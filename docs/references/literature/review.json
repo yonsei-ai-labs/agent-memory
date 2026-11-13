@@ -1,0 +1,105 @@
+{
+  "reviewed_on": "2026-11-13",
+  "purpose": "Survey primary agent-memory papers before choosing a mechanism or experimental constraint for the current project.",
+  "scope": {
+    "papers": 12,
+    "experiment_sections_reviewed": 11,
+    "background_only": [
+      "locomo"
+    ],
+    "exhaustive_or_latest_leaderboard_claim": false,
+    "benchmarks_run": 0,
+    "models_trained": 0,
+    "current_evaluation_code_or_dataset_changed": false
+  },
+  "evidence_policy": "Primary papers and official proceedings; author-reported experiments were read, not independently reproduced. Older arXiv versions were superseded by the latest checked versions for MemRL, ReasoningBank and MemoryAgentBench.",
+  "synthesis": [
+    {
+      "kind": "reviewer_inference",
+      "claim": "Separate historical QA, cross-task experiential learning, and online memory-action control before selecting metrics or methods.",
+      "papers": [
+        "longmemeval",
+        "memoryarena",
+        "reasoningbank",
+        "agemem"
+      ]
+    },
+    {
+      "kind": "reviewer_inference",
+      "claim": "No common requirement for BM25 or a 2k memory cap follows from the reviewed papers. Resource limits are research-specific settings or sensitivity axes.",
+      "papers": [
+        "longmemeval",
+        "mem0",
+        "memoryagentbench",
+        "agemem"
+      ]
+    },
+    {
+      "kind": "reported_counterexample",
+      "claim": "Mem0 Table 2 reports higher judge quality for full-context reading than Mem0 while memory has token/latency advantages. Quality and efficiency claims must stay separate.",
+      "papers": [
+        "mem0"
+      ]
+    },
+    {
+      "kind": "reviewer_inference",
+      "claim": "Ablations and same-worker baseline comparisons support component claims. They do not automatically establish the causal marginal effect of each memory item.",
+      "papers": [
+        "amem",
+        "reasoningbank",
+        "memrl",
+        "automem"
+      ]
+    },
+    {
+      "kind": "reported_limit",
+      "claim": "MemRL explicitly discusses multi-memory credit-assignment ambiguity. Its theoretical stability analysis assumes a frozen policy and stationary tasks.",
+      "papers": [
+        "memrl"
+      ]
+    },
+    {
+      "kind": "reviewer_inference",
+      "claim": "For the current fixed-bank dynamic-selection question, first compare actual task outcomes with no additional memory, all available memory where it fits, and the proposed selection policy; record cost rather than imposing an unjustified 2k primary cap.",
+      "papers": [
+        "mem0",
+        "memoryarena",
+        "automem"
+      ]
+    },
+    {
+      "kind": "reviewer_inference",
+      "claim": "A fully observed scripted history can diagnose memory applicability but does not itself demonstrate experiential learning or autonomous task improvement.",
+      "papers": [
+        "memoryarena",
+        "reflexion",
+        "reasoningbank"
+      ]
+    }
+  ],
+  "reading_priority_for_this_project": [
+    "memoryarena",
+    "reasoningbank",
+    "memrl",
+    "automem"
+  ],
+  "open_questions_before_design": [
+    "Is the intended contribution selecting an existing fixed bank, learning what to write, or improving through repeated environment interaction?",
+    "Which actual worker outcome should improve, and what simple reference can already solve the task?",
+    "Do losses arise from missing evidence, misapplied old evidence, or the worker misusing adequate evidence?"
+  ],
+  "paper_ids": [
+    "locomo",
+    "longmemeval",
+    "memoryagentbench",
+    "memoryarena",
+    "reflexion",
+    "amem",
+    "mem0",
+    "reasoningbank",
+    "memrl",
+    "agemem",
+    "automem",
+    "memgov"
+  ]
+}

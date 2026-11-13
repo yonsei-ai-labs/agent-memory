@@ -1,0 +1,119 @@
+{
+  "schema_version": "1.0",
+  "plan_status": "draft",
+  "experiment_id": "agent-memory-tau2-two-pass-draft-v1",
+  "protocol": {
+    "name": "collect_then_probe",
+    "collection_bank_scope": "per_source_task",
+    "probe_writes": "follow_condition_discard_clone",
+    "variant": "memory_adaptation"
+  },
+  "worker": {
+    "alias": "luna",
+    "provider": "openrouter",
+    "model_id": "openai/gpt-6-luna",
+    "route_provider": "openai",
+    "allow_fallbacks": false,
+    "parameters": {},
+    "parameters_confirmed": false
+  },
+  "benchmark": {
+    "name": "tau2",
+    "source_revision": null,
+    "domain": null,
+    "task_manifest_ref": null,
+    "task_manifest_sha256": null,
+    "binding_revision": null,
+    "memory_mode": "external_memory"
+  },
+  "sampling": {
+    "independent_bank_replicates": null,
+    "order_count": null,
+    "trials_per_probe": null,
+    "schedule_seed": null
+  },
+  "pool_modes": [
+    "own_experience",
+    "mixed_experience"
+  ],
+  "catalog": {
+    "order": "creation_then_id",
+    "page_size": null,
+    "fields": [
+      "id",
+      "title",
+      "version"
+    ]
+  },
+  "limits": {
+    "storage_max_items": null,
+    "storage_max_payload_utf8_bytes": null,
+    "read_max_utf8_bytes": null,
+    "max_model_requests_per_run": null,
+    "max_seconds_per_run": null,
+    "max_reported_cost_usd": null,
+    "unknown_cost_policy": "continue_with_call_or_time_limit"
+  },
+  "conditions": [
+    {
+      "id": "no_memory",
+      "memory_enabled": false,
+      "write_timing": "none",
+      "representation": "none",
+      "instruction_ref": null,
+      "read_mode": "none",
+      "read_transform": "verbatim",
+      "preload_selector_ref": null,
+      "curation_instruction_ref": null,
+      "feedback": "observations_only",
+      "same_episode_read": false
+    },
+    {
+      "id": "post_task",
+      "memory_enabled": true,
+      "write_timing": "post_task",
+      "representation": "free_text",
+      "instruction_ref": null,
+      "read_mode": "on_demand",
+      "read_transform": "verbatim",
+      "preload_selector_ref": null,
+      "curation_instruction_ref": null,
+      "feedback": "observations_only",
+      "same_episode_read": false
+    },
+    {
+      "id": "during_task",
+      "memory_enabled": true,
+      "write_timing": "during_task",
+      "representation": "free_text",
+      "instruction_ref": null,
+      "read_mode": "on_demand",
+      "read_transform": "verbatim",
+      "preload_selector_ref": null,
+      "curation_instruction_ref": null,
+      "feedback": "observations_only",
+      "same_episode_read": true
+    },
+    {
+      "id": "during_and_post",
+      "memory_enabled": true,
+      "write_timing": "during_and_post",
+      "representation": "free_text",
+      "instruction_ref": null,
+      "read_mode": "on_demand",
+      "read_transform": "verbatim",
+      "preload_selector_ref": null,
+      "curation_instruction_ref": null,
+      "feedback": "observations_only",
+      "same_episode_read": true
+    }
+  ],
+  "analysis": {
+    "task_weighting": "equal_task_weight_within_benchmark",
+    "pairing_ref": null,
+    "uncertainty_method": null,
+    "annotation_protocol_ref": null,
+    "cost_allocation_ref": null,
+    "analysis_confirmed": false
+  }
+}

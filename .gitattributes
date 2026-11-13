@@ -1,0 +1,10 @@
+# Keep project text portable and hashed evidence byte-for-byte stable.
+* text=auto eol=lf
+/schemas/*.json -text
+/protocols/drafts/*.json -text
+/tests/fixtures/** -text
+/docs/references/literature/** -text
+/artifacts/*.json -text
+
+# The original literature CSV includes a BOM and intentional CRLF endings.
+/docs/references/literature/papers.csv -text whitespace=cr-at-eol

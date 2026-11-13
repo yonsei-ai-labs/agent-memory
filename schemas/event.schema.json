@@ -1,0 +1,173 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ai-memory:framework:event:1",
+  "title": "Agent memory framework event v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "event_id", "event_seq", "experiment_id", "run_id", "session_id", "condition_id", "stage", "phase", "type", "timestamp_utc", "record_kind", "caused_by", "payload"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "event_id": {"$ref": "#/$defs/id"},
+    "event_seq": {"type": "integer", "minimum": 1},
+    "experiment_id": {"$ref": "#/$defs/id"},
+    "run_id": {"$ref": "#/$defs/nullable_id"},
+    "session_id": {"$ref": "#/$defs/nullable_id"},
+    "condition_id": {"$ref": "#/$defs/nullable_id"},
+    "stage": {"enum": ["controller", "collection", "probe", "continual", "diagnostic"]},
+    "phase": {"enum": ["prepare", "solve", "post_task_write", "grade", "seal", "analyze"]},
+    "type": {"enum": ["run.started", "run.ended", "model.request_started", "model.request_finished", "memory.stored", "memory.returned", "memory.input_included", "bank.snapshot_created", "business.transition", "outcome.scored", "policy.denied", "runtime.error"]},
+    "timestamp_utc": {"type": "string", "format": "date-time", "pattern": "Z$"},
+    "record_kind": {"enum": ["observed", "illustrative"]},
+    "caused_by": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/id"}},
+    "payload": {"type": "object"}
+  },
+  "allOf": [
+    {"if": {"properties": {"type": {"const": "run.started"}}}, "then": {"properties": {"payload": {"$ref": "#/$defs/run_started"}}}},
+    {"if": {"properties": {"type": {"const": "run.ended"}}}, "then": {"properties": {"payload": {"$ref": "#/$defs/run_ended"}}}},
+    {"if": {"properties": {"type": {"const": "memory.stored"}}}, "then": {"properties": {"payload": {"$ref": "#/$defs/memory_stored"}}}},
+    {"if": {"properties": {"type": {"const": "memory.returned"}}}, "then": {"properties": {"payload": {"$ref": "#/$defs/memory_returned"}}}},
+    {"if": {"properties": {"type": {"const": "memory.input_included"}}}, "then": {"properties": {"payload": {"$ref": "#/$defs/input_included"}}}},
+    {"if": {"properties": {"type": {"const": "bank.snapshot_created"}}}, "then": {"properties": {"payload": {"$ref": "#/$defs/snapshot_created"}}}},
+    {"if": {"properties": {"type": {"const": "model.request_started"}}}, "then": {"properties": {"payload": {"$ref": "#/$defs/request_started"}}}},
+    {"if": {"properties": {"type": {"const": "model.request_finished"}}}, "then": {"properties": {"payload": {"$ref": "#/$defs/request_finished"}}}},
+    {"if": {"properties": {"type": {"const": "outcome.scored"}}}, "then": {"properties": {"payload": {"$ref": "#/$defs/outcome"}}}}
+  ],
+  "$defs": {
+    "id": {"type": "string", "minLength": 1},
+    "nullable_id": {"type": ["string", "null"], "minLength": 1},
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "artifact": {
+      "type": "object", "additionalProperties": false,
+      "required": ["path", "sha256", "media_type"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "sha256": {"$ref": "#/$defs/sha256"},
+        "media_type": {"type": "string", "minLength": 1}
+      }
+    },
+    "nullable_artifact": {"anyOf": [{"$ref": "#/$defs/artifact"}, {"type": "null"}]},
+    "run_started": {
+      "type": "object", "additionalProperties": false,
+      "required": ["bank_id", "start_snapshot_id", "fresh_session", "source_run_ids"],
+      "properties": {
+        "bank_id": {"$ref": "#/$defs/nullable_id"},
+        "start_snapshot_id": {"$ref": "#/$defs/nullable_id"},
+        "fresh_session": {"type": "boolean"},
+        "source_run_ids": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/id"}}
+      }
+    },
+    "run_ended": {
+      "type": "object", "additionalProperties": false,
+      "required": ["termination_reason", "grading_status", "end_snapshot_id"],
+      "properties": {
+        "termination_reason": {"type": "string", "minLength": 1},
+        "grading_status": {"enum": ["graded", "not_available", "error", "incomplete"]},
+        "end_snapshot_id": {"$ref": "#/$defs/nullable_id"}
+      }
+    },
+    "memory_stored": {
+      "type": "object", "additionalProperties": false,
+      "required": ["bank_id", "head_revision", "operation_id", "item_id", "version_id", "parent_version_id", "title", "body_ref", "body_sha256", "public_context_ref", "public_context_cutoff_seq"],
+      "properties": {
+        "bank_id": {"$ref": "#/$defs/id"},
+        "head_revision": {"type": "integer", "minimum": 1},
+        "operation_id": {"$ref": "#/$defs/id"},
+        "item_id": {"$ref": "#/$defs/id"},
+        "version_id": {"$ref": "#/$defs/id"},
+        "parent_version_id": {"$ref": "#/$defs/nullable_id"},
+        "title": {"type": "string", "minLength": 1},
+        "body_ref": {"$ref": "#/$defs/artifact"},
+        "body_sha256": {"$ref": "#/$defs/sha256"},
+        "public_context_ref": {"$ref": "#/$defs/artifact"},
+        "public_context_cutoff_seq": {"type": "integer", "minimum": 1}
+      }
+    },
+    "memory_returned": {
+      "type": "object", "additionalProperties": false,
+      "required": ["bank_id", "operation_id", "operation", "status", "result_ref", "items"],
+      "properties": {
+        "bank_id": {"$ref": "#/$defs/id"},
+        "operation_id": {"$ref": "#/$defs/id"},
+        "operation": {"enum": ["create", "update", "list", "get", "search", "delete", "clear"]},
+        "status": {"enum": ["ok", "error"]},
+        "result_ref": {"$ref": "#/$defs/artifact"},
+        "items": {
+          "type": "array", "items": {
+            "type": "object", "additionalProperties": false,
+            "required": ["item_id", "version_id", "fields"],
+            "properties": {
+              "item_id": {"$ref": "#/$defs/id"},
+              "version_id": {"$ref": "#/$defs/id"},
+              "fields": {"type": "array", "uniqueItems": true, "items": {"enum": ["title", "body", "metadata", "derived"]}}
+            }
+          }
+        }
+      }
+    },
+    "input_included": {
+      "type": "object", "additionalProperties": false,
+      "required": ["request_id", "item_id", "version_id", "returned_event_id", "field", "request_ref", "pointer", "char_start", "char_end", "rendered_sha256"],
+      "properties": {
+        "request_id": {"$ref": "#/$defs/id"},
+        "item_id": {"$ref": "#/$defs/id"},
+        "version_id": {"$ref": "#/$defs/id"},
+        "returned_event_id": {"$ref": "#/$defs/id"},
+        "field": {"enum": ["title", "body", "metadata", "derived"]},
+        "request_ref": {"$ref": "#/$defs/artifact"},
+        "pointer": {"type": "string", "pattern": "^/"},
+        "char_start": {"type": "integer", "minimum": 0},
+        "char_end": {"type": "integer", "minimum": 0},
+        "rendered_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "snapshot_created": {
+      "type": "object", "additionalProperties": false,
+      "required": ["bank_id", "snapshot_id", "head_revision", "parent_snapshot_ids", "manifest_ref"],
+      "properties": {
+        "bank_id": {"$ref": "#/$defs/id"},
+        "snapshot_id": {"$ref": "#/$defs/id"},
+        "head_revision": {"type": "integer", "minimum": 0},
+        "parent_snapshot_ids": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/id"}},
+        "manifest_ref": {"$ref": "#/$defs/artifact"}
+      }
+    },
+    "request_started": {
+      "type": "object", "additionalProperties": false,
+      "required": ["request_id", "actor_role", "request_ref", "delivery_status"],
+      "properties": {
+        "request_id": {"$ref": "#/$defs/id"},
+        "actor_role": {"enum": ["worker", "writer", "curator", "user_simulator", "grader"]},
+        "request_ref": {"$ref": "#/$defs/artifact"},
+        "delivery_status": {"enum": ["prepared", "submitted", "unknown"]}
+      }
+    },
+    "request_finished": {
+      "type": "object", "additionalProperties": false,
+      "required": ["request_id", "status", "delivery_status", "response_ref", "usage", "cost_usd", "cost_status"],
+      "properties": {
+        "request_id": {"$ref": "#/$defs/id"},
+        "status": {"enum": ["response", "error", "timeout"]},
+        "delivery_status": {"enum": ["response_received", "not_submitted", "unknown"]},
+        "response_ref": {"$ref": "#/$defs/nullable_artifact"},
+        "usage": {"type": ["object", "null"]},
+        "cost_usd": {"type": ["number", "null"], "minimum": 0},
+        "cost_status": {"enum": ["observed", "estimated", "unknown", "not_applicable"]}
+      }
+    },
+    "outcome": {
+      "type": "object", "additionalProperties": false,
+      "required": ["grading_status", "official_success", "official_score", "official_artifact_ref"],
+      "properties": {
+        "grading_status": {"enum": ["graded", "not_available", "error", "incomplete"]},
+        "official_success": {"type": ["boolean", "null"]},
+        "official_score": {"type": ["object", "number", "null"]},
+        "official_artifact_ref": {"$ref": "#/$defs/nullable_artifact"}
+      },
+      "allOf": [{
+        "if": {"properties": {"grading_status": {"const": "graded"}}},
+        "then": {"properties": {"official_success": {"type": "boolean"}, "official_artifact_ref": {"$ref": "#/$defs/artifact"}}},
+        "else": {"properties": {"official_success": {"type": "null"}}}
+      }]
+    }
+  }
+}

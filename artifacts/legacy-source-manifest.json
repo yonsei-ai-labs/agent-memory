@@ -1,0 +1,422 @@
+{
+  "schema_version": "1.0",
+  "kind": "legacy-source-manifest",
+  "migration_date": "2026-11-14",
+  "source": {
+    "repository": "https://github.com/yonsei-ai-labs/ai-memory-lab",
+    "commit": "d0044c6367e17c1488db4dae37f44e5b358342f9",
+    "selection": "committed_bytes_only",
+    "working_tree_changes_imported": false
+  },
+  "destination": {
+    "project": "agent-memory-eval",
+    "repository": "https://github.com/yonsei-ai-labs/agent-memory",
+    "branch": "main"
+  },
+  "sources": [
+    {
+      "path": "docs/ai-memory-framework-detailed-design-2026-11-13.md",
+      "sha256": "dd90dff13e58229922594c17e52c6e954792e7a6389478c9e6987466a0a27f67",
+      "purpose": "공통 기술 계약과 최신 세션·은행·노출·분석 의미를 새 패키지에 맞게 이관",
+      "targets": [
+        {
+          "path": "docs/design/architecture.md",
+          "transformation": "adapted",
+          "sha256_at_migration": "351f203699d251155540a0917c3212c7976cba93315afca9dbb8758c7f247e89"
+        },
+        {
+          "path": "docs/research/experiment-protocol.md",
+          "transformation": "adapted",
+          "sha256_at_migration": "81fb8bc868ace86fde24cd0cc3c0674a68f89efc7f17e558ca30b7470f5954fe"
+        },
+        {
+          "path": "docs/research/metrics.md",
+          "transformation": "adapted",
+          "sha256_at_migration": "93179d67888dfd5293184b33139dbe6e3e81d1de1a52e14dff43bb1191069015"
+        },
+        {
+          "path": "docs/design/recording.md",
+          "transformation": "adapted",
+          "sha256_at_migration": "541529c8a2150cd548a9e7443fffcbb3746bfc5a1d9fec8e9e25e179cb141dad"
+        },
+        {
+          "path": "docs/development/roadmap.md",
+          "transformation": "adapted",
+          "sha256_at_migration": "7a733b37c3ee1920efd0d3a7b47571dd9611d49492a95e3ee90f16e5d7b4c4ef"
+        }
+      ]
+    },
+    {
+      "path": "docs/ai-memory-evaluation-framework-design-2026-11-13.md",
+      "sha256": "f2dfcca856a7da288d4a38371c4ff7f566ddeb1ab9c69eb8d1665773c395d145",
+      "purpose": "연구 범위·실험 요인·기준선·같은 경험과 통제 비교",
+      "targets": [
+        {
+          "path": "docs/research/plan.md",
+          "transformation": "synthesized",
+          "sha256_at_migration": "4511d5099bcf63191375a41b8860765672d515d8cb47db74df71099af4df3e97"
+        },
+        {
+          "path": "docs/research/experiment-protocol.md",
+          "transformation": "synthesized",
+          "sha256_at_migration": "81fb8bc868ace86fde24cd0cc3c0674a68f89efc7f17e558ca30b7470f5954fe"
+        }
+      ]
+    },
+    {
+      "path": "docs/ai-memory-experiment-report-brief-2026-11-13.md",
+      "sha256": "0cd441c6aeb5f73de40d2206704cd9a6a8c844d6aa3a771e18f449cc1eb14484",
+      "purpose": "연구 목적·기여·기대 효과·보고서 설명",
+      "targets": [
+        {
+          "path": "docs/research/plan.md",
+          "transformation": "synthesized",
+          "sha256_at_migration": "4511d5099bcf63191375a41b8860765672d515d8cb47db74df71099af4df3e97"
+        },
+        {
+          "path": "docs/handoff/report-outline.md",
+          "transformation": "synthesized",
+          "sha256_at_migration": "1bb240206a76f8c6be96646e9f62e52a5e9c94ef361914713b04d6edaf370d53"
+        }
+      ]
+    },
+    {
+      "path": "docs/ai-memory-write-read-experiment-note-2026-11-13.md",
+      "sha256": "e68b947c4cb83d21962927319714d73a6fc259224a441fae0177429e0e4ab562",
+      "purpose": "연구 범위와 기억 정책 선행연구의 배경",
+      "targets": [
+        {
+          "path": "docs/research/plan.md",
+          "transformation": "synthesized",
+          "sha256_at_migration": "4511d5099bcf63191375a41b8860765672d515d8cb47db74df71099af4df3e97"
+        },
+        {
+          "path": "docs/research/related-work.md",
+          "transformation": "synthesized",
+          "sha256_at_migration": "7a05c8508c132f00925c83e3b7765c9471228c5d2a145e04cc53193947fcb4e9"
+        }
+      ]
+    },
+    {
+      "path": "docs/reports/2026-11-13-memory-benchmark-metrics-and-novelty.md",
+      "sha256": "b54883c3dd5a620b92e028a08d9a233f5ce60c3894e0ffb3a15580d26c293c7a",
+      "purpose": "지표·벤치 비교·근거와 기여 후보의 구분",
+      "targets": [
+        {
+          "path": "docs/research/metrics.md",
+          "transformation": "adapted",
+          "sha256_at_migration": "93179d67888dfd5293184b33139dbe6e3e81d1de1a52e14dff43bb1191069015"
+        },
+        {
+          "path": "docs/research/related-work.md",
+          "transformation": "adapted",
+          "sha256_at_migration": "7a05c8508c132f00925c83e3b7765c9471228c5d2a145e04cc53193947fcb4e9"
+        }
+      ]
+    },
+    {
+      "path": "docs/experiment-recording.md",
+      "sha256": "11b786d45f7f01ac2004758eb884b20b7a8a02dec822c220c63b960884e4fb53",
+      "purpose": "원본·실제 입력·사용량·결측·분석 revision 원칙만 선별",
+      "targets": [
+        {
+          "path": "docs/design/recording.md",
+          "transformation": "synthesized",
+          "sha256_at_migration": "541529c8a2150cd548a9e7443fffcbb3746bfc5a1d9fec8e9e25e179cb141dad"
+        }
+      ]
+    },
+    {
+      "path": "CONTRIBUTING.md",
+      "sha256": "b91a7db034013344c6e08c2738923c0a5ebf344f6960100272a35af7e538dd5d",
+      "purpose": "영역 책임·원천/라벨 분리·재현 규약을 새 기본 검증에 맞게 정리",
+      "targets": [
+        {
+          "path": "CONTRIBUTING.md",
+          "transformation": "synthesized",
+          "sha256_at_migration": "4bbcd0dcc48f7cf90e8ff35fe56d34460c709d632611c2220611739f47787d9c"
+        },
+        {
+          "path": "AGENTS.md",
+          "transformation": "synthesized",
+          "sha256_at_migration": "ad58972fe8333c294719060bab434787286eccb72d6546b675aa72bb1ca0dce8"
+        }
+      ]
+    },
+    {
+      "path": "docs/design-data/agent-memory-framework-20261113-v1/README.md",
+      "sha256": "47250ba01f3f6a2db5aa07031d1358074b96a9a5efec7220c4facd5c4525da84",
+      "purpose": "계약·예시·미구현 상태와 검증 범위를 새 위치에서 설명",
+      "targets": [
+        {
+          "path": "schemas/README.md",
+          "transformation": "adapted",
+          "sha256_at_migration": "2b2465dd07c420f05bbd32f26a70b79d70cc9ac7cc82814569c7cce6811c7c75"
+        },
+        {
+          "path": "protocols/README.md",
+          "transformation": "adapted",
+          "sha256_at_migration": "a0419c8d19b54c16cc6ec9ffe976bb8dabc1b987491fe2022c5122b01f431c1e"
+        },
+        {
+          "path": "tests/README.md",
+          "transformation": "adapted",
+          "sha256_at_migration": "76a5b01b69be440c5ef114a479a8ee7519730aafbf24e81169b000757f716c20"
+        },
+        {
+          "path": "tests/fixtures/contracts/README.md",
+          "transformation": "adapted",
+          "sha256_at_migration": "8ab316df4c81279851d14daccab1918e504e83a21def52da89fb6e8b99f06190"
+        }
+      ]
+    },
+    {
+      "path": "docs/design-data/agent-memory-framework-20261113-v1/run-plan.schema.json",
+      "sha256": "1c332cf9532abeb8d91d1fb9845294da5933468f21bc8006392d30981a346b74",
+      "purpose": "의미·ID·버전을 유지한 설정/사건 스키마",
+      "targets": [
+        {
+          "path": "schemas/run-plan.schema.json",
+          "transformation": "verbatim",
+          "sha256_at_migration": "1c332cf9532abeb8d91d1fb9845294da5933468f21bc8006392d30981a346b74"
+        }
+      ]
+    },
+    {
+      "path": "docs/design-data/agent-memory-framework-20261113-v1/event.schema.json",
+      "sha256": "7abce598a1bab6aa2a3c5e2c63a41927da8f74e8a4b2727779166cf2ca3448e8",
+      "purpose": "의미·ID·버전을 유지한 설정/사건 스키마",
+      "targets": [
+        {
+          "path": "schemas/event.schema.json",
+          "transformation": "verbatim",
+          "sha256_at_migration": "7abce598a1bab6aa2a3c5e2c63a41927da8f74e8a4b2727779166cf2ca3448e8"
+        }
+      ]
+    },
+    {
+      "path": "docs/design-data/agent-memory-framework-20261113-v1/run-plan.example.json",
+      "sha256": "9780fc85f7c21ce71cc58209e56c72b32464f8356fc35fcd7dc73f00e105666f",
+      "purpose": "draft 상태와 미정 설정을 유지하고 계획 ID와 경로만 재구성",
+      "targets": [
+        {
+          "path": "protocols/drafts/tau2-two-pass.json",
+          "transformation": "adapted",
+          "sha256_at_migration": "c9487f28ea8ca83991825719a63bf439a50b7996e75e0ec89684f2f15a20017b"
+        }
+      ]
+    },
+    {
+      "path": "docs/design-data/agent-memory-framework-20261113-v1/validate_examples.py",
+      "sha256": "aabb09819e28511cbc2de5d137684ff16acba691595ccfa5f914df308a2495b7",
+      "purpose": "새 디렉터리에서 독립 검증하도록 경로 수정 및 날짜 거절 검사 추가",
+      "targets": [
+        {
+          "path": "scripts/validate_design.py",
+          "transformation": "adapted",
+          "sha256_at_migration": "a474c6cdc625ea2f44559c7a551935f20e78e76a19196afc2ea85260e384fe53"
+        }
+      ]
+    },
+    {
+      "path": "docs/design-data/agent-memory-framework-20261113-v1/example-events.jsonl",
+      "sha256": "72de57556fd33caf4a9d042bb1edd79d2070d59a72f193b8950456941f876fc2",
+      "purpose": "실험 결과가 아닌 합성 사건의 원본 bytes 보존",
+      "targets": [
+        {
+          "path": "tests/fixtures/contracts/example-events.jsonl",
+          "transformation": "verbatim",
+          "sha256_at_migration": "72de57556fd33caf4a9d042bb1edd79d2070d59a72f193b8950456941f876fc2"
+        }
+      ]
+    },
+    {
+      "path": "docs/design-data/agent-memory-framework-20261113-v1/examples/bank-snapshot.json",
+      "sha256": "2220804dc569405b5916c6eeecbdf6636e3cc0d65a0651fa467799143722b8dd",
+      "purpose": "사건이 참조하는 합성 내용·반환·요청의 bytes와 해시 보존",
+      "targets": [
+        {
+          "path": "tests/fixtures/contracts/examples/bank-snapshot.json",
+          "transformation": "verbatim",
+          "sha256_at_migration": "2220804dc569405b5916c6eeecbdf6636e3cc0d65a0651fa467799143722b8dd"
+        }
+      ]
+    },
+    {
+      "path": "docs/design-data/agent-memory-framework-20261113-v1/examples/collection-context.json",
+      "sha256": "cb546800e1e207c4eb180efdac6dde582e3733802092b1fbf42b8ef72f1e4942",
+      "purpose": "사건이 참조하는 합성 내용·반환·요청의 bytes와 해시 보존",
+      "targets": [
+        {
+          "path": "tests/fixtures/contracts/examples/collection-context.json",
+          "transformation": "verbatim",
+          "sha256_at_migration": "cb546800e1e207c4eb180efdac6dde582e3733802092b1fbf42b8ef72f1e4942"
+        }
+      ]
+    },
+    {
+      "path": "docs/design-data/agent-memory-framework-20261113-v1/examples/get-result.json",
+      "sha256": "71edaf5100b0a482caa9d7d05904492d57c43ef0eb13a6ff64c1c042c69d2471",
+      "purpose": "사건이 참조하는 합성 내용·반환·요청의 bytes와 해시 보존",
+      "targets": [
+        {
+          "path": "tests/fixtures/contracts/examples/get-result.json",
+          "transformation": "verbatim",
+          "sha256_at_migration": "71edaf5100b0a482caa9d7d05904492d57c43ef0eb13a6ff64c1c042c69d2471"
+        }
+      ]
+    },
+    {
+      "path": "docs/design-data/agent-memory-framework-20261113-v1/examples/list-result.json",
+      "sha256": "25db9746865987a6704442858430103588fabb230fcd0e1974f189d95e376103",
+      "purpose": "사건이 참조하는 합성 내용·반환·요청의 bytes와 해시 보존",
+      "targets": [
+        {
+          "path": "tests/fixtures/contracts/examples/list-result.json",
+          "transformation": "verbatim",
+          "sha256_at_migration": "25db9746865987a6704442858430103588fabb230fcd0e1974f189d95e376103"
+        }
+      ]
+    },
+    {
+      "path": "docs/design-data/agent-memory-framework-20261113-v1/examples/memory.json",
+      "sha256": "604b19874bca4593d8f5c13b4713210771f0a5145c6937a960b679ee9aca88b7",
+      "purpose": "사건이 참조하는 합성 내용·반환·요청의 bytes와 해시 보존",
+      "targets": [
+        {
+          "path": "tests/fixtures/contracts/examples/memory.json",
+          "transformation": "verbatim",
+          "sha256_at_migration": "604b19874bca4593d8f5c13b4713210771f0a5145c6937a960b679ee9aca88b7"
+        }
+      ]
+    },
+    {
+      "path": "docs/design-data/agent-memory-framework-20261113-v1/examples/model-request-after-get.json",
+      "sha256": "91d6bbeaee73b5b8f5bacb9f488db66c6864b5278aede85a9645310bce076d25",
+      "purpose": "사건이 참조하는 합성 내용·반환·요청의 bytes와 해시 보존",
+      "targets": [
+        {
+          "path": "tests/fixtures/contracts/examples/model-request-after-get.json",
+          "transformation": "verbatim",
+          "sha256_at_migration": "91d6bbeaee73b5b8f5bacb9f488db66c6864b5278aede85a9645310bce076d25"
+        }
+      ]
+    },
+    {
+      "path": "docs/design-data/agent-memory-framework-20261113-v1/examples/model-request-after-list.json",
+      "sha256": "20c03bc19b2c5436b305aec7a87175e591e44f23fa77e08e13e8323709a6f8c8",
+      "purpose": "사건이 참조하는 합성 내용·반환·요청의 bytes와 해시 보존",
+      "targets": [
+        {
+          "path": "tests/fixtures/contracts/examples/model-request-after-list.json",
+          "transformation": "verbatim",
+          "sha256_at_migration": "20c03bc19b2c5436b305aec7a87175e591e44f23fa77e08e13e8323709a6f8c8"
+        }
+      ]
+    },
+    {
+      "path": "docs/design-data/agent-memory-framework-20261113-v1/examples/model-response-after-list.json",
+      "sha256": "2c87c8b22328b5e65dee6f191b77a273a7022adc4765e8c9f7e3d0fba6ce9371",
+      "purpose": "사건이 참조하는 합성 내용·반환·요청의 bytes와 해시 보존",
+      "targets": [
+        {
+          "path": "tests/fixtures/contracts/examples/model-response-after-list.json",
+          "transformation": "verbatim",
+          "sha256_at_migration": "2c87c8b22328b5e65dee6f191b77a273a7022adc4765e8c9f7e3d0fba6ce9371"
+        }
+      ]
+    },
+    {
+      "path": "docs/reports/data/agent-memory-literature-20261113/review.json",
+      "sha256": "755ace15c4a531750d765abdd420d45346740e0f4df4799e2985f8f90803d52f",
+      "purpose": "초기 문헌 조사 표의 원본과 당시 조사 범위 보존",
+      "targets": [
+        {
+          "path": "docs/references/literature/review.json",
+          "transformation": "verbatim",
+          "sha256_at_migration": "755ace15c4a531750d765abdd420d45346740e0f4df4799e2985f8f90803d52f"
+        }
+      ]
+    },
+    {
+      "path": "docs/reports/data/agent-memory-literature-20261113/papers.csv",
+      "sha256": "4b15da8b9ac7da0f6a2d21307e430f1660fa40e12cc76cf6c46b1f6226e56a5b",
+      "purpose": "초기 문헌 조사 표의 원본과 당시 조사 범위 보존",
+      "targets": [
+        {
+          "path": "docs/references/literature/papers.csv",
+          "transformation": "verbatim",
+          "sha256_at_migration": "4b15da8b9ac7da0f6a2d21307e430f1660fa40e12cc76cf6c46b1f6226e56a5b"
+        }
+      ]
+    },
+    {
+      "path": "experiments/swe_memory/scripts/records.py",
+      "sha256": "5485a4647e332e8ec10e1500139452ffe766434695b1074f289641f58611ad92",
+      "purpose": "reference_only: 해시·원자적 기록·미확인 비용의 향후 재사용 검토. 실행 코드로 복사하지 않음",
+      "targets": []
+    },
+    {
+      "path": ".gitattributes",
+      "sha256": "44ebe51d6b375f71b0811979a26818d904d747b161cd93893055a59e6382f260",
+      "purpose": "해시 기반 예시와 문헌 CSV의 bytes가 checkout 설정으로 바뀌지 않도록 새 경로에 맞춘 속성 규칙",
+      "targets": [
+        {
+          "path": ".gitattributes",
+          "transformation": "adapted",
+          "sha256_at_migration": "0854c14ff469a47890c08d2bfe516460a1b9dba55074320d9160ec7e78aa6a6e"
+        }
+      ]
+    }
+  ],
+  "newly_authored_files": [
+    ".gitignore",
+    ".python-version",
+    "README.md",
+    "artifacts/README.md",
+    "docs/README.md",
+    "docs/migration.md",
+    "docs/references/README.md",
+    "pyproject.toml",
+    "scripts/check_repository.py",
+    "src/agent_memory_eval/README.md",
+    "src/agent_memory_eval/__init__.py",
+    "src/agent_memory_eval/adapters/__init__.py",
+    "src/agent_memory_eval/analysis/__init__.py",
+    "src/agent_memory_eval/contracts/__init__.py",
+    "src/agent_memory_eval/memory/__init__.py",
+    "src/agent_memory_eval/models/__init__.py",
+    "src/agent_memory_eval/policies/__init__.py",
+    "src/agent_memory_eval/recording/__init__.py",
+    "src/agent_memory_eval/runner/__init__.py",
+    "uv.lock"
+  ],
+  "conversation_decisions": [
+    "새 프로젝트를 독립 레포의 연구·프레임워크 기준으로 관리한다.",
+    "Luna·τ² 초기 실증, AppWorld·BFCL 확장, 저장·조회·전이·누적·득실·비용 범위를 유지한다.",
+    "보고서는 메모리 필요성·관련 연구·두 회차 큰 그림·측정과 기여의 네 장으로 정리한다."
+  ],
+  "retained_in_legacy_repository": [
+    {
+      "scope": "datasets and historical labels",
+      "reason": "새 자율 생성 기억의 정답으로 자동 승계하지 않음"
+    },
+    {
+      "scope": "training checkpoints and model outputs",
+      "reason": "현재 프레임워크의 실행 의존성이나 성능 자료가 아님"
+    },
+    {
+      "scope": "raw runs and large evaluation bundles",
+      "reason": "원래 출처·해시·재현 위치를 보존하고 필요한 경우 명시적으로 참조"
+    },
+    {
+      "scope": "legacy root README, dependency lock and test commands",
+      "reason": "새 목적과 기본 의존성·검증을 독립 구성"
+    },
+    {
+      "scope": "uncommitted work",
+      "reason": "원래 작업자의 진행 중 변경을 그대로 보존"
+    }
+  ],
+  "validation_scope": "문서·스키마·합성 자료·출처 및 패키지 골격. 벤치·모델 실행이나 성능 재현은 아님"
+}
