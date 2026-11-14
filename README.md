@@ -10,6 +10,8 @@
 
 새 개발 세션은 [인수인계](docs/handoff/next-session.md)에서 현재 구현 상태·합의 사항·미정 값을 확인하고, [첫 구현 작업](docs/development/first-implementation.md)부터 이어간다.
 
+첫 구현은 **SQLite 없이 JSON·JSONL 파일로 가볍게 시작한다.** 기억 버전·평가별 격리와 실제 입력 기록을 작은 오프라인 흐름으로 연결한다. 최근 선택과 남은 세부 논의는 [방향 논의 노트](docs/design/direction-notes.md)에 있다.
+
 추가로 전달받은 실험팀 문서는 [검토·반영 내역](docs/handoff/experiment-handoff-review.md)과 [적용 조건 기억 파일럿 제안](docs/research/condition-sensitive-pilot.md)으로 정리했다. 기존 프로토콜·연구 범위를 유지하며, 제안을 실행 확정이나 성능 결과로 취급하지 않는다.
 
 1. [연구 계획](docs/research/plan.md): 문제·연구 질문·기여 목표·기대 효과와 결정 사항.

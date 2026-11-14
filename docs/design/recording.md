@@ -20,7 +20,8 @@ runs/<experiment_id>/
   schedules.jsonl
   pairs.jsonl
   task-groups.json
-  state/memory.sqlite3
+  state/commits/<operation_id>.json
+  state/banks/<bank_id>.json
   events.jsonl
   snapshots/<snapshot_id>.json
   blobs/sha256/<digest>
@@ -53,7 +54,9 @@ experiment의 manifest를 한 번의 과제 실행으로 집계하지 않는다.
 
 ## 사건과 장애
 
-[사건 스키마](../../schemas/event.schema.json)에 envelope와 핵심 payload가 있다. 저장·갱신·head·연산 결과·사건은 같은 저장소 트랜잭션으로 확정한다. outbox에서 JSONL을 내보내고 재내보내기의 중복을 event ID로 탐지한다.
+[사건 스키마](../../schemas/event.schema.json)에 envelope와 핵심 payload가 있다. 첫 구현은 SQLite 없이 파일을 사용한다. 기억 변경은 연산 ID·요청 해시·결과·head 변경·연결 사건을 작은 JSON 확정 기록으로 묶고, 은행 목록과 관련 JSONL을 그 기록에서 만든다. 첫 쓰기 경로는 단일 프로세스에서 순차 처리한다. 재내보내기의 중복은 event ID로 탐지한다.
+
+본문은 먼저 불변 파일로 저장한다. 확정 기록 공개 전후와 JSONL 내보내기 중단을 구분하고, 상태·기록의 일치를 확인할 수 없으면 실행을 불완전 상태로 남긴다. 확정 파일의 형식과 동기화 방법은 구현하며 검증한다. 여러 파일을 차례로 썼다는 이유만으로 전체 변경의 원자성을 가정하지 않는다.
 
 요청 시작을 응답보다 먼저 남긴다. 누락·중간 행 손상·해시 불일치를 검사하고 추적 근거가 불완전한 실행을 정상 완료로 표시하지 않는다. 복원할 수 없는 시도는 중단 기록을 유지하고 새 run으로 시작한다.
 

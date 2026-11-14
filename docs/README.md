@@ -5,6 +5,7 @@
 | 읽을 내용 | 문서 |
 | --- | --- |
 | 새 개발 세션의 시작점·실제 상태·합의·미정 값 | [인수인계](handoff/next-session.md) |
+| 최근 방향 논의·구성 스케치·재검토·남은 상세 결정 | [방향 논의 노트](design/direction-notes.md) |
 | 추가 실험팀 문서의 제안·기존 합의·출처 검토 | [검토와 반영](handoff/experiment-handoff-review.md) |
 | 연구 목적·질문·기여·기대 효과와 미정 사항 | [연구 계획](research/plan.md) |
 | 저장·조회 조건, 두 회차, 자기 경험·혼합·누적·전이·개입 | [실험 프로토콜](research/experiment-protocol.md) |
