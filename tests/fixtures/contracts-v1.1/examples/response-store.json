@@ -1,0 +1,19 @@
+{
+  "choices": [
+    {
+      "message": {
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "id": "call_store",
+            "type": "function",
+            "function": {
+              "name": "memory_store",
+              "arguments": "{\"body\":\"새 배송지를 다시 확인한다.\\n승인받은 \\\"주소\\\"만 사용한다.\",\"title\":\"배송지 확인\"}"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

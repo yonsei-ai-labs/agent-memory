@@ -1,0 +1,211 @@
+{
+  "template": {
+    "kind": "template",
+    "run_id": null,
+    "roles": [
+      "worker",
+      "writer"
+    ],
+    "pointer": "",
+    "memory_spans": [],
+    "artifact_ref": {
+      "path": "examples/templates.json",
+      "sha256": "e9a288119570b1f8064a3cd604ca8ccb331ed386c19ed31dba83f86cf0883efa",
+      "media_type": "application/json"
+    }
+  },
+  "task_c": {
+    "kind": "task_initial",
+    "run_id": "r_collect",
+    "roles": [
+      "writer"
+    ],
+    "pointer": "",
+    "memory_spans": [],
+    "artifact_ref": {
+      "path": "examples/task-collection.json",
+      "sha256": "1ac4eb580f1f077de12a02b70aa098196570810b8405cee9adc23f78b32541d7",
+      "media_type": "application/json"
+    },
+    "producer_event_id": "e_start_c"
+  },
+  "task_p": {
+    "kind": "task_initial",
+    "run_id": "r_probe",
+    "roles": [
+      "worker"
+    ],
+    "pointer": "",
+    "memory_spans": [],
+    "artifact_ref": {
+      "path": "examples/task-probe.json",
+      "sha256": "0b24daebd722df099a2855b9f26cbf140fcaca7dd0d76d6761aef37eba1fbb5f",
+      "media_type": "application/json"
+    },
+    "producer_event_id": "e_start_p"
+  },
+  "public_c": {
+    "kind": "public_experience",
+    "run_id": "r_collect",
+    "roles": [
+      "writer"
+    ],
+    "pointer": "",
+    "memory_spans": [],
+    "prefix": {
+      "path": "experience.jsonl",
+      "run_id": "r_collect",
+      "entry_count": 1,
+      "through_event_seq": 2,
+      "prefix_sha256": "fa17dfffb58128f2eb216b2c39cc253fd5adee05fd3442638f09a827720cf7e5"
+    }
+  },
+  "public_p": {
+    "kind": "business_result",
+    "run_id": "r_probe",
+    "roles": [
+      "worker"
+    ],
+    "pointer": "",
+    "memory_spans": [],
+    "artifact_ref": {
+      "path": "examples/public-probe.json",
+      "sha256": "0e83865cd21b89d43a66395333e30921ea8bb7b8249a20d006b9d3de1e81e6ed",
+      "media_type": "application/json"
+    },
+    "producer_event_id": "e_public_p"
+  },
+  "authored_store": {
+    "kind": "self_authored",
+    "run_id": "r_collect",
+    "roles": [
+      "writer"
+    ],
+    "pointer": "/choices/0/message",
+    "memory_spans": [
+      {
+        "pointer": "/tool_calls/0/function/arguments",
+        "char_start": 55,
+        "char_end": 61,
+        "item_id": null,
+        "version_id": null,
+        "field": "title"
+      },
+      {
+        "pointer": "/tool_calls/0/function/arguments",
+        "char_start": 9,
+        "char_end": 44,
+        "item_id": null,
+        "version_id": null,
+        "field": "body"
+      }
+    ],
+    "artifact_ref": {
+      "path": "examples/response-store.json",
+      "sha256": "f9dc3916f616a455684c01f9b7dd833d02ac52265920105285ce932ca743e3c3",
+      "media_type": "application/json"
+    },
+    "producer_event_id": "e_finish_q1"
+  },
+  "authored_list": {
+    "kind": "self_authored",
+    "run_id": "r_probe",
+    "roles": [
+      "worker"
+    ],
+    "pointer": "/choices/0/message",
+    "memory_spans": [],
+    "artifact_ref": {
+      "path": "examples/response-list.json",
+      "sha256": "0538998d1359861eac62909eec877449e29cc21f351207d13413d3c670972304",
+      "media_type": "application/json"
+    },
+    "producer_event_id": "e_finish_q3"
+  },
+  "authored_get": {
+    "kind": "self_authored",
+    "run_id": "r_probe",
+    "roles": [
+      "worker"
+    ],
+    "pointer": "/choices/0/message",
+    "memory_spans": [],
+    "artifact_ref": {
+      "path": "examples/response-get.json",
+      "sha256": "37eb71c4fbe99d0016afb3fd357e8448664a26daf9d1a93b79edb92433e02ae6",
+      "media_type": "application/json"
+    },
+    "producer_event_id": "e_finish_q4"
+  },
+  "ack": {
+    "kind": "memory_return",
+    "run_id": "r_collect",
+    "roles": [
+      "writer"
+    ],
+    "pointer": "",
+    "memory_spans": [],
+    "artifact_ref": {
+      "path": "examples/store-result.json",
+      "sha256": "7b87ad73ea298a72732d25e5c0b1692298447a279760eb275abf7f65bb724b70",
+      "media_type": "application/json"
+    },
+    "producer_event_id": "e_ack"
+  },
+  "get": {
+    "kind": "memory_return",
+    "run_id": "r_probe",
+    "roles": [
+      "worker"
+    ],
+    "pointer": "",
+    "memory_spans": [
+      {
+        "pointer": "/content",
+        "char_start": 77,
+        "char_end": 83,
+        "item_id": "m_7fd1",
+        "version_id": "v_4c2e",
+        "field": "title"
+      },
+      {
+        "pointer": "/content",
+        "char_start": 17,
+        "char_end": 52,
+        "item_id": "m_7fd1",
+        "version_id": "v_4c2e",
+        "field": "body"
+      }
+    ],
+    "artifact_ref": {
+      "path": "examples/get-result.json",
+      "sha256": "11c865dece8f0d94083a99e60360f13f37212a18ee0998b72916ba82f4c532d6",
+      "media_type": "application/json"
+    },
+    "producer_event_id": "e_get"
+  },
+  "list": {
+    "kind": "memory_return",
+    "run_id": "r_probe",
+    "roles": [
+      "worker"
+    ],
+    "pointer": "",
+    "memory_spans": [
+      {
+        "pointer": "/content",
+        "char_start": 34,
+        "char_end": 40,
+        "item_id": "m_7fd1",
+        "version_id": "v_4c2e",
+        "field": "title"
+      }
+    ],
+    "artifact_ref": {
+      "path": "examples/list-result.json",
+      "sha256": "e4c3afda4d5d735f7668597a4e3e9df2c25fb99d3d1ad8efaee06584589d336e",
+      "media_type": "application/json"
+    },
+    "producer_event_id": "e_list"
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.1",
+  "request_id": "q3",
+  "run_id": "r_probe",
+  "actor_role": "worker",
+  "request_ref": {
+    "path": "examples/q3-request.json",
+    "sha256": "8a996c3f942ead6eca3eebab78875de570bc0c2976626f8a2c3de0bb4f97cf01",
+    "media_type": "application/json"
+  },
+  "bindings": [
+    {
+      "pointer": "/model",
+      "source_id": "template",
+      "source_pointer": "/model"
+    },
+    {
+      "pointer": "/tools",
+      "source_id": "template",
+      "source_pointer": "/tools"
+    },
+    {
+      "pointer": "/messages/0",
+      "source_id": "template",
+      "source_pointer": "/worker_system"
+    },
+    {
+      "pointer": "/messages/1",
+      "source_id": "task_p",
+      "source_pointer": ""
+    },
+    {
+      "pointer": "/messages/2",
+      "source_id": "public_p",
+      "source_pointer": ""
+    }
+  ],
+  "memory_spans": []
+}

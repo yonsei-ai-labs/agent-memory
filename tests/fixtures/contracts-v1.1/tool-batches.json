@@ -1,0 +1,51 @@
+[
+  {
+    "calls": [
+      {
+        "id": "business_1",
+        "name": "inspect"
+      },
+      {
+        "id": "memory_1",
+        "name": "memory_store"
+      },
+      {
+        "id": "business_2",
+        "name": "update"
+      }
+    ],
+    "configured_stop_tools": [],
+    "disposition": "execute",
+    "execution_order": [
+      "business_1",
+      "memory_1",
+      "business_2"
+    ],
+    "result_order": [
+      "business_1",
+      "memory_1",
+      "business_2"
+    ]
+  },
+  {
+    "calls": [
+      {
+        "id": "memory_1",
+        "name": "memory_store"
+      },
+      {
+        "id": "stop_1",
+        "name": "finish"
+      }
+    ],
+    "configured_stop_tools": [
+      "finish"
+    ],
+    "disposition": "reject_all",
+    "execution_order": [],
+    "result_order": [
+      "memory_1",
+      "stop_1"
+    ]
+  }
+]

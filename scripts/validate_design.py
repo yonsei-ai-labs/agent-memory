@@ -10,6 +10,8 @@ from pathlib import Path
 
 from jsonschema import Draft202012Validator, FormatChecker
 
+from contract_v11 import validate_fixture, validators as validators_v11
+
 
 ROOT = Path(__file__).resolve().parents[1]
 BASE = ROOT / "tests" / "fixtures" / "contracts"
@@ -175,6 +177,13 @@ def main() -> None:
     invalid["timestamp_utc"] = "not-a-dateZ"
     reject(validators["event"], invalid, "invalid UTC date-time")
 
+    checks_v11 = validators_v11()
+    draft_v11 = read_json(ROOT / "protocols" / "drafts" / "tau2-two-pass-v1.1.json")
+    checks_v11["run-plan"].validate(draft_v11)
+    if draft_v11["plan_status"] != "draft":
+        raise ValueError("The v1.1 example must remain a draft")
+    result_v11 = validate_fixture()
+
     print(json.dumps({
         "status": "passed",
         "scope": "design_schemas_and_synthetic_references_only",
@@ -184,6 +193,7 @@ def main() -> None:
         "artifact_files_hash_verified": len(artifacts),
         "input_spans_verified": exposed,
         "invalid_contract_cases_rejected": 6,
+        "v1_1": result_v11,
         "runtime_readiness_verified": False,
         "benchmark_or_model_calls": 0,
     }, ensure_ascii=False, indent=2))

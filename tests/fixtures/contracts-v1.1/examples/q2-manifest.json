@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.1",
+  "request_id": "q2",
+  "run_id": "r_collect",
+  "actor_role": "writer",
+  "request_ref": {
+    "path": "examples/q2-request.json",
+    "sha256": "3edaa18c957ecdca763838068932e3a7f7e877a105d3a7f69ff774235ed386f4",
+    "media_type": "application/json"
+  },
+  "bindings": [
+    {
+      "pointer": "/model",
+      "source_id": "template",
+      "source_pointer": "/model"
+    },
+    {
+      "pointer": "/tools",
+      "source_id": "template",
+      "source_pointer": "/tools"
+    },
+    {
+      "pointer": "/messages/0",
+      "source_id": "template",
+      "source_pointer": "/writer_system"
+    },
+    {
+      "pointer": "/messages/1",
+      "source_id": "task_c",
+      "source_pointer": ""
+    },
+    {
+      "pointer": "/messages/2",
+      "source_id": "public_c",
+      "source_pointer": "/messages/0"
+    },
+    {
+      "pointer": "/messages/3",
+      "source_id": "authored_store",
+      "source_pointer": ""
+    },
+    {
+      "pointer": "/messages/4",
+      "source_id": "ack",
+      "source_pointer": ""
+    }
+  ],
+  "memory_spans": [
+    {
+      "pointer": "/messages/3/tool_calls/0/function/arguments",
+      "char_start": 55,
+      "char_end": 61,
+      "item_id": null,
+      "version_id": null,
+      "field": "title",
+      "span_id": "q2:m0",
+      "source_id": "authored_store",
+      "rendered_sha256": "29ea05dfd7e9aaef0210ae9061f785188681aacb7c34486cd443ec728c40879c"
+    },
+    {
+      "pointer": "/messages/3/tool_calls/0/function/arguments",
+      "char_start": 9,
+      "char_end": 44,
+      "item_id": null,
+      "version_id": null,
+      "field": "body",
+      "span_id": "q2:m1",
+      "source_id": "authored_store",
+      "rendered_sha256": "903d9b873f25d2d6098f38046f1875d0186beeca58558dc2bbc3eb0bcf7078be"
+    }
+  ]
+}

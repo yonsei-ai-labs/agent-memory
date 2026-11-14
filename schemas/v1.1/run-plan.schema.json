@@ -1,0 +1,971 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:agent-memory-eval:run-plan:1.1",
+  "title": "Agent memory run plan v1.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "plan_status",
+    "experiment_id",
+    "protocol",
+    "worker",
+    "benchmark",
+    "sampling",
+    "pool_modes",
+    "catalog",
+    "limits",
+    "conditions",
+    "analysis"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.1"
+    },
+    "plan_status": {
+      "enum": [
+        "draft",
+        "ready"
+      ]
+    },
+    "experiment_id": {
+      "$ref": "#/$defs/id"
+    },
+    "protocol": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "collection_bank_scope",
+        "probe_writes",
+        "variant"
+      ],
+      "properties": {
+        "name": {
+          "enum": [
+            "collect_then_probe",
+            "continual",
+            "common_experience",
+            "write_read_cross",
+            "checkpoint_probe",
+            "intervention"
+          ]
+        },
+        "collection_bank_scope": {
+          "enum": [
+            "per_source_task",
+            "per_stream"
+          ]
+        },
+        "probe_writes": {
+          "enum": [
+            "follow_condition_discard_clone",
+            "read_only_diagnostic"
+          ]
+        },
+        "variant": {
+          "const": "memory_adaptation"
+        }
+      }
+    },
+    "worker": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "alias",
+        "provider",
+        "model_id",
+        "route_provider",
+        "allow_fallbacks",
+        "parameters",
+        "parameters_confirmed"
+      ],
+      "properties": {
+        "alias": {
+          "type": "string",
+          "minLength": 1
+        },
+        "provider": {
+          "$ref": "#/$defs/nullable_string"
+        },
+        "model_id": {
+          "$ref": "#/$defs/nullable_string"
+        },
+        "route_provider": {
+          "$ref": "#/$defs/nullable_string"
+        },
+        "allow_fallbacks": {
+          "const": false
+        },
+        "parameters": {
+          "type": "object"
+        },
+        "parameters_confirmed": {
+          "type": "boolean"
+        }
+      }
+    },
+    "benchmark": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "source_revision",
+        "domain",
+        "task_manifest_ref",
+        "task_manifest_sha256",
+        "binding_revision",
+        "memory_mode",
+        "runtime"
+      ],
+      "properties": {
+        "name": {
+          "enum": [
+            "tau2",
+            "appworld",
+            "bfcl"
+          ]
+        },
+        "source_revision": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "domain": {
+          "$ref": "#/$defs/nullable_string"
+        },
+        "task_manifest_ref": {
+          "$ref": "#/$defs/nullable_string"
+        },
+        "task_manifest_sha256": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/sha256"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "binding_revision": {
+          "$ref": "#/$defs/nullable_string"
+        },
+        "memory_mode": {
+          "enum": [
+            "external_memory",
+            "native_memory_observed"
+          ]
+        },
+        "runtime": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": false,
+          "required": [
+            "user_simulator",
+            "native_limits",
+            "response_cache",
+            "adapter_config_ref"
+          ],
+          "properties": {
+            "user_simulator": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "mode",
+                "implementation",
+                "model_id",
+                "provider",
+                "parameters",
+                "parameters_confirmed"
+              ],
+              "properties": {
+                "mode": {
+                  "enum": [
+                    "model",
+                    "not_applicable"
+                  ]
+                },
+                "implementation": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1
+                },
+                "model_id": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1
+                },
+                "provider": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1
+                },
+                "parameters": {
+                  "type": "object"
+                },
+                "parameters_confirmed": {
+                  "type": "boolean"
+                }
+              }
+            },
+            "native_limits": {
+              "type": "object",
+              "additionalProperties": {
+                "type": [
+                  "integer",
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              }
+            },
+            "response_cache": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "enabled",
+                "verified"
+              ],
+              "properties": {
+                "enabled": {
+                  "type": [
+                    "boolean",
+                    "null"
+                  ]
+                },
+                "verified": {
+                  "type": "boolean"
+                }
+              }
+            },
+            "adapter_config_ref": {
+              "$ref": "#/$defs/nullable_artifact"
+            }
+          }
+        }
+      }
+    },
+    "sampling": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "independent_bank_replicates",
+        "order_count",
+        "trials_per_probe",
+        "schedule_seed"
+      ],
+      "properties": {
+        "independent_bank_replicates": {
+          "$ref": "#/$defs/nullable_positive_integer"
+        },
+        "order_count": {
+          "$ref": "#/$defs/nullable_positive_integer"
+        },
+        "trials_per_probe": {
+          "$ref": "#/$defs/nullable_positive_integer"
+        },
+        "schedule_seed": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        }
+      }
+    },
+    "pool_modes": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "own_experience",
+          "mixed_experience"
+        ]
+      }
+    },
+    "catalog": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "order",
+        "page_size",
+        "fields"
+      ],
+      "properties": {
+        "order": {
+          "enum": [
+            "creation_then_id",
+            "fixed_permutation"
+          ]
+        },
+        "page_size": {
+          "$ref": "#/$defs/nullable_positive_integer"
+        },
+        "fields": {
+          "const": [
+            "id",
+            "title",
+            "version"
+          ]
+        }
+      }
+    },
+    "limits": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "storage_max_items",
+        "storage_max_payload_utf8_bytes",
+        "read_max_utf8_bytes",
+        "max_model_requests_per_run",
+        "max_seconds_per_run",
+        "max_reported_cost_usd",
+        "unknown_cost_policy"
+      ],
+      "properties": {
+        "storage_max_items": {
+          "$ref": "#/$defs/nullable_nonnegative_integer"
+        },
+        "storage_max_payload_utf8_bytes": {
+          "$ref": "#/$defs/nullable_nonnegative_integer"
+        },
+        "read_max_utf8_bytes": {
+          "$ref": "#/$defs/nullable_nonnegative_integer"
+        },
+        "max_model_requests_per_run": {
+          "$ref": "#/$defs/nullable_positive_integer"
+        },
+        "max_seconds_per_run": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "exclusiveMinimum": 0
+        },
+        "max_reported_cost_usd": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "exclusiveMinimum": 0
+        },
+        "unknown_cost_policy": {
+          "enum": [
+            "stop",
+            "continue_with_call_or_time_limit"
+          ]
+        }
+      }
+    },
+    "conditions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/condition"
+      }
+    },
+    "analysis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "task_weighting",
+        "pairing_ref",
+        "uncertainty_method",
+        "annotation_protocol_ref",
+        "cost_allocation_ref",
+        "analysis_confirmed"
+      ],
+      "properties": {
+        "task_weighting": {
+          "const": "equal_task_weight_within_benchmark"
+        },
+        "pairing_ref": {
+          "$ref": "#/$defs/nullable_string"
+        },
+        "uncertainty_method": {
+          "$ref": "#/$defs/nullable_string"
+        },
+        "annotation_protocol_ref": {
+          "$ref": "#/$defs/nullable_string"
+        },
+        "cost_allocation_ref": {
+          "$ref": "#/$defs/nullable_string"
+        },
+        "analysis_confirmed": {
+          "type": "boolean"
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "plan_status": {
+            "const": "ready"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "worker": {
+            "properties": {
+              "provider": {
+                "type": "string",
+                "minLength": 1
+              },
+              "model_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "route_provider": {
+                "type": "string",
+                "minLength": 1
+              },
+              "parameters_confirmed": {
+                "const": true
+              }
+            }
+          },
+          "benchmark": {
+            "properties": {
+              "source_revision": {
+                "type": "string"
+              },
+              "domain": {
+                "type": "string",
+                "minLength": 1
+              },
+              "task_manifest_ref": {
+                "type": "string",
+                "minLength": 1
+              },
+              "task_manifest_sha256": {
+                "type": "string"
+              },
+              "runtime": {
+                "type": "object",
+                "properties": {
+                  "adapter_config_ref": {
+                    "$ref": "#/$defs/artifact"
+                  },
+                  "response_cache": {
+                    "properties": {
+                      "enabled": {
+                        "const": false
+                      },
+                      "verified": {
+                        "const": true
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "sampling": {
+            "properties": {
+              "independent_bank_replicates": {
+                "type": "integer"
+              },
+              "order_count": {
+                "type": "integer"
+              },
+              "trials_per_probe": {
+                "type": "integer"
+              },
+              "schedule_seed": {
+                "type": "integer"
+              }
+            }
+          },
+          "limits": {
+            "anyOf": [
+              {
+                "properties": {
+                  "max_model_requests_per_run": {
+                    "type": "integer"
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "max_seconds_per_run": {
+                    "type": "number"
+                  }
+                }
+              }
+            ]
+          },
+          "conditions": {
+            "items": {
+              "allOf": [
+                {
+                  "if": {
+                    "properties": {
+                      "read_mode": {
+                        "enum": [
+                          "preload",
+                          "preload_and_on_demand"
+                        ]
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "preload_selector_ref": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "read_transform": {
+                        "const": "task_conditioned_curation"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "curation_instruction_ref": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "memory_enabled": {
+                        "const": true
+                      },
+                      "write_timing": {
+                        "const": "during_task"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "instructions": {
+                        "properties": {
+                          "solve": {
+                            "$ref": "#/$defs/artifact"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "memory_enabled": {
+                        "const": true
+                      },
+                      "write_timing": {
+                        "const": "post_task"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "instructions": {
+                        "properties": {
+                          "post_task_write": {
+                            "$ref": "#/$defs/artifact"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "memory_enabled": {
+                        "const": true
+                      },
+                      "write_timing": {
+                        "const": "during_and_post"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "instructions": {
+                        "properties": {
+                          "solve": {
+                            "$ref": "#/$defs/artifact"
+                          },
+                          "post_task_write": {
+                            "$ref": "#/$defs/artifact"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "analysis": {
+            "properties": {
+              "pairing_ref": {
+                "type": "string",
+                "minLength": 1
+              },
+              "uncertainty_method": {
+                "type": "string",
+                "minLength": 1
+              },
+              "annotation_protocol_ref": {
+                "type": "string",
+                "minLength": 1
+              },
+              "cost_allocation_ref": {
+                "type": "string",
+                "minLength": 1
+              },
+              "analysis_confirmed": {
+                "const": true
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "plan_status": {
+            "const": "ready"
+          },
+          "conditions": {
+            "contains": {
+              "properties": {
+                "memory_enabled": {
+                  "const": true
+                }
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "catalog": {
+            "properties": {
+              "page_size": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "benchmark": {
+            "properties": {
+              "memory_mode": {
+                "const": "native_memory_observed"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "benchmark": {
+            "properties": {
+              "name": {
+                "const": "bfcl"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "plan_status": {
+            "const": "ready"
+          },
+          "benchmark": {
+            "properties": {
+              "name": {
+                "const": "tau2"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "benchmark": {
+            "properties": {
+              "runtime": {
+                "properties": {
+                  "user_simulator": {
+                    "properties": {
+                      "mode": {
+                        "const": "model"
+                      },
+                      "implementation": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "model_id": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "provider": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "parameters_confirmed": {
+                        "const": true
+                      }
+                    }
+                  },
+                  "native_limits": {
+                    "required": [
+                      "max_steps",
+                      "max_errors"
+                    ],
+                    "properties": {
+                      "max_steps": {
+                        "type": "integer",
+                        "minimum": 1
+                      },
+                      "max_errors": {
+                        "type": "integer",
+                        "minimum": 1
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "nullable_string": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1
+    },
+    "nullable_positive_integer": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1
+    },
+    "nullable_nonnegative_integer": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "condition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "memory_enabled",
+        "write_timing",
+        "representation",
+        "read_mode",
+        "read_transform",
+        "preload_selector_ref",
+        "curation_instruction_ref",
+        "feedback",
+        "same_episode_read",
+        "instructions"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "memory_enabled": {
+          "type": "boolean"
+        },
+        "write_timing": {
+          "enum": [
+            "none",
+            "post_task",
+            "during_task",
+            "during_and_post"
+          ]
+        },
+        "representation": {
+          "enum": [
+            "none",
+            "free_text",
+            "event_log",
+            "summary",
+            "facts_and_conditions",
+            "procedure",
+            "failure_lessons",
+            "raw_experience"
+          ]
+        },
+        "read_mode": {
+          "enum": [
+            "none",
+            "on_demand",
+            "preload",
+            "preload_and_on_demand"
+          ]
+        },
+        "read_transform": {
+          "enum": [
+            "verbatim",
+            "task_conditioned_curation"
+          ]
+        },
+        "preload_selector_ref": {
+          "$ref": "#/$defs/nullable_string"
+        },
+        "curation_instruction_ref": {
+          "$ref": "#/$defs/nullable_string"
+        },
+        "feedback": {
+          "$ref": "#/$defs/id"
+        },
+        "same_episode_read": {
+          "type": "boolean"
+        },
+        "instructions": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "solve",
+            "post_task_write"
+          ],
+          "properties": {
+            "solve": {
+              "$ref": "#/$defs/nullable_artifact"
+            },
+            "post_task_write": {
+              "$ref": "#/$defs/nullable_artifact"
+            }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "memory_enabled": {
+                "const": false
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "write_timing": {
+                "const": "none"
+              },
+              "representation": {
+                "const": "none"
+              },
+              "read_mode": {
+                "const": "none"
+              },
+              "read_transform": {
+                "const": "verbatim"
+              },
+              "preload_selector_ref": {
+                "type": "null"
+              },
+              "curation_instruction_ref": {
+                "type": "null"
+              },
+              "same_episode_read": {
+                "const": false
+              },
+              "instructions": {
+                "properties": {
+                  "solve": {
+                    "type": "null"
+                  },
+                  "post_task_write": {
+                    "type": "null"
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "sha256",
+        "media_type"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "media_type": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "nullable_artifact": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/artifact"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  }
+}

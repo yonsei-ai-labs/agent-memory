@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.1",
+  "request_id": "q1",
+  "run_id": "r_collect",
+  "actor_role": "writer",
+  "request_ref": {
+    "path": "examples/q1-request.json",
+    "sha256": "c2dc1822e1ff75b6ef28ce87304540a46e9c10e6fcb174466dfa9688d3929d0e",
+    "media_type": "application/json"
+  },
+  "bindings": [
+    {
+      "pointer": "/model",
+      "source_id": "template",
+      "source_pointer": "/model"
+    },
+    {
+      "pointer": "/tools",
+      "source_id": "template",
+      "source_pointer": "/tools"
+    },
+    {
+      "pointer": "/messages/0",
+      "source_id": "template",
+      "source_pointer": "/writer_system"
+    },
+    {
+      "pointer": "/messages/1",
+      "source_id": "task_c",
+      "source_pointer": ""
+    },
+    {
+      "pointer": "/messages/2",
+      "source_id": "public_c",
+      "source_pointer": "/messages/0"
+    }
+  ],
+  "memory_spans": []
+}

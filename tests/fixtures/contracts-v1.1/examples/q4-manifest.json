@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.1",
+  "request_id": "q4",
+  "run_id": "r_probe",
+  "actor_role": "worker",
+  "request_ref": {
+    "path": "examples/q4-request.json",
+    "sha256": "1ebba71e03a266355ddd662d0fd7f2f6fa1fa8309f39d7e05f8815aff04d2adb",
+    "media_type": "application/json"
+  },
+  "bindings": [
+    {
+      "pointer": "/model",
+      "source_id": "template",
+      "source_pointer": "/model"
+    },
+    {
+      "pointer": "/tools",
+      "source_id": "template",
+      "source_pointer": "/tools"
+    },
+    {
+      "pointer": "/messages/0",
+      "source_id": "template",
+      "source_pointer": "/worker_system"
+    },
+    {
+      "pointer": "/messages/1",
+      "source_id": "task_p",
+      "source_pointer": ""
+    },
+    {
+      "pointer": "/messages/2",
+      "source_id": "public_p",
+      "source_pointer": ""
+    },
+    {
+      "pointer": "/messages/3",
+      "source_id": "authored_list",
+      "source_pointer": ""
+    },
+    {
+      "pointer": "/messages/4",
+      "source_id": "list",
+      "source_pointer": ""
+    }
+  ],
+  "memory_spans": [
+    {
+      "pointer": "/messages/4/content",
+      "char_start": 34,
+      "char_end": 40,
+      "item_id": "m_7fd1",
+      "version_id": "v_4c2e",
+      "field": "title",
+      "span_id": "q4:m0",
+      "source_id": "list",
+      "rendered_sha256": "29ea05dfd7e9aaef0210ae9061f785188681aacb7c34486cd443ec728c40879c"
+    }
+  ]
+}

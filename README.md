@@ -10,7 +10,7 @@
 
 새 개발 세션은 [인수인계](docs/handoff/next-session.md)에서 현재 구현 상태·합의 사항·미정 값을 확인하고, [첫 구현 작업](docs/development/first-implementation.md)부터 이어간다.
 
-첫 구현은 **SQLite 없이 JSON·JSONL 파일로 가볍게 시작한다.** 기억 버전·평가별 격리와 실제 입력 기록을 작은 오프라인 흐름으로 연결한다. 최근 선택과 남은 세부 논의는 [방향 논의 노트](docs/design/direction-notes.md)에 있다.
+첫 구현은 **SQLite 없이 JSON·JSONL 파일로 가볍게 시작한다.** 단일 원본 로그·요청 출처·혼합 호출의 [코어 계약](docs/design/core-contracts.md)과 v1.1 합성 검증을 보완했다. 실제 기억 서비스·기록자·라우터는 구현 전이다. 최근 탐색 질문은 [방향 논의 노트](docs/design/direction-notes.md)에 있다.
 
 추가로 전달받은 실험팀 문서는 [검토·반영 내역](docs/handoff/experiment-handoff-review.md)과 [적용 조건 기억 파일럿 제안](docs/research/condition-sensitive-pilot.md)으로 정리했다. 기존 프로토콜·연구 범위를 유지하며, 제안을 실행 확정이나 성능 결과로 취급하지 않는다.
 
@@ -30,9 +30,10 @@ uv sync --frozen
 uv run python scripts/validate_design.py
 uv run python scripts/check_repository.py
 uv run python scripts/verify_legacy_data.py
+uv run python -m unittest discover -s tests
 ```
 
-첫 명령은 잠금 파일의 개발 환경을 구성한다. 검증기는 로컬 파일·스키마·참조·해시를 검사하며 모델 API·벤치·GPU를 실행하지 않는다. 이전 연구 레포를 설치하거나 가중치를 받을 필요가 없다. 보관본의 손상 탐지 테스트는 `uv run python -m unittest discover -s tests -p 'test_legacy_data_archive.py'`로 실행한다.
+첫 명령은 잠금 파일의 개발 환경을 구성한다. 검증기는 로컬 파일·스키마·참조·해시를 검사하며 모델 API·벤치·GPU를 실행하지 않는다. 이전 연구 레포를 설치하거나 가중치를 받을 필요가 없다. unittest는 v1.1 계약 음성 사례와 보관본 손상 탐지를 확인한다.
 
 ## 구조
 

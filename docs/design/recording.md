@@ -20,10 +20,10 @@ runs/<experiment_id>/
   schedules.jsonl
   pairs.jsonl
   task-groups.json
-  state/commits/<operation_id>.json
-  state/banks/<bank_id>.json
-  events.jsonl
-  snapshots/<snapshot_id>.json
+  log.jsonl
+  views/banks/<bank_id>.json
+  views/events.jsonl
+  views/snapshots/<snapshot_id>.json
   blobs/sha256/<digest>
   analysis/<analysis_revision>/
 
@@ -46,7 +46,7 @@ experiment의 manifest를 한 번의 과제 실행으로 집계하지 않는다.
 
 ## 실제 입력과 기억 노출
 
-실제 요청의 메시지·도구 스키마·모델·설정과 응답을 보존한다. 제목·목록·본문·가공본·이력 재전송을 구분하고 입력의 JSON pointer·문자 범위·해시를 기록한다. 문맥 생략·압축·redaction도 표시한다.
+실제 요청의 메시지·도구 스키마·모델·설정과 응답을 보존한다. 요청을 조립할 때 출처 manifest도 만들고 최종 전송 요청과 대조한다. 제목·목록·본문·가공본·이력 재전송을 구분하고 입력의 JSON pointer·문자 범위·해시를 기록한다. 자기 작성 인수는 반환과 별도 출처로 남긴다. 상세 규칙은 [입력 출처 계약](core-contracts.md#2-요청을-만들-때-출처-manifest도-생성)을 따른다. 문맥 생략·압축·redaction도 표시한다.
 
 `returned`는 도구 반환, `input_included`는 보관한 요청의 내용 포함이다. 전송 전 중단·전송 여부 불명·정상 응답을 구분한다. 입력 포함을 주의·이해·효용의 증거로 단정하지 않는다. 인증 정보는 요청 원본과 함께 보관하지 않으며 저장용 redaction을 실제 입력 변형에 사용하지 않는다.
 
@@ -54,9 +54,9 @@ experiment의 manifest를 한 번의 과제 실행으로 집계하지 않는다.
 
 ## 사건과 장애
 
-[사건 스키마](../../schemas/event.schema.json)에 envelope와 핵심 payload가 있다. 첫 구현은 SQLite 없이 파일을 사용한다. 기억 변경은 연산 ID·요청 해시·결과·head 변경·연결 사건을 작은 JSON 확정 기록으로 묶고, 은행 목록과 관련 JSONL을 그 기록에서 만든다. 첫 쓰기 경로는 단일 프로세스에서 순차 처리한다. 재내보내기의 중복은 event ID로 탐지한다.
+[사건 v1.1](../../schemas/v1.1/event.schema.json)과 [journal envelope](../../schemas/v1.1/journal.schema.json)를 사용한다. 기억·모델·업무·채점·run 수명주기를 모두 `log.jsonl`에 확정한다. 기억 연산별 파일은 두지 않는다. 순서·자기/연결 해시·본문 선기록·동기화·미확정 tail과 손상의 구분은 [원본 로그 계약](core-contracts.md#1-모든-사건을-하나의-원본-로그에-확정)을 기준으로 한다.
 
-본문은 먼저 불변 파일로 저장한다. 확정 기록 공개 전후와 JSONL 내보내기 중단을 구분하고, 상태·기록의 일치를 확인할 수 없으면 실행을 불완전 상태로 남긴다. 확정 파일의 형식과 동기화 방법은 구현하며 검증한다. 여러 파일을 차례로 썼다는 이유만으로 전체 변경의 원자성을 가정하지 않는다.
+은행·snapshot·사건 보기와 run별 export는 원본 로그와 참조 blob에서 재구성한다. export 중단은 확정 연산 재실행과 구분하고 중복은 event ID로 탐지한다. 첫 쓰기 경로는 단일 프로세스·단일 기록자다. 추적 근거가 불완전한 실행은 정상 완료로 표시하지 않는다.
 
 요청 시작을 응답보다 먼저 남긴다. 누락·중간 행 손상·해시 불일치를 검사하고 추적 근거가 불완전한 실행을 정상 완료로 표시하지 않는다. 복원할 수 없는 시도는 중단 기록을 유지하고 새 run으로 시작한다.
 

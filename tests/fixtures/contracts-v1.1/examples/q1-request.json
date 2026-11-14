@@ -1,0 +1,46 @@
+{
+  "model": "synthetic-offline",
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "memory_store",
+        "parameters": {
+          "type": "object"
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "memory_list",
+        "parameters": {
+          "type": "object"
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "memory_get",
+        "parameters": {
+          "type": "object"
+        }
+      }
+    }
+  ],
+  "messages": [
+    {
+      "role": "system",
+      "content": "합성 계약 예시. 공개된 경험에서 기억을 작성한다."
+    },
+    {
+      "role": "user",
+      "content": "합성 배송 업무를 처리해 주세요."
+    },
+    {
+      "role": "user",
+      "content": "새 배송지는 사용자의 승인을 받은 뒤 적용합니다."
+    }
+  ]
+}

@@ -8,10 +8,14 @@ version = "0.1.0a0"
 source = { editable = "." }
 dependencies = [
     { name = "jsonschema", extra = ["format-nongpl"] },
+    { name = "referencing" },
 ]
 
 [package.metadata]
-requires-dist = [{ name = "jsonschema", extras = ["format-nongpl"], specifier = ">=4.10.3,<5" }]
+requires-dist = [
+    { name = "jsonschema", extras = ["format-nongpl"], specifier = ">=4.18,<5" },
+    { name = "referencing", specifier = ">=0.30,<1" },
+]
 
 [[package]]
 name = "arrow"

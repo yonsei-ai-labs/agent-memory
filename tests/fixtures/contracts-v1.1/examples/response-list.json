@@ -1,0 +1,19 @@
+{
+  "choices": [
+    {
+      "message": {
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "id": "call_list",
+            "type": "function",
+            "function": {
+              "name": "memory_list",
+              "arguments": "{}"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
