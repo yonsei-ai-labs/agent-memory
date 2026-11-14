@@ -2,6 +2,8 @@
 
 새 구현 기준은 **v1.1**이다. 기존 v1.0의 `$id`·내용·fixture·draft는 호환 확인용으로 그대로 보존한다. v1.1은 반환 참조·공개 경험·지침 필드의 의미도 바꾸므로 버전 없이 교환하지 않는다.
 
+자동 본문 제공은 기존 v1.1 사건을 유지하면서 **별도 v1.2 확장**을 쓴다. [event](v1.2/event.schema.json)는 `memory.preloaded`와 snapshot 출처의 입력 포함, [manifest](v1.2/input-manifest.schema.json)는 snapshot binding, [journal](v1.2/journal-state.schema.json)은 기존/확장 사건을 함께 담는다. 이전 로그를 새 버전으로 덮어쓰지 않는다. [실행 프로필](delivery-comparison.schema.json)의 버전 1.0은 이 기록 버전과 별개다. [동작과 한계](../docs/development/tau2-delivery.md)를 따른다.
+
 | 파일 | 역할 |
 | --- | --- |
 | [v1.1/run-plan.schema.json](v1.1/run-plan.schema.json) | 단계별 지침, 사용자 시뮬레이터·native 한도·응답 캐시 확인·adapter 설정 해시 |

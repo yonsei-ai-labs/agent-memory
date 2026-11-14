@@ -25,6 +25,9 @@
 | 실제 파일럿 결과의 해석·우선 보완·다음 2주 산출물 | [진행 보고서와 2주 계획](reports/20261114-progress-and-two-week-plan.md) |
 | 기존 9회 실행의 거절 설명·이관 근거·대안 제안 검토 | [업무 행동 사례 검토](reports/20261114-tau2-case-review.md) |
 | 다음 train 과제 후보·DB 누락 탐지·행동과 설명 주석 | [과제 후보와 채점 기준](research/tau2-task-selection-and-rubric.md) |
+| 고정 은행의 본문 시작 제공·자율 조회와 여러 과제/반복 실행 | [전달 비교 실행](development/tau2-delivery.md) |
+| 세 과제·네 조건 48회 결과·실패 경로·시나리오 제시·한계 | [전달 비교 결과](reports/20261114-tau2-delivery-development-results.md) |
+| 실행 전에 고정한 과제·조건·은행·예산과 분석 범위 | [개발 파일럿 프로토콜](research/delivery-development-pilot.md) |
 | 가져온 자료와 원본 연결·변환·제외 이유 | [이관 내역](migration.md) |
 | 기존 문헌 조사 표의 범위 | [문헌 자료](references/README.md) |
 | 이전 datasets·설계 자료의 보관 범위·라벨 의미·재사용 | [데이터 보관 안내](data/legacy-datasets.md) |

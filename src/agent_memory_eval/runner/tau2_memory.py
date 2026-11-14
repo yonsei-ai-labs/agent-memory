@@ -73,6 +73,7 @@ class Tau2MemoryRunner:
         termination, error_code, writing = "connection_error", None, "not_requested"
         with bridge:
             try:
+                bridge.ensure_preload()
                 result = run_simulation(orch)
                 report_ref = self.journal.blobs.put(result.model_dump(mode="json"))
                 score, grading, termination = result.reward_info.reward, "graded", result.termination_reason

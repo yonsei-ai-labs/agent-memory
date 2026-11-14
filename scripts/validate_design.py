@@ -47,6 +47,7 @@ def main() -> None:
         "memory-connection-check": read_json(ROOT / "schemas" / "memory-connection-check.schema.json"),
         "autonomy-pilot": read_json(ROOT / "schemas" / "autonomy-pilot.schema.json"),
         "autonomy-pilot-v1.1": read_json(ROOT / "schemas" / "autonomy-pilot-v1.1.schema.json"),
+        "delivery-comparison": read_json(ROOT / "schemas" / "delivery-comparison.schema.json"),
     }
     validators = {}
     for name, schema in schemas.items():
@@ -208,6 +209,34 @@ def main() -> None:
     if draft_v11["plan_status"] != "draft":
         raise ValueError("The v1.1 example must remain a draft")
     result_v11 = validate_fixture()
+    # The v1.2 fixture is a real illustrative file-core trace, never a model result.
+    from agent_memory_eval.recording.journal import BlobStore, read_experiment
+    from agent_memory_eval.contracts.validation import validate_manifest
+    from agent_memory_eval.recording.provenance import exposure_payload
+    from agent_memory_eval.runner.tau2_delivery import compile_delivery
+    compile_delivery(read_json(ROOT / "protocols/drafts/tau2-delivery-comparison-v1.json"), require_ready=False)
+    fixture_v12 = ROOT / "tests/fixtures/contracts-v1.2"
+    scan_v12, state_v12, _ = read_experiment(fixture_v12)
+    if scan_v12["incomplete_runs"] or scan_v12["pending_requests"] or scan_v12["tail_bytes"]:
+        raise ValueError("The preload fixture must be closed")
+    blobs_v12 = BlobStore(fixture_v12)
+    expected_v12, actual_v12 = {}, {}
+    for event in scan_v12["events"].values():
+        if event["record_kind"] != "illustrative":
+            raise ValueError("The preload fixture must remain illustrative")
+        if event["schema_version"] == "1.2":
+            reject(checks_v11["event"], event, "snapshot extension passed as v1.1")
+        if event["type"] == "model.request_started":
+            origin = state_v12["provenance"][event["payload"]["request_id"]]
+            catalog = blobs_v12.get(origin["sources_ref"])
+            manifest = blobs_v12.get(event["payload"]["input_manifest_ref"])
+            spans = validate_manifest(fixture_v12, manifest, event, catalog, scan_v12["events"], origin["approved_templates"])
+            for span in spans:
+                expected_v12[span["span_id"]] = exposure_payload(manifest, span, catalog[span["source_id"]])
+        if event["type"] == "memory.input_included":
+            actual_v12[event["payload"]["manifest_span_id"]] = event["payload"]
+    if expected_v12 != actual_v12 or not expected_v12:
+        raise ValueError("Preload fixture exposure coverage differs")
 
     print(json.dumps({
         "status": "passed",
@@ -219,6 +248,7 @@ def main() -> None:
         "input_spans_verified": exposed,
         "invalid_contract_cases_rejected": 6,
         "v1_1": result_v11,
+        "v1_2": dict(schemas_valid=3, synthetic_events_valid=len(scan_v12["events"]), input_spans_verified=len(expected_v12)),
         "runtime_readiness_verified": False,
         "benchmark_or_model_calls": 0,
     }, ensure_ascii=False, indent=2))

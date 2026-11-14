@@ -1,0 +1,442 @@
+{
+  "format": "agent-memory-tau2-delivery-development-observation/v1",
+  "record_kind": "observed",
+  "scope": "development_three_train_tasks_two_source_groups_single_guided_bank",
+  "run_directory": "runs/tau2-delivery-luna-deepseek1017-development-01",
+  "requested_profile": {
+    "conditions": [
+      "no_memory",
+      "empty_bank",
+      "on_demand",
+      "full_preload"
+    ],
+    "connection_profile_ref": {
+      "path": "protocols/checks/openrouter-tau2-smoke.json",
+      "sha256": "fab9e52495a7fbc122ffcbcdc5fc9cfe59d8f61d18f421e822a1298a0de68d49"
+    },
+    "frozen_source": {
+      "experiment_id": "memory-connection_ef61e798a0594baa821cfbc3a15d76e8",
+      "log_sha256": "762fbeb6a903403512acae3eb061acb3a665964dee3f2dd5852f5c093e9cf0d0",
+      "path": "runs/tau2-memory-luna-deepseek1017-check-01",
+      "snapshot_id": "snap_3f33fe153fe84888b1730be1fbe4ca3d",
+      "source_run_id": "r_d709484a63c54236b66ae87723c4b876"
+    },
+    "guards": {
+      "max_model_requests": 1152,
+      "max_reported_cost_usd": 3.0,
+      "max_seconds": 5400
+    },
+    "intent": "frozen_bank_delivery_comparison",
+    "memory_instruction_ref": {
+      "path": "protocols/instructions/tau2-delivery-memory.txt",
+      "sha256": "050147f01a4ae531d38f0d8a85b2bec2fcc07df51e7cf3076d8f1735526fca1d"
+    },
+    "memory_limits": {
+      "max_items": null,
+      "max_payload_bytes": null,
+      "max_return_bytes": null,
+      "page_size": 1
+    },
+    "preload_query_tools": true,
+    "primary_comparison": {
+      "baseline": "on_demand",
+      "treated": "full_preload"
+    },
+    "profile_version": "1.0",
+    "repetitions": 4,
+    "schedule_seed": 20261114,
+    "status": "ready",
+    "tasks": [
+      {
+        "id": "40",
+        "source_group_id": "reservation-3RK2T9"
+      },
+      {
+        "id": "47",
+        "source_group_id": "reservation-H8Q05L"
+      },
+      {
+        "id": "49",
+        "source_group_id": "reservation-3RK2T9"
+      }
+    ]
+  },
+  "protocol_lock_ref": {
+    "path": "artifacts/pilots/20261114-tau2-delivery-development-protocol.json",
+    "sha256": "2d283068c3b46aaf7f8a0e4ea57fc7111d10c87e639e7ee0e6307c245e5835e5"
+  },
+  "protocol_and_implementation_hashes_verified": true,
+  "implementation_files_verified": 60,
+  "source_archive": {
+    "copied_blob_count": 188,
+    "local_snapshot_id": "snap_095557eba66b44ed94fef4998aa7a100",
+    "requested": {
+      "experiment_id": "memory-connection_ef61e798a0594baa821cfbc3a15d76e8",
+      "log_sha256": "762fbeb6a903403512acae3eb061acb3a665964dee3f2dd5852f5c093e9cf0d0",
+      "path": "runs/tau2-memory-luna-deepseek1017-check-01",
+      "snapshot_id": "snap_3f33fe153fe84888b1730be1fbe4ca3d",
+      "source_run_id": "r_d709484a63c54236b66ae87723c4b876"
+    },
+    "source_final_state_ref": {
+      "media_type": "application/json",
+      "path": "blobs/sha256/a997092759d79354f9e70a771ae520214e09a861013f3ac7591dabdc16c5e3a9",
+      "sha256": "a997092759d79354f9e70a771ae520214e09a861013f3ac7591dabdc16c5e3a9"
+    },
+    "source_generation_reported_cost_usd_decimal": "0.0015464252",
+    "source_generation_unknown_cost": false,
+    "source_log_ref": {
+      "media_type": "application/json",
+      "path": "blobs/sha256/be07b9467956f0cc383c218a917c097f17a20201de2289e605ca34b12ecd05c4",
+      "sha256": "be07b9467956f0cc383c218a917c097f17a20201de2289e605ca34b12ecd05c4"
+    }
+  },
+  "source_generation_reported_cost_usd_decimal": "0.0015464252",
+  "observed": {
+    "status": "completed",
+    "task_conditions": [
+      {
+        "task_id": "40",
+        "source_group_id": "reservation-3RK2T9",
+        "condition": "no_memory",
+        "scheduled": 4,
+        "started": 4,
+        "graded": 4,
+        "successes": 4,
+        "success_rate": 1.0,
+        "runs_with_title_input": 0,
+        "runs_with_body_input": 0,
+        "reported_cost_usd_decimal": "0.0038339594"
+      },
+      {
+        "task_id": "40",
+        "source_group_id": "reservation-3RK2T9",
+        "condition": "empty_bank",
+        "scheduled": 4,
+        "started": 4,
+        "graded": 4,
+        "successes": 3,
+        "success_rate": 0.75,
+        "runs_with_title_input": 0,
+        "runs_with_body_input": 0,
+        "reported_cost_usd_decimal": "0.0045027292"
+      },
+      {
+        "task_id": "40",
+        "source_group_id": "reservation-3RK2T9",
+        "condition": "on_demand",
+        "scheduled": 4,
+        "started": 4,
+        "graded": 4,
+        "successes": 4,
+        "success_rate": 1.0,
+        "runs_with_title_input": 0,
+        "runs_with_body_input": 0,
+        "reported_cost_usd_decimal": "0.0040769800"
+      },
+      {
+        "task_id": "40",
+        "source_group_id": "reservation-3RK2T9",
+        "condition": "full_preload",
+        "scheduled": 4,
+        "started": 4,
+        "graded": 4,
+        "successes": 3,
+        "success_rate": 0.75,
+        "runs_with_title_input": 4,
+        "runs_with_body_input": 4,
+        "reported_cost_usd_decimal": "0.0039189670"
+      },
+      {
+        "task_id": "47",
+        "source_group_id": "reservation-H8Q05L",
+        "condition": "no_memory",
+        "scheduled": 4,
+        "started": 4,
+        "graded": 4,
+        "successes": 4,
+        "success_rate": 1.0,
+        "runs_with_title_input": 0,
+        "runs_with_body_input": 0,
+        "reported_cost_usd_decimal": "0.0070995438"
+      },
+      {
+        "task_id": "47",
+        "source_group_id": "reservation-H8Q05L",
+        "condition": "empty_bank",
+        "scheduled": 4,
+        "started": 4,
+        "graded": 4,
+        "successes": 4,
+        "success_rate": 1.0,
+        "runs_with_title_input": 0,
+        "runs_with_body_input": 0,
+        "reported_cost_usd_decimal": "0.0067419348"
+      },
+      {
+        "task_id": "47",
+        "source_group_id": "reservation-H8Q05L",
+        "condition": "on_demand",
+        "scheduled": 4,
+        "started": 4,
+        "graded": 4,
+        "successes": 4,
+        "success_rate": 1.0,
+        "runs_with_title_input": 0,
+        "runs_with_body_input": 0,
+        "reported_cost_usd_decimal": "0.0075325956"
+      },
+      {
+        "task_id": "47",
+        "source_group_id": "reservation-H8Q05L",
+        "condition": "full_preload",
+        "scheduled": 4,
+        "started": 4,
+        "graded": 4,
+        "successes": 4,
+        "success_rate": 1.0,
+        "runs_with_title_input": 4,
+        "runs_with_body_input": 4,
+        "reported_cost_usd_decimal": "0.0072865442"
+      },
+      {
+        "task_id": "49",
+        "source_group_id": "reservation-3RK2T9",
+        "condition": "no_memory",
+        "scheduled": 4,
+        "started": 4,
+        "graded": 4,
+        "successes": 4,
+        "success_rate": 1.0,
+        "runs_with_title_input": 0,
+        "runs_with_body_input": 0,
+        "reported_cost_usd_decimal": "0.003987983"
+      },
+      {
+        "task_id": "49",
+        "source_group_id": "reservation-3RK2T9",
+        "condition": "empty_bank",
+        "scheduled": 4,
+        "started": 4,
+        "graded": 4,
+        "successes": 4,
+        "success_rate": 1.0,
+        "runs_with_title_input": 0,
+        "runs_with_body_input": 0,
+        "reported_cost_usd_decimal": "0.004659904"
+      },
+      {
+        "task_id": "49",
+        "source_group_id": "reservation-3RK2T9",
+        "condition": "on_demand",
+        "scheduled": 4,
+        "started": 4,
+        "graded": 4,
+        "successes": 4,
+        "success_rate": 1.0,
+        "runs_with_title_input": 0,
+        "runs_with_body_input": 0,
+        "reported_cost_usd_decimal": "0.004883419"
+      },
+      {
+        "task_id": "49",
+        "source_group_id": "reservation-3RK2T9",
+        "condition": "full_preload",
+        "scheduled": 4,
+        "started": 4,
+        "graded": 4,
+        "successes": 4,
+        "success_rate": 1.0,
+        "runs_with_title_input": 4,
+        "runs_with_body_input": 4,
+        "reported_cost_usd_decimal": "0.003776537"
+      }
+    ],
+    "primary_comparisons": [
+      {
+        "block_id": 1,
+        "task_id": "47",
+        "source_group_id": "reservation-H8Q05L",
+        "repetition": 1,
+        "baseline_run_id": "r_0332b9b7aa394e9a960a6c5c5fa6b17a",
+        "treated_run_id": "r_4a9b28f555df42a1b17db5e755e1f699",
+        "official_success_difference": 0
+      },
+      {
+        "block_id": 2,
+        "task_id": "47",
+        "source_group_id": "reservation-H8Q05L",
+        "repetition": 4,
+        "baseline_run_id": "r_69e6601ce8474bd4b011e94ce5bb472c",
+        "treated_run_id": "r_4c2842a95c9d492aa7decf57612b6b6b",
+        "official_success_difference": 0
+      },
+      {
+        "block_id": 3,
+        "task_id": "49",
+        "source_group_id": "reservation-3RK2T9",
+        "repetition": 2,
+        "baseline_run_id": "r_f13ba10fa6a74ad7a07a576f16a6ff77",
+        "treated_run_id": "r_1485de9e91064bf188129f18647de2da",
+        "official_success_difference": 0
+      },
+      {
+        "block_id": 4,
+        "task_id": "40",
+        "source_group_id": "reservation-3RK2T9",
+        "repetition": 2,
+        "baseline_run_id": "r_dd57ae93792c49eabfe509c2096a95df",
+        "treated_run_id": "r_5a8aeab9fada42bfb2e85f9a87531879",
+        "official_success_difference": 0
+      },
+      {
+        "block_id": 5,
+        "task_id": "49",
+        "source_group_id": "reservation-3RK2T9",
+        "repetition": 3,
+        "baseline_run_id": "r_95c06a73db3a442ea71c8e47812604dc",
+        "treated_run_id": "r_5efd84b1583b4ffb86278d4c49fe95cf",
+        "official_success_difference": 0
+      },
+      {
+        "block_id": 6,
+        "task_id": "47",
+        "source_group_id": "reservation-H8Q05L",
+        "repetition": 2,
+        "baseline_run_id": "r_0d41faffdf7e4baf9cd37e6f8cd0678b",
+        "treated_run_id": "r_cfc1123f7e82489dafc4c897b2d36292",
+        "official_success_difference": 0
+      },
+      {
+        "block_id": 7,
+        "task_id": "40",
+        "source_group_id": "reservation-3RK2T9",
+        "repetition": 4,
+        "baseline_run_id": "r_a2a838c1382d40af98e400808aee0c68",
+        "treated_run_id": "r_d787899d97f9483ab5d8d87187e4714f",
+        "official_success_difference": 0
+      },
+      {
+        "block_id": 8,
+        "task_id": "49",
+        "source_group_id": "reservation-3RK2T9",
+        "repetition": 1,
+        "baseline_run_id": "r_a9e7ebd993154c4c9e6bd7ea364f3293",
+        "treated_run_id": "r_0f31734e99274cb4a728c4cf6e20e2f3",
+        "official_success_difference": 0
+      },
+      {
+        "block_id": 9,
+        "task_id": "47",
+        "source_group_id": "reservation-H8Q05L",
+        "repetition": 3,
+        "baseline_run_id": "r_11fc8aa123e64c7cbbf5808e56f6032c",
+        "treated_run_id": "r_da0b9530d9f84464b292c8772d0c188b",
+        "official_success_difference": 0
+      },
+      {
+        "block_id": 10,
+        "task_id": "40",
+        "source_group_id": "reservation-3RK2T9",
+        "repetition": 1,
+        "baseline_run_id": "r_613e2cefbade4c32a8a399a2c3a468d5",
+        "treated_run_id": "r_52a31e1adac14953b254c45f82ed4397",
+        "official_success_difference": -1
+      },
+      {
+        "block_id": 11,
+        "task_id": "40",
+        "source_group_id": "reservation-3RK2T9",
+        "repetition": 3,
+        "baseline_run_id": "r_8d92f8cf29f3457bac31f120a6da1b86",
+        "treated_run_id": "r_ee820021f4a441ac8afb1e31ce4dc7d8",
+        "official_success_difference": 0
+      },
+      {
+        "block_id": 12,
+        "task_id": "49",
+        "source_group_id": "reservation-3RK2T9",
+        "repetition": 4,
+        "baseline_run_id": "r_467d07cee19d4367ab57b3acc7a1d2a1",
+        "treated_run_id": "r_7d3d851a66934d06bf74908f5330ab6c",
+        "official_success_difference": 0
+      }
+    ],
+    "baseline_repeat_variation": [
+      {
+        "task_id": "40",
+        "source_group_id": "reservation-3RK2T9",
+        "graded_runs": 4,
+        "pair_count": 6,
+        "outcome_disagreements": 0
+      },
+      {
+        "task_id": "47",
+        "source_group_id": "reservation-H8Q05L",
+        "graded_runs": 4,
+        "pair_count": 6,
+        "outcome_disagreements": 0
+      },
+      {
+        "task_id": "49",
+        "source_group_id": "reservation-3RK2T9",
+        "graded_runs": 4,
+        "pair_count": 6,
+        "outcome_disagreements": 0
+      }
+    ],
+    "http_calls": 622,
+    "reported_tokens": 1726925,
+    "reported_cost_usd_decimal": "0.0623010970",
+    "unknown_cost": false
+  },
+  "returned_models": {
+    "deepseek/deepseek-v4.1-flash-1017": 277,
+    "openai/gpt-6-luna": 345
+  },
+  "returned_providers": {
+    "Fireworks": 277,
+    "OpenAI": 345
+  },
+  "role_usage": {
+    "user_simulator": {
+      "requests": 277,
+      "reported_cost_usd_decimal": "0.0260373420",
+      "prompt_tokens": 246201,
+      "completion_tokens": 7045,
+      "reported_tokens": 253246,
+      "reasoning_tokens": 0,
+      "cached_prompt_tokens": 182186
+    },
+    "worker": {
+      "requests": 345,
+      "reported_cost_usd_decimal": "0.036263755",
+      "prompt_tokens": 1445389,
+      "completion_tokens": 28290,
+      "reported_tokens": 1473679,
+      "reasoning_tokens": 9989,
+      "cached_prompt_tokens": 1378513
+    }
+  },
+  "behavior_review_ref": {
+    "path": "artifacts/analyses/20261114-tau2-delivery-behavior-review.json",
+    "sha256": "e6df8f40060686632cc6dfb2d159881b8a374d462d31cd5d612a209b18044353"
+  },
+  "audit": {
+    "root": "runs/tau2-delivery-luna-deepseek1017-development-01",
+    "experiment_id": "delivery_4124c7e6e5424f378af57488c9faea9c",
+    "audit_status": "audit_passed",
+    "log_sha256": "d8a4307eb849cafd9e0b3e57e4393e9c92c795ef7e2e0fe815e06a8335645233",
+    "summary_sha256": "8fc20c03a902e0585f5fef6289955de6563027e5a9565e43bf495f525f98eff7"
+  },
+  "interpretation": {
+    "memory_body_delivered_in_full_preload": true,
+    "on_demand_prior_memory_exposure": false,
+    "content_effect_identified": false,
+    "policy_equivalence_established": false,
+    "inference": "descriptive_three_train_tasks_two_source_groups_one_guided_bank_no_equivalence_or_causal_claim"
+  },
+  "validation": {
+    "unit_tests_preceding_live_run": 109,
+    "offline_tests_not_model_evidence": true
+  }
+}

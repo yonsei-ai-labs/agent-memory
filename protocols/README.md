@@ -8,6 +8,10 @@
 
 연구용 ready 계획을 해석하는 범용 실행 CLI는 구현 전이다. 계약 검증은 저장소 루트에서 실행한다.
 
+[고정 은행 전달 비교 초안](drafts/tau2-delivery-comparison-v1.json)은 별도 실행기가 읽는다. 무기억·빈 은행·자율 조회·본문 시작 제공, 과제별 출처 그룹·반복·배정을 설정한다. 실제 과제·은행·반복·페이지·guards와 preload의 조회 도구 유지 여부는 미정이다. [전달 비교 안내](../docs/development/tau2-delivery.md)의 로컬 확인·명시적 실행·원본 audit를 지원하며, 범용 연구 계획을 ready로 승격시키지 않는다.
+
+별도 [개발 실행 프로필](pilots/tau2-delivery-development-v1.json)은 train 40·47·49 × 네 조건 × 4회, 같은 guided 은행, Luna low·DeepSeek 1017, 조회 도구 유지와 승인 비용 상한 $3을 고정했다. [실행 전 방법](../docs/research/delivery-development-pilot.md)·[동결 해시](../artifacts/pilots/20261114-tau2-delivery-development-protocol.json)·[실제 결과](../docs/reports/20261114-tau2-delivery-development-results.md)를 연결하며 기존 초안은 유지한다.
+
 [실제 OpenRouter·τ² 연결 확인](checks/openrouter-tau2-smoke.json)은 별도 `connection_check` 프로필이다. [실행 안내](../docs/development/tau2-connection.md)에 따라 제한된 무기억 1과제에서 연결·계측을 확인한다. 이 프로필을 연구용 ready 계획이나 정책 효과 결과로 사용하지 않는다.
 
 [기억 두 회차 연결 확인](checks/openrouter-tau2-memory-smoke.json)은 별도 `memory_connection_check`/`guided_check`다. 모델/사용자 연결 설정과 단계별 지침의 해시, 사후 작성/새 snapshot 복제본 조회 정책, 전체 실행 한도를 고정한다. [실행·검증 안내](../docs/development/tau2-memory.md)를 따르며 자율 기억 정책 효과나 일반 연구 계획을 대신하지 않는다.

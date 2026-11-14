@@ -1,0 +1,161 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "request_id",
+    "run_id",
+    "actor_role",
+    "request_ref",
+    "bindings",
+    "memory_spans"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.2"
+    },
+    "request_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "actor_role": {
+      "enum": [
+        "worker",
+        "writer",
+        "curator",
+        "user_simulator",
+        "grader"
+      ]
+    },
+    "request_ref": {
+      "$ref": "#/$defs/artifact"
+    },
+    "bindings": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "pointer",
+          "source_id",
+          "source_pointer"
+        ],
+        "properties": {
+          "pointer": {
+            "type": "string",
+            "pattern": "^/"
+          },
+          "source_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source_pointer": {
+            "type": "string",
+            "pattern": "^(/|$)"
+          }
+        }
+      }
+    },
+    "memory_spans": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "span_id",
+          "pointer",
+          "char_start",
+          "char_end",
+          "rendered_sha256",
+          "source_id",
+          "item_id",
+          "version_id",
+          "field"
+        ],
+        "properties": {
+          "span_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "pointer": {
+            "type": "string",
+            "pattern": "^/"
+          },
+          "char_start": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "char_end": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "rendered_sha256": {
+            "$ref": "#/$defs/sha256"
+          },
+          "source_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "item_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1
+          },
+          "version_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1
+          },
+          "field": {
+            "enum": [
+              "title",
+              "body",
+              "metadata",
+              "derived"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:agent-memory-eval:input-manifest:1.2",
+  "title": "Request provenance with snapshot sources v1.2",
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "sha256",
+        "media_type"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "media_type": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}

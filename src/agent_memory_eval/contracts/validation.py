@@ -41,6 +41,8 @@ def read_json(data: bytes):
 def validators():
     schemas = {path.stem.split(".")[0]: read_json(path.read_bytes())
                for path in SCHEMAS.glob("*.schema.json")}
+    schemas.update({path.stem.split(".")[0] + "-v1.2": read_json(path.read_bytes())
+                    for path in (ROOT / "schemas/v1.2").glob("*.schema.json")})
     registry = Registry()
     for schema in schemas.values():
         Draft202012Validator.check_schema(schema)
@@ -121,7 +123,8 @@ def inspect_journal(data: bytes, checks=None, *, validated_prefix=0):
         try:
             row = read_json(line)
             if len(records) >= validated_prefix:
-                checks["journal" if row["journal_version"] == "1.0" else "journal-state"].validate(row)
+                name = {"1.0": "journal", "1.1": "journal-state", "1.2": "journal-state-v1.2"}[row["journal_version"]]
+                checks[name].validate(row)
             if row["commit_seq"] != len(records) + 1 or row["prev_sha256"] != previous:
                 raise ValueError("Journal sequence or previous hash mismatch")
             if record_hash(row) != row["record_sha256"]:
@@ -238,6 +241,7 @@ def resolve_source(base, source, request_event, events, approved_templates):
         allowed = {"task_initial": ("run.started", "task_ref"),
                    "self_authored": ("model.request_finished", "response_ref"),
                    "memory_return": ("memory.returned", "result_ref"),
+                   "memory_snapshot": ("memory.preloaded", "public_message_ref"),
                    "business_result": ("business.transition", "public_message_ref"),
                    "policy_result": ("policy.denied", "tool_result_ref"),
                    "benchmark_message": ("business.transition", "model_message_ref")}
@@ -248,12 +252,16 @@ def resolve_source(base, source, request_event, events, approved_templates):
             raise ValueError("Source does not match its recorded producer")
         if kind == "benchmark_message" and event["payload"].get("actor_role") != role:
             raise ValueError("Benchmark message has a different recipient role")
+        if kind == "memory_snapshot":
+            if role != "worker":
+                raise ValueError("Snapshot memory is worker-only")
+            validate_preload(base, event, events)
     return pointer(artifact(base, source["artifact_ref"]), source.get("pointer", ""))
 
 
 def check_source_memory(source, value, events):
     spans = source.get("memory_spans", [])
-    if source["kind"] == "memory_return":
+    if source["kind"] in {"memory_return", "memory_snapshot"}:
         event = events[source["producer_event_id"]]
         expected = {(item["item_id"], item["version_id"], field)
                     for item in event["payload"]["items"] for field in item["fields"]}
@@ -293,7 +301,49 @@ def check_source_memory(source, value, events):
             if json.loads('"' + encoded + '"') != read_json(text.encode())[span["field"]]:
                 raise ValueError("Self-authored span is not its named argument")
     elif spans:
-        raise ValueError("Memory spans require a memory return or a self-authored producer")
+        raise ValueError("Memory spans require a memory producer")
+
+
+def validate_preload(base, event, events, state=None):
+    """Check the complete fixed snapshot, its public rendering and prior producer."""
+    p = event["payload"]
+    if sum(e["type"] == "memory.preloaded" and e["run_id"] == event["run_id"] for e in events.values()) != 1:
+        raise ValueError("A run must have exactly one preload producer")
+    start = next(e for e in events.values() if e["type"] == "run.started" and e["run_id"] == event["run_id"])
+    if (p["bank_id"], p["snapshot_id"]) != (start["payload"]["bank_id"], start["payload"]["start_snapshot_id"]):
+        raise ValueError("Preload does not belong to the run's starting snapshot")
+    producers = [e for e in events.values() if e["type"] == "bank.snapshot_created"
+                 and e["payload"]["snapshot_id"] == p["snapshot_id"] and e["event_seq"] < event["event_seq"]]
+    if len(producers) != 1 or producers[0]["payload"]["manifest_ref"] != p["snapshot_manifest_ref"]:
+        raise ValueError("Preload snapshot has no matching prior producer")
+    if any(e["run_id"] == event["run_id"] and e["type"] == "model.request_started"
+           and e["event_seq"] < event["event_seq"] for e in events.values()):
+        raise ValueError("Starting memory must be prepared before model requests")
+    snapshot = artifact(base, p["snapshot_manifest_ref"])
+    versions = p["versions"]
+    if [(v["item_id"], v["version_id"]) for v in versions] != [(i, snapshot["heads"][i]) for i in snapshot["order"]]:
+        raise ValueError("Preload must preserve all starting items, versions and order")
+    wire = artifact(base, p["public_message_ref"])
+    if set(wire) != {"role", "content"} or wire["role"] != "user":
+        raise ValueError("Preload must be a separate user context message")
+    expected = []
+    for v in versions:
+        if state is not None and state["versions"].get(v["version_id"]) != v["artifact_ref"]:
+            raise ValueError("Preload version differs from the immutable bank version")
+        memory = artifact(base, v["artifact_ref"])
+        if (memory["id"], memory["version"]) != (v["item_id"], v["version_id"]):
+            raise ValueError("Preload version identity differs")
+        expected.append({k: memory[k] for k in ("id", "version", "title", "body")})
+    if wire["content"] != canonical(dict(items=expected)).decode():
+        raise ValueError("Preload changed, truncated or added snapshot content")
+    annotations = [dict(item_id=m["id"], version_id=m["version"], fields=["title", "body"]) for m in expected]
+    if p["items"] != annotations:
+        raise ValueError("Preload field annotations differ")
+    if state is not None:
+        bank = state["banks"][p["bank_id"]]
+        if bank["owner_run"] != event["run_id"] or bank["parent_snapshot"] != p["snapshot_id"]:
+            raise ValueError("Preload bank belongs to another owner or snapshot")
+    return wire
 
 
 def validate_public_return(wire, payload):
@@ -318,7 +368,10 @@ def validate_public_return(wire, payload):
 
 def validate_manifest(base, manifest, request_event, catalog, events, approved_templates, checks=None):
     checks = checks or validators()
-    checks["input-manifest"].validate(manifest)
+    name = "input-manifest-v1.2" if manifest.get("schema_version") == "1.2" else "input-manifest"
+    checks[name].validate(manifest)
+    if manifest["schema_version"] == "1.1" and any(catalog[b["source_id"]]["kind"] == "memory_snapshot" for b in manifest["bindings"]):
+        raise ValueError("Snapshot sources require a v1.2 manifest")
     payload = request_event["payload"]
     if (manifest["request_id"], manifest["run_id"], manifest["actor_role"], manifest["request_ref"]) != (
             payload["request_id"], request_event["run_id"], payload["actor_role"], payload["request_ref"]):
@@ -442,7 +495,7 @@ def validate_fixture(base=FIXTURE):
     batches = artifact(base, bundle["tool_batches_ref"])
     for batch in batches:
         validate_batch(batch)
-    return {"schemas_valid": len(checks), "journal_records_valid": len(scan["records"]),
+    return {"schemas_valid": sum(not name.endswith("-v1.2") for name in checks), "journal_records_valid": len(scan["records"]),
             "synthetic_events_valid": len(events), "input_spans_verified": len(expected),
             "tool_batches_verified": len(batches), "runtime_readiness_verified": False,
             "benchmark_or_model_calls": 0}

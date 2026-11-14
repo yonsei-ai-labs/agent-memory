@@ -1,0 +1,35 @@
+{
+  "profile_version": "1.0",
+  "intent": "frozen_bank_delivery_comparison",
+  "status": "draft",
+  "connection_profile_ref": {
+    "path": "protocols/checks/openrouter-tau2-smoke.json",
+    "sha256": "fab9e52495a7fbc122ffcbcdc5fc9cfe59d8f61d18f421e822a1298a0de68d49"
+  },
+  "memory_instruction_ref": {
+    "path": "protocols/instructions/tau2-delivery-memory.txt",
+    "sha256": "050147f01a4ae531d38f0d8a85b2bec2fcc07df51e7cf3076d8f1735526fca1d"
+  },
+  "conditions": [
+    "no_memory",
+    "empty_bank",
+    "on_demand",
+    "full_preload"
+  ],
+  "tasks": null,
+  "repetitions": null,
+  "schedule_seed": null,
+  "frozen_source": null,
+  "preload_query_tools": null,
+  "primary_comparison": {
+    "baseline": "on_demand",
+    "treated": "full_preload"
+  },
+  "memory_limits": {
+    "page_size": null,
+    "max_items": null,
+    "max_payload_bytes": null,
+    "max_return_bytes": null
+  },
+  "guards": null
+}

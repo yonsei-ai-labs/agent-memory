@@ -26,3 +26,5 @@ uv run python scripts/check_repository.py --verify-source-snapshot /path/to/ai-m
 [업무 사례 주석](analyses/20261114-tau2-case-review.json)은 같은 9회 실행의 공개 메시지를 근거로 한 단일 에이전트의 사후 검토다. 사용자 거절 설명·이관 근거·대안 제안을 구분하고 사건 번호·원문 blob 해시를 남긴다. [해석과 판정 범위](../docs/reports/20261114-tau2-case-review.md)를 따른다. 원본 점수와 별도이며 독립 재판정은 아직 없다.
 
 [다음 과제 후보](analyses/20261114-tau2-task-candidates.json)는 공식 train 30개의 구조 목록, 상세 검토 7개와 개발 후보 6개, 고정 소스 해시와 오프라인 native DB 검사를 담는다. 모델 실험 결과나 실행 프로토콜이 아니다. 두 자료는 분석 전용이며 worker·writer 입력에 넣지 않는다. 원본 사건의 재대조에는 기록된 `runs/` 원본과 고정 τ² checkout이 필요하다. [과제 선정과 주석 기준](../docs/research/tau2-task-selection-and-rubric.md)을 함께 읽는다.
+
+[전달 비교의 실행 전 동결 기록](pilots/20261114-tau2-delivery-development-protocol.json)은 프로토콜·주석 기준·구현 해시와 비용 상한을 보존한다. [실제 48회 receipt](pilots/20261114-tau2-delivery-development-results.json)는 원본 audit·배정·채점·노출·비용·모델/제공자에 연결한다. [공개 근거와 주석](analyses/20261114-tau2-delivery-behavior-review.json)은 실패·설명·시나리오 제시와 파일 상태 사본의 보관량을 별도로 남긴다. 원본·동결 기록은 유지하며, 단일 검토자의 의미 판정은 독립 재판정 전이다. [결과 보고서와 재검증 명령](../docs/reports/20261114-tau2-delivery-development-results.md)을 따른다.

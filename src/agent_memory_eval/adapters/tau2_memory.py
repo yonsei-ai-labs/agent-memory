@@ -41,6 +41,7 @@ class Tau2MemoryBridge(Tau2Bridge):
         self.post_instruction = post_instruction
         self.history_sources, self.history_hashes, self.tool_sources = {}, {}, {}
         self.pending, self.input_prefix = None, None
+        self.preload_source = None
         self.original_next = self.orchestrator.agent.generate_next_message
         self.original_execute = self.orchestrator._execute_tool_calls
         self.router = ToolRouter(self.journal, memory, NativeBusiness(self.orchestrator), bank_id, policy,
@@ -97,7 +98,15 @@ class Tau2MemoryBridge(Tau2Bridge):
                 raise ContractError("An untracked worker message was blocked")
             entries.append(self.history_sources[index])
         self.input_prefix = self.journal.public_prefix(self.ctx)
+        if actor == "worker" and self.policy.preloads:
+            self.ensure_preload()
+            entries.insert(1, (self.preload_source, ""))
         return entries
+
+    def ensure_preload(self):
+        if self.policy.preloads and self.preload_source is None:
+            event = self.memory.preload(self.ctx, self.bank_id)
+            self.preload_source = self.registry.add("memory_snapshot", event["event_id"])
 
     def invoke(self, actor, *, messages, tools=None, **kwargs):
         if actor == "user_simulator":

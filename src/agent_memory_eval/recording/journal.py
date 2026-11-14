@@ -8,7 +8,7 @@ import tempfile
 import threading
 
 from agent_memory_eval.contracts.core import ContractError, canonical, digest, read_json
-from agent_memory_eval.contracts.validation import inspect_journal, read_public_prefix, record_hash, validators
+from agent_memory_eval.contracts.validation import inspect_journal, read_public_prefix, record_hash, validate_preload, validators
 
 
 def sync_directory(path):
@@ -123,10 +123,12 @@ def read_experiment(root):
     root = Path(root).absolute()
     blobs = BlobStore(root)
     scan = inspect_journal(safe_path(root, "log.jsonl").read_bytes())
+    if len({r["journal_version"] for r in scan["records"]}) > 1:
+        raise ContractError("Runtime journal versions cannot change within an experiment")
     state, experiment, verified = empty_state(), None, set()
     for row in scan["records"]:
-        if row["journal_version"] != "1.1":
-            raise ContractError("Runtime evidence requires journal v1.1")
+        if row["journal_version"] not in {"1.1", "1.2"}:
+            raise ContractError("Unsupported runtime journal version")
         experiment = experiment or row["experiment_id"]
         if row["experiment_id"] != experiment:
             raise ContractError("Experiment identity mismatch")
@@ -139,11 +141,16 @@ def read_experiment(root):
                 if digest(memory["body"].encode()) != payload["body_sha256"]:
                     raise ContractError("Stored body checksum mismatch")
                 read_public_prefix(root, payload["public_context_prefix"], scan["events"], event["event_seq"])
+            elif event["type"] == "memory.preloaded":
+                validate_preload(root, event, scan["events"], state)
     return scan, state, experiment
 
 
 class Journal:
-    def __init__(self, root, experiment_id, fault=None):
+    def __init__(self, root, experiment_id, fault=None, *, contract_version="1.1"):
+        if contract_version not in {"1.1", "1.2"}:
+            raise ContractError("Unsupported journal contract version")
+        self.contract_version = contract_version
         self.root = Path(root).absolute()
         if self.root.resolve() != self.root:
             raise ContractError("Experiment root must not traverse a symlink")
@@ -172,7 +179,7 @@ class Journal:
             self.state = empty_state()
             verified = set()
             for row in self.scan["records"]:
-                if row["journal_version"] != "1.1" or row["experiment_id"] != experiment_id:
+                if row["journal_version"] != self.contract_version or row["experiment_id"] != experiment_id:
                     raise ContractError("Unsupported journal profile or experiment identity")
                 self.blobs.verify(row, verified)
                 self.state = self.blobs.get(row["state_ref"])
@@ -209,7 +216,7 @@ class Journal:
             events = deepcopy(events)
             for seq, event in enumerate(events, len(self.events) + 1):
                 event["event_seq"] = seq
-            row = dict(journal_version="1.1", experiment_id=self.experiment_id,
+            row = dict(journal_version=self.contract_version, experiment_id=self.experiment_id,
                        commit_seq=len(self.scan["records"]) + 1,
                        prev_sha256=self.scan["records"][-1]["record_sha256"] if self.scan["records"] else None,
                        record_sha256="0" * 64, operation=deepcopy(operation), events=events,

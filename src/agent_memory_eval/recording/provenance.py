@@ -49,7 +49,7 @@ def json_string_ranges(text):
 
 def source_spans(kind, value, producer):
     result = []
-    if kind == "memory_return":
+    if kind in {"memory_return", "memory_snapshot"}:
         content = read_json(value["content"].encode())
         ranges = json_string_ranges(value["content"])
         items = [(f"/items/{i}", item) for i, item in enumerate(content.get("items", []))]
@@ -79,6 +79,14 @@ def source_spans(kind, value, producer):
     return result
 
 
+def exposure_payload(manifest, span, source):
+    key = {"memory_return": "returned_event_id", "self_authored": "response_event_id",
+           "memory_snapshot": "preloaded_event_id"}[source["kind"]]
+    return dict(request_id=manifest["request_id"], manifest_span_id=span["span_id"],
+        source=dict(kind=source["kind"], **{key: source["producer_event_id"]}), request_ref=manifest["request_ref"],
+        **{k: span[k] for k in ("item_id", "version_id", "field", "pointer", "char_start", "char_end", "rendered_sha256")})
+
+
 class SourceRegistry:
     def __init__(self, journal, ctx):
         self.journal, self.ctx = journal, ctx
@@ -98,6 +106,7 @@ class SourceRegistry:
                   "business_result": ("business.transition", "public_message_ref"),
                   "self_authored": ("model.request_finished", "response_ref"),
                   "memory_return": ("memory.returned", "result_ref"),
+                  "memory_snapshot": ("memory.preloaded", "public_message_ref"),
                   "policy_result": ("policy.denied", "tool_result_ref"),
                   "benchmark_message": ("business.transition", "model_message_ref")}
         if kind not in fields:
@@ -105,6 +114,8 @@ class SourceRegistry:
         event_type, field = fields[kind]
         if event["type"] != event_type or event["run_id"] != self.ctx.run_id:
             raise ContractError("Source producer does not belong to this run")
+        if kind == "memory_snapshot":
+            roles = ("worker",)
         ref = event["payload"][field]
         value = pointer(self.journal.blobs.get(ref), location)
         source_id = new_id("source")
@@ -146,7 +157,8 @@ class SourceRegistry:
                             rendered_sha256=digest(text.encode()))
                 memory_spans.append(span)
         request_ref = self.journal.blobs.put(request)
-        manifest = dict(schema_version="1.1", request_id=request_id, run_id=ctx.run_id, actor_role=actor,
+        version = "1.2" if any(self.sources[s]["kind"] == "memory_snapshot" for s, _ in messages) else "1.1"
+        manifest = dict(schema_version=version, request_id=request_id, run_id=ctx.run_id, actor_role=actor,
                         request_ref=request_ref, bindings=bindings, memory_spans=memory_spans)
         event = ctx.event("model.request_started", dict(request_id=request_id, actor_role=actor,
             request_ref=request_ref, input_manifest_ref=self.journal.blobs.put(manifest), delivery_status="prepared"))
@@ -189,11 +201,11 @@ class RecordingGateway:
         events = [start]
         for span in manifest["memory_spans"]:
             source = registry.sources[span["source_id"]]
-            key = "returned_event_id" if source["kind"] == "memory_return" else "response_event_id"
-            events.append(ctx.event("memory.input_included", dict(request_id=manifest["request_id"],
-                manifest_span_id=span["span_id"], source=dict(kind=source["kind"], **{key: source["producer_event_id"]}),
-                request_ref=manifest["request_ref"], **{k: span[k] for k in ("item_id", "version_id", "field",
-                    "pointer", "char_start", "char_end", "rendered_sha256")}), causes=[start["event_id"], source["producer_event_id"]]))
+            exposure = ctx.event("memory.input_included", exposure_payload(manifest, span, source),
+                                 causes=[start["event_id"], source["producer_event_id"]])
+            if source["kind"] == "memory_snapshot":
+                exposure["schema_version"] = "1.2"
+            events.append(exposure)
         state = deepcopy(self.journal.state)
         state["provenance"][manifest["request_id"]] = dict(sources_ref=self.journal.blobs.put(registry.sources),
                                                           approved_templates=deepcopy(registry.approved_templates))

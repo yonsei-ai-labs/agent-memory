@@ -99,6 +99,52 @@ class MemoryService:
     def _version(self, state, version):
         return self.journal.blobs.get(state["versions"][version])
 
+    def preload(self, ctx, bank_id):
+        """Prepare every frozen item verbatim, without inventing a model tool call."""
+        if self.journal.contract_version != "1.2" or ctx.phase != "solve":
+            raise ContractError("Preload requires a v1.2 journal and the solve phase")
+        with self.journal.lock:
+            state = deepcopy(self.journal.state)
+            bank = self._bank(state, bank_id)
+            start = self.journal.scan["starts"].get(ctx.run_id)
+            if (ctx.experiment_id != self.journal.experiment_id or bank["owner_run"] != ctx.run_id
+                    or bank["sealed"] or start is None or start["payload"]["bank_id"] != bank_id):
+                raise MemoryFault("ACCESS_DENIED")
+            if not MemoryPolicy(**bank["policy"]).preloads:
+                raise MemoryFault("POLICY_DENIED")
+            prior = [e for e in self.journal.events.values() if e["run_id"] == ctx.run_id and e["type"] == "memory.preloaded"]
+            if prior:
+                if prior[0]["payload"]["bank_id"] != bank_id:
+                    raise ContractError("Preload retry changed banks")
+                return deepcopy(prior[0])
+            if any(e["run_id"] == ctx.run_id and e["type"] == "model.request_started" for e in self.journal.events.values()):
+                raise ContractError("Preload must precede every model request")
+            snapshot_id = bank["parent_snapshot"]
+            snapshot = self._snapshot(state, snapshot_id)
+            if start["payload"]["start_snapshot_id"] != snapshot_id or bank["start_heads"] != snapshot["heads"]:
+                raise ContractError("Preload bank does not match the starting snapshot")
+            producer = next(e for e in self.journal.events.values() if e["type"] == "bank.snapshot_created"
+                            and e["payload"]["snapshot_id"] == snapshot_id)
+            items, versions = [], []
+            for item in snapshot["order"]:
+                version = snapshot["heads"][item]
+                value = self._version(state, version)
+                items.append({k: value[k] for k in ("id", "version", "title", "body")})
+                versions.append(dict(item_id=item, version_id=version, artifact_ref=state["versions"][version]))
+            content = canonical(dict(items=items)).decode()
+            used = state["return_bytes"].get(ctx.run_id, 0)
+            cap = bank["policy"]["max_return_bytes"]
+            if cap is not None and used + len(content.encode()) > cap:
+                raise MemoryFault("QUOTA_EXCEEDED")
+            state["return_bytes"][ctx.run_id] = used + len(content.encode())
+            event = ctx.at("prepare").event("memory.preloaded", dict(bank_id=bank_id, snapshot_id=snapshot_id,
+                selector="all_snapshot_verbatim", snapshot_manifest_ref=producer["payload"]["manifest_ref"],
+                public_message_ref=self.journal.blobs.put(dict(role="user", content=content)), versions=versions,
+                items=[dict(item_id=m["id"], version_id=m["version"], fields=["title", "body"]) for m in items]),
+                causes=[start["event_id"], producer["event_id"]])
+            event["schema_version"] = "1.2"
+            return self.journal.append([event], state=state)["events"][0]
+
     @staticmethod
     def _args(arguments, allowed, required):
         if not isinstance(arguments, dict) or set(arguments) - set(allowed) or not set(required) <= arguments.keys():

@@ -1,0 +1,58 @@
+{
+  "profile_version": "1.0",
+  "intent": "frozen_bank_delivery_comparison",
+  "status": "ready",
+  "connection_profile_ref": {
+    "path": "protocols/checks/openrouter-tau2-smoke.json",
+    "sha256": "fab9e52495a7fbc122ffcbcdc5fc9cfe59d8f61d18f421e822a1298a0de68d49"
+  },
+  "memory_instruction_ref": {
+    "path": "protocols/instructions/tau2-delivery-memory.txt",
+    "sha256": "050147f01a4ae531d38f0d8a85b2bec2fcc07df51e7cf3076d8f1735526fca1d"
+  },
+  "conditions": [
+    "no_memory",
+    "empty_bank",
+    "on_demand",
+    "full_preload"
+  ],
+  "tasks": [
+    {
+      "id": "40",
+      "source_group_id": "reservation-3RK2T9"
+    },
+    {
+      "id": "47",
+      "source_group_id": "reservation-H8Q05L"
+    },
+    {
+      "id": "49",
+      "source_group_id": "reservation-3RK2T9"
+    }
+  ],
+  "repetitions": 4,
+  "schedule_seed": 20261114,
+  "frozen_source": {
+    "path": "runs/tau2-memory-luna-deepseek1017-check-01",
+    "log_sha256": "762fbeb6a903403512acae3eb061acb3a665964dee3f2dd5852f5c093e9cf0d0",
+    "experiment_id": "memory-connection_ef61e798a0594baa821cfbc3a15d76e8",
+    "snapshot_id": "snap_3f33fe153fe84888b1730be1fbe4ca3d",
+    "source_run_id": "r_d709484a63c54236b66ae87723c4b876"
+  },
+  "preload_query_tools": true,
+  "primary_comparison": {
+    "baseline": "on_demand",
+    "treated": "full_preload"
+  },
+  "memory_limits": {
+    "page_size": 1,
+    "max_items": null,
+    "max_payload_bytes": null,
+    "max_return_bytes": null
+  },
+  "guards": {
+    "max_model_requests": 1152,
+    "max_reported_cost_usd": 3.0,
+    "max_seconds": 5400
+  }
+}

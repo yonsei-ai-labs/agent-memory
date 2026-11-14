@@ -1,0 +1,322 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "event_id",
+    "event_seq",
+    "experiment_id",
+    "run_id",
+    "session_id",
+    "condition_id",
+    "stage",
+    "phase",
+    "type",
+    "timestamp_utc",
+    "record_kind",
+    "caused_by",
+    "payload"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.2"
+    },
+    "event_id": {
+      "$ref": "#/$defs/id"
+    },
+    "event_seq": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "experiment_id": {
+      "$ref": "#/$defs/id"
+    },
+    "run_id": {
+      "$ref": "#/$defs/nullable_id"
+    },
+    "session_id": {
+      "$ref": "#/$defs/nullable_id"
+    },
+    "condition_id": {
+      "$ref": "#/$defs/nullable_id"
+    },
+    "stage": {
+      "enum": [
+        "controller",
+        "collection",
+        "probe",
+        "continual",
+        "diagnostic"
+      ]
+    },
+    "phase": {
+      "enum": [
+        "prepare",
+        "solve",
+        "post_task_write",
+        "grade",
+        "seal",
+        "analyze"
+      ]
+    },
+    "type": {
+      "enum": [
+        "memory.preloaded",
+        "memory.input_included"
+      ]
+    },
+    "timestamp_utc": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "Z$"
+    },
+    "record_kind": {
+      "enum": [
+        "observed",
+        "illustrative"
+      ]
+    },
+    "caused_by": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/id"
+      }
+    },
+    "payload": {
+      "type": "object"
+    }
+  },
+  "$id": "urn:agent-memory-eval:event:1.2",
+  "title": "Snapshot preload events v1.2",
+  "$defs": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "nullable_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "sha256",
+        "media_type"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "media_type": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "preloaded": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "bank_id",
+        "snapshot_id",
+        "selector",
+        "snapshot_manifest_ref",
+        "public_message_ref",
+        "versions",
+        "items"
+      ],
+      "properties": {
+        "bank_id": {
+          "$ref": "#/$defs/id"
+        },
+        "snapshot_id": {
+          "$ref": "#/$defs/id"
+        },
+        "selector": {
+          "const": "all_snapshot_verbatim"
+        },
+        "snapshot_manifest_ref": {
+          "$ref": "#/$defs/artifact"
+        },
+        "public_message_ref": {
+          "$ref": "#/$defs/artifact"
+        },
+        "versions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "item_id",
+              "version_id",
+              "artifact_ref"
+            ],
+            "properties": {
+              "item_id": {
+                "$ref": "#/$defs/id"
+              },
+              "version_id": {
+                "$ref": "#/$defs/id"
+              },
+              "artifact_ref": {
+                "$ref": "#/$defs/artifact"
+              }
+            }
+          }
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "item_id",
+              "version_id",
+              "fields"
+            ],
+            "properties": {
+              "item_id": {
+                "$ref": "#/$defs/id"
+              },
+              "version_id": {
+                "$ref": "#/$defs/id"
+              },
+              "fields": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": {
+                  "enum": [
+                    "title",
+                    "body",
+                    "metadata",
+                    "derived"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "input_included": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "request_id",
+        "item_id",
+        "version_id",
+        "field",
+        "request_ref",
+        "pointer",
+        "char_start",
+        "char_end",
+        "rendered_sha256",
+        "manifest_span_id",
+        "source"
+      ],
+      "properties": {
+        "request_id": {
+          "$ref": "#/$defs/id"
+        },
+        "item_id": {
+          "$ref": "#/$defs/id"
+        },
+        "version_id": {
+          "$ref": "#/$defs/id"
+        },
+        "field": {
+          "enum": [
+            "title",
+            "body"
+          ]
+        },
+        "request_ref": {
+          "$ref": "#/$defs/artifact"
+        },
+        "pointer": {
+          "type": "string",
+          "pattern": "^/"
+        },
+        "char_start": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "char_end": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "rendered_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "manifest_span_id": {
+          "$ref": "#/$defs/id"
+        },
+        "source": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "preloaded_event_id"
+          ],
+          "properties": {
+            "kind": {
+              "const": "memory_snapshot"
+            },
+            "preloaded_event_id": {
+              "$ref": "#/$defs/id"
+            }
+          }
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "type": {
+            "const": "memory.preloaded"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/preloaded"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "type": {
+            "const": "memory.input_included"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/input_included"
+          }
+        }
+      }
+    }
+  ]
+}

@@ -132,3 +132,9 @@ v1.1 계획은 단계별 `instructions.solve`·`instructions.post_task_write`를
 새 [v1.1 검사](../../scripts/contract_v11.py)와 [음성 사례 테스트](../../tests/test_contract_v11.py)는 journal 순서/해시, 미확정 tail, 공개 경험 접두부, 승인 출처와 요청의 대조, 자기 작성/반환 구간, 노출 사건 누락, run/session·은행/고정 보기 연결과 합성 batch trace를 확인한다. 나중의 정상 관측 추가는 통과하는 양성 대조다. fixture는 모두 illustrative이며 실제 사용량·성공값을 만들지 않는다.
 
 **현재는 파일 기록자·기억 서비스·입력 구성·라우터·가짜 두 회차 실행과 재계산이 동작한다.** [오프라인 코어 실행/검증](../development/offline-core.md)에 구현과 행동 테스트의 범위를 정리했다. 기존 계약 예시 검증과 새 로컬 행동 테스트를 구분한다. [무기억 연결](../development/tau2-connection.md)에 이어 [τ² 기억/두 회차 binding](../development/tau2-memory.md)의 native 행동도 검증한다. 연구 계획 준비 검사·일반 정책 비교·통계 실증은 후속이며 guided 연결 확인을 정책 효과로 보고하지 않는다.
+
+## 6. Snapshot 자동 제공의 v1.2 확장
+
+[고정 은행 전달 비교](../development/tau2-delivery.md)는 `memory.preloaded`에 시작 snapshot·원문 버전·준비한 메시지를 기록하고, `memory_snapshot` 출처를 실제 요청 구간과 연결한다. 에이전트가 부르지 않은 list/get 사건을 만들지 않는다. 같은 요청이 반복돼도 동일 원문의 재노출을 매번 기록하며 준비와 전송 상태·활용을 구분한다.
+
+별도 journal/manifest/event v1.2 스키마와 [닫힌 합성 fixture](../../tests/fixtures/contracts-v1.2/README.md)를 추가했다. 새 journal은 기존 v1.1 사건도 수용하지만 과거 원본의 버전을 바꾸지 않는다. 준비 검사·실제 worker wire·은행/역할/세션 격리·한도·원본 재계산을 행동 테스트로 검증한다. 실제 모델 효과·자동 의미 주석·통계 추론은 별도다.

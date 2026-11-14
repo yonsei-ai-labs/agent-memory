@@ -6,6 +6,8 @@
 
 현재는 **파일 기반 기억 서비스·기록자·입력 구성·도구 라우터·가짜 두 회차 실행과 원본 재계산**이 동작한다. [오프라인 코어 안내](docs/development/offline-core.md)에 실행 방법과 행동 검증을 정리했다. [OpenRouter·Luna·τ² 연결](docs/development/tau2-connection.md), [native 기억 두 회차](docs/development/tau2-memory.md)와 [무기억·빈은행·고정 은행의 자율 조회 파일럿](docs/development/tau2-autonomy-pilot.md)을 구현했다. 일반 연구 계획 실행과 정책 효과 실증은 [후속 작업](docs/development/roadmap.md)이다.
 
+[고정 은행 전달 비교](docs/development/tau2-delivery.md)는 본문 시작 제공과 자율 조회를 여러 과제·조건·반복에 배정한다. [실제 48회 개발 결과](docs/reports/20261114-tau2-delivery-development-results.md)에서 본문 전달·미조회·필요한 수정 실패를 확인했다. 고정 은행 1개·세 train 과제의 관측이며 일반 정책 효과는 미확정이다. [보고서와 다음 2주 계획](docs/reports/20261114-progress-and-two-week-plan.md)을 함께 본다.
+
 ## 먼저 읽기
 
 새 개발 세션은 [인수인계](docs/handoff/next-session.md)에서 현재 구현 상태·합의 사항·미정 값을 확인하고, [첫 구현 작업](docs/development/first-implementation.md)부터 이어간다.

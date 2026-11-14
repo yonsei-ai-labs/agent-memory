@@ -56,8 +56,8 @@ class MemoryPolicy:
             raise ContractError("Memory flags must be booleans")
         if self.write_timing not in {"none", "during_task", "post_task", "during_and_post"}:
             raise ContractError("Unknown write timing")
-        if self.read_mode not in {"none", "on_demand"}:
-            raise ContractError("This first runtime supports verbatim on-demand reads only")
+        if self.read_mode not in {"none", "on_demand", "preload", "preload_and_on_demand"}:
+            raise ContractError("Unknown verbatim read mode")
         if type(self.page_size) is not int or self.page_size < 1:
             raise ContractError("An explicit positive page size is required")
         if not self.enabled and (self.write_timing != "none" or self.read_mode != "none" or self.same_episode_read):
@@ -72,7 +72,11 @@ class MemoryPolicy:
         if name == "memory_store":
             return self.write_timing in ({"during_task", "during_and_post"} if phase == "solve"
                                          else {"post_task", "during_and_post"})
-        return name in {"memory_list", "memory_get"} and self.read_mode == "on_demand"
+        return name in {"memory_list", "memory_get"} and self.read_mode in {"on_demand", "preload_and_on_demand"}
+
+    @property
+    def preloads(self):
+        return self.enabled and self.read_mode in {"preload", "preload_and_on_demand"}
 
     def tools(self, phase):
         return [name for name in ("memory_store", "memory_list", "memory_get") if self.permits(name, phase)]
