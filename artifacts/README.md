@@ -22,3 +22,7 @@ uv run python scripts/check_repository.py --verify-source-snapshot /path/to/ai-m
 [experiment-handoff-import.json](experiment-handoff-import.json)은 다운로드 폴더의 실험팀 문서를 추가 반영한 기록이다. 원문 보관본의 bytes·SHA-256, 파생 검토/제안 문서, 확인한 공식 소스 commit·해시와 미열람 Library 연결을 남긴다. 기본 저장소 검사는 원문 보관본의 해시를 확인하며, 온라인 원문을 다시 조회하거나 실제 실험을 수행하지 않는다.
 
 [행동 보조 분석](analyses/20261114-tau2-action-comparison.json)은 기존 자율 조회 파일럿을 audit한 뒤 원본과 별도 버전으로 계산한 사후 기술 분석이다. 입력 로그·요약 해시와 이관 요약 인수만 제외하는 규칙을 담으며, 원래 `actions_changed`나 실행 원본을 바꾸지 않는다. [재계산 방법과 해석](../docs/development/tau2-autonomy-pilot.md#보고서용-행동-보조-분석)을 따른다.
+
+[업무 사례 주석](analyses/20261114-tau2-case-review.json)은 같은 9회 실행의 공개 메시지를 근거로 한 단일 에이전트의 사후 검토다. 사용자 거절 설명·이관 근거·대안 제안을 구분하고 사건 번호·원문 blob 해시를 남긴다. [해석과 판정 범위](../docs/reports/20261114-tau2-case-review.md)를 따른다. 원본 점수와 별도이며 독립 재판정은 아직 없다.
+
+[다음 과제 후보](analyses/20261114-tau2-task-candidates.json)는 공식 train 30개의 구조 목록, 상세 검토 7개와 개발 후보 6개, 고정 소스 해시와 오프라인 native DB 검사를 담는다. 모델 실험 결과나 실행 프로토콜이 아니다. 두 자료는 분석 전용이며 worker·writer 입력에 넣지 않는다. 원본 사건의 재대조에는 기록된 `runs/` 원본과 고정 τ² checkout이 필요하다. [과제 선정과 주석 기준](../docs/research/tau2-task-selection-and-rubric.md)을 함께 읽는다.

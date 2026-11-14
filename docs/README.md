@@ -23,6 +23,8 @@
 | 실제 OpenRouter·Luna·τ² 단일 과제 연결과 사용량/비용 | [연결 확인](development/tau2-connection.md) |
 | 발표·보고서의 네 장 구성 | [보고서 구성](handoff/report-outline.md) |
 | 실제 파일럿 결과의 해석·우선 보완·다음 2주 산출물 | [진행 보고서와 2주 계획](reports/20261114-progress-and-two-week-plan.md) |
+| 기존 9회 실행의 거절 설명·이관 근거·대안 제안 검토 | [업무 행동 사례 검토](reports/20261114-tau2-case-review.md) |
+| 다음 train 과제 후보·DB 누락 탐지·행동과 설명 주석 | [과제 후보와 채점 기준](research/tau2-task-selection-and-rubric.md) |
 | 가져온 자료와 원본 연결·변환·제외 이유 | [이관 내역](migration.md) |
 | 기존 문헌 조사 표의 범위 | [문헌 자료](references/README.md) |
 | 이전 datasets·설계 자료의 보관 범위·라벨 의미·재사용 | [데이터 보관 안내](data/legacy-datasets.md) |

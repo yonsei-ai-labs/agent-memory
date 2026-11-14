@@ -1,0 +1,1033 @@
+{
+  "format": "agent-memory-tau2-task-candidates/v1",
+  "visibility": "analysis_only_never_worker_or_writer_input",
+  "status": "development_selection_not_executable",
+  "review_date": "2026-11-14",
+  "official_source": {
+    "repository": "https://github.com/sierra-research/tau2-bench",
+    "commit": "c06b07dd7c4d4ec61ba6ff9bcdf0b15dd7ef36d4",
+    "files": [
+      {
+        "path": "data/tau2-bench/data/tau2/domains/airline/tasks.json",
+        "sha256": "ccd8ba737b4cc371415af70151187788f728d6108d0916e73bb4317b40542052"
+      },
+      {
+        "path": "data/tau2-bench/data/tau2/domains/airline/split_tasks.json",
+        "sha256": "b22ced4d9a9850ac9aea31c53bdcb6d6009058140bd9acc7db37c1d36222ba8b"
+      },
+      {
+        "path": "data/tau2-bench/data/tau2/domains/airline/db.json",
+        "sha256": "1af9fea6e03ca7ca15a22bb3fcaf3e351393e3fc9070b6777947da8996f7531b"
+      },
+      {
+        "path": "data/tau2-bench/data/tau2/domains/airline/policy.md",
+        "sha256": "10dc0525421521208be39cee235bba84a16e2bcba9899eb93d92cd81d2f62fc4"
+      },
+      {
+        "path": "data/tau2-bench/src/tau2/domains/airline/tools.py",
+        "sha256": "6ec01c8c362ab0242eff658fc79547cf9519b93422ab113b6930cb627d202779"
+      },
+      {
+        "path": "data/tau2-bench/src/tau2/evaluator/evaluator_env.py",
+        "sha256": "e883703cb57120ac193af7b6cf2c7e1d1394db80591600824275a54ec0114989"
+      },
+      {
+        "path": "data/tau2-bench/src/tau2/evaluator/evaluator.py",
+        "sha256": "adc929736ee3d75186fcd5c7cf5d5a4036814a9b73a845f7a513b39a44e9bc93"
+      }
+    ]
+  },
+  "rubric_version": "tau2-airline-behavior-review/v0.1",
+  "rubric_ref": {
+    "path": "docs/research/tau2-task-selection-and-rubric.md",
+    "sha256": "7788e0d414e031e16558f70dc4f75aeda30ee71deff46d5fc7821373ca4d5531"
+  },
+  "screening": {
+    "train_tasks": 30,
+    "test_tasks_used_for_selection": 0,
+    "train_task_ids": [
+      "0",
+      "1",
+      "3",
+      "4",
+      "5",
+      "7",
+      "9",
+      "10",
+      "11",
+      "12",
+      "14",
+      "15",
+      "17",
+      "20",
+      "21",
+      "23",
+      "27",
+      "28",
+      "33",
+      "34",
+      "36",
+      "38",
+      "39",
+      "40",
+      "41",
+      "42",
+      "43",
+      "46",
+      "47",
+      "49"
+    ],
+    "detailed_task_ids": [
+      "0",
+      "40",
+      "47",
+      "49",
+      "7",
+      "17",
+      "39"
+    ],
+    "candidate_task_ids": [
+      "0",
+      "40",
+      "47",
+      "49",
+      "7",
+      "17"
+    ],
+    "held_task_ids": [
+      "39"
+    ],
+    "not_selected_train_task_ids": [
+      "1",
+      "3",
+      "4",
+      "5",
+      "9",
+      "10",
+      "11",
+      "12",
+      "14",
+      "15",
+      "20",
+      "21",
+      "23",
+      "27",
+      "28",
+      "33",
+      "34",
+      "36",
+      "38",
+      "41",
+      "42",
+      "43",
+      "46"
+    ],
+    "selection_not_based_on_new_model_outcomes": true
+  },
+  "inventory": [
+    {
+      "task_id": "0",
+      "task_pointer": "/0",
+      "reference_write_tools": [],
+      "communicate_info_count": 0,
+      "nl_assertion_count": 1,
+      "reward_basis": [
+        "DB",
+        "COMMUNICATE"
+      ]
+    },
+    {
+      "task_id": "1",
+      "task_pointer": "/1",
+      "reference_write_tools": [],
+      "communicate_info_count": 0,
+      "nl_assertion_count": 1,
+      "reward_basis": [
+        "DB",
+        "COMMUNICATE"
+      ]
+    },
+    {
+      "task_id": "3",
+      "task_pointer": "/3",
+      "reference_write_tools": [],
+      "communicate_info_count": 1,
+      "nl_assertion_count": 2,
+      "reward_basis": [
+        "DB",
+        "COMMUNICATE"
+      ]
+    },
+    {
+      "task_id": "4",
+      "task_pointer": "/4",
+      "reference_write_tools": [],
+      "communicate_info_count": 0,
+      "nl_assertion_count": 2,
+      "reward_basis": [
+        "DB",
+        "COMMUNICATE"
+      ]
+    },
+    {
+      "task_id": "5",
+      "task_pointer": "/5",
+      "reference_write_tools": [],
+      "communicate_info_count": 0,
+      "nl_assertion_count": 2,
+      "reward_basis": [
+        "DB",
+        "COMMUNICATE"
+      ]
+    },
+    {
+      "task_id": "7",
+      "task_pointer": "/7",
+      "reference_write_tools": [
+        "update_reservation_flights",
+        "cancel_reservation",
+        "cancel_reservation"
+      ],
+      "communicate_info_count": 1,
+      "nl_assertion_count": 4,
+      "reward_basis": [
+        "DB",
+        "COMMUNICATE"
+      ]
+    },
+    {
+      "task_id": "9",
+      "task_pointer": "/9",
+      "reference_write_tools": [],
+      "communicate_info_count": 0,
+      "nl_assertion_count": 4,
+      "reward_basis": [
+        "DB",
+        "COMMUNICATE"
+      ]
+    },
+    {
+      "task_id": "10",
+      "task_pointer": "/10",
+      "reference_write_tools": [],
+      "communicate_info_count": 0,
+      "nl_assertion_count": 1,
+      "reward_basis": [
+        "DB",
+        "COMMUNICATE"
+      ]
+    },
+    {
+      "task_id": "11",
+      "task_pointer": "/11",
+      "reference_write_tools": [
+        "update_reservation_flights"
+      ],
+      "communicate_info_count": 1,
+      "nl_assertion_count": 3,
+      "reward_basis": [
+        "DB",
+        "COMMUNICATE"
+      ]
+    },
+    {
+      "task_id": "12",
+      "task_pointer": "/12",
+      "reference_write_tools": [
+        "update_reservation_baggages"
+      ],
+      "communicate_info_count": 0,
+      "nl_assertion_count": 2,
+      "reward_basis": [
+        "DB",
+        "COMMUNICATE"
+      ]
+    },
+    {
+      "task_id": "14",
+      "task_pointer": "/14",
+      "reference_write_tools": [
+        "cancel_reservation",
+        "book_reservation"
+      ],
+      "communicate_info_count": 3,
+      "nl_assertion_count": 5,
+      "reward_basis": [
+        "DB",
+        "COMMUNICATE"
+      ]
+    },
+    {
+      "task_id": "15",
+      "task_pointer": "/15",
+      "reference_write_tools": [
+        "update_reservation_flights"
+      ],
+      "communicate_info_count": 0,
+      "nl_assertion_count": 2,
+      "reward_basis": [
+        "DB",
+        "COMMUNICATE"
+      ]
+    },
+    {
+      "task_id": "17",
+      "task_pointer": "/17",
+      "reference_write_tools": [
+        "update_reservation_flights",
+        "update_reservation_passengers",
+        "update_reservation_baggages"
+      ],
+      "communicate_info_count": 0,
+      "nl_assertion_count": 3,
+      "reward_basis": [
+        "DB",
+        "COMMUNICATE"
+      ]
+    },
+    {
+      "task_id": "20",
+      "task_pointer": "/20",
+      "reference_write_tools": [
+        "book_reservation"
+      ],
+      "communicate_info_count": 0,
+      "nl_assertion_count": 2,
+      "reward_basis": [
+        "DB",
+        "COMMUNICATE"
+      ]
+    },
+    {
+      "task_id": "21",
+      "task_pointer": "/21",
+      "reference_write_tools": [
+        "update_reservation_flights",
+        "update_reservation_baggages"
+      ],
+      "communicate_info_count": 0,
+      "nl_assertion_count": 3,
+      "reward_basis": [
+        "DB",
+        "COMMUNICATE"
+      ]
+    },
+    {
+      "task_id": "23",
+      "task_pointer": "/23",
+      "reference_write_tools": [
+        "cancel_reservation",
+        "book_reservation",
+        "book_reservation",
+        "book_reservation"
+      ],
+      "communicate_info_count": 3,
+      "nl_assertion_count": 8,
+      "reward_basis": [
+        "DB",
+        "COMMUNICATE"
+      ]
+    },
+    {
+      "task_id": "27",
+      "task_pointer": "/27",
+      "reference_write_tools": [],
+      "communicate_info_count": 0,
+      "nl_assertion_count": 3,
+      "reward_basis": [
+        "DB",
+        "COMMUNICATE"
+      ]
+    },
+    {
+      "task_id": "28",
+      "task_pointer": "/28",
+      "reference_write_tools": [],
+      "communicate_info_count": 0,
+      "nl_assertion_count": 2,
+      "reward_basis": [
+        "DB",
+        "COMMUNICATE"
+      ]
+    },
+    {
+      "task_id": "33",
+      "task_pointer": "/33",
+      "reference_write_tools": [
+        "update_reservation_flights",
+        "update_reservation_baggages"
+      ],
+      "communicate_info_count": 0,
+      "nl_assertion_count": 3,
+      "reward_basis": [
+        "DB",
+        "COMMUNICATE"
+      ]
+    },
+    {
+      "task_id": "34",
+      "task_pointer": "/34",
+      "reference_write_tools": [],
+      "communicate_info_count": 0,
+      "nl_assertion_count": 1,
+      "reward_basis": [
+        "DB",
+        "COMMUNICATE"
+      ]
+    },
+    {
+      "task_id": "36",
+      "task_pointer": "/36",
+      "reference_write_tools": [],
+      "communicate_info_count": 0,
+      "nl_assertion_count": 1,
+      "reward_basis": [
+        "DB",
+        "COMMUNICATE"
+      ]
+    },
+    {
+      "task_id": "38",
+      "task_pointer": "/38",
+      "reference_write_tools": [],
+      "communicate_info_count": 0,
+      "nl_assertion_count": 4,
+      "reward_basis": [
+        "DB",
+        "COMMUNICATE"
+      ]
+    },
+    {
+      "task_id": "39",
+      "task_pointer": "/39",
+      "reference_write_tools": [
+        "cancel_reservation",
+        "cancel_reservation",
+        "cancel_reservation"
+      ],
+      "communicate_info_count": 0,
+      "nl_assertion_count": 4,
+      "reward_basis": [
+        "DB",
+        "COMMUNICATE"
+      ]
+    },
+    {
+      "task_id": "40",
+      "task_pointer": "/40",
+      "reference_write_tools": [
+        "update_reservation_passengers"
+      ],
+      "communicate_info_count": 0,
+      "nl_assertion_count": 1,
+      "reward_basis": [
+        "DB",
+        "COMMUNICATE"
+      ]
+    },
+    {
+      "task_id": "41",
+      "task_pointer": "/41",
+      "reference_write_tools": [],
+      "communicate_info_count": 0,
+      "nl_assertion_count": 2,
+      "reward_basis": [
+        "DB",
+        "COMMUNICATE"
+      ]
+    },
+    {
+      "task_id": "42",
+      "task_pointer": "/42",
+      "reference_write_tools": [
+        "cancel_reservation",
+        "cancel_reservation"
+      ],
+      "communicate_info_count": 0,
+      "nl_assertion_count": 2,
+      "reward_basis": [
+        "DB",
+        "COMMUNICATE"
+      ]
+    },
+    {
+      "task_id": "43",
+      "task_pointer": "/43",
+      "reference_write_tools": [],
+      "communicate_info_count": 0,
+      "nl_assertion_count": 2,
+      "reward_basis": [
+        "DB",
+        "COMMUNICATE"
+      ]
+    },
+    {
+      "task_id": "46",
+      "task_pointer": "/46",
+      "reference_write_tools": [],
+      "communicate_info_count": 0,
+      "nl_assertion_count": 1,
+      "reward_basis": [
+        "DB",
+        "COMMUNICATE"
+      ]
+    },
+    {
+      "task_id": "47",
+      "task_pointer": "/47",
+      "reference_write_tools": [],
+      "communicate_info_count": 0,
+      "nl_assertion_count": 1,
+      "reward_basis": [
+        "DB",
+        "COMMUNICATE"
+      ]
+    },
+    {
+      "task_id": "49",
+      "task_pointer": "/49",
+      "reference_write_tools": [],
+      "communicate_info_count": 0,
+      "nl_assertion_count": 1,
+      "reward_basis": [
+        "DB",
+        "COMMUNICATE"
+      ]
+    }
+  ],
+  "candidates": [
+    {
+      "task_id": "0",
+      "official_split": "train",
+      "role": "existing_sentinel",
+      "source_group": "reservation-EHGLP3",
+      "task_pointer": "/0",
+      "task_canonical_sha256": "49172382bda4762601b4854955d8d69fc2dc2526201433e98958f51029567b71",
+      "selection_reason": "Trace the existing refusal case and expose DB-only grading limitations.",
+      "reference_write_tools": [],
+      "reward_basis": [
+        "DB",
+        "COMMUNICATE"
+      ],
+      "analysis_only_db_facts": [
+        {
+          "reservation_id": "EHGLP3",
+          "db_pointer": "/reservations/EHGLP3",
+          "user_id": "emma_kim_9957",
+          "cabin": "basic_economy",
+          "insurance": "no",
+          "created_at": "2024-05-04T23:12:06",
+          "passenger_count": 2,
+          "flight_statuses": [
+            {
+              "flight_number": "HAT156",
+              "date": "2024-05-17",
+              "status": "available"
+            },
+            {
+              "flight_number": "HAT021",
+              "date": "2024-05-17",
+              "status": "available"
+            }
+          ]
+        }
+      ],
+      "offline_native_check": {
+        "task_id": "0",
+        "initial_db_hash": "124e39a664b56402bcd09cb8a6a9cece6acb8462337c969799d5658e3250f263",
+        "reference_final_db_hash": "124e39a664b56402bcd09cb8a6a9cece6acb8462337c969799d5658e3250f263",
+        "reference_changes_db": false,
+        "no_op_db_reward": 1.0,
+        "reference_errors": []
+      }
+    },
+    {
+      "task_id": "40",
+      "official_split": "train",
+      "role": "priority_development_candidate",
+      "source_group": "reservation-3RK2T9",
+      "task_pointer": "/40",
+      "task_canonical_sha256": "4928c624f06a934ce5dd8d0bdc1394082384cc2d358f7fed065dbd4753d27920",
+      "selection_reason": "Allowed passenger-name update tests whether cancellation restrictions suppress an unrelated permitted update.",
+      "reference_write_tools": [
+        "update_reservation_passengers"
+      ],
+      "reward_basis": [
+        "DB",
+        "COMMUNICATE"
+      ],
+      "analysis_only_db_facts": [
+        {
+          "reservation_id": "3RK2T9",
+          "db_pointer": "/reservations/3RK2T9",
+          "user_id": "anya_garcia_5901",
+          "cabin": "basic_economy",
+          "insurance": "no",
+          "created_at": "2024-05-02T06:02:56",
+          "passenger_count": 2,
+          "flight_statuses": [
+            {
+              "flight_number": "HAT214",
+              "date": "2024-05-19",
+              "status": "available"
+            },
+            {
+              "flight_number": "HAT009",
+              "date": "2024-05-20",
+              "status": "available"
+            }
+          ]
+        }
+      ],
+      "offline_native_check": {
+        "task_id": "40",
+        "initial_db_hash": "124e39a664b56402bcd09cb8a6a9cece6acb8462337c969799d5658e3250f263",
+        "reference_final_db_hash": "96b61d516184b98eebc91d53fd4bb5a4b1e19198059980b803f38acf050a4c10",
+        "reference_changes_db": true,
+        "no_op_db_reward": 0.0,
+        "reference_errors": []
+      }
+    },
+    {
+      "task_id": "47",
+      "official_split": "train",
+      "role": "priority_development_candidate",
+      "source_group": "reservation-H8Q05L",
+      "task_pointer": "/47",
+      "task_canonical_sha256": "fbb24be9f82b9e63dd7809f79649071678c30a32cd0a4b8bc62d3a5c275228ee",
+      "selection_reason": "Insurance exists, but a birthday is not a covered health/weather cancellation reason.",
+      "reference_write_tools": [],
+      "reward_basis": [
+        "DB",
+        "COMMUNICATE"
+      ],
+      "analysis_only_db_facts": [
+        {
+          "reservation_id": "H8Q05L",
+          "db_pointer": "/reservations/H8Q05L",
+          "user_id": "sophia_silva_7557",
+          "cabin": "basic_economy",
+          "insurance": "yes",
+          "created_at": "2024-05-03T15:12:00",
+          "passenger_count": 1,
+          "flight_statuses": [
+            {
+              "flight_number": "HAT268",
+              "date": "2024-05-24",
+              "status": "available"
+            }
+          ]
+        }
+      ],
+      "offline_native_check": {
+        "task_id": "47",
+        "initial_db_hash": "124e39a664b56402bcd09cb8a6a9cece6acb8462337c969799d5658e3250f263",
+        "reference_final_db_hash": "124e39a664b56402bcd09cb8a6a9cece6acb8462337c969799d5658e3250f263",
+        "reference_changes_db": false,
+        "no_op_db_reward": 1.0,
+        "reference_errors": []
+      }
+    },
+    {
+      "task_id": "49",
+      "official_split": "train",
+      "role": "priority_development_candidate",
+      "source_group": "reservation-3RK2T9",
+      "task_pointer": "/49",
+      "task_canonical_sha256": "6718337b1b648ac3cee2b44eb299c3f13107b817ac1e475eb5d26fb097301043",
+      "selection_reason": "A user claim of insurance conflicts with the currently retrieved uninsured reservation.",
+      "reference_write_tools": [],
+      "reward_basis": [
+        "DB",
+        "COMMUNICATE"
+      ],
+      "analysis_only_db_facts": [
+        {
+          "reservation_id": "3RK2T9",
+          "db_pointer": "/reservations/3RK2T9",
+          "user_id": "anya_garcia_5901",
+          "cabin": "basic_economy",
+          "insurance": "no",
+          "created_at": "2024-05-02T06:02:56",
+          "passenger_count": 2,
+          "flight_statuses": [
+            {
+              "flight_number": "HAT214",
+              "date": "2024-05-19",
+              "status": "available"
+            },
+            {
+              "flight_number": "HAT009",
+              "date": "2024-05-20",
+              "status": "available"
+            }
+          ]
+        }
+      ],
+      "offline_native_check": {
+        "task_id": "49",
+        "initial_db_hash": "124e39a664b56402bcd09cb8a6a9cece6acb8462337c969799d5658e3250f263",
+        "reference_final_db_hash": "124e39a664b56402bcd09cb8a6a9cece6acb8462337c969799d5658e3250f263",
+        "reference_changes_db": false,
+        "no_op_db_reward": 1.0,
+        "reference_errors": []
+      }
+    },
+    {
+      "task_id": "7",
+      "official_split": "train",
+      "role": "extended_development_candidate",
+      "source_group": "user-daiki-muller",
+      "task_pointer": "/7",
+      "task_canonical_sha256": "8c66a0f45bbb05bfd11a8444a417d26e091bb95dc9f7e309f20806cf49f17e2e",
+      "selection_reason": "Permitted cancellation paths after cabin upgrade and for an insured health reason; contains multiple intents and amount communication.",
+      "reference_write_tools": [
+        "update_reservation_flights",
+        "cancel_reservation",
+        "cancel_reservation"
+      ],
+      "reward_basis": [
+        "DB",
+        "COMMUNICATE"
+      ],
+      "analysis_only_db_facts": [
+        {
+          "reservation_id": "XEHM4B",
+          "db_pointer": "/reservations/XEHM4B",
+          "user_id": "daiki_muller_1116",
+          "cabin": "basic_economy",
+          "insurance": "no",
+          "created_at": "2024-05-01T05:17:41",
+          "passenger_count": 2,
+          "flight_statuses": [
+            {
+              "flight_number": "HAT005",
+              "date": "2024-05-20",
+              "status": "available"
+            },
+            {
+              "flight_number": "HAT178",
+              "date": "2024-05-30",
+              "status": "available"
+            }
+          ]
+        },
+        {
+          "reservation_id": "59XX6W",
+          "db_pointer": "/reservations/59XX6W",
+          "user_id": "daiki_muller_1116",
+          "cabin": "economy",
+          "insurance": "yes",
+          "created_at": "2024-05-12T04:19:15",
+          "passenger_count": 2,
+          "flight_statuses": [
+            {
+              "flight_number": "HAT007",
+              "date": "2024-05-19",
+              "status": "available"
+            },
+            {
+              "flight_number": "HAT174",
+              "date": "2024-05-29",
+              "status": "available"
+            }
+          ]
+        }
+      ],
+      "offline_native_check": {
+        "task_id": "7",
+        "initial_db_hash": "124e39a664b56402bcd09cb8a6a9cece6acb8462337c969799d5658e3250f263",
+        "reference_final_db_hash": "0087f8266f0f2fc2091ee4fabd9c137ed8b6c8751df09ec4f650756e4ae0ccf7",
+        "reference_changes_db": true,
+        "no_op_db_reward": 0.0,
+        "reference_errors": []
+      }
+    },
+    {
+      "task_id": "17",
+      "official_split": "train",
+      "role": "extended_development_candidate",
+      "source_group": "reservation-FQ8APE",
+      "task_pointer": "/17",
+      "task_canonical_sha256": "d83db4e78ae317b5a20d7a3edb1bd0d04c828cd9b9fb04d9fd8be70a755cade0",
+      "selection_reason": "Three permitted state changes allow component-wise omission checks.",
+      "reference_write_tools": [
+        "update_reservation_flights",
+        "update_reservation_passengers",
+        "update_reservation_baggages"
+      ],
+      "reward_basis": [
+        "DB",
+        "COMMUNICATE"
+      ],
+      "analysis_only_db_facts": [
+        {
+          "reservation_id": "FQ8APE",
+          "db_pointer": "/reservations/FQ8APE",
+          "user_id": "omar_rossi_1241",
+          "cabin": "basic_economy",
+          "insurance": "yes",
+          "created_at": "2024-05-01T16:18:10",
+          "passenger_count": 1,
+          "flight_statuses": [
+            {
+              "flight_number": "HAT056",
+              "date": "2024-05-25",
+              "status": "available"
+            },
+            {
+              "flight_number": "HAT138",
+              "date": "2024-05-25",
+              "status": "available"
+            }
+          ]
+        }
+      ],
+      "offline_native_check": {
+        "task_id": "17",
+        "initial_db_hash": "124e39a664b56402bcd09cb8a6a9cece6acb8462337c969799d5658e3250f263",
+        "reference_final_db_hash": "37ea6df3bdb75dc6be08b9fc19909ddef8e0a58c7d56afeaf20781acfba3b871",
+        "reference_changes_db": true,
+        "no_op_db_reward": 0.0,
+        "reference_errors": []
+      }
+    },
+    {
+      "task_id": "39",
+      "official_split": "train",
+      "role": "held_for_policy_adjudication",
+      "source_group": "user-amelia-davis",
+      "task_pointer": "/39",
+      "task_canonical_sha256": "a455a77004ea68543172d7c7fdacae21cb36a2a53aabc93fdc5d3dd084c64e7e",
+      "selection_reason": "MSJ4OA insurance eligibility requires a covered reason not fixed in the scenario; inspect actual public reason before a policy judgment.",
+      "reference_write_tools": [
+        "cancel_reservation",
+        "cancel_reservation",
+        "cancel_reservation"
+      ],
+      "reward_basis": [
+        "DB",
+        "COMMUNICATE"
+      ],
+      "analysis_only_db_facts": [
+        {
+          "reservation_id": "8C8K4E",
+          "db_pointer": "/reservations/8C8K4E",
+          "user_id": "amelia_davis_8890",
+          "cabin": "business",
+          "insurance": "yes",
+          "created_at": "2024-05-08T10:31:36",
+          "passenger_count": 2,
+          "flight_statuses": [
+            {
+              "flight_number": "HAT247",
+              "date": "2024-05-24",
+              "status": "available"
+            },
+            {
+              "flight_number": "HAT193",
+              "date": "2024-05-24",
+              "status": "available"
+            }
+          ]
+        },
+        {
+          "reservation_id": "UDMOP1",
+          "db_pointer": "/reservations/UDMOP1",
+          "user_id": "amelia_davis_8890",
+          "cabin": "basic_economy",
+          "insurance": "no",
+          "created_at": "2024-05-09T11:34:16",
+          "passenger_count": 1,
+          "flight_statuses": [
+            {
+              "flight_number": "HAT134",
+              "date": "2024-05-28",
+              "status": "available"
+            },
+            {
+              "flight_number": "HAT032",
+              "date": "2024-05-28",
+              "status": "available"
+            },
+            {
+              "flight_number": "HAT280",
+              "date": "2024-05-29",
+              "status": "available"
+            },
+            {
+              "flight_number": "HAT199",
+              "date": "2024-05-29",
+              "status": "available"
+            }
+          ]
+        },
+        {
+          "reservation_id": "XAZ3C0",
+          "db_pointer": "/reservations/XAZ3C0",
+          "user_id": "amelia_davis_8890",
+          "cabin": "basic_economy",
+          "insurance": "no",
+          "created_at": "2024-05-06T15:43:54",
+          "passenger_count": 2,
+          "flight_statuses": [
+            {
+              "flight_number": "HAT110",
+              "date": "2024-05-27",
+              "status": "available"
+            },
+            {
+              "flight_number": "HAT272",
+              "date": "2024-05-27",
+              "status": "available"
+            }
+          ]
+        },
+        {
+          "reservation_id": "LU15PA",
+          "db_pointer": "/reservations/LU15PA",
+          "user_id": "amelia_davis_8890",
+          "cabin": "business",
+          "insurance": "no",
+          "created_at": "2024-05-01T00:08:44",
+          "passenger_count": 2,
+          "flight_statuses": [
+            {
+              "flight_number": "HAT144",
+              "date": "2024-05-23",
+              "status": "available"
+            },
+            {
+              "flight_number": "HAT009",
+              "date": "2024-05-23",
+              "status": "available"
+            }
+          ]
+        },
+        {
+          "reservation_id": "MSJ4OA",
+          "db_pointer": "/reservations/MSJ4OA",
+          "user_id": "amelia_davis_8890",
+          "cabin": "economy",
+          "insurance": "yes",
+          "created_at": "2024-05-05T14:36:15",
+          "passenger_count": 3,
+          "flight_statuses": [
+            {
+              "flight_number": "HAT099",
+              "date": "2024-05-22",
+              "status": "available"
+            },
+            {
+              "flight_number": "HAT274",
+              "date": "2024-05-22",
+              "status": "available"
+            }
+          ]
+        },
+        {
+          "reservation_id": "I6M8JQ",
+          "db_pointer": "/reservations/I6M8JQ",
+          "user_id": "amelia_davis_8890",
+          "cabin": "economy",
+          "insurance": "yes",
+          "created_at": "2024-05-08T14:58:17",
+          "passenger_count": 2,
+          "flight_statuses": [
+            {
+              "flight_number": "HAT115",
+              "date": "2024-05-09",
+              "status": "landed"
+            },
+            {
+              "flight_number": "HAT192",
+              "date": "2024-05-09",
+              "status": "landed"
+            }
+          ]
+        },
+        {
+          "reservation_id": "4XGCCM",
+          "db_pointer": "/reservations/4XGCCM",
+          "user_id": "amelia_davis_8890",
+          "cabin": "business",
+          "insurance": "yes",
+          "created_at": "2024-05-02T14:48:47",
+          "passenger_count": 1,
+          "flight_statuses": [
+            {
+              "flight_number": "HAT116",
+              "date": "2024-05-03",
+              "status": "cancelled"
+            },
+            {
+              "flight_number": "HAT020",
+              "date": "2024-05-03",
+              "status": "landed"
+            },
+            {
+              "flight_number": "HAT169",
+              "date": "2024-05-04",
+              "status": "landed"
+            },
+            {
+              "flight_number": "HAT279",
+              "date": "2024-05-04",
+              "status": "cancelled"
+            }
+          ]
+        }
+      ],
+      "offline_native_check": {
+        "task_id": "39",
+        "initial_db_hash": "124e39a664b56402bcd09cb8a6a9cece6acb8462337c969799d5658e3250f263",
+        "reference_final_db_hash": "964c9e1c81f8bf2571dc6b6053e9d0b7f10ad89b375456c8bc70ca96e5c7f4f5",
+        "reference_changes_db": true,
+        "no_op_db_reward": 0.0,
+        "reference_errors": []
+      }
+    }
+  ],
+  "shared_source_groups": [
+    {
+      "task_ids": [
+        "40",
+        "49"
+      ],
+      "reason": "Same user and initial reservation 3RK2T9; do not treat as independent task evidence or a single-factor controlled pair."
+    }
+  ],
+  "memory_source": {
+    "pilot_source": {
+      "experiment_id": "memory-connection_ef61e798a0594baa821cfbc3a15d76e8",
+      "log_sha256": "762fbeb6a903403512acae3eb061acb3a665964dee3f2dd5852f5c093e9cf0d0",
+      "path": "runs/tau2-memory-luna-deepseek1017-check-01",
+      "snapshot_id": "snap_3f33fe153fe84888b1730be1fbe4ca3d",
+      "source_run_id": "r_d709484a63c54236b66ae87723c4b876"
+    },
+    "version_id": "v_bb59e99632264c5d8fb0a6f8667e38ef",
+    "title": "Flight cancellation eligibility and escalation",
+    "version_ref": {
+      "media_type": "application/json",
+      "path": "blobs/sha256/c10ee5a216f4c65260935db84a396ce4c06893388c7c565b4ffb7d68e7719baa",
+      "sha256": "c10ee5a216f4c65260935db84a396ce4c06893388c7c565b4ffb7d68e7719baa"
+    },
+    "version_content_sha256": "c10ee5a216f4c65260935db84a396ce4c06893388c7c565b4ffb7d68e7719baa",
+    "body_utf8_sha256": "8cc999c9820ad3f44ce393c83243a9799b19bd6fe5f3c59608d877353cfe1790",
+    "information_gap": "Policy-redundant cancellation rules plus task-0-specific facts and a transfer outcome; no candidate establishes a necessary history-only fact.",
+    "applicability": "Past reservation identifiers, statuses and transfer outcome must not substitute for current-task observations or a general escalation rule."
+  },
+  "offline_validation": {
+    "method": "pinned_native_reference_replay_and_empty_trajectory_db_check",
+    "network_attempts": 0,
+    "model_requests": 0,
+    "source_db_file_unchanged": true,
+    "interpretation": "DB-only no-op check; executable reference calls are not proof of policy compliance, user confirmation, or full native success."
+  },
+  "next_protocol_decisions": [
+    "Bank source and fixed versions for each task; same-task retry versus transfer",
+    "on_demand versus full_preload; preserve no_memory and empty_bank controls and declare memory-tool availability",
+    "Development versus untouched confirmation tasks and shared-source grouping",
+    "Repetitions, allocation, stopping, spend cap, annotation blinding and independent adjudication"
+  ]
+}
