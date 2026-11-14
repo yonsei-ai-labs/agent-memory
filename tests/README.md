@@ -1,6 +1,6 @@
 # 검증 자료와 테스트 배치
 
-현재 제공하는 것은 [v1.1 합성 계약 fixture](fixtures/contracts-v1.1/README.md)와 읽기 전용 검증기, 계약 음성 사례와 데이터 보관본 손상 탐지 테스트다. [기존 v1.0 fixture](fixtures/contracts/README.md)도 보존한다. 실제 에이전트·벤치 행동 테스트가 구현됐다는 뜻은 아니다.
+현재는 파일 코어·입력 구성·혼합 도구·가짜 두 회차의 [실제 오프라인 행동 테스트](test_offline_core.py), [v1.1 합성 계약 fixture](fixtures/contracts-v1.1/README.md)의 음성 사례, 보관본 손상 탐지를 제공한다. [기존 v1.0 fixture](fixtures/contracts/README.md)도 보존한다. 실제 모델·벤치 능력이나 정책 효과의 실증은 아니다.
 
 ```bash
 uv run python scripts/validate_design.py
@@ -9,7 +9,7 @@ uv run python scripts/verify_legacy_data.py
 uv run python -m unittest discover -s tests
 ```
 
-기능 구현 이후에는 기억 버전·멱등성·은행 복제·세션 분리·목록/본문 노출·도구 라우팅·공식 채점·비용·중단/재개의 행동 테스트를 추가한다. 세부 완료 기준은 [개발 계획](../docs/development/roadmap.md)과 [검증 시나리오](../docs/design/architecture.md#13-재개와-검증-시나리오)를 따른다.
+오프라인 코어 26개·계약 26개·보관본 8개를 실행한다. 새 기능/벤치 연결에는 관련 행동 테스트를 추가한다. 현재 지원 범위는 [오프라인 코어 안내](../docs/development/offline-core.md), 전체 목표는 [개발 계획](../docs/development/roadmap.md)과 [검증 시나리오](../docs/design/architecture.md#13-재개와-검증-시나리오)를 따른다.
 
 [v1.1 테스트](test_contract_v11.py) 26개는 journal tail/손상/누락, 재전송 중복, 세션 ID·은행/고정 보기, 요청 출처/역할/시점/완전성, 자기 작성 인수, 공개 경험 접두부, 목록 메타데이터, 합성 혼합 호출 순서와 ready 설정 형식을 확인한다. 매 테스트는 작은 임시 fixture를 만든다. 실제 기록자·라우터·provider 요청을 생성하거나 실행하지 않는다.
 

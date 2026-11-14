@@ -4,13 +4,13 @@
 
 초기 작업자 모델은 Luna, 초기 실증 환경은 τ²-bench다. 기억 관리·실험 제어·기록·분석을 벤치 실행과 분리하고 AppWorld·BFCL로의 확장을 설계한다. 저장 시점·형태·조회 방식, 재시도·전이·누적 변화와 이득·손해를 연구 범위로 유지한다.
 
-현재는 **설계 문서·설정과 사건 스키마·합성 계약 예시·오프라인 검증기·Python 패키지 골격**을 제공한다. 실험 실행기·모델 연결·벤치 어댑터는 [구현 계획](docs/development/roadmap.md)에 따라 개발할 대상이다. 합성 예시는 모델·벤치 성능 자료가 아니다.
+현재는 **파일 기반 기억 서비스·기록자·입력 구성·도구 라우터·가짜 두 회차 실행과 원본 재계산**이 동작한다. [오프라인 코어 안내](docs/development/offline-core.md)에 실행 방법과 행동 검증을 정리했다. 실제 Luna·벤치 연결과 성능 실증은 [후속 작업](docs/development/roadmap.md)이다.
 
 ## 먼저 읽기
 
 새 개발 세션은 [인수인계](docs/handoff/next-session.md)에서 현재 구현 상태·합의 사항·미정 값을 확인하고, [첫 구현 작업](docs/development/first-implementation.md)부터 이어간다.
 
-첫 구현은 **SQLite 없이 JSON·JSONL 파일로 가볍게 시작한다.** 단일 원본 로그·요청 출처·혼합 호출의 [코어 계약](docs/design/core-contracts.md)과 v1.1 합성 검증을 보완했다. 실제 기억 서비스·기록자·라우터는 구현 전이다. 최근 탐색 질문은 [방향 논의 노트](docs/design/direction-notes.md)에 있다.
+첫 구현은 **SQLite 없이 JSON·JSONL 파일로 가볍게 시작한다.** 단일 원본 로그·요청 출처·혼합 호출의 [코어 계약](docs/design/core-contracts.md)과 v1.1 합성 검증을 보완했다. 첫 오프라인 구현을 마쳤고 실제 provider·벤치 연결은 후속이다. 최근 탐색 질문은 [방향 논의 노트](docs/design/direction-notes.md)에 있다.
 
 추가로 전달받은 실험팀 문서는 [검토·반영 내역](docs/handoff/experiment-handoff-review.md)과 [적용 조건 기억 파일럿 제안](docs/research/condition-sensitive-pilot.md)으로 정리했다. 기존 프로토콜·연구 범위를 유지하며, 제안을 실행 확정이나 성능 결과로 취급하지 않는다.
 
@@ -33,12 +33,19 @@ uv run python scripts/verify_legacy_data.py
 uv run python -m unittest discover -s tests
 ```
 
-첫 명령은 잠금 파일의 개발 환경을 구성한다. 검증기는 로컬 파일·스키마·참조·해시를 검사하며 모델 API·벤치·GPU를 실행하지 않는다. 이전 연구 레포를 설치하거나 가중치를 받을 필요가 없다. unittest는 v1.1 계약 음성 사례와 보관본 손상 탐지를 확인한다.
+첫 명령은 잠금 파일의 개발 환경을 구성한다. 검증기는 로컬 파일·스키마·참조·해시를 검사하며 모델 API·벤치·GPU를 실행하지 않는다. 이전 연구 레포를 설치하거나 가중치를 받을 필요가 없다. unittest는 실제 오프라인 코어의 행동, v1.1 계약 음성 사례와 보관본 손상 탐지를 확인한다.
+
+새 출력 디렉터리에서 가짜 두 회차 흐름을 실행하고 같은 원본을 재분석할 수 있다.
+
+```bash
+uv run python scripts/run_offline_demo.py --output runs/offline-example
+uv run python scripts/run_offline_demo.py --output runs/offline-example --analyze-only
+```
 
 ## 구조
 
 ```text
-src/agent_memory_eval/   # 공통 구현을 배치할 패키지 골격
+src/agent_memory_eval/   # 파일 코어·가짜 실행·원본 재계산과 후속 어댑터 위치
 schemas/                # 설정·사건 계약
 protocols/              # 초안과 향후 고정할 실험 계획
 tests/fixtures/         # 작은 합성 계약 자료

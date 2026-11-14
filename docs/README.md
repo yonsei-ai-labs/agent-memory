@@ -16,7 +16,8 @@
 | 단일 원본 로그·요청 출처·혼합 호출·v1.1 기준 | [코어 계약](design/core-contracts.md) |
 | 실제 입력·원본·사용량·채점·결측의 기록 | [기록 설계](design/recording.md) |
 | 구현 순서와 단계별 완료 기준 | [개발 계획](development/roadmap.md) |
-| 바로 구현할 오프라인 코어·가짜 실행·행동 검증 | [첫 구현 작업](development/first-implementation.md) |
+| 첫 구현 명세·가짜 실행·행동 검증의 요구 | [첫 구현 작업](development/first-implementation.md) |
+| 구현한 파일 코어·합성 실행 명령·검증 범위와 한계 | [오프라인 코어](development/offline-core.md) |
 | 발표·보고서의 네 장 구성 | [보고서 구성](handoff/report-outline.md) |
 | 가져온 자료와 원본 연결·변환·제외 이유 | [이관 내역](migration.md) |
 | 기존 문헌 조사 표의 범위 | [문헌 자료](references/README.md) |

@@ -8,6 +8,7 @@
 | [v1.1/event.schema.json](v1.1/event.schema.json) | 요청 manifest·과제 입력 참조, 공개 경험 접두부, 반환/자기 작성 출처 |
 | [v1.1/input-manifest.schema.json](v1.1/input-manifest.schema.json) | 실제 요청의 출처 binding과 렌더링된 기억 구간 |
 | [v1.1/journal.schema.json](v1.1/journal.schema.json) | 모든 사건을 확정하는 journal envelope v1.0. 사건 버전과 별개 |
+| [v1.1/journal-state.schema.json](v1.1/journal-state.schema.json) | 첫 코어의 journal envelope v1.1. 불변 내부 상태 참조와 상태 전용 commit |
 | [기존 run-plan](run-plan.schema.json), [기존 event](event.schema.json) | v1.0 호환 자료, 새 필드로 덮어쓰지 않음 |
 
 설정 예시는 [현재 v1.1 초안](../protocols/drafts/tau2-two-pass-v1.1.json), 사건과 요청·반환 예시는 [v1.1 fixture](../tests/fixtures/contracts-v1.1/README.md)에 있다. [v1.0 초안](../protocols/drafts/tau2-two-pass.json)과 [기존 fixture](../tests/fixtures/contracts/README.md)도 계속 검증한다. v1.0에서 없는 provenance를 임의 생성해 v1.1의 검증을 통과시켰다고 보고하지 않는다.

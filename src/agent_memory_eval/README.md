@@ -1,16 +1,16 @@
 # 공통 패키지 배치
 
-현재 하위 패키지는 구현 위치를 정한 골격이다. 실행기·메모리 저장소·벤치 연결의 구현은 아직 없다. 현재 동작하는 오프라인 계약 검증기는 저장소의 `scripts/`에 있다.
+파일 코어·가짜 실행·원본 재계산이 동작한다. [실행과 검증](../../docs/development/offline-core.md)을 따른다. 실제 provider·벤치 연결과 통계 실증은 후속이다. 저장소 checkout의 스키마를 사용하며 과거 연구 코드를 import하지 않는다.
 
-| 패키지 | 구현할 책임 |
+| 패키지 | 현재 구현과 후속 책임 |
 | --- | --- |
-| `contracts` | 계획·식별·메시지·상태·결과 타입 |
-| `runner` | 수집·독립 평가·누적·교차·개입과 배정 |
-| `memory` | 저장·버전·은행·snapshot·복제·멱등성 |
-| `policies` | 저장 시점·표현·조회·가공·피드백·한도 |
-| `adapters` | τ²·AppWorld·BFCL의 실행·초기화·공식 채점 |
-| `models` | 요청·응답·제공 경로·실제 설정·사용량 |
-| `recording` | 공개/내부 보기·사건·반환·입력 포함·원본 |
-| `analysis` | 성능·진척·기억 품질·득실·비용·불확실성 |
+| `contracts` | `RunContext`·`MemoryPolicy` 타입과 JSON/사건/출처 검사. 실제 계획의 의미/준비 검사는 후속 |
+| `runner` | `OfflineRunner`·`ToolRouter`의 사전 배정·수집/독립 probe·혼합 호출. 누적·교차·개입 실행은 후속 |
+| `memory` | `MemoryService`의 저장·불변 버전·은행·snapshot/fork/compose·멱등성 |
+| `policies` | 공통 허용/한도 규칙은 현재 `contracts.core.MemoryPolicy`. 실제 작성·조회·가공 지침 운용은 후속 |
+| `adapters` | `FakeBenchmark`의 합성 업무 상태/검사. τ²·AppWorld·BFCL 연결은 후속 |
+| `models` | `FakeWorker`의 합성 응답. 실제 모델 제공자·사용량 연결은 후속 |
+| `recording` | `Journal`·`SourceRegistry`·`OfflineGateway`의 파일 원본·출처·자기 작성/반환/입력 포함 |
+| `analysis` | 합성 사건/결과 짝·노출·결측 재계산. 효과·근거 주석·통계·실제 비용 분석은 후속 |
 
-[상세 설계](../../docs/design/architecture.md)와 [개발 계획](../../docs/development/roadmap.md)을 따른다. 이 골격은 이전 저장소의 Python 모듈을 import하지 않는다.
+[상세 설계](../../docs/design/architecture.md)와 [개발 계획](../../docs/development/roadmap.md)의 전체 연구 범위는 유지한다. 가짜 환경의 성공을 실제 모델/벤치의 성능으로 표시하지 않는다.
