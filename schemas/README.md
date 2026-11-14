@@ -13,6 +13,8 @@
 | [connection-check-v1.1.schema.json](connection-check-v1.1.schema.json) | Luna/DeepSeek 1017의 역할별 제공 경로·native seed 전달을 고정한 현재 연결 확인 프로필 |
 | [connection-check.schema.json](connection-check.schema.json) | 이전 GPT-4.1 연결 확인의 v1.0 호환 자료 |
 | [memory-connection-check.schema.json](memory-connection-check.schema.json) | 기존 모델/지침의 해시 참조·두 회차 정책·전체 한도를 고정하는 별도 guided 기억 연결 진단 |
+| [autonomy-pilot-v1.1.schema.json](autonomy-pilot-v1.1.schema.json) | 기존 관측 snapshot의 해시/출처, 세 조건·블록/seed·선택적 조회·전체 한도를 고정한 파일럿 |
+| [autonomy-pilot.schema.json](autonomy-pilot.schema.json) | 원천 경험과 선택적 사후 작성을 새로 실행한 v1.0 파일럿의 보존 계약 |
 
 설정 예시는 [현재 v1.1 초안](../protocols/drafts/tau2-two-pass-v1.1.json), 사건과 요청·반환 예시는 [v1.1 fixture](../tests/fixtures/contracts-v1.1/README.md)에 있다. [v1.0 초안](../protocols/drafts/tau2-two-pass.json)과 [기존 fixture](../tests/fixtures/contracts/README.md)도 계속 검증한다. v1.0에서 없는 provenance를 임의 생성해 v1.1의 검증을 통과시켰다고 보고하지 않는다.
 

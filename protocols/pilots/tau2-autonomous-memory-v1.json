@@ -1,0 +1,43 @@
+{
+  "profile_version": "1.0",
+  "intent": "autonomous_memory_pilot",
+  "scope": "exploratory_same_task_fixed_bank",
+  "feedback": "observations_only",
+  "blocks": 3,
+  "schedule_seed": 20261114,
+  "model_seed_policy": "repeat_fixed_connection_seed",
+  "conditions": [
+    "no_memory",
+    "empty_bank",
+    "memory_bank"
+  ],
+  "connection_profile_ref": {
+    "path": "protocols/checks/openrouter-tau2-smoke.json",
+    "sha256": "fab9e52495a7fbc122ffcbcdc5fc9cfe59d8f61d18f421e822a1298a0de68d49"
+  },
+  "instructions": {
+    "collection_solve": {
+      "path": "protocols/instructions/tau2-collection-solve.txt",
+      "sha256": "952b98128bbc6d048cb7892b0b7cc493a5b440fe35cc32d40e75eae598c02a9b"
+    },
+    "post_task_write": {
+      "path": "protocols/instructions/tau2-autonomy-post-write.txt",
+      "sha256": "6ca9cb9769ff74050a525e4a8586ad4a2b45e8baea348f1fe5a585292f0b449e"
+    },
+    "probe_memory": {
+      "path": "protocols/instructions/tau2-optional-memory.txt",
+      "sha256": "356d0d7c291087292f693c852b065680ce117059e994ad14171310904d0ae9ab"
+    }
+  },
+  "memory_limits": {
+    "page_size": 4,
+    "max_items": null,
+    "max_payload_bytes": null,
+    "max_return_bytes": null
+  },
+  "guards": {
+    "max_model_requests": 240,
+    "max_reported_cost_usd": 0.25,
+    "max_seconds": 1200
+  }
+}

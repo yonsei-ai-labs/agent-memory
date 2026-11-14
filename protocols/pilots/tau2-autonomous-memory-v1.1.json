@@ -1,0 +1,42 @@
+{
+  "profile_version": "1.1",
+  "intent": "autonomous_memory_pilot",
+  "scope": "exploratory_same_task_fixed_bank",
+  "feedback": "observations_only",
+  "blocks": 3,
+  "schedule_seed": 20261114,
+  "model_seed_policy": "repeat_fixed_connection_seed",
+  "conditions": [
+    "no_memory",
+    "empty_bank",
+    "memory_bank"
+  ],
+  "connection_profile_ref": {
+    "path": "protocols/checks/openrouter-tau2-smoke.json",
+    "sha256": "fab9e52495a7fbc122ffcbcdc5fc9cfe59d8f61d18f421e822a1298a0de68d49"
+  },
+  "instructions": {
+    "probe_memory": {
+      "path": "protocols/instructions/tau2-optional-memory.txt",
+      "sha256": "356d0d7c291087292f693c852b065680ce117059e994ad14171310904d0ae9ab"
+    }
+  },
+  "memory_limits": {
+    "page_size": 4,
+    "max_items": null,
+    "max_payload_bytes": null,
+    "max_return_bytes": null
+  },
+  "guards": {
+    "max_model_requests": 216,
+    "max_reported_cost_usd": 0.24,
+    "max_seconds": 1200
+  },
+  "frozen_source": {
+    "path": "runs/tau2-memory-luna-deepseek1017-check-01",
+    "log_sha256": "762fbeb6a903403512acae3eb061acb3a665964dee3f2dd5852f5c093e9cf0d0",
+    "experiment_id": "memory-connection_ef61e798a0594baa821cfbc3a15d76e8",
+    "snapshot_id": "snap_3f33fe153fe84888b1730be1fbe4ca3d",
+    "source_run_id": "r_d709484a63c54236b66ae87723c4b876"
+  }
+}

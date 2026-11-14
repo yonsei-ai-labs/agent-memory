@@ -31,7 +31,10 @@ class Tau2MemoryBridge(Tau2Bridge):
         super().__init__(*args, **kwargs)
         self.memory, self.bank_id, self.policy = memory, bank_id, policy
         self.native_system = self.systems["worker"]
-        self.systems["worker"] += "\n<memory_policy>\n" + solve_instruction + "\n" + canonical(asdict(policy)).decode() + "\n</memory_policy>"
+        if policy.enabled:
+            self.systems["worker"] += "\n<memory_policy>\n" + solve_instruction + "\n" + canonical(asdict(policy)).decode() + "\n</memory_policy>"
+        elif solve_instruction or post_instruction:
+            raise ContractError("The no-memory condition has no memory instructions")
         self.systems["writer"] = self.systems["worker"]
         self.models = dict(self.models)
         self.clients["writer"], self.models["writer"] = self.clients["worker"], self.models["worker"]

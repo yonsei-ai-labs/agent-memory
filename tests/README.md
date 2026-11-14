@@ -11,6 +11,8 @@ uv run python -m unittest discover -s tests
 
 오프라인 코어 26개·계약 26개·보관본 8개·OpenRouter 전송/프로필 mock 10개를 실행한다. τ² extra와 고정 checkout이 있으면 native 무기억 통합 2개와 [기억 통합](test_tau2_memory.py) 8개를 더해 총 80개다. 기억 통합은 같은 native 환경/채점에서 내부 왕복·혼합 순서·종료 batch·사후 작성 실패·은행 분리·요청 한도·출처/audit를 확인한다. 새 기능/벤치 연결에는 관련 행동 테스트를 추가한다. 현재 지원 범위는 [기억 연결 안내](../docs/development/tau2-memory.md)와 [오프라인 코어 안내](../docs/development/offline-core.md), 전체 목표는 [개발 계획](../docs/development/roadmap.md)을 따른다.
 
+[자율 조회 파일럿](test_tau2_autonomy.py)의 순수 준비 검사 3개와 native mock 5개를 더해 현재 전체는 88개다. 블록/위치 배정·해시 변경 거절·무기억/빈은행/기억은행의 wire 대조·미확인 비용 중단·빈 source의 생략·동일 버전 가져오기·예전 대화 차단·원본 폴더 없이 audit·요약 변조 거절을 확인한다. 모든 unittest는 모의 HTTP만 사용한다.
+
 [v1.1 테스트](test_contract_v11.py) 26개는 journal tail/손상/누락, 재전송 중복, 세션 ID·은행/고정 보기, 요청 출처/역할/시점/완전성, 자기 작성 인수, 공개 경험 접두부, 목록 메타데이터, 합성 혼합 호출 순서와 ready 설정 형식을 확인한다. 매 테스트는 작은 임시 fixture를 만든다. 실제 기록자·라우터·provider 요청을 생성하거나 실행하지 않는다.
 
 [보관본 테스트](test_legacy_data_archive.py)는 작은 임시 파일에서 bytes 변경·누락·미등록 추가·경로 이탈·symlink·현재 출처 변경을 탐지한다. 큰 과거 데이터를 테스트 fixture로 복제하거나 모델을 호출하지 않는다. 첫 런타임 작업의 검증은 [구현 명세](../docs/development/first-implementation.md)를 따른다.

@@ -45,6 +45,8 @@ def main() -> None:
         "connection-check": read_json(ROOT / "schemas" / "connection-check.schema.json"),
         "connection-check-v1.1": read_json(ROOT / "schemas" / "connection-check-v1.1.schema.json"),
         "memory-connection-check": read_json(ROOT / "schemas" / "memory-connection-check.schema.json"),
+        "autonomy-pilot": read_json(ROOT / "schemas" / "autonomy-pilot.schema.json"),
+        "autonomy-pilot-v1.1": read_json(ROOT / "schemas" / "autonomy-pilot-v1.1.schema.json"),
     }
     validators = {}
     for name, schema in schemas.items():
@@ -60,6 +62,18 @@ def main() -> None:
         path = (ROOT / ref["path"]).resolve()
         if not path.is_relative_to(ROOT) or digest(path.read_bytes()) != ref["sha256"]:
             raise ValueError("Memory connection profile has a changed or external asset")
+    pilot = read_json(ROOT / "protocols" / "pilots" / "tau2-autonomous-memory-v1.json")
+    validators["autonomy-pilot"].validate(pilot)
+    for ref in [pilot["connection_profile_ref"], *pilot["instructions"].values()]:
+        path = (ROOT/ref["path"]).resolve()
+        if not path.is_relative_to(ROOT) or digest(path.read_bytes()) != ref["sha256"]:
+            raise ValueError("Autonomy pilot has a changed or external asset")
+    frozen_pilot = read_json(ROOT / "protocols" / "pilots" / "tau2-autonomous-memory-v1.1.json")
+    validators["autonomy-pilot-v1.1"].validate(frozen_pilot)
+    for ref in [frozen_pilot["connection_profile_ref"], *frozen_pilot["instructions"].values()]:
+        path = (ROOT/ref["path"]).resolve()
+        if not path.is_relative_to(ROOT) or digest(path.read_bytes()) != ref["sha256"]:
+            raise ValueError("Frozen-bank pilot has a changed or external asset")
     validators["plan"].validate(plan)
     if plan["plan_status"] != "draft":
         raise ValueError("The committed example must remain a draft")

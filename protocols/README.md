@@ -12,6 +12,8 @@
 
 [기억 두 회차 연결 확인](checks/openrouter-tau2-memory-smoke.json)은 별도 `memory_connection_check`/`guided_check`다. 모델/사용자 연결 설정과 단계별 지침의 해시, 사후 작성/새 snapshot 복제본 조회 정책, 전체 실행 한도를 고정한다. [실행·검증 안내](../docs/development/tau2-memory.md)를 따르며 자율 기억 정책 효과나 일반 연구 계획을 대신하지 않는다.
 
+[현재 자율 조회 파일럿 v1.1](pilots/tau2-autonomous-memory-v1.1.json)은 기존 관측 기억을 고정하고 무기억·빈은행·기억은행을 각 3회 비교한다. 같은 실행 경로·선택적 조회 지침·블록 순서·사용량/비용 한도를 고정하며 [안내](../docs/development/tau2-autonomy-pilot.md)에 해석 범위를 적었다. [v1.0](pilots/tau2-autonomous-memory-v1.json)은 새 사후 작성에서 저장이 없었던 첫 시도의 계약으로 보존한다. 연구 초안의 미정 값을 채우거나 범용 ready 실행기로 취급하지 않는다.
+
 ```bash
 uv run python scripts/validate_design.py
 ```

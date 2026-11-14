@@ -12,6 +12,7 @@
 | 같은 경험의 일반 요약/조건·절차 비교와 선택적 필터 | [파일럿 제안](research/condition-sensitive-pilot.md) |
 | 수치의 정의·분모·필요 근거·통계와 한계 | [측정과 분석](research/metrics.md) |
 | 유사 벤치·정책 연구와 기여 비교 | [관련 연구](research/related-work.md) |
+| 파일럿 이후 진행 점검·추가 문헌·첫 주장 후보 | [노벨티 검토 노트](research/novelty-direction-review.md) |
 | 모듈·도구·은행·벤치·상태·오류·재개 | [상세 설계](design/architecture.md) |
 | 단일 원본 로그·요청 출처·혼합 호출·v1.1 기준 | [코어 계약](design/core-contracts.md) |
 | 실제 입력·원본·사용량·채점·결측의 기록 | [기록 설계](design/recording.md) |

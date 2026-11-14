@@ -49,16 +49,20 @@ class Tau2MemoryRunner:
         self.memory, self.opener = MemoryService(journal, record_kind="observed"), opener
         self.environments = {}
 
-    def episode(self, *, run_id, stage, policy, solve_instruction, post_instruction, parent=None, sources=()):
+    def episode(self, *, run_id, stage, policy, solve_instruction, post_instruction, parent=None, sources=(),
+                condition_id=None, mode="guided_check", block_id=None):
         from tau2.runner.simulation import run_simulation
         orch = fresh_orchestrator(self.prepared)
         self.environments[run_id] = orch
-        ctx = RunContext(self.journal.experiment_id, run_id, new_id("s"), "guided_" + stage,
+        if not policy.enabled and (parent is not None or sources or solve_instruction or post_instruction):
+            raise ContractError("No-memory runs cannot inherit memory or instructions")
+        ctx = RunContext(self.journal.experiment_id, run_id, new_id("s"), condition_id or "guided_" + stage,
                          stage, "solve", "observed")
-        bank = self.memory.create_bank(run_id, policy, parent)
+        bank = self.memory.create_bank(run_id, policy, parent) if policy.enabled else None
         state = deepcopy(self.journal.state)
-        state["assignments"][run_id] = dict(stage=stage, mode="guided_check", policy=asdict(policy),
-            bank_id=bank, parent_snapshot=parent, task_key=orch.task.id)
+        state["assignments"][run_id] = dict(stage=stage, mode=mode, policy=asdict(policy),
+            bank_id=bank, parent_snapshot=parent, task_key=orch.task.id, block_id=block_id,
+            condition_id=ctx.condition_id)
         self.journal.append([ctx.at("prepare").event("run.started", dict(bank_id=bank,
             start_snapshot_id=parent, fresh_session=True, source_run_ids=list(sources),
             task_ref=self.journal.blobs.put(dict(role="system", content=orch.agent.system_prompt))))], state=state)
@@ -78,7 +82,9 @@ class Tau2MemoryRunner:
                 grading = "error" if orch.done else "incomplete"
                 self.journal.append([ctx.event("runtime.error", dict(code=error_code))])
             native_counts = dict(native_steps=orch.step_count, native_tool_errors=orch.num_errors)
-            self.journal.append([ctx.at("grade").event("business.transition", dict(origin="tau2_native_final", **native_counts))])
+            final_db_hash = orch.environment.get_db_hash()
+            self.journal.append([ctx.at("grade").event("business.transition", dict(origin="tau2_native_final",
+                final_db_hash=final_db_hash, **native_counts))])
             self.journal.append([ctx.at("grade").event("outcome.scored", dict(grading_status=grading,
                 official_success=success, official_score=score, official_artifact_ref=report_ref))])
             if grading == "graded" and policy.write_timing in {"post_task", "during_and_post"}:
@@ -90,8 +96,9 @@ class Tau2MemoryRunner:
                     writing, termination = "error", "post_task_error"
                     error_code = getattr(error, "code", type(error).__name__)
                     self.journal.append([ctx.at("post_task_write").event("runtime.error", dict(code=error_code))])
-        snapshot = self.memory.freeze(bank)
-        self.memory.seal(bank)
+        snapshot = self.memory.freeze(bank) if bank is not None else None
+        if bank is not None:
+            self.memory.seal(bank)
         self.journal.append([ctx.at("seal").event("run.ended", dict(termination_reason=termination,
             grading_status=grading, end_snapshot_id=snapshot))])
         events = [event for event in self.journal.events.values() if event["run_id"] == run_id]
@@ -99,6 +106,7 @@ class Tau2MemoryRunner:
             status="completed" if grading == "graded" and writing != "error" else "error",
             grading_status=grading, official_success=success, official_score=score,
             native_steps=orch.step_count, native_tool_errors=orch.num_errors, termination_reason=termination,
+            final_db_hash=final_db_hash,
             post_task_status=writing, error_code=error_code, report_ref=report_ref,
             requests_by_role=dict(Counter(e["payload"]["actor_role"] for e in events if e["type"] == "model.request_started")),
             memory_stores=sum(e["type"] == "memory.stored" for e in events),

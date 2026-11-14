@@ -1,0 +1,199 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:agent-memory-eval:autonomy-pilot:1",
+  "title": "Small blocked autonomous memory pilot with one fixed source bank",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "profile_version",
+    "intent",
+    "scope",
+    "feedback",
+    "blocks",
+    "schedule_seed",
+    "model_seed_policy",
+    "conditions",
+    "connection_profile_ref",
+    "instructions",
+    "memory_limits",
+    "guards"
+  ],
+  "properties": {
+    "profile_version": {
+      "const": "1.0"
+    },
+    "intent": {
+      "const": "autonomous_memory_pilot"
+    },
+    "scope": {
+      "const": "exploratory_same_task_fixed_bank"
+    },
+    "feedback": {
+      "const": "observations_only"
+    },
+    "blocks": {
+      "const": 3
+    },
+    "model_seed_policy": {
+      "const": "repeat_fixed_connection_seed"
+    },
+    "conditions": {
+      "const": [
+        "no_memory",
+        "empty_bank",
+        "memory_bank"
+      ]
+    },
+    "schedule_seed": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "connection_profile_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "sha256"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "instructions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "collection_solve",
+        "post_task_write",
+        "probe_memory"
+      ],
+      "properties": {
+        "collection_solve": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "sha256"
+          ],
+          "properties": {
+            "path": {
+              "type": "string",
+              "minLength": 1
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          }
+        },
+        "post_task_write": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "sha256"
+          ],
+          "properties": {
+            "path": {
+              "type": "string",
+              "minLength": 1
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          }
+        },
+        "probe_memory": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "sha256"
+          ],
+          "properties": {
+            "path": {
+              "type": "string",
+              "minLength": 1
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          }
+        }
+      }
+    },
+    "memory_limits": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "page_size",
+        "max_items",
+        "max_payload_bytes",
+        "max_return_bytes"
+      ],
+      "properties": {
+        "page_size": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 64
+        },
+        "max_items": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "max_payload_bytes": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "max_return_bytes": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        }
+      }
+    },
+    "guards": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "max_model_requests",
+        "max_reported_cost_usd",
+        "max_seconds"
+      ],
+      "properties": {
+        "max_model_requests": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 240
+        },
+        "max_reported_cost_usd": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 0.25
+        },
+        "max_seconds": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1200
+        }
+      }
+    }
+  }
+}

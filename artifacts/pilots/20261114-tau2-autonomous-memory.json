@@ -1,0 +1,284 @@
+{
+  "kind": "autonomous_memory_pilot_observation",
+  "record_kind": "observed",
+  "scope": "exploratory_same_task_fixed_bank",
+  "run_directory": "runs/tau2-autonomy-luna-deepseek1017-pilot-02",
+  "requested_profile": {
+    "blocks": 3,
+    "conditions": [
+      "no_memory",
+      "empty_bank",
+      "memory_bank"
+    ],
+    "connection_profile_ref": {
+      "path": "protocols/checks/openrouter-tau2-smoke.json",
+      "sha256": "fab9e52495a7fbc122ffcbcdc5fc9cfe59d8f61d18f421e822a1298a0de68d49"
+    },
+    "feedback": "observations_only",
+    "frozen_source": {
+      "experiment_id": "memory-connection_ef61e798a0594baa821cfbc3a15d76e8",
+      "log_sha256": "762fbeb6a903403512acae3eb061acb3a665964dee3f2dd5852f5c093e9cf0d0",
+      "path": "runs/tau2-memory-luna-deepseek1017-check-01",
+      "snapshot_id": "snap_3f33fe153fe84888b1730be1fbe4ca3d",
+      "source_run_id": "r_d709484a63c54236b66ae87723c4b876"
+    },
+    "guards": {
+      "max_model_requests": 216,
+      "max_reported_cost_usd": 0.24,
+      "max_seconds": 1200
+    },
+    "instructions": {
+      "probe_memory": {
+        "path": "protocols/instructions/tau2-optional-memory.txt",
+        "sha256": "356d0d7c291087292f693c852b065680ce117059e994ad14171310904d0ae9ab"
+      }
+    },
+    "intent": "autonomous_memory_pilot",
+    "memory_limits": {
+      "max_items": null,
+      "max_payload_bytes": null,
+      "max_return_bytes": null,
+      "page_size": 4
+    },
+    "model_seed_policy": "repeat_fixed_connection_seed",
+    "profile_version": "1.1",
+    "schedule_seed": 20261114,
+    "scope": "exploratory_same_task_fixed_bank"
+  },
+  "resolved_connection_profile": {
+    "benchmark": {
+      "communicate_scorer": "substring",
+      "domain": "airline",
+      "localize_db": false,
+      "max_errors": 5,
+      "max_steps": 40,
+      "name": "tau2",
+      "seed": 0,
+      "source_revision": "c06b07dd7c4d4ec61ba6ff9bcdf0b15dd7ef36d4",
+      "split": "train",
+      "task_id": "0"
+    },
+    "guards": {
+      "max_model_requests": 24,
+      "max_reported_cost_usd": 0.25,
+      "max_seconds": 180
+    },
+    "intent": "connection_check",
+    "memory_enabled": false,
+    "profile_version": "1.1",
+    "user_simulator": {
+      "forward_native_seed": false,
+      "model_id": "deepseek/deepseek-v4.1-flash-1017",
+      "parameters": {
+        "max_tokens": 512,
+        "reasoning": {
+          "enabled": false
+        },
+        "temperature": 0
+      },
+      "provider": {
+        "allow_fallbacks": false,
+        "only": [
+          "fireworks"
+        ],
+        "require_parameters": true
+      }
+    },
+    "worker": {
+      "forward_native_seed": true,
+      "model_id": "openai/gpt-6-luna",
+      "parameters": {
+        "max_completion_tokens": 2048,
+        "reasoning": {
+          "effort": "low"
+        },
+        "seed": 0
+      },
+      "provider": {
+        "allow_fallbacks": false,
+        "only": [
+          "openai"
+        ],
+        "require_parameters": true
+      }
+    }
+  },
+  "source": {
+    "origin": {
+      "experiment_id": "memory-connection_ef61e798a0594baa821cfbc3a15d76e8",
+      "log_sha256": "762fbeb6a903403512acae3eb061acb3a665964dee3f2dd5852f5c093e9cf0d0",
+      "path": "runs/tau2-memory-luna-deepseek1017-check-01",
+      "snapshot_id": "snap_3f33fe153fe84888b1730be1fbe4ca3d",
+      "source_run_id": "r_d709484a63c54236b66ae87723c4b876"
+    },
+    "memory_items": 1,
+    "versions": {
+      "m_363cd90a816344d1bbb6ad36213783f1": "v_bb59e99632264c5d8fb0a6f8667e38ef"
+    },
+    "source_generation_reported_cost_usd_decimal": "0.0015464252",
+    "generation_is_prior_guided_run": true
+  },
+  "observed": {
+    "conditions": {
+      "no_memory": {
+        "scheduled": 3,
+        "started": 3,
+        "graded": 3,
+        "successes": 3,
+        "success_rate": 1.0,
+        "runs_with_list_calls": 0,
+        "runs_with_get_calls": 0,
+        "runs_with_title_input": 0,
+        "runs_with_body_input": 0,
+        "reported_cost_usd_decimal": "0.003648152",
+        "unknown_cost_runs": 0
+      },
+      "empty_bank": {
+        "scheduled": 3,
+        "started": 3,
+        "graded": 3,
+        "successes": 3,
+        "success_rate": 1.0,
+        "runs_with_list_calls": 0,
+        "runs_with_get_calls": 0,
+        "runs_with_title_input": 0,
+        "runs_with_body_input": 0,
+        "reported_cost_usd_decimal": "0.004066357",
+        "unknown_cost_runs": 0
+      },
+      "memory_bank": {
+        "scheduled": 3,
+        "started": 3,
+        "graded": 3,
+        "successes": 3,
+        "success_rate": 1.0,
+        "runs_with_list_calls": 0,
+        "runs_with_get_calls": 0,
+        "runs_with_title_input": 0,
+        "runs_with_body_input": 0,
+        "reported_cost_usd_decimal": "0.002921039",
+        "unknown_cost_runs": 0
+      }
+    },
+    "business_call_variation": {
+      "no_memory": {
+        "business_calls_per_run": [
+          4,
+          2,
+          2
+        ],
+        "native_steps_per_run": [
+          13,
+          9,
+          15
+        ]
+      },
+      "empty_bank": {
+        "business_calls_per_run": [
+          3,
+          2,
+          4
+        ],
+        "native_steps_per_run": [
+          11,
+          15,
+          17
+        ]
+      },
+      "memory_bank": {
+        "business_calls_per_run": [
+          2,
+          4,
+          2
+        ],
+        "native_steps_per_run": [
+          9,
+          15,
+          11
+        ]
+      }
+    },
+    "action_names": {
+      "get_reservation_details": 9,
+      "get_flight_status": 7,
+      "transfer_to_human_agents": 9
+    },
+    "baseline_repeat_variation": {
+      "graded_runs": 3,
+      "pair_count": 3,
+      "outcome_disagreements": 0,
+      "disagreement_fraction": 0.0
+    },
+    "blocked_outcomes": {
+      "both_success": 9
+    },
+    "http_calls": 90,
+    "reported_cost_usd_decimal": "0.010635548",
+    "reported_tokens": 243176,
+    "unknown_cost": false,
+    "returned_models": {
+      "deepseek/deepseek-v4.1-flash-1017": 37,
+      "openai/gpt-6-luna": 53
+    },
+    "returned_providers": {
+      "Fireworks": 37,
+      "OpenAI": 53
+    }
+  },
+  "audit": {
+    "audit_status": "audit_passed",
+    "log_sha256": "01a58a1b4a1a64645a59a9941532ed91c8e2614b93858f96afdfffb7e5dea04d",
+    "summary_sha256": "2fa9d05a82c7b4f5c8845493990098413790f16ea737a7a2b0f54772c6e752a2"
+  },
+  "implementation_ref": {
+    "media_type": "application/json",
+    "path": "blobs/sha256/dcbbfaba27007929969c2d322d51205294025a82d393e25abc3057c5d0c8ed84",
+    "sha256": "dcbbfaba27007929969c2d322d51205294025a82d393e25abc3057c5d0c8ed84"
+  },
+  "first_attempt": {
+    "run_directory": "runs/tau2-autonomy-luna-deepseek1017-pilot-01",
+    "status": "incomplete",
+    "source_eligibility": "source_empty",
+    "source_writer_memory_stores": 0,
+    "skipped_probe_runs": 9,
+    "http_calls": 12,
+    "reported_cost_usd_decimal": "0.0018703952",
+    "writer_response": "{\"message\":\"No memory was saved.\"}",
+    "reason_for_not_storing": "not_established",
+    "audit_status": "audit_passed",
+    "log_sha256": "954df3c1c3eb0632b1eddd1f84f90354c9394bd9f8464ac43d61ff3a7cfd5066",
+    "summary_sha256": "e23c28547afe551b9d054aefebae05a2809052a4efec3c37de846ecdc4bf6998"
+  },
+  "total_new_reported_cost_usd_decimal": "0.0125059432",
+  "grading_scope": {
+    "source_revision": "c06b07dd7c4d4ec61ba6ff9bcdf0b15dd7ef36d4",
+    "task_id": "0",
+    "source_path": "data/tau2-bench/data/tau2/domains/airline/tasks.json",
+    "tasks_sha256": "ccd8ba737b4cc371415af70151187788f728d6108d0916e73bb4317b40542052",
+    "evaluation_criteria": {
+      "actions": [],
+      "communicate_info": [],
+      "nl_assertions": [
+        "Agent should refuse to proceed with the cancellation."
+      ],
+      "reward_basis": [
+        "DB",
+        "COMMUNICATE"
+      ]
+    }
+  },
+  "interpretation": {
+    "memory_content_was_exposed": false,
+    "content_effect_identified": false,
+    "native_success_does_not_establish_refusal_quality": true,
+    "inference": "descriptive_only_single_task_single_bank_three_repetitions_no_significance_claim"
+  },
+  "validation": {
+    "unit_tests": 88,
+    "schemas_links_archive_passed": true
+  },
+  "credential_scan": {
+    "files_checked": 1081,
+    "secret_values_found": false
+  }
+}
