@@ -1,0 +1,47 @@
+{
+  "profile_version": "1.0",
+  "intent": "connection_check",
+  "memory_enabled": false,
+  "benchmark": {
+    "name": "tau2",
+    "source_revision": "c06b07dd7c4d4ec61ba6ff9bcdf0b15dd7ef36d4",
+    "domain": "airline",
+    "split": "train",
+    "task_id": "0",
+    "seed": 0,
+    "max_steps": 40,
+    "max_errors": 5,
+    "communicate_scorer": "substring",
+    "localize_db": false
+  },
+  "worker": {
+    "model_id": "openai/gpt-6-luna",
+    "parameters": {
+      "reasoning": {
+        "effort": "low"
+      },
+      "max_completion_tokens": 2048,
+      "seed": 0
+    }
+  },
+  "user_simulator": {
+    "model_id": "openai/gpt-4.1",
+    "parameters": {
+      "temperature": 0,
+      "max_completion_tokens": 512,
+      "seed": 0
+    }
+  },
+  "guards": {
+    "max_model_requests": 24,
+    "max_reported_cost_usd": 0.25,
+    "max_seconds": 180
+  },
+  "provider": {
+    "only": [
+      "openai"
+    ],
+    "allow_fallbacks": false,
+    "require_parameters": true
+  }
+}

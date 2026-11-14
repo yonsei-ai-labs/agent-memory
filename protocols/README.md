@@ -6,7 +6,9 @@
 
 실제 실행 시 새 계획 revision과 ID로 구체적인 조건·배정·seed·출처·비용·중단 규칙을 고정한다. 초안을 임의 숫자로 채워 사용하지 않는다. 내용은 [실험 프로토콜](../docs/research/experiment-protocol.md), 형식은 [설정 스키마 v1.1](../schemas/v1.1/run-plan.schema.json), 준비 검사 의미는 [코어 계약](../docs/design/core-contracts.md#4-v11과-실제-실행-준비)을 따른다.
 
-현재 실행기 CLI는 구현 전이다. 계약 검증은 저장소 루트에서 실행한다.
+연구용 ready 계획을 해석하는 범용 실행 CLI는 구현 전이다. 계약 검증은 저장소 루트에서 실행한다.
+
+[실제 OpenRouter·τ² 연결 확인](checks/openrouter-tau2-smoke.json)은 별도 `connection_check` 프로필이다. [실행 안내](../docs/development/tau2-connection.md)에 따라 제한된 무기억 1과제에서 연결·계측을 확인한다. 이 프로필을 연구용 ready 계획이나 정책 효과 결과로 사용하지 않는다.
 
 ```bash
 uv run python scripts/validate_design.py

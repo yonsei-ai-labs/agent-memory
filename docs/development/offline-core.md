@@ -66,6 +66,6 @@ uv run python scripts/verify_legacy_data.py
 
 ## 남은 작업
 
-실제 provider·τ²/AppWorld/BFCL 어댑터, 실제 계획의 의미/준비 검사, preload·가공·다른 목록 순서, 누적·교차·내용 개입 실행과 통계 분석은 후속이다. 코어 계약의 source/role 검사는 실제 provider wrapper와 어댑터에서도 다시 검증해야 한다. 현재 패키지는 저장소 checkout의 스키마를 사용하며 독립 wheel 배포는 아직 지원 범위가 아니다.
+[OpenRouter·τ² 무기억 연결](tau2-connection.md)은 별도 확인했다. 실제 τ² 기억 통합·AppWorld/BFCL 어댑터, 연구 계획 의미/준비 검사, preload·가공·다른 목록 순서, 누적·교차·개입·통계 분석은 후속이다. 코어 계약의 source/role 검사는 실제 provider wrapper와 어댑터에서도 다시 검증해야 한다. 현재 패키지는 저장소 checkout의 스키마를 사용하며 독립 wheel 배포는 아직 지원 범위가 아니다.
 
 전체 세션 복구·동시 실험 실행과 원격 DB를 추가하지 않았다. 연구 범위와 초기 Luna·τ² 방향은 유지한다. [만들면서 확인할 실증 질문](../design/direction-notes.md#만들면서-확인할-실증-질문)은 후속 파일럿의 질문이며 가짜 작업자의 결과로 답한 것으로 취급하지 않는다.

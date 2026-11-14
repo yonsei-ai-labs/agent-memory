@@ -1,0 +1,141 @@
+{
+  "kind": "live_connection_check",
+  "record_kind": "observed",
+  "scope": "single_train_task_no_memory_not_policy_evaluation",
+  "run_directory": "runs/tau2-openrouter-luna-check-01",
+  "requested_profile": {
+    "benchmark": {
+      "communicate_scorer": "substring",
+      "domain": "airline",
+      "localize_db": false,
+      "max_errors": 5,
+      "max_steps": 40,
+      "name": "tau2",
+      "seed": 0,
+      "source_revision": "c06b07dd7c4d4ec61ba6ff9bcdf0b15dd7ef36d4",
+      "split": "train",
+      "task_id": "0"
+    },
+    "guards": {
+      "max_model_requests": 24,
+      "max_reported_cost_usd": 0.25,
+      "max_seconds": 180
+    },
+    "intent": "connection_check",
+    "memory_enabled": false,
+    "profile_version": "1.0",
+    "provider": {
+      "allow_fallbacks": false,
+      "only": [
+        "openai"
+      ],
+      "require_parameters": true
+    },
+    "user_simulator": {
+      "model_id": "openai/gpt-4.1",
+      "parameters": {
+        "max_completion_tokens": 512,
+        "seed": 0,
+        "temperature": 0
+      }
+    },
+    "worker": {
+      "model_id": "openai/gpt-6-luna",
+      "parameters": {
+        "max_completion_tokens": 2048,
+        "reasoning": {
+          "effort": "low"
+        },
+        "seed": 0
+      }
+    }
+  },
+  "model_catalog_entries": {
+    "user_simulator": {
+      "id": "openai/gpt-4.1",
+      "canonical_slug": "openai/gpt-4.1-2025-04-14",
+      "pricing": {
+        "completion": "0.000008",
+        "input_cache_read": "0.0000005",
+        "prompt": "0.000002",
+        "web_search": "0.01"
+      },
+      "supported_parameters": [
+        "max_completion_tokens",
+        "max_tokens",
+        "response_format",
+        "seed",
+        "structured_outputs",
+        "temperature",
+        "tool_choice",
+        "tools",
+        "top_p"
+      ]
+    },
+    "worker": {
+      "id": "openai/gpt-6-luna",
+      "canonical_slug": "openai/gpt-6-luna-20260922",
+      "pricing": {
+        "completion": "0.0000005",
+        "input_cache_read": "0.00000001",
+        "input_cache_write": "0.000000125",
+        "overrides": [
+          {
+            "completion": "0.00000075",
+            "input_cache_read": "0.00000002",
+            "input_cache_write": "0.00000025",
+            "min_prompt_tokens": 272000,
+            "prompt": "0.0000002"
+          }
+        ],
+        "prompt": "0.0000001",
+        "web_search": "0.01"
+      },
+      "supported_parameters": [
+        "include_reasoning",
+        "max_completion_tokens",
+        "max_tokens",
+        "reasoning",
+        "reasoning_effort",
+        "response_format",
+        "seed",
+        "structured_outputs",
+        "tool_choice",
+        "tools",
+        "verbosity"
+      ]
+    }
+  },
+  "audit": {
+    "intent": "connection_check",
+    "status": "audit_passed",
+    "experiment_id": "connection_5835daccaef04a79aa66e1553597c838",
+    "requests_by_role": {
+      "user_simulator": 5,
+      "worker": 7
+    },
+    "completion_statuses": {
+      "response": 12
+    },
+    "returned_models": {
+      "openai/gpt-4.1": 5,
+      "openai/gpt-6-luna": 7
+    },
+    "returned_providers": {
+      "OpenAI": 12
+    },
+    "reported_cost_usd_decimal": "0.011176270",
+    "reported_tokens": 31608,
+    "native_business_tool_calls": 3,
+    "log_sha256": "70772025ad776f1fd5be274906125e947079101d5571901ec903997c0092a2a3",
+    "summary_sha256": "fd3fdb6a0bfb98ccf56d83e2264a9adb53903f145e176dc50fe16adcda656495",
+    "memory_enabled": false,
+    "official_success": true,
+    "official_score": 1.0,
+    "native_revision": "c06b07dd7c4d4ec61ba6ff9bcdf0b15dd7ef36d4"
+  },
+  "credential_scan": {
+    "files_checked": 95,
+    "secret_values_found": false
+  }
+}

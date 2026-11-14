@@ -18,9 +18,10 @@
 | 구현 순서와 단계별 완료 기준 | [개발 계획](development/roadmap.md) |
 | 첫 구현 명세·가짜 실행·행동 검증의 요구 | [첫 구현 작업](development/first-implementation.md) |
 | 구현한 파일 코어·합성 실행 명령·검증 범위와 한계 | [오프라인 코어](development/offline-core.md) |
+| 실제 OpenRouter·Luna·τ² 단일 과제 연결과 사용량/비용 | [연결 확인](development/tau2-connection.md) |
 | 발표·보고서의 네 장 구성 | [보고서 구성](handoff/report-outline.md) |
 | 가져온 자료와 원본 연결·변환·제외 이유 | [이관 내역](migration.md) |
 | 기존 문헌 조사 표의 범위 | [문헌 자료](references/README.md) |
 | 이전 datasets·설계 자료의 보관 범위·라벨 의미·재사용 | [데이터 보관 안내](data/legacy-datasets.md) |
 
-설정 초안은 [protocols](../protocols/README.md), 형식 계약은 [schemas](../schemas/README.md), 합성 예시는 [tests](../tests/README.md)에 있다. 모델·벤치 실행 결과는 아직 없다.
+설정 초안은 [protocols](../protocols/README.md), 형식 계약은 [schemas](../schemas/README.md), 합성 예시는 [tests](../tests/README.md)에 있다. 실제 무기억 연결 확인은 있으며 기억 정책 효과의 실증은 아직 없다.

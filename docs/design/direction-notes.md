@@ -120,3 +120,7 @@
 현재는 v1.1 예시의 의미 검사와 실제 파일/요청/가짜 도구의 행동 검증이 있다. 이전 점검 이력과 현재 한계는 [검증 범위](core-contracts.md#5-합성-검증의-범위와-남은-구현)에 있다. 실제 세션 초기화·wrapper 계측·벤치 행동은 구현 후 확인한다.
 
 비교의 자세한 정의는 [실험 프로토콜](../research/experiment-protocol.md), 지표는 [측정과 분석](../research/metrics.md), 초기 구현안은 [첫 구현 작업](../development/first-implementation.md), 세션 재개 시 현재 상태는 [인수인계](../handoff/next-session.md)에서 확인한다.
+
+## 첫 실제 연결 확인
+
+OpenRouter의 Luna 작업자와 GPT-4.1 사용자, 고정 τ²의 무기억 1과제를 [별도 연결 프로필](../development/tau2-connection.md)로 확인했다. 요청 출처·역할 경계·native 도구/채점·실제 사용량/비용은 [확인 기록](../../artifacts/connection-checks/20261114-openrouter-tau2.json)에 있다. 현재 native binding은 외부 기억 도구를 거절한다. 다음은 기억 왕복의 내부 처리와 혼합 순서·단계/사용자 진행 보존을 검증하는 일이다. 이 연결 점수를 기억 정책의 유용성이나 반복/전이 결과로 사용하지 않는다.

@@ -239,12 +239,15 @@ def resolve_source(base, source, request_event, events, approved_templates):
                    "self_authored": ("model.request_finished", "response_ref"),
                    "memory_return": ("memory.returned", "result_ref"),
                    "business_result": ("business.transition", "public_message_ref"),
-                   "policy_result": ("policy.denied", "tool_result_ref")}
+                   "policy_result": ("policy.denied", "tool_result_ref"),
+                   "benchmark_message": ("business.transition", "model_message_ref")}
         if kind not in allowed:
             raise ValueError("Unsupported source kind")
         expected_type, field = allowed[kind]
         if event["type"] != expected_type or event["payload"][field] != source["artifact_ref"]:
             raise ValueError("Source does not match its recorded producer")
+        if kind == "benchmark_message" and event["payload"].get("actor_role") != role:
+            raise ValueError("Benchmark message has a different recipient role")
     return pointer(artifact(base, source["artifact_ref"]), source.get("pointer", ""))
 
 

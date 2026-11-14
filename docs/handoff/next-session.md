@@ -10,10 +10,10 @@
 | --- | --- |
 | 연구·설계 | 연구 질문·프로토콜·지표·관련 연구·상세 설계 문서 있음 |
 | 계약 | 기존 v1.0/v1.1 예시 보존, 내부 상태 참조를 가진 별도 journal envelope v1.1 추가 |
-| 동작하는 코드 | 파일 Journal·MemoryService·입력 출처/Gateway·ToolRouter·가짜 수집/평가·원본 재계산, 기존 검증기 |
+| 동작하는 코드 | 파일 코어·가짜 수집/평가·원본 재계산, 실제 OpenRouter 전송·τ² 무기억 binding·읽기 전용 연결 audit |
 | 패키지 | [구현 위치와 후속 범위](../../src/agent_memory_eval/README.md)를 구분 |
-| 미구현 | 실제 계획 의미/준비 검사·provider·벤치 어댑터, preload/가공, 누적·교차·개입 실행과 효과/통계 분석 |
-| 실험 | 새 프레임워크의 실제 모델·τ² 실행 및 성능 결과 없음 |
+| 미구현 | 연구용 계획 의미/준비 검사, τ² 외부 기억 통합·다른 벤치, preload/가공·누적·교차·개입·통계 분석 |
+| 실험 | 무기억 airline train 1과제의 실제 연결 확인 있음. 기억 정책 효과 실증은 없음 |
 | 과거 자료 | [데이터 보관본](../data/legacy-datasets.md)에 원본 datasets·설계 자료·생성 코드·설명 문서 복사 |
 
 첫 저장소 초기화는 `172859cd4b2073440448ea9084c552758f3bd387`이다. 이 문서 이후 기능이 추가됐을 수 있으므로 `git status`, 최근 커밋, 실제 함수·테스트를 확인한다. 다음 기능 작업이 끝나면 이 표와 실행 방법·미완료 항목도 갱신한다.
@@ -23,7 +23,7 @@
 1. 루트 [AGENTS.md](../../AGENTS.md)와 [README](../../README.md).
 2. [연구 계획](../research/plan.md), [실험 프로토콜](../research/experiment-protocol.md), [측정](../research/metrics.md).
 3. [상세 설계](../design/architecture.md), [코어 계약](../design/core-contracts.md), [기록 계약](../design/recording.md).
-4. [현재 오프라인 실행/검증](../development/offline-core.md), [첫 구현 명세](../development/first-implementation.md)와 [전체 개발 계획](../development/roadmap.md).
+4. [실제 OpenRouter·τ² 연결](../development/tau2-connection.md), [현재 오프라인 실행/검증](../development/offline-core.md), [첫 구현 명세](../development/first-implementation.md)와 [전체 개발 계획](../development/roadmap.md).
 5. [관련 연구](../research/related-work.md), [보고서 네 장 구성](report-outline.md), [데이터 사용 안내](../data/legacy-datasets.md).
 6. [추가 실험팀 문서 검토](experiment-handoff-review.md)와 [파일럿 제안](../research/condition-sensitive-pilot.md).
 7. [방향 논의 노트](../design/direction-notes.md): 최근 구성 스케치·재검토와 아직 논의할 세부 사항.
@@ -61,11 +61,11 @@ uv run python scripts/verify_legacy_data.py
 uv run python -m unittest discover -s tests
 ```
 
-현재 명령은 모델 호출 없이 로컬 계약·링크·보관 파일과 오프라인 행동을 검증한다. unittest는 보관본 8개·계약 26개·오프라인 코어 26개다. 코어 테스트는 실제 임시 파일과 가짜 업무에서의 행동이며 실제 provider·벤치 실증은 아니다.
+현재 명령은 모델 호출 없이 로컬 계약·링크·보관 파일과 오프라인 행동을 검증한다. unittest는 보관본 8개·계약 26개·오프라인 코어 26개·OpenRouter 전송 mock 7개와 선택적인 native mock 1개다. native 테스트는 τ² extra와 고정 checkout이 있을 때 실행하며 테스트 명령 자체는 유료 호출을 하지 않는다.
 
 첫 오프라인 코어와 2원천·8 run 가짜 흐름은 구현했다. [실행 안내](../development/offline-core.md)에 따라 **새/빈 출력 폴더**에서 실행하고 `--analyze-only`로 원본을 바꾸지 않고 재계산할 수 있다. 예제의 페이지 4·run별 요청 12는 합성 builder 값이며 실제 draft를 채우지 않았다.
 
-다음 구현은 실제 계획 준비 검사와 τ²/provider 연결을 작은 단계로 진행한다. 사용할 revision·사용자 시뮬레이터·native 한도·응답 캐시·계측 경계를 고정하고 해당 어댑터의 행동을 검증한다. 유료 실행은 실제 계획·예산·사용량/실패 기록이 준비된 별도 단계다. 전체 세션 복구·다중 실행 동시성·preload/가공·누적/교차/개입과 통계를 코어가 이미 구현한 것으로 취급하지 않는다.
+OpenRouter·Luna 작업자/GPT-4.1 사용자·τ² 고정 commit의 제한된 무기억 연결 확인을 수행했다. [연결 프로토콜과 결과](../development/tau2-connection.md), [검증 기록](../../artifacts/connection-checks/20261114-openrouter-tau2.json)을 따른다. 다음은 실제 τ² 기억 호출의 내부 처리·혼합 순서·사후 작성과 두 회차 격리를 구현하고 연구용 계획 준비 검사를 연결하는 일이다. 추가 유료 실행도 해당 목적·과제·한도·사용량/실패를 고정해 별도로 기록한다. 전체 세션 복구·다중 실행 동시성·preload/가공·누적/교차/개입과 통계를 코어가 이미 구현한 것으로 취급하지 않는다.
 
 최근 구성·선행연구 탐색 질문은 [방향 논의 노트](../design/direction-notes.md), 구현 결정을 모은 기준은 [코어 계약](../design/core-contracts.md)이다. 자연 실행의 전체 정책 효과와 동일 경험의 저장 효과를 구분하고 현재 과제가 정상 제공하는 초기 대화는 유지한다.
 
@@ -76,12 +76,12 @@ uv run python -m unittest discover -s tests
 - 기억·모델 요청·업무·채점·run 수명주기를 하나의 `log.jsonl`에 확정한다. 자기/연결 해시·연속 순서와 불변 blob을 사용하며 은행·snapshot·사건 보기는 파생물이다.
 - 요청 구성 시 승인 출처 manifest를 만들고 최종 전송 요청과 대조한다. 자기 작성 인수는 `self_authored`, 조회는 `memory_return`으로 구분하고 공개 경험은 길이·해시를 고정한 접두부로 참조한다.
 - 공개 반환에서 은행 `head_revision`을 뺀다. 내부 revision·CAS와 불투명 커서는 유지한다.
-- 혼합 호출은 부작용/결과 순서를 보존하고 종료 도구가 섞인 batch는 실행 전에 모두 거절한다. 실제 τ² 어댑터는 아직 없다.
+- 혼합 호출은 부작용/결과 순서를 보존하고 종료 도구가 섞인 batch는 실행 전에 모두 거절한다. 현재 native 무기억 binding은 있으며 외부 기억 혼합 호출 경로는 후속이다.
 - v1.1 계획은 사용자 시뮬레이터·native 한도·응답 캐시 확인·adapter 설정 해시와 단계별 지침을 받는다. 미정 실제 값은 draft에 남겼다.
 
 기존 v1.0 스키마·fixture·draft는 바꾸지 않았다. 새 v1.1 검증은 세션 ID 재사용·출처 위반·미래/변조된 경험·노출 누락·다른 은행/고정 버전·로그 손상을 합성 자료에서 검사한다. 과거 v1.0 검사 공백과 이번 확인 범위는 [계약 검증 설명](../design/core-contracts.md#5-합성-검증의-범위와-남은-구현)에 있다.
 
-**파일 기록자·기억 서비스·출처 구성기·라우터와 가짜 실행을 구현했다.** 은행 생성·봉인·배정도 `state_ref`로 보존하는 journal v1.1을 추가했으며 기존 journal v1.0과 사건 v1.1은 유지한다. [실제 코드와 행동 검증](../development/offline-core.md)을 기준으로 한다. DB 설치·유료 호출·실제 벤치 실행·Luna 성능 결과는 없다. Linux 파일 연산/주입 예외의 통과를 전원 장애·모든 파일시스템 또는 실제 provider의 보장으로 확대하지 않는다.
+**파일 기록자·기억 서비스·출처 구성기·라우터와 가짜 실행을 구현했다.** 은행 생성·봉인·배정도 `state_ref`로 보존하는 journal v1.1을 추가했으며 기존 journal v1.0과 사건 v1.1은 유지한다. [실제 코드와 행동 검증](../development/offline-core.md)을 기준으로 한다. DB 설치는 하지 않았다. 실제 유료 연결 확인의 원본·비용은 별도 기록에 있으며 기억 정책의 성능·득실 결과는 아직 없다. Linux 파일 연산/주입 예외의 통과를 전원 장애·모든 파일시스템 또는 실제 provider의 보장으로 확대하지 않는다.
 
 ## 추가 인계 문서에서 남긴 후속 제안
 
@@ -91,7 +91,7 @@ uv run python -m unittest discover -s tests
 
 항공 33·36번을 등급 하나의 대조군으로 직접 쓰지 않는다. 새 진단쌍의 상태·인수·채점 의미를 먼저 검증하고, 변형 결과와 공식 원본 점수를 구분한다. 적용 가능성 필터는 작업자와 판정기의 정보 노출을 분리하고 적합 후보의 차단·미확정·추가 비용도 남긴다. Jev·계층 시간 기억·그래프는 후속 후보이며 기본 구현 의존성이 아니다.
 
-필터 전 후보·판정·worker 노출을 별도 기록할 때 필요한 역할/필드의 계약은 아직 구현하지 않았다. 실제 모델·과제쌍·반복/예산·실험 실행도 미확정이다. 첫 오프라인 코어 위에서 τ² 연결과 이 제안의 별도 draft를 준비한다.
+필터 전 후보·판정·worker 노출을 별도 기록할 때 필요한 역할/필드의 계약은 아직 구현하지 않았다. 실제 모델·과제쌍·반복/예산·실험 실행도 미확정이다. 첫 오프라인 코어와 native 무기억 연결 위에서 기억 통합 및 이 제안의 별도 draft를 준비한다.
 
 ## 미확정 값과 진행 가능한 작업
 
@@ -101,7 +101,7 @@ uv run python -m unittest discover -s tests
 
 오프라인 테스트에는 별도의 작고 명시적인 합성 값을 쓸 수 있다. 이를 τ² 실제 과제나 Luna 결과로 표기하지 않는다. 현재 계획 스키마의 벤치 이름은 실제 세 벤치만 허용하므로 가짜 환경은 테스트 전용 구성으로 시작한다.
 
-유료 모델 연결·실제 벤치 실행은 이 인수인계 작업에서 수행하지 않았다. 향후 실행 작업에서는 준비된 계획과 사용량·비용·오류 기록을 갖춘다. 오래된 모델 별칭을 불변 snapshot이라고 가정하지 않는다.
+제한된 무기억 연결 확인은 별도 connection_check 프로필로 수행했다. 연구 draft를 ready로 승격시키지 않았으며 향후 실행도 준비된 계획과 사용량·비용·오류 기록을 갖춘다. 오래된 모델 별칭을 불변 snapshot이라고 가정하지 않는다.
 
 ## 자료와 출처 유지
 
@@ -113,4 +113,4 @@ uv run python -m unittest discover -s tests
 
 ## 새 세션에 전달할 요청 예시
 
-> 이 저장소의 AGENTS.md와 docs/handoff/next-session.md, docs/development/first-implementation.md를 읽고 현재 코드·검증 상태를 확인해줘. 추가 실험팀 문서 검토와 적용 조건 기억 파일럿 제안도 후속 계획으로 참고해줘. 연구 범위를 유지하면서 구현된 오프라인 코어와 실제 행동 검증을 확인하고, 남은 계획 준비 검사·τ²/provider 연결을 단계적으로 진행해줘. 보관 데이터·과거 라벨은 현재 실험 기본값으로 편입하지 말고, 미확정 실제 실험 숫자는 draft로 남겨줘. 구현·검증·문서 상태를 함께 갱신하고 main을 기준으로 작업해줘.
+> 이 저장소의 AGENTS.md와 docs/handoff/next-session.md, docs/development/first-implementation.md를 읽고 현재 코드·검증 상태를 확인해줘. 추가 실험팀 문서 검토와 적용 조건 기억 파일럿 제안도 후속 계획으로 참고해줘. 연구 범위를 유지하면서 구현된 오프라인 코어와 실제 행동 검증을 확인하고, 실제 연결 확인 기록을 읽고 남은 연구 계획 준비 검사·τ² 기억 통합을 단계적으로 진행해줘. 보관 데이터·과거 라벨은 현재 실험 기본값으로 편입하지 말고, 미확정 실제 실험 숫자는 draft로 남겨줘. 구현·검증·문서 상태를 함께 갱신하고 main을 기준으로 작업해줘.

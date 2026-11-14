@@ -2,6 +2,7 @@
 
 from copy import deepcopy
 import json
+import math
 
 from agent_memory_eval.contracts.core import ContractError, canonical, digest, new_id, pointer, read_json
 from agent_memory_eval.contracts.validation import resolve_source, validate_manifest
@@ -97,7 +98,8 @@ class SourceRegistry:
                   "business_result": ("business.transition", "public_message_ref"),
                   "self_authored": ("model.request_finished", "response_ref"),
                   "memory_return": ("memory.returned", "result_ref"),
-                  "policy_result": ("policy.denied", "tool_result_ref")}
+                  "policy_result": ("policy.denied", "tool_result_ref"),
+                  "benchmark_message": ("business.transition", "model_message_ref")}
         if kind not in fields:
             raise ContractError("Unsupported source producer")
         event_type, field = fields[kind]
@@ -123,9 +125,10 @@ class SourceRegistry:
         request_id = new_id("request")
         seq = len(self.journal.events) + 1
         config = self.value(template, actor, seq)
-        request = dict(model=config["model"], tools=deepcopy(config["tools"]), messages=[])
+        request = deepcopy({key: value for key, value in config.items() if key not in {"system", "messages"}})
+        request["messages"] = []
         bindings = [dict(pointer="/" + field, source_id=template, source_pointer="/" + field)
-                    for field in ("model", "tools")]
+                    for field in request if field != "messages"]
         memory_spans = []
         for index, (source_id, source_pointer) in enumerate(messages):
             source = self.sources[source_id]
@@ -157,8 +160,9 @@ class RequestLimit(ContractError):
     pass
 
 
-class OfflineGateway:
-    """A real request/recording path around an explicitly synthetic transport only."""
+class RecordingGateway:
+    """Record manifest-checked requests around a transport, including observed usage."""
+    synthetic_only = False
     def __init__(self, journal):
         self.journal = journal
 
@@ -170,10 +174,13 @@ class OfflineGateway:
         if count >= max_requests:
             self.journal.append([ctx.event("runtime.error", dict(code="REQUEST_LIMIT"))])
             raise RequestLimit("Policy-side request limit reached")
-        if not getattr(worker, "offline", False) or ctx.record_kind != "illustrative":
-            raise ContractError("Real provider transport is not implemented")
+        offline = bool(getattr(worker, "offline", False))
+        if self.synthetic_only and not offline:
+            raise ContractError("This gateway accepts synthetic transports only")
+        if ctx.record_kind != ("illustrative" if offline else "observed"):
+            raise ContractError("Transport and record kind differ")
         request, manifest, start = registry.prepare(ctx, actor, template, messages)
-        if request["model"] != "synthetic-offline":
+        if offline and request["model"] != "synthetic-offline":
             raise ContractError("An offline request must identify its synthetic model")
         final_wire = deepcopy(request) if transform is None else transform(deepcopy(request))
         if canonical(final_wire) != canonical(request):
@@ -192,24 +199,48 @@ class OfflineGateway:
                                                           approved_templates=deepcopy(registry.approved_templates))
         self.journal.append(events, state=state)
         status, delivery, ref, error = "error", "not_submitted", None, None
+        usage, cost = None, None
+        cost_status = "not_applicable" if offline else "unknown"
         response = None
         if not cancel:
             try:
                 response = worker.respond(deepcopy(final_wire))
+                ref = self.journal.blobs.put(response)
+                delivery = "response_received"
+                usage = deepcopy(response.get("usage"))
+                raw_cost = usage.get("cost") if isinstance(usage, dict) else None
+                if type(raw_cost) in (int, float) and math.isfinite(raw_cost) and raw_cost >= 0:
+                    cost, cost_status = raw_cost, "observed"
                 if response["choices"][0]["message"]["role"] != "assistant":
                     raise ContractError("Transport must return an assistant message")
-                ref = self.journal.blobs.put(response)
                 status, delivery = "response", "response_received"
             except Exception as caught:
                 status = "timeout" if isinstance(caught, TimeoutError) else "error"
-                delivery, error = "unknown", caught
+                error = caught
+                if getattr(caught, "response", None) is not None:
+                    ref = self.journal.blobs.put(caught.response)
+                    delivery = "response_received"
+                elif getattr(caught, "submitted", None) is False:
+                    delivery = "not_submitted"
+                elif getattr(caught, "submitted", None) is True:
+                    delivery = "response_received"
+                elif ref is None:
+                    delivery = "unknown"
+        if delivery == "not_submitted" and cost is None:
+            cost_status = "not_applicable"
         finish = ctx.event("model.request_finished", dict(request_id=manifest["request_id"], status=status,
-            delivery_status=delivery, response_ref=ref, usage=None, cost_usd=None,
-            cost_status="not_applicable"), causes=[start["event_id"]])
+            delivery_status=delivery, response_ref=ref, usage=usage, cost_usd=cost,
+            cost_status=cost_status), causes=[start["event_id"]])
         self.journal.append([finish])
         if error:
             raise error
         if cancel:
             return None, None, manifest["request_id"]
-        source = registry.add("self_authored", finish["event_id"], location="/choices/0/message")
+        roles = ("worker", "writer") if actor in {"worker", "writer"} else (actor,)
+        source = registry.add("self_authored", finish["event_id"], location="/choices/0/message", roles=roles)
         return response["choices"][0]["message"], source, manifest["request_id"]
+
+
+class OfflineGateway(RecordingGateway):
+    """Preserve the original synthetic-only entry point."""
+    synthetic_only = True
