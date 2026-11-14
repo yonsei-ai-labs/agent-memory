@@ -1,0 +1,97 @@
+{
+  "experiment": "memory-external-test-20261112-v1",
+  "status": "frozen_before_predictions",
+  "training": false,
+  "sources": {
+    "convomem": [
+      "Salesforce/ConvoMem",
+      "e3e9b39115b02346824c70d349350de738f8be41"
+    ],
+    "ama": [
+      "AMA-bench/AMA-bench",
+      "a5777378066f53229a94557a7b192435cd027909"
+    ]
+  },
+  "base_model": "microsoft/harrier-oss-v1-0.6b",
+  "base_revision": "f9b9dc8d367d443f2479d27aa5d8d2850c0774ee",
+  "models": {
+    "previous-seed731": {
+      "path": "runs/memory-partial-records-20261111-v1/training/augmented-seed731",
+      "sha256": {
+        "head.npz": "54d1d58268c00269070590264729afd6d9422d4e136c1f8b32a9ed130ef2eeba",
+        "adapter/adapter_model.safetensors": "6175463e818fc137a0629ffa63dc358e9fde61d44d25110431ebf4736e125fb6",
+        "adapter/adapter_config.json": "14bf6b274d7518aed1b9754ddb9916e45e2f5f8a3f90e439465ecadcb14de0c6"
+      }
+    },
+    "replay-seed731": {
+      "path": "runs/memory-balanced-replay-20261112-v1/training/replay-seed731",
+      "sha256": {
+        "head.npz": "bdee6f1f730bf06b68160a932d6022f12f08fdcd17298e47081d7a7ff5aa6436",
+        "adapter/adapter_model.safetensors": "f5e65efd18ed510d92cc198bb6f988c8382aee438eadf4e4d6d84263899aaa85",
+        "adapter/adapter_config.json": "7daa1279727374c598ad78e2a10a95c3f3a949cf17449afa4e8df4348e661b46"
+      }
+    },
+    "previous-seed1729": {
+      "path": "runs/memory-partial-records-20261111-v1/training/augmented-seed1729",
+      "sha256": {
+        "head.npz": "a0f262783bb6af469a85c910fd78d17e9f3f732f1ef8cf6739c949c6eb0f6b1c",
+        "adapter/adapter_model.safetensors": "39f301456e44a7c307a8f26790204e8c0687ef9e9c4020487120d538b34898ce",
+        "adapter/adapter_config.json": "14bf6b274d7518aed1b9754ddb9916e45e2f5f8a3f90e439465ecadcb14de0c6"
+      }
+    },
+    "replay-seed1729": {
+      "path": "runs/memory-balanced-replay-20261112-v1/training/replay-seed1729",
+      "sha256": {
+        "head.npz": "310a489bb64f58679a9233a91b7fcf63849f5b87ead56670d4dc3174dc2f2dcf",
+        "adapter/adapter_model.safetensors": "1f42ae5d5e08ca4e3bf26c1050a63e4add3e0babedb8b4d2bb69cd4350bbfa72",
+        "adapter/adapter_config.json": "7daa1279727374c598ad78e2a10a95c3f3a949cf17449afa4e8df4348e661b46"
+      }
+    }
+  },
+  "seeds": [
+    731,
+    1729
+  ],
+  "memory_tokens": 1024,
+  "max_records": 12,
+  "selector_tokens": 1536,
+  "worker_input_tokens": 3072,
+  "chunk_tokens": 192,
+  "chunk_stride": 160,
+  "candidate_pool": "BM25 top64 from full unchanged bank; identical pool for all methods; no oracle injection",
+  "threshold": 0.5,
+  "baselines": [
+    "none",
+    "bm25",
+    "base_dense"
+  ],
+  "worker": {
+    "model_id": "Qwen/Qwen3.5-4B",
+    "revision": "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
+    "dtype": "bfloat16",
+    "max_new_tokens": 256,
+    "greedy": true,
+    "thinking": false
+  },
+  "judge": {
+    "model_id": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "quantization": "NF4 double quantization bfloat16 compute",
+    "policy_names_hidden": true,
+    "max_new_tokens": 16,
+    "greedy": true,
+    "thinking": false,
+    "scope": "Local reference-based semantic correctness; not the official benchmark judge. Invalid verdicts remain unscored, never fall back to lexical F1."
+  },
+  "convomem_bank": "Native question/answer and complete original evidence conversations, plus two original same-persona filler conversations. Fixed interleaving preserves evidence relative order. No regenerated or shortened QA; controlled subset, not official premixed context sweep.",
+  "ama_bank": "Complete original action/observation trajectory. SOFTWARE excluded to avoid previous SWE-source overlap; 5 domains x20 episodes, 4 QA types x25.",
+  "metrics": "Benchmark-specific judged answer correctness, paired gains/losses and memory cost; ConvoMem provided-evidence span coverage only. No invented negative relation labels or AMA gold retrieval spans.",
+  "bounds": {
+    "selector_seconds": 7200,
+    "worker_seconds": 10800,
+    "judge_seconds": 7200,
+    "paid_api_calls": 0,
+    "colab_allocations": 0
+  },
+  "selection": "All chosen sources remain regardless of selector/worker outcomes; no threshold/model/question changes after outputs."
+}

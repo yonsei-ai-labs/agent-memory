@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "task": "bounded_memory_context_relation_v1",
+  "query_instruction": "Assess the bounded relationship asked in the question between a historical development memory and the currently available evidence. Answer supported, contradicted, or not_established. A historical fact or compatible precondition does not establish performance benefit.",
+  "label_order": [
+    "supported",
+    "contradicted",
+    "not_established"
+  ],
+  "predictor_allowlist": [
+    "input.state_text",
+    "input.candidate_text"
+  ],
+  "state_side": "Current evidence and a generic relational question only.",
+  "candidate_side": "Historical memory and source evidence. Neither is duplicated on the state side.",
+  "unknown_semantics": "The source premise or current evidence needed for the stated question is not established. Never an automatic withhold/harm label.",
+  "decision_stages": [
+    "before_controlled_fixture",
+    "after_controlled_probe",
+    "after_common_public_inspection",
+    "after_passive_runtime_inspection"
+  ],
+  "grouping": "Keep source-target connected families and all variants/views together; repo holdout is an additional diagnostic.",
+  "training_status": "Discovery functional supervision. Read semantic review notes and run integrity validation; not a new independent policy test.",
+  "required_evaluations": [
+    "By facet and stratum",
+    "Same memory/question across changed current states",
+    "Same state/question across changed memory",
+    "State-only,memory-only,structural/exec-rule baselines",
+    "Separate actual policy success/cost on fresh tasks"
+  ]
+}

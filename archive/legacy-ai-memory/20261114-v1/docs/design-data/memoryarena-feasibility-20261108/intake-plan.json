@@ -1,0 +1,33 @@
+{
+  "purpose": "Read-only feasibility review of MemoryArena for memory relation and utility experiments",
+  "date": "2026-11-08",
+  "code_repository": "https://github.com/ZexueHe/MemoryArena",
+  "code_revision": "6cd9de14b71915e39ac742a20dc33785e14b6aab",
+  "dataset": "ZexueHe/memoryarena",
+  "dataset_revision": "da1a37c8b19280e18627ca01cf368195a5e1d92e",
+  "data_files": [
+    "bundled_shopping/data.jsonl",
+    "group_travel_planner/data.jsonl",
+    "progressive_search/data.jsonl",
+    "formal_reasoning_math/data.jsonl",
+    "formal_reasoning_phys/data.jsonl"
+  ],
+  "max_bytes_per_file": 15000000,
+  "allowed_checks": [
+    "Pinned public JSONL download; schema, counts, identities and shared-background grouping",
+    "Read public setup, memory injection, agent history and scorer implementation",
+    "CPU-only offline scorer probes and prompt capture with a fake model",
+    "Read-only access checks and size inventories for external assets"
+  ],
+  "content_review_scope": "First travel group and first shopping sequence may be inspected for protocol feasibility; treat those groups as exposed discovery cases. Other rows are used for structural counts and hashes only.",
+  "prohibited_in_this_review": [
+    "Real model, embedding or LLM judge requests",
+    "GPU allocation or training",
+    "External user messages or upstream repository writes",
+    "Treating offline diagnostic scores as memory utility measurements"
+  ],
+  "large_assets": "Inventory only; do not download the multi-GB product or search corpus for this review",
+  "raw_download_directory": "training/memory_selector/outputs/memoryarena-feasibility-20261108",
+  "learner_export_allowed": false,
+  "worker_utility_labels": 0
+}

@@ -1,0 +1,198 @@
+{
+  "at": "2026-11-07T11:06:55.349909+00:00",
+  "status": "proposal_only_no_paid_actor_run",
+  "main_question": "Which source-grounded component changes errors,cost and submitted success under specified current conditions?",
+  "stages": [
+    {
+      "stage": 1,
+      "name": "Independent semantic review and new-source collection",
+      "requirement": "Review bounded labels without current actor outcomes; reserve new source families before selecting on observed memory gains."
+    },
+    {
+      "stage": 2,
+      "name": "Small controlled memory-exposure experiment",
+      "arms": [
+        "no_memory",
+        "fixed_summary",
+        "fixed_summary_plus_source_setup"
+      ],
+      "primary_contrast": "fixed_summary_plus_source_setup minus fixed_summary",
+      "followup_arm": "source_setup_only if useful to distinguish environment guidance from combination benefit",
+      "outcomes": [
+        "environment_error_count",
+        "inspection_commands_and_seconds",
+        "total_api_and_selector_cost",
+        "intermediate_patch_quality",
+        "final_submitted_success"
+      ],
+      "interpretation": "Controlled tasks establish local exposure mechanisms;they are not new SWE-bench solve results."
+    },
+    {
+      "stage": 3,
+      "name": "Fresh source-target benchmark confirmation",
+      "controls": [
+        "public_base_and_actor_image_match",
+        "original_fails_and_gold_passes",
+        "complete_expected_test_parsing"
+      ],
+      "assignment": "Randomize provide/withhold or full/minus-component within source-target blocks;fix contents,decision state,reader,budget and final submission reminder.",
+      "analysis": "Report block-level success/cost differences and uncertainty;keep all assignments including normal non-submission. External interruption stays unknown."
+    },
+    {
+      "stage": 4,
+      "name": "Frozen learned policy evaluation",
+      "baselines": [
+        "always_provide",
+        "always_withhold",
+        "explicit_precondition_rules",
+        "similarity_or_reranker",
+        "learned_policy"
+      ],
+      "costs": "Include shared inspection,selection,inference,tool and reader costs.",
+      "prohibited_inference": "A contradicted relation is not automatically harmful or a withhold label;it may be useful as a warning."
+    }
+  ],
+  "exact_span_interventions": [
+    {
+      "component": "validation_order",
+      "source_instance_id": "scikit-learn__scikit-learn-10508",
+      "memory_id": "sklearn10508-procedure",
+      "selected_verbatim_span": "after fitted-state and column_or_1d validation",
+      "full_memory": "Source problem: empty-list transformation in LabelEncoder behaved differently after numeric versus string fitting, with the report showing a TypeError for string classes. In this repository and local environment, a tentative approach was to check for zero-length input in LabelEncoder.transform after fitted-state and column_or_1d validation, then return an empty np.intp array before np.unique/searchsorted. The local reproducer covered fitting [1, 2] and ['a', 'b']; added checks also covered ordinary string transformation and rejection of an unseen label. The agent-local test file run, `pytest -q sklearn/preprocessing/tests/test_label.py`, passed 19 tests with 3 xfailed. These local results do not establish broader behavior or compatibility; other APIs, input forms, and versions were not verified. The actual official outcome for the submitted patch was unresolved, official_resolved=false, despite those local checks.",
+      "memory_minus_selected_span": "Source problem: empty-list transformation in LabelEncoder behaved differently after numeric versus string fitting, with the report showing a TypeError for string classes. In this repository and local environment, a tentative approach was to check for zero-length input in LabelEncoder.transform , then return an empty np.intp array before np.unique/searchsorted. The local reproducer covered fitting [1, 2] and ['a', 'b']; added checks also covered ordinary string transformation and rejection of an unseen label. The agent-local test file run, `pytest -q sklearn/preprocessing/tests/test_label.py`, passed 19 tests with 3 xfailed. These local results do not establish broader behavior or compatibility; other APIs, input forms, and versions were not verified. The actual official outcome for the submitted patch was unresolved, official_resolved=false, despite those local checks.",
+      "full_sha256": "99cf5c98180ed9652a070c617be8f1b69abdd75cd2cdbf01112e0db7b03425d1",
+      "minus_sha256": "404685c39fd4db352bf492c22592bce5d55d68e6ad23e8f7a156734c04964d6b",
+      "comparison_contexts": "Compare fitted-empty,unfitted-empty and invalid-shape contexts.",
+      "provenance": {
+        "path": "runs/memory-author-20261105T141051Z-4fd777/candidate-bank.json",
+        "sha256": "f42b49360604e6467f41de163598ec5d382710e47966246ee014cb658dfa0356"
+      },
+      "status": "proposed_not_executed",
+      "utility_label": null,
+      "caveat": "The remaining card still mentions the tentative check and validation limits. This removes one explicit ordering phrase,not every possible inference.",
+      "requirement": "Freeze the complete two-string predictor and actor prompts; check whether the removed information survives in source evidence or other prompt sections."
+    },
+    {
+      "component": "configuration_scope",
+      "source_instance_id": "sphinx-doc__sphinx-8282",
+      "memory_id": "sphinx8282-procedure",
+      "selected_verbatim_span": "when the setting is 'none' or 'description'",
+      "full_memory": "Source problem: Sphinx 3.3 autodoc_typehints='none' did not suppress annotations in overloaded callable signatures, despite that being the requested behavior. In this observed case, a tentative approach was to find where overload signatures bypass the ordinary format_args path, then pass show_annotation=False to stringify_signature in each relevant overload branch when the setting is 'none' or 'description'. The submitted edit did this for FunctionDocumenter, ClassDocumenter, and MethodDocumenter (indices 2, 8). The focused local pytest command for test_overload, test_overload2, and test_autodoc_typehints_none passed (index 14), and a local text-build reproducer displayed unannotated overloads (index 16). These are agent-local checks, not official evaluation. The broader local suite had a failure caused by a duplicate-meta warning assertion (index 10). Limits: the evidence does not verify other autodoc APIs, settings, versions, or inputs, and the local reproducer emitted a warning. Actual final official outcome: unresolved/failed (official_resolved=false), despite those local checks.",
+      "memory_minus_selected_span": "Source problem: Sphinx 3.3 autodoc_typehints='none' did not suppress annotations in overloaded callable signatures, despite that being the requested behavior. In this observed case, a tentative approach was to find where overload signatures bypass the ordinary format_args path, then pass show_annotation=False to stringify_signature in each relevant overload branch . The submitted edit did this for FunctionDocumenter, ClassDocumenter, and MethodDocumenter (indices 2, 8). The focused local pytest command for test_overload, test_overload2, and test_autodoc_typehints_none passed (index 14), and a local text-build reproducer displayed unannotated overloads (index 16). These are agent-local checks, not official evaluation. The broader local suite had a failure caused by a duplicate-meta warning assertion (index 10). Limits: the evidence does not verify other autodoc APIs, settings, versions, or inputs, and the local reproducer emitted a warning. Actual final official outcome: unresolved/failed (official_resolved=false), despite those local checks.",
+      "full_sha256": "40d4a96882cda98b1705a888dd576ffac81e196163966aeb92a417fb590ca0b9",
+      "minus_sha256": "62155d2a61fb49da716d57811b4a431dfc514ade3f15cade5f8e7160d528f7c3",
+      "comparison_contexts": "Compare none/description with signature contexts.",
+      "provenance": {
+        "path": "runs/memory-author-20261103T151432Z-8ff603/candidate-bank.json",
+        "sha256": "a950e617ce0c75948448c0c98993166eec469e88d1b19df9e5613e0d6df39dd2"
+      },
+      "status": "proposed_not_executed",
+      "utility_label": null,
+      "caveat": "The source problem still names none. Removing this phrase does not erase all configuration evidence.",
+      "requirement": "Freeze the complete two-string predictor and actor prompts; check whether the removed information survives in source evidence or other prompt sections."
+    },
+    {
+      "component": "uncertainty_warning",
+      "source_instance_id": "pvlib__pvlib-python-1154",
+      "memory_id": "pvlib-reindl-procedure",
+      "selected_verbatim_span": "Do not assume this handles NaN GHI or other invalid values; those cases were unverified.",
+      "full_memory": "For the reported `reindl()` zero-GHI sky-diffuse problem, a tentative approach was to avoid the `HB / ghi` zero denominator by replacing exactly zero GHI with infinity for that quotient, then force corresponding output entries to zero. A manual check showed this produced zero for scalar and mixed array/Series examples, including an inconsistent scalar case with nonzero DHI and zero DNI/GHI. This was not a successful test-suite fix: the existing targeted test failed because its expected zero-GHI value was NaN. If revisiting, update or add an expectation for the reported zero-GHI behavior and run relevant tests. Do not assume this handles NaN GHI or other invalid values; those cases were unverified.",
+      "memory_minus_selected_span": "For the reported `reindl()` zero-GHI sky-diffuse problem, a tentative approach was to avoid the `HB / ghi` zero denominator by replacing exactly zero GHI with infinity for that quotient, then force corresponding output entries to zero. A manual check showed this produced zero for scalar and mixed array/Series examples, including an inconsistent scalar case with nonzero DHI and zero DNI/GHI. This was not a successful test-suite fix: the existing targeted test failed because its expected zero-GHI value was NaN. If revisiting, update or add an expectation for the reported zero-GHI behavior and run relevant tests. ",
+      "full_sha256": "eac56883d79f8d808d0f59eff113b7353be9121279f73f23a87292e47eaa36a9",
+      "minus_sha256": "bd4f7624378126de1ed0fa6f630350853d82a97666e04086be66f1402128e286",
+      "comparison_contexts": "Compare exact-zero with NaN inputs; score output contract and verification behavior separately.",
+      "provenance": {
+        "path": "runs/memory-author-20261103T135832Z-79453a/candidate-bank.json",
+        "sha256": "b3d2d7c275477aa7b2e2d87d154f91d408afb4d5fa84e7dad0297f812e09f9a1"
+      },
+      "status": "proposed_not_executed",
+      "utility_label": null,
+      "caveat": "Exactly-zero scope remains elsewhere. A null effect would not show that applicability conditions are generally unnecessary.",
+      "requirement": "Freeze the complete two-string predictor and actor prompts; check whether the removed information survives in source evidence or other prompt sections."
+    }
+  ],
+  "missing_process_restoration": {
+    "component": "source_setup_information",
+    "source_instance_id": "django__django-11019",
+    "baseline_summary": "Source problem: three-way Media additions could impose false relative-order constraints and warn for independent assets, although the supplied form should order text-editor.js, text-editor-extras.js, color-picker.js. In this Django 3.0 repository, the observed tentative approach was to retain asset lists during Media.__add__, resolve them together in _css/_js, and use a topological ordering with first-seen tie-breaking; on a cycle, the submitted code falls back to pairwise Media.merge() (commands 6, 16, 23). After the changes, the agent-local focused test command passed all 17 media tests (command 22), and a local reproducer printed the expected order with zero MediaOrderConflictWarnings (command 17). This does not establish success for other inputs or APIs: official evaluation later remained evaluation_incomplete and official_resolved=false, with ten explicitly failed expected tests and four expected labels unparsed. Treat the local checks as earlier agent observations, not the official outcome; the cause of official failures is not established here.",
+    "verbatim_setup_excerpt": "cd /testbed && PYTHONPATH=tests:. DJANGO_SETTINGS_MODULE=test_sqlite python - <<'PY'\nimport warnings\nimport django\ndjango.setup()\n",
+    "source_command_index": 17,
+    "provenance": {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/source-episodes/django__django-11019.json",
+      "sha256": "c080d876d877a5ac27bd02418ae8158a33edd049b84152550d73f5a5028de11f"
+    },
+    "status": "proposed_not_executed",
+    "utility_label": null,
+    "excerpt_is_complete_shell_command": false,
+    "caveat": "This is real source process information absent from the card. Configuration paths are version-scoped and must be checked in the target. The current fixtures verify setup prerequisites but no memory exposure effect."
+  },
+  "context_only_candidate_tasks": [
+    {
+      "target_instance_id": "sympy__sympy-19007",
+      "reason": "BlockMatrix element indexing versus historical outer-grid construction.",
+      "public_context": {
+        "path": "datasets/memory_relations/20261107-discovery-v1/evidence/public-code/sympy__sympy-19007.json",
+        "sha256": "5e5b5fe3405418d00dc75f840bcf240949ee59b66c154729e704af10633dd49a"
+      },
+      "new_agent_trial": false,
+      "current_gold_test_read_by_this_expansion": false,
+      "official_original_and_gold_controls": "not_certified_by_this_expansion",
+      "runtime_precondition": "verify_actor_environment_and_official_controls_before_calls",
+      "no_assumption": "No prior success,expected memory gain,or independent-source status is assigned."
+    },
+    {
+      "target_instance_id": "sympy__sympy-22840",
+      "reason": "Symbolic indexing/CSE versus historical concrete block construction.",
+      "public_context": {
+        "path": "datasets/memory_relations/20261107-discovery-v1/evidence/public-code/sympy__sympy-22840.json",
+        "sha256": "d164be54bed98b08cddc2adc277cbc1bf7aca95cf86090ce579f0c71f4e5bef8"
+      },
+      "new_agent_trial": false,
+      "current_gold_test_read_by_this_expansion": false,
+      "official_original_and_gold_controls": "not_certified_by_this_expansion",
+      "runtime_precondition": "verify_actor_environment_and_official_controls_before_calls",
+      "no_assumption": "No prior success,expected memory gain,or independent-source status is assigned."
+    },
+    {
+      "target_instance_id": "sphinx-doc__sphinx-8595",
+      "reason": "Empty __all__ semantics; a potential contrast between general boundary reasoning and unrelated annotation instructions.",
+      "public_context": {
+        "path": "datasets/memory_relations/20261107-discovery-v1/evidence/public-code/sphinx-doc__sphinx-8595.json",
+        "sha256": "e33f8eb9c8fc7846f88f41d0f14680d68658768322e6ab658edf00ad531a27b1"
+      },
+      "new_agent_trial": false,
+      "current_gold_test_read_by_this_expansion": false,
+      "official_original_and_gold_controls": "not_certified_by_this_expansion",
+      "runtime_precondition": "verify_actor_environment_and_official_controls_before_calls",
+      "no_assumption": "No prior success,expected memory gain,or independent-source status is assigned."
+    },
+    {
+      "target_instance_id": "sphinx-doc__sphinx-8721",
+      "reason": "Builder configuration scope; distinguish a reusable configuration principle from a specific annotation recipe.",
+      "public_context": {
+        "path": "datasets/memory_relations/20261107-discovery-v1/evidence/public-code/sphinx-doc__sphinx-8721.json",
+        "sha256": "67625f9af0c290e9b9643c2f2efcaeb53faa2c8201ffdf25f89ebdb922830cb5"
+      },
+      "new_agent_trial": false,
+      "current_gold_test_read_by_this_expansion": false,
+      "official_original_and_gold_controls": "not_certified_by_this_expansion",
+      "runtime_precondition": "verify_actor_environment_and_official_controls_before_calls",
+      "no_assumption": "No prior success,expected memory gain,or independent-source status is assigned."
+    },
+    {
+      "target_instance_id": "django__django-15213",
+      "reason": "Old Query helper positive availability; current ExpressionWrapper issue is a different mechanism.",
+      "public_context": {
+        "path": "datasets/memory_relations/20261107-discovery-v1/evidence/public-code/django__django-15213.json",
+        "sha256": "e11ea682be04592d1ea586ca15f1d8d440c53016f9bcc1db722cc0eb4979776c"
+      },
+      "new_agent_trial": false,
+      "current_gold_test_read_by_this_expansion": false,
+      "official_original_and_gold_controls": "not_certified_by_this_expansion",
+      "runtime_precondition": "prepare_a_matching_image_first",
+      "no_assumption": "No prior success,expected memory gain,or independent-source status is assigned."
+    }
+  ],
+  "wording_followup": "After content effects are interpretable,hold all function names,fix information and validation facts constant while varying descriptive versus directive wording. The existing facts/procedure cards are not that control.",
+  "stopping_and_claim_policy": "Predeclare outcomes,repeats,resource limits and uncertainty before confirmation. If only errors/cost change,claim that effect; if success intervals overlap meaningful benefit and harm,leave success unresolved. Do not generate individual helpful/harmful labels from one pair of stochastic outcomes."
+}

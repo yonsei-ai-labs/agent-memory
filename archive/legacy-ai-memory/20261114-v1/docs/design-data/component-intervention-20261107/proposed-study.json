@@ -1,0 +1,173 @@
+{
+  "status": "proposal_not_frozen_not_executed",
+  "model_calls": 0,
+  "main_note": "docs/ai-memory-intervention-study-plan-2026-11-07.md",
+  "external_review": {
+    "status": "User-provided review, not independently rerun in this design task",
+    "reported_raw_hash_checks": 18390,
+    "reported_local_tests": 60,
+    "accepted_issues": [
+      "Delivery versus patch attainment",
+      "Information versus phrasing",
+      "Concrete-recipe versus principle applicability",
+      "Source/task diversity and prompt position"
+    ]
+  },
+  "primary_hypothesis": "Adding source-grounded operational evidence to a fixed summary changes delivered official success.",
+  "arms": {
+    "N": "No external source episode",
+    "R": "Frozen-rule source excerpts covering S and O",
+    "S": "Fixed source solution summary",
+    "M": "Exactly S plus operational evidence O"
+  },
+  "primary_contrast": "p(M)-p(S)",
+  "secondary_contrasts": [
+    "p(M)-p(N)",
+    "p(R)-p(N)",
+    "p(S)-p(R)"
+  ],
+  "information_groups": {
+    "E": [
+      "source_rg_unavailable",
+      "source_pytest_unavailable"
+    ],
+    "V": [
+      "source_native_test_runner"
+    ]
+  },
+  "following_feedback": {
+    "primary_success_separate_from_secondary_error_cost": true,
+    "successful_trials_with_observed_tool_error": 14,
+    "successful_trials": 15,
+    "failed_trials_with_observed_tool_error": 31,
+    "failed_trials": 33,
+    "interpretation": "The observational count identifies a candidate, not a causal failure mechanism."
+  },
+  "followup_controls": [
+    {
+      "arms": [
+        "N",
+        "O",
+        "S",
+        "S+O"
+      ],
+      "question": "Does operational information help alone or in combination with S?",
+      "interaction": "p(S+O)-p(S)-p(O)+p(N)"
+    },
+    {
+      "arms": [
+        "S",
+        "S+E",
+        "S+V",
+        "S+E+V"
+      ],
+      "question": "Distinguish environment observations from source verification procedures."
+    },
+    {
+      "arms": [
+        "N",
+        "M",
+        "A_env",
+        "A_env+M"
+      ],
+      "question": "Does past experience add value when current public environment facts are already supplied?",
+      "contrast": "p(A_env+M)-p(A_env)",
+      "limits": [
+        "Same text with different researcher labels is not a distinct treatment.",
+        "Count environment-audit generation costs and source-memory generation costs consistently.",
+        "This is a follow-up competing baseline, not a prerequisite for the first pilot."
+      ]
+    }
+  ],
+  "next_axes": [
+    {
+      "name": "Within-bundle deletion and correction",
+      "contrasts": [
+        "M versus M-u",
+        "M-u+u* versus M"
+      ],
+      "caveat": "Fresh confirmation after selection; restoration to M is not a novel treatment."
+    },
+    {
+      "name": "Same propositions, observational versus directive",
+      "requirements": [
+        "Proposition inventory",
+        "Same identifiers, premises, tests, outcomes and limits",
+        "Balanced multiple templates",
+        "N baseline"
+      ]
+    },
+    {
+      "name": "Concrete-recipe and principle applicability",
+      "labels": [
+        "direct_recipe",
+        "principle_transfer",
+        "operational_compatibility"
+      ],
+      "label_values": [
+        "yes",
+        "no",
+        "unknown"
+      ],
+      "caveat": "Natural applicability strata are not randomized state interventions."
+    },
+    {
+      "name": "Action-conditioned verification",
+      "arms": [
+        "No extra guidance",
+        "Broad checking guidance",
+        "Action-premise checking guidance"
+      ],
+      "controls": [
+        "General review",
+        "No-memory checking"
+      ],
+      "caveat": "Guidance, mandatory tools, fixed-candidate diagnosis and free replanning are distinct interventions."
+    }
+  ],
+  "main_endpoint": "Actual within-budget submission passing official evaluation, all assigned trials",
+  "diagnostics": [
+    "First observed passing checkpoint, post-run grading only",
+    "Passing-checkpoint without successful delivery, all-assigned numerator",
+    "Final-workspace regressions with evaluation coverage",
+    "All-assigned API/host costs",
+    "Observed command errors and premise-check actions"
+  ],
+  "calibration": {
+    "use": "Previously explored tasks only; not confirmation",
+    "requirements": [
+      "Common final budget/submission notice",
+      "Passive checkpoints plus final workspace snapshot",
+      "No interim official feedback to actor",
+      "Budget and checkpoint grid fixed before new outcomes"
+    ],
+    "candidate_response_limits": [
+      10,
+      20
+    ],
+    "final_limits": null
+  },
+  "scale_example": {
+    "source_episodes": 4,
+    "targets_per_source": 2,
+    "arms": 4,
+    "repeats": 2,
+    "total_target_runs": 64,
+    "status": "Pilot arithmetic only, not sufficient-power claim or finalized case list"
+  },
+  "before_launch": [
+    "New source/target list and original/gold controls",
+    "Target-blind source evidence and memory edits",
+    "Fixed ordering, hashes and actual input diff audit",
+    "Randomized block allocation and case/source weighting",
+    "Error, stop, cost and multiplicity rules",
+    "Practical effect/noninferiority margins and uncertainty method",
+    "Independent confirmation split including source separation"
+  ],
+  "limitations": [
+    "Current 48 trials are hypothesis-generation data.",
+    "No direct-recipe positive transfer case established in the old two targets.",
+    "Task edits define auxiliary probes rather than standard SWE scores.",
+    "API-level input effects do not identify neural attention mechanisms."
+  ]
+}

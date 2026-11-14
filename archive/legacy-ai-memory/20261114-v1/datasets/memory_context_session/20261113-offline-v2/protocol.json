@@ -1,0 +1,34 @@
+{
+  "format": "context-session-offline-protocol-v2",
+  "parent_manifest_sha256": "a097c765a1100c1c1f4e8c3e624697107a55e642e13e9d81e21a4efa03d472ff",
+  "source_session_id": "58357e6d94c7d840607cf928",
+  "source_family_id": "1458a961a030d80acf4210ae9a1334da0d78ad5fb17aa6bb0f5188024c6bb1f7",
+  "split": "design_dev",
+  "independent_source_families": 1,
+  "independent_sources_added": 0,
+  "selection_rule": "Smallest session ID; first absent, first open_book, first history, then first ref_changed after that history; sort by source time.",
+  "source_question_times": [
+    12,
+    16,
+    47,
+    48
+  ],
+  "schedule_change_from_v1": "Replace the earlier ref_changed at 39 by the first ref_changed after history (48); the history/current pair has no intervening external observation.",
+  "selection_uses_worker_outputs": false,
+  "external_event_times_modified": false,
+  "original_question_labels_reused_after_answer_dependency_check": true,
+  "parent_dependency_check": "docs/design-data/memory-context-stream-20261112-v1/checks/feasibility.json",
+  "parent_dependency_check_sha256": "6d6b236eb2270e81188c56aefea0eca38fd1ef2ed78fec231baae062cb62d55b",
+  "parent_unknown_answer_states": 12,
+  "parent_unknown_states_with_required_evidence": 4,
+  "offline_fixtures": [
+    "Constant UNKNOWN JSON",
+    "Label-independent near-256-reference-token JSON"
+  ],
+  "fixture_answers_are_not_model_outputs": true,
+  "fixture_answers_graded": false,
+  "independent_human_semantic_review_complete": false,
+  "utility_measured": false,
+  "original_packet_modified": false,
+  "full_benchmark_started": false
+}

@@ -1,0 +1,410 @@
+[
+  {
+    "case_id": "travel-28-turn-3-clause-7",
+    "reference_memory_id": "r28-p2-d6-lunch",
+    "reference": {
+      "person": "Michael",
+      "day": 6,
+      "slot": "lunch",
+      "kind": "reuse_reference",
+      "target_day": 6
+    },
+    "constraints": {
+      "kind": "reuse"
+    }
+  },
+  {
+    "case_id": "travel-253-turn-5-clause-6",
+    "reference_memory_id": "r253-p4-d3-lunch",
+    "reference": {
+      "person": "Aria",
+      "day": 3,
+      "slot": "lunch",
+      "kind": "comparison_reference",
+      "target_day": 6
+    },
+    "constraints": {
+      "kind": "comparison",
+      "price": {
+        "mode": "absolute_min",
+        "amount": 5.0,
+        "direction": "more"
+      },
+      "rating": {
+        "mode": "gt"
+      },
+      "cuisine": "Desserts"
+    }
+  },
+  {
+    "case_id": "travel-67-turn-6-clause-4",
+    "reference_memory_id": "r67-p5-d3-lunch",
+    "reference": {
+      "person": "Allison",
+      "day": 3,
+      "slot": "lunch",
+      "kind": "reuse_reference",
+      "target_day": 3
+    },
+    "constraints": {
+      "kind": "reuse"
+    }
+  },
+  {
+    "case_id": "travel-247-turn-4-clause-3",
+    "reference_memory_id": "r247-p2-d3-breakfast",
+    "reference": {
+      "person": "Diane",
+      "day": 3,
+      "slot": "breakfast",
+      "kind": "comparison_reference",
+      "target_day": 3
+    },
+    "constraints": {
+      "kind": "comparison",
+      "price": {
+        "mode": "percent_min",
+        "amount": 50.0,
+        "direction": "more"
+      },
+      "rating": {
+        "mode": "ge"
+      },
+      "cuisine": "Desserts"
+    }
+  },
+  {
+    "case_id": "travel-249-turn-6-clause-6",
+    "reference_memory_id": "r249-p5-d5-breakfast",
+    "reference": {
+      "person": "Chloe",
+      "day": 5,
+      "slot": "breakfast",
+      "kind": "reuse_reference",
+      "target_day": 5
+    },
+    "constraints": {
+      "kind": "reuse"
+    }
+  },
+  {
+    "case_id": "travel-114-turn-2-clause-3",
+    "reference_memory_id": "r114-p1-d1-dinner",
+    "reference": {
+      "person": "Violet",
+      "day": 1,
+      "slot": "dinner",
+      "kind": "comparison_reference",
+      "target_day": 3
+    },
+    "constraints": {
+      "kind": "comparison",
+      "price": {
+        "mode": "absolute_within",
+        "amount": 10.0,
+        "direction": null
+      },
+      "rating": null,
+      "cuisine": "Bakery"
+    }
+  },
+  {
+    "case_id": "travel-223-turn-2-clause-5",
+    "reference_memory_id": "r223-p1-d3-dinner",
+    "reference": {
+      "person": "Paul",
+      "day": 3,
+      "slot": "dinner",
+      "kind": "reuse_reference",
+      "target_day": 3
+    },
+    "constraints": {
+      "kind": "reuse"
+    }
+  },
+  {
+    "case_id": "travel-178-turn-6-clause-1",
+    "reference_memory_id": "r178-p5-d5-lunch",
+    "reference": {
+      "person": "Joey",
+      "day": 5,
+      "slot": "lunch",
+      "kind": "comparison_reference",
+      "target_day": 2
+    },
+    "constraints": {
+      "kind": "comparison",
+      "price": {
+        "mode": "percent_min",
+        "amount": 10.0,
+        "direction": "less"
+      },
+      "rating": {
+        "mode": "within",
+        "amount": 0.3
+      },
+      "cuisine": "Bakery"
+    }
+  },
+  {
+    "case_id": "travel-92-turn-8-clause-0",
+    "reference_memory_id": "r92-p7-d1-dinner",
+    "reference": {
+      "person": "Elijah",
+      "day": 1,
+      "slot": "dinner",
+      "kind": "reuse_reference",
+      "target_day": 1
+    },
+    "constraints": {
+      "kind": "reuse"
+    }
+  },
+  {
+    "case_id": "travel-47-turn-3-clause-2",
+    "reference_memory_id": "r47-p2-d1-dinner",
+    "reference": {
+      "person": "Zoe",
+      "day": 1,
+      "slot": "dinner",
+      "kind": "comparison_reference",
+      "target_day": 2
+    },
+    "constraints": {
+      "kind": "comparison",
+      "price": {
+        "mode": "absolute_min",
+        "amount": 5.0,
+        "direction": "more"
+      },
+      "rating": {
+        "mode": "gt"
+      },
+      "cuisine": "Pizza"
+    }
+  },
+  {
+    "case_id": "travel-135-turn-5-clause-0",
+    "reference_memory_id": "r135-p3-d1-dinner",
+    "reference": {
+      "person": "James",
+      "day": 1,
+      "slot": "dinner",
+      "kind": "reuse_reference",
+      "target_day": 1
+    },
+    "constraints": {
+      "kind": "reuse"
+    }
+  },
+  {
+    "case_id": "travel-135-turn-8-clause-3",
+    "reference_memory_id": "r135-p6-d5-dinner",
+    "reference": {
+      "person": "Phoebe",
+      "day": 5,
+      "slot": "dinner",
+      "kind": "comparison_reference",
+      "target_day": 3
+    },
+    "constraints": {
+      "kind": "comparison",
+      "price": {
+        "mode": "percent_min",
+        "amount": 30.0,
+        "direction": "less"
+      },
+      "rating": {
+        "mode": "within",
+        "amount": 0.5
+      },
+      "cuisine": "Fast Food"
+    }
+  },
+  {
+    "case_id": "travel-245-turn-7-clause-0",
+    "reference_memory_id": "r245-p5-d1-dinner",
+    "reference": {
+      "person": "Adam",
+      "day": 1,
+      "slot": "dinner",
+      "kind": "reuse_reference",
+      "target_day": 1
+    },
+    "constraints": {
+      "kind": "reuse"
+    }
+  },
+  {
+    "case_id": "travel-200-turn-7-clause-1",
+    "reference_memory_id": "r200-p5-d3-breakfast",
+    "reference": {
+      "person": "Austin",
+      "day": 3,
+      "slot": "breakfast",
+      "kind": "comparison_reference",
+      "target_day": 2
+    },
+    "constraints": {
+      "kind": "comparison",
+      "price": {
+        "mode": "strict",
+        "amount": null,
+        "direction": "less"
+      },
+      "rating": {
+        "mode": "within",
+        "amount": 1.0
+      },
+      "cuisine": "Pizza"
+    }
+  },
+  {
+    "case_id": "travel-11-turn-2-clause-3",
+    "reference_memory_id": "r11-p1-d3-lunch",
+    "reference": {
+      "person": "Gina",
+      "day": 3,
+      "slot": "lunch",
+      "kind": "reuse_reference",
+      "target_day": 3
+    },
+    "constraints": {
+      "kind": "reuse"
+    }
+  },
+  {
+    "case_id": "travel-236-turn-7-clause-3",
+    "reference_memory_id": "r236-p4-d7-lunch",
+    "reference": {
+      "person": "Monica",
+      "day": 7,
+      "slot": "lunch",
+      "kind": "comparison_reference",
+      "target_day": 3
+    },
+    "constraints": {
+      "kind": "comparison",
+      "price": {
+        "mode": "percent_min",
+        "amount": 50.0,
+        "direction": "less"
+      },
+      "rating": {
+        "mode": "ge"
+      },
+      "cuisine": null
+    }
+  },
+  {
+    "case_id": "travel-83-turn-6-clause-3",
+    "reference_memory_id": "r83-p4-d3-dinner",
+    "reference": {
+      "person": "Henry",
+      "day": 3,
+      "slot": "dinner",
+      "kind": "reuse_reference",
+      "target_day": 3
+    },
+    "constraints": {
+      "kind": "reuse"
+    }
+  },
+  {
+    "case_id": "travel-128-turn-4-clause-4",
+    "reference_memory_id": "r128-p3-d4-dinner",
+    "reference": {
+      "person": "Joey",
+      "day": 4,
+      "slot": "dinner",
+      "kind": "comparison_reference",
+      "target_day": 4
+    },
+    "constraints": {
+      "kind": "comparison",
+      "price": {
+        "mode": "absolute_min",
+        "amount": 5.0,
+        "direction": "less"
+      },
+      "rating": {
+        "mode": "lt"
+      },
+      "cuisine": "Cafe"
+    }
+  },
+  {
+    "case_id": "travel-4-turn-5-clause-0",
+    "reference_memory_id": "r4-p1-d1-dinner",
+    "reference": {
+      "person": "Monica",
+      "day": 1,
+      "slot": "dinner",
+      "kind": "reuse_reference",
+      "target_day": 1
+    },
+    "constraints": {
+      "kind": "reuse"
+    }
+  },
+  {
+    "case_id": "travel-94-turn-7-clause-3",
+    "reference_memory_id": "r94-p6-d2-dinner",
+    "reference": {
+      "person": "Emma",
+      "day": 2,
+      "slot": "dinner",
+      "kind": "comparison_reference",
+      "target_day": 2
+    },
+    "constraints": {
+      "kind": "comparison",
+      "price": {
+        "mode": "absolute_within",
+        "amount": 5.0,
+        "direction": null
+      },
+      "rating": {
+        "mode": "lt"
+      },
+      "cuisine": "Bakery"
+    }
+  },
+  {
+    "case_id": "travel-235-turn-3-clause-3",
+    "reference_memory_id": "r235-p1-d4-lunch",
+    "reference": {
+      "person": "Lisa",
+      "day": 4,
+      "slot": "lunch",
+      "kind": "reuse_reference",
+      "target_day": 4
+    },
+    "constraints": {
+      "kind": "reuse"
+    }
+  },
+  {
+    "case_id": "travel-100-turn-4-clause-2",
+    "reference_memory_id": "r100-p2-d4-breakfast",
+    "reference": {
+      "person": "Chelsea",
+      "day": 4,
+      "slot": "breakfast",
+      "kind": "comparison_reference",
+      "target_day": 3
+    },
+    "constraints": {
+      "kind": "comparison",
+      "price": {
+        "mode": "percent_min",
+        "amount": 50.0,
+        "direction": "less"
+      },
+      "rating": {
+        "mode": "gt"
+      },
+      "cuisine": "Mexican"
+    }
+  }
+]

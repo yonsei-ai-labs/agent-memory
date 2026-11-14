@@ -1,0 +1,65 @@
+{
+  "version": "travel-worker-utility-v1",
+  "official_memoryarena_score": false,
+  "history": "new_worker_choices_on_constructed_restaurant_menus",
+  "current_clauses": "unchanged_original_reference_clauses",
+  "source_task_is_original_full_trip": false,
+  "current_task_is_original_full_trip": false,
+  "policies": [
+    "none",
+    "all",
+    "bm25",
+    "learned",
+    "rule"
+  ],
+  "current_conditions": [
+    "memory_needed",
+    "reference_visible_now"
+  ],
+  "selection_threshold": 0.25,
+  "selector_frozen_before_this_run": true,
+  "success": "any listed restaurant satisfying all local constraints relative to actual generated prior choice; NONE iff no feasible listed restaurant",
+  "invalid_source": "record without usable restaurant; preserve case as unavailable-history and report separately; do not replace with benchmark answer",
+  "repeat": "repeat all five policies for the first case per split in memory_needed condition",
+  "counts": {
+    "base_clauses": {
+      "test": 16,
+      "dev": 6
+    },
+    "source_jobs": 132,
+    "eligible_by_group_kind": {
+      "6e143ff10f0c012cf2a7080343407557708c4b97aaf1c17c17a0738420f13c5d:reuse_reference": 14,
+      "fc7a086b3e86788cfe6e14946ef0a1377b02583a146fe8eb6b39b156f46d49fb:reuse_reference": 16,
+      "fc7a086b3e86788cfe6e14946ef0a1377b02583a146fe8eb6b39b156f46d49fb:comparison_reference": 25,
+      "fe71e85d3c67352416bf8e77f35a40c50bef15a8589f26fb49edd43a0961a398:comparison_reference": 21,
+      "fe71e85d3c67352416bf8e77f35a40c50bef15a8589f26fb49edd43a0961a398:reuse_reference": 28,
+      "ea018172c91e521d6dd2f678d2f77f206c2467e5f3f0e41ce81e37a63a739529:reuse_reference": 44,
+      "ea018172c91e521d6dd2f678d2f77f206c2467e5f3f0e41ce81e37a63a739529:comparison_reference": 69,
+      "a3d1265910577b1da25bb5405281e6a634bdcb541dd87a0758c78624c59f4b4b:reuse_reference": 12,
+      "a3d1265910577b1da25bb5405281e6a634bdcb541dd87a0758c78624c59f4b4b:comparison_reference": 10,
+      "1b0a3324ed3eff26b6977c3e6e7b984a5622d5063021a4c9a967cf7a81a463af:reuse_reference": 31,
+      "1b0a3324ed3eff26b6977c3e6e7b984a5622d5063021a4c9a967cf7a81a463af:comparison_reference": 44,
+      "223bc11d8204d114d17174a30305df0874a9cfb9c6dcc8848e9f33bc008864ed:reuse_reference": 41,
+      "223bc11d8204d114d17174a30305df0874a9cfb9c6dcc8848e9f33bc008864ed:comparison_reference": 51,
+      "0975687dec410a531541d33987fdce1ebab260b1c69fcccd849047a17fd9130b:comparison_reference": 60,
+      "0975687dec410a531541d33987fdce1ebab260b1c69fcccd849047a17fd9130b:reuse_reference": 28,
+      "edac52574adddfe1bd3140e8f4ce32045e375ac318b5435900f9c82fbff58b4d:reuse_reference": 26,
+      "edac52574adddfe1bd3140e8f4ce32045e375ac318b5435900f9c82fbff58b4d:comparison_reference": 32,
+      "4f0d1aa0430e740daca2b1ba2a69d1d7a8fdc32a9d6a296998cd7122ce92af8e:reuse_reference": 40,
+      "4f0d1aa0430e740daca2b1ba2a69d1d7a8fdc32a9d6a296998cd7122ce92af8e:comparison_reference": 68,
+      "7ed8d5619ffab6ec5437670873dc36f1ee0a8a27ab8cfe8d504644072f50f9a1:comparison_reference": 88,
+      "7ed8d5619ffab6ec5437670873dc36f1ee0a8a27ab8cfe8d504644072f50f9a1:reuse_reference": 43,
+      "6e143ff10f0c012cf2a7080343407557708c4b97aaf1c17c17a0738420f13c5d:comparison_reference": 7
+    },
+    "excluded": {
+      "no_generated_prior_slot_or_fewer_than_six_restaurant_records": 74,
+      "unsupported_or_ambiguous_constraints": 108
+    }
+  },
+  "data_origin": {
+    "reference_index_sha256": "9863e9f6bce5961d76b9b4dc04462eea587cd99f7c0aabf6ce5dee0028a1c5e2",
+    "restaurant_csv_sha256": "a38ef00a3398b1ef78306a9b1851c491723d27899c6a1d4a3d6fe042929c0f26",
+    "restaurant_csv_upstream_commit": "6cd9de14b71915e39ac742a20dc33785e14b6aab"
+  },
+  "selection": "one reuse and one supported comparison per group, SHA256 order; 3 dev and 8 test base plans; no worker outcomes used"
+}

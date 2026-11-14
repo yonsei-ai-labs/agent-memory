@@ -1,0 +1,120 @@
+{
+  "created_at": "2026-11-05T12:00:50.154079+00:00",
+  "status": "draft_not_executed",
+  "purpose": "Reviewable same-body framing examples; not an experimental result or a frozen run plan.",
+  "new_model_api_calls": 0,
+  "new_target_tasks_selected": false,
+  "included_in_memory_banks": false,
+  "target_answers_used_for_transformation": false,
+  "source_cards_and_outcomes_already_seen": true,
+  "common_applicability_rule_is_researcher_authored": true,
+  "length_control": "The body is exact and fixed; wrapper lengths differ. No matched-token or pure instruction-strength claim.",
+  "source_diversity": "Two examples from the existing four source experiences, not two new source experiences.",
+  "examples": [
+    {
+      "source_bank": "experiments/swe_memory/banks/overnight-r02-related-memory.json",
+      "source_bank_sha256": "639524072e31f4060c56fe2f97e6a4bab7f41a397b6b5dfce45cbb6234e64c91",
+      "source_card_id": "sphinx8435-procedure",
+      "source_run": "20261103T150854Z-467436f4",
+      "source_instance_id": "sphinx-doc__sphinx-8435",
+      "source_official_resolved": true,
+      "source_evidence_command_indices": [
+        2,
+        17,
+        19,
+        20,
+        21,
+        27
+      ],
+      "variants": [
+        {
+          "framing": "informational",
+          "changed_wrapper": "Use framing: The following account is reference information about a past investigation.",
+          "shared_applicability_rule": "Applicability rule, identical in every condition: Transfer past investigation actions only when the current code and task meet their stated scope. Verify that match first; when it does not hold, do not transfer those actions. Historical local and official outcomes remain evidence about the source task only.",
+          "body": "Source problem: Sphinx 3.4 autodoc ignored `autodoc_type_aliases` for annotated module variables and class attributes. A tentative approach observed here was to trace the data/attribute documenters’ annotation paths, then handle both evaluated annotations and analyzer-provided annotation strings: pass the configured aliases to `get_type_hints()` and apply a bounded alias substitution when formatting/outputting annotations. In this case, `get_type_hints()` with the qualified target `example.MyString` raised `NameError` in the small reproducer, so relying on that lookup alone did not fix the output (indices 17, 19). The submitted implementation added `_apply_type_aliases` and used it in both documenters; a Sphinx text build then showed the qualified alias on both variables, and the autodoc config tests passed (indices 20, 27). Limits: this was observed for this Sphinx tree and reproducer, not established for other APIs, alias formats, Python versions, or inputs. The combined local run’s warning assertion failure was not the official result; official evaluation marked the submission resolved: true.",
+          "body_sha256": "940d2b7fb3f76bad89dc87683eb5a18e2202e22fa8a45ebcba6205d2737a2f7b",
+          "rendered_text": "Applicability rule, identical in every condition: Transfer past investigation actions only when the current code and task meet their stated scope. Verify that match first; when it does not hold, do not transfer those actions. Historical local and official outcomes remain evidence about the source task only.\nUse framing: The following account is reference information about a past investigation.\n\nSource problem: Sphinx 3.4 autodoc ignored `autodoc_type_aliases` for annotated module variables and class attributes. A tentative approach observed here was to trace the data/attribute documenters’ annotation paths, then handle both evaluated annotations and analyzer-provided annotation strings: pass the configured aliases to `get_type_hints()` and apply a bounded alias substitution when formatting/outputting annotations. In this case, `get_type_hints()` with the qualified target `example.MyString` raised `NameError` in the small reproducer, so relying on that lookup alone did not fix the output (indices 17, 19). The submitted implementation added `_apply_type_aliases` and used it in both documenters; a Sphinx text build then showed the qualified alias on both variables, and the autodoc config tests passed (indices 20, 27). Limits: this was observed for this Sphinx tree and reproducer, not established for other APIs, alias formats, Python versions, or inputs. The combined local run’s warning assertion failure was not the official result; official evaluation marked the submission resolved: true.",
+          "rendered_characters": 1510,
+          "wrapper_characters": 87,
+          "rendered_sha256": "c0362e237b5acea8965497a36489d3d8898ec0a63ed035c3688036f766f64d20"
+        },
+        {
+          "framing": "suggestive",
+          "changed_wrapper": "Use framing: The investigation actions in the following account are options to consider for the current task.",
+          "shared_applicability_rule": "Applicability rule, identical in every condition: Transfer past investigation actions only when the current code and task meet their stated scope. Verify that match first; when it does not hold, do not transfer those actions. Historical local and official outcomes remain evidence about the source task only.",
+          "body": "Source problem: Sphinx 3.4 autodoc ignored `autodoc_type_aliases` for annotated module variables and class attributes. A tentative approach observed here was to trace the data/attribute documenters’ annotation paths, then handle both evaluated annotations and analyzer-provided annotation strings: pass the configured aliases to `get_type_hints()` and apply a bounded alias substitution when formatting/outputting annotations. In this case, `get_type_hints()` with the qualified target `example.MyString` raised `NameError` in the small reproducer, so relying on that lookup alone did not fix the output (indices 17, 19). The submitted implementation added `_apply_type_aliases` and used it in both documenters; a Sphinx text build then showed the qualified alias on both variables, and the autodoc config tests passed (indices 20, 27). Limits: this was observed for this Sphinx tree and reproducer, not established for other APIs, alias formats, Python versions, or inputs. The combined local run’s warning assertion failure was not the official result; official evaluation marked the submission resolved: true.",
+          "body_sha256": "940d2b7fb3f76bad89dc87683eb5a18e2202e22fa8a45ebcba6205d2737a2f7b",
+          "rendered_text": "Applicability rule, identical in every condition: Transfer past investigation actions only when the current code and task meet their stated scope. Verify that match first; when it does not hold, do not transfer those actions. Historical local and official outcomes remain evidence about the source task only.\nUse framing: The investigation actions in the following account are options to consider for the current task.\n\nSource problem: Sphinx 3.4 autodoc ignored `autodoc_type_aliases` for annotated module variables and class attributes. A tentative approach observed here was to trace the data/attribute documenters’ annotation paths, then handle both evaluated annotations and analyzer-provided annotation strings: pass the configured aliases to `get_type_hints()` and apply a bounded alias substitution when formatting/outputting annotations. In this case, `get_type_hints()` with the qualified target `example.MyString` raised `NameError` in the small reproducer, so relying on that lookup alone did not fix the output (indices 17, 19). The submitted implementation added `_apply_type_aliases` and used it in both documenters; a Sphinx text build then showed the qualified alias on both variables, and the autodoc config tests passed (indices 20, 27). Limits: this was observed for this Sphinx tree and reproducer, not established for other APIs, alias formats, Python versions, or inputs. The combined local run’s warning assertion failure was not the official result; official evaluation marked the submission resolved: true.",
+          "rendered_characters": 1532,
+          "wrapper_characters": 109,
+          "rendered_sha256": "d90ccd87b3e40eab770232424fae8d3f3aad072a95e89ca1a8c4dd060ea89757"
+        },
+        {
+          "framing": "directive",
+          "changed_wrapper": "Use framing: Follow the investigation actions in the following account when working on the current task.",
+          "shared_applicability_rule": "Applicability rule, identical in every condition: Transfer past investigation actions only when the current code and task meet their stated scope. Verify that match first; when it does not hold, do not transfer those actions. Historical local and official outcomes remain evidence about the source task only.",
+          "body": "Source problem: Sphinx 3.4 autodoc ignored `autodoc_type_aliases` for annotated module variables and class attributes. A tentative approach observed here was to trace the data/attribute documenters’ annotation paths, then handle both evaluated annotations and analyzer-provided annotation strings: pass the configured aliases to `get_type_hints()` and apply a bounded alias substitution when formatting/outputting annotations. In this case, `get_type_hints()` with the qualified target `example.MyString` raised `NameError` in the small reproducer, so relying on that lookup alone did not fix the output (indices 17, 19). The submitted implementation added `_apply_type_aliases` and used it in both documenters; a Sphinx text build then showed the qualified alias on both variables, and the autodoc config tests passed (indices 20, 27). Limits: this was observed for this Sphinx tree and reproducer, not established for other APIs, alias formats, Python versions, or inputs. The combined local run’s warning assertion failure was not the official result; official evaluation marked the submission resolved: true.",
+          "body_sha256": "940d2b7fb3f76bad89dc87683eb5a18e2202e22fa8a45ebcba6205d2737a2f7b",
+          "rendered_text": "Applicability rule, identical in every condition: Transfer past investigation actions only when the current code and task meet their stated scope. Verify that match first; when it does not hold, do not transfer those actions. Historical local and official outcomes remain evidence about the source task only.\nUse framing: Follow the investigation actions in the following account when working on the current task.\n\nSource problem: Sphinx 3.4 autodoc ignored `autodoc_type_aliases` for annotated module variables and class attributes. A tentative approach observed here was to trace the data/attribute documenters’ annotation paths, then handle both evaluated annotations and analyzer-provided annotation strings: pass the configured aliases to `get_type_hints()` and apply a bounded alias substitution when formatting/outputting annotations. In this case, `get_type_hints()` with the qualified target `example.MyString` raised `NameError` in the small reproducer, so relying on that lookup alone did not fix the output (indices 17, 19). The submitted implementation added `_apply_type_aliases` and used it in both documenters; a Sphinx text build then showed the qualified alias on both variables, and the autodoc config tests passed (indices 20, 27). Limits: this was observed for this Sphinx tree and reproducer, not established for other APIs, alias formats, Python versions, or inputs. The combined local run’s warning assertion failure was not the official result; official evaluation marked the submission resolved: true.",
+          "rendered_characters": 1527,
+          "wrapper_characters": 104,
+          "rendered_sha256": "ed64c3d838eebb30f1e2afc906d8841d7e1c4bf8cd3d081b766dfaad8186094e"
+        }
+      ]
+    },
+    {
+      "source_bank": "experiments/swe_memory/banks/overnight-r02-related-memory.json",
+      "source_bank_sha256": "639524072e31f4060c56fe2f97e6a4bab7f41a397b6b5dfce45cbb6234e64c91",
+      "source_card_id": "django14667-procedure",
+      "source_run": "20261103T151201Z-08fad502",
+      "source_instance_id": "django__django-14667",
+      "source_official_resolved": false,
+      "source_evidence_command_indices": [
+        1,
+        3,
+        8,
+        11
+      ],
+      "variants": [
+        {
+          "framing": "informational",
+          "changed_wrapper": "Use framing: The following account is reference information about a past investigation.",
+          "shared_applicability_rule": "Applicability rule, identical in every condition: Transfer past investigation actions only when the current code and task meet their stated scope. Verify that match first; when it does not hold, do not transfer those actions. Historical local and official outcomes remain evidence about the source task only.",
+          "body": "For the reported Django 4.0 `only()`/`defer()` chaining issue, a tentative investigation path was to trace `QuerySet.only()` and `.defer()` into `Query.add_immediate_loading()` / `add_deferred_loading()`, then inspect how `deferred_to_data()` handles the stored `(field_names, defer)` state. In this instance, the agent changed its empty-name early return to apply only when `defer` was true, then ran `python tests/runtests.py defer --verbosity 2`; all 29 local defer tests passed. That local suite result does not establish the reported SQL behavior on every input, and no separate SQL reproducer result is recorded here. The official evaluation nevertheless marked this submission unresolved (`official_resolved: false`; F2P 0/1, P2P 28/1), with no cause established by this evidence.",
+          "body_sha256": "cab480e30288e096ecd4216aa3135126b0e38d48bef3c3d733edb59b3a5fffc8",
+          "rendered_text": "Applicability rule, identical in every condition: Transfer past investigation actions only when the current code and task meet their stated scope. Verify that match first; when it does not hold, do not transfer those actions. Historical local and official outcomes remain evidence about the source task only.\nUse framing: The following account is reference information about a past investigation.\n\nFor the reported Django 4.0 `only()`/`defer()` chaining issue, a tentative investigation path was to trace `QuerySet.only()` and `.defer()` into `Query.add_immediate_loading()` / `add_deferred_loading()`, then inspect how `deferred_to_data()` handles the stored `(field_names, defer)` state. In this instance, the agent changed its empty-name early return to apply only when `defer` was true, then ran `python tests/runtests.py defer --verbosity 2`; all 29 local defer tests passed. That local suite result does not establish the reported SQL behavior on every input, and no separate SQL reproducer result is recorded here. The official evaluation nevertheless marked this submission unresolved (`official_resolved: false`; F2P 0/1, P2P 28/1), with no cause established by this evidence.",
+          "rendered_characters": 1185,
+          "wrapper_characters": 87,
+          "rendered_sha256": "10f4304b9b569b25982b1cc2f20692ac157aa5b3f6c4887e7c32df2a261e92d5"
+        },
+        {
+          "framing": "suggestive",
+          "changed_wrapper": "Use framing: The investigation actions in the following account are options to consider for the current task.",
+          "shared_applicability_rule": "Applicability rule, identical in every condition: Transfer past investigation actions only when the current code and task meet their stated scope. Verify that match first; when it does not hold, do not transfer those actions. Historical local and official outcomes remain evidence about the source task only.",
+          "body": "For the reported Django 4.0 `only()`/`defer()` chaining issue, a tentative investigation path was to trace `QuerySet.only()` and `.defer()` into `Query.add_immediate_loading()` / `add_deferred_loading()`, then inspect how `deferred_to_data()` handles the stored `(field_names, defer)` state. In this instance, the agent changed its empty-name early return to apply only when `defer` was true, then ran `python tests/runtests.py defer --verbosity 2`; all 29 local defer tests passed. That local suite result does not establish the reported SQL behavior on every input, and no separate SQL reproducer result is recorded here. The official evaluation nevertheless marked this submission unresolved (`official_resolved: false`; F2P 0/1, P2P 28/1), with no cause established by this evidence.",
+          "body_sha256": "cab480e30288e096ecd4216aa3135126b0e38d48bef3c3d733edb59b3a5fffc8",
+          "rendered_text": "Applicability rule, identical in every condition: Transfer past investigation actions only when the current code and task meet their stated scope. Verify that match first; when it does not hold, do not transfer those actions. Historical local and official outcomes remain evidence about the source task only.\nUse framing: The investigation actions in the following account are options to consider for the current task.\n\nFor the reported Django 4.0 `only()`/`defer()` chaining issue, a tentative investigation path was to trace `QuerySet.only()` and `.defer()` into `Query.add_immediate_loading()` / `add_deferred_loading()`, then inspect how `deferred_to_data()` handles the stored `(field_names, defer)` state. In this instance, the agent changed its empty-name early return to apply only when `defer` was true, then ran `python tests/runtests.py defer --verbosity 2`; all 29 local defer tests passed. That local suite result does not establish the reported SQL behavior on every input, and no separate SQL reproducer result is recorded here. The official evaluation nevertheless marked this submission unresolved (`official_resolved: false`; F2P 0/1, P2P 28/1), with no cause established by this evidence.",
+          "rendered_characters": 1207,
+          "wrapper_characters": 109,
+          "rendered_sha256": "326b12c9b1cd05d687262b79adba6c9b7c8d0cb83ee8b8240ebf52ac8b4b523c"
+        },
+        {
+          "framing": "directive",
+          "changed_wrapper": "Use framing: Follow the investigation actions in the following account when working on the current task.",
+          "shared_applicability_rule": "Applicability rule, identical in every condition: Transfer past investigation actions only when the current code and task meet their stated scope. Verify that match first; when it does not hold, do not transfer those actions. Historical local and official outcomes remain evidence about the source task only.",
+          "body": "For the reported Django 4.0 `only()`/`defer()` chaining issue, a tentative investigation path was to trace `QuerySet.only()` and `.defer()` into `Query.add_immediate_loading()` / `add_deferred_loading()`, then inspect how `deferred_to_data()` handles the stored `(field_names, defer)` state. In this instance, the agent changed its empty-name early return to apply only when `defer` was true, then ran `python tests/runtests.py defer --verbosity 2`; all 29 local defer tests passed. That local suite result does not establish the reported SQL behavior on every input, and no separate SQL reproducer result is recorded here. The official evaluation nevertheless marked this submission unresolved (`official_resolved: false`; F2P 0/1, P2P 28/1), with no cause established by this evidence.",
+          "body_sha256": "cab480e30288e096ecd4216aa3135126b0e38d48bef3c3d733edb59b3a5fffc8",
+          "rendered_text": "Applicability rule, identical in every condition: Transfer past investigation actions only when the current code and task meet their stated scope. Verify that match first; when it does not hold, do not transfer those actions. Historical local and official outcomes remain evidence about the source task only.\nUse framing: Follow the investigation actions in the following account when working on the current task.\n\nFor the reported Django 4.0 `only()`/`defer()` chaining issue, a tentative investigation path was to trace `QuerySet.only()` and `.defer()` into `Query.add_immediate_loading()` / `add_deferred_loading()`, then inspect how `deferred_to_data()` handles the stored `(field_names, defer)` state. In this instance, the agent changed its empty-name early return to apply only when `defer` was true, then ran `python tests/runtests.py defer --verbosity 2`; all 29 local defer tests passed. That local suite result does not establish the reported SQL behavior on every input, and no separate SQL reproducer result is recorded here. The official evaluation nevertheless marked this submission unresolved (`official_resolved: false`; F2P 0/1, P2P 28/1), with no cause established by this evidence.",
+          "rendered_characters": 1202,
+          "wrapper_characters": 104,
+          "rendered_sha256": "c922f6c7d3999d83da3275f49c0e0d56ade98f0007ddd176a3fe7ad8b6dbb26b"
+        }
+      ]
+    }
+  ],
+  "local_validation": {
+    "source_body_hashes_match": true,
+    "only_wrapper_differs_within_example": true,
+    "variant_count": 6
+  }
+}

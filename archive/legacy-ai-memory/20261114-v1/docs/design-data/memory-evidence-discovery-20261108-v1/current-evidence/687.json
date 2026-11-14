@@ -1,0 +1,54 @@
+{
+  "target_trajectory_row_index": 687,
+  "task": {
+    "instance_id": "numpy__numpydoc-283",
+    "repo": "numpy/numpydoc",
+    "base_commit": "fd17df0c96e107f7550b91e2680e76d2be796e0c",
+    "created_at": "2020-07-15 16:30:40",
+    "problem_statement": "Failed See Also Parsing.\n```\r\nIn [1]: from numpydoc.docscrape import NumpyDocString\r\n   ...: from numpy import seterrobj\r\n   ...: NumpyDocString(\"\"\"seterrobj(errobj)\r\n   ...:\r\n   ...:     Set the object that defines floating-point error handling.\r\n   ...:\r\n   ...:     See Also\r\n   ...:     --------\r\n   ...:     geterrobj, seterr, geterr, seterrcall, geterrcall\r\n   ...:     getbufsize, setbufsize\"\"\")['See Also']\r\nOut[1]: []\r\n\r\nIn [2]:\r\n```\r\n\r\n```\r\ndiff --git a/numpydoc/docscrape.py b/numpydoc/docscrape.py\r\nindex 77de401..d79992c 100644\r\n--- a/numpydoc/docscrape.py\r\n+++ b/numpydoc/docscrape.py\r\n@@ -284,6 +284,8 @@ class NumpyDocString(Mapping):\r\n\r\n         \"\"\"\r\n\r\n+        content = dedent_lines(content)\r\n         items = []\r\n\r\n         def parse_item_name(text):\r\n```\r\n\r\nMight be enough, but it may also be the wrong place to put that:\r\n\r\n```\r\nIn [1]: from numpydoc.docscrape import NumpyDocString\r\n   ...: from numpy import seterrobj\r\n   ...: NumpyDocString(\"\"\"seterrobj(errobj)\r\n   ...:\r\n   ...:     Set the object that defines floating-point error handling.\r\n   ...:\r\n   ...:     See Also\r\n   ...:     --------\r\n   ...:     geterrobj, seterr, geterr, seterrcall, geterrcall\r\n   ...:     getbufsize, setbufsize\"\"\")['See Also']\r\nOut[1]:\r\n[([('geterrobj', None),\r\n   ('seterr', None),\r\n   ('geterr', None),\r\n   ('seterrcall', None),\r\n   ('geterrcall', None)],\r\n  []),\r\n ([('getbufsize', None), ('setbufsize', None)], [])]\r\n```\r\n\r\n\r\n",
+    "version": "1.1",
+    "environment_setup_commit": "f25273e6447288441d3e6941eca5dba3d3f1c497",
+    "license_name": "BSD License",
+    "docker_image": "swerebench/sweb.eval.x86_64.numpy_1776_numpydoc-283",
+    "image_name": "swerebench/sweb.eval.x86_64.numpy_1776_numpydoc-283",
+    "dataset": "nebius/SWE-rebench",
+    "revision": "89cdfbab4ab1bd8f5a658bb212d1b63624f4f881",
+    "file": "data/test-00001-of-00002.parquet",
+    "row_index": 2407
+  },
+  "base_code": [
+    {
+      "path": "numpydoc/docscrape.py",
+      "repository": "numpy/numpydoc",
+      "base_commit": "fd17df0c96e107f7550b91e2680e76d2be796e0c",
+      "git_blob_sha": "77de401ba6a1c9c8fecd12c908adb2c87e7edafd",
+      "full_content_sha256": "e3e8c2fc9c0f54c23d6bab36e58e293e58460453949f1091901ccf2b56614ad6",
+      "source_url": "https://github.com/numpy/numpydoc/blob/fd17df0c96e107f7550b91e2680e76d2be796e0c/numpydoc/docscrape.py",
+      "spans": [
+        {
+          "start_line": 278,
+          "end_line": 289,
+          "text": "    def _parse_see_also(self, content):\n        \"\"\"\n        func_name : Descriptive text\n            continued text\n        another_func_name : Descriptive text\n        func_name1, func_name2, :meth:`func_name`, func_name3\n\n        \"\"\"\n\n        items = []\n\n        def parse_item_name(text):\n",
+          "sha256": "f79e1075d4c432b7b17afc858411a0721c7fa7a78a4bc497736aebd36a3519e8"
+        },
+        {
+          "start_line": 298,
+          "end_line": 329,
+          "text": "        rest = []\n        for line in content:\n            if not line.strip():\n                continue\n\n            line_match = self._line_rgx.match(line)\n            description = None\n            if line_match:\n                description = line_match.group('desc')\n                if line_match.group('trailing') and description:\n                    self._error_location(\n                        'Unexpected comma or period after function list at index %d of '\n                        'line \"%s\"' % (line_match.end('trailing'), line),\n                        error=False)\n            if not description and line.startswith(' '):\n                rest.append(line.strip())\n            elif line_match:\n                funcs = []\n                text = line_match.group('allfuncs')\n                while True:\n                    if not text.strip():\n                        break\n                    name, role, match_end = parse_item_name(text)\n                    funcs.append((name, role))\n                    text = text[match_end:].strip()\n                    if text and text[0] == ',':\n                        text = text[1:].strip()\n                rest = list(filter(None, [description]))\n                items.append((funcs, rest))\n            else:\n                raise ParseError(\"%s is not a item name\" % line)\n        return items\n",
+          "sha256": "db158aecfc2eafb790d5edbf9748a8d9e101373363edff14cc392ec104d2c0ed"
+        },
+        {
+          "start_line": 380,
+          "end_line": 407,
+          "text": "        has_yields = 'Yields' in section_names\n        # We could do more tests, but we are not. Arbitrarily.\n        if has_returns and has_yields:\n            msg = 'Docstring contains both a Returns and Yields section.'\n            raise ValueError(msg)\n        if not has_yields and 'Receives' in section_names:\n            msg = 'Docstring contains a Receives section but not Yields.'\n            raise ValueError(msg)\n\n        for (section, content) in sections:\n            if not section.startswith('..'):\n                section = (s.capitalize() for s in section.split(' '))\n                section = ' '.join(section)\n                if self.get(section):\n                    self._error_location(\"The section %s appears twice in  %s\"\n                            % (section, '\\n'.join(self._doc._str)))\n\n            if section in ('Parameters', 'Other Parameters', 'Attributes',\n                           'Methods'):\n                self[section] = self._parse_param_list(content)\n            elif section in ('Returns', 'Yields', 'Raises', 'Warns', 'Receives'):\n                self[section] = self._parse_param_list(\n                    content, single_element_is_type=True)\n            elif section.startswith('.. index::'):\n                self['index'] = self._parse_index(section, content)\n            elif section == 'See Also':\n                self['See Also'] = self._parse_see_also(content)\n            else:\n",
+          "sha256": "233a7236a1932bd20fc08a6b3d26050587594e578df84709b55d63d6a25fdd3a"
+        }
+      ]
+    }
+  ],
+  "observation_kind": "researcher_read_of_pinned_pre_patch_code",
+  "worker_initial_inspection_performed": false,
+  "restorable_worker_snapshot": null,
+  "target_trajectory_loaded": false,
+  "gold_patch_or_hidden_tests_loaded": false
+}

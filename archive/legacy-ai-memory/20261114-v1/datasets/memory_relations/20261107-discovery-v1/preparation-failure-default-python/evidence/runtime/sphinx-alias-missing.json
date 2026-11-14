@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-07T10:29:32.005178+00:00",
+  "model_api_calls": 0,
+  "specification": {
+    "probe_id": "sphinx-alias-missing",
+    "context_task": "sphinx-doc__sphinx-8627",
+    "mechanism": "namespace_resolution",
+    "fixture": {
+      "annotation": "missing",
+      "namespace_present": false
+    },
+    "program": "import types\nfrom sphinx.util.typing import get_type_hints\nclass Example:pass\nExample.__annotations__={'value':'Alias'}\nnamespace={}\nannotations=get_type_hints(Example,globalns=namespace)\nvalue=annotations['value']\nresult={'value_repr':repr(value),'resolved_to_str_type':value is str,'returned_unresolved_string':isinstance(value,str)}\n"
+  },
+  "public_context_file": "datasets/memory_relations/20261107-discovery-v1/evidence/public-code/sphinx-doc__sphinx-8627.json",
+  "image_id": "sha256:04021b2c427e043e32f595a6de6c91e0f575eec3b23fbe50a42fc7c9249f0498",
+  "executed_program_sha256": "6ad523e2ad4c5195c2f8188d038917ad036a07f6b294c15e6673481907c96343",
+  "observed": {
+    "exception_type": "ModuleNotFoundError",
+    "kind": "exception",
+    "message": "No module named 'docutils'",
+    "traceback": "Traceback (most recent call last):\n  File \"<string>\", line 4, in <module>\n  File \"/testbed/sphinx/util/__init__.py\", line 35, in <module>\n    from sphinx.util import smartypants  # noqa\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/testbed/sphinx/util/smartypants.py\", line 31, in <module>\n    from docutils.utils import smartquotes\nModuleNotFoundError: No module named 'docutils'\n"
+  },
+  "execution": {
+    "returncode": 0,
+    "stdout": "MEMORY_RELATION_RESULT:{\"exception_type\": \"ModuleNotFoundError\", \"kind\": \"exception\", \"message\": \"No module named 'docutils'\", \"traceback\": \"Traceback (most recent call last):\\n  File \\\"<string>\\\", line 4, in <module>\\n  File \\\"/testbed/sphinx/util/__init__.py\\\", line 35, in <module>\\n    from sphinx.util import smartypants  # noqa\\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \\\"/testbed/sphinx/util/smartypants.py\\\", line 31, in <module>\\n    from docutils.utils import smartquotes\\nModuleNotFoundError: No module named 'docutils'\\n\"}\n",
+    "stderr": "",
+    "seconds": 0.5120181049860548,
+    "image_id": "sha256:04021b2c427e043e32f595a6de6c91e0f575eec3b23fbe50a42fc7c9249f0498",
+    "resources": {
+      "cpus": 1,
+      "memory": "1g",
+      "network": "none",
+      "root_filesystem": "read-only"
+    }
+  },
+  "interpretation": "Controlled mechanism probe. Expected validation exceptions are observed outcomes, not infrastructure failures. Shell success is not treated as semantic success. No actor or memory policy was evaluated."
+}

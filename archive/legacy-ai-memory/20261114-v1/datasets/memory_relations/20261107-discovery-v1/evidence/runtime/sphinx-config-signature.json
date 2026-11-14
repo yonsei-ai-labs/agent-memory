@@ -1,0 +1,39 @@
+{
+  "at": "2026-11-07T10:31:05.240515+00:00",
+  "model_api_calls": 0,
+  "specification": {
+    "probe_id": "sphinx-config-signature",
+    "context_task": "sphinx-doc__sphinx-8627",
+    "mechanism": "configuration_guard",
+    "fixture": {
+      "autodoc_typehints": "signature"
+    },
+    "interpreter": "/opt/miniconda3/envs/testbed/bin/python",
+    "program": "import inspect\nfrom sphinx.util.inspect import stringify_signature\ndef example(value:int)->str:return str(value)\nsetting='signature'\nshow=setting not in ('none','description')\noutput=stringify_signature(inspect.signature(example),show_annotation=show)\nresult={'output':output,'suppression_guard_active':not show}\n"
+  },
+  "public_context_file": "datasets/memory_relations/20261107-discovery-v1/evidence/public-code/sphinx-doc__sphinx-8627.json",
+  "image_id": "sha256:04021b2c427e043e32f595a6de6c91e0f575eec3b23fbe50a42fc7c9249f0498",
+  "executed_program_sha256": "587322dd9557c28a0241f36b2486b78af84f47b154d65ed099000fd7db138a6b",
+  "observed": {
+    "kind": "returned",
+    "result": {
+      "output": "(value: int) -> str",
+      "suppression_guard_active": false
+    }
+  },
+  "execution": {
+    "returncode": 0,
+    "stdout": "MEMORY_RELATION_RESULT:{\"kind\": \"returned\", \"result\": {\"output\": \"(value: int) -> str\", \"suppression_guard_active\": false}}\n",
+    "stderr": "",
+    "seconds": 0.7419353539880831,
+    "image_id": "sha256:04021b2c427e043e32f595a6de6c91e0f575eec3b23fbe50a42fc7c9249f0498",
+    "interpreter": "/opt/miniconda3/envs/testbed/bin/python",
+    "resources": {
+      "cpus": 1,
+      "memory": "1g",
+      "network": "none",
+      "root_filesystem": "read-only"
+    }
+  },
+  "interpretation": "Controlled mechanism probe. Expected validation exceptions are observed outcomes, not infrastructure failures. Shell success is not treated as semantic success. No actor or memory policy was evaluated."
+}

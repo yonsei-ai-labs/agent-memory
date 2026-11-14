@@ -1,0 +1,108 @@
+{
+  "at": "2026-11-07T03:47:49.536080+00:00",
+  "model_calls": 0,
+  "existing_completed_indices": [
+    {
+      "index": "docs/reports/data/framing-smoke-20261105/artifact-index.json",
+      "entries": 104,
+      "mismatches": []
+    },
+    {
+      "index": "docs/reports/data/new-content-transfer-20261105/artifact-index.json",
+      "entries": 296,
+      "mismatches": []
+    },
+    {
+      "index": "docs/reports/data/memory-content-analysis-20261106/artifact-index.json",
+      "entries": 11,
+      "mismatches": []
+    },
+    {
+      "index": "docs/reports/data/component-feasibility-20261105/artifact-index.json",
+      "entries": 65,
+      "mismatches": []
+    },
+    {
+      "index": "docs/reports/data/prescription-validation-20261107/artifact-index.json",
+      "entries": 926,
+      "mismatches": []
+    },
+    {
+      "index": "docs/reports/data/prescription-replication-20261107/artifact-index.json",
+      "entries": 302,
+      "mismatches": []
+    },
+    {
+      "index": "docs/reports/data/literature-revisit-20261107/artifact-index.json",
+      "entries": 11,
+      "mismatches": []
+    }
+  ],
+  "existing_index_entries_verified": 1715,
+  "global_records": 278,
+  "global_export_sha256": {
+    "runs.json": "0271d6f77e6231593c764a9aa8c9c10c969601adc3b8ad4dbe71f26f52b0214e",
+    "runs.csv": "aecab9b24dfcabb72eeb31ab4e5e2a358d24007c6c66b3b3dca68e87cae2a935"
+  },
+  "exact_ablation_restoration": {
+    "variants": 9,
+    "process_units": 3,
+    "original_summary_preserved": true
+  },
+  "synthetic_calculations_verified": true,
+  "tool_error_outcome_counts": [
+    {
+      "delivered_success": false,
+      "observed_tool_error": false,
+      "runs": 2
+    },
+    {
+      "delivered_success": false,
+      "observed_tool_error": true,
+      "runs": 31
+    },
+    {
+      "delivered_success": true,
+      "observed_tool_error": true,
+      "runs": 14
+    },
+    {
+      "delivered_success": true,
+      "observed_tool_error": false,
+      "runs": 1
+    }
+  ],
+  "local_links": [
+    {
+      "document": "docs/ai-memory-intervention-study-plan-2026-11-07.md",
+      "target": "ai-memory-literature-revisit-2026-11-07.md",
+      "exists": true
+    },
+    {
+      "document": "docs/ai-memory-intervention-study-plan-2026-11-07.md",
+      "target": "design-data/component-intervention-20261107/tool-error-outcome-crosscheck.json",
+      "exists": true
+    },
+    {
+      "document": "docs/ai-memory-intervention-study-plan-2026-11-07.md",
+      "target": "design-data/component-intervention-20261107/ablation-example.json",
+      "exists": true
+    },
+    {
+      "document": "docs/ai-memory-intervention-study-plan-2026-11-07.md",
+      "target": "design-data/component-intervention-20261107/README.md",
+      "exists": true
+    },
+    {
+      "document": "docs/design-data/component-intervention-20261107/README.md",
+      "target": "../../ai-memory-intervention-study-plan-2026-11-07.md",
+      "exists": true
+    }
+  ],
+  "python_syntax": "ok",
+  "limitations": [
+    "Design-only data; no new experimental effect has been observed.",
+    "The external review raw-file and test totals were not rechecked here.",
+    "The older workspace-review live-file index is not asserted unchanged."
+  ]
+}

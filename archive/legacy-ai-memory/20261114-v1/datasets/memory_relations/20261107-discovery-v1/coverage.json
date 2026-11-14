@@ -1,0 +1,110 @@
+{
+  "at": "2026-11-07T10:59:57.282249+00:00",
+  "model_api_calls": 0,
+  "neural_training_runs": 0,
+  "relation_rows": 74,
+  "known_relation_rows": 62,
+  "counter_memory_controls": 5,
+  "missing_evidence_views": 7,
+  "source_experiences": 10,
+  "repositories": [
+    "django/django",
+    "pvlib/pvlib-python",
+    "pytest-dev/pytest",
+    "scikit-learn/scikit-learn",
+    "sphinx-doc/sphinx",
+    "sympy/sympy"
+  ],
+  "context_tasks": 14,
+  "label_counts": {
+    "contradicted": 32,
+    "supported": 30,
+    "not_established": 12
+  },
+  "by_facet": {
+    "canonical_module_change": {
+      "supported": 1,
+      "contradicted": 2
+    },
+    "config_guard": {
+      "supported": 2,
+      "contradicted": 1,
+      "not_established": 1
+    },
+    "container_representation": {
+      "contradicted": 1,
+      "supported": 1,
+      "not_established": 1
+    },
+    "dimension_normalization_guard": {
+      "supported": 1,
+      "contradicted": 2,
+      "not_established": 2
+    },
+    "helper_availability": {
+      "contradicted": 2,
+      "supported": 2
+    },
+    "initialization_prerequisites": {
+      "contradicted": 2,
+      "supported": 1,
+      "not_established": 1
+    },
+    "keyword_compatibility": {
+      "supported": 2,
+      "contradicted": 2,
+      "not_established": 1
+    },
+    "legacy_alias_identity": {
+      "supported": 3
+    },
+    "lookup_resolution": {
+      "supported": 2,
+      "contradicted": 1,
+      "not_established": 1
+    },
+    "memory_target_family": {
+      "supported": 4,
+      "contradicted": 4
+    },
+    "namespace_reuse": {
+      "contradicted": 1,
+      "supported": 2
+    },
+    "numeric_guard_scope": {
+      "supported": 2,
+      "contradicted": 2,
+      "not_established": 1
+    },
+    "output_contract_change": {
+      "contradicted": 1
+    },
+    "shared_implementation_scope": {
+      "supported": 4,
+      "contradicted": 2,
+      "not_established": 1
+    },
+    "source_observation_transfer": {
+      "contradicted": 1,
+      "supported": 1
+    },
+    "source_path_reorganization": {
+      "contradicted": 2
+    },
+    "validation_before_shortcut": {
+      "supported": 1,
+      "contradicted": 4,
+      "not_established": 2
+    },
+    "versioned_api_availability": {
+      "supported": 1,
+      "contradicted": 2,
+      "not_established": 1
+    }
+  },
+  "transfer_candidates": 38,
+  "unique_source_target_pairs": 19,
+  "source_provenance_diagnostics": 20,
+  "actual_memory_utility_labels": 0,
+  "interpretation": "Discovery corpus. Controlled fixtures,public-code relations,counter-memory and missing-evidence views are distinct strata. Rows do not equal independent experiences; all source families were already present in the project. No new actor run or gain/harm label is produced."
+}

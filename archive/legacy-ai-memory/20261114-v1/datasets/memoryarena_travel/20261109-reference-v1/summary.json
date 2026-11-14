@@ -1,0 +1,116 @@
+{
+  "status": "frozen_before_training",
+  "source_sha256": "2f955d444f6f3ad3c5da2064359ab19f8fc1f90621ff9d00723a450a009c3732",
+  "dataset_revision": "da1a37c8b19280e18627ca01cf368195a5e1d92e",
+  "history_mode": "public_reference_history",
+  "official_benchmark_score": false,
+  "utility_labels": 0,
+  "labels": [
+    "reuse_reference",
+    "comparison_reference",
+    "not_referenced"
+  ],
+  "base_plan_groups": {
+    "test": 8,
+    "train": 30,
+    "dev": 7
+  },
+  "query_counts": {
+    "dev": 940,
+    "test": 1153,
+    "train": 4288
+  },
+  "pair_counts": {
+    "dev": 5640,
+    "test": 6918,
+    "train": 25728
+  },
+  "train_dev_annotation_counts": {
+    "train": {
+      "relation": {
+        "reuse_reference": 1236,
+        "comparison_reference": 3052
+      },
+      "slot": {
+        "breakfast": 935,
+        "accommodation": 1554,
+        "lunch": 835,
+        "dinner": 964
+      },
+      "different_target_and_reference_day": 2300
+    },
+    "dev": {
+      "relation": {
+        "reuse_reference": 289,
+        "comparison_reference": 651
+      },
+      "slot": {
+        "accommodation": 358,
+        "lunch": 157,
+        "dinner": 248,
+        "breakfast": 177
+      },
+      "different_target_and_reference_day": 472
+    }
+  },
+  "exclusions": [
+    {
+      "split": "dev",
+      "reason": "ambiguous_or_missing_reference_slot",
+      "count": 1
+    },
+    {
+      "split": "dev",
+      "reason": "no_unique_explicit_prior_person",
+      "count": 769
+    },
+    {
+      "split": "dev",
+      "reason": "uncovered_reference_relation",
+      "count": 68
+    },
+    {
+      "split": "test",
+      "reason": "ambiguous_or_missing_reference_slot",
+      "count": 1
+    },
+    {
+      "split": "test",
+      "reason": "multiple_mentions_of_person",
+      "count": 2
+    },
+    {
+      "split": "test",
+      "reason": "no_unique_explicit_prior_person",
+      "count": 961
+    },
+    {
+      "split": "test",
+      "reason": "uncovered_reference_relation",
+      "count": 79
+    },
+    {
+      "split": "train",
+      "reason": "ambiguous_or_missing_reference_slot",
+      "count": 1
+    },
+    {
+      "split": "train",
+      "reason": "multiple_mentions_of_person",
+      "count": 5
+    },
+    {
+      "split": "train",
+      "reason": "no_unique_explicit_prior_person",
+      "count": 3664
+    },
+    {
+      "split": "train",
+      "reason": "uncovered_reference_relation",
+      "count": 290
+    }
+  ],
+  "generator_sha256": "66962538fe59e78be03d3091efda40077e0245dfffdb3635d7e2ce3c7d615a83",
+  "reviewed_queries": 50,
+  "independent_annotation": false
+}

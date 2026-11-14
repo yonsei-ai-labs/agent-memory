@@ -1,0 +1,39 @@
+{
+  "experiment": "memory-need-20261111-v1",
+  "model_id": "microsoft/harrier-oss-v1-0.6b",
+  "revision": "f9b9dc8d367d443f2479d27aa5d8d2850c0774ee",
+  "new_train_families": 24,
+  "splits_per_duration": {
+    "train": 4,
+    "dev": 2,
+    "confirmation": 2
+  },
+  "seeds": [
+    731,
+    1729
+  ],
+  "arms": [
+    "goal",
+    "state"
+  ],
+  "epochs": 8,
+  "checkpoints": [
+    2,
+    4,
+    8
+  ],
+  "head_lr": 0.001,
+  "adapter_lr": 0.0001,
+  "state_batch_size": 4,
+  "microbatch_size": 8,
+  "train_candidates": 16,
+  "candidate_k": 32,
+  "threshold": 0.5,
+  "max_input_tokens": 2048,
+  "training_budget_seconds": 5400,
+  "gpu_memory_fraction": 0.5,
+  "minimum_free_gib": 7,
+  "supervision": "balanced per-state cross entropy for source-grounded needed-now labels; no worker-success labels",
+  "checkpoint_selection": "dev exact required set; then evidence recall; then fewer extra records; then earlier epoch",
+  "confirmation_selection": "Both seeds and both arms; no selection using confirmation labels or worker results"
+}

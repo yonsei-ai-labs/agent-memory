@@ -1,0 +1,20 @@
+case_id,selection_challenges,reason
+pyfilesystem-474-ftp-boundary,S1,같은 저장소이나 FTP 파싱과 예외 생성자 인자 문제는 다름
+webob-332-nullable-name,S1,같은 파일이나 IPv6 구분자와 None 이름 디코딩은 다름
+tabulate-151-visible-width,S1|S4,행 구분선과 폭 계산은 다르며 기존 형식으로 요구가 충족되는지도 미정
+numpydoc-283-section-registration,S1|S3,등록과 들여쓰기 해석은 다르고 기존 등록 코드와 본문의 수정 제안도 확인됨
+wheel-641-soabi,S1|S4,ABI 계산과 출력 스트림은 다르며 로그 handler 스트림은 미확인
+fsspec-1699-scheme,S1|S2,비동기 위임과 scheme 등록은 다르고 현재 별칭 정책도 과거 시도와 다름
+responses-673-exception,S1|S3,헤더 우선순위와 예외 위치는 다르며 과거 예외 처리가 현재 코드에 있음
+jsonargparse-625-callable,S1,callable 분기와 list 내부 dataclass 검증을 구분해야 함
+pyupgrade-890-keyword,S1,같은 문자열 재작성이나 keyword 경계와 format 필드 해석은 다름
+pyflakes-765-special-name,S1|S3,used의 타입 계약과 특별한 이름의 허용 범위는 다르며 과거 처리가 존재함
+deprecation-47-docstring,S1|S4,날짜 비교와 문서 들여쓰기는 다르며 날짜 표현 계약도 미정
+structlog-675-context,S1|S3,None 비교와 문맥 손실은 다르며 과거 문맥 캡처가 이미 구현됨
+numpydoc-172-stage-boundary,S5,등록 처방을 복사하기보다 파싱과 렌더링 사이의 보존 여부를 진단하는 후보
+fsspec-1452-local-versus-uri,S2|S3|S5,실제 scheme 인식과 로컬 파일 오인식의 경계가 다르고 본문에도 관련 단서가 있음
+pyupgrade-195-malformed-format,S1,문자열이라는 공통 단서와 실제 format 문법 오류 단계를 구분해야 함
+pyupgrade-707-cross-repo-scope,S5,특별한 이름 허용 처방을 복사하지 않고 중첩 스코프 비교 원리를 옮길 후보
+pyflakes-754-forward-annotation,S2|S5,특별한 런타임 이름의 허용 조건과 forward annotation의 평가 시점이 다름
+structlog-478-filtered-call,S1|S3,문맥 복사와 필터 분기의 인자 계약은 다르며 과거 처리는 이미 구현됨
+structlog-675-cross-repo-nullable,S3|S5,None 보존 원리를 옮길 후보지만 현재 본문이 None 검사를 직접 요청함

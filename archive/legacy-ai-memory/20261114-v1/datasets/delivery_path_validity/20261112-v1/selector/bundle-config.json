@@ -1,0 +1,56 @@
+{
+ "base_files": {
+  "added_tokens.json": "c0284b582e14987fbd3d5a2cb2bd139084371ed9acbae488829a1c900833c680",
+  "chat_template.jinja": "87a2728cb8dc9fe424d624542f6060ec05a1d285ebbec578bb078900e33396b5",
+  "config.json": "eb15983a1c7f53ecf3d3f1880e676a56967650b0c3c4ed2387c3851133f2d7ef",
+  "merges.txt": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5",
+  "model.safetensors": "6bb124227f33c3dbf7fbbd38119b2afa8be959e93666d3c9be7142b66708b66c",
+  "special_tokens_map.json": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd",
+  "tokenizer.json": "def76fb086971c7867b829c23a26261e38d9d74e02139253b38aeb9df8b4b50a",
+  "tokenizer_config.json": "443bfa629eb16387a12edbf92a76f6a6f10b2af3b53d87ba1550adfcf45f7fa0",
+  "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+ },
+ "base_model": "microsoft/harrier-oss-v1-0.6b",
+ "base_revision": "f9b9dc8d367d443f2479d27aa5d8d2850c0774ee",
+ "batch": 4,
+ "checks": {
+  "haug": 144,
+  "hreplay": 576
+ },
+ "controller_budget_seconds": 3600,
+ "gpu": "L4",
+ "main_jobs": 25410,
+ "models": {
+  "haug": {
+   "files": {
+    "adapter/adapter_config.json": "14bf6b274d7518aed1b9754ddb9916e45e2f5f8a3f90e439465ecadcb14de0c6",
+    "adapter/adapter_model.safetensors": "6175463e818fc137a0629ffa63dc358e9fde61d44d25110431ebf4736e125fb6",
+    "head.npz": "54d1d58268c00269070590264729afd6d9422d4e136c1f8b32a9ed130ef2eeba"
+   },
+   "source": "runs/memory-partial-records-20261111-v1/training/augmented-seed731"
+  },
+  "hreplay": {
+   "files": {
+    "adapter/adapter_config.json": "7daa1279727374c598ad78e2a10a95c3f3a949cf17449afa4e8df4348e661b46",
+    "adapter/adapter_model.safetensors": "f5e65efd18ed510d92cc198bb6f988c8382aee438eadf4e4d6d84263899aaa85",
+    "head.npz": "bdee6f1f730bf06b68160a932d6022f12f08fdcd17298e47081d7a7ff5aa6436"
+   },
+   "source": "runs/memory-balanced-replay-20261112-v1/training/replay-seed731"
+  }
+ },
+ "phase": "harrier-scoring",
+ "repeat": {
+  "pairs": 100,
+  "set": "validity-pilot-9b"
+ },
+ "repeat_jobs": 200,
+ "script_budget_seconds": 2400,
+ "sets": {
+  "beam-main": 495,
+  "lme-main": 3308,
+  "validity-pilot-27b": 4271,
+  "validity-pilot-9b": 4271
+ },
+ "threshold": 0.5,
+ "version": "harrier-20261112-v1"
+}

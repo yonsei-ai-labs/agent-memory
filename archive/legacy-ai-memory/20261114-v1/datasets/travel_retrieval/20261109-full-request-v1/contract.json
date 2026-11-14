@@ -1,0 +1,21 @@
+{
+  "task": "full_request_explicit_travel_retrieval",
+  "query_instruction": "Given a current travel request, retrieve past travel records that it explicitly references. Match each referenced person, day and item, including comparison baselines.",
+  "pair_instruction": "Determine whether this past travel record is explicitly referenced anywhere in the current travel request, either to reuse a choice or as a comparison baseline. Match the referenced person, day and item; merely appearing in the travel party is not enough.",
+  "history_mode": "public_reference_history",
+  "split_unit": "identical_base_daily_plan",
+  "source_revision": "da1a37c8b19280e18627ca01cf368195a5e1d92e",
+  "source_sha256": "2f955d444f6f3ad3c5da2064359ab19f8fc1f90621ff9d00723a450a009c3732",
+  "official_benchmark_score": false,
+  "utility_labels": false,
+  "previous_test_exposure": "Same 8 base plans were already inspected in the earlier clause retrieval and utility pilots; this is a broader-condition diagnostic, not fresh-source confirmation.",
+  "relevance": "canonical explicitly referenced person/day/item records; all referenced records are positive, including multiple roles of one record",
+  "not_covered": [
+    "implicit applicability",
+    "alternative records with the same value",
+    "memory benefit or harm",
+    "real generated histories"
+  ],
+  "missing_diagnostic": "remove all canonically referenced records from the full bank without changing query text; no natural absence claim",
+  "rule_baseline": "same conservative parser as annotation, so expected perfect by construction; not independent labeling"
+}

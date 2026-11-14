@@ -1,0 +1,1086 @@
+[
+  {
+    "context_id": "numpy-sort-return",
+    "family": "numpy",
+    "worlds": [
+      "numpy-sort-return"
+    ],
+    "observation": "known",
+    "state_id": "numpy-sort-return-preserve",
+    "goal": "preserve",
+    "state_text": "Environment: numpy 2.4.6\nInput and fitted state:\ndata = np.array([[9., -2.], [7., 3.]])\nImplementation of operation(data):\n    return np.sort(data, axis=-1)\nTransformation: Sort each row in ascending order.\nCurrent requirement: Return the transformed result. The original input must remain unchanged."
+  },
+  {
+    "context_id": "numpy-sort-return",
+    "family": "numpy",
+    "worlds": [
+      "numpy-sort-return"
+    ],
+    "observation": "known",
+    "state_id": "numpy-sort-return-mutate",
+    "goal": "mutate",
+    "state_text": "Environment: numpy 2.4.6\nInput and fitted state:\ndata = np.array([[9., -2.], [7., 3.]])\nImplementation of operation(data):\n    return np.sort(data, axis=-1)\nTransformation: Sort each row in ascending order.\nCurrent requirement: Return the transformed result. The original input object itself must contain the transformed result after the call."
+  },
+  {
+    "context_id": "numpy-sort-receiver",
+    "family": "numpy",
+    "worlds": [
+      "numpy-sort-receiver"
+    ],
+    "observation": "known",
+    "state_id": "numpy-sort-receiver-preserve",
+    "goal": "preserve",
+    "state_text": "Environment: numpy 2.4.6\nInput and fitted state:\ndata = np.array([[9., -2.], [7., 3.]])\nImplementation of operation(data):\n    return data.sort(axis=-1)\nTransformation: Sort each row in ascending order.\nCurrent requirement: Return the transformed result. The original input must remain unchanged."
+  },
+  {
+    "context_id": "numpy-sort-receiver",
+    "family": "numpy",
+    "worlds": [
+      "numpy-sort-receiver"
+    ],
+    "observation": "known",
+    "state_id": "numpy-sort-receiver-mutate",
+    "goal": "mutate",
+    "state_text": "Environment: numpy 2.4.6\nInput and fitted state:\ndata = np.array([[9., -2.], [7., 3.]])\nImplementation of operation(data):\n    return data.sort(axis=-1)\nTransformation: Sort each row in ascending order.\nCurrent requirement: Return the transformed result. The original input object itself must contain the transformed result after the call."
+  },
+  {
+    "context_id": "numpy-replace-nan-false",
+    "family": "numpy",
+    "worlds": [
+      "numpy-replace-nan-false"
+    ],
+    "observation": "known",
+    "state_id": "numpy-replace-nan-false-preserve",
+    "goal": "preserve",
+    "state_text": "Environment: numpy 2.4.6\nInput and fitted state:\ndata = np.array([np.nan, -4., 8., np.nan])\nImplementation of operation(data):\n    return np.nan_to_num(data, copy=False, nan=0.)\nTransformation: Replace NaN with zero, preserving the other values.\nCurrent requirement: Return the transformed result. The original input must remain unchanged."
+  },
+  {
+    "context_id": "numpy-replace-nan-false",
+    "family": "numpy",
+    "worlds": [
+      "numpy-replace-nan-false"
+    ],
+    "observation": "known",
+    "state_id": "numpy-replace-nan-false-mutate",
+    "goal": "mutate",
+    "state_text": "Environment: numpy 2.4.6\nInput and fitted state:\ndata = np.array([np.nan, -4., 8., np.nan])\nImplementation of operation(data):\n    return np.nan_to_num(data, copy=False, nan=0.)\nTransformation: Replace NaN with zero, preserving the other values.\nCurrent requirement: Return the transformed result. The original input object itself must contain the transformed result after the call."
+  },
+  {
+    "context_id": "numpy-replace-nan-true",
+    "family": "numpy",
+    "worlds": [
+      "numpy-replace-nan-true"
+    ],
+    "observation": "known",
+    "state_id": "numpy-replace-nan-true-preserve",
+    "goal": "preserve",
+    "state_text": "Environment: numpy 2.4.6\nInput and fitted state:\ndata = np.array([np.nan, -4., 8., np.nan])\nImplementation of operation(data):\n    return np.nan_to_num(data, copy=True, nan=0.)\nTransformation: Replace NaN with zero, preserving the other values.\nCurrent requirement: Return the transformed result. The original input must remain unchanged."
+  },
+  {
+    "context_id": "numpy-replace-nan-true",
+    "family": "numpy",
+    "worlds": [
+      "numpy-replace-nan-true"
+    ],
+    "observation": "known",
+    "state_id": "numpy-replace-nan-true-mutate",
+    "goal": "mutate",
+    "state_text": "Environment: numpy 2.4.6\nInput and fitted state:\ndata = np.array([np.nan, -4., 8., np.nan])\nImplementation of operation(data):\n    return np.nan_to_num(data, copy=True, nan=0.)\nTransformation: Replace NaN with zero, preserving the other values.\nCurrent requirement: Return the transformed result. The original input object itself must contain the transformed result after the call."
+  },
+  {
+    "context_id": "numpy-round-return",
+    "family": "numpy",
+    "worlds": [
+      "numpy-round-return"
+    ],
+    "observation": "known",
+    "state_id": "numpy-round-return-preserve",
+    "goal": "preserve",
+    "state_text": "Environment: numpy 2.4.6\nInput and fitted state:\ndata = np.array([-1.2, 3.7])\nImplementation of operation(data):\n    return np.round(data, decimals=0)\nTransformation: Round values to the nearest integer.\nCurrent requirement: Return the transformed result. The original input must remain unchanged."
+  },
+  {
+    "context_id": "numpy-round-return",
+    "family": "numpy",
+    "worlds": [
+      "numpy-round-return"
+    ],
+    "observation": "known",
+    "state_id": "numpy-round-return-mutate",
+    "goal": "mutate",
+    "state_text": "Environment: numpy 2.4.6\nInput and fitted state:\ndata = np.array([-1.2, 3.7])\nImplementation of operation(data):\n    return np.round(data, decimals=0)\nTransformation: Round values to the nearest integer.\nCurrent requirement: Return the transformed result. The original input object itself must contain the transformed result after the call."
+  },
+  {
+    "context_id": "numpy-round-out",
+    "family": "numpy",
+    "worlds": [
+      "numpy-round-out"
+    ],
+    "observation": "known",
+    "state_id": "numpy-round-out-preserve",
+    "goal": "preserve",
+    "state_text": "Environment: numpy 2.4.6\nInput and fitted state:\ndata = np.array([-1.2, 3.7])\nImplementation of operation(data):\n    return np.round(data, decimals=0, out=data)\nTransformation: Round values to the nearest integer.\nCurrent requirement: Return the transformed result. The original input must remain unchanged."
+  },
+  {
+    "context_id": "numpy-round-out",
+    "family": "numpy",
+    "worlds": [
+      "numpy-round-out"
+    ],
+    "observation": "known",
+    "state_id": "numpy-round-out-mutate",
+    "goal": "mutate",
+    "state_text": "Environment: numpy 2.4.6\nInput and fitted state:\ndata = np.array([-1.2, 3.7])\nImplementation of operation(data):\n    return np.round(data, decimals=0, out=data)\nTransformation: Round values to the nearest integer.\nCurrent requirement: Return the transformed result. The original input object itself must contain the transformed result after the call."
+  },
+  {
+    "context_id": "pandas-sort-false",
+    "family": "pandas",
+    "worlds": [
+      "pandas-sort-false"
+    ],
+    "observation": "known",
+    "state_id": "pandas-sort-false-preserve",
+    "goal": "preserve",
+    "state_text": "Environment: pandas 3.1.0\nInput and fitted state:\ndata = pd.DataFrame({'value': [4, 2, 3], 'extra': [-2, -3, -4]})\nImplementation of operation(data):\n    return data.sort_values('value', inplace=False)\nTransformation: Order rows by value ascending.\nCurrent requirement: Return the transformed result. The original input must remain unchanged."
+  },
+  {
+    "context_id": "pandas-sort-false",
+    "family": "pandas",
+    "worlds": [
+      "pandas-sort-false"
+    ],
+    "observation": "known",
+    "state_id": "pandas-sort-false-mutate",
+    "goal": "mutate",
+    "state_text": "Environment: pandas 3.1.0\nInput and fitted state:\ndata = pd.DataFrame({'value': [4, 2, 3], 'extra': [-2, -3, -4]})\nImplementation of operation(data):\n    return data.sort_values('value', inplace=False)\nTransformation: Order rows by value ascending.\nCurrent requirement: Return the transformed result. The original input object itself must contain the transformed result after the call."
+  },
+  {
+    "context_id": "pandas-drop-false",
+    "family": "pandas",
+    "worlds": [
+      "pandas-drop-false"
+    ],
+    "observation": "known",
+    "state_id": "pandas-drop-false-preserve",
+    "goal": "preserve",
+    "state_text": "Environment: pandas 3.1.0\nInput and fitted state:\ndata = pd.DataFrame({'value': [4, 2, 3], 'extra': [-2, -3, -4]})\nImplementation of operation(data):\n    return data.drop(columns=['extra'], inplace=False)\nTransformation: Remove the extra column, retaining row order.\nCurrent requirement: Return the transformed result. The original input must remain unchanged."
+  },
+  {
+    "context_id": "pandas-drop-false",
+    "family": "pandas",
+    "worlds": [
+      "pandas-drop-false"
+    ],
+    "observation": "known",
+    "state_id": "pandas-drop-false-mutate",
+    "goal": "mutate",
+    "state_text": "Environment: pandas 3.1.0\nInput and fitted state:\ndata = pd.DataFrame({'value': [4, 2, 3], 'extra': [-2, -3, -4]})\nImplementation of operation(data):\n    return data.drop(columns=['extra'], inplace=False)\nTransformation: Remove the extra column, retaining row order.\nCurrent requirement: Return the transformed result. The original input object itself must contain the transformed result after the call."
+  },
+  {
+    "context_id": "pandas-fill-false",
+    "family": "pandas",
+    "worlds": [
+      "pandas-fill-false"
+    ],
+    "observation": "known",
+    "state_id": "pandas-fill-false-preserve",
+    "goal": "preserve",
+    "state_text": "Environment: pandas 3.1.0\nInput and fitted state:\ndata = pd.DataFrame({'value': [-1., np.nan, 7.]})\nImplementation of operation(data):\n    return data.fillna(0., inplace=False)\nTransformation: Fill missing numeric values with zero.\nCurrent requirement: Return the transformed result. The original input must remain unchanged."
+  },
+  {
+    "context_id": "pandas-fill-false",
+    "family": "pandas",
+    "worlds": [
+      "pandas-fill-false"
+    ],
+    "observation": "known",
+    "state_id": "pandas-fill-false-mutate",
+    "goal": "mutate",
+    "state_text": "Environment: pandas 3.1.0\nInput and fitted state:\ndata = pd.DataFrame({'value': [-1., np.nan, 7.]})\nImplementation of operation(data):\n    return data.fillna(0., inplace=False)\nTransformation: Fill missing numeric values with zero.\nCurrent requirement: Return the transformed result. The original input object itself must contain the transformed result after the call."
+  },
+  {
+    "context_id": "pandas-sort-true",
+    "family": "pandas",
+    "worlds": [
+      "pandas-sort-true"
+    ],
+    "observation": "known",
+    "state_id": "pandas-sort-true-preserve",
+    "goal": "preserve",
+    "state_text": "Environment: pandas 3.1.0\nInput and fitted state:\ndata = pd.DataFrame({'value': [4, 2, 3], 'extra': [-2, -3, -4]})\nImplementation of operation(data):\n    return data.sort_values('value', inplace=True)\nTransformation: Order rows by value ascending.\nCurrent requirement: Return the transformed result. The original input must remain unchanged."
+  },
+  {
+    "context_id": "pandas-sort-true",
+    "family": "pandas",
+    "worlds": [
+      "pandas-sort-true"
+    ],
+    "observation": "known",
+    "state_id": "pandas-sort-true-mutate",
+    "goal": "mutate",
+    "state_text": "Environment: pandas 3.1.0\nInput and fitted state:\ndata = pd.DataFrame({'value': [4, 2, 3], 'extra': [-2, -3, -4]})\nImplementation of operation(data):\n    return data.sort_values('value', inplace=True)\nTransformation: Order rows by value ascending.\nCurrent requirement: Return the transformed result. The original input object itself must contain the transformed result after the call."
+  },
+  {
+    "context_id": "pandas-drop-true",
+    "family": "pandas",
+    "worlds": [
+      "pandas-drop-true"
+    ],
+    "observation": "known",
+    "state_id": "pandas-drop-true-preserve",
+    "goal": "preserve",
+    "state_text": "Environment: pandas 3.1.0\nInput and fitted state:\ndata = pd.DataFrame({'value': [4, 2, 3], 'extra': [-2, -3, -4]})\nImplementation of operation(data):\n    return data.drop(columns=['extra'], inplace=True)\nTransformation: Remove the extra column, retaining row order.\nCurrent requirement: Return the transformed result. The original input must remain unchanged."
+  },
+  {
+    "context_id": "pandas-drop-true",
+    "family": "pandas",
+    "worlds": [
+      "pandas-drop-true"
+    ],
+    "observation": "known",
+    "state_id": "pandas-drop-true-mutate",
+    "goal": "mutate",
+    "state_text": "Environment: pandas 3.1.0\nInput and fitted state:\ndata = pd.DataFrame({'value': [4, 2, 3], 'extra': [-2, -3, -4]})\nImplementation of operation(data):\n    return data.drop(columns=['extra'], inplace=True)\nTransformation: Remove the extra column, retaining row order.\nCurrent requirement: Return the transformed result. The original input object itself must contain the transformed result after the call."
+  },
+  {
+    "context_id": "pandas-fill-true",
+    "family": "pandas",
+    "worlds": [
+      "pandas-fill-true"
+    ],
+    "observation": "known",
+    "state_id": "pandas-fill-true-preserve",
+    "goal": "preserve",
+    "state_text": "Environment: pandas 3.1.0\nInput and fitted state:\ndata = pd.DataFrame({'value': [-1., np.nan, 7.]})\nImplementation of operation(data):\n    return data.fillna(0., inplace=True)\nTransformation: Fill missing numeric values with zero.\nCurrent requirement: Return the transformed result. The original input must remain unchanged."
+  },
+  {
+    "context_id": "pandas-fill-true",
+    "family": "pandas",
+    "worlds": [
+      "pandas-fill-true"
+    ],
+    "observation": "known",
+    "state_id": "pandas-fill-true-mutate",
+    "goal": "mutate",
+    "state_text": "Environment: pandas 3.1.0\nInput and fitted state:\ndata = pd.DataFrame({'value': [-1., np.nan, 7.]})\nImplementation of operation(data):\n    return data.fillna(0., inplace=True)\nTransformation: Fill missing numeric values with zero.\nCurrent requirement: Return the transformed result. The original input object itself must contain the transformed result after the call."
+  },
+  {
+    "context_id": "pillow-resize",
+    "family": "pillow",
+    "worlds": [
+      "pillow-resize"
+    ],
+    "observation": "known",
+    "state_id": "pillow-resize-preserve",
+    "goal": "preserve",
+    "state_text": "Environment: Pillow 13.0.0\nInput and fitted state:\ndata = Image.new('RGB', (4, 4), color=(6, 2, 1))\nImplementation of operation(data):\n    return data.resize((2, 2), resample=Image.Resampling.NEAREST)\nTransformation: Produce a two by two image with the same solid color.\nCurrent requirement: Return the transformed result. The original input must remain unchanged."
+  },
+  {
+    "context_id": "pillow-resize",
+    "family": "pillow",
+    "worlds": [
+      "pillow-resize"
+    ],
+    "observation": "known",
+    "state_id": "pillow-resize-mutate",
+    "goal": "mutate",
+    "state_text": "Environment: Pillow 13.0.0\nInput and fitted state:\ndata = Image.new('RGB', (4, 4), color=(6, 2, 1))\nImplementation of operation(data):\n    return data.resize((2, 2), resample=Image.Resampling.NEAREST)\nTransformation: Produce a two by two image with the same solid color.\nCurrent requirement: Return the transformed result. The original input object itself must contain the transformed result after the call."
+  },
+  {
+    "context_id": "pillow-thumbnail",
+    "family": "pillow",
+    "worlds": [
+      "pillow-thumbnail"
+    ],
+    "observation": "known",
+    "state_id": "pillow-thumbnail-preserve",
+    "goal": "preserve",
+    "state_text": "Environment: Pillow 13.0.0\nInput and fitted state:\ndata = Image.new('RGB', (4, 4), color=(6, 2, 1))\nImplementation of operation(data):\n    return data.thumbnail((2, 2), resample=Image.Resampling.NEAREST)\nTransformation: Produce a two by two image with the same solid color.\nCurrent requirement: Return the transformed result. The original input must remain unchanged."
+  },
+  {
+    "context_id": "pillow-thumbnail",
+    "family": "pillow",
+    "worlds": [
+      "pillow-thumbnail"
+    ],
+    "observation": "known",
+    "state_id": "pillow-thumbnail-mutate",
+    "goal": "mutate",
+    "state_text": "Environment: Pillow 13.0.0\nInput and fitted state:\ndata = Image.new('RGB', (4, 4), color=(6, 2, 1))\nImplementation of operation(data):\n    return data.thumbnail((2, 2), resample=Image.Resampling.NEAREST)\nTransformation: Produce a two by two image with the same solid color.\nCurrent requirement: Return the transformed result. The original input object itself must contain the transformed result after the call."
+  },
+  {
+    "context_id": "pillow-crop",
+    "family": "pillow",
+    "worlds": [
+      "pillow-crop"
+    ],
+    "observation": "known",
+    "state_id": "pillow-crop-preserve",
+    "goal": "preserve",
+    "state_text": "Environment: Pillow 13.0.0\nInput and fitted state:\ndata = Image.new('RGB', (4, 4), color=(6, 2, 1))\nImplementation of operation(data):\n    return data.crop((0, 0, 2, 2))\nTransformation: Produce the upper-left two by two crop.\nCurrent requirement: Return the transformed result. The original input must remain unchanged."
+  },
+  {
+    "context_id": "pillow-crop",
+    "family": "pillow",
+    "worlds": [
+      "pillow-crop"
+    ],
+    "observation": "known",
+    "state_id": "pillow-crop-mutate",
+    "goal": "mutate",
+    "state_text": "Environment: Pillow 13.0.0\nInput and fitted state:\ndata = Image.new('RGB', (4, 4), color=(6, 2, 1))\nImplementation of operation(data):\n    return data.crop((0, 0, 2, 2))\nTransformation: Produce the upper-left two by two crop.\nCurrent requirement: Return the transformed result. The original input object itself must contain the transformed result after the call."
+  },
+  {
+    "context_id": "pillow-paste",
+    "family": "pillow",
+    "worlds": [
+      "pillow-paste"
+    ],
+    "observation": "known",
+    "state_id": "pillow-paste-preserve",
+    "goal": "preserve",
+    "state_text": "Environment: Pillow 13.0.0\nInput and fitted state:\ndata = Image.new('RGB', (4, 4), color=(6, 2, 1))\nImplementation of operation(data):\n    return data.paste((9, 8, 7), (0, 0, 4, 4))\nTransformation: Replace all pixels with the specified new color.\nCurrent requirement: Return the transformed result. The original input must remain unchanged."
+  },
+  {
+    "context_id": "pillow-paste",
+    "family": "pillow",
+    "worlds": [
+      "pillow-paste"
+    ],
+    "observation": "known",
+    "state_id": "pillow-paste-mutate",
+    "goal": "mutate",
+    "state_text": "Environment: Pillow 13.0.0\nInput and fitted state:\ndata = Image.new('RGB', (4, 4), color=(6, 2, 1))\nImplementation of operation(data):\n    return data.paste((9, 8, 7), (0, 0, 4, 4))\nTransformation: Replace all pixels with the specified new color.\nCurrent requirement: Return the transformed result. The original input object itself must contain the transformed result after the call."
+  },
+  {
+    "context_id": "scipy-sorted-indices",
+    "family": "scipy",
+    "worlds": [
+      "scipy-sorted-indices"
+    ],
+    "observation": "known",
+    "state_id": "scipy-sorted-indices-preserve",
+    "goal": "preserve",
+    "state_text": "Environment: scipy 1.17.1\nInput and fitted state:\ndata = sp.csr_matrix((np.array([8., -2., 5.]), np.array([2, 0, 1]), np.array([0, 3])), shape=(1, 3))\nImplementation of operation(data):\n    return data.sorted_indices()\nTransformation: Sort sparse column indices without changing matrix entries.\nCurrent requirement: Return the transformed result. The original input must remain unchanged."
+  },
+  {
+    "context_id": "scipy-sorted-indices",
+    "family": "scipy",
+    "worlds": [
+      "scipy-sorted-indices"
+    ],
+    "observation": "known",
+    "state_id": "scipy-sorted-indices-mutate",
+    "goal": "mutate",
+    "state_text": "Environment: scipy 1.17.1\nInput and fitted state:\ndata = sp.csr_matrix((np.array([8., -2., 5.]), np.array([2, 0, 1]), np.array([0, 3])), shape=(1, 3))\nImplementation of operation(data):\n    return data.sorted_indices()\nTransformation: Sort sparse column indices without changing matrix entries.\nCurrent requirement: Return the transformed result. The original input object itself must contain the transformed result after the call."
+  },
+  {
+    "context_id": "scipy-sort-indices",
+    "family": "scipy",
+    "worlds": [
+      "scipy-sort-indices"
+    ],
+    "observation": "known",
+    "state_id": "scipy-sort-indices-preserve",
+    "goal": "preserve",
+    "state_text": "Environment: scipy 1.17.1\nInput and fitted state:\ndata = sp.csr_matrix((np.array([8., -2., 5.]), np.array([2, 0, 1]), np.array([0, 3])), shape=(1, 3))\nImplementation of operation(data):\n    return data.sort_indices()\nTransformation: Sort sparse column indices without changing matrix entries.\nCurrent requirement: Return the transformed result. The original input must remain unchanged."
+  },
+  {
+    "context_id": "scipy-sort-indices",
+    "family": "scipy",
+    "worlds": [
+      "scipy-sort-indices"
+    ],
+    "observation": "known",
+    "state_id": "scipy-sort-indices-mutate",
+    "goal": "mutate",
+    "state_text": "Environment: scipy 1.17.1\nInput and fitted state:\ndata = sp.csr_matrix((np.array([8., -2., 5.]), np.array([2, 0, 1]), np.array([0, 3])), shape=(1, 3))\nImplementation of operation(data):\n    return data.sort_indices()\nTransformation: Sort sparse column indices without changing matrix entries.\nCurrent requirement: Return the transformed result. The original input object itself must contain the transformed result after the call."
+  },
+  {
+    "context_id": "scipy-multiply",
+    "family": "scipy",
+    "worlds": [
+      "scipy-multiply"
+    ],
+    "observation": "known",
+    "state_id": "scipy-multiply-preserve",
+    "goal": "preserve",
+    "state_text": "Environment: scipy 1.17.1\nInput and fitted state:\ndata = sp.csr_matrix(np.array([[-1., 4.]]))\nImplementation of operation(data):\n    return data.multiply(2).tocsr()\nTransformation: Double every matrix value.\nCurrent requirement: Return the transformed result. The original input must remain unchanged."
+  },
+  {
+    "context_id": "scipy-multiply",
+    "family": "scipy",
+    "worlds": [
+      "scipy-multiply"
+    ],
+    "observation": "known",
+    "state_id": "scipy-multiply-mutate",
+    "goal": "mutate",
+    "state_text": "Environment: scipy 1.17.1\nInput and fitted state:\ndata = sp.csr_matrix(np.array([[-1., 4.]]))\nImplementation of operation(data):\n    return data.multiply(2).tocsr()\nTransformation: Double every matrix value.\nCurrent requirement: Return the transformed result. The original input object itself must contain the transformed result after the call."
+  },
+  {
+    "context_id": "scipy-setdiag",
+    "family": "scipy",
+    "worlds": [
+      "scipy-setdiag"
+    ],
+    "observation": "known",
+    "state_id": "scipy-setdiag-preserve",
+    "goal": "preserve",
+    "state_text": "Environment: scipy 1.17.1\nInput and fitted state:\ndata = sp.csr_matrix(np.array([[8., -2.], [7., 9.]]))\nImplementation of operation(data):\n    return data.setdiag([5., 6.])\nTransformation: Replace diagonal entries with five and six.\nCurrent requirement: Return the transformed result. The original input must remain unchanged."
+  },
+  {
+    "context_id": "scipy-setdiag",
+    "family": "scipy",
+    "worlds": [
+      "scipy-setdiag"
+    ],
+    "observation": "known",
+    "state_id": "scipy-setdiag-mutate",
+    "goal": "mutate",
+    "state_text": "Environment: scipy 1.17.1\nInput and fitted state:\ndata = sp.csr_matrix(np.array([[8., -2.], [7., 9.]]))\nImplementation of operation(data):\n    return data.setdiag([5., 6.])\nTransformation: Replace diagonal entries with five and six.\nCurrent requirement: Return the transformed result. The original input object itself must contain the transformed result after the call."
+  },
+  {
+    "context_id": "networkx-relabel-false",
+    "family": "networkx",
+    "worlds": [
+      "networkx-relabel-false"
+    ],
+    "observation": "known",
+    "state_id": "networkx-relabel-false-preserve",
+    "goal": "preserve",
+    "state_text": "Environment: networkx 3.6.1\nInput and fitted state:\ndata = nx.DiGraph([(0, 2), (2, 3)])\nImplementation of operation(data):\n    return nx.relabel_nodes(data, {0: 10}, copy=False)\nTransformation: Rename node zero to ten, retaining directed edges.\nCurrent requirement: Return the transformed result. The original input must remain unchanged."
+  },
+  {
+    "context_id": "networkx-relabel-false",
+    "family": "networkx",
+    "worlds": [
+      "networkx-relabel-false"
+    ],
+    "observation": "known",
+    "state_id": "networkx-relabel-false-mutate",
+    "goal": "mutate",
+    "state_text": "Environment: networkx 3.6.1\nInput and fitted state:\ndata = nx.DiGraph([(0, 2), (2, 3)])\nImplementation of operation(data):\n    return nx.relabel_nodes(data, {0: 10}, copy=False)\nTransformation: Rename node zero to ten, retaining directed edges.\nCurrent requirement: Return the transformed result. The original input object itself must contain the transformed result after the call."
+  },
+  {
+    "context_id": "networkx-relabel-true",
+    "family": "networkx",
+    "worlds": [
+      "networkx-relabel-true"
+    ],
+    "observation": "known",
+    "state_id": "networkx-relabel-true-preserve",
+    "goal": "preserve",
+    "state_text": "Environment: networkx 3.6.1\nInput and fitted state:\ndata = nx.DiGraph([(0, 2), (2, 3)])\nImplementation of operation(data):\n    return nx.relabel_nodes(data, {0: 10}, copy=True)\nTransformation: Rename node zero to ten, retaining directed edges.\nCurrent requirement: Return the transformed result. The original input must remain unchanged."
+  },
+  {
+    "context_id": "networkx-relabel-true",
+    "family": "networkx",
+    "worlds": [
+      "networkx-relabel-true"
+    ],
+    "observation": "known",
+    "state_id": "networkx-relabel-true-mutate",
+    "goal": "mutate",
+    "state_text": "Environment: networkx 3.6.1\nInput and fitted state:\ndata = nx.DiGraph([(0, 2), (2, 3)])\nImplementation of operation(data):\n    return nx.relabel_nodes(data, {0: 10}, copy=True)\nTransformation: Rename node zero to ten, retaining directed edges.\nCurrent requirement: Return the transformed result. The original input object itself must contain the transformed result after the call."
+  },
+  {
+    "context_id": "networkx-reverse",
+    "family": "networkx",
+    "worlds": [
+      "networkx-reverse"
+    ],
+    "observation": "known",
+    "state_id": "networkx-reverse-preserve",
+    "goal": "preserve",
+    "state_text": "Environment: networkx 3.6.1\nInput and fitted state:\ndata = nx.DiGraph([(0, 2), (2, 3)])\nImplementation of operation(data):\n    return data.reverse(copy=True)\nTransformation: Reverse all directed edges.\nCurrent requirement: Return the transformed result. The original input must remain unchanged."
+  },
+  {
+    "context_id": "networkx-reverse",
+    "family": "networkx",
+    "worlds": [
+      "networkx-reverse"
+    ],
+    "observation": "known",
+    "state_id": "networkx-reverse-mutate",
+    "goal": "mutate",
+    "state_text": "Environment: networkx 3.6.1\nInput and fitted state:\ndata = nx.DiGraph([(0, 2), (2, 3)])\nImplementation of operation(data):\n    return data.reverse(copy=True)\nTransformation: Reverse all directed edges.\nCurrent requirement: Return the transformed result. The original input object itself must contain the transformed result after the call."
+  },
+  {
+    "context_id": "networkx-add-edge",
+    "family": "networkx",
+    "worlds": [
+      "networkx-add-edge"
+    ],
+    "observation": "known",
+    "state_id": "networkx-add-edge-preserve",
+    "goal": "preserve",
+    "state_text": "Environment: networkx 3.6.1\nInput and fitted state:\ndata = nx.DiGraph([(0, 1), (1, 3)])\nImplementation of operation(data):\n    return data.add_edge(0, 2)\nTransformation: Add the directed edge zero to two.\nCurrent requirement: Return the transformed result. The original input must remain unchanged."
+  },
+  {
+    "context_id": "networkx-add-edge",
+    "family": "networkx",
+    "worlds": [
+      "networkx-add-edge"
+    ],
+    "observation": "known",
+    "state_id": "networkx-add-edge-mutate",
+    "goal": "mutate",
+    "state_text": "Environment: networkx 3.6.1\nInput and fitted state:\ndata = nx.DiGraph([(0, 1), (1, 3)])\nImplementation of operation(data):\n    return data.add_edge(0, 2)\nTransformation: Add the directed edge zero to two.\nCurrent requirement: Return the transformed result. The original input object itself must contain the transformed result after the call."
+  },
+  {
+    "context_id": "sklearn-scale-float-false",
+    "family": "sklearn",
+    "worlds": [
+      "sklearn-scale-float-false"
+    ],
+    "observation": "known",
+    "state_id": "sklearn-scale-float-false-preserve",
+    "goal": "preserve",
+    "state_text": "Environment: scikit-learn 1.8.0\nInput and fitted state:\ndata = np.array([[-1, -2], [7, 14]], dtype=float)\nmodel = StandardScaler().fit(np.array([[0., 0.], [2., 4.]]))\nImplementation of operation(data):\n    return model.transform(data, copy=False)\nTransformation: Apply the already fitted scaler; return a floating transformed array.\nCurrent requirement: Return the transformed result. The original input must remain unchanged."
+  },
+  {
+    "context_id": "sklearn-scale-float-false",
+    "family": "sklearn",
+    "worlds": [
+      "sklearn-scale-float-false"
+    ],
+    "observation": "known",
+    "state_id": "sklearn-scale-float-false-mutate",
+    "goal": "mutate",
+    "state_text": "Environment: scikit-learn 1.8.0\nInput and fitted state:\ndata = np.array([[-1, -2], [7, 14]], dtype=float)\nmodel = StandardScaler().fit(np.array([[0., 0.], [2., 4.]]))\nImplementation of operation(data):\n    return model.transform(data, copy=False)\nTransformation: Apply the already fitted scaler; return a floating transformed array.\nCurrent requirement: Return the transformed result. The original input object itself must contain the transformed result after the call."
+  },
+  {
+    "context_id": "sklearn-scale-float-true",
+    "family": "sklearn",
+    "worlds": [
+      "sklearn-scale-float-true"
+    ],
+    "observation": "known",
+    "state_id": "sklearn-scale-float-true-preserve",
+    "goal": "preserve",
+    "state_text": "Environment: scikit-learn 1.8.0\nInput and fitted state:\ndata = np.array([[-1, -2], [7, 14]], dtype=float)\nmodel = StandardScaler().fit(np.array([[0., 0.], [2., 4.]]))\nImplementation of operation(data):\n    return model.transform(data, copy=True)\nTransformation: Apply the already fitted scaler; return a floating transformed array.\nCurrent requirement: Return the transformed result. The original input must remain unchanged."
+  },
+  {
+    "context_id": "sklearn-scale-float-true",
+    "family": "sklearn",
+    "worlds": [
+      "sklearn-scale-float-true"
+    ],
+    "observation": "known",
+    "state_id": "sklearn-scale-float-true-mutate",
+    "goal": "mutate",
+    "state_text": "Environment: scikit-learn 1.8.0\nInput and fitted state:\ndata = np.array([[-1, -2], [7, 14]], dtype=float)\nmodel = StandardScaler().fit(np.array([[0., 0.], [2., 4.]]))\nImplementation of operation(data):\n    return model.transform(data, copy=True)\nTransformation: Apply the already fitted scaler; return a floating transformed array.\nCurrent requirement: Return the transformed result. The original input object itself must contain the transformed result after the call."
+  },
+  {
+    "context_id": "sklearn-scale-int-false",
+    "family": "sklearn",
+    "worlds": [
+      "sklearn-scale-int-false"
+    ],
+    "observation": "known",
+    "state_id": "sklearn-scale-int-false-preserve",
+    "goal": "preserve",
+    "state_text": "Environment: scikit-learn 1.8.0\nInput and fitted state:\ndata = np.array([[-1, -2], [7, 14]], dtype=int)\nmodel = StandardScaler().fit(np.array([[0., 0.], [2., 4.]]))\nImplementation of operation(data):\n    return model.transform(data, copy=False)\nTransformation: Apply the already fitted scaler; return a floating transformed array.\nCurrent requirement: Return the transformed result. The original input must remain unchanged."
+  },
+  {
+    "context_id": "sklearn-scale-int-false",
+    "family": "sklearn",
+    "worlds": [
+      "sklearn-scale-int-false"
+    ],
+    "observation": "known",
+    "state_id": "sklearn-scale-int-false-mutate",
+    "goal": "mutate",
+    "state_text": "Environment: scikit-learn 1.8.0\nInput and fitted state:\ndata = np.array([[-1, -2], [7, 14]], dtype=int)\nmodel = StandardScaler().fit(np.array([[0., 0.], [2., 4.]]))\nImplementation of operation(data):\n    return model.transform(data, copy=False)\nTransformation: Apply the already fitted scaler; return a floating transformed array.\nCurrent requirement: Return the transformed result. The original input object itself must contain the transformed result after the call."
+  },
+  {
+    "context_id": "sklearn-scale-int-true",
+    "family": "sklearn",
+    "worlds": [
+      "sklearn-scale-int-true"
+    ],
+    "observation": "known",
+    "state_id": "sklearn-scale-int-true-preserve",
+    "goal": "preserve",
+    "state_text": "Environment: scikit-learn 1.8.0\nInput and fitted state:\ndata = np.array([[-1, -2], [7, 14]], dtype=int)\nmodel = StandardScaler().fit(np.array([[0., 0.], [2., 4.]]))\nImplementation of operation(data):\n    return model.transform(data, copy=True)\nTransformation: Apply the already fitted scaler; return a floating transformed array.\nCurrent requirement: Return the transformed result. The original input must remain unchanged."
+  },
+  {
+    "context_id": "sklearn-scale-int-true",
+    "family": "sklearn",
+    "worlds": [
+      "sklearn-scale-int-true"
+    ],
+    "observation": "known",
+    "state_id": "sklearn-scale-int-true-mutate",
+    "goal": "mutate",
+    "state_text": "Environment: scikit-learn 1.8.0\nInput and fitted state:\ndata = np.array([[-1, -2], [7, 14]], dtype=int)\nmodel = StandardScaler().fit(np.array([[0., 0.], [2., 4.]]))\nImplementation of operation(data):\n    return model.transform(data, copy=True)\nTransformation: Apply the already fitted scaler; return a floating transformed array.\nCurrent requirement: Return the transformed result. The original input object itself must contain the transformed result after the call."
+  },
+  {
+    "context_id": "sklearn-normalize-false",
+    "family": "sklearn",
+    "worlds": [
+      "sklearn-normalize-false"
+    ],
+    "observation": "known",
+    "state_id": "sklearn-normalize-false-preserve",
+    "goal": "preserve",
+    "state_text": "Environment: scikit-learn 1.8.0\nInput and fitted state:\ndata = np.array([[3., 1.], [2., 6.]])\nmodel = Normalizer(norm=\"l1\").fit(np.array([[1., 1.]]))\nImplementation of operation(data):\n    return model.transform(data, copy=False)\nTransformation: Normalize each row to unit L1 norm.\nCurrent requirement: Return the transformed result. The original input must remain unchanged."
+  },
+  {
+    "context_id": "sklearn-normalize-false",
+    "family": "sklearn",
+    "worlds": [
+      "sklearn-normalize-false"
+    ],
+    "observation": "known",
+    "state_id": "sklearn-normalize-false-mutate",
+    "goal": "mutate",
+    "state_text": "Environment: scikit-learn 1.8.0\nInput and fitted state:\ndata = np.array([[3., 1.], [2., 6.]])\nmodel = Normalizer(norm=\"l1\").fit(np.array([[1., 1.]]))\nImplementation of operation(data):\n    return model.transform(data, copy=False)\nTransformation: Normalize each row to unit L1 norm.\nCurrent requirement: Return the transformed result. The original input object itself must contain the transformed result after the call."
+  },
+  {
+    "context_id": "sklearn-normalize-true",
+    "family": "sklearn",
+    "worlds": [
+      "sklearn-normalize-true"
+    ],
+    "observation": "known",
+    "state_id": "sklearn-normalize-true-preserve",
+    "goal": "preserve",
+    "state_text": "Environment: scikit-learn 1.8.0\nInput and fitted state:\ndata = np.array([[3., 1.], [2., 6.]])\nmodel = Normalizer(norm=\"l1\").fit(np.array([[1., 1.]]))\nImplementation of operation(data):\n    return model.transform(data, copy=True)\nTransformation: Normalize each row to unit L1 norm.\nCurrent requirement: Return the transformed result. The original input must remain unchanged."
+  },
+  {
+    "context_id": "sklearn-normalize-true",
+    "family": "sklearn",
+    "worlds": [
+      "sklearn-normalize-true"
+    ],
+    "observation": "known",
+    "state_id": "sklearn-normalize-true-mutate",
+    "goal": "mutate",
+    "state_text": "Environment: scikit-learn 1.8.0\nInput and fitted state:\ndata = np.array([[3., 1.], [2., 6.]])\nmodel = Normalizer(norm=\"l1\").fit(np.array([[1., 1.]]))\nImplementation of operation(data):\n    return model.transform(data, copy=True)\nTransformation: Normalize each row to unit L1 norm.\nCurrent requirement: Return the transformed result. The original input object itself must contain the transformed result after the call."
+  },
+  {
+    "context_id": "stdlib-sorted",
+    "family": "stdlib",
+    "worlds": [
+      "stdlib-sorted"
+    ],
+    "observation": "known",
+    "state_id": "stdlib-sorted-preserve",
+    "goal": "preserve",
+    "state_text": "Environment: python 3.11.14\nInput and fitted state:\ndata = [8, -2, 4]\nImplementation of operation(data):\n    return sorted(data)\nTransformation: Sort the numbers ascending.\nCurrent requirement: Return the transformed result. The original input must remain unchanged."
+  },
+  {
+    "context_id": "stdlib-sorted",
+    "family": "stdlib",
+    "worlds": [
+      "stdlib-sorted"
+    ],
+    "observation": "known",
+    "state_id": "stdlib-sorted-mutate",
+    "goal": "mutate",
+    "state_text": "Environment: python 3.11.14\nInput and fitted state:\ndata = [8, -2, 4]\nImplementation of operation(data):\n    return sorted(data)\nTransformation: Sort the numbers ascending.\nCurrent requirement: Return the transformed result. The original input object itself must contain the transformed result after the call."
+  },
+  {
+    "context_id": "stdlib-sort",
+    "family": "stdlib",
+    "worlds": [
+      "stdlib-sort"
+    ],
+    "observation": "known",
+    "state_id": "stdlib-sort-preserve",
+    "goal": "preserve",
+    "state_text": "Environment: python 3.11.14\nInput and fitted state:\ndata = [8, -2, 4]\nImplementation of operation(data):\n    return data.sort()\nTransformation: Sort the numbers ascending.\nCurrent requirement: Return the transformed result. The original input must remain unchanged."
+  },
+  {
+    "context_id": "stdlib-sort",
+    "family": "stdlib",
+    "worlds": [
+      "stdlib-sort"
+    ],
+    "observation": "known",
+    "state_id": "stdlib-sort-mutate",
+    "goal": "mutate",
+    "state_text": "Environment: python 3.11.14\nInput and fitted state:\ndata = [8, -2, 4]\nImplementation of operation(data):\n    return data.sort()\nTransformation: Sort the numbers ascending.\nCurrent requirement: Return the transformed result. The original input object itself must contain the transformed result after the call."
+  },
+  {
+    "context_id": "stdlib-dict-union",
+    "family": "stdlib",
+    "worlds": [
+      "stdlib-dict-union"
+    ],
+    "observation": "known",
+    "state_id": "stdlib-dict-union-preserve",
+    "goal": "preserve",
+    "state_text": "Environment: python 3.11.14\nInput and fitted state:\ndata = {'a': 7, 'c': -1}\nImplementation of operation(data):\n    return data | {'b': 2}\nTransformation: Add the b mapping while preserving the a mapping.\nCurrent requirement: Return the transformed result. The original input must remain unchanged."
+  },
+  {
+    "context_id": "stdlib-dict-union",
+    "family": "stdlib",
+    "worlds": [
+      "stdlib-dict-union"
+    ],
+    "observation": "known",
+    "state_id": "stdlib-dict-union-mutate",
+    "goal": "mutate",
+    "state_text": "Environment: python 3.11.14\nInput and fitted state:\ndata = {'a': 7, 'c': -1}\nImplementation of operation(data):\n    return data | {'b': 2}\nTransformation: Add the b mapping while preserving the a mapping.\nCurrent requirement: Return the transformed result. The original input object itself must contain the transformed result after the call."
+  },
+  {
+    "context_id": "stdlib-dict-update",
+    "family": "stdlib",
+    "worlds": [
+      "stdlib-dict-update"
+    ],
+    "observation": "known",
+    "state_id": "stdlib-dict-update-preserve",
+    "goal": "preserve",
+    "state_text": "Environment: python 3.11.14\nInput and fitted state:\ndata = {'a': 7, 'c': -1}\nImplementation of operation(data):\n    return data.update({'b': 2})\nTransformation: Add the b mapping while preserving the a mapping.\nCurrent requirement: Return the transformed result. The original input must remain unchanged."
+  },
+  {
+    "context_id": "stdlib-dict-update",
+    "family": "stdlib",
+    "worlds": [
+      "stdlib-dict-update"
+    ],
+    "observation": "known",
+    "state_id": "stdlib-dict-update-mutate",
+    "goal": "mutate",
+    "state_text": "Environment: python 3.11.14\nInput and fitted state:\ndata = {'a': 7, 'c': -1}\nImplementation of operation(data):\n    return data.update({'b': 2})\nTransformation: Add the b mapping while preserving the a mapping.\nCurrent requirement: Return the transformed result. The original input object itself must contain the transformed result after the call."
+  },
+  {
+    "context_id": "networkx-unobserved-relabel",
+    "family": "networkx",
+    "worlds": [
+      "networkx-relabel-false",
+      "networkx-relabel-true"
+    ],
+    "observation": "mode_unobserved",
+    "state_id": "networkx-unobserved-relabel-preserve",
+    "goal": "preserve",
+    "state_text": "The operation mode has not been observed. Exactly one of these implementations is in use; no other implementation is possible.\n\nPossible implementation 1:\nEnvironment: networkx 3.6.1\nInput and fitted state:\ndata = nx.DiGraph([(0, 2), (2, 3)])\nImplementation of operation(data):\n    return nx.relabel_nodes(data, {0: 10}, copy=False)\nTransformation: Rename node zero to ten, retaining directed edges.\n\nPossible implementation 2:\nEnvironment: networkx 3.6.1\nInput and fitted state:\ndata = nx.DiGraph([(0, 2), (2, 3)])\nImplementation of operation(data):\n    return nx.relabel_nodes(data, {0: 10}, copy=True)\nTransformation: Rename node zero to ten, retaining directed edges.\nCurrent requirement: Return the transformed result. The original input must remain unchanged."
+  },
+  {
+    "context_id": "networkx-unobserved-relabel",
+    "family": "networkx",
+    "worlds": [
+      "networkx-relabel-false",
+      "networkx-relabel-true"
+    ],
+    "observation": "mode_unobserved",
+    "state_id": "networkx-unobserved-relabel-mutate",
+    "goal": "mutate",
+    "state_text": "The operation mode has not been observed. Exactly one of these implementations is in use; no other implementation is possible.\n\nPossible implementation 1:\nEnvironment: networkx 3.6.1\nInput and fitted state:\ndata = nx.DiGraph([(0, 2), (2, 3)])\nImplementation of operation(data):\n    return nx.relabel_nodes(data, {0: 10}, copy=False)\nTransformation: Rename node zero to ten, retaining directed edges.\n\nPossible implementation 2:\nEnvironment: networkx 3.6.1\nInput and fitted state:\ndata = nx.DiGraph([(0, 2), (2, 3)])\nImplementation of operation(data):\n    return nx.relabel_nodes(data, {0: 10}, copy=True)\nTransformation: Rename node zero to ten, retaining directed edges.\nCurrent requirement: Return the transformed result. The original input object itself must contain the transformed result after the call."
+  },
+  {
+    "context_id": "numpy-unobserved-replace-nan",
+    "family": "numpy",
+    "worlds": [
+      "numpy-replace-nan-false",
+      "numpy-replace-nan-true"
+    ],
+    "observation": "mode_unobserved",
+    "state_id": "numpy-unobserved-replace-nan-preserve",
+    "goal": "preserve",
+    "state_text": "The operation mode has not been observed. Exactly one of these implementations is in use; no other implementation is possible.\n\nPossible implementation 1:\nEnvironment: numpy 2.4.6\nInput and fitted state:\ndata = np.array([np.nan, -4., 8., np.nan])\nImplementation of operation(data):\n    return np.nan_to_num(data, copy=False, nan=0.)\nTransformation: Replace NaN with zero, preserving the other values.\n\nPossible implementation 2:\nEnvironment: numpy 2.4.6\nInput and fitted state:\ndata = np.array([np.nan, -4., 8., np.nan])\nImplementation of operation(data):\n    return np.nan_to_num(data, copy=True, nan=0.)\nTransformation: Replace NaN with zero, preserving the other values.\nCurrent requirement: Return the transformed result. The original input must remain unchanged."
+  },
+  {
+    "context_id": "numpy-unobserved-replace-nan",
+    "family": "numpy",
+    "worlds": [
+      "numpy-replace-nan-false",
+      "numpy-replace-nan-true"
+    ],
+    "observation": "mode_unobserved",
+    "state_id": "numpy-unobserved-replace-nan-mutate",
+    "goal": "mutate",
+    "state_text": "The operation mode has not been observed. Exactly one of these implementations is in use; no other implementation is possible.\n\nPossible implementation 1:\nEnvironment: numpy 2.4.6\nInput and fitted state:\ndata = np.array([np.nan, -4., 8., np.nan])\nImplementation of operation(data):\n    return np.nan_to_num(data, copy=False, nan=0.)\nTransformation: Replace NaN with zero, preserving the other values.\n\nPossible implementation 2:\nEnvironment: numpy 2.4.6\nInput and fitted state:\ndata = np.array([np.nan, -4., 8., np.nan])\nImplementation of operation(data):\n    return np.nan_to_num(data, copy=True, nan=0.)\nTransformation: Replace NaN with zero, preserving the other values.\nCurrent requirement: Return the transformed result. The original input object itself must contain the transformed result after the call."
+  },
+  {
+    "context_id": "numpy-unobserved-round",
+    "family": "numpy",
+    "worlds": [
+      "numpy-round-out",
+      "numpy-round-return"
+    ],
+    "observation": "mode_unobserved",
+    "state_id": "numpy-unobserved-round-preserve",
+    "goal": "preserve",
+    "state_text": "The operation mode has not been observed. Exactly one of these implementations is in use; no other implementation is possible.\n\nPossible implementation 1:\nEnvironment: numpy 2.4.6\nInput and fitted state:\ndata = np.array([-1.2, 3.7])\nImplementation of operation(data):\n    return np.round(data, decimals=0, out=data)\nTransformation: Round values to the nearest integer.\n\nPossible implementation 2:\nEnvironment: numpy 2.4.6\nInput and fitted state:\ndata = np.array([-1.2, 3.7])\nImplementation of operation(data):\n    return np.round(data, decimals=0)\nTransformation: Round values to the nearest integer.\nCurrent requirement: Return the transformed result. The original input must remain unchanged."
+  },
+  {
+    "context_id": "numpy-unobserved-round",
+    "family": "numpy",
+    "worlds": [
+      "numpy-round-out",
+      "numpy-round-return"
+    ],
+    "observation": "mode_unobserved",
+    "state_id": "numpy-unobserved-round-mutate",
+    "goal": "mutate",
+    "state_text": "The operation mode has not been observed. Exactly one of these implementations is in use; no other implementation is possible.\n\nPossible implementation 1:\nEnvironment: numpy 2.4.6\nInput and fitted state:\ndata = np.array([-1.2, 3.7])\nImplementation of operation(data):\n    return np.round(data, decimals=0, out=data)\nTransformation: Round values to the nearest integer.\n\nPossible implementation 2:\nEnvironment: numpy 2.4.6\nInput and fitted state:\ndata = np.array([-1.2, 3.7])\nImplementation of operation(data):\n    return np.round(data, decimals=0)\nTransformation: Round values to the nearest integer.\nCurrent requirement: Return the transformed result. The original input object itself must contain the transformed result after the call."
+  },
+  {
+    "context_id": "numpy-unobserved-sort",
+    "family": "numpy",
+    "worlds": [
+      "numpy-sort-receiver",
+      "numpy-sort-return"
+    ],
+    "observation": "mode_unobserved",
+    "state_id": "numpy-unobserved-sort-preserve",
+    "goal": "preserve",
+    "state_text": "The operation mode has not been observed. Exactly one of these implementations is in use; no other implementation is possible.\n\nPossible implementation 1:\nEnvironment: numpy 2.4.6\nInput and fitted state:\ndata = np.array([[9., -2.], [7., 3.]])\nImplementation of operation(data):\n    return data.sort(axis=-1)\nTransformation: Sort each row in ascending order.\n\nPossible implementation 2:\nEnvironment: numpy 2.4.6\nInput and fitted state:\ndata = np.array([[9., -2.], [7., 3.]])\nImplementation of operation(data):\n    return np.sort(data, axis=-1)\nTransformation: Sort each row in ascending order.\nCurrent requirement: Return the transformed result. The original input must remain unchanged."
+  },
+  {
+    "context_id": "numpy-unobserved-sort",
+    "family": "numpy",
+    "worlds": [
+      "numpy-sort-receiver",
+      "numpy-sort-return"
+    ],
+    "observation": "mode_unobserved",
+    "state_id": "numpy-unobserved-sort-mutate",
+    "goal": "mutate",
+    "state_text": "The operation mode has not been observed. Exactly one of these implementations is in use; no other implementation is possible.\n\nPossible implementation 1:\nEnvironment: numpy 2.4.6\nInput and fitted state:\ndata = np.array([[9., -2.], [7., 3.]])\nImplementation of operation(data):\n    return data.sort(axis=-1)\nTransformation: Sort each row in ascending order.\n\nPossible implementation 2:\nEnvironment: numpy 2.4.6\nInput and fitted state:\ndata = np.array([[9., -2.], [7., 3.]])\nImplementation of operation(data):\n    return np.sort(data, axis=-1)\nTransformation: Sort each row in ascending order.\nCurrent requirement: Return the transformed result. The original input object itself must contain the transformed result after the call."
+  },
+  {
+    "context_id": "pandas-unobserved-drop",
+    "family": "pandas",
+    "worlds": [
+      "pandas-drop-false",
+      "pandas-drop-true"
+    ],
+    "observation": "mode_unobserved",
+    "state_id": "pandas-unobserved-drop-preserve",
+    "goal": "preserve",
+    "state_text": "The operation mode has not been observed. Exactly one of these implementations is in use; no other implementation is possible.\n\nPossible implementation 1:\nEnvironment: pandas 3.1.0\nInput and fitted state:\ndata = pd.DataFrame({'value': [4, 2, 3], 'extra': [-2, -3, -4]})\nImplementation of operation(data):\n    return data.drop(columns=['extra'], inplace=False)\nTransformation: Remove the extra column, retaining row order.\n\nPossible implementation 2:\nEnvironment: pandas 3.1.0\nInput and fitted state:\ndata = pd.DataFrame({'value': [4, 2, 3], 'extra': [-2, -3, -4]})\nImplementation of operation(data):\n    return data.drop(columns=['extra'], inplace=True)\nTransformation: Remove the extra column, retaining row order.\nCurrent requirement: Return the transformed result. The original input must remain unchanged."
+  },
+  {
+    "context_id": "pandas-unobserved-drop",
+    "family": "pandas",
+    "worlds": [
+      "pandas-drop-false",
+      "pandas-drop-true"
+    ],
+    "observation": "mode_unobserved",
+    "state_id": "pandas-unobserved-drop-mutate",
+    "goal": "mutate",
+    "state_text": "The operation mode has not been observed. Exactly one of these implementations is in use; no other implementation is possible.\n\nPossible implementation 1:\nEnvironment: pandas 3.1.0\nInput and fitted state:\ndata = pd.DataFrame({'value': [4, 2, 3], 'extra': [-2, -3, -4]})\nImplementation of operation(data):\n    return data.drop(columns=['extra'], inplace=False)\nTransformation: Remove the extra column, retaining row order.\n\nPossible implementation 2:\nEnvironment: pandas 3.1.0\nInput and fitted state:\ndata = pd.DataFrame({'value': [4, 2, 3], 'extra': [-2, -3, -4]})\nImplementation of operation(data):\n    return data.drop(columns=['extra'], inplace=True)\nTransformation: Remove the extra column, retaining row order.\nCurrent requirement: Return the transformed result. The original input object itself must contain the transformed result after the call."
+  },
+  {
+    "context_id": "pandas-unobserved-fill",
+    "family": "pandas",
+    "worlds": [
+      "pandas-fill-false",
+      "pandas-fill-true"
+    ],
+    "observation": "mode_unobserved",
+    "state_id": "pandas-unobserved-fill-preserve",
+    "goal": "preserve",
+    "state_text": "The operation mode has not been observed. Exactly one of these implementations is in use; no other implementation is possible.\n\nPossible implementation 1:\nEnvironment: pandas 3.1.0\nInput and fitted state:\ndata = pd.DataFrame({'value': [-1., np.nan, 7.]})\nImplementation of operation(data):\n    return data.fillna(0., inplace=False)\nTransformation: Fill missing numeric values with zero.\n\nPossible implementation 2:\nEnvironment: pandas 3.1.0\nInput and fitted state:\ndata = pd.DataFrame({'value': [-1., np.nan, 7.]})\nImplementation of operation(data):\n    return data.fillna(0., inplace=True)\nTransformation: Fill missing numeric values with zero.\nCurrent requirement: Return the transformed result. The original input must remain unchanged."
+  },
+  {
+    "context_id": "pandas-unobserved-fill",
+    "family": "pandas",
+    "worlds": [
+      "pandas-fill-false",
+      "pandas-fill-true"
+    ],
+    "observation": "mode_unobserved",
+    "state_id": "pandas-unobserved-fill-mutate",
+    "goal": "mutate",
+    "state_text": "The operation mode has not been observed. Exactly one of these implementations is in use; no other implementation is possible.\n\nPossible implementation 1:\nEnvironment: pandas 3.1.0\nInput and fitted state:\ndata = pd.DataFrame({'value': [-1., np.nan, 7.]})\nImplementation of operation(data):\n    return data.fillna(0., inplace=False)\nTransformation: Fill missing numeric values with zero.\n\nPossible implementation 2:\nEnvironment: pandas 3.1.0\nInput and fitted state:\ndata = pd.DataFrame({'value': [-1., np.nan, 7.]})\nImplementation of operation(data):\n    return data.fillna(0., inplace=True)\nTransformation: Fill missing numeric values with zero.\nCurrent requirement: Return the transformed result. The original input object itself must contain the transformed result after the call."
+  },
+  {
+    "context_id": "pandas-unobserved-sort",
+    "family": "pandas",
+    "worlds": [
+      "pandas-sort-false",
+      "pandas-sort-true"
+    ],
+    "observation": "mode_unobserved",
+    "state_id": "pandas-unobserved-sort-preserve",
+    "goal": "preserve",
+    "state_text": "The operation mode has not been observed. Exactly one of these implementations is in use; no other implementation is possible.\n\nPossible implementation 1:\nEnvironment: pandas 3.1.0\nInput and fitted state:\ndata = pd.DataFrame({'value': [4, 2, 3], 'extra': [-2, -3, -4]})\nImplementation of operation(data):\n    return data.sort_values('value', inplace=False)\nTransformation: Order rows by value ascending.\n\nPossible implementation 2:\nEnvironment: pandas 3.1.0\nInput and fitted state:\ndata = pd.DataFrame({'value': [4, 2, 3], 'extra': [-2, -3, -4]})\nImplementation of operation(data):\n    return data.sort_values('value', inplace=True)\nTransformation: Order rows by value ascending.\nCurrent requirement: Return the transformed result. The original input must remain unchanged."
+  },
+  {
+    "context_id": "pandas-unobserved-sort",
+    "family": "pandas",
+    "worlds": [
+      "pandas-sort-false",
+      "pandas-sort-true"
+    ],
+    "observation": "mode_unobserved",
+    "state_id": "pandas-unobserved-sort-mutate",
+    "goal": "mutate",
+    "state_text": "The operation mode has not been observed. Exactly one of these implementations is in use; no other implementation is possible.\n\nPossible implementation 1:\nEnvironment: pandas 3.1.0\nInput and fitted state:\ndata = pd.DataFrame({'value': [4, 2, 3], 'extra': [-2, -3, -4]})\nImplementation of operation(data):\n    return data.sort_values('value', inplace=False)\nTransformation: Order rows by value ascending.\n\nPossible implementation 2:\nEnvironment: pandas 3.1.0\nInput and fitted state:\ndata = pd.DataFrame({'value': [4, 2, 3], 'extra': [-2, -3, -4]})\nImplementation of operation(data):\n    return data.sort_values('value', inplace=True)\nTransformation: Order rows by value ascending.\nCurrent requirement: Return the transformed result. The original input object itself must contain the transformed result after the call."
+  },
+  {
+    "context_id": "pillow-unobserved-size",
+    "family": "pillow",
+    "worlds": [
+      "pillow-resize",
+      "pillow-thumbnail"
+    ],
+    "observation": "mode_unobserved",
+    "state_id": "pillow-unobserved-size-preserve",
+    "goal": "preserve",
+    "state_text": "The operation mode has not been observed. Exactly one of these implementations is in use; no other implementation is possible.\n\nPossible implementation 1:\nEnvironment: Pillow 13.0.0\nInput and fitted state:\ndata = Image.new('RGB', (4, 4), color=(6, 2, 1))\nImplementation of operation(data):\n    return data.resize((2, 2), resample=Image.Resampling.NEAREST)\nTransformation: Produce a two by two image with the same solid color.\n\nPossible implementation 2:\nEnvironment: Pillow 13.0.0\nInput and fitted state:\ndata = Image.new('RGB', (4, 4), color=(6, 2, 1))\nImplementation of operation(data):\n    return data.thumbnail((2, 2), resample=Image.Resampling.NEAREST)\nTransformation: Produce a two by two image with the same solid color.\nCurrent requirement: Return the transformed result. The original input must remain unchanged."
+  },
+  {
+    "context_id": "pillow-unobserved-size",
+    "family": "pillow",
+    "worlds": [
+      "pillow-resize",
+      "pillow-thumbnail"
+    ],
+    "observation": "mode_unobserved",
+    "state_id": "pillow-unobserved-size-mutate",
+    "goal": "mutate",
+    "state_text": "The operation mode has not been observed. Exactly one of these implementations is in use; no other implementation is possible.\n\nPossible implementation 1:\nEnvironment: Pillow 13.0.0\nInput and fitted state:\ndata = Image.new('RGB', (4, 4), color=(6, 2, 1))\nImplementation of operation(data):\n    return data.resize((2, 2), resample=Image.Resampling.NEAREST)\nTransformation: Produce a two by two image with the same solid color.\n\nPossible implementation 2:\nEnvironment: Pillow 13.0.0\nInput and fitted state:\ndata = Image.new('RGB', (4, 4), color=(6, 2, 1))\nImplementation of operation(data):\n    return data.thumbnail((2, 2), resample=Image.Resampling.NEAREST)\nTransformation: Produce a two by two image with the same solid color.\nCurrent requirement: Return the transformed result. The original input object itself must contain the transformed result after the call."
+  },
+  {
+    "context_id": "scipy-unobserved-sort",
+    "family": "scipy",
+    "worlds": [
+      "scipy-sort-indices",
+      "scipy-sorted-indices"
+    ],
+    "observation": "mode_unobserved",
+    "state_id": "scipy-unobserved-sort-preserve",
+    "goal": "preserve",
+    "state_text": "The operation mode has not been observed. Exactly one of these implementations is in use; no other implementation is possible.\n\nPossible implementation 1:\nEnvironment: scipy 1.17.1\nInput and fitted state:\ndata = sp.csr_matrix((np.array([8., -2., 5.]), np.array([2, 0, 1]), np.array([0, 3])), shape=(1, 3))\nImplementation of operation(data):\n    return data.sort_indices()\nTransformation: Sort sparse column indices without changing matrix entries.\n\nPossible implementation 2:\nEnvironment: scipy 1.17.1\nInput and fitted state:\ndata = sp.csr_matrix((np.array([8., -2., 5.]), np.array([2, 0, 1]), np.array([0, 3])), shape=(1, 3))\nImplementation of operation(data):\n    return data.sorted_indices()\nTransformation: Sort sparse column indices without changing matrix entries.\nCurrent requirement: Return the transformed result. The original input must remain unchanged."
+  },
+  {
+    "context_id": "scipy-unobserved-sort",
+    "family": "scipy",
+    "worlds": [
+      "scipy-sort-indices",
+      "scipy-sorted-indices"
+    ],
+    "observation": "mode_unobserved",
+    "state_id": "scipy-unobserved-sort-mutate",
+    "goal": "mutate",
+    "state_text": "The operation mode has not been observed. Exactly one of these implementations is in use; no other implementation is possible.\n\nPossible implementation 1:\nEnvironment: scipy 1.17.1\nInput and fitted state:\ndata = sp.csr_matrix((np.array([8., -2., 5.]), np.array([2, 0, 1]), np.array([0, 3])), shape=(1, 3))\nImplementation of operation(data):\n    return data.sort_indices()\nTransformation: Sort sparse column indices without changing matrix entries.\n\nPossible implementation 2:\nEnvironment: scipy 1.17.1\nInput and fitted state:\ndata = sp.csr_matrix((np.array([8., -2., 5.]), np.array([2, 0, 1]), np.array([0, 3])), shape=(1, 3))\nImplementation of operation(data):\n    return data.sorted_indices()\nTransformation: Sort sparse column indices without changing matrix entries.\nCurrent requirement: Return the transformed result. The original input object itself must contain the transformed result after the call."
+  },
+  {
+    "context_id": "sklearn-unobserved-normalize",
+    "family": "sklearn",
+    "worlds": [
+      "sklearn-normalize-false",
+      "sklearn-normalize-true"
+    ],
+    "observation": "mode_unobserved",
+    "state_id": "sklearn-unobserved-normalize-preserve",
+    "goal": "preserve",
+    "state_text": "The operation mode has not been observed. Exactly one of these implementations is in use; no other implementation is possible.\n\nPossible implementation 1:\nEnvironment: scikit-learn 1.8.0\nInput and fitted state:\ndata = np.array([[3., 1.], [2., 6.]])\nmodel = Normalizer(norm=\"l1\").fit(np.array([[1., 1.]]))\nImplementation of operation(data):\n    return model.transform(data, copy=False)\nTransformation: Normalize each row to unit L1 norm.\n\nPossible implementation 2:\nEnvironment: scikit-learn 1.8.0\nInput and fitted state:\ndata = np.array([[3., 1.], [2., 6.]])\nmodel = Normalizer(norm=\"l1\").fit(np.array([[1., 1.]]))\nImplementation of operation(data):\n    return model.transform(data, copy=True)\nTransformation: Normalize each row to unit L1 norm.\nCurrent requirement: Return the transformed result. The original input must remain unchanged."
+  },
+  {
+    "context_id": "sklearn-unobserved-normalize",
+    "family": "sklearn",
+    "worlds": [
+      "sklearn-normalize-false",
+      "sklearn-normalize-true"
+    ],
+    "observation": "mode_unobserved",
+    "state_id": "sklearn-unobserved-normalize-mutate",
+    "goal": "mutate",
+    "state_text": "The operation mode has not been observed. Exactly one of these implementations is in use; no other implementation is possible.\n\nPossible implementation 1:\nEnvironment: scikit-learn 1.8.0\nInput and fitted state:\ndata = np.array([[3., 1.], [2., 6.]])\nmodel = Normalizer(norm=\"l1\").fit(np.array([[1., 1.]]))\nImplementation of operation(data):\n    return model.transform(data, copy=False)\nTransformation: Normalize each row to unit L1 norm.\n\nPossible implementation 2:\nEnvironment: scikit-learn 1.8.0\nInput and fitted state:\ndata = np.array([[3., 1.], [2., 6.]])\nmodel = Normalizer(norm=\"l1\").fit(np.array([[1., 1.]]))\nImplementation of operation(data):\n    return model.transform(data, copy=True)\nTransformation: Normalize each row to unit L1 norm.\nCurrent requirement: Return the transformed result. The original input object itself must contain the transformed result after the call."
+  },
+  {
+    "context_id": "sklearn-unobserved-scale-float",
+    "family": "sklearn",
+    "worlds": [
+      "sklearn-scale-float-false",
+      "sklearn-scale-float-true"
+    ],
+    "observation": "mode_unobserved",
+    "state_id": "sklearn-unobserved-scale-float-preserve",
+    "goal": "preserve",
+    "state_text": "The operation mode has not been observed. Exactly one of these implementations is in use; no other implementation is possible.\n\nPossible implementation 1:\nEnvironment: scikit-learn 1.8.0\nInput and fitted state:\ndata = np.array([[-1, -2], [7, 14]], dtype=float)\nmodel = StandardScaler().fit(np.array([[0., 0.], [2., 4.]]))\nImplementation of operation(data):\n    return model.transform(data, copy=False)\nTransformation: Apply the already fitted scaler; return a floating transformed array.\n\nPossible implementation 2:\nEnvironment: scikit-learn 1.8.0\nInput and fitted state:\ndata = np.array([[-1, -2], [7, 14]], dtype=float)\nmodel = StandardScaler().fit(np.array([[0., 0.], [2., 4.]]))\nImplementation of operation(data):\n    return model.transform(data, copy=True)\nTransformation: Apply the already fitted scaler; return a floating transformed array.\nCurrent requirement: Return the transformed result. The original input must remain unchanged."
+  },
+  {
+    "context_id": "sklearn-unobserved-scale-float",
+    "family": "sklearn",
+    "worlds": [
+      "sklearn-scale-float-false",
+      "sklearn-scale-float-true"
+    ],
+    "observation": "mode_unobserved",
+    "state_id": "sklearn-unobserved-scale-float-mutate",
+    "goal": "mutate",
+    "state_text": "The operation mode has not been observed. Exactly one of these implementations is in use; no other implementation is possible.\n\nPossible implementation 1:\nEnvironment: scikit-learn 1.8.0\nInput and fitted state:\ndata = np.array([[-1, -2], [7, 14]], dtype=float)\nmodel = StandardScaler().fit(np.array([[0., 0.], [2., 4.]]))\nImplementation of operation(data):\n    return model.transform(data, copy=False)\nTransformation: Apply the already fitted scaler; return a floating transformed array.\n\nPossible implementation 2:\nEnvironment: scikit-learn 1.8.0\nInput and fitted state:\ndata = np.array([[-1, -2], [7, 14]], dtype=float)\nmodel = StandardScaler().fit(np.array([[0., 0.], [2., 4.]]))\nImplementation of operation(data):\n    return model.transform(data, copy=True)\nTransformation: Apply the already fitted scaler; return a floating transformed array.\nCurrent requirement: Return the transformed result. The original input object itself must contain the transformed result after the call."
+  },
+  {
+    "context_id": "sklearn-unobserved-scale-int",
+    "family": "sklearn",
+    "worlds": [
+      "sklearn-scale-int-false",
+      "sklearn-scale-int-true"
+    ],
+    "observation": "mode_unobserved",
+    "state_id": "sklearn-unobserved-scale-int-preserve",
+    "goal": "preserve",
+    "state_text": "The operation mode has not been observed. Exactly one of these implementations is in use; no other implementation is possible.\n\nPossible implementation 1:\nEnvironment: scikit-learn 1.8.0\nInput and fitted state:\ndata = np.array([[-1, -2], [7, 14]], dtype=int)\nmodel = StandardScaler().fit(np.array([[0., 0.], [2., 4.]]))\nImplementation of operation(data):\n    return model.transform(data, copy=False)\nTransformation: Apply the already fitted scaler; return a floating transformed array.\n\nPossible implementation 2:\nEnvironment: scikit-learn 1.8.0\nInput and fitted state:\ndata = np.array([[-1, -2], [7, 14]], dtype=int)\nmodel = StandardScaler().fit(np.array([[0., 0.], [2., 4.]]))\nImplementation of operation(data):\n    return model.transform(data, copy=True)\nTransformation: Apply the already fitted scaler; return a floating transformed array.\nCurrent requirement: Return the transformed result. The original input must remain unchanged."
+  },
+  {
+    "context_id": "sklearn-unobserved-scale-int",
+    "family": "sklearn",
+    "worlds": [
+      "sklearn-scale-int-false",
+      "sklearn-scale-int-true"
+    ],
+    "observation": "mode_unobserved",
+    "state_id": "sklearn-unobserved-scale-int-mutate",
+    "goal": "mutate",
+    "state_text": "The operation mode has not been observed. Exactly one of these implementations is in use; no other implementation is possible.\n\nPossible implementation 1:\nEnvironment: scikit-learn 1.8.0\nInput and fitted state:\ndata = np.array([[-1, -2], [7, 14]], dtype=int)\nmodel = StandardScaler().fit(np.array([[0., 0.], [2., 4.]]))\nImplementation of operation(data):\n    return model.transform(data, copy=False)\nTransformation: Apply the already fitted scaler; return a floating transformed array.\n\nPossible implementation 2:\nEnvironment: scikit-learn 1.8.0\nInput and fitted state:\ndata = np.array([[-1, -2], [7, 14]], dtype=int)\nmodel = StandardScaler().fit(np.array([[0., 0.], [2., 4.]]))\nImplementation of operation(data):\n    return model.transform(data, copy=True)\nTransformation: Apply the already fitted scaler; return a floating transformed array.\nCurrent requirement: Return the transformed result. The original input object itself must contain the transformed result after the call."
+  },
+  {
+    "context_id": "stdlib-unobserved-mapping",
+    "family": "stdlib",
+    "worlds": [
+      "stdlib-dict-union",
+      "stdlib-dict-update"
+    ],
+    "observation": "mode_unobserved",
+    "state_id": "stdlib-unobserved-mapping-preserve",
+    "goal": "preserve",
+    "state_text": "The operation mode has not been observed. Exactly one of these implementations is in use; no other implementation is possible.\n\nPossible implementation 1:\nEnvironment: python 3.11.14\nInput and fitted state:\ndata = {'a': 7, 'c': -1}\nImplementation of operation(data):\n    return data | {'b': 2}\nTransformation: Add the b mapping while preserving the a mapping.\n\nPossible implementation 2:\nEnvironment: python 3.11.14\nInput and fitted state:\ndata = {'a': 7, 'c': -1}\nImplementation of operation(data):\n    return data.update({'b': 2})\nTransformation: Add the b mapping while preserving the a mapping.\nCurrent requirement: Return the transformed result. The original input must remain unchanged."
+  },
+  {
+    "context_id": "stdlib-unobserved-mapping",
+    "family": "stdlib",
+    "worlds": [
+      "stdlib-dict-union",
+      "stdlib-dict-update"
+    ],
+    "observation": "mode_unobserved",
+    "state_id": "stdlib-unobserved-mapping-mutate",
+    "goal": "mutate",
+    "state_text": "The operation mode has not been observed. Exactly one of these implementations is in use; no other implementation is possible.\n\nPossible implementation 1:\nEnvironment: python 3.11.14\nInput and fitted state:\ndata = {'a': 7, 'c': -1}\nImplementation of operation(data):\n    return data | {'b': 2}\nTransformation: Add the b mapping while preserving the a mapping.\n\nPossible implementation 2:\nEnvironment: python 3.11.14\nInput and fitted state:\ndata = {'a': 7, 'c': -1}\nImplementation of operation(data):\n    return data.update({'b': 2})\nTransformation: Add the b mapping while preserving the a mapping.\nCurrent requirement: Return the transformed result. The original input object itself must contain the transformed result after the call."
+  },
+  {
+    "context_id": "stdlib-unobserved-sort",
+    "family": "stdlib",
+    "worlds": [
+      "stdlib-sort",
+      "stdlib-sorted"
+    ],
+    "observation": "mode_unobserved",
+    "state_id": "stdlib-unobserved-sort-preserve",
+    "goal": "preserve",
+    "state_text": "The operation mode has not been observed. Exactly one of these implementations is in use; no other implementation is possible.\n\nPossible implementation 1:\nEnvironment: python 3.11.14\nInput and fitted state:\ndata = [8, -2, 4]\nImplementation of operation(data):\n    return data.sort()\nTransformation: Sort the numbers ascending.\n\nPossible implementation 2:\nEnvironment: python 3.11.14\nInput and fitted state:\ndata = [8, -2, 4]\nImplementation of operation(data):\n    return sorted(data)\nTransformation: Sort the numbers ascending.\nCurrent requirement: Return the transformed result. The original input must remain unchanged."
+  },
+  {
+    "context_id": "stdlib-unobserved-sort",
+    "family": "stdlib",
+    "worlds": [
+      "stdlib-sort",
+      "stdlib-sorted"
+    ],
+    "observation": "mode_unobserved",
+    "state_id": "stdlib-unobserved-sort-mutate",
+    "goal": "mutate",
+    "state_text": "The operation mode has not been observed. Exactly one of these implementations is in use; no other implementation is possible.\n\nPossible implementation 1:\nEnvironment: python 3.11.14\nInput and fitted state:\ndata = [8, -2, 4]\nImplementation of operation(data):\n    return data.sort()\nTransformation: Sort the numbers ascending.\n\nPossible implementation 2:\nEnvironment: python 3.11.14\nInput and fitted state:\ndata = [8, -2, 4]\nImplementation of operation(data):\n    return sorted(data)\nTransformation: Sort the numbers ascending.\nCurrent requirement: Return the transformed result. The original input object itself must contain the transformed result after the call."
+  }
+]

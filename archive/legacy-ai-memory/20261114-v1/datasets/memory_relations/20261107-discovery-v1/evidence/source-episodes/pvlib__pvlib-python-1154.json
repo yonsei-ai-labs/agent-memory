@@ -1,0 +1,61 @@
+{
+  "source_instance_id": "pvlib__pvlib-python-1154",
+  "source_run": "20261103T135629Z-3cafeecc",
+  "public_task": {
+    "instance_id": "pvlib__pvlib-python-1154",
+    "repo": "pvlib/pvlib-python",
+    "base_commit": "0b8f24c265d76320067a5ee908a57d475cd1bb24",
+    "version": "0.8",
+    "created_at": "2021-01-29T20:53:24Z",
+    "problem_statement": "pvlib.irradiance.reindl() model generates NaNs when GHI = 0\n**Describe the bug**\r\nThe reindl function should give zero sky diffuse when GHI is zero. Instead it generates NaN or Inf values due to \"term3\" having a quotient that divides by GHI.  \r\n\r\n**Expected behavior**\r\nThe reindl function should result in zero sky diffuse when GHI is zero.\r\n\r\n\npvlib.irradiance.reindl() model generates NaNs when GHI = 0\n**Describe the bug**\r\nThe reindl function should give zero sky diffuse when GHI is zero. Instead it generates NaN or Inf values due to \"term3\" having a quotient that divides by GHI.  \r\n\r\n**Expected behavior**\r\nThe reindl function should result in zero sky diffuse when GHI is zero.\r\n\r\n\n"
+  },
+  "official_resolved": true,
+  "evaluation_complete": true,
+  "focused_command_index": 11,
+  "commands": [
+    {
+      "agent_command_index": 11,
+      "jsonl_line": 14,
+      "event": {
+        "started_at": "2026-11-03T13:57:24.947898+00:00",
+        "phase": "agent",
+        "action": {
+          "command": "python -m pytest -q pvlib/tests/test_irradiance.py -k reindl --disable-warnings --maxfail=1",
+          "tool_call_id": "call_tIezBGucaPcOp5TTsruptaI4"
+        },
+        "cwd": "/testbed",
+        "outcome": "completed",
+        "output": {
+          "output": "F\n=================================== FAILURES ===================================\n_________________________________ test_reindl __________________________________\n\nirrad_data =                                    ghi         dni         dhi\n2014-06-24 00:00:00-07:00     0.000000    0.000000    0...6-24 12:00:00-07:00  1042.480315  939.954699  118.458319\n2014-06-24 18:00:00-07:00   257.207511  646.228860   62.033763\nephem_data =                            apparent_zenith  ...  equation_of_time\n2014-06-24 00:00:00-07:00       124.039086  ...     ...0.564136  ...         -2.474573\n2014-06-24 18:00:00-07:00        72.416871  ...         -2.528319\n\n[4 rows x 6 columns]\ndni_et = array([1321.16558348, 1321.16558348, 1321.16558348, 1321.16558348])\n\n    def test_reindl(irrad_data, ephem_data, dni_et):\n        result = irradiance.reindl(\n            40, 180, irrad_data['dhi'], irrad_data['dni'], irrad_data['ghi'],\n            dni_et, ephem_data['apparent_zenith'], ephem_data['azimuth'])\n        # values from matlab 1.4 code\n>       assert_allclose(result, [np.nan, 27.9412, 104.1317, 34.1663], atol=1e-4)\nE       AssertionError: \nE       Not equal to tolerance rtol=1e-07, atol=0.0001\nE       \nE       x and y nan location mismatch:\nE        x: array([  0.      ,  27.94117 , 104.131724,  34.166258])\nE        y: array([     nan,  27.9412, 104.1317,  34.1663])\n\npvlib/tests/test_irradiance.py:206: AssertionError\n=========================== short test summary info ============================\nFAILED pvlib/tests/test_irradiance.py::test_reindl - AssertionError: \n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed, 95 deselected, 2 warnings in 0.15s\n",
+          "returncode": 1,
+          "exception_info": ""
+        },
+        "finished_at": "2026-11-03T13:57:27.617588+00:00",
+        "duration_seconds": 2.6696879069986608
+      }
+    }
+  ],
+  "original_files": [
+    {
+      "path": "runs/20261103T135629Z-3cafeecc/manifest.json",
+      "sha256": "49cb083a434950c7159bc7e04ac724086113fd6696cecfd50793c69bd66039e9"
+    },
+    {
+      "path": "runs/20261103T135629Z-3cafeecc/summary.json",
+      "sha256": "a0f961d082641e63e79ae5ea1b6af12793f900cf62273cd7198ed3572fba3d20"
+    },
+    {
+      "path": "runs/20261103T135629Z-3cafeecc/task.json",
+      "sha256": "99471a27328a136e67caf105fa8dca1be300a22ff6eed20c738d9037453e929f"
+    },
+    {
+      "path": "runs/20261103T135629Z-3cafeecc/commands.jsonl",
+      "sha256": "42fa7421bc13bea14e286d69f856e0b5926033a11261b7b0591e98b4211f4a91"
+    },
+    {
+      "path": "runs/20261103T135629Z-3cafeecc/official_report.json",
+      "sha256": "14c24d9046e2e2d096002e1012e881fe9b581ee0fa1206afe2e466486790fc50"
+    }
+  ],
+  "metadata_note": "Source-local observations and official source outcome are separate. For11019 explicit failures establish unresolved status despite parser gaps; source raw manifest stays unchanged."
+}

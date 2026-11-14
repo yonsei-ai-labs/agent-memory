@@ -1,0 +1,50 @@
+[
+  {
+    "source_id": "version-source-returned",
+    "recipe": "returned",
+    "text": "Past successful experience (pandas 3.1.0):\nInput and fitted state:\ndata = pd.DataFrame({'value': [1., np.nan, 3.]})\nPast operation(data):\n    return data.fillna(0., inplace=True)\nPast requirement: Fill missing numeric values with zero. Return the transformed result. The original input object itself must contain the transformed result after the call.\nReusable procedure:\nresult = operation(data)\nreturn result\nObserved returned value: {\"type\":\"DataFrame\",\"columns\":[\"value\"],\"index\":[0,1,2],\"values\":[[1.0],[0.0],[3.0]]}\nObserved original after execution: {\"type\":\"DataFrame\",\"columns\":[\"value\"],\"index\":[0,1,2],\"values\":[[1.0],[0.0],[3.0]]}\nThe returned value and original-object requirement both passed in that past execution.",
+    "pandas_version": "3.1.0",
+    "evidence_key": [
+      "pandas-fill-true",
+      0,
+      "mutate",
+      "returned"
+    ]
+  },
+  {
+    "source_id": "version-source-receiver",
+    "recipe": "receiver",
+    "text": "Past successful experience (pandas 3.1.0):\nInput and fitted state:\ndata = pd.DataFrame({'value': [1., np.nan, 3.]})\nPast operation(data):\n    return data.fillna(0., inplace=True)\nPast requirement: Fill missing numeric values with zero. Return the transformed result. The original input object itself must contain the transformed result after the call.\nReusable procedure:\noperation(data)\nreturn data\nObserved returned value: {\"type\":\"DataFrame\",\"columns\":[\"value\"],\"index\":[0,1,2],\"values\":[[1.0],[0.0],[3.0]]}\nObserved original after execution: {\"type\":\"DataFrame\",\"columns\":[\"value\"],\"index\":[0,1,2],\"values\":[[1.0],[0.0],[3.0]]}\nThe returned value and original-object requirement both passed in that past execution.",
+    "pandas_version": "3.1.0",
+    "evidence_key": [
+      "pandas-fill-true",
+      0,
+      "mutate",
+      "receiver"
+    ]
+  },
+  {
+    "source_id": "version-source-copied_returned",
+    "recipe": "copied_returned",
+    "text": "Past successful experience (pandas 3.1.0):\nInput and fitted state:\ndata = pd.DataFrame({'value': [1., np.nan, 3.]})\nPast operation(data):\n    return data.fillna(0., inplace=True)\nPast requirement: Fill missing numeric values with zero. Return the transformed result. The original input must remain unchanged.\nReusable procedure:\nwork = copy.deepcopy(data)\nresult = operation(work)\nreturn result\nObserved returned value: {\"type\":\"DataFrame\",\"columns\":[\"value\"],\"index\":[0,1,2],\"values\":[[1.0],[0.0],[3.0]]}\nObserved original after execution: {\"type\":\"DataFrame\",\"columns\":[\"value\"],\"index\":[0,1,2],\"values\":[[1.0],[null],[3.0]]}\nThe returned value and original-object requirement both passed in that past execution.",
+    "pandas_version": "3.1.0",
+    "evidence_key": [
+      "pandas-fill-true",
+      0,
+      "preserve",
+      "copied_returned"
+    ]
+  },
+  {
+    "source_id": "version-source-copied_receiver",
+    "recipe": "copied_receiver",
+    "text": "Past successful experience (pandas 3.1.0):\nInput and fitted state:\ndata = pd.DataFrame({'value': [1., np.nan, 3.]})\nPast operation(data):\n    return data.fillna(0., inplace=True)\nPast requirement: Fill missing numeric values with zero. Return the transformed result. The original input must remain unchanged.\nReusable procedure:\nwork = copy.deepcopy(data)\noperation(work)\nreturn work\nObserved returned value: {\"type\":\"DataFrame\",\"columns\":[\"value\"],\"index\":[0,1,2],\"values\":[[1.0],[0.0],[3.0]]}\nObserved original after execution: {\"type\":\"DataFrame\",\"columns\":[\"value\"],\"index\":[0,1,2],\"values\":[[1.0],[null],[3.0]]}\nThe returned value and original-object requirement both passed in that past execution.",
+    "pandas_version": "3.1.0",
+    "evidence_key": [
+      "pandas-fill-true",
+      0,
+      "preserve",
+      "copied_receiver"
+    ]
+  }
+]

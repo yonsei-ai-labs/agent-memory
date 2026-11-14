@@ -1,0 +1,44 @@
+{
+ "status": "complete",
+ "main_calls": 25410,
+ "repeat_calls": 200,
+ "inputs_sha256": "a52e76cbd75204021e922d6e2e613c8c502b2b1d39cea3ba6892623747890289",
+ "models": {
+  "haug": {
+   "check_against_main": {
+    "pairs": 144,
+    "max_abs_diff": 0.15664851665496826,
+    "decisions_differ": 1
+   },
+   "repeat": {
+    "pairs": 100,
+    "max_abs_diff": 0.0,
+    "decisions_differ": 0
+   }
+  },
+  "hreplay": {
+   "check_against_main": {
+    "pairs": 576,
+    "max_abs_diff": 0.16599905490875244,
+    "decisions_differ": 1
+   },
+   "repeat": {
+    "pairs": 100,
+    "max_abs_diff": 0.0,
+    "decisions_differ": 0
+   }
+  }
+ },
+ "device": "NVIDIA L4",
+ "peak_allocated_bytes": 2516142592,
+ "packages": {
+  "torch": "2.14.1+cu130",
+  "transformers": "4.57.6",
+  "peft": "0.18.1",
+  "tokenizers": "0.22.2",
+  "huggingface-hub": "0.36.2",
+  "safetensors": "0.8.0",
+  "numpy": "2.4.6"
+ },
+ "elapsed_seconds": 467.80841164599997
+}

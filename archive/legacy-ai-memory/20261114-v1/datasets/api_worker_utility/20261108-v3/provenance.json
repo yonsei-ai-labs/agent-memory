@@ -1,0 +1,179 @@
+{
+  "worker_run_id": "daytime-api-worker-full-20261108-v3",
+  "config": {
+    "model_id": "Qwen/Qwen3.5-4B",
+    "revision": "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
+    "precision": "bfloat16",
+    "experiment": "api-fixed-worker-full-v3",
+    "script_budget_seconds": 3300,
+    "max_new_tokens": 512,
+    "max_input_tokens": 4096,
+    "do_sample": false,
+    "enable_thinking": false,
+    "collect_none_prefill_features": true,
+    "protocol_version": 3,
+    "hash_checkpoint_shards": true
+  },
+  "environment": {
+    "torch": "2.14.1+cu130",
+    "cuda": "13.0",
+    "gpu": "NVIDIA L4",
+    "packages": {
+      "transformers": "5.22.2",
+      "accelerate": "1.13.0",
+      "numpy": "2.4.6"
+    },
+    "source_sha256": {
+      "generate_api_worker.py": "1052051fbe20e2f476c48541d5c95827263682f1a861c19fd7ce524acdd4fd1e",
+      "prepare_api_worker.py": "fcd811a70b9002d82d9f4179d485f30e03e19eeec7d0ba95de4670980eb9e78d"
+    },
+    "model_resolved_commit": null
+  },
+  "weight_provenance": {
+    "requested_revision": "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
+    "cache_snapshot_revision": "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
+    "raw_config_sha256": "ddc63e1c717afa86c865bb5e01313d89d72bb53b97ad4a8a03ba8510c0621670",
+    "weight_index_sha256": "cf3f798ee02ba45f9622aa8892a47369ab667d0afbf154ee7c2212de42e6302d",
+    "weight_files": {
+      "model.safetensors-00001-of-00002.safetensors": {
+        "sha256": "26a93f066e1916adb13453dae5a0c707c0fbc71299ed98779571a907b8e74c61",
+        "bytes": 5329398688
+      },
+      "model.safetensors-00002-of-00002.safetensors": {
+        "sha256": "cb544bd9bfae93dc59b0f22b292f5933573854a7f9b97835c67060d7d910e188",
+        "bytes": 3990429408
+      }
+    },
+    "meaning": "Hashes of pinned local checkpoint shards used by the loader; not a hash of all in-memory tensors."
+  },
+  "original_audit": {
+    "status": "passed",
+    "generations": 964,
+    "native_predecision_states": 96,
+    "tokenization_and_decoding_recomputed": true,
+    "same_output_in_all_exact_repeats": true,
+    "repeat_checks": [
+      {
+        "job_id": "numpy-round-out-mutate--all_full-repeat-0",
+        "same_output_tokens": true
+      },
+      {
+        "job_id": "sklearn-unobserved-normalize-preserve--copied_returned_full-repeat-1",
+        "same_output_tokens": true
+      },
+      {
+        "job_id": "stdlib-unobserved-sort-mutate--receiver_full-repeat-2",
+        "same_output_tokens": true
+      },
+      {
+        "job_id": "stdlib-unobserved-sort-preserve--copied_receiver_full-repeat-3",
+        "same_output_tokens": true
+      }
+    ],
+    "runtime_stopped": true,
+    "local_gpu_used": false,
+    "encoder_forward_repeated": false,
+    "completed_transport_recovery": false,
+    "outcome_labels_in_upload": false,
+    "requested_model_revision": "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
+    "model_config_commit_field": null,
+    "weight_files_independently_hashed": true,
+    "weight_hashes_match_pinned_public_metadata": true,
+    "weight_provenance_limit": "Pinned cache snapshot and checkpoint shard hashes recorded; in-memory model tensors not independently recomputed."
+  },
+  "original_artifacts_sha256": {
+    "upload.zip": "c62e15280b98c06f48d85122eb396e34813bf1ff8510c9e8a453a39c11154c82",
+    "results.zip": "aa1d5f66135ab0ebca8e61dc3ff9df644267b9fa682690bc83b5d2f901447a66",
+    "upload-manifest.json": "616452e25fc874250cbfdb453b71b00fb022dcda78c62851212ddc25546e024b",
+    "run-status.json": "b402082dc1efd5e7a05028c290f621834e6e98eaf5bfd1774bf47f5472b58366"
+  },
+  "original_predictions_sha256": "6195e4df23c8b2ad5fd150256d1ec1ae544d36f480b9ddc8d9c08e2e0fdffe10",
+  "original_judgments_sha256": {
+    "train_dev": "46390dc5edf0358e94df19bba0b851e3176b6b0660f26b32f035c3ae9ba0da76",
+    "test": "67f26f4dbf1879532602c30158382eaa7ae7426043290b571f90987d2f98a728"
+  },
+  "judgment_summaries": {
+    "train_dev": {
+      "status": "complete",
+      "states": 68,
+      "base_generations": 680,
+      "repeat_generations": 3,
+      "allowed_splits": [
+        "train",
+        "dev"
+      ],
+      "syntax_supported_fraction": 0.986764705882353,
+      "strict_success_by_fixed_action": {
+        "all_full": 0.3382352941176471,
+        "receiver_full": 0.29411764705882354,
+        "copied_receiver_full": 0.17647058823529413,
+        "copied_returned_procedure": 0.35294117647058826,
+        "copied_receiver_procedure": 0.17647058823529413,
+        "copied_returned_full": 0.3235294117647059,
+        "receiver_procedure": 0.4411764705882353,
+        "returned_full": 0.29411764705882354,
+        "none": 0.4264705882352941,
+        "returned_procedure": 0.35294117647058826
+      },
+      "per_state_action_oracle_success": 0.6617647058823529,
+      "learnable_action_oracle_success": 0.6176470588235294,
+      "best_fixed_learnable_action_success": 0.4411764705882353,
+      "expand_gate": true,
+      "meaning": "Fixed-worker paired microtasks; not independent SWE outcomes. No selection model fitted here.",
+      "files_sha256": {
+        "predictions": "6195e4df23c8b2ad5fd150256d1ec1ae544d36f480b9ddc8d9c08e2e0fdffe10",
+        "judge": "ad52dd3b570740dcf866e367646440074df1594a6bec9dc6e30151eb854c8bd7",
+        "serialization_wrapper": "b3501e75c9c08cebab2e5a620ae74b9a2957008cff747d8ee0e5ae01f1ce57d3"
+      },
+      "gpu_used": false,
+      "serialization": "Original execution judgments unchanged; nonfinite snapshot floats encoded by runtime.plain after grading.",
+      "nonfinite_snapshot_executions": 4,
+      "nonfinite_snapshot_values": 24
+    },
+    "test": {
+      "status": "complete",
+      "states": 28,
+      "base_generations": 280,
+      "repeat_generations": 1,
+      "allowed_splits": [
+        "test"
+      ],
+      "syntax_supported_fraction": 0.9964285714285714,
+      "strict_success_by_fixed_action": {
+        "copied_returned_full": 0.6071428571428571,
+        "copied_returned_procedure": 0.5,
+        "all_full": 0.39285714285714285,
+        "copied_receiver_full": 0.14285714285714285,
+        "returned_procedure": 0.5,
+        "none": 0.5357142857142857,
+        "receiver_full": 0.39285714285714285,
+        "copied_receiver_procedure": 0.14285714285714285,
+        "receiver_procedure": 0.5,
+        "returned_full": 0.4642857142857143
+      },
+      "per_state_action_oracle_success": 0.75,
+      "learnable_action_oracle_success": 0.75,
+      "best_fixed_learnable_action_success": 0.6071428571428571,
+      "expand_gate": true,
+      "meaning": "Fixed-worker paired microtasks; not independent SWE outcomes. No selection model fitted here.",
+      "files_sha256": {
+        "predictions": "6195e4df23c8b2ad5fd150256d1ec1ae544d36f480b9ddc8d9c08e2e0fdffe10",
+        "judge": "ad52dd3b570740dcf866e367646440074df1594a6bec9dc6e30151eb854c8bd7",
+        "serialization_wrapper": "b3501e75c9c08cebab2e5a620ae74b9a2957008cff747d8ee0e5ae01f1ce57d3"
+      },
+      "gpu_used": false,
+      "serialization": "Original execution judgments unchanged; nonfinite snapshot floats encoded by runtime.plain after grading.",
+      "nonfinite_snapshot_executions": 0,
+      "nonfinite_snapshot_values": 0
+    }
+  },
+  "native_features": {
+    "phase": "before_generated_tokens_and_without_memory",
+    "states": 96,
+    "extra_prefill_seconds": 13.605612217000498,
+    "binary_features_shared": false
+  },
+  "transport_runtime_stopped": true,
+  "base_model_weights_shared": false,
+  "raw_token_arrays_shared": false
+}

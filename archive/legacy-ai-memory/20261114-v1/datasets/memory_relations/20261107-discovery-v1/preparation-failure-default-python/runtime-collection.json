@@ -1,0 +1,263 @@
+{
+  "at": "2026-11-07T10:29:33.720343+00:00",
+  "model_api_calls": 0,
+  "probes": 25,
+  "rows": [
+    {
+      "probe_id": "django-init-missing",
+      "reused": false,
+      "outcome": {
+        "exception_type": "ModuleNotFoundError",
+        "kind": "exception",
+        "message": "No module named 'asgiref'",
+        "traceback": "Traceback (most recent call last):\n  File \"<string>\", line 3, in <module>\n  File \"/testbed/django/forms/__init__.py\", line 6, in <module>\n    from django.forms.boundfield import *  # NOQA\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/testbed/django/forms/boundfield.py\", line 4, in <module>\n    from django.forms.utils import pretty_name\n  File \"/testbed/django/forms/utils.py\", line 5, in <module>\n    from django.conf import settings\n  File \"/testbed/django/conf/__init__.py\", line 19, in <module>\n    from django.utils.deprecation import RemovedInDjango50Warning\n  File \"/testbed/django/utils/deprecation.py\", line 5, in <module>\n    from asgiref.sync import sync_to_async\nModuleNotFoundError: No module named 'asgiref'\n"
+      }
+    },
+    {
+      "probe_id": "django-init-settings_only",
+      "reused": false,
+      "outcome": {
+        "exception_type": "ModuleNotFoundError",
+        "kind": "exception",
+        "message": "No module named 'asgiref'",
+        "traceback": "Traceback (most recent call last):\n  File \"<string>\", line 3, in <module>\n  File \"/testbed/django/conf/__init__.py\", line 19, in <module>\n    from django.utils.deprecation import RemovedInDjango50Warning\n  File \"/testbed/django/utils/deprecation.py\", line 5, in <module>\n    from asgiref.sync import sync_to_async\nModuleNotFoundError: No module named 'asgiref'\n"
+      }
+    },
+    {
+      "probe_id": "django-init-full",
+      "reused": false,
+      "outcome": {
+        "exception_type": "ModuleNotFoundError",
+        "kind": "exception",
+        "message": "No module named 'asgiref'",
+        "traceback": "Traceback (most recent call last):\n  File \"<string>\", line 7, in <module>\n  File \"/testbed/django/__init__.py\", line 14, in setup\n    from django.apps import apps\n  File \"/testbed/django/apps/__init__.py\", line 1, in <module>\n    from .config import AppConfig\n  File \"/testbed/django/apps/config.py\", line 13, in <module>\n    class AppConfig:\n  File \"/testbed/django/apps/config.py\", line 61, in AppConfig\n    @cached_property\n     ^^^^^^^^^^^^^^^\n  File \"/testbed/django/utils/functional.py\", line 27, in __init__\n    from django.utils.deprecation import RemovedInDjango50Warning\n  File \"/testbed/django/utils/deprecation.py\", line 5, in <module>\n    from asgiref.sync import sync_to_async\nModuleNotFoundError: No module named 'asgiref'\n"
+      }
+    },
+    {
+      "probe_id": "label-encoder-fitted_empty",
+      "reused": false,
+      "outcome": {
+        "exception_type": "ImportError",
+        "kind": "exception",
+        "message": "No module named 'sklearn.__check_build._check_build'\n___________________________________________________________________________\nContents of /testbed/sklearn/__check_build:\nsetup.py                  __pycache__               __init__.py\n_check_build.cpython-36m-x86_64-linux-gnu.so_check_build.pyx          _check_build.c\n___________________________________________________________________________\nIt seems that scikit-learn has not been built correctly.\n\nIf you have installed scikit-learn from source, please do not forget\nto build the package before using it: run `python setup.py install` or\n`make` in the source directory.\n\nIf you have used an installer, please check that it is suited for your\nPython version, your operating system and your platform.",
+        "traceback": "Traceback (most recent call last):\n  File \"/testbed/sklearn/__check_build/__init__.py\", line 44, in <module>\n    from ._check_build import check_build  # noqa\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nModuleNotFoundError: No module named 'sklearn.__check_build._check_build'\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"<string>\", line 3, in <module>\n  File \"/testbed/sklearn/__init__.py\", line 63, in <module>\n    from . import __check_build\n  File \"/testbed/sklearn/__check_build/__init__.py\", line 46, in <module>\n    raise_build_error(e)\n  File \"/testbed/sklearn/__check_build/__init__.py\", line 31, in raise_build_error\n    raise ImportError(\"\"\"%s\nImportError: No module named 'sklearn.__check_build._check_build'\n___________________________________________________________________________\nContents of /testbed/sklearn/__check_build:\nsetup.py                  __pycache__               __init__.py\n_check_build.cpython-36m-x86_64-linux-gnu.so_check_build.pyx          _check_build.c\n___________________________________________________________________________\nIt seems that scikit-learn has not been built correctly.\n\nIf you have installed scikit-learn from source, please do not forget\nto build the package before using it: run `python setup.py install` or\n`make` in the source directory.\n\nIf you have used an installer, please check that it is suited for your\nPython version, your operating system and your platform.\n"
+      }
+    },
+    {
+      "probe_id": "label-encoder-fitted_nonempty",
+      "reused": false,
+      "outcome": {
+        "exception_type": "ImportError",
+        "kind": "exception",
+        "message": "No module named 'sklearn.__check_build._check_build'\n___________________________________________________________________________\nContents of /testbed/sklearn/__check_build:\nsetup.py                  __pycache__               __init__.py\n_check_build.cpython-36m-x86_64-linux-gnu.so_check_build.pyx          _check_build.c\n___________________________________________________________________________\nIt seems that scikit-learn has not been built correctly.\n\nIf you have installed scikit-learn from source, please do not forget\nto build the package before using it: run `python setup.py install` or\n`make` in the source directory.\n\nIf you have used an installer, please check that it is suited for your\nPython version, your operating system and your platform.",
+        "traceback": "Traceback (most recent call last):\n  File \"/testbed/sklearn/__check_build/__init__.py\", line 44, in <module>\n    from ._check_build import check_build  # noqa\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nModuleNotFoundError: No module named 'sklearn.__check_build._check_build'\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"<string>\", line 3, in <module>\n  File \"/testbed/sklearn/__init__.py\", line 63, in <module>\n    from . import __check_build\n  File \"/testbed/sklearn/__check_build/__init__.py\", line 46, in <module>\n    raise_build_error(e)\n  File \"/testbed/sklearn/__check_build/__init__.py\", line 31, in raise_build_error\n    raise ImportError(\"\"\"%s\nImportError: No module named 'sklearn.__check_build._check_build'\n___________________________________________________________________________\nContents of /testbed/sklearn/__check_build:\nsetup.py                  __pycache__               __init__.py\n_check_build.cpython-36m-x86_64-linux-gnu.so_check_build.pyx          _check_build.c\n___________________________________________________________________________\nIt seems that scikit-learn has not been built correctly.\n\nIf you have installed scikit-learn from source, please do not forget\nto build the package before using it: run `python setup.py install` or\n`make` in the source directory.\n\nIf you have used an installer, please check that it is suited for your\nPython version, your operating system and your platform.\n"
+      }
+    },
+    {
+      "probe_id": "label-encoder-unfitted_empty",
+      "reused": false,
+      "outcome": {
+        "exception_type": "ImportError",
+        "kind": "exception",
+        "message": "No module named 'sklearn.__check_build._check_build'\n___________________________________________________________________________\nContents of /testbed/sklearn/__check_build:\nsetup.py                  __pycache__               __init__.py\n_check_build.cpython-36m-x86_64-linux-gnu.so_check_build.pyx          _check_build.c\n___________________________________________________________________________\nIt seems that scikit-learn has not been built correctly.\n\nIf you have installed scikit-learn from source, please do not forget\nto build the package before using it: run `python setup.py install` or\n`make` in the source directory.\n\nIf you have used an installer, please check that it is suited for your\nPython version, your operating system and your platform.",
+        "traceback": "Traceback (most recent call last):\n  File \"/testbed/sklearn/__check_build/__init__.py\", line 44, in <module>\n    from ._check_build import check_build  # noqa\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nModuleNotFoundError: No module named 'sklearn.__check_build._check_build'\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"<string>\", line 3, in <module>\n  File \"/testbed/sklearn/__init__.py\", line 63, in <module>\n    from . import __check_build\n  File \"/testbed/sklearn/__check_build/__init__.py\", line 46, in <module>\n    raise_build_error(e)\n  File \"/testbed/sklearn/__check_build/__init__.py\", line 31, in raise_build_error\n    raise ImportError(\"\"\"%s\nImportError: No module named 'sklearn.__check_build._check_build'\n___________________________________________________________________________\nContents of /testbed/sklearn/__check_build:\nsetup.py                  __pycache__               __init__.py\n_check_build.cpython-36m-x86_64-linux-gnu.so_check_build.pyx          _check_build.c\n___________________________________________________________________________\nIt seems that scikit-learn has not been built correctly.\n\nIf you have installed scikit-learn from source, please do not forget\nto build the package before using it: run `python setup.py install` or\n`make` in the source directory.\n\nIf you have used an installer, please check that it is suited for your\nPython version, your operating system and your platform.\n"
+      }
+    },
+    {
+      "probe_id": "label-encoder-invalid_shape",
+      "reused": false,
+      "outcome": {
+        "exception_type": "ImportError",
+        "kind": "exception",
+        "message": "No module named 'sklearn.__check_build._check_build'\n___________________________________________________________________________\nContents of /testbed/sklearn/__check_build:\nsetup.py                  __pycache__               __init__.py\n_check_build.cpython-36m-x86_64-linux-gnu.so_check_build.pyx          _check_build.c\n___________________________________________________________________________\nIt seems that scikit-learn has not been built correctly.\n\nIf you have installed scikit-learn from source, please do not forget\nto build the package before using it: run `python setup.py install` or\n`make` in the source directory.\n\nIf you have used an installer, please check that it is suited for your\nPython version, your operating system and your platform.",
+        "traceback": "Traceback (most recent call last):\n  File \"/testbed/sklearn/__check_build/__init__.py\", line 44, in <module>\n    from ._check_build import check_build  # noqa\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nModuleNotFoundError: No module named 'sklearn.__check_build._check_build'\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"<string>\", line 3, in <module>\n  File \"/testbed/sklearn/__init__.py\", line 63, in <module>\n    from . import __check_build\n  File \"/testbed/sklearn/__check_build/__init__.py\", line 46, in <module>\n    raise_build_error(e)\n  File \"/testbed/sklearn/__check_build/__init__.py\", line 31, in raise_build_error\n    raise ImportError(\"\"\"%s\nImportError: No module named 'sklearn.__check_build._check_build'\n___________________________________________________________________________\nContents of /testbed/sklearn/__check_build:\nsetup.py                  __pycache__               __init__.py\n_check_build.cpython-36m-x86_64-linux-gnu.so_check_build.pyx          _check_build.c\n___________________________________________________________________________\nIt seems that scikit-learn has not been built correctly.\n\nIf you have installed scikit-learn from source, please do not forget\nto build the package before using it: run `python setup.py install` or\n`make` in the source directory.\n\nIf you have used an installer, please check that it is suited for your\nPython version, your operating system and your platform.\n"
+      }
+    },
+    {
+      "probe_id": "label-encoder-unseen_label",
+      "reused": false,
+      "outcome": {
+        "exception_type": "ImportError",
+        "kind": "exception",
+        "message": "No module named 'sklearn.__check_build._check_build'\n___________________________________________________________________________\nContents of /testbed/sklearn/__check_build:\nsetup.py                  __pycache__               __init__.py\n_check_build.cpython-36m-x86_64-linux-gnu.so_check_build.pyx          _check_build.c\n___________________________________________________________________________\nIt seems that scikit-learn has not been built correctly.\n\nIf you have installed scikit-learn from source, please do not forget\nto build the package before using it: run `python setup.py install` or\n`make` in the source directory.\n\nIf you have used an installer, please check that it is suited for your\nPython version, your operating system and your platform.",
+        "traceback": "Traceback (most recent call last):\n  File \"/testbed/sklearn/__check_build/__init__.py\", line 44, in <module>\n    from ._check_build import check_build  # noqa\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nModuleNotFoundError: No module named 'sklearn.__check_build._check_build'\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"<string>\", line 3, in <module>\n  File \"/testbed/sklearn/__init__.py\", line 63, in <module>\n    from . import __check_build\n  File \"/testbed/sklearn/__check_build/__init__.py\", line 46, in <module>\n    raise_build_error(e)\n  File \"/testbed/sklearn/__check_build/__init__.py\", line 31, in raise_build_error\n    raise ImportError(\"\"\"%s\nImportError: No module named 'sklearn.__check_build._check_build'\n___________________________________________________________________________\nContents of /testbed/sklearn/__check_build:\nsetup.py                  __pycache__               __init__.py\n_check_build.cpython-36m-x86_64-linux-gnu.so_check_build.pyx          _check_build.c\n___________________________________________________________________________\nIt seems that scikit-learn has not been built correctly.\n\nIf you have installed scikit-learn from source, please do not forget\nto build the package before using it: run `python setup.py install` or\n`make` in the source directory.\n\nIf you have used an installer, please check that it is suited for your\nPython version, your operating system and your platform.\n"
+      }
+    },
+    {
+      "probe_id": "pvlib-zero-guard-zero",
+      "reused": false,
+      "outcome": {
+        "exception_type": "ModuleNotFoundError",
+        "kind": "exception",
+        "message": "No module named 'numpy'",
+        "traceback": "Traceback (most recent call last):\n  File \"<string>\", line 3, in <module>\n  File \"/testbed/pvlib/__init__.py\", line 3, in <module>\n    from pvlib import (  # noqa: F401\n  File \"/testbed/pvlib/spectrum/__init__.py\", line 1, in <module>\n    from pvlib.spectrum.spectrl2 import spectrl2  # noqa: F401\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/testbed/pvlib/spectrum/spectrl2.py\", line 6, in <module>\n    from pvlib.tools import cosd\n  File \"/testbed/pvlib/tools.py\", line 6, in <module>\n    import numpy as np\nModuleNotFoundError: No module named 'numpy'\n"
+      }
+    },
+    {
+      "probe_id": "pvlib-zero-guard-nan",
+      "reused": false,
+      "outcome": {
+        "exception_type": "ModuleNotFoundError",
+        "kind": "exception",
+        "message": "No module named 'numpy'",
+        "traceback": "Traceback (most recent call last):\n  File \"<string>\", line 3, in <module>\n  File \"/testbed/pvlib/__init__.py\", line 3, in <module>\n    from pvlib import (  # noqa: F401\n  File \"/testbed/pvlib/spectrum/__init__.py\", line 1, in <module>\n    from pvlib.spectrum.spectrl2 import spectrl2  # noqa: F401\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/testbed/pvlib/spectrum/spectrl2.py\", line 6, in <module>\n    from pvlib.tools import cosd\n  File \"/testbed/pvlib/tools.py\", line 6, in <module>\n    import numpy as np\nModuleNotFoundError: No module named 'numpy'\n"
+      }
+    },
+    {
+      "probe_id": "pvlib-zero-guard-positive",
+      "reused": false,
+      "outcome": {
+        "exception_type": "ModuleNotFoundError",
+        "kind": "exception",
+        "message": "No module named 'numpy'",
+        "traceback": "Traceback (most recent call last):\n  File \"<string>\", line 3, in <module>\n  File \"/testbed/pvlib/__init__.py\", line 3, in <module>\n    from pvlib import (  # noqa: F401\n  File \"/testbed/pvlib/spectrum/__init__.py\", line 1, in <module>\n    from pvlib.spectrum.spectrl2 import spectrl2  # noqa: F401\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/testbed/pvlib/spectrum/spectrl2.py\", line 6, in <module>\n    from pvlib.tools import cosd\n  File \"/testbed/pvlib/tools.py\", line 6, in <module>\n    import numpy as np\nModuleNotFoundError: No module named 'numpy'\n"
+      }
+    },
+    {
+      "probe_id": "pytest-namespace-different",
+      "reused": false,
+      "outcome": {
+        "kind": "returned",
+        "result": {
+          "module_a_value": true,
+          "module_b_value": false,
+          "same_result": false
+        }
+      }
+    },
+    {
+      "probe_id": "pytest-namespace-same_true",
+      "reused": false,
+      "outcome": {
+        "kind": "returned",
+        "result": {
+          "module_a_value": true,
+          "module_b_value": true,
+          "same_result": true
+        }
+      }
+    },
+    {
+      "probe_id": "pytest-namespace-same_false",
+      "reused": false,
+      "outcome": {
+        "kind": "returned",
+        "result": {
+          "module_a_value": false,
+          "module_b_value": false,
+          "same_result": true
+        }
+      }
+    },
+    {
+      "probe_id": "sphinx-alias-known",
+      "reused": false,
+      "outcome": {
+        "exception_type": "ModuleNotFoundError",
+        "kind": "exception",
+        "message": "No module named 'docutils'",
+        "traceback": "Traceback (most recent call last):\n  File \"<string>\", line 4, in <module>\n  File \"/testbed/sphinx/util/__init__.py\", line 35, in <module>\n    from sphinx.util import smartypants  # noqa\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/testbed/sphinx/util/smartypants.py\", line 31, in <module>\n    from docutils.utils import smartquotes\nModuleNotFoundError: No module named 'docutils'\n"
+      }
+    },
+    {
+      "probe_id": "sphinx-alias-missing",
+      "reused": false,
+      "outcome": {
+        "exception_type": "ModuleNotFoundError",
+        "kind": "exception",
+        "message": "No module named 'docutils'",
+        "traceback": "Traceback (most recent call last):\n  File \"<string>\", line 4, in <module>\n  File \"/testbed/sphinx/util/__init__.py\", line 35, in <module>\n    from sphinx.util import smartypants  # noqa\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/testbed/sphinx/util/smartypants.py\", line 31, in <module>\n    from docutils.utils import smartquotes\nModuleNotFoundError: No module named 'docutils'\n"
+      }
+    },
+    {
+      "probe_id": "sphinx-alias-qualified_known",
+      "reused": false,
+      "outcome": {
+        "exception_type": "ModuleNotFoundError",
+        "kind": "exception",
+        "message": "No module named 'docutils'",
+        "traceback": "Traceback (most recent call last):\n  File \"<string>\", line 4, in <module>\n  File \"/testbed/sphinx/util/__init__.py\", line 35, in <module>\n    from sphinx.util import smartypants  # noqa\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/testbed/sphinx/util/smartypants.py\", line 31, in <module>\n    from docutils.utils import smartquotes\nModuleNotFoundError: No module named 'docutils'\n"
+      }
+    },
+    {
+      "probe_id": "sphinx-config-none",
+      "reused": false,
+      "outcome": {
+        "exception_type": "ModuleNotFoundError",
+        "kind": "exception",
+        "message": "No module named 'docutils'",
+        "traceback": "Traceback (most recent call last):\n  File \"<string>\", line 4, in <module>\n  File \"/testbed/sphinx/util/__init__.py\", line 35, in <module>\n    from sphinx.util import smartypants  # noqa\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/testbed/sphinx/util/smartypants.py\", line 31, in <module>\n    from docutils.utils import smartquotes\nModuleNotFoundError: No module named 'docutils'\n"
+      }
+    },
+    {
+      "probe_id": "sphinx-config-description",
+      "reused": false,
+      "outcome": {
+        "exception_type": "ModuleNotFoundError",
+        "kind": "exception",
+        "message": "No module named 'docutils'",
+        "traceback": "Traceback (most recent call last):\n  File \"<string>\", line 4, in <module>\n  File \"/testbed/sphinx/util/__init__.py\", line 35, in <module>\n    from sphinx.util import smartypants  # noqa\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/testbed/sphinx/util/smartypants.py\", line 31, in <module>\n    from docutils.utils import smartquotes\nModuleNotFoundError: No module named 'docutils'\n"
+      }
+    },
+    {
+      "probe_id": "sphinx-config-signature",
+      "reused": false,
+      "outcome": {
+        "exception_type": "ModuleNotFoundError",
+        "kind": "exception",
+        "message": "No module named 'docutils'",
+        "traceback": "Traceback (most recent call last):\n  File \"<string>\", line 4, in <module>\n  File \"/testbed/sphinx/util/__init__.py\", line 35, in <module>\n    from sphinx.util import smartypants  # noqa\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/testbed/sphinx/util/smartypants.py\", line 31, in <module>\n    from docutils.utils import smartquotes\nModuleNotFoundError: No module named 'docutils'\n"
+      }
+    },
+    {
+      "probe_id": "sympy-dimension-ratio",
+      "reused": false,
+      "outcome": {
+        "exception_type": "ImportError",
+        "kind": "exception",
+        "message": "SymPy now depends on mpmath as an external library. See https://docs.sympy.org/latest/install.html#mpmath for more information.",
+        "traceback": "Traceback (most recent call last):\n  File \"/testbed/sympy/__init__.py\", line 22, in <module>\n    import mpmath\nModuleNotFoundError: No module named 'mpmath'\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"<string>\", line 3, in <module>\n  File \"/testbed/sympy/__init__.py\", line 24, in <module>\n    raise ImportError(\"SymPy now depends on mpmath as an external library. \"\nImportError: SymPy now depends on mpmath as an external library. See https://docs.sympy.org/latest/install.html#mpmath for more information.\n"
+      }
+    },
+    {
+      "probe_id": "sympy-dimension-second",
+      "reused": false,
+      "outcome": {
+        "exception_type": "ImportError",
+        "kind": "exception",
+        "message": "SymPy now depends on mpmath as an external library. See https://docs.sympy.org/latest/install.html#mpmath for more information.",
+        "traceback": "Traceback (most recent call last):\n  File \"/testbed/sympy/__init__.py\", line 22, in <module>\n    import mpmath\nModuleNotFoundError: No module named 'mpmath'\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"<string>\", line 3, in <module>\n  File \"/testbed/sympy/__init__.py\", line 24, in <module>\n    raise ImportError(\"SymPy now depends on mpmath as an external library. \"\nImportError: SymPy now depends on mpmath as an external library. See https://docs.sympy.org/latest/install.html#mpmath for more information.\n"
+      }
+    },
+    {
+      "probe_id": "sympy-dimension-velocity",
+      "reused": false,
+      "outcome": {
+        "exception_type": "ImportError",
+        "kind": "exception",
+        "message": "SymPy now depends on mpmath as an external library. See https://docs.sympy.org/latest/install.html#mpmath for more information.",
+        "traceback": "Traceback (most recent call last):\n  File \"/testbed/sympy/__init__.py\", line 22, in <module>\n    import mpmath\nModuleNotFoundError: No module named 'mpmath'\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"<string>\", line 3, in <module>\n  File \"/testbed/sympy/__init__.py\", line 24, in <module>\n    raise ImportError(\"SymPy now depends on mpmath as an external library. \"\nImportError: SymPy now depends on mpmath as an external library. See https://docs.sympy.org/latest/install.html#mpmath for more information.\n"
+      }
+    },
+    {
+      "probe_id": "sklearn-alias-15512",
+      "reused": false,
+      "outcome": {
+        "exception_type": "ImportError",
+        "kind": "exception",
+        "message": "No module named 'sklearn.__check_build._check_build'\n___________________________________________________________________________\nContents of /testbed/sklearn/__check_build:\nsetup.py                  __pycache__               __init__.py\n_check_build.cpython-36m-x86_64-linux-gnu.so_check_build.pyx          _check_build.c\n___________________________________________________________________________\nIt seems that scikit-learn has not been built correctly.\n\nIf you have installed scikit-learn from source, please do not forget\nto build the package before using it: run `python setup.py install` or\n`make` in the source directory.\n\nIf you have used an installer, please check that it is suited for your\nPython version, your operating system and your platform.",
+        "traceback": "Traceback (most recent call last):\n  File \"/testbed/sklearn/__check_build/__init__.py\", line 44, in <module>\n    from ._check_build import check_build  # noqa\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nModuleNotFoundError: No module named 'sklearn.__check_build._check_build'\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"<string>\", line 4, in <module>\n  File \"/testbed/sklearn/__init__.py\", line 73, in <module>\n    from . import __check_build\n  File \"/testbed/sklearn/__check_build/__init__.py\", line 46, in <module>\n    raise_build_error(e)\n  File \"/testbed/sklearn/__check_build/__init__.py\", line 31, in raise_build_error\n    raise ImportError(\"\"\"%s\nImportError: No module named 'sklearn.__check_build._check_build'\n___________________________________________________________________________\nContents of /testbed/sklearn/__check_build:\nsetup.py                  __pycache__               __init__.py\n_check_build.cpython-36m-x86_64-linux-gnu.so_check_build.pyx          _check_build.c\n___________________________________________________________________________\nIt seems that scikit-learn has not been built correctly.\n\nIf you have installed scikit-learn from source, please do not forget\nto build the package before using it: run `python setup.py install` or\n`make` in the source directory.\n\nIf you have used an installer, please check that it is suited for your\nPython version, your operating system and your platform.\n"
+      }
+    },
+    {
+      "probe_id": "sklearn-alias-15535",
+      "reused": false,
+      "outcome": {
+        "exception_type": "ImportError",
+        "kind": "exception",
+        "message": "No module named 'sklearn.__check_build._check_build'\n___________________________________________________________________________\nContents of /testbed/sklearn/__check_build:\nsetup.py                  __pycache__               __init__.py\n_check_build.cpython-36m-x86_64-linux-gnu.so_check_build.pyx          _check_build.c\n___________________________________________________________________________\nIt seems that scikit-learn has not been built correctly.\n\nIf you have installed scikit-learn from source, please do not forget\nto build the package before using it: run `python setup.py install` or\n`make` in the source directory.\n\nIf you have used an installer, please check that it is suited for your\nPython version, your operating system and your platform.",
+        "traceback": "Traceback (most recent call last):\n  File \"/testbed/sklearn/__check_build/__init__.py\", line 44, in <module>\n    from ._check_build import check_build  # noqa\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nModuleNotFoundError: No module named 'sklearn.__check_build._check_build'\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"<string>\", line 4, in <module>\n  File \"/testbed/sklearn/__init__.py\", line 73, in <module>\n    from . import __check_build\n  File \"/testbed/sklearn/__check_build/__init__.py\", line 46, in <module>\n    raise_build_error(e)\n  File \"/testbed/sklearn/__check_build/__init__.py\", line 31, in raise_build_error\n    raise ImportError(\"\"\"%s\nImportError: No module named 'sklearn.__check_build._check_build'\n___________________________________________________________________________\nContents of /testbed/sklearn/__check_build:\nsetup.py                  __pycache__               __init__.py\n_check_build.cpython-36m-x86_64-linux-gnu.so_check_build.pyx          _check_build.c\n___________________________________________________________________________\nIt seems that scikit-learn has not been built correctly.\n\nIf you have installed scikit-learn from source, please do not forget\nto build the package before using it: run `python setup.py install` or\n`make` in the source directory.\n\nIf you have used an installer, please check that it is suited for your\nPython version, your operating system and your platform.\n"
+      }
+    }
+  ]
+}

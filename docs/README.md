@@ -4,6 +4,7 @@
 
 | 읽을 내용 | 문서 |
 | --- | --- |
+| 새 개발 세션의 시작점·실제 상태·합의·미정 값 | [인수인계](handoff/next-session.md) |
 | 연구 목적·질문·기여·기대 효과와 미정 사항 | [연구 계획](research/plan.md) |
 | 저장·조회 조건, 두 회차, 자기 경험·혼합·누적·전이·개입 | [실험 프로토콜](research/experiment-protocol.md) |
 | 수치의 정의·분모·필요 근거·통계와 한계 | [측정과 분석](research/metrics.md) |
@@ -11,8 +12,10 @@
 | 모듈·도구·은행·벤치·상태·오류·재개 | [상세 설계](design/architecture.md) |
 | 실제 입력·원본·사용량·채점·결측의 기록 | [기록 설계](design/recording.md) |
 | 구현 순서와 단계별 완료 기준 | [개발 계획](development/roadmap.md) |
+| 바로 구현할 오프라인 코어·가짜 실행·행동 검증 | [첫 구현 작업](development/first-implementation.md) |
 | 발표·보고서의 네 장 구성 | [보고서 구성](handoff/report-outline.md) |
 | 가져온 자료와 원본 연결·변환·제외 이유 | [이관 내역](migration.md) |
 | 기존 문헌 조사 표의 범위 | [문헌 자료](references/README.md) |
+| 이전 datasets·설계 자료의 보관 범위·라벨 의미·재사용 | [데이터 보관 안내](data/legacy-datasets.md) |
 
 설정 초안은 [protocols](../protocols/README.md), 형식 계약은 [schemas](../schemas/README.md), 합성 예시는 [tests](../tests/README.md)에 있다. 모델·벤치 실행 결과는 아직 없다.

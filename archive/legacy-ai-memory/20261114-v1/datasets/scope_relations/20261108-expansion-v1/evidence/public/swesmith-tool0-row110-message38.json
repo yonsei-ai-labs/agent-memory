@@ -1,0 +1,46 @@
+{
+  "dataset": "SWE-bench/SWE-smith-trajectories",
+  "hub_revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+  "parquet_file": "data/tool-00000-of-00008.parquet",
+  "parquet_sha256": "ac76e9efe75978f83d4daec98a55604587dd58b0f1509364893b8778cbf5b487",
+  "parquet_row_index": 110,
+  "instance_id": "life4__textdistance.c3aca916.func_pm_ctrl_shuffle__asaa092v",
+  "traj_id": "life4__textdistance.c3aca916.func_pm_ctrl_shuffle__asaa092v.8qa84d2e",
+  "repository": "life4/textdistance",
+  "upstream_revision": "c3aca916",
+  "raw_messages_sha256": "6a2a7968861694156de1c27782a86b09f1ded49932c75b5258c4ec530ddfabba",
+  "message_index": 38,
+  "tool_call": {
+    "index": 1,
+    "function": {
+      "arguments": "{\"command\": \"cd /testbed && python -m pytest tests/test_phonetic/test_editex.py -v\"}",
+      "name": "bash"
+    },
+    "id": "toolu_01Mgvr2jK96tg9GU3JEz55fc",
+    "type": "function"
+  },
+  "observation_index": 39,
+  "observation": {
+    "role": "tool",
+    "content": [
+      {
+        "type": "text",
+        "text": "OBSERVATION:\n============================= test session starts ==============================\r\nplatform linux -- Python 3.10.16, pytest-8.3.4, pluggy-1.5.0 -- /opt/miniconda3/envs/testbed/bin/python\r\ncachedir: .pytest_cache\r\nhypothesis profile 'default' -> database=DirectoryBasedExampleDatabase(PosixPath('/testbed/.hypothesis/examples'))\r\nrootdir: /testbed\r\nconfigfile: setup.cfg\r\nplugins: hypothesis-6.126.0\r\ncollecting ... \rcollected 30 items                                                             \r\n\r\ntests/test_phonetic/test_editex.py::test_distance[--0] PASSED            [  3%]\r\ntests/test_phonetic/test_editex.py::test_distance[nelson--12] PASSED     [  6%]\r\ntests/test_phonetic/test_editex.py::test_distance[-neilsen-14] PASSED    [ 10%]\r\ntests/test_phonetic/test_editex.py::test_distance[ab-a-2] PASSED         [ 13%]\r\ntests/test_phonetic/test_editex.py::test_distance[ab-c-4] PASSED         [ 16%]\r\ntests/test_phonetic/test_editex.py::test_distance[nelson-neilsen-2] PASSED [ 20%]\r\ntests/test_phonetic/test_editex.py::test_distance[neilsen-nelson-2] PASSED [ 23%]\r\ntests/test_phonetic/test_editex.py::test_distance[niall-neal-1] PASSED   [ 26%]\r\ntests/test_phonetic/test_editex.py::test_distance[neal-niall-1] PASSED   [ 30%]\r\ntests/test_phonetic/test_editex.py::test_distance[niall-nihal-2] PASSED  [ 33%]\r\ntests/test_phonetic/test_editex.py::test_distance[nihal-niall-2] PASSED  [ 36%]\r\ntests/test_phonetic/test_editex.py::test_distance[neal-nihl-3] PASSED    [ 40%]\r\ntests/test_phonetic/test_editex.py::test_distance[nihl-neal-3] PASSED    [ 43%]\r\ntests/test_phonetic/test_editex.py::test_distance[cat-hat-2] PASSED      [ 46%]\r\ntests/test_phonetic/test_editex.py::test_distance[Niall-Neil-2] PASSED   [ 50%]\r\ntests/test_phonetic/test_editex.py::test_distance[aluminum-Catalan-12] PASSED [ 53%]\r\ntests/test_phonetic/test_editex.py::test_distance[ATCG-TAGC-6] PASSED    [ 56%]\r\ntests/test_phonetic/test_editex.py::test_local[--0] PASSED               [ 60%]\r\ntests/test_phonetic/test_editex.py::test_local[nelson--12] PASSED        [ 63%]\r\ntests/test_phonetic/test_editex.py::test_local[-neilsen-14] PASSED       [ 66%]\r\ntests/test_phonetic/test_editex.py::test_local[ab-a-2] PASSED            [ 70%]\r\ntests/test_phonetic/test_editex.py::test_local[ab-c-2] PASSED            [ 73%]\r\ntests/test_phonetic/test_editex.py::test_local[nelson-neilsen-2] PASSED  [ 76%]\r\ntests/test_phonetic/test_editex.py::test_local[neilsen-nelson-2] PASSED  [ 80%]\r\ntests/test_phonetic/test_editex.py::test_local[niall-neal-1] PASSED      [ 83%]\r\ntests/test_phonetic/test_editex.py::test_local[neal-niall-1] PASSED      [ 86%]\r\ntests/test_phonetic/test_editex.py::test_local[niall-nihal-2] PASSED     [ 90%]\r\ntests/test_phonetic/test_editex.py::test_local[nihal-niall-2] PASSED     [ 93%]\r\ntests/test_phonetic/test_editex.py::test_local[neal-nihl-3] PASSED       [ 96%]\r\ntests/test_phonetic/test_editex.py::test_local[nihl-neal-3] PASSED       [100%]\r\n\r\n============================== 30 passed in 0.64s =============================="
+      }
+    ],
+    "agent": "main",
+    "message_type": "observation",
+    "tool_call_ids": [
+      "toolu_01Mgvr2jK96tg9GU3JEz55fc"
+    ]
+  },
+  "created_paths_in_trace": [
+    "/testbed/debug_editex.py",
+    "/testbed/reproduce_editex_bug.py",
+    "/testbed/test_editex_edge_cases.py"
+  ],
+  "observed_whole_scope_selection": [
+    "tests/test_phonetic/test_editex.py"
+  ],
+  "observed_target_state_or_memory_utility": false
+}

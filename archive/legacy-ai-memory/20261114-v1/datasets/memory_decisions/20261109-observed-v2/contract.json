@@ -1,0 +1,66 @@
+{
+  "schema": "observed-memory-decisions-v2",
+  "state_model_input_allowlist": [
+    "input.current_context",
+    "input.candidate_memory_ids"
+  ],
+  "memory_model_input_allowlist": [
+    "memory_id",
+    "text"
+  ],
+  "supervision_separate": true,
+  "worker": {
+    "worker_model_id": "Qwen/Qwen3.5-9B",
+    "worker_revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "do_sample": false,
+    "enable_thinking": false,
+    "max_new_tokens": 64,
+    "max_input_tokens": 8192
+  },
+  "worker_weight_provenance": {
+    "model_id": "Qwen/Qwen3.5-9B",
+    "resolved_revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "config_sha256": "d0883072e01861ed0b2d47be3c16c36a8e81c224c7ffaa310c6558fb3f932b05",
+    "weight_sha256": {
+      "model.safetensors-00001-of-00004.safetensors": "db6f444b43d318c92f360a13a25561a6a65b10c0631b8ed305a426dbaa6c380e",
+      "model.safetensors-00002-of-00004.safetensors": "31c7d7e2dd5d207840b31cc59083c8f4c4718959149e0358c0364052bb9a0330",
+      "model.safetensors-00003-of-00004.safetensors": "7ec36ba3a4176a44c3c0876ad80c56a2f70c84bf008d82e9501df642f17dadec",
+      "model.safetensors-00004-of-00004.safetensors": "b62b0c4cd7e44edee103ee8f4fe225f246d5e768e07bfd5f25b63a8aa1fdd0c6"
+    }
+  },
+  "worker_prompt_contract": "original",
+  "memory_delivery_token_cap": 512,
+  "memory_budget_tokenizer": "Qwen/Qwen3.5-9B@c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+  "memory_budget_tokenizer_sha256": "a5cd9732badce41de57e6efce8302930ded1c1188c5f81feb2bd6c24c4a1941f",
+  "memory_budget_scope": "Exact delivered record text joined with newlines; same upper bound, no padding requirement.",
+  "research_question": "With worker and memory bank fixed per state, can goal-, progress-, and failure-aware selection improve task success under a shared context budget?",
+  "observed_input_coverage": {
+    "current_goal": true,
+    "current_tool_observations": true,
+    "sequential_progress_history": false,
+    "failed_attempt_history": false
+  },
+  "model_comparison": [
+    "Harrier 0.6B base",
+    "Harrier 0.6B LoRA",
+    "Qwen3.5-4B selector",
+    "Qwen3.5-9B selector"
+  ],
+  "model_training_performed": false,
+  "exploratory_training_allowed": true,
+  "fresh_confirmatory_test_eligible": false,
+  "folds_are_exploratory_not_fresh_test": true,
+  "unobserved_actions": "Missing outcome; request a separately recorded worker execution, never fill zero.",
+  "unknown_error_labels": "Mask null; do not train as false.",
+  "selector_cost_available": false,
+  "limits": [
+    "Reformatted existing 12 train families; zero new independent experiences.",
+    "Recorded action sets are not all possible memory combinations.",
+    "Mixed policy aliases with identical inputs are one observed action.",
+    "Candidate order is deterministic and unrelated to labels; method must record its final delivery order.",
+    "Component factual infeasibility is relative to common evidence in the original judge, not inaccessible world state.",
+    "No failure-history or multi-step progress ablation is supported by these archived snapshots.",
+    "All-memory policy exceeds the delivery budget and is excluded from the matched-budget export.",
+    "No split of a state/action or family into independent training/test rows."
+  ]
+}

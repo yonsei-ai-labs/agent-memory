@@ -1,0 +1,38 @@
+{
+  "at": "2026-11-07T10:31:00.742890+00:00",
+  "model_api_calls": 0,
+  "specification": {
+    "probe_id": "label-encoder-unfitted_empty",
+    "context_task": "scikit-learn__scikit-learn-12471",
+    "mechanism": "validation_order",
+    "fixture": {
+      "mode": "unfitted_empty"
+    },
+    "interpreter": "/opt/miniconda3/envs/testbed/bin/python",
+    "program": "from sklearn.preprocessing import LabelEncoder\nimport numpy as np\nencoder=LabelEncoder()\nvalues=[]\noutput=encoder.transform(values)\nresult={'values':output.tolist(),'dtype':str(output.dtype),'size':int(output.size)}\n"
+  },
+  "public_context_file": "datasets/memory_relations/20261107-discovery-v1/evidence/public-code/scikit-learn__scikit-learn-12471.json",
+  "image_id": "sha256:a64885c975df6dc88571c92acbd9efc6af4c0e4a8e0841e0b24710acc152cfd3",
+  "executed_program_sha256": "3cda9ee21ace7c1dccc22c54112a032c4f518809693a05d33e2f5d8a592754fc",
+  "observed": {
+    "exception_type": "NotFittedError",
+    "kind": "exception",
+    "message": "This LabelEncoder instance is not fitted yet. Call 'fit' with appropriate arguments before using this method.",
+    "traceback": "Traceback (most recent call last):\n  File \"<string>\", line 7, in <module>\n  File \"/testbed/sklearn/preprocessing/label.py\", line 251, in transform\n    check_is_fitted(self, 'classes_')\n  File \"/testbed/sklearn/utils/validation.py\", line 951, in check_is_fitted\n    raise NotFittedError(msg % {'name': type(estimator).__name__})\nsklearn.exceptions.NotFittedError: This LabelEncoder instance is not fitted yet. Call 'fit' with appropriate arguments before using this method.\n"
+  },
+  "execution": {
+    "returncode": 0,
+    "stdout": "MEMORY_RELATION_RESULT:{\"exception_type\": \"NotFittedError\", \"kind\": \"exception\", \"message\": \"This LabelEncoder instance is not fitted yet. Call 'fit' with appropriate arguments before using this method.\", \"traceback\": \"Traceback (most recent call last):\\n  File \\\"<string>\\\", line 7, in <module>\\n  File \\\"/testbed/sklearn/preprocessing/label.py\\\", line 251, in transform\\n    check_is_fitted(self, 'classes_')\\n  File \\\"/testbed/sklearn/utils/validation.py\\\", line 951, in check_is_fitted\\n    raise NotFittedError(msg % {'name': type(estimator).__name__})\\nsklearn.exceptions.NotFittedError: This LabelEncoder instance is not fitted yet. Call 'fit' with appropriate arguments before using this method.\\n\"}\n",
+    "stderr": "",
+    "seconds": 1.2247212829825003,
+    "image_id": "sha256:a64885c975df6dc88571c92acbd9efc6af4c0e4a8e0841e0b24710acc152cfd3",
+    "interpreter": "/opt/miniconda3/envs/testbed/bin/python",
+    "resources": {
+      "cpus": 1,
+      "memory": "1g",
+      "network": "none",
+      "root_filesystem": "read-only"
+    }
+  },
+  "interpretation": "Controlled mechanism probe. Expected validation exceptions are observed outcomes, not infrastructure failures. Shell success is not treated as semantic success. No actor or memory policy was evaluated."
+}

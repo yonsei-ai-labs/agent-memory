@@ -1,0 +1,67 @@
+{
+  "version": "statebench-preparation-20261112-v1",
+  "upstream_revision": "5644b1838d96bc4483da29642d058ecaa6f80f7f",
+  "stage": "train data and adapter preparation; not a performance result",
+  "files": {
+    "README.md": {
+      "bytes": 6117,
+      "sha256": "3e90f54c760e23b1074831c642d1a534dec3ee77c8da81470843d61eabf8efa8"
+    },
+    "audit.json": {
+      "bytes": 1992,
+      "sha256": "209663ce0c585c92185a060384811741530376e5c82193d5eb23c2c83a039f8b"
+    },
+    "content-review.jsonl": {
+      "bytes": 11194,
+      "sha256": "56bc3ce479522e03c69f9e7321c2884c36ff60e10bcd3fbb64201f587ca81b29"
+    },
+    "cpu-diagnostics.zip": {
+      "bytes": 39642,
+      "sha256": "3423cb4b4c7c07e518ce22a4fb0543af7ad3e9d7a459119ae16e2affdd85c986"
+    },
+    "execution-dependencies.json": {
+      "bytes": 654,
+      "sha256": "24ee1bcfe0333b12e4e0f7569b1132e25a44641e50089ccd96ccbc58b1cbeda1"
+    },
+    "prepared.zip": {
+      "bytes": 942390,
+      "sha256": "f1b9dbeac92be849c631c8f794a53415ee5cb5df30dc418e4bd047b46dfa521e"
+    },
+    "protocol.json": {
+      "bytes": 3660,
+      "sha256": "9e3d84b27384e41d55a0ba7dc4d9bc15e88d56aa7c4778f323d717e1252e4f3d"
+    },
+    "review-sampling.json": {
+      "bytes": 293,
+      "sha256": "e93904d58598f6d6a76edf163e58a0182927d58d5b92b10445c66626deb12c70"
+    },
+    "runtime-packages.txt": {
+      "bytes": 747,
+      "sha256": "fbcde58695a5e37ef8c8baadd6c5dfd3c6a0de2aea34191af2c24b0be62c5c86"
+    },
+    "source-snapshot.zip": {
+      "bytes": 1132850,
+      "sha256": "47097b8bb1f235453227e2022985e9ba46f94da08128af3d1d4e5a43c02ca53f"
+    },
+    "sources.jsonl": {
+      "bytes": 207603,
+      "sha256": "5c3112db78db38f9ed882e4eec4a386b59797b3ee40c941e0a9dc9fc0af15333"
+    },
+    "verification-tests.txt": {
+      "bytes": 2553,
+      "sha256": "79bf15abb7f3494989b569c3197011daed92989c5a66d3084eaed9eec41c11e8"
+    },
+    "verification.json": {
+      "bytes": 1491,
+      "sha256": "02d1b7864ef463a789f9f0205be560fb9d94093a402eedb83e3878209ab97a79"
+    }
+  },
+  "code": {
+    "data_pipeline/statebench_data.py": "84b6160ba3373638164a5f4a2a9b14bcf4fbc474e487591f891add4400e17299",
+    "evaluation/statebench_protocol.py": "a3bac530d9be0de6eeee77ce141d47186c5e7d5695879074dc7780a4e17a69e2",
+    "evaluation/prepare_statebench.py": "8c36e36d41e278a2a550406d6b6c7197907c352d0692ba2bfd16c6c18217f129",
+    "evaluation/verify_statebench_preparation.py": "e220df5a50e48bcad24c6c19711af8ebcac5ff8af33162c4ca2a43e6f9f5cc70",
+    "tests/test_statebench.py": "f058b17d4a6851e5e68b0f8918e2bdad5d8235e87f8bba94bed299a21953699a",
+    "tests/test_statebench_integration.py": "a874ff15a1ed18b19f9cbe94cda982a78ff377f0f1938230bac7d3dc0241689e"
+  }
+}

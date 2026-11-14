@@ -1,0 +1,21 @@
+{
+  "source": "datasets/memory_decisions/20261110-refresh-v1",
+  "source_inputs_unchanged": true,
+  "primary": "Rank nonempty measured bundles by one logit for task success if provided; always provide the top bundle.",
+  "secondary": "Compare the selected bundle probability with a separate no-memory head on frozen base state embeddings; threshold 0, no cost tuning.",
+  "labels": "Existing binary task_success. Grounded success and UNKNOWN are reported separately, not relabeled.",
+  "loss": "State-mean BCE plus lambda * mean of within-state positive-negative softplus differences over informative training states.",
+  "normalization": "Uniform state batches; multiply each informative state rank mean by train_states / informative_train_states.",
+  "inner_selection": "One fixed seed 731, 6 train / 2 validation families per outer fold; choose among 8/16/24 epochs by validation top-choice success, then state-macro pair accuracy, then lower BCE, then fewer epochs.",
+  "outer_refit": "Fresh base/adapter/head on all 8 outer train families at the chosen epoch; two seeds, both reported; outer held outputs never select settings.",
+  "no_memory_head": "Frozen pinned base encodes only current state. Independent scalar MLP is trained on CPU; choose 16/64/128/256 epochs on inner validation BCE, then refit on all outer train states.",
+  "fixed_hyperparameters": "Lambda=1, learning rates, threshold, head width and LoRA rank are fixed; only epoch count selected internally.",
+  "fits": {
+    "inner_lora": 6,
+    "outer_lora": 12,
+    "baseline_cpu_outer": 6
+  },
+  "comparison_to_old_run": "Reference only: the new scalar objective and batch organization differ; causal loss comparison is binary versus binary_rank.",
+  "scope": "Already explored 12 development families. No new independent test, no new worker calls, no retriever features or warm starts.",
+  "stop": "Complete these two arms or stop with an incomplete artifact at the four-hour limit; no automatic method or hyperparameter expansion."
+}

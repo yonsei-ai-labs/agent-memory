@@ -1,0 +1,38 @@
+{
+  "at": "2026-11-07T10:30:59.487746+00:00",
+  "model_api_calls": 0,
+  "specification": {
+    "probe_id": "django-init-full",
+    "context_task": "django__django-16041",
+    "mechanism": "initialization",
+    "fixture": {
+      "mode": "full"
+    },
+    "interpreter": "/opt/miniconda3/envs/testbed/bin/python",
+    "program": "import os,sys\nsys.path.insert(0,'/testbed/tests')\nos.environ['DJANGO_SETTINGS_MODULE']='test_sqlite'\nimport django\ndjango.setup()\nfrom django import forms\nclass Example(forms.Form):\n    value=forms.CharField()\nrendered=str(Example())\nresult={'rendered':bool(rendered)}\n"
+  },
+  "public_context_file": "datasets/memory_relations/20261107-discovery-v1/evidence/public-code/django__django-16041.json",
+  "image_id": "sha256:b9a365cadc576e7765d07d1b94b43822a45bc30d949dd1e7f1982292d10f14cc",
+  "executed_program_sha256": "c67ebce0b17e22c0405faee7636f4621ff38d9fe1c32cbc5141f290c6b30029a",
+  "observed": {
+    "kind": "returned",
+    "result": {
+      "rendered": true
+    }
+  },
+  "execution": {
+    "returncode": 0,
+    "stdout": "MEMORY_RELATION_RESULT:{\"kind\": \"returned\", \"result\": {\"rendered\": true}}\n",
+    "stderr": "<string>:11: RemovedInDjango50Warning: The \"default.html\" templates for forms and formsets will be removed. These were proxies to the equivalent \"table.html\" templates, but the new \"div.html\" templates will be the default from Django 5.0. Transitional renderers are provided to allow you to opt-in to the new output style now. See https://docs.djangoproject.com/en/dev/releases/4.1/ for more details\n",
+    "seconds": 1.1569065139919985,
+    "image_id": "sha256:b9a365cadc576e7765d07d1b94b43822a45bc30d949dd1e7f1982292d10f14cc",
+    "interpreter": "/opt/miniconda3/envs/testbed/bin/python",
+    "resources": {
+      "cpus": 1,
+      "memory": "1g",
+      "network": "none",
+      "root_filesystem": "read-only"
+    }
+  },
+  "interpretation": "Controlled mechanism probe. Expected validation exceptions are observed outcomes, not infrastructure failures. Shell success is not treated as semantic success. No actor or memory policy was evaluated."
+}

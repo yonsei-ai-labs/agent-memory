@@ -1,0 +1,69 @@
+{
+  "version": "memory-relation-intake-v1",
+  "stage": "pre_execution",
+  "provenance": "Schema fixture only; not a collected source, model result, or observed memory-harm case.",
+  "sources": [
+    {
+      "source_id": "fixture-source",
+      "root_family_id": "fixture-family",
+      "split": "train",
+      "new_to_project": false,
+      "prior_use": [
+        "schema_fixture"
+      ]
+    }
+  ],
+  "events": [
+    {
+      "event_id": "fixture-failure",
+      "source_id": "fixture-source",
+      "scenario_id": "fixture-state",
+      "step": 1,
+      "public_text": "The initial checkout failed."
+    },
+    {
+      "event_id": "fixture-booking",
+      "source_id": "fixture-source",
+      "scenario_id": "*",
+      "step": 0,
+      "public_text": "Alice previously booked R1."
+    }
+  ],
+  "cases": [
+    {
+      "state_id": "fixture-state",
+      "source_id": "fixture-source",
+      "decision_step": 1,
+      "candidate_scope": "one illustrative historical record",
+      "input_scope": "rendered_pair_text_before_model_tokenization",
+      "inputs": [
+        {
+          "memory_id": "fixture-m1",
+          "text": "Goal: Use Alice's plan before failure; use Ben's plan after the initial checkout fails.\nCurrent state: The initial checkout failed.\nCandidate memory: Alice previously booked R1.",
+          "sha256": "090e0833f8912cf6f3752f5084d24e57ad43f9322404166a1c1217a71e698cd3"
+        }
+      ]
+    }
+  ],
+  "relations": [
+    {
+      "state_id": "fixture-state",
+      "memory_id": "fixture-m1",
+      "judgment": "not_needed",
+      "relation_type": "inactive_branch",
+      "evidence": [
+        {
+          "event_id": "fixture-failure",
+          "start": 103,
+          "end": 131
+        },
+        {
+          "event_id": "fixture-booking",
+          "start": 150,
+          "end": 177
+        }
+      ],
+      "utility": null
+    }
+  ]
+}

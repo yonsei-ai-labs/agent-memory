@@ -1,0 +1,98 @@
+[
+  {
+    "id": "pyfilesystem-timestamp-boundary", "row_index": 433,
+    "calls": [44, 52, 66, 74, 78, 82, 84],
+    "procedure": "In the Windows NT FTP-listing parser, bound the timestamp field to its date/time syntax before parsing size and filename. Keep one- and two-digit date/hour fields supported.",
+    "condition_observation": "The source filename itself contained AM/PM, which the greedy timestamp capture consumed. A first fixed-width replacement then rejected a one-digit date/hour. The revised expression accepted that example. Five existing parser tests passed, but the FTP filesystem test file did not collect because pyftpdlib was missing.",
+    "bounded_claim": "Observed parser edits and bounded test results; no FTP integration or whole-task success claim.",
+    "relation_type": "input_format_boundary"
+  },
+  {
+    "id": "webob-nullable-field-name", "row_index": 3856,
+    "calls": [80, 84, 86, 112, 120, 122, 124],
+    "procedure": "Before decoding a multipart field name in transcode_fs, preserve None instead of calling decode on it.",
+    "condition_observation": "The source report allowed a nameless multipart field. Guarding field.name removed that access, but a later reproduction exposed a separate str.decode error. The later source edit also changed value handling. Six transcode tests and one selected request test passed; a multipart keyword selection collected no tests. The name guard alone was not validated as a complete fix.",
+    "bounded_claim": "A nullable-name guard and subsequent type boundary, not proof that every multipart case is correct.",
+    "relation_type": "nullable_value_contract"
+  },
+  {
+    "id": "pyupgrade-keyword-token-boundary", "row_index": 475,
+    "calls": [52, 66, 68, 76, 94, 116, 118],
+    "procedure": "When repairing a NAME token followed by a STRING token, exclude Python keywords before merging the name into the string prefix.",
+    "condition_observation": "The source concerned return'foo', where return must remain a keyword rather than becoming a string prefix. The modified guard used keyword.iskeyword. The source reproduction reported passing afterward; the existing suite reported 278 passed and 12 xfailed. A later -k token invocation selected no tests, so that invocation adds no coverage.",
+    "bounded_claim": "Keyword/string token boundary and observed local coverage, not all rewriting rules.",
+    "relation_type": "syntax_boundary"
+  },
+  {
+    "id": "tabulate-hyperlink-visible-width", "row_index": 2232,
+    "calls": [26, 46, 48, 54, 58, 110],
+    "procedure": "Exclude OSC-8 hyperlink control sequences when measuring visible table-cell width, alongside existing ANSI color controls. Keep text and byte patterns consistent.",
+    "condition_observation": "The source added patterns for ESC ] 8 ;; ... ESC-backslash wrappers to both invisible-code regexes. The visible label remains relevant to width; the URL/control wrappers do not. The existing suite reported 149 passed and 16 skipped; five ANSI-selected regressions passed. These results do not establish coverage for every possible terminal-control form.",
+    "bounded_claim": "A specific terminal hyperlink representation and bounded rendering tests.",
+    "relation_type": "representation_vs_visible_output"
+  },
+  {
+    "id": "deprecation-docstring-indentation", "row_index": 42,
+    "calls": [30, 34, 40, 42, 48, 74],
+    "procedure": "When appending a deprecation note to a multiline docstring, align the note with the body indentation rather than adding an unindented line.",
+    "condition_observation": "The source edit inferred indentation from the first non-empty line after the summary and applied it to the note. Existing tests reported seven passed and one xfailed. This is evidence for that append-style formatting procedure, not a general rule for placing a note among arbitrary reStructuredText sections.",
+    "bounded_claim": "Observed indentation heuristic and existing tests; section placement remains a separate contract.",
+    "relation_type": "structured_text_layout"
+  },
+  {
+    "id": "fsspec-uri-scheme-boundary", "row_index": 2291,
+    "calls": [44, 48, 50, 54, 56, 60, 62, 64, 66],
+    "procedure": "For the arrow_hdfs URL-scheme registration, use a hyphenated scheme compatible with URL parsing and check registry lookup separately from backend access.",
+    "condition_observation": "The source changed the registry key to arrow-hdfs. urllib.parse examples then recognized the scheme. API and registry tests passed, but HDFS and Arrow selections each skipped their only collected module and returned code 5. No successful HDFS connection was observed in these checks; alias compatibility is not established by the rename.",
+    "bounded_claim": "URL parsing/registry behavior, not backend availability or universal protocol renaming.",
+    "relation_type": "parser_vs_backend_contract"
+  },
+  {
+    "id": "responses-callback-exception-location", "row_index": 214,
+    "calls": [66, 72, 74, 84, 86, 104],
+    "procedure": "After unpacking a callback's status, headers and body, check whether the body is an Exception before converting it to a response body; retain the check for a callback returning an Exception directly.",
+    "condition_observation": "An exception can be the callback result itself or the body inside its result tuple. The source inserted the body check before _handle_body. Three callback-selected tests passed, while the broader file had 48 passes and one failure. Callback coverage alone does not establish that the full file succeeds.",
+    "bounded_claim": "Exception location in two callback contracts; broader failure explicitly retained.",
+    "relation_type": "nested_return_contract"
+  },
+  {
+    "id": "structlog-context-capture-time", "row_index": 34,
+    "calls": [50, 54, 56, 60, 62, 84, 86],
+    "procedure": "Capture contextvars.copy_context in the caller before dispatching logging to run_in_executor, then run the logging callback under that captured context inside the executor.",
+    "condition_observation": "The source moved context capture out of executor lambdas in ameth, alog and aexception. Copying in the executor reads the executor's context rather than the caller's. The local reproduction changed after the edits; 21 log-level and 18 contextvars tests passed. This applies to the thread handoff, not every loss of a rendered log field.",
+    "bounded_claim": "Observed capture-time change in three async entry points with local tests.",
+    "relation_type": "execution_context_timing"
+  },
+  {
+    "id": "numpydoc-parser-renderer-registration", "row_index": 1713,
+    "calls": [52, 54, 56, 60, 68, 94, 104],
+    "procedure": "When adding a coroutine Receives section, update section recognition, parameter parsing, text rendering, Sphinx rendering and its template together.",
+    "condition_observation": "The source added Receives to the recognized sections and parameter-like parsing, to text/Sphinx rendering, and to the Sphinx template. Forty existing tests passed afterward. The five tests in test_receives_official.py were created by the source agent; their filename does not make them official benchmark tests.",
+    "bounded_claim": "A concrete multi-stage section extension; agent-authored tests identified as such.",
+    "relation_type": "multi_stage_output_contract"
+  },
+  {
+    "id": "jsonargparse-callable-instance-dispatch", "row_index": 800,
+    "calls": [42, 46, 52, 54, 84, 110, 136, 138, 140, 180],
+    "procedure": "Distinguish callable instances from classes in both CLI argument registration and invocation, instead of treating every non-function as a class.",
+    "condition_observation": "The source used callable(component) and not inspect.isclass(component) in both dispatch points. Existing CLI/signature checks eventually reported 66 passed and three skipped. Added local-class callable tests failed to determine an import path and were subsequently removed. Those final passing counts do not establish support for those local-class cases.",
+    "bounded_claim": "Dispatch change with an explicit unsupported/unvalidated local-import boundary.",
+    "relation_type": "object_kind_dispatch"
+  },
+  {
+    "id": "wheel-soabi-format-branch", "row_index": 2038,
+    "calls": [14, 20, 68, 76, 82, 92, 104, 110],
+    "procedure": "Derive a CPython ABI tag according to the observed SOABI format: a cp-and-digits prefix differs from a cpython-version prefix. Retain the older-format branch when supporting the newer one.",
+    "condition_observation": "Replacing all CPython SOABI handling with the first hyphen-separated part fixed the new-format example but broke Linux tag tests. The later branch distinguished cp313-win_amd64 from cpython-39-style input and 37 selected existing tests passed. Checks used PYTHONPATH pointing at src; system-installed wheel is a different import target. The source did not perform a Windows Python 3.13 build.",
+    "bounded_claim": "String-format branch and observed regression checks, not a completed cross-platform build.",
+    "relation_type": "version_and_import_target"
+  },
+  {
+    "id": "pyflakes-scope-limited-special-name", "row_index": 3595,
+    "calls": [62, 78, 84, 104, 108, 112, 114],
+    "procedure": "Recognize __class__ using Python-version and enclosing-scope conditions instead of declaring the name globally valid.",
+    "condition_observation": "An initial source edit allowed the name after finding any ClassScope. A later edit also required the current scope to be FunctionScope before scanning enclosing scopes. The existing suite reported 577 passed and 34 skipped after that edit. This is a scoped special-name rule, not proof that all nested-scope cases were covered.",
+    "bounded_claim": "Recorded refinement of a scope rule and existing tests; no whole-language correctness claim.",
+    "relation_type": "lexical_scope_condition"
+  }
+]

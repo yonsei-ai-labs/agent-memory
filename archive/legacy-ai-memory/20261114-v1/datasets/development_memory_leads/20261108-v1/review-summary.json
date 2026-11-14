@@ -1,0 +1,38 @@
+{
+  "rows": 640,
+  "queries": 40,
+  "memories": 16,
+  "current_repositories": 24,
+  "splits": {
+    "train": {
+      "queries": 27,
+      "repositories": 16,
+      "label_counts": {
+        "different_mechanism": 391,
+        "shared_diagnostic_mechanism": 18,
+        "insufficient_connection": 23
+      }
+    },
+    "dev": {
+      "queries": 7,
+      "repositories": 4,
+      "label_counts": {
+        "shared_diagnostic_mechanism": 9,
+        "different_mechanism": 102,
+        "insufficient_connection": 1
+      }
+    },
+    "test": {
+      "queries": 6,
+      "repositories": 4,
+      "label_counts": {
+        "insufficient_connection": 7,
+        "different_mechanism": 85,
+        "shared_diagnostic_mechanism": 4
+      }
+    }
+  },
+  "actual_memory_utility_labels": 0,
+  "independent_human_annotation": false,
+  "test_relation_labels_not_for_upload": true
+}

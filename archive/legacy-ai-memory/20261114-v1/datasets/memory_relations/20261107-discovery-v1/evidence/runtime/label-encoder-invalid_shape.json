@@ -1,0 +1,38 @@
+{
+  "at": "2026-11-07T10:31:01.905881+00:00",
+  "model_api_calls": 0,
+  "specification": {
+    "probe_id": "label-encoder-invalid_shape",
+    "context_task": "scikit-learn__scikit-learn-12471",
+    "mechanism": "validation_order",
+    "fixture": {
+      "mode": "invalid_shape"
+    },
+    "interpreter": "/opt/miniconda3/envs/testbed/bin/python",
+    "program": "from sklearn.preprocessing import LabelEncoder\nimport numpy as np\nencoder=LabelEncoder()\nencoder.fit(['a','b'])\nvalues=np.empty((1,0))\noutput=encoder.transform(values)\nresult={'values':output.tolist(),'dtype':str(output.dtype),'size':int(output.size)}\n"
+  },
+  "public_context_file": "datasets/memory_relations/20261107-discovery-v1/evidence/public-code/scikit-learn__scikit-learn-12471.json",
+  "image_id": "sha256:a64885c975df6dc88571c92acbd9efc6af4c0e4a8e0841e0b24710acc152cfd3",
+  "executed_program_sha256": "87f04877d753fa7dace47e09277d4b5bf2ae5ed615d9e6cce5046cbab08f0f8c",
+  "observed": {
+    "exception_type": "ValueError",
+    "kind": "exception",
+    "message": "bad input shape (1, 0)",
+    "traceback": "Traceback (most recent call last):\n  File \"<string>\", line 8, in <module>\n  File \"/testbed/sklearn/preprocessing/label.py\", line 252, in transform\n    y = column_or_1d(y, warn=True)\n  File \"/testbed/sklearn/utils/validation.py\", line 797, in column_or_1d\n    raise ValueError(\"bad input shape {0}\".format(shape))\nValueError: bad input shape (1, 0)\n"
+  },
+  "execution": {
+    "returncode": 0,
+    "stdout": "MEMORY_RELATION_RESULT:{\"exception_type\": \"ValueError\", \"kind\": \"exception\", \"message\": \"bad input shape (1, 0)\", \"traceback\": \"Traceback (most recent call last):\\n  File \\\"<string>\\\", line 8, in <module>\\n  File \\\"/testbed/sklearn/preprocessing/label.py\\\", line 252, in transform\\n    y = column_or_1d(y, warn=True)\\n  File \\\"/testbed/sklearn/utils/validation.py\\\", line 797, in column_or_1d\\n    raise ValueError(\\\"bad input shape {0}\\\".format(shape))\\nValueError: bad input shape (1, 0)\\n\"}\n",
+    "stderr": "",
+    "seconds": 1.3548886839998886,
+    "image_id": "sha256:a64885c975df6dc88571c92acbd9efc6af4c0e4a8e0841e0b24710acc152cfd3",
+    "interpreter": "/opt/miniconda3/envs/testbed/bin/python",
+    "resources": {
+      "cpus": 1,
+      "memory": "1g",
+      "network": "none",
+      "root_filesystem": "read-only"
+    }
+  },
+  "interpretation": "Controlled mechanism probe. Expected validation exceptions are observed outcomes, not infrastructure failures. Shell success is not treated as semantic success. No actor or memory policy was evaluated."
+}

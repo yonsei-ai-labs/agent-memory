@@ -1,0 +1,86 @@
+{
+  "experiment": "memory-context-value-20261111-v1",
+  "status": "fixed_before_any_model_outputs",
+  "source": "BEAM b2da22eac88bb0874c64665f13457eb99835774a, top-level 100 conversations only; nested 10M plan folders are not independent sources",
+  "collection_target": "At least 50 reviewed source groups across the complete study; never pad with invalid evidence to reach this target.",
+  "partition": "Preserve assign_splits for all original 100K/500K/1M conversations and use the same hash rule within 10M. Legacy confirm groups remain confirm. Review inputs before generation; never train or tune on confirm outputs.",
+  "review": "Verify the same entity, attribute, unit and scope in old and new original passages. Numbers present in text are not sufficient. Record every exclusion. Additional context may be included only as unmodified source passages with explicit provenance.",
+  "states": [
+    "missing",
+    "known",
+    "updated",
+    "unrelated"
+  ],
+  "state_meaning": "Same goal and fixed historical memory bank. Old fact is needed in missing/unrelated states, already observed in known, replaced by verified newer observation in updated. These are controlled context interventions, not natural execution failures.",
+  "bank": "Same-conversation historical user passages preceding the update; all policies see the same bank. Native evidence IDs and answer values are never model inputs. Reviewed old support plus pre-update lexical candidates; no arbitrary padding to create a budget problem.",
+  "budget": {
+    "memory_tokens": 512,
+    "max_records": 12,
+    "selector_max_input_tokens": 1536,
+    "worker_max_input_tokens": 2048
+  },
+  "initial_selector": "memory-source-scale-20261111-v1/train-60 selected by that study's dev score, not its test worker results",
+  "initial_selector_threshold": 0.5,
+  "worker": {
+    "model_id": "Qwen/Qwen3.5-4B",
+    "revision": "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
+    "greedy": true,
+    "thinking": false,
+    "max_new_tokens": 64
+  },
+  "policy_comparisons": [
+    "none",
+    "bm25",
+    "dense",
+    "lexical_dedup_latest",
+    "frozen_selector",
+    "budget_fill",
+    "reviewed_support_diagnostic",
+    "old_support_only_diagnostic"
+  ],
+  "labels": "Fact contribution, redundancy, supersession and unknown applicability are source annotations. Actual improvement/harm/neutral and costs come only from paired worker outputs, stored separately.",
+  "training": {
+    "condition": "After train/dev baseline measurement identifies a relation/selection gap; no confirm outputs before fitting and freezing.",
+    "architecture": "Same Harrier 0.6B q/v rank8 LoRA and 128 GELU binary head",
+    "arms": [
+      "state_seed731",
+      "state_seed1729",
+      "goal_only_seed731"
+    ],
+    "adapter_lr": 5e-05,
+    "head_lr": 0.001,
+    "epochs": 4,
+    "checkpoints": [
+      1,
+      2,
+      4
+    ],
+    "state_batch_size": 4,
+    "microbatch_size": 4,
+    "selection": "Dev source-macro balanced accuracy; earlier epoch on ties; fixed 0.5 delivery threshold",
+    "loss": "State-balanced cross entropy on reviewed relation labels; no substitution of worker failures for relation negatives"
+  },
+  "confirmation_gate": "Dev reviewed-support diagnostic must achieve at least 80% answer match separately for the four modes, with no unresolved source/answer reviews. Gate is task/measurement feasibility, not existence of harm or learned superiority.",
+  "scoring": "Strict single numeric answer or explicit UNKNOWN; explanatory/multiple-value outputs require source-linked review. Preserve raw answer match and reviewed support availability separately.",
+  "reporting": "All eligible cases including easy/no-effect cases; source-group paired uncertainty; score learned improvement and harm over none/rules, memory tokens plus selector and worker timing. No population/scale claim from one source benchmark.",
+  "bounds": {
+    "maximum_new_worker_calls": 5000,
+    "maximum_local_training_seconds": 14400,
+    "colab_allocations": 0,
+    "paid_model_api_calls": 0
+  },
+  "stop_rule": "If the feasibility gate fails, preserve confirm outputs unopened, report train/dev results and the concrete blocker. Do not relax the gate after results. If no practical advantage appears, retain the data/measurement result without claiming a useful learned selector.",
+  "bank_draft_size": 8,
+  "scope_uncertainty": "When old records supply scope omitted by the update, their updated-state labels remain unknown; diagnostic includes old context as well as the observed update. Other unresolved candidate labels are sparse, never automatically negative.",
+  "candidate_review": "Every retained bank passage and unrelated observation read before inference. Duplicate answer support is annotated, native annotation residues are excluded, and unresolved pre-update contradictions exclude the whole case.",
+  "history_scope": "This is a reviewed extracted memory bank, not the full conversation. Relative chronology is available to every policy. Original native evidence IDs, answers and modes are metadata only.",
+  "selection_limits": {
+    "bm25": 2,
+    "dense": 2,
+    "lexical_dedup_latest": 2,
+    "frozen_or_corrected_selector": 12,
+    "budget_fill": 12
+  },
+  "rule": "Rank by goal BM25, prefer newer record on equal score; remove exact observed copies or passages with >=0.45 nonnumeric content-word Jaccard overlap with current observations. No answer/entity oracle.",
+  "raw_answer_contract": "One number without units or prose, or UNKNOWN. Strict parser tolerates commas, leading currency, trailing percent and whitespace only. Correctness and reviewed evidence availability separately reported."
+}

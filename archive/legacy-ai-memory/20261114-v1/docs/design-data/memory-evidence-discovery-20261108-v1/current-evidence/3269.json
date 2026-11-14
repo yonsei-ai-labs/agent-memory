@@ -1,0 +1,58 @@
+{
+  "target_trajectory_row_index": 3269,
+  "task": {
+    "instance_id": "hynek__structlog-675",
+    "repo": "hynek/structlog",
+    "base_commit": "e51f34705d0e6c6551ca0915eded697dc99f0e57",
+    "created_at": "2024-11-13 23:13:27",
+    "problem_statement": "TypeError when setting ExceptionDictTransformer's constructor arguments locals_max_string and locals_max_length to None\nAs of version 24.3.0 (see #627), `ExceptionDictTransformer` interprets the constructor arguments `locals_max_string` and `locals_max_length` as type `int | None` where `None` supposedly disables abbreviation or truncation. However, if you set one of those to `None`, you get a `TypeError`:\r\n\r\n```\r\nTypeError: '<' not supported between instances of 'NoneType' and 'int'\r\n``` \r\n\r\nThis is because of the following snippet:\r\n\r\nhttps://github.com/hynek/structlog/blob/51641b764085c1b907a9b57857c1e71b2810a70e/src/structlog/tracebacks.py#L385-L390\r\n\r\nIt should contain logic that handles the `None` case.",
+    "version": "24.4",
+    "environment_setup_commit": "8688c323641f2d241f31ad5705560f55f57a5e65",
+    "license_name": "Apache License 2.0 or MIT License",
+    "docker_image": "swerebench/sweb.eval.x86_64.hynek_1776_structlog-675",
+    "image_name": "swerebench/sweb.eval.x86_64.hynek_1776_structlog-675",
+    "dataset": "nebius/SWE-rebench",
+    "revision": "89cdfbab4ab1bd8f5a658bb212d1b63624f4f881",
+    "file": "data/test-00000-of-00002.parquet",
+    "row_index": 9065
+  },
+  "base_code": [
+    {
+      "path": "src/structlog/_native.py",
+      "repository": "hynek/structlog",
+      "base_commit": "e51f34705d0e6c6551ca0915eded697dc99f0e57",
+      "git_blob_sha": "dedf8a6cb574d93618954e2ac9a9e22144ee9e5d",
+      "full_content_sha256": "7393e3f352ccff44a0780077ab5286df2aa8827e298c8d863c58b2315320c77b",
+      "source_url": "https://github.com/hynek/structlog/blob/e51f34705d0e6c6551ca0915eded697dc99f0e57/src/structlog/_native.py",
+      "spans": [
+        {
+          "start_line": 138,
+          "end_line": 156,
+          "text": "        async def ameth(self: Any, event: str, *args: Any, **kw: Any) -> Any:\n            \"\"\"\n            .. versionchanged:: 23.3.0\n               Callsite parameters are now also collected under asyncio.\n            \"\"\"\n            if args:\n                event = event % args\n\n            scs_token = _ASYNC_CALLING_STACK.set(sys._getframe().f_back)  # type: ignore[arg-type]\n            ctx = contextvars.copy_context()\n            try:\n                await asyncio.get_running_loop().run_in_executor(\n                    None,\n                    lambda: ctx.run(\n                        lambda: self._proxy_to_logger(name, event, **kw)\n                    ),\n                )\n            finally:\n                _ASYNC_CALLING_STACK.reset(scs_token)\n",
+          "sha256": "89cf32667ab3c81bdadd0d8d0bf79d966ec32b32465ae61280d02a110e9262b4"
+        }
+      ]
+    },
+    {
+      "path": "src/structlog/tracebacks.py",
+      "repository": "hynek/structlog",
+      "base_commit": "e51f34705d0e6c6551ca0915eded697dc99f0e57",
+      "git_blob_sha": "2392b34261ab03ab642db867b83cbaebd630e2aa",
+      "full_content_sha256": "60cadfde1320406f2ee4c7e13a87b735296dc90b76e6dc6a460becd4d6a82951",
+      "source_url": "https://github.com/hynek/structlog/blob/e51f34705d0e6c6551ca0915eded697dc99f0e57/src/structlog/tracebacks.py",
+      "spans": [
+        {
+          "start_line": 373,
+          "end_line": 399,
+          "text": "    def __init__(\n        self,\n        *,\n        show_locals: bool = SHOW_LOCALS,\n        locals_max_length: int = LOCALS_MAX_LENGTH,\n        locals_max_string: int = LOCALS_MAX_STRING,\n        locals_hide_dunder: bool = True,\n        locals_hide_sunder: bool = False,\n        suppress: Iterable[str | ModuleType] = (),\n        max_frames: int = MAX_FRAMES,\n        use_rich: bool = True,\n    ) -> None:\n        if locals_max_length < 0:\n            msg = f'\"locals_max_length\" must be >= 0: {locals_max_length}'\n            raise ValueError(msg)\n        if locals_max_string < 0:\n            msg = f'\"locals_max_string\" must be >= 0: {locals_max_string}'\n            raise ValueError(msg)\n        if max_frames < 2:\n            msg = f'\"max_frames\" must be >= 2: {max_frames}'\n            raise ValueError(msg)\n        self.show_locals = show_locals\n        self.locals_max_length = locals_max_length\n        self.locals_max_string = locals_max_string\n        self.locals_hide_dunder = locals_hide_dunder\n        self.locals_hide_sunder = locals_hide_sunder\n        self.suppress: Sequence[str] = []\n",
+          "sha256": "2c983660e80e92e6ed2cbdff9efee37f9812ee0b22263433f6b11693c07a0cef"
+        }
+      ]
+    }
+  ],
+  "observation_kind": "researcher_read_of_pinned_pre_patch_code",
+  "worker_initial_inspection_performed": false,
+  "restorable_worker_snapshot": null,
+  "target_trajectory_loaded": false,
+  "gold_patch_or_hidden_tests_loaded": false
+}

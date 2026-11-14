@@ -1,0 +1,42 @@
+{
+  "target_trajectory_row_index": 2891,
+  "task": {
+    "instance_id": "asottile__pyupgrade-890",
+    "repo": "asottile/pyupgrade",
+    "base_commit": "a61ea875545997641089caf87b9f1cf623d059fe",
+    "created_at": "2023-09-19 17:57:57",
+    "problem_statement": "Error after upgrading a formatted sting starting with a variable\nIf I run pyupgrade on this string : \r\n  **'{}\\N{NO-BREAK SPACE}'.format(currency.symbol or \"\")**\r\nI get this line as an output : \r\n\"\\N{NO-BREAK SPACE}\".format(currency.symbol or \"\") \r\nWich causes an error ",
+    "version": "3.11",
+    "environment_setup_commit": "b0e58ecad103565dcb4d4cd8845066b691d3868c",
+    "license_name": "MIT License",
+    "docker_image": "swerebench/sweb.eval.x86_64.asottile_1776_pyupgrade-890",
+    "image_name": "swerebench/sweb.eval.x86_64.asottile_1776_pyupgrade-890",
+    "dataset": "nebius/SWE-rebench",
+    "revision": "89cdfbab4ab1bd8f5a658bb212d1b63624f4f881",
+    "file": "data/test-00000-of-00002.parquet",
+    "row_index": 3957
+  },
+  "base_code": [
+    {
+      "path": "pyupgrade/_main.py",
+      "repository": "asottile/pyupgrade",
+      "base_commit": "a61ea875545997641089caf87b9f1cf623d059fe",
+      "git_blob_sha": "ee762b4bf255634f43f413d2b269b07aed1461f7",
+      "full_content_sha256": "bbabe874f1699dc8cfdcc32ffc2e1d05be20815efac65e55ae9b73e448768959",
+      "source_url": "https://github.com/asottile/pyupgrade/blob/a61ea875545997641089caf87b9f1cf623d059fe/pyupgrade/_main.py",
+      "spans": [
+        {
+          "start_line": 185,
+          "end_line": 222,
+          "text": "    if tup[1] is None:\n        return tup\n    else:\n        return (tup[0], '', tup[2], tup[3])\n\n\ndef _fix_format_literal(tokens: list[Token], end: int) -> None:\n    parts = rfind_string_parts(tokens, end)\n    parsed_parts = []\n    last_int = -1\n    for i in parts:\n        # f'foo {0}'.format(...) would get turned into a SyntaxError\n        prefix, _ = parse_string_literal(tokens[i].src)\n        if 'f' in prefix.lower():  # pragma: <3.12 cover\n            return\n\n        try:\n            parsed = parse_format(tokens[i].src)\n        except ValueError:\n            # the format literal was malformed, skip it\n            return\n\n        # The last segment will always be the end of the string and not a\n        # format, slice avoids the `None` format key\n        for _, fmtkey, spec, _ in parsed[:-1]:\n            if (\n                    fmtkey is not None and inty(fmtkey) and\n                    int(fmtkey) == last_int + 1 and\n                    spec is not None and '{' not in spec\n            ):\n                last_int += 1\n            else:\n                return\n\n        parsed_parts.append([_remove_fmt(tup) for tup in parsed])\n\n    for i, parsed in zip(parts, parsed_parts):\n        tokens[i] = tokens[i]._replace(src=unparse_parsed_string(parsed))\n",
+          "sha256": "80a82cf01ad86a3223b0afcbd35bdf5fffaf8e7e9bf14c70d70bb59f21ba437e"
+        }
+      ]
+    }
+  ],
+  "observation_kind": "researcher_read_of_pinned_pre_patch_code",
+  "worker_initial_inspection_performed": false,
+  "restorable_worker_snapshot": null,
+  "target_trajectory_loaded": false,
+  "gold_patch_or_hidden_tests_loaded": false
+}

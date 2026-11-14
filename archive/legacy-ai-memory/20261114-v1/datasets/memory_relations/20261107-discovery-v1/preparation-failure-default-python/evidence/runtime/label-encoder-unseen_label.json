@@ -1,0 +1,36 @@
+{
+  "at": "2026-11-07T10:29:30.414360+00:00",
+  "model_api_calls": 0,
+  "specification": {
+    "probe_id": "label-encoder-unseen_label",
+    "context_task": "scikit-learn__scikit-learn-12471",
+    "mechanism": "validation_order",
+    "fixture": {
+      "mode": "unseen_label"
+    },
+    "program": "from sklearn.preprocessing import LabelEncoder\nimport numpy as np\nencoder=LabelEncoder()\nencoder.fit(['a','b'])\nvalues=['missing']\noutput=encoder.transform(values)\nresult={'values':output.tolist(),'dtype':str(output.dtype),'size':int(output.size)}\n"
+  },
+  "public_context_file": "datasets/memory_relations/20261107-discovery-v1/evidence/public-code/scikit-learn__scikit-learn-12471.json",
+  "image_id": "sha256:a64885c975df6dc88571c92acbd9efc6af4c0e4a8e0841e0b24710acc152cfd3",
+  "executed_program_sha256": "232826ac239f96aee30e52ec1227871a1a8a782a1df1ea190415d4801854679e",
+  "observed": {
+    "exception_type": "ImportError",
+    "kind": "exception",
+    "message": "No module named 'sklearn.__check_build._check_build'\n___________________________________________________________________________\nContents of /testbed/sklearn/__check_build:\nsetup.py                  __pycache__               __init__.py\n_check_build.cpython-36m-x86_64-linux-gnu.so_check_build.pyx          _check_build.c\n___________________________________________________________________________\nIt seems that scikit-learn has not been built correctly.\n\nIf you have installed scikit-learn from source, please do not forget\nto build the package before using it: run `python setup.py install` or\n`make` in the source directory.\n\nIf you have used an installer, please check that it is suited for your\nPython version, your operating system and your platform.",
+    "traceback": "Traceback (most recent call last):\n  File \"/testbed/sklearn/__check_build/__init__.py\", line 44, in <module>\n    from ._check_build import check_build  # noqa\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nModuleNotFoundError: No module named 'sklearn.__check_build._check_build'\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"<string>\", line 3, in <module>\n  File \"/testbed/sklearn/__init__.py\", line 63, in <module>\n    from . import __check_build\n  File \"/testbed/sklearn/__check_build/__init__.py\", line 46, in <module>\n    raise_build_error(e)\n  File \"/testbed/sklearn/__check_build/__init__.py\", line 31, in raise_build_error\n    raise ImportError(\"\"\"%s\nImportError: No module named 'sklearn.__check_build._check_build'\n___________________________________________________________________________\nContents of /testbed/sklearn/__check_build:\nsetup.py                  __pycache__               __init__.py\n_check_build.cpython-36m-x86_64-linux-gnu.so_check_build.pyx          _check_build.c\n___________________________________________________________________________\nIt seems that scikit-learn has not been built correctly.\n\nIf you have installed scikit-learn from source, please do not forget\nto build the package before using it: run `python setup.py install` or\n`make` in the source directory.\n\nIf you have used an installer, please check that it is suited for your\nPython version, your operating system and your platform.\n"
+  },
+  "execution": {
+    "returncode": 0,
+    "stdout": "MEMORY_RELATION_RESULT:{\"exception_type\": \"ImportError\", \"kind\": \"exception\", \"message\": \"No module named 'sklearn.__check_build._check_build'\\n___________________________________________________________________________\\nContents of /testbed/sklearn/__check_build:\\nsetup.py                  __pycache__               __init__.py\\n_check_build.cpython-36m-x86_64-linux-gnu.so_check_build.pyx          _check_build.c\\n___________________________________________________________________________\\nIt seems that scikit-learn has not been built correctly.\\n\\nIf you have installed scikit-learn from source, please do not forget\\nto build the package before using it: run `python setup.py install` or\\n`make` in the source directory.\\n\\nIf you have used an installer, please check that it is suited for your\\nPython version, your operating system and your platform.\", \"traceback\": \"Traceback (most recent call last):\\n  File \\\"/testbed/sklearn/__check_build/__init__.py\\\", line 44, in <module>\\n    from ._check_build import check_build  # noqa\\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\nModuleNotFoundError: No module named 'sklearn.__check_build._check_build'\\n\\nDuring handling of the above exception, another exception occurred:\\n\\nTraceback (most recent call last):\\n  File \\\"<string>\\\", line 3, in <module>\\n  File \\\"/testbed/sklearn/__init__.py\\\", line 63, in <module>\\n    from . import __check_build\\n  File \\\"/testbed/sklearn/__check_build/__init__.py\\\", line 46, in <module>\\n    raise_build_error(e)\\n  File \\\"/testbed/sklearn/__check_build/__init__.py\\\", line 31, in raise_build_error\\n    raise ImportError(\\\"\\\"\\\"%s\\nImportError: No module named 'sklearn.__check_build._check_build'\\n___________________________________________________________________________\\nContents of /testbed/sklearn/__check_build:\\nsetup.py                  __pycache__               __init__.py\\n_check_build.cpython-36m-x86_64-linux-gnu.so_check_build.pyx          _check_build.c\\n___________________________________________________________________________\\nIt seems that scikit-learn has not been built correctly.\\n\\nIf you have installed scikit-learn from source, please do not forget\\nto build the package before using it: run `python setup.py install` or\\n`make` in the source directory.\\n\\nIf you have used an installer, please check that it is suited for your\\nPython version, your operating system and your platform.\\n\"}\n",
+    "stderr": "",
+    "seconds": 0.5345183330064174,
+    "image_id": "sha256:a64885c975df6dc88571c92acbd9efc6af4c0e4a8e0841e0b24710acc152cfd3",
+    "resources": {
+      "cpus": 1,
+      "memory": "1g",
+      "network": "none",
+      "root_filesystem": "read-only"
+    }
+  },
+  "interpretation": "Controlled mechanism probe. Expected validation exceptions are observed outcomes, not infrastructure failures. Shell success is not treated as semantic success. No actor or memory policy was evaluated."
+}

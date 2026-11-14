@@ -1,0 +1,44 @@
+{
+  "created_at": "2026-11-08T08:13:55.984922+00:00",
+  "purpose": "Feasibility and measurement pilot for source process information, not selector training or SWE-bench scoring.",
+  "source_families": 1,
+  "repository_versions": 2,
+  "states": 8,
+  "arms": [
+    "none",
+    "process",
+    "procedure",
+    "both",
+    "generic"
+  ],
+  "primary_contrast": "both minus procedure; source startup observation added to unchanged procedure",
+  "secondary_contrasts": [
+    "process minus none",
+    "both minus none",
+    "both minus generic"
+  ],
+  "generic_definition": "same procedure plus general state-aware startup guidance, without source-specific module/path",
+  "no_agent_outcome_based_replacements": true,
+  "failure_categories": [
+    "syntax",
+    "startup_exception",
+    "settings_not_ready",
+    "app_registry_not_ready",
+    "probe_failure",
+    "existing_settings_changed",
+    "timeout",
+    "infrastructure"
+  ],
+  "measures": [
+    "valid_fixed_probe",
+    "configuration_preserved",
+    "startup_exception",
+    "input_output_tokens",
+    "generation_seconds",
+    "docker_seconds",
+    "startup_probe_seconds"
+  ],
+  "cost_limit": "one owned L4 runtime, 1800 s total controller limit, 1200 s script limit; no paid model API, no local GPU",
+  "expansion_decision": "Preserve all outcomes. No trained-selector advantage claim from one connected family. If a fixed action or generic guidance suffices, report it and collect new independent sources before training.",
+  "interpretation": "Content and length change together: package effects for a fixed worker and constructed states. Greedy repeats check reproducibility, not success-probability uncertainty."
+}

@@ -1,0 +1,179 @@
+{
+  "code_revision": "6cd9de14b71915e39ac742a20dc33785e14b6aab",
+  "dataset_revision": "da1a37c8b19280e18627ca01cf368195a5e1d92e",
+  "probe_script_sha256": "8ff86cefd681a4fee99ab1765381f44d5920b07aae2499b03b4ad99e2f2777c0",
+  "source_sha256": {
+    "run_travel.py": "3b35937f0caba4c2b614f42d1b0cd0d4f32242973e4942bca5eda89df82e5d5f",
+    "agent/base.py": "3a7edf6b0f96e1793aef3d658e586c078ebc6a67b0ab0bc4239ba64370571b26",
+    "agent/travel_planner.py": "e96c4ef040156a2d9e6ac7c6598b685e4779adb44fb468bcbe48baa9f982b93f",
+    "env/env_systems/base_env.py": "3c7a2dcd6595f3ec39c06e1fefcaaf8903d0848fb17e8bdf56daaf35c46a6278",
+    "env/env_systems/travel_env.py": "b189f76c4cd0db5984cce29a1ad19cba98ebdd033128679287106a054590797f",
+    "env/env_systems/travel_planner_env/data_loader.py": "8033cc39ab6514f9e79a7044ab84b4dffd1f6a72dcbe4a6281ea49766076c7af",
+    "env/env_systems/travel_planner_env/eval.py": "6b1da29d295207898401bf325684b83a0691ecd04cd5211ff5f1fca4d8555942",
+    "env/env_systems/travel_planner_env/prompts.py": "984d2c9dc8522ec750eb8ed4da41eb2397997ba80272faac918ba80fe7149ade",
+    "env/env_systems/travel_planner_env/tool_executor.py": "bfa838a63d2db4c886dcfdb2682210c6045f8f2b82c387d9a1ba6d4d2f9e0de7"
+  },
+  "data_structure_checks": [
+    {
+      "path": "bundled_shopping/data.jsonl",
+      "rows": 150,
+      "subtasks": 900,
+      "unique_ids": 150,
+      "question_answer_length_mismatches": 0
+    },
+    {
+      "path": "group_travel_planner/data.jsonl",
+      "rows": 270,
+      "subtasks": 1869,
+      "unique_ids": 270,
+      "question_answer_length_mismatches": 0
+    },
+    {
+      "path": "progressive_search/data.jsonl",
+      "rows": 221,
+      "subtasks": 1641,
+      "unique_ids": 221,
+      "question_answer_length_mismatches": 0
+    },
+    {
+      "path": "formal_reasoning_math/data.jsonl",
+      "rows": 40,
+      "subtasks": 354,
+      "unique_ids": 40,
+      "question_answer_length_mismatches": 0
+    },
+    {
+      "path": "formal_reasoning_phys/data.jsonl",
+      "rows": 20,
+      "subtasks": 86,
+      "unique_ids": 20,
+      "question_answer_length_mismatches": 0
+    }
+  ],
+  "travel_backgrounds": {
+    "exact_unique_base_person_objects": 263,
+    "multiplicity_histogram": {
+      "1": 256,
+      "2": 7
+    },
+    "exact_unique_daily_plans": 45,
+    "daily_plan_multiplicity_histogram": {
+      "6": 45
+    },
+    "note": "Ignore names and query wording when grouping identical base plans; this still does not prove template independence"
+  },
+  "exposed_travel_group_id": 1,
+  "grading_probes": {
+    "reference_sanity": {
+      "scores_percent": {
+        "ps": 100.0,
+        "sps": 100.0,
+        "sr": 100.0
+      },
+      "expected_groups": 1,
+      "counted_groups": 1,
+      "expected_persons": 8,
+      "counted_persons": 8,
+      "passed_persons": 8
+    },
+    "empty_submission_sanity": {
+      "scores_percent": {
+        "ps": 0,
+        "sps": 0,
+        "sr": 0
+      },
+      "expected_groups": 1,
+      "counted_groups": 0,
+      "expected_persons": 8,
+      "counted_persons": 0,
+      "passed_persons": 0
+    },
+    "one_character_per_scored_slot": {
+      "scores_percent": {
+        "ps": 100.0,
+        "sps": 100.0,
+        "sr": 100.0
+      },
+      "expected_groups": 1,
+      "counted_groups": 1,
+      "expected_persons": 8,
+      "counted_persons": 8,
+      "passed_persons": 8
+    },
+    "wrong_current_city_only": {
+      "scores_percent": {
+        "ps": 100.0,
+        "sps": 100.0,
+        "sr": 100.0
+      },
+      "expected_groups": 1,
+      "counted_groups": 1,
+      "expected_persons": 8,
+      "counted_persons": 8,
+      "passed_persons": 8,
+      "environment_passed_persons": 0
+    },
+    "only_first_person_submitted": {
+      "scores_percent": {
+        "ps": 100.0,
+        "sps": 100.0,
+        "sr": 100.0
+      },
+      "expected_groups": 1,
+      "counted_groups": 1,
+      "expected_persons": 8,
+      "counted_persons": 1,
+      "passed_persons": 1
+    },
+    "one_of_two_expected_groups_submitted": {
+      "scores_percent": {
+        "ps": 100.0,
+        "sps": 100.0,
+        "sr": 100.0
+      },
+      "expected_groups": 2,
+      "counted_groups": 1,
+      "expected_persons": 16,
+      "counted_persons": 8,
+      "passed_persons": 8
+    }
+  },
+  "prompt_probes": {
+    "runner_none_history_flag": {
+      "previous_person_plan_present": true,
+      "base_plan_present": true,
+      "selected_memory_present": false,
+      "fake_client_calls": 1
+    },
+    "history_disabled": {
+      "previous_person_plan_present": false,
+      "base_plan_present": true,
+      "selected_memory_present": false,
+      "fake_client_calls": 1
+    },
+    "history_disabled_selected_memory": {
+      "previous_person_plan_present": false,
+      "base_plan_present": true,
+      "selected_memory_present": true,
+      "fake_client_calls": 1
+    }
+  },
+  "reset_observation_keys": [
+    "answers",
+    "base_person",
+    "group_id",
+    "questions",
+    "step"
+  ],
+  "flight_csv_present_in_clone": false,
+  "scope": {
+    "real_model_calls": 0,
+    "embedding_calls": 0,
+    "llm_judge_calls": 0,
+    "gpu_allocations": 0,
+    "worker_utility_labels": 0,
+    "end_to_end_run": false,
+    "fake_model_calls": 3,
+    "warning": "High scores here demonstrate grading weaknesses, not memory performance"
+  }
+}

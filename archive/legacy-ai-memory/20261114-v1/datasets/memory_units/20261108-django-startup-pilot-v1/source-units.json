@@ -1,0 +1,32 @@
+{
+  "source_instance_id": "django__django-11019",
+  "source_run": "runs/20261107T043844Z-c1316dac",
+  "source_agent_command_index_zero_based": 17,
+  "source_raw_command_index_zero_based": 22,
+  "source_command_record": {
+    "started_at": "2026-11-07T04:40:09.947152+00:00",
+    "phase": "agent",
+    "action": {
+      "command": "cd /testbed && PYTHONPATH=tests:. DJANGO_SETTINGS_MODULE=test_sqlite python - <<'PY'\nimport warnings\nimport django\ndjango.setup()\nfrom django import forms\nfrom django.forms.widgets import MediaOrderConflictWarning\nclass ColorPicker(forms.Widget):\n    class Media:\n        js = ['color-picker.js']\nclass SimpleTextWidget(forms.Widget):\n    class Media:\n        js = ['text-editor.js']\nclass FancyTextWidget(forms.Widget):\n    class Media:\n        js = ['text-editor.js', 'text-editor-extras.js', 'color-picker.js']\nclass MyForm(forms.Form):\n    background_color = forms.CharField(widget=ColorPicker())\n    intro = forms.CharField(widget=SimpleTextWidget())\n    body = forms.CharField(widget=FancyTextWidget())\nwith warnings.catch_warnings(record=True) as caught:\n    warnings.simplefilter('always')\n    print(MyForm().media._js)\nprint('order-conflict warnings:', len([w for w in caught if issubclass(w.category, MediaOrderConflictWarning)]))\nPY",
+      "tool_call_id": "call_ZIgBPkgYPEtiBFy72yTzksIU"
+    },
+    "cwd": "/testbed",
+    "outcome": "completed",
+    "output": {
+      "output": "['text-editor.js', 'text-editor-extras.js', 'color-picker.js']\norder-conflict warnings: 0\n",
+      "returncode": 0,
+      "exception_info": ""
+    },
+    "finished_at": "2026-11-07T04:40:10.315796+00:00",
+    "duration_seconds": 0.3686525279772468
+  },
+  "source_command_file_sha256": "ddb5ec548b145ef10741bcc8222ca8236109b543fbe96c43a8d041e26e8c66c5",
+  "source_procedure_file": "experiments/swe_memory/memory/process-restoration-20261107/django__django-11019-S.json",
+  "source_procedure_file_sha256": "afdf8e13ee063033eb891396256333312e249ddbda36d5b69be83936f70fae2d",
+  "source_procedure_original_sha256": "8de216627a5866971be29501e77b72ad4faae734ff53ccca0dff4442472aa989",
+  "process_observation": "In the recorded source checkout, an agent-local standalone forms reproducer used the following startup before importing forms:\nWorking directory: /testbed\nShell environment: PYTHONPATH=tests:. DJANGO_SETTINGS_MODULE=test_sqlite\nPython startup:\nimport django\ndjango.setup()\nThe local reproducer then printed:\n['text-editor.js', 'text-editor-extras.js', 'color-picker.js']\norder-conflict warnings: 0\nThis records a source-local startup, not proof that the source patch was correct or that another process needs the same settings.",
+  "procedure": "Source problem: three-way Media additions could impose false relative-order constraints and warn for independent assets, although the supplied form should order text-editor.js, text-editor-extras.js, color-picker.js. In this Django 3.0 repository, the observed tentative approach was to retain asset lists during Media.__add__, resolve them together in _css/_js, and use a topological ordering with first-seen tie-breaking; on a cycle, the submitted code falls back to pairwise Media.merge() (commands 6, 16, 23). After the changes, the agent-local focused test command passed all 17 media tests (command 22), and a local reproducer printed the expected order with zero MediaOrderConflictWarnings (command 17). This does not establish success for other inputs or APIs: official evaluation later remained evaluation_incomplete and official_resolved=false, with ten explicitly failed expected tests and four expected labels unparsed. Treat the local checks as earlier agent observations, not the official outcome; the cause of official failures is not established here.",
+  "shared_scope": "Historical source: django__django-11019, Django 3.0 checkout. Source official evaluation was incomplete and source resolved=false. Historical observations and tentative fixes are not current instructions; check applicability to the visible process state.",
+  "selection_status": "selected_after_prior_target_analysis_diagnostic_only",
+  "information_unit_definition": "E is a missing source startup observation; P is the existing tentative Media-fix procedure card. Not a generic evidence-versus-instruction style comparison. The two units have some shared outcome facts."
+}

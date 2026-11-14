@@ -14,3 +14,7 @@
 uv run python scripts/check_repository.py
 uv run python scripts/check_repository.py --verify-source-snapshot /path/to/ai-memory
 ```
+
+[legacy-datasets-manifest.json](legacy-datasets-manifest.json)은 이후 요청받은 데이터 보관의 별도 기록이다. 고정 commit만 가져온 최초 설계 이관과 달리, 기존 작업 트리의 미커밋·미추적·ignore된 파일도 포함한다. 파일별 SHA-256·크기·역할·출처 Git 상태와 HEAD blob ID, 전체 선택·제외 범위를 기록한다.
+
+데이터 본체는 `archive/`에 있으며 [보관 안내](../docs/data/legacy-datasets.md)를 따른다. `uv run python scripts/verify_legacy_data.py`로 원본 checkout 없이 모든 보관 파일의 무결성을 확인한다. 당시의 라벨 의미·실제 성능을 재검증하는 명령은 아니다.

@@ -1,0 +1,32 @@
+{
+  "experiment": "memory-selector-regression-20261111-v1",
+  "models": [
+    "old_reader",
+    "goal--seed731",
+    "goal--seed1729",
+    "state--seed731",
+    "state--seed1729"
+  ],
+  "training_updates": 0,
+  "candidate_retrieval": "Previously frozen learned-hybrid top32; identical across models and surface variants",
+  "state_input": "All five models see the same goal, progress and observed facts, regardless of original training view",
+  "retention": "Previously exposed 219 queries / 8 base plans; public reference histories, no worker utility labels",
+  "retention_metric": "Unthresholded Recall@10 primary; threshold .5 exact-set and recall secondary. No token cap in historical protocol, same K=10 for all.",
+  "prompt_control": "Both historical reference and current need instructions for every retention checkpoint; report both, do not choose the better one.",
+  "state_metric": "Threshold .5 exact need set, complete evidence, redundant delivery and paired correctness under original K/token caps",
+  "state_variants": "Original, meaning-preserving plain wording, and unrelated lookup failure/success distractors; all36 per variant, same6 exposed held families",
+  "rule_scope": "Text-only template-aware rule; retention uses the annotation parser. Neither is an independent general-purpose baseline.",
+  "new_natural_sources": 0,
+  "new_independent_families": 0,
+  "sealed_source_dev_test_used": false,
+  "worker_plan": "Reuse exact canonical worker messages only; selector-only rewrites do not change worker prompt. Complete missing calls in one bounded run if <=180; otherwise report utility as unmeasured and do not subsample.",
+  "worker_calls_cap": 180,
+  "local_inference_wall_limit_seconds": 2400,
+  "limits": "Regression and controlled wording tests, not fresh-source confirmation or official benchmark; no threshold, checkpoint, prompt, or variant tuning after scoring.",
+  "source_sha256": {
+    "need_manifest": "08ce01763cf17b0ddcfb0865af99a015d2adf558ef4551f5587a723b02e43309",
+    "retention_index": "4e77511202949ac1a63e386524cb2550875df49a914570a49afdb8cb00db7bad",
+    "prior_search_archive": "950f148af79dedc169b7fa957098833a386e00af669e96f50ee3b78baa5f1671",
+    "need_candidate_rankings": "f26752e23b5c25ee13e19dee51a6659b06ee885863573df1e975b6058940b689"
+  }
+}

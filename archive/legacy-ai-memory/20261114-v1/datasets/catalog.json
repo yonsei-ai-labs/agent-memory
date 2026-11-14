@@ -1,0 +1,544 @@
+{
+  "format": "memory-data-role-catalog-v1",
+  "basis_commit": "70bb898af4674232bc9a24251417310f4aa80c61",
+  "purpose": "Roles and readiness for the next study, not a merged training dataset",
+  "raw_datasets_modified": false,
+  "new_training_examples_created": 0,
+  "original_split_contracts_unchanged": true,
+  "assets": [
+    {
+      "asset_id": "natural-relations-74",
+      "path": "datasets/memory_relations/20261107-discovery-v1",
+      "readme": "datasets/memory_relations/20261107-discovery-v1/README.md",
+      "evidence_index": "datasets/memory_relations/20261107-discovery-v1/artifact-index.json",
+      "evidence_index_sha256": "ce72844b4b91dd2f4b8d1ed0c0b47cf10b3d7c9c046893a4bc6c13a4acdc2112",
+      "origin": "source_grounded_relation_annotations",
+      "units": {
+        "rows": 74,
+        "source_experiences": 10,
+        "repositories": 6
+      },
+      "label_meaning": "supported / contradicted / not_established; bounded relation, not worker utility",
+      "measured_worker_effects": false,
+      "next_study_role": "auxiliary_relation_diagnostic",
+      "fresh_confirmatory_test_eligible": false,
+      "limits": [
+        "Already inspected discovery data; preserve original grouped splits.",
+        "Do not turn relation labels into provide/withhold or benefit/harm labels."
+      ]
+    },
+    {
+      "asset_id": "scope-expansion",
+      "path": "datasets/scope_relations/20261108-expansion-v1",
+      "readme": "datasets/scope_relations/20261108-expansion-v1/README.md",
+      "evidence_index": "datasets/scope_relations/20261108-expansion-v1/artifact-index.json",
+      "evidence_index_sha256": "63ddcf5d339c1afa8510dfe2319b9ead4540f6bc58154dbfc94413f712e3095e",
+      "origin": "observed_scope_identifiers_with_constructed_current_states",
+      "units": {
+        "rows_by_training_file": {
+          "train-small.jsonl": 146,
+          "train-wide.jsonl": 522,
+          "train-wide-ab.jsonl": 1044,
+          "train-public-ab.jsonl": 1316
+        },
+        "external_rows": 108
+      },
+      "label_meaning": "Two relation outputs: requested scope and completed scope",
+      "measured_worker_effects": false,
+      "next_study_role": "controlled_optimization_and_regression_diagnostic",
+      "fresh_confirmatory_test_eligible": false,
+      "limits": [
+        "Training variants overlap; do not sum row counts.",
+        "Length/string shortcuts and repeated source families limit generalization."
+      ]
+    },
+    {
+      "asset_id": "scope-length-control",
+      "path": "datasets/scope_relations/20261108-length-challenge-v1",
+      "readme": "datasets/scope_relations/20261108-length-challenge-v1/README.md",
+      "evidence_index": "datasets/scope_relations/20261108-length-challenge-v1/artifact-index.json",
+      "evidence_index_sha256": "9d875933318abdee15e6ecd7a45372b915bab5d68498de69ac8928cd8f743af8",
+      "origin": "constructed_length_control",
+      "units": {
+        "rows": 108,
+        "base_conditions": 36,
+        "repositories": 2,
+        "source_episodes": 3
+      },
+      "label_meaning": "Two scope relations with controlled lengths",
+      "measured_worker_effects": false,
+      "next_study_role": "historical_stress_test_only",
+      "fresh_confirmatory_test_eligible": false,
+      "limits": [
+        "Original training_allowed=false remains in force.",
+        "Already inspected; not a new independent confirmation."
+      ]
+    },
+    {
+      "asset_id": "api-direct-applicability",
+      "path": "datasets/api_transfer/20261108-v1",
+      "readme": "datasets/api_transfer/20261108-v1/README.md",
+      "evidence_index": "datasets/api_transfer/20261108-v1/artifact-index.json",
+      "evidence_index_sha256": "00c1df77c9a6dd5d4e8e26dc603f86c6d17b271537819f929470614456e1e94d",
+      "origin": "authored_executable_fixtures",
+      "units": {
+        "states": 96,
+        "candidate_rows": 384,
+        "libraries": 7,
+        "execution_records": 544
+      },
+      "label_meaning": "Exact historical procedure reuse satisfies the authored output/mutation contract",
+      "measured_worker_effects": false,
+      "next_study_role": "auxiliary_applicability_and_control_diagnostic",
+      "fresh_confirmatory_test_eligible": false,
+      "limits": [
+        "Shares states with API worker utility data; not independent extra examples.",
+        "Direct reuse correctness differs from a worker adapting the memory."
+      ]
+    },
+    {
+      "asset_id": "api-version-challenge",
+      "path": "datasets/api_transfer/20261108-pandas-version-v1",
+      "readme": "datasets/api_transfer/20261108-pandas-version-v1/README.md",
+      "evidence_index": "datasets/api_transfer/20261108-pandas-version-v1/artifact-index.json",
+      "evidence_index_sha256": "829cab502a6ef73a4cb2ab8edb92ffc4b07bc9c6e09aba82d0eff45a47201823",
+      "origin": "authored_real_version_contrast",
+      "units": {
+        "rows": 72,
+        "states": 18,
+        "label_flipping_version_pairs": 2
+      },
+      "label_meaning": "Exact procedure applicability under two actual package versions",
+      "measured_worker_effects": false,
+      "next_study_role": "historical_stress_test_only",
+      "fresh_confirmatory_test_eligible": false,
+      "limits": [
+        "Original training_allowed=false remains in force.",
+        "One version-change mechanism; not an independent broad family benchmark."
+      ]
+    },
+    {
+      "asset_id": "api-utility-4b",
+      "path": "datasets/api_worker_utility/20261108-v3",
+      "readme": "datasets/api_worker_utility/20261108-v3/README.md",
+      "evidence_index": "datasets/api_worker_utility/20261108-v3/manifest.json",
+      "evidence_index_sha256": "fd676eef5d6c7d2c159b116afa6c07ca4969441127b846af003141374710da3e",
+      "origin": "generated_worker_code_on_authored_fixtures",
+      "units": {
+        "states": 96,
+        "base_generations": 960,
+        "repeat_generations": 4
+      },
+      "label_meaning": "Fixed-worker code execution outcomes and costs for every recorded action",
+      "measured_worker_effects": true,
+      "next_study_role": "existing_utility_learning_prototype",
+      "fresh_confirmatory_test_eligible": false,
+      "limits": [
+        "4B split is 50/18/28 states; 9B reuses the same 28 test states.",
+        "Effects are conditional on worker, prompt, fixtures, action and budget.",
+        "Retain original test partition for historical reporting; future confirmatory claims need new sources."
+      ]
+    },
+    {
+      "asset_id": "api-utility-9b",
+      "path": "datasets/api_worker_utility/20261108-9b-transfer-v1",
+      "readme": "datasets/api_worker_utility/20261108-9b-transfer-v1/README.md",
+      "evidence_index": "datasets/api_worker_utility/20261108-9b-transfer-v1/manifest.json",
+      "evidence_index_sha256": "cec66707a4bf76d8f7b65fae8ecdeec5dce8f619a5dbdf95d869f566db122d6e",
+      "origin": "generated_worker_code_on_authored_fixtures",
+      "units": {
+        "states": 28,
+        "base_generations": 280,
+        "repeat_generations": 4
+      },
+      "label_meaning": "Fixed-worker code execution outcomes and costs for every recorded action",
+      "measured_worker_effects": true,
+      "next_study_role": "historical_worker_transfer_diagnostic",
+      "fresh_confirmatory_test_eligible": false,
+      "limits": [
+        "4B split is 50/18/28 states; 9B reuses the same 28 test states.",
+        "Effects are conditional on worker, prompt, fixtures, action and budget.",
+        "Retain original test partition for historical reporting; future confirmatory claims need new sources."
+      ]
+    },
+    {
+      "asset_id": "django-information-unit",
+      "path": "datasets/memory_units/20261108-django-startup-pilot-v1",
+      "readme": "datasets/memory_units/20261108-django-startup-pilot-v1/README.md",
+      "evidence_index": "datasets/memory_units/20261108-django-startup-pilot-v1/artifact-index.json",
+      "evidence_index_sha256": "7399a0e9de501cb73ad23c47c8136b661000da00060dba1fab0a77e45507b415",
+      "origin": "source_grounded_memory_with_reconstructed_process_states",
+      "units": {
+        "source_families": 1,
+        "states": 8,
+        "base_generations": 40,
+        "repeat_generations": 4
+      },
+      "label_meaning": "Startup probe and settings-preservation contract after memory delivery",
+      "measured_worker_effects": true,
+      "next_study_role": "information_ablation_diagnostic",
+      "fresh_confirmatory_test_eligible": false,
+      "limits": [
+        "One family, not eight independent source experiences.",
+        "All states are diagnostic; best fixed arm equals observed action oracle."
+      ]
+    },
+    {
+      "asset_id": "development-leads-640",
+      "path": "datasets/development_memory_leads/20261108-v1",
+      "readme": "datasets/development_memory_leads/20261108-v1/README.md",
+      "evidence_index": "datasets/development_memory_leads/20261108-v1/artifact-index.json",
+      "evidence_index_sha256": "9668602000443ed2ef6f262a2a12450039d9f0060e22871da96b9cdd663e6673",
+      "origin": "public_issue_and_historical_edit_annotations",
+      "units": {
+        "pairs": 640,
+        "current_issues": 40,
+        "memory_cards": 16,
+        "current_repositories": 24,
+        "train_positive_pairs": 18
+      },
+      "label_meaning": "Shared diagnostic mechanism / different mechanism / insufficient connection",
+      "measured_worker_effects": false,
+      "next_study_role": "candidate_mining_and_annotation_review",
+      "fresh_confirmatory_test_eligible": false,
+      "limits": [
+        "Single-assistant annotations, not measured utility.",
+        "Same memory bank across splits; issue excerpts may already contain the proposed information.",
+        "Ambiguous positives need independent review; no silent relabeling."
+      ]
+    },
+    {
+      "asset_id": "memory-state-augmentation-20261112-v1",
+      "path": "datasets/memory_state_augmentation/20261112-v1",
+      "readme": "datasets/memory_state_augmentation/20261112-v1/README.md",
+      "evidence_index": "datasets/memory_state_augmentation/20261112-v1/manifest.json",
+      "evidence_index_sha256": "c6d5c7eb8624493bc1f47c7f02e225cdc4fdd035b1dfd2ef8ce023b1381a4e1c",
+      "origin": "controlled_current_state_variants_of_existing_training_records",
+      "units": {
+        "source_families": 11,
+        "states": 1056,
+        "unique_core_pair_inputs": 4224,
+        "independent_sources_added": 0,
+        "worker_calls": 0
+      },
+      "label_meaning": "Candidate relation roles: already_observed, inactive_branch, needed_now, other_reference, unavailable_source; never measured utility",
+      "measured_worker_effects": false,
+      "next_study_role": "existing_train_partition_relation_augmentation_candidate",
+      "fresh_confirmatory_test_eligible": false,
+      "limits": [
+        "Original train families only; no automatic export into a different trainer/input contract.",
+        "One family stays in one split across wording, order, and observation variants.",
+        "No actual worker effects or training results were added by creating this asset."
+      ],
+      "split": "original_train_only",
+      "training_use_scope": "Original training source groups; preserve the existing input and label contracts."
+    },
+    {
+      "asset_id": "memory-state-supplement-20261112-v3",
+      "path": "datasets/memory_state_supplement/20261112-v3",
+      "readme": "datasets/memory_state_supplement/20261112-v3/README.md",
+      "evidence_index": "datasets/memory_state_supplement/20261112-v3/manifest.json",
+      "evidence_index_sha256": "1aa88429fa3e67e8ba54b6f3a5e7afd1ba09c2f728e5bbd5a6c2a4c1a4e79e6f",
+      "origin": "controlled_observation_and_missing_premise_diagnostics_on_old_pilot_revision",
+      "units": {
+        "source_families": 4,
+        "matched_pairs": 96,
+        "controlled_states": 192,
+        "parent_decision_states": 84,
+        "worker_calls": 0
+      },
+      "label_meaning": "Input-grounded applicability and observation controls; utility is null",
+      "measured_worker_effects": false,
+      "next_study_role": "design_dev_fixed_state_diagnostic",
+      "fresh_confirmatory_test_eligible": false,
+      "limits": [
+        "Parent revision differs from the newly delivered hidden-traps packet despite similar paths and IDs.",
+        "Training is not approved by this data contract; inspect/review as dev only.",
+        "338 record identities shared with the newer packet have different text; do not join by memory_id alone."
+      ],
+      "split": "dev",
+      "training_approved": false,
+      "parent_revision_manifest_sha256": "01018932115f09a111823fd42a6010eea65d05288fd498cb558b71c283adcc53"
+    },
+    {
+      "asset_id": "hidden-memory-traps-pilot-delivered-20261112-v1",
+      "path": "datasets/hidden_memory_traps/pilot-20261112-v1",
+      "readme": "datasets/hidden_memory_traps/pilot-20261112-v1/README.md",
+      "evidence_index": "datasets/hidden_memory_traps/pilot-20261112-v1/manifest.json",
+      "evidence_index_sha256": "a097c765a1100c1c1f4e8c3e624697107a55e642e13e9d81e21a4efa03d472ff",
+      "origin": "authored_synthetic_fixed_correct_past_sessions_with_long_record_banks",
+      "units": {
+        "source_families": 4,
+        "events": 212,
+        "decision_states": 92,
+        "cases": 552,
+        "record_table_rows": 1536,
+        "unique_worker_inputs": 3468,
+        "worker_calls": 0
+      },
+      "label_meaning": "Script-defined answer sets and record relations; ambiguous and utility remain null",
+      "measured_worker_effects": false,
+      "next_study_role": "long_context_design_pilot_and_context_stream_source",
+      "fresh_confirmatory_test_eligible": false,
+      "limits": [
+        "Design pilot only; all four source families have prior stage1 exposure.",
+        "Actual rendered memory block exceeds the nominal budget in 254/552 2k and 132/552 8k cases.",
+        "needs_memory currently encodes answer type; UNKNOWN does not imply no-memory worker success or one-sided memory harm.",
+        "Twenty record judgments need other records; the small selector input/support generation contract is still undefined.",
+        "Model semantic review is not blind human annotation; unannotated candidates are not negative labels.",
+        "Fixed scripted answers in the exported histories are not an autonomous cumulative rollout."
+      ],
+      "split": "pilot_design_dev",
+      "generator_commit": "953217b9ac442e717eac1ad5436e9ccbbcdde6cf",
+      "latest_review": "docs/reports/2026-11-12-hidden-memory-traps-pilot-review.md"
+    },
+    {
+      "asset_id": "context-session-luna-smoke-20261112-v1",
+      "path": "datasets/memory_context_session/20261112-luna-smoke-v1",
+      "readme": "datasets/memory_context_session/20261112-luna-smoke-v1/README.md",
+      "evidence_index": "datasets/memory_context_session/20261112-luna-smoke-v1/manifest.json",
+      "evidence_index_sha256": "b82602f9086f1f4bcd734d6c4f73bbe549c37c0c0a79d0d6d72f6efa8839249c",
+      "origin": "read_only_setup_packet_from_existing_pilot",
+      "units": {
+        "source_families": 1,
+        "questions": 4,
+        "observed_records": 42,
+        "observed_chunks": 79,
+        "main_assignments": 16,
+        "local_provide_withhold_pairs": 8,
+        "main_unique_worker_calls": 14
+      },
+      "label_meaning": "Script answer sets, with observed local paired outcomes stored separately in results.",
+      "measured_worker_effects": true,
+      "worker_effect_scope": "Four-question setup only; 6 both-success and 2 both-failure local pairs, no observed gains or harms.",
+      "training_approved": false,
+      "fresh_confirmatory_test_eligible": false,
+      "next_study_role": "setup_regression_diagnostic_only",
+      "results": "evaluation/results/context-session-luna-smoke-20261112-v1",
+      "limits": [
+        "One previously inspected family; no new independent sources.",
+        "Six of eight cross-mode inputs are identical; history exposure is insufficient.",
+        "Read-only recommendation instructions need clarification; original results are preserved.",
+        "Reference o200k_base budget, not exact pre-counted Luna-native allocation."
+      ]
+    },
+    {
+      "asset_id": "context-session-offline-20261113-v2",
+      "path": "datasets/memory_context_session/20261113-offline-v2",
+      "readme": "datasets/memory_context_session/20261113-offline-v2/README.md",
+      "evidence_index": "datasets/memory_context_session/20261113-offline-v2/manifest.json",
+      "evidence_index_sha256": "26eda8c9d96a8eade30522ea4e732f61370399aeaee759d887bd7331f5d9b8d9",
+      "parent_revision_manifest_sha256": "a097c765a1100c1c1f4e8c3e624697107a55e642e13e9d81e21a4efa03d472ff",
+      "origin": "offline_read_only_input_revision_from_existing_pilot",
+      "units": {
+        "source_families": 1,
+        "independent_sources_added": 0,
+        "questions": 4,
+        "observed_records": 42,
+        "observed_chunks": 79,
+        "fixture_input_assignments": 32,
+        "local_input_pairs": 16,
+        "worker_calls": 0
+      },
+      "label_meaning": "Script answer sets and masked relation targets. Utility remains null; fixture answers are never graded.",
+      "measured_worker_effects": false,
+      "split": "design_dev",
+      "training_approved": false,
+      "fresh_confirmatory_test_eligible": false,
+      "next_study_role": "offline_input_contract_validation_before_small_live_setup",
+      "checks": "evaluation/results/context-session-offline-20261113-v2",
+      "limits": [
+        "One previously inspected family; no independent sources added.",
+        "Actual rendered block and serialized input budgets are checked for this child packet only; the original 552-case packet is preserved.",
+        "Reference o200k_base counts are not native provider chat-template counts.",
+        "Both fixture lengths expose a prior answer in the last question under both policies, while five of eight cross-mode inputs remain identical.",
+        "No model calls, utility measurements, independent human review or full-benchmark run."
+      ]
+    }
+  ],
+  "unlabeled_evidence_pools": [
+    {
+      "pool_id": "execution-prerequisite-evidence",
+      "readme": "docs/design-data/memory-prerequisite-sources-20261108/README.md",
+      "reviewed_tool_calls": 36,
+      "retained_evidence_candidates": 8,
+      "retained_source_families": 4,
+      "new_training_rows": 0,
+      "observed_utility_labels": 0,
+      "next_study_role": "source_evidence_only; needs a separate predecision target and actual intervention outcomes"
+    },
+    {
+      "pool_id": "early-independent-review-candidates",
+      "readme": "training/memory_selector/reviews/2026-11-07-independent/README.md",
+      "table": "training/memory_selector/reviews/2026-11-07-independent/candidate-table.csv",
+      "candidates": 9,
+      "sources": 3,
+      "hidden_official_information_diagnostic_only": 4,
+      "observed_utility_labels": 0,
+      "next_study_role": "review examples only; do not export diagnostic information into selector inputs"
+    },
+    {
+      "pool_id": "memory-evidence-discovery-20261108-v1",
+      "readme": "docs/design-data/memory-evidence-discovery-20261108-v1/README.md",
+      "table": "docs/design-data/memory-evidence-discovery-20261108-v1/case-table.csv",
+      "evidence_index": "docs/design-data/memory-evidence-discovery-20261108-v1/artifact-index.json",
+      "evidence_index_sha256": "228bf884845e137206b61435d5eed257739d79a755a14baa7220880bb000f49f",
+      "source_memories": 12,
+      "source_repository_groups": 12,
+      "current_problems": 18,
+      "case_pairs": 19,
+      "source_tool_call_observation_pairs": 87,
+      "relation_review_status": "single_agent_provisional",
+      "new_training_rows": 0,
+      "observed_utility_labels": 0,
+      "worker_snapshots_ready": 0,
+      "learner_export_allowed": false,
+      "fresh_confirmatory_test_eligible": false,
+      "next_study_role": "code-grounded source/current-condition review and execution preparation; not utility labels",
+      "collection_basis_commit": "49e5ec09344c785d46f2de0de912208f188bc28f"
+    }
+  ],
+  "reuse_policy": [
+    "Re-use original training partitions only for development prototypes; do not quietly relabel original test rows as training.",
+    "Old test observations may diagnose failures, but any method tuned using them needs new confirmation sources.",
+    "Missing utility remains null, never zero; row counts and independent source groups must remain separate."
+  ],
+  "next_design_note": "docs/ai-memory-next-data-contract-2026-11-08.md",
+  "review_queue": "docs/design-data/memory-selection-next-20261108/review-queue.jsonl",
+  "current_focus": {
+    "updated_on": "2026-11-13",
+    "basis_commit": "d1177d4ec8b5ad8a570eec0d5675d9c84ae83bc3",
+    "scope": "Selected role index for the three parent assets plus their offline session-preparation child; not an exhaustive census or merged training set.",
+    "asset_ids": [
+      "memory-state-augmentation-20261112-v1",
+      "memory-state-supplement-20261112-v3",
+      "hidden-memory-traps-pilot-delivered-20261112-v1",
+      "context-session-offline-20261113-v2"
+    ],
+    "design_note": "docs/ai-memory-data-cleanup-and-context-stream-plan-2026-11-12.md",
+    "read_only_stream_feasibility": "docs/design-data/memory-context-stream-20261112-v1/checks/feasibility.json",
+    "raw_payloads_modified": false,
+    "model_or_worker_runs_started": 0,
+    "record_identity_fields": [
+      "dataset_manifest_sha256",
+      "session_id",
+      "surface",
+      "tier",
+      "memory_id"
+    ],
+    "join_policy": "Check actual record text hash too; same memory_id across revisions is not the same record.",
+    "worker_cache_policy": "Use actual messages plus model revision, tokenizer/chat template, decoding, tools and environment. Keep repeat IDs; cache reuse is not an independent observation.",
+    "revision_boundary": {
+      "old_parent_manifest_sha256": "01018932115f09a111823fd42a6010eea65d05288fd498cb558b71c283adcc53",
+      "new_parent_manifest_sha256": "a097c765a1100c1c1f4e8c3e624697107a55e642e13e9d81e21a4efa03d472ff",
+      "same_key_changed_text_rows": 338,
+      "collision_table": "docs/reports/data/hidden-memory-traps-review-20261112-v2/cross-version-record-collisions.jsonl",
+      "supplement_can_be_merged_without_versioned_adapter": false
+    },
+    "open_items": [
+      {
+        "id": "rendered-block-budget",
+        "priority": "before_worker_comparison",
+        "asset_id": "hidden-memory-traps-pilot-delivered-20261112-v1",
+        "status": "pending_code_fix_and_new_data_revision",
+        "resolution": "Count the full rendered block, then regenerate inputs, hashes, delivered IDs and coverage in a new revision."
+      },
+      {
+        "id": "unknown-label-meaning",
+        "priority": "before_training_or_reporting",
+        "asset_id": "hidden-memory-traps-pilot-delivered-20261112-v1",
+        "status": "readme_and_handoff_corrected_raw_protocol_preserved",
+        "resolution": "Do not treat needs_memory as measured utility or a provide/withhold target. Revise the schema explicitly in the next data revision."
+      },
+      {
+        "id": "small-selector-observability",
+        "priority": "before_selector_training",
+        "asset_id": "hidden-memory-traps-pilot-delivered-20261112-v1",
+        "status": "pending_rendered_input_contract",
+        "resolution": "Fix a label-blind candidate/support rule and input limits; mark missing premises insufficient and unannotated candidates masked."
+      },
+      {
+        "id": "stream-input-and-schedule",
+        "priority": "before_stream_worker_run",
+        "asset_id": "hidden-memory-traps-pilot-delivered-20261112-v1",
+        "status": "structured_read_only_answer_check_passed_inputs_not_built",
+        "resolution": "Render read-only questions, fix recent-window/memory budgets and causal schedules, then recheck each observed prefix."
+      },
+      {
+        "id": "same-total-budget-baseline",
+        "priority": "before_worker_comparison",
+        "status": "plan_amended_runner_pending",
+        "resolution": "Compare recent-only 4096 against recent 2048 plus selected memory 2048 and enforce one fully serialized input cap. Keep recent-only 2048 as a separate removal diagnostic."
+      },
+      {
+        "id": "local-effect-snapshot-pair",
+        "priority": "before_utility_label_collection",
+        "status": "plan_amended_runner_pending",
+        "resolution": "Local provide/withhold outcomes must share the complete predecision snapshot and worker contract. Separate them from comparisons across policy-generated session trajectories."
+      },
+      {
+        "id": "question-answer-derived-records",
+        "priority": "before_stream_worker_run",
+        "status": "diagnosed_new_revision_pending",
+        "record_table_rows_all_tiers_and_surfaces": 408,
+        "annotated_occurrences_all_irrelevant": 772,
+        "resolution": "Exclude old scripted question-answer booking confirmations from the new read-only external-fact bank; regenerate banks, relation targets, inputs and hashes."
+      }
+    ],
+    "source_reservations": {
+      "pilot_source_families": 4,
+      "main_source_candidates_not_generated": 20,
+      "pilot_and_main_candidates_prior_use": "delivery-path-stage1",
+      "sealed_new_b_families": 40,
+      "sealed_content_opened_by_this_work": false
+    },
+    "counting_policy": "Report independent source groups separately from states, cases, surfaces, tiers, schedules and unique model inputs.",
+    "latest_overall_review": "docs/reports/2026-11-12-overall-protocol-review.md",
+    "overall_data_diagnostics": "docs/reports/data/memory-overall-protocol-review-20261112-v1/checks/data-audit.json",
+    "planned_primary_comparison": {
+      "modes": [
+        "isolated_query",
+        "cumulative_own_answers"
+      ],
+      "delivery_conditions": [
+        "recent_only_4096",
+        "fixed_policy_recent_2048_memory_2048"
+      ],
+      "fixed_policy_implementation_candidate": "Existing BM25 budget policy; not a retrieval-model competition.",
+      "local_effect_diagnostic": "Provide/withhold branches from the same predecision snapshot.",
+      "implementation_status": "Plan only; packet regeneration, input contracts, serialization budgets and snapshot-pair assertions pending.",
+      "separate_model_comparisons_required": false
+    },
+    "deferred_comparisons": [
+      {
+        "id": "frozen-harrier-baseline",
+        "status": "not_required_for_current_measurement",
+        "reason": "Only relevant to a separate learned-selector superiority claim; hold the worker and delivery policy fixed for current session/effect measurements."
+      }
+    ],
+    "setup_test": {
+      "asset_id": "context-session-luna-smoke-20261112-v1",
+      "report": "docs/reports/2026-11-12-luna-session-setup.md",
+      "status": "four_question_test_complete_contrast_and_contract_need_amendment",
+      "model": "openai/gpt-6-luna",
+      "main_study_started": false,
+      "training_started": false,
+      "gpu_used": false
+    },
+    "offline_preparation": {
+      "asset_id": "context-session-offline-20261113-v2",
+      "status": "contract_and_cpu_input_checks_complete_small_live_setup_not_run",
+      "manifest_sha256": "26eda8c9d96a8eade30522ea4e732f61370399aeaee759d887bd7331f5d9b8d9",
+      "checks": "evaluation/results/context-session-offline-20261113-v2/audit.json",
+      "completed": [
+        "separate_relation_answer_type_and_measured_utility",
+        "version_and_text_bound_record_identity",
+        "serialized_reference_budget_checks",
+        "causal_fixture_history_and_same_snapshot_input_pairs"
+      ],
+      "scope_boundary": "One family and four questions. Parent 552-case inputs, full 92-question stream, native counting, independent semantic review and actual utility remain outside this completed preparation.",
+      "model_calls": 0,
+      "next_step": "Fix the worker/native input contract before a separate bounded live setup; no automatic execution."
+    }
+  }
+}

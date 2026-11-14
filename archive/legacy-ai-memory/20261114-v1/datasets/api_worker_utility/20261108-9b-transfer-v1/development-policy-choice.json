@@ -1,0 +1,416 @@
+{
+  "status": "frozen_before_test_worker_outcomes",
+  "frozen_utc": "2026-11-08T01:52:31.930898+00:00",
+  "selected_name": "semantic-policy-731",
+  "primary_unchanged": "harrier-value-731",
+  "selected_dev_metrics": {
+    "states": 18,
+    "successes": 11,
+    "success_rate": 0.6111111111111112,
+    "none_successes": 9,
+    "improvements": 2,
+    "harms": 0,
+    "unchanged": 16,
+    "provided_memory": 12,
+    "unsupported": 0,
+    "partial_pass_mean": 0.6944444444444444,
+    "input_tokens": 7433,
+    "output_tokens": 353,
+    "total_tokens": 7786,
+    "extra_tokens": 69,
+    "worker_seconds": 24.60337003399968,
+    "relative_utility": {
+      "0.0": 0.1111111111111111,
+      "0.05": 0.11091944444444445,
+      "0.2": 0.11034444444444444
+    },
+    "cost_scope": "Worker inference only; selector encoding/readout and extra native prefill reported separately.",
+    "decisions": [
+      {
+        "state_id": "pandas-drop-false-mutate",
+        "action": "receiver_procedure",
+        "success": false,
+        "none_success": false,
+        "gain": 0,
+        "unsupported": false,
+        "pass_fraction": 0.0,
+        "input_tokens": 388,
+        "output_tokens": 24,
+        "seconds": 1.6481609279999248,
+        "extra_tokens": -10
+      },
+      {
+        "state_id": "pandas-drop-false-preserve",
+        "action": "returned_procedure",
+        "success": true,
+        "none_success": true,
+        "gain": 0,
+        "unsupported": false,
+        "pass_fraction": 1.0,
+        "input_tokens": 383,
+        "output_tokens": 18,
+        "seconds": 1.273915212999782,
+        "extra_tokens": 7
+      },
+      {
+        "state_id": "pandas-drop-true-mutate",
+        "action": "receiver_procedure",
+        "success": true,
+        "none_success": false,
+        "gain": 1,
+        "unsupported": false,
+        "pass_fraction": 1.0,
+        "input_tokens": 388,
+        "output_tokens": 16,
+        "seconds": 1.1302104819997112,
+        "extra_tokens": 4
+      },
+      {
+        "state_id": "pandas-drop-true-preserve",
+        "action": "returned_procedure",
+        "success": true,
+        "none_success": true,
+        "gain": 0,
+        "unsupported": false,
+        "pass_fraction": 1.0,
+        "input_tokens": 383,
+        "output_tokens": 23,
+        "seconds": 1.5737352920000376,
+        "extra_tokens": 8
+      },
+      {
+        "state_id": "pandas-fill-false-mutate",
+        "action": "receiver_procedure",
+        "success": true,
+        "none_success": false,
+        "gain": 1,
+        "unsupported": false,
+        "pass_fraction": 1.0,
+        "input_tokens": 374,
+        "output_tokens": 24,
+        "seconds": 1.604881622999983,
+        "extra_tokens": 12
+      },
+      {
+        "state_id": "pandas-fill-false-preserve",
+        "action": "returned_procedure",
+        "success": true,
+        "none_success": true,
+        "gain": 0,
+        "unsupported": false,
+        "pass_fraction": 1.0,
+        "input_tokens": 369,
+        "output_tokens": 18,
+        "seconds": 1.2497546320000765,
+        "extra_tokens": 7
+      },
+      {
+        "state_id": "pandas-fill-true-mutate",
+        "action": "receiver_procedure",
+        "success": true,
+        "none_success": true,
+        "gain": 0,
+        "unsupported": false,
+        "pass_fraction": 1.0,
+        "input_tokens": 374,
+        "output_tokens": 16,
+        "seconds": 1.1126924329998928,
+        "extra_tokens": 6
+      },
+      {
+        "state_id": "pandas-fill-true-preserve",
+        "action": "returned_procedure",
+        "success": true,
+        "none_success": true,
+        "gain": 0,
+        "unsupported": false,
+        "pass_fraction": 1.0,
+        "input_tokens": 369,
+        "output_tokens": 23,
+        "seconds": 1.603091295000013,
+        "extra_tokens": 8
+      },
+      {
+        "state_id": "pandas-sort-false-mutate",
+        "action": "receiver_procedure",
+        "success": false,
+        "none_success": false,
+        "gain": 0,
+        "unsupported": false,
+        "pass_fraction": 0.0,
+        "input_tokens": 385,
+        "output_tokens": 23,
+        "seconds": 1.582743821999884,
+        "extra_tokens": 6
+      },
+      {
+        "state_id": "pandas-sort-false-preserve",
+        "action": "returned_procedure",
+        "success": true,
+        "none_success": true,
+        "gain": 0,
+        "unsupported": false,
+        "pass_fraction": 1.0,
+        "input_tokens": 380,
+        "output_tokens": 18,
+        "seconds": 1.2458339840000008,
+        "extra_tokens": 7
+      },
+      {
+        "state_id": "pandas-sort-true-mutate",
+        "action": "receiver_procedure",
+        "success": true,
+        "none_success": true,
+        "gain": 0,
+        "unsupported": false,
+        "pass_fraction": 1.0,
+        "input_tokens": 385,
+        "output_tokens": 16,
+        "seconds": 1.1125248610001108,
+        "extra_tokens": 6
+      },
+      {
+        "state_id": "pandas-sort-true-preserve",
+        "action": "returned_procedure",
+        "success": true,
+        "none_success": true,
+        "gain": 0,
+        "unsupported": false,
+        "pass_fraction": 1.0,
+        "input_tokens": 380,
+        "output_tokens": 23,
+        "seconds": 1.571175207000124,
+        "extra_tokens": 8
+      },
+      {
+        "state_id": "pandas-unobserved-drop-mutate",
+        "action": "none",
+        "success": false,
+        "none_success": false,
+        "gain": 0,
+        "unsupported": false,
+        "pass_fraction": 0.0,
+        "input_tokens": 494,
+        "output_tokens": 18,
+        "seconds": 1.2738345939999363,
+        "extra_tokens": 0
+      },
+      {
+        "state_id": "pandas-unobserved-drop-preserve",
+        "action": "none",
+        "success": false,
+        "none_success": false,
+        "gain": 0,
+        "unsupported": false,
+        "pass_fraction": 0.5,
+        "input_tokens": 487,
+        "output_tokens": 19,
+        "seconds": 1.344102563999968,
+        "extra_tokens": 0
+      },
+      {
+        "state_id": "pandas-unobserved-fill-mutate",
+        "action": "none",
+        "success": false,
+        "none_success": false,
+        "gain": 0,
+        "unsupported": false,
+        "pass_fraction": 0.5,
+        "input_tokens": 466,
+        "output_tokens": 18,
+        "seconds": 1.2899111419997098,
+        "extra_tokens": 0
+      },
+      {
+        "state_id": "pandas-unobserved-fill-preserve",
+        "action": "none",
+        "success": true,
+        "none_success": true,
+        "gain": 0,
+        "unsupported": false,
+        "pass_fraction": 1.0,
+        "input_tokens": 459,
+        "output_tokens": 19,
+        "seconds": 1.3811236220003593,
+        "extra_tokens": 0
+      },
+      {
+        "state_id": "pandas-unobserved-sort-mutate",
+        "action": "none",
+        "success": false,
+        "none_success": false,
+        "gain": 0,
+        "unsupported": false,
+        "pass_fraction": 0.0,
+        "input_tokens": 488,
+        "output_tokens": 18,
+        "seconds": 1.2737991140002123,
+        "extra_tokens": 0
+      },
+      {
+        "state_id": "pandas-unobserved-sort-preserve",
+        "action": "none",
+        "success": false,
+        "none_success": false,
+        "gain": 0,
+        "unsupported": false,
+        "pass_fraction": 0.5,
+        "input_tokens": 481,
+        "output_tokens": 19,
+        "seconds": 1.3318792259999555,
+        "extra_tokens": 0
+      }
+    ]
+  },
+  "criterion": "Maximum development strict successes, then fewer recorded worker tokens, then first candidate. Oracle excluded.",
+  "candidates": [
+    {
+      "name": "always-none",
+      "successes": 9,
+      "total_tokens": 7717
+    },
+    {
+      "name": "always-all-full",
+      "successes": 8,
+      "total_tokens": 22109
+    },
+    {
+      "name": "fixed-from-dev",
+      "successes": 11,
+      "total_tokens": 7813
+    },
+    {
+      "name": "harrier-value-731",
+      "successes": 8,
+      "total_tokens": 7881
+    },
+    {
+      "name": "harrier-value-732",
+      "successes": 8,
+      "total_tokens": 7850
+    },
+    {
+      "name": "harrier-preference-731",
+      "successes": 7,
+      "total_tokens": 7979
+    },
+    {
+      "name": "harrier-preference-732",
+      "successes": 7,
+      "total_tokens": 8477
+    },
+    {
+      "name": "harrier-policy-731",
+      "successes": 9,
+      "total_tokens": 7767
+    },
+    {
+      "name": "harrier-policy-732",
+      "successes": 9,
+      "total_tokens": 7767
+    },
+    {
+      "name": "harrier-native-value-731",
+      "successes": 7,
+      "total_tokens": 7786
+    },
+    {
+      "name": "harrier-native-value-732",
+      "successes": 8,
+      "total_tokens": 8175
+    },
+    {
+      "name": "harrier-native-preference-731",
+      "successes": 7,
+      "total_tokens": 7872
+    },
+    {
+      "name": "harrier-native-preference-732",
+      "successes": 5,
+      "total_tokens": 8120
+    },
+    {
+      "name": "harrier-native-policy-731",
+      "successes": 6,
+      "total_tokens": 9254
+    },
+    {
+      "name": "harrier-native-policy-732",
+      "successes": 7,
+      "total_tokens": 8871
+    },
+    {
+      "name": "state-only-value-731",
+      "successes": 6,
+      "total_tokens": 7873
+    },
+    {
+      "name": "state-only-value-732",
+      "successes": 7,
+      "total_tokens": 10016
+    },
+    {
+      "name": "tree",
+      "successes": 9,
+      "total_tokens": 7717
+    },
+    {
+      "name": "lexical-ridge",
+      "successes": 9,
+      "total_tokens": 7717
+    },
+    {
+      "name": "semantic-linear",
+      "successes": 10,
+      "total_tokens": 7762
+    },
+    {
+      "name": "semantic-value-731",
+      "successes": 9,
+      "total_tokens": 9327
+    },
+    {
+      "name": "semantic-value-732",
+      "successes": 10,
+      "total_tokens": 8898
+    },
+    {
+      "name": "semantic-policy-731",
+      "successes": 11,
+      "total_tokens": 7786
+    },
+    {
+      "name": "semantic-policy-732",
+      "successes": 9,
+      "total_tokens": 7922
+    },
+    {
+      "name": "relation-lora-joint",
+      "successes": 9,
+      "total_tokens": 7717
+    },
+    {
+      "name": "relation-lora-auxiliary",
+      "successes": 9,
+      "total_tokens": 7717
+    },
+    {
+      "name": "relation-lora-concept",
+      "successes": 9,
+      "total_tokens": 7717
+    },
+    {
+      "name": "relation-lexical-syntax-tree",
+      "successes": 9,
+      "total_tokens": 7717
+    }
+  ],
+  "selection_files_sha256": {
+    "policy-selection.json": "f196a594fea988db066b09c297a8538a3da160d3116ef0adb249fa4d92dbda34",
+    "semantic-selection.json": "b9397d2575955bec608765accac2a78eb23ec36e2d6fc10795b6291d20026c47",
+    "relation-selection.json": "03be3ddce76cd3ef7034f6d32159702a4ffd8fc3dab0e674217539c54d01d4ab"
+  },
+  "source_sha256": "6521f58c8a05038177f913f0c8e206ac3ec918d3e0b1e6dcbc94678420943d10",
+  "test_worker_outcomes_read": false,
+  "limitation": "Secondary candidate chosen across many exploratory models on 18 related states from one development library."
+}

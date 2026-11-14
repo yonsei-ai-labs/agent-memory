@@ -1,0 +1,70 @@
+{
+  "target_trajectory_row_index": 1400,
+  "task": {
+    "instance_id": "fsspec__filesystem_spec-1699",
+    "repo": "fsspec/filesystem_spec",
+    "base_commit": "b842cf4cc7e4e22caa3110157cec9b4959582993",
+    "created_at": "2024-10-01 03:04:23",
+    "problem_statement": "DirFileSystem missing `open_async()` method for proper async operation\n\r\n```python\r\nimport asyncio\r\nimport fsspec\r\n\r\nasync def async_test():\r\n    dirfs = fsspec.filesystem('dir', path='/tmp', asynchrnous=True)\r\n    file = await dirfs.open_async('hello', 'wb')\r\n    await file.close()\r\n\r\nasyncio.run(async_test())\r\n```\r\n\r\nresults in:\r\n```bash\r\n$ poetry run python3 d.py\r\nTraceback (most recent call last):\r\n  File \"/Users/orenl/dirfs_async.py\", line 9, in <module>\r\n    asyncio.run(async_test())\r\n  File \"/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/asyncio/runners.py\", line 194, in run\r\n    return runner.run(main)\r\n           ^^^^^^^^^^^^^^^^\r\n  File \"/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/asyncio/runners.py\", line 118, in run\r\n    return self._loop.run_until_complete(task)\r\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\n  File \"/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/asyncio/base_events.py\", line 687, in run_until_complete\r\n    return future.result()\r\n           ^^^^^^^^^^^^^^^\r\n  File \"/Users/orenl/dirfs_async.py\", line 6, in async_test\r\n    file = await dirfs.open_async('hello', 'wb')\r\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\n  File \"/Users/orenl/Library/Caches/pypoetry/virtualenvs/app-FHy2xRiz-py3.12/lib/python3.12/site-packages/fsspec/asyn.py\", line 910, in open_async\r\n    raise NotImplementedError\r\nNotImplementedError\r\n```\r\n\r\nLooks like the the `open_async()` method is missing despite other async methods implemented as stubs.\r\nWill send a PR that add this function simply calling the `open_async()` of the underlying filesystem.",
+    "version": "2024.9",
+    "environment_setup_commit": "360e46d13069b0426565429f9f610bf704cfa062",
+    "license_name": "BSD 3-Clause \"New\" or \"Revised\" License",
+    "docker_image": "swerebench/sweb.eval.x86_64.fsspec_1776_filesystem_spec-1699",
+    "image_name": "swerebench/sweb.eval.x86_64.fsspec_1776_filesystem_spec-1699",
+    "dataset": "nebius/SWE-rebench",
+    "revision": "89cdfbab4ab1bd8f5a658bb212d1b63624f4f881",
+    "file": "data/test-00000-of-00002.parquet",
+    "row_index": 7961
+  },
+  "base_code": [
+    {
+      "path": "fsspec/implementations/dirfs.py",
+      "repository": "fsspec/filesystem_spec",
+      "base_commit": "b842cf4cc7e4e22caa3110157cec9b4959582993",
+      "git_blob_sha": "6a28909dad3996451c9c0192008ddb87c1ac4beb",
+      "full_content_sha256": "54f489872db0159a1d639041fa8d6d91619879cbd4d8499b82e6e65f794ec2ec",
+      "source_url": "https://github.com/fsspec/filesystem_spec/blob/b842cf4cc7e4e22caa3110157cec9b4959582993/fsspec/implementations/dirfs.py",
+      "spans": [
+        {
+          "start_line": 1,
+          "end_line": 42,
+          "text": "from .. import filesystem\nfrom ..asyn import AsyncFileSystem\n\n\nclass DirFileSystem(AsyncFileSystem):\n    \"\"\"Directory prefix filesystem\n\n    The DirFileSystem is a filesystem-wrapper. It assumes every path it is dealing with\n    is relative to the `path`. After performing the necessary paths operation it\n    delegates everything to the wrapped filesystem.\n    \"\"\"\n\n    protocol = \"dir\"\n\n    def __init__(\n        self,\n        path=None,\n        fs=None,\n        fo=None,\n        target_protocol=None,\n        target_options=None,\n        **storage_options,\n    ):\n        \"\"\"\n        Parameters\n        ----------\n        path: str\n            Path to the directory.\n        fs: AbstractFileSystem\n            An instantiated filesystem to wrap.\n        target_protocol, target_options:\n            if fs is none, construct it from these\n        fo: str\n            Alternate for path; do not provide both\n        \"\"\"\n        super().__init__(**storage_options)\n        if fs is None:\n            fs = filesystem(protocol=target_protocol, **(target_options or {}))\n        if (path is not None) ^ (fo is not None) is False:\n            raise ValueError(\"Provide path or fo, not both\")\n        path = path or fo\n\n",
+          "sha256": "6ad92dd88178654378e7883c8acdfc90cb676aaaccbcdd08154e184229147bbf"
+        },
+        {
+          "start_line": 303,
+          "end_line": 329,
+          "text": "    async def _find(self, path, *args, **kwargs):\n        detail = kwargs.get(\"detail\", False)\n        ret = await self.fs._find(self._join(path), *args, **kwargs)\n        if detail:\n            return {self._relpath(path): info for path, info in ret.items()}\n        return self._relpath(ret)\n\n    def find(self, path, *args, **kwargs):\n        detail = kwargs.get(\"detail\", False)\n        ret = self.fs.find(self._join(path), *args, **kwargs)\n        if detail:\n            return {self._relpath(path): info for path, info in ret.items()}\n        return self._relpath(ret)\n\n    async def _expand_path(self, path, *args, **kwargs):\n        return self._relpath(\n            await self.fs._expand_path(self._join(path), *args, **kwargs)\n        )\n\n    def expand_path(self, path, *args, **kwargs):\n        return self._relpath(self.fs.expand_path(self._join(path), *args, **kwargs))\n\n    async def _mkdir(self, path, *args, **kwargs):\n        return await self.fs._mkdir(self._join(path), *args, **kwargs)\n\n    def mkdir(self, path, *args, **kwargs):\n        return self.fs.mkdir(self._join(path), *args, **kwargs)\n",
+          "sha256": "9950f0890e88b8634c7e429937f2466b2d38a2c2fbdb445bf74ccd93f05e82c2"
+        }
+      ]
+    },
+    {
+      "path": "fsspec/registry.py",
+      "repository": "fsspec/filesystem_spec",
+      "base_commit": "b842cf4cc7e4e22caa3110157cec9b4959582993",
+      "git_blob_sha": "c261b9b088a72cd94412b6810d4f353b47dea274",
+      "full_content_sha256": "1d50bee0758366703aaf2709c00bbc17c657cce37ff393134152324ba2ce1f1a",
+      "source_url": "https://github.com/fsspec/filesystem_spec/blob/b842cf4cc7e4e22caa3110157cec9b4959582993/fsspec/registry.py",
+      "spans": [
+        {
+          "start_line": 71,
+          "end_line": 78,
+          "text": "    \"arrow_hdfs\": {\n        \"class\": \"fsspec.implementations.arrow.HadoopFileSystem\",\n        \"err\": \"pyarrow and local java libraries required for HDFS\",\n    },\n    \"asynclocal\": {\n        \"class\": \"morefs.asyn_local.AsyncLocalFileSystem\",\n        \"err\": \"Install 'morefs[asynclocalfs]' to use AsyncLocalFileSystem\",\n    },\n",
+          "sha256": "88919b87490701b0f4ad3ff5091cd0061e2679bf383233286817c0438d5d449c"
+        },
+        {
+          "start_line": 289,
+          "end_line": 303,
+          "text": "def filesystem(protocol, **storage_options):\n    \"\"\"Instantiate filesystems for given protocol and arguments\n\n    ``storage_options`` are specific to the protocol being chosen, and are\n    passed directly to the class.\n    \"\"\"\n    if protocol == \"arrow_hdfs\":\n        warnings.warn(\n            \"The 'arrow_hdfs' protocol has been deprecated and will be \"\n            \"removed in the future. Specify it as 'hdfs'.\",\n            DeprecationWarning,\n        )\n\n    cls = get_filesystem_class(protocol)\n    return cls(**storage_options)\n",
+          "sha256": "9596830bb2944624f63214002370e4b9559d9c24fd5b9906bc6c211cb1bd8c93"
+        }
+      ]
+    }
+  ],
+  "observation_kind": "researcher_read_of_pinned_pre_patch_code",
+  "worker_initial_inspection_performed": false,
+  "restorable_worker_snapshot": null,
+  "target_trajectory_loaded": false,
+  "gold_patch_or_hidden_tests_loaded": false
+}

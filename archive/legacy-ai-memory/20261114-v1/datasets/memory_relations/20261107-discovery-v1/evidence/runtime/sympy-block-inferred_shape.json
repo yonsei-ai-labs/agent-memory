@@ -1,0 +1,44 @@
+{
+  "at": "2026-11-07T10:37:02.978117+00:00",
+  "model_api_calls": 0,
+  "specification": {
+    "probe_id": "sympy-block-inferred_shape",
+    "context_task": "sympy__sympy-19007",
+    "mechanism": "container_representation",
+    "fixture": {
+      "constructor": "ImmutableDenseMatrix([[block]])"
+    },
+    "interpreter": "/opt/miniconda3/envs/testbed/bin/python",
+    "program": "from sympy import Matrix,ImmutableDenseMatrix\nfrom sympy.matrices import MatrixBase\nblock=Matrix([[1,2],[3,4]])\ngrid=ImmutableDenseMatrix([[block]])\ncell=grid[0,0]\nresult={'grid_shape':list(grid.shape),'cell_type':type(cell).__name__,'cell_is_matrix':isinstance(cell,MatrixBase),'cell_repr':repr(cell)}\n"
+  },
+  "public_context_file": "datasets/memory_relations/20261107-discovery-v1/evidence/public-code/sympy__sympy-19007.json",
+  "image_id": "sha256:5c2cd68f35f9cc3212de0e11594439611fbf1262adea0ece456b7f31dcabde1c",
+  "executed_program_sha256": "3dc79eebebc243f038e2163c09a3ee6af615f2b978f72bf4f7dc5bf3ad068b0e",
+  "observed": {
+    "kind": "returned",
+    "result": {
+      "cell_is_matrix": false,
+      "cell_repr": "1",
+      "cell_type": "One",
+      "grid_shape": [
+        2,
+        2
+      ]
+    }
+  },
+  "execution": {
+    "returncode": 0,
+    "stdout": "MEMORY_RELATION_RESULT:{\"kind\": \"returned\", \"result\": {\"cell_is_matrix\": false, \"cell_repr\": \"1\", \"cell_type\": \"One\", \"grid_shape\": [2, 2]}}\n",
+    "stderr": "",
+    "seconds": 2.0731551390199456,
+    "image_id": "sha256:5c2cd68f35f9cc3212de0e11594439611fbf1262adea0ece456b7f31dcabde1c",
+    "interpreter": "/opt/miniconda3/envs/testbed/bin/python",
+    "resources": {
+      "cpus": 1,
+      "memory": "1g",
+      "network": "none",
+      "root_filesystem": "read-only"
+    }
+  },
+  "interpretation": "Controlled mechanism probe. Expected validation exceptions are observed outcomes, not infrastructure failures. Shell success is not treated as semantic success. No actor or memory policy was evaluated."
+}

@@ -1,0 +1,48 @@
+{
+  "target_trajectory_row_index": 69,
+  "task": {
+    "instance_id": "asottile__pyupgrade-195",
+    "repo": "asottile/pyupgrade",
+    "base_commit": "776d3fd38005862a891ce7a8e9c77fbfaadcca4c",
+    "created_at": "2019-08-07 22:52:41",
+    "problem_statement": "--py36-plus: ValueError: Single '{' encountered in format string\nInvalid format failures are not skipped currently:\r\n\r\n```python\r\n'{'.format(a)\r\n```\r\n\r\n```console\r\n$ pyupgrade --py36-plus t.py\r\nTraceback (most recent call last):\r\n  File \"/home/asottile/workspace/ridemonitor/venv/bin/pyupgrade\", line 10, in <module>\r\n    sys.exit(main())\r\n  File \"/home/asottile/workspace/ridemonitor/venv/lib/python3.6/site-packages/pyupgrade.py\", line 2136, in main\r\n    ret |= fix_file(filename, args)\r\n  File \"/home/asottile/workspace/ridemonitor/venv/lib/python3.6/site-packages/pyupgrade.py\", line 2107, in fix_file\r\n    contents_text = _fix_fstrings(contents_text)\r\n  File \"/home/asottile/workspace/ridemonitor/venv/lib/python3.6/site-packages/pyupgrade.py\", line 2053, in _fix_fstrings\r\n    visitor.visit(ast_obj)\r\n  File \"/usr/lib/python3.6/ast.py\", line 253, in visit\r\n    return visitor(node)\r\n  File \"/usr/lib/python3.6/ast.py\", line 261, in generic_visit\r\n    self.visit(item)\r\n  File \"/usr/lib/python3.6/ast.py\", line 253, in visit\r\n    return visitor(node)\r\n  File \"/usr/lib/python3.6/ast.py\", line 263, in generic_visit\r\n    self.visit(value)\r\n  File \"/usr/lib/python3.6/ast.py\", line 253, in visit\r\n    return visitor(node)\r\n  File \"/home/asottile/workspace/ridemonitor/venv/lib/python3.6/site-packages/pyupgrade.py\", line 1996, in visit_Call\r\n    for _, name, spec, _ in parse_format(node.func.value.s):\r\n  File \"/home/asottile/workspace/ridemonitor/venv/lib/python3.6/site-packages/pyupgrade.py\", line 69, in parse_format\r\n    parsed = tuple(_stdlib_parse_format(s))\r\nValueError: Single '{' encountered in format string\r\n```",
+    "version": "1.22",
+    "environment_setup_commit": "776d3fd38005862a891ce7a8e9c77fbfaadcca4c",
+    "license_name": "MIT License",
+    "docker_image": "swerebench/sweb.eval.x86_64.asottile_1776_pyupgrade-195",
+    "image_name": "swerebench/sweb.eval.x86_64.asottile_1776_pyupgrade-195",
+    "dataset": "nebius/SWE-rebench",
+    "revision": "89cdfbab4ab1bd8f5a658bb212d1b63624f4f881",
+    "file": "data/test-00000-of-00002.parquet",
+    "row_index": 3905
+  },
+  "base_code": [
+    {
+      "path": "pyupgrade.py",
+      "repository": "asottile/pyupgrade",
+      "base_commit": "776d3fd38005862a891ce7a8e9c77fbfaadcca4c",
+      "git_blob_sha": "2347ec532285949791a81e95c31633176a42fc41",
+      "full_content_sha256": "c7df3b26d15656f1dd7c2defd084080a1d421b3a6a1b02b7f33e5980e55c3a04",
+      "source_url": "https://github.com/asottile/pyupgrade/blob/776d3fd38005862a891ce7a8e9c77fbfaadcca4c/pyupgrade.py",
+      "spans": [
+        {
+          "start_line": 65,
+          "end_line": 78,
+          "text": "def parse_format(s):  # type: (str) -> Tuple[DotFormatPart, ...]\n    \"\"\"Makes the empty string not a special case.  In the stdlib, there's\n    loss of information (the type) on the empty string.\n    \"\"\"\n    parsed = tuple(_stdlib_parse_format(s))\n    if not parsed:\n        return ((s, None, None, None),)\n    else:\n        return parsed\n\n\ndef unparse_parsed_string(parsed):  # type: (Sequence[DotFormatPart]) -> str\n    stype = type(parsed[0][0])\n    j = stype()\n",
+          "sha256": "f94988347349e82751ca98396c5f39f6b1c6354ef715305599efba91d3f211cd"
+        },
+        {
+          "start_line": 1980,
+          "end_line": 2025,
+          "text": "class FindSimpleFormats(ast.NodeVisitor):\n    def __init__(self):  # type: () -> None\n        self.found = {}  # type: Dict[Offset, ast.Call]\n\n    def visit_Call(self, node):  # type: (ast.Call) -> None\n        if (\n                isinstance(node.func, ast.Attribute) and\n                isinstance(node.func.value, ast.Str) and\n                node.func.attr == 'format' and\n                all(_simple_arg(arg) for arg in node.args) and\n                all(_simple_arg(k.value) for k in node.keywords) and\n                not _starargs(node)\n        ):\n            params = _format_params(node)\n            seen = set()  # type: Set[str]\n            i = 0\n            for _, name, spec, _ in parse_format(node.func.value.s):\n                # timid: difficult to rewrite correctly\n                if spec is not None and '{' in spec:\n                    break\n                if name is not None:\n                    candidate, _, _ = name.partition('.')\n                    # timid: could make the f-string longer\n                    if candidate and candidate in seen:\n                        break\n                    # timid: bracketed\n                    elif '[' in name:\n                        break\n                    seen.add(candidate)\n\n                    key = candidate or str(i)\n                    # their .format() call is broken currently\n                    if key not in params:\n                        break\n                    if not candidate:\n                        i += 1\n            else:\n                self.found[_ast_to_offset(node)] = node\n\n        self.generic_visit(node)\n\n\ndef _unparse(node):  # type: (ast.expr) -> str\n    if isinstance(node, ast.Name):\n        return node.id\n    elif isinstance(node, ast.Attribute):\n",
+          "sha256": "678ee842d309e9a58067de948742c22cc65acdbc1fa810e10a01562086a9a47c"
+        }
+      ]
+    }
+  ],
+  "observation_kind": "researcher_read_of_pinned_pre_patch_code",
+  "worker_initial_inspection_performed": false,
+  "restorable_worker_snapshot": null,
+  "target_trajectory_loaded": false,
+  "gold_patch_or_hidden_tests_loaded": false
+}

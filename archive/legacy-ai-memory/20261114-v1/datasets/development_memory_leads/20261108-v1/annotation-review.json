@@ -1,0 +1,434 @@
+[
+  {
+    "query_id": "rebench-7",
+    "row_index": 7,
+    "shared": {
+      "numeric_validation": "Zero coordinate increments reach a numerical plotting operation; validate the numerical input contract before computation."
+    },
+    "uncertain": {},
+    "all_other_reviewed_memories": "different_mechanism",
+    "current_issue_reason": "Swapped coordinates and zero increments, not callback binding or syntax escaping."
+  },
+  {
+    "query_id": "rebench-24",
+    "row_index": 24,
+    "shared": {
+      "literal_escaping": "Brackets become percent escapes at a URL encoding boundary; inspect literal versus syntax handling and the safe-character policy."
+    },
+    "uncertain": {},
+    "all_other_reviewed_memories": "different_mechanism",
+    "current_issue_reason": "Repeated query values already exist; sequence expansion would not decide bracket escaping."
+  },
+  {
+    "query_id": "rebench-162",
+    "row_index": 162,
+    "shared": {
+      "empty_input": "Empty data/files still produce a boundary; inspect the zero-element branch before emitting output."
+    },
+    "uncertain": {},
+    "all_other_reviewed_memories": "different_mechanism",
+    "current_issue_reason": "An empty multipart body, not argument count, AST traversal, or array element validation."
+  },
+  {
+    "query_id": "rebench-197",
+    "row_index": 197,
+    "shared": {
+      "literal_escaping": "The report distinguishes regex character meaning from escaped textual spelling."
+    },
+    "uncertain": {
+      "identifier_scope": "The warning matcher may need a more precise matching boundary, but its implementation is not shown."
+    },
+    "all_other_reviewed_memories": "different_mechanism",
+    "current_issue_reason": "Regex-warning recognition; no container, connection, or numeric input failure."
+  },
+  {
+    "query_id": "rebench-242",
+    "row_index": 242,
+    "shared": {},
+    "uncertain": {},
+    "all_other_reviewed_memories": "different_mechanism",
+    "current_issue_reason": "Rewritten Git history invalidates a symmetric-difference range; none of the fixed memories addresses commit ancestry or missing revisions."
+  },
+  {
+    "query_id": "rebench-293",
+    "row_index": 293,
+    "shared": {},
+    "uncertain": {
+      "nested_blocks": "Mixed DTD content is skipped; traversal depth is plausible but parser internals are missing.",
+      "roundtrip_fields": "A class is lost in schema-to-code conversion, but it is unknown whether intermediate fields are dropped.",
+      "multivalue_mapping": "Mixed repeated content may need a sequence representation; the actual parser representation is missing.",
+      "element_constraints": "Mixed element semantics may matter, but no misplaced per-element constraint is demonstrated."
+    },
+    "all_other_reviewed_memories": "different_mechanism",
+    "current_issue_reason": "A missing generated mixed-content class; avoid assuming the cause from the word schema."
+  },
+  {
+    "query_id": "rebench-323",
+    "row_index": 323,
+    "shared": {
+      "roundtrip_fields": "Client-port metadata is omitted from the explicit mapping into the WSGI environment; inspect propagated fields at the representation boundary."
+    },
+    "uncertain": {
+      "socket_options": "Client address capabilities may differ by transport, but the issue does not show a failing non-TCP address."
+    },
+    "all_other_reviewed_memories": "different_mechanism",
+    "current_issue_reason": "A missing environment field, not pool ownership, argument forwarding, or dictionary merge precedence."
+  },
+  {
+    "query_id": "rebench-406",
+    "row_index": 406,
+    "shared": {},
+    "uncertain": {
+      "introspection_version": "MRO/builtin-provider introspection could be implicated, but the short report does not establish runtime metadata behavior."
+    },
+    "all_other_reviewed_memories": "different_mechanism",
+    "current_issue_reason": "A short recursion/MRO report; no evidence for the other concrete mechanisms."
+  },
+  {
+    "query_id": "rebench-424",
+    "row_index": 424,
+    "shared": {
+      "numeric_validation": "The request explicitly calls for client-side validation/coercion of numeric input before an API call."
+    },
+    "uncertain": {},
+    "all_other_reviewed_memories": "different_mechanism",
+    "current_issue_reason": "Input type validation, not output dtype, tag merge order, or repeated query encoding."
+  },
+  {
+    "query_id": "rebench-434",
+    "row_index": 434,
+    "shared": {
+      "roundtrip_fields": "The input contains an id:null field which disappears from serialized output; inspect field propagation/filtering."
+    },
+    "uncertain": {},
+    "all_other_reviewed_memories": "different_mechanism",
+    "current_issue_reason": "Null preservation is different from array-level constraints, native wrapper factories, and dtype conversion."
+  },
+  {
+    "query_id": "rebench-469",
+    "row_index": 469,
+    "shared": {
+      "multivalue_mapping": "The requested boundary converts scalar textual reports containing multiple numbers into arrays/elements."
+    },
+    "uncertain": {
+      "output_dtype": "Output representation is relevant, but no ignored dtype argument or cast-back behavior is established."
+    },
+    "all_other_reviewed_memories": "different_mechanism",
+    "current_issue_reason": "Returning structured output rather than text; no nested syntax traversal or missing object field is shown."
+  },
+  {
+    "query_id": "rebench-541",
+    "row_index": 541,
+    "shared": {
+      "stale_client": "A recovery path uses connection state whose heartbeat attribute is unavailable; inspect initialization/cleanup and reuse together."
+    },
+    "uncertain": {
+      "connection_ownership": "Resource lifetime might contribute, but external pool ownership is not shown."
+    },
+    "all_other_reviewed_memories": "different_mechanism",
+    "current_issue_reason": "Heartbeat state during recovery; the callback runs and does not report an argument binding failure."
+  },
+  {
+    "query_id": "rebench-553",
+    "row_index": 553,
+    "shared": {},
+    "uncertain": {
+      "connection_ownership": "Begin/end inset scope raises lifecycle questions, but connection ownership is only a possible analogy."
+    },
+    "all_other_reviewed_memories": "different_mechanism",
+    "current_issue_reason": "A new plotting-scope API, not an observed parser, socket-option, or stale-client defect."
+  },
+  {
+    "query_id": "rebench-602",
+    "row_index": 602,
+    "shared": {},
+    "uncertain": {
+      "output_dtype": "Aggregation/explode may encounter a representation mismatch, but the excerpt ends before the actual error.",
+      "multivalue_mapping": "List-valued scoring may require element-wise representation, but the traceback is clipped before the failure detail."
+    },
+    "all_other_reviewed_memories": "different_mechanism",
+    "current_issue_reason": "The available excerpt is insufficient to identify the aggregation cause; do not fill in missing traceback text."
+  },
+  {
+    "query_id": "rebench-639",
+    "row_index": 639,
+    "shared": {},
+    "uncertain": {},
+    "all_other_reviewed_memories": "different_mechanism",
+    "current_issue_reason": "Requested linter warning/error exit-code policy; none of the sixteen mechanisms addresses status aggregation."
+  },
+  {
+    "query_id": "rebench-644",
+    "row_index": 644,
+    "shared": {
+      "numeric_validation": "The request explicitly changes which values the message-data type validator accepts."
+    },
+    "uncertain": {},
+    "all_other_reviewed_memories": "different_mechanism",
+    "current_issue_reason": "Accepting bool input is not a scalar-to-sequence or output conversion problem."
+  },
+  {
+    "query_id": "rebench-647",
+    "row_index": 647,
+    "shared": {
+      "callback_arguments": "The issue explicitly identifies required test-name/time arguments as an unnecessary calling restriction.",
+      "empty_input": "Generalizing the call beyond the existing context calls for checking omitted-input/default handling."
+    },
+    "uncertain": {},
+    "all_other_reviewed_memories": "different_mechanism",
+    "current_issue_reason": "Required call parameters, not Android connection cleanup despite the common repository."
+  },
+  {
+    "query_id": "rebench-668",
+    "row_index": 668,
+    "shared": {
+      "specific_precedence": "Multiple layer glyphs receive a mapping intended for the base glyph; inspect which object owns each shared codepoint key."
+    },
+    "uncertain": {
+      "nested_blocks": "Layer traversal and node roles might explain duplication, but the construction code is absent."
+    },
+    "all_other_reviewed_memories": "different_mechanism",
+    "current_issue_reason": "Ownership/scope of duplicate mappings; blindly preserving all fields would not be the requested behavior."
+  },
+  {
+    "query_id": "rebench-672",
+    "row_index": 672,
+    "shared": {
+      "empty_input": "The issue explicitly requests handling params=None using decorator defaults.",
+      "callback_arguments": "The decorated and direct invocation paths must deliver parameters consistently to ParamHandler."
+    },
+    "uncertain": {},
+    "all_other_reviewed_memories": "different_mechanism",
+    "current_issue_reason": "Missing call parameters and hidden exception propagation; not a transport-specific socket operation."
+  },
+  {
+    "query_id": "rebench-714",
+    "row_index": 714,
+    "shared": {},
+    "uncertain": {
+      "output_dtype": "Version-dependent identifiers may have changed representation, but the before/after identifier types are absent.",
+      "container_wrappers": "A container/identifier representation change is plausible but not demonstrated."
+    },
+    "all_other_reviewed_memories": "different_mechanism",
+    "current_issue_reason": "Time-series ids do not align; a library version change is not evidence of Python introspection metadata drift."
+  },
+  {
+    "query_id": "rebench-775",
+    "row_index": 775,
+    "shared": {},
+    "uncertain": {
+      "introspection_version": "Dependency-key construction may use generic/type metadata, but no runtime-version metadata change is shown."
+    },
+    "all_other_reviewed_memories": "different_mechanism",
+    "current_issue_reason": "A missing or invalidly scoped dependency factory, not connection pool auto-close behavior."
+  },
+  {
+    "query_id": "rebench-876",
+    "row_index": 876,
+    "shared": {
+      "literal_escaping": "Generated code embeds forward references as live type expressions where delayed/string references are required; inspect data versus executable syntax."
+    },
+    "uncertain": {
+      "nested_blocks": "References inside nested choices metadata may be missed by traversal, but generator internals are not shown."
+    },
+    "all_other_reviewed_memories": "different_mechanism",
+    "current_issue_reason": "Recursive forward references, not native-list defaults or missing serialization fields."
+  },
+  {
+    "query_id": "rebench-896",
+    "row_index": 896,
+    "shared": {
+      "empty_input": "The shown formatting expression emits an extra separator when the optional name is empty."
+    },
+    "uncertain": {},
+    "all_other_reviewed_memories": "different_mechanism",
+    "current_issue_reason": "Trailing output space from an absent name, not runtime docstring trimming or f-string brace escaping."
+  },
+  {
+    "query_id": "rebench-912",
+    "row_index": 912,
+    "shared": {
+      "stale_client": "Failure in the coroutine path leaves the connection open whereas the synchronous path closes it; inspect cleanup across lifecycle paths."
+    },
+    "uncertain": {
+      "connection_ownership": "Cleanup responsibility is related, but the excerpt does not establish externally owned resources."
+    },
+    "all_other_reviewed_memories": "different_mechanism",
+    "current_issue_reason": "Async exception cleanup, not callback arity or unsupported TCP socket options."
+  },
+  {
+    "query_id": "rebench-923",
+    "row_index": 923,
+    "shared": {
+      "container_wrappers": "A framework marker wrapping a factory is rejected as the factory itself; inspect wrapper handling at construction/dispatch."
+    },
+    "uncertain": {},
+    "all_other_reviewed_memories": "different_mechanism",
+    "current_issue_reason": "An adapter/marker representation boundary; no numeric output or identifier replacement is shown."
+  },
+  {
+    "query_id": "rebench-963",
+    "row_index": 963,
+    "shared": {
+      "numeric_validation": "The request is explicitly about a configurable acceptance bound, here AE-title length, rather than always rejecting the extended value."
+    },
+    "uncertain": {
+      "socket_options": "The server supports a nonstandard capability, but this is not evidence of a transport socket-option error."
+    },
+    "all_other_reviewed_memories": "different_mechanism",
+    "current_issue_reason": "A protocol input-validation policy; the numeric validation memory transfers only as an inspection principle."
+  },
+  {
+    "query_id": "rebench-1001",
+    "row_index": 1001,
+    "shared": {
+      "roundtrip_fields": "The emitted program retains an internal placeholder instead of the original expression; inspect reconstruction from the intermediate representation."
+    },
+    "uncertain": {
+      "nested_blocks": "The WHERE expression is nested, but omitted traversal is not established."
+    },
+    "all_other_reviewed_memories": "different_mechanism",
+    "current_issue_reason": "Intermediate-expression restoration, not text escaping of literal braces."
+  },
+  {
+    "query_id": "rebench-1074",
+    "row_index": 1074,
+    "shared": {
+      "specific_precedence": "The generated value uses the containing metaclass identity instead of the requested instance/class context."
+    },
+    "uncertain": {
+      "roundtrip_fields": "A wrong mapping between representations is plausible, but the issue shows a context/default problem rather than a lost field."
+    },
+    "all_other_reviewed_memories": "different_mechanism",
+    "current_issue_reason": "Incorrect context for generated defaults; no evidence of runtime introspection version changes."
+  },
+  {
+    "query_id": "rebench-1092",
+    "row_index": 1092,
+    "shared": {
+      "nested_blocks": "The same checker must distinguish the role of a statement nested in pytest.raises from an Act block."
+    },
+    "uncertain": {},
+    "all_other_reviewed_memories": "different_mechanism",
+    "current_issue_reason": "The transfer is block-role inspection; recursively collecting more nodes alone is not a correct patch."
+  },
+  {
+    "query_id": "rebench-1098",
+    "row_index": 1098,
+    "shared": {
+      "empty_input": "A dictionary lookup assumes the flags key exists and raises KeyError; inspect existence/default handling before access."
+    },
+    "uncertain": {
+      "stale_client": "Long-lived state may contribute, but stale connection state is not established."
+    },
+    "all_other_reviewed_memories": "different_mechanism",
+    "current_issue_reason": "Missing message field, not numeric input or dtype conversion."
+  },
+  {
+    "query_id": "rebench-1127",
+    "row_index": 1127,
+    "shared": {
+      "specific_precedence": "Several physics objects overwrite a shared exported value; inspect shared-state ownership and update scope."
+    },
+    "uncertain": {},
+    "all_other_reviewed_memories": "different_mechanism",
+    "current_issue_reason": "The requested repair removes the export; reusing the historical merge patch verbatim is not implied."
+  },
+  {
+    "query_id": "rebench-1228",
+    "row_index": 1228,
+    "shared": {
+      "literal_escaping": "A space inside a device name is treated like a boundary in the resulting filename; inspect text quoting/tokenization."
+    },
+    "uncertain": {
+      "identifier_scope": "Token boundaries may be implicated, but substring rewriting is not shown."
+    },
+    "all_other_reviewed_memories": "different_mechanism",
+    "current_issue_reason": "Truncation at whitespace, not repeated sequence values or output dtype."
+  },
+  {
+    "query_id": "rebench-1266",
+    "row_index": 1266,
+    "shared": {
+      "introspection_version": "Python 3.8 decorator/code-object line metadata differs from parsed FunctionDef locations, producing a lookup mismatch."
+    },
+    "uncertain": {},
+    "all_other_reviewed_memories": "different_mechanism",
+    "current_issue_reason": "Metadata alignment across representations/runtime behavior, not an empty-input guard or AST traversal depth."
+  },
+  {
+    "query_id": "rebench-1274",
+    "row_index": 1274,
+    "shared": {},
+    "uncertain": {
+      "roundtrip_fields": "IO tests could cover round-trip field preservation, but no required behavior is specified.",
+      "output_dtype": "IO tests could cover output types, but no type contract is specified.",
+      "container_wrappers": "Wrapper handling might be part of IO, but no such requirement is shown.",
+      "element_constraints": "Container/element validation could be relevant, but the requested test contract is absent."
+    },
+    "all_other_reviewed_memories": "different_mechanism",
+    "current_issue_reason": "The entire available request only asks for tests for three IO classes; no concrete failure mechanism is given."
+  },
+  {
+    "query_id": "rebench-1420",
+    "row_index": 1420,
+    "shared": {
+      "container_wrappers": "A Literal wrapper is compared with a raw integer; inspect unwrapping/conversion at the operator boundary."
+    },
+    "uncertain": {},
+    "all_other_reviewed_memories": "different_mechanism",
+    "current_issue_reason": "Wrapped versus native value interoperability, not numeric range rejection."
+  },
+  {
+    "query_id": "rebench-1470",
+    "row_index": 1470,
+    "shared": {},
+    "uncertain": {
+      "numeric_validation": "Both involve numerical bounds, but this issue concerns output clipping rather than rejecting invalid inputs."
+    },
+    "all_other_reviewed_memories": "different_mechanism",
+    "current_issue_reason": "Missing lower clipping branch; do not equate every numerical issue with dtype or input validation."
+  },
+  {
+    "query_id": "rebench-1483",
+    "row_index": 1483,
+    "shared": {},
+    "uncertain": {},
+    "all_other_reviewed_memories": "different_mechanism",
+    "current_issue_reason": "Package discovery exports a tests namespace globally; none of the bank entries concerns build/package inclusion."
+  },
+  {
+    "query_id": "rebench-1504",
+    "row_index": 1504,
+    "shared": {
+      "literal_escaping": "Escaped regex fragments are incompletely unescaped when generating a concrete URL."
+    },
+    "uncertain": {
+      "identifier_scope": "Fragment-specific matching boundaries may matter, but identifier substitution is not demonstrated."
+    },
+    "all_other_reviewed_memories": "different_mechanism",
+    "current_issue_reason": "Representation-dependent escaping; the correct direction is unescaping, not copying brace doubling."
+  },
+  {
+    "query_id": "rebench-1514",
+    "row_index": 1514,
+    "shared": {
+      "container_wrappers": "The operation rejects a supported framework tensor wrapper despite accepting its ordinary base representations.",
+      "output_dtype": "The memory explicitly distinguishes dtype conversion from preserving MetaTensor/container type at transform output."
+    },
+    "uncertain": {},
+    "all_other_reviewed_memories": "different_mechanism",
+    "current_issue_reason": "Type-wrapper interoperability; no evidence of multivalued query expansion or option precedence."
+  },
+  {
+    "query_id": "rebench-1627",
+    "row_index": 1627,
+    "shared": {},
+    "uncertain": {
+      "output_dtype": "The title mentions PDU-to-primitive conversion but the excerpt stops before the exception and resulting type.",
+      "element_constraints": "Presentation-context constraints may be implicated, but the rejected/parsed structure and failure are not visible."
+    },
+    "all_other_reviewed_memories": "different_mechanism",
+    "current_issue_reason": "Clipped negotiation log; do not infer the missing exception or treat a DICOM context rejection as a TCP socket-option failure."
+  }
+]

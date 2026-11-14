@@ -1,0 +1,39 @@
+{
+  "schema": "memory-evidence-sidecar-v1",
+  "purpose": "Evidence diagnostics for memory benefit/harm research",
+  "base_dataset": "datasets/memory_decisions/20261109-observed-v2",
+  "selector_views": [
+    "goal",
+    "goal_and_observations"
+  ],
+  "worker_observations_unchanged_between_views": true,
+  "memory_bank_and_order_unchanged_between_views": true,
+  "selector_input_fields": [
+    "input.goal",
+    "input.current_observations",
+    "input.candidate_memory_ids",
+    "memory_id",
+    "text"
+  ],
+  "labels_never_in_selector_inputs": true,
+  "automatic_reference_labels_are_semantic_gold": false,
+  "semantic_null_means": "Unreviewed; mask, never convert to insufficient or negative utility",
+  "outcome_join_key": [
+    "state_id",
+    "ordered_selected_memory_ids"
+  ],
+  "unobserved_bundle_outcome": null,
+  "actual_progress_history": false,
+  "actual_failure_history": false,
+  "fresh_confirmatory_test_eligible": false,
+  "memory_delivery_token_cap": 512,
+  "limits": [
+    "Original 12 train families; no additional independent data.",
+    "Two answer components do not establish within-answer multi-memory reasoning.",
+    "Candidate pool equals the allowed bank here; bank-outside-candidate gaps are not observed.",
+    "Deleting two references exposes a candidate-count shortcut.",
+    "Identity coverage does not verify facts, applicability, alternative proofs or sufficiency.",
+    "Current redundancy does not imply zero or negative observed utility.",
+    "Shared token cap does not constitute length-matched training controls."
+  ]
+}

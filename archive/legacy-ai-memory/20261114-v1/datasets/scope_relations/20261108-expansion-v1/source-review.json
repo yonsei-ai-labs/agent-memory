@@ -1,0 +1,2112 @@
+{
+  "observations": [
+    {
+      "observation_id": "02d6196b5c36870b0d6a195fd36c13ba37e69814e2305bfaef03a01036a59164",
+      "source": "sympy__sympy-24213",
+      "repository": "sympy/sympy",
+      "provenance": {
+        "command": "python -m pytest sympy/physics/units/tests/test_quantities.py sympy/physics/units/tests/test_dimensions.py -q --disable-warnings --maxfail=1",
+        "line": 9,
+        "path": "runs/20261107T020340Z-e24b8f08/commands.jsonl",
+        "run_id": "20261107T020340Z-e24b8f08",
+        "sha256": "c451129ebfc98e2e18ed720772b990cbdb9e238f1d7ad8570a89b60e876e0d02",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [
+        "sympy/physics/units/tests/test_dimensions.py",
+        "sympy/physics/units/tests/test_quantities.py"
+      ],
+      "status": "included_identifier_evidence",
+      "reason": "Only explicit whole-file/module selection is used; no completion or passing claim."
+    },
+    {
+      "observation_id": "03048c0d4a2d1093407f52fdc77108aa03ef0ec193ad339867750285195e6bf1",
+      "source": "django__django-16910",
+      "repository": "django/django",
+      "provenance": {
+        "command": "cd /testbed && python tests/runtests.py defer defer_regress select_related_onetoone filtered_relation --verbosity 1",
+        "line": 28,
+        "path": "runs/20261103T163704Z-16c34e31/commands.jsonl",
+        "run_id": "20261103T163704Z-16c34e31",
+        "sha256": "232f40d7446eddca8caea77a9ec7392321b578e8510657a74e2a0a2193b0306e",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [
+        "defer",
+        "defer_regress",
+        "filtered_relation",
+        "select_related_onetoone"
+      ],
+      "status": "included_identifier_evidence",
+      "reason": "Only explicit whole-file/module selection is used; no completion or passing claim."
+    },
+    {
+      "observation_id": "061ead750c366d1e35acc7c4c41fca6dafbfa3b89191f9789e7c909a6d3a788c",
+      "source": "sympy__sympy-24213",
+      "repository": "sympy/sympy",
+      "provenance": {
+        "command": "cd /testbed && python -m pytest sympy/physics/units/tests/test_unitsystem.py sympy/physics/units/tests/test_dimensions.py -q",
+        "line": 9,
+        "path": "runs/20261107T014507Z-155e887b/commands.jsonl",
+        "run_id": "20261107T014507Z-155e887b",
+        "sha256": "17442fcaa00547dc374a57a9daec39dfda3482af31a2aef55a3a61654c264fc1",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [
+        "sympy/physics/units/tests/test_dimensions.py",
+        "sympy/physics/units/tests/test_unitsystem.py"
+      ],
+      "status": "included_identifier_evidence",
+      "reason": "Only explicit whole-file/module selection is used; no completion or passing claim."
+    },
+    {
+      "observation_id": "06c25976ed3e3c972950eefb51af31ca474519ef6f8adaf7ff76947353cb6a5c",
+      "source": "sympy__sympy-24909",
+      "repository": "sympy/sympy",
+      "provenance": {
+        "command": "python -m pytest sympy/physics/units/tests -q",
+        "line": 14,
+        "path": "runs/20261107T015951Z-588c8bd6/commands.jsonl",
+        "run_id": "20261107T015951Z-588c8bd6",
+        "sha256": "7aed82148b582916e7e053848ac54548b2c74909292e0ba6fd2a37722a95aefc",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [],
+      "status": "excluded_no_supported_whole_scope",
+      "reason": "No conservative whole-file/module selector; filtered/unsupported commands are excluded."
+    },
+    {
+      "observation_id": "07a679347a97b95b2dc487c60648fc8fc7341656400919043698416e53da8842",
+      "source": "scikit-learn__scikit-learn-15535",
+      "repository": "scikit-learn/scikit-learn",
+      "provenance": {
+        "command": "pytest -q sklearn/metrics/cluster/tests/test_supervised.py",
+        "line": 16,
+        "path": "runs/20261105T143854Z-36ed2156/commands.jsonl",
+        "run_id": "20261105T143854Z-36ed2156",
+        "sha256": "aa4612953795b441d6f3c7a4e7445c8608cb6709d3b7b978bf6636e7a47c096c",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [
+        "sklearn/metrics/cluster/tests/test_supervised.py"
+      ],
+      "status": "included_identifier_evidence",
+      "reason": "Only explicit whole-file/module selection is used; no completion or passing claim."
+    },
+    {
+      "observation_id": "083b6963e09df8bdd20c7bf8aeba371e14dc197b75a0d67014191323c3f4ebe4",
+      "source": "django__django-14667",
+      "repository": "django/django",
+      "provenance": {
+        "command": "cd /testbed && python tests/runtests.py defer --verbosity 2",
+        "line": 14,
+        "path": "runs/20261103T151201Z-08fad502/commands.jsonl",
+        "run_id": "20261103T151201Z-08fad502",
+        "sha256": "fa737525799d310ec85d153fa524e85bc5de3c9b61f494bb0678dad55c4e1a91",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [
+        "defer"
+      ],
+      "status": "excluded_single_scope_family",
+      "reason": "Only one observed whole scope; no invented alternative is added to this source."
+    },
+    {
+      "observation_id": "091658f4425e885c0ebba08454418da0f258860cf1b51b7877bcf13f2e17cba0",
+      "source": "django__django-16910",
+      "repository": "django/django",
+      "provenance": {
+        "command": "python tests/runtests.py defer defer_regress --verbosity 1",
+        "line": 30,
+        "path": "runs/20261103T183103Z-3d8b8199/commands.jsonl",
+        "run_id": "20261103T183103Z-3d8b8199",
+        "sha256": "14017660760670bf5b79d92b809ae4664e299348738241e7a3c3f6b658eef472",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [
+        "defer",
+        "defer_regress"
+      ],
+      "status": "included_identifier_evidence",
+      "reason": "Only explicit whole-file/module selection is used; no completion or passing claim."
+    },
+    {
+      "observation_id": "0bda3cdb68c9fb6c5d0c1e808dac327ca318b58c78b7b5651dfd7f0acc63358e",
+      "source": "django__django-16910",
+      "repository": "django/django",
+      "provenance": {
+        "command": "python tests/runtests.py select_related_onetoone --verbosity 0",
+        "line": 13,
+        "path": "runs/20261103T181938Z-31f054d3/commands.jsonl",
+        "run_id": "20261103T181938Z-31f054d3",
+        "sha256": "a50e679f8dc7ea31a838819560a25f459262c1362993aa366c18f74609a42d66",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [
+        "select_related_onetoone"
+      ],
+      "status": "included_identifier_evidence",
+      "reason": "Only explicit whole-file/module selection is used; no completion or passing claim."
+    },
+    {
+      "observation_id": "0c7ba9957628779d49581820b02e415076315b01f6c7711a93092fb82c8e70ce",
+      "source": "sphinx-doc__sphinx-8801",
+      "repository": "sphinx-doc/sphinx",
+      "provenance": {
+        "command": "pytest -q tests/test_ext_autodoc_autoclass.py",
+        "line": 18,
+        "path": "runs/20261103T175834Z-86e07af2/commands.jsonl",
+        "run_id": "20261103T175834Z-86e07af2",
+        "sha256": "6161081404b85305e447a555d71a65e3aa18e199a0ab22c784a521ed612eb21c",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [
+        "tests/test_ext_autodoc_autoclass.py"
+      ],
+      "status": "included_identifier_evidence",
+      "reason": "Only explicit whole-file/module selection is used; no completion or passing claim."
+    },
+    {
+      "observation_id": "0f8865c483075ca72728146ce74499d64b9f1650cb3054e81b8e1f8b79dcb1c4",
+      "source": "sphinx-doc__sphinx-8627",
+      "repository": "sphinx-doc/sphinx",
+      "provenance": {
+        "command": "python -m pytest -q tests/test_ext_autodoc.py tests/test_ext_autodoc_configs.py tests/test_domain_py.py --disable-warnings --maxfail=1",
+        "line": 18,
+        "path": "runs/20261103T165230Z-8495e837/commands.jsonl",
+        "run_id": "20261103T165230Z-8495e837",
+        "sha256": "65a504427caffa8e7f963c5cb7176825b52b879c7bccd0a46e4657636ef06eb6",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [
+        "tests/test_domain_py.py",
+        "tests/test_ext_autodoc.py",
+        "tests/test_ext_autodoc_configs.py"
+      ],
+      "status": "included_identifier_evidence",
+      "reason": "Only explicit whole-file/module selection is used; no completion or passing claim."
+    },
+    {
+      "observation_id": "1178cf029266f66338923b33fdfc7aa97301011d37067f6ce43a547a04d7951b",
+      "source": "sphinx-doc__sphinx-10451",
+      "repository": "sphinx-doc/sphinx",
+      "provenance": {
+        "command": "pytest -q tests/test_ext_autodoc_configs.py -k 'autodoc_typehints_description' --disable-warnings --maxfail=1",
+        "line": 9,
+        "path": "runs/20261103T152600Z-83e3fa8f/commands.jsonl",
+        "run_id": "20261103T152600Z-83e3fa8f",
+        "sha256": "78f860f32fc976e79b9d24c8fa9f5958a1bc9d2e81d97b4c661e4637e497f0f4",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [],
+      "status": "excluded_no_supported_whole_scope",
+      "reason": "No conservative whole-file/module selector; filtered/unsupported commands are excluded."
+    },
+    {
+      "observation_id": "13ac219121bab4badc2283e9c4f7e6e2654d0039a2c6de2553f0fee28cce9208",
+      "source": "sympy__sympy-24213",
+      "repository": "sympy/sympy",
+      "provenance": {
+        "command": "cd /testbed && python -m pytest sympy/physics/units/tests/test_quantities.py sympy/physics/units/tests/test_dimensions.py -q --disable-warnings --maxfail=1",
+        "line": 9,
+        "path": "runs/20261107T020601Z-b9bdee40/commands.jsonl",
+        "run_id": "20261107T020601Z-b9bdee40",
+        "sha256": "6cd3eb0c392c0d9f3558cf2f855c23f78e9d2301c97b4358186a1dd9d6925127",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [
+        "sympy/physics/units/tests/test_dimensions.py",
+        "sympy/physics/units/tests/test_quantities.py"
+      ],
+      "status": "included_identifier_evidence",
+      "reason": "Only explicit whole-file/module selection is used; no completion or passing claim."
+    },
+    {
+      "observation_id": "13da2e328b24e30210f6553d4be82371234b127a49d76bdde3ac817d8746e144",
+      "source": "sympy__sympy-24909",
+      "repository": "sympy/sympy",
+      "provenance": {
+        "command": "python -m pytest -q sympy/physics/units/tests --disable-warnings --maxfail=1",
+        "line": 11,
+        "path": "runs/20261107T015548Z-59f4dc6e/commands.jsonl",
+        "run_id": "20261107T015548Z-59f4dc6e",
+        "sha256": "aa1152dcab5972d5d2177bd2b29afeea6471b71986ced40ce2466f8859a8d04a",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [],
+      "status": "excluded_no_supported_whole_scope",
+      "reason": "No conservative whole-file/module selector; filtered/unsupported commands are excluded."
+    },
+    {
+      "observation_id": "148657e78863dcfd6ae530edaa1835363f9672bdcbd504e57a7e965cfb4bdd6f",
+      "source": "marshmallow-code__marshmallow-1359",
+      "repository": "marshmallow-code/marshmallow",
+      "provenance": {
+        "command": "pytest -q tests/test_schema.py::test_datetimeformat_option tests/test_schema.py::test_dateformat_option tests/test_schema.py::test_default_dateformat tests/test_serialization.py -q",
+        "line": 14,
+        "path": "runs/20261103T125247Z-955f5919/commands.jsonl",
+        "run_id": "20261103T125247Z-955f5919",
+        "sha256": "f7113d3ef39f4b3831c7480620a45dfae755ff99decba0d4aec710dd0294738c",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [
+        "tests/test_serialization.py"
+      ],
+      "status": "included_identifier_evidence",
+      "reason": "Only explicit whole-file/module selection is used; no completion or passing claim."
+    },
+    {
+      "observation_id": "17e8ef746afcc1fef013a2db6e049b8fa6e781d11228339ba0709e117a11e685",
+      "source": "sphinx-doc__sphinx-10325",
+      "repository": "sphinx-doc/sphinx",
+      "provenance": {
+        "command": "pytest -q tests/test_ext_autodoc_automodule.py",
+        "line": 19,
+        "path": "runs/20261104T205627Z-dcfa1f52/commands.jsonl",
+        "run_id": "20261104T205627Z-dcfa1f52",
+        "sha256": "4ad4a9bcb2bbb6643826ac5428988694177980025429846ba24ff225a23bac36",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [
+        "tests/test_ext_autodoc_automodule.py"
+      ],
+      "status": "included_identifier_evidence",
+      "reason": "Only explicit whole-file/module selection is used; no completion or passing claim."
+    },
+    {
+      "observation_id": "1812409e5da46059948433819558e279cf9170b1db974a8a53b7f796d40d9c85",
+      "source": "sphinx-doc__sphinx-10451",
+      "repository": "sphinx-doc/sphinx",
+      "provenance": {
+        "command": "cd /testbed && pytest -q tests/test_ext_autodoc_configs.py -k 'typehints_description_with_documented_init'",
+        "line": 10,
+        "path": "runs/20261103T154223Z-cb75ea5e/commands.jsonl",
+        "run_id": "20261103T154223Z-cb75ea5e",
+        "sha256": "70b4405c6f37800de3cbd6977f495cfba0e4d94b71eaf0c08738c315e0c8600c",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [],
+      "status": "excluded_no_supported_whole_scope",
+      "reason": "No conservative whole-file/module selector; filtered/unsupported commands are excluded."
+    },
+    {
+      "observation_id": "1950faa7e7eff244a992610a57803b92354d043209927f63f7019751c37e66ee",
+      "source": "sphinx-doc__sphinx-8801",
+      "repository": "sphinx-doc/sphinx",
+      "provenance": {
+        "command": "pytest -q tests/test_ext_autodoc_autoclass.py tests/test_ext_autodoc_autoattribute.py --disable-warnings --maxfail=1",
+        "line": 21,
+        "path": "runs/20261103T175711Z-b22cfcdf/commands.jsonl",
+        "run_id": "20261103T175711Z-b22cfcdf",
+        "sha256": "03917d7f62ade1f10df69d0744f61b827d921a460069c1e225560d99b9ab6b54",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [
+        "tests/test_ext_autodoc_autoattribute.py",
+        "tests/test_ext_autodoc_autoclass.py"
+      ],
+      "status": "included_identifier_evidence",
+      "reason": "Only explicit whole-file/module selection is used; no completion or passing claim."
+    },
+    {
+      "observation_id": "19b735228b760bebe533a5e248c969c6aa4c646f7a77e1b769daf30a388296dc",
+      "source": "sphinx-doc__sphinx-10325",
+      "repository": "sphinx-doc/sphinx",
+      "provenance": {
+        "command": "pytest -q tests/test_ext_autodoc.py",
+        "line": 24,
+        "path": "runs/20261104T205627Z-dcfa1f52/commands.jsonl",
+        "run_id": "20261104T205627Z-dcfa1f52",
+        "sha256": "4ad4a9bcb2bbb6643826ac5428988694177980025429846ba24ff225a23bac36",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [
+        "tests/test_ext_autodoc.py"
+      ],
+      "status": "included_identifier_evidence",
+      "reason": "Only explicit whole-file/module selection is used; no completion or passing claim."
+    },
+    {
+      "observation_id": "1ac43d022110cc683c4198fa83ded81df3f35aa62a5dbcff86cd246217be851c",
+      "source": "sympy__sympy-24909",
+      "repository": "sympy/sympy",
+      "provenance": {
+        "command": "cd /testbed && pytest -q sympy/physics/units/tests --disable-warnings --maxfail=1",
+        "line": 12,
+        "path": "runs/20261107T013911Z-6a488814/commands.jsonl",
+        "run_id": "20261107T013911Z-6a488814",
+        "sha256": "766809d45a544c51b87ed6536ba4b668784c77884351ce1d7fb250355d3f9611",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [],
+      "status": "excluded_no_supported_whole_scope",
+      "reason": "No conservative whole-file/module selector; filtered/unsupported commands are excluded."
+    },
+    {
+      "observation_id": "1b369c587dbcc1565400bf2043fb2d6a77d2350b527463794042e4128d5c956a",
+      "source": "pvlib__pvlib-python-1606",
+      "repository": "pvlib/pvlib-python",
+      "provenance": {
+        "command": "pytest -q pvlib/tests/test_singlediode.py",
+        "line": 11,
+        "path": "runs/20261103T140135Z-f9c54963/commands.jsonl",
+        "run_id": "20261103T140135Z-f9c54963",
+        "sha256": "b5026798df0772106847ab698db7d4b062b90ddfc51824125b4775663aa8a1eb",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [
+        "pvlib/tests/test_singlediode.py"
+      ],
+      "status": "included_identifier_evidence",
+      "reason": "Only explicit whole-file/module selection is used; no completion or passing claim."
+    },
+    {
+      "observation_id": "1c1c5d4b0d35add2ff5d5a6d95fe2fa7f899e2d59083996bc4eb46d925deafd5",
+      "source": "django__django-16910",
+      "repository": "django/django",
+      "provenance": {
+        "command": "python tests/runtests.py defer_regress select_related_onetoone select_related --verbosity 1",
+        "line": 24,
+        "path": "runs/20261103T164001Z-b8a4d928/commands.jsonl",
+        "run_id": "20261103T164001Z-b8a4d928",
+        "sha256": "f8c0a25b5306d56b8e53b2db8eae56d8196f405ddcbeaa91f4635ce105fa3e66",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [
+        "defer_regress",
+        "select_related",
+        "select_related_onetoone"
+      ],
+      "status": "included_identifier_evidence",
+      "reason": "Only explicit whole-file/module selection is used; no completion or passing claim."
+    },
+    {
+      "observation_id": "1cdffd97a0411a42e6f0340a716db9b2ec79838ba7974fd3c5699f5c620478ff",
+      "source": "sphinx-doc__sphinx-8627",
+      "repository": "sphinx-doc/sphinx",
+      "provenance": {
+        "command": "pytest -q tests/test_util_typing.py --disable-warnings",
+        "line": 27,
+        "path": "runs/20261105T125741Z-fe751df6/commands.jsonl",
+        "run_id": "20261105T125741Z-fe751df6",
+        "sha256": "1da664fabdeee399b4ba32bfe7df8c88ca57aeb72474d79ccf1666d2ed66f888",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [
+        "tests/test_util_typing.py"
+      ],
+      "status": "included_identifier_evidence",
+      "reason": "Only explicit whole-file/module selection is used; no completion or passing claim."
+    },
+    {
+      "observation_id": "2114a1487688840f3967b559497290580a4a5323914edfe5056439e0b1a8a298",
+      "source": "sympy__sympy-24066",
+      "repository": "sympy/sympy",
+      "provenance": {
+        "command": "cd /testbed && bin/test sympy/physics/units/tests/test_quantities.py",
+        "line": 14,
+        "path": "runs/20261107T013550Z-8989373b/commands.jsonl",
+        "run_id": "20261107T013550Z-8989373b",
+        "sha256": "d9ef8089604419f5435306a5bef5c1b757005d9f42355f6fa70ef0ed57adef95",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [],
+      "status": "excluded_no_supported_whole_scope",
+      "reason": "No conservative whole-file/module selector; filtered/unsupported commands are excluded."
+    },
+    {
+      "observation_id": "26dc458ef9c034814fff3dcbff506266d42efd3263277f20acccbeeb3c024c6e",
+      "source": "marshmallow-code__marshmallow-1359",
+      "repository": "marshmallow-code/marshmallow",
+      "provenance": {
+        "command": "pytest -q",
+        "line": 15,
+        "path": "runs/20261103T125247Z-955f5919/commands.jsonl",
+        "run_id": "20261103T125247Z-955f5919",
+        "sha256": "f7113d3ef39f4b3831c7480620a45dfae755ff99decba0d4aec710dd0294738c",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [],
+      "status": "excluded_no_supported_whole_scope",
+      "reason": "No conservative whole-file/module selector; filtered/unsupported commands are excluded."
+    },
+    {
+      "observation_id": "26f219396fe667c3eee5c63dd22714e7098ef3fc2701a1aa24a0b43c4d07e93c",
+      "source": "sympy__sympy-24909",
+      "repository": "sympy/sympy",
+      "provenance": {
+        "command": "cd /testbed && python -m pytest sympy/physics/units/tests/test_quantities.py -q",
+        "line": 12,
+        "path": "runs/20261107T015426Z-421272df/commands.jsonl",
+        "run_id": "20261107T015426Z-421272df",
+        "sha256": "45f6dd8e220b16a0be85d0a45ed643187d4f616706d0abef7482798f90de75f2",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [
+        "sympy/physics/units/tests/test_quantities.py"
+      ],
+      "status": "included_identifier_evidence",
+      "reason": "Only explicit whole-file/module selection is used; no completion or passing claim."
+    },
+    {
+      "observation_id": "2a3619fba82fcbb26c08e6e7f441740c330a52d5837f52efe800b74d3ccffedf",
+      "source": "sympy__sympy-24213",
+      "repository": "sympy/sympy",
+      "provenance": {
+        "command": "python -m pytest sympy/physics/units/tests/test_quantities.py -k 'factor_and_dimension or check_unit_consistency' -q --disable-warnings --maxfail=1",
+        "line": 10,
+        "path": "runs/20261107T014901Z-9ebd7227/commands.jsonl",
+        "run_id": "20261107T014901Z-9ebd7227",
+        "sha256": "a898402c8bdc3d9721aafb5539884e83ee0cb24cba2ead47b7740c9009fba1e8",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [],
+      "status": "excluded_no_supported_whole_scope",
+      "reason": "No conservative whole-file/module selector; filtered/unsupported commands are excluded."
+    },
+    {
+      "observation_id": "2a8ecb9d8ba17caec39249c2858bbc855c00625a0f4094b28a9b973f5c9d57b4",
+      "source": "django__django-16910",
+      "repository": "django/django",
+      "provenance": {
+        "command": "cd /testbed && python tests/runtests.py defer defer_regress --verbosity 1",
+        "line": 18,
+        "path": "runs/20261103T191120Z-7449ae1e/commands.jsonl",
+        "run_id": "20261103T191120Z-7449ae1e",
+        "sha256": "dee7aafe667d9ae113c46380fa59436cb26df959680c3e51b505af342f6f02ba",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [
+        "defer",
+        "defer_regress"
+      ],
+      "status": "included_identifier_evidence",
+      "reason": "Only explicit whole-file/module selection is used; no completion or passing claim."
+    },
+    {
+      "observation_id": "2b7e4bc7c21c48f3eda411c4b52fd25da652d505da084986a1eec30d109cb929",
+      "source": "sympy__sympy-24213",
+      "repository": "sympy/sympy",
+      "provenance": {
+        "command": "python -m unittest sympy.physics.units.tests.test_quantities -q",
+        "line": 13,
+        "path": "runs/20261107T020229Z-c6251aca/commands.jsonl",
+        "run_id": "20261107T020229Z-c6251aca",
+        "sha256": "fce8489cc11952f9c4a98fafb1ac2454878b84478ce019a7366e7712a6d21cf3",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [],
+      "status": "excluded_no_supported_whole_scope",
+      "reason": "No conservative whole-file/module selector; filtered/unsupported commands are excluded."
+    },
+    {
+      "observation_id": "2de4d9e19effc2b6cb4a366c37defaddf9b1a604046784170aa9d1ed93558ccf",
+      "source": "sympy__sympy-24066",
+      "repository": "sympy/sympy",
+      "provenance": {
+        "command": "python -m pytest sympy/physics/units/tests/test_quantities.py -q --disable-warnings --maxfail=1",
+        "line": 13,
+        "path": "runs/20261107T013726Z-c3a40999/commands.jsonl",
+        "run_id": "20261107T013726Z-c3a40999",
+        "sha256": "87ca0c864f07bea5d01efa97625b67a97a39e60734b40dd3094791aa90e9d7fa",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [
+        "sympy/physics/units/tests/test_quantities.py"
+      ],
+      "status": "excluded_single_scope_family",
+      "reason": "Only one observed whole scope; no invented alternative is added to this source."
+    },
+    {
+      "observation_id": "2e803d9eab33c6c513a02579bf439e6cd8c5a30280f278847edd6e2977a80ad7",
+      "source": "sympy__sympy-24909",
+      "repository": "sympy/sympy",
+      "provenance": {
+        "command": "python -m pytest -q sympy/physics/units/tests",
+        "line": 14,
+        "path": "runs/20261107T015212Z-d4fb3b1b/commands.jsonl",
+        "run_id": "20261107T015212Z-d4fb3b1b",
+        "sha256": "8b7358c65082d64529dcce20fdd46a6ce05d9e274b00296474354aabb339805a",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [],
+      "status": "excluded_no_supported_whole_scope",
+      "reason": "No conservative whole-file/module selector; filtered/unsupported commands are excluded."
+    },
+    {
+      "observation_id": "2e901fd356a335faa4813cbf26f1865240b5db493c5a196621a907382f27a3c9",
+      "source": "sphinx-doc__sphinx-8627",
+      "repository": "sphinx-doc/sphinx",
+      "provenance": {
+        "command": "pytest -q tests/test_ext_autodoc_autofunction.py tests/test_ext_autodoc_autoclass.py",
+        "line": 25,
+        "path": "runs/20261103T165733Z-d286ce24/commands.jsonl",
+        "run_id": "20261103T165733Z-d286ce24",
+        "sha256": "225bea607391a6cd1539a88437da7ceda43f6b87220f5f0a4bcc36ed03c4295d",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [
+        "tests/test_ext_autodoc_autoclass.py",
+        "tests/test_ext_autodoc_autofunction.py"
+      ],
+      "status": "included_identifier_evidence",
+      "reason": "Only explicit whole-file/module selection is used; no completion or passing claim."
+    },
+    {
+      "observation_id": "307e6e7f6986a8b1ebe53445e3580d56348255301d390bc5dec38fb393d4d535",
+      "source": "sphinx-doc__sphinx-10325",
+      "repository": "sphinx-doc/sphinx",
+      "provenance": {
+        "command": "pytest -q tests/test_ext_autodoc.py -k inherited_members --disable-warnings --maxfail=1",
+        "line": 8,
+        "path": "runs/20261104T210639Z-381acc13/commands.jsonl",
+        "run_id": "20261104T210639Z-381acc13",
+        "sha256": "5c5ad0cab32d9b74cadfb5cf77c868899c6f6c63288bc0502f5af51529cd6d65",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [],
+      "status": "excluded_no_supported_whole_scope",
+      "reason": "No conservative whole-file/module selector; filtered/unsupported commands are excluded."
+    },
+    {
+      "observation_id": "30e7e3cdbbadae3d80536243309c6ee1a022492887201c619c0f6628da6598be",
+      "source": "sphinx-doc__sphinx-8627",
+      "repository": "sphinx-doc/sphinx",
+      "provenance": {
+        "command": "pytest -q tests/test_domain_py.py tests/test_util_typing.py",
+        "line": 24,
+        "path": "runs/20261103T165733Z-d286ce24/commands.jsonl",
+        "run_id": "20261103T165733Z-d286ce24",
+        "sha256": "225bea607391a6cd1539a88437da7ceda43f6b87220f5f0a4bcc36ed03c4295d",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [
+        "tests/test_domain_py.py",
+        "tests/test_util_typing.py"
+      ],
+      "status": "included_identifier_evidence",
+      "reason": "Only explicit whole-file/module selection is used; no completion or passing claim."
+    },
+    {
+      "observation_id": "311af5a6b915e1cb18c97ccc2b5e9724e3aaa0b2b1920e3b8db819a3c9930f2d",
+      "source": "sympy__sympy-18621",
+      "repository": "sympy/sympy",
+      "provenance": {
+        "command": "bin/test sympy/matrices/expressions/tests/test_blockmatrix.py",
+        "line": 13,
+        "path": "runs/20261107T042122Z-6551858d/commands.jsonl",
+        "run_id": "20261107T042122Z-6551858d",
+        "sha256": "cd97b04a74209c34f14b81893aca596726dcba483b3d04fa69c7eb730f624def",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [],
+      "status": "excluded_no_supported_whole_scope",
+      "reason": "No conservative whole-file/module selector; filtered/unsupported commands are excluded."
+    },
+    {
+      "observation_id": "31c529fbd1e503d4c776788cfb70713a0036fe1e618b1689065b54e91fb07c8b",
+      "source": "sphinx-doc__sphinx-10325",
+      "repository": "sphinx-doc/sphinx",
+      "provenance": {
+        "command": "pytest -q tests/test_ext_autodoc.py tests/test_ext_autodoc_autoclass.py",
+        "line": 17,
+        "path": "runs/20261104T210808Z-18ebc033/commands.jsonl",
+        "run_id": "20261104T210808Z-18ebc033",
+        "sha256": "8ac228a8a4429e73a0fb6dcbcd41c49e6a494a401d9ebe60c30b549caed1ad04",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [
+        "tests/test_ext_autodoc.py",
+        "tests/test_ext_autodoc_autoclass.py"
+      ],
+      "status": "included_identifier_evidence",
+      "reason": "Only explicit whole-file/module selection is used; no completion or passing claim."
+    },
+    {
+      "observation_id": "32ba4df52662ed4cacffb4b085ee984237898049dd53165d00f1158a5517e6dd",
+      "source": "sphinx-doc__sphinx-8627",
+      "repository": "sphinx-doc/sphinx",
+      "provenance": {
+        "command": "pytest -q tests/test_ext_autodoc.py tests/test_ext_autodoc_autofunction.py",
+        "line": 19,
+        "path": "runs/20261103T165410Z-5ebfb752/commands.jsonl",
+        "run_id": "20261103T165410Z-5ebfb752",
+        "sha256": "ed690200d58f019457176b933afa4c3d12656c87aeec91f2cbf058f8633c2dbf",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [
+        "tests/test_ext_autodoc.py",
+        "tests/test_ext_autodoc_autofunction.py"
+      ],
+      "status": "included_identifier_evidence",
+      "reason": "Only explicit whole-file/module selection is used; no completion or passing claim."
+    },
+    {
+      "observation_id": "340b49bbcb8b5145e6e90aaaced70c02c1654b6e1c9046063344acb1faedc9cd",
+      "source": "scikit-learn__scikit-learn-12471",
+      "repository": "scikit-learn/scikit-learn",
+      "provenance": {
+        "command": "cd /testbed && pytest -q sklearn/preprocessing/tests/test_encoders.py -k 'one_hot_encoder_handle_unknown'",
+        "line": 7,
+        "path": "runs/20261105T145500Z-6855a951/commands.jsonl",
+        "run_id": "20261105T145500Z-6855a951",
+        "sha256": "f00f07fca86b0cbb5a31a0e9762a5dd2eacb09554e9a3cf94c269788452ff64b",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [],
+      "status": "excluded_no_supported_whole_scope",
+      "reason": "No conservative whole-file/module selector; filtered/unsupported commands are excluded."
+    },
+    {
+      "observation_id": "34ae7925b0210e6a9b51154b569064df95c23d4915bea6884adfcfe5f25d5181",
+      "source": "sphinx-doc__sphinx-8627",
+      "repository": "sphinx-doc/sphinx",
+      "provenance": {
+        "command": "pytest -q tests/test_util_typing.py",
+        "line": 19,
+        "path": "runs/20261103T151740Z-064cabb1/commands.jsonl",
+        "run_id": "20261103T151740Z-064cabb1",
+        "sha256": "d640802326fdaf4f0aa22ea0200b780b3febc2080131f4af4c21018e961a9ba3",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [
+        "tests/test_util_typing.py"
+      ],
+      "status": "included_identifier_evidence",
+      "reason": "Only explicit whole-file/module selection is used; no completion or passing claim."
+    },
+    {
+      "observation_id": "35776a598aaa1f7ee03a93ad8545c9ba5b0c4be6214e23c84f84cdb155018a77",
+      "source": "scikit-learn__scikit-learn-10508",
+      "repository": "scikit-learn/scikit-learn",
+      "provenance": {
+        "command": "cd /testbed && pytest -q sklearn/preprocessing/tests/test_label.py",
+        "line": 7,
+        "path": "runs/20261105T140701Z-28974fd0/commands.jsonl",
+        "run_id": "20261105T140701Z-28974fd0",
+        "sha256": "e5b734232a1e018ede1f91ab97958d7db866cc30ce7acdff2f8c2ceb16fbb6b0",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [
+        "sklearn/preprocessing/tests/test_label.py"
+      ],
+      "status": "excluded_single_scope_family",
+      "reason": "Only one observed whole scope; no invented alternative is added to this source."
+    },
+    {
+      "observation_id": "35e40f4f5b081404a3b758243bc97c7aa98da8b8ec1dc32a2493301437cafaf8",
+      "source": "pvlib__pvlib-python-1154",
+      "repository": "pvlib/pvlib-python",
+      "provenance": {
+        "command": "python -m pytest -q pvlib/tests/test_irradiance.py -k reindl --disable-warnings --maxfail=1",
+        "line": 14,
+        "path": "runs/20261103T135629Z-3cafeecc/commands.jsonl",
+        "run_id": "20261103T135629Z-3cafeecc",
+        "sha256": "42fa7421bc13bea14e286d69f856e0b5926033a11261b7b0591e98b4211f4a91",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [],
+      "status": "excluded_no_supported_whole_scope",
+      "reason": "No conservative whole-file/module selector; filtered/unsupported commands are excluded."
+    },
+    {
+      "observation_id": "3606a0f9bd0737aeb3f21d6df4801976c4f00cedf7da7058888114a2eaca3244",
+      "source": "django__django-16910",
+      "repository": "django/django",
+      "provenance": {
+        "command": "python tests/runtests.py defer --verbosity 1 --noinput",
+        "line": 16,
+        "path": "runs/20261103T190313Z-f6110218/commands.jsonl",
+        "run_id": "20261103T190313Z-f6110218",
+        "sha256": "50b13e6f5f2387429512ba36fc9e68496f82ea2eb72ec94d4e7c49ee5cbfbd09",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [
+        "defer"
+      ],
+      "status": "included_identifier_evidence",
+      "reason": "Only explicit whole-file/module selection is used; no completion or passing claim."
+    },
+    {
+      "observation_id": "361859fd2c2efce02bcc416522d98018a16cbb250f3d16939a829f00aa5776fd",
+      "source": "scikit-learn__scikit-learn-12471",
+      "repository": "scikit-learn/scikit-learn",
+      "provenance": {
+        "command": "cd /testbed && pytest -q sklearn/preprocessing/tests/test_encoders.py",
+        "line": 11,
+        "path": "runs/20261105T141957Z-bd4321a0/commands.jsonl",
+        "run_id": "20261105T141957Z-bd4321a0",
+        "sha256": "3f6e465415f7d025cbf1d7ee2d83d435c21d2ab7fc70317762488569c94b6f79",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [
+        "sklearn/preprocessing/tests/test_encoders.py"
+      ],
+      "status": "excluded_single_scope_family",
+      "reason": "Only one observed whole scope; no invented alternative is added to this source."
+    },
+    {
+      "observation_id": "3661fa89fd45e62b13a8e5d149560c5095319adf17520c8fa1543f2c5d831d37",
+      "source": "sympy__sympy-24909",
+      "repository": "sympy/sympy",
+      "provenance": {
+        "command": "cd /testbed && python -m pytest sympy/physics/units/tests/test_prefixes.py -q",
+        "line": 11,
+        "path": "runs/20261107T015426Z-421272df/commands.jsonl",
+        "run_id": "20261107T015426Z-421272df",
+        "sha256": "45f6dd8e220b16a0be85d0a45ed643187d4f616706d0abef7482798f90de75f2",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [
+        "sympy/physics/units/tests/test_prefixes.py"
+      ],
+      "status": "included_identifier_evidence",
+      "reason": "Only explicit whole-file/module selection is used; no completion or passing claim."
+    },
+    {
+      "observation_id": "37d4e76ee619055117bd5f2b40efc4cee8bffd6706df7bc741ed90ba37250e74",
+      "source": "sphinx-doc__sphinx-8801",
+      "repository": "sphinx-doc/sphinx",
+      "provenance": {
+        "command": "pytest -q tests/test_ext_autodoc.py::test_autodoc_typed_inherited_instance_variables tests/test_ext_autodoc_autoclass.py::test_inherited_instance_variable",
+        "line": 17,
+        "path": "runs/20261103T181228Z-8e342635/commands.jsonl",
+        "run_id": "20261103T181228Z-8e342635",
+        "sha256": "5c5540eed84c951b595219d428bfed76ecd3db60fa8d17749ffc78d96488d608",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [],
+      "status": "excluded_no_supported_whole_scope",
+      "reason": "No conservative whole-file/module selector; filtered/unsupported commands are excluded."
+    },
+    {
+      "observation_id": "382097d2329b89a4779d823f01567e1088ead1fbc3ac8387c9b0c2e47e38ca36",
+      "source": "sphinx-doc__sphinx-8435",
+      "repository": "sphinx-doc/sphinx",
+      "provenance": {
+        "command": "python -m pytest -q tests/test_ext_autodoc_configs.py::test_autodoc_type_aliases tests/test_ext_autodoc.py",
+        "line": 24,
+        "path": "runs/20261103T150854Z-467436f4/commands.jsonl",
+        "run_id": "20261103T150854Z-467436f4",
+        "sha256": "b0d92317b2dc507b5e4ad6fa68152020b24bbf70554d35f7e024e2e367c4def3",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [
+        "tests/test_ext_autodoc.py"
+      ],
+      "status": "included_identifier_evidence",
+      "reason": "Only explicit whole-file/module selection is used; no completion or passing claim."
+    },
+    {
+      "observation_id": "384e7dfe7056671fa8d9d4e0a105ea6f983673dcf1a159a58fb395e281654f73",
+      "source": "sympy__sympy-24213",
+      "repository": "sympy/sympy",
+      "provenance": {
+        "command": "python -m pytest -q sympy/physics/units/tests/test_quantities.py -k 'factor_and_dimension'",
+        "line": 10,
+        "path": "runs/20261107T024822Z-8755c0d7/commands.jsonl",
+        "run_id": "20261107T024822Z-8755c0d7",
+        "sha256": "4a0e6b0db4df366b3b0013f478b920a0c525b010529e110c3896e2c8ee52bd8a",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [],
+      "status": "excluded_no_supported_whole_scope",
+      "reason": "No conservative whole-file/module selector; filtered/unsupported commands are excluded."
+    },
+    {
+      "observation_id": "3d63ca8a6265349c2c0f0469fa1fdd0362811807d63961ab7bb0d63bcd82a8e5",
+      "source": "sphinx-doc__sphinx-10325",
+      "repository": "sphinx-doc/sphinx",
+      "provenance": {
+        "command": "pytest -q tests/test_ext_autodoc_autoclass.py tests/test_ext_autodoc_automodule.py",
+        "line": 12,
+        "path": "runs/20261104T205946Z-f4253d76/commands.jsonl",
+        "run_id": "20261104T205946Z-f4253d76",
+        "sha256": "a08a03007410dbcdd7476f1b12eb3f9ae65dd052f6295a9653a1945c5b6c7f63",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [
+        "tests/test_ext_autodoc_autoclass.py",
+        "tests/test_ext_autodoc_automodule.py"
+      ],
+      "status": "included_identifier_evidence",
+      "reason": "Only explicit whole-file/module selection is used; no completion or passing claim."
+    },
+    {
+      "observation_id": "3f9a15751ebb20cafcf498de86d2c011fa2142c3c3fe58f4b2659382c4e47066",
+      "source": "sphinx-doc__sphinx-8801",
+      "repository": "sphinx-doc/sphinx",
+      "provenance": {
+        "command": "pytest -q tests/test_ext_autodoc_autoclass.py tests/test_ext_autodoc.py",
+        "line": 18,
+        "path": "runs/20261103T180750Z-361f09a4/commands.jsonl",
+        "run_id": "20261103T180750Z-361f09a4",
+        "sha256": "b7841efa20716377be6bc64ce5c866f9a11a7103e5b6d3ec32f5298781e0d550",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [
+        "tests/test_ext_autodoc.py",
+        "tests/test_ext_autodoc_autoclass.py"
+      ],
+      "status": "included_identifier_evidence",
+      "reason": "Only explicit whole-file/module selection is used; no completion or passing claim."
+    },
+    {
+      "observation_id": "43ffebbde6473d95ff1cef080ee49b198aba4a1622167cd4bf885018c3d7ce14",
+      "source": "sympy__sympy-18621",
+      "repository": "sympy/sympy",
+      "provenance": {
+        "command": "python -m pytest sympy/matrices/expressions/tests/test_blockmatrix.py -q",
+        "line": 11,
+        "path": "runs/20261107T042122Z-6551858d/commands.jsonl",
+        "run_id": "20261107T042122Z-6551858d",
+        "sha256": "cd97b04a74209c34f14b81893aca596726dcba483b3d04fa69c7eb730f624def",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [
+        "sympy/matrices/expressions/tests/test_blockmatrix.py"
+      ],
+      "status": "excluded_single_scope_family",
+      "reason": "Only one observed whole scope; no invented alternative is added to this source."
+    },
+    {
+      "observation_id": "4a51c298bc5b6b8678635d8406e6a68f7fcd4367dc8380e8b1fde9c3f9e91ea2",
+      "source": "pvlib__pvlib-python-1707",
+      "repository": "pvlib/pvlib-python",
+      "provenance": {
+        "command": "pytest -q pvlib/tests/test_iam.py --disable-warnings --maxfail=1",
+        "line": 11,
+        "path": "runs/20261103T145714Z-8339a962/commands.jsonl",
+        "run_id": "20261103T145714Z-8339a962",
+        "sha256": "2aeeea715a897fb2926557fe796c46d1e3dadc0e9e6d638c92f932054be0451f",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [
+        "pvlib/tests/test_iam.py"
+      ],
+      "status": "excluded_single_scope_family",
+      "reason": "Only one observed whole scope; no invented alternative is added to this source."
+    },
+    {
+      "observation_id": "4b0ca3d3202f9ec5b7fa489da349e136658be214f66a42404958f087ca0093c8",
+      "source": "sphinx-doc__sphinx-10325",
+      "repository": "sphinx-doc/sphinx",
+      "provenance": {
+        "command": "pytest -q tests/test_ext_autodoc.py tests/test_ext_autodoc_autoclass.py tests/test_ext_autodoc_automodule.py tests/test_ext_autodoc_configs.py",
+        "line": 11,
+        "path": "runs/20261104T211117Z-4e72ad4c/commands.jsonl",
+        "run_id": "20261104T211117Z-4e72ad4c",
+        "sha256": "3288b6080ea50fdf30a9bb008bb9976223795e75676c43b31045b5af16476fdb",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [
+        "tests/test_ext_autodoc.py",
+        "tests/test_ext_autodoc_autoclass.py",
+        "tests/test_ext_autodoc_automodule.py",
+        "tests/test_ext_autodoc_configs.py"
+      ],
+      "status": "included_identifier_evidence",
+      "reason": "Only explicit whole-file/module selection is used; no completion or passing claim."
+    },
+    {
+      "observation_id": "50ab50c0e1fc3094dc1c27897143a3976e9768b63ae6ecf37c7a4113b16c45c5",
+      "source": "sphinx-doc__sphinx-10451",
+      "repository": "sphinx-doc/sphinx",
+      "provenance": {
+        "command": "pytest -q tests/test_ext_autodoc_configs.py --disable-warnings --maxfail=1",
+        "line": 13,
+        "path": "runs/20261103T154352Z-cb4447e0/commands.jsonl",
+        "run_id": "20261103T154352Z-cb4447e0",
+        "sha256": "32294510248cbf3d97288942d8d8d244a2b2a5cdf02185366c14aee2c4157997",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [
+        "tests/test_ext_autodoc_configs.py"
+      ],
+      "status": "excluded_single_scope_family",
+      "reason": "Only one observed whole scope; no invented alternative is added to this source."
+    },
+    {
+      "observation_id": "57e9f62ecaec73ac498301a86a97e34ca22356eaa6130c319f3bae504a564b44",
+      "source": "sphinx-doc__sphinx-8801",
+      "repository": "sphinx-doc/sphinx",
+      "provenance": {
+        "command": "cd /testbed && pytest -q tests/test_ext_autodoc_autoclass.py tests/test_ext_autodoc_autoattribute.py",
+        "line": 13,
+        "path": "runs/20261103T180454Z-2d816469/commands.jsonl",
+        "run_id": "20261103T180454Z-2d816469",
+        "sha256": "756233c179c5e09836cd5d28b13bf537fa1c77484fd21691c4ced57ba9fb013f",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [
+        "tests/test_ext_autodoc_autoattribute.py",
+        "tests/test_ext_autodoc_autoclass.py"
+      ],
+      "status": "included_identifier_evidence",
+      "reason": "Only explicit whole-file/module selection is used; no completion or passing claim."
+    },
+    {
+      "observation_id": "5abdc77d2acb7480df904716f5ecd2e18bd3a78177e32c6ee63b3125855e3d09",
+      "source": "sphinx-doc__sphinx-10451",
+      "repository": "sphinx-doc/sphinx",
+      "provenance": {
+        "command": "pytest -q tests/test_ext_autodoc_configs.py -k 'description_with_documented_init'",
+        "line": 11,
+        "path": "runs/20261103T152335Z-2e93bef3/commands.jsonl",
+        "run_id": "20261103T152335Z-2e93bef3",
+        "sha256": "14db4b62dc4f75dff919a51b7ac24c8468017d1c282e22d6dac9729528fd808a",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [],
+      "status": "excluded_no_supported_whole_scope",
+      "reason": "No conservative whole-file/module selector; filtered/unsupported commands are excluded."
+    },
+    {
+      "observation_id": "5cf28f00e371634275a1a2ab6789cd37e3852b02ead998ceec40a81d3dfc43ed",
+      "source": "marshmallow-code__marshmallow-1359",
+      "repository": "marshmallow-code/marshmallow",
+      "provenance": {
+        "command": "cd /testbed && pytest -q tests/test_fields.py tests/test_schema.py",
+        "line": 10,
+        "path": "runs/20261103T124645Z-1b559f36/commands.jsonl",
+        "run_id": "20261103T124645Z-1b559f36",
+        "sha256": "174389664928157190d80130851a2a45b5498c6bc3320f869547344f8e947cc6",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [
+        "tests/test_fields.py",
+        "tests/test_schema.py"
+      ],
+      "status": "included_identifier_evidence",
+      "reason": "Only explicit whole-file/module selection is used; no completion or passing claim."
+    },
+    {
+      "observation_id": "5d81a301f21a281ff75d15ca39cb10907d23488e8ac19083d7e2c60b6897d0b0",
+      "source": "sphinx-doc__sphinx-10451",
+      "repository": "sphinx-doc/sphinx",
+      "provenance": {
+        "command": "pytest -q tests/test_ext_autodoc_configs.py -k 'typehints'",
+        "line": 11,
+        "path": "runs/20261103T152732Z-9191dea7/commands.jsonl",
+        "run_id": "20261103T152732Z-9191dea7",
+        "sha256": "49442e750ea8a3091113090d9f6c1a60cc576f5bc509e6ae9938214c56786352",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [],
+      "status": "excluded_no_supported_whole_scope",
+      "reason": "No conservative whole-file/module selector; filtered/unsupported commands are excluded."
+    },
+    {
+      "observation_id": "5fb160c8e816d74415129dd80d5a0cc6181917423f1457ee7a8d7cc097511a1a",
+      "source": "pvlib__pvlib-python-1606",
+      "repository": "pvlib/pvlib-python",
+      "provenance": {
+        "command": "pytest -q pvlib/tests/test_tools.py -k golden_sect",
+        "line": 6,
+        "path": "runs/20261103T144912Z-9c7bb5e7/commands.jsonl",
+        "run_id": "20261103T144912Z-9c7bb5e7",
+        "sha256": "b5c8e3436cf31bae94a50c38d1ebabef593a68f7ad992758ac1e855a3a5b0b0d",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [],
+      "status": "excluded_no_supported_whole_scope",
+      "reason": "No conservative whole-file/module selector; filtered/unsupported commands are excluded."
+    },
+    {
+      "observation_id": "60064d2b3183d1262e59e9efa40d1b21d846b227c3d13437cc4b7163169fd43a",
+      "source": "sphinx-doc__sphinx-8801",
+      "repository": "sphinx-doc/sphinx",
+      "provenance": {
+        "command": "pytest -q tests/test_ext_autodoc.py -k 'inherited_members' --disable-warnings --maxfail=1",
+        "line": 30,
+        "path": "runs/20261103T173651Z-d83127c4/commands.jsonl",
+        "run_id": "20261103T173651Z-d83127c4",
+        "sha256": "06791180b8ecc0ac07e28fffa7c42d8af115ecf0c23d7c52d55819bf8d5af91b",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [],
+      "status": "excluded_no_supported_whole_scope",
+      "reason": "No conservative whole-file/module selector; filtered/unsupported commands are excluded."
+    },
+    {
+      "observation_id": "621b457f03c4ed453a8083d1c1fd12b9d10a583e6fa956de4367f791fb8daae3",
+      "source": "django__django-11019",
+      "repository": "django/django",
+      "provenance": {
+        "command": "cd /testbed && python tests/runtests.py --settings=test_sqlite forms_tests.tests.test_media --verbosity 2",
+        "line": 15,
+        "path": "runs/20261107T043844Z-c1316dac/commands.jsonl",
+        "run_id": "20261107T043844Z-c1316dac",
+        "sha256": "ddb5ec548b145ef10741bcc8222ca8236109b543fbe96c43a8d041e26e8c66c5",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [
+        "forms_tests.tests.test_media"
+      ],
+      "status": "excluded_single_scope_family",
+      "reason": "Only one observed whole scope; no invented alternative is added to this source."
+    },
+    {
+      "observation_id": "665ada514b3cea582d0904f03625a2bcf73c0518339710b3116009f9802eaba5",
+      "source": "scikit-learn__scikit-learn-12471",
+      "repository": "scikit-learn/scikit-learn",
+      "provenance": {
+        "command": "pytest -q sklearn/preprocessing/tests/test_encoders.py --disable-warnings --maxfail=1",
+        "line": 8,
+        "path": "runs/20261105T145104Z-42af5042/commands.jsonl",
+        "run_id": "20261105T145104Z-42af5042",
+        "sha256": "6f78b9d6bc029560d56650ec5caadee8dde6cb638d06aff6916736c42333df50",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [
+        "sklearn/preprocessing/tests/test_encoders.py"
+      ],
+      "status": "excluded_single_scope_family",
+      "reason": "Only one observed whole scope; no invented alternative is added to this source."
+    },
+    {
+      "observation_id": "7d9d29fef236aabe4eea6c21e74f1d3e7980ab2c17faf60a9d3133b4183b29df",
+      "source": "pvlib__pvlib-python-1606",
+      "repository": "pvlib/pvlib-python",
+      "provenance": {
+        "command": "cd /testbed && pytest -q pvlib/tests/test_tools.py",
+        "line": 8,
+        "path": "runs/20261103T142913Z-128cc5d2/commands.jsonl",
+        "run_id": "20261103T142913Z-128cc5d2",
+        "sha256": "7f6200356708e534fd3097783a86f285ae68203c2f45ee4c03fca4b8816f663b",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [
+        "pvlib/tests/test_tools.py"
+      ],
+      "status": "included_identifier_evidence",
+      "reason": "Only explicit whole-file/module selection is used; no completion or passing claim."
+    },
+    {
+      "observation_id": "82984d98ed31f662ce8ef2652195924064c6257e9c165f673fc7a83096c7718a",
+      "source": "scikit-learn__scikit-learn-15535",
+      "repository": "scikit-learn/scikit-learn",
+      "provenance": {
+        "command": "pytest -q sklearn/metrics/cluster/tests/test_supervised.py sklearn/metrics/cluster/tests/test_unsupervised.py",
+        "line": 13,
+        "path": "runs/20261105T144318Z-8e350378/commands.jsonl",
+        "run_id": "20261105T144318Z-8e350378",
+        "sha256": "c28b5b167b646bb1d3dfc1773247a674bd6376c49162185f6f9cf843e40cca55",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [
+        "sklearn/metrics/cluster/tests/test_supervised.py",
+        "sklearn/metrics/cluster/tests/test_unsupervised.py"
+      ],
+      "status": "included_identifier_evidence",
+      "reason": "Only explicit whole-file/module selection is used; no completion or passing claim."
+    },
+    {
+      "observation_id": "85312e8146b9d7c4cae1e524ffef9b35905c0451564305521a77c76a02369429",
+      "source": "pvlib__pvlib-python-1606",
+      "repository": "pvlib/pvlib-python",
+      "provenance": {
+        "command": "pytest -q pvlib/tests/test_tools.py",
+        "line": 9,
+        "path": "runs/20261103T140135Z-f9c54963/commands.jsonl",
+        "run_id": "20261103T140135Z-f9c54963",
+        "sha256": "b5026798df0772106847ab698db7d4b062b90ddfc51824125b4775663aa8a1eb",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [
+        "pvlib/tests/test_tools.py"
+      ],
+      "status": "included_identifier_evidence",
+      "reason": "Only explicit whole-file/module selection is used; no completion or passing claim."
+    },
+    {
+      "observation_id": "88ee16b6356966daf20672eeb318c05135103d47560084bb081a9ef3453eb6e3",
+      "source": "pytest-dev__pytest-8906",
+      "repository": "pytest-dev/pytest",
+      "provenance": {
+        "command": "cd /testbed && python -m pytest -q testing/test_skipping.py -k 'module_level_skip'",
+        "line": 11,
+        "path": "runs/20261105T144851Z-ab0bb984/commands.jsonl",
+        "run_id": "20261105T144851Z-ab0bb984",
+        "sha256": "57c3e3aba07bea76ccb40f7c1ee5a7d4c315b380a230b76931f4fcb7715ae674",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [],
+      "status": "excluded_no_supported_whole_scope",
+      "reason": "No conservative whole-file/module selector; filtered/unsupported commands are excluded."
+    },
+    {
+      "observation_id": "8d6bd58cb175135e44e8f296279d87429bf44758ace53577afea6ca980e459d5",
+      "source": "sphinx-doc__sphinx-8435",
+      "repository": "sphinx-doc/sphinx",
+      "provenance": {
+        "command": "python -m pytest -q tests/test_ext_autodoc_configs.py",
+        "line": 26,
+        "path": "runs/20261103T150854Z-467436f4/commands.jsonl",
+        "run_id": "20261103T150854Z-467436f4",
+        "sha256": "b0d92317b2dc507b5e4ad6fa68152020b24bbf70554d35f7e024e2e367c4def3",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [
+        "tests/test_ext_autodoc_configs.py"
+      ],
+      "status": "included_identifier_evidence",
+      "reason": "Only explicit whole-file/module selection is used; no completion or passing claim."
+    },
+    {
+      "observation_id": "9c5418ec4874d192d4f4ecea5780b89a9aecfa47f66e59adeb26b6ac805874f9",
+      "source": "sphinx-doc__sphinx-8282",
+      "repository": "sphinx-doc/sphinx",
+      "provenance": {
+        "command": "cd /testbed && python -m pytest -q tests/test_ext_autodoc.py::test_overload tests/test_ext_autodoc.py::test_overload2 tests/test_ext_autodoc_configs.py::test_autodoc_typehints_none --disable-warnings",
+        "line": 17,
+        "path": "runs/20261103T150718Z-8bb04726/commands.jsonl",
+        "run_id": "20261103T150718Z-8bb04726",
+        "sha256": "bbb59489d198f20110ff928fbb692b6ac5ec8aaebadde5a74ea22de12113ee3e",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [],
+      "status": "excluded_no_supported_whole_scope",
+      "reason": "No conservative whole-file/module selector; filtered/unsupported commands are excluded."
+    },
+    {
+      "observation_id": "9c979dcc9702e139509f6b0046722509337f4b691f2609b9c0e3d712ad539fac",
+      "source": "pvlib__pvlib-python-1707",
+      "repository": "pvlib/pvlib-python",
+      "provenance": {
+        "command": "cd /testbed && pytest -q pvlib/tests/test_iam.py --disable-warnings --maxfail=1",
+        "line": 11,
+        "path": "runs/20261103T140539Z-9c740f26/commands.jsonl",
+        "run_id": "20261103T140539Z-9c740f26",
+        "sha256": "2e9c32f15581d7053b6368c92101c6320e146bae4be1e78338ae08bd9a3b49b3",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [
+        "pvlib/tests/test_iam.py"
+      ],
+      "status": "excluded_single_scope_family",
+      "reason": "Only one observed whole scope; no invented alternative is added to this source."
+    },
+    {
+      "observation_id": "a6661b4e2e976502003fcf528e46f1a9095bd4af8da03151af1666c7ec87f2ad",
+      "source": "scikit-learn__scikit-learn-15535",
+      "repository": "scikit-learn/scikit-learn",
+      "provenance": {
+        "command": "cd /testbed && python -m pytest sklearn/metrics/cluster/tests/test_supervised.py -q --disable-warnings --maxfail=1",
+        "line": 11,
+        "path": "runs/20261105T150322Z-2cc337ab/commands.jsonl",
+        "run_id": "20261105T150322Z-2cc337ab",
+        "sha256": "079062e77bfa50398c2f9e1df9d898a47f8c252cb3f3a8e1b5b5be1237569c8c",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [
+        "sklearn/metrics/cluster/tests/test_supervised.py"
+      ],
+      "status": "included_identifier_evidence",
+      "reason": "Only explicit whole-file/module selection is used; no completion or passing claim."
+    },
+    {
+      "observation_id": "a69089802bbfb268bbad5d273b08ff2455cedcfc34ade53b6ad92d46d687f81c",
+      "source": "pvlib__pvlib-python-1707",
+      "repository": "pvlib/pvlib-python",
+      "provenance": {
+        "command": "cd /testbed && pytest -q pvlib/tests/test_iam.py",
+        "line": 10,
+        "path": "runs/20261103T140930Z-222ffe21/commands.jsonl",
+        "run_id": "20261103T140930Z-222ffe21",
+        "sha256": "dd67c2b614335baff930451cc997e6378f1497696d707413181da78360e16548",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [
+        "pvlib/tests/test_iam.py"
+      ],
+      "status": "excluded_single_scope_family",
+      "reason": "Only one observed whole scope; no invented alternative is added to this source."
+    },
+    {
+      "observation_id": "b21eff4a2d42e9d9436d12a888b149d3a6dcc289d278568985f60c245abf39ee",
+      "source": "sphinx-doc__sphinx-8282",
+      "repository": "sphinx-doc/sphinx",
+      "provenance": {
+        "command": "cd /testbed && python -m pytest -q tests/test_ext_autodoc.py --disable-warnings --maxfail=1",
+        "line": 13,
+        "path": "runs/20261103T150718Z-8bb04726/commands.jsonl",
+        "run_id": "20261103T150718Z-8bb04726",
+        "sha256": "bbb59489d198f20110ff928fbb692b6ac5ec8aaebadde5a74ea22de12113ee3e",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [
+        "tests/test_ext_autodoc.py"
+      ],
+      "status": "excluded_single_scope_family",
+      "reason": "Only one observed whole scope; no invented alternative is added to this source."
+    },
+    {
+      "observation_id": "b88ce943140557f10fc48bc7311a1b6f7fdd411bb544be4fc8cdc8bebc912561",
+      "source": "pvlib__pvlib-python-1154",
+      "repository": "pvlib/pvlib-python",
+      "provenance": {
+        "command": "python -m pytest -q pvlib/tests/test_irradiance.py -k 'not reindl' --disable-warnings --maxfail=1",
+        "line": 15,
+        "path": "runs/20261103T135629Z-3cafeecc/commands.jsonl",
+        "run_id": "20261103T135629Z-3cafeecc",
+        "sha256": "42fa7421bc13bea14e286d69f856e0b5926033a11261b7b0591e98b4211f4a91",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [],
+      "status": "excluded_no_supported_whole_scope",
+      "reason": "No conservative whole-file/module selector; filtered/unsupported commands are excluded."
+    },
+    {
+      "observation_id": "c488900abfec7274f4c05733651d1084b85f69f783a47fd483ba76f1344e0cbc",
+      "source": "sympy__sympy-24066",
+      "repository": "sympy/sympy",
+      "provenance": {
+        "command": "cd /testbed && python -m pytest sympy/physics/units/tests/test_quantities.py -q --disable-warnings --maxfail=1",
+        "line": 11,
+        "path": "runs/20261107T013550Z-8989373b/commands.jsonl",
+        "run_id": "20261107T013550Z-8989373b",
+        "sha256": "d9ef8089604419f5435306a5bef5c1b757005d9f42355f6fa70ef0ed57adef95",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [
+        "sympy/physics/units/tests/test_quantities.py"
+      ],
+      "status": "excluded_single_scope_family",
+      "reason": "Only one observed whole scope; no invented alternative is added to this source."
+    },
+    {
+      "observation_id": "c651c6b7c7e63eb82da3a368d71051c37d5ebbc1301d4162ec8118972f53cf12",
+      "source": "sphinx-doc__sphinx-10451",
+      "repository": "sphinx-doc/sphinx",
+      "provenance": {
+        "command": "pytest -q tests/test_ext_autodoc_configs.py -k 'typehints_description_with_documented_init or typehints_description_for_invalid_node or typehints_both' --disable-warnings --maxfail=1",
+        "line": 11,
+        "path": "runs/20261103T154352Z-cb4447e0/commands.jsonl",
+        "run_id": "20261103T154352Z-cb4447e0",
+        "sha256": "32294510248cbf3d97288942d8d8d244a2b2a5cdf02185366c14aee2c4157997",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [],
+      "status": "excluded_no_supported_whole_scope",
+      "reason": "No conservative whole-file/module selector; filtered/unsupported commands are excluded."
+    },
+    {
+      "observation_id": "cdcec8b915d23a8db1ede30b97e180464947b20d6050e847131e0e14ca30e380",
+      "source": "pytest-dev__pytest-8906",
+      "repository": "pytest-dev/pytest",
+      "provenance": {
+        "command": "cd /testbed && pytest -q testing/test_skipping.py -k 'module_level_skip' --disable-warnings --maxfail=1",
+        "line": 10,
+        "path": "runs/20261105T141859Z-0f11dedf/commands.jsonl",
+        "run_id": "20261105T141859Z-0f11dedf",
+        "sha256": "ff2e83691f1bc17bb9b30ca36894d731de07710ba6f525f85b3828c4082c7e69",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [],
+      "status": "excluded_no_supported_whole_scope",
+      "reason": "No conservative whole-file/module selector; filtered/unsupported commands are excluded."
+    },
+    {
+      "observation_id": "dc479f6570405974e3191bd056d1d25b126ba37e453a0038f46ed4c476bdd9fc",
+      "source": "pytest-dev__pytest-8906",
+      "repository": "pytest-dev/pytest",
+      "provenance": {
+        "command": "cd /testbed && pytest -q testing/test_skipping.py -k 'skip_outside' --disable-warnings --maxfail=1",
+        "line": 9,
+        "path": "runs/20261105T141859Z-0f11dedf/commands.jsonl",
+        "run_id": "20261105T141859Z-0f11dedf",
+        "sha256": "ff2e83691f1bc17bb9b30ca36894d731de07710ba6f525f85b3828c4082c7e69",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [],
+      "status": "excluded_no_supported_whole_scope",
+      "reason": "No conservative whole-file/module selector; filtered/unsupported commands are excluded."
+    },
+    {
+      "observation_id": "e06e21c85c46d842f448fbd9f78b3a3c11d89f1c4af4da5d51bbf683c194815a",
+      "source": "scikit-learn__scikit-learn-11281",
+      "repository": "scikit-learn/scikit-learn",
+      "provenance": {
+        "command": "python -m pytest -q sklearn/mixture/tests/test_gaussian_mixture.py sklearn/mixture/tests/test_bayesian_mixture.py --disable-warnings --maxfail=1",
+        "line": 18,
+        "path": "runs/20261107T042240Z-c040822f/commands.jsonl",
+        "run_id": "20261107T042240Z-c040822f",
+        "sha256": "f000673d3b885c0c22dbd032973e5db3be165e39a4a311a48f4b2066c259e315",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [
+        "sklearn/mixture/tests/test_bayesian_mixture.py",
+        "sklearn/mixture/tests/test_gaussian_mixture.py"
+      ],
+      "status": "included_identifier_evidence",
+      "reason": "Only explicit whole-file/module selection is used; no completion or passing claim."
+    },
+    {
+      "observation_id": "e3228fed3d7c60192ea8dafbc7de3dd903a0ac6269a9433f16520b5da25dc498",
+      "source": "scikit-learn__scikit-learn-12471",
+      "repository": "scikit-learn/scikit-learn",
+      "provenance": {
+        "command": "pytest -q sklearn/preprocessing/tests/test_encoders.py",
+        "line": 7,
+        "path": "runs/20261105T142713Z-555d64c4/commands.jsonl",
+        "run_id": "20261105T142713Z-555d64c4",
+        "sha256": "18371c6f59546afed379b321de68d7a3aea8def7e5ee381dfcad5b661e363a68",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [
+        "sklearn/preprocessing/tests/test_encoders.py"
+      ],
+      "status": "excluded_single_scope_family",
+      "reason": "Only one observed whole scope; no invented alternative is added to this source."
+    },
+    {
+      "observation_id": "ecc53d88c951ddfdb627b4b8c9286d93603febda34f765e22b1a0b16d8de557a",
+      "source": "pvlib__pvlib-python-1606",
+      "repository": "pvlib/pvlib-python",
+      "provenance": {
+        "command": "cd /testbed && python -m pytest -q pvlib/tests/test_tools.py",
+        "line": 8,
+        "path": "runs/20261103T145605Z-ae4a24e1/commands.jsonl",
+        "run_id": "20261103T145605Z-ae4a24e1",
+        "sha256": "fbf24fadcb9ad5aa85e650d67dd7d34bf477d8f3b15e02ee24f1c8e64b50172f",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [
+        "pvlib/tests/test_tools.py"
+      ],
+      "status": "included_identifier_evidence",
+      "reason": "Only explicit whole-file/module selection is used; no completion or passing claim."
+    },
+    {
+      "observation_id": "ee6a88f37d5ea990a67990dc18c8b2e36600ad089de1bfed964f2d519566b9ac",
+      "source": "sphinx-doc__sphinx-8435",
+      "repository": "sphinx-doc/sphinx",
+      "provenance": {
+        "command": "python -m pytest -q tests/test_ext_autodoc_configs.py::test_autodoc_type_aliases",
+        "line": 14,
+        "path": "runs/20261103T150854Z-467436f4/commands.jsonl",
+        "run_id": "20261103T150854Z-467436f4",
+        "sha256": "b0d92317b2dc507b5e4ad6fa68152020b24bbf70554d35f7e024e2e367c4def3",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [],
+      "status": "excluded_no_supported_whole_scope",
+      "reason": "No conservative whole-file/module selector; filtered/unsupported commands are excluded."
+    },
+    {
+      "observation_id": "fcb10781b32c455990e341facdd8b3c0120519eab95856a3b179c77bee604325",
+      "source": "pvlib__pvlib-python-1707",
+      "repository": "pvlib/pvlib-python",
+      "provenance": {
+        "command": "pytest -q pvlib/tests/test_iam.py --disable-warnings --maxfail=1",
+        "line": 14,
+        "path": "runs/20261103T145714Z-8339a962/commands.jsonl",
+        "run_id": "20261103T145714Z-8339a962",
+        "sha256": "2aeeea715a897fb2926557fe796c46d1e3dadc0e9e6d638c92f932054be0451f",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [
+        "pvlib/tests/test_iam.py"
+      ],
+      "status": "excluded_single_scope_family",
+      "reason": "Only one observed whole scope; no invented alternative is added to this source."
+    },
+    {
+      "observation_id": "fef01c95fac7b1d3caaa25c4997c1d6d1ae03c399b318510fa996b040894fc94",
+      "source": "django__django-11019",
+      "repository": "django/django",
+      "provenance": {
+        "command": "cd /testbed && python tests/runtests.py --settings=test_sqlite forms_tests.tests.test_media --verbosity 1",
+        "line": 28,
+        "path": "runs/20261107T043844Z-c1316dac/commands.jsonl",
+        "run_id": "20261107T043844Z-c1316dac",
+        "sha256": "ddb5ec548b145ef10741bcc8222ca8236109b543fbe96c43a8d041e26e8c66c5",
+        "source_phase": "agent"
+      },
+      "selected_scopes": [
+        "forms_tests.tests.test_media"
+      ],
+      "status": "excluded_single_scope_family",
+      "reason": "Only one observed whole scope; no invented alternative is added to this source."
+    },
+    {
+      "observation_id": "swesmith-tool0-row43-message44",
+      "source": "marshmallow-code__apispec.8b421526.func_pm_ctrl_invert_if__sfjed7bx",
+      "repository": "marshmallow-code/apispec",
+      "provenance": {
+        "dataset": "SWE-bench/SWE-smith-trajectories",
+        "revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+        "row_index": 43,
+        "message_index": 44,
+        "command": "cd /testbed && python -m pytest tests/test_ext_marshmallow_field.py -v",
+        "evidence_file": "evidence/public/swesmith-tool0-row43-message44.json",
+        "sha256": "1479d943b944fb847d87714c24412c03c5e17895971385e2eb6e2991a2f68aa5"
+      },
+      "selected_scopes": [
+        "tests/test_ext_marshmallow_field.py"
+      ],
+      "status": "included_identifier_evidence",
+      "reason": "Actual whole-file command and linked observation; no selected file was created by the agent in this trace. Selection alone is used, not passing/completion."
+    },
+    {
+      "observation_id": "swesmith-tool0-row43-message46",
+      "source": "marshmallow-code__apispec.8b421526.func_pm_ctrl_invert_if__sfjed7bx",
+      "repository": "marshmallow-code/apispec",
+      "provenance": {
+        "dataset": "SWE-bench/SWE-smith-trajectories",
+        "revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+        "row_index": 43,
+        "message_index": 46,
+        "command": "cd /testbed && python -m pytest tests/test_ext_marshmallow.py -v",
+        "evidence_file": "evidence/public/swesmith-tool0-row43-message46.json",
+        "sha256": "f44a6c1c091ee6f9c2cf3ba2afd078a44d884aa5305de647096db5e4f6fffa2c"
+      },
+      "selected_scopes": [
+        "tests/test_ext_marshmallow.py"
+      ],
+      "status": "included_identifier_evidence",
+      "reason": "Actual whole-file command and linked observation; no selected file was created by the agent in this trace. Selection alone is used, not passing/completion."
+    },
+    {
+      "observation_id": "swesmith-tool0-row60-message32",
+      "source": "amueller__word_cloud.ec24191c.func_pm_ctrl_invert_if__2afmf2dq",
+      "repository": "amueller/word_cloud",
+      "provenance": {
+        "dataset": "SWE-bench/SWE-smith-trajectories",
+        "revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+        "row_index": 60,
+        "message_index": 32,
+        "command": "cd /testbed && python -m pytest test/test_wordcloud.py -v",
+        "evidence_file": "evidence/public/swesmith-tool0-row60-message32.json",
+        "sha256": "a1279ca761d880016d987778894c9465ad4a49759afdee347118a5b4217169be"
+      },
+      "selected_scopes": [
+        "test/test_wordcloud.py"
+      ],
+      "status": "included_identifier_evidence",
+      "reason": "Actual whole-file command and linked observation; no selected file was created by the agent in this trace. Selection alone is used, not passing/completion."
+    },
+    {
+      "observation_id": "swesmith-tool0-row60-message34",
+      "source": "amueller__word_cloud.ec24191c.func_pm_ctrl_invert_if__2afmf2dq",
+      "repository": "amueller/word_cloud",
+      "provenance": {
+        "dataset": "SWE-bench/SWE-smith-trajectories",
+        "revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+        "row_index": 60,
+        "message_index": 34,
+        "command": "cd /testbed && python -m pytest test/test_wordcloud_cli.py -v",
+        "evidence_file": "evidence/public/swesmith-tool0-row60-message34.json",
+        "sha256": "efa85972ef0681374884f1a9bca0e0ce243ef1529dcd6005ced05d3c440aac03"
+      },
+      "selected_scopes": [
+        "test/test_wordcloud_cli.py"
+      ],
+      "status": "included_identifier_evidence",
+      "reason": "Actual whole-file command and linked observation; no selected file was created by the agent in this trace. Selection alone is used, not passing/completion."
+    },
+    {
+      "observation_id": "swesmith-tool0-row110-message38",
+      "source": "life4__textdistance.c3aca916.func_pm_ctrl_shuffle__asaa092v",
+      "repository": "life4/textdistance",
+      "provenance": {
+        "dataset": "SWE-bench/SWE-smith-trajectories",
+        "revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+        "row_index": 110,
+        "message_index": 38,
+        "command": "cd /testbed && python -m pytest tests/test_phonetic/test_editex.py -v",
+        "evidence_file": "evidence/public/swesmith-tool0-row110-message38.json",
+        "sha256": "2ea69f5b92a3de44fa045282cc3dccd186d2f860f220b422d07cf6d8d38dfa88"
+      },
+      "selected_scopes": [
+        "tests/test_phonetic/test_editex.py"
+      ],
+      "status": "included_identifier_evidence",
+      "reason": "Actual whole-file command and linked observation; no selected file was created by the agent in this trace. Selection alone is used, not passing/completion."
+    },
+    {
+      "observation_id": "swesmith-tool0-row113-message36",
+      "source": "PyCQA__flake8.cf1542ce.func_pm_remove_cond__c7i9mnxb",
+      "repository": "PyCQA/flake8",
+      "provenance": {
+        "dataset": "SWE-bench/SWE-smith-trajectories",
+        "revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+        "row_index": 113,
+        "message_index": 36,
+        "command": "cd /testbed && python -m pytest tests/unit/test_discover_files.py -v",
+        "evidence_file": "evidence/public/swesmith-tool0-row113-message36.json",
+        "sha256": "f40259c3260069e53dc24e12741320057afd5691a014f25ad162324ac09cb87a"
+      },
+      "selected_scopes": [
+        "tests/unit/test_discover_files.py"
+      ],
+      "status": "included_identifier_evidence",
+      "reason": "Actual whole-file command and linked observation; no selected file was created by the agent in this trace. Selection alone is used, not passing/completion."
+    },
+    {
+      "observation_id": "swesmith-tool0-row170-message30",
+      "source": "life4__textdistance.c3aca916.func_pm_op_change_const__j1nrey18",
+      "repository": "life4/textdistance",
+      "provenance": {
+        "dataset": "SWE-bench/SWE-smith-trajectories",
+        "revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+        "row_index": 170,
+        "message_index": 30,
+        "command": "cd /testbed && python -m pytest tests/test_edit/test_strcmp95.py -v",
+        "evidence_file": "evidence/public/swesmith-tool0-row170-message30.json",
+        "sha256": "158db080fbb1c8f8297c3f596cb9bfe31a2f0e412bcb74a565d7b581dddea882"
+      },
+      "selected_scopes": [
+        "tests/test_edit/test_strcmp95.py"
+      ],
+      "status": "included_identifier_evidence",
+      "reason": "Actual whole-file command and linked observation; no selected file was created by the agent in this trace. Selection alone is used, not passing/completion."
+    },
+    {
+      "observation_id": "swesmith-tool0-row172-message24",
+      "source": "life4__textdistance.c3aca916.func_pm_remove_assign__wz2xdz8k",
+      "repository": "life4/textdistance",
+      "provenance": {
+        "dataset": "SWE-bench/SWE-smith-trajectories",
+        "revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+        "row_index": 172,
+        "message_index": 24,
+        "command": "cd /testbed && python -m pytest tests/test_sequence/test_lcsseq.py -v",
+        "evidence_file": "evidence/public/swesmith-tool0-row172-message24.json",
+        "sha256": "c12caa9e21b398579f74c1fe4cf596255870ac59ff57d5a6394f4de0b583ed1c"
+      },
+      "selected_scopes": [
+        "tests/test_sequence/test_lcsseq.py"
+      ],
+      "status": "included_identifier_evidence",
+      "reason": "Actual whole-file command and linked observation; no selected file was created by the agent in this trace. Selection alone is used, not passing/completion."
+    },
+    {
+      "observation_id": "swesmith-tool0-row175-message38",
+      "source": "python-openxml__python-docx.0cf6d71f.func_pm_ctrl_shuffle__z6689b9m",
+      "repository": "python-openxml/python-docx",
+      "provenance": {
+        "dataset": "SWE-bench/SWE-smith-trajectories",
+        "revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+        "row_index": 175,
+        "message_index": 38,
+        "command": "cd /testbed && python -m pytest tests/opc/test_pkgreader.py -v",
+        "evidence_file": "evidence/public/swesmith-tool0-row175-message38.json",
+        "sha256": "070eac58f1751650ad6a0b978cc78ab332876401801528f9c75a45301d4f239b"
+      },
+      "selected_scopes": [
+        "tests/opc/test_pkgreader.py"
+      ],
+      "status": "included_identifier_evidence",
+      "reason": "Actual whole-file command and linked observation; no selected file was created by the agent in this trace. Selection alone is used, not passing/completion."
+    },
+    {
+      "observation_id": "swesmith-tool0-row175-message40",
+      "source": "python-openxml__python-docx.0cf6d71f.func_pm_ctrl_shuffle__z6689b9m",
+      "repository": "python-openxml/python-docx",
+      "provenance": {
+        "dataset": "SWE-bench/SWE-smith-trajectories",
+        "revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+        "row_index": 175,
+        "message_index": 40,
+        "command": "cd /testbed && python -m pytest tests/opc/test_package.py -v",
+        "evidence_file": "evidence/public/swesmith-tool0-row175-message40.json",
+        "sha256": "4acecf4529247ff9133c2a6ca685d477571410d0365a2b01d6ea423ad4e22617"
+      },
+      "selected_scopes": [
+        "tests/opc/test_package.py"
+      ],
+      "status": "included_identifier_evidence",
+      "reason": "Actual whole-file command and linked observation; no selected file was created by the agent in this trace. Selection alone is used, not passing/completion."
+    },
+    {
+      "observation_id": "swesmith-tool0-row180-message24",
+      "source": "life4__textdistance.c3aca916.func_pm_ctrl_shuffle__xxd63ulb",
+      "repository": "life4/textdistance",
+      "provenance": {
+        "dataset": "SWE-bench/SWE-smith-trajectories",
+        "revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+        "row_index": 180,
+        "message_index": 24,
+        "command": "cd /testbed && python -m pytest tests/test_edit/test_gotoh.py -v",
+        "evidence_file": "evidence/public/swesmith-tool0-row180-message24.json",
+        "sha256": "024aab06cd46eec362d169526e581e07a5ddd7d67b67567d7890c1bed7b225ac"
+      },
+      "selected_scopes": [
+        "tests/test_edit/test_gotoh.py"
+      ],
+      "status": "included_identifier_evidence",
+      "reason": "Actual whole-file command and linked observation; no selected file was created by the agent in this trace. Selection alone is used, not passing/completion."
+    },
+    {
+      "observation_id": "swesmith-tool0-row182-message20",
+      "source": "life4__textdistance.c3aca916.func_pm_ctrl_shuffle__1vccrmac",
+      "repository": "life4/textdistance",
+      "provenance": {
+        "dataset": "SWE-bench/SWE-smith-trajectories",
+        "revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+        "row_index": 182,
+        "message_index": 20,
+        "command": "cd /testbed && python -m pytest tests/test_sequence/test_lcsseq.py -v",
+        "evidence_file": "evidence/public/swesmith-tool0-row182-message20.json",
+        "sha256": "a7ae9c6d4dded05406c42da535f59d11798fa05cdc46ebd4d9a16ade7c2a6cb6"
+      },
+      "selected_scopes": [
+        "tests/test_sequence/test_lcsseq.py"
+      ],
+      "status": "included_identifier_evidence",
+      "reason": "Actual whole-file command and linked observation; no selected file was created by the agent in this trace. Selection alone is used, not passing/completion."
+    },
+    {
+      "observation_id": "swesmith-tool0-row216-message138",
+      "source": "PyCQA__flake8.cf1542ce.func_pm_remove_assign__zp1dya4y",
+      "repository": "PyCQA/flake8",
+      "provenance": {
+        "dataset": "SWE-bench/SWE-smith-trajectories",
+        "revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+        "row_index": 216,
+        "message_index": 138,
+        "command": "cd /testbed && python -m pytest tests/unit/test_violation.py -v",
+        "evidence_file": "evidence/public/swesmith-tool0-row216-message138.json",
+        "sha256": "9e11913e228e0ec06458f6e2dcf60d2596d9da2af7ebbe1bdd22d7e68a7bd1d9"
+      },
+      "selected_scopes": [
+        "tests/unit/test_violation.py"
+      ],
+      "status": "included_identifier_evidence",
+      "reason": "Actual whole-file command and linked observation; no selected file was created by the agent in this trace. Selection alone is used, not passing/completion."
+    },
+    {
+      "observation_id": "swesmith-tool0-row216-message142",
+      "source": "PyCQA__flake8.cf1542ce.func_pm_remove_assign__zp1dya4y",
+      "repository": "PyCQA/flake8",
+      "provenance": {
+        "dataset": "SWE-bench/SWE-smith-trajectories",
+        "revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+        "row_index": 216,
+        "message_index": 142,
+        "command": "cd /testbed && python -m pytest tests/unit/test_violation.py -v",
+        "evidence_file": "evidence/public/swesmith-tool0-row216-message142.json",
+        "sha256": "6ea00f07ee66d98ca26ea73bb9d526079f5da6612155c7131004c6357da1b76f"
+      },
+      "selected_scopes": [
+        "tests/unit/test_violation.py"
+      ],
+      "status": "included_identifier_evidence",
+      "reason": "Actual whole-file command and linked observation; no selected file was created by the agent in this trace. Selection alone is used, not passing/completion."
+    },
+    {
+      "observation_id": "swesmith-tool0-row216-message146",
+      "source": "PyCQA__flake8.cf1542ce.func_pm_remove_assign__zp1dya4y",
+      "repository": "PyCQA/flake8",
+      "provenance": {
+        "dataset": "SWE-bench/SWE-smith-trajectories",
+        "revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+        "row_index": 216,
+        "message_index": 146,
+        "command": "cd /testbed && python -m pytest tests/unit/test_violation.py -v",
+        "evidence_file": "evidence/public/swesmith-tool0-row216-message146.json",
+        "sha256": "37db285a3f43fb48bf9e84d5d460da52d2b16f3ce8eaf34c89a85d4fe91135bf"
+      },
+      "selected_scopes": [
+        "tests/unit/test_violation.py"
+      ],
+      "status": "included_identifier_evidence",
+      "reason": "Actual whole-file command and linked observation; no selected file was created by the agent in this trace. Selection alone is used, not passing/completion."
+    },
+    {
+      "observation_id": "swesmith-tool0-row216-message150",
+      "source": "PyCQA__flake8.cf1542ce.func_pm_remove_assign__zp1dya4y",
+      "repository": "PyCQA/flake8",
+      "provenance": {
+        "dataset": "SWE-bench/SWE-smith-trajectories",
+        "revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+        "row_index": 216,
+        "message_index": 150,
+        "command": "cd /testbed && python -m pytest tests/unit/test_violation.py -v",
+        "evidence_file": "evidence/public/swesmith-tool0-row216-message150.json",
+        "sha256": "276e11b93d98243532dfadd94274f1f8e9d099dc948629b7dbc98cfe2fd0755f"
+      },
+      "selected_scopes": [
+        "tests/unit/test_violation.py"
+      ],
+      "status": "included_identifier_evidence",
+      "reason": "Actual whole-file command and linked observation; no selected file was created by the agent in this trace. Selection alone is used, not passing/completion."
+    },
+    {
+      "observation_id": "swesmith-tool0-row216-message156",
+      "source": "PyCQA__flake8.cf1542ce.func_pm_remove_assign__zp1dya4y",
+      "repository": "PyCQA/flake8",
+      "provenance": {
+        "dataset": "SWE-bench/SWE-smith-trajectories",
+        "revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+        "row_index": 216,
+        "message_index": 156,
+        "command": "cd /testbed && python -m pytest tests/unit/test_violation.py -v",
+        "evidence_file": "evidence/public/swesmith-tool0-row216-message156.json",
+        "sha256": "e5d04b2d062a104538136ef7bea32e6b7621c9863f070f863abe33a5e9de7616"
+      },
+      "selected_scopes": [
+        "tests/unit/test_violation.py"
+      ],
+      "status": "included_identifier_evidence",
+      "reason": "Actual whole-file command and linked observation; no selected file was created by the agent in this trace. Selection alone is used, not passing/completion."
+    },
+    {
+      "observation_id": "swesmith-tool0-row216-message162",
+      "source": "PyCQA__flake8.cf1542ce.func_pm_remove_assign__zp1dya4y",
+      "repository": "PyCQA/flake8",
+      "provenance": {
+        "dataset": "SWE-bench/SWE-smith-trajectories",
+        "revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+        "row_index": 216,
+        "message_index": 162,
+        "command": "cd /testbed && python -m pytest tests/unit/test_violation.py -v",
+        "evidence_file": "evidence/public/swesmith-tool0-row216-message162.json",
+        "sha256": "24a54ae0f79cf73d29e92d3efd7142f5374d5632550951d1a7c27655344a861f"
+      },
+      "selected_scopes": [
+        "tests/unit/test_violation.py"
+      ],
+      "status": "included_identifier_evidence",
+      "reason": "Actual whole-file command and linked observation; no selected file was created by the agent in this trace. Selection alone is used, not passing/completion."
+    },
+    {
+      "observation_id": "swesmith-tool0-row216-message166",
+      "source": "PyCQA__flake8.cf1542ce.func_pm_remove_assign__zp1dya4y",
+      "repository": "PyCQA/flake8",
+      "provenance": {
+        "dataset": "SWE-bench/SWE-smith-trajectories",
+        "revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+        "row_index": 216,
+        "message_index": 166,
+        "command": "cd /testbed && python -m pytest tests/unit/test_violation.py -v",
+        "evidence_file": "evidence/public/swesmith-tool0-row216-message166.json",
+        "sha256": "1ca45bb604589db39a92cf4ad1b40d6100b465e22164d28d5f047cfd613a67aa"
+      },
+      "selected_scopes": [
+        "tests/unit/test_violation.py"
+      ],
+      "status": "included_identifier_evidence",
+      "reason": "Actual whole-file command and linked observation; no selected file was created by the agent in this trace. Selection alone is used, not passing/completion."
+    }
+  ],
+  "families": [
+    {
+      "source": "django__django-16910",
+      "repository": "django/django",
+      "split": "dev",
+      "scopes": {
+        "defer": [
+          "03048c0d4a2d1093407f52fdc77108aa03ef0ec193ad339867750285195e6bf1",
+          "091658f4425e885c0ebba08454418da0f258860cf1b51b7877bcf13f2e17cba0",
+          "2a8ecb9d8ba17caec39249c2858bbc855c00625a0f4094b28a9b973f5c9d57b4",
+          "3606a0f9bd0737aeb3f21d6df4801976c4f00cedf7da7058888114a2eaca3244"
+        ],
+        "defer_regress": [
+          "03048c0d4a2d1093407f52fdc77108aa03ef0ec193ad339867750285195e6bf1",
+          "091658f4425e885c0ebba08454418da0f258860cf1b51b7877bcf13f2e17cba0",
+          "1c1c5d4b0d35add2ff5d5a6d95fe2fa7f899e2d59083996bc4eb46d925deafd5",
+          "2a8ecb9d8ba17caec39249c2858bbc855c00625a0f4094b28a9b973f5c9d57b4"
+        ],
+        "filtered_relation": [
+          "03048c0d4a2d1093407f52fdc77108aa03ef0ec193ad339867750285195e6bf1"
+        ],
+        "select_related_onetoone": [
+          "03048c0d4a2d1093407f52fdc77108aa03ef0ec193ad339867750285195e6bf1",
+          "0bda3cdb68c9fb6c5d0c1e808dac327ca318b58c78b7b5651dfd7f0acc63358e",
+          "1c1c5d4b0d35add2ff5d5a6d95fe2fa7f899e2d59083996bc4eb46d925deafd5"
+        ],
+        "select_related": [
+          "1c1c5d4b0d35add2ff5d5a6d95fe2fa7f899e2d59083996bc4eb46d925deafd5"
+        ]
+      }
+    },
+    {
+      "source": "marshmallow-code__marshmallow-1359",
+      "repository": "marshmallow-code/marshmallow",
+      "split": "train",
+      "scopes": {
+        "tests/test_serialization.py": [
+          "148657e78863dcfd6ae530edaa1835363f9672bdcbd504e57a7e965cfb4bdd6f"
+        ],
+        "tests/test_fields.py": [
+          "5cf28f00e371634275a1a2ab6789cd37e3852b02ead998ceec40a81d3dfc43ed"
+        ],
+        "tests/test_schema.py": [
+          "5cf28f00e371634275a1a2ab6789cd37e3852b02ead998ceec40a81d3dfc43ed"
+        ]
+      }
+    },
+    {
+      "source": "pvlib__pvlib-python-1606",
+      "repository": "pvlib/pvlib-python",
+      "split": "dev",
+      "scopes": {
+        "pvlib/tests/test_singlediode.py": [
+          "1b369c587dbcc1565400bf2043fb2d6a77d2350b527463794042e4128d5c956a"
+        ],
+        "pvlib/tests/test_tools.py": [
+          "7d9d29fef236aabe4eea6c21e74f1d3e7980ab2c17faf60a9d3133b4183b29df",
+          "85312e8146b9d7c4cae1e524ffef9b35905c0451564305521a77c76a02369429",
+          "ecc53d88c951ddfdb627b4b8c9286d93603febda34f765e22b1a0b16d8de557a"
+        ]
+      }
+    },
+    {
+      "source": "scikit-learn__scikit-learn-11281",
+      "repository": "scikit-learn/scikit-learn",
+      "split": "train",
+      "scopes": {
+        "sklearn/mixture/tests/test_bayesian_mixture.py": [
+          "e06e21c85c46d842f448fbd9f78b3a3c11d89f1c4af4da5d51bbf683c194815a"
+        ],
+        "sklearn/mixture/tests/test_gaussian_mixture.py": [
+          "e06e21c85c46d842f448fbd9f78b3a3c11d89f1c4af4da5d51bbf683c194815a"
+        ]
+      }
+    },
+    {
+      "source": "scikit-learn__scikit-learn-15535",
+      "repository": "scikit-learn/scikit-learn",
+      "split": "train",
+      "scopes": {
+        "sklearn/metrics/cluster/tests/test_supervised.py": [
+          "07a679347a97b95b2dc487c60648fc8fc7341656400919043698416e53da8842",
+          "82984d98ed31f662ce8ef2652195924064c6257e9c165f673fc7a83096c7718a",
+          "a6661b4e2e976502003fcf528e46f1a9095bd4af8da03151af1666c7ec87f2ad"
+        ],
+        "sklearn/metrics/cluster/tests/test_unsupervised.py": [
+          "82984d98ed31f662ce8ef2652195924064c6257e9c165f673fc7a83096c7718a"
+        ]
+      }
+    },
+    {
+      "source": "sphinx-doc__sphinx-10325",
+      "repository": "sphinx-doc/sphinx",
+      "split": "train",
+      "scopes": {
+        "tests/test_ext_autodoc_automodule.py": [
+          "17e8ef746afcc1fef013a2db6e049b8fa6e781d11228339ba0709e117a11e685",
+          "3d63ca8a6265349c2c0f0469fa1fdd0362811807d63961ab7bb0d63bcd82a8e5",
+          "4b0ca3d3202f9ec5b7fa489da349e136658be214f66a42404958f087ca0093c8"
+        ],
+        "tests/test_ext_autodoc.py": [
+          "19b735228b760bebe533a5e248c969c6aa4c646f7a77e1b769daf30a388296dc",
+          "31c529fbd1e503d4c776788cfb70713a0036fe1e618b1689065b54e91fb07c8b",
+          "4b0ca3d3202f9ec5b7fa489da349e136658be214f66a42404958f087ca0093c8"
+        ],
+        "tests/test_ext_autodoc_autoclass.py": [
+          "31c529fbd1e503d4c776788cfb70713a0036fe1e618b1689065b54e91fb07c8b",
+          "3d63ca8a6265349c2c0f0469fa1fdd0362811807d63961ab7bb0d63bcd82a8e5",
+          "4b0ca3d3202f9ec5b7fa489da349e136658be214f66a42404958f087ca0093c8"
+        ],
+        "tests/test_ext_autodoc_configs.py": [
+          "4b0ca3d3202f9ec5b7fa489da349e136658be214f66a42404958f087ca0093c8"
+        ]
+      }
+    },
+    {
+      "source": "sphinx-doc__sphinx-8435",
+      "repository": "sphinx-doc/sphinx",
+      "split": "train",
+      "scopes": {
+        "tests/test_ext_autodoc.py": [
+          "382097d2329b89a4779d823f01567e1088ead1fbc3ac8387c9b0c2e47e38ca36"
+        ],
+        "tests/test_ext_autodoc_configs.py": [
+          "8d6bd58cb175135e44e8f296279d87429bf44758ace53577afea6ca980e459d5"
+        ]
+      }
+    },
+    {
+      "source": "sphinx-doc__sphinx-8627",
+      "repository": "sphinx-doc/sphinx",
+      "split": "train",
+      "scopes": {
+        "tests/test_domain_py.py": [
+          "0f8865c483075ca72728146ce74499d64b9f1650cb3054e81b8e1f8b79dcb1c4",
+          "30e7e3cdbbadae3d80536243309c6ee1a022492887201c619c0f6628da6598be"
+        ],
+        "tests/test_ext_autodoc.py": [
+          "0f8865c483075ca72728146ce74499d64b9f1650cb3054e81b8e1f8b79dcb1c4",
+          "32ba4df52662ed4cacffb4b085ee984237898049dd53165d00f1158a5517e6dd"
+        ],
+        "tests/test_ext_autodoc_configs.py": [
+          "0f8865c483075ca72728146ce74499d64b9f1650cb3054e81b8e1f8b79dcb1c4"
+        ],
+        "tests/test_util_typing.py": [
+          "1cdffd97a0411a42e6f0340a716db9b2ec79838ba7974fd3c5699f5c620478ff",
+          "30e7e3cdbbadae3d80536243309c6ee1a022492887201c619c0f6628da6598be",
+          "34ae7925b0210e6a9b51154b569064df95c23d4915bea6884adfcfe5f25d5181"
+        ],
+        "tests/test_ext_autodoc_autoclass.py": [
+          "2e901fd356a335faa4813cbf26f1865240b5db493c5a196621a907382f27a3c9"
+        ],
+        "tests/test_ext_autodoc_autofunction.py": [
+          "2e901fd356a335faa4813cbf26f1865240b5db493c5a196621a907382f27a3c9",
+          "32ba4df52662ed4cacffb4b085ee984237898049dd53165d00f1158a5517e6dd"
+        ]
+      }
+    },
+    {
+      "source": "sphinx-doc__sphinx-8801",
+      "repository": "sphinx-doc/sphinx",
+      "split": "train",
+      "scopes": {
+        "tests/test_ext_autodoc_autoclass.py": [
+          "0c7ba9957628779d49581820b02e415076315b01f6c7711a93092fb82c8e70ce",
+          "1950faa7e7eff244a992610a57803b92354d043209927f63f7019751c37e66ee",
+          "3f9a15751ebb20cafcf498de86d2c011fa2142c3c3fe58f4b2659382c4e47066",
+          "57e9f62ecaec73ac498301a86a97e34ca22356eaa6130c319f3bae504a564b44"
+        ],
+        "tests/test_ext_autodoc_autoattribute.py": [
+          "1950faa7e7eff244a992610a57803b92354d043209927f63f7019751c37e66ee",
+          "57e9f62ecaec73ac498301a86a97e34ca22356eaa6130c319f3bae504a564b44"
+        ],
+        "tests/test_ext_autodoc.py": [
+          "3f9a15751ebb20cafcf498de86d2c011fa2142c3c3fe58f4b2659382c4e47066"
+        ]
+      }
+    },
+    {
+      "source": "sympy__sympy-24213",
+      "repository": "sympy/sympy",
+      "split": "train",
+      "scopes": {
+        "sympy/physics/units/tests/test_dimensions.py": [
+          "02d6196b5c36870b0d6a195fd36c13ba37e69814e2305bfaef03a01036a59164",
+          "061ead750c366d1e35acc7c4c41fca6dafbfa3b89191f9789e7c909a6d3a788c",
+          "13ac219121bab4badc2283e9c4f7e6e2654d0039a2c6de2553f0fee28cce9208"
+        ],
+        "sympy/physics/units/tests/test_quantities.py": [
+          "02d6196b5c36870b0d6a195fd36c13ba37e69814e2305bfaef03a01036a59164",
+          "13ac219121bab4badc2283e9c4f7e6e2654d0039a2c6de2553f0fee28cce9208"
+        ],
+        "sympy/physics/units/tests/test_unitsystem.py": [
+          "061ead750c366d1e35acc7c4c41fca6dafbfa3b89191f9789e7c909a6d3a788c"
+        ]
+      }
+    },
+    {
+      "source": "sympy__sympy-24909",
+      "repository": "sympy/sympy",
+      "split": "train",
+      "scopes": {
+        "sympy/physics/units/tests/test_quantities.py": [
+          "26f219396fe667c3eee5c63dd22714e7098ef3fc2701a1aa24a0b43c4d07e93c"
+        ],
+        "sympy/physics/units/tests/test_prefixes.py": [
+          "3661fa89fd45e62b13a8e5d149560c5095319adf17520c8fa1543f2c5d831d37"
+        ]
+      }
+    },
+    {
+      "source": "public:PyCQA/flake8@cf1542ce",
+      "source_instances": [
+        "PyCQA__flake8.cf1542ce.func_pm_remove_assign__zp1dya4y",
+        "PyCQA__flake8.cf1542ce.func_pm_remove_cond__c7i9mnxb"
+      ],
+      "repository": "PyCQA/flake8",
+      "split": "train",
+      "scopes": {
+        "tests/unit/test_discover_files.py": [
+          "swesmith-tool0-row113-message36"
+        ],
+        "tests/unit/test_violation.py": [
+          "swesmith-tool0-row216-message138",
+          "swesmith-tool0-row216-message142",
+          "swesmith-tool0-row216-message146",
+          "swesmith-tool0-row216-message150",
+          "swesmith-tool0-row216-message156",
+          "swesmith-tool0-row216-message162",
+          "swesmith-tool0-row216-message166"
+        ]
+      },
+      "synthetic_defect_tasks": true
+    },
+    {
+      "source": "public:amueller/word_cloud@ec24191c",
+      "source_instances": [
+        "amueller__word_cloud.ec24191c.func_pm_ctrl_invert_if__2afmf2dq"
+      ],
+      "repository": "amueller/word_cloud",
+      "split": "external",
+      "scopes": {
+        "test/test_wordcloud.py": [
+          "swesmith-tool0-row60-message32"
+        ],
+        "test/test_wordcloud_cli.py": [
+          "swesmith-tool0-row60-message34"
+        ]
+      },
+      "synthetic_defect_tasks": true
+    },
+    {
+      "source": "public:life4/textdistance@c3aca916",
+      "source_instances": [
+        "life4__textdistance.c3aca916.func_pm_ctrl_shuffle__1vccrmac",
+        "life4__textdistance.c3aca916.func_pm_ctrl_shuffle__asaa092v",
+        "life4__textdistance.c3aca916.func_pm_ctrl_shuffle__xxd63ulb",
+        "life4__textdistance.c3aca916.func_pm_op_change_const__j1nrey18",
+        "life4__textdistance.c3aca916.func_pm_remove_assign__wz2xdz8k"
+      ],
+      "repository": "life4/textdistance",
+      "split": "train",
+      "scopes": {
+        "tests/test_phonetic/test_editex.py": [
+          "swesmith-tool0-row110-message38"
+        ],
+        "tests/test_edit/test_strcmp95.py": [
+          "swesmith-tool0-row170-message30"
+        ],
+        "tests/test_sequence/test_lcsseq.py": [
+          "swesmith-tool0-row172-message24",
+          "swesmith-tool0-row182-message20"
+        ],
+        "tests/test_edit/test_gotoh.py": [
+          "swesmith-tool0-row180-message24"
+        ]
+      },
+      "synthetic_defect_tasks": true
+    },
+    {
+      "source": "public:marshmallow-code/apispec@8b421526",
+      "source_instances": [
+        "marshmallow-code__apispec.8b421526.func_pm_ctrl_invert_if__sfjed7bx"
+      ],
+      "repository": "marshmallow-code/apispec",
+      "split": "external",
+      "scopes": {
+        "tests/test_ext_marshmallow_field.py": [
+          "swesmith-tool0-row43-message44"
+        ],
+        "tests/test_ext_marshmallow.py": [
+          "swesmith-tool0-row43-message46"
+        ]
+      },
+      "synthetic_defect_tasks": true
+    },
+    {
+      "source": "public:python-openxml/python-docx@0cf6d71f",
+      "source_instances": [
+        "python-openxml__python-docx.0cf6d71f.func_pm_ctrl_shuffle__z6689b9m"
+      ],
+      "repository": "python-openxml/python-docx",
+      "split": "train",
+      "scopes": {
+        "tests/opc/test_pkgreader.py": [
+          "swesmith-tool0-row175-message38"
+        ],
+        "tests/opc/test_package.py": [
+          "swesmith-tool0-row175-message40"
+        ]
+      },
+      "synthetic_defect_tasks": true
+    }
+  ],
+  "reviewer": "single_researcher_source_and_command_review",
+  "source_bundle_sha256": "01164a2494bbed938dfb295642b5393f0f4eeb93af2fc9375381a96d79ace685",
+  "current_states_observed": false
+}

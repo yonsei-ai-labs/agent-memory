@@ -1,0 +1,151 @@
+{
+  "status": "design_only_not_in_execution_bank",
+  "model_calls": 0,
+  "source_run": "20261107T013550Z-8989373b",
+  "source_task_id": "sympy__sympy-24066",
+  "created_after_existing_target_outcomes": true,
+  "allowed_use": "Construction review and calibration only; not independent confirmation.",
+  "target_gold_used_to_write_claims": false,
+  "units": [
+    {
+      "id": "S",
+      "text": "Source problem: SymPy issue sympy__sympy-24066 concerned a dimensionless SI exponent being treated as dimensionful when collecting dimensions through exp. For this observed case, inspect the Function branch of SI._collect_factor_and_dimension() and compare its argument dimensions with DimensionSystem.is_dimensionless(); the submitted tentative approach mapped dimensionless argument dimensions to Dimension(1), leaving non-dimensionless ones unchanged. Check the reported seconds/(ohm*farad) expression inside 100 + exp(expr), and also check that exp(second) still raises when added to a dimensionless number. The corrected local reproducer passed, and the local quantities test command reported 31 passed and 1 expected failure; these agent-local checks are not the official result. Limits: the evidence does not establish behavior for other APIs, dimension systems, functions, or inputs. Actual official evaluation resolved the submission: official_resolved=true.",
+      "kind": "unchanged_existing_source_summary",
+      "evidence_path": "docs/reports/data/prescription-validation-20261107/cases.json",
+      "evidence_sha256": "6f7de1fce7a153b5a2325377fdbcfeb6e8ac0397734d3e610f5af7e25f46c778",
+      "original_text_sha256": "6b96c9e1995657e6bf3a372cb4d08afb8be77902f8ca641ead32118f72638bf6"
+    },
+    {
+      "id": "source_rg_unavailable",
+      "kind": "source_observation",
+      "information_group": "E_environment_observation",
+      "text": "In the recorded source container, rg returned command-not-found (exit 127). This is a recorded source observation; current target applicability is unverified.",
+      "evidence_path": "docs/reports/data/literature-revisit-20261107/source-process-evidence.json",
+      "evidence_sha256": "19adb917ce910736b3de15a07d03387b3f4837a8da81fa7f0f15e64a2e088386",
+      "source_agent_command_index": 0
+    },
+    {
+      "id": "source_pytest_unavailable",
+      "kind": "source_observation",
+      "information_group": "E_environment_observation",
+      "text": "In that source container, python -m pytest sympy/physics/units/tests/test_quantities.py could not import pytest (exit 1). This is a recorded source observation; current target applicability is unverified.",
+      "evidence_path": "docs/reports/data/literature-revisit-20261107/source-process-evidence.json",
+      "evidence_sha256": "f4689de39754b523858adf06cb9981169c9dfd3bdba10af9cdb551013a6d947d",
+      "source_agent_command_index": 8
+    },
+    {
+      "id": "source_native_test_runner",
+      "kind": "source_observation",
+      "information_group": "V_verification_procedure",
+      "text": "In the same source run, bin/test sympy/physics/units/tests/test_quantities.py exited 0 with 31 passed and 1 expected to fail. This is a recorded source observation; current target applicability is unverified.",
+      "evidence_path": "docs/reports/data/literature-revisit-20261107/source-process-evidence.json",
+      "evidence_sha256": "9e1ac79a0ef28ea7d0a6774679e654a6533e6c46a4a09dacb0ecaf7930a48f3a",
+      "source_agent_command_index": 11
+    }
+  ],
+  "original_unit_order": [
+    "S",
+    "source_rg_unavailable",
+    "source_pytest_unavailable",
+    "source_native_test_runner"
+  ],
+  "variants": {
+    "S": {
+      "unit_ids": [
+        "S"
+      ],
+      "text": "Source problem: SymPy issue sympy__sympy-24066 concerned a dimensionless SI exponent being treated as dimensionful when collecting dimensions through exp. For this observed case, inspect the Function branch of SI._collect_factor_and_dimension() and compare its argument dimensions with DimensionSystem.is_dimensionless(); the submitted tentative approach mapped dimensionless argument dimensions to Dimension(1), leaving non-dimensionless ones unchanged. Check the reported seconds/(ohm*farad) expression inside 100 + exp(expr), and also check that exp(second) still raises when added to a dimensionless number. The corrected local reproducer passed, and the local quantities test command reported 31 passed and 1 expected failure; these agent-local checks are not the official result. Limits: the evidence does not establish behavior for other APIs, dimension systems, functions, or inputs. Actual official evaluation resolved the submission: official_resolved=true.",
+      "text_sha256": "6b96c9e1995657e6bf3a372cb4d08afb8be77902f8ca641ead32118f72638bf6",
+      "characters": 967
+    },
+    "M": {
+      "unit_ids": [
+        "S",
+        "source_rg_unavailable",
+        "source_pytest_unavailable",
+        "source_native_test_runner"
+      ],
+      "text": "Source problem: SymPy issue sympy__sympy-24066 concerned a dimensionless SI exponent being treated as dimensionful when collecting dimensions through exp. For this observed case, inspect the Function branch of SI._collect_factor_and_dimension() and compare its argument dimensions with DimensionSystem.is_dimensionless(); the submitted tentative approach mapped dimensionless argument dimensions to Dimension(1), leaving non-dimensionless ones unchanged. Check the reported seconds/(ohm*farad) expression inside 100 + exp(expr), and also check that exp(second) still raises when added to a dimensionless number. The corrected local reproducer passed, and the local quantities test command reported 31 passed and 1 expected failure; these agent-local checks are not the official result. Limits: the evidence does not establish behavior for other APIs, dimension systems, functions, or inputs. Actual official evaluation resolved the submission: official_resolved=true.\nIn the recorded source container, rg returned command-not-found (exit 127). This is a recorded source observation; current target applicability is unverified.\nIn that source container, python -m pytest sympy/physics/units/tests/test_quantities.py could not import pytest (exit 1). This is a recorded source observation; current target applicability is unverified.\nIn the same source run, bin/test sympy/physics/units/tests/test_quantities.py exited 0 with 31 passed and 1 expected to fail. This is a recorded source observation; current target applicability is unverified.",
+      "text_sha256": "d1f48a44065a9e1bc9a3d855f7881557f7f4499be3de8dc9154f496bc42fb03d",
+      "characters": 1540
+    },
+    "M_minus_O": {
+      "unit_ids": [
+        "S"
+      ],
+      "text": "Source problem: SymPy issue sympy__sympy-24066 concerned a dimensionless SI exponent being treated as dimensionful when collecting dimensions through exp. For this observed case, inspect the Function branch of SI._collect_factor_and_dimension() and compare its argument dimensions with DimensionSystem.is_dimensionless(); the submitted tentative approach mapped dimensionless argument dimensions to Dimension(1), leaving non-dimensionless ones unchanged. Check the reported seconds/(ohm*farad) expression inside 100 + exp(expr), and also check that exp(second) still raises when added to a dimensionless number. The corrected local reproducer passed, and the local quantities test command reported 31 passed and 1 expected failure; these agent-local checks are not the official result. Limits: the evidence does not establish behavior for other APIs, dimension systems, functions, or inputs. Actual official evaluation resolved the submission: official_resolved=true.",
+      "text_sha256": "6b96c9e1995657e6bf3a372cb4d08afb8be77902f8ca641ead32118f72638bf6",
+      "characters": 967
+    },
+    "M_minus_source_rg_unavailable": {
+      "unit_ids": [
+        "S",
+        "source_pytest_unavailable",
+        "source_native_test_runner"
+      ],
+      "text": "Source problem: SymPy issue sympy__sympy-24066 concerned a dimensionless SI exponent being treated as dimensionful when collecting dimensions through exp. For this observed case, inspect the Function branch of SI._collect_factor_and_dimension() and compare its argument dimensions with DimensionSystem.is_dimensionless(); the submitted tentative approach mapped dimensionless argument dimensions to Dimension(1), leaving non-dimensionless ones unchanged. Check the reported seconds/(ohm*farad) expression inside 100 + exp(expr), and also check that exp(second) still raises when added to a dimensionless number. The corrected local reproducer passed, and the local quantities test command reported 31 passed and 1 expected failure; these agent-local checks are not the official result. Limits: the evidence does not establish behavior for other APIs, dimension systems, functions, or inputs. Actual official evaluation resolved the submission: official_resolved=true.\nIn that source container, python -m pytest sympy/physics/units/tests/test_quantities.py could not import pytest (exit 1). This is a recorded source observation; current target applicability is unverified.\nIn the same source run, bin/test sympy/physics/units/tests/test_quantities.py exited 0 with 31 passed and 1 expected to fail. This is a recorded source observation; current target applicability is unverified.",
+      "text_sha256": "551dc96e1309d220327063e45157bb46e347d12a6580b75a81bf378bbb2a394d",
+      "characters": 1381
+    },
+    "restored_source_rg_unavailable": {
+      "unit_ids": [
+        "S",
+        "source_rg_unavailable",
+        "source_pytest_unavailable",
+        "source_native_test_runner"
+      ],
+      "text": "Source problem: SymPy issue sympy__sympy-24066 concerned a dimensionless SI exponent being treated as dimensionful when collecting dimensions through exp. For this observed case, inspect the Function branch of SI._collect_factor_and_dimension() and compare its argument dimensions with DimensionSystem.is_dimensionless(); the submitted tentative approach mapped dimensionless argument dimensions to Dimension(1), leaving non-dimensionless ones unchanged. Check the reported seconds/(ohm*farad) expression inside 100 + exp(expr), and also check that exp(second) still raises when added to a dimensionless number. The corrected local reproducer passed, and the local quantities test command reported 31 passed and 1 expected failure; these agent-local checks are not the official result. Limits: the evidence does not establish behavior for other APIs, dimension systems, functions, or inputs. Actual official evaluation resolved the submission: official_resolved=true.\nIn the recorded source container, rg returned command-not-found (exit 127). This is a recorded source observation; current target applicability is unverified.\nIn that source container, python -m pytest sympy/physics/units/tests/test_quantities.py could not import pytest (exit 1). This is a recorded source observation; current target applicability is unverified.\nIn the same source run, bin/test sympy/physics/units/tests/test_quantities.py exited 0 with 31 passed and 1 expected to fail. This is a recorded source observation; current target applicability is unverified.",
+      "text_sha256": "d1f48a44065a9e1bc9a3d855f7881557f7f4499be3de8dc9154f496bc42fb03d",
+      "characters": 1540
+    },
+    "M_minus_source_pytest_unavailable": {
+      "unit_ids": [
+        "S",
+        "source_rg_unavailable",
+        "source_native_test_runner"
+      ],
+      "text": "Source problem: SymPy issue sympy__sympy-24066 concerned a dimensionless SI exponent being treated as dimensionful when collecting dimensions through exp. For this observed case, inspect the Function branch of SI._collect_factor_and_dimension() and compare its argument dimensions with DimensionSystem.is_dimensionless(); the submitted tentative approach mapped dimensionless argument dimensions to Dimension(1), leaving non-dimensionless ones unchanged. Check the reported seconds/(ohm*farad) expression inside 100 + exp(expr), and also check that exp(second) still raises when added to a dimensionless number. The corrected local reproducer passed, and the local quantities test command reported 31 passed and 1 expected failure; these agent-local checks are not the official result. Limits: the evidence does not establish behavior for other APIs, dimension systems, functions, or inputs. Actual official evaluation resolved the submission: official_resolved=true.\nIn the recorded source container, rg returned command-not-found (exit 127). This is a recorded source observation; current target applicability is unverified.\nIn the same source run, bin/test sympy/physics/units/tests/test_quantities.py exited 0 with 31 passed and 1 expected to fail. This is a recorded source observation; current target applicability is unverified.",
+      "text_sha256": "9eb84bb6e834aa794183527453b47394e453b215a1ba67a49ced664d927ba9a9",
+      "characters": 1335
+    },
+    "restored_source_pytest_unavailable": {
+      "unit_ids": [
+        "S",
+        "source_rg_unavailable",
+        "source_pytest_unavailable",
+        "source_native_test_runner"
+      ],
+      "text": "Source problem: SymPy issue sympy__sympy-24066 concerned a dimensionless SI exponent being treated as dimensionful when collecting dimensions through exp. For this observed case, inspect the Function branch of SI._collect_factor_and_dimension() and compare its argument dimensions with DimensionSystem.is_dimensionless(); the submitted tentative approach mapped dimensionless argument dimensions to Dimension(1), leaving non-dimensionless ones unchanged. Check the reported seconds/(ohm*farad) expression inside 100 + exp(expr), and also check that exp(second) still raises when added to a dimensionless number. The corrected local reproducer passed, and the local quantities test command reported 31 passed and 1 expected failure; these agent-local checks are not the official result. Limits: the evidence does not establish behavior for other APIs, dimension systems, functions, or inputs. Actual official evaluation resolved the submission: official_resolved=true.\nIn the recorded source container, rg returned command-not-found (exit 127). This is a recorded source observation; current target applicability is unverified.\nIn that source container, python -m pytest sympy/physics/units/tests/test_quantities.py could not import pytest (exit 1). This is a recorded source observation; current target applicability is unverified.\nIn the same source run, bin/test sympy/physics/units/tests/test_quantities.py exited 0 with 31 passed and 1 expected to fail. This is a recorded source observation; current target applicability is unverified.",
+      "text_sha256": "d1f48a44065a9e1bc9a3d855f7881557f7f4499be3de8dc9154f496bc42fb03d",
+      "characters": 1540
+    },
+    "M_minus_source_native_test_runner": {
+      "unit_ids": [
+        "S",
+        "source_rg_unavailable",
+        "source_pytest_unavailable"
+      ],
+      "text": "Source problem: SymPy issue sympy__sympy-24066 concerned a dimensionless SI exponent being treated as dimensionful when collecting dimensions through exp. For this observed case, inspect the Function branch of SI._collect_factor_and_dimension() and compare its argument dimensions with DimensionSystem.is_dimensionless(); the submitted tentative approach mapped dimensionless argument dimensions to Dimension(1), leaving non-dimensionless ones unchanged. Check the reported seconds/(ohm*farad) expression inside 100 + exp(expr), and also check that exp(second) still raises when added to a dimensionless number. The corrected local reproducer passed, and the local quantities test command reported 31 passed and 1 expected failure; these agent-local checks are not the official result. Limits: the evidence does not establish behavior for other APIs, dimension systems, functions, or inputs. Actual official evaluation resolved the submission: official_resolved=true.\nIn the recorded source container, rg returned command-not-found (exit 127). This is a recorded source observation; current target applicability is unverified.\nIn that source container, python -m pytest sympy/physics/units/tests/test_quantities.py could not import pytest (exit 1). This is a recorded source observation; current target applicability is unverified.",
+      "text_sha256": "0850e214caa32c6bf36e4a132a7d18a9960bc5fe807be8789bfa991434a38a64",
+      "characters": 1331
+    },
+    "restored_source_native_test_runner": {
+      "unit_ids": [
+        "S",
+        "source_rg_unavailable",
+        "source_pytest_unavailable",
+        "source_native_test_runner"
+      ],
+      "text": "Source problem: SymPy issue sympy__sympy-24066 concerned a dimensionless SI exponent being treated as dimensionful when collecting dimensions through exp. For this observed case, inspect the Function branch of SI._collect_factor_and_dimension() and compare its argument dimensions with DimensionSystem.is_dimensionless(); the submitted tentative approach mapped dimensionless argument dimensions to Dimension(1), leaving non-dimensionless ones unchanged. Check the reported seconds/(ohm*farad) expression inside 100 + exp(expr), and also check that exp(second) still raises when added to a dimensionless number. The corrected local reproducer passed, and the local quantities test command reported 31 passed and 1 expected failure; these agent-local checks are not the official result. Limits: the evidence does not establish behavior for other APIs, dimension systems, functions, or inputs. Actual official evaluation resolved the submission: official_resolved=true.\nIn the recorded source container, rg returned command-not-found (exit 127). This is a recorded source observation; current target applicability is unverified.\nIn that source container, python -m pytest sympy/physics/units/tests/test_quantities.py could not import pytest (exit 1). This is a recorded source observation; current target applicability is unverified.\nIn the same source run, bin/test sympy/physics/units/tests/test_quantities.py exited 0 with 31 passed and 1 expected to fail. This is a recorded source observation; current target applicability is unverified.",
+      "text_sha256": "d1f48a44065a9e1bc9a3d855f7881557f7f4499be3de8dc9154f496bc42fb03d",
+      "characters": 1540
+    }
+  },
+  "caveats": [
+    "M minus O exactly equals S; the added operational bundle includes information, length and structure.",
+    "Restored variants are byte-identical to M and are construction checks, not distinct treatments.",
+    "Current target tool state is not inferred from the source snapshot.",
+    "R must cover source evidence for S and O; no R selection is finalized here.",
+    "No complete API prompt, execution bank, allocation or model config is changed."
+  ]
+}

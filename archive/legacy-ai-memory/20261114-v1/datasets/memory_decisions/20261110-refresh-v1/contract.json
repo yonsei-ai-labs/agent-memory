@@ -1,0 +1,57 @@
+{
+  "measurement_version": "memory-worker-refresh-20261110-v1",
+  "source_state_dataset": "datasets/memory_decisions/20261109-observed-v2",
+  "source_state_manifest_sha256": "d4c710d349762bdef86ccdefb945a6052550a2ee1d0c0b16547b1cd04dcc43cf",
+  "worker_config": {
+    "experiment": "memory-worker-refresh-20261110-v1",
+    "worker_model_id": "Qwen/Qwen3.5-9B",
+    "worker_revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "do_sample": false,
+    "enable_thinking": false,
+    "max_input_tokens": 8192,
+    "max_new_tokens": 64,
+    "script_budget_seconds": 3300
+  },
+  "worker_weight_provenance": {
+    "model_id": "Qwen/Qwen3.5-9B",
+    "resolved_revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "config_sha256": "d0883072e01861ed0b2d47be3c16c36a8e81c224c7ffaa310c6558fb3f932b05",
+    "weight_sha256": {
+      "model.safetensors-00001-of-00004.safetensors": "db6f444b43d318c92f360a13a25561a6a65b10c0631b8ed305a426dbaa6c380e",
+      "model.safetensors-00002-of-00004.safetensors": "31c7d7e2dd5d207840b31cc59083c8f4c4718959149e0358c0364052bb9a0330",
+      "model.safetensors-00003-of-00004.safetensors": "7ec36ba3a4176a44c3c0876ad80c56a2f70c84bf008d82e9501df642f17dadec",
+      "model.safetensors-00004-of-00004.safetensors": "b62b0c4cd7e44edee103ee8f4fe225f246d5e768e07bfd5f25b63a8aa1fdd0c6"
+    }
+  },
+  "selector_model_input": "examples.jsonl texts.goal_and_observations only; metadata controls grouping/splits, not the neural input.",
+  "labels_separate": true,
+  "task_effect_classes": [
+    "both_failure",
+    "gain",
+    "harm",
+    "both_success"
+  ],
+  "primary_class_source": "fresh paired task_success",
+  "grounded_outcome_source": "all-supervision.jsonl outcomes.input_contract_success, kept distinct from factual task success",
+  "unobserved_action_policy": "Missing, never imputed as failure or neutral.",
+  "memory_token_cap": 512,
+  "original_example_count": 237,
+  "new_candidate_example_count": 171,
+  "all_example_count": 408,
+  "worker_output_identity": "observation_id includes this measurement version; generation_id identifies messages and is shared with the old dataset when inputs match.",
+  "repetitions_used_for_target": 1,
+  "repeat_role": "Stability diagnostics, not extra independent training rows.",
+  "folds": "Three existing development-family folds; no independent evaluation family created.",
+  "new_independent_source_families": 0,
+  "sequential_progress_history": false,
+  "failed_attempt_history": false,
+  "model_training_performed": false,
+  "selector_cost_measured": false,
+  "old_source_labels_overwritten": false,
+  "limits": [
+    "Same previously analyzed development families; no new generalization claim.",
+    "Controlled candidate sets and current-state variants; not a full MemoryArena rollout.",
+    "Single recorded greedy outcome per unique input, not an estimated stochastic treatment effect.",
+    "Relevant/sufficient reference identities are diagnostic metadata, not utility labels."
+  ]
+}

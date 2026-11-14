@@ -1,0 +1,52 @@
+{
+  "version": "read-only-memory-evaluation-v2",
+  "worker_instruction": "Answer read-only questions about the observed trip log and catalog. Do not execute bookings or change the world. Observed records and additional confirmed past records are external facts. Earlier assistant answers are unverified previous answers, not booking confirmations; check them against external facts. A later change replaces the earlier booking for the same traveller and day. A booking that will not be used is not in force. An extra visit does not replace a booking. A one-time exception does not replace a persistent preference. For a first/original booking, report the earliest one even if it later changed or ceased to be used. For a hypothetical recommendation, choose any available catalog ID satisfying all established persistent preferences and the named constraints. A recommendation for a new day does not require an existing booking; reporting an ID does not create one. Apply the displayed catalog attributes even when names suggest otherwise. If the supplied evidence cannot establish a required booking or preference for a component, return UNKNOWN for that component. Return only a JSON object with exactly two string fields: dinner and accommodation.",
+  "scope": "One previously inspected design family and four questions. Offline preparation only; dev, no training.",
+  "measurements": {
+    "relation": "Script-defined needed/invalid/distractor/irrelevant roles. Unannotated candidates are null with loss_mask=0.",
+    "local_utility": "Only observed provide/withhold outcomes from the exact same predecision state and worker contract can define utility.",
+    "session_effect": "Cumulative versus isolated trajectories include the history and fact-displacement effects of each policy."
+  },
+  "unknown_policy": {
+    "answer_kind_is_not_memory_need": true,
+    "description": "UNKNOWN can require an invalidation record. An UNKNOWN answer never implies a no-memory worker succeeds.",
+    "completion": "UNKNOWN is task-correct only where the acceptable answer set includes UNKNOWN.",
+    "with_missing_evidence": "UNKNOWN for an otherwise concrete gold answer is unresolved task completion; report abstention separately from wrong concrete claims."
+  },
+  "record_identity_fields": [
+    "parent_manifest_sha256",
+    "session_id",
+    "surface",
+    "tier",
+    "memory_id",
+    "source_text_sha256"
+  ],
+  "input_rules": {
+    "confirmed_facts": "Only public external observations enter the immutable fact bank; scripted answers and worker answers never enter it.",
+    "cumulative_history": "Keep actual prior question/answer turns under the same chronological bounded-window rule; never substitute gold answers.",
+    "recent_window": "Take the newest complete groups until the next older group does not fit; do not skip an oversized newest group.",
+    "memory_selection": "BM25 over public chunks outside the recent window; query text only, fixed tie order, no label-derived support injection.",
+    "missing_support": "judge_with is private audit metadata. If a future selector omits a necessary premise, record insufficient evidence rather than invent a negative label.",
+    "never_model_input": [
+      "labels.jsonl",
+      "record-provenance.jsonl",
+      "protocol.json",
+      "manifest.json",
+      "contract metadata other than worker_instruction"
+    ]
+  },
+  "budget_rules": {
+    "main_comparison": "Recent-only 4096 versus recent 2048 plus selected memory 2048, under a shared 4096 variable-input budget.",
+    "serialization": "Count canonical JSON of the complete messages, including role wrappers, separators, record IDs and memory header.",
+    "memory": "Both the rendered memory block and its serialized full-input increment must fit 2048 reference tokens.",
+    "common_input": "Catalog, common instruction and current question are outside the shared variable allocation but inside the shared 6144 full-input cap.",
+    "native_limit": "Reference counts are not native chat-template counts. A future live setup must fix the worker and native input contract first."
+  },
+  "future_execution_gates": [
+    "Independent semantic review remains pending.",
+    "Fix model revision, decoding, native counting/caps and repeat/cache contract before a small live setup.",
+    "Record actual cumulative exposure; offline fixtures alone cannot establish it for a real trajectory.",
+    "Pair local outcomes by the complete predecision snapshot and worker contract; do not pair different policy trajectories.",
+    "Keep the four parent sessions as design dev; reserve different source families before confirmatory evaluation."
+  ]
+}

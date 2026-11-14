@@ -1,0 +1,246 @@
+{
+  "revision": "8736504ecfc31b7f8b7e40122873c337e83fff7c",
+  "input_sha256": {
+    "train": "2c02c4a31bf08599ea84013565a05d9a1a0a1b0c7613ded0ca932fb964780da1",
+    "validation": "0e54b26b13c0b6d50e8683765e930bffca949488c44634e530da899914d40e80"
+  },
+  "catalog_sha256": {
+    "restaurants/clean_restaurant_2022.csv": "a38ef00a3398b1ef78306a9b1851c491723d27899c6a1d4a3d6fe042929c0f26",
+    "accommodations/clean_accommodations_2022.csv": "7e70cc8cb573e824267be47153a3cf7934c839f01c955fb523d18be405921d86"
+  },
+  "upstream_validation_rows": 180,
+  "eligible_families": 173,
+  "selected_families": 120,
+  "splits": {
+    "train": 60,
+    "dev": 20,
+    "test": 40
+  },
+  "pilot_train_families": 12,
+  "excluded_catalog_rows": [
+    {
+      "id": "H72",
+      "reason": "missing_or_invalid_price_or_rating"
+    },
+    {
+      "id": "H179",
+      "reason": "missing_or_invalid_price_or_rating"
+    },
+    {
+      "id": "H723",
+      "reason": "missing_or_invalid_price_or_rating"
+    },
+    {
+      "id": "H822",
+      "reason": "missing_or_invalid_price_or_rating"
+    },
+    {
+      "id": "H1063",
+      "reason": "missing_or_invalid_price_or_rating"
+    },
+    {
+      "id": "H1077",
+      "reason": "missing_or_invalid_price_or_rating"
+    },
+    {
+      "id": "H1092",
+      "reason": "missing_or_invalid_price_or_rating"
+    },
+    {
+      "id": "H1127",
+      "reason": "missing_or_invalid_price_or_rating"
+    },
+    {
+      "id": "H1162",
+      "reason": "missing_or_invalid_price_or_rating"
+    },
+    {
+      "id": "H1234",
+      "reason": "missing_or_invalid_price_or_rating"
+    },
+    {
+      "id": "H1415",
+      "reason": "missing_or_invalid_price_or_rating"
+    },
+    {
+      "id": "H1547",
+      "reason": "missing_or_invalid_price_or_rating"
+    },
+    {
+      "id": "H1658",
+      "reason": "missing_or_invalid_price_or_rating"
+    },
+    {
+      "id": "H1673",
+      "reason": "missing_or_invalid_price_or_rating"
+    },
+    {
+      "id": "H1794",
+      "reason": "missing_or_invalid_price_or_rating"
+    },
+    {
+      "id": "H1934",
+      "reason": "missing_or_invalid_price_or_rating"
+    },
+    {
+      "id": "H1983",
+      "reason": "missing_or_invalid_price_or_rating"
+    },
+    {
+      "id": "H2025",
+      "reason": "missing_or_invalid_price_or_rating"
+    },
+    {
+      "id": "H2030",
+      "reason": "missing_or_invalid_price_or_rating"
+    },
+    {
+      "id": "H2075",
+      "reason": "missing_or_invalid_price_or_rating"
+    },
+    {
+      "id": "H2695",
+      "reason": "missing_or_invalid_price_or_rating"
+    },
+    {
+      "id": "H2754",
+      "reason": "missing_or_invalid_price_or_rating"
+    },
+    {
+      "id": "H2777",
+      "reason": "missing_or_invalid_price_or_rating"
+    },
+    {
+      "id": "H3561",
+      "reason": "missing_or_invalid_price_or_rating"
+    },
+    {
+      "id": "H3828",
+      "reason": "missing_or_invalid_price_or_rating"
+    },
+    {
+      "id": "H3947",
+      "reason": "missing_or_invalid_price_or_rating"
+    },
+    {
+      "id": "H4021",
+      "reason": "missing_or_invalid_price_or_rating"
+    },
+    {
+      "id": "H4242",
+      "reason": "missing_or_invalid_price_or_rating"
+    },
+    {
+      "id": "H4574",
+      "reason": "missing_or_invalid_price_or_rating"
+    },
+    {
+      "id": "H4611",
+      "reason": "missing_or_invalid_price_or_rating"
+    },
+    {
+      "id": "H4634",
+      "reason": "missing_or_invalid_price_or_rating"
+    },
+    {
+      "id": "H4927",
+      "reason": "missing_or_invalid_price_or_rating"
+    },
+    {
+      "id": "H4930",
+      "reason": "missing_or_invalid_price_or_rating"
+    }
+  ],
+  "exclusions": [
+    {
+      "upstream_row": 47,
+      "reason": "same_origin_destination_duration_family"
+    },
+    {
+      "upstream_row": 56,
+      "reason": "same_origin_destination_duration_family"
+    },
+    {
+      "upstream_row": 132,
+      "reason": "same_origin_destination_duration_family"
+    },
+    {
+      "upstream_row": 145,
+      "reason": "overlaps_prior_request_or_route_duration"
+    },
+    {
+      "upstream_row": 151,
+      "reason": "same_origin_destination_duration_family"
+    },
+    {
+      "upstream_row": 153,
+      "reason": "overlaps_prior_request_or_route_duration"
+    },
+    {
+      "upstream_row": 175,
+      "reason": "same_origin_destination_duration_family"
+    }
+  ],
+  "unselected_families": [
+    "d423d88085cb2fa49d135d22c9e4c9b9b901723b1d4e059b3102461e1e7c1271",
+    "e43e9ab4964353b93429b99516847b6b18150b4d9ef699ef69682dc9f93ef093",
+    "f20daf40f20e507ff79510f42e495a84ead619a445e9cf4406879fb431084b17",
+    "ed4bb338e530f7acc00ad8f60e3cc7a28927d8eb751be73ddc8757dadd5f8452",
+    "f81302f1d6fd089932a879dbfef4154e68522ebe5bb1ee2a70818c38a91ecd45",
+    "feea5f7106fd53a09f58bb8bc403d672203ff37669a10be0efb638cc816e4cf6",
+    "bd59010f3acc5f96de3c6051c5fc14efeebe624bd82a1343b715a68a86094900",
+    "d0bb22ba7dfa1c1f12753f34dd2ecdb5db4f180747c859ae15174a8b606e99b8",
+    "ce8792ba6845437c0e061800a97e3f1950b1c607b16a803bb967acea0f2500e0",
+    "dd0e5d22cd140f6c1b22ccbdf075bcec0b9dd8aca6809db728683ead8bfc7648",
+    "d9c6ddd02db89f3da1f0a055141d412636336b43f9331dc256f9f82ef212271c",
+    "de5dd8752b795b2f37668de423f9896d7c028b6d421dbc82942b477e7a17519e",
+    "ecbf00e20f569b0d9012f8ec4ae29a87da23d50eee32700cc27573723c713894",
+    "e42451a54cde533c9ba32fe6ca66bab5d29d873cb5950c882d2451b6edbb179e",
+    "d194291a68ede8e642774059d0f7835547a527c4e2e58e359986086b5a21cbde",
+    "fb3d5f3783aba14a757b76de826014bb7a59981acd345b1231529877498c2017",
+    "c087eb3e47f76450c247d845f5eee2c7f8d13e499c01563d0f1dca861358c401",
+    "f5a0df3be08f26ef7bbd3b820fb751552a9c34d59490f8fac6e983556d9d1d03",
+    "f62b8f49a07f684f54470741072a70c6358737eef0565de883cf9e62f99b6a4e",
+    "96b2c3b02e595de6877d69c06fa8bf4b2881886584f922392218fbe31eb51cde",
+    "a88b8e10c9e9f7d69fd6dad05060645c5802bcc2b36b124e8d00a214951f6b78",
+    "a00e17a92a53e74c85385bc0a7885d2a92acbd9476d4e3adcc1f8ec277c08fa5",
+    "a799894306dcf73f0a99f7165ed82450131ffd0cc2332d10eb65a146cf30f957",
+    "d3c7ca1babce2a95518a1fa5a7f020b8d7e4b83c1dd1d4aff6f92bd050563439",
+    "d4a382e7f49a98ed63a7b2416aa9153a5494eb5609e7af317a3a4dc6cdc98973",
+    "e2d0f89ff8849f731c7d0f7172b898e639aeb600f0fa6a15ea1061c8cfc750d8",
+    "c27795df33d5ca0c8b5edb9110070618aa57909d04d23fefcb47cd4d365cd80e",
+    "c247133ba9612bb6fe87e0fc270c1231b8e6746368eb8325e70ab1448ec6f61e",
+    "e7b9d4a50a2f563e573951a9395790b1359bc7ce5aedff42a63925ddb487dfbd",
+    "b6f066b9ee870e32327d8effa0b7f7c592a02e672bf46e87722c6cfde1df3c36",
+    "829620da018fde7b50bb2da34a3ba7b1b1b1a89c3d62655469f4dfbcd5c20cce",
+    "97df899f4a9749e4dfb3bfa1fda58af12b88c7c6ba95347f2b2d63664029d222",
+    "8d5dca4de45c2c74732fabf9771dffbe2cde2785e1964e51e1e5e26292bb148d",
+    "e8346bc38faf266be683209755725e7a80f1df67fe4d70d20f5d480ab3d0ec89",
+    "a1d0116aca3ddb6203493f28d129efcc2f4d189e1e9f18b117b56702e5d343de",
+    "d9d2f359715286512fc4a027a8726b9e85471b174734ac1a7d7fc1d73896dda2",
+    "a6f26bf260245af1396d6a27f5c9ea8d754a52915e4d2f436a4933ee1c809663",
+    "c7a6b82a1387c672461e18d5180a50fb8d21a642fcb090623c29f17e8cb7258b",
+    "cb5894146ec763b9e00d99bfb7b959a2f9acd6058bcd5ca1d8d2791b178f1d3a",
+    "ed1e3ccc8037b43eccb9b07dd7f75777f59c0bbc9e4a84c749d246705f854e5f",
+    "f6a642e9171cc64d7841eb2293506b89c5fa80b1c97c5d53bc49f4f16bda5379",
+    "fc75f3cb36a06a84b5de46d976d2764d73a39aac58f1e1d9355ddd06f70d23c4",
+    "cf253cc29c97a9359bdc247c86fcffb0ba83b32a19cc19b25f7e9f8e087008b9",
+    "fff6b162fc2506b8de41b72bbf6bc8eab40b1fc186cddb67c181f86201b6af44",
+    "d916872f51504df66c4905ad05e34b36b7fbbe9f968ca95a2bdf4ca762d81dc1",
+    "f5141c96995704f2c11bbc227be250ecb718449163c20e3e6552a0c4f621c3cd",
+    "e767475782e4b5d2eed0b07ab593956c5741b6e068ed0da4a937e17d3fb0500f",
+    "96f26318b98cae42485bff929f26c4b69b9e96ed76636fd76390cb39bc76b024",
+    "d96973f75cd18dc75ad2b047a62a3167ba2d6d7821f1782a7414ee5e3059987e",
+    "9e8308ba1e3db7dda5bab1ae28ebde266aaa42fdbd6b0bd3268ba56391443c46",
+    "d739273bbe87f723d501c914dc162193b249d0d15463d07ded6c90f3c1561850",
+    "fb9f17ad4682b761b22a75741705eb87565e272b18227ecfcf6fa28dabf3fb9f",
+    "b76d010d018c85d94ae45dced583bd2c2215bfa37570b3034314d9314154d2e1"
+  ],
+  "same_domain_catalog_transfer": true,
+  "independent_external_domain_test": false,
+  "limits": [
+    "Synthetic follow-up requests and availability interventions, grounded catalog values",
+    "Original trip requirements are provenance, not the complete task being scored",
+    "Route/duration grouped; shared cities and catalog entities remain"
+  ]
+}

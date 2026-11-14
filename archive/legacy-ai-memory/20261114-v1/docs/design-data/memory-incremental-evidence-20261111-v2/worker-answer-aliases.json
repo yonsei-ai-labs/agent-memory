@@ -1,0 +1,22 @@
+{
+  "fixed_before_worker_outputs": true,
+  "aliases": {
+    "qa_131": {
+      "algorithm": [
+        "Viterbi algorithm",
+        "the Viterbi algorithm"
+      ]
+    },
+    "qa_336": {
+      "interview_type": [
+        "video interview"
+      ],
+      "role": [
+        "manager position",
+        "a manager position"
+      ]
+    }
+  },
+  "normalization": "Whitespace normalization; matching outer quote pair removed; names case-insensitive but *_id fields case-sensitive. Only explicit source noun phrases listed as aliases. No fuzzy substring matching.",
+  "reason": "Accept video interview/manager position and Viterbi algorithm, which literally occur in source, without accepting wrong IDs or unrelated longer text."
+}

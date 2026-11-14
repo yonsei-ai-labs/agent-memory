@@ -1,0 +1,38 @@
+{
+  "at": "2026-11-07T10:30:59.148386+00:00",
+  "model_api_calls": 0,
+  "specification": {
+    "probe_id": "django-init-missing",
+    "context_task": "django__django-16041",
+    "mechanism": "initialization",
+    "fixture": {
+      "mode": "missing"
+    },
+    "interpreter": "/opt/miniconda3/envs/testbed/bin/python",
+    "program": "from django import forms\nclass Example(forms.Form):\n    value=forms.CharField()\nrendered=str(Example())\nresult={'rendered':bool(rendered)}\n"
+  },
+  "public_context_file": "datasets/memory_relations/20261107-discovery-v1/evidence/public-code/django__django-16041.json",
+  "image_id": "sha256:b9a365cadc576e7765d07d1b94b43822a45bc30d949dd1e7f1982292d10f14cc",
+  "executed_program_sha256": "e46d66fb4bc9d770cdf87e4533f8c5e8733e2fd253a84b77f7e2163fdd7990a6",
+  "observed": {
+    "exception_type": "ImproperlyConfigured",
+    "kind": "exception",
+    "message": "Requested setting USE_I18N, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings.",
+    "traceback": "Traceback (most recent call last):\n  File \"<string>\", line 6, in <module>\n  File \"/testbed/django/forms/forms.py\", line 98, in __init__\n    self.label_suffix = label_suffix if label_suffix is not None else _(\":\")\n  File \"/testbed/django/utils/translation/__init__.py\", line 95, in gettext\n    return _trans.gettext(message)\n  File \"/testbed/django/utils/translation/__init__.py\", line 65, in __getattr__\n    if settings.USE_I18N:\n  File \"/testbed/django/conf/__init__.py\", line 92, in __getattr__\n    self._setup(name)\n  File \"/testbed/django/conf/__init__.py\", line 72, in _setup\n    raise ImproperlyConfigured(\ndjango.core.exceptions.ImproperlyConfigured: Requested setting USE_I18N, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings.\n"
+  },
+  "execution": {
+    "returncode": 0,
+    "stdout": "MEMORY_RELATION_RESULT:{\"exception_type\": \"ImproperlyConfigured\", \"kind\": \"exception\", \"message\": \"Requested setting USE_I18N, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings.\", \"traceback\": \"Traceback (most recent call last):\\n  File \\\"<string>\\\", line 6, in <module>\\n  File \\\"/testbed/django/forms/forms.py\\\", line 98, in __init__\\n    self.label_suffix = label_suffix if label_suffix is not None else _(\\\":\\\")\\n  File \\\"/testbed/django/utils/translation/__init__.py\\\", line 95, in gettext\\n    return _trans.gettext(message)\\n  File \\\"/testbed/django/utils/translation/__init__.py\\\", line 65, in __getattr__\\n    if settings.USE_I18N:\\n  File \\\"/testbed/django/conf/__init__.py\\\", line 92, in __getattr__\\n    self._setup(name)\\n  File \\\"/testbed/django/conf/__init__.py\\\", line 72, in _setup\\n    raise ImproperlyConfigured(\\ndjango.core.exceptions.ImproperlyConfigured: Requested setting USE_I18N, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings.\\n\"}\n",
+    "stderr": "",
+    "seconds": 0.8261179269757122,
+    "image_id": "sha256:b9a365cadc576e7765d07d1b94b43822a45bc30d949dd1e7f1982292d10f14cc",
+    "interpreter": "/opt/miniconda3/envs/testbed/bin/python",
+    "resources": {
+      "cpus": 1,
+      "memory": "1g",
+      "network": "none",
+      "root_filesystem": "read-only"
+    }
+  },
+  "interpretation": "Controlled mechanism probe. Expected validation exceptions are observed outcomes, not infrastructure failures. Shell success is not treated as semantic success. No actor or memory policy was evaluated."
+}

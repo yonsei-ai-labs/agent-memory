@@ -1,0 +1,47 @@
+{
+  "parquet_row_index": 588,
+  "instance_id": "mahmoud__boltons.3bfcfdd0.func_pm_remove_assign__vqbi52f0",
+  "traj_id": "mahmoud__boltons.3bfcfdd0.func_pm_remove_assign__vqbi52f0.8qa84d2e",
+  "repository": "mahmoud/boltons",
+  "upstream_revision": "3bfcfdd0",
+  "raw_messages_sha256": "b86a02bb2b84bef316cd888fc0f95c485bfba84f66e97dfb06caea43e5f115f5",
+  "message_index": 38,
+  "tool_call": {
+    "index": 1,
+    "function": {
+      "arguments": "{\"command\": \"cd /testbed && python -m pytest tests/test_mathutils.py -v\"}",
+      "name": "bash"
+    },
+    "id": "toolu_01CHWJA51HgY8D15ViDwWQ4q",
+    "type": "function"
+  },
+  "command": "cd /testbed && python -m pytest tests/test_mathutils.py -v",
+  "observation_index": 39,
+  "observation": {
+    "role": "tool",
+    "content": [
+      {
+        "type": "text",
+        "text": "OBSERVATION:\n============================= test session starts ==============================\r\nplatform linux -- Python 3.10.15, pytest-7.2.0, pluggy-1.5.0 -- /opt/miniconda3/envs/testbed/bin/python\r\ncachedir: .pytest_cache\r\nrootdir: /testbed, configfile: pytest.ini\r\nplugins: cov-4.0.0\r\ncollecting ... \rcollected 11 items                                                             \r\n\r\ntests/test_mathutils.py::test_clamp_examples PASSED                      [  9%]\r\ntests/test_mathutils.py::test_clamp_transparent PASSED                   [ 18%]\r\ntests/test_mathutils.py::test_ceil_basic PASSED                          [ 27%]\r\ntests/test_mathutils.py::test_ceil_sorted PASSED                         [ 36%]\r\ntests/test_mathutils.py::test_ceil_oor_lower PASSED                      [ 45%]\r\ntests/test_mathutils.py::test_ceil_oor_upper PASSED                      [ 54%]\r\ntests/test_mathutils.py::test_floor_basic PASSED                         [ 63%]\r\ntests/test_mathutils.py::test_floor_sorted PASSED                        [ 72%]\r\ntests/test_mathutils.py::test_floor_oor_upper PASSED                     [ 81%]\r\ntests/test_mathutils.py::test_floor_oor_lower PASSED                     [ 90%]\r\ntests/test_mathutils.py::test_bits PASSED                                [100%]\r\n\r\n============================== 11 passed in 0.01s =============================="
+      }
+    ],
+    "agent": "main",
+    "message_type": "observation",
+    "tool_call_ids": [
+      "toolu_01CHWJA51HgY8D15ViDwWQ4q"
+    ]
+  },
+  "created_paths_in_trace": [
+    "/testbed/reproduce_error.py",
+    "/testbed/test_edge_cases.py"
+  ],
+  "selected_scopes": [
+    "tests/test_mathutils.py"
+  ],
+  "dataset": "SWE-bench/SWE-smith-trajectories",
+  "hub_revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+  "parquet_file": "data/tool-00000-of-00008.parquet",
+  "parquet_sha256": "ac76e9efe75978f83d4daec98a55604587dd58b0f1509364893b8778cbf5b487",
+  "manual_review": "Exact whole-file command, unique matching tool_call_id observation, selected file not in created paths, and pinned upstream existence verified. Passing count is not used to label current states.",
+  "utility_label": null
+}

@@ -1,0 +1,48 @@
+{
+  "target_trajectory_row_index": 3014,
+  "task": {
+    "instance_id": "fsspec__filesystem_spec-1452",
+    "repo": "fsspec/filesystem_spec",
+    "base_commit": "30e479b2f25020a70293d0ff4dc555388bc7bc33",
+    "created_at": "2023-12-07 15:55:03",
+    "problem_statement": "Local files with colons in name no longer readable after `2023.12.0` version\nNewer `fsspec` versions [2023.12.1](https://github.com/fsspec/filesystem_spec/releases/tag/2023.12.1) and [2023.12.0](https://github.com/fsspec/filesystem_spec/releases/tag/2023.12.0) break the ability to read local files with `:` in the file name.\r\n\r\nThis is the behaviour in version `2023.10.0`\r\n```python\r\nimport fsspec\r\nfsspec.core.url_to_fs(\"file-with:colons.txt\")\r\n\r\n(<fsspec.implementations.local.LocalFileSystem object at 0x101b13610>, '/Users/lobis/git/uproot/file-with:colons.txt')\r\n```\r\n\r\nOn a newer version:\r\n```python\r\nimport fsspec\r\nfsspec.core.url_to_fs(\"file-with:colons.txt\")\r\n\r\nTraceback (most recent call last):\r\n  File \"<stdin>\", line 1, in <module>\r\n  File \"/Users/lobis/anaconda3/envs/uproot/lib/python3.11/site-packages/fsspec/core.py\", line 383, in url_to_fs\r\n    chain = _un_chain(url, kwargs)\r\n            ^^^^^^^^^^^^^^^^^^^^^^\r\n  File \"/Users/lobis/anaconda3/envs/uproot/lib/python3.11/site-packages/fsspec/core.py\", line 332, in _un_chain\r\n    cls = get_filesystem_class(protocol)\r\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\n  File \"/Users/lobis/anaconda3/envs/uproot/lib/python3.11/site-packages/fsspec/registry.py\", line 233, in get_filesystem_class\r\n    raise ValueError(f\"Protocol not known: {protocol}\")\r\nValueError: Protocol not known: file-with\r\n\r\n```\r\n\r\nIt appears that previously the protocol delimiter was `://` but now has been updated to `:`.\r\n\r\nThis is currently breaking the uproot `fsspec` source for local files since we rely on being able to parse file names with `:` https://github.com/scikit-hep/uproot5/issues/1054.\r\n\r\nI believe files with a `:` in the filename are still valid filenames (unlike files with `://`) so I assume this change was not intentional. Please let me know otherwise so I will modify how we use `fsspec` to read local files.\r\n\r\nThanks!",
+    "version": "2023.12",
+    "environment_setup_commit": "303a0858dd9e3aea131b9e2274d22150d6d4f30e",
+    "license_name": "BSD 3-Clause \"New\" or \"Revised\" License",
+    "docker_image": "swerebench/sweb.eval.x86_64.fsspec_1776_filesystem_spec-1452",
+    "image_name": "swerebench/sweb.eval.x86_64.fsspec_1776_filesystem_spec-1452",
+    "dataset": "nebius/SWE-rebench",
+    "revision": "89cdfbab4ab1bd8f5a658bb212d1b63624f4f881",
+    "file": "data/test-00000-of-00002.parquet",
+    "row_index": 7953
+  },
+  "base_code": [
+    {
+      "path": "fsspec/core.py",
+      "repository": "fsspec/filesystem_spec",
+      "base_commit": "30e479b2f25020a70293d0ff4dc555388bc7bc33",
+      "git_blob_sha": "a1e15b2eb8ba8f917457c81782bb6a8c08e96484",
+      "full_content_sha256": "f686885cde0f6db091a38459fabed967a2cb9b8bccc83c2abfec79de405f3a64",
+      "source_url": "https://github.com/fsspec/filesystem_spec/blob/30e479b2f25020a70293d0ff4dc555388bc7bc33/fsspec/core.py",
+      "spans": [
+        {
+          "start_line": 319,
+          "end_line": 340,
+          "text": "def _un_chain(path, kwargs):\n    x = re.compile(\".*[^a-z]+.*\")  # test for non protocol-like single word\n    bits = (\n        [p if \"://\" in p or x.match(p) else p + \"://\" for p in path.split(\"::\")]\n        if \"::\" in path\n        else [path]\n    )\n    # [[url, protocol, kwargs], ...]\n    out = []\n    previous_bit = None\n    kwargs = kwargs.copy()\n    for bit in reversed(bits):\n        protocol = kwargs.pop(\"protocol\", None) or split_protocol(bit)[0] or \"file\"\n        cls = get_filesystem_class(protocol)\n        extra_kwargs = cls._get_kwargs_from_urls(bit)\n        kws = kwargs.pop(protocol, {})\n        if bit is bits[0]:\n            kws.update(kwargs)\n        kw = dict(**extra_kwargs, **kws)\n        bit = cls._strip_protocol(bit)\n        if (\n            protocol in {\"blockcache\", \"filecache\", \"simplecache\"}\n",
+          "sha256": "54d321e036c21b6ce80b7d65a48af362b5941a14805e3334c7d41bb6528c9fc2"
+        },
+        {
+          "start_line": 516,
+          "end_line": 533,
+          "text": "def split_protocol(urlpath):\n    \"\"\"Return protocol, path pair\"\"\"\n    urlpath = stringify_path(urlpath)\n    if \"://\" in urlpath:\n        protocol, path = urlpath.split(\"://\", 1)\n        if len(protocol) > 1:\n            # excludes Windows paths\n            return protocol, path\n    if \":\" in urlpath and urlpath.find(\":\") > 1:\n        return urlpath.split(\":\", 1)\n    return None, urlpath\n\n\ndef strip_protocol(urlpath):\n    \"\"\"Return only path part of full URL, according to appropriate backend\"\"\"\n    protocol, _ = split_protocol(urlpath)\n    cls = get_filesystem_class(protocol)\n    return cls._strip_protocol(urlpath)\n",
+          "sha256": "c67041ca0c446fb749e040eab84afea8313e2aa1c67803d651eb0daab4947bc5"
+        }
+      ]
+    }
+  ],
+  "observation_kind": "researcher_read_of_pinned_pre_patch_code",
+  "worker_initial_inspection_performed": false,
+  "restorable_worker_snapshot": null,
+  "target_trajectory_loaded": false,
+  "gold_patch_or_hidden_tests_loaded": false
+}

@@ -1,0 +1,30 @@
+{
+  "schema": "memory-remediation-verification-v1",
+  "commands": [
+    "/home/depa/ai-memory/.venv/bin/python -m unittest evaluation.tests.test_memory_outcome_labels evaluation.tests.test_memory_remediation evaluation.tests.test_development_leads evaluation.tests.test_memory_data_quality evaluation.tests.test_travel_policy_followup evaluation.tests.test_travel_worker_utility"
+  ],
+  "tests_passed": 40,
+  "tests_failed": 0,
+  "clean_index_only_copy_verified": true,
+  "packet_regeneration_byte_identical": true,
+  "observed_dataset_regeneration_byte_identical": true,
+  "new_gpu_allocations": 0,
+  "new_worker_generations": 0,
+  "new_selector_training_runs": 0,
+  "relation_source_sha256": {
+    "annotation-review.json": "971909dddd12184351d05e02418932527d37f675a0f4a21ce0cd4b5bb5ecce03",
+    "design.json": "c1a59aa486a647c884a0f34af03e2e5b7654466b9bc88460c2af01f1a59adc6e",
+    "inputs.jsonl": "0d94c5c38ce589e053430cdb0eddc2702263b1c847d3fb56e5339e0b5c117b1b",
+    "memory-bank.json": "6c52460ecff083a3b08deaa35cdf88f0716b8a23e7a33b1932a03aca44a6125e",
+    "pretraining-amendment.json": "8bfb8620656eb6e774369a2f9c21488c5c35fe195f7c2a58013c6a650dd07a69",
+    "review-packet.json": "a5a25f70659e066680368c584038fca23383b1e085cd19e0e1cd4d307c921725",
+    "review-summary.json": "668d440eff23c807a170a9f8908b5bc2083541c3044bdd3922f4e1899421fdae",
+    "source-evidence.json": "98a80dda5543a13b6c67b1849a73c2fc11ddc3a2e58ad5ec7f6fef71e5320fff",
+    "supervision.jsonl": "ee08b4868813dab899b7b216733535f73221c9e0cd1599c562f58ca6c5c81252"
+  },
+  "observed_source_sha256": {
+    "decisions.json": "cbe5539c373f26fda9387de08aad8509fd1604112fa434593753d80d2e9f60b2",
+    "shared-manifest.json": "ee20017b1cdf4dcbebd637f279f3c5fff64cac56e176ebf59d4c0c8df527a79e",
+    "predictions.zip": "b03a70797bfb7d490c5a5a9e9bc9bce9170d9e08d10aa415d087ea131a6bda66"
+  }
+}

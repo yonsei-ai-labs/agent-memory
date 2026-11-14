@@ -1,0 +1,83 @@
+{
+  "experiment": "memory-balanced-replay-20261112-v1",
+  "status": "fixed_before_new_model_outputs",
+  "question": "Can broader train-only paired replay recover specificity without losing the learned preservation of partially observed compound records, and how does it change utility under a binding context budget?",
+  "data_scope": "Pinned Mem2Act literal fields with controlled current states, plus reviewed BEAM and Mem2Act training histories for replay. Fresh two-fact banks test retention; existing BEAM development histories separately test binding context budgets.",
+  "partition": "Keep existing train/dev/confirm assignments. New field evaluation uses 12 unused reserved Mem2Act test source groups. Prior partial test is regression only. BEAM dev budget study is diagnostic, not fresh confirmation. Previously sealed BEAM confirm stays unexecuted.",
+  "labels": "goal_link = supplies a requested attribute regardless of current observations; needed_now = supplies a requested attribute not already confirmed. Explicit coverage and source spans are audited separately. Actual worker effects never replace these labels.",
+  "states": "Training preserves 320 core states and 80 replay slots. Fresh evaluation has eight original requested/observed configurations plus two failed-lookup configurations, atomic and compound packing.",
+  "renderings": [
+    "unchanged core and original replay renderers for training",
+    "prose current observations for all fresh evaluation states"
+  ],
+  "budget": {
+    "memory_tokens": 512,
+    "max_records": 12,
+    "selector_input_tokens": 1536,
+    "worker_input_tokens": 2048
+  },
+  "initial_model": "Corresponding seed of memory-partial-records/augmented, kept immutable",
+  "base_model": "microsoft/harrier-oss-v1-0.6b",
+  "base_revision": "f9b9dc8d367d443f2479d27aa5d8d2850c0774ee",
+  "training": {
+    "arms": [
+      "control",
+      "replay"
+    ],
+    "seeds": [
+      731,
+      1729
+    ],
+    "epochs": 2,
+    "final_checkpoint": "last epoch, no checkpoint selection",
+    "state_batch_size": 4,
+    "microbatch_size": 4,
+    "adapter_lr": 5e-05,
+    "head_lr": 0.001,
+    "lora": "Continue rank8 q/v from prior augmented checkpoint for the corresponding seed",
+    "anchor_states": 80,
+    "loss": "Need cross entropy. Equal class mass within each state when both labels occur, else uniform; then apply train-global class factors to aggregate positive and negative loss mass one half each. Same algorithm, 400 state entries, 200 updates and two epochs for both arms. Candidate and token counts differ. No auxiliary loss.",
+    "replay_states": 80,
+    "replay": "Same 320 core packing states for both arms. Control keeps previous 80 incremental anchors; replay replaces them with 13 BEAM train questions x missing/known/unrelated-observation/failed-lookup plus 7 Mem2Act train questions x same four modes. Unknown candidate labels masked. No updated-state supervision. Same 400 state entries, 200 updates, two epochs, seeds and state order; token/candidate counts differ and are reported."
+  },
+  "selection": "Fixed need probability >=0.5 for all learned policies; no model, epoch or threshold chosen by test or worker scores.",
+  "baselines": [
+    "none",
+    "bm25_top2",
+    "base_dense_top2",
+    "legacy_trained_dense_top2",
+    "lexical_dedup_top2",
+    "budget_fill",
+    "reviewed_support_diagnostic",
+    "old_support_only_diagnostic"
+  ],
+  "evaluation": "Fresh 240 states, 12 sources x 10 configurations x atomic/compound, prose current observations. Prior partial test, incremental dev, source-scale dev and BEAM dev are labelled regression. Both seeds and both arms reported regardless of outcome.",
+  "worker": {
+    "model_id": "Qwen/Qwen3.5-4B",
+    "revision": "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
+    "greedy": true,
+    "thinking": false,
+    "max_new_tokens": 128,
+    "task": "Recover requested fields as a JSON object; never execute an external tool."
+  },
+  "worker_policy": "Every fresh compound/prose state (120) with frozen/control/replay for both seeds and fixed baselines. Every BEAM dev state (52) under each budget and every declared policy. Same model/revision/greedy nonthinking worker. Fresh fields use max_new_tokens128; BEAM scalar contract uses max_new_tokens64. All primary aliases frozen before generation. No adaptive pruning of hard/no-effect cases.",
+  "bounds": {
+    "max_training_seconds": 10800,
+    "max_unique_worker_calls": 1600,
+    "paid_api_calls": 0,
+    "colab_allocations": 0
+  },
+  "resource_rule": "One local GPU process at a time, require native BF16 and >=10GiB free before loading; never interrupt another user's process. Exit after bounded work and preserve incomplete status on failure.",
+  "reporting": "Source-conditioned field recovery and budget-limited diagnostic, not live tool success. Distinguish need/sufficiency from raw answer and reviewed-support success. Compare both retention and false delivery; report matched-source effects and paired gains/losses. Old BEAM dev remains development, never generalization proof. A method that reduces extras by dropping needed evidence is not adopted.",
+  "baseline_note": "Fresh banks have <=2 records and all fit; unfiltered top2 equals full delivery there. BEAM same-bank histories contain 7–8 records, all banks >128 tokens and all reviewed-support diagnostics <=84 tokens. Dense uses the same general retrieval instruction for base Harrier and the previous fixed travel retriever adapter.",
+  "budgets": {
+    "fresh_memory_tokens": 512,
+    "beam_memory_tokens": [
+      128,
+      512
+    ],
+    "max_records": 12,
+    "selector_input_tokens": 1536,
+    "worker_input_tokens": 2048
+  }
+}

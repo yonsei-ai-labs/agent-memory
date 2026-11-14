@@ -1,0 +1,114 @@
+[
+  {
+    "memory_id": "roundtrip_fields",
+    "source_row": 342,
+    "source_instance": "googlefonts__glyphsLib-808",
+    "source_repository": "googlefonts/glyphsLib",
+    "text": "Historical experience: Serialization and round-trip metadata\nObserved attempt: Font metadata disappeared when converting from UFO to Glyphs and back. The observed edits copied the meta table into an intermediate userData field and restored it on the reverse conversion.\nDiagnostic use and boundary: When data disappears across representation changes, inspect both conversion directions and the fields carried by the intermediate object. Exact field names and schemas require checking.\nOverall source success is not asserted."
+  },
+  {
+    "memory_id": "output_dtype",
+    "source_row": 1050,
+    "source_instance": "Project-MONAI__MONAI-8109",
+    "source_repository": "Project-MONAI/MONAI",
+    "text": "Historical experience: Requested dtype and output container type\nObserved attempt: An intensity transform converted results back to the original image dtype despite a dtype argument. The trace revised the output conversion several times, distinguishing dtype from tensor or metadata container type.\nDiagnostic use and boundary: For an unexpected output type, inspect the final conversion and caller-requested dtype, while preserving supported container types. This does not fix every numerical error.\nOverall source success is not asserted."
+  },
+  {
+    "memory_id": "callback_arguments",
+    "source_row": 2645,
+    "source_instance": "pika__pika-1233",
+    "source_repository": "pika/pika",
+    "text": "Historical experience: Callback argument binding\nObserved attempt: A registered callback accepted one message argument but the caller passed channel, method, properties, and body. The observed edit accepted those arguments and assembled a message object inside the callback.\nDiagnostic use and boundary: Compare the caller arguments and registered function signature when dispatch raises argument errors. Check positional and keyword routing; do not copy the old signature without checking the new caller.\nOverall source success is not asserted."
+  },
+  {
+    "memory_id": "numeric_validation",
+    "source_row": 247,
+    "source_instance": "PMEAL__OpenPNM-2265",
+    "source_repository": "PMEAL/OpenPNM",
+    "text": "Historical experience: Validate numerical inputs before computation\nObserved attempt: A transport solver checked its matrix and right-hand side but omitted the initial vector. The edit checked the provided vector for finite values and moved initialization before validation.\nDiagnostic use and boundary: When invalid numerical inputs reach computation, inspect all inputs and the order of default construction and validation. Finiteness, accepted types, and valid ranges are different contracts.\nOverall source success is not asserted."
+  },
+  {
+    "memory_id": "specific_precedence",
+    "source_row": 477,
+    "source_instance": "ApptuitAI__apptuit-py-21",
+    "source_repository": "ApptuitAI/apptuit-py",
+    "text": "Historical experience: Specific values versus global defaults\nObserved attempt: A metrics reporter updated per-datapoint tags with global tags, overwriting the specific values. The observed edit built the merged mapping so per-datapoint tags took precedence.\nDiagnostic use and boundary: For unexpectedly overwritten settings or metadata, inspect merge order and where caller-specific keys are stored. A shared name or dictionary alone does not establish an overwrite problem.\nOverall source success is not asserted."
+  },
+  {
+    "memory_id": "stale_client",
+    "source_row": 478,
+    "source_instance": "google__mobly-821",
+    "source_repository": "google/mobly",
+    "text": "Historical experience: Release stale connection state\nObserved attempt: An Android snippet client retained an event client after stopping, so a later use could reuse a broken connection. The trace added event-client cleanup to stop paths.\nDiagnostic use and boundary: For reuse of invalid connection state, inspect lifecycle cleanup and lazy recreation together. Ownership matters: releasing an external shared resource can be wrong.\nOverall source success is not asserted."
+  },
+  {
+    "memory_id": "literal_escaping",
+    "source_row": 894,
+    "source_instance": "berkerpeksag__astor-125",
+    "source_repository": "berkerpeksag/astor",
+    "text": "Historical experience: Escape literal data in generated syntax\nObserved attempt: An AST code generator inserted literal braces into an f-string without escaping them. The observed edit doubled braces in literal segments while retaining formatted-expression handling.\nDiagnostic use and boundary: When generated syntax changes the meaning of literal text, distinguish literal and syntax regions and inspect escaping at that boundary. More escaping is not universally correct for URLs, regexes, or other formats.\nOverall source success is not asserted."
+  },
+  {
+    "memory_id": "container_wrappers",
+    "source_row": 3680,
+    "source_instance": "Scille__umongo-231",
+    "source_repository": "Scille/umongo",
+    "text": "Historical experience: Native container defaults versus framework wrappers\nObserved attempt: A schema library expected wrapped List and Dict values while users supplied native list and dict defaults. Several observed edits wrapped default factories so framework-specific container behavior remained available.\nDiagnostic use and boundary: When native containers and framework wrappers behave differently, inspect construction and conversion paths, including empty defaults. The existence of a list does not by itself require a wrapper.\nOverall source success is not asserted."
+  },
+  {
+    "memory_id": "multivalue_mapping",
+    "source_row": 91,
+    "source_instance": "encode__httpx-386",
+    "source_repository": "encode/httpx",
+    "text": "Historical experience: Expand sequence values at the encoding boundary\nObserved attempt: Query parameter types allowed scalar values but a request supplied sequences. The observed work extended the accepted value types and expanded multiple values into repeated key-value entries.\nDiagnostic use and boundary: For scalar-versus-sequence mismatches, inspect both the accepted type and the representation of each element. Query-value expansion does not determine which URL characters should be escaped.\nOverall source success is not asserted."
+  },
+  {
+    "memory_id": "introspection_version",
+    "source_row": 2259,
+    "source_instance": "twisted__twisted-12064",
+    "source_repository": "twisted/twisted",
+    "text": "Historical experience: Runtime changes to introspection metadata\nObserved attempt: Python 3.13 changed docstring trimming behavior. The trace revised deprecation docstring processing to avoid assumptions about old leading or trailing whitespace.\nDiagnostic use and boundary: If introspection breaks across runtime versions, inspect metadata returned by that runtime and assumptions in lookup or formatting code. A version difference alone does not establish this cause.\nOverall source success is not asserted."
+  },
+  {
+    "memory_id": "nested_blocks",
+    "source_row": 1536,
+    "source_instance": "jamescooke__flake8-aaa-34",
+    "source_repository": "jamescooke/flake8-aaa",
+    "text": "Historical experience: Nested syntax blocks and traversal\nObserved attempt: A test-style checker did not discover action blocks inside context managers. The observed edit traversed nested syntax nodes instead of scanning only the top-level function body.\nDiagnostic use and boundary: When syntactically nested statements are skipped or classified incorrectly, inspect traversal depth and the role assigned to each block. Finding more nodes does not alone decide their semantic role.\nOverall source success is not asserted."
+  },
+  {
+    "memory_id": "empty_input",
+    "source_row": 243,
+    "source_instance": "pre-commit__pre-commit-933",
+    "source_repository": "pre-commit/pre-commit",
+    "text": "Historical experience: Guard empty or exhausted input before indexing\nObserved attempt: An empty pre-commit configuration caused an IndexError. The observed migration edit checked the line index against the line count before inspecting the next header line.\nDiagnostic use and boundary: For failures on empty or omitted inputs, inspect assumptions about element existence and default initialization. An unrelated exception or missing package is a different mechanism.\nOverall source success is not asserted."
+  },
+  {
+    "memory_id": "identifier_scope",
+    "source_row": 415,
+    "source_instance": "tefra__xsdata-755",
+    "source_repository": "tefra/xsdata",
+    "text": "Historical experience: Replacement scope inside identifiers\nObserved attempt: A default Class-to-Type substitution also changed Classifier inside EClassifier. An anchored-regex attempt was later reverted in the trace, so it is not a confirmed final repair.\nDiagnostic use and boundary: Inspect full-token versus substring matching when identifier rewriting changes unintended portions. Keep the failed or reverted attempt as a boundary, not a reusable successful patch.\nOverall source success is not asserted."
+  },
+  {
+    "memory_id": "socket_options",
+    "source_row": 3057,
+    "source_instance": "twisted__twisted-12366",
+    "source_repository": "twisted/twisted",
+    "text": "Historical experience: Transport-specific operations\nObserved attempt: HTTP over Unix sockets hit an unsupported TCP socket option. The trace guarded socket-option operations and considered the reported OS error instead of assuming every socket was TCP.\nDiagnostic use and boundary: When a shared networking interface covers distinct transports, check capability assumptions at the operation that fails. An argument mismatch or ownership bug needs a different investigation.\nOverall source success is not asserted."
+  },
+  {
+    "memory_id": "connection_ownership",
+    "source_row": 2300,
+    "source_instance": "redis__redis-py-2752",
+    "source_repository": "redis/redis-py",
+    "text": "Historical experience: Factory forwarding and connection ownership\nObserved attempt: Redis.from_url passed kwargs to the connection pool while a client-level auto-close option controlled resource lifetime. The observed edit separated that option from pool construction and set it on the client.\nDiagnostic use and boundary: For convenience constructors, inspect which layer consumes each option and who owns cleanup. This differs from unconditionally closing or resetting every client.\nOverall source success is not asserted."
+  },
+  {
+    "memory_id": "element_constraints",
+    "source_row": 1282,
+    "source_instance": "linkml__linkml-1276",
+    "source_repository": "linkml/linkml",
+    "text": "Historical experience: Container constraints versus element constraints\nObserved attempt: A JSON Schema generator put a string pattern on an array-valued slot rather than its items. The observed edit routed value constraints to the element schema for multivalued slots.\nDiagnostic use and boundary: For nested containers, check whether a rule applies to the collection or to each element. Correct nesting and element types must be observed before copying a schema edit.\nOverall source success is not asserted."
+  }
+]

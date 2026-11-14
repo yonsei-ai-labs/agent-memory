@@ -1,0 +1,733 @@
+{
+  "status": "evidence_review_only",
+  "selection_plan_sha256": "fffa781394a3e6b8259f77eababb6760e889da8f6f24f3a13879631b6d945752",
+  "annotation_sha256": "ff7c35d5e3f333d4702640acbfd4dae16e07b05785b2ee54875bd5dd94a74bbd",
+  "reviewed_tool_calls": 16,
+  "reviewed_connected_families": 16,
+  "decisions": {
+    "keep_evidence": 3,
+    "exclude": 10,
+    "unresolved_observation_only": 1,
+    "failed_attempt_evidence_only": 1,
+    "exclude_with_failed_attempt_control": 1
+  },
+  "actual_utility_labels": 0,
+  "new_training_examples": 0,
+  "commands_executed": 0,
+  "rows": [
+    {
+      "row": 1082,
+      "message": 24,
+      "decision": "keep_evidence",
+      "episode": "pipdeptree-editable-build",
+      "reason": "An internal version module is missing. Editable installation completes; the identical script advances beyond import to a metadata TypeError with no intervening source edit.",
+      "limitation": "An internal missing module is not automatically an application bug. A build-generated version file is a plausible explanation, but the trace alone does not prove which build step fixed import or that the overall task succeeded.",
+      "evidence_windows": {
+        "24": null,
+        "26": "Successfully installed",
+        "28": null
+      },
+      "candidate_id": "swesmith-tool0-row1082-message24",
+      "dataset": "SWE-bench/SWE-smith-trajectories",
+      "hub_revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+      "parquet_file": "data/tool-00000-of-00008.parquet",
+      "parquet_sha256": "ac76e9efe75978f83d4daec98a55604587dd58b0f1509364893b8778cbf5b487",
+      "row_index": 1082,
+      "instance_id": "tox-dev__pipdeptree.c31b6418.pr_357",
+      "traj_id": "tox-dev__pipdeptree.c31b6418.pr_357.1cm1w3ln",
+      "repository": "tox-dev/pipdeptree",
+      "upstream_revision": "c31b6418",
+      "connected_family": "tox-dev/pipdeptree@c31b6418",
+      "raw_messages_sha256": "74381f2afe32a054dd3e79a691202270469dc068bf45caf4bd8ea4e58d4c1c2b",
+      "source_record_sha256": "52c47e436ded0f9dd00a98044110bb53f640979dea9e23293655394ae6b8cc79",
+      "evidence": [
+        {
+          "message_index": 24,
+          "observation_index": 25,
+          "tool_call": {
+            "index": 1,
+            "function": {
+              "arguments": "{\"command\": \"cd /testbed && python3 test_script.py\"}",
+              "name": "bash"
+            },
+            "id": "toolu_01F3o2b1GzSVtkkwoNQdKRse",
+            "type": "function"
+          },
+          "original_observation_characters": 303,
+          "original_observation_sha256": "960217e6ba5d6d5f18923dbd2faf63384196dba9c45a68465e594c2e44fe6890",
+          "original_observation_clipped": false,
+          "excerpt_start": 0,
+          "excerpt_end": 303,
+          "exact_excerpt": "OBSERVATION:\nTraceback (most recent call last):\r\n  File \"/testbed/test_script.py\", line 3, in <module>\r\n    from pipdeptree._cli import Options\r\n  File \"/testbed/src/pipdeptree/_cli.py\", line 7, in <module>\r\n    from .version import __version__\r\nModuleNotFoundError: No module named 'pipdeptree.version'"
+        },
+        {
+          "message_index": 26,
+          "observation_index": 27,
+          "tool_call": {
+            "index": 1,
+            "function": {
+              "arguments": "{\"command\": \"cd /testbed && pip install -e .\"}",
+              "name": "bash"
+            },
+            "id": "toolu_01BPt86ZGYvVPiEyMP4QKjiZ",
+            "type": "function"
+          },
+          "original_observation_characters": 1772,
+          "original_observation_sha256": "1a0fed36774adaa403f192050881e2507785e41b7e218d42b6fab89c8ffe8506",
+          "original_observation_clipped": false,
+          "excerpt_start": 1167,
+          "excerpt_end": 1772,
+          "exact_excerpt": "eptree\r\n    Found existing installation: pipdeptree 0.1.dev1+g6b62888\r\n    Uninstalling pipdeptree-0.1.dev1+g6b62888:\r\n      Successfully uninstalled pipdeptree-0.1.dev1+g6b62888\r\nSuccessfully installed pipdeptree-0.1.dev2+gbed4700.d20250323\r\nWARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable.It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning."
+        },
+        {
+          "message_index": 28,
+          "observation_index": 29,
+          "tool_call": {
+            "index": 1,
+            "function": {
+              "arguments": "{\"command\": \"cd /testbed && python3 test_script.py\"}",
+              "name": "bash"
+            },
+            "id": "toolu_01Wsrtng7qSqZzHp5rwVFj2M",
+            "type": "function"
+          },
+          "original_observation_characters": 849,
+          "original_observation_sha256": "292925d5459edea7dcdb93f69ba853d013805e31a1a8518707cf06464887bb44",
+          "original_observation_clipped": false,
+          "excerpt_start": 0,
+          "excerpt_end": 849,
+          "exact_excerpt": "OBSERVATION:\nTraceback (most recent call last):\r\n  File \"/testbed/test_script.py\", line 49, in <module>\r\n    tree = PackageDAG.from_pkgs(dists)\r\n  File \"/testbed/src/pipdeptree/_models/dag.py\", line 56, in from_pkgs\r\n    dist_pkgs = [DistPackage(p) for p in pkgs]\r\n  File \"/testbed/src/pipdeptree/_models/dag.py\", line 56, in <listcomp>\r\n    dist_pkgs = [DistPackage(p) for p in pkgs]\r\n  File \"/testbed/src/pipdeptree/_models/package.py\", line 98, in __init__\r\n    super().__init__(obj.metadata[\"Name\"])\r\n  File \"/testbed/src/pipdeptree/_models/package.py\", line 33, in __init__\r\n    self.key = canonicalize_name(project_name)\r\n  File \"/opt/miniconda3/envs/testbed/lib/python3.10/site-packages/packaging/utils.py\", line 50, in canonicalize_name\r\n    value = _canonicalize_regex.sub(\"-\", name).lower()\r\nTypeError: expected string or bytes-like object"
+        }
+      ],
+      "utility_label": null,
+      "relation_training_label": null,
+      "target_state_provided": false
+    },
+    {
+      "row": 1088,
+      "message": 14,
+      "decision": "keep_evidence",
+      "episode": "dask-test-path-and-system-executable",
+      "reason": "The requested test_highlevelgraph.py file does not exist. test_highgraph.py collects and runs: 18 pass, one fails because the Graphviz dot executable is absent.",
+      "limitation": "This supports a repository-specific test-path correction and reveals a second prerequisite. It does not establish that the narrower test scope is sufficient for the original task or that installing Graphviz would solve the task.",
+      "evidence_windows": {
+        "14": null,
+        "16": "FAILED dask/tests/test_highgraph.py::test_visualize"
+      },
+      "candidate_id": "swesmith-tool0-row1088-message14",
+      "dataset": "SWE-bench/SWE-smith-trajectories",
+      "hub_revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+      "parquet_file": "data/tool-00000-of-00008.parquet",
+      "parquet_sha256": "ac76e9efe75978f83d4daec98a55604587dd58b0f1509364893b8778cbf5b487",
+      "row_index": 1088,
+      "instance_id": "dask__dask.5f61e423.pr_8954",
+      "traj_id": "dask__dask.5f61e423.pr_8954.1cm1w3ln",
+      "repository": "dask/dask",
+      "upstream_revision": "5f61e423",
+      "connected_family": "dask/dask@5f61e423",
+      "raw_messages_sha256": "d60c87f1d06aaa2774728cdd8a3baf40b3d2dd04f4b2bc5754ae53a7ffb065a2",
+      "source_record_sha256": "eb970fed4ed7d8090a1bd637973b973d9025f3e3dd9fc705f0b0076105ab29dd",
+      "evidence": [
+        {
+          "message_index": 14,
+          "observation_index": 15,
+          "tool_call": {
+            "index": 0,
+            "function": {
+              "arguments": "{\"command\": \"cd /testbed && python -m pytest dask/tests/test_highlevelgraph.py -v\"}",
+              "name": "bash"
+            },
+            "id": "toolu_01Hrk3DuEC9PynEpDU2GxUaq",
+            "type": "function"
+          },
+          "original_observation_characters": 822,
+          "original_observation_sha256": "4c8b2b99a0a501f66012631da75d100a1fa71864c958826a0ad8b70273d7122f",
+          "original_observation_clipped": false,
+          "excerpt_start": 0,
+          "excerpt_end": 822,
+          "exact_excerpt": "OBSERVATION:\n============================= test session starts ==============================\r\nplatform linux -- Python 3.10.16, pytest-8.3.5, pluggy-1.5.0 -- /opt/miniconda3/envs/testbed/bin/python\r\ncachedir: .pytest_cache\r\nhypothesis profile 'default' -> database=DirectoryBasedExampleDatabase(PosixPath('/testbed/.hypothesis/examples'))\r\nrootdir: /testbed\r\nconfigfile: pyproject.toml\r\nplugins: rerunfailures-15.0, xdist-3.6.1, hypothesis-6.127.5, mimesis-18.0.0, mock-3.14.0, cov-6.0.0, timeout-2.3.1\r\ntimeout: 300.0s\r\ntimeout method: thread\r\ntimeout func_only: False\r\ncollecting ... \rcollected 0 items                                                              \r\n\r\n============================ no tests ran in 0.17s =============================\r\nERROR: file or directory not found: dask/tests/test_highlevelgraph.py"
+        },
+        {
+          "message_index": 16,
+          "observation_index": 17,
+          "tool_call": {
+            "index": 0,
+            "function": {
+              "arguments": "{\"command\": \"cd /testbed && python -m pytest dask/tests/test_highgraph.py -v\"}",
+              "name": "bash"
+            },
+            "id": "toolu_0162PmxGS6mdSpBz4t5LwJcj",
+            "type": "function"
+          },
+          "original_observation_characters": 16678,
+          "original_observation_sha256": "3b15ec6f67055afba7d7cb094d68388f3a2a4620a113dc0edbcd463464a786b4",
+          "original_observation_clipped": false,
+          "excerpt_start": 16221,
+          "excerpt_end": 16678,
+          "exact_excerpt": "annotation[annotation1]\r\n0.00s call     dask/tests/test_highgraph.py::test_blockwise_cull[False]\r\n=========================== short test summary info ============================\r\nFAILED dask/tests/test_highgraph.py::test_visualize - graphviz.backend.execute.ExecutableNotFound: failed to execute PosixPath('dot'), make sure the Graphviz executables are on your systems' PATH\r\n========================= 1 failed, 18 passed in 0.58s ========================="
+        }
+      ],
+      "utility_label": null,
+      "relation_training_label": null,
+      "target_state_provided": false
+    },
+    {
+      "row": 1112,
+      "message": 6,
+      "decision": "exclude",
+      "reason": "The reproduction imports via src.exceptiongroup and the subsequent workaround creates a fake _version.py with version 1.0.0. That source mutation is not a validated installation procedure.",
+      "candidate_id": "swesmith-tool0-row1112-message6",
+      "dataset": "SWE-bench/SWE-smith-trajectories",
+      "hub_revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+      "parquet_file": "data/tool-00000-of-00008.parquet",
+      "parquet_sha256": "ac76e9efe75978f83d4daec98a55604587dd58b0f1509364893b8778cbf5b487",
+      "row_index": 1112,
+      "instance_id": "agronholm__exceptiongroup.0b4f4937.pr_69",
+      "traj_id": "agronholm__exceptiongroup.0b4f4937.pr_69.1cm1w3ln",
+      "repository": "agronholm/exceptiongroup",
+      "upstream_revision": "0b4f4937",
+      "connected_family": "agronholm/exceptiongroup@0b4f4937",
+      "raw_messages_sha256": "f1a045ceb9bfa534eb868bd28b0ff700bab4609152e52bdf64b3deb23c73c60a",
+      "source_record_sha256": "83c0d2baa3a2be15621aa8eb378415023c2ba93a762e0bc2a2048942d97b7967",
+      "evidence": [],
+      "utility_label": null,
+      "relation_training_label": null,
+      "target_state_provided": false
+    },
+    {
+      "row": 1114,
+      "message": 14,
+      "decision": "unresolved_observation_only",
+      "reason": "uvicorn is absent when the reproduction tries to start a server. The next action is submission; there is no tested repair in the review window.",
+      "limitation": "Retain the blocker only. Do not manufacture a successful install history or a utility label.",
+      "evidence_windows": {
+        "14": null
+      },
+      "candidate_id": "swesmith-tool0-row1114-message14",
+      "dataset": "SWE-bench/SWE-smith-trajectories",
+      "hub_revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+      "parquet_file": "data/tool-00000-of-00008.parquet",
+      "parquet_sha256": "ac76e9efe75978f83d4daec98a55604587dd58b0f1509364893b8778cbf5b487",
+      "row_index": 1114,
+      "instance_id": "encode__starlette.db5063c2.pr_2812",
+      "traj_id": "encode__starlette.db5063c2.pr_2812.1cm1w3ln",
+      "repository": "encode/starlette",
+      "upstream_revision": "db5063c2",
+      "connected_family": "encode/starlette@db5063c2",
+      "raw_messages_sha256": "43d2b5aa2d8b88fdcee7457a0c513b7e3f39ecfab33bdd1e541b5f2fdc3f514e",
+      "source_record_sha256": "6330c52158265fc4a08d3ed6d3bfb99aa49290dc1da45b4ba6223d648f5a8f01",
+      "evidence": [
+        {
+          "message_index": 14,
+          "observation_index": 15,
+          "tool_call": {
+            "index": 1,
+            "function": {
+              "arguments": "{\"command\": \"cd /testbed && python reproduce_error.py\"}",
+              "name": "bash"
+            },
+            "id": "toolu_01Cd1YATTxB1W2sLsDpB3jHq",
+            "type": "function"
+          },
+          "original_observation_characters": 175,
+          "original_observation_sha256": "f7d3c09d43d522c14490e4f31ad86eb02c480ae577d871755d27bfbc632b7b1a",
+          "original_observation_clipped": false,
+          "excerpt_start": 0,
+          "excerpt_end": 175,
+          "exact_excerpt": "OBSERVATION:\nTraceback (most recent call last):\r\n  File \"/testbed/reproduce_error.py\", line 22, in <module>\r\n    import uvicorn\r\nModuleNotFoundError: No module named 'uvicorn'"
+        }
+      ],
+      "utility_label": null,
+      "relation_training_label": null,
+      "target_state_provided": false
+    },
+    {
+      "row": 1118,
+      "message": 56,
+      "decision": "failed_attempt_evidence_only",
+      "reason": "After reinstalling pandas, import still resolves into /testbed/pandas and cannot find its compiled pandas_parser. A conda attempt times out, another pip install reports dependencies present but repeats the same failure, and an apt install also leaves that failure.",
+      "limitation": "Local source import precedence or an unbuilt extension is a plausible diagnosis, not a demonstrated fix. Do not teach a successful replacement procedure from these failed attempts.",
+      "evidence_windows": {
+        "56": "ModuleNotFoundError",
+        "58": null,
+        "60": "Traceback",
+        "62": "ModuleNotFoundError"
+      },
+      "candidate_id": "swesmith-tool0-row1118-message56",
+      "dataset": "SWE-bench/SWE-smith-trajectories",
+      "hub_revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+      "parquet_file": "data/tool-00000-of-00008.parquet",
+      "parquet_sha256": "ac76e9efe75978f83d4daec98a55604587dd58b0f1509364893b8778cbf5b487",
+      "row_index": 1118,
+      "instance_id": "pandas-dev__pandas.95280573.pr_54996",
+      "traj_id": "pandas-dev__pandas.95280573.pr_54996.1cm1w3ln",
+      "repository": "pandas-dev/pandas",
+      "upstream_revision": "95280573",
+      "connected_family": "pandas-dev/pandas@95280573",
+      "raw_messages_sha256": "df25e2fa6300491e12ad2ac3630de2eeaebc8341d59dae825344e8c788b08cd7",
+      "source_record_sha256": "b422979cfc7553f3716d73b491586f10173a6df528ce6a0ead29bed7be7a5d88",
+      "evidence": [
+        {
+          "message_index": 56,
+          "observation_index": 57,
+          "tool_call": {
+            "index": 1,
+            "function": {
+              "arguments": "{\"command\": \"pip uninstall -y pandas && pip install pandas && python /testbed/minimal_test.py\"}",
+              "name": "bash"
+            },
+            "id": "toolu_01CgNamxnyo58sJv5NLPhZPF",
+            "type": "function"
+          },
+          "original_observation_characters": 2238,
+          "original_observation_sha256": "2cb5e2f5830c57a985915a2870cf4b2cf99262db7f4fd471b13b526441431ee8",
+          "original_observation_clipped": false,
+          "excerpt_start": 1972,
+          "excerpt_end": 2238,
+          "exact_excerpt": "m pandas._libs import (\r\n  File \"/testbed/pandas/_libs/__init__.py\", line 16, in <module>\r\n    import pandas._libs.pandas_parser  # isort: skip # type: ignore[reportUnusedImport]\r\nModuleNotFoundError: No module named 'pandas._libs.pandas_parser'\r\n(testbed)(testbed) "
+        },
+        {
+          "message_index": 58,
+          "observation_index": 59,
+          "tool_call": {
+            "index": 1,
+            "function": {
+              "arguments": "{\"command\": \"conda create -n test python=3.10 pandas && conda activate test && python /testbed/minimal_test.py\"}",
+              "name": "bash"
+            },
+            "id": "toolu_01KtGfrCSAmhcVqbrVGhcRuK",
+            "type": "function"
+          },
+          "original_observation_characters": 237,
+          "original_observation_sha256": "4753aeb89dc9f931ff00792077fd1002f3c0209fefddd6b7faf02a7e7eebcb33",
+          "original_observation_clipped": false,
+          "excerpt_start": 0,
+          "excerpt_end": 237,
+          "exact_excerpt": "OBSERVATION:\nThe command 'conda create -n test python=3.10 pandas && conda activate test && python /testbed/minimal_test.py' was cancelled because it took more than 120 seconds. Please try a different command that completes more quickly."
+        },
+        {
+          "message_index": 60,
+          "observation_index": 61,
+          "tool_call": {
+            "index": 1,
+            "function": {
+              "arguments": "{\"command\": \"pip install --no-deps pandas && pip install numpy python-dateutil pytz tzdata && python /testbed/minimal_test.py\"}",
+              "name": "bash"
+            },
+            "id": "toolu_01FRnxQfgYLjx8zBTmuYDc1E",
+            "type": "function"
+          },
+          "original_observation_characters": 1976,
+          "original_observation_sha256": "e74276be88816c50d81dd5e14880e86d7a296a65324271416200f5de60009c9b",
+          "original_observation_clipped": false,
+          "excerpt_start": 1252,
+          "excerpt_end": 1976,
+          "exact_excerpt": "ended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.\r\nTraceback (most recent call last):\r\n  File \"/testbed/minimal_test.py\", line 1, in <module>\r\n    import pandas as pd\r\n  File \"/testbed/pandas/__init__.py\", line 47, in <module>\r\n    from pandas.core.api import (\r\n  File \"/testbed/pandas/core/api.py\", line 1, in <module>\r\n    from pandas._libs import (\r\n  File \"/testbed/pandas/_libs/__init__.py\", line 16, in <module>\r\n    import pandas._libs.pandas_parser  # isort: skip # type: ignore[reportUnusedImport]\r\nModuleNotFoundError: No module named 'pandas._libs.pandas_parser'\r\n(testbed)(testbed) "
+        },
+        {
+          "message_index": 62,
+          "observation_index": 63,
+          "tool_call": {
+            "index": 1,
+            "function": {
+              "arguments": "{\"command\": \"apt-get update && apt-get install -y python3-pandas && python3 /testbed/minimal_test.py\"}",
+              "name": "bash"
+            },
+            "id": "toolu_017pkmBpFCzucpkkxgHNt9Vu",
+            "type": "function"
+          },
+          "original_observation_characters": 65317,
+          "original_observation_sha256": "c18dd372672ce6f28aef4cd3cb0378cdbd463e161a389d5f9039274249272550",
+          "original_observation_clipped": false,
+          "excerpt_start": 65051,
+          "excerpt_end": 65317,
+          "exact_excerpt": "m pandas._libs import (\r\n  File \"/testbed/pandas/_libs/__init__.py\", line 16, in <module>\r\n    import pandas._libs.pandas_parser  # isort: skip # type: ignore[reportUnusedImport]\r\nModuleNotFoundError: No module named 'pandas._libs.pandas_parser'\r\n(testbed)(testbed) "
+        }
+      ],
+      "utility_label": null,
+      "relation_training_label": null,
+      "target_state_provided": false
+    },
+    {
+      "row": 1180,
+      "message": 6,
+      "decision": "keep_evidence",
+      "episode": "gtts-six-dependency",
+      "reason": "Import fails on six. The log installs six while reporting requests already present. The identical script then reaches its basic/long-text/language checks and its expected invalid-language branch without a source edit in between.",
+      "limitation": "This is observable script progression, not independent verification of every printed check, external speech service behavior, or task completion.",
+      "evidence_windows": {
+        "6": null,
+        "8": "Successfully installed",
+        "10": null
+      },
+      "candidate_id": "swesmith-tool0-row1180-message6",
+      "dataset": "SWE-bench/SWE-smith-trajectories",
+      "hub_revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+      "parquet_file": "data/tool-00000-of-00008.parquet",
+      "parquet_sha256": "ac76e9efe75978f83d4daec98a55604587dd58b0f1509364893b8778cbf5b487",
+      "row_index": 1180,
+      "instance_id": "pndurette__gTTS.dbcda4f3.pr_394",
+      "traj_id": "pndurette__gTTS.dbcda4f3.pr_394.1cm1w3ln",
+      "repository": "pndurette/gTTS",
+      "upstream_revision": "dbcda4f3",
+      "connected_family": "pndurette/gTTS@dbcda4f3",
+      "raw_messages_sha256": "439a6ceb506ca78c1f28eb335781948ccdb7d80a8fd93d39ced6c3c6694b273f",
+      "source_record_sha256": "20c61c8a9912fb25e9b3385d18ca009007a3c199982b5e0ebb8acf6db168675f",
+      "evidence": [
+        {
+          "message_index": 6,
+          "observation_index": 7,
+          "tool_call": {
+            "index": 1,
+            "function": {
+              "arguments": "{\"command\": \"cd /testbed && python reproduce.py\"}",
+              "name": "bash"
+            },
+            "id": "toolu_011e34npQvH66tNmAYmXvmWq",
+            "type": "function"
+          },
+          "original_observation_characters": 352,
+          "original_observation_sha256": "72e1f129490a303add9d22ef1d3b61ccf53a937fa8bbd0384a995fcb97491c35",
+          "original_observation_clipped": false,
+          "excerpt_start": 0,
+          "excerpt_end": 352,
+          "exact_excerpt": "OBSERVATION:\nTraceback (most recent call last):\r\n  File \"/testbed/reproduce.py\", line 1, in <module>\r\n    from gtts import gTTS\r\n  File \"/testbed/gtts/__init__.py\", line 3, in <module>\r\n    from .tts import gTTS, gTTSError\r\n  File \"/testbed/gtts/tts.py\", line 6, in <module>\r\n    from six.moves import urllib\r\nModuleNotFoundError: No module named 'six'"
+        },
+        {
+          "message_index": 8,
+          "observation_index": 9,
+          "tool_call": {
+            "index": 1,
+            "function": {
+              "arguments": "{\"command\": \"pip install six requests\"}",
+              "name": "bash"
+            },
+            "id": "toolu_012KwhQswYmwoKN65NwYfYJd",
+            "type": "function"
+          },
+          "original_observation_characters": 1238,
+          "original_observation_sha256": "b2a02f24f07686d985d8305aaff76a4d9a72eb1d5a27ddba0ed6e88933cf9844",
+          "original_observation_clipped": false,
+          "excerpt_start": 661,
+          "excerpt_end": 1238,
+          "exact_excerpt": " in /opt/miniconda3/envs/testbed/lib/python3.10/site-packages (from requests) (2024.8.30)\r\nDownloading six-1.17.0-py2.py3-none-any.whl (11 kB)\r\nInstalling collected packages: six\r\nSuccessfully installed six-1.17.0\r\nWARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable.It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning."
+        },
+        {
+          "message_index": 10,
+          "observation_index": 11,
+          "tool_call": {
+            "index": 1,
+            "function": {
+              "arguments": "{\"command\": \"cd /testbed && python reproduce.py\"}",
+              "name": "bash"
+            },
+            "id": "toolu_01DtChGbQ49bfCwGDfdtUSz3",
+            "type": "function"
+          },
+          "original_observation_characters": 204,
+          "original_observation_sha256": "9738c28142c3141b6574f07c77a5604098b186911c2dcb057cf4cbbda6f2c324",
+          "original_observation_clipped": false,
+          "excerpt_start": 0,
+          "excerpt_end": 204,
+          "exact_excerpt": "OBSERVATION:\nTesting basic case...\r\nTesting long text...\r\nTesting text with special characters...\r\nTesting non-English text...\r\nTesting invalid language...\r\nExpected error: Language not supported: invalid"
+        }
+      ],
+      "utility_label": null,
+      "relation_training_label": null,
+      "target_state_provided": false
+    },
+    {
+      "row": 1183,
+      "message": 12,
+      "decision": "exclude",
+      "reason": "Internal mypy circular import of ExpandTypeVisitor; later attempts edit implementation symbols and imports. No environment-only prerequisite transition is established.",
+      "candidate_id": "swesmith-tool0-row1183-message12",
+      "dataset": "SWE-bench/SWE-smith-trajectories",
+      "hub_revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+      "parquet_file": "data/tool-00000-of-00008.parquet",
+      "parquet_sha256": "ac76e9efe75978f83d4daec98a55604587dd58b0f1509364893b8778cbf5b487",
+      "row_index": 1183,
+      "instance_id": "python__mypy.e93f06ce.pr_10036",
+      "traj_id": "python__mypy.e93f06ce.pr_10036.1cm1w3ln",
+      "repository": "python/mypy",
+      "upstream_revision": "e93f06ce",
+      "connected_family": "python/mypy@e93f06ce",
+      "raw_messages_sha256": "1ea67caf804c6b93043a478fefde09e461fd3380aa9f9a3461a10d3e9f20f923",
+      "source_record_sha256": "10b33f424f6a7a40132c4be8aabf4125aaa41da26b77bc58e15fe22213f1a881",
+      "evidence": [],
+      "utility_label": null,
+      "relation_training_label": null,
+      "target_state_provided": false
+    },
+    {
+      "row": 1216,
+      "message": 6,
+      "decision": "exclude",
+      "reason": "The runner explicitly prints Expected error for an invalid CLI case. The regex hit is not evidence of an unexpected environment prerequisite failure.",
+      "candidate_id": "swesmith-tool0-row1216-message6",
+      "dataset": "SWE-bench/SWE-smith-trajectories",
+      "hub_revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+      "parquet_file": "data/tool-00000-of-00008.parquet",
+      "parquet_sha256": "ac76e9efe75978f83d4daec98a55604587dd58b0f1509364893b8778cbf5b487",
+      "row_index": 1216,
+      "instance_id": "mozillazg__python-pinyin.e42dede5.pr_318",
+      "traj_id": "mozillazg__python-pinyin.e42dede5.pr_318.1cm1w3ln",
+      "repository": "mozillazg/python-pinyin",
+      "upstream_revision": "e42dede5",
+      "connected_family": "mozillazg/python-pinyin@e42dede5",
+      "raw_messages_sha256": "cabbff7aaf326de7e090244f402570e3009ad7680922a973b4e00fa0cc35f8cc",
+      "source_record_sha256": "c5ae857d3ad7d76ab562467b3507df249682527730579cac56cbfa7259891f23",
+      "evidence": [],
+      "utility_label": null,
+      "relation_training_label": null,
+      "target_state_provided": false
+    },
+    {
+      "row": 1224,
+      "message": 28,
+      "decision": "exclude",
+      "reason": "A tests.instantiate.Nested target cannot be resolved; later work edits Hydra instantiation implementation. No reusable installation repair is demonstrated.",
+      "candidate_id": "swesmith-tool0-row1224-message28",
+      "dataset": "SWE-bench/SWE-smith-trajectories",
+      "hub_revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+      "parquet_file": "data/tool-00000-of-00008.parquet",
+      "parquet_sha256": "ac76e9efe75978f83d4daec98a55604587dd58b0f1509364893b8778cbf5b487",
+      "row_index": 1224,
+      "instance_id": "facebookresearch__hydra.0f03eb60.pr_1915",
+      "traj_id": "facebookresearch__hydra.0f03eb60.pr_1915.1cm1w3ln",
+      "repository": "facebookresearch/hydra",
+      "upstream_revision": "0f03eb60",
+      "connected_family": "facebookresearch/hydra@0f03eb60",
+      "raw_messages_sha256": "ddd1cc06e2d8ed872fa5b013c7df8f9325f23724db10080f235055e3e322660c",
+      "source_record_sha256": "5e09f7b0bfbd64fa24aafd74945b38bae588965b77f29b56016e53fedd98da08",
+      "evidence": [],
+      "utility_label": null,
+      "relation_training_label": null,
+      "target_state_provided": false
+    },
+    {
+      "row": 1257,
+      "message": 4,
+      "decision": "exclude",
+      "reason": "Internal astroid PY313_PLUS symbol is missing and the follow-up adds it to source. This is not evidence that Python 3.13 or a package dependency needs installation.",
+      "candidate_id": "swesmith-tool0-row1257-message4",
+      "dataset": "SWE-bench/SWE-smith-trajectories",
+      "hub_revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+      "parquet_file": "data/tool-00000-of-00008.parquet",
+      "parquet_sha256": "ac76e9efe75978f83d4daec98a55604587dd58b0f1509364893b8778cbf5b487",
+      "row_index": 1257,
+      "instance_id": "pylint-dev__astroid.b114f6b5.pr_2328",
+      "traj_id": "pylint-dev__astroid.b114f6b5.pr_2328.1cm1w3ln",
+      "repository": "pylint-dev/astroid",
+      "upstream_revision": "b114f6b5",
+      "connected_family": "pylint-dev/astroid@b114f6b5",
+      "raw_messages_sha256": "c29063624438fe7b5a14823f1b3b4d75a99cfe7ab4fca6397bc98c9aec7a0c32",
+      "source_record_sha256": "defdbaf4ee594c8945321b9919795b0b5a26b8531f411b37a7bc284e23541f85",
+      "evidence": [],
+      "utility_label": null,
+      "relation_training_label": null,
+      "target_state_provided": false
+    },
+    {
+      "row": 1296,
+      "message": 12,
+      "decision": "exclude",
+      "reason": "Missing internal _version is followed by creating a fake version 0.0.0 file and application-source edits. No successful build/install procedure is observed.",
+      "candidate_id": "swesmith-tool0-row1296-message12",
+      "dataset": "SWE-bench/SWE-smith-trajectories",
+      "hub_revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+      "parquet_file": "data/tool-00000-of-00008.parquet",
+      "parquet_sha256": "ac76e9efe75978f83d4daec98a55604587dd58b0f1509364893b8778cbf5b487",
+      "row_index": 1296,
+      "instance_id": "john-kurkowski__tldextract.3d1bf184.pr_309",
+      "traj_id": "john-kurkowski__tldextract.3d1bf184.pr_309.1cm1w3ln",
+      "repository": "john-kurkowski/tldextract",
+      "upstream_revision": "3d1bf184",
+      "connected_family": "john-kurkowski/tldextract@3d1bf184",
+      "raw_messages_sha256": "c8b97d33b0a9621366fa2d2d4c218a60b39788dc85aa5e4a364439062ae92a69",
+      "source_record_sha256": "7eff55468540de96f678102a68bb526c07a643f8fbc30265af8a2791e763c29c",
+      "evidence": [],
+      "utility_label": null,
+      "relation_training_label": null,
+      "target_state_provided": false
+    },
+    {
+      "row": 1318,
+      "message": 12,
+      "decision": "exclude",
+      "reason": "Internal RetryBaseT import failure is followed by edits to retry, wait, and stop modules. It is an application repair case rather than an environment procedure.",
+      "candidate_id": "swesmith-tool0-row1318-message12",
+      "dataset": "SWE-bench/SWE-smith-trajectories",
+      "hub_revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+      "parquet_file": "data/tool-00000-of-00008.parquet",
+      "parquet_sha256": "ac76e9efe75978f83d4daec98a55604587dd58b0f1509364893b8778cbf5b487",
+      "row_index": 1318,
+      "instance_id": "jd__tenacity.0d40e76f.pr_384",
+      "traj_id": "jd__tenacity.0d40e76f.pr_384.1cm1w3ln",
+      "repository": "jd/tenacity",
+      "upstream_revision": "0d40e76f",
+      "connected_family": "jd/tenacity@0d40e76f",
+      "raw_messages_sha256": "b72a4e0e803b24570e5a70076db45762f3f8ae1a62d7269042275678b0ad8416",
+      "source_record_sha256": "a5991e009530bee9e71b5b1ce84487bafac3ab2ab4e945b935c03ce0b9fca9c8",
+      "evidence": [],
+      "utility_label": null,
+      "relation_training_label": null,
+      "target_state_provided": false
+    },
+    {
+      "row": 1342,
+      "message": 12,
+      "decision": "exclude",
+      "reason": "Internal create_tmp_repo_dir import is followed by edits to cookiecutter utilities and hooks. No prerequisite-only repair is shown.",
+      "candidate_id": "swesmith-tool0-row1342-message12",
+      "dataset": "SWE-bench/SWE-smith-trajectories",
+      "hub_revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+      "parquet_file": "data/tool-00000-of-00008.parquet",
+      "parquet_sha256": "ac76e9efe75978f83d4daec98a55604587dd58b0f1509364893b8778cbf5b487",
+      "row_index": 1342,
+      "instance_id": "cookiecutter__cookiecutter.b4451231.pr_1950",
+      "traj_id": "cookiecutter__cookiecutter.b4451231.pr_1950.1cm1w3ln",
+      "repository": "cookiecutter/cookiecutter",
+      "upstream_revision": "b4451231",
+      "connected_family": "cookiecutter/cookiecutter@b4451231",
+      "raw_messages_sha256": "1ab60e188df187551593387c3c16822c6cdba6b2c2dd40b48746a41cda7e1aea",
+      "source_record_sha256": "bd20d7828cf46fd1136dbc6d8fcec7be9910b82978057888f4f2358f8dac473a",
+      "evidence": [],
+      "utility_label": null,
+      "relation_training_label": null,
+      "target_state_provided": false
+    },
+    {
+      "row": 1349,
+      "message": 24,
+      "decision": "exclude",
+      "reason": "Internal positive_int symbol failure is followed by several implementation/import changes. It is not a demonstrated external dependency absence.",
+      "candidate_id": "swesmith-tool0-row1349-message24",
+      "dataset": "SWE-bench/SWE-smith-trajectories",
+      "hub_revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+      "parquet_file": "data/tool-00000-of-00008.parquet",
+      "parquet_sha256": "ac76e9efe75978f83d4daec98a55604587dd58b0f1509364893b8778cbf5b487",
+      "row_index": 1349,
+      "instance_id": "Cog-Creators__Red-DiscordBot.33e0eac7.pr_5969",
+      "traj_id": "Cog-Creators__Red-DiscordBot.33e0eac7.pr_5969.1cm1w3ln",
+      "repository": "Cog-Creators/Red-DiscordBot",
+      "upstream_revision": "33e0eac7",
+      "connected_family": "Cog-Creators/Red-DiscordBot@33e0eac7",
+      "raw_messages_sha256": "1aaac18897bc11bf9cab375ac00de28a99d0a601fa24eaedfa4c4a20433e1baa",
+      "source_record_sha256": "46600ae4dcf9346ab07c5ad6d2ce5cc1ed7c568fcdc533f61f26b22b2bf69e68",
+      "evidence": [],
+      "utility_label": null,
+      "relation_training_label": null,
+      "target_state_provided": false
+    },
+    {
+      "row": 1355,
+      "message": 28,
+      "decision": "exclude",
+      "reason": "Internal replace_in_file import failure is followed by edits to conan/tools/files/files.py. No environment-only remedy is established.",
+      "candidate_id": "swesmith-tool0-row1355-message28",
+      "dataset": "SWE-bench/SWE-smith-trajectories",
+      "hub_revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+      "parquet_file": "data/tool-00000-of-00008.parquet",
+      "parquet_sha256": "ac76e9efe75978f83d4daec98a55604587dd58b0f1509364893b8778cbf5b487",
+      "row_index": 1355,
+      "instance_id": "conan-io__conan.86f29e13.pr_16350",
+      "traj_id": "conan-io__conan.86f29e13.pr_16350.1cm1w3ln",
+      "repository": "conan-io/conan",
+      "upstream_revision": "86f29e13",
+      "connected_family": "conan-io/conan@86f29e13",
+      "raw_messages_sha256": "2b3af7827711f392f240735b25b0d91a05dfaa47b7e0a161321fc44d3457ba2a",
+      "source_record_sha256": "815afc93a6d0ffe7a2e3c61b4158f6652f68a601706f343e2f136c5fdddbd4e8",
+      "evidence": [],
+      "utility_label": null,
+      "relation_training_label": null,
+      "target_state_provided": false
+    },
+    {
+      "row": 1400,
+      "message": 12,
+      "decision": "exclude_with_failed_attempt_control",
+      "reason": "Editable typeguard installation succeeds but the identical reproduction still fails on internal CallMemo. Source edits follow. This explicitly limits transferring the successful pipdeptree editable-install procedure to every internal missing symbol.",
+      "evidence_windows": {
+        "12": null,
+        "14": "Successfully installed",
+        "16": null
+      },
+      "candidate_id": "swesmith-tool0-row1400-message12",
+      "dataset": "SWE-bench/SWE-smith-trajectories",
+      "hub_revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+      "parquet_file": "data/tool-00000-of-00008.parquet",
+      "parquet_sha256": "ac76e9efe75978f83d4daec98a55604587dd58b0f1509364893b8778cbf5b487",
+      "row_index": 1400,
+      "instance_id": "agronholm__typeguard.b6a7e438.pr_298",
+      "traj_id": "agronholm__typeguard.b6a7e438.pr_298.1cm1w3ln",
+      "repository": "agronholm/typeguard",
+      "upstream_revision": "b6a7e438",
+      "connected_family": "agronholm/typeguard@b6a7e438",
+      "raw_messages_sha256": "65c5937dda531dec1d53cb2141eac1e8621e7ae219e5ead692432176429b120f",
+      "source_record_sha256": "5e044beeeeb52705743f8c9ba08ea1fadb09f9167004df070f63d56517773697",
+      "evidence": [
+        {
+          "message_index": 12,
+          "observation_index": 13,
+          "tool_call": {
+            "index": 1,
+            "function": {
+              "arguments": "{\"command\": \"python /testbed/reproduce.py\"}",
+              "name": "bash"
+            },
+            "id": "toolu_01Xp9t9xyHHus9DjPfqGPskx",
+            "type": "function"
+          },
+          "original_observation_characters": 602,
+          "original_observation_sha256": "d8d2598511d59759e844e28482a7951bc74720d91b8f2426400121e1deface3e",
+          "original_observation_clipped": false,
+          "excerpt_start": 0,
+          "excerpt_end": 602,
+          "exact_excerpt": "OBSERVATION:\nTraceback (most recent call last):\r\n  File \"/testbed/reproduce.py\", line 1, in <module>\r\n    from typeguard import typechecked\r\n  File \"/testbed/src/typeguard/__init__.py\", line 12, in <module>\r\n    from ._decorators import typechecked as typechecked\r\n  File \"/testbed/src/typeguard/_decorators.py\", line 15, in <module>\r\n    from ._functions import TypeCheckFailCallback\r\n  File \"/testbed/src/typeguard/_functions.py\", line 16, in <module>\r\n    from ._memo import CallMemo, TypeCheckMemo\r\nImportError: cannot import name 'CallMemo' from 'typeguard._memo' (/testbed/src/typeguard/_memo.py)"
+        },
+        {
+          "message_index": 14,
+          "observation_index": 15,
+          "tool_call": {
+            "index": 1,
+            "function": {
+              "arguments": "{\"command\": \"pip install -e /testbed\"}",
+              "name": "bash"
+            },
+            "id": "toolu_01934F5a5ZML1DJ3qvt5HSck",
+            "type": "function"
+          },
+          "original_observation_characters": 1504,
+          "original_observation_sha256": "14c3fdacb80018385533ae2f5983d7628fcb0e70705d3c7115c539437107a70f",
+          "original_observation_clipped": false,
+          "excerpt_start": 918,
+          "excerpt_end": 1504,
+          "exact_excerpt": "  Attempting uninstall: typeguard\r\n    Found existing installation: typeguard 0.0.post1\r\n    Uninstalling typeguard-0.0.post1:\r\n      Successfully uninstalled typeguard-0.0.post1\r\nSuccessfully installed typeguard-0.0.post2\r\nWARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable.It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning."
+        },
+        {
+          "message_index": 16,
+          "observation_index": 17,
+          "tool_call": {
+            "index": 1,
+            "function": {
+              "arguments": "{\"command\": \"python /testbed/reproduce.py\"}",
+              "name": "bash"
+            },
+            "id": "toolu_01N1fbSpR8rBEG6udMmYFy9A",
+            "type": "function"
+          },
+          "original_observation_characters": 602,
+          "original_observation_sha256": "d8d2598511d59759e844e28482a7951bc74720d91b8f2426400121e1deface3e",
+          "original_observation_clipped": false,
+          "excerpt_start": 0,
+          "excerpt_end": 602,
+          "exact_excerpt": "OBSERVATION:\nTraceback (most recent call last):\r\n  File \"/testbed/reproduce.py\", line 1, in <module>\r\n    from typeguard import typechecked\r\n  File \"/testbed/src/typeguard/__init__.py\", line 12, in <module>\r\n    from ._decorators import typechecked as typechecked\r\n  File \"/testbed/src/typeguard/_decorators.py\", line 15, in <module>\r\n    from ._functions import TypeCheckFailCallback\r\n  File \"/testbed/src/typeguard/_functions.py\", line 16, in <module>\r\n    from ._memo import CallMemo, TypeCheckMemo\r\nImportError: cannot import name 'CallMemo' from 'typeguard._memo' (/testbed/src/typeguard/_memo.py)"
+        }
+      ],
+      "utility_label": null,
+      "relation_training_label": null,
+      "target_state_provided": false
+    }
+  ]
+}

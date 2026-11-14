@@ -1,0 +1,3329 @@
+{
+  "status": "frozen_before_transfer_generation",
+  "frozen_utc": "2026-11-08T02:02:33.506740+00:00",
+  "primary": "harrier-value-731",
+  "secondary_from_original_dev": "semantic-policy-731",
+  "source_sha256": {
+    "original_evaluation": "ab976576e051ccc71d40357aa87b26e8267989e4e4f623829b559ed71b7efcf8",
+    "original_evaluation_audit": "867691d5c48b83917b6909183f71aeed09d40991aee650096b92b8f17580673a",
+    "original_jobs": "53075469747d9702d8e03df9431e4ead235c7eb50075f555c2a8361c8306af3b",
+    "transfer_jobs": "9ec92d928aaa75fa4a26fdb19f488ee834e6673547e0832f0774933a1dc09be8",
+    "transfer_protocol": "d01084e4e6e435580ba987cec8d066bfbaf4d6473753385069d797125cb1c17b",
+    "judge": "ad52dd3b570740dcf866e367646440074df1594a6bec9dc6e30151eb854c8bd7",
+    "interpreter": "4add93d87c54e0d375276f0dcdda25f7d5f3d25ee9511c41bff79daa5273733e",
+    "serialization_wrapper": "b3501e75c9c08cebab2e5a620ae74b9a2957008cff747d8ee0e5ae01f1ce57d3",
+    "policy-selection.json": "f196a594fea988db066b09c297a8538a3da160d3116ef0adb249fa4d92dbda34",
+    "relation-selection.json": "03be3ddce76cd3ef7034f6d32159702a4ffd8fc3dab0e674217539c54d01d4ab",
+    "semantic-selection.json": "b9397d2575955bec608765accac2a78eb23ec36e2d6fc10795b6291d20026c47",
+    "development-policy-choice.json": "f804a92b8df8bbbfa36305fde2409ba700677898543fcfb861573ab7cb43107f"
+  },
+  "identical_base_messages": 280,
+  "policies": [
+    {
+      "name": "harrier-value-731",
+      "kind": "learned-utility",
+      "choices": [
+        {
+          "state_id": "networkx-add-edge-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-add-edge-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-false-mutate",
+          "action": "copied_receiver_procedure"
+        },
+        {
+          "state_id": "networkx-relabel-false-preserve",
+          "action": "copied_receiver_procedure"
+        },
+        {
+          "state_id": "networkx-relabel-true-mutate",
+          "action": "copied_receiver_procedure"
+        },
+        {
+          "state_id": "networkx-relabel-true-preserve",
+          "action": "copied_receiver_procedure"
+        },
+        {
+          "state_id": "networkx-reverse-mutate",
+          "action": "copied_receiver_full"
+        },
+        {
+          "state_id": "networkx-reverse-preserve",
+          "action": "copied_receiver_full"
+        },
+        {
+          "state_id": "networkx-unobserved-relabel-mutate",
+          "action": "copied_receiver_procedure"
+        },
+        {
+          "state_id": "networkx-unobserved-relabel-preserve",
+          "action": "copied_receiver_procedure"
+        },
+        {
+          "state_id": "sklearn-normalize-false-mutate",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "sklearn-normalize-false-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-normalize-true-mutate",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "sklearn-normalize-true-preserve",
+          "action": "returned_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-float-false-mutate",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-float-false-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-float-true-mutate",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-float-true-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-int-false-mutate",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-int-false-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-int-true-mutate",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-int-true-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-unobserved-normalize-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-normalize-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-float-mutate",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-float-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-int-mutate",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-int-preserve",
+          "action": "copied_returned_procedure"
+        }
+      ]
+    },
+    {
+      "name": "harrier-value-732",
+      "kind": "learned-utility",
+      "choices": [
+        {
+          "state_id": "networkx-add-edge-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-add-edge-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-false-mutate",
+          "action": "copied_receiver_procedure"
+        },
+        {
+          "state_id": "networkx-relabel-false-preserve",
+          "action": "copied_receiver_procedure"
+        },
+        {
+          "state_id": "networkx-relabel-true-mutate",
+          "action": "copied_receiver_procedure"
+        },
+        {
+          "state_id": "networkx-relabel-true-preserve",
+          "action": "copied_receiver_procedure"
+        },
+        {
+          "state_id": "networkx-reverse-mutate",
+          "action": "copied_receiver_full"
+        },
+        {
+          "state_id": "networkx-reverse-preserve",
+          "action": "copied_receiver_full"
+        },
+        {
+          "state_id": "networkx-unobserved-relabel-mutate",
+          "action": "copied_receiver_procedure"
+        },
+        {
+          "state_id": "networkx-unobserved-relabel-preserve",
+          "action": "copied_receiver_procedure"
+        },
+        {
+          "state_id": "sklearn-normalize-false-mutate",
+          "action": "returned_full"
+        },
+        {
+          "state_id": "sklearn-normalize-false-preserve",
+          "action": "copied_returned_full"
+        },
+        {
+          "state_id": "sklearn-normalize-true-mutate",
+          "action": "returned_procedure"
+        },
+        {
+          "state_id": "sklearn-normalize-true-preserve",
+          "action": "copied_returned_full"
+        },
+        {
+          "state_id": "sklearn-scale-float-false-mutate",
+          "action": "copied_receiver_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-float-false-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-float-true-mutate",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-float-true-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-int-false-mutate",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-int-false-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-int-true-mutate",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-int-true-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-unobserved-normalize-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-normalize-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-float-mutate",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-float-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-int-mutate",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-int-preserve",
+          "action": "copied_returned_procedure"
+        }
+      ]
+    },
+    {
+      "name": "harrier-preference-731",
+      "kind": "learned-utility",
+      "choices": [
+        {
+          "state_id": "networkx-add-edge-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-add-edge-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-false-preserve",
+          "action": "copied_receiver_procedure"
+        },
+        {
+          "state_id": "networkx-relabel-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-reverse-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-reverse-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "networkx-unobserved-relabel-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-unobserved-relabel-preserve",
+          "action": "copied_receiver_procedure"
+        },
+        {
+          "state_id": "sklearn-normalize-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-normalize-false-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-normalize-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-normalize-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-false-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-float-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-normalize-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-normalize-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-float-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-float-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-int-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-int-preserve",
+          "action": "copied_returned_procedure"
+        }
+      ]
+    },
+    {
+      "name": "harrier-preference-732",
+      "kind": "learned-utility",
+      "choices": [
+        {
+          "state_id": "networkx-add-edge-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-add-edge-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-false-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "networkx-relabel-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-true-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "networkx-reverse-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-reverse-preserve",
+          "action": "copied_returned_full"
+        },
+        {
+          "state_id": "networkx-unobserved-relabel-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-unobserved-relabel-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-normalize-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-normalize-false-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-normalize-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-normalize-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-normalize-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-normalize-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-float-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-float-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-int-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-int-preserve",
+          "action": "copied_returned_procedure"
+        }
+      ]
+    },
+    {
+      "name": "harrier-policy-731",
+      "kind": "learned-utility",
+      "choices": [
+        {
+          "state_id": "networkx-add-edge-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-add-edge-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-reverse-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-reverse-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-unobserved-relabel-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-unobserved-relabel-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-normalize-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-normalize-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-normalize-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-normalize-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-normalize-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-normalize-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-float-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-float-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-int-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-int-preserve",
+          "action": "none"
+        }
+      ]
+    },
+    {
+      "name": "harrier-policy-732",
+      "kind": "learned-utility",
+      "choices": [
+        {
+          "state_id": "networkx-add-edge-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-add-edge-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-reverse-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-reverse-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-unobserved-relabel-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-unobserved-relabel-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-normalize-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-normalize-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-normalize-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-normalize-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-normalize-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-normalize-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-float-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-float-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-int-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-int-preserve",
+          "action": "none"
+        }
+      ]
+    },
+    {
+      "name": "harrier-native-value-731",
+      "kind": "learned-utility",
+      "choices": [
+        {
+          "state_id": "networkx-add-edge-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-add-edge-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-false-mutate",
+          "action": "copied_receiver_procedure"
+        },
+        {
+          "state_id": "networkx-relabel-false-preserve",
+          "action": "copied_receiver_procedure"
+        },
+        {
+          "state_id": "networkx-relabel-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-reverse-mutate",
+          "action": "copied_receiver_procedure"
+        },
+        {
+          "state_id": "networkx-reverse-preserve",
+          "action": "copied_receiver_full"
+        },
+        {
+          "state_id": "networkx-unobserved-relabel-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-unobserved-relabel-preserve",
+          "action": "copied_receiver_procedure"
+        },
+        {
+          "state_id": "sklearn-normalize-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-normalize-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-normalize-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-normalize-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-false-mutate",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-float-false-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-float-true-mutate",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-float-true-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-int-false-mutate",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-int-false-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-int-true-mutate",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-int-true-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-unobserved-normalize-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-normalize-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-float-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-float-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-int-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-int-preserve",
+          "action": "none"
+        }
+      ]
+    },
+    {
+      "name": "harrier-native-value-732",
+      "kind": "learned-utility",
+      "choices": [
+        {
+          "state_id": "networkx-add-edge-mutate",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "networkx-add-edge-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-false-mutate",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "networkx-relabel-false-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "networkx-relabel-true-mutate",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "networkx-relabel-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-reverse-mutate",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "networkx-reverse-preserve",
+          "action": "copied_receiver_full"
+        },
+        {
+          "state_id": "networkx-unobserved-relabel-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-unobserved-relabel-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-normalize-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-normalize-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-normalize-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-normalize-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-false-mutate",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-float-false-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-float-true-mutate",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-float-true-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-int-false-mutate",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-int-false-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-int-true-mutate",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-int-true-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-unobserved-normalize-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-normalize-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-float-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-float-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-int-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-int-preserve",
+          "action": "none"
+        }
+      ]
+    },
+    {
+      "name": "harrier-native-preference-731",
+      "kind": "learned-utility",
+      "choices": [
+        {
+          "state_id": "networkx-add-edge-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-add-edge-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "networkx-relabel-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-false-preserve",
+          "action": "copied_receiver_procedure"
+        },
+        {
+          "state_id": "networkx-relabel-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-true-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "networkx-reverse-mutate",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "networkx-reverse-preserve",
+          "action": "copied_receiver_procedure"
+        },
+        {
+          "state_id": "networkx-unobserved-relabel-mutate",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "networkx-unobserved-relabel-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-normalize-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-normalize-false-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-normalize-true-mutate",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "sklearn-normalize-true-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-float-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-true-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-int-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-true-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-unobserved-normalize-mutate",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "sklearn-unobserved-normalize-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-float-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-float-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-int-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-int-preserve",
+          "action": "copied_returned_procedure"
+        }
+      ]
+    },
+    {
+      "name": "harrier-native-preference-732",
+      "kind": "learned-utility",
+      "choices": [
+        {
+          "state_id": "networkx-add-edge-mutate",
+          "action": "returned_procedure"
+        },
+        {
+          "state_id": "networkx-add-edge-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "networkx-relabel-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-false-preserve",
+          "action": "copied_receiver_procedure"
+        },
+        {
+          "state_id": "networkx-relabel-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-true-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "networkx-reverse-mutate",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "networkx-reverse-preserve",
+          "action": "copied_receiver_procedure"
+        },
+        {
+          "state_id": "networkx-unobserved-relabel-mutate",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "networkx-unobserved-relabel-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-normalize-false-mutate",
+          "action": "returned_procedure"
+        },
+        {
+          "state_id": "sklearn-normalize-false-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-normalize-true-mutate",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "sklearn-normalize-true-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-float-false-mutate",
+          "action": "returned_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-float-false-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-float-true-mutate",
+          "action": "returned_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-float-true-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-int-false-mutate",
+          "action": "returned_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-int-false-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-int-true-mutate",
+          "action": "returned_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-int-true-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-unobserved-normalize-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-normalize-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-float-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-float-preserve",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-int-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-int-preserve",
+          "action": "receiver_procedure"
+        }
+      ]
+    },
+    {
+      "name": "harrier-native-policy-731",
+      "kind": "learned-utility",
+      "choices": [
+        {
+          "state_id": "networkx-add-edge-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-add-edge-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-reverse-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-reverse-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-unobserved-relabel-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-unobserved-relabel-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-normalize-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-normalize-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-normalize-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-normalize-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-normalize-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-normalize-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-float-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-float-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-int-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-int-preserve",
+          "action": "none"
+        }
+      ]
+    },
+    {
+      "name": "harrier-native-policy-732",
+      "kind": "learned-utility",
+      "choices": [
+        {
+          "state_id": "networkx-add-edge-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-add-edge-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-reverse-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-reverse-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-unobserved-relabel-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-unobserved-relabel-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-normalize-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-normalize-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-normalize-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-normalize-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-normalize-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-normalize-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-float-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-float-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-int-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-int-preserve",
+          "action": "none"
+        }
+      ]
+    },
+    {
+      "name": "state-only-value-731",
+      "kind": "learned-utility",
+      "choices": [
+        {
+          "state_id": "networkx-add-edge-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-add-edge-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-reverse-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-reverse-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-unobserved-relabel-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-unobserved-relabel-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-normalize-false-mutate",
+          "action": "returned_procedure"
+        },
+        {
+          "state_id": "sklearn-normalize-false-preserve",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "sklearn-normalize-true-mutate",
+          "action": "returned_procedure"
+        },
+        {
+          "state_id": "sklearn-normalize-true-preserve",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-float-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-normalize-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-normalize-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-float-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-float-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-int-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-int-preserve",
+          "action": "none"
+        }
+      ]
+    },
+    {
+      "name": "state-only-value-732",
+      "kind": "learned-utility",
+      "choices": [
+        {
+          "state_id": "networkx-add-edge-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-add-edge-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-reverse-mutate",
+          "action": "copied_receiver_full"
+        },
+        {
+          "state_id": "networkx-reverse-preserve",
+          "action": "receiver_full"
+        },
+        {
+          "state_id": "networkx-unobserved-relabel-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-unobserved-relabel-preserve",
+          "action": "returned_full"
+        },
+        {
+          "state_id": "sklearn-normalize-false-mutate",
+          "action": "copied_returned_full"
+        },
+        {
+          "state_id": "sklearn-normalize-false-preserve",
+          "action": "copied_receiver_full"
+        },
+        {
+          "state_id": "sklearn-normalize-true-mutate",
+          "action": "copied_returned_full"
+        },
+        {
+          "state_id": "sklearn-normalize-true-preserve",
+          "action": "copied_returned_full"
+        },
+        {
+          "state_id": "sklearn-scale-float-false-mutate",
+          "action": "receiver_full"
+        },
+        {
+          "state_id": "sklearn-scale-float-false-preserve",
+          "action": "returned_full"
+        },
+        {
+          "state_id": "sklearn-scale-float-true-mutate",
+          "action": "copied_returned_full"
+        },
+        {
+          "state_id": "sklearn-scale-float-true-preserve",
+          "action": "returned_full"
+        },
+        {
+          "state_id": "sklearn-scale-int-false-mutate",
+          "action": "copied_receiver_full"
+        },
+        {
+          "state_id": "sklearn-scale-int-false-preserve",
+          "action": "copied_returned_full"
+        },
+        {
+          "state_id": "sklearn-scale-int-true-mutate",
+          "action": "receiver_full"
+        },
+        {
+          "state_id": "sklearn-scale-int-true-preserve",
+          "action": "returned_full"
+        },
+        {
+          "state_id": "sklearn-unobserved-normalize-mutate",
+          "action": "returned_full"
+        },
+        {
+          "state_id": "sklearn-unobserved-normalize-preserve",
+          "action": "returned_full"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-float-mutate",
+          "action": "returned_full"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-float-preserve",
+          "action": "copied_receiver_full"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-int-mutate",
+          "action": "copied_returned_full"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-int-preserve",
+          "action": "copied_returned_full"
+        }
+      ]
+    },
+    {
+      "name": "tree",
+      "kind": "learned-utility",
+      "choices": [
+        {
+          "state_id": "networkx-add-edge-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-add-edge-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-reverse-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-reverse-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-unobserved-relabel-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-unobserved-relabel-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-normalize-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-normalize-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-normalize-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-normalize-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-normalize-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-normalize-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-float-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-float-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-int-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-int-preserve",
+          "action": "none"
+        }
+      ]
+    },
+    {
+      "name": "lexical-ridge",
+      "kind": "learned-utility",
+      "choices": [
+        {
+          "state_id": "networkx-add-edge-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-add-edge-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-reverse-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-reverse-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-unobserved-relabel-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-unobserved-relabel-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-normalize-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-normalize-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-normalize-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-normalize-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-normalize-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-normalize-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-float-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-float-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-int-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-int-preserve",
+          "action": "none"
+        }
+      ]
+    },
+    {
+      "name": "semantic-linear",
+      "kind": "learned-utility",
+      "choices": [
+        {
+          "state_id": "networkx-add-edge-mutate",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "networkx-add-edge-preserve",
+          "action": "returned_procedure"
+        },
+        {
+          "state_id": "networkx-relabel-false-mutate",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "networkx-relabel-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-true-mutate",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "networkx-relabel-true-preserve",
+          "action": "returned_procedure"
+        },
+        {
+          "state_id": "networkx-reverse-mutate",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "networkx-reverse-preserve",
+          "action": "returned_procedure"
+        },
+        {
+          "state_id": "networkx-unobserved-relabel-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-unobserved-relabel-preserve",
+          "action": "returned_procedure"
+        },
+        {
+          "state_id": "sklearn-normalize-false-mutate",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "sklearn-normalize-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-normalize-true-mutate",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "sklearn-normalize-true-preserve",
+          "action": "returned_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-float-false-mutate",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-float-false-preserve",
+          "action": "returned_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-float-true-mutate",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-float-true-preserve",
+          "action": "returned_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-int-false-mutate",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-int-false-preserve",
+          "action": "returned_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-int-true-mutate",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-int-true-preserve",
+          "action": "returned_procedure"
+        },
+        {
+          "state_id": "sklearn-unobserved-normalize-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-normalize-preserve",
+          "action": "returned_procedure"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-float-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-float-preserve",
+          "action": "returned_procedure"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-int-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-int-preserve",
+          "action": "returned_procedure"
+        }
+      ]
+    },
+    {
+      "name": "semantic-value-731",
+      "kind": "learned-utility",
+      "choices": [
+        {
+          "state_id": "networkx-add-edge-mutate",
+          "action": "receiver_full"
+        },
+        {
+          "state_id": "networkx-add-edge-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-false-mutate",
+          "action": "receiver_full"
+        },
+        {
+          "state_id": "networkx-relabel-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-true-mutate",
+          "action": "receiver_full"
+        },
+        {
+          "state_id": "networkx-relabel-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-reverse-mutate",
+          "action": "receiver_full"
+        },
+        {
+          "state_id": "networkx-reverse-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-unobserved-relabel-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-unobserved-relabel-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-normalize-false-mutate",
+          "action": "receiver_full"
+        },
+        {
+          "state_id": "sklearn-normalize-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-normalize-true-mutate",
+          "action": "receiver_full"
+        },
+        {
+          "state_id": "sklearn-normalize-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-false-mutate",
+          "action": "receiver_full"
+        },
+        {
+          "state_id": "sklearn-scale-float-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-true-mutate",
+          "action": "receiver_full"
+        },
+        {
+          "state_id": "sklearn-scale-float-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-false-mutate",
+          "action": "receiver_full"
+        },
+        {
+          "state_id": "sklearn-scale-int-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-true-mutate",
+          "action": "receiver_full"
+        },
+        {
+          "state_id": "sklearn-scale-int-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-normalize-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-normalize-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-float-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-float-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-int-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-int-preserve",
+          "action": "copied_returned_procedure"
+        }
+      ]
+    },
+    {
+      "name": "semantic-value-732",
+      "kind": "learned-utility",
+      "choices": [
+        {
+          "state_id": "networkx-add-edge-mutate",
+          "action": "receiver_full"
+        },
+        {
+          "state_id": "networkx-add-edge-preserve",
+          "action": "returned_procedure"
+        },
+        {
+          "state_id": "networkx-relabel-false-mutate",
+          "action": "receiver_full"
+        },
+        {
+          "state_id": "networkx-relabel-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-true-mutate",
+          "action": "receiver_full"
+        },
+        {
+          "state_id": "networkx-relabel-true-preserve",
+          "action": "returned_procedure"
+        },
+        {
+          "state_id": "networkx-reverse-mutate",
+          "action": "receiver_full"
+        },
+        {
+          "state_id": "networkx-reverse-preserve",
+          "action": "returned_procedure"
+        },
+        {
+          "state_id": "networkx-unobserved-relabel-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-unobserved-relabel-preserve",
+          "action": "returned_full"
+        },
+        {
+          "state_id": "sklearn-normalize-false-mutate",
+          "action": "receiver_full"
+        },
+        {
+          "state_id": "sklearn-normalize-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-normalize-true-mutate",
+          "action": "receiver_full"
+        },
+        {
+          "state_id": "sklearn-normalize-true-preserve",
+          "action": "returned_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-float-false-mutate",
+          "action": "receiver_full"
+        },
+        {
+          "state_id": "sklearn-scale-float-false-preserve",
+          "action": "returned_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-float-true-mutate",
+          "action": "receiver_full"
+        },
+        {
+          "state_id": "sklearn-scale-float-true-preserve",
+          "action": "returned_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-int-false-mutate",
+          "action": "receiver_full"
+        },
+        {
+          "state_id": "sklearn-scale-int-false-preserve",
+          "action": "returned_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-int-true-mutate",
+          "action": "receiver_full"
+        },
+        {
+          "state_id": "sklearn-scale-int-true-preserve",
+          "action": "returned_procedure"
+        },
+        {
+          "state_id": "sklearn-unobserved-normalize-mutate",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-unobserved-normalize-preserve",
+          "action": "returned_full"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-float-mutate",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-float-preserve",
+          "action": "returned_full"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-int-mutate",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-int-preserve",
+          "action": "returned_full"
+        }
+      ]
+    },
+    {
+      "name": "semantic-policy-731",
+      "kind": "learned-utility",
+      "choices": [
+        {
+          "state_id": "networkx-add-edge-mutate",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "networkx-add-edge-preserve",
+          "action": "copied_receiver_procedure"
+        },
+        {
+          "state_id": "networkx-relabel-false-mutate",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "networkx-relabel-false-preserve",
+          "action": "returned_procedure"
+        },
+        {
+          "state_id": "networkx-relabel-true-mutate",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "networkx-relabel-true-preserve",
+          "action": "copied_receiver_procedure"
+        },
+        {
+          "state_id": "networkx-reverse-mutate",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "networkx-reverse-preserve",
+          "action": "copied_receiver_procedure"
+        },
+        {
+          "state_id": "networkx-unobserved-relabel-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-unobserved-relabel-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-normalize-false-mutate",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "sklearn-normalize-false-preserve",
+          "action": "returned_procedure"
+        },
+        {
+          "state_id": "sklearn-normalize-true-mutate",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "sklearn-normalize-true-preserve",
+          "action": "copied_receiver_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-float-false-mutate",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-float-false-preserve",
+          "action": "copied_receiver_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-float-true-mutate",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-float-true-preserve",
+          "action": "copied_receiver_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-int-false-mutate",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-int-false-preserve",
+          "action": "copied_receiver_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-int-true-mutate",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-int-true-preserve",
+          "action": "copied_receiver_procedure"
+        },
+        {
+          "state_id": "sklearn-unobserved-normalize-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-normalize-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-float-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-float-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-int-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-int-preserve",
+          "action": "copied_returned_procedure"
+        }
+      ]
+    },
+    {
+      "name": "semantic-policy-732",
+      "kind": "learned-utility",
+      "choices": [
+        {
+          "state_id": "networkx-add-edge-mutate",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "networkx-add-edge-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "networkx-relabel-false-mutate",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "networkx-relabel-false-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "networkx-relabel-true-mutate",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "networkx-relabel-true-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "networkx-reverse-mutate",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "networkx-reverse-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "networkx-unobserved-relabel-mutate",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "networkx-unobserved-relabel-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-normalize-false-mutate",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "sklearn-normalize-false-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-normalize-true-mutate",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "sklearn-normalize-true-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-float-false-mutate",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-float-false-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-float-true-mutate",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-float-true-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-int-false-mutate",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-int-false-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-int-true-mutate",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-int-true-preserve",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-unobserved-normalize-mutate",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-unobserved-normalize-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-float-mutate",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-float-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-int-mutate",
+          "action": "copied_returned_procedure"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-int-preserve",
+          "action": "none"
+        }
+      ]
+    },
+    {
+      "name": "relation-lora-joint",
+      "kind": "applicability-policy",
+      "choices": [
+        {
+          "state_id": "networkx-add-edge-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-add-edge-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-reverse-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-reverse-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-unobserved-relabel-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-unobserved-relabel-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-normalize-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-normalize-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-normalize-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-normalize-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-normalize-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-normalize-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-float-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-float-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-int-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-int-preserve",
+          "action": "none"
+        }
+      ]
+    },
+    {
+      "name": "relation-lora-auxiliary",
+      "kind": "applicability-policy",
+      "choices": [
+        {
+          "state_id": "networkx-add-edge-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-add-edge-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-reverse-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-reverse-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-unobserved-relabel-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-unobserved-relabel-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-normalize-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-normalize-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-normalize-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-normalize-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-normalize-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-normalize-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-float-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-float-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-int-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-int-preserve",
+          "action": "none"
+        }
+      ]
+    },
+    {
+      "name": "relation-lora-concept",
+      "kind": "applicability-policy",
+      "choices": [
+        {
+          "state_id": "networkx-add-edge-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-add-edge-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-reverse-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-reverse-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-unobserved-relabel-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-unobserved-relabel-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-normalize-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-normalize-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-normalize-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-normalize-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-normalize-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-normalize-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-float-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-float-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-int-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-int-preserve",
+          "action": "none"
+        }
+      ]
+    },
+    {
+      "name": "relation-lexical-syntax-tree",
+      "kind": "applicability-policy",
+      "choices": [
+        {
+          "state_id": "networkx-add-edge-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-add-edge-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-reverse-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-reverse-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-unobserved-relabel-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-unobserved-relabel-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-normalize-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-normalize-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-normalize-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-normalize-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-normalize-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-normalize-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-float-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-float-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-int-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-int-preserve",
+          "action": "none"
+        }
+      ]
+    },
+    {
+      "name": "always-none",
+      "kind": "fixed-policy",
+      "choices": [
+        {
+          "state_id": "networkx-add-edge-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-add-edge-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-relabel-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-reverse-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-reverse-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-unobserved-relabel-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "networkx-unobserved-relabel-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-normalize-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-normalize-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-normalize-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-normalize-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-float-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-false-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-false-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-true-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-scale-int-true-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-normalize-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-normalize-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-float-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-float-preserve",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-int-mutate",
+          "action": "none"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-int-preserve",
+          "action": "none"
+        }
+      ]
+    },
+    {
+      "name": "always-all-full",
+      "kind": "fixed-policy",
+      "choices": [
+        {
+          "state_id": "networkx-add-edge-mutate",
+          "action": "all_full"
+        },
+        {
+          "state_id": "networkx-add-edge-preserve",
+          "action": "all_full"
+        },
+        {
+          "state_id": "networkx-relabel-false-mutate",
+          "action": "all_full"
+        },
+        {
+          "state_id": "networkx-relabel-false-preserve",
+          "action": "all_full"
+        },
+        {
+          "state_id": "networkx-relabel-true-mutate",
+          "action": "all_full"
+        },
+        {
+          "state_id": "networkx-relabel-true-preserve",
+          "action": "all_full"
+        },
+        {
+          "state_id": "networkx-reverse-mutate",
+          "action": "all_full"
+        },
+        {
+          "state_id": "networkx-reverse-preserve",
+          "action": "all_full"
+        },
+        {
+          "state_id": "networkx-unobserved-relabel-mutate",
+          "action": "all_full"
+        },
+        {
+          "state_id": "networkx-unobserved-relabel-preserve",
+          "action": "all_full"
+        },
+        {
+          "state_id": "sklearn-normalize-false-mutate",
+          "action": "all_full"
+        },
+        {
+          "state_id": "sklearn-normalize-false-preserve",
+          "action": "all_full"
+        },
+        {
+          "state_id": "sklearn-normalize-true-mutate",
+          "action": "all_full"
+        },
+        {
+          "state_id": "sklearn-normalize-true-preserve",
+          "action": "all_full"
+        },
+        {
+          "state_id": "sklearn-scale-float-false-mutate",
+          "action": "all_full"
+        },
+        {
+          "state_id": "sklearn-scale-float-false-preserve",
+          "action": "all_full"
+        },
+        {
+          "state_id": "sklearn-scale-float-true-mutate",
+          "action": "all_full"
+        },
+        {
+          "state_id": "sklearn-scale-float-true-preserve",
+          "action": "all_full"
+        },
+        {
+          "state_id": "sklearn-scale-int-false-mutate",
+          "action": "all_full"
+        },
+        {
+          "state_id": "sklearn-scale-int-false-preserve",
+          "action": "all_full"
+        },
+        {
+          "state_id": "sklearn-scale-int-true-mutate",
+          "action": "all_full"
+        },
+        {
+          "state_id": "sklearn-scale-int-true-preserve",
+          "action": "all_full"
+        },
+        {
+          "state_id": "sklearn-unobserved-normalize-mutate",
+          "action": "all_full"
+        },
+        {
+          "state_id": "sklearn-unobserved-normalize-preserve",
+          "action": "all_full"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-float-mutate",
+          "action": "all_full"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-float-preserve",
+          "action": "all_full"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-int-mutate",
+          "action": "all_full"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-int-preserve",
+          "action": "all_full"
+        }
+      ]
+    },
+    {
+      "name": "fixed-from-dev",
+      "kind": "fixed-policy",
+      "choices": [
+        {
+          "state_id": "networkx-add-edge-mutate",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "networkx-add-edge-preserve",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "networkx-relabel-false-mutate",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "networkx-relabel-false-preserve",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "networkx-relabel-true-mutate",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "networkx-relabel-true-preserve",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "networkx-reverse-mutate",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "networkx-reverse-preserve",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "networkx-unobserved-relabel-mutate",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "networkx-unobserved-relabel-preserve",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "sklearn-normalize-false-mutate",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "sklearn-normalize-false-preserve",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "sklearn-normalize-true-mutate",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "sklearn-normalize-true-preserve",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-float-false-mutate",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-float-false-preserve",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-float-true-mutate",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-float-true-preserve",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-int-false-mutate",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-int-false-preserve",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-int-true-mutate",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "sklearn-scale-int-true-preserve",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "sklearn-unobserved-normalize-mutate",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "sklearn-unobserved-normalize-preserve",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-float-mutate",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-float-preserve",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-int-mutate",
+          "action": "receiver_procedure"
+        },
+        {
+          "state_id": "sklearn-unobserved-scale-int-preserve",
+          "action": "receiver_procedure"
+        }
+      ]
+    }
+  ],
+  "selection_on_transfer_outcomes": false,
+  "interpretation": "Same states and frozen actions under a different worker. All remaining policies are exploratory; no test-winner selection."
+}

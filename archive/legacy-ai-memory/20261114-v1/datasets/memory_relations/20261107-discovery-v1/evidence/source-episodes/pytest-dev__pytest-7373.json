@@ -1,0 +1,145 @@
+{
+  "source_instance_id": "pytest-dev__pytest-7373",
+  "source_run": "20261105T140548Z-bdd50d0b",
+  "public_task": {
+    "instance_id": "pytest-dev__pytest-7373",
+    "repo": "pytest-dev/pytest",
+    "base_commit": "7b77fc086aab8b3a8ebc890200371884555eea1e",
+    "version": "5.4",
+    "created_at": "2020-06-15T17:12:08Z",
+    "problem_statement": "Incorrect caching of skipif/xfail string condition evaluation\nVersion: pytest 5.4.3, current master\r\n\r\npytest caches the evaluation of the string in e.g. `@pytest.mark.skipif(\"sys.platform == 'win32'\")`. The caching key is only the string itself (see `cached_eval` in `_pytest/mark/evaluate.py`). However, the evaluation also depends on the item's globals, so the caching can lead to incorrect results. Example:\r\n\r\n```py\r\n# test_module_1.py\r\nimport pytest\r\n\r\nskip = True\r\n\r\n@pytest.mark.skipif(\"skip\")\r\ndef test_should_skip():\r\n    assert False\r\n```\r\n\r\n```py\r\n# test_module_2.py\r\nimport pytest\r\n\r\nskip = False\r\n\r\n@pytest.mark.skipif(\"skip\")\r\ndef test_should_not_skip():\r\n    assert False\r\n```\r\n\r\nRunning `pytest test_module_1.py test_module_2.py`.\r\n\r\nExpected: `test_should_skip` is skipped, `test_should_not_skip` is not skipped.\r\n\r\nActual: both are skipped.\r\n\r\n---\r\n\r\nI think the most appropriate fix is to simply remove the caching, which I don't think is necessary really, and inline `cached_eval` into `MarkEvaluator._istrue`.\n"
+  },
+  "official_resolved": true,
+  "evaluation_complete": true,
+  "focused_command_index": 6,
+  "commands": [
+    {
+      "agent_command_index": 2,
+      "jsonl_line": 5,
+      "event": {
+        "started_at": "2026-11-05T14:06:00.122013+00:00",
+        "phase": "agent",
+        "action": {
+          "command": "cd /testbed && sed -n '1,260p' src/_pytest/mark/evaluate.py && grep -R \"cached_eval\\|MarkEvaluator\" -n src/_pytest",
+          "tool_call_id": "call_wO7a645sZ9gHa0mf0X0E5Zi3"
+        },
+        "cwd": "/testbed",
+        "outcome": "completed",
+        "output": {
+          "output": "import os\nimport platform\nimport sys\nimport traceback\nfrom typing import Any\nfrom typing import Dict\nfrom typing import List\nfrom typing import Optional\n\nfrom ..outcomes import fail\nfrom ..outcomes import TEST_OUTCOME\nfrom .structures import Mark\nfrom _pytest.config import Config\nfrom _pytest.nodes import Item\nfrom _pytest.store import StoreKey\n\n\nevalcache_key = StoreKey[Dict[str, Any]]()\n\n\ndef cached_eval(config: Config, expr: str, d: Dict[str, object]) -> Any:\n    default = {}  # type: Dict[str, object]\n    evalcache = config._store.setdefault(evalcache_key, default)\n    try:\n        return evalcache[expr]\n    except KeyError:\n        import _pytest._code\n\n        exprcode = _pytest._code.compile(expr, mode=\"eval\")\n        evalcache[expr] = x = eval(exprcode, d)\n        return x\n\n\nclass MarkEvaluator:\n    def __init__(self, item: Item, name: str) -> None:\n        self.item = item\n        self._marks = None  # type: Optional[List[Mark]]\n        self._mark = None  # type: Optional[Mark]\n        self._mark_name = name\n\n    def __bool__(self) -> bool:\n        # don't cache here to prevent staleness\n        return bool(self._get_marks())\n\n    def wasvalid(self) -> bool:\n        return not hasattr(self, \"exc\")\n\n    def _get_marks(self) -> List[Mark]:\n        return list(self.item.iter_markers(name=self._mark_name))\n\n    def invalidraise(self, exc) -> Optional[bool]:\n        raises = self.get(\"raises\")\n        if not raises:\n            return None\n        return not isinstance(exc, raises)\n\n    def istrue(self) -> bool:\n        try:\n            return self._istrue()\n        except TEST_OUTCOME:\n            self.exc = sys.exc_info()\n            if isinstance(self.exc[1], SyntaxError):\n                # TODO: Investigate why SyntaxError.offset is Optional, and if it can be None here.\n                assert self.exc[1].offset is not None\n                msg = [\" \" * (self.exc[1].offset + 4) + \"^\"]\n                msg.append(\"SyntaxError: invalid syntax\")\n            else:\n                msg = traceback.format_exception_only(*self.exc[:2])\n            fail(\n                \"Error evaluating %r expression\\n\"\n                \"    %s\\n\"\n                \"%s\" % (self._mark_name, self.expr, \"\\n\".join(msg)),\n                pytrace=False,\n            )\n\n    def _getglobals(self) -> Dict[str, object]:\n        d = {\"os\": os, \"sys\": sys, \"platform\": platform, \"config\": self.item.config}\n        if hasattr(self.item, \"obj\"):\n            d.update(self.item.obj.__globals__)  # type: ignore[attr-defined] # noqa: F821\n        return d\n\n    def _istrue(self) -> bool:\n        if hasattr(self, \"result\"):\n            result = getattr(self, \"result\")  # type: bool\n            return result\n        self._marks = self._get_marks()\n\n        if self._marks:\n            self.result = False\n            for mark in self._marks:\n                self._mark = mark\n                if \"condition\" not in mark.kwargs:\n                    args = mark.args\n                else:\n                    args = (mark.kwargs[\"condition\"],)\n\n                for expr in args:\n                    self.expr = expr\n                    if isinstance(expr, str):\n                        d = self._getglobals()\n                        result = cached_eval(self.item.config, expr, d)\n                    else:\n                        if \"reason\" not in mark.kwargs:\n                            # XXX better be checked at collection time\n                            msg = (\n                                \"you need to specify reason=STRING \"\n                                \"when using booleans as conditions.\"\n                            )\n                            fail(msg)\n                        result = bool(expr)\n                    if result:\n                        self.result = True\n                        self.reason = mark.kwargs.get(\"reason\", None)\n                        self.expr = expr\n                        return self.result\n\n                if not args:\n                    self.result = True\n                    self.reason = mark.kwargs.get(\"reason\", None)\n                    return self.result\n        return False\n\n    def get(self, attr, default=None):\n        if self._mark is None:\n            return default\n        return self._mark.kwargs.get(attr, default)\n\n    def getexplanation(self):\n        expl = getattr(self, \"reason\", None) or self.get(\"reason\", None)\n        if not expl:\n            if not hasattr(self, \"expr\"):\n                return \"\"\n            else:\n                return \"condition: \" + str(self.expr)\n        return expl\nsrc/_pytest/mark/evaluate.py:21:def cached_eval(config: Config, expr: str, d: Dict[str, object]) -> Any:\nsrc/_pytest/mark/evaluate.py:34:class MarkEvaluator:\nsrc/_pytest/mark/evaluate.py:101:                        result = cached_eval(self.item.config, expr, d)\nsrc/_pytest/skipping.py:8:from _pytest.mark.evaluate import MarkEvaluator\nsrc/_pytest/skipping.py:20:evalxfail_key = StoreKey[MarkEvaluator]()\nsrc/_pytest/skipping.py:87:    eval_skipif = MarkEvaluator(item, \"skipif\")\nsrc/_pytest/skipping.py:101:    item._store[evalxfail_key] = MarkEvaluator(item, \"xfail\")\n",
+          "returncode": 0,
+          "exception_info": ""
+        },
+        "finished_at": "2026-11-05T14:06:00.288470+00:00",
+        "duration_seconds": 0.16645793099996808
+      }
+    },
+    {
+      "agent_command_index": 3,
+      "jsonl_line": 6,
+      "event": {
+        "started_at": "2026-11-05T14:06:05.869306+00:00",
+        "phase": "agent",
+        "action": {
+          "command": "cd /testbed && python - <<'PY'\nfrom pathlib import Path\np = Path('src/_pytest/mark/evaluate.py')\ns = p.read_text()\ns = s.replace('from typing import Any\\n', '')\ns = s.replace('from _pytest.config import Config\\n', '')\ns = s.replace('from _pytest.store import StoreKey\\n', '')\ns = s.replace('\\n\\nevalcache_key = StoreKey[Dict[str, Any]]()\\n\\n\\ndef cached_eval(config: Config, expr: str, d: Dict[str, object]) -> Any:\\n    default = {}  # type: Dict[str, object]\\n    evalcache = config._store.setdefault(evalcache_key, default)\\n    try:\\n        return evalcache[expr]\\n    except KeyError:\\n        import _pytest._code\\n\\n        exprcode = _pytest._code.compile(expr, mode=\"eval\")\\n        evalcache[expr] = x = eval(exprcode, d)\\n        return x\\n', '')\ns = s.replace('                        result = cached_eval(self.item.config, expr, d)\\n', '                        import _pytest._code\\n\\n                        exprcode = _pytest._code.compile(expr, mode=\"eval\")\\n                        result = eval(exprcode, d)\\n')\np.write_text(s)\nPY\nsed -n '1,145p' src/_pytest/mark/evaluate.py && git diff -- src/_pytest/mark/evaluate.py",
+          "tool_call_id": "call_dOPTxFF8cCNwl29s86SZcGFD"
+        },
+        "cwd": "/testbed",
+        "outcome": "completed",
+        "output": {
+          "output": "import os\nimport platform\nimport sys\nimport traceback\nfrom typing import Dict\nfrom typing import List\nfrom typing import Optional\n\nfrom ..outcomes import fail\nfrom ..outcomes import TEST_OUTCOME\nfrom .structures import Mark\nfrom _pytest.nodes import Item\n\n\nclass MarkEvaluator:\n    def __init__(self, item: Item, name: str) -> None:\n        self.item = item\n        self._marks = None  # type: Optional[List[Mark]]\n        self._mark = None  # type: Optional[Mark]\n        self._mark_name = name\n\n    def __bool__(self) -> bool:\n        # don't cache here to prevent staleness\n        return bool(self._get_marks())\n\n    def wasvalid(self) -> bool:\n        return not hasattr(self, \"exc\")\n\n    def _get_marks(self) -> List[Mark]:\n        return list(self.item.iter_markers(name=self._mark_name))\n\n    def invalidraise(self, exc) -> Optional[bool]:\n        raises = self.get(\"raises\")\n        if not raises:\n            return None\n        return not isinstance(exc, raises)\n\n    def istrue(self) -> bool:\n        try:\n            return self._istrue()\n        except TEST_OUTCOME:\n            self.exc = sys.exc_info()\n            if isinstance(self.exc[1], SyntaxError):\n                # TODO: Investigate why SyntaxError.offset is Optional, and if it can be None here.\n                assert self.exc[1].offset is not None\n                msg = [\" \" * (self.exc[1].offset + 4) + \"^\"]\n                msg.append(\"SyntaxError: invalid syntax\")\n            else:\n                msg = traceback.format_exception_only(*self.exc[:2])\n            fail(\n                \"Error evaluating %r expression\\n\"\n                \"    %s\\n\"\n                \"%s\" % (self._mark_name, self.expr, \"\\n\".join(msg)),\n                pytrace=False,\n            )\n\n    def _getglobals(self) -> Dict[str, object]:\n        d = {\"os\": os, \"sys\": sys, \"platform\": platform, \"config\": self.item.config}\n        if hasattr(self.item, \"obj\"):\n            d.update(self.item.obj.__globals__)  # type: ignore[attr-defined] # noqa: F821\n        return d\n\n    def _istrue(self) -> bool:\n        if hasattr(self, \"result\"):\n            result = getattr(self, \"result\")  # type: bool\n            return result\n        self._marks = self._get_marks()\n\n        if self._marks:\n            self.result = False\n            for mark in self._marks:\n                self._mark = mark\n                if \"condition\" not in mark.kwargs:\n                    args = mark.args\n                else:\n                    args = (mark.kwargs[\"condition\"],)\n\n                for expr in args:\n                    self.expr = expr\n                    if isinstance(expr, str):\n                        d = self._getglobals()\n                        import _pytest._code\n\n                        exprcode = _pytest._code.compile(expr, mode=\"eval\")\n                        result = eval(exprcode, d)\n                    else:\n                        if \"reason\" not in mark.kwargs:\n                            # XXX better be checked at collection time\n                            msg = (\n                                \"you need to specify reason=STRING \"\n                                \"when using booleans as conditions.\"\n                            )\n                            fail(msg)\n                        result = bool(expr)\n                    if result:\n                        self.result = True\n                        self.reason = mark.kwargs.get(\"reason\", None)\n                        self.expr = expr\n                        return self.result\n\n                if not args:\n                    self.result = True\n                    self.reason = mark.kwargs.get(\"reason\", None)\n                    return self.result\n        return False\n\n    def get(self, attr, default=None):\n        if self._mark is None:\n            return default\n        return self._mark.kwargs.get(attr, default)\n\n    def getexplanation(self):\n        expl = getattr(self, \"reason\", None) or self.get(\"reason\", None)\n        if not expl:\n            if not hasattr(self, \"expr\"):\n                return \"\"\n            else:\n                return \"condition: \" + str(self.expr)\n        return expl\ndiff --git a/src/_pytest/mark/evaluate.py b/src/_pytest/mark/evaluate.py\nindex 759191668..6ac7b646b 100644\n--- a/src/_pytest/mark/evaluate.py\n+++ b/src/_pytest/mark/evaluate.py\n@@ -2,7 +2,6 @@ import os\n import platform\n import sys\n import traceback\n-from typing import Any\n from typing import Dict\n from typing import List\n from typing import Optional\n@@ -10,25 +9,7 @@ from typing import Optional\n from ..outcomes import fail\n from ..outcomes import TEST_OUTCOME\n from .structures import Mark\n-from _pytest.config import Config\n from _pytest.nodes import Item\n-from _pytest.store import StoreKey\n-\n-\n-evalcache_key = StoreKey[Dict[str, Any]]()\n-\n-\n-def cached_eval(config: Config, expr: str, d: Dict[str, object]) -> Any:\n-    default = {}  # type: Dict[str, object]\n-    evalcache = config._store.setdefault(evalcache_key, default)\n-    try:\n-        return evalcache[expr]\n-    except KeyError:\n-        import _pytest._code\n-\n-        exprcode = _pytest._code.compile(expr, mode=\"eval\")\n-        evalcache[expr] = x = eval(exprcode, d)\n-        return x\n \n \n class MarkEvaluator:\n@@ -98,7 +79,10 @@ class MarkEvaluator:\n                     self.expr = expr\n                     if isinstance(expr, str):\n                         d = self._getglobals()\n-                        result = cached_eval(self.item.config, expr, d)\n+                        import _pytest._code\n+\n+                        exprcode = _pytest._code.compile(expr, mode=\"eval\")\n+                        result = eval(exprcode, d)\n                     else:\n                         if \"reason\" not in mark.kwargs:\n                             # XXX better be checked at collection time\n",
+          "returncode": 0,
+          "exception_info": ""
+        },
+        "finished_at": "2026-11-05T14:06:06.347970+00:00",
+        "duration_seconds": 0.47865549300149723
+      }
+    },
+    {
+      "agent_command_index": 4,
+      "jsonl_line": 7,
+      "event": {
+        "started_at": "2026-11-05T14:06:11.858534+00:00",
+        "phase": "agent",
+        "action": {
+          "command": "cd /testbed && tmp=$(mktemp -d) && cat > \"$tmp/test_module_1.py\" <<'PY'\nimport pytest\nskip = True\n@pytest.mark.skipif(\"skip\")\ndef test_should_skip():\n    assert False\nPY\ncat > \"$tmp/test_module_2.py\" <<'PY'\nimport pytest\nskip = False\n@pytest.mark.skipif(\"skip\")\ndef test_should_not_skip():\n    assert False\nPY\nPYTHONPATH=/testbed/src python -m pytest -q \"$tmp/test_module_1.py\" \"$tmp/test_module_2.py\"; result=$?; rm -rf \"$tmp\"; echo \"pytest exit: $result\"; test \"$result\" -eq 1",
+          "tool_call_id": "call_OVLhppQfkg41qHdhoJVrh6qn"
+        },
+        "cwd": "/testbed",
+        "outcome": "completed",
+        "output": {
+          "output": "sF                                                                       [100%]\n=================================== FAILURES ===================================\n_____________________________ test_should_not_skip _____________________________\n\n    @pytest.mark.skipif(\"skip\")\n    def test_should_not_skip():\n>       assert False\nE       assert False\n\n/tmp/tmp.en5MrpIgRY/test_module_2.py:5: AssertionError\n=========================== short test summary info ============================\nFAILED ../tmp/tmp.en5MrpIgRY/test_module_2.py::test_should_not_skip - assert ...\n1 failed, 1 skipped in 0.04s\npytest exit: 1\n",
+          "returncode": 0,
+          "exception_info": ""
+        },
+        "finished_at": "2026-11-05T14:06:12.861267+00:00",
+        "duration_seconds": 1.0027370259995223
+      }
+    },
+    {
+      "agent_command_index": 6,
+      "jsonl_line": 9,
+      "event": {
+        "started_at": "2026-11-05T14:06:16.851759+00:00",
+        "phase": "agent",
+        "action": {
+          "command": "cd /testbed && PYTHONPATH=src python -m pytest -q testing/test_skipping.py",
+          "tool_call_id": "call_OPqbycTxfVQm8MLqNfXl3EA6"
+        },
+        "cwd": "/testbed",
+        "outcome": "completed",
+        "output": {
+          "output": "........................................................................ [ 94%]\n....                                                                     [100%]\n76 passed in 4.23s\n",
+          "returncode": 0,
+          "exception_info": ""
+        },
+        "finished_at": "2026-11-05T14:06:22.474418+00:00",
+        "duration_seconds": 5.622727514999497
+      }
+    },
+    {
+      "agent_command_index": 7,
+      "jsonl_line": 10,
+      "event": {
+        "started_at": "2026-11-05T14:06:22.485147+00:00",
+        "phase": "agent",
+        "action": {
+          "command": "cd /testbed && python -m compileall -q src/_pytest/mark/evaluate.py && git diff --check",
+          "tool_call_id": "call_GIincskPWq58lwAeM1jn6hwe"
+        },
+        "cwd": "/testbed",
+        "outcome": "completed",
+        "output": {
+          "output": "",
+          "returncode": 0,
+          "exception_info": ""
+        },
+        "finished_at": "2026-11-05T14:06:22.793873+00:00",
+        "duration_seconds": 0.30868291099977796
+      }
+    }
+  ],
+  "original_files": [
+    {
+      "path": "runs/20261105T140548Z-bdd50d0b/manifest.json",
+      "sha256": "9d603c2df99dc01cf58ce829f5e2d6297dce317adccbb12c1bc5713abc72e57f"
+    },
+    {
+      "path": "runs/20261105T140548Z-bdd50d0b/summary.json",
+      "sha256": "254c5b05606e5cb8310a6f2afbf278bc766e168bfeb4b3eca79848898b08dfb2"
+    },
+    {
+      "path": "runs/20261105T140548Z-bdd50d0b/task.json",
+      "sha256": "54b97c6ba8099c06c81e1b37ffbfaa77d3a4dff972781cb84704a816ff7607cd"
+    },
+    {
+      "path": "runs/20261105T140548Z-bdd50d0b/commands.jsonl",
+      "sha256": "3c153f96668ae1cfb3b32120f0bf9546024eb4565c3de4958575157f69286f2d"
+    },
+    {
+      "path": "runs/20261105T140548Z-bdd50d0b/official_report.json",
+      "sha256": "99e80c549e693e7cd1f3586a0e06325b762c710587e70e59fb4f1559ad9825d3"
+    }
+  ],
+  "metadata_note": "Source-local observations and official source outcome are separate. For11019 explicit failures establish unresolved status despite parser gaps; source raw manifest stays unchanged."
+}

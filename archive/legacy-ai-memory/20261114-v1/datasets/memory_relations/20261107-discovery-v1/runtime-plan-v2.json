@@ -1,0 +1,310 @@
+{
+  "at": "2026-11-07T10:37:00.851718+00:00",
+  "model_api_calls": 0,
+  "jobs": [
+    {
+      "probe_id": "django-init-missing",
+      "context_task": "django__django-16041",
+      "mechanism": "initialization",
+      "fixture": {
+        "mode": "missing"
+      },
+      "interpreter": "/opt/miniconda3/envs/testbed/bin/python",
+      "program": "from django import forms\nclass Example(forms.Form):\n    value=forms.CharField()\nrendered=str(Example())\nresult={'rendered':bool(rendered)}\n"
+    },
+    {
+      "probe_id": "django-init-settings_only",
+      "context_task": "django__django-16041",
+      "mechanism": "initialization",
+      "fixture": {
+        "mode": "settings_only"
+      },
+      "interpreter": "/opt/miniconda3/envs/testbed/bin/python",
+      "program": "from django.conf import settings\nsettings.configure(SECRET_KEY='test',USE_I18N=True)\nfrom django import forms\nclass Example(forms.Form):\n    value=forms.CharField()\nrendered=str(Example())\nresult={'rendered':bool(rendered)}\n"
+    },
+    {
+      "probe_id": "django-init-full",
+      "context_task": "django__django-16041",
+      "mechanism": "initialization",
+      "fixture": {
+        "mode": "full"
+      },
+      "interpreter": "/opt/miniconda3/envs/testbed/bin/python",
+      "program": "import os,sys\nsys.path.insert(0,'/testbed/tests')\nos.environ['DJANGO_SETTINGS_MODULE']='test_sqlite'\nimport django\ndjango.setup()\nfrom django import forms\nclass Example(forms.Form):\n    value=forms.CharField()\nrendered=str(Example())\nresult={'rendered':bool(rendered)}\n"
+    },
+    {
+      "probe_id": "label-encoder-fitted_empty",
+      "context_task": "scikit-learn__scikit-learn-12471",
+      "mechanism": "validation_order",
+      "fixture": {
+        "mode": "fitted_empty"
+      },
+      "interpreter": "/opt/miniconda3/envs/testbed/bin/python",
+      "program": "from sklearn.preprocessing import LabelEncoder\nimport numpy as np\nencoder=LabelEncoder()\nencoder.fit(['a','b'])\nvalues=[]\noutput=encoder.transform(values)\nresult={'values':output.tolist(),'dtype':str(output.dtype),'size':int(output.size)}\n"
+    },
+    {
+      "probe_id": "label-encoder-fitted_nonempty",
+      "context_task": "scikit-learn__scikit-learn-12471",
+      "mechanism": "validation_order",
+      "fixture": {
+        "mode": "fitted_nonempty"
+      },
+      "interpreter": "/opt/miniconda3/envs/testbed/bin/python",
+      "program": "from sklearn.preprocessing import LabelEncoder\nimport numpy as np\nencoder=LabelEncoder()\nencoder.fit(['a','b'])\nvalues=['a']\noutput=encoder.transform(values)\nresult={'values':output.tolist(),'dtype':str(output.dtype),'size':int(output.size)}\n"
+    },
+    {
+      "probe_id": "label-encoder-unfitted_empty",
+      "context_task": "scikit-learn__scikit-learn-12471",
+      "mechanism": "validation_order",
+      "fixture": {
+        "mode": "unfitted_empty"
+      },
+      "interpreter": "/opt/miniconda3/envs/testbed/bin/python",
+      "program": "from sklearn.preprocessing import LabelEncoder\nimport numpy as np\nencoder=LabelEncoder()\nvalues=[]\noutput=encoder.transform(values)\nresult={'values':output.tolist(),'dtype':str(output.dtype),'size':int(output.size)}\n"
+    },
+    {
+      "probe_id": "label-encoder-invalid_shape",
+      "context_task": "scikit-learn__scikit-learn-12471",
+      "mechanism": "validation_order",
+      "fixture": {
+        "mode": "invalid_shape"
+      },
+      "interpreter": "/opt/miniconda3/envs/testbed/bin/python",
+      "program": "from sklearn.preprocessing import LabelEncoder\nimport numpy as np\nencoder=LabelEncoder()\nencoder.fit(['a','b'])\nvalues=np.empty((1,0))\noutput=encoder.transform(values)\nresult={'values':output.tolist(),'dtype':str(output.dtype),'size':int(output.size)}\n"
+    },
+    {
+      "probe_id": "label-encoder-unseen_label",
+      "context_task": "scikit-learn__scikit-learn-12471",
+      "mechanism": "validation_order",
+      "fixture": {
+        "mode": "unseen_label"
+      },
+      "interpreter": "/opt/miniconda3/envs/testbed/bin/python",
+      "program": "from sklearn.preprocessing import LabelEncoder\nimport numpy as np\nencoder=LabelEncoder()\nencoder.fit(['a','b'])\nvalues=['missing']\noutput=encoder.transform(values)\nresult={'values':output.tolist(),'dtype':str(output.dtype),'size':int(output.size)}\n"
+    },
+    {
+      "probe_id": "pvlib-zero-guard-zero",
+      "context_task": "pvlib__pvlib-python-1707",
+      "mechanism": "numeric_boundary",
+      "fixture": {
+        "ghi": "zero"
+      },
+      "interpreter": "/opt/miniconda3/envs/testbed/bin/python",
+      "program": "from pvlib.irradiance import reindl\nimport numpy as np\nghi=0.0\noutput=reindl(30,180,100,0,ghi,1360,30,180)\nresult={'output_repr':repr(output),'is_finite':bool(np.isfinite(output)),'is_zero':bool(output==0),'ghi_is_exact_zero':bool(ghi==0)}\n"
+    },
+    {
+      "probe_id": "pvlib-zero-guard-nan",
+      "context_task": "pvlib__pvlib-python-1707",
+      "mechanism": "numeric_boundary",
+      "fixture": {
+        "ghi": "nan"
+      },
+      "interpreter": "/opt/miniconda3/envs/testbed/bin/python",
+      "program": "from pvlib.irradiance import reindl\nimport numpy as np\nghi=float('nan')\noutput=reindl(30,180,100,0,ghi,1360,30,180)\nresult={'output_repr':repr(output),'is_finite':bool(np.isfinite(output)),'is_zero':bool(output==0),'ghi_is_exact_zero':bool(ghi==0)}\n"
+    },
+    {
+      "probe_id": "pvlib-zero-guard-positive",
+      "context_task": "pvlib__pvlib-python-1707",
+      "mechanism": "numeric_boundary",
+      "fixture": {
+        "ghi": "positive"
+      },
+      "interpreter": "/opt/miniconda3/envs/testbed/bin/python",
+      "program": "from pvlib.irradiance import reindl\nimport numpy as np\nghi=800.0\noutput=reindl(30,180,100,0,ghi,1360,30,180)\nresult={'output_repr':repr(output),'is_finite':bool(np.isfinite(output)),'is_zero':bool(output==0),'ghi_is_exact_zero':bool(ghi==0)}\n"
+    },
+    {
+      "probe_id": "pytest-namespace-different",
+      "context_task": "pytest-dev__pytest-7432",
+      "mechanism": "namespace_dependency",
+      "fixture": {
+        "module_a": {
+          "should_skip": true
+        },
+        "module_b": {
+          "should_skip": false
+        },
+        "expression": "should_skip"
+      },
+      "interpreter": "/opt/miniconda3/envs/testbed/bin/python",
+      "program": "a=True\nb=False\nleft=eval('should_skip',{'should_skip':a})\nright=eval('should_skip',{'should_skip':b})\nresult={'module_a_value':left,'module_b_value':right,'same_result':left==right}\n"
+    },
+    {
+      "probe_id": "pytest-namespace-same_true",
+      "context_task": "pytest-dev__pytest-7432",
+      "mechanism": "namespace_dependency",
+      "fixture": {
+        "module_a": {
+          "should_skip": true
+        },
+        "module_b": {
+          "should_skip": true
+        },
+        "expression": "should_skip"
+      },
+      "interpreter": "/opt/miniconda3/envs/testbed/bin/python",
+      "program": "a=True\nb=True\nleft=eval('should_skip',{'should_skip':a})\nright=eval('should_skip',{'should_skip':b})\nresult={'module_a_value':left,'module_b_value':right,'same_result':left==right}\n"
+    },
+    {
+      "probe_id": "pytest-namespace-same_false",
+      "context_task": "pytest-dev__pytest-7432",
+      "mechanism": "namespace_dependency",
+      "fixture": {
+        "module_a": {
+          "should_skip": false
+        },
+        "module_b": {
+          "should_skip": false
+        },
+        "expression": "should_skip"
+      },
+      "interpreter": "/opt/miniconda3/envs/testbed/bin/python",
+      "program": "a=False\nb=False\nleft=eval('should_skip',{'should_skip':a})\nright=eval('should_skip',{'should_skip':b})\nresult={'module_a_value':left,'module_b_value':right,'same_result':left==right}\n"
+    },
+    {
+      "probe_id": "sphinx-alias-known",
+      "context_task": "sphinx-doc__sphinx-8627",
+      "mechanism": "namespace_resolution",
+      "fixture": {
+        "annotation": "known",
+        "namespace_present": true
+      },
+      "interpreter": "/opt/miniconda3/envs/testbed/bin/python",
+      "program": "import types\nfrom sphinx.util.typing import get_type_hints\nclass Example:pass\nExample.__annotations__={'value':'Alias'}\nnamespace={'Alias':str}\nannotations=get_type_hints(Example,globalns=namespace)\nvalue=annotations['value']\nresult={'value_repr':repr(value),'resolved_to_str_type':value is str,'returned_unresolved_string':isinstance(value,str)}\n"
+    },
+    {
+      "probe_id": "sphinx-alias-missing",
+      "context_task": "sphinx-doc__sphinx-8627",
+      "mechanism": "namespace_resolution",
+      "fixture": {
+        "annotation": "missing",
+        "namespace_present": false
+      },
+      "interpreter": "/opt/miniconda3/envs/testbed/bin/python",
+      "program": "import types\nfrom sphinx.util.typing import get_type_hints\nclass Example:pass\nExample.__annotations__={'value':'Alias'}\nnamespace={}\nannotations=get_type_hints(Example,globalns=namespace)\nvalue=annotations['value']\nresult={'value_repr':repr(value),'resolved_to_str_type':value is str,'returned_unresolved_string':isinstance(value,str)}\n"
+    },
+    {
+      "probe_id": "sphinx-alias-qualified_known",
+      "context_task": "sphinx-doc__sphinx-8627",
+      "mechanism": "namespace_resolution",
+      "fixture": {
+        "annotation": "qualified_known",
+        "namespace_present": true
+      },
+      "interpreter": "/opt/miniconda3/envs/testbed/bin/python",
+      "program": "import types\nfrom sphinx.util.typing import get_type_hints\nclass Example:pass\nExample.__annotations__={'value':'example.Alias'}\nnamespace={'example':types.SimpleNamespace(Alias=str)}\nannotations=get_type_hints(Example,globalns=namespace)\nvalue=annotations['value']\nresult={'value_repr':repr(value),'resolved_to_str_type':value is str,'returned_unresolved_string':isinstance(value,str)}\n"
+    },
+    {
+      "probe_id": "sphinx-config-none",
+      "context_task": "sphinx-doc__sphinx-8627",
+      "mechanism": "configuration_guard",
+      "fixture": {
+        "autodoc_typehints": "none"
+      },
+      "interpreter": "/opt/miniconda3/envs/testbed/bin/python",
+      "program": "import inspect\nfrom sphinx.util.inspect import stringify_signature\ndef example(value:int)->str:return str(value)\nsetting='none'\nshow=setting not in ('none','description')\noutput=stringify_signature(inspect.signature(example),show_annotation=show)\nresult={'output':output,'suppression_guard_active':not show}\n"
+    },
+    {
+      "probe_id": "sphinx-config-description",
+      "context_task": "sphinx-doc__sphinx-8627",
+      "mechanism": "configuration_guard",
+      "fixture": {
+        "autodoc_typehints": "description"
+      },
+      "interpreter": "/opt/miniconda3/envs/testbed/bin/python",
+      "program": "import inspect\nfrom sphinx.util.inspect import stringify_signature\ndef example(value:int)->str:return str(value)\nsetting='description'\nshow=setting not in ('none','description')\noutput=stringify_signature(inspect.signature(example),show_annotation=show)\nresult={'output':output,'suppression_guard_active':not show}\n"
+    },
+    {
+      "probe_id": "sphinx-config-signature",
+      "context_task": "sphinx-doc__sphinx-8627",
+      "mechanism": "configuration_guard",
+      "fixture": {
+        "autodoc_typehints": "signature"
+      },
+      "interpreter": "/opt/miniconda3/envs/testbed/bin/python",
+      "program": "import inspect\nfrom sphinx.util.inspect import stringify_signature\ndef example(value:int)->str:return str(value)\nsetting='signature'\nshow=setting not in ('none','description')\noutput=stringify_signature(inspect.signature(example),show_annotation=show)\nresult={'output':output,'suppression_guard_active':not show}\n"
+    },
+    {
+      "probe_id": "sympy-dimension-ratio",
+      "context_task": "sympy__sympy-24213",
+      "mechanism": "physical_dimension_guard",
+      "fixture": {
+        "expression": "units.second/(units.ohm*units.farad)"
+      },
+      "interpreter": "/opt/miniconda3/envs/testbed/bin/python",
+      "program": "from sympy.physics import units\nfrom sympy.physics.units.systems.si import SI\nexpr=units.second/(units.ohm*units.farad)\nfactor,dimension=SI._collect_factor_and_dimension(expr)\nresult={'factor':str(factor),'dimension':str(dimension),'dimensionless':bool(SI.get_dimension_system().is_dimensionless(dimension))}\n"
+    },
+    {
+      "probe_id": "sympy-dimension-second",
+      "context_task": "sympy__sympy-24213",
+      "mechanism": "physical_dimension_guard",
+      "fixture": {
+        "expression": "units.second"
+      },
+      "interpreter": "/opt/miniconda3/envs/testbed/bin/python",
+      "program": "from sympy.physics import units\nfrom sympy.physics.units.systems.si import SI\nexpr=units.second\nfactor,dimension=SI._collect_factor_and_dimension(expr)\nresult={'factor':str(factor),'dimension':str(dimension),'dimensionless':bool(SI.get_dimension_system().is_dimensionless(dimension))}\n"
+    },
+    {
+      "probe_id": "sympy-dimension-velocity",
+      "context_task": "sympy__sympy-24213",
+      "mechanism": "physical_dimension_guard",
+      "fixture": {
+        "expression": "units.meter/units.second"
+      },
+      "interpreter": "/opt/miniconda3/envs/testbed/bin/python",
+      "program": "from sympy.physics import units\nfrom sympy.physics.units.systems.si import SI\nexpr=units.meter/units.second\nfactor,dimension=SI._collect_factor_and_dimension(expr)\nresult={'factor':str(factor),'dimension':str(dimension),'dimensionless':bool(SI.get_dimension_system().is_dimensionless(dimension))}\n"
+    },
+    {
+      "probe_id": "sklearn-alias-15512",
+      "context_task": "scikit-learn__scikit-learn-15512",
+      "mechanism": "compatibility_alias",
+      "fixture": {
+        "module": "sklearn.preprocessing.label"
+      },
+      "interpreter": "/opt/miniconda3/envs/testbed/bin/python",
+      "program": "import inspect,importlib,os\nfrom sklearn.preprocessing import LabelEncoder\nlegacy=importlib.import_module('sklearn.preprocessing.label')\nresult={'canonical_module':LabelEncoder.__module__,'definition_file':inspect.getfile(LabelEncoder),'legacy_module_file':getattr(legacy,'__file__',None),'legacy_alias_same_class':legacy.LabelEncoder is LabelEncoder}\n"
+    },
+    {
+      "probe_id": "sklearn-alias-15535",
+      "context_task": "scikit-learn__scikit-learn-15535",
+      "mechanism": "compatibility_alias",
+      "fixture": {
+        "module": "sklearn.preprocessing.label"
+      },
+      "interpreter": "/opt/miniconda3/envs/testbed/bin/python",
+      "program": "import inspect,importlib,os\nfrom sklearn.preprocessing import LabelEncoder\nlegacy=importlib.import_module('sklearn.preprocessing.label')\nresult={'canonical_module':LabelEncoder.__module__,'definition_file':inspect.getfile(LabelEncoder),'legacy_module_file':getattr(legacy,'__file__',None),'legacy_alias_same_class':legacy.LabelEncoder is LabelEncoder}\n"
+    },
+    {
+      "probe_id": "pvlib-zero-guard-consistent_zero",
+      "context_task": "pvlib__pvlib-python-1707",
+      "mechanism": "numeric_boundary",
+      "fixture": {
+        "ghi": "zero",
+        "dhi": 0,
+        "followup": "Contrast with zeroGHI/nonzeroDHI after the first observed result."
+      },
+      "interpreter": "/opt/miniconda3/envs/testbed/bin/python",
+      "program": "from pvlib.irradiance import reindl\nimport numpy as np\nghi=0.0\noutput=reindl(30,180,0,0,ghi,1360,30,180)\nresult={'output_repr':repr(output),'is_finite':bool(np.isfinite(output)),'is_zero':bool(output==0),'ghi_is_exact_zero':True}\n"
+    },
+    {
+      "probe_id": "sympy-block-inferred_shape",
+      "context_task": "sympy__sympy-19007",
+      "mechanism": "container_representation",
+      "fixture": {
+        "constructor": "ImmutableDenseMatrix([[block]])"
+      },
+      "interpreter": "/opt/miniconda3/envs/testbed/bin/python",
+      "program": "from sympy import Matrix,ImmutableDenseMatrix\nfrom sympy.matrices import MatrixBase\nblock=Matrix([[1,2],[3,4]])\ngrid=ImmutableDenseMatrix([[block]])\ncell=grid[0,0]\nresult={'grid_shape':list(grid.shape),'cell_type':type(cell).__name__,'cell_is_matrix':isinstance(cell,MatrixBase),'cell_repr':repr(cell)}\n"
+    },
+    {
+      "probe_id": "sympy-block-explicit_shape",
+      "context_task": "sympy__sympy-19007",
+      "mechanism": "container_representation",
+      "fixture": {
+        "constructor": "ImmutableDenseMatrix(1,1,[block])"
+      },
+      "interpreter": "/opt/miniconda3/envs/testbed/bin/python",
+      "program": "from sympy import Matrix,ImmutableDenseMatrix\nfrom sympy.matrices import MatrixBase\nblock=Matrix([[1,2],[3,4]])\ngrid=ImmutableDenseMatrix(1,1,[block])\ncell=grid[0,0]\nresult={'grid_shape':list(grid.shape),'cell_type':type(cell).__name__,'cell_is_matrix':isinstance(cell,MatrixBase),'cell_repr':repr(cell)}\n"
+    }
+  ],
+  "scope": "First25 testbed probes preserved in runtime-plan.json. V2 adds a consistent zeroGHI boundary after inspecting its contrasting case and two block-constructor checks. Exploratory additions, not independent confirmation."
+}

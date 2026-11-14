@@ -1,0 +1,36 @@
+{
+  "at": "2026-11-07T10:29:30.927930+00:00",
+  "model_api_calls": 0,
+  "specification": {
+    "probe_id": "pvlib-zero-guard-nan",
+    "context_task": "pvlib__pvlib-python-1707",
+    "mechanism": "numeric_boundary",
+    "fixture": {
+      "ghi": "nan"
+    },
+    "program": "from pvlib.irradiance import reindl\nimport numpy as np\nghi=float('nan')\noutput=reindl(30,180,100,0,ghi,1360,30,180)\nresult={'output_repr':repr(output),'is_finite':bool(np.isfinite(output)),'is_zero':bool(output==0),'ghi_is_exact_zero':bool(ghi==0)}\n"
+  },
+  "public_context_file": "datasets/memory_relations/20261107-discovery-v1/evidence/public-code/pvlib__pvlib-python-1707.json",
+  "image_id": "sha256:2be661be128c6f5f4e1c11292027b20e80c93206282615752e1af7ef07876921",
+  "executed_program_sha256": "368dec8be43fc7e1187489b8f6e56f6d44babb0e525b0aecb043a3fa1cb2dbbf",
+  "observed": {
+    "exception_type": "ModuleNotFoundError",
+    "kind": "exception",
+    "message": "No module named 'numpy'",
+    "traceback": "Traceback (most recent call last):\n  File \"<string>\", line 3, in <module>\n  File \"/testbed/pvlib/__init__.py\", line 3, in <module>\n    from pvlib import (  # noqa: F401\n  File \"/testbed/pvlib/spectrum/__init__.py\", line 1, in <module>\n    from pvlib.spectrum.spectrl2 import spectrl2  # noqa: F401\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/testbed/pvlib/spectrum/spectrl2.py\", line 6, in <module>\n    from pvlib.tools import cosd\n  File \"/testbed/pvlib/tools.py\", line 6, in <module>\n    import numpy as np\nModuleNotFoundError: No module named 'numpy'\n"
+  },
+  "execution": {
+    "returncode": 0,
+    "stdout": "MEMORY_RELATION_RESULT:{\"exception_type\": \"ModuleNotFoundError\", \"kind\": \"exception\", \"message\": \"No module named 'numpy'\", \"traceback\": \"Traceback (most recent call last):\\n  File \\\"<string>\\\", line 3, in <module>\\n  File \\\"/testbed/pvlib/__init__.py\\\", line 3, in <module>\\n    from pvlib import (  # noqa: F401\\n  File \\\"/testbed/pvlib/spectrum/__init__.py\\\", line 1, in <module>\\n    from pvlib.spectrum.spectrl2 import spectrl2  # noqa: F401\\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \\\"/testbed/pvlib/spectrum/spectrl2.py\\\", line 6, in <module>\\n    from pvlib.tools import cosd\\n  File \\\"/testbed/pvlib/tools.py\\\", line 6, in <module>\\n    import numpy as np\\nModuleNotFoundError: No module named 'numpy'\\n\"}\n",
+    "stderr": "",
+    "seconds": 0.5577480659994762,
+    "image_id": "sha256:2be661be128c6f5f4e1c11292027b20e80c93206282615752e1af7ef07876921",
+    "resources": {
+      "cpus": 1,
+      "memory": "1g",
+      "network": "none",
+      "root_filesystem": "read-only"
+    }
+  },
+  "interpretation": "Controlled mechanism probe. Expected validation exceptions are observed outcomes, not infrastructure failures. Shell success is not treated as semantic success. No actor or memory policy was evaluated."
+}

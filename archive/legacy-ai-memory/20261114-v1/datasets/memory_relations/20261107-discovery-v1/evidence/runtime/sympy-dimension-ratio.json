@@ -1,0 +1,40 @@
+{
+  "at": "2026-11-07T10:31:07.275508+00:00",
+  "model_api_calls": 0,
+  "specification": {
+    "probe_id": "sympy-dimension-ratio",
+    "context_task": "sympy__sympy-24213",
+    "mechanism": "physical_dimension_guard",
+    "fixture": {
+      "expression": "units.second/(units.ohm*units.farad)"
+    },
+    "interpreter": "/opt/miniconda3/envs/testbed/bin/python",
+    "program": "from sympy.physics import units\nfrom sympy.physics.units.systems.si import SI\nexpr=units.second/(units.ohm*units.farad)\nfactor,dimension=SI._collect_factor_and_dimension(expr)\nresult={'factor':str(factor),'dimension':str(dimension),'dimensionless':bool(SI.get_dimension_system().is_dimensionless(dimension))}\n"
+  },
+  "public_context_file": "datasets/memory_relations/20261107-discovery-v1/evidence/public-code/sympy__sympy-24213.json",
+  "image_id": "sha256:18923da5948aaa9695423806c79e35ac223d64667d7e0809ffde1e4199789b21",
+  "executed_program_sha256": "85cce177f455fc0ed2a3d7c10585e271fe4ed6bee0d7a1bc7f8a379d8262e4c6",
+  "observed": {
+    "kind": "returned",
+    "result": {
+      "dimension": "Dimension(time/(capacitance*impedance))",
+      "dimensionless": true,
+      "factor": "1"
+    }
+  },
+  "execution": {
+    "returncode": 0,
+    "stdout": "MEMORY_RELATION_RESULT:{\"kind\": \"returned\", \"result\": {\"dimension\": \"Dimension(time/(capacitance*impedance))\", \"dimensionless\": true, \"factor\": \"1\"}}\n",
+    "stderr": "",
+    "seconds": 2.0937768809963018,
+    "image_id": "sha256:18923da5948aaa9695423806c79e35ac223d64667d7e0809ffde1e4199789b21",
+    "interpreter": "/opt/miniconda3/envs/testbed/bin/python",
+    "resources": {
+      "cpus": 1,
+      "memory": "1g",
+      "network": "none",
+      "root_filesystem": "read-only"
+    }
+  },
+  "interpretation": "Controlled mechanism probe. Expected validation exceptions are observed outcomes, not infrastructure failures. Shell success is not treated as semantic success. No actor or memory policy was evaluated."
+}

@@ -1,0 +1,864 @@
+[
+  {
+    "source_key": "source-01",
+    "source_evidence": {
+      "memory_id": "socket_options",
+      "dataset": "nebius/SWE-rebench-openhands-trajectories",
+      "revision": "35455389ab51bf5e2306bfd436ef72d0f98bf882",
+      "row_index": 3057,
+      "trajectory_id": "chatcmpl-034ec55349a3b352d0f64d5719972a3b",
+      "raw_record_sha256": "75881bbf3c5a2e2f8b00cc37618a41ce9a2bc80cc482bc24fe621fb9ba696f44",
+      "events": [
+        {
+          "message_index": 110,
+          "call": {
+            "function": {
+              "arguments": "{\"path\": \"/workspace/twisted__twisted__24.10/src/twisted/internet/tcp.py\", \"command\": \"str_replace\", \"old_str\": \"    def getTcpNoDelay(self):\\n        return bool(self.socket.getsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY))\\n\\n    def setTcpNoDelay(self, enabled):\\n        self.socket.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, enabled)\\n\\n    def getTcpKeepAlive(self):\\n        return bool(self.socket.getsockopt(socket.SOL_SOCKET, socket.SO_KEEPALIVE))\\n\\n    def setTcpKeepAlive(self, enabled):\\n        self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_KEEPALIVE, enabled)\", \"new_str\": \"    def getTcpNoDelay(self):\\n        try:\\n            return bool(self.socket.getsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY))\\n        except OSError as e:\\n            # Unix domain sockets and other non-TCP sockets don't support TCP_NODELAY\\n            if e.errno == 95:  # Operation not supported\\n                return False\\n            raise\\n\\n    def setTcpNoDelay(self, enabled):\\n        try:\\n            self.socket.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, enabled)\\n        except OSError as e:\\n            # Unix domain sockets and other non-TCP sockets don't support TCP_NODELAY\\n            if e.errno != 95:  # Re-raise if it's not \\\"Operation not supported\\\"\\n                raise\\n\\n    def getTcpKeepAlive(self):\\n        return bool(self.socket.getsockopt(socket.SOL_SOCKET, socket.SO_KEEPALIVE))\\n\\n    def setTcpKeepAlive(self, enabled):\\n        self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_KEEPALIVE, enabled)\"}",
+              "name": "str_replace_editor"
+            },
+            "id": "chatcmpl-tool-b6194085417141a79450383bf9591a63",
+            "type": "function"
+          },
+          "response_index": 111,
+          "response": {
+            "content": "The file /workspace/twisted__twisted__24.10/src/twisted/internet/tcp.py has been edited. Here's the result of running `cat -n` on a snippet of /workspace/twisted__twisted__24.10/src/twisted/internet/tcp.py:\n   333\t        \"\"\"Return the prefix to log with when I own the logging thread.\"\"\"\n   334\t        return self.logstr\n   335\t\n   336\t    def getTcpNoDelay(self):\n   337\t        try:\n   338\t            return bool(self.socket.getsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY))\n   339\t        except OSError as e:\n   340\t            # Unix domain sockets and other non-TCP sockets don't support TCP_NODELAY\n   341\t            if e.errno == 95:  # Operation not supported\n   342\t                return False\n   343\t            raise\n   344\t\n   345\t    def setTcpNoDelay(self, enabled):\n   346\t        try:\n   347\t            self.socket.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, enabled)\n   348\t        except OSError as e:\n   349\t            # Unix domain sockets and other non-TCP sockets don't support TCP_NODELAY\n   350\t            if e.errno != 95:  # Re-raise if it's not \"Operation not supported\"\n   351\t                raise\n   352\t\n   353\t    def getTcpKeepAlive(self):\n   354\t        return bool(self.socket.getsockopt(socket.SOL_SOCKET, socket.SO_KEEPALIVE))\n   355\t\n   356\t    def setTcpKeepAlive(self, enabled):\n   357\t        self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_KEEPALIVE, enabled)\n   358\t\n   359\t\n   360\tclass _BaseBaseClient:\n   361\t    \"\"\"\n   362\t\nReview the changes and make sure they are as expected. Edit the file again if necessary.",
+            "name": "str_replace_editor",
+            "role": "tool",
+            "tool_call_id": "chatcmpl-tool-b6194085417141a79450383bf9591a63",
+            "tool_calls": null
+          }
+        },
+        {
+          "message_index": 114,
+          "call": {
+            "function": {
+              "arguments": "{\"path\": \"/workspace/twisted__twisted__24.10/src/twisted/internet/tcp.py\", \"command\": \"str_replace\", \"old_str\": \"import os\\nimport socket\\nimport struct\\nimport sys\\nfrom typing import Any, Callable, ClassVar, List, Optional, Union\", \"new_str\": \"import errno\\nimport os\\nimport socket\\nimport struct\\nimport sys\\nfrom typing import Any, Callable, ClassVar, List, Optional, Union\"}",
+              "name": "str_replace_editor"
+            },
+            "id": "chatcmpl-tool-8f3f97ffbf9042cfb510d3d6826c4ee4",
+            "type": "function"
+          },
+          "response_index": 115,
+          "response": {
+            "content": "The file /workspace/twisted__twisted__24.10/src/twisted/internet/tcp.py has been edited. Here's the result of running `cat -n` on a snippet of /workspace/twisted__twisted__24.10/src/twisted/internet/tcp.py:\n    10\t\n    11\tfrom __future__ import annotations\n    12\t\n    13\timport errno\n    14\timport os\n    15\timport socket\n    16\timport struct\n    17\timport sys\n    18\tfrom typing import Any, Callable, ClassVar, List, Optional, Union\n    19\t\n    20\tfrom zope.interface import Interface, implementer\n    21\t\n    22\timport attr\n    23\t\nReview the changes and make sure they are as expected. Edit the file again if necessary.",
+            "name": "str_replace_editor",
+            "role": "tool",
+            "tool_call_id": "chatcmpl-tool-8f3f97ffbf9042cfb510d3d6826c4ee4",
+            "tool_calls": null
+          }
+        }
+      ],
+      "summary_status": "single_assistant_reviewed_observed_attempt_not_success_claim"
+    },
+    "historical_issue_context": {
+      "raw_record_sha256": "75881bbf3c5a2e2f8b00cc37618a41ce9a2bc80cc482bc24fe621fb9ba696f44",
+      "message_index": 1,
+      "message_sha256": "992c3be0aec236a7e3ff36d5a6dba61e595abbd3d96ec50b8d418b82a77e2e26",
+      "start": 214,
+      "end": 1788,
+      "issue_excerpt": "\nbuiltins.OSError when using HTTP server over unix sockets since Twisted 24.10.0\nSince 24.10.0 it is not possible to use HTTP server over `unix:` protocol. \r\n\r\nThis bug has been initially reported in https://github.com/buildbot/buildbot/issues/8207.\r\n\r\nRelevant log:\r\n```\r\n2024-11-12 05:54:43+0000 [buildbot.www.service.BuildbotSite] Unhandled Error\r\n        Traceback (most recent call last):\r\n          File \"/home/buildbot/venv/lib64/python3.13/site-packages/twisted/internet/tcp.py\", line 1423, in doRead\r\n            protocol.makeConnection(transport)\r\n          File \"/home/buildbot/venv/lib64/python3.13/site-packages/twisted/internet/protocol.py\", line 509, in makeConnection\r\n            self.connectionMade()\r\n          File \"/home/buildbot/venv/lib64/python3.13/site-packages/twisted/web/http.py\", line 2336, in connectionMade\r\n            self.transport.setTcpNoDelay(True)\r\n          File \"/home/buildbot/venv/lib64/python3.13/site-packages/twisted/internet/tcp.py\", line 340, in setTcpNoDelay\r\n            self.socket.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, enabled)\r\n        builtins.OSError: [Errno 95] Operation not supported\r\n```\r\n\r\nRelevant Twisted configuration:\r\n```\r\n    port='unix:/run/buildbot/buildbot-loop-master.sock:mode=660',\r\n```\r\n\r\nMost likely https://github.com/twisted/twisted/pull/12312 is the cause of the regression because it introduces `setTcpNoDelay` to HTTP client. Unfortunately `setTcpNoDelay` is available on all stream sockets, which includes unix domain sockets. Setting TCP NODELAY option on them fails with error.\r\n\n",
+      "evidence_kind": "historical_user_report_not_independent_runtime_verification"
+    }
+  },
+  {
+    "source_key": "source-02",
+    "source_evidence": {
+      "memory_id": "introspection_version",
+      "dataset": "nebius/SWE-rebench-openhands-trajectories",
+      "revision": "35455389ab51bf5e2306bfd436ef72d0f98bf882",
+      "row_index": 2259,
+      "trajectory_id": "chatcmpl-2933f18cd46840685fde059d8607a82c",
+      "raw_record_sha256": "be5b88b7630b498356793fada64f25eaaa1ed057fcc8d310cc0334a0924c1e6a",
+      "events": [
+        {
+          "message_index": 116,
+          "call": {
+            "function": {
+              "arguments": "{\"path\": \"/workspace/twisted__twisted__24.3/src/twisted/python/deprecate.py\", \"command\": \"str_replace\", \"old_str\": \"def _appendToDocstring(thingWithDoc, textToAppend):\\n    \\\"\\\"\\\"\\n    Append the given text to the docstring of C{thingWithDoc}.\\n\\n    If C{thingWithDoc} has no docstring, then the text just replaces the\\n    docstring. If it has a single-line docstring then it appends a blank line\\n    and the message text. If it has a multi-line docstring, then in appends a\\n    blank line a the message text, and also does the indentation correctly.\\n    \\\"\\\"\\\"\\n    if thingWithDoc.__doc__:\\n        docstringLines = thingWithDoc.__doc__.splitlines()\\n    else:\\n        docstringLines = []\", \"new_str\": \"def _appendToDocstring(thingWithDoc, textToAppend):\\n    \\\"\\\"\\\"\\n    Append the given text to the docstring of C{thingWithDoc}.\\n\\n    If C{thingWithDoc} has no docstring, then the text just replaces the\\n    docstring. If it has a single-line docstring then it appends a blank line\\n    and the message text. If it has a multi-line docstring, then in appends a\\n    blank line a the message text, and also does the indentation correctly.\\n    \\\"\\\"\\\"\\n    if thingWithDoc.__doc__ and not thingWithDoc.__doc__.isspace():\\n        docstringLines = thingWithDoc.__doc__.splitlines()\\n    else:\\n        docstringLines = []\"}",
+              "name": "str_replace_editor"
+            },
+            "id": "chatcmpl-tool-914400c3e2874ac1acd49e35ac81fc7c",
+            "type": "function"
+          },
+          "response_index": 117,
+          "response": {
+            "content": "The file /workspace/twisted__twisted__24.3/src/twisted/python/deprecate.py has been edited. Here's the result of running `cat -n` on a snippet of /workspace/twisted__twisted__24.3/src/twisted/python/deprecate.py:\n   240\t    )\n   241\t\n   242\t\n   243\tdef _appendToDocstring(thingWithDoc, textToAppend):\n   244\t    \"\"\"\n   245\t    Append the given text to the docstring of C{thingWithDoc}.\n   246\t\n   247\t    If C{thingWithDoc} has no docstring, then the text just replaces the\n   248\t    docstring. If it has a single-line docstring then it appends a blank line\n   249\t    and the message text. If it has a multi-line docstring, then in appends a\n   250\t    blank line a the message text, and also does the indentation correctly.\n   251\t    \"\"\"\n   252\t    if thingWithDoc.__doc__ and not thingWithDoc.__doc__.isspace():\n   253\t        docstringLines = thingWithDoc.__doc__.splitlines()\n   254\t    else:\n   255\t        docstringLines = []\n   256\t\n   257\t    if len(docstringLines) == 0:\n   258\t        docstringLines.append(textToAppend)\n   259\t    elif len(docstringLines) == 1:\n   260\t\nReview the changes and make sure they are as expected. Edit the file again if necessary.",
+            "name": "str_replace_editor",
+            "role": "tool",
+            "tool_call_id": "chatcmpl-tool-914400c3e2874ac1acd49e35ac81fc7c",
+            "tool_calls": null
+          }
+        }
+      ],
+      "summary_status": "single_assistant_reviewed_observed_attempt_not_success_claim"
+    },
+    "historical_issue_context": {
+      "raw_record_sha256": "be5b88b7630b498356793fada64f25eaaa1ed057fcc8d310cc0334a0924c1e6a",
+      "message_index": 1,
+      "message_sha256": "137a9c67747b9a5d8bb4279a499541c2f6ebde810f0075947a1cb9c524510a34",
+      "start": 212,
+      "end": 380,
+      "issue_excerpt": "\nUpdate docstring handling for Python 3.13\nIn Python 3.13 the docstring are trimmed by default.\r\n\r\nWe need to update some of the deprecation helpers to work with this.\n",
+      "evidence_kind": "historical_user_report_not_independent_runtime_verification"
+    }
+  },
+  {
+    "source_key": "source-03",
+    "source_evidence": {
+      "memory_id": "literal_escaping",
+      "dataset": "nebius/SWE-rebench-openhands-trajectories",
+      "revision": "35455389ab51bf5e2306bfd436ef72d0f98bf882",
+      "row_index": 894,
+      "trajectory_id": "chatcmpl-8ec27e05a57acdf5bdb3f0c88dbbaecf",
+      "raw_record_sha256": "9d99abbda66b023d6dd67785fcca89e4ae8fd878709687b1478ee3b8ccae866d",
+      "events": [
+        {
+          "message_index": 54,
+          "call": {
+            "function": {
+              "arguments": "{\"path\": \"/workspace/berkerpeksag__astor__0.7/astor/code_gen.py\", \"command\": \"str_replace\", \"old_str\": \"            def recurse(node):\\n                for value in node.values:\\n                    if isinstance(value, ast.Str):\\n                        self.write(value.s)\\n                    elif isinstance(value, ast.FormattedValue):\\n                        with self.delimit('{}'):\\n                            self.visit(value.value)\\n                            if value.conversion != -1:\\n                                self.write('!%s' % chr(value.conversion))\\n                            if value.format_spec is not None:\\n                                self.write(':')\\n                                recurse(value.format_spec)\\n                    else:\\n                        kind = type(value).__name__\\n                        assert False, 'Invalid node %s inside JoinedStr' % kind\", \"new_str\": \"            def recurse(node):\\n                for value in node.values:\\n                    if isinstance(value, ast.Str):\\n                        # Escape braces for f-string context\\n                        s = value.s.replace('{', '{{').replace('}', '}}')\\n                        self.write(s)\\n                    elif isinstance(value, ast.Constant) and isinstance(value.value, str):\\n                        # Handle Constant nodes containing strings (Python 3.8+)\\n                        # Escape braces for f-string context\\n                        s = value.value.replace('{', '{{').replace('}', '}}')\\n                        self.write(s)\\n                    elif isinstance(value, ast.FormattedValue):\\n                        with self.delimit('{}'):\\n                            self.visit(value.value)\\n                            if value.conversion != -1:\\n                                self.write('!%s' % chr(value.conversion))\\n                            if value.format_spec is not None:\\n                                self.write(':')\\n                                recurse(value.format_spec)\\n                    else:\\n                        kind = type(value).__name__\\n                        assert False, 'Invalid node %s inside JoinedStr' % kind\"}",
+              "name": "str_replace_editor"
+            },
+            "id": "chatcmpl-tool-41fe2c8ad68846b19fe8caf583c58f5f",
+            "type": "function"
+          },
+          "response_index": 55,
+          "response": {
+            "content": "The file /workspace/berkerpeksag__astor__0.7/astor/code_gen.py has been edited. Here's the result of running `cat -n` on a snippet of /workspace/berkerpeksag__astor__0.7/astor/code_gen.py:\n   563\t            # the tree can contain subnodes that recurse back to JoinedStr\n   564\t            # subnodes...\n   565\t\n   566\t            def recurse(node):\n   567\t                for value in node.values:\n   568\t                    if isinstance(value, ast.Str):\n   569\t                        # Escape braces for f-string context\n   570\t                        s = value.s.replace('{', '{{').replace('}', '}}')\n   571\t                        self.write(s)\n   572\t                    elif isinstance(value, ast.Constant) and isinstance(value.value, str):\n   573\t                        # Handle Constant nodes containing strings (Python 3.8+)\n   574\t                        # Escape braces for f-string context\n   575\t                        s = value.value.replace('{', '{{').replace('}', '}}')\n   576\t                        self.write(s)\n   577\t                    elif isinstance(value, ast.FormattedValue):\n   578\t                        with self.delimit('{}'):\n   579\t                            self.visit(value.value)\n   580\t                            if value.conversion != -1:\n   581\t                                self.write('!%s' % chr(value.conversion))\n   582\t                            if value.format_spec is not None:\n   583\t                                self.write(':')\n   584\t                                recurse(value.format_spec)\n   585\t                    else:\n   586\t                        kind = type(value).__name__\n   587\t                        assert False, 'Invalid node %s inside JoinedStr' % kind\n   588\t\n   589\t            index = len(result)\n   590\t            recurse(node)\n   591\t\n   592\t\nReview the changes and make sure they are as expected. Edit the file again if necessary.",
+            "name": "str_replace_editor",
+            "role": "tool",
+            "tool_call_id": "chatcmpl-tool-41fe2c8ad68846b19fe8caf583c58f5f",
+            "tool_calls": null
+          }
+        }
+      ],
+      "summary_status": "single_assistant_reviewed_observed_attempt_not_success_claim"
+    },
+    "historical_issue_context": {
+      "raw_record_sha256": "9d99abbda66b023d6dd67785fcca89e4ae8fd878709687b1478ee3b8ccae866d",
+      "message_index": 1,
+      "message_sha256": "ba0abc1a57c9b0a4820ff829a86840119957c9685d5c938cc82e8f00bc7a5c55",
+      "start": 216,
+      "end": 885,
+      "issue_excerpt": "\nNew fstring failures\nI'm not sure how to handle this one, so I did not submit a PR yet.\r\n\r\nSource (from Python 3.7's dataclasses.py):\r\n`f\"{f.name}={{self.{f.name}!r}}\"`\r\n\r\nParsed as:\r\n```\r\nJoinedStr(\r\n    values=[\r\n        FormattedValue(value=Attribute(value=Name(id='f'), attr='name'), conversion=-1, format_spec=None),\r\n        Str(s='={self.'),\r\n        FormattedValue(value=Attribute(value=Name(id='f'), attr='name'), conversion=-1, format_spec=None),\r\n        Str(s='!r}')]),\r\n```\r\n\r\nwhich becomes a syntax error after rtrip:\r\n`f'{f.name}={self.{f.name}!r}'`\r\n\r\n```\r\n  File \"<fstring>\", line 1\r\n    (self.{f.name})\r\n          ^\r\nSyntaxError: invalid syntax\r\n```\n",
+      "evidence_kind": "historical_user_report_not_independent_runtime_verification"
+    }
+  },
+  {
+    "source_key": "source-04",
+    "source_evidence": {
+      "memory_id": "identifier_scope",
+      "dataset": "nebius/SWE-rebench-openhands-trajectories",
+      "revision": "35455389ab51bf5e2306bfd436ef72d0f98bf882",
+      "row_index": 415,
+      "trajectory_id": "chatcmpl-b5b244151cd6623b4349566bd21a3742",
+      "raw_record_sha256": "a9833570b6e3bec7b3705a6f86f3603159aadd671844851c59151f9af22b573c",
+      "events": [
+        {
+          "message_index": 60,
+          "call": {
+            "function": {
+              "arguments": "{\"path\": \"/workspace/tefra__xsdata__22.12/xsdata/models/config.py\", \"command\": \"str_replace\", \"old_str\": \"        obj.substitutions.substitution.append(\\n            GeneratorSubstitution(type=ObjectType.CLASS, search=\\\"Class\\\", replace=\\\"Type\\\")\\n        )\", \"new_str\": \"        obj.substitutions.substitution.append(\\n            GeneratorSubstitution(type=ObjectType.CLASS, search=\\\"^Class$\\\", replace=\\\"Type\\\")\\n        )\"}",
+              "name": "str_replace_editor"
+            },
+            "id": "chatcmpl-tool-a017dbca029c4474af7b74fe5fb0f125",
+            "type": "function"
+          },
+          "response_index": 61,
+          "response": {
+            "content": "The file /workspace/tefra__xsdata__22.12/xsdata/models/config.py has been edited. Here's the result of running `cat -n` on a snippet of /workspace/tefra__xsdata__22.12/xsdata/models/config.py:\n   442\t                )\n   443\t            )\n   444\t\n   445\t        obj.substitutions.substitution.append(\n   446\t            GeneratorSubstitution(type=ObjectType.CLASS, search=\"^Class$\", replace=\"Type\")\n   447\t        )\n   448\t\n   449\t        return obj\n   450\t\n   451\t    @classmethod\n   452\t\nReview the changes and make sure they are as expected. Edit the file again if necessary.",
+            "name": "str_replace_editor",
+            "role": "tool",
+            "tool_call_id": "chatcmpl-tool-a017dbca029c4474af7b74fe5fb0f125",
+            "tool_calls": null
+          }
+        },
+        {
+          "message_index": 70,
+          "call": {
+            "function": {
+              "arguments": "{\"path\": \"/workspace/tefra__xsdata__22.12/xsdata/models/config.py\", \"old_str\": \"        obj.substitutions.substitution.append(\\n            GeneratorSubstitution(type=ObjectType.CLASS, search=\\\"^Class$\\\", replace=\\\"Type\\\")\\n        )\", \"new_str\": \"        obj.substitutions.substitution.append(\\n            GeneratorSubstitution(type=ObjectType.CLASS, search=\\\"Class\\\", replace=\\\"Type\\\")\\n        )\", \"command\": \"str_replace\"}",
+              "name": "str_replace_editor"
+            },
+            "id": "chatcmpl-tool-e13b43ceb0d7429097532fe813dd1316",
+            "type": "function"
+          },
+          "response_index": 71,
+          "response": {
+            "content": "The file /workspace/tefra__xsdata__22.12/xsdata/models/config.py has been edited. Here's the result of running `cat -n` on a snippet of /workspace/tefra__xsdata__22.12/xsdata/models/config.py:\n   442\t                )\n   443\t            )\n   444\t\n   445\t        obj.substitutions.substitution.append(\n   446\t            GeneratorSubstitution(type=ObjectType.CLASS, search=\"Class\", replace=\"Type\")\n   447\t        )\n   448\t\n   449\t        return obj\n   450\t\n   451\t    @classmethod\n   452\t\nReview the changes and make sure they are as expected. Edit the file again if necessary.",
+            "name": "str_replace_editor",
+            "role": "tool",
+            "tool_call_id": "chatcmpl-tool-e13b43ceb0d7429097532fe813dd1316",
+            "tool_calls": null
+          }
+        }
+      ],
+      "summary_status": "single_assistant_reviewed_observed_attempt_not_success_claim"
+    },
+    "historical_issue_context": {
+      "raw_record_sha256": "a9833570b6e3bec7b3705a6f86f3603159aadd671844851c59151f9af22b573c",
+      "message_index": 1,
+      "message_sha256": "0ef6d869169ed91b0e9d4aede586e5f30657474ef2cae396a6f9ac8f4b6a2f79",
+      "start": 208,
+      "end": 823,
+      "issue_excerpt": "\ndefault substitution \"Class\"->\"Type\" does infix substitution\nWhen I create a python class model from the [Ecore.xsd](https://git.eclipse.org/c/emf/org.eclipse.emf.git/plain/plugins/org.eclipse.emf.ecore/model/Ecore.xsd), the [xsdata.models.config.py:GeneratorConfig.create()](https://github.com/tefra/xsdata/blob/040692db47e6e51028fd959c793e757858c392d7/xsdata/models/config.py#L443) default substitution will mangle names EClass and EClassifier to EType and ETypeifier.\r\n\r\nanchoring the search wit `^`and `$`like so `^Class$` fixed the problem.\r\n\r\n`<Substitution type=\"class\" search=\"^Class$\" replace=\"Type\"/>`\r\n\n",
+      "evidence_kind": "historical_user_report_not_independent_runtime_verification"
+    }
+  },
+  {
+    "source_key": "source-05",
+    "source_evidence": {
+      "memory_id": "multivalue_mapping",
+      "dataset": "nebius/SWE-rebench-openhands-trajectories",
+      "revision": "35455389ab51bf5e2306bfd436ef72d0f98bf882",
+      "row_index": 91,
+      "trajectory_id": "chatcmpl-6a9fb18516ffc33ac64758b7c156d073",
+      "raw_record_sha256": "b561efdd87ad7e9555737f3acb0e123fe0828d78d3539d168bc259a2197abc59",
+      "events": [
+        {
+          "message_index": 54,
+          "call": {
+            "function": {
+              "arguments": "{\"path\": \"/workspace/encode__httpx__0.7/httpx/models.py\", \"command\": \"str_replace\", \"old_str\": \"PrimitiveData = typing.Optional[typing.Union[str, int, float, bool]]\", \"new_str\": \"PrimitiveData = typing.Optional[typing.Union[str, int, float, bool]]\\n\\nQueryParamValue = typing.Union[PrimitiveData, typing.Sequence[PrimitiveData]]\"}",
+              "name": "str_replace_editor"
+            },
+            "id": "chatcmpl-tool-c01bc965eb674395814966272b9e0f7f",
+            "type": "function"
+          },
+          "response_index": 55,
+          "response": {
+            "content": "The file /workspace/encode__httpx__0.7/httpx/models.py has been edited. Here's the result of running `cat -n` on a snippet of /workspace/encode__httpx__0.7/httpx/models.py:\n    45\t    from .middleware.base import BaseMiddleware  # noqa: F401\n    46\t    from .dispatch.base import AsyncDispatcher  # noqa: F401\n    47\t\n    48\tPrimitiveData = typing.Optional[typing.Union[str, int, float, bool]]\n    49\t\n    50\tQueryParamValue = typing.Union[PrimitiveData, typing.Sequence[PrimitiveData]]\n    51\t\n    52\tURLTypes = typing.Union[\"URL\", str]\n    53\t\n    54\tQueryParamTypes = typing.Union[\n    55\t\nReview the changes and make sure they are as expected. Edit the file again if necessary.",
+            "name": "str_replace_editor",
+            "role": "tool",
+            "tool_call_id": "chatcmpl-tool-c01bc965eb674395814966272b9e0f7f",
+            "tool_calls": null
+          }
+        },
+        {
+          "message_index": 56,
+          "call": {
+            "function": {
+              "arguments": "{\"path\": \"/workspace/encode__httpx__0.7/httpx/models.py\", \"new_str\": \"QueryParamTypes = typing.Union[\\n    \\\"QueryParams\\\",\\n    typing.Mapping[str, QueryParamValue],\\n    typing.List[typing.Tuple[str, QueryParamValue]],\\n    str,\\n]\", \"old_str\": \"QueryParamTypes = typing.Union[\\n    \\\"QueryParams\\\",\\n    typing.Mapping[str, PrimitiveData],\\n    typing.List[typing.Tuple[str, PrimitiveData]],\\n    str,\\n]\", \"command\": \"str_replace\"}",
+              "name": "str_replace_editor"
+            },
+            "id": "chatcmpl-tool-1aa801c2fd944267bb2d4331b47d17a1",
+            "type": "function"
+          },
+          "response_index": 57,
+          "response": {
+            "content": "The file /workspace/encode__httpx__0.7/httpx/models.py has been edited. Here's the result of running `cat -n` on a snippet of /workspace/encode__httpx__0.7/httpx/models.py:\n    51\t\n    52\tURLTypes = typing.Union[\"URL\", str]\n    53\t\n    54\tQueryParamTypes = typing.Union[\n    55\t    \"QueryParams\",\n    56\t    typing.Mapping[str, QueryParamValue],\n    57\t    typing.List[typing.Tuple[str, QueryParamValue]],\n    58\t    str,\n    59\t]\n    60\t\n    61\tHeaderTypes = typing.Union[\n    62\t    \"Headers\",\n    63\t    typing.Dict[typing.AnyStr, typing.AnyStr],\n    64\t\nReview the changes and make sure they are as expected. Edit the file again if necessary.",
+            "name": "str_replace_editor",
+            "role": "tool",
+            "tool_call_id": "chatcmpl-tool-1aa801c2fd944267bb2d4331b47d17a1",
+            "tool_calls": null
+          }
+        },
+        {
+          "message_index": 60,
+          "call": {
+            "function": {
+              "arguments": "{\"path\": \"/workspace/encode__httpx__0.7/httpx/models.py\", \"new_str\": \"    def __init__(self, *args: QueryParamTypes, **kwargs: typing.Any) -> None:\\n        assert len(args) < 2, \\\"Too many arguments.\\\"\\n        assert not (args and kwargs), \\\"Cannot mix named and unnamed arguments.\\\"\\n\\n        value = args[0] if args else kwargs\\n\\n        if isinstance(value, str):\\n            items = parse_qsl(value)\\n        elif isinstance(value, QueryParams):\\n            items = value.multi_items()\\n        elif isinstance(value, list):\\n            items = value  # type: ignore\\n        else:\\n            # Handle mapping with potential sequence values\\n            items = []\\n            for k, v in value.items():  # type: ignore\\n                if isinstance(v, (list, tuple)) and not isinstance(v, (str, bytes)):\\n                    # Expand sequence values into multiple items\\n                    items.extend((k, item) for item in v)\\n                else:\\n                    items.append((k, v))\\n\\n        self._list = [(str(k), str_query_param(v)) for k, v in items]\\n        self._dict = {str(k): str_query_param(v) for k, v in items}\", \"old_str\": \"    def __init__(self, *args: QueryParamTypes, **kwargs: typing.Any) -> None:\\n        assert len(args) < 2, \\\"Too many arguments.\\\"\\n        assert not (args and kwargs), \\\"Cannot mix named and unnamed arguments.\\\"\\n\\n        value = args[0] if args else kwargs\\n\\n        if isinstance(value, str):\\n            items = parse_qsl(value)\\n        elif isinstance(value, QueryParams):\\n            items = value.multi_items()\\n        elif isinstance(value, list):\\n            items = value  # type: ignore\\n        else:\\n            items = value.items()  # type: ignore\\n\\n        self._list = [(str(k), str_query_param(v)) for k, v in items]\\n        self._dict = {str(k): str_query_param(v) for k, v in items}\", \"command\": \"str_replace\"}",
+              "name": "str_replace_editor"
+            },
+            "id": "chatcmpl-tool-5fe32c4e50e844ee80bbb9a8aa9d21b7",
+            "type": "function"
+          },
+          "response_index": 61,
+          "response": {
+            "content": "The file /workspace/encode__httpx__0.7/httpx/models.py has been edited. Here's the result of running `cat -n` on a snippet of /workspace/encode__httpx__0.7/httpx/models.py:\n   307\t    URL query parameters, as a multi-dict.\n   308\t    \"\"\"\n   309\t\n   310\t    def __init__(self, *args: QueryParamTypes, **kwargs: typing.Any) -> None:\n   311\t        assert len(args) < 2, \"Too many arguments.\"\n   312\t        assert not (args and kwargs), \"Cannot mix named and unnamed arguments.\"\n   313\t\n   314\t        value = args[0] if args else kwargs\n   315\t\n   316\t        if isinstance(value, str):\n   317\t            items = parse_qsl(value)\n   318\t        elif isinstance(value, QueryParams):\n   319\t            items = value.multi_items()\n   320\t        elif isinstance(value, list):\n   321\t            items = value  # type: ignore\n   322\t        else:\n   323\t            # Handle mapping with potential sequence values\n   324\t            items = []\n   325\t            for k, v in value.items():  # type: ignore\n   326\t                if isinstance(v, (list, tuple)) and not isinstance(v, (str, bytes)):\n   327\t                    # Expand sequence values into multiple items\n   328\t                    items.extend((k, item) for item in v)\n   329\t                else:\n   330\t                    items.append((k, v))\n   331\t\n   332\t        self._list = [(str(k), str_query_param(v)) for k, v in items]\n   333\t        self._dict = {str(k): str_query_param(v) for k, v in items}\n   334\t\n   335\t    def getlist(self, key: typing.Any) -> typing.List[str]:\n   336\t        return [item_value for item_key, item_value in self._list if item_key == key]\n   337\t\n   338\t\nReview the changes and make sure they are as expected. Edit the file again if necessary.",
+            "name": "str_replace_editor",
+            "role": "tool",
+            "tool_call_id": "chatcmpl-tool-5fe32c4e50e844ee80bbb9a8aa9d21b7",
+            "tool_calls": null
+          }
+        }
+      ],
+      "summary_status": "single_assistant_reviewed_observed_attempt_not_success_claim"
+    },
+    "historical_issue_context": {
+      "raw_record_sha256": "b561efdd87ad7e9555737f3acb0e123fe0828d78d3539d168bc259a2197abc59",
+      "message_index": 1,
+      "message_sha256": "8599a27cf4d7c76932b5ddc98475cab38385f871a5371d1027726a3c94072b31",
+      "start": 204,
+      "end": 1763,
+      "issue_excerpt": "\nQuery params should support list-of-strings values.\nHi,\r\n\r\nI recently tried to use `httpx` instead of `requests` in my simple app that calls few API endpoints and  suddenly it did not work.\r\n\r\nThe problem here is that `httpx` and `requests` process query parameters differently.\r\n\r\nHere's a simple script to see how both libraries process `params`:\r\n```python\r\nfrom httpx.models import QueryParams\r\nfrom requests.models import RequestEncodingMixin\r\n\r\ndict_params = {\r\n    \"documentIds\": [\"a55b2f894b90dd1213201471_25\", \"b54b2f894b90dd1213201471_9\"]\r\n}\r\n\r\nhttpx_params = str(QueryParams(dict_params))\r\nprint(\"httpx\", httpx_params)\r\n\r\nrequests_params = RequestEncodingMixin._encode_params(dict_params)\r\nprint(\"requests\", requests_params)\r\n```\r\n\r\nResults:\r\n```\r\nhttpx documentIds=%5B%27a55b2f894b90dd1213201471_25%27%2C+%27b54b2f894b90dd1213201471_9%27%5D\r\nrequests documentIds=a55b2f894b90dd1213201471_25&documentIds=b54b2f894b90dd1213201471_9\r\n```\r\n\r\nIf we try to parse the query string `httpx` produced, here's what we get:\r\n```python\r\nfrom urllib.parse import parse_qs\r\n\r\nhttpx_params_parsed = parse_qs('documentIds=%5B%27a55b2f894b90dd1213201471_25%27%2C+%27b54b2f894b90dd1213201471_9%27%5D')\r\nprint(httpx_params_parsed )\r\n```\r\nResult:\r\n```\r\n{'documentIds': [\"['a55b2f894b90dd1213201471_25', 'b54b2f894b90dd1213201471_9']\"]}\r\n```\r\nWhich is not what you would expect, I guess. At least, it works differently than in `requests`.\r\n\r\nIf it is an intended behavior, can you please recommend me the proper way of passing a list into the query params?\r\n\r\nThanks!\n",
+      "evidence_kind": "historical_user_report_not_independent_runtime_verification"
+    }
+  },
+  {
+    "source_key": "source-06",
+    "source_evidence": {
+      "memory_id": "specific_precedence",
+      "dataset": "nebius/SWE-rebench-openhands-trajectories",
+      "revision": "35455389ab51bf5e2306bfd436ef72d0f98bf882",
+      "row_index": 477,
+      "trajectory_id": "chatcmpl-17d9085cf2ed7eb96af315b682748b3c",
+      "raw_record_sha256": "b8a766cba159969fe91683688f3a01220a6aca251e6b10bec0ab1a112f921cd1",
+      "events": [
+        {
+          "message_index": 32,
+          "call": {
+            "function": {
+              "arguments": "{\"path\": \"/workspace/ApptuitAI__apptuit-py__0.3/apptuit/pyformance/apptuit_reporter.py\", \"command\": \"str_replace\", \"old_str\": \"    def _collect_data_points(self, registry, timestamp=None):\\n        \\\"\\\"\\\"\\n        will collect all metrics from registry and convert them to DataPoints\\n        Params:\\n            registry: pyformance registry object\\n            timestamp: timestamp of the data point\\n        Returns:\\n            list of DataPoints\\n        \\\"\\\"\\\"\\n        timestamp = timestamp or int(round(self.clock.time()))\\n        metrics = registry.dump_metrics()\\n        dps = []\\n        for key in metrics.keys():\\n            metric_name, metric_tags = self._get_tags(key)\\n            if self.tags is not None and len(self.tags) != 0:\\n                metric_tags.update(self.tags)\\n            for value_key in metrics[key].keys():\\n                dps.append(DataPoint(metric=\\\"{0}{1}.{2}\\\".format(self.prefix, metric_name, value_key),\\n                                     tags=metric_tags,\\n                                     timestamp=timestamp,\\n                                     value=metrics[key][value_key]))\\n        return dps\", \"new_str\": \"    def _collect_data_points(self, registry, timestamp=None):\\n        \\\"\\\"\\\"\\n        will collect all metrics from registry and convert them to DataPoints\\n        Params:\\n            registry: pyformance registry object\\n            timestamp: timestamp of the data point\\n        Returns:\\n            list of DataPoints\\n        \\\"\\\"\\\"\\n        timestamp = timestamp or int(round(self.clock.time()))\\n        metrics = registry.dump_metrics()\\n        dps = []\\n        for key in metrics.keys():\\n            metric_name, metric_tags = self._get_tags(key)\\n            if self.tags is not None and len(self.tags) != 0:\\n                merged_tags = dict(self.tags)  # Copy global tags\\n                merged_tags.update(metric_tags)  # Update with datapoint tags (these take precedence)\\n            else:\\n                merged_tags = metric_tags\\n            for value_key in metrics[key].keys():\\n                dps.append(DataPoint(metric=\\\"{0}{1}.{2}\\\".format(self.prefix, metric_name, value_key),\\n                                     tags=merged_tags,\\n                                     timestamp=timestamp,\\n                                     value=metrics[key][value_key]))\\n        return dps\"}",
+              "name": "str_replace_editor"
+            },
+            "id": "chatcmpl-tool-384db8ae40ec4dc1a8032bc5b9a4875e",
+            "type": "function"
+          },
+          "response_index": 33,
+          "response": {
+            "content": "The file /workspace/ApptuitAI__apptuit-py__0.3/apptuit/pyformance/apptuit_reporter.py has been edited. Here's the result of running `cat -n` on a snippet of /workspace/ApptuitAI__apptuit-py__0.3/apptuit/pyformance/apptuit_reporter.py:\n    44\t            metric_name, metric_tags = self.metric_tags[key]\n    45\t        return metric_name, metric_tags\n    46\t\n    47\t    def _collect_data_points(self, registry, timestamp=None):\n    48\t        \"\"\"\n    49\t        will collect all metrics from registry and convert them to DataPoints\n    50\t        Params:\n    51\t            registry: pyformance registry object\n    52\t            timestamp: timestamp of the data point\n    53\t        Returns:\n    54\t            list of DataPoints\n    55\t        \"\"\"\n    56\t        timestamp = timestamp or int(round(self.clock.time()))\n    57\t        metrics = registry.dump_metrics()\n    58\t        dps = []\n    59\t        for key in metrics.keys():\n    60\t            metric_name, metric_tags = self._get_tags(key)\n    61\t            if self.tags is not None and len(self.tags) != 0:\n    62\t                merged_tags = dict(self.tags)  # Copy global tags\n    63\t                merged_tags.update(metric_tags)  # Update with datapoint tags (these take precedence)\n    64\t            else:\n    65\t                merged_tags = metric_tags\n    66\t            for value_key in metrics[key].keys():\n    67\t                dps.append(DataPoint(metric=\"{0}{1}.{2}\".format(self.prefix, metric_name, value_key),\n    68\t                                     tags=merged_tags,\n    69\t                                     timestamp=timestamp,\n    70\t                                     value=metrics[key][value_key]))\n    71\t        return dps\n    72\t\nReview the changes and make sure they are as expected. Edit the file again if necessary.",
+            "name": "str_replace_editor",
+            "role": "tool",
+            "tool_call_id": "chatcmpl-tool-384db8ae40ec4dc1a8032bc5b9a4875e",
+            "tool_calls": null
+          }
+        }
+      ],
+      "summary_status": "single_assistant_reviewed_observed_attempt_not_success_claim"
+    },
+    "historical_issue_context": {
+      "raw_record_sha256": "b8a766cba159969fe91683688f3a01220a6aca251e6b10bec0ab1a112f921cd1",
+      "message_index": 1,
+      "message_sha256": "71d7ec16013a1c6195339ed4d58b99d7ccf871ef2cc8894020f31c00681a15e7",
+      "start": 220,
+      "end": 623,
+      "issue_excerpt": "\nGlobal tags should not over-ride tags from the datapoint\nIf the same tag key-value pair is on the datapoint and in global tags of the reporter, current implementation prefers the global tag:\r\nhttps://github.com/ApptuitAI/apptuit-py/blob/9872766e4838fced1a580f4da3b44acf5fd3ea81/apptuit/pyformance/apptuit_reporter.py#L62\r\n\r\n\r\nWe should prefer the tag key-value of the data point over the global values\n",
+      "evidence_kind": "historical_user_report_not_independent_runtime_verification"
+    }
+  },
+  {
+    "source_key": "source-07",
+    "source_evidence": {
+      "memory_id": "connection_ownership",
+      "dataset": "nebius/SWE-rebench-openhands-trajectories",
+      "revision": "35455389ab51bf5e2306bfd436ef72d0f98bf882",
+      "row_index": 2300,
+      "trajectory_id": "chatcmpl-f865075c1a808aea2868ded9dacd4518",
+      "raw_record_sha256": "bbb0d0ebdbedabc3087e014832557d8485c817086f281a682d993802404db7f6",
+      "events": [
+        {
+          "message_index": 112,
+          "call": {
+            "function": {
+              "arguments": "{\"path\": \"/workspace/redis__redis-py__5.0/redis/client.py\", \"command\": \"str_replace\", \"old_str\": \"    @classmethod\\n    def from_url(cls, url, **kwargs):\\n        \\\"\\\"\\\"\\n        Return a Redis client object configured from the given URL\\n\\n        For example::\\n\\n            redis://[[username]:[password]]@localhost:6379/0\\n            rediss://[[username]:[password]]@localhost:6379/0\\n            unix://[username@]/path/to/socket.sock?db=0[&password=password]\\n\\n        Three URL schemes are supported:\\n\\n        - `redis://` creates a TCP socket connection. See more at:\\n          <https://www.iana.org/assignments/uri-schemes/prov/redis>\\n        - `rediss://` creates a SSL wrapped TCP socket connection. See more at:\\n          <https://www.iana.org/assignments/uri-schemes/prov/rediss>\\n        - ``unix://``: creates a Unix Domain Socket connection.\\n\\n        The username, password, hostname, path and all querystring values\\n        are passed through urllib.parse.unquote in order to replace any\\n        percent-encoded values with their corresponding characters.\\n\\n        There are several ways to specify a database number. The first value\\n        found will be used:\\n\\n            1. A ``db`` querystring option, e.g. redis://localhost?db=0\\n            2. If using the redis:// or rediss:// schemes, the path argument\\n               of the url, e.g. redis://localhost/0\\n            3. A ``db`` keyword argument to this function.\\n\\n        If none of these options are specified, the default db=0 is used.\\n\\n        All querystring options are cast to their appropriate Python types.\\n        Boolean arguments can be specified with string values \\\"True\\\"/\\\"False\\\"\\n        or \\\"Yes\\\"/\\\"No\\\". Values that cannot be properly cast cause a\\n        ``ValueError`` to be raised. Once parsed, the querystring arguments\\n        and keyword arguments are passed to the ``ConnectionPool``'s\\n        class initializer. In the case of conflicting arguments, querystring\\n        arguments always win.\\n\\n        \\\"\\\"\\\"\\n        connection_pool = ConnectionPool.from_url(url, **kwargs)\\n        return cls(connection_pool=connection_pool)\", \"new_str\": \"    @classmethod\\n    def from_url(cls, url, **kwargs):\\n        \\\"\\\"\\\"\\n        Return a Redis client object configured from the given URL\\n\\n        For example::\\n\\n            redis://[[username]:[password]]@localhost:6379/0\\n            rediss://[[username]:[password]]@localhost:6379/0\\n            unix://[username@]/path/to/socket.sock?db=0[&password=password]\\n\\n        Three URL schemes are supported:\\n\\n        - `redis://` creates a TCP socket connection. See more at:\\n          <https://www.iana.org/assignments/uri-schemes/prov/redis>\\n        - `rediss://` creates a SSL wrapped TCP socket connection. See more at:\\n          <https://www.iana.org/assignments/uri-schemes/prov/rediss>\\n        - ``unix://``: creates a Unix Domain Socket connection.\\n\\n        The username, password, hostname, path and all querystring values\\n        are passed through urllib.parse.unquote in order to replace any\\n        percent-encoded values with their corresponding characters.\\n\\n        There are several ways to specify a database number. The first value\\n        found will be used:\\n\\n            1. A ``db`` querystring option, e.g. redis://localhost?db=0\\n            2. If using the redis:// or rediss:// schemes, the path argument\\n               of the url, e.g. redis://localhost/0\\n            3. A ``db`` keyword argument to this function.\\n\\n        If none of these options are specified, the default db=0 is used.\\n\\n        All querystring options are cast to their appropriate Python types.\\n        Boolean arguments can be specified with string values \\\"True\\\"/\\\"False\\\"\\n        or \\\"Yes\\\"/\\\"No\\\". Values that cannot be properly cast cause a\\n        ``ValueError`` to be raised. Once parsed, the querystring arguments\\n        and keyword arguments are passed to the ``ConnectionPool``'s\\n        class initializer. In the case of conflicting arguments, querystring\\n        arguments always win.\\n\\n        Redis-specific keyword arguments (e.g. single_connection_client) \\n        are passed to the Redis instance constructor, while connection-related\\n        arguments are passed to the ConnectionPool.\\n\\n        \\\"\\\"\\\"\\n        # Separate Redis-specific kwargs from ConnectionPool kwargs\\n        redis_kwargs = {}\\n        connection_pool_kwargs = {}\\n        \\n        # Redis-specific parameters that should not be passed to ConnectionPool\\n        redis_specific_params = {\\n            'single_connection_client',\\n        }\\n        \\n        for key, value in kwargs.items():\\n            if key in redis_specific_params:\\n                redis_kwargs[key] = value\\n            else:\\n                connection_pool_kwargs[key] = value\\n        \\n        connection_pool = ConnectionPool.from_url(url, **connection_pool_kwargs)\\n        return cls(connection_pool=connection_pool, **redis_kwargs)\"}",
+              "name": "str_replace_editor"
+            },
+            "id": "chatcmpl-tool-cff00cf3a4994dfd98322adaa15ee613",
+            "type": "function"
+          },
+          "response_index": 113,
+          "response": {
+            "content": "The file /workspace/redis__redis-py__5.0/redis/client.py has been edited. Here's the result of running `cat -n` on a snippet of /workspace/redis__redis-py__5.0/redis/client.py:\n   860\t    It is not safe to pass PubSub or Pipeline objects between threads.\n   861\t    \"\"\"\n   862\t\n   863\t    @classmethod\n   864\t    def from_url(cls, url, **kwargs):\n   865\t        \"\"\"\n   866\t        Return a Redis client object configured from the given URL\n   867\t\n   868\t        For example::\n   869\t\n   870\t            redis://[[username]:[password]]@localhost:6379/0\n   871\t            rediss://[[username]:[password]]@localhost:6379/0\n   872\t            unix://[username@]/path/to/socket.sock?db=0[&password=password]\n   873\t\n   874\t        Three URL schemes are supported:\n   875\t\n   876\t        - `redis://` creates a TCP socket connection. See more at:\n   877\t          <https://www.iana.org/assignments/uri-schemes/prov/redis>\n   878\t        - `rediss://` creates a SSL wrapped TCP socket connection. See more at:\n   879\t          <https://www.iana.org/assignments/uri-schemes/prov/rediss>\n   880\t        - ``unix://``: creates a Unix Domain Socket connection.\n   881\t\n   882\t        The username, password, hostname, path and all querystring values\n   883\t        are passed through urllib.parse.unquote in order to replace any\n   884\t        percent-encoded values with their corresponding characters.\n   885\t\n   886\t        There are several ways to specify a database number. The first value\n   887\t        found will be used:\n   888\t\n   889\t            1. A ``db`` querystring option, e.g. redis://localhost?db=0\n   890\t            2. If using the redis:// or rediss:// schemes, the path argument\n   891\t               of the url, e.g. redis://localhost/0\n   892\t            3. A ``db`` keyword argument to this function.\n   893\t\n   894\t        If none of these options are specified, the default db=0 is used.\n   895\t\n   896\t        All querystring options are cast to their appropriate Python types.\n   897\t        Boolean arguments can be specified with string values \"True\"/\"False\"\n   898\t        or \"Yes\"/\"No\". Values that cannot be properly cast cause a\n   899\t        ``ValueError`` to be raised. Once parsed, the querystring arguments\n   900\t        and keyword arguments are passed to the ``ConnectionPool``'s\n   901\t        class initializer. In the case of conflicting arguments, querystring\n   902\t        arguments always win.\n   903\t\n   904\t        Redis-specific keyword arguments (e.g. single_connection_client) \n   905\t        are passed to the Redis instance constructor, while connection-related\n   906\t        arguments are passed to the ConnectionPool.\n   907\t\n   908\t        \"\"\"\n   909\t        # Separate Redis-specific kwargs from ConnectionPool kwargs\n   910\t        redis_kwargs = {}\n   911\t        connection_pool_kwargs = {}\n   912\t        \n   913\t        # Redis-specific parameters that should not be passed to ConnectionPool\n   914\t        redis_specific_params = {\n   915\t            'single_connection_client',\n   916\t        }\n   917\t        \n   918\t        for key, value in kwargs.items():\n   919\t            if key in redis_specific_params:\n   920\t                redis_kwargs[key] = value\n   921\t            else:\n   922\t                connection_pool_kwargs[key] = value\n   923\t        \n   924\t        connection_pool = ConnectionPool.from_url(url, **connection_pool_kwargs)\n   925\t        return cls(connection_pool=connection_pool, **redis_kwargs)\n   926\t\n   927\t    def __init__(\n   928\t        self,\n   929\t        host=\"localhost\",\n   930\t\nReview the changes and make sure they are as expected. Edit the file again if necessary.",
+            "name": "str_replace_editor",
+            "role": "tool",
+            "tool_call_id": "chatcmpl-tool-cff00cf3a4994dfd98322adaa15ee613",
+            "tool_calls": null
+          }
+        }
+      ],
+      "summary_status": "single_assistant_reviewed_observed_attempt_not_success_claim"
+    },
+    "historical_issue_context": {
+      "raw_record_sha256": "bbb0d0ebdbedabc3087e014832557d8485c817086f281a682d993802404db7f6",
+      "message_index": 1,
+      "message_sha256": "8b5960702b2c86ee1aa23b6230e5c6785aba1aeb1a1c260ae4cdf2a893b9f405",
+      "start": 208,
+      "end": 605,
+      "issue_excerpt": "\nRedis.from_url() is a misnomer\n**Version**: 4.5.2\r\n\r\n**Platform**: Python 3.11.2\r\n\r\n**Description**: Redis.from_url is a convenience function, but the kwargs are passed into the ConnectionPool object and not the Redis instance. This formerly wasn't a problem, but it appears as though auto_close_connection_pool now defaults to true, so you can't reliably use Redis.from_url() in a singleton. \r\n\n",
+      "evidence_kind": "historical_user_report_not_independent_runtime_verification"
+    }
+  },
+  {
+    "source_key": "source-08",
+    "source_evidence": {
+      "memory_id": "empty_input",
+      "dataset": "nebius/SWE-rebench-openhands-trajectories",
+      "revision": "35455389ab51bf5e2306bfd436ef72d0f98bf882",
+      "row_index": 243,
+      "trajectory_id": "chatcmpl-2fa576b7819c736b8bcab50a23c1ec9c",
+      "raw_record_sha256": "4efd21e1e45d55d8568dbee0d8fca12a51f6e91bad2c7ffd7dec2f30aedbe70b",
+      "events": [
+        {
+          "message_index": 52,
+          "call": {
+            "function": {
+              "arguments": "{\"path\": \"/workspace/pre-commit__pre-commit__1.14/pre_commit/commands/migrate_config.py\", \"command\": \"str_replace\", \"old_str\": \"def _migrate_map(contents):\\n    # Find the first non-header line\\n    lines = contents.splitlines(True)\\n    i = 0\\n    while _is_header_line(lines[i]):\\n        i += 1\", \"new_str\": \"def _migrate_map(contents):\\n    # Find the first non-header line\\n    lines = contents.splitlines(True)\\n    i = 0\\n    while i < len(lines) and _is_header_line(lines[i]):\\n        i += 1\"}",
+              "name": "str_replace_editor"
+            },
+            "id": "chatcmpl-tool-e0fd834342714b83a68d5dcfba78b939",
+            "type": "function"
+          },
+          "response_index": 53,
+          "response": {
+            "content": "The file /workspace/pre-commit__pre-commit__1.14/pre_commit/commands/migrate_config.py has been edited. Here's the result of running `cat -n` on a snippet of /workspace/pre-commit__pre-commit__1.14/pre_commit/commands/migrate_config.py:\n    17\t    return (line.startswith(('#', '---')) or not line.strip())\n    18\t\n    19\t\n    20\tdef _migrate_map(contents):\n    21\t    # Find the first non-header line\n    22\t    lines = contents.splitlines(True)\n    23\t    i = 0\n    24\t    while i < len(lines) and _is_header_line(lines[i]):\n    25\t        i += 1\n    26\t\n    27\t    header = ''.join(lines[:i])\n    28\t    rest = ''.join(lines[i:])\n    29\t\n    30\t\nReview the changes and make sure they are as expected. Edit the file again if necessary.",
+            "name": "str_replace_editor",
+            "role": "tool",
+            "tool_call_id": "chatcmpl-tool-e0fd834342714b83a68d5dcfba78b939",
+            "tool_calls": null
+          }
+        }
+      ],
+      "summary_status": "single_assistant_reviewed_observed_attempt_not_success_claim"
+    },
+    "historical_issue_context": {
+      "raw_record_sha256": "4efd21e1e45d55d8568dbee0d8fca12a51f6e91bad2c7ffd7dec2f30aedbe70b",
+      "message_index": 1,
+      "message_sha256": "e8c2b9425f67dfb1264fdbd4d118322ae822bf17151bd716a6833f987657143c",
+      "start": 224,
+      "end": 1374,
+      "issue_excerpt": "\npre-commit autoupdate fails when config is empty\nRunning `pre-commit autoupdate` with an empty `.pre-commit-config.yaml` results in the below error:\r\n```An unexpected error has occurred: IndexError: list index out of range\r\nTraceback (most recent call last):\r\n  File \"/usr/local/Cellar/pre-commit/1.14.2/libexec/lib/python3.7/site-packages/pre_commit/error_handler.py\", line 46, in error_handler\r\n    yield\r\n  File \"/usr/local/Cellar/pre-commit/1.14.2/libexec/lib/python3.7/site-packages/pre_commit/main.py\", line 286, in main\r\n    repos=args.repos,\r\n  File \"/usr/local/Cellar/pre-commit/1.14.2/libexec/lib/python3.7/site-packages/pre_commit/commands/autoupdate.py\", line 117, in autoupdate\r\n    migrate_config(config_file, quiet=True)\r\n  File \"/usr/local/Cellar/pre-commit/1.14.2/libexec/lib/python3.7/site-packages/pre_commit/commands/migrate_config.py\", line 52, in migrate_config\r\n    contents = _migrate_map(contents)\r\n  File \"/usr/local/Cellar/pre-commit/1.14.2/libexec/lib/python3.7/site-packages/pre_commit/commands/migrate_config.py\", line 24, in _migrate_map\r\n    while _is_header_line(lines[i]):\r\nIndexError: list index out of range\r\n```\n",
+      "evidence_kind": "historical_user_report_not_independent_runtime_verification"
+    }
+  },
+  {
+    "source_key": "source-09",
+    "source_evidence": {
+      "memory_id": "stale_client",
+      "dataset": "nebius/SWE-rebench-openhands-trajectories",
+      "revision": "35455389ab51bf5e2306bfd436ef72d0f98bf882",
+      "row_index": 478,
+      "trajectory_id": "chatcmpl-587d88b678256b8bc0da2c0ff12a1395",
+      "raw_record_sha256": "513fb98dff17acb6830b91f5824584dbf730c8203515feab21786ef64e5cda67",
+      "events": [
+        {
+          "message_index": 76,
+          "call": {
+            "function": {
+              "arguments": "{\"path\": \"/workspace/google__mobly__1.11/mobly/controllers/android_device_lib/snippet_client.py\", \"command\": \"str_replace\", \"old_str\": \"  def stop_app(self):\\n    # Kill the pending 'adb shell am instrument -w' process if there is one.\\n    # Although killing the snippet apk would abort this process anyway, we\\n    # want to call stop_standing_subprocess() to perform a health check,\\n    # print the failure stack trace if there was any, and reap it from the\\n    # process table.\\n    self.log.debug('Stopping snippet apk %s', self.package)\\n    # Close the socket connection.\\n    self.disconnect()\\n    if self._proc:\\n      utils.stop_standing_subprocess(self._proc)\\n      self._proc = None\\n    out = self._adb.shell(\\n        _STOP_CMD.format(snippet_package=self.package,\\n                         user=self._get_user_command_string())).decode('utf-8')\\n    if 'OK (0 tests)' not in out:\\n      raise errors.DeviceError(\\n          self._ad, 'Failed to stop existing apk. Unexpected output: %s' % out)\", \"new_str\": \"  def stop_app(self):\\n    # Kill the pending 'adb shell am instrument -w' process if there is one.\\n    # Although killing the snippet apk would abort this process anyway, we\\n    # want to call stop_standing_subprocess() to perform a health check,\\n    # print the failure stack trace if there was any, and reap it from the\\n    # process table.\\n    self.log.debug('Stopping snippet apk %s', self.package)\\n    # Close the socket connection.\\n    self.disconnect()\\n    if self._proc:\\n      utils.stop_standing_subprocess(self._proc)\\n      self._proc = None\\n    out = self._adb.shell(\\n        _STOP_CMD.format(snippet_package=self.package,\\n                         user=self._get_user_command_string())).decode('utf-8')\\n    if 'OK (0 tests)' not in out:\\n      raise errors.DeviceError(\\n          self._ad, 'Failed to stop existing apk. Unexpected output: %s' % out)\\n    # Clean up the event client to avoid reuse of broken connections\\n    self._event_client = None\"}",
+              "name": "str_replace_editor"
+            },
+            "id": "chatcmpl-tool-e3785281b6ea427abd6bddb1801c20bc",
+            "type": "function"
+          },
+          "response_index": 77,
+          "response": {
+            "content": "The file /workspace/google__mobly__1.11/mobly/controllers/android_device_lib/snippet_client.py has been edited. Here's the result of running `cat -n` on a snippet of /workspace/google__mobly__1.11/mobly/controllers/android_device_lib/snippet_client.py:\n   232\t    self._proc = None\n   233\t    self._restore_event_client()\n   234\t\n   235\t  def stop_app(self):\n   236\t    # Kill the pending 'adb shell am instrument -w' process if there is one.\n   237\t    # Although killing the snippet apk would abort this process anyway, we\n   238\t    # want to call stop_standing_subprocess() to perform a health check,\n   239\t    # print the failure stack trace if there was any, and reap it from the\n   240\t    # process table.\n   241\t    self.log.debug('Stopping snippet apk %s', self.package)\n   242\t    # Close the socket connection.\n   243\t    self.disconnect()\n   244\t    if self._proc:\n   245\t      utils.stop_standing_subprocess(self._proc)\n   246\t      self._proc = None\n   247\t    out = self._adb.shell(\n   248\t        _STOP_CMD.format(snippet_package=self.package,\n   249\t                         user=self._get_user_command_string())).decode('utf-8')\n   250\t    if 'OK (0 tests)' not in out:\n   251\t      raise errors.DeviceError(\n   252\t          self._ad, 'Failed to stop existing apk. Unexpected output: %s' % out)\n   253\t    # Clean up the event client to avoid reuse of broken connections\n   254\t    self._event_client = None\n   255\t\n   256\t  def _start_event_client(self):\n   257\t    \"\"\"Overrides superclass.\"\"\"\n   258\t    event_client = SnippetClient(package=self.package, ad=self._ad)\n   259\t\nReview the changes and make sure they are as expected. Edit the file again if necessary.",
+            "name": "str_replace_editor",
+            "role": "tool",
+            "tool_call_id": "chatcmpl-tool-e3785281b6ea427abd6bddb1801c20bc",
+            "tool_calls": null
+          }
+        },
+        {
+          "message_index": 80,
+          "call": {
+            "function": {
+              "arguments": "{\"path\": \"/workspace/google__mobly__1.11/mobly/controllers/android_device_lib/snippet_client_v2.py\", \"old_str\": \"  def stop(self):\\n    \\\"\\\"\\\"Releases all the resources acquired in `initialize`.\\n\\n    This function releases following resources:\\n    * Close the socket connection.\\n    * Stop forwarding the device port to host.\\n    * Stop the standing server subprocess running on the host side.\\n    * Stop the snippet server running on the device side.\\n\\n    Raises:\\n      android_device_lib_errors.DeviceError: if the server exited with errors on\\n        the device side.\\n    \\\"\\\"\\\"\\n    self.log.debug('Stopping snippet package %s.', self.package)\\n    self.close_connection()\\n    self._stop_server()\\n    self.log.debug('Snippet package %s stopped.', self.package)\", \"new_str\": \"  def stop(self):\\n    \\\"\\\"\\\"Releases all the resources acquired in `initialize`.\\n\\n    This function releases following resources:\\n    * Close the socket connection.\\n    * Stop forwarding the device port to host.\\n    * Stop the standing server subprocess running on the host side.\\n    * Stop the snippet server running on the device side.\\n\\n    Raises:\\n      android_device_lib_errors.DeviceError: if the server exited with errors on\\n        the device side.\\n    \\\"\\\"\\\"\\n    self.log.debug('Stopping snippet package %s.', self.package)\\n    self.close_connection()\\n    self._stop_server()\\n    # Clean up the event client to avoid reuse of broken connections\\n    self._event_client = None\\n    self.log.debug('Snippet package %s stopped.', self.package)\", \"command\": \"str_replace\"}",
+              "name": "str_replace_editor"
+            },
+            "id": "chatcmpl-tool-94511fa626454ab59e0cad8d5b1018cc",
+            "type": "function"
+          },
+          "response_index": 81,
+          "response": {
+            "content": "The file /workspace/google__mobly__1.11/mobly/controllers/android_device_lib/snippet_client_v2.py has been edited. Here's the result of running `cat -n` on a snippet of /workspace/google__mobly__1.11/mobly/controllers/android_device_lib/snippet_client_v2.py:\n   550\t    self.create_socket_connection()\n   551\t    self.send_handshake_request(uid, cmd)\n   552\t\n   553\t  def stop(self):\n   554\t    \"\"\"Releases all the resources acquired in `initialize`.\n   555\t\n   556\t    This function releases following resources:\n   557\t    * Close the socket connection.\n   558\t    * Stop forwarding the device port to host.\n   559\t    * Stop the standing server subprocess running on the host side.\n   560\t    * Stop the snippet server running on the device side.\n   561\t\n   562\t    Raises:\n   563\t      android_device_lib_errors.DeviceError: if the server exited with errors on\n   564\t        the device side.\n   565\t    \"\"\"\n   566\t    self.log.debug('Stopping snippet package %s.', self.package)\n   567\t    self.close_connection()\n   568\t    self._stop_server()\n   569\t    # Clean up the event client to avoid reuse of broken connections\n   570\t    self._event_client = None\n   571\t    self.log.debug('Snippet package %s stopped.', self.package)\n   572\t\n   573\t  def close_connection(self):\n   574\t    \"\"\"Closes the connection to the snippet server on the device.\n   575\t\n   576\t\nReview the changes and make sure they are as expected. Edit the file again if necessary.",
+            "name": "str_replace_editor",
+            "role": "tool",
+            "tool_call_id": "chatcmpl-tool-94511fa626454ab59e0cad8d5b1018cc",
+            "tool_calls": null
+          }
+        }
+      ],
+      "summary_status": "single_assistant_reviewed_observed_attempt_not_success_claim"
+    },
+    "historical_issue_context": {
+      "raw_record_sha256": "513fb98dff17acb6830b91f5824584dbf730c8203515feab21786ef64e5cda67",
+      "message_index": 1,
+      "message_sha256": "1f4053cecd2b18bd887267b81088aa8c3a604008c0213a2f1b3086d63acd5092",
+      "start": 206,
+      "end": 484,
+      "issue_excerpt": "\nAndroid snippet client should clean event client when stopping\nAndroid snippet client should set `self._event_client` to None when it is requested to stop. Otherwsie, after device reboot, the snippet client will still use the broken event client instead of creating a new one.\n",
+      "evidence_kind": "historical_user_report_not_independent_runtime_verification"
+    }
+  },
+  {
+    "source_key": "source-10",
+    "source_evidence": {
+      "memory_id": "roundtrip_fields",
+      "dataset": "nebius/SWE-rebench-openhands-trajectories",
+      "revision": "35455389ab51bf5e2306bfd436ef72d0f98bf882",
+      "row_index": 342,
+      "trajectory_id": "chatcmpl-ada8f79e98c0b10fe7886cb482206252",
+      "raw_record_sha256": "2db14c47a405cd8181a61b74a458365be8e223de565095c8a634a2e882339d98",
+      "events": [
+        {
+          "message_index": 112,
+          "call": {
+            "function": {
+              "arguments": "{\"path\": \"/workspace/googlefonts__glyphsLib__6.0/Lib/glyphsLib/builder/font.py\", \"command\": \"str_replace\", \"old_str\": \"        self.to_ufo_names(ufo, master, family_name)\\n        self.to_ufo_family_user_data(ufo)\", \"new_str\": \"        self.to_ufo_names(ufo, master, family_name)\\n        self.to_ufo_family_user_data(ufo)\\n        \\n        # Handle meta table data\\n        original_meta = font.userData.get(ORIGINAL_META_KEY)\\n        if original_meta is not None:\\n            ufo.lib[\\\"public.openType.meta\\\"] = original_meta\"}",
+              "name": "str_replace_editor"
+            },
+            "id": "chatcmpl-tool-25be5c4e16ce4169ab36fa1f549ffbbb",
+            "type": "function"
+          },
+          "response_index": 113,
+          "response": {
+            "content": "The file /workspace/googlefonts__glyphsLib__6.0/Lib/glyphsLib/builder/font.py has been edited. Here's the result of running `cat -n` on a snippet of /workspace/googlefonts__glyphsLib__6.0/Lib/glyphsLib/builder/font.py:\n    80\t        # by a glyphOrder custom parameter below in `to_ufo_custom_params`.\n    81\t        ufo.glyphOrder = glyph_order\n    82\t\n    83\t        self.to_ufo_names(ufo, master, family_name)\n    84\t        self.to_ufo_family_user_data(ufo)\n    85\t        \n    86\t        # Handle meta table data\n    87\t        original_meta = font.userData.get(ORIGINAL_META_KEY)\n    88\t        if original_meta is not None:\n    89\t            ufo.lib[\"public.openType.meta\"] = original_meta\n    90\t\n    91\t        ufo.lib.setdefault(UFO2FT_FILTERS_KEY, []).append(\n    92\t            {\"namespace\": \"glyphsLib.filters\", \"name\": \"eraseOpenCorners\", \"pre\": True}\n    93\t        )\n    94\t\nReview the changes and make sure they are as expected. Edit the file again if necessary.",
+            "name": "str_replace_editor",
+            "role": "tool",
+            "tool_call_id": "chatcmpl-tool-25be5c4e16ce4169ab36fa1f549ffbbb",
+            "tool_calls": null
+          }
+        },
+        {
+          "message_index": 118,
+          "call": {
+            "function": {
+              "arguments": "{\"path\": \"/workspace/googlefonts__glyphsLib__6.0/Lib/glyphsLib/builder/font.py\", \"new_str\": \"    self.to_glyphs_family_names(ufo)\\n    self.to_glyphs_family_user_data_from_ufo(ufo)\\n    \\n    # Handle meta table data\\n    opentype_meta = ufo.lib.get(\\\"public.openType.meta\\\")\\n    if opentype_meta is not None:\\n        font.userData[ORIGINAL_META_KEY] = opentype_meta\\n    \\n    self.to_glyphs_custom_params(ufo, font)\", \"old_str\": \"    self.to_glyphs_family_names(ufo)\\n    self.to_glyphs_family_user_data_from_ufo(ufo)\\n    self.to_glyphs_custom_params(ufo, font)\", \"command\": \"str_replace\"}",
+              "name": "str_replace_editor"
+            },
+            "id": "chatcmpl-tool-4b5d900c200c41ab85f7a7fd2e90a99f",
+            "type": "function"
+          },
+          "response_index": 119,
+          "response": {
+            "content": "The file /workspace/googlefonts__glyphsLib__6.0/Lib/glyphsLib/builder/font.py has been edited. Here's the result of running `cat -n` on a snippet of /workspace/googlefonts__glyphsLib__6.0/Lib/glyphsLib/builder/font.py:\n   152\t    if info.openTypeNameManufacturerURL is not None:\n   153\t        font.manufacturerURL = info.openTypeNameManufacturerURL\n   154\t\n   155\t    self.to_glyphs_family_names(ufo)\n   156\t    self.to_glyphs_family_user_data_from_ufo(ufo)\n   157\t    \n   158\t    # Handle meta table data\n   159\t    opentype_meta = ufo.lib.get(\"public.openType.meta\")\n   160\t    if opentype_meta is not None:\n   161\t        font.userData[ORIGINAL_META_KEY] = opentype_meta\n   162\t    \n   163\t    self.to_glyphs_custom_params(ufo, font)\n   164\t\n   165\t\n   166\tdef _compare_and_merge_glyphs_font_attributes(self, source):\n   167\t    ufo = source.font\n   168\t\nReview the changes and make sure they are as expected. Edit the file again if necessary.",
+            "name": "str_replace_editor",
+            "role": "tool",
+            "tool_call_id": "chatcmpl-tool-4b5d900c200c41ab85f7a7fd2e90a99f",
+            "tool_calls": null
+          }
+        }
+      ],
+      "summary_status": "single_assistant_reviewed_observed_attempt_not_success_claim"
+    },
+    "historical_issue_context": {
+      "raw_record_sha256": "2db14c47a405cd8181a61b74a458365be8e223de565095c8a634a2e882339d98",
+      "message_index": 1,
+      "message_sha256": "fbedffe357b33b2a0eb0925881e94012088092f085bfa2af757bdee950c1f66e",
+      "start": 222,
+      "end": 626,
+      "issue_excerpt": "\nsupport for `meta` table needed\nufo2ft [now supports](https://github.com/googlefonts/ufo2ft/pull/509) the `meta` table [defined in UFO3](https://unifiedfontobject.org/versions/ufo3/lib.plist/#publicopentypemeta).  \r\n\r\nHowever, it doesn't look as though glyphsLib supports it yet: I tried round-tripping a UFO to glyphs and back, and the meta table info was removed -- but maybe I did something wrong?\r\n\n",
+      "evidence_kind": "historical_user_report_not_independent_runtime_verification"
+    }
+  },
+  {
+    "source_key": "source-11",
+    "source_evidence": {
+      "memory_id": "numeric_validation",
+      "dataset": "nebius/SWE-rebench-openhands-trajectories",
+      "revision": "35455389ab51bf5e2306bfd436ef72d0f98bf882",
+      "row_index": 247,
+      "trajectory_id": "chatcmpl-bb5c4d95129154017bee5e69c0a0f492",
+      "raw_record_sha256": "c694a327f2fbe3e724fdc1ad9faff5bc0d6521966867fd37df44d0534eed78f7",
+      "events": [
+        {
+          "message_index": 62,
+          "call": {
+            "function": {
+              "arguments": "{\"path\": \"/workspace/PMEAL__OpenPNM__2.8/openpnm/algorithms/_generic_transport.py\", \"command\": \"str_replace\", \"old_str\": \"    def _validate_data_health(self):\\n        r\\\"\\\"\\\"\\n        Check whether A and b are well-defined, i.e. doesn't contain nans.\\n        \\\"\\\"\\\"\\n        import networkx as nx\\n        from pandas import unique\\n\\n        # Validate network topology health\\n        self._validate_topology_health()\\n        # Short-circuit subsequent checks if data are healthy\\n        if np.isfinite(self.A.data).all() and np.isfinite(self.b).all():\\n            return True\", \"new_str\": \"    def _validate_data_health(self, x0=None):\\n        r\\\"\\\"\\\"\\n        Check whether A and b are well-defined, i.e. doesn't contain nans.\\n        \\n        Parameters\\n        ----------\\n        x0 : ndarray, optional\\n            Initial guess vector to validate for NaNs and infinite values\\n        \\\"\\\"\\\"\\n        import networkx as nx\\n        from pandas import unique\\n\\n        # Validate x0 if provided\\n        if x0 is not None:\\n            if not np.isfinite(x0).all():\\n                msg = \\\"Initial guess vector (x0) contains NaNs or infinite values\\\"\\n                raise Exception(msg)\\n\\n        # Validate network topology health\\n        self._validate_topology_health()\\n        # Short-circuit subsequent checks if data are healthy\\n        if np.isfinite(self.A.data).all() and np.isfinite(self.b).all():\\n            return True\"}",
+              "name": "str_replace_editor"
+            },
+            "id": "chatcmpl-tool-fbfcd6f711bb4947824c8bc19f83bde4",
+            "type": "function"
+          },
+          "response_index": 63,
+          "response": {
+            "content": "The file /workspace/PMEAL__OpenPNM__2.8/openpnm/algorithms/_generic_transport.py has been edited. Here's the result of running `cat -n` on a snippet of /workspace/PMEAL__OpenPNM__2.8/openpnm/algorithms/_generic_transport.py:\n   280\t                   \"trim_pores']) to make your network fully connected.\")\n   281\t            raise Exception(msg)\n   282\t\n   283\t    def _validate_data_health(self, x0=None):\n   284\t        r\"\"\"\n   285\t        Check whether A and b are well-defined, i.e. doesn't contain nans.\n   286\t        \n   287\t        Parameters\n   288\t        ----------\n   289\t        x0 : ndarray, optional\n   290\t            Initial guess vector to validate for NaNs and infinite values\n   291\t        \"\"\"\n   292\t        import networkx as nx\n   293\t        from pandas import unique\n   294\t\n   295\t        # Validate x0 if provided\n   296\t        if x0 is not None:\n   297\t            if not np.isfinite(x0).all():\n   298\t                msg = \"Initial guess vector (x0) contains NaNs or infinite values\"\n   299\t                raise Exception(msg)\n   300\t\n   301\t        # Validate network topology health\n   302\t        self._validate_topology_health()\n   303\t        # Short-circuit subsequent checks if data are healthy\n   304\t        if np.isfinite(self.A.data).all() and np.isfinite(self.b).all():\n   305\t            return True\n   306\t        # Validate geometry health\n   307\t        self._validate_geometry_health()\n   308\t\n   309\t        # Fetch phase/geometries/physics\n   310\t\nReview the changes and make sure they are as expected. Edit the file again if necessary.",
+            "name": "str_replace_editor",
+            "role": "tool",
+            "tool_call_id": "chatcmpl-tool-fbfcd6f711bb4947824c8bc19f83bde4",
+            "tool_calls": null
+          }
+        },
+        {
+          "message_index": 66,
+          "call": {
+            "function": {
+              "arguments": "{\"path\": \"/workspace/PMEAL__OpenPNM__2.8/openpnm/algorithms/_generic_transport.py\", \"old_str\": \"        # Perform pre-solve validations\\n        self._validate_settings()\\n        self._validate_data_health()\\n        # Write x0 to algorithm the obj (needed by _update_iterative_props)\\n        self.x = x0 = np.zeros_like(self.b) if x0 is None else x0\", \"new_str\": \"        # Write x0 to algorithm the obj (needed by _update_iterative_props)\\n        self.x = x0 = np.zeros_like(self.b) if x0 is None else x0\\n        # Perform pre-solve validations\\n        self._validate_settings()\\n        self._validate_data_health(x0=x0)\", \"command\": \"str_replace\"}",
+              "name": "str_replace_editor"
+            },
+            "id": "chatcmpl-tool-2ca0a4def4a9479687468ffacab02638",
+            "type": "function"
+          },
+          "response_index": 67,
+          "response": {
+            "content": "The file /workspace/PMEAL__OpenPNM__2.8/openpnm/algorithms/_generic_transport.py has been edited. Here's the result of running `cat -n` on a snippet of /workspace/PMEAL__OpenPNM__2.8/openpnm/algorithms/_generic_transport.py:\n   220\t        \"\"\"\n   221\t        logger.info('Running GenericTransport')\n   222\t        solver = PardisoSpsolve() if solver is None else solver\n   223\t        # Write x0 to algorithm the obj (needed by _update_iterative_props)\n   224\t        self.x = x0 = np.zeros_like(self.b) if x0 is None else x0\n   225\t        # Perform pre-solve validations\n   226\t        self._validate_settings()\n   227\t        self._validate_data_health(x0=x0)\n   228\t        self[\"pore.initial_guess\"] = x0\n   229\t        # Initialize the solution object\n   230\t        self.soln = SteadyStateSolution(x0)\n   231\t        self.soln.is_converged = False\n   232\t\nReview the changes and make sure they are as expected. Edit the file again if necessary.",
+            "name": "str_replace_editor",
+            "role": "tool",
+            "tool_call_id": "chatcmpl-tool-2ca0a4def4a9479687468ffacab02638",
+            "tool_calls": null
+          }
+        }
+      ],
+      "summary_status": "single_assistant_reviewed_observed_attempt_not_success_claim"
+    },
+    "historical_issue_context": {
+      "raw_record_sha256": "c694a327f2fbe3e724fdc1ad9faff5bc0d6521966867fd37df44d0534eed78f7",
+      "message_index": 1,
+      "message_sha256": "27ea7b9caedc56427ac69e38aff09d0d667225ffcb7a55f4e4d8425bb3da9118",
+      "start": 206,
+      "end": 397,
+      "issue_excerpt": "\nCheck that x0 contains valid numbers in transport algs\nthe ``_validate_data_health`` check should also check if x0 doesn't contain nan/infs.\r\n\r\nThis is the main point we settled on in #2126\n",
+      "evidence_kind": "historical_user_report_not_independent_runtime_verification"
+    }
+  },
+  {
+    "source_key": "source-12",
+    "source_evidence": {
+      "memory_id": "output_dtype",
+      "dataset": "nebius/SWE-rebench-openhands-trajectories",
+      "revision": "35455389ab51bf5e2306bfd436ef72d0f98bf882",
+      "row_index": 1050,
+      "trajectory_id": "chatcmpl-40727686f0c34bff0926152f528f810b",
+      "raw_record_sha256": "bf8cc1ad70f1944b63b304647770f1e15d4980fd9b37666267fb3725ff719762",
+      "events": [
+        {
+          "message_index": 52,
+          "call": {
+            "function": {
+              "arguments": "{\"path\": \"/workspace/Project-MONAI__MONAI__1.4/monai/transforms/intensity/array.py\", \"old_str\": \"    def __call__(self, img: NdarrayOrTensor) -> NdarrayOrTensor:\\n        \\\"\\\"\\\"\\n        Apply the transform to `img`.\\n        \\\"\\\"\\\"\\n        img = convert_to_tensor(img, track_meta=get_track_meta())\\n        img_t = convert_to_tensor(img, track_meta=False)\\n        if self.channel_wise:\\n            img_t = torch.stack([self._normalize(img=d) for d in img_t])  # type: ignore\\n        else:\\n            img_t = self._normalize(img=img_t)\\n\\n        return convert_to_dst_type(img_t, dst=img)[0]\", \"new_str\": \"    def __call__(self, img: NdarrayOrTensor) -> NdarrayOrTensor:\\n        \\\"\\\"\\\"\\n        Apply the transform to `img`.\\n        \\\"\\\"\\\"\\n        img = convert_to_tensor(img, track_meta=get_track_meta())\\n        img_t = convert_to_tensor(img, track_meta=False)\\n        if self.channel_wise:\\n            img_t = torch.stack([self._normalize(img=d) for d in img_t])  # type: ignore\\n        else:\\n            img_t = self._normalize(img=img_t)\\n\\n        dtype = self.dtype or img.dtype\\n        ret: NdarrayOrTensor = convert_data_type(img_t, dtype=dtype)[0]\\n        return ret\", \"command\": \"str_replace\"}",
+              "name": "str_replace_editor"
+            },
+            "id": "chatcmpl-tool-362ae539937c4956818baa98fa566a51",
+            "type": "function"
+          },
+          "response_index": 53,
+          "response": {
+            "content": "The file /workspace/Project-MONAI__MONAI__1.4/monai/transforms/intensity/array.py has been edited. Here's the result of running `cat -n` on a snippet of /workspace/Project-MONAI__MONAI__1.4/monai/transforms/intensity/array.py:\n  1400\t        img = convert_to_tensor(img, track_meta=False)\n  1401\t        return img\n  1402\t\n  1403\t    def __call__(self, img: NdarrayOrTensor) -> NdarrayOrTensor:\n  1404\t        \"\"\"\n  1405\t        Apply the transform to `img`.\n  1406\t        \"\"\"\n  1407\t        img = convert_to_tensor(img, track_meta=get_track_meta())\n  1408\t        img_t = convert_to_tensor(img, track_meta=False)\n  1409\t        if self.channel_wise:\n  1410\t            img_t = torch.stack([self._normalize(img=d) for d in img_t])  # type: ignore\n  1411\t        else:\n  1412\t            img_t = self._normalize(img=img_t)\n  1413\t\n  1414\t        dtype = self.dtype or img.dtype\n  1415\t        ret: NdarrayOrTensor = convert_data_type(img_t, dtype=dtype)[0]\n  1416\t        return ret\n  1417\t\n  1418\t\n  1419\tclass MaskIntensity(Transform):\n  1420\t    \"\"\"\n  1421\t\nReview the changes and make sure they are as expected. Edit the file again if necessary.",
+            "name": "str_replace_editor",
+            "role": "tool",
+            "tool_call_id": "chatcmpl-tool-362ae539937c4956818baa98fa566a51",
+            "tool_calls": null
+          }
+        },
+        {
+          "message_index": 124,
+          "call": {
+            "function": {
+              "arguments": "{\"path\": \"/workspace/Project-MONAI__MONAI__1.4/monai/transforms/intensity/array.py\", \"new_str\": \"    def __call__(self, img: NdarrayOrTensor) -> NdarrayOrTensor:\\n        \\\"\\\"\\\"\\n        Apply the transform to `img`.\\n        \\\"\\\"\\\"\\n        img = convert_to_tensor(img, track_meta=get_track_meta())\\n        img_t = convert_to_tensor(img, track_meta=False)\\n        if self.channel_wise:\\n            img_t = torch.stack([self._normalize(img=d) for d in img_t])  # type: ignore\\n        else:\\n            img_t = self._normalize(img=img_t)\\n\\n        dtype = self.dtype or img.dtype\\n        # Preserve the tensor type (MetaTensor, torch.Tensor, or np.ndarray) while changing dtype\\n        if isinstance(img, MetaTensor):\\n            ret: NdarrayOrTensor = convert_data_type(img_t, output_type=MetaTensor, dtype=dtype)[0]\\n        elif isinstance(img, torch.Tensor):\\n            ret: NdarrayOrTensor = convert_data_type(img_t, output_type=torch.Tensor, dtype=dtype)[0]\\n        else:  # numpy array\\n            ret: NdarrayOrTensor = convert_data_type(img_t, output_type=np.ndarray, dtype=dtype)[0]\\n        return ret\", \"old_str\": \"    def __call__(self, img: NdarrayOrTensor) -> NdarrayOrTensor:\\n        \\\"\\\"\\\"\\n        Apply the transform to `img`.\\n        \\\"\\\"\\\"\\n        img = convert_to_tensor(img, track_meta=get_track_meta())\\n        img_t = convert_to_tensor(img, track_meta=False)\\n        if self.channel_wise:\\n            img_t = torch.stack([self._normalize(img=d) for d in img_t])  # type: ignore\\n        else:\\n            img_t = self._normalize(img=img_t)\\n\\n        dtype = self.dtype or img.dtype\\n        ret: NdarrayOrTensor = convert_data_type(img_t, dtype=dtype)[0]\\n        return ret\", \"command\": \"str_replace\"}",
+              "name": "str_replace_editor"
+            },
+            "id": "chatcmpl-tool-a504ab268a3c4aa5a3fad30e5eee9b0a",
+            "type": "function"
+          },
+          "response_index": 125,
+          "response": {
+            "content": "The file /workspace/Project-MONAI__MONAI__1.4/monai/transforms/intensity/array.py has been edited. Here's the result of running `cat -n` on a snippet of /workspace/Project-MONAI__MONAI__1.4/monai/transforms/intensity/array.py:\n  1400\t        img = convert_to_tensor(img, track_meta=False)\n  1401\t        return img\n  1402\t\n  1403\t    def __call__(self, img: NdarrayOrTensor) -> NdarrayOrTensor:\n  1404\t        \"\"\"\n  1405\t        Apply the transform to `img`.\n  1406\t        \"\"\"\n  1407\t        img = convert_to_tensor(img, track_meta=get_track_meta())\n  1408\t        img_t = convert_to_tensor(img, track_meta=False)\n  1409\t        if self.channel_wise:\n  1410\t            img_t = torch.stack([self._normalize(img=d) for d in img_t])  # type: ignore\n  1411\t        else:\n  1412\t            img_t = self._normalize(img=img_t)\n  1413\t\n  1414\t        dtype = self.dtype or img.dtype\n  1415\t        # Preserve the tensor type (MetaTensor, torch.Tensor, or np.ndarray) while changing dtype\n  1416\t        if isinstance(img, MetaTensor):\n  1417\t            ret: NdarrayOrTensor = convert_data_type(img_t, output_type=MetaTensor, dtype=dtype)[0]\n  1418\t        elif isinstance(img, torch.Tensor):\n  1419\t            ret: NdarrayOrTensor = convert_data_type(img_t, output_type=torch.Tensor, dtype=dtype)[0]\n  1420\t        else:  # numpy array\n  1421\t            ret: NdarrayOrTensor = convert_data_type(img_t, output_type=np.ndarray, dtype=dtype)[0]\n  1422\t        return ret\n  1423\t\n  1424\t\n  1425\tclass MaskIntensity(Transform):\n  1426\t    \"\"\"\n  1427\t\nReview the changes and make sure they are as expected. Edit the file again if necessary.",
+            "name": "str_replace_editor",
+            "role": "tool",
+            "tool_call_id": "chatcmpl-tool-a504ab268a3c4aa5a3fad30e5eee9b0a",
+            "tool_calls": null
+          }
+        }
+      ],
+      "summary_status": "single_assistant_reviewed_observed_attempt_not_success_claim"
+    },
+    "historical_issue_context": {
+      "raw_record_sha256": "bf8cc1ad70f1944b63b304647770f1e15d4980fd9b37666267fb3725ff719762",
+      "message_index": 1,
+      "message_sha256": "a77d19e17333562c0734514fcf0f31cb927dc97610fb77324261dce6010e1112",
+      "start": 218,
+      "end": 747,
+      "issue_excerpt": "\nScaleIntensityRangePercentile bug\n**Describe the bug**\r\nIn ScaleIntensityRangePercentile, the output is converted back to input dtype and ignored the `dtype` input. If input is uint8,  the scaled image is wrong. \r\nhttps://github.com/Project-MONAI/MONAI/blob/59a7211070538586369afd4a01eca0a7fe2e742e/monai/transforms/intensity/array.py#L1414\r\n\r\nIn ScaleIntensityRange, the implementation is correct\r\nhttps://github.com/Project-MONAI/MONAI/blob/59a7211070538586369afd4a01eca0a7fe2e742e/monai/transforms/intensity/array.py#L1006\r\n\n",
+      "evidence_kind": "historical_user_report_not_independent_runtime_verification"
+    }
+  },
+  {
+    "source_key": "source-13",
+    "source_evidence": {
+      "memory_id": "container_wrappers",
+      "dataset": "nebius/SWE-rebench-openhands-trajectories",
+      "revision": "35455389ab51bf5e2306bfd436ef72d0f98bf882",
+      "row_index": 3680,
+      "trajectory_id": "chatcmpl-c5151cc101358634c0d3a9f9e6756a89",
+      "raw_record_sha256": "b2f2a74163f2e12a80243602e8f995255911d8b99ac355af7aea767ee8a24548",
+      "events": [
+        {
+          "message_index": 90,
+          "call": {
+            "function": {
+              "arguments": "{\"path\": \"/workspace/Scille__umongo__2.2/umongo/fields.py\", \"command\": \"str_replace\", \"old_str\": \"class DictField(BaseField, ma_fields.Dict):\\n\\n    def _deserialize(self, value, attr, data, **kwargs):\\n        value = super()._deserialize(value, attr, data, **kwargs)\\n        return Dict(value)\\n\\n    def _serialize_to_mongo(self, obj):\\n        if obj is None:\\n            return missing\\n        return dict(obj)\\n\\n    def _deserialize_from_mongo(self, value):\\n        if value:\\n            return Dict(value)\\n        return Dict()\\n\\n    def translate_query(self, key, query):\\n        keys = key.split('.')\\n        self.attribute or keys[0] + '.' + '.'.join(keys[1:])\\n        return {self.attribute or key: query}\", \"new_str\": \"class DictField(BaseField, ma_fields.Dict):\\n\\n    def __init__(self, *args, **kwargs):\\n        super().__init__(*args, **kwargs)\\n        # Wrap the missing value to convert dict() to Dict() when needed\\n        if callable(self.missing) and self.missing is dict:\\n            self._original_missing = self.missing\\n            self.missing = self._wrap_dict_default\\n\\n    def _wrap_dict_default(self):\\n        \\\"\\\"\\\"Wrap dict() default to return uMongo Dict object\\\"\\\"\\\"\\n        return Dict()\\n\\n    def _deserialize(self, value, attr, data, **kwargs):\\n        value = super()._deserialize(value, attr, data, **kwargs)\\n        return Dict(value)\\n\\n    def _serialize_to_mongo(self, obj):\\n        if obj is None:\\n            return missing\\n        return dict(obj)\\n\\n    def _deserialize_from_mongo(self, value):\\n        if value:\\n            return Dict(value)\\n        return Dict()\\n\\n    def translate_query(self, key, query):\\n        keys = key.split('.')\\n        self.attribute or keys[0] + '.' + '.'.join(keys[1:])\\n        return {self.attribute or key: query}\"}",
+              "name": "str_replace_editor"
+            },
+            "id": "chatcmpl-tool-437c192f162c48bb86cabf5e10e3793d",
+            "type": "function"
+          },
+          "response_index": 91,
+          "response": {
+            "content": "The file /workspace/Scille__umongo__2.2/umongo/fields.py has been edited. Here's the result of running `cat -n` on a snippet of /workspace/Scille__umongo__2.2/umongo/fields.py:\n    51\t#     pass\n    52\t\n    53\t\n    54\tclass DictField(BaseField, ma_fields.Dict):\n    55\t\n    56\t    def __init__(self, *args, **kwargs):\n    57\t        super().__init__(*args, **kwargs)\n    58\t        # Wrap the missing value to convert dict() to Dict() when needed\n    59\t        if callable(self.missing) and self.missing is dict:\n    60\t            self._original_missing = self.missing\n    61\t            self.missing = self._wrap_dict_default\n    62\t\n    63\t    def _wrap_dict_default(self):\n    64\t        \"\"\"Wrap dict() default to return uMongo Dict object\"\"\"\n    65\t        return Dict()\n    66\t\n    67\t    def _deserialize(self, value, attr, data, **kwargs):\n    68\t        value = super()._deserialize(value, attr, data, **kwargs)\n    69\t        return Dict(value)\n    70\t\n    71\t    def _serialize_to_mongo(self, obj):\n    72\t        if obj is None:\n    73\t            return missing\n    74\t        return dict(obj)\n    75\t\n    76\t    def _deserialize_from_mongo(self, value):\n    77\t        if value:\n    78\t            return Dict(value)\n    79\t        return Dict()\n    80\t\n    81\t    def translate_query(self, key, query):\n    82\t        keys = key.split('.')\n    83\t        self.attribute or keys[0] + '.' + '.'.join(keys[1:])\n    84\t        return {self.attribute or key: query}\n    85\t\n    86\t\n    87\tclass ListField(BaseField, ma_fields.List):\n    88\t\n    89\t\nReview the changes and make sure they are as expected. Edit the file again if necessary.",
+            "name": "str_replace_editor",
+            "role": "tool",
+            "tool_call_id": "chatcmpl-tool-437c192f162c48bb86cabf5e10e3793d",
+            "tool_calls": null
+          }
+        },
+        {
+          "message_index": 92,
+          "call": {
+            "function": {
+              "arguments": "{\"path\": \"/workspace/Scille__umongo__2.2/umongo/fields.py\", \"new_str\": \"class ListField(BaseField, ma_fields.List):\\n\\n    def __init__(self, *args, **kwargs):\\n        super().__init__(*args, **kwargs)\\n        # Wrap the missing value to convert list() to List() when needed\\n        if callable(self.missing) and self.missing is list:\\n            self._original_missing = self.missing\\n            self.missing = self._wrap_list_default\\n\\n    def _wrap_list_default(self):\\n        \\\"\\\"\\\"Wrap list() default to return uMongo List object\\\"\\\"\\\"\\n        return List(self.inner)\\n\\n    def _deserialize(self, value, attr, data, **kwargs):\\n        ret = List(self.inner, super()._deserialize(value, attr, data, **kwargs))\\n        return ret\\n\\n    def _serialize_to_mongo(self, obj):\\n        if obj is None:\\n            return missing\\n        return [self.inner.serialize_to_mongo(each) for each in obj]\\n\\n    def _deserialize_from_mongo(self, value):\\n        if value:\\n            return List(\\n                self.inner,\\n                [self.inner.deserialize_from_mongo(each) for each in value]\\n            )\\n        return List(self.inner)\", \"old_str\": \"class ListField(BaseField, ma_fields.List):\\n\\n    def _deserialize(self, value, attr, data, **kwargs):\\n        ret = List(self.inner, super()._deserialize(value, attr, data, **kwargs))\\n        return ret\\n\\n    def _serialize_to_mongo(self, obj):\\n        if obj is None:\\n            return missing\\n        return [self.inner.serialize_to_mongo(each) for each in obj]\\n\\n    def _deserialize_from_mongo(self, value):\\n        if value:\\n            return List(\\n                self.inner,\\n                [self.inner.deserialize_from_mongo(each) for each in value]\\n            )\\n        return List(self.inner)\", \"command\": \"str_replace\"}",
+              "name": "str_replace_editor"
+            },
+            "id": "chatcmpl-tool-8ff3d7ba0e7a492ebf23e3a0272b6d7a",
+            "type": "function"
+          },
+          "response_index": 93,
+          "response": {
+            "content": "The file /workspace/Scille__umongo__2.2/umongo/fields.py has been edited. Here's the result of running `cat -n` on a snippet of /workspace/Scille__umongo__2.2/umongo/fields.py:\n    84\t        return {self.attribute or key: query}\n    85\t\n    86\t\n    87\tclass ListField(BaseField, ma_fields.List):\n    88\t\n    89\t    def __init__(self, *args, **kwargs):\n    90\t        super().__init__(*args, **kwargs)\n    91\t        # Wrap the missing value to convert list() to List() when needed\n    92\t        if callable(self.missing) and self.missing is list:\n    93\t            self._original_missing = self.missing\n    94\t            self.missing = self._wrap_list_default\n    95\t\n    96\t    def _wrap_list_default(self):\n    97\t        \"\"\"Wrap list() default to return uMongo List object\"\"\"\n    98\t        return List(self.inner)\n    99\t\n   100\t    def _deserialize(self, value, attr, data, **kwargs):\n   101\t        ret = List(self.inner, super()._deserialize(value, attr, data, **kwargs))\n   102\t        return ret\n   103\t\n   104\t    def _serialize_to_mongo(self, obj):\n   105\t        if obj is None:\n   106\t            return missing\n   107\t        return [self.inner.serialize_to_mongo(each) for each in obj]\n   108\t\n   109\t    def _deserialize_from_mongo(self, value):\n   110\t        if value:\n   111\t            return List(\n   112\t                self.inner,\n   113\t                [self.inner.deserialize_from_mongo(each) for each in value]\n   114\t            )\n   115\t        return List(self.inner)\n   116\t\n   117\t    def map_to_field(self, mongo_path, path, func):\n   118\t        \"\"\"Apply a function to every field in the schema\n   119\t        \"\"\"\n   120\t\nReview the changes and make sure they are as expected. Edit the file again if necessary.",
+            "name": "str_replace_editor",
+            "role": "tool",
+            "tool_call_id": "chatcmpl-tool-8ff3d7ba0e7a492ebf23e3a0272b6d7a",
+            "tool_calls": null
+          }
+        }
+      ],
+      "summary_status": "single_assistant_reviewed_observed_attempt_not_success_claim"
+    },
+    "historical_issue_context": {
+      "raw_record_sha256": "b2f2a74163f2e12a80243602e8f995255911d8b99ac355af7aea767ee8a24548",
+      "message_index": 1,
+      "message_sha256": "cf316316a3126e3e5ba5ac0a857bfa6e0ec015411dcff931a913d5163dfaf624",
+      "start": 206,
+      "end": 885,
+      "issue_excerpt": "\nDictField / ListField: how to pass dict / list as default?\nSince #154, default values must be passed in deserialized form for consistency with marshmallow 3.\r\n\r\nOne can't write this anymore:\r\n\r\n```py\r\nlist_field = ListField(IntField, default=list)\r\n```\r\n\r\nOne must now write\r\n\r\n```py\r\nfrom umongo.data_objects import List\r\nlist_field = ListField(IntField, default=List)\r\n```\r\n\r\nNot ideal.\r\n\r\nShall we still take default values in serialized form in umongo even if it is not consistent with marshmallow 3? Is there another way to cast the default value in these specific cases?\r\n\r\nEdit: in fact, the workaround above doesn't work, so it is worse than not ideal, it is a blocker.\n",
+      "evidence_kind": "historical_user_report_not_independent_runtime_verification"
+    }
+  },
+  {
+    "source_key": "source-14",
+    "source_evidence": {
+      "memory_id": "element_constraints",
+      "dataset": "nebius/SWE-rebench-openhands-trajectories",
+      "revision": "35455389ab51bf5e2306bfd436ef72d0f98bf882",
+      "row_index": 1282,
+      "trajectory_id": "chatcmpl-2d90e66df6c7df0a7a0cd23dfdb414cb",
+      "raw_record_sha256": "461f2715742b7cbe90415bcc86c99c4800e1879dbf79d6844b80fde2d6a85c2a",
+      "events": [
+        {
+          "message_index": 78,
+          "call": {
+            "function": {
+              "arguments": "{\"path\": \"/workspace/linkml__linkml__1.4/linkml/generators/jsonschemagen.py\", \"command\": \"str_replace\", \"old_str\": \"        if slot.description:\\n            prop['description'] = slot.description\\n\\n        if slot.pattern:\\n            # See https://github.com/linkml/linkml/issues/193\\n            prop['pattern'] = slot.pattern\\n\\n        if slot.minimum_value is not None:\\n            prop['minimum'] = slot.minimum_value\\n\\n        if slot.maximum_value is not None:\\n            prop['maximum'] = slot.maximum_value\\n\\n        if slot.equals_string is not None:\\n            prop['const'] = slot.equals_string\\n\\n        if slot.equals_number is not None:\\n            prop['const'] = slot.equals_number\", \"new_str\": \"        if slot.description:\\n            prop['description'] = slot.description\\n\\n        # Handle value constraints - for multivalued slots, apply to items instead of array level\\n        def apply_constraint(prop_schema, constraint_key, constraint_value):\\n            \\\"\\\"\\\"Apply constraint to either the schema directly or to its items if it's an array.\\\"\\\"\\\"\\n            if slot.multivalued and isinstance(prop_schema, dict) and prop_schema.get('type') == 'array' and 'items' in prop_schema:\\n                # Apply constraint to items for multivalued slots\\n                if isinstance(prop_schema['items'], dict):\\n                    prop_schema['items'][constraint_key] = constraint_value\\n                # Note: if items is a list (tuple validation), we'd need more complex handling\\n            else:\\n                # Apply constraint at the schema level\\n                prop_schema[constraint_key] = constraint_value\\n\\n        if slot.pattern:\\n            # See https://github.com/linkml/linkml/issues/193\\n            apply_constraint(prop, 'pattern', slot.pattern)\\n\\n        if slot.minimum_value is not None:\\n            apply_constraint(prop, 'minimum', slot.minimum_value)\\n\\n        if slot.maximum_value is not None:\\n            apply_constraint(prop, 'maximum', slot.maximum_value)\\n\\n        if slot.equals_string is not None:\\n            apply_constraint(prop, 'const', slot.equals_string)\\n\\n        if slot.equals_number is not None:\\n            apply_constraint(prop, 'const', slot.equals_number)\"}",
+              "name": "str_replace_editor"
+            },
+            "id": "chatcmpl-tool-0317c994379c4a818058d8840a5d5d74",
+            "type": "function"
+          },
+          "response_index": 79,
+          "response": {
+            "content": "The file /workspace/linkml__linkml__1.4/linkml/generators/jsonschemagen.py has been edited. Here's the result of running `cat -n` on a snippet of /workspace/linkml__linkml__1.4/linkml/generators/jsonschemagen.py:\n   359\t                        else:\n   360\t                            prop = JsonSchema({\"type\": typ, \"format\": fmt})\n   361\t\n   362\t        if slot.description:\n   363\t            prop['description'] = slot.description\n   364\t\n   365\t        # Handle value constraints - for multivalued slots, apply to items instead of array level\n   366\t        def apply_constraint(prop_schema, constraint_key, constraint_value):\n   367\t            \"\"\"Apply constraint to either the schema directly or to its items if it's an array.\"\"\"\n   368\t            if slot.multivalued and isinstance(prop_schema, dict) and prop_schema.get('type') == 'array' and 'items' in prop_schema:\n   369\t                # Apply constraint to items for multivalued slots\n   370\t                if isinstance(prop_schema['items'], dict):\n   371\t                    prop_schema['items'][constraint_key] = constraint_value\n   372\t                # Note: if items is a list (tuple validation), we'd need more complex handling\n   373\t            else:\n   374\t                # Apply constraint at the schema level\n   375\t                prop_schema[constraint_key] = constraint_value\n   376\t\n   377\t        if slot.pattern:\n   378\t            # See https://github.com/linkml/linkml/issues/193\n   379\t            apply_constraint(prop, 'pattern', slot.pattern)\n   380\t\n   381\t        if slot.minimum_value is not None:\n   382\t            apply_constraint(prop, 'minimum', slot.minimum_value)\n   383\t\n   384\t        if slot.maximum_value is not None:\n   385\t            apply_constraint(prop, 'maximum', slot.maximum_value)\n   386\t\n   387\t        if slot.equals_string is not None:\n   388\t            apply_constraint(prop, 'const', slot.equals_string)\n   389\t\n   390\t        if slot.equals_number is not None:\n   391\t            apply_constraint(prop, 'const', slot.equals_number)\n   392\t\n   393\t        if slot.minimum_cardinality is not None:\n   394\t            if prop['type'] == 'array':\n   395\t                prop['minItems'] = slot.minimum_cardinality\n   396\t\nReview the changes and make sure they are as expected. Edit the file again if necessary.",
+            "name": "str_replace_editor",
+            "role": "tool",
+            "tool_call_id": "chatcmpl-tool-0317c994379c4a818058d8840a5d5d74",
+            "tool_calls": null
+          }
+        }
+      ],
+      "summary_status": "single_assistant_reviewed_observed_attempt_not_success_claim"
+    },
+    "historical_issue_context": {
+      "raw_record_sha256": "461f2715742b7cbe90415bcc86c99c4800e1879dbf79d6844b80fde2d6a85c2a",
+      "message_index": 1,
+      "message_sha256": "717fcc611e2383f94ccda3a6b08218fadc1ae25a18d2efef978d2c6cde8ce65e",
+      "start": 206,
+      "end": 1682,
+      "issue_excerpt": "\nJSON Schema generator should implicitly apply value constraints to all members of multivalued slots\n**Describe the bug**\r\nUsing this schema as an example:\r\n\r\n```yaml\r\nid: http://example.com/test\r\nname: test\r\n\r\nimports:\r\n  - https://w3id.org/linkml/types\r\n\r\nslots:\r\n  e_words_only:\r\n    range: string\r\n    multivalued: true\r\n    pattern: \"e.*\"\r\n\r\nclasses:\r\n  Container:\r\n    slots:\r\n      - e_words_only\r\n```\r\n\r\nI would expect that `gen-json-schema` would produce a JSON Schema that _fails_ validation for this data instance:\r\n\r\n```json\r\n{\r\n  \"e_words_only\": [\r\n    \"echo\",\r\n    \"foxtrot\"\r\n  ]\r\n}\r\n```\r\n\r\nHowever that currently does not appear to be the case.\r\n\r\n**To reproduce**\r\nSteps to reproduce the behavior:\r\n1. With the above schema as `test.yaml`: `gen-json-schema --top-class Container test.yaml > test.schema.json`\r\n2. With the above data instance as `test.data.json`: `jsonschema -i test.data.json test.schema.json` (assuming you're in a virtual environment with https://pypi.org/project/jsonschema/)\r\n3. Note that no validation error is produced\r\n\r\n**Additional context**\r\nThe JSON Schema that's currently being produced for the above example contains the following:\r\n\r\n```json\r\n\"properties\": {\r\n    \"e_words_only\": {\r\n        \"items\": {\r\n            \"type\": \"string\"\r\n        },\r\n        \"pattern\": \"e.*\",\r\n        \"type\": \"array\"\r\n    }\r\n},\r\n```\r\n\r\nIn order for the `pattern` to apply to all elements, it would need to be moved into the `items` specification.\r\n\n",
+      "evidence_kind": "historical_user_report_not_independent_runtime_verification"
+    }
+  },
+  {
+    "source_key": "source-15",
+    "source_evidence": {
+      "memory_id": "callback_arguments",
+      "dataset": "nebius/SWE-rebench-openhands-trajectories",
+      "revision": "35455389ab51bf5e2306bfd436ef72d0f98bf882",
+      "row_index": 2645,
+      "trajectory_id": "chatcmpl-f912db21fb81cc4d3074d4d66a6e4627",
+      "raw_record_sha256": "b630caf2bfe128d3e636cf163c001aaadc76a21a9211922fbfd24ee663c4d22e",
+      "events": [
+        {
+          "message_index": 68,
+          "call": {
+            "function": {
+              "arguments": "{\"path\": \"/workspace/pika__pika__1.0/pika/adapters/twisted_connection.py\", \"command\": \"str_replace\", \"old_str\": \"    def _on_puback_message_returned(self, message):\\n        \\\"\\\"\\\"Called as the result of Basic.Return from broker in\\n        publisher-acknowledgements mode. Saves the info as a ReturnedMessage\\n        instance in self._puback_return.\\n\\n        :param pika.Channel channel: our self._impl channel\\n        :param pika.spec.Basic.Return method:\\n        :param pika.spec.BasicProperties properties: message properties\\n        :param bytes body: returned message body; empty string if no body\\n\\n        \\\"\\\"\\\"\\n        assert isinstance(message.method, spec.Basic.Return), message.method\\n        assert isinstance(message.properties,\\n                          spec.BasicProperties), (message.properties)\\n\\n        LOGGER.warning(\\n            \\\"Published message was returned: _delivery_confirmation=%s; \\\"\\n            \\\"channel=%s; method=%r; properties=%r; body_size=%d; \\\"\\n            \\\"body_prefix=%.255r\\\", self._delivery_confirmation,\\n            message.channel.channel_number, message.method, message.properties,\\n            len(message.body) if message.body is not None else None,\\n            message.body)\\n\\n        self._puback_return = message\", \"new_str\": \"    def _on_puback_message_returned(self, channel, method, properties, body):\\n        \\\"\\\"\\\"Called as the result of Basic.Return from broker in\\n        publisher-acknowledgements mode. Saves the info as a ReturnedMessage\\n        instance in self._puback_return.\\n\\n        :param pika.Channel channel: our self._impl channel\\n        :param pika.spec.Basic.Return method:\\n        :param pika.spec.BasicProperties properties: message properties\\n        :param bytes body: returned message body; empty string if no body\\n\\n        \\\"\\\"\\\"\\n        message = ReceivedMessage(\\n            channel=self,\\n            method=method,\\n            properties=properties,\\n            body=body,\\n        )\\n        \\n        assert isinstance(message.method, spec.Basic.Return), message.method\\n        assert isinstance(message.properties,\\n                          spec.BasicProperties), (message.properties)\\n\\n        LOGGER.warning(\\n            \\\"Published message was returned: _delivery_confirmation=%s; \\\"\\n            \\\"channel=%s; method=%r; properties=%r; body_size=%d; \\\"\\n            \\\"body_prefix=%.255r\\\", self._delivery_confirmation,\\n            message.channel.channel_number, message.method, message.properties,\\n            len(message.body) if message.body is not None else None,\\n            message.body)\\n\\n        self._puback_return = message\"}",
+              "name": "str_replace_editor"
+            },
+            "id": "chatcmpl-tool-bcffb2e527e642d891f29d09c218c2f7",
+            "type": "function"
+          },
+          "response_index": 69,
+          "response": {
+            "content": "The file /workspace/pika__pika__1.0/pika/adapters/twisted_connection.py has been edited. Here's the result of running `cat -n` on a snippet of /workspace/pika__pika__1.0/pika/adapters/twisted_connection.py:\n   736\t                else:\n   737\t                    d.callback(method_frame.method)\n   738\t\n   739\t    def _on_puback_message_returned(self, channel, method, properties, body):\n   740\t        \"\"\"Called as the result of Basic.Return from broker in\n   741\t        publisher-acknowledgements mode. Saves the info as a ReturnedMessage\n   742\t        instance in self._puback_return.\n   743\t\n   744\t        :param pika.Channel channel: our self._impl channel\n   745\t        :param pika.spec.Basic.Return method:\n   746\t        :param pika.spec.BasicProperties properties: message properties\n   747\t        :param bytes body: returned message body; empty string if no body\n   748\t\n   749\t        \"\"\"\n   750\t        message = ReceivedMessage(\n   751\t            channel=self,\n   752\t            method=method,\n   753\t            properties=properties,\n   754\t            body=body,\n   755\t        )\n   756\t        \n   757\t        assert isinstance(message.method, spec.Basic.Return), message.method\n   758\t        assert isinstance(message.properties,\n   759\t                          spec.BasicProperties), (message.properties)\n   760\t\n   761\t        LOGGER.warning(\n   762\t            \"Published message was returned: _delivery_confirmation=%s; \"\n   763\t            \"channel=%s; method=%r; properties=%r; body_size=%d; \"\n   764\t            \"body_prefix=%.255r\", self._delivery_confirmation,\n   765\t            message.channel.channel_number, message.method, message.properties,\n   766\t            len(message.body) if message.body is not None else None,\n   767\t            message.body)\n   768\t\n   769\t        self._puback_return = message\n   770\t\n   771\t    def exchange_bind(self, destination, source, routing_key='',\n   772\t                      arguments=None):\n   773\t        \"\"\"Bind an exchange to another exchange.\n   774\t\nReview the changes and make sure they are as expected. Edit the file again if necessary.",
+            "name": "str_replace_editor",
+            "role": "tool",
+            "tool_call_id": "chatcmpl-tool-bcffb2e527e642d891f29d09c218c2f7",
+            "tool_calls": null
+          }
+        }
+      ],
+      "summary_status": "single_assistant_reviewed_observed_attempt_not_success_claim"
+    },
+    "historical_issue_context": {
+      "raw_record_sha256": "b630caf2bfe128d3e636cf163c001aaadc76a21a9211922fbfd24ee663c4d22e",
+      "message_index": 1,
+      "message_sha256": "42042d195dc9f30b20d270e9d4f0a0107fbaf8b3cdb7821f6dc503a96c713912",
+      "start": 198,
+      "end": 374,
+      "issue_excerpt": "\ntwisted channel _on_puback_message_returned has wrong number of args\n_on_puback_message_returned in twisted channel has only 1 parameter, bug it's called with 4, is it a bug?\n",
+      "evidence_kind": "historical_user_report_not_independent_runtime_verification"
+    }
+  },
+  {
+    "source_key": "source-16",
+    "source_evidence": {
+      "memory_id": "nested_blocks",
+      "dataset": "nebius/SWE-rebench-openhands-trajectories",
+      "revision": "35455389ab51bf5e2306bfd436ef72d0f98bf882",
+      "row_index": 1536,
+      "trajectory_id": "chatcmpl-29050be49ebeec2acd7b3c3567dd7b3e",
+      "raw_record_sha256": "03ded432a47d48a9fbc0bab5fe9593d2de2f32a4d9ff20573f082cc702594245",
+      "events": [
+        {
+          "message_index": 74,
+          "call": {
+            "function": {
+              "arguments": "{\"path\": \"/workspace/jamescooke__flake8-aaa__0.3/flake8_aaa/function.py\", \"old_str\": \"    def load_act_block(self):\\n        \\\"\\\"\\\"\\n        Returns:\\n            ActBlock\\n\\n        Raises:\\n            ValidationError\\n        \\\"\\\"\\\"\\n        act_blocks = []\\n        for child_node in self.node.body:\\n            try:\\n                act_blocks.append(ActBlock.build(child_node))\\n            except NotActionBlock:\\n                continue\\n\\n        if len(act_blocks) < 1:\\n            raise ValidationError(self.node.lineno, self.node.col_offset, 'AAA01 no Act block found in test')\\n\\n        if len(act_blocks) > 1:\\n            # Allow `pytest.raises` in assert blocks - if any of the additional\\n            # act blocks are `pytest.raises` blocks, then raise\\n            if list(filter(lambda ab: ab.block_type != ActBlockType.pytest_raises, act_blocks[1:])):\\n                raise ValidationError(self.node.lineno, self.node.col_offset, 'AAA02 multiple Act blocks found in test')\\n\\n        return act_blocks[0]\", \"new_str\": \"    def load_act_block(self):\\n        \\\"\\\"\\\"\\n        Returns:\\n            ActBlock\\n\\n        Raises:\\n            ValidationError\\n        \\\"\\\"\\\"\\n        act_blocks = []\\n        # Traverse all nodes including nested ones to find Act blocks\\n        for child_node in self._get_all_nodes(self.node.body):\\n            try:\\n                act_blocks.append(ActBlock.build(child_node))\\n            except NotActionBlock:\\n                continue\\n\\n        if len(act_blocks) < 1:\\n            raise ValidationError(self.node.lineno, self.node.col_offset, 'AAA01 no Act block found in test')\\n\\n        if len(act_blocks) > 1:\\n            # Allow `pytest.raises` in assert blocks - if any of the additional\\n            # act blocks are `pytest.raises` blocks, then raise\\n            if list(filter(lambda ab: ab.block_type != ActBlockType.pytest_raises, act_blocks[1:])):\\n                raise ValidationError(self.node.lineno, self.node.col_offset, 'AAA02 multiple Act blocks found in test')\\n\\n        return act_blocks[0]\\n\\n    def _get_all_nodes(self, nodes):\\n        \\\"\\\"\\\"\\n        Recursively get all nodes including those nested in With statements.\\n        \\n        Args:\\n            nodes (list): List of AST nodes to process\\n            \\n        Yields:\\n            ast.Node: All nodes including nested ones\\n        \\\"\\\"\\\"\\n        for node in nodes:\\n            yield node\\n            # If this is a With statement, also process its body\\n            if hasattr(node, 'body') and isinstance(node, ast.With):\\n                for nested_node in self._get_all_nodes(node.body):\\n                    yield nested_node\", \"command\": \"str_replace\"}",
+              "name": "str_replace_editor"
+            },
+            "id": "chatcmpl-tool-1fe18282e78f4a2f8b5bc43a183745a8",
+            "type": "function"
+          },
+          "response_index": 75,
+          "response": {
+            "content": "The file /workspace/jamescooke__flake8-aaa__0.3/flake8_aaa/function.py has been edited. Here's the result of running `cat -n` on a snippet of /workspace/jamescooke__flake8-aaa__0.3/flake8_aaa/function.py:\n    42\t        self.assert_block = self.load_assert_block()\n    43\t        self.check_act_assert_spacing()\n    44\t\n    45\t    def load_act_block(self):\n    46\t        \"\"\"\n    47\t        Returns:\n    48\t            ActBlock\n    49\t\n    50\t        Raises:\n    51\t            ValidationError\n    52\t        \"\"\"\n    53\t        act_blocks = []\n    54\t        # Traverse all nodes including nested ones to find Act blocks\n    55\t        for child_node in self._get_all_nodes(self.node.body):\n    56\t            try:\n    57\t                act_blocks.append(ActBlock.build(child_node))\n    58\t            except NotActionBlock:\n    59\t                continue\n    60\t\n    61\t        if len(act_blocks) < 1:\n    62\t            raise ValidationError(self.node.lineno, self.node.col_offset, 'AAA01 no Act block found in test')\n    63\t\n    64\t        if len(act_blocks) > 1:\n    65\t            # Allow `pytest.raises` in assert blocks - if any of the additional\n    66\t            # act blocks are `pytest.raises` blocks, then raise\n    67\t            if list(filter(lambda ab: ab.block_type != ActBlockType.pytest_raises, act_blocks[1:])):\n    68\t                raise ValidationError(self.node.lineno, self.node.col_offset, 'AAA02 multiple Act blocks found in test')\n    69\t\n    70\t        return act_blocks[0]\n    71\t\n    72\t    def _get_all_nodes(self, nodes):\n    73\t        \"\"\"\n    74\t        Recursively get all nodes including those nested in With statements.\n    75\t        \n    76\t        Args:\n    77\t            nodes (list): List of AST nodes to process\n    78\t            \n    79\t        Yields:\n    80\t            ast.Node: All nodes including nested ones\n    81\t        \"\"\"\n    82\t        for node in nodes:\n    83\t            yield node\n    84\t            # If this is a With statement, also process its body\n    85\t            if hasattr(node, 'body') and isinstance(node, ast.With):\n    86\t                for nested_node in self._get_all_nodes(node.body):\n    87\t                    yield nested_node\n    88\t\n    89\t    def load_arrange_block(self):\n    90\t        \"\"\"\n    91\t        Returns:\n    92\t\nReview the changes and make sure they are as expected. Edit the file again if necessary.",
+            "name": "str_replace_editor",
+            "role": "tool",
+            "tool_call_id": "chatcmpl-tool-1fe18282e78f4a2f8b5bc43a183745a8",
+            "tool_calls": null
+          }
+        },
+        {
+          "message_index": 78,
+          "call": {
+            "function": {
+              "arguments": "{\"path\": \"/workspace/jamescooke__flake8-aaa__0.3/flake8_aaa/function.py\", \"new_str\": \"import ast\\n\\nfrom .act_block import ActBlock\\nfrom .arrange_block import ArrangeBlock\\nfrom .assert_block import AssertBlock\\nfrom .exceptions import NotActionBlock, ValidationError\\nfrom .helpers import function_is_noop\\nfrom .types import ActBlockType\", \"old_str\": \"from .act_block import ActBlock\\nfrom .arrange_block import ArrangeBlock\\nfrom .assert_block import AssertBlock\\nfrom .exceptions import NotActionBlock, ValidationError\\nfrom .helpers import function_is_noop\\nfrom .types import ActBlockType\", \"command\": \"str_replace\"}",
+              "name": "str_replace_editor"
+            },
+            "id": "chatcmpl-tool-ea8096dc46c1421ea089c395fcb20ecb",
+            "type": "function"
+          },
+          "response_index": 79,
+          "response": {
+            "content": "The file /workspace/jamescooke__flake8-aaa__0.3/flake8_aaa/function.py has been edited. Here's the result of running `cat -n` on a snippet of /workspace/jamescooke__flake8-aaa__0.3/flake8_aaa/function.py:\n     1\timport ast\n     2\t\n     3\tfrom .act_block import ActBlock\n     4\tfrom .arrange_block import ArrangeBlock\n     5\tfrom .assert_block import AssertBlock\n     6\tfrom .exceptions import NotActionBlock, ValidationError\n     7\tfrom .helpers import function_is_noop\n     8\tfrom .types import ActBlockType\n     9\t\n    10\t\n    11\tclass Function(object):\n    12\t    \"\"\"\n    13\t\nReview the changes and make sure they are as expected. Edit the file again if necessary.",
+            "name": "str_replace_editor",
+            "role": "tool",
+            "tool_call_id": "chatcmpl-tool-ea8096dc46c1421ea089c395fcb20ecb",
+            "tool_calls": null
+          }
+        }
+      ],
+      "summary_status": "single_assistant_reviewed_observed_attempt_not_success_claim"
+    },
+    "historical_issue_context": {
+      "raw_record_sha256": "03ded432a47d48a9fbc0bab5fe9593d2de2f32a4d9ff20573f082cc702594245",
+      "message_index": 1,
+      "message_sha256": "d0190339bc284906cff664431a29c1991394a28c208729a5a8dc944869b6ab67",
+      "start": 222,
+      "end": 415,
+      "issue_excerpt": "\nAct blocks within context managers are not found, even when marked with #act\n```\r\n    with mock.patch.object(sync_metadata, 'delay') as m_delay:\r\n        result = url(project_biz)  # act\r\n```\n",
+      "evidence_kind": "historical_user_report_not_independent_runtime_verification"
+    }
+  }
+]

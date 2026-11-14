@@ -1,0 +1,64 @@
+{
+  "target_trajectory_row_index": 2105,
+  "task": {
+    "instance_id": "PyFilesystem__pyfilesystem2-474",
+    "repo": "PyFilesystem/pyfilesystem2",
+    "base_commit": "60b0a6347e3bbcee4a2a6261a5e1b3166c45e192",
+    "created_at": "2021-03-27 02:24:49",
+    "problem_statement": "convert_os_errors error when converting errno.ENAMETOOLONG to PathError\nUsing convert_os_errors to convert errno.ENAMETOOLONG to PathError results in unexpected keyword arguement 'exc' error. Seems that [this line](https://github.com/PyFilesystem/pyfilesystem2/blob/8784fd61797fac654511f16fd50c38c8a1675f16/fs/error_tools.py#L89) will set exc=exc_value however PathError does not take in exc parameter.\r\n\r\nThe following example code:\r\n```\r\nimport errno\r\nfrom fs.error_tools import convert_os_errors\r\nfrom fs import errors as fserrors\r\n\r\ntry:\r\n\tfrom fs import open_fs\r\n\tf = open_fs('/tmp')\r\n\tf.open('x'*500, mode='w')\r\nexcept OSError as e:\r\n    with convert_os_errors(\"foo\", \"test\"):\r\n        raise e\r\n```\r\nresults in: TypeError: __init__() got an unexpected keyword argument 'exc'",
+    "version": "2.4",
+    "environment_setup_commit": "a6ea045e766c76bae2e2fde19294c8275773ffde",
+    "license_name": "MIT License",
+    "docker_image": "swerebench/sweb.eval.x86_64.pyfilesystem_1776_pyfilesystem2-474",
+    "image_name": "swerebench/sweb.eval.x86_64.pyfilesystem_1776_pyfilesystem2-474",
+    "dataset": "nebius/SWE-rebench",
+    "revision": "89cdfbab4ab1bd8f5a658bb212d1b63624f4f881",
+    "file": "data/test-00000-of-00002.parquet",
+    "row_index": 2365
+  },
+  "base_code": [
+    {
+      "path": "fs/error_tools.py",
+      "repository": "PyFilesystem/pyfilesystem2",
+      "base_commit": "60b0a6347e3bbcee4a2a6261a5e1b3166c45e192",
+      "git_blob_sha": "66d38696e13f1ae62a01ebb7cb55554b30b7242a",
+      "full_content_sha256": "cfa3dd9bee4ab001ac821d242bdb0564026e1a6c47fabebd51e2bb3f26082706",
+      "source_url": "https://github.com/PyFilesystem/pyfilesystem2/blob/60b0a6347e3bbcee4a2a6261a5e1b3166c45e192/fs/error_tools.py",
+      "spans": [
+        {
+          "start_line": 34,
+          "end_line": 58,
+          "text": "        64: errors.RemoteConnectionError,  # ENONET\n        errno.EACCES: errors.PermissionDenied,\n        errno.ENOENT: errors.ResourceNotFound,\n        errno.EFAULT: errors.ResourceNotFound,\n        errno.ESRCH: errors.ResourceNotFound,\n        errno.ENOTEMPTY: errors.DirectoryNotEmpty,\n        errno.EEXIST: errors.FileExists,\n        183: errors.DirectoryExists,\n        # errno.ENOTDIR: errors.DirectoryExpected,\n        errno.ENOTDIR: errors.ResourceNotFound,\n        errno.EISDIR: errors.FileExpected,\n        errno.EINVAL: errors.FileExpected,\n        errno.ENOSPC: errors.InsufficientStorage,\n        errno.EPERM: errors.PermissionDenied,\n        errno.ENETDOWN: errors.RemoteConnectionError,\n        errno.ECONNRESET: errors.RemoteConnectionError,\n        errno.ENAMETOOLONG: errors.PathError,\n        errno.EOPNOTSUPP: errors.Unsupported,\n        errno.ENOSYS: errors.Unsupported,\n    }\n\n    DIR_ERRORS = FILE_ERRORS.copy()\n    DIR_ERRORS[errno.ENOTDIR] = errors.DirectoryExpected\n    DIR_ERRORS[errno.EEXIST] = errors.DirectoryExists\n    DIR_ERRORS[errno.EINVAL] = errors.DirectoryExpected\n",
+          "sha256": "92fefacf2280f36491ad6866cacece636f967b05aabd9fde4579d8d6a518e480"
+        },
+        {
+          "start_line": 70,
+          "end_line": 92,
+          "text": "\n    def __enter__(self):\n        # type: () -> _ConvertOSErrors\n        return self\n\n    def __exit__(\n        self,\n        exc_type,  # type: Optional[Type[BaseException]]\n        exc_value,  # type: Optional[BaseException]\n        traceback,  # type: Optional[TracebackType]\n    ):\n        # type: (...) -> None\n        os_errors = self.DIR_ERRORS if self._directory else self.FILE_ERRORS\n        if exc_type and isinstance(exc_value, EnvironmentError):\n            _errno = exc_value.errno\n            fserror = os_errors.get(_errno, errors.OperationFailed)\n            if _errno == errno.EACCES and sys.platform == \"win32\":\n                if getattr(exc_value, \"args\", None) == 32:  # pragma: no cover\n                    fserror = errors.ResourceLocked\n            reraise(fserror, fserror(self._path, exc=exc_value), traceback)\n\n\n# Stops linter complaining about invalid class name\n",
+          "sha256": "12477fd2c3224d428b8cd54349af9635e4474cb3476b259c362849bdcb08aa3a"
+        }
+      ]
+    },
+    {
+      "path": "fs/errors.py",
+      "repository": "PyFilesystem/pyfilesystem2",
+      "base_commit": "60b0a6347e3bbcee4a2a6261a5e1b3166c45e192",
+      "git_blob_sha": "25625e28bb93c400a829fad73d5b33fcbc87e801",
+      "full_content_sha256": "c649850340e6388b6770f279977a36592eb8b254f3dfdb7ddd353711aaedc70e",
+      "source_url": "https://github.com/PyFilesystem/pyfilesystem2/blob/60b0a6347e3bbcee4a2a6261a5e1b3166c45e192/fs/errors.py",
+      "spans": [
+        {
+          "start_line": 137,
+          "end_line": 152,
+          "text": "class PathError(FSError):\n    \"\"\"Base exception for errors to do with a path string.\"\"\"\n\n    default_message = \"path '{path}' is invalid\"\n\n    def __init__(self, path, msg=None):  # noqa: D107\n        # type: (Text, Optional[Text]) -> None\n        self.path = path\n        super(PathError, self).__init__(msg=msg)\n\n    def __reduce__(self):\n        return type(self), (self.path, self._msg)\n\n\nclass NoSysPath(PathError):\n    \"\"\"The filesystem does not provide *sys paths* to the resource.\"\"\"\n",
+          "sha256": "b09a3ed2b2d77e8ce63df2344be121032c30333d216f850d4734c5321e5f0e2a"
+        }
+      ]
+    }
+  ],
+  "observation_kind": "researcher_read_of_pinned_pre_patch_code",
+  "worker_initial_inspection_performed": false,
+  "restorable_worker_snapshot": null,
+  "target_trajectory_loaded": false,
+  "gold_patch_or_hidden_tests_loaded": false
+}

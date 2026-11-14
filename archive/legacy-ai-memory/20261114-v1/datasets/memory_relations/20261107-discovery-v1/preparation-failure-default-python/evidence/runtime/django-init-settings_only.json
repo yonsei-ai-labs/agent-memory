@@ -1,0 +1,36 @@
+{
+  "at": "2026-11-07T10:29:29.225585+00:00",
+  "model_api_calls": 0,
+  "specification": {
+    "probe_id": "django-init-settings_only",
+    "context_task": "django__django-16041",
+    "mechanism": "initialization",
+    "fixture": {
+      "mode": "settings_only"
+    },
+    "program": "from django.conf import settings\nsettings.configure(SECRET_KEY='test',USE_I18N=True)\nfrom django import forms\nclass Example(forms.Form):\n    value=forms.CharField()\nrendered=str(Example())\nresult={'rendered':bool(rendered)}\n"
+  },
+  "public_context_file": "datasets/memory_relations/20261107-discovery-v1/evidence/public-code/django__django-16041.json",
+  "image_id": "sha256:b9a365cadc576e7765d07d1b94b43822a45bc30d949dd1e7f1982292d10f14cc",
+  "executed_program_sha256": "c405cc6e979f0ef18d22a24141d13d4f523832d0c1fdb6aa73e3f01c35578953",
+  "observed": {
+    "exception_type": "ModuleNotFoundError",
+    "kind": "exception",
+    "message": "No module named 'asgiref'",
+    "traceback": "Traceback (most recent call last):\n  File \"<string>\", line 3, in <module>\n  File \"/testbed/django/conf/__init__.py\", line 19, in <module>\n    from django.utils.deprecation import RemovedInDjango50Warning\n  File \"/testbed/django/utils/deprecation.py\", line 5, in <module>\n    from asgiref.sync import sync_to_async\nModuleNotFoundError: No module named 'asgiref'\n"
+  },
+  "execution": {
+    "returncode": 0,
+    "stdout": "MEMORY_RELATION_RESULT:{\"exception_type\": \"ModuleNotFoundError\", \"kind\": \"exception\", \"message\": \"No module named 'asgiref'\", \"traceback\": \"Traceback (most recent call last):\\n  File \\\"<string>\\\", line 3, in <module>\\n  File \\\"/testbed/django/conf/__init__.py\\\", line 19, in <module>\\n    from django.utils.deprecation import RemovedInDjango50Warning\\n  File \\\"/testbed/django/utils/deprecation.py\\\", line 5, in <module>\\n    from asgiref.sync import sync_to_async\\nModuleNotFoundError: No module named 'asgiref'\\n\"}\n",
+    "stderr": "",
+    "seconds": 1.0156519799784292,
+    "image_id": "sha256:b9a365cadc576e7765d07d1b94b43822a45bc30d949dd1e7f1982292d10f14cc",
+    "resources": {
+      "cpus": 1,
+      "memory": "1g",
+      "network": "none",
+      "root_filesystem": "read-only"
+    }
+  },
+  "interpretation": "Controlled mechanism probe. Expected validation exceptions are observed outcomes, not infrastructure failures. Shell success is not treated as semantic success. No actor or memory policy was evaluated."
+}

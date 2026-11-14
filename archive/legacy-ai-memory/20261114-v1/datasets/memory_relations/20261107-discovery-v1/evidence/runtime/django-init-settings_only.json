@@ -1,0 +1,38 @@
+{
+  "at": "2026-11-07T10:30:59.177943+00:00",
+  "model_api_calls": 0,
+  "specification": {
+    "probe_id": "django-init-settings_only",
+    "context_task": "django__django-16041",
+    "mechanism": "initialization",
+    "fixture": {
+      "mode": "settings_only"
+    },
+    "interpreter": "/opt/miniconda3/envs/testbed/bin/python",
+    "program": "from django.conf import settings\nsettings.configure(SECRET_KEY='test',USE_I18N=True)\nfrom django import forms\nclass Example(forms.Form):\n    value=forms.CharField()\nrendered=str(Example())\nresult={'rendered':bool(rendered)}\n"
+  },
+  "public_context_file": "datasets/memory_relations/20261107-discovery-v1/evidence/public-code/django__django-16041.json",
+  "image_id": "sha256:b9a365cadc576e7765d07d1b94b43822a45bc30d949dd1e7f1982292d10f14cc",
+  "executed_program_sha256": "c405cc6e979f0ef18d22a24141d13d4f523832d0c1fdb6aa73e3f01c35578953",
+  "observed": {
+    "exception_type": "AppRegistryNotReady",
+    "kind": "exception",
+    "message": "The translation infrastructure cannot be initialized before the apps registry is ready. Check that you don't make non-lazy gettext calls at import time.",
+    "traceback": "Traceback (most recent call last):\n  File \"/testbed/django/utils/translation/trans_real.py\", line 210, in _add_installed_apps_translations\n    app_configs = reversed(apps.get_app_configs())\n  File \"/testbed/django/apps/registry.py\", line 147, in get_app_configs\n    self.check_apps_ready()\n  File \"/testbed/django/apps/registry.py\", line 138, in check_apps_ready\n    raise AppRegistryNotReady(\"Apps aren't loaded yet.\")\ndjango.core.exceptions.AppRegistryNotReady: Apps aren't loaded yet.\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"<string>\", line 8, in <module>\n  File \"/testbed/django/forms/forms.py\", line 98, in __init__\n    self.label_suffix = label_suffix if label_suffix is not None else _(\":\")\n  File \"/testbed/django/utils/translation/__init__.py\", line 95, in gettext\n    return _trans.gettext(message)\n  File \"/testbed/django/utils/translation/trans_real.py\", line 374, in gettext\n    _default = _default or translation(settings.LANGUAGE_CODE)\n  File \"/testbed/django/utils/translation/trans_real.py\", line 287, in translation\n    _translations[language] = DjangoTranslation(language)\n  File \"/testbed/django/utils/translation/trans_real.py\", line 164, in __init__\n    self._add_installed_apps_translations()\n  File \"/testbed/django/utils/translation/trans_real.py\", line 212, in _add_installed_apps_translations\n    raise AppRegistryNotReady(\ndjango.core.exceptions.AppRegistryNotReady: The translation infrastructure cannot be initialized before the apps registry is ready. Check that you don't make non-lazy gettext calls at import time.\n"
+  },
+  "execution": {
+    "returncode": 0,
+    "stdout": "MEMORY_RELATION_RESULT:{\"exception_type\": \"AppRegistryNotReady\", \"kind\": \"exception\", \"message\": \"The translation infrastructure cannot be initialized before the apps registry is ready. Check that you don't make non-lazy gettext calls at import time.\", \"traceback\": \"Traceback (most recent call last):\\n  File \\\"/testbed/django/utils/translation/trans_real.py\\\", line 210, in _add_installed_apps_translations\\n    app_configs = reversed(apps.get_app_configs())\\n  File \\\"/testbed/django/apps/registry.py\\\", line 147, in get_app_configs\\n    self.check_apps_ready()\\n  File \\\"/testbed/django/apps/registry.py\\\", line 138, in check_apps_ready\\n    raise AppRegistryNotReady(\\\"Apps aren't loaded yet.\\\")\\ndjango.core.exceptions.AppRegistryNotReady: Apps aren't loaded yet.\\n\\nDuring handling of the above exception, another exception occurred:\\n\\nTraceback (most recent call last):\\n  File \\\"<string>\\\", line 8, in <module>\\n  File \\\"/testbed/django/forms/forms.py\\\", line 98, in __init__\\n    self.label_suffix = label_suffix if label_suffix is not None else _(\\\":\\\")\\n  File \\\"/testbed/django/utils/translation/__init__.py\\\", line 95, in gettext\\n    return _trans.gettext(message)\\n  File \\\"/testbed/django/utils/translation/trans_real.py\\\", line 374, in gettext\\n    _default = _default or translation(settings.LANGUAGE_CODE)\\n  File \\\"/testbed/django/utils/translation/trans_real.py\\\", line 287, in translation\\n    _translations[language] = DjangoTranslation(language)\\n  File \\\"/testbed/django/utils/translation/trans_real.py\\\", line 164, in __init__\\n    self._add_installed_apps_translations()\\n  File \\\"/testbed/django/utils/translation/trans_real.py\\\", line 212, in _add_installed_apps_translations\\n    raise AppRegistryNotReady(\\ndjango.core.exceptions.AppRegistryNotReady: The translation infrastructure cannot be initialized before the apps registry is ready. Check that you don't make non-lazy gettext calls at import time.\\n\"}\n",
+    "stderr": "",
+    "seconds": 0.8567094749887474,
+    "image_id": "sha256:b9a365cadc576e7765d07d1b94b43822a45bc30d949dd1e7f1982292d10f14cc",
+    "interpreter": "/opt/miniconda3/envs/testbed/bin/python",
+    "resources": {
+      "cpus": 1,
+      "memory": "1g",
+      "network": "none",
+      "root_filesystem": "read-only"
+    }
+  },
+  "interpretation": "Controlled mechanism probe. Expected validation exceptions are observed outcomes, not infrastructure failures. Shell success is not treated as semantic success. No actor or memory policy was evaluated."
+}

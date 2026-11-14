@@ -1,0 +1,540 @@
+{
+  "dataset": "scope-expansion-20261108-v1",
+  "created_before_model_evaluation": true,
+  "source_review": "source-review.json",
+  "counts": {
+    "train-small.jsonl": {
+      "rows": 146,
+      "label_counts": [
+        {
+          "1": 54,
+          "2": 46,
+          "0": 46
+        },
+        {
+          "0": 54,
+          "2": 46,
+          "1": 46
+        }
+      ],
+      "strata": {
+        "neither_matches": 18,
+        "completed_unknown": 32,
+        "both_unknown": 14,
+        "requested_unknown": 32,
+        "both_match": 14,
+        "completed_only_matches": 18,
+        "requested_only_matches": 18
+      }
+    },
+    "train-wide.jsonl": {
+      "rows": 522,
+      "label_counts": [
+        {
+          "1": 330,
+          "0": 96,
+          "2": 96
+        },
+        {
+          "2": 96,
+          "0": 330,
+          "1": 96
+        }
+      ],
+      "strata": {
+        "completed_unknown": 77,
+        "requested_only_matches": 58,
+        "neither_matches": 214,
+        "both_unknown": 19,
+        "requested_unknown": 77,
+        "both_match": 19,
+        "completed_only_matches": 58
+      }
+    },
+    "train-wide-ab.jsonl": {
+      "rows": 1044,
+      "label_counts": [
+        {
+          "1": 660,
+          "0": 192,
+          "2": 192
+        },
+        {
+          "2": 192,
+          "0": 660,
+          "1": 192
+        }
+      ],
+      "strata": {
+        "completed_unknown": 154,
+        "neither_matches": 428,
+        "requested_only_matches": 116,
+        "completed_only_matches": 116,
+        "requested_unknown": 154,
+        "both_unknown": 38,
+        "both_match": 38
+      }
+    },
+    "train-public-ab.jsonl": {
+      "rows": 1316,
+      "label_counts": [
+        {
+          "1": 804,
+          "0": 256,
+          "2": 256
+        },
+        {
+          "2": 256,
+          "0": 804,
+          "1": 256
+        }
+      ],
+      "strata": {
+        "completed_unknown": 202,
+        "neither_matches": 508,
+        "requested_only_matches": 148,
+        "completed_only_matches": 148,
+        "requested_unknown": 202,
+        "both_unknown": 54,
+        "both_match": 54
+      }
+    },
+    "dev.jsonl": {
+      "rows": 594,
+      "label_counts": [
+        {
+          "1": 378,
+          "2": 108,
+          "0": 108
+        },
+        {
+          "0": 378,
+          "2": 108,
+          "1": 108
+        }
+      ],
+      "strata": {
+        "neither_matches": 246,
+        "completed_unknown": 87,
+        "completed_only_matches": 66,
+        "requested_unknown": 87,
+        "both_unknown": 21,
+        "requested_only_matches": 66,
+        "both_match": 21
+      }
+    },
+    "legacy.jsonl": {
+      "rows": 72,
+      "label_counts": [
+        {
+          "0": 24,
+          "1": 24,
+          "2": 24
+        },
+        {
+          "1": 24,
+          "0": 24,
+          "2": 24
+        }
+      ],
+      "strata": {
+        "both_match": 8,
+        "requested_only_matches": 8,
+        "completed_unknown": 16,
+        "completed_only_matches": 8,
+        "neither_matches": 8,
+        "requested_unknown": 16,
+        "both_unknown": 8
+      }
+    },
+    "controls.jsonl": {
+      "rows": 96,
+      "label_counts": [
+        {
+          "0": 24,
+          "1": 48,
+          "2": 24
+        },
+        {
+          "1": 24,
+          "0": 48,
+          "2": 24
+        }
+      ],
+      "strata": {
+        "both_match": 6,
+        "requested_only_matches": 12,
+        "completed_unknown": 18,
+        "completed_only_matches": 12,
+        "neither_matches": 24,
+        "requested_unknown": 18,
+        "both_unknown": 6
+      }
+    }
+  },
+  "source_families": [
+    {
+      "source": "django__django-16910",
+      "repository": "django/django",
+      "split": "dev",
+      "scopes": {
+        "defer": [
+          "03048c0d4a2d1093407f52fdc77108aa03ef0ec193ad339867750285195e6bf1",
+          "091658f4425e885c0ebba08454418da0f258860cf1b51b7877bcf13f2e17cba0",
+          "2a8ecb9d8ba17caec39249c2858bbc855c00625a0f4094b28a9b973f5c9d57b4",
+          "3606a0f9bd0737aeb3f21d6df4801976c4f00cedf7da7058888114a2eaca3244"
+        ],
+        "defer_regress": [
+          "03048c0d4a2d1093407f52fdc77108aa03ef0ec193ad339867750285195e6bf1",
+          "091658f4425e885c0ebba08454418da0f258860cf1b51b7877bcf13f2e17cba0",
+          "1c1c5d4b0d35add2ff5d5a6d95fe2fa7f899e2d59083996bc4eb46d925deafd5",
+          "2a8ecb9d8ba17caec39249c2858bbc855c00625a0f4094b28a9b973f5c9d57b4"
+        ],
+        "filtered_relation": [
+          "03048c0d4a2d1093407f52fdc77108aa03ef0ec193ad339867750285195e6bf1"
+        ],
+        "select_related_onetoone": [
+          "03048c0d4a2d1093407f52fdc77108aa03ef0ec193ad339867750285195e6bf1",
+          "0bda3cdb68c9fb6c5d0c1e808dac327ca318b58c78b7b5651dfd7f0acc63358e",
+          "1c1c5d4b0d35add2ff5d5a6d95fe2fa7f899e2d59083996bc4eb46d925deafd5"
+        ],
+        "select_related": [
+          "1c1c5d4b0d35add2ff5d5a6d95fe2fa7f899e2d59083996bc4eb46d925deafd5"
+        ]
+      }
+    },
+    {
+      "source": "marshmallow-code__marshmallow-1359",
+      "repository": "marshmallow-code/marshmallow",
+      "split": "train",
+      "scopes": {
+        "tests/test_serialization.py": [
+          "148657e78863dcfd6ae530edaa1835363f9672bdcbd504e57a7e965cfb4bdd6f"
+        ],
+        "tests/test_fields.py": [
+          "5cf28f00e371634275a1a2ab6789cd37e3852b02ead998ceec40a81d3dfc43ed"
+        ],
+        "tests/test_schema.py": [
+          "5cf28f00e371634275a1a2ab6789cd37e3852b02ead998ceec40a81d3dfc43ed"
+        ]
+      }
+    },
+    {
+      "source": "pvlib__pvlib-python-1606",
+      "repository": "pvlib/pvlib-python",
+      "split": "dev",
+      "scopes": {
+        "pvlib/tests/test_singlediode.py": [
+          "1b369c587dbcc1565400bf2043fb2d6a77d2350b527463794042e4128d5c956a"
+        ],
+        "pvlib/tests/test_tools.py": [
+          "7d9d29fef236aabe4eea6c21e74f1d3e7980ab2c17faf60a9d3133b4183b29df",
+          "85312e8146b9d7c4cae1e524ffef9b35905c0451564305521a77c76a02369429",
+          "ecc53d88c951ddfdb627b4b8c9286d93603febda34f765e22b1a0b16d8de557a"
+        ]
+      }
+    },
+    {
+      "source": "scikit-learn__scikit-learn-11281",
+      "repository": "scikit-learn/scikit-learn",
+      "split": "train",
+      "scopes": {
+        "sklearn/mixture/tests/test_bayesian_mixture.py": [
+          "e06e21c85c46d842f448fbd9f78b3a3c11d89f1c4af4da5d51bbf683c194815a"
+        ],
+        "sklearn/mixture/tests/test_gaussian_mixture.py": [
+          "e06e21c85c46d842f448fbd9f78b3a3c11d89f1c4af4da5d51bbf683c194815a"
+        ]
+      }
+    },
+    {
+      "source": "scikit-learn__scikit-learn-15535",
+      "repository": "scikit-learn/scikit-learn",
+      "split": "train",
+      "scopes": {
+        "sklearn/metrics/cluster/tests/test_supervised.py": [
+          "07a679347a97b95b2dc487c60648fc8fc7341656400919043698416e53da8842",
+          "82984d98ed31f662ce8ef2652195924064c6257e9c165f673fc7a83096c7718a",
+          "a6661b4e2e976502003fcf528e46f1a9095bd4af8da03151af1666c7ec87f2ad"
+        ],
+        "sklearn/metrics/cluster/tests/test_unsupervised.py": [
+          "82984d98ed31f662ce8ef2652195924064c6257e9c165f673fc7a83096c7718a"
+        ]
+      }
+    },
+    {
+      "source": "sphinx-doc__sphinx-10325",
+      "repository": "sphinx-doc/sphinx",
+      "split": "train",
+      "scopes": {
+        "tests/test_ext_autodoc_automodule.py": [
+          "17e8ef746afcc1fef013a2db6e049b8fa6e781d11228339ba0709e117a11e685",
+          "3d63ca8a6265349c2c0f0469fa1fdd0362811807d63961ab7bb0d63bcd82a8e5",
+          "4b0ca3d3202f9ec5b7fa489da349e136658be214f66a42404958f087ca0093c8"
+        ],
+        "tests/test_ext_autodoc.py": [
+          "19b735228b760bebe533a5e248c969c6aa4c646f7a77e1b769daf30a388296dc",
+          "31c529fbd1e503d4c776788cfb70713a0036fe1e618b1689065b54e91fb07c8b",
+          "4b0ca3d3202f9ec5b7fa489da349e136658be214f66a42404958f087ca0093c8"
+        ],
+        "tests/test_ext_autodoc_autoclass.py": [
+          "31c529fbd1e503d4c776788cfb70713a0036fe1e618b1689065b54e91fb07c8b",
+          "3d63ca8a6265349c2c0f0469fa1fdd0362811807d63961ab7bb0d63bcd82a8e5",
+          "4b0ca3d3202f9ec5b7fa489da349e136658be214f66a42404958f087ca0093c8"
+        ],
+        "tests/test_ext_autodoc_configs.py": [
+          "4b0ca3d3202f9ec5b7fa489da349e136658be214f66a42404958f087ca0093c8"
+        ]
+      }
+    },
+    {
+      "source": "sphinx-doc__sphinx-8435",
+      "repository": "sphinx-doc/sphinx",
+      "split": "train",
+      "scopes": {
+        "tests/test_ext_autodoc.py": [
+          "382097d2329b89a4779d823f01567e1088ead1fbc3ac8387c9b0c2e47e38ca36"
+        ],
+        "tests/test_ext_autodoc_configs.py": [
+          "8d6bd58cb175135e44e8f296279d87429bf44758ace53577afea6ca980e459d5"
+        ]
+      }
+    },
+    {
+      "source": "sphinx-doc__sphinx-8627",
+      "repository": "sphinx-doc/sphinx",
+      "split": "train",
+      "scopes": {
+        "tests/test_domain_py.py": [
+          "0f8865c483075ca72728146ce74499d64b9f1650cb3054e81b8e1f8b79dcb1c4",
+          "30e7e3cdbbadae3d80536243309c6ee1a022492887201c619c0f6628da6598be"
+        ],
+        "tests/test_ext_autodoc.py": [
+          "0f8865c483075ca72728146ce74499d64b9f1650cb3054e81b8e1f8b79dcb1c4",
+          "32ba4df52662ed4cacffb4b085ee984237898049dd53165d00f1158a5517e6dd"
+        ],
+        "tests/test_ext_autodoc_configs.py": [
+          "0f8865c483075ca72728146ce74499d64b9f1650cb3054e81b8e1f8b79dcb1c4"
+        ],
+        "tests/test_util_typing.py": [
+          "1cdffd97a0411a42e6f0340a716db9b2ec79838ba7974fd3c5699f5c620478ff",
+          "30e7e3cdbbadae3d80536243309c6ee1a022492887201c619c0f6628da6598be",
+          "34ae7925b0210e6a9b51154b569064df95c23d4915bea6884adfcfe5f25d5181"
+        ],
+        "tests/test_ext_autodoc_autoclass.py": [
+          "2e901fd356a335faa4813cbf26f1865240b5db493c5a196621a907382f27a3c9"
+        ],
+        "tests/test_ext_autodoc_autofunction.py": [
+          "2e901fd356a335faa4813cbf26f1865240b5db493c5a196621a907382f27a3c9",
+          "32ba4df52662ed4cacffb4b085ee984237898049dd53165d00f1158a5517e6dd"
+        ]
+      }
+    },
+    {
+      "source": "sphinx-doc__sphinx-8801",
+      "repository": "sphinx-doc/sphinx",
+      "split": "train",
+      "scopes": {
+        "tests/test_ext_autodoc_autoclass.py": [
+          "0c7ba9957628779d49581820b02e415076315b01f6c7711a93092fb82c8e70ce",
+          "1950faa7e7eff244a992610a57803b92354d043209927f63f7019751c37e66ee",
+          "3f9a15751ebb20cafcf498de86d2c011fa2142c3c3fe58f4b2659382c4e47066",
+          "57e9f62ecaec73ac498301a86a97e34ca22356eaa6130c319f3bae504a564b44"
+        ],
+        "tests/test_ext_autodoc_autoattribute.py": [
+          "1950faa7e7eff244a992610a57803b92354d043209927f63f7019751c37e66ee",
+          "57e9f62ecaec73ac498301a86a97e34ca22356eaa6130c319f3bae504a564b44"
+        ],
+        "tests/test_ext_autodoc.py": [
+          "3f9a15751ebb20cafcf498de86d2c011fa2142c3c3fe58f4b2659382c4e47066"
+        ]
+      }
+    },
+    {
+      "source": "sympy__sympy-24213",
+      "repository": "sympy/sympy",
+      "split": "train",
+      "scopes": {
+        "sympy/physics/units/tests/test_dimensions.py": [
+          "02d6196b5c36870b0d6a195fd36c13ba37e69814e2305bfaef03a01036a59164",
+          "061ead750c366d1e35acc7c4c41fca6dafbfa3b89191f9789e7c909a6d3a788c",
+          "13ac219121bab4badc2283e9c4f7e6e2654d0039a2c6de2553f0fee28cce9208"
+        ],
+        "sympy/physics/units/tests/test_quantities.py": [
+          "02d6196b5c36870b0d6a195fd36c13ba37e69814e2305bfaef03a01036a59164",
+          "13ac219121bab4badc2283e9c4f7e6e2654d0039a2c6de2553f0fee28cce9208"
+        ],
+        "sympy/physics/units/tests/test_unitsystem.py": [
+          "061ead750c366d1e35acc7c4c41fca6dafbfa3b89191f9789e7c909a6d3a788c"
+        ]
+      }
+    },
+    {
+      "source": "sympy__sympy-24909",
+      "repository": "sympy/sympy",
+      "split": "train",
+      "scopes": {
+        "sympy/physics/units/tests/test_quantities.py": [
+          "26f219396fe667c3eee5c63dd22714e7098ef3fc2701a1aa24a0b43c4d07e93c"
+        ],
+        "sympy/physics/units/tests/test_prefixes.py": [
+          "3661fa89fd45e62b13a8e5d149560c5095319adf17520c8fa1543f2c5d831d37"
+        ]
+      }
+    },
+    {
+      "source": "public:PyCQA/flake8@cf1542ce",
+      "source_instances": [
+        "PyCQA__flake8.cf1542ce.func_pm_remove_assign__zp1dya4y",
+        "PyCQA__flake8.cf1542ce.func_pm_remove_cond__c7i9mnxb"
+      ],
+      "repository": "PyCQA/flake8",
+      "split": "train",
+      "scopes": {
+        "tests/unit/test_discover_files.py": [
+          "swesmith-tool0-row113-message36"
+        ],
+        "tests/unit/test_violation.py": [
+          "swesmith-tool0-row216-message138",
+          "swesmith-tool0-row216-message142",
+          "swesmith-tool0-row216-message146",
+          "swesmith-tool0-row216-message150",
+          "swesmith-tool0-row216-message156",
+          "swesmith-tool0-row216-message162",
+          "swesmith-tool0-row216-message166"
+        ]
+      },
+      "synthetic_defect_tasks": true
+    },
+    {
+      "source": "public:amueller/word_cloud@ec24191c",
+      "source_instances": [
+        "amueller__word_cloud.ec24191c.func_pm_ctrl_invert_if__2afmf2dq"
+      ],
+      "repository": "amueller/word_cloud",
+      "split": "external",
+      "scopes": {
+        "test/test_wordcloud.py": [
+          "swesmith-tool0-row60-message32"
+        ],
+        "test/test_wordcloud_cli.py": [
+          "swesmith-tool0-row60-message34"
+        ]
+      },
+      "synthetic_defect_tasks": true
+    },
+    {
+      "source": "public:life4/textdistance@c3aca916",
+      "source_instances": [
+        "life4__textdistance.c3aca916.func_pm_ctrl_shuffle__1vccrmac",
+        "life4__textdistance.c3aca916.func_pm_ctrl_shuffle__asaa092v",
+        "life4__textdistance.c3aca916.func_pm_ctrl_shuffle__xxd63ulb",
+        "life4__textdistance.c3aca916.func_pm_op_change_const__j1nrey18",
+        "life4__textdistance.c3aca916.func_pm_remove_assign__wz2xdz8k"
+      ],
+      "repository": "life4/textdistance",
+      "split": "train",
+      "scopes": {
+        "tests/test_phonetic/test_editex.py": [
+          "swesmith-tool0-row110-message38"
+        ],
+        "tests/test_edit/test_strcmp95.py": [
+          "swesmith-tool0-row170-message30"
+        ],
+        "tests/test_sequence/test_lcsseq.py": [
+          "swesmith-tool0-row172-message24",
+          "swesmith-tool0-row182-message20"
+        ],
+        "tests/test_edit/test_gotoh.py": [
+          "swesmith-tool0-row180-message24"
+        ]
+      },
+      "synthetic_defect_tasks": true
+    },
+    {
+      "source": "public:marshmallow-code/apispec@8b421526",
+      "source_instances": [
+        "marshmallow-code__apispec.8b421526.func_pm_ctrl_invert_if__sfjed7bx"
+      ],
+      "repository": "marshmallow-code/apispec",
+      "split": "external",
+      "scopes": {
+        "tests/test_ext_marshmallow_field.py": [
+          "swesmith-tool0-row43-message44"
+        ],
+        "tests/test_ext_marshmallow.py": [
+          "swesmith-tool0-row43-message46"
+        ]
+      },
+      "synthetic_defect_tasks": true
+    },
+    {
+      "source": "public:python-openxml/python-docx@0cf6d71f",
+      "source_instances": [
+        "python-openxml__python-docx.0cf6d71f.func_pm_ctrl_shuffle__z6689b9m"
+      ],
+      "repository": "python-openxml/python-docx",
+      "split": "train",
+      "scopes": {
+        "tests/opc/test_pkgreader.py": [
+          "swesmith-tool0-row175-message38"
+        ],
+        "tests/opc/test_package.py": [
+          "swesmith-tool0-row175-message40"
+        ]
+      },
+      "synthetic_defect_tasks": true
+    }
+  ],
+  "export_sha256": {
+    "train-small.jsonl": "fb604a1668cf3c5e1b61cf65a702110420f18b6d18266988266cd64cbf6f561d",
+    "train-wide.jsonl": "01ab05db2200f474a5ed67359f3dee40319afb10f1626c13176e3dce23571f75",
+    "train-wide-ab.jsonl": "a5b76ecf067a91e623b94029e914f5511981a0118da221979fd65efc26217382",
+    "train-public-ab.jsonl": "4def4d867b8b7dc0351baa88d6323c5b283304314b57c07798f8201dafc94b4b",
+    "dev.jsonl": "c62e685cf86d6ac3f3832ed42dc53f2ffaf86773a32d286c934d4f2641b66087",
+    "legacy.jsonl": "da4d3d965113cc10211b26e85db582822bc047dbfec408a138166f2440a67aa8",
+    "controls.jsonl": "eca2e556c35254a557c197345ae05c5e485d7bec06e3bc066475753161c69ae9",
+    "source-review.json": "fd586f00e67d5c1262e86ae6eb5974a2ce7924099749c4a309fc9ef4fdceab21"
+  },
+  "external_holdout": {
+    "file": "external.jsonl",
+    "sha256": "52c7acf9b3559c6030153b923d94d4b913a77944750957ea9a0425608aa82cfd",
+    "counts": {
+      "rows": 108,
+      "label_counts": [
+        {
+          "2": 36,
+          "0": 36,
+          "1": 36
+        },
+        {
+          "2": 36,
+          "0": 36,
+          "1": 36
+        }
+      ],
+      "strata": {
+        "both_unknown": 12,
+        "requested_only_matches": 12,
+        "requested_unknown": 24,
+        "completed_only_matches": 12,
+        "neither_matches": 12,
+        "completed_unknown": 24,
+        "both_match": 12
+      }
+    },
+    "excluded_from_training_upload": true,
+    "repositories": [
+      "amueller/word_cloud",
+      "marshmallow-code/apispec"
+    ]
+  },
+  "original_scope_controls_sha256": "9afa252a1ebbf9915b4f6bfce0be935042aeac7865331cf02e497f4c6edc302c",
+  "limitations": [
+    "All current requested/completed states are constructed, not observed target executions.",
+    "Only actual selected source identifiers are expanded; source families were already inspected.",
+    "Duplicate visible inputs are merged; source parents are retained.",
+    "Source/format development metrics are not new independent memory utility evidence.",
+    "A text parsing/equality rule is perfect by the bounded task contract."
+  ]
+}

@@ -1,0 +1,779 @@
+[
+  {
+    "episode": "pydantic-jsonschema",
+    "source_family": "pydantic/pydantic@acb0f10f",
+    "candidate_id": "swesmith-tool0-row1024-message6",
+    "source_record_sha256": "2334d057b2fe7ed1b528424e6b203dca73c56f57d4d19550aede3b27fb3f2172",
+    "dataset": "SWE-bench/SWE-smith-trajectories",
+    "hub_revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+    "instance_id": "pydantic__pydantic.acb0f10f.pr_9914",
+    "source_status": "source_evidence_verified_only",
+    "annotation": {
+      "unit": "conftest의 외부 jsonschema import와 검사 의존성 설치",
+      "observation": "jsonschema import 실패 뒤 설치하고 같은 pytest 명령이 내부 FieldValidatorModes import 오류까지 진행했다.",
+      "prescription_message_indices": [
+        12
+      ],
+      "boundary": "앞선 editable 설치가 의존성을 바꾸었다. 진행은 전체 성공이 아니다. dev dependency group을 dev extra로 취급한 경고도 보존한다.",
+      "missing": "실제 판단 전 환경 snapshot과 설치 단계별 대조, 별도 현재 과제 및 제공/보류 실행",
+      "cheap_baseline": "현재 import 오류와 선언된 의존성 확인"
+    },
+    "observed_prescription": [
+      {
+        "message_index": 12,
+        "command": "cd /testbed && pip install pytest jsonschema"
+      }
+    ],
+    "evidence": [
+      {
+        "message_index": 6,
+        "observation_index": 7,
+        "tool_call": {
+          "index": 1,
+          "function": {
+            "arguments": "{\"command\": \"cd /testbed && python -m pytest tests/\"}",
+            "name": "bash"
+          },
+          "id": "toolu_016z2PspptxHqBEo4cXVGMRg",
+          "type": "function"
+        },
+        "original_observation_characters": 229,
+        "original_observation_sha256": "ebf419aafa0e8c40d9cc4a5f9062ea1f414d1ac00653bf6f65d9eaa043fc54cd",
+        "original_observation_clipped": false,
+        "excerpt_start": 0,
+        "excerpt_end": 229,
+        "exact_excerpt": "OBSERVATION:\nImportError while loading conftest '/testbed/tests/conftest.py'.\r\ntests/conftest.py:18: in <module>\r\n    from jsonschema import Draft202012Validator, SchemaError\r\nE   ModuleNotFoundError: No module named 'jsonschema'"
+      },
+      {
+        "message_index": 8,
+        "observation_index": 9,
+        "tool_call": {
+          "index": 1,
+          "function": {
+            "arguments": "{\"command\": \"view\", \"path\": \"/testbed/pyproject.toml\"}",
+            "name": "str_replace_editor"
+          },
+          "id": "toolu_01W8bCFTxQaSkoEj2uynh61f",
+          "type": "function"
+        },
+        "original_observation_characters": 10705,
+        "original_observation_sha256": "bfb2e8fde21344e7f064764fdea443f0c123f3c7a99bd0f87e256e964d8762c0",
+        "original_observation_clipped": false,
+        "excerpt_start": 3100,
+        "excerpt_end": 5060,
+        "exact_excerpt": "onsors/samuelcolvin'\r\n    64\tSource = 'https://github.com/pydantic/pydantic'\r\n    65\tChangelog = 'https://docs.pydantic.dev/latest/changelog/'\r\n    66\t\r\n    67\t[dependency-groups]\r\n    68\tdev = [\r\n    69\t    'coverage[toml]',\r\n    70\t    'pytz',\r\n    71\t    'dirty-equals',\r\n    72\t    'eval-type-backport',\r\n    73\t    'pytest',\r\n    74\t    'pytest-mock',\r\n    75\t    'pytest-pretty',\r\n    76\t    'pytest-examples',\r\n    77\t    'faker',\r\n    78\t    'pytest-benchmark',\r\n    79\t    'pytest-codspeed',\r\n    80\t    'pytest-memray; platform_python_implementation == \"CPython\" and platform_system != \"Windows\"',\r\n    81\t    'packaging',\r\n    82\t    'jsonschema',\r\n    83\t]\r\n    84\tdocs = [\r\n    85\t    'autoflake',\r\n    86\t    \"bs4>=0.0.2\",\r\n    87\t    \"markdownify>=0.14.1\",\r\n    88\t    'mkdocs',\r\n    89\t    'mkdocs-exclude',\r\n    90\t    'mkdocs-material[imaging]',\r\n    91\t    'mkdocs-redirects',\r\n    92\t    'mkdocstrings-python',\r\n    93\t    'tomli',\r\n    94\t    'pyupgrade',\r\n    95\t    'mike',\r\n    96\t    'pydantic-settings',\r\n    97\t    # remove once docs issue is fixed in pydantic-extra-types\r\n    98\t    'pydantic-extra-types==2.10',\r\n    99\t    'requests',\r\n   100\t]\r\n   101\tdocs-upload = [\r\n   102\t    \"algoliasearch>=4.12.0\",\r\n   103\t]\r\n   104\tlinting = [\r\n   105\t    'eval-type-backport',\r\n   106\t    'ruff',\r\n   107\t    'pyright',\r\n   108\t]\r\n   109\ttesting-extra = [\r\n   110\t    'cloudpickle',\r\n   111\t    # used when generate devtools docs example\r\n   112\t    'ansi2html',\r\n   113\t    'devtools',\r\n   114\t    # used in docs tests\r\n   115\t    'sqlalchemy',\r\n   116\t]\r\n   117\ttypechecking = [\r\n   118\t    'mypy',\r\n   119\t    'pyright',\r\n   120\t    'pydantic-settings',\r\n   121\t]\r\n   122\t\r\n   123\tall = [\r\n   124\t  { include-group = 'dev' },\r\n   125\t  { include-group = 'docs' },\r\n   126\t  { include-group = 'linting' },\r\n   127\t  { include-group = 'testing-extra' },\r\n   128\t  { include-group = 'typechecking' },\r\n   129\t]\r\n   130\t\r\n   131\t[tool.ha"
+      },
+      {
+        "message_index": 10,
+        "observation_index": 11,
+        "tool_call": {
+          "index": 1,
+          "function": {
+            "arguments": "{\"command\": \"cd /testbed && pip install -e \\\".[dev]\\\"\"}",
+            "name": "bash"
+          },
+          "id": "toolu_01YCUd78cXaLYBNX24yUyh91",
+          "type": "function"
+        },
+        "original_observation_characters": 2190,
+        "original_observation_sha256": "3cc872a966d0d737217bc599d629a1612009947296df6c72ceb04e3783e7d56b",
+        "original_observation_clipped": false,
+        "excerpt_start": 633,
+        "excerpt_end": 2190,
+        "exact_excerpt": "ing typing-extensions>=4.12.2 (from pydantic==2.11.0a2)\r\n  Using cached typing_extensions-4.12.2-py3-none-any.whl.metadata (3.0 kB)\r\nWARNING: pydantic 2.11.0a2 does not provide the extra 'dev'\r\nDownloading pydantic_core-2.30.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (2.0 MB)\r\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.0/2.0 MB ? eta -:--:--\r   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.0/2.0 MB 20.6 MB/s eta 0:00:00\r\nUsing cached annotated_types-0.7.0-py3-none-any.whl (13 kB)\r\nUsing cached typing_extensions-4.12.2-py3-none-any.whl (37 kB)\r\nBuilding wheels for collected packages: pydantic\r\n  Building editable for pydantic (pyproject.toml) ... done\r\n  Created wheel for pydantic: filename=pydantic-2.11.0a2-py3-none-any.whl size=11531 sha256=86437e768b597b6dcec316047bf2b082ba615723237e887ebe99d20993a5e708\r\n  Stored in directory: /tmp/pip-ephem-wheel-cache-sadyhrip/wheels/0d/a6/cb/465a7b303d624cc531250fa27c75d038ddc29430bdb6ba7c9f\r\nSuccessfully built pydantic\r\nInstalling collected packages: typing-extensions, annotated-types, pydantic-core, pydantic\r\nSuccessfully installed annotated-types-0.7.0 pydantic-2.11.0a2 pydantic-core-2.30.0 typing-extensions-4.12.2\r\nWARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning."
+      },
+      {
+        "message_index": 12,
+        "observation_index": 13,
+        "tool_call": {
+          "index": 0,
+          "function": {
+            "arguments": "{\"command\": \"cd /testbed && pip install pytest jsonschema\"}",
+            "name": "bash"
+          },
+          "id": "toolu_01NrwJQRtmwmgBTvMHehp8Zn",
+          "type": "function"
+        },
+        "original_observation_characters": 2472,
+        "original_observation_sha256": "b80304c6139945c72453b418af2e44d9fd35f897c9cbbdb94d751d22f524deb1",
+        "original_observation_clipped": false,
+        "excerpt_start": 1824,
+        "excerpt_end": 2472,
+        "exact_excerpt": "310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (386 kB)\r\nInstalling collected packages: rpds-py, attrs, referencing, jsonschema-specifications, jsonschema\r\nSuccessfully installed attrs-25.3.0 jsonschema-4.23.0 jsonschema-specifications-2024.10.1 referencing-0.36.2 rpds-py-0.23.1\r\nWARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning."
+      },
+      {
+        "message_index": 14,
+        "observation_index": 15,
+        "tool_call": {
+          "index": 1,
+          "function": {
+            "arguments": "{\"command\": \"cd /testbed && python -m pytest tests/\"}",
+            "name": "bash"
+          },
+          "id": "toolu_01SAkQeFLx17AJrCTUSqRbT8",
+          "type": "function"
+        },
+        "original_observation_characters": 503,
+        "original_observation_sha256": "f6089aa445c664f3557adc7ee5bc6694cc7d4132c17beb4ea91c020fa816ad4f",
+        "original_observation_clipped": false,
+        "excerpt_start": 0,
+        "excerpt_end": 503,
+        "exact_excerpt": "OBSERVATION:\nImportError while loading conftest '/testbed/tests/conftest.py'.\r\ntests/conftest.py:20: in <module>\r\n    from pydantic._internal._generate_schema import GenerateSchema\r\npydantic/_internal/_generate_schema.py:59: in <module>\r\n    from ..functional_validators import AfterValidator, BeforeValidator, FieldValidatorModes, PlainValidator, WrapValidator\r\nE   ImportError: cannot import name 'FieldValidatorModes' from 'pydantic.functional_validators' (/testbed/pydantic/functional_validators.py)"
+      }
+    ],
+    "target_predecision_state": null,
+    "relation_label": null,
+    "memory_utility_label": null,
+    "ready_for_utility_training": false,
+    "independent_human_review": false
+  },
+  {
+    "episode": "pydantic-benchmark-plugin",
+    "source_family": "pydantic/pydantic@acb0f10f",
+    "candidate_id": "swesmith-tool0-row1024-message22",
+    "source_record_sha256": "3fa0f2e0aeaba220ba97426f495b8877915c770d754f090525db3e945d81c008",
+    "dataset": "SWE-bench/SWE-smith-trajectories",
+    "hub_revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+    "instance_id": "pydantic__pydantic.acb0f10f.pr_9914",
+    "source_status": "source_evidence_verified_only",
+    "annotation": {
+      "unit": "pytest 옵션을 등록하는 plugin과 실패했던 대안",
+      "observation": "PYTHONPATH 변경과 검사 범위 축소에도 benchmark 옵션 거부가 반복됐고 plugin 설치 뒤 다음 수집 오류로 진행했다.",
+      "prescription_message_indices": [
+        28
+      ],
+      "boundary": "옵션 파싱의 복구와 대상 코드의 통과는 다르다. 이후 dirty_equals 오류를 지우지 않는다.",
+      "missing": "plugin 유무·이미 충족·다른 옵션 원인을 가진 새로운 현재 상태와 paired worker 결과",
+      "cheap_baseline": "pytest plugin 목록과 프로젝트 addopts 확인"
+    },
+    "observed_prescription": [
+      {
+        "message_index": 28,
+        "command": "cd /testbed && pip install pytest-benchmark"
+      }
+    ],
+    "evidence": [
+      {
+        "message_index": 22,
+        "observation_index": 23,
+        "tool_call": {
+          "index": 1,
+          "function": {
+            "arguments": "{\"command\": \"cd /testbed && python -m pytest tests/\"}",
+            "name": "bash"
+          },
+          "id": "toolu_01VEw6HGfTMwTtsw5LQodPkA",
+          "type": "function"
+        },
+        "original_observation_characters": 280,
+        "original_observation_sha256": "dd078798ab090d17f54627efc323535b25dca9ef259d0be95f40f4b4a583b47b",
+        "original_observation_clipped": false,
+        "excerpt_start": 0,
+        "excerpt_end": 280,
+        "exact_excerpt": "OBSERVATION:\nERROR: usage: __main__.py [options] [file_or_dir] [file_or_dir] [...]\r\n__main__.py: error: unrecognized arguments: --benchmark-columns --benchmark-group-by group --benchmark-warmup on --benchmark-disable tests/\r\n  inifile: /testbed/pyproject.toml\r\n  rootdir: /testbed"
+      },
+      {
+        "message_index": 24,
+        "observation_index": 25,
+        "tool_call": {
+          "index": 1,
+          "function": {
+            "arguments": "{\"command\": \"cd /testbed && PYTHONPATH=/testbed pytest tests/\"}",
+            "name": "bash"
+          },
+          "id": "toolu_015WfXa7Ssch9ky4T3HR96J8",
+          "type": "function"
+        },
+        "original_observation_characters": 270,
+        "original_observation_sha256": "5e5a6dfc29f7c3fe5edd1996d0a3ba72126d9df2ef3c99d5d21afe745a0f1154",
+        "original_observation_clipped": false,
+        "excerpt_start": 0,
+        "excerpt_end": 270,
+        "exact_excerpt": "OBSERVATION:\nERROR: usage: pytest [options] [file_or_dir] [file_or_dir] [...]\r\npytest: error: unrecognized arguments: --benchmark-columns --benchmark-group-by group --benchmark-warmup on --benchmark-disable tests/\r\n  inifile: /testbed/pyproject.toml\r\n  rootdir: /testbed"
+      },
+      {
+        "message_index": 26,
+        "observation_index": 27,
+        "tool_call": {
+          "index": 1,
+          "function": {
+            "arguments": "{\"command\": \"cd /testbed && PYTHONPATH=/testbed pytest tests/test_edge_cases.py\"}",
+            "name": "bash"
+          },
+          "id": "toolu_01BpktYkQhZjJdE8qAmfaP3D",
+          "type": "function"
+        },
+        "original_observation_characters": 288,
+        "original_observation_sha256": "249bcad4596d93f7e6861651124105b781763109ceedd046ddfc35299452cbf7",
+        "original_observation_clipped": false,
+        "excerpt_start": 0,
+        "excerpt_end": 288,
+        "exact_excerpt": "OBSERVATION:\nERROR: usage: pytest [options] [file_or_dir] [file_or_dir] [...]\r\npytest: error: unrecognized arguments: --benchmark-columns --benchmark-group-by group --benchmark-warmup on --benchmark-disable tests/test_edge_cases.py\r\n  inifile: /testbed/pyproject.toml\r\n  rootdir: /testbed"
+      },
+      {
+        "message_index": 28,
+        "observation_index": 29,
+        "tool_call": {
+          "index": 1,
+          "function": {
+            "arguments": "{\"command\": \"cd /testbed && pip install pytest-benchmark\"}",
+            "name": "bash"
+          },
+          "id": "toolu_01Pzn4tmiXpW84vWmKrUbPDX",
+          "type": "function"
+        },
+        "original_observation_characters": 1730,
+        "original_observation_sha256": "bbd8463527e5591ac1d6ed2a75908e1e98a22babe07e9cda0da721092bbe1b7c",
+        "original_observation_clipped": false,
+        "excerpt_start": 1143,
+        "excerpt_end": 1730,
+        "exact_excerpt": "t_benchmark-5.1.0-py3-none-any.whl (44 kB)\r\nDownloading py_cpuinfo-9.0.0-py3-none-any.whl (22 kB)\r\nInstalling collected packages: py-cpuinfo, pytest-benchmark\r\nSuccessfully installed py-cpuinfo-9.0.0 pytest-benchmark-5.1.0\r\nWARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning."
+      },
+      {
+        "message_index": 30,
+        "observation_index": 31,
+        "tool_call": {
+          "index": 1,
+          "function": {
+            "arguments": "{\"command\": \"cd /testbed && PYTHONPATH=/testbed pytest tests/test_edge_cases.py -v\"}",
+            "name": "bash"
+          },
+          "id": "toolu_01UPbMUeF4twsQ9ENkSHCMhJ",
+          "type": "function"
+        },
+        "original_observation_characters": 1471,
+        "original_observation_sha256": "bcfb920d3cd25d378e8e2b842d6e501f6aa4cc8dc13040b94cac966b07950e2b",
+        "original_observation_clipped": false,
+        "excerpt_start": 289,
+        "excerpt_end": 1471,
+        "exact_excerpt": "alse min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=True warmup_iterations=100000)\r\nrootdir: /testbed\r\nconfigfile: pyproject.toml\r\nplugins: benchmark-5.1.0\r\ncollecting ... \rcollected 0 items / 1 error                                                    \r\n\r\n==================================== ERRORS ====================================\r\n__________________ ERROR collecting tests/test_edge_cases.py ___________________\r\nImportError while importing test module '/testbed/tests/test_edge_cases.py'.\r\nHint: make sure your test modules/packages have valid Python names.\r\nTraceback:\r\n/opt/miniconda3/envs/testbed/lib/python3.10/importlib/__init__.py:126: in import_module\r\n    return _bootstrap._gcd_import(name[level:], package, level)\r\ntests/test_edge_cases.py:23: in <module>\r\n    from dirty_equals import HasRepr, IsStr\r\nE   ModuleNotFoundError: No module named 'dirty_equals'\r\n=========================== short test summary info ============================\r\nERROR tests/test_edge_cases.py\r\n!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!\r\n=============================== 1 error in 0.29s ==============================="
+      }
+    ],
+    "target_predecision_state": null,
+    "relation_label": null,
+    "memory_utility_label": null,
+    "ready_for_utility_training": false,
+    "independent_human_review": false
+  },
+  {
+    "episode": "pydantic-dirty-equals",
+    "source_family": "pydantic/pydantic@acb0f10f",
+    "candidate_id": "swesmith-tool0-row1024-message30",
+    "source_record_sha256": "f8ef495d60911ebdcec7d25e997ac0707c9546eddb57ef42244968de42a40633",
+    "dataset": "SWE-bench/SWE-smith-trajectories",
+    "hub_revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+    "instance_id": "pydantic__pydantic.acb0f10f.pr_9914",
+    "source_status": "source_evidence_verified_only",
+    "annotation": {
+      "unit": "검사 모듈 수집 의존성과 관측된 검사 범위",
+      "observation": "dirty_equals 수집 실패 뒤 설치하고 같은 test_edge_cases 명령이 186 passed, 5 skipped였다.",
+      "prescription_message_indices": [
+        32
+      ],
+      "boundary": "한 파일의 검사 성공이다. repository 전체 해결이나 기억 제공의 이득이 아니다.",
+      "missing": "현재 대상의 독립 출처, 판단 시점 환경, 추가 설치 불필요/부적합 대조",
+      "cheap_baseline": "오류에 명시된 외부 의존성 확인"
+    },
+    "observed_prescription": [
+      {
+        "message_index": 32,
+        "command": "cd /testbed && pip install dirty-equals"
+      }
+    ],
+    "evidence": [
+      {
+        "message_index": 30,
+        "observation_index": 31,
+        "tool_call": {
+          "index": 1,
+          "function": {
+            "arguments": "{\"command\": \"cd /testbed && PYTHONPATH=/testbed pytest tests/test_edge_cases.py -v\"}",
+            "name": "bash"
+          },
+          "id": "toolu_01UPbMUeF4twsQ9ENkSHCMhJ",
+          "type": "function"
+        },
+        "original_observation_characters": 1471,
+        "original_observation_sha256": "bcfb920d3cd25d378e8e2b842d6e501f6aa4cc8dc13040b94cac966b07950e2b",
+        "original_observation_clipped": false,
+        "excerpt_start": 982,
+        "excerpt_end": 1471,
+        "exact_excerpt": "le\r\n    return _bootstrap._gcd_import(name[level:], package, level)\r\ntests/test_edge_cases.py:23: in <module>\r\n    from dirty_equals import HasRepr, IsStr\r\nE   ModuleNotFoundError: No module named 'dirty_equals'\r\n=========================== short test summary info ============================\r\nERROR tests/test_edge_cases.py\r\n!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!\r\n=============================== 1 error in 0.29s ==============================="
+      },
+      {
+        "message_index": 32,
+        "observation_index": 33,
+        "tool_call": {
+          "index": 1,
+          "function": {
+            "arguments": "{\"command\": \"cd /testbed && pip install dirty-equals\"}",
+            "name": "bash"
+          },
+          "id": "toolu_013Vcbg55w9gR8kjm94S7Trn",
+          "type": "function"
+        },
+        "original_observation_characters": 615,
+        "original_observation_sha256": "06a698affea9ccff2e023fc2da5988ad540ef0b66d8373201619fe6015a602f9",
+        "original_observation_clipped": false,
+        "excerpt_start": 49,
+        "excerpt_end": 615,
+        "exact_excerpt": "ng dirty_equals-0.9.0-py3-none-any.whl.metadata (5.7 kB)\r\nDownloading dirty_equals-0.9.0-py3-none-any.whl (28 kB)\r\nInstalling collected packages: dirty-equals\r\nSuccessfully installed dirty-equals-0.9.0\r\nWARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning."
+      },
+      {
+        "message_index": 34,
+        "observation_index": 35,
+        "tool_call": {
+          "index": 1,
+          "function": {
+            "arguments": "{\"command\": \"cd /testbed && PYTHONPATH=/testbed pytest tests/test_edge_cases.py -v\"}",
+            "name": "bash"
+          },
+          "id": "toolu_01CPwFs3obdb5cFvtwNU5eq7",
+          "type": "function"
+        },
+        "original_observation_characters": 17387,
+        "original_observation_sha256": "7b76c7b2538f4b7fd409768cabd9ffb121e71f07faf0f3c67c0f44d0af32f725",
+        "original_observation_clipped": false,
+        "excerpt_start": 17172,
+        "excerpt_end": 17387,
+        "exact_excerpt": "ot_reused_during_rebuild PASSED [ 99%]\r\ntests/test_edge_cases.py::test_get_schema_on_classes_with_both_v1_and_v2_apis PASSED [100%]\r\n\r\n======================== 186 passed, 5 skipped in 0.37s ========================"
+      }
+    ],
+    "target_predecision_state": null,
+    "relation_label": null,
+    "memory_utility_label": null,
+    "ready_for_utility_training": false,
+    "independent_human_review": false
+  },
+  {
+    "episode": "pydantic-collection-dependencies",
+    "source_family": "pydantic/pydantic@acb0f10f",
+    "candidate_id": "swesmith-tool0-row1024-message36",
+    "source_record_sha256": "b19a101742f6152fe988784866595c3bfd691a2d42b9019d9b63eb6efb40250d",
+    "dataset": "SWE-bench/SWE-smith-trajectories",
+    "hub_revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+    "instance_id": "pydantic__pydantic.acb0f10f.pr_9914",
+    "source_status": "source_evidence_verified_only",
+    "annotation": {
+      "unit": "pytz와 pytest-examples를 함께 설치한 과정",
+      "observation": "수집 오류 뒤 두 의존성을 함께 설치하자 6,247개 수집과 실행 시작이 관측됐다.",
+      "prescription_message_indices": [
+        38
+      ],
+      "boundary": "두 설치의 효과를 분리할 수 없다. 잘린 후속 로그를 전체 성공으로 바꾸지 않는다.",
+      "missing": "패키지별 상태 snapshot, 완전한 검사 출력, 별도 현재 과제 및 실제 효용 비교",
+      "cheap_baseline": "수집 오류와 개발 의존성 목록 확인"
+    },
+    "observed_prescription": [
+      {
+        "message_index": 38,
+        "command": "cd /testbed && pip install pytz pytest-examples"
+      }
+    ],
+    "evidence": [
+      {
+        "message_index": 36,
+        "observation_index": 37,
+        "tool_call": {
+          "index": 1,
+          "function": {
+            "arguments": "{\"command\": \"cd /testbed && PYTHONPATH=/testbed pytest tests/ -v\"}",
+            "name": "bash"
+          },
+          "id": "toolu_011BoXqQqrhs47HHaz9m3CxE",
+          "type": "function"
+        },
+        "original_observation_characters": 2944,
+        "original_observation_sha256": "9ee748372ff5521ea5f3d4509e8e9d684467a6a8194dcb3759566c50a163c594",
+        "original_observation_clipped": false,
+        "excerpt_start": 0,
+        "excerpt_end": 2944,
+        "exact_excerpt": "OBSERVATION:\n============================= test session starts ==============================\r\nplatform linux -- Python 3.10.16, pytest-8.3.4, pluggy-1.5.0 -- /opt/miniconda3/envs/testbed/bin/python\r\ncachedir: .pytest_cache\r\nbenchmark: 5.1.0 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=True warmup_iterations=100000)\r\nrootdir: /testbed\r\nconfigfile: pyproject.toml\r\nplugins: benchmark-5.1.0\r\ncollecting ... \rcollecting 886 items / 1 error                                                 \rcollecting 1899 items / 2 errors                                               \rcollecting 2580 items / 2 errors                                               \rcollecting 3554 items / 3 errors                                               \rcollecting 4860 items / 3 errors                                               \rcollected 5447 items / 3 errors                                                \r\n\r\n==================================== ERRORS ====================================\r\n___________________ ERROR collecting tests/test_annotated.py ___________________\r\nImportError while importing test module '/testbed/tests/test_annotated.py'.\r\nHint: make sure your test modules/packages have valid Python names.\r\nTraceback:\r\n/opt/miniconda3/envs/testbed/lib/python3.10/importlib/__init__.py:126: in import_module\r\n    return _bootstrap._gcd_import(name[level:], package, level)\r\ntests/test_annotated.py:9: in <module>\r\n    import pytz\r\nE   ModuleNotFoundError: No module named 'pytz'\r\n_____________________ ERROR collecting tests/test_docs.py ______________________\r\nImportError while importing test module '/testbed/tests/test_docs.py'.\r\nHint: make sure your test modules/packages have valid Python names.\r\nTraceback:\r\n/opt/miniconda3/envs/testbed/lib/python3.10/importlib/__init__.py:126: in import_module\r\n    return _bootstrap._gcd_import(name[level:], package, level)\r\ntests/test_docs.py:15: in <module>\r\n    from pytest_examples import CodeExample, EvalExample, find_examples\r\nE   ModuleNotFoundError: No module named 'pytest_examples'\r\n___________________ ERROR collecting tests/test_pipeline.py ____________________\r\nImportError while importing test module '/testbed/tests/test_pipeline.py'.\r\nHint: make sure your test modules/packages have valid Python names.\r\nTraceback:\r\n/opt/miniconda3/envs/testbed/lib/python3.10/importlib/__init__.py:126: in import_module\r\n    return _bootstrap._gcd_import(name[level:], package, level)\r\ntests/test_pipeline.py:11: in <module>\r\n    import pytz\r\nE   ModuleNotFoundError: No module named 'pytz'\r\n=========================== short test summary info ============================\r\nERROR tests/test_annotated.py\r\nERROR tests/test_docs.py\r\nERROR tests/test_pipeline.py\r\n!!!!!!!!!!!!!!!!!!! Interrupted: 3 errors during collection !!!!!!!!!!!!!!!!!!!!\r\n============================== 3 errors in 3.47s ==============================="
+      },
+      {
+        "message_index": 38,
+        "observation_index": 39,
+        "tool_call": {
+          "index": 1,
+          "function": {
+            "arguments": "{\"command\": \"cd /testbed && pip install pytz pytest-examples\"}",
+            "name": "bash"
+          },
+          "id": "toolu_01QCfmKJrxe1KgZT93yrqnYt",
+          "type": "function"
+        },
+        "original_observation_characters": 3490,
+        "original_observation_sha256": "597aa8fe958d8f410b90aa30ccb8dbc153e26591c95417ff4b4b3ab5638cb760",
+        "original_observation_clipped": false,
+        "excerpt_start": 2833,
+        "excerpt_end": 3490,
+        "exact_excerpt": "B)\r\nUsing cached pathspec-0.12.1-py3-none-any.whl (31 kB)\r\nInstalling collected packages: pytz, ruff, pathspec, mypy-extensions, click, black, pytest-examples\r\nSuccessfully installed black-25.1.0 click-8.1.8 mypy-extensions-1.0.0 pathspec-0.12.1 pytest-examples-0.0.15 pytz-2025.1 ruff-0.11.2\r\nWARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning."
+      },
+      {
+        "message_index": 40,
+        "observation_index": 41,
+        "tool_call": {
+          "index": 1,
+          "function": {
+            "arguments": "{\"command\": \"cd /testbed && PYTHONPATH=/testbed pytest tests/ -v\"}",
+            "name": "bash"
+          },
+          "id": "toolu_014bT9tG21nvj47K7HwqSgCj",
+          "type": "function"
+        },
+        "original_observation_characters": 100267,
+        "original_observation_sha256": "2b9a956202ec0d12eef822df5a92835d4cbc59ba028b05da366bb6bf26064ca9",
+        "original_observation_clipped": true,
+        "excerpt_start": 428,
+        "excerpt_end": 2388,
+        "exact_excerpt": "ile: pyproject.toml\r\nplugins: examples-0.0.15, benchmark-5.1.0\r\ncollecting ... \rcollecting 4128 items                                                          \rcollected 6247 items                                                           \r\n\r\ntests/benchmarks/test_attribute_access.py::test_setattr PASSED           [  0%]\r\ntests/benchmarks/test_attribute_access.py::test_getattr PASSED           [  0%]\r\ntests/benchmarks/test_discriminated_unions.py::test_schema_build PASSED  [  0%]\r\ntests/benchmarks/test_discriminated_unions.py::test_efficiency_with_highly_nested_examples PASSED [  0%]\r\ntests/benchmarks/test_fastapi_startup_generics.py::test_fastapi_startup_perf PASSED [  0%]\r\ntests/benchmarks/test_fastapi_startup_simple.py::test_fastapi_startup_perf SKIPPED [  0%]\r\ntests/benchmarks/test_imports.py::test_import_basemodel PASSED           [  0%]\r\ntests/benchmarks/test_imports.py::test_import_field PASSED               [  0%]\r\ntests/benchmarks/test_isinstance.py::test_isinstance_basemodel PASSED    [  0%]\r\ntests/benchmarks/test_model_schema_generation.py::test_simple_model_schema_generation PASSED [  0%]\r\ntests/benchmarks/test_model_schema_generation.py::test_simple_model_schema_lots_of_fields_generation PASSED [  0%]\r\ntests/benchmarks/test_model_schema_generation.py::test_nested_model_schema_generation PASSED [  0%]\r\ntests/benchmarks/test_model_schema_generation.py::test_complex_model_schema_generation PASSED [  0%]\r\ntests/benchmarks/test_model_schema_generation.py::test_recursive_model_schema_generation PASSED [  0%]\r\ntests/benchmarks/test_model_schema_generation.py::test_construct_dataclass_schema PASSED [  0%]\r\ntests/benchmarks/test_model_schema_generation.py::test_lots_of_models_with_lots_of_fields PASSED [  0%]\r\ntests/benchmarks/test_model_schema_generation.py::test_field_validators_serializers PASSED [  0%]\r\ntests/benchmarks/test_model_schema_generation.py::test_model_validators_serializers PASSED [  0%]\r\ntests/benchmarks/t"
+      }
+    ],
+    "target_predecision_state": null,
+    "relation_label": null,
+    "memory_utility_label": null,
+    "ready_for_utility_training": false,
+    "independent_human_review": false
+  },
+  {
+    "episode": "pydantic-faker-fixture",
+    "source_family": "pydantic/pydantic@acb0f10f",
+    "candidate_id": "swesmith-tool0-row1024-message54",
+    "source_record_sha256": "7a8cb432055d2cdf5c8176cbb60bcf5a9105028411e8b2e87a46f12cb27ac412",
+    "dataset": "SWE-bench/SWE-smith-trajectories",
+    "hub_revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+    "instance_id": "pydantic__pydantic.acb0f10f.pr_9914",
+    "source_status": "source_evidence_verified_only",
+    "annotation": {
+      "unit": "fixture 내부의 faker import 실패와 특정 여덟 검사",
+      "observation": "faker import로 여덟 fixture 오류가 있었고 설치 뒤 전체 검사 출력에 해당 여덟 항목의 통과가 보였다.",
+      "prescription_message_indices": [
+        56
+      ],
+      "boundary": "이름 있는 항목의 통과만 말할 수 있다. 전체 실행의 최종 성공은 불명확하다.",
+      "missing": "같은 범위의 완전한 실행과 새 현재 상태, 기억 제공/보류 결과",
+      "cheap_baseline": "fixture traceback과 현재 의존성 확인"
+    },
+    "observed_prescription": [
+      {
+        "message_index": 56,
+        "command": "cd /testbed && pip install faker"
+      }
+    ],
+    "evidence": [
+      {
+        "message_index": 54,
+        "observation_index": 55,
+        "tool_call": {
+          "index": 0,
+          "function": {
+            "arguments": "{\"command\": \"cd /testbed && PYTHONPATH=/testbed pytest tests/benchmarks/test_north_star.py -v\"}",
+            "name": "bash"
+          },
+          "id": "toolu_01TgbmXmnjnAqCekcCYZUCdU",
+          "type": "function"
+        },
+        "original_observation_characters": 8674,
+        "original_observation_sha256": "bce19cb39d6ff82ea695ac52ec4c4bec9d6991e967d59db5df4c163a80453ce6",
+        "original_observation_clipped": false,
+        "excerpt_start": 1850,
+        "excerpt_end": 3810,
+        "exact_excerpt": "_ _ _ _ _ _ _ _ _ _ _ _ _ _ \r\n\r\n    from datetime import datetime\r\n    from typing import Any, Callable, TypeVar, Union\r\n    \r\n>   from faker import Faker\r\nE   ModuleNotFoundError: No module named 'faker'\r\n\r\ntests/benchmarks/generate_north_star_data.py:4: ModuleNotFoundError\r\n____________ ERROR at setup of test_north_star_validate_json_strict ____________\r\n\r\n    @pytest.fixture(scope='module')\r\n    def north_star_data_bytes():\r\n>       return _north_star_data_bytes()\r\n\r\ntests/benchmarks/test_north_star.py:70: \r\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \r\ntests/benchmarks/test_north_star.py:74: in _north_star_data_bytes\r\n    from .generate_north_star_data import person_data\r\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \r\n\r\n    from datetime import datetime\r\n    from typing import Any, Callable, TypeVar, Union\r\n    \r\n>   from faker import Faker\r\nE   ModuleNotFoundError: No module named 'faker'\r\n\r\ntests/benchmarks/generate_north_star_data.py:4: ModuleNotFoundError\r\n_________________ ERROR at setup of test_north_star_dump_json __________________\r\n\r\n    @pytest.fixture(scope='module')\r\n    def north_star_data_bytes():\r\n>       return _north_star_data_bytes()\r\n\r\ntests/benchmarks/test_north_star.py:70: \r\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \r\ntests/benchmarks/test_north_star.py:74: in _north_star_data_bytes\r\n    from .generate_north_star_data import person_data\r\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \r\n\r\n    from datetime import datetime\r\n    from typing import Any, Callable, TypeVar, Union\r\n    \r\n>   from faker import Faker\r\nE   ModuleNotFoundError: No module named 'faker'\r\n\r\ntests/benchmarks/generate_north_star_data.py:4: ModuleNotFoundError\r\n______________ ERROR at setup of test_north_star_validate_python _______________\r\n\r\n    @pytest.fixture(scope='module')\r\n    def north_st"
+      },
+      {
+        "message_index": 56,
+        "observation_index": 57,
+        "tool_call": {
+          "index": 1,
+          "function": {
+            "arguments": "{\"command\": \"cd /testbed && pip install faker\"}",
+            "name": "bash"
+          },
+          "id": "toolu_01BnD7rRDiksDDMNy58upkHh",
+          "type": "function"
+        },
+        "original_observation_characters": 909,
+        "original_observation_sha256": "c93b0619e1309182d8060866c7de50222dfa6fe89f6b055459374c6223900fbc",
+        "original_observation_clipped": false,
+        "excerpt_start": 335,
+        "excerpt_end": 909,
+        "exact_excerpt": "━━━━━━━━━━━━━━━━━━━━━━ 1.9/1.9 MB 37.9 MB/s eta 0:00:00\r\nDownloading tzdata-2025.1-py2.py3-none-any.whl (346 kB)\r\nInstalling collected packages: tzdata, faker\r\nSuccessfully installed faker-37.0.2 tzdata-2025.1\r\nWARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning."
+      },
+      {
+        "message_index": 58,
+        "observation_index": 59,
+        "tool_call": {
+          "index": 1,
+          "function": {
+            "arguments": "{\"command\": \"cd /testbed && PYTHONPATH=/testbed pytest tests/ -v\"}",
+            "name": "bash"
+          },
+          "id": "toolu_01EJts3TEBYRYs9xh1s1mhdT",
+          "type": "function"
+        },
+        "original_observation_characters": 100267,
+        "original_observation_sha256": "2dd4137b3ac52b7d0384fc986ab58165682fc3ce0d60411f7ff52a03920cbf32",
+        "original_observation_clipped": true,
+        "excerpt_start": 17079,
+        "excerpt_end": 19039,
+        "exact_excerpt": "est_list_of_models_validation[model_validate] PASSED [  2%]\r\ntests/benchmarks/test_model_validation.py::test_list_of_models_validation[__init__] PASSED [  2%]\r\ntests/benchmarks/test_north_star.py::test_north_star_validate_json PASSED [  2%]\r\ntests/benchmarks/test_north_star.py::test_north_star_validate_json_strict PASSED [  2%]\r\ntests/benchmarks/test_north_star.py::test_north_star_dump_json PASSED    [  2%]\r\ntests/benchmarks/test_north_star.py::test_north_star_validate_python PASSED [  2%]\r\ntests/benchmarks/test_north_star.py::test_north_star_validate_python_strict PASSED [  2%]\r\ntests/benchmarks/test_north_star.py::test_north_star_dump_python PASSED  [  2%]\r\ntests/benchmarks/test_north_star.py::test_north_star_json_loads PASSED   [  2%]\r\ntests/benchmarks/test_north_star.py::test_north_star_json_dumps PASSED   [  2%]\r\ntests/mypy/test_mypy.py::test_mypy_results[mypy-default.ini-pydantic_settings.py] SKIPPED [  2%]\r\ntests/mypy/test_mypy.py::test_mypy_results[pyproject-default.toml-pydantic_settings.py] SKIPPED [  2%]\r\ntests/mypy/test_mypy.py::test_mypy_results[mypy-default.ini-root_models.py] SKIPPED [  2%]\r\ntests/mypy/test_mypy.py::test_mypy_results[pyproject-default.toml-root_models.py] SKIPPED [  2%]\r\ntests/mypy/test_mypy.py::test_mypy_results[mypy-default.ini-plugin_success.py] SKIPPED [  2%]\r\ntests/mypy/test_mypy.py::test_mypy_results[mypy-default.ini-plugin_success_baseConfig.py] SKIPPED [  2%]\r\ntests/mypy/test_mypy.py::test_mypy_results[mypy-default.ini-metaclass_args.py] SKIPPED [  2%]\r\ntests/mypy/test_mypy.py::test_mypy_results[mypy-plugin.ini-plugin_success.py] SKIPPED [  2%]\r\ntests/mypy/test_mypy.py::test_mypy_results[mypy-plugin.ini-plugin_fail.py] SKIPPED [  2%]\r\ntests/mypy/test_mypy.py::test_mypy_results[mypy-plugin.ini-plugin_success_baseConfig.py] SKIPPED [  2%]\r\ntests/mypy/test_mypy.py::test_mypy_results[mypy-plugin.ini-plugin_fail_baseConfig.py] SKIPPED [  2%]\r\ntests/mypy/test_mypy.py::test_mypy_results[mypy-pl"
+      }
+    ],
+    "target_predecision_state": null,
+    "relation_label": null,
+    "memory_utility_label": null,
+    "ready_for_utility_training": false,
+    "independent_human_review": false
+  },
+  {
+    "episode": "pipdeptree-editable-build",
+    "source_family": "tox-dev/pipdeptree@c31b6418",
+    "candidate_id": "swesmith-tool0-row1082-message24",
+    "source_record_sha256": "52c47e436ded0f9dd00a98044110bb53f640979dea9e23293655394ae6b8cc79",
+    "dataset": "SWE-bench/SWE-smith-trajectories",
+    "hub_revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+    "instance_id": "tox-dev__pipdeptree.c31b6418.pr_357",
+    "source_status": "source_evidence_verified_only",
+    "annotation": {
+      "unit": "내부 version module의 부재와 editable 설치",
+      "observation": "version import 실패 뒤 editable 설치를 하자 동일 스크립트가 metadata TypeError까지 진행했다.",
+      "prescription_message_indices": [
+        26
+      ],
+      "boundary": "build가 어떤 파일을 바꿨는지 분리되지 않았다. 모든 내부 import 오류에 설치를 권할 근거가 아니다.",
+      "missing": "해당 revision의 build 산출물 전후, 실패하던 정확한 파일 상태와 독립 현재 상태",
+      "cheap_baseline": "build-generated module 여부와 현재 설치 메타데이터 확인"
+    },
+    "observed_prescription": [
+      {
+        "message_index": 26,
+        "command": "cd /testbed && pip install -e ."
+      }
+    ],
+    "evidence": [
+      {
+        "message_index": 24,
+        "observation_index": 25,
+        "tool_call": {
+          "index": 1,
+          "function": {
+            "arguments": "{\"command\": \"cd /testbed && python3 test_script.py\"}",
+            "name": "bash"
+          },
+          "id": "toolu_01F3o2b1GzSVtkkwoNQdKRse",
+          "type": "function"
+        },
+        "original_observation_characters": 303,
+        "original_observation_sha256": "960217e6ba5d6d5f18923dbd2faf63384196dba9c45a68465e594c2e44fe6890",
+        "original_observation_clipped": false,
+        "excerpt_start": 0,
+        "excerpt_end": 303,
+        "exact_excerpt": "OBSERVATION:\nTraceback (most recent call last):\r\n  File \"/testbed/test_script.py\", line 3, in <module>\r\n    from pipdeptree._cli import Options\r\n  File \"/testbed/src/pipdeptree/_cli.py\", line 7, in <module>\r\n    from .version import __version__\r\nModuleNotFoundError: No module named 'pipdeptree.version'"
+      },
+      {
+        "message_index": 26,
+        "observation_index": 27,
+        "tool_call": {
+          "index": 1,
+          "function": {
+            "arguments": "{\"command\": \"cd /testbed && pip install -e .\"}",
+            "name": "bash"
+          },
+          "id": "toolu_01BPt86ZGYvVPiEyMP4QKjiZ",
+          "type": "function"
+        },
+        "original_observation_characters": 1772,
+        "original_observation_sha256": "1a0fed36774adaa403f192050881e2507785e41b7e218d42b6fab89c8ffe8506",
+        "original_observation_clipped": false,
+        "excerpt_start": 1167,
+        "excerpt_end": 1772,
+        "exact_excerpt": "eptree\r\n    Found existing installation: pipdeptree 0.1.dev1+g6b62888\r\n    Uninstalling pipdeptree-0.1.dev1+g6b62888:\r\n      Successfully uninstalled pipdeptree-0.1.dev1+g6b62888\r\nSuccessfully installed pipdeptree-0.1.dev2+gbed4700.d20250323\r\nWARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable.It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning."
+      },
+      {
+        "message_index": 28,
+        "observation_index": 29,
+        "tool_call": {
+          "index": 1,
+          "function": {
+            "arguments": "{\"command\": \"cd /testbed && python3 test_script.py\"}",
+            "name": "bash"
+          },
+          "id": "toolu_01Wsrtng7qSqZzHp5rwVFj2M",
+          "type": "function"
+        },
+        "original_observation_characters": 849,
+        "original_observation_sha256": "292925d5459edea7dcdb93f69ba853d013805e31a1a8518707cf06464887bb44",
+        "original_observation_clipped": false,
+        "excerpt_start": 0,
+        "excerpt_end": 849,
+        "exact_excerpt": "OBSERVATION:\nTraceback (most recent call last):\r\n  File \"/testbed/test_script.py\", line 49, in <module>\r\n    tree = PackageDAG.from_pkgs(dists)\r\n  File \"/testbed/src/pipdeptree/_models/dag.py\", line 56, in from_pkgs\r\n    dist_pkgs = [DistPackage(p) for p in pkgs]\r\n  File \"/testbed/src/pipdeptree/_models/dag.py\", line 56, in <listcomp>\r\n    dist_pkgs = [DistPackage(p) for p in pkgs]\r\n  File \"/testbed/src/pipdeptree/_models/package.py\", line 98, in __init__\r\n    super().__init__(obj.metadata[\"Name\"])\r\n  File \"/testbed/src/pipdeptree/_models/package.py\", line 33, in __init__\r\n    self.key = canonicalize_name(project_name)\r\n  File \"/opt/miniconda3/envs/testbed/lib/python3.10/site-packages/packaging/utils.py\", line 50, in canonicalize_name\r\n    value = _canonicalize_regex.sub(\"-\", name).lower()\r\nTypeError: expected string or bytes-like object"
+      }
+    ],
+    "target_predecision_state": null,
+    "relation_label": null,
+    "memory_utility_label": null,
+    "ready_for_utility_training": false,
+    "independent_human_review": false
+  },
+  {
+    "episode": "dask-test-path-and-system-executable",
+    "source_family": "dask/dask@5f61e423",
+    "candidate_id": "swesmith-tool0-row1088-message14",
+    "source_record_sha256": "eb970fed4ed7d8090a1bd637973b973d9025f3e3dd9fc705f0b0076105ab29dd",
+    "dataset": "SWE-bench/SWE-smith-trajectories",
+    "hub_revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+    "instance_id": "dask__dask.5f61e423.pr_8954",
+    "source_status": "source_evidence_verified_only",
+    "annotation": {
+      "unit": "잘못된 검사 경로 교정과 남은 시스템 실행 파일 전제",
+      "observation": "test_highlevelgraph.py가 없어서 test_highgraph.py를 실행했고 18 pass와 dot 부재에 의한 1 fail이 관측됐다.",
+      "prescription_message_indices": [
+        16
+      ],
+      "boundary": "경로 교정은 기록돼 있지만 Graphviz 설치로 해결했다는 근거는 없다. 검사 범위의 충분성도 별도다.",
+      "missing": "새 현재 트리의 경로/범위 관계와 실제 worker 비교; Graphviz 수리는 관측되지 않음",
+      "cheap_baseline": "현재 파일 목록과 실행 파일 존재 확인"
+    },
+    "observed_prescription": [
+      {
+        "message_index": 16,
+        "command": "cd /testbed && python -m pytest dask/tests/test_highgraph.py -v"
+      }
+    ],
+    "evidence": [
+      {
+        "message_index": 14,
+        "observation_index": 15,
+        "tool_call": {
+          "index": 0,
+          "function": {
+            "arguments": "{\"command\": \"cd /testbed && python -m pytest dask/tests/test_highlevelgraph.py -v\"}",
+            "name": "bash"
+          },
+          "id": "toolu_01Hrk3DuEC9PynEpDU2GxUaq",
+          "type": "function"
+        },
+        "original_observation_characters": 822,
+        "original_observation_sha256": "4c8b2b99a0a501f66012631da75d100a1fa71864c958826a0ad8b70273d7122f",
+        "original_observation_clipped": false,
+        "excerpt_start": 0,
+        "excerpt_end": 822,
+        "exact_excerpt": "OBSERVATION:\n============================= test session starts ==============================\r\nplatform linux -- Python 3.10.16, pytest-8.3.5, pluggy-1.5.0 -- /opt/miniconda3/envs/testbed/bin/python\r\ncachedir: .pytest_cache\r\nhypothesis profile 'default' -> database=DirectoryBasedExampleDatabase(PosixPath('/testbed/.hypothesis/examples'))\r\nrootdir: /testbed\r\nconfigfile: pyproject.toml\r\nplugins: rerunfailures-15.0, xdist-3.6.1, hypothesis-6.127.5, mimesis-18.0.0, mock-3.14.0, cov-6.0.0, timeout-2.3.1\r\ntimeout: 300.0s\r\ntimeout method: thread\r\ntimeout func_only: False\r\ncollecting ... \rcollected 0 items                                                              \r\n\r\n============================ no tests ran in 0.17s =============================\r\nERROR: file or directory not found: dask/tests/test_highlevelgraph.py"
+      },
+      {
+        "message_index": 16,
+        "observation_index": 17,
+        "tool_call": {
+          "index": 0,
+          "function": {
+            "arguments": "{\"command\": \"cd /testbed && python -m pytest dask/tests/test_highgraph.py -v\"}",
+            "name": "bash"
+          },
+          "id": "toolu_0162PmxGS6mdSpBz4t5LwJcj",
+          "type": "function"
+        },
+        "original_observation_characters": 16678,
+        "original_observation_sha256": "3b15ec6f67055afba7d7cb094d68388f3a2a4620a113dc0edbcd463464a786b4",
+        "original_observation_clipped": false,
+        "excerpt_start": 16221,
+        "excerpt_end": 16678,
+        "exact_excerpt": "annotation[annotation1]\r\n0.00s call     dask/tests/test_highgraph.py::test_blockwise_cull[False]\r\n=========================== short test summary info ============================\r\nFAILED dask/tests/test_highgraph.py::test_visualize - graphviz.backend.execute.ExecutableNotFound: failed to execute PosixPath('dot'), make sure the Graphviz executables are on your systems' PATH\r\n========================= 1 failed, 18 passed in 0.58s ========================="
+      }
+    ],
+    "target_predecision_state": null,
+    "relation_label": null,
+    "memory_utility_label": null,
+    "ready_for_utility_training": false,
+    "independent_human_review": false
+  },
+  {
+    "episode": "gtts-six-dependency",
+    "source_family": "pndurette/gTTS@dbcda4f3",
+    "candidate_id": "swesmith-tool0-row1180-message6",
+    "source_record_sha256": "20c61c8a9912fb25e9b3385d18ca009007a3c199982b5e0ebb8acf6db168675f",
+    "dataset": "SWE-bench/SWE-smith-trajectories",
+    "hub_revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+    "instance_id": "pndurette__gTTS.dbcda4f3.pr_394",
+    "source_status": "source_evidence_verified_only",
+    "annotation": {
+      "unit": "six import와 재현 스크립트의 실행 진행",
+      "observation": "six import 실패 뒤 six/requests 설치 명령을 실행했고 같은 스크립트가 여러 분기를 출력했다.",
+      "prescription_message_indices": [
+        8
+      ],
+      "boundary": "requests는 이미 설치돼 있었고 출력 문구만으로 실제 assertion 검증을 보장하지 못한다.",
+      "missing": "재현 스크립트의 검사 계약과 독립 현재 상태, 제공/보류 효용 측정",
+      "cheap_baseline": "의존성 확인과 검사 스크립트의 assertion 검토"
+    },
+    "observed_prescription": [
+      {
+        "message_index": 8,
+        "command": "pip install six requests"
+      }
+    ],
+    "evidence": [
+      {
+        "message_index": 6,
+        "observation_index": 7,
+        "tool_call": {
+          "index": 1,
+          "function": {
+            "arguments": "{\"command\": \"cd /testbed && python reproduce.py\"}",
+            "name": "bash"
+          },
+          "id": "toolu_011e34npQvH66tNmAYmXvmWq",
+          "type": "function"
+        },
+        "original_observation_characters": 352,
+        "original_observation_sha256": "72e1f129490a303add9d22ef1d3b61ccf53a937fa8bbd0384a995fcb97491c35",
+        "original_observation_clipped": false,
+        "excerpt_start": 0,
+        "excerpt_end": 352,
+        "exact_excerpt": "OBSERVATION:\nTraceback (most recent call last):\r\n  File \"/testbed/reproduce.py\", line 1, in <module>\r\n    from gtts import gTTS\r\n  File \"/testbed/gtts/__init__.py\", line 3, in <module>\r\n    from .tts import gTTS, gTTSError\r\n  File \"/testbed/gtts/tts.py\", line 6, in <module>\r\n    from six.moves import urllib\r\nModuleNotFoundError: No module named 'six'"
+      },
+      {
+        "message_index": 8,
+        "observation_index": 9,
+        "tool_call": {
+          "index": 1,
+          "function": {
+            "arguments": "{\"command\": \"pip install six requests\"}",
+            "name": "bash"
+          },
+          "id": "toolu_012KwhQswYmwoKN65NwYfYJd",
+          "type": "function"
+        },
+        "original_observation_characters": 1238,
+        "original_observation_sha256": "b2a02f24f07686d985d8305aaff76a4d9a72eb1d5a27ddba0ed6e88933cf9844",
+        "original_observation_clipped": false,
+        "excerpt_start": 661,
+        "excerpt_end": 1238,
+        "exact_excerpt": " in /opt/miniconda3/envs/testbed/lib/python3.10/site-packages (from requests) (2024.8.30)\r\nDownloading six-1.17.0-py2.py3-none-any.whl (11 kB)\r\nInstalling collected packages: six\r\nSuccessfully installed six-1.17.0\r\nWARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable.It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning."
+      },
+      {
+        "message_index": 10,
+        "observation_index": 11,
+        "tool_call": {
+          "index": 1,
+          "function": {
+            "arguments": "{\"command\": \"cd /testbed && python reproduce.py\"}",
+            "name": "bash"
+          },
+          "id": "toolu_01DtChGbQ49bfCwGDfdtUSz3",
+          "type": "function"
+        },
+        "original_observation_characters": 204,
+        "original_observation_sha256": "9738c28142c3141b6574f07c77a5604098b186911c2dcb057cf4cbbda6f2c324",
+        "original_observation_clipped": false,
+        "excerpt_start": 0,
+        "excerpt_end": 204,
+        "exact_excerpt": "OBSERVATION:\nTesting basic case...\r\nTesting long text...\r\nTesting text with special characters...\r\nTesting non-English text...\r\nTesting invalid language...\r\nExpected error: Language not supported: invalid"
+      }
+    ],
+    "target_predecision_state": null,
+    "relation_label": null,
+    "memory_utility_label": null,
+    "ready_for_utility_training": false,
+    "independent_human_review": false
+  }
+]

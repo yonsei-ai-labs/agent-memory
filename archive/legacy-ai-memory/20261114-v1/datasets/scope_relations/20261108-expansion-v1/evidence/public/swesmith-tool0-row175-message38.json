@@ -1,0 +1,45 @@
+{
+  "dataset": "SWE-bench/SWE-smith-trajectories",
+  "hub_revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+  "parquet_file": "data/tool-00000-of-00008.parquet",
+  "parquet_sha256": "ac76e9efe75978f83d4daec98a55604587dd58b0f1509364893b8778cbf5b487",
+  "parquet_row_index": 175,
+  "instance_id": "python-openxml__python-docx.0cf6d71f.func_pm_ctrl_shuffle__z6689b9m",
+  "traj_id": "python-openxml__python-docx.0cf6d71f.func_pm_ctrl_shuffle__z6689b9m.8qa84d2e",
+  "repository": "python-openxml/python-docx",
+  "upstream_revision": "0cf6d71f",
+  "raw_messages_sha256": "d296743ddfd5311a18ffbb4d41a4e92699acfb59d778ea365d36dc135dc101de",
+  "message_index": 38,
+  "tool_call": {
+    "index": 1,
+    "function": {
+      "arguments": "{\"command\": \"cd /testbed && python -m pytest tests/opc/test_pkgreader.py -v\"}",
+      "name": "bash"
+    },
+    "id": "toolu_01D4ACSD7A6F1ijfayQQPHVC",
+    "type": "function"
+  },
+  "observation_index": 39,
+  "observation": {
+    "role": "tool",
+    "content": [
+      {
+        "type": "text",
+        "text": "OBSERVATION:\n============================= test session starts ==============================\r\nplatform linux -- Python 3.10.15, pytest-8.3.4, pluggy-1.5.0 -- /opt/miniconda3/envs/testbed/bin/python\r\ncachedir: .pytest_cache\r\nrootdir: /testbed\r\nconfigfile: pyproject.toml\r\nplugins: xdist-3.6.1, cov-6.0.0\r\ncollecting ... \rcollected 22 items                                                             \r\n\r\ntests/opc/test_pkgreader.py::DescribePackageReader::it_can_construct_from_pkg_file PASSED [  4%]\r\ntests/opc/test_pkgreader.py::DescribePackageReader::it_can_iterate_over_the_serialized_parts PASSED [  9%]\r\ntests/opc/test_pkgreader.py::DescribePackageReader::it_can_iterate_over_all_the_srels PASSED [ 13%]\r\ntests/opc/test_pkgreader.py::DescribePackageReader::it_can_load_serialized_parts PASSED [ 18%]\r\ntests/opc/test_pkgreader.py::DescribePackageReader::it_can_walk_phys_pkg_parts PASSED [ 22%]\r\ntests/opc/test_pkgreader.py::DescribePackageReader::it_can_retrieve_srels_for_a_source_uri PASSED [ 27%]\r\ntests/opc/test_pkgreader.py::Describe_ContentTypeMap::it_can_construct_from_ct_item_xml PASSED [ 31%]\r\ntests/opc/test_pkgreader.py::Describe_ContentTypeMap::it_matches_an_override_on_case_insensitive_partname[match_override_fixture0] PASSED [ 36%]\r\ntests/opc/test_pkgreader.py::Describe_ContentTypeMap::it_matches_an_override_on_case_insensitive_partname[match_override_fixture1] PASSED [ 40%]\r\ntests/opc/test_pkgreader.py::Describe_ContentTypeMap::it_matches_an_override_on_case_insensitive_partname[match_override_fixture2] PASSED [ 45%]\r\ntests/opc/test_pkgreader.py::Describe_ContentTypeMap::it_falls_back_to_case_insensitive_extension_default_match[match_default_fixture0] PASSED [ 50%]\r\ntests/opc/test_pkgreader.py::Describe_ContentTypeMap::it_falls_back_to_case_insensitive_extension_default_match[match_default_fixture1] PASSED [ 54%]\r\ntests/opc/test_pkgreader.py::Describe_ContentTypeMap::it_falls_back_to_case_insensitive_extension_default_match[match_default_fixture2] PASSED [ 59%]\r\ntests/opc/test_pkgreader.py::Describe_ContentTypeMap::it_should_raise_on_partname_not_found PASSED [ 63%]\r\ntests/opc/test_pkgreader.py::Describe_ContentTypeMap::it_should_raise_on_key_not_instance_of_PackURI PASSED [ 68%]\r\ntests/opc/test_pkgreader.py::Describe_SerializedPart::it_remembers_construction_values PASSED [ 72%]\r\ntests/opc/test_pkgreader.py::Describe_SerializedRelationship::it_remembers_construction_values PASSED [ 77%]\r\ntests/opc/test_pkgreader.py::Describe_SerializedRelationship::it_knows_when_it_is_external PASSED [ 81%]\r\ntests/opc/test_pkgreader.py::Describe_SerializedRelationship::it_can_calculate_its_target_partname PASSED [ 86%]\r\ntests/opc/test_pkgreader.py::Describe_SerializedRelationship::it_raises_on_target_partname_when_external PASSED [ 90%]\r\ntests/opc/test_pkgreader.py::Describe_SerializedRelationships::it_can_load_from_xml PASSED [ 95%]\r\ntests/opc/test_pkgreader.py::Describe_SerializedRelationships::it_should_be_iterable PASSED [100%]\r\n\r\n============================== 22 passed in 0.11s =============================="
+      }
+    ],
+    "agent": "main",
+    "message_type": "observation",
+    "tool_call_ids": [
+      "toolu_01D4ACSD7A6F1ijfayQQPHVC"
+    ]
+  },
+  "created_paths_in_trace": [
+    "/testbed/reproduce_issue.py",
+    "/testbed/test_edge_cases.py"
+  ],
+  "observed_whole_scope_selection": [
+    "tests/opc/test_pkgreader.py"
+  ],
+  "observed_target_state_or_memory_utility": false
+}

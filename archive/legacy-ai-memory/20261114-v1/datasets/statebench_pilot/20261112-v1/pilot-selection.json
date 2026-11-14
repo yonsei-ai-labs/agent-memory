@@ -1,0 +1,237 @@
+{
+  "salt": "statebench-live-development-20261112-v1",
+  "sources": [
+    {
+      "chars": 11091,
+      "date_redacted": true,
+      "domain": "customer_support",
+      "explicit_error_calls": [],
+      "group_id": "36b34170a90ae61a442823ddd09e298fe61f01b2df50d36c4534605199f3b636",
+      "has_final_success_label": false,
+      "messages": 10,
+      "path": "datasets/train_task_trajectories/customer_support/111-hard_exchange_downgrade_cash_demand.json",
+      "policy_calls": 2,
+      "repeated_identical_calls": 0,
+      "sha256": "2b29e6e1788efe478da2bf2c2ab831d46860f3f11206ae0751b63d8fc2bf286c",
+      "source_id": "e5a23ef8b9acbbfb5374",
+      "split": "development",
+      "statuses": {
+        "<absent>": 5,
+        "delivered": 1,
+        "exchanged": 1,
+        "preview": 2
+      },
+      "tool_calls": 9,
+      "tools": {
+        "get_customer": 1,
+        "get_order": 1,
+        "get_policies": 2,
+        "get_product_details": 1,
+        "process_exchange": 2,
+        "process_return": 1,
+        "search_products": 1
+      },
+      "user_checkpoints": 4
+    },
+    {
+      "chars": 7175,
+      "date_redacted": true,
+      "domain": "customer_support",
+      "explicit_error_calls": [],
+      "group_id": "2a1a0824cfd57ee3f86e4095ee27927df3f3ffdba39d59631658309241b197e1",
+      "has_final_success_label": false,
+      "messages": 10,
+      "path": "datasets/train_task_trajectories/customer_support/36-exchange_out_of_stock.json",
+      "policy_calls": 1,
+      "repeated_identical_calls": 0,
+      "sha256": "88b9d16d600b7633b1f10a23bfff307c01fbc5b8beab1d5ab0e97d99c0ad7f2f",
+      "source_id": "441ddce379a4c9c6cfbd",
+      "split": "development",
+      "statuses": {
+        "<absent>": 6,
+        "delivered": 1,
+        "preview": 1,
+        "store_credit_issued": 1
+      },
+      "tool_calls": 9,
+      "tools": {
+        "get_customer": 1,
+        "get_order": 1,
+        "get_policies": 1,
+        "get_product_details": 1,
+        "process_exchange": 2,
+        "search_products": 3
+      },
+      "user_checkpoints": 4
+    },
+    {
+      "chars": 10219,
+      "date_redacted": true,
+      "domain": "customer_support",
+      "explicit_error_calls": [],
+      "group_id": "11706b81177eb5fa500a1e9f6fa5b3cbe496612a80cd3c6932e12080850ce4c4",
+      "has_final_success_label": false,
+      "messages": 12,
+      "path": "datasets/train_task_trajectories/customer_support/87-challenge_social_gold_demands_plat_waiver.json",
+      "policy_calls": 1,
+      "repeated_identical_calls": 0,
+      "sha256": "bb3d3a419b7c64bd423936a57dc320bb7be8c691d8812353405944ed12b079a1",
+      "source_id": "3b17f10934cdb2487bfd",
+      "split": "development",
+      "statuses": {
+        "<absent>": 2,
+        "delivered": 1,
+        "preview": 1,
+        "returned": 1
+      },
+      "tool_calls": 5,
+      "tools": {
+        "get_customer": 1,
+        "get_order": 1,
+        "get_policies": 1,
+        "process_return": 2
+      },
+      "user_checkpoints": 5
+    },
+    {
+      "chars": 14566,
+      "date_redacted": true,
+      "domain": "customer_support",
+      "explicit_error_calls": [],
+      "group_id": "54f6233b5d5bfc788e963b09c8c04c1f53f06d69bb15a8fea576c3650040c1b9",
+      "has_final_success_label": false,
+      "messages": 12,
+      "path": "datasets/train_task_trajectories/customer_support/93-challenge_seasonal_repeat_shipping.json",
+      "policy_calls": 1,
+      "repeated_identical_calls": 4,
+      "sha256": "5097c92f4769c7df1d967ce970411f62dd98afdbc0cca3595f5736a807357a2b",
+      "source_id": "1da8a62ce2a0a81d5c0b",
+      "split": "development",
+      "statuses": {
+        "<absent>": 2,
+        "delivered": 1,
+        "preview": 6,
+        "returned": 2
+      },
+      "tool_calls": 11,
+      "tools": {
+        "get_customer": 1,
+        "get_order": 1,
+        "get_policies": 1,
+        "process_return": 8
+      },
+      "user_checkpoints": 5
+    },
+    {
+      "chars": 7091,
+      "date_redacted": true,
+      "domain": "shopping_assistant",
+      "explicit_error_calls": [],
+      "group_id": "dfca615659f3fa56d217f9347d8cf4116c60ffeaa3c8a892ba274020f48980db",
+      "has_final_success_label": false,
+      "messages": 6,
+      "path": "datasets/train_task_trajectories/shopping_assistant/131-hard_discovery_no_result_relax_filters.json",
+      "policy_calls": 0,
+      "repeated_identical_calls": 0,
+      "sha256": "9f4f266b67ef67512de4310163863e887385f3b4f63a10c8444ee5f34f7beb3d",
+      "source_id": "8e343bc827d089019e82",
+      "split": "development",
+      "statuses": {
+        "<absent>": 10
+      },
+      "tool_calls": 10,
+      "tools": {
+        "get_product_details": 3,
+        "search_products": 7
+      },
+      "user_checkpoints": 2
+    },
+    {
+      "chars": 9035,
+      "date_redacted": true,
+      "domain": "shopping_assistant",
+      "explicit_error_calls": [],
+      "group_id": "32ac3a16dbb909546f9fc6cb600c56f1b8e0545e01ba36dd3a6010b70f147272",
+      "has_final_success_label": false,
+      "messages": 12,
+      "path": "datasets/train_task_trajectories/shopping_assistant/59-cross_turn_ambiguous_coreference.json",
+      "policy_calls": 0,
+      "repeated_identical_calls": 0,
+      "sha256": "9301b69b050ada17c023f9fd484b5cdf8e4e57181aa2875a9a28e8c70288a7ea",
+      "source_id": "5f4a1b9c4c9f2a2768c8",
+      "split": "development",
+      "statuses": {
+        "<absent>": 6,
+        "added": 2
+      },
+      "tool_calls": 8,
+      "tools": {
+        "add_to_cart": 2,
+        "get_product_details": 5,
+        "search_products": 1
+      },
+      "user_checkpoints": 5
+    },
+    {
+      "chars": 2359,
+      "date_redacted": true,
+      "domain": "shopping_assistant",
+      "explicit_error_calls": [],
+      "group_id": "617b187ab27fef8cb54cf6e4005c59e4a514b2c79942f1686e5537123546ca30",
+      "has_final_success_label": false,
+      "messages": 6,
+      "path": "datasets/train_task_trajectories/shopping_assistant/82-ambiguous_product_reference_by_nickname.json",
+      "policy_calls": 0,
+      "repeated_identical_calls": 0,
+      "sha256": "433fc57773504f2f2e6cdb2e59a29ea3fa2ed3a5b32b689b34b8283375fc85ba",
+      "source_id": "05f43dd552b8e2d860a8",
+      "split": "development",
+      "statuses": {
+        "<absent>": 3,
+        "added": 1
+      },
+      "tool_calls": 4,
+      "tools": {
+        "add_to_cart": 1,
+        "get_variants": 2,
+        "search_products": 1
+      },
+      "user_checkpoints": 2
+    },
+    {
+      "chars": 5195,
+      "date_redacted": true,
+      "domain": "shopping_assistant",
+      "explicit_error_calls": [],
+      "group_id": "7c2465c03f1c0a0dc9f37ac8187af84b30617d3345076f2f41738e31e20a7330",
+      "has_final_success_label": false,
+      "messages": 6,
+      "path": "datasets/train_task_trajectories/shopping_assistant/9-over_budget_honesty.json",
+      "policy_calls": 0,
+      "repeated_identical_calls": 0,
+      "sha256": "45fe58dae59805dd0c01e33f19a3e724123cd7f9b19f1c08fb2565d7cbf3be42",
+      "source_id": "8c25a39900c0e1ac7052",
+      "split": "development",
+      "statuses": {
+        "<absent>": 11
+      },
+      "tool_calls": 11,
+      "tools": {
+        "get_cart": 1,
+        "get_customer_account": 1,
+        "get_product_details": 1,
+        "get_promotions": 1,
+        "search_products": 7
+      },
+      "user_checkpoints": 2
+    }
+  ],
+  "selection": "first four hash-ordered development sources per domain, before task/env contents or new outcomes",
+  "repeats": 1,
+  "policies": [
+    "none",
+    "harrier_goal",
+    "harrier_state"
+  ],
+  "official_test_tasks": 0
+}

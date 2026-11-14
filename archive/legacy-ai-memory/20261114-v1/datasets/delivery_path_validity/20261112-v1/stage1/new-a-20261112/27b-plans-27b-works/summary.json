@@ -1,0 +1,257 @@
+{
+  "new-a": {
+    "group": "new-a",
+    "units": 42,
+    "states": 252,
+    "unreadable_answers": {
+      "none": 0,
+      "own_turns": 0,
+      "quoted_log": 0,
+      "all_records": 0,
+      "needed_records": 0
+    },
+    "success": {
+      "needs_memory": {
+        "own_turns": {
+          "states": 168,
+          "success": 115
+        },
+        "quoted_log": {
+          "states": 168,
+          "success": 152
+        },
+        "all_records": {
+          "states": 168,
+          "success": 166
+        },
+        "needed_records": {
+          "states": 168,
+          "success": 168
+        },
+        "none": {
+          "states": 168,
+          "success": 0
+        }
+      },
+      "already_sufficient": {
+        "own_turns": {
+          "states": 84,
+          "success": 84
+        },
+        "quoted_log": {
+          "states": 84,
+          "success": 84
+        },
+        "all_records": {
+          "states": 84,
+          "success": 84
+        },
+        "needed_records": {
+          "states": 84,
+          "success": 84
+        },
+        "none": {
+          "states": 84,
+          "success": 84
+        }
+      }
+    },
+    "neighbours": {
+      "needs_memory": {
+        "own_turns -> quoted_log": {
+          "states": 168,
+          "broke": 2,
+          "fixed": 39,
+          "both": 113,
+          "neither": 14,
+          "net": 37,
+          "units": 42,
+          "units_down": 0,
+          "units_up": 31,
+          "units_changed": 31,
+          "verdict": "difference"
+        },
+        "quoted_log -> all_records": {
+          "states": 168,
+          "broke": 1,
+          "fixed": 15,
+          "both": 151,
+          "neither": 1,
+          "net": 14,
+          "units": 42,
+          "units_down": 1,
+          "units_up": 14,
+          "units_changed": 15,
+          "verdict": "uncertain"
+        },
+        "all_records -> needed_records": {
+          "states": 168,
+          "broke": 0,
+          "fixed": 2,
+          "both": 166,
+          "neither": 0,
+          "net": 2,
+          "units": 42,
+          "units_down": 0,
+          "units_up": 2,
+          "units_changed": 2,
+          "verdict": "no difference seen"
+        }
+      },
+      "already_sufficient": {
+        "own_turns -> quoted_log": {
+          "states": 84,
+          "broke": 0,
+          "fixed": 0,
+          "both": 84,
+          "neither": 0,
+          "net": 0,
+          "units": 42,
+          "units_down": 0,
+          "units_up": 0,
+          "units_changed": 0,
+          "verdict": "no difference seen"
+        },
+        "quoted_log -> all_records": {
+          "states": 84,
+          "broke": 0,
+          "fixed": 0,
+          "both": 84,
+          "neither": 0,
+          "net": 0,
+          "units": 42,
+          "units_down": 0,
+          "units_up": 0,
+          "units_changed": 0,
+          "verdict": "no difference seen"
+        },
+        "all_records -> needed_records": {
+          "states": 84,
+          "broke": 0,
+          "fixed": 0,
+          "both": 84,
+          "neither": 0,
+          "net": 0,
+          "units": 42,
+          "units_down": 0,
+          "units_up": 0,
+          "units_changed": 0,
+          "verdict": "no difference seen"
+        }
+      }
+    },
+    "harm": {
+      "own_turns": {
+        "solved_without_memory": 84,
+        "broken": 0,
+        "units_with_a_break": 0
+      },
+      "quoted_log": {
+        "solved_without_memory": 84,
+        "broken": 0,
+        "units_with_a_break": 0
+      },
+      "all_records": {
+        "solved_without_memory": 84,
+        "broken": 0,
+        "units_with_a_break": 0
+      },
+      "needed_records": {
+        "solved_without_memory": 84,
+        "broken": 0,
+        "units_with_a_break": 0
+      }
+    },
+    "harm_by_problem_type": {
+      "observed_component": {
+        "own_turns": {
+          "solved_without_memory": 42,
+          "broken": 0,
+          "units_with_a_break": 0
+        },
+        "quoted_log": {
+          "solved_without_memory": 42,
+          "broken": 0,
+          "units_with_a_break": 0
+        },
+        "all_records": {
+          "solved_without_memory": 42,
+          "broken": 0,
+          "units_with_a_break": 0
+        },
+        "needed_records": {
+          "solved_without_memory": 42,
+          "broken": 0,
+          "units_with_a_break": 0
+        }
+      },
+      "retry_branch": {
+        "own_turns": {
+          "solved_without_memory": 42,
+          "broken": 0,
+          "units_with_a_break": 0
+        },
+        "quoted_log": {
+          "solved_without_memory": 42,
+          "broken": 0,
+          "units_with_a_break": 0
+        },
+        "all_records": {
+          "solved_without_memory": 42,
+          "broken": 0,
+          "units_with_a_break": 0
+        },
+        "needed_records": {
+          "solved_without_memory": 42,
+          "broken": 0,
+          "units_with_a_break": 0
+        }
+      }
+    },
+    "kinds": {
+      "none": {
+        "correct": 253,
+        "withheld": 250,
+        "counter_record": 1
+      },
+      "own_turns": {
+        "correct": 444,
+        "other_record": 13,
+        "withheld": 33,
+        "counter_record": 14
+      },
+      "quoted_log": {
+        "correct": 485,
+        "counter_record": 9,
+        "other_record": 10
+      },
+      "all_records": {
+        "correct": 502,
+        "other_record": 2
+      },
+      "needed_records": {
+        "correct": 504
+      }
+    },
+    "kinds_already_sufficient": {
+      "none": {
+        "correct": 168
+      },
+      "own_turns": {
+        "correct": 168
+      },
+      "quoted_log": {
+        "correct": 168
+      },
+      "all_records": {
+        "correct": 168
+      },
+      "needed_records": {
+        "correct": 168
+      }
+    }
+  },
+  "selection": {
+    "new-a": {}
+  }
+}

@@ -1,0 +1,146 @@
+{
+  "roundtrip_fields": {
+    "raw_record_sha256": "2db14c47a405cd8181a61b74a458365be8e223de565095c8a634a2e882339d98",
+    "message_index": 1,
+    "message_sha256": "fbedffe357b33b2a0eb0925881e94012088092f085bfa2af757bdee950c1f66e",
+    "start": 222,
+    "end": 626,
+    "issue_excerpt": "\nsupport for `meta` table needed\nufo2ft [now supports](https://github.com/googlefonts/ufo2ft/pull/509) the `meta` table [defined in UFO3](https://unifiedfontobject.org/versions/ufo3/lib.plist/#publicopentypemeta).  \r\n\r\nHowever, it doesn't look as though glyphsLib supports it yet: I tried round-tripping a UFO to glyphs and back, and the meta table info was removed -- but maybe I did something wrong?\r\n\n",
+    "evidence_kind": "historical_user_report_not_independent_runtime_verification"
+  },
+  "output_dtype": {
+    "raw_record_sha256": "bf8cc1ad70f1944b63b304647770f1e15d4980fd9b37666267fb3725ff719762",
+    "message_index": 1,
+    "message_sha256": "a77d19e17333562c0734514fcf0f31cb927dc97610fb77324261dce6010e1112",
+    "start": 218,
+    "end": 747,
+    "issue_excerpt": "\nScaleIntensityRangePercentile bug\n**Describe the bug**\r\nIn ScaleIntensityRangePercentile, the output is converted back to input dtype and ignored the `dtype` input. If input is uint8,  the scaled image is wrong. \r\nhttps://github.com/Project-MONAI/MONAI/blob/59a7211070538586369afd4a01eca0a7fe2e742e/monai/transforms/intensity/array.py#L1414\r\n\r\nIn ScaleIntensityRange, the implementation is correct\r\nhttps://github.com/Project-MONAI/MONAI/blob/59a7211070538586369afd4a01eca0a7fe2e742e/monai/transforms/intensity/array.py#L1006\r\n\n",
+    "evidence_kind": "historical_user_report_not_independent_runtime_verification"
+  },
+  "callback_arguments": {
+    "raw_record_sha256": "b630caf2bfe128d3e636cf163c001aaadc76a21a9211922fbfd24ee663c4d22e",
+    "message_index": 1,
+    "message_sha256": "42042d195dc9f30b20d270e9d4f0a0107fbaf8b3cdb7821f6dc503a96c713912",
+    "start": 198,
+    "end": 374,
+    "issue_excerpt": "\ntwisted channel _on_puback_message_returned has wrong number of args\n_on_puback_message_returned in twisted channel has only 1 parameter, bug it's called with 4, is it a bug?\n",
+    "evidence_kind": "historical_user_report_not_independent_runtime_verification"
+  },
+  "numeric_validation": {
+    "raw_record_sha256": "c694a327f2fbe3e724fdc1ad9faff5bc0d6521966867fd37df44d0534eed78f7",
+    "message_index": 1,
+    "message_sha256": "27ea7b9caedc56427ac69e38aff09d0d667225ffcb7a55f4e4d8425bb3da9118",
+    "start": 206,
+    "end": 397,
+    "issue_excerpt": "\nCheck that x0 contains valid numbers in transport algs\nthe ``_validate_data_health`` check should also check if x0 doesn't contain nan/infs.\r\n\r\nThis is the main point we settled on in #2126\n",
+    "evidence_kind": "historical_user_report_not_independent_runtime_verification"
+  },
+  "specific_precedence": {
+    "raw_record_sha256": "b8a766cba159969fe91683688f3a01220a6aca251e6b10bec0ab1a112f921cd1",
+    "message_index": 1,
+    "message_sha256": "71d7ec16013a1c6195339ed4d58b99d7ccf871ef2cc8894020f31c00681a15e7",
+    "start": 220,
+    "end": 623,
+    "issue_excerpt": "\nGlobal tags should not over-ride tags from the datapoint\nIf the same tag key-value pair is on the datapoint and in global tags of the reporter, current implementation prefers the global tag:\r\nhttps://github.com/ApptuitAI/apptuit-py/blob/9872766e4838fced1a580f4da3b44acf5fd3ea81/apptuit/pyformance/apptuit_reporter.py#L62\r\n\r\n\r\nWe should prefer the tag key-value of the data point over the global values\n",
+    "evidence_kind": "historical_user_report_not_independent_runtime_verification"
+  },
+  "stale_client": {
+    "raw_record_sha256": "513fb98dff17acb6830b91f5824584dbf730c8203515feab21786ef64e5cda67",
+    "message_index": 1,
+    "message_sha256": "1f4053cecd2b18bd887267b81088aa8c3a604008c0213a2f1b3086d63acd5092",
+    "start": 206,
+    "end": 484,
+    "issue_excerpt": "\nAndroid snippet client should clean event client when stopping\nAndroid snippet client should set `self._event_client` to None when it is requested to stop. Otherwsie, after device reboot, the snippet client will still use the broken event client instead of creating a new one.\n",
+    "evidence_kind": "historical_user_report_not_independent_runtime_verification"
+  },
+  "literal_escaping": {
+    "raw_record_sha256": "9d99abbda66b023d6dd67785fcca89e4ae8fd878709687b1478ee3b8ccae866d",
+    "message_index": 1,
+    "message_sha256": "ba0abc1a57c9b0a4820ff829a86840119957c9685d5c938cc82e8f00bc7a5c55",
+    "start": 216,
+    "end": 885,
+    "issue_excerpt": "\nNew fstring failures\nI'm not sure how to handle this one, so I did not submit a PR yet.\r\n\r\nSource (from Python 3.7's dataclasses.py):\r\n`f\"{f.name}={{self.{f.name}!r}}\"`\r\n\r\nParsed as:\r\n```\r\nJoinedStr(\r\n    values=[\r\n        FormattedValue(value=Attribute(value=Name(id='f'), attr='name'), conversion=-1, format_spec=None),\r\n        Str(s='={self.'),\r\n        FormattedValue(value=Attribute(value=Name(id='f'), attr='name'), conversion=-1, format_spec=None),\r\n        Str(s='!r}')]),\r\n```\r\n\r\nwhich becomes a syntax error after rtrip:\r\n`f'{f.name}={self.{f.name}!r}'`\r\n\r\n```\r\n  File \"<fstring>\", line 1\r\n    (self.{f.name})\r\n          ^\r\nSyntaxError: invalid syntax\r\n```\n",
+    "evidence_kind": "historical_user_report_not_independent_runtime_verification"
+  },
+  "container_wrappers": {
+    "raw_record_sha256": "b2f2a74163f2e12a80243602e8f995255911d8b99ac355af7aea767ee8a24548",
+    "message_index": 1,
+    "message_sha256": "cf316316a3126e3e5ba5ac0a857bfa6e0ec015411dcff931a913d5163dfaf624",
+    "start": 206,
+    "end": 885,
+    "issue_excerpt": "\nDictField / ListField: how to pass dict / list as default?\nSince #154, default values must be passed in deserialized form for consistency with marshmallow 3.\r\n\r\nOne can't write this anymore:\r\n\r\n```py\r\nlist_field = ListField(IntField, default=list)\r\n```\r\n\r\nOne must now write\r\n\r\n```py\r\nfrom umongo.data_objects import List\r\nlist_field = ListField(IntField, default=List)\r\n```\r\n\r\nNot ideal.\r\n\r\nShall we still take default values in serialized form in umongo even if it is not consistent with marshmallow 3? Is there another way to cast the default value in these specific cases?\r\n\r\nEdit: in fact, the workaround above doesn't work, so it is worse than not ideal, it is a blocker.\n",
+    "evidence_kind": "historical_user_report_not_independent_runtime_verification"
+  },
+  "multivalue_mapping": {
+    "raw_record_sha256": "b561efdd87ad7e9555737f3acb0e123fe0828d78d3539d168bc259a2197abc59",
+    "message_index": 1,
+    "message_sha256": "8599a27cf4d7c76932b5ddc98475cab38385f871a5371d1027726a3c94072b31",
+    "start": 204,
+    "end": 1763,
+    "issue_excerpt": "\nQuery params should support list-of-strings values.\nHi,\r\n\r\nI recently tried to use `httpx` instead of `requests` in my simple app that calls few API endpoints and  suddenly it did not work.\r\n\r\nThe problem here is that `httpx` and `requests` process query parameters differently.\r\n\r\nHere's a simple script to see how both libraries process `params`:\r\n```python\r\nfrom httpx.models import QueryParams\r\nfrom requests.models import RequestEncodingMixin\r\n\r\ndict_params = {\r\n    \"documentIds\": [\"a55b2f894b90dd1213201471_25\", \"b54b2f894b90dd1213201471_9\"]\r\n}\r\n\r\nhttpx_params = str(QueryParams(dict_params))\r\nprint(\"httpx\", httpx_params)\r\n\r\nrequests_params = RequestEncodingMixin._encode_params(dict_params)\r\nprint(\"requests\", requests_params)\r\n```\r\n\r\nResults:\r\n```\r\nhttpx documentIds=%5B%27a55b2f894b90dd1213201471_25%27%2C+%27b54b2f894b90dd1213201471_9%27%5D\r\nrequests documentIds=a55b2f894b90dd1213201471_25&documentIds=b54b2f894b90dd1213201471_9\r\n```\r\n\r\nIf we try to parse the query string `httpx` produced, here's what we get:\r\n```python\r\nfrom urllib.parse import parse_qs\r\n\r\nhttpx_params_parsed = parse_qs('documentIds=%5B%27a55b2f894b90dd1213201471_25%27%2C+%27b54b2f894b90dd1213201471_9%27%5D')\r\nprint(httpx_params_parsed )\r\n```\r\nResult:\r\n```\r\n{'documentIds': [\"['a55b2f894b90dd1213201471_25', 'b54b2f894b90dd1213201471_9']\"]}\r\n```\r\nWhich is not what you would expect, I guess. At least, it works differently than in `requests`.\r\n\r\nIf it is an intended behavior, can you please recommend me the proper way of passing a list into the query params?\r\n\r\nThanks!\n",
+    "evidence_kind": "historical_user_report_not_independent_runtime_verification"
+  },
+  "introspection_version": {
+    "raw_record_sha256": "be5b88b7630b498356793fada64f25eaaa1ed057fcc8d310cc0334a0924c1e6a",
+    "message_index": 1,
+    "message_sha256": "137a9c67747b9a5d8bb4279a499541c2f6ebde810f0075947a1cb9c524510a34",
+    "start": 212,
+    "end": 380,
+    "issue_excerpt": "\nUpdate docstring handling for Python 3.13\nIn Python 3.13 the docstring are trimmed by default.\r\n\r\nWe need to update some of the deprecation helpers to work with this.\n",
+    "evidence_kind": "historical_user_report_not_independent_runtime_verification"
+  },
+  "nested_blocks": {
+    "raw_record_sha256": "03ded432a47d48a9fbc0bab5fe9593d2de2f32a4d9ff20573f082cc702594245",
+    "message_index": 1,
+    "message_sha256": "d0190339bc284906cff664431a29c1991394a28c208729a5a8dc944869b6ab67",
+    "start": 222,
+    "end": 415,
+    "issue_excerpt": "\nAct blocks within context managers are not found, even when marked with #act\n```\r\n    with mock.patch.object(sync_metadata, 'delay') as m_delay:\r\n        result = url(project_biz)  # act\r\n```\n",
+    "evidence_kind": "historical_user_report_not_independent_runtime_verification"
+  },
+  "empty_input": {
+    "raw_record_sha256": "4efd21e1e45d55d8568dbee0d8fca12a51f6e91bad2c7ffd7dec2f30aedbe70b",
+    "message_index": 1,
+    "message_sha256": "e8c2b9425f67dfb1264fdbd4d118322ae822bf17151bd716a6833f987657143c",
+    "start": 224,
+    "end": 1374,
+    "issue_excerpt": "\npre-commit autoupdate fails when config is empty\nRunning `pre-commit autoupdate` with an empty `.pre-commit-config.yaml` results in the below error:\r\n```An unexpected error has occurred: IndexError: list index out of range\r\nTraceback (most recent call last):\r\n  File \"/usr/local/Cellar/pre-commit/1.14.2/libexec/lib/python3.7/site-packages/pre_commit/error_handler.py\", line 46, in error_handler\r\n    yield\r\n  File \"/usr/local/Cellar/pre-commit/1.14.2/libexec/lib/python3.7/site-packages/pre_commit/main.py\", line 286, in main\r\n    repos=args.repos,\r\n  File \"/usr/local/Cellar/pre-commit/1.14.2/libexec/lib/python3.7/site-packages/pre_commit/commands/autoupdate.py\", line 117, in autoupdate\r\n    migrate_config(config_file, quiet=True)\r\n  File \"/usr/local/Cellar/pre-commit/1.14.2/libexec/lib/python3.7/site-packages/pre_commit/commands/migrate_config.py\", line 52, in migrate_config\r\n    contents = _migrate_map(contents)\r\n  File \"/usr/local/Cellar/pre-commit/1.14.2/libexec/lib/python3.7/site-packages/pre_commit/commands/migrate_config.py\", line 24, in _migrate_map\r\n    while _is_header_line(lines[i]):\r\nIndexError: list index out of range\r\n```\n",
+    "evidence_kind": "historical_user_report_not_independent_runtime_verification"
+  },
+  "identifier_scope": {
+    "raw_record_sha256": "a9833570b6e3bec7b3705a6f86f3603159aadd671844851c59151f9af22b573c",
+    "message_index": 1,
+    "message_sha256": "0ef6d869169ed91b0e9d4aede586e5f30657474ef2cae396a6f9ac8f4b6a2f79",
+    "start": 208,
+    "end": 823,
+    "issue_excerpt": "\ndefault substitution \"Class\"->\"Type\" does infix substitution\nWhen I create a python class model from the [Ecore.xsd](https://git.eclipse.org/c/emf/org.eclipse.emf.git/plain/plugins/org.eclipse.emf.ecore/model/Ecore.xsd), the [xsdata.models.config.py:GeneratorConfig.create()](https://github.com/tefra/xsdata/blob/040692db47e6e51028fd959c793e757858c392d7/xsdata/models/config.py#L443) default substitution will mangle names EClass and EClassifier to EType and ETypeifier.\r\n\r\nanchoring the search wit `^`and `$`like so `^Class$` fixed the problem.\r\n\r\n`<Substitution type=\"class\" search=\"^Class$\" replace=\"Type\"/>`\r\n\n",
+    "evidence_kind": "historical_user_report_not_independent_runtime_verification"
+  },
+  "socket_options": {
+    "raw_record_sha256": "75881bbf3c5a2e2f8b00cc37618a41ce9a2bc80cc482bc24fe621fb9ba696f44",
+    "message_index": 1,
+    "message_sha256": "992c3be0aec236a7e3ff36d5a6dba61e595abbd3d96ec50b8d418b82a77e2e26",
+    "start": 214,
+    "end": 1788,
+    "issue_excerpt": "\nbuiltins.OSError when using HTTP server over unix sockets since Twisted 24.10.0\nSince 24.10.0 it is not possible to use HTTP server over `unix:` protocol. \r\n\r\nThis bug has been initially reported in https://github.com/buildbot/buildbot/issues/8207.\r\n\r\nRelevant log:\r\n```\r\n2024-11-12 05:54:43+0000 [buildbot.www.service.BuildbotSite] Unhandled Error\r\n        Traceback (most recent call last):\r\n          File \"/home/buildbot/venv/lib64/python3.13/site-packages/twisted/internet/tcp.py\", line 1423, in doRead\r\n            protocol.makeConnection(transport)\r\n          File \"/home/buildbot/venv/lib64/python3.13/site-packages/twisted/internet/protocol.py\", line 509, in makeConnection\r\n            self.connectionMade()\r\n          File \"/home/buildbot/venv/lib64/python3.13/site-packages/twisted/web/http.py\", line 2336, in connectionMade\r\n            self.transport.setTcpNoDelay(True)\r\n          File \"/home/buildbot/venv/lib64/python3.13/site-packages/twisted/internet/tcp.py\", line 340, in setTcpNoDelay\r\n            self.socket.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, enabled)\r\n        builtins.OSError: [Errno 95] Operation not supported\r\n```\r\n\r\nRelevant Twisted configuration:\r\n```\r\n    port='unix:/run/buildbot/buildbot-loop-master.sock:mode=660',\r\n```\r\n\r\nMost likely https://github.com/twisted/twisted/pull/12312 is the cause of the regression because it introduces `setTcpNoDelay` to HTTP client. Unfortunately `setTcpNoDelay` is available on all stream sockets, which includes unix domain sockets. Setting TCP NODELAY option on them fails with error.\r\n\n",
+    "evidence_kind": "historical_user_report_not_independent_runtime_verification"
+  },
+  "connection_ownership": {
+    "raw_record_sha256": "bbb0d0ebdbedabc3087e014832557d8485c817086f281a682d993802404db7f6",
+    "message_index": 1,
+    "message_sha256": "8b5960702b2c86ee1aa23b6230e5c6785aba1aeb1a1c260ae4cdf2a893b9f405",
+    "start": 208,
+    "end": 605,
+    "issue_excerpt": "\nRedis.from_url() is a misnomer\n**Version**: 4.5.2\r\n\r\n**Platform**: Python 3.11.2\r\n\r\n**Description**: Redis.from_url is a convenience function, but the kwargs are passed into the ConnectionPool object and not the Redis instance. This formerly wasn't a problem, but it appears as though auto_close_connection_pool now defaults to true, so you can't reliably use Redis.from_url() in a singleton. \r\n\n",
+    "evidence_kind": "historical_user_report_not_independent_runtime_verification"
+  },
+  "element_constraints": {
+    "raw_record_sha256": "461f2715742b7cbe90415bcc86c99c4800e1879dbf79d6844b80fde2d6a85c2a",
+    "message_index": 1,
+    "message_sha256": "717fcc611e2383f94ccda3a6b08218fadc1ae25a18d2efef978d2c6cde8ce65e",
+    "start": 206,
+    "end": 1682,
+    "issue_excerpt": "\nJSON Schema generator should implicitly apply value constraints to all members of multivalued slots\n**Describe the bug**\r\nUsing this schema as an example:\r\n\r\n```yaml\r\nid: http://example.com/test\r\nname: test\r\n\r\nimports:\r\n  - https://w3id.org/linkml/types\r\n\r\nslots:\r\n  e_words_only:\r\n    range: string\r\n    multivalued: true\r\n    pattern: \"e.*\"\r\n\r\nclasses:\r\n  Container:\r\n    slots:\r\n      - e_words_only\r\n```\r\n\r\nI would expect that `gen-json-schema` would produce a JSON Schema that _fails_ validation for this data instance:\r\n\r\n```json\r\n{\r\n  \"e_words_only\": [\r\n    \"echo\",\r\n    \"foxtrot\"\r\n  ]\r\n}\r\n```\r\n\r\nHowever that currently does not appear to be the case.\r\n\r\n**To reproduce**\r\nSteps to reproduce the behavior:\r\n1. With the above schema as `test.yaml`: `gen-json-schema --top-class Container test.yaml > test.schema.json`\r\n2. With the above data instance as `test.data.json`: `jsonschema -i test.data.json test.schema.json` (assuming you're in a virtual environment with https://pypi.org/project/jsonschema/)\r\n3. Note that no validation error is produced\r\n\r\n**Additional context**\r\nThe JSON Schema that's currently being produced for the above example contains the following:\r\n\r\n```json\r\n\"properties\": {\r\n    \"e_words_only\": {\r\n        \"items\": {\r\n            \"type\": \"string\"\r\n        },\r\n        \"pattern\": \"e.*\",\r\n        \"type\": \"array\"\r\n    }\r\n},\r\n```\r\n\r\nIn order for the `pattern` to apply to all elements, it would need to be moved into the `items` specification.\r\n\n",
+    "evidence_kind": "historical_user_report_not_independent_runtime_verification"
+  }
+}

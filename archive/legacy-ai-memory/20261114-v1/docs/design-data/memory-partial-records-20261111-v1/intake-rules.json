@@ -1,0 +1,11 @@
+{
+  "target_new_groups": {
+    "train": 12,
+    "dev": 6,
+    "test": 12
+  },
+  "candidate_order": "Fixed source hash order, then question ID. Review in this order. Accept source-grounded two explicit independent attributes with interpretable split spans and no target in derived request. Reject ambiguous roles, purely implied relations, external API state or unsupported directional assumptions. Record every reviewed accept/reject.",
+  "retained_training": "Eight previously reviewed train source groups with two requested attributes, selected before new model inference. No old dev/test migrated.",
+  "new_sources": "New relative to prior source-scale and incremental fits/evaluations, from already downloaded pinned public benchmark.",
+  "model_plan": "Frozen prior single models plus equal-update atomic-only control and atomic/compound augmentation, each two seeds. Single need loss only. Calibration on dev only before test predictions; fixed .5 retained as independent policy."
+}

@@ -1,0 +1,34 @@
+{
+  "experiment": "memory-state-screen-20261111-v2",
+  "families": 6,
+  "states": 36,
+  "family_ids": [
+    "3faef20a96259aed72035217dcc68ce9ed411886938b6a7c22e751e9ac71ef0d",
+    "0eab536e592af3e53924ad16edc67d14ae493645e64dccf6223d0b75642f9086",
+    "11bb9cce204bad9e6c2d66c845b7d1e1b19091be3afcf21b997dfce0e9ecd0ca",
+    "015f64adf40542a3dc9cd7d3b2cf2686aa0c5f0939d348cef5f011c50b36f3cb",
+    "03304974d761f6b891b4e0129e7cdd4e1a1fbcc9ffcda667ac4dcd60e6858865",
+    "293dc6fa8d3d84c4bc2f13bc5ea662d605c0152ad5bb777e8d2ea0f6d59d4d32"
+  ],
+  "modes": {
+    "observed_component": 18,
+    "retry_branch": 18
+  },
+  "source": "Actual generated past choices; all current follow-ups and failure statuses are synthetic interventions.",
+  "scope": "Train-only functionality/collection-yield pilot, not independent generalization or selector necessity.",
+  "policies": [
+    "none",
+    "required_evidence",
+    "goal_reader",
+    "counter_memory"
+  ],
+  "screening": "Report all outcomes of none/required/goal_reader; never delete all-fail or harm states.",
+  "known_controls": "State 2 has all necessary observations; keep it for harm/cost diagnostics.",
+  "simple_rule": "Public state rule independently reproduces required IDs; therefore success does not prove a neural selector is necessary.",
+  "sampling": "Fixed greedy worker; repeated calls measure stability, not Bernoulli success probabilities.",
+  "acceptance": "At least 4 of 24 paired states across >=3 families have task outcomes none=0, required=1, goal_reader=0; additionally required evidence succeeds in >=20/24. Engineering yield criteria, not significance.",
+  "stop": "One frozen pilot only; no outcome-driven prompt revisions or new source collection in this run.",
+  "held_data": "No new dev20/test40 work, no LongMemEval fitting.",
+  "v2_change": "Escape literal vertical bars in catalog cells before worker inference; source records, goals, states, labels and budgets are unchanged from v1.",
+  "source_sha256": "227928288ea3728cd3224d68819290d110820161574dfe07b00d74546c15ffa5"
+}

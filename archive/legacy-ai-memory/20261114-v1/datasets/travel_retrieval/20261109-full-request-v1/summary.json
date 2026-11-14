@@ -1,0 +1,99 @@
+{
+  "status": "draft_requires_review",
+  "base_plans": {
+    "test": 8,
+    "train": 30,
+    "dev": 7
+  },
+  "base_requests": {
+    "dev": 189,
+    "test": 219,
+    "train": 813
+  },
+  "queries_with_missing_diagnostic": {
+    "dev": 378,
+    "test": 438,
+    "train": 1626
+  },
+  "memories": 47573,
+  "bank_sizes": {
+    "min": 26,
+    "max": 336
+  },
+  "positive_counts": {
+    "1": 142,
+    "2": 271,
+    "3": 246,
+    "4": 217,
+    "5": 146,
+    "6": 94,
+    "7": 56,
+    "8": 32,
+    "9": 9,
+    "10": 6,
+    "11": 1,
+    "12": 1
+  },
+  "excluded_question_reasons": [
+    {
+      "split": "dev",
+      "reason": "ambiguous_or_missing_reference_slot",
+      "count": 1
+    },
+    {
+      "split": "dev",
+      "reason": "no_covered_explicit_reference",
+      "count": 47
+    },
+    {
+      "split": "dev",
+      "reason": "uncovered_reference_relation",
+      "count": 52
+    },
+    {
+      "split": "test",
+      "reason": "ambiguous_or_missing_reference_slot",
+      "count": 1
+    },
+    {
+      "split": "test",
+      "reason": "multiple_mentions_of_person",
+      "count": 2
+    },
+    {
+      "split": "test",
+      "reason": "no_covered_explicit_reference",
+      "count": 56
+    },
+    {
+      "split": "test",
+      "reason": "uncovered_reference_relation",
+      "count": 58
+    },
+    {
+      "split": "train",
+      "reason": "ambiguous_or_missing_reference_slot",
+      "count": 1
+    },
+    {
+      "split": "train",
+      "reason": "multiple_mentions_of_person",
+      "count": 5
+    },
+    {
+      "split": "train",
+      "reason": "no_covered_explicit_reference",
+      "count": 207
+    },
+    {
+      "split": "train",
+      "reason": "no_unique_explicit_prior_person",
+      "count": 1
+    },
+    {
+      "split": "train",
+      "reason": "uncovered_reference_relation",
+      "count": 221
+    }
+  ]
+}

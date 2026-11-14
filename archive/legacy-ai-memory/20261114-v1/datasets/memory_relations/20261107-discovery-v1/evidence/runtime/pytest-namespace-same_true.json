@@ -1,0 +1,46 @@
+{
+  "at": "2026-11-07T10:31:03.720540+00:00",
+  "model_api_calls": 0,
+  "specification": {
+    "probe_id": "pytest-namespace-same_true",
+    "context_task": "pytest-dev__pytest-7432",
+    "mechanism": "namespace_dependency",
+    "fixture": {
+      "module_a": {
+        "should_skip": true
+      },
+      "module_b": {
+        "should_skip": true
+      },
+      "expression": "should_skip"
+    },
+    "interpreter": "/opt/miniconda3/envs/testbed/bin/python",
+    "program": "a=True\nb=True\nleft=eval('should_skip',{'should_skip':a})\nright=eval('should_skip',{'should_skip':b})\nresult={'module_a_value':left,'module_b_value':right,'same_result':left==right}\n"
+  },
+  "public_context_file": "datasets/memory_relations/20261107-discovery-v1/evidence/public-code/pytest-dev__pytest-7432.json",
+  "image_id": "sha256:38510f26ccd30e957bd4ba9012b32308e11955747e4965146b29d4ce4deea105",
+  "executed_program_sha256": "015559200ed7bec611c1c690037743841b506d7cfc6acac3e9114c06374102db",
+  "observed": {
+    "kind": "returned",
+    "result": {
+      "module_a_value": true,
+      "module_b_value": true,
+      "same_result": true
+    }
+  },
+  "execution": {
+    "returncode": 0,
+    "stdout": "MEMORY_RELATION_RESULT:{\"kind\": \"returned\", \"result\": {\"module_a_value\": true, \"module_b_value\": true, \"same_result\": true}}\n",
+    "stderr": "",
+    "seconds": 0.5624196199933067,
+    "image_id": "sha256:38510f26ccd30e957bd4ba9012b32308e11955747e4965146b29d4ce4deea105",
+    "interpreter": "/opt/miniconda3/envs/testbed/bin/python",
+    "resources": {
+      "cpus": 1,
+      "memory": "1g",
+      "network": "none",
+      "root_filesystem": "read-only"
+    }
+  },
+  "interpretation": "Controlled mechanism probe. Expected validation exceptions are observed outcomes, not infrastructure failures. Shell success is not treated as semantic success. No actor or memory policy was evaluated."
+}

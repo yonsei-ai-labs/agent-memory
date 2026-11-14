@@ -1,0 +1,21 @@
+{
+  "purpose": "Evidence discovery for future memory prerequisites, not a new training or evaluation dataset",
+  "created_before_scanning_this_range": true,
+  "dataset": "SWE-bench/SWE-smith-trajectories",
+  "candidate_shard": "data/tool-00000-of-00008.parquet",
+  "candidate_parquet_sha256": "ac76e9efe75978f83d4daec98a55604587dd58b0f1509364893b8778cbf5b487",
+  "candidate_row_range_inclusive": [1024, 2047],
+  "loaded_columns": ["instance_id", "traj_id", "messages"],
+  "source_type": "Agent trajectories on real repositories with synthetic defects; not human-authored natural issues",
+  "candidate_error_categories": ["missing executable", "missing import or dependency", "runner option or collection precondition", "framework initialization prerequisite"],
+  "review_order": "Increasing parquet row and tool-call message index; at most the first 20 candidate records for detailed initial review",
+  "grouping": "Same repository and upstream revision remains one connected source family even when defect or trajectory IDs differ",
+  "exclusion_review": ["Application bug or deliberately failing assertion rather than execution prerequisite", "Ambiguous command/response linkage", "No interpretable current prerequisite", "Repair depends on an intervening source edit not a reusable environment procedure"],
+  "preserve": ["Exact command and linked output", "Subsequent tool commands and intervening edit metadata", "Source row/message IDs, pinned revision and raw-message digest", "Inclusion/exclusion reason and unresolved ambiguity"],
+  "future_use": "Evidence card candidates only. A separate target state, predecision observation protocol, split graph, and paired worker outcomes are required before utility supervision.",
+  "intermediate_error_observations_used_for_discovery": true,
+  "final_task_outcomes_or_official_patches_used_for_selection": false,
+  "execute_retrieved_commands": false,
+  "utility_labels": null,
+  "gpu_allocation": false
+}

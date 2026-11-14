@@ -1,0 +1,56 @@
+{
+  "origin": "Authored execution-backed API transfer diagnostic; not naturally collected SWE trajectories.",
+  "cases": 34,
+  "libraries": 7,
+  "fixtures_per_implementation": 2,
+  "execution_records": 544,
+  "source_successes_available": 80,
+  "distinct_source_episodes_used": 62,
+  "current_states": 96,
+  "splits": {
+    "train": {
+      "rows": 200,
+      "states": 50,
+      "families": [
+        "numpy",
+        "pillow",
+        "scipy",
+        "stdlib"
+      ],
+      "labels": {
+        "supported": 42,
+        "conflict": 130,
+        "information_insufficient": 28
+      }
+    },
+    "dev": {
+      "rows": 72,
+      "states": 18,
+      "families": [
+        "pandas"
+      ],
+      "labels": {
+        "supported": 15,
+        "conflict": 45,
+        "information_insufficient": 12
+      }
+    },
+    "test": {
+      "rows": 112,
+      "states": 28,
+      "families": [
+        "networkx",
+        "sklearn"
+      ],
+      "labels": {
+        "conflict": 69,
+        "supported": 31,
+        "information_insufficient": 12
+      }
+    }
+  },
+  "data_builder_sha256": "b2c2ffca1b9a814a75e2c79e9f2e0cf6928582812753d4157817e462638ca6e8",
+  "runtime_sha256": "9538b0528f956063ffd114962969a6b885dba2654bb74accd790210237650de9",
+  "test_available_during_training": false,
+  "model_predictions_before_freeze": false
+}

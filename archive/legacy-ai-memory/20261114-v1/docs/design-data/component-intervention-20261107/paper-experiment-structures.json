@@ -1,0 +1,76 @@
+{
+  "as_of": "2026-11-07",
+  "model_calls": 0,
+  "papers": [
+    {
+      "key": "memory_tax",
+      "title": "Memory Tax: Dissecting the Net Value of Agent Memory",
+      "arxiv_id": "2610.34073",
+      "read_version": "v1",
+      "html_url": "https://arxiv.org/html/2610.34073v1",
+      "html_sha256": "c0080c542596c6a458549d9140805bcb0f7b96b9283fd3aa363a94ebce855552",
+      "inspected_sections": [
+        "4: diagnosis of faithfulness, accessibility and robustness",
+        "6: recovering source evidence",
+        "experiential-memory extension"
+      ],
+      "interpretation_limit": "RAG-relative observed flips are reference-dependent; gold-evidence diagnostics are not deployable selection policies."
+    },
+    {
+      "key": "basm",
+      "title": "When Not to Imitate: Boundary-Aware Skill Memory for Reliable Tool-Use LLM Agents",
+      "arxiv_id": "2608.22339",
+      "read_version": "v1",
+      "html_url": "https://arxiv.org/html/2608.22339v1",
+      "html_sha256": "310b6dd12c52cf438c17582c6a6c8a8b6a934fbfebea3d29dce4d44cf010e00a",
+      "inspected_sections": [
+        "3.4: causal validation",
+        "5.3: component ablations",
+        "Appendix A: controls and intervention details"
+      ],
+      "interpretation_limit": "Attention knockout is not available through our API; adding one scope sentence does not reproduce the full method."
+    },
+    {
+      "key": "memharness",
+      "title": "MemHarness: Memory Is Reconstructed, Not Replayed",
+      "arxiv_id": "2607.28272",
+      "read_version": "v1",
+      "html_url": "https://arxiv.org/html/2607.28272v1",
+      "html_sha256": "135439263dd63cf76255c8e9cc5a89267d0ac5acfc3d0215945b7b966cafa75f",
+      "inspected_sections": [
+        "method and SFT/GRPO training",
+        "Appendix B: minimally edited state probes"
+      ],
+      "interpretation_limit": "A prompt adaptation does not reproduce trained policies; modified SWE states form an auxiliary diagnostic set."
+    },
+    {
+      "key": "action_verification",
+      "title": "When Is a Memory Safe Enough to Act On? Action-Conditioned Verification for Long-Lived Agents",
+      "arxiv_id": "2610.31446",
+      "read_version": "v1",
+      "html_url": "https://arxiv.org/html/2610.31446v1",
+      "html_sha256": "dfe64cb6409446b3b9ddd59f2a764462a5967ffcf1b5c37385b0c1fb2003fb60",
+      "inspected_sections": [
+        "4.2: candidate-fixed premise interventions",
+        "4.3: diagnostic oracles",
+        "gate and end-to-end evaluation"
+      ],
+      "interpretation_limit": "Gate-local safety rates have different denominators from end-to-end harm; lower verification cost need not increase task success."
+    },
+    {
+      "key": "faulty_memories",
+      "title": "Useful Memories Become Faulty When Continuously Updated by LLMs",
+      "arxiv_id": "2605.12978",
+      "read_version": "v2",
+      "html_url": "https://arxiv.org/html/2605.12978v2",
+      "html_sha256": "23f5266fb1e972b8903d3be149445065940bddc0f8ed84fd45688c02bc632cc4",
+      "inspected_sections": [
+        "episodic-memory baselines",
+        "6.4: compression, conditioning and rewrite",
+        "Appendix I: diagnostic deletion"
+      ],
+      "interpretation_limit": "Our fixed-card trials do not test repeated consolidation; single-run deletion improvements do not establish a general effect."
+    }
+  ],
+  "scope": "Selected intervention and diagnostic designs rechecked in primary full text; claims and proposed adaptations are distinguished in the note."
+}

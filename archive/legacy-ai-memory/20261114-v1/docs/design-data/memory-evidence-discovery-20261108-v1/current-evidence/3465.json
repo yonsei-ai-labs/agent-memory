@@ -1,0 +1,48 @@
+{
+  "target_trajectory_row_index": 3465,
+  "task": {
+    "instance_id": "PyCQA__pyflakes-754",
+    "repo": "PyCQA/pyflakes",
+    "base_commit": "4158a4537773ec3da41aed5afdea46c121082804",
+    "created_at": "2022-11-27 20:53:59",
+    "problem_statement": "Error when referencing a class yet not declared inside function\nI am facing a bug.\r\n\r\nI created this example to test all behaviours I can foresee and spotted a bug:\r\n\r\n```python\r\nfrom typing import Optional\r\n\r\nclass InnerModel1:\r\n        model2: \"Model2\"\r\n        mode2_no_err1: Optional[\"Model2\"] # NO ERROR\r\n        mode2_no_err2: \"Optional[Model2]\" # NO ERROR\r\n\r\nclass Model2:\r\n    pass\r\n\r\ndef f():\r\n    class InnerModel1:\r\n        model2: \"InnerModel2\"\r\n        mode2_err: Optional[\"InnerModel2\"] # ERROR\r\n        mode2_no_err: \"Optional[InnerModel2]\"\r\n\r\n    class InnerModel2:\r\n        pass\r\n```\r\nif I run `pyflakes` against this code I get:\r\n\r\n`pyflakes_bug.py:14:29: undefined name 'InnerModel2'`\r\n\r\nI would expect that annotating a with `Optional[\"InnerModel2\"]` or with `\"Optional[InnerModel2]\"` should have the same behaviour as demonstrated with `Optional[\"Model2\"]` and `\"Optional[Model2]\"`.\r\n\r\nWhy am I defining a class inside a method?  For now this is supporting lots of unit testing on my side.\r\n\r\n\r\n",
+    "version": "3.0",
+    "environment_setup_commit": "e19886e583637a7e2eec428cc036094b9630f2d0",
+    "license_name": "MIT License",
+    "docker_image": "swerebench/sweb.eval.x86_64.pycqa_1776_pyflakes-754",
+    "image_name": "swerebench/sweb.eval.x86_64.pycqa_1776_pyflakes-754",
+    "dataset": "nebius/SWE-rebench",
+    "revision": "89cdfbab4ab1bd8f5a658bb212d1b63624f4f881",
+    "file": "data/test-00000-of-00002.parquet",
+    "row_index": 2345
+  },
+  "base_code": [
+    {
+      "path": "pyflakes/checker.py",
+      "repository": "PyCQA/pyflakes",
+      "base_commit": "4158a4537773ec3da41aed5afdea46c121082804",
+      "git_blob_sha": "919e1bb4ff474d64700e8c2128333da09cfe4286",
+      "full_content_sha256": "4beddb4e56ff99bec9795cf8dc30be5bba853ca4763d8ec62ec12839df2d42b9",
+      "source_url": "https://github.com/PyCQA/pyflakes/blob/4158a4537773ec3da41aed5afdea46c121082804/pyflakes/checker.py",
+      "spans": [
+        {
+          "start_line": 1289,
+          "end_line": 1329,
+          "text": "    def handleStringAnnotation(self, s, node, ref_lineno, ref_col_offset, err):\n        try:\n            tree = ast.parse(s)\n        except SyntaxError:\n            self.report(err, node, s)\n            return\n\n        body = tree.body\n        if len(body) != 1 or not isinstance(body[0], ast.Expr):\n            self.report(err, node, s)\n            return\n\n        parsed_annotation = tree.body[0].value\n        for descendant in ast.walk(parsed_annotation):\n            if (\n                    'lineno' in descendant._attributes and\n                    'col_offset' in descendant._attributes\n            ):\n                descendant.lineno = ref_lineno\n                descendant.col_offset = ref_col_offset\n\n        self.handleNode(parsed_annotation, node)\n\n    @in_annotation\n    def handleAnnotation(self, annotation, node):\n        if isinstance(annotation, ast.Str):\n            # Defer handling forward annotation.\n            self.deferFunction(functools.partial(\n                self.handleStringAnnotation,\n                annotation.s,\n                node,\n                annotation.lineno,\n                annotation.col_offset,\n                messages.ForwardAnnotationSyntaxError,\n            ))\n        elif self.annotationsFutureEnabled:\n            fn = in_annotation(Checker.handleNode)\n            self.deferFunction(lambda: fn(self, annotation, node))\n        else:\n            self.handleNode(annotation, node)\n\n",
+          "sha256": "a2cccfff414784f00e28a53c13076c1467f9085b2731b88472035bc37a582577"
+        },
+        {
+          "start_line": 1689,
+          "end_line": 1706,
+          "text": "    def STR(self, node):\n        if self._in_annotation:\n            fn = functools.partial(\n                self.handleStringAnnotation,\n                node.s,\n                node,\n                node.lineno,\n                node.col_offset,\n                messages.ForwardAnnotationSyntaxError,\n            )\n            if self._in_deferred:\n                fn()\n            else:\n                self.deferFunction(fn)\n\n    def CONSTANT(self, node):\n        if isinstance(node.value, str):\n            return self.STR(node)\n",
+          "sha256": "5523ccd246a4a0e27ab8bcb37d4bd7a65a41c5afdb296e7f3b93f0d8cff5266d"
+        }
+      ]
+    }
+  ],
+  "observation_kind": "researcher_read_of_pinned_pre_patch_code",
+  "worker_initial_inspection_performed": false,
+  "restorable_worker_snapshot": null,
+  "target_trajectory_loaded": false,
+  "gold_patch_or_hidden_tests_loaded": false
+}

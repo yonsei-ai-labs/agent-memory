@@ -1,0 +1,94 @@
+{
+  "experiment": "memory-partial-records-20261111-v1",
+  "status": "fixed_before_any_new_model_outputs",
+  "question": "Does matched packing augmentation preserve still-needed information in partly observed compound records on unseen source groups, beyond threshold recalibration alone?",
+  "data_scope": "Literal spans from pinned Mem2Act user passages. Controlled requests and observations. Atomic versus compound concatenations conserve the same two facts. Minimal banks, not a retrieval competition or live tool benchmark.",
+  "partition": "Reserve unused transitive source groups before annotation: 12 fresh train + 6 fresh dev + 12 fresh test. Eight reviewed old train groups supplement packing training; 80 old train anchor states in both arms. All variants of a source remain together. Prose observations occur only in test.",
+  "labels": "goal_link = supplies a requested attribute regardless of current observations; needed_now = supplies a requested attribute not already confirmed. Explicit coverage and source spans are audited separately. Actual worker effects never replace these labels.",
+  "states": "Eight frozen requested/observed attribute combinations, each paired across atomic and compound packing.",
+  "renderings": [
+    "direct (train/dev/test)",
+    "prose (test only)"
+  ],
+  "budget": {
+    "memory_tokens": 512,
+    "max_records": 12,
+    "selector_input_tokens": 1536,
+    "worker_input_tokens": 2048
+  },
+  "initial_model": "Corresponding seed of memory-incremental-evidence-20261111-v2/single",
+  "base_model": "microsoft/harrier-oss-v1-0.6b",
+  "base_revision": "f9b9dc8d367d443f2479d27aa5d8d2850c0774ee",
+  "training": {
+    "arms": [
+      "control",
+      "augmented"
+    ],
+    "seeds": [
+      731,
+      1729
+    ],
+    "epochs": 2,
+    "final_checkpoint": "last epoch, no checkpoint selection",
+    "state_batch_size": 4,
+    "microbatch_size": 4,
+    "adapter_lr": 5e-05,
+    "head_lr": 0.001,
+    "lora": "continue rank8 q/v from prior single for the same seed",
+    "anchor_states": 80,
+    "loss": "Need cross entropy. First equal class mass within each state when both labels occur, else uniform; then multiply each class by a train-global factor to make aggregate positive and negative loss mass exactly one half. Factors estimated per arm from training labels only. Same algorithm for both arms. No auxiliary loss. Matched 400 state entries, 200 updates, 2 epochs; atomic pair count differs as the declared packing intervention."
+  },
+  "selection": "Report both fixed 0.5 and dev-calibrated thresholds for frozen, control and augmented models for both seeds. Same 512-token cap and canonical bank order.",
+  "baselines": [
+    "none",
+    "bm25_top2",
+    "lexical_dedup_top2",
+    "budget_fill",
+    "reviewed_support_diagnostic"
+  ],
+  "evaluation": "All 384 new test states; strata by atomic/compound and direct/prose. Frozen initial and all trained models also re-evaluated on old incremental dev, old source-scale dev and old BEAM context dev as previously observed retention diagnostics. No seed or model chosen by test results.",
+  "worker": {
+    "model_id": "Qwen/Qwen3.5-4B",
+    "revision": "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
+    "greedy": true,
+    "thinking": false,
+    "max_new_tokens": 128,
+    "task": "Recover requested fields as a JSON object; never execute an external tool."
+  },
+  "worker_policy": "All 96 compound/prose test states, fixed before outputs; all learned threshold variants and declared baselines. Reuse identical prompts only; source-based aliases frozen before inference. Report supported correctness, raw correctness, unsupported answers, tokens and timing separately.",
+  "bounds": {
+    "max_training_seconds": 7200,
+    "max_unique_worker_calls": 1000,
+    "paid_api_calls": 0,
+    "colab_allocations": 0
+  },
+  "resource_rule": "One local GPU process at a time, require native BF16 and >=10GiB free before loading; never interrupt another user's process. Exit after bounded work and preserve incomplete status on failure.",
+  "reporting": "Focused compound-retention repair; source-dependent variants are not independent samples. Paired source bootstrap descriptive only. Atomic and compound have different length and positive-label incidence: loss-mass correction controls global class mass, lengths remain part of packing. All minimal banks fit budget; no claim of constrained retrieval or general memory-agent utility. Preserve old source data and weights.",
+  "calibration": {
+    "grid": [
+      0.05,
+      0.1,
+      0.15,
+      0.2,
+      0.25,
+      0.3,
+      0.35,
+      0.4,
+      0.45,
+      0.5,
+      0.55,
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95
+    ],
+    "objective": "source_macro_balanced_accuracy",
+    "tie_break": "closest to 0.5, then higher threshold",
+    "freeze": "All six thresholds and model hashes written before any test model predictions. No worker outcomes in calibration."
+  },
+  "baseline_note": "With at most two records, dense_top2 and any unfiltered top2 equal budget_fill. No separate dense inference needed; this equality does not support a retrieval superiority claim."
+}

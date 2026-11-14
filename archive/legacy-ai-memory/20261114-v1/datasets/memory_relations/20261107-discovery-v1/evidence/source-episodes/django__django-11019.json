@@ -1,0 +1,187 @@
+{
+  "source_instance_id": "django__django-11019",
+  "source_run": "20261107T043844Z-c1316dac",
+  "public_task": {
+    "instance_id": "django__django-11019",
+    "repo": "django/django",
+    "base_commit": "93e892bb645b16ebaf287beb5fe7f3ffe8d10408",
+    "version": "3.0",
+    "created_at": "2019-02-23T15:51:14Z",
+    "problem_statement": "Merging 3 or more media objects can throw unnecessary MediaOrderConflictWarnings\nDescription\n\t\nConsider the following form definition, where text-editor-extras.js depends on text-editor.js but all other JS files are independent:\nfrom django import forms\nclass ColorPicker(forms.Widget):\n\tclass Media:\n\t\tjs = ['color-picker.js']\nclass SimpleTextWidget(forms.Widget):\n\tclass Media:\n\t\tjs = ['text-editor.js']\nclass FancyTextWidget(forms.Widget):\n\tclass Media:\n\t\tjs = ['text-editor.js', 'text-editor-extras.js', 'color-picker.js']\nclass MyForm(forms.Form):\n\tbackground_color = forms.CharField(widget=ColorPicker())\n\tintro = forms.CharField(widget=SimpleTextWidget())\n\tbody = forms.CharField(widget=FancyTextWidget())\nDjango should be able to resolve the JS files for the final form into the order text-editor.js, text-editor-extras.js, color-picker.js. However, accessing MyForm().media results in:\n/projects/django/django/forms/widgets.py:145: MediaOrderConflictWarning: Detected duplicate Media files in an opposite order:\ntext-editor-extras.js\ntext-editor.js\n MediaOrderConflictWarning,\nMedia(css={}, js=['text-editor-extras.js', 'color-picker.js', 'text-editor.js'])\nThe MediaOrderConflictWarning is a result of the order that the additions happen in: ColorPicker().media + SimpleTextWidget().media produces Media(css={}, js=['color-picker.js', 'text-editor.js']), which (wrongly) imposes the constraint that color-picker.js must appear before text-editor.js.\nThe final result is particularly unintuitive here, as it's worse than the \"naïve\" result produced by Django 1.11 before order-checking was added (color-picker.js, text-editor.js, text-editor-extras.js), and the pair of files reported in the warning message seems wrong too (aren't color-picker.js and text-editor.js the wrong-ordered ones?)\n"
+  },
+  "official_resolved": false,
+  "evaluation_complete": false,
+  "focused_command_index": 22,
+  "commands": [
+    {
+      "agent_command_index": 0,
+      "jsonl_line": 3,
+      "event": {
+        "started_at": "2026-11-07T04:38:49.452884+00:00",
+        "phase": "agent",
+        "action": {
+          "command": "cd /testbed && git status --short && grep -R \"MediaOrderConflictWarning\\|class Media\" -n django/forms/widgets.py && sed -n '1,230p' django/forms/widgets.py",
+          "tool_call_id": "call_sF5T54cYNHvysBlDZKrq2XFt"
+        },
+        "cwd": "/testbed",
+        "outcome": "completed",
+        "output": {
+          "output": "36:class MediaOrderConflictWarning(RuntimeWarning):\n41:class Media:\n145:                        MediaOrderConflictWarning,\n185:class MediaDefiningClass(type):\n\"\"\"\nHTML Widget classes\n\"\"\"\n\nimport copy\nimport datetime\nimport re\nimport warnings\nfrom itertools import chain\n\nfrom django.conf import settings\nfrom django.forms.utils import to_current_timezone\nfrom django.templatetags.static import static\nfrom django.utils import datetime_safe, formats\nfrom django.utils.dates import MONTHS\nfrom django.utils.formats import get_format\nfrom django.utils.html import format_html, html_safe\nfrom django.utils.safestring import mark_safe\nfrom django.utils.translation import gettext_lazy as _\n\nfrom .renderers import get_default_renderer\n\n__all__ = (\n    'Media', 'MediaDefiningClass', 'Widget', 'TextInput', 'NumberInput',\n    'EmailInput', 'URLInput', 'PasswordInput', 'HiddenInput',\n    'MultipleHiddenInput', 'FileInput', 'ClearableFileInput', 'Textarea',\n    'DateInput', 'DateTimeInput', 'TimeInput', 'CheckboxInput', 'Select',\n    'NullBooleanSelect', 'SelectMultiple', 'RadioSelect',\n    'CheckboxSelectMultiple', 'MultiWidget', 'SplitDateTimeWidget',\n    'SplitHiddenDateTimeWidget', 'SelectDateWidget',\n)\n\nMEDIA_TYPES = ('css', 'js')\n\n\nclass MediaOrderConflictWarning(RuntimeWarning):\n    pass\n\n\n@html_safe\nclass Media:\n    def __init__(self, media=None, css=None, js=None):\n        if media is not None:\n            css = getattr(media, 'css', {})\n            js = getattr(media, 'js', [])\n        else:\n            if css is None:\n                css = {}\n            if js is None:\n                js = []\n        self._css_lists = [css]\n        self._js_lists = [js]\n\n    def __repr__(self):\n        return 'Media(css=%r, js=%r)' % (self._css, self._js)\n\n    def __str__(self):\n        return self.render()\n\n    @property\n    def _css(self):\n        css = self._css_lists[0]\n        # filter(None, ...) avoids calling merge with empty dicts.\n        for obj in filter(None, self._css_lists[1:]):\n            css = {\n                medium: self.merge(css.get(medium, []), obj.get(medium, []))\n                for medium in css.keys() | obj.keys()\n            }\n        return css\n\n    @property\n    def _js(self):\n        js = self._js_lists[0]\n        # filter(None, ...) avoids calling merge() with empty lists.\n        for obj in filter(None, self._js_lists[1:]):\n            js = self.merge(js, obj)\n        return js\n\n    def render(self):\n        return mark_safe('\\n'.join(chain.from_iterable(getattr(self, 'render_' + name)() for name in MEDIA_TYPES)))\n\n    def render_js(self):\n        return [\n            format_html(\n                '<script type=\"text/javascript\" src=\"{}\"></script>',\n                self.absolute_path(path)\n            ) for path in self._js\n        ]\n\n    def render_css(self):\n        # To keep rendering order consistent, we can't just iterate over items().\n        # We need to sort the keys, and iterate over the sorted list.\n        media = sorted(self._css)\n        return chain.from_iterable([\n            format_html(\n                '<link href=\"{}\" type=\"text/css\" media=\"{}\" rel=\"stylesheet\">',\n                self.absolute_path(path), medium\n            ) for path in self._css[medium]\n        ] for medium in media)\n\n    def absolute_path(self, path):\n        \"\"\"\n        Given a relative or absolute path to a static asset, return an absolute\n        path. An absolute path will be returned unchanged while a relative path\n        will be passed to django.templatetags.static.static().\n        \"\"\"\n        if path.startswith(('http://', 'https://', '/')):\n            return path\n        return static(path)\n\n    def __getitem__(self, name):\n        \"\"\"Return a Media object that only contains media of the given type.\"\"\"\n        if name in MEDIA_TYPES:\n            return Media(**{str(name): getattr(self, '_' + name)})\n        raise KeyError('Unknown media type \"%s\"' % name)\n\n    @staticmethod\n    def merge(list_1, list_2):\n        \"\"\"\n        Merge two lists while trying to keep the relative order of the elements.\n        Warn if the lists have the same two elements in a different relative\n        order.\n\n        For static assets it can be important to have them included in the DOM\n        in a certain order. In JavaScript you may not be able to reference a\n        global or in CSS you might want to override a style.\n        \"\"\"\n        # Start with a copy of list_1.\n        combined_list = list(list_1)\n        last_insert_index = len(list_1)\n        # Walk list_2 in reverse, inserting each element into combined_list if\n        # it doesn't already exist.\n        for path in reversed(list_2):\n            try:\n                # Does path already exist in the list?\n                index = combined_list.index(path)\n            except ValueError:\n                # Add path to combined_list since it doesn't exist.\n                combined_list.insert(last_insert_index, path)\n            else:\n                if index > last_insert_index:\n                    warnings.warn(\n                        'Detected duplicate Media files in an opposite order:\\n'\n                        '%s\\n%s' % (combined_list[last_insert_index], combined_list[index]),\n                        MediaOrderConflictWarning,\n                    )\n                # path already exists in the list. Update last_insert_index so\n                # that the following elements are inserted in front of this one.\n                last_insert_index = index\n        return combined_list\n\n    def __add__(self, other):\n        combined = Media()\n        combined._css_lists = self._css_lists + other._css_lists\n        combined._js_lists = self._js_lists + other._js_lists\n        return combined\n\n\ndef media_property(cls):\n    def _media(self):\n        # Get the media property of the superclass, if it exists\n        sup_cls = super(cls, self)\n        try:\n            base = sup_cls.media\n        except AttributeError:\n            base = Media()\n\n        # Get the media definition for this class\n        definition = getattr(cls, 'Media', None)\n        if definition:\n            extend = getattr(definition, 'extend', True)\n            if extend:\n                if extend is True:\n                    m = base\n                else:\n                    m = Media()\n                    for medium in extend:\n                        m = m + base[medium]\n                return m + Media(definition)\n            return Media(definition)\n        return base\n    return property(_media)\n\n\nclass MediaDefiningClass(type):\n    \"\"\"\n    Metaclass for classes that can have media definitions.\n    \"\"\"\n    def __new__(mcs, name, bases, attrs):\n        new_class = super(MediaDefiningClass, mcs).__new__(mcs, name, bases, attrs)\n\n        if 'media' not in attrs:\n            new_class.media = media_property(new_class)\n\n        return new_class\n\n\nclass Widget(metaclass=MediaDefiningClass):\n    needs_multipart_form = False  # Determines does this widget need multipart form\n    is_localized = False\n    is_required = False\n    supports_microseconds = True\n\n    def __init__(self, attrs=None):\n        self.attrs = {} if attrs is None else attrs.copy()\n\n    def __deepcopy__(self, memo):\n        obj = copy.copy(self)\n        obj.attrs = self.attrs.copy()\n        memo[id(self)] = obj\n        return obj\n\n    @property\n    def is_hidden(self):\n        return self.input_type == 'hidden' if hasattr(self, 'input_type') else False\n\n    def subwidgets(self, name, value, attrs=None):\n        context = self.get_context(name, value, attrs)\n        yield context['widget']\n\n    def format_value(self, value):\n        \"\"\"\n        Return a value as it should appear when rendered in a template.\n        \"\"\"\n        if value == '' or value is None:\n            return None\n        if self.is_localized:\n            return formats.localize_input(value)\n        return str(value)\n\n",
+          "returncode": 0,
+          "exception_info": ""
+        },
+        "finished_at": "2026-11-07T04:38:49.649809+00:00",
+        "duration_seconds": 0.1969307929975912
+      }
+    },
+    {
+      "agent_command_index": 1,
+      "jsonl_line": 4,
+      "event": {
+        "started_at": "2026-11-07T04:38:54.947099+00:00",
+        "phase": "agent",
+        "action": {
+          "command": "cd /testbed && grep -R \"Media\\.merge\\|MediaOrderConflictWarning\\|\\.media\" -n tests/forms_tests | head -80",
+          "tool_call_id": "call_U0S7ETvvcWyy4OZF9kdIeeOI"
+        },
+        "cwd": "/testbed",
+        "outcome": "completed",
+        "output": {
+          "output": "tests/forms_tests/tests/test_formsets.py:1316:        self.assertIn('some-file.js', str(formset_factory(MediaForm, extra=0)().media))\ntests/forms_tests/tests/test_media.py:53:        self.assertEqual(str(w.media), '')\ntests/forms_tests/tests/test_media.py:72:            str(w1.media),\ntests/forms_tests/tests/test_media.py:82:            str(w1.media['css']),\ntests/forms_tests/tests/test_media.py:88:            str(w1.media['js']),\ntests/forms_tests/tests/test_media.py:122:            str(w1.media + w2.media + w3.media),\ntests/forms_tests/tests/test_media.py:134:            str(w1.media),\ntests/forms_tests/tests/test_media.py:151:        self.assertEqual(str(w4.media), \"\"\"<link href=\"/path/to/css1\" type=\"text/css\" media=\"all\" rel=\"stylesheet\">\ntests/forms_tests/tests/test_media.py:166:        self.assertEqual(str(w4.media), \"\"\"<link href=\"/some/path\" type=\"text/css\" media=\"all\" rel=\"stylesheet\">\ntests/forms_tests/tests/test_media.py:172:                return super().media + Media(css={'all': ('/other/path',)}, js=('/other/js',))\ntests/forms_tests/tests/test_media.py:176:        self.assertEqual(str(w5.media), \"\"\"<link href=\"/some/path\" type=\"text/css\" media=\"all\" rel=\"stylesheet\">\ntests/forms_tests/tests/test_media.py:193:                return super().media + Media(css={'all': ('/other/path',)}, js=('/other/js',))\ntests/forms_tests/tests/test_media.py:198:            str(w6.media),\ntests/forms_tests/tests/test_media.py:226:            str(w7.media),\ntests/forms_tests/tests/test_media.py:244:            str(w8.media),\ntests/forms_tests/tests/test_media.py:278:            str(w9.media),\ntests/forms_tests/tests/test_media.py:295:        self.assertEqual(str(w10.media), \"\"\"<link href=\"/path/to/css3\" type=\"text/css\" media=\"all\" rel=\"stylesheet\">\ntests/forms_tests/tests/test_media.py:319:            str(w11.media),\ntests/forms_tests/tests/test_media.py:348:            str(w12.media),\ntests/forms_tests/tests/test_media.py:373:            str(multimedia.media),\ntests/forms_tests/tests/test_media.py:417:            str(mymulti.media),\ntests/forms_tests/tests/test_media.py:459:            str(f1.media),\ntests/forms_tests/tests/test_media.py:474:            str(f1.media + f2.media),\ntests/forms_tests/tests/test_media.py:496:            str(f3.media),\ntests/forms_tests/tests/test_media.py:510:            Template(\"{{ form.media.js }}{{ form.media.css }}\").render(Context({'form': f3})),\ntests/forms_tests/tests/test_media.py:538:                self.assertEqual(Media.merge(list1, list2), expected)\ntests/forms_tests/tests/test_media.py:543:            self.assertEqual(Media.merge([1, 2], [2, 1]), [1, 2])\n",
+          "returncode": 0,
+          "exception_info": ""
+        },
+        "finished_at": "2026-11-07T04:38:55.102376+00:00",
+        "duration_seconds": 0.15528462099609897
+      }
+    },
+    {
+      "agent_command_index": 5,
+      "jsonl_line": 8,
+      "event": {
+        "started_at": "2026-11-07T04:38:58.273698+00:00",
+        "phase": "agent",
+        "action": {
+          "command": "cd /testbed && git show --stat 959d0c078a && git show 959d0c078a -- django/forms/widgets.py tests/forms_tests/tests/test_media.py",
+          "tool_call_id": "call_fzB6oBMQOP0GXhksZX1GCIKr"
+        },
+        "cwd": "/testbed",
+        "outcome": "completed",
+        "output": {
+          "output": "commit 959d0c078a1c903cd1e4850932be77c4f0d2294d\nAuthor: Matthias Kestenholz <mk@feinheit.ch>\nDate:   Sat Feb 9 15:38:52 2019 +0100\n\n    Fixed #30153 -- Fixed incorrect form Media asset ordering after three way merge.\n    \n    Delaying merging assets as long as possible avoids introducing\n    incorrect relative orderings that cause a broken final result.\n\n django/forms/widgets.py               | 30 +++++++++++++++++++++++-------\n tests/forms_tests/tests/test_media.py | 30 ++++++++++++++++++++++++++++++\n 2 files changed, 53 insertions(+), 7 deletions(-)\ncommit 959d0c078a1c903cd1e4850932be77c4f0d2294d\nAuthor: Matthias Kestenholz <mk@feinheit.ch>\nDate:   Sat Feb 9 15:38:52 2019 +0100\n\n    Fixed #30153 -- Fixed incorrect form Media asset ordering after three way merge.\n    \n    Delaying merging assets as long as possible avoids introducing\n    incorrect relative orderings that cause a broken final result.\n\ndiff --git a/django/forms/widgets.py b/django/forms/widgets.py\nindex eed1fa5c3b..02aa32b207 100644\n--- a/django/forms/widgets.py\n+++ b/django/forms/widgets.py\n@@ -48,8 +48,8 @@ class Media:\n                 css = {}\n             if js is None:\n                 js = []\n-        self._css = css\n-        self._js = js\n+        self._css_lists = [css]\n+        self._js_lists = [js]\n \n     def __repr__(self):\n         return 'Media(css=%r, js=%r)' % (self._css, self._js)\n@@ -57,6 +57,25 @@ class Media:\n     def __str__(self):\n         return self.render()\n \n+    @property\n+    def _css(self):\n+        css = self._css_lists[0]\n+        # filter(None, ...) avoids calling merge with empty dicts.\n+        for obj in filter(None, self._css_lists[1:]):\n+            css = {\n+                medium: self.merge(css.get(medium, []), obj.get(medium, []))\n+                for medium in css.keys() | obj.keys()\n+            }\n+        return css\n+\n+    @property\n+    def _js(self):\n+        js = self._js_lists[0]\n+        # filter(None, ...) avoids calling merge() with empty lists.\n+        for obj in filter(None, self._js_lists[1:]):\n+            js = self.merge(js, obj)\n+        return js\n+\n     def render(self):\n         return mark_safe('\\n'.join(chain.from_iterable(getattr(self, 'render_' + name)() for name in MEDIA_TYPES)))\n \n@@ -132,11 +151,8 @@ class Media:\n \n     def __add__(self, other):\n         combined = Media()\n-        combined._js = self.merge(self._js, other._js)\n-        combined._css = {\n-            medium: self.merge(self._css.get(medium, []), other._css.get(medium, []))\n-            for medium in self._css.keys() | other._css.keys()\n-        }\n+        combined._css_lists = self._css_lists + other._css_lists\n+        combined._js_lists = self._js_lists + other._js_lists\n         return combined\n \n \ndiff --git a/tests/forms_tests/tests/test_media.py b/tests/forms_tests/tests/test_media.py\nindex a586da90c5..8cb484a15e 100644\n--- a/tests/forms_tests/tests/test_media.py\n+++ b/tests/forms_tests/tests/test_media.py\n@@ -541,3 +541,33 @@ class FormsMediaTestCase(SimpleTestCase):\n         msg = 'Detected duplicate Media files in an opposite order:\\n1\\n2'\n         with self.assertWarnsMessage(RuntimeWarning, msg):\n             self.assertEqual(Media.merge([1, 2], [2, 1]), [1, 2])\n+\n+    def test_merge_js_three_way(self):\n+        \"\"\"\n+        The relative order of scripts is preserved in a three-way merge.\n+        \"\"\"\n+        # custom_widget.js doesn't depend on jquery.js.\n+        widget1 = Media(js=['custom_widget.js'])\n+        widget2 = Media(js=['jquery.js', 'uses_jquery.js'])\n+        form_media = widget1 + widget2\n+        # The relative ordering of custom_widget.js and jquery.js has been\n+        # established (but without a real need to).\n+        self.assertEqual(form_media._js, ['custom_widget.js', 'jquery.js', 'uses_jquery.js'])\n+        # The inline also uses custom_widget.js. This time, it's at the end.\n+        inline_media = Media(js=['jquery.js', 'also_jquery.js']) + Media(js=['custom_widget.js'])\n+        merged = form_media + inline_media\n+        self.assertEqual(merged._js, ['custom_widget.js', 'jquery.js', 'uses_jquery.js', 'also_jquery.js'])\n+\n+    def test_merge_css_three_way(self):\n+        widget1 = Media(css={'screen': ['a.css']})\n+        widget2 = Media(css={'screen': ['b.css']})\n+        widget3 = Media(css={'all': ['c.css']})\n+        form1 = widget1 + widget2\n+        form2 = widget2 + widget1\n+        # form1 and form2 have a.css and b.css in different order...\n+        self.assertEqual(form1._css, {'screen': ['a.css', 'b.css']})\n+        self.assertEqual(form2._css, {'screen': ['b.css', 'a.css']})\n+        # ...but merging succeeds as the relative ordering of a.css and b.css\n+        # was never specified.\n+        merged = widget3 + form1 + form2\n+        self.assertEqual(merged._css, {'screen': ['a.css', 'b.css'], 'all': ['c.css']})\n",
+          "returncode": 0,
+          "exception_info": ""
+        },
+        "finished_at": "2026-11-07T04:38:58.440682+00:00",
+        "duration_seconds": 0.16695733097731136
+      }
+    },
+    {
+      "agent_command_index": 17,
+      "jsonl_line": 23,
+      "event": {
+        "started_at": "2026-11-07T04:40:09.947152+00:00",
+        "phase": "agent",
+        "action": {
+          "command": "cd /testbed && PYTHONPATH=tests:. DJANGO_SETTINGS_MODULE=test_sqlite python - <<'PY'\nimport warnings\nimport django\ndjango.setup()\nfrom django import forms\nfrom django.forms.widgets import MediaOrderConflictWarning\nclass ColorPicker(forms.Widget):\n    class Media:\n        js = ['color-picker.js']\nclass SimpleTextWidget(forms.Widget):\n    class Media:\n        js = ['text-editor.js']\nclass FancyTextWidget(forms.Widget):\n    class Media:\n        js = ['text-editor.js', 'text-editor-extras.js', 'color-picker.js']\nclass MyForm(forms.Form):\n    background_color = forms.CharField(widget=ColorPicker())\n    intro = forms.CharField(widget=SimpleTextWidget())\n    body = forms.CharField(widget=FancyTextWidget())\nwith warnings.catch_warnings(record=True) as caught:\n    warnings.simplefilter('always')\n    print(MyForm().media._js)\nprint('order-conflict warnings:', len([w for w in caught if issubclass(w.category, MediaOrderConflictWarning)]))\nPY",
+          "tool_call_id": "call_ZIgBPkgYPEtiBFy72yTzksIU"
+        },
+        "cwd": "/testbed",
+        "outcome": "completed",
+        "output": {
+          "output": "['text-editor.js', 'text-editor-extras.js', 'color-picker.js']\norder-conflict warnings: 0\n",
+          "returncode": 0,
+          "exception_info": ""
+        },
+        "finished_at": "2026-11-07T04:40:10.315796+00:00",
+        "duration_seconds": 0.3686525279772468
+      }
+    },
+    {
+      "agent_command_index": 21,
+      "jsonl_line": 27,
+      "event": {
+        "started_at": "2026-11-07T04:40:21.790308+00:00",
+        "phase": "agent",
+        "action": {
+          "command": "cd /testbed && python - <<'PY'\nfrom pathlib import Path\np = Path('django/forms/widgets.py')\ns = p.read_text().replace('''                if after not in successors[before]:\n                    successors[before].add(after)\n                    indegree[after] += 1\n''', '''                if before != after and after not in successors[before]:\n                    successors[before].add(after)\n                    indegree[after] += 1\n''')\np.write_text(s)\nPY\npython tests/runtests.py --settings=test_sqlite forms_tests --verbosity 1",
+          "tool_call_id": "call_0o4YwwpI6E0VEkBODIhdoHDH"
+        },
+        "cwd": "/testbed",
+        "outcome": "completed",
+        "output": {
+          "output": "Testing against Django installed in '/testbed/django' with up to 16 processes\nSystem check identified no issues (0 silenced).\nCreating test database for alias 'default'...\nCloning test database for alias 'default'...\nCloning test database for alias 'default'...\nCloning test database for alias 'default'...\nCloning test database for alias 'default'...\nCloning test database for alias 'default'...\nCloning test database for alias 'default'...\nCloning test database for alias 'default'...\nCloning test database for alias 'default'...\nCloning test database for alias 'default'...\nCloning test database for alias 'default'...\nCloning test database for alias 'default'...\nCloning test database for alias 'default'...\nCloning test database for alias 'default'...\nCloning test database for alias 'default'...\nCloning test database for alias 'default'...\nCloning test database for alias 'default'...\n............................................................................................E......................................................................................................................s...........................................................................................................................................................................................................................................................................................................................................................................................................................................\n======================================================================\nERROR: test_unicode_filename (forms_tests.tests.tests.FormsModelTestCase)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/opt/miniconda3/envs/testbed/lib/python3.6/unittest/case.py\", line 59, in testPartExecutor\n    yield\n  File \"/opt/miniconda3/envs/testbed/lib/python3.6/unittest/case.py\", line 605, in run\n    testMethod()\n  File \"/testbed/tests/forms_tests/tests/tests.py\", line 158, in test_unicode_filename\n    m = FileModel.objects.create(file=f.cleaned_data['file1'])\n  File \"/testbed/django/db/models/manager.py\", line 82, in manager_method\n    return getattr(self.get_queryset(), name)(*args, **kwargs)\n  File \"/testbed/django/db/models/query.py\", line 421, in create\n    obj.save(force_insert=True, using=self.db)\n  File \"/testbed/django/db/models/base.py\", line 736, in save\n    force_update=force_update, update_fields=update_fields)\n  File \"/testbed/django/db/models/base.py\", line 774, in save_base\n    force_update, using, update_fields,\n  File \"/testbed/django/db/models/base.py\", line 865, in _save_table\n    result = self._do_insert(cls._base_manager, using, fields, update_pk, raw)\n  File \"/testbed/django/db/models/base.py\", line 903, in _do_insert\n    using=using, raw=raw)\n  File \"/testbed/django/db/models/manager.py\", line 82, in manager_method\n    return getattr(self.get_queryset(), name)(*args, **kwargs)\n  File \"/testbed/django/db/models/query.py\", line 1175, in _insert\n    return query.get_compiler(using=using).execute_sql(return_id)\n  File \"/testbed/django/db/models/sql/compiler.py\", line 1320, in execute_sql\n    for sql, params in self.as_sql():\n  File \"/testbed/django/db/models/sql/compiler.py\", line 1264, in as_sql\n    for obj in self.query.objs\n  File \"/testbed/django/db/models/sql/compiler.py\", line 1264, in <listcomp>\n    for obj in self.query.objs\n  File \"/testbed/django/db/models/sql/compiler.py\", line 1263, in <listcomp>\n    [self.prepare_value(field, self.pre_save_val(field, obj)) for field in fields]\n  File \"/testbed/django/db/models/sql/compiler.py\", line 1214, in pre_save_val\n    return field.pre_save(obj, add=True)\n  File \"/testbed/django/db/models/fields/files.py\", line 288, in pre_save\n    file.save(file.name, file.file, save=False)\n  File \"/testbed/django/db/models/fields/files.py\", line 87, in save\n    self.name = self.storage.save(name, content, max_length=self.field.max_length)\n  File \"/testbed/django/core/files/storage.py\", line 51, in save\n    name = self.get_available_name(name, max_length=max_length)\n  File \"/testbed/django/core/files/storage.py\", line 75, in get_available_name\n    while self.exists(name) or (max_length and len(name) > max_length):\n  File \"/testbed/django/core/files/storage.py\", line 304, in exists\n    return os.path.exists(self.path(name))\n  File \"/opt/miniconda3/envs/testbed/lib/python3.6/genericpath.py\", line 19, in exists\n    os.stat(path)\nUnicodeEncodeError: 'ascii' codec can't encode characters in position 39-47: ordinal not in range(128)\n\n----------------------------------------------------------------------\nRan 639 tests in 1.482s\n\nFAILED (errors=1, skipped=1)\nDestroying test database for alias 'default'...\nDestroying test database for alias 'default'...\nDestroying test database for alias 'default'...\nDestroying test database for alias 'default'...\nDestroying test database for alias 'default'...\nDestroying test database for alias 'default'...\nDestroying test database for alias 'default'...\nDestroying test database for alias 'default'...\nDestroying test database for alias 'default'...\nDestroying test database for alias 'default'...\nDestroying test database for alias 'default'...\nDestroying test database for alias 'default'...\nDestroying test database for alias 'default'...\nDestroying test database for alias 'default'...\nDestroying test database for alias 'default'...\nDestroying test database for alias 'default'...\nDestroying test database for alias 'default'...\n",
+          "returncode": 1,
+          "exception_info": ""
+        },
+        "finished_at": "2026-11-07T04:40:23.949242+00:00",
+        "duration_seconds": 2.158761910017347
+      }
+    },
+    {
+      "agent_command_index": 22,
+      "jsonl_line": 28,
+      "event": {
+        "started_at": "2026-11-07T04:40:28.094505+00:00",
+        "phase": "agent",
+        "action": {
+          "command": "cd /testbed && python tests/runtests.py --settings=test_sqlite forms_tests.tests.test_media --verbosity 1",
+          "tool_call_id": "call_Hx1Tn3ojXBG3nvFzBtETmFWR"
+        },
+        "cwd": "/testbed",
+        "outcome": "completed",
+        "output": {
+          "output": ".................Testing against Django installed in '/testbed/django' with up to 16 processes\nSystem check identified no issues (0 silenced).\n\n----------------------------------------------------------------------\nRan 17 tests in 0.006s\n\nOK\n",
+          "returncode": 0,
+          "exception_info": ""
+        },
+        "finished_at": "2026-11-07T04:40:28.566998+00:00",
+        "duration_seconds": 0.47249391401419416
+      }
+    },
+    {
+      "agent_command_index": 23,
+      "jsonl_line": 29,
+      "event": {
+        "started_at": "2026-11-07T04:40:28.571916+00:00",
+        "phase": "agent",
+        "action": {
+          "command": "cd /testbed && git diff --check && git status --short && git diff -- django/forms/widgets.py",
+          "tool_call_id": "call_YYiUd5TguiF1WEIvK2u07pdk"
+        },
+        "cwd": "/testbed",
+        "outcome": "completed",
+        "output": {
+          "output": " M django/forms/widgets.py\ndiff --git a/django/forms/widgets.py b/django/forms/widgets.py\nindex 02aa32b207..67705e9164 100644\n--- a/django/forms/widgets.py\n+++ b/django/forms/widgets.py\n@@ -4,6 +4,7 @@ HTML Widget classes\n \n import copy\n import datetime\n+import heapq\n import re\n import warnings\n from itertools import chain\n@@ -59,22 +60,27 @@ class Media:\n \n     @property\n     def _css(self):\n-        css = self._css_lists[0]\n-        # filter(None, ...) avoids calling merge with empty dicts.\n-        for obj in filter(None, self._css_lists[1:]):\n-            css = {\n-                medium: self.merge(css.get(medium, []), obj.get(medium, []))\n-                for medium in css.keys() | obj.keys()\n-            }\n-        return css\n+        css_lists = [obj for obj in self._css_lists if obj]\n+        if not css_lists:\n+            return self._css_lists[0]\n+        if len(css_lists) == 1 and css_lists[0] is self._css_lists[0]:\n+            return css_lists[0]\n+        media = set(chain.from_iterable(obj.keys() for obj in self._css_lists))\n+        return {\n+            medium: self.merge_lists([\n+                obj.get(medium, []) for obj in self._css_lists\n+            ])\n+            for medium in media\n+        }\n \n     @property\n     def _js(self):\n-        js = self._js_lists[0]\n-        # filter(None, ...) avoids calling merge() with empty lists.\n-        for obj in filter(None, self._js_lists[1:]):\n-            js = self.merge(js, obj)\n-        return js\n+        js_lists = [media for media in self._js_lists if media]\n+        if not js_lists:\n+            return self._js_lists[0]\n+        if len(js_lists) == 1 and js_lists[0] is self._js_lists[0]:\n+            return js_lists[0]\n+        return self.merge_lists(self._js_lists)\n \n     def render(self):\n         return mark_safe('\\n'.join(chain.from_iterable(getattr(self, 'render_' + name)() for name in MEDIA_TYPES)))\n@@ -149,6 +155,47 @@ class Media:\n                 last_insert_index = index\n         return combined_list\n \n+    @staticmethod\n+    def merge_lists(media_lists):\n+        \"\"\"Merge asset lists without inventing order between independent lists.\"\"\"\n+        paths = []\n+        path_indexes = {}\n+        for media_list in media_lists:\n+            for path in media_list:\n+                if path not in path_indexes:\n+                    path_indexes[path] = len(paths)\n+                    paths.append(path)\n+\n+        successors = {path: set() for path in paths}\n+        indegree = {path: 0 for path in paths}\n+        for media_list in media_lists:\n+            for before, after in zip(media_list, media_list[1:]):\n+                if before != after and after not in successors[before]:\n+                    successors[before].add(after)\n+                    indegree[after] += 1\n+\n+        ready = [\n+            (path_indexes[path], path)\n+            for path in paths if indegree[path] == 0\n+        ]\n+        heapq.heapify(ready)\n+        merged = []\n+        while ready:\n+            _, path = heapq.heappop(ready)\n+            merged.append(path)\n+            for successor in successors[path]:\n+                indegree[successor] -= 1\n+                if indegree[successor] == 0:\n+                    heapq.heappush(ready, (path_indexes[successor], successor))\n+\n+        if len(merged) != len(paths):\n+            # Preserve the established warning and fallback behavior for real\n+            # ordering conflicts.\n+            merged = []\n+            for media_list in media_lists:\n+                merged = Media.merge(merged, media_list)\n+        return merged\n+\n     def __add__(self, other):\n         combined = Media()\n         combined._css_lists = self._css_lists + other._css_lists\n",
+          "returncode": 0,
+          "exception_info": ""
+        },
+        "finished_at": "2026-11-07T04:40:28.789007+00:00",
+        "duration_seconds": 0.2170918360061478
+      }
+    }
+  ],
+  "original_files": [
+    {
+      "path": "runs/20261107T043844Z-c1316dac/manifest.json",
+      "sha256": "5a12128b44c2014ce7e9c17cb1b55098b2b64d23f9a2f2aecbd4d4a8fec51f93"
+    },
+    {
+      "path": "runs/20261107T043844Z-c1316dac/summary.json",
+      "sha256": "5aaa1492908d2afceb149774cce89bd2d7b9e2ca1b53ab5488c3d84c20db2137"
+    },
+    {
+      "path": "runs/20261107T043844Z-c1316dac/task.json",
+      "sha256": "86841ba6189e2b596bf5e8b1065a4b00eb5011c7aa1b21c5f1a8dce6aadf75f4"
+    },
+    {
+      "path": "runs/20261107T043844Z-c1316dac/commands.jsonl",
+      "sha256": "ddb5ec548b145ef10741bcc8222ca8236109b543fbe96c43a8d041e26e8c66c5"
+    },
+    {
+      "path": "runs/20261107T043844Z-c1316dac/official_report.json",
+      "sha256": "f0eea925390b2d9b3d2457cbe42876dfeb10231e22fee097e851d9acc970f207"
+    }
+  ],
+  "metadata_note": "Source-local observations and official source outcome are separate. For11019 explicit failures establish unresolved status despite parser gaps; source raw manifest stays unchanged."
+}

@@ -1,0 +1,150 @@
+{
+  "source_instance_id": "scikit-learn__scikit-learn-10508",
+  "source_run": "20261105T140701Z-28974fd0",
+  "public_task": {
+    "instance_id": "scikit-learn__scikit-learn-10508",
+    "repo": "scikit-learn/scikit-learn",
+    "base_commit": "c753b77ac49e72ebc0fe5e3c2369fe628f975017",
+    "version": "0.20",
+    "created_at": "2018-01-19T18:00:29Z",
+    "problem_statement": "LabelEncoder transform fails for empty lists (for certain inputs)\nPython 3.6.3, scikit_learn 0.19.1\r\n\r\nDepending on which datatypes were used to fit the LabelEncoder, transforming empty lists works or not. Expected behavior would be that empty arrays are returned in both cases.\r\n\r\n```python\r\n>>> from sklearn.preprocessing import LabelEncoder\r\n>>> le = LabelEncoder()\r\n>>> le.fit([1,2])\r\nLabelEncoder()\r\n>>> le.transform([])\r\narray([], dtype=int64)\r\n>>> le.fit([\"a\",\"b\"])\r\nLabelEncoder()\r\n>>> le.transform([])\r\nTraceback (most recent call last):\r\n  File \"[...]\\Python36\\lib\\site-packages\\numpy\\core\\fromnumeric.py\", line 57, in _wrapfunc\r\n    return getattr(obj, method)(*args, **kwds)\r\nTypeError: Cannot cast array data from dtype('float64') to dtype('<U32') according to the rule 'safe'\r\n\r\nDuring handling of the above exception, another exception occurred:\r\n\r\nTraceback (most recent call last):\r\n  File \"<stdin>\", line 1, in <module>\r\n  File \"[...]\\Python36\\lib\\site-packages\\sklearn\\preprocessing\\label.py\", line 134, in transform\r\n    return np.searchsorted(self.classes_, y)\r\n  File \"[...]\\Python36\\lib\\site-packages\\numpy\\core\\fromnumeric.py\", line 1075, in searchsorted\r\n    return _wrapfunc(a, 'searchsorted', v, side=side, sorter=sorter)\r\n  File \"[...]\\Python36\\lib\\site-packages\\numpy\\core\\fromnumeric.py\", line 67, in _wrapfunc\r\n    return _wrapit(obj, method, *args, **kwds)\r\n  File \"[...]\\Python36\\lib\\site-packages\\numpy\\core\\fromnumeric.py\", line 47, in _wrapit\r\n    result = getattr(asarray(obj), method)(*args, **kwds)\r\nTypeError: Cannot cast array data from dtype('float64') to dtype('<U32') according to the rule 'safe'\r\n```\n"
+  },
+  "official_resolved": false,
+  "evaluation_complete": true,
+  "focused_command_index": 4,
+  "commands": [
+    {
+      "agent_command_index": 0,
+      "jsonl_line": 3,
+      "event": {
+        "started_at": "2026-11-05T14:07:06.329550+00:00",
+        "phase": "agent",
+        "action": {
+          "command": "cd /testbed && grep -R \"class LabelEncoder\\|def transform\" -n sklearn/preprocessing/label.py && sed -n '1,190p' sklearn/preprocessing/label.py && git status --short",
+          "tool_call_id": "call_5I5j1z0CZgIsymipxQNcyZW8"
+        },
+        "cwd": "/testbed",
+        "outcome": "completed",
+        "output": {
+          "output": "39:class LabelEncoder(BaseEstimator, TransformerMixin):\n115:    def transform(self, y):\n311:    def transform(self, y):\n748:    def transform(self, y):\n# Authors: Alexandre Gramfort <alexandre.gramfort@inria.fr>\n#          Mathieu Blondel <mathieu@mblondel.org>\n#          Olivier Grisel <olivier.grisel@ensta.org>\n#          Andreas Mueller <amueller@ais.uni-bonn.de>\n#          Joel Nothman <joel.nothman@gmail.com>\n#          Hamzeh Alsalhi <ha258@cornell.edu>\n# License: BSD 3 clause\n\nfrom collections import defaultdict\nimport itertools\nimport array\n\nimport numpy as np\nimport scipy.sparse as sp\n\nfrom ..base import BaseEstimator, TransformerMixin\n\nfrom ..utils.fixes import sparse_min_max\nfrom ..utils import column_or_1d\nfrom ..utils.validation import check_array\nfrom ..utils.validation import check_is_fitted\nfrom ..utils.validation import _num_samples\nfrom ..utils.multiclass import unique_labels\nfrom ..utils.multiclass import type_of_target\n\nfrom ..externals import six\n\nzip = six.moves.zip\nmap = six.moves.map\n\n__all__ = [\n    'label_binarize',\n    'LabelBinarizer',\n    'LabelEncoder',\n    'MultiLabelBinarizer',\n]\n\n\nclass LabelEncoder(BaseEstimator, TransformerMixin):\n    \"\"\"Encode labels with value between 0 and n_classes-1.\n\n    Read more in the :ref:`User Guide <preprocessing_targets>`.\n\n    Attributes\n    ----------\n    classes_ : array of shape (n_class,)\n        Holds the label for each class.\n\n    Examples\n    --------\n    `LabelEncoder` can be used to normalize labels.\n\n    >>> from sklearn import preprocessing\n    >>> le = preprocessing.LabelEncoder()\n    >>> le.fit([1, 2, 2, 6])\n    LabelEncoder()\n    >>> le.classes_\n    array([1, 2, 6])\n    >>> le.transform([1, 1, 2, 6]) #doctest: +ELLIPSIS\n    array([0, 0, 1, 2]...)\n    >>> le.inverse_transform([0, 0, 1, 2])\n    array([1, 1, 2, 6])\n\n    It can also be used to transform non-numerical labels (as long as they are\n    hashable and comparable) to numerical labels.\n\n    >>> le = preprocessing.LabelEncoder()\n    >>> le.fit([\"paris\", \"paris\", \"tokyo\", \"amsterdam\"])\n    LabelEncoder()\n    >>> list(le.classes_)\n    ['amsterdam', 'paris', 'tokyo']\n    >>> le.transform([\"tokyo\", \"tokyo\", \"paris\"]) #doctest: +ELLIPSIS\n    array([2, 2, 1]...)\n    >>> list(le.inverse_transform([2, 2, 1]))\n    ['tokyo', 'tokyo', 'paris']\n\n    See also\n    --------\n    sklearn.preprocessing.CategoricalEncoder : encode categorical features\n        using a one-hot or ordinal encoding scheme.\n    \"\"\"\n\n    def fit(self, y):\n        \"\"\"Fit label encoder\n\n        Parameters\n        ----------\n        y : array-like of shape (n_samples,)\n            Target values.\n\n        Returns\n        -------\n        self : returns an instance of self.\n        \"\"\"\n        y = column_or_1d(y, warn=True)\n        self.classes_ = np.unique(y)\n        return self\n\n    def fit_transform(self, y):\n        \"\"\"Fit label encoder and return encoded labels\n\n        Parameters\n        ----------\n        y : array-like of shape [n_samples]\n            Target values.\n\n        Returns\n        -------\n        y : array-like of shape [n_samples]\n        \"\"\"\n        y = column_or_1d(y, warn=True)\n        self.classes_, y = np.unique(y, return_inverse=True)\n        return y\n\n    def transform(self, y):\n        \"\"\"Transform labels to normalized encoding.\n\n        Parameters\n        ----------\n        y : array-like of shape [n_samples]\n            Target values.\n\n        Returns\n        -------\n        y : array-like of shape [n_samples]\n        \"\"\"\n        check_is_fitted(self, 'classes_')\n        y = column_or_1d(y, warn=True)\n\n        classes = np.unique(y)\n        if len(np.intersect1d(classes, self.classes_)) < len(classes):\n            diff = np.setdiff1d(classes, self.classes_)\n            raise ValueError(\n                    \"y contains previously unseen labels: %s\" % str(diff))\n        return np.searchsorted(self.classes_, y)\n\n    def inverse_transform(self, y):\n        \"\"\"Transform labels back to original encoding.\n\n        Parameters\n        ----------\n        y : numpy array of shape [n_samples]\n            Target values.\n\n        Returns\n        -------\n        y : numpy array of shape [n_samples]\n        \"\"\"\n        check_is_fitted(self, 'classes_')\n\n        diff = np.setdiff1d(y, np.arange(len(self.classes_)))\n        if len(diff):\n            raise ValueError(\n                    \"y contains previously unseen labels: %s\" % str(diff))\n        y = np.asarray(y)\n        return self.classes_[y]\n\n\nclass LabelBinarizer(BaseEstimator, TransformerMixin):\n    \"\"\"Binarize labels in a one-vs-all fashion\n\n    Several regression and binary classification algorithms are\n    available in scikit-learn. A simple way to extend these algorithms\n    to the multi-class classification case is to use the so-called\n    one-vs-all scheme.\n\n    At learning time, this simply consists in learning one regressor\n    or binary classifier per class. In doing so, one needs to convert\n    multi-class labels to binary labels (belong or does not belong\n    to the class). LabelBinarizer makes this process easy with the\n    transform method.\n\n    At prediction time, one assigns the class for which the corresponding\n    model gave the greatest confidence. LabelBinarizer makes this easy\n    with the inverse_transform method.\n\n    Read more in the :ref:`User Guide <preprocessing_targets>`.\n\n    Parameters\n    ----------\n\n    neg_label : int (default: 0)\n        Value with which negative labels must be encoded.\n\n    pos_label : int (default: 1)\n        Value with which positive labels must be encoded.\n\n    sparse_output : boolean (default: False)\n        True if the returned array from transform is desired to be in sparse\n        CSR format.\n",
+          "returncode": 0,
+          "exception_info": ""
+        },
+        "finished_at": "2026-11-05T14:07:06.493950+00:00",
+        "duration_seconds": 0.16439999099929992
+      }
+    },
+    {
+      "agent_command_index": 1,
+      "jsonl_line": 4,
+      "event": {
+        "started_at": "2026-11-05T14:07:12.735770+00:00",
+        "phase": "agent",
+        "action": {
+          "command": "cd /testbed && python - <<'PY'\nfrom sklearn.preprocessing import LabelEncoder\nimport numpy as np\nfor labels in ([1, 2], ['a', 'b']):\n    le = LabelEncoder().fit(labels)\n    try:\n        result = le.transform([])\n        print(labels, result, result.dtype)\n    except Exception as e:\n        print(labels, type(e).__name__, e)\nPY",
+          "tool_call_id": "call_0M3pvjqY6FUVUetJqb6mS6k7"
+        },
+        "cwd": "/testbed",
+        "outcome": "completed",
+        "output": {
+          "output": "[1, 2] [] int64\n['a', 'b'] TypeError Cannot cast array data from dtype('float64') to dtype('<U32') according to the rule 'safe'\n",
+          "returncode": 0,
+          "exception_info": ""
+        },
+        "finished_at": "2026-11-05T14:07:13.424588+00:00",
+        "duration_seconds": 0.688818815000559
+      }
+    },
+    {
+      "agent_command_index": 3,
+      "jsonl_line": 6,
+      "event": {
+        "started_at": "2026-11-05T14:07:25.252851+00:00",
+        "phase": "agent",
+        "action": {
+          "command": "cd /testbed && find sklearn -path '*test*' -iname '*label*' -o -path '*test*' -iname '*preprocessing*' | head -30 && git diff -- sklearn/preprocessing/label.py && git status --short",
+          "tool_call_id": "call_cGS9SjBDrduKsLw6zoHhoy6d"
+        },
+        "cwd": "/testbed",
+        "outcome": "completed",
+        "output": {
+          "output": "sklearn/datasets/tests/data/svmlight_multilabel.txt\nsklearn/preprocessing/tests/test_label.py\nsklearn/semi_supervised/tests/test_label_propagation.py\ndiff --git a/sklearn/preprocessing/label.py b/sklearn/preprocessing/label.py\nindex 61b8d4a21..a1d7ca686 100644\n--- a/sklearn/preprocessing/label.py\n+++ b/sklearn/preprocessing/label.py\n@@ -127,6 +127,9 @@ class LabelEncoder(BaseEstimator, TransformerMixin):\n         check_is_fitted(self, 'classes_')\n         y = column_or_1d(y, warn=True)\n \n+        if len(y) == 0:\n+            return np.array([], dtype=np.intp)\n+\n         classes = np.unique(y)\n         if len(np.intersect1d(classes, self.classes_)) < len(classes):\n             diff = np.setdiff1d(classes, self.classes_)\n M sklearn/preprocessing/label.py\n",
+          "returncode": 0,
+          "exception_info": ""
+        },
+        "finished_at": "2026-11-05T14:07:25.420432+00:00",
+        "duration_seconds": 0.16757652900014364
+      }
+    },
+    {
+      "agent_command_index": 4,
+      "jsonl_line": 7,
+      "event": {
+        "started_at": "2026-11-05T14:07:27.587053+00:00",
+        "phase": "agent",
+        "action": {
+          "command": "cd /testbed && pytest -q sklearn/preprocessing/tests/test_label.py",
+          "tool_call_id": "call_k6zuahvKWNHCwcAhNsf6Q3We"
+        },
+        "cwd": "/testbed",
+        "outcome": "completed",
+        "output": {
+          "output": ".................xxx..                                                   [100%]\n19 passed, 3 xfailed, 13 warnings in 0.40s\n",
+          "returncode": 0,
+          "exception_info": ""
+        },
+        "finished_at": "2026-11-05T14:07:28.572668+00:00",
+        "duration_seconds": 0.9856142370008456
+      }
+    },
+    {
+      "agent_command_index": 7,
+      "jsonl_line": 10,
+      "event": {
+        "started_at": "2026-11-05T14:07:36.642317+00:00",
+        "phase": "agent",
+        "action": {
+          "command": "cd /testbed && echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT && cat patch.txt",
+          "tool_call_id": "call_Dl6TWq6xIqRkTJOKSp8AYQbb"
+        },
+        "cwd": "/testbed",
+        "outcome": "submitted",
+        "submission": [
+          {
+            "role": "exit",
+            "content": "diff --git a/sklearn/preprocessing/label.py b/sklearn/preprocessing/label.py\nindex 61b8d4a21..a1d7ca686 100644\n--- a/sklearn/preprocessing/label.py\n+++ b/sklearn/preprocessing/label.py\n@@ -127,6 +127,9 @@ class LabelEncoder(BaseEstimator, TransformerMixin):\n         check_is_fitted(self, 'classes_')\n         y = column_or_1d(y, warn=True)\n \n+        if len(y) == 0:\n+            return np.array([], dtype=np.intp)\n+\n         classes = np.unique(y)\n         if len(np.intersect1d(classes, self.classes_)) < len(classes):\n             diff = np.setdiff1d(classes, self.classes_)\n",
+            "extra": {
+              "exit_status": "Submitted",
+              "submission": "diff --git a/sklearn/preprocessing/label.py b/sklearn/preprocessing/label.py\nindex 61b8d4a21..a1d7ca686 100644\n--- a/sklearn/preprocessing/label.py\n+++ b/sklearn/preprocessing/label.py\n@@ -127,6 +127,9 @@ class LabelEncoder(BaseEstimator, TransformerMixin):\n         check_is_fitted(self, 'classes_')\n         y = column_or_1d(y, warn=True)\n \n+        if len(y) == 0:\n+            return np.array([], dtype=np.intp)\n+\n         classes = np.unique(y)\n         if len(np.intersect1d(classes, self.classes_)) < len(classes):\n             diff = np.setdiff1d(classes, self.classes_)\n"
+            }
+          }
+        ],
+        "finished_at": "2026-11-05T14:07:37.020844+00:00",
+        "duration_seconds": 0.37850629599961394
+      }
+    }
+  ],
+  "original_files": [
+    {
+      "path": "runs/20261105T140701Z-28974fd0/manifest.json",
+      "sha256": "b8b42023606ea265dbba71c3236f98ebad30950f308072d456172271eab8f6a4"
+    },
+    {
+      "path": "runs/20261105T140701Z-28974fd0/summary.json",
+      "sha256": "8805b777cf8a4dd7be53188a47cc6ad7b4a555ddcc65dc94ad1e0d0699cb48fc"
+    },
+    {
+      "path": "runs/20261105T140701Z-28974fd0/task.json",
+      "sha256": "39e82f2678f9e1bf22805a6eb72ec4f37737ce970f8320390d250c45e6168e36"
+    },
+    {
+      "path": "runs/20261105T140701Z-28974fd0/commands.jsonl",
+      "sha256": "e5b734232a1e018ede1f91ab97958d7db866cc30ce7acdff2f8c2ceb16fbb6b0"
+    },
+    {
+      "path": "runs/20261105T140701Z-28974fd0/official_report.json",
+      "sha256": "92cba1362f487456722580af4a0a44cbb4809e6a6ac6d801de67ebb72a984917"
+    }
+  ],
+  "metadata_note": "Source-local observations and official source outcome are separate. For11019 explicit failures establish unresolved status despite parser gaps; source raw manifest stays unchanged."
+}

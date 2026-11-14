@@ -1,0 +1,141 @@
+{
+  "worker_run_id": "daytime-api-worker-9b-test-20261108-v3",
+  "config": {
+    "model_id": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "precision": "bfloat16",
+    "experiment": "api-fixed-worker-9b-test-transfer-v3",
+    "script_budget_seconds": 1800,
+    "max_new_tokens": 512,
+    "max_input_tokens": 4096,
+    "do_sample": false,
+    "enable_thinking": false,
+    "collect_none_prefill_features": true,
+    "protocol_version": 3,
+    "hash_checkpoint_shards": true
+  },
+  "environment": {
+    "torch": "2.14.1+cu130",
+    "cuda": "13.0",
+    "gpu": "NVIDIA L4",
+    "packages": {
+      "transformers": "5.22.2",
+      "accelerate": "1.13.0",
+      "numpy": "2.4.6"
+    },
+    "source_sha256": {
+      "generate_api_worker.py": "1052051fbe20e2f476c48541d5c95827263682f1a861c19fd7ce524acdd4fd1e",
+      "prepare_api_worker.py": "fdef4db2bdfc225b01c8f92541f1120e9fc260a97de21c1cbb767a8e286d3ed2"
+    },
+    "model_resolved_commit": null
+  },
+  "weight_provenance": {
+    "requested_revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "cache_snapshot_revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "raw_config_sha256": "d0883072e01861ed0b2d47be3c16c36a8e81c224c7ffaa310c6558fb3f932b05",
+    "weight_index_sha256": "26d3539b516be613f39563617cb9d33b3f83d401298125be392c80cefb8f7fe5",
+    "weight_files": {
+      "model.safetensors-00001-of-00004.safetensors": {
+        "sha256": "db6f444b43d318c92f360a13a25561a6a65b10c0631b8ed305a426dbaa6c380e",
+        "bytes": 5276436216
+      },
+      "model.safetensors-00002-of-00004.safetensors": {
+        "sha256": "31c7d7e2dd5d207840b31cc59083c8f4c4718959149e0358c0364052bb9a0330",
+        "bytes": 5335161512
+      },
+      "model.safetensors-00003-of-00004.safetensors": {
+        "sha256": "7ec36ba3a4176a44c3c0876ad80c56a2f70c84bf008d82e9501df642f17dadec",
+        "bytes": 5368717440
+      },
+      "model.safetensors-00004-of-00004.safetensors": {
+        "sha256": "b62b0c4cd7e44edee103ee8f4fe225f246d5e768e07bfd5f25b63a8aa1fdd0c6",
+        "bytes": 3325995712
+      }
+    },
+    "meaning": "Hashes of pinned local checkpoint shards used by the loader; not a hash of all in-memory tensors."
+  },
+  "original_audit": {
+    "status": "passed",
+    "generations": 284,
+    "native_predecision_states": 28,
+    "tokenization_and_decoding_recomputed": true,
+    "same_output_in_all_exact_repeats": true,
+    "repeat_checks": [
+      {
+        "job_id": "sklearn-normalize-false-mutate--none-repeat-0",
+        "same_output_tokens": true
+      },
+      {
+        "job_id": "networkx-relabel-true-preserve--copied_returned_full-repeat-1",
+        "same_output_tokens": true
+      },
+      {
+        "job_id": "networkx-add-edge-mutate--copied_receiver_procedure-repeat-2",
+        "same_output_tokens": true
+      },
+      {
+        "job_id": "sklearn-unobserved-scale-float-mutate--copied_returned_procedure-repeat-3",
+        "same_output_tokens": true
+      }
+    ],
+    "runtime_stopped": true,
+    "local_gpu_used": false,
+    "encoder_forward_repeated": false,
+    "completed_transport_recovery": false,
+    "outcome_labels_in_upload": false,
+    "requested_model_revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "model_config_commit_field": null,
+    "weight_files_independently_hashed": true,
+    "weight_hashes_match_pinned_public_metadata": true,
+    "weight_provenance_limit": "Pinned cache snapshot and checkpoint shard hashes recorded; in-memory model tensors not independently recomputed."
+  },
+  "original_artifacts_sha256": {
+    "upload.zip": "7071c7f59620f1a6abbdcd6f68abcb034564b01e98e239bc23d3e1f4b3217c96",
+    "results.zip": "21f75ea71f429e87c294e8983fa5e84989d3af1986a62ff97425ea56749a62c2",
+    "upload-manifest.json": "6c594bb3dd7fd4d4a94aa06f2cae3441916bfe0bd59cfce982101396b695705b",
+    "run-status.json": "fe7dbe7bc1734987941022f40e6582672d2485df0a292b3dfb470897eb89ff94"
+  },
+  "original_predictions_sha256": "e6d90daddde9c786ef9333556a8b2b6dfdc7f89ba8a8af467801184c6d9f37a3",
+  "judgment_summaries": {
+    "test": {
+      "status": "complete",
+      "states": 28,
+      "base_generations": 280,
+      "repeat_generations": 4,
+      "allowed_splits": [
+        "test"
+      ],
+      "syntax_supported_fraction": 0.9964285714285714,
+      "strict_success_by_fixed_action": {
+        "none": 0.6428571428571429,
+        "copied_returned_full": 0.6785714285714286,
+        "copied_receiver_procedure": 0.17857142857142858,
+        "copied_returned_procedure": 0.6785714285714286,
+        "copied_receiver_full": 0.42857142857142855,
+        "returned_full": 0.5,
+        "all_full": 0.6071428571428571,
+        "returned_procedure": 0.5357142857142857,
+        "receiver_full": 0.5,
+        "receiver_procedure": 0.75
+      },
+      "per_state_action_oracle_success": 0.7857142857142857,
+      "learnable_action_oracle_success": 0.7857142857142857,
+      "best_fixed_learnable_action_success": 0.75,
+      "expand_gate": true,
+      "meaning": "Fixed-worker paired microtasks; not independent SWE outcomes. No selection model fitted here.",
+      "files_sha256": {
+        "predictions": "e6d90daddde9c786ef9333556a8b2b6dfdc7f89ba8a8af467801184c6d9f37a3",
+        "judge": "ad52dd3b570740dcf866e367646440074df1594a6bec9dc6e30151eb854c8bd7",
+        "serialization_wrapper": "b3501e75c9c08cebab2e5a620ae74b9a2957008cff747d8ee0e5ae01f1ce57d3"
+      },
+      "gpu_used": false,
+      "serialization": "Original execution judgments unchanged; nonfinite snapshot floats encoded by runtime.plain after grading.",
+      "nonfinite_snapshot_executions": 0,
+      "nonfinite_snapshot_values": 0
+    }
+  },
+  "transport_runtime_stopped": true,
+  "base_model_weights_shared": false,
+  "raw_token_arrays_shared": false,
+  "original_4b_share_manifest_sha256": "fd676eef5d6c7d2c159b116afa6c07ca4969441127b846af003141374710da3e"
+}

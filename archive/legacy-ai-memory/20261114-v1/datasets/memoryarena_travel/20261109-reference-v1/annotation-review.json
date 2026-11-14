@@ -1,0 +1,760 @@
+{
+  "reviewed_queries": [
+    {
+      "query_id": "travel-11-turn-8-clause-8",
+      "split": "dev",
+      "source_group": "ea018172c91e521d6dd2f678d2f77f206c2467e5f3f0e41ce81e37a63a739529",
+      "clause": "For accommodation on day 6, I'm looking for a place that costs at least $150 more than Chelsea's day-5 accommodation, shares at least one house rule, is rated higher, and has the same room type.",
+      "reference": {
+        "person": "Chelsea",
+        "day": 5,
+        "slot": "accommodation",
+        "kind": "comparison_reference",
+        "target_day": 6
+      },
+      "review": "single_reviewer_checked_against_source_clause",
+      "correction_checked": true
+    },
+    {
+      "query_id": "travel-12-turn-4-clause-1",
+      "split": "train",
+      "source_group": "5328fbe95f34916cb6dbbb46397b48261a53fea98a4812a6bf9fe24622700d98",
+      "clause": "For lunch on the second day, I want a place that serves Italian cuisine, costs at least 30% less than Nathan's day 5 dinner, and has a rating within 0.3.",
+      "reference": {
+        "person": "Nathan",
+        "day": 5,
+        "slot": "dinner",
+        "kind": "comparison_reference",
+        "target_day": 2
+      },
+      "review": "single_reviewer_checked_against_source_clause",
+      "correction_checked": false
+    },
+    {
+      "query_id": "travel-16-turn-5-clause-1",
+      "split": "train",
+      "source_group": "562e25ef2e54b90dab7b42ee2fde41493b838fc0e87075cbee56c9d46c158c48",
+      "clause": "On the second day, I'd like to join Grace for breakfast.",
+      "reference": {
+        "person": "Grace",
+        "day": 2,
+        "slot": "breakfast",
+        "kind": "reuse_reference",
+        "target_day": 2
+      },
+      "review": "single_reviewer_checked_against_source_clause",
+      "correction_checked": false
+    },
+    {
+      "query_id": "travel-17-turn-4-clause-2",
+      "split": "train",
+      "source_group": "fca74abb5f81ad67d3f2ddf7bb75409fb9c6c348b2ad0680be8ed8be71cdc5dc",
+      "clause": "For my second-day accommodation, I want the same room type as Gina's, priced within 50%, and rated within 0.3.",
+      "reference": {
+        "person": "Gina",
+        "day": 2,
+        "slot": "accommodation",
+        "kind": "comparison_reference",
+        "target_day": 2
+      },
+      "review": "single_reviewer_checked_against_source_clause",
+      "correction_checked": false
+    },
+    {
+      "query_id": "travel-18-turn-6-clause-3",
+      "split": "train",
+      "source_group": "abf6824e3c0ea174b23a17495782db6915b98066c1619082871c12fcf66a1137",
+      "clause": "For lunch on the second day, I'd like to join Dylan.",
+      "reference": {
+        "person": "Dylan",
+        "day": 2,
+        "slot": "lunch",
+        "kind": "reuse_reference",
+        "target_day": 2
+      },
+      "review": "single_reviewer_checked_against_source_clause",
+      "correction_checked": false
+    },
+    {
+      "query_id": "travel-183-turn-7-clause-5",
+      "split": "train",
+      "source_group": "886852e6c3f70da40db097a5e36d7b90464e82790e7b27972b450cad004b35d2",
+      "clause": "For breakfast on the third day, I want a Fast Food place with a rating within 0.3 of Mason's first-day lunch, priced within $10 of his.",
+      "reference": {
+        "person": "Mason",
+        "day": 1,
+        "slot": "lunch",
+        "kind": "comparison_reference",
+        "target_day": 3
+      },
+      "review": "single_reviewer_checked_against_source_clause",
+      "correction_checked": false
+    },
+    {
+      "query_id": "travel-188-turn-4-clause-0",
+      "split": "train",
+      "source_group": "e722c3044629bf9db6705336a571b96dc94b001e10e7767023c3cda6e15b0e6e",
+      "clause": "For breakfast on the second day, I'd like a place that also serves Italian cuisine, is rated higher, and is priced within 30% of Rachel's third-day breakfast.",
+      "reference": {
+        "person": "Rachel",
+        "day": 3,
+        "slot": "breakfast",
+        "kind": "comparison_reference",
+        "target_day": 2
+      },
+      "review": "single_reviewer_checked_against_source_clause",
+      "correction_checked": false
+    },
+    {
+      "query_id": "travel-188-turn-5-clause-4",
+      "split": "train",
+      "source_group": "e722c3044629bf9db6705336a571b96dc94b001e10e7767023c3cda6e15b0e6e",
+      "clause": "On day 4, I'm looking for a dinner spot priced within 30% of Aurora's day-3 dinner, serving Fast Food cuisine, with a rating within 0.3.",
+      "reference": {
+        "person": "Aurora",
+        "day": 3,
+        "slot": "dinner",
+        "kind": "comparison_reference",
+        "target_day": 4
+      },
+      "review": "single_reviewer_checked_against_source_clause",
+      "correction_checked": true
+    },
+    {
+      "query_id": "travel-188-turn-5-clause-5",
+      "split": "train",
+      "source_group": "e722c3044629bf9db6705336a571b96dc94b001e10e7767023c3cda6e15b0e6e",
+      "clause": "On day 5, I want a breakfast spot with a rating within 0.5 of Aurora's day-4 dinner, costing at least $15 more, and offering all the same cuisines.",
+      "reference": {
+        "person": "Aurora",
+        "day": 4,
+        "slot": "dinner",
+        "kind": "comparison_reference",
+        "target_day": 5
+      },
+      "review": "single_reviewer_checked_against_source_clause",
+      "correction_checked": true
+    },
+    {
+      "query_id": "travel-19-turn-4-clause-1",
+      "split": "train",
+      "source_group": "814fa9f283a6c2ffdd00ed10119d635e1c5a0a9f24fbbcbc7f7a6c63ea96a829",
+      "clause": "For breakfast on the second day, I want somewhere that costs at least 50% more than Mason's third-day breakfast, has a rating within 0.3, and serves Mexican cuisine.",
+      "reference": {
+        "person": "Mason",
+        "day": 3,
+        "slot": "breakfast",
+        "kind": "comparison_reference",
+        "target_day": 2
+      },
+      "review": "single_reviewer_checked_against_source_clause",
+      "correction_checked": false
+    },
+    {
+      "query_id": "travel-193-turn-5-clause-5",
+      "split": "train",
+      "source_group": "2f6c2f7ee4c436da4694797d4c56ce6a4694c63ac587092e696f5a10d65205a3",
+      "clause": "For dinner on day 6, I'd like a place that costs at least 50% less than Natalie's day-4 dinner and serves BBQ cuisine.",
+      "reference": {
+        "person": "Natalie",
+        "day": 4,
+        "slot": "dinner",
+        "kind": "comparison_reference",
+        "target_day": 6
+      },
+      "review": "single_reviewer_checked_against_source_clause",
+      "correction_checked": true
+    },
+    {
+      "query_id": "travel-205-turn-3-clause-3",
+      "split": "train",
+      "source_group": "5326a11bdd662d32dae7ad805697eebed08c22a3b62cc4a0867e2509068c0d81",
+      "clause": "For dinner on the third day, I want a restaurant that serves BBQ cuisine, is rated at least as high as Jacob's second-day lunch, and costs within $5 of it.",
+      "reference": {
+        "person": "Jacob",
+        "day": 2,
+        "slot": "lunch",
+        "kind": "comparison_reference",
+        "target_day": 3
+      },
+      "review": "single_reviewer_checked_against_source_clause",
+      "correction_checked": false
+    },
+    {
+      "query_id": "travel-21-turn-5-clause-3",
+      "split": "train",
+      "source_group": "caaac57e77a02ec9850ac700faa12331729787111873f72e9796128d83ba3152",
+      "clause": "On the third day, for breakfast, I'd like to join Logan.",
+      "reference": {
+        "person": "Logan",
+        "day": 3,
+        "slot": "breakfast",
+        "kind": "reuse_reference",
+        "target_day": 3
+      },
+      "review": "single_reviewer_checked_against_source_clause",
+      "correction_checked": false
+    },
+    {
+      "query_id": "travel-212-turn-3-clause-5",
+      "split": "train",
+      "source_group": "209066c3f28fcf5bfb0d331e36f5eed551d9cbbf0012888ab7c135645d9aa612",
+      "clause": "On the third day, for lunch, I'm looking for a spot that serves Cafe cuisine, costs within $15 of Matthew's second-day breakfast, and has a rating within 0.5.",
+      "reference": {
+        "person": "Matthew",
+        "day": 2,
+        "slot": "breakfast",
+        "kind": "comparison_reference",
+        "target_day": 3
+      },
+      "review": "single_reviewer_checked_against_source_clause",
+      "correction_checked": false
+    },
+    {
+      "query_id": "travel-218-turn-7-clause-3",
+      "split": "dev",
+      "source_group": "edac52574adddfe1bd3140e8f4ce32045e375ac318b5435900f9c82fbff58b4d",
+      "clause": "For accommodation on the third day, I want a place that costs more than Victor's first-day accommodation, has the same no-pets rule, and offers a different room type.",
+      "reference": {
+        "person": "Victor",
+        "day": 1,
+        "slot": "accommodation",
+        "kind": "comparison_reference",
+        "target_day": 3
+      },
+      "review": "single_reviewer_checked_against_source_clause",
+      "correction_checked": false
+    },
+    {
+      "query_id": "travel-221-turn-4-clause-3",
+      "split": "train",
+      "source_group": "beddabdf6cbef57b0566790a9735aaee03aa889d9f202251409939c7f120e873",
+      "clause": "For dinner on the third day, I'd like to join Andrew.",
+      "reference": {
+        "person": "Andrew",
+        "day": 3,
+        "slot": "dinner",
+        "kind": "reuse_reference",
+        "target_day": 3
+      },
+      "review": "single_reviewer_checked_against_source_clause",
+      "correction_checked": false
+    },
+    {
+      "query_id": "travel-226-turn-6-clause-0",
+      "split": "dev",
+      "source_group": "e5d8bc7afcadc4762c51292e4b22d03c76bd64530637a74c06e304983343d47e",
+      "clause": "For my first-day accommodation, I'd like a place that costs at least $150 more than Sally's first-day stay, offers the same room type, and has a rating within 0.5.",
+      "reference": {
+        "person": "Sally",
+        "day": 1,
+        "slot": "accommodation",
+        "kind": "comparison_reference",
+        "target_day": 1
+      },
+      "review": "single_reviewer_checked_against_source_clause",
+      "correction_checked": false
+    },
+    {
+      "query_id": "travel-23-turn-4-clause-1",
+      "split": "train",
+      "source_group": "200ae33d4efe433c78823bdceb42c58c5cfda577467e9de71e647f965d25f59b",
+      "clause": "For dinner on the second day, I want to join Brenda.",
+      "reference": {
+        "person": "Brenda",
+        "day": 2,
+        "slot": "dinner",
+        "kind": "reuse_reference",
+        "target_day": 2
+      },
+      "review": "single_reviewer_checked_against_source_clause",
+      "correction_checked": false
+    },
+    {
+      "query_id": "travel-230-turn-3-clause-1",
+      "split": "train",
+      "source_group": "3d3de34c89de6ee2e3842970181d334c60700181fbc94a93b139d3f9eb7f869a",
+      "clause": "For my first-day accommodation, I want a place that costs at least $50 less than Eleanor's second-day accommodation, has a rating within 0.3, and offers a different room type.",
+      "reference": {
+        "person": "Eleanor",
+        "day": 2,
+        "slot": "accommodation",
+        "kind": "comparison_reference",
+        "target_day": 1
+      },
+      "review": "single_reviewer_checked_against_source_clause",
+      "correction_checked": false
+    },
+    {
+      "query_id": "travel-236-turn-5-clause-1",
+      "split": "dev",
+      "source_group": "ea018172c91e521d6dd2f678d2f77f206c2467e5f3f0e41ce81e37a63a739529",
+      "clause": "For lunch on the second day, I'm looking for a restaurant that serves Bakery cuisine like Benjamin's fifth-day breakfast and costs at least 50% less.",
+      "reference": {
+        "person": "Benjamin",
+        "day": 5,
+        "slot": "breakfast",
+        "kind": "comparison_reference",
+        "target_day": 2
+      },
+      "review": "single_reviewer_checked_against_source_clause",
+      "correction_checked": false
+    },
+    {
+      "query_id": "travel-238-turn-5-clause-1",
+      "split": "train",
+      "source_group": "2f6c2f7ee4c436da4694797d4c56ce6a4694c63ac587092e696f5a10d65205a3",
+      "clause": "I'd like to join Lisa for lunch on the second day.",
+      "reference": {
+        "person": "Lisa",
+        "day": 2,
+        "slot": "lunch",
+        "kind": "reuse_reference",
+        "target_day": 2
+      },
+      "review": "single_reviewer_checked_against_source_clause",
+      "correction_checked": false
+    },
+    {
+      "query_id": "travel-239-turn-7-clause-4",
+      "split": "train",
+      "source_group": "a822fa5b09425efd298b669bb4e243ca027eb23deccad8815cf738615cdb65d7",
+      "clause": "For dinner on day 6, I want somewhere that costs at least $15 less than Logan's dinner on day 6 and also serves Pizza cuisine.",
+      "reference": {
+        "person": "Logan",
+        "day": 6,
+        "slot": "dinner",
+        "kind": "comparison_reference",
+        "target_day": 6
+      },
+      "review": "single_reviewer_checked_against_source_clause",
+      "correction_checked": false
+    },
+    {
+      "query_id": "travel-240-turn-3-clause-6",
+      "split": "train",
+      "source_group": "33b05421d870d24b438c96c97321f3cd96f7cb36a62e88a724201ee39d67a139",
+      "clause": "For breakfast on day 7, I want a Bakery spot that costs at least $10 more than Audrey's first-day dinner, with a rating within 0.3.",
+      "reference": {
+        "person": "Audrey",
+        "day": 1,
+        "slot": "dinner",
+        "kind": "comparison_reference",
+        "target_day": 7
+      },
+      "review": "single_reviewer_checked_against_source_clause",
+      "correction_checked": false
+    },
+    {
+      "query_id": "travel-251-turn-5-clause-4",
+      "split": "dev",
+      "source_group": "cc976a1d4cc178affeb216379a104b1d105c3657ab65f9bb9689872bf1dfc0a1",
+      "clause": "For my day 4 accommodation, I prefer a place with a different room type than Henry's day 5 accommodation, costs at least $150 less, and has the same no-smoking rule.",
+      "reference": {
+        "person": "Henry",
+        "day": 5,
+        "slot": "accommodation",
+        "kind": "comparison_reference",
+        "target_day": 4
+      },
+      "review": "single_reviewer_checked_against_source_clause",
+      "correction_checked": false
+    },
+    {
+      "query_id": "travel-252-turn-3-clause-0",
+      "split": "train",
+      "source_group": "7b26279cd69b03ec1f52e968b1775628ed3fbb31c42b870bb577652994c2726e",
+      "clause": "For my first-day accommodation, I'd like a place rated within 0.3 of Vince's second-day stay but costing at least 20% more.",
+      "reference": {
+        "person": "Vince",
+        "day": 2,
+        "slot": "accommodation",
+        "kind": "comparison_reference",
+        "target_day": 1
+      },
+      "review": "single_reviewer_checked_against_source_clause",
+      "correction_checked": false
+    },
+    {
+      "query_id": "travel-254-turn-4-clause-5",
+      "split": "train",
+      "source_group": "952c2428e945d57d245c27aa2cd7d7e4da3a0bc60c0c39bca1825107fb9d2f66",
+      "clause": "On day 4, for breakfast, I'd like to join Dylan.",
+      "reference": {
+        "person": "Dylan",
+        "day": 4,
+        "slot": "breakfast",
+        "kind": "reuse_reference",
+        "target_day": 4
+      },
+      "review": "single_reviewer_checked_against_source_clause",
+      "correction_checked": false
+    },
+    {
+      "query_id": "travel-255-turn-5-clause-2",
+      "split": "train",
+      "source_group": "80a224b99529ff1647fae05e4ab14fec1237b5ce36141474cd06eb7f17d834ee",
+      "clause": "On day 4, for breakfast, I'd like to join Wendy.",
+      "reference": {
+        "person": "Wendy",
+        "day": 4,
+        "slot": "breakfast",
+        "kind": "reuse_reference",
+        "target_day": 4
+      },
+      "review": "single_reviewer_checked_against_source_clause",
+      "correction_checked": false
+    },
+    {
+      "query_id": "travel-256-turn-5-clause-2",
+      "split": "train",
+      "source_group": "c6ef7eadbc879d4bd3a925ddc4e95b5937a85290b43aa57cb7174ca952ef7c32",
+      "clause": "For dinner on the second day, I want somewhere that costs at least 30% more than Austin's second-day dinner, also serves Bakery cuisine, and is rated at least as high.",
+      "reference": {
+        "person": "Austin",
+        "day": 2,
+        "slot": "dinner",
+        "kind": "comparison_reference",
+        "target_day": 2
+      },
+      "review": "single_reviewer_checked_against_source_clause",
+      "correction_checked": false
+    },
+    {
+      "query_id": "travel-267-turn-5-clause-4",
+      "split": "train",
+      "source_group": "c4399426e7e9b4da73de2725a5dd6de0ca4f8e6eff00d323ee77c2ae52387f40",
+      "clause": "For accommodation on day 4, I want a place that costs at least 10% less than Paul's day-5 accommodation and shares the no-smoking rule.",
+      "reference": {
+        "person": "Paul",
+        "day": 5,
+        "slot": "accommodation",
+        "kind": "comparison_reference",
+        "target_day": 4
+      },
+      "review": "single_reviewer_checked_against_source_clause",
+      "correction_checked": true
+    },
+    {
+      "query_id": "travel-267-turn-5-clause-5",
+      "split": "train",
+      "source_group": "c4399426e7e9b4da73de2725a5dd6de0ca4f8e6eff00d323ee77c2ae52387f40",
+      "clause": "On day 5 for breakfast, I'm looking for a restaurant priced within 10% of Avery's day-6 lunch that also serves Seafood.",
+      "reference": {
+        "person": "Avery",
+        "day": 6,
+        "slot": "lunch",
+        "kind": "comparison_reference",
+        "target_day": 5
+      },
+      "review": "single_reviewer_checked_against_source_clause",
+      "correction_checked": true
+    },
+    {
+      "query_id": "travel-267-turn-5-clause-7",
+      "split": "train",
+      "source_group": "c4399426e7e9b4da73de2725a5dd6de0ca4f8e6eff00d323ee77c2ae52387f40",
+      "clause": "For dinner on day 6, I want a place that shares at least one cuisine type with Avery's day-5 dinner, has a rating within 0.3, and costs at least $15 less.",
+      "reference": {
+        "person": "Avery",
+        "day": 5,
+        "slot": "dinner",
+        "kind": "comparison_reference",
+        "target_day": 6
+      },
+      "review": "single_reviewer_checked_against_source_clause",
+      "correction_checked": true
+    },
+    {
+      "query_id": "travel-269-turn-6-clause-0",
+      "split": "train",
+      "source_group": "2e1822b9d61edcaaf4b94a4bd7adab31d52451b8562db71880b7cd5fdbfc7dd2",
+      "clause": "On the first day, I want accommodation that costs at least $20 less than Rachel's day 6 stay and shares at least one house rule.",
+      "reference": {
+        "person": "Rachel",
+        "day": 6,
+        "slot": "accommodation",
+        "kind": "comparison_reference",
+        "target_day": 1
+      },
+      "review": "single_reviewer_checked_against_source_clause",
+      "correction_checked": false
+    },
+    {
+      "query_id": "travel-33-turn-5-clause-2",
+      "split": "dev",
+      "source_group": "d71f5925ffef299fc4e7957b30f1be7c9758147ed87831adbce049910e0a0bef",
+      "clause": "For dinner on the third day, I'd like to join Sally.",
+      "reference": {
+        "person": "Sally",
+        "day": 3,
+        "slot": "dinner",
+        "kind": "reuse_reference",
+        "target_day": 3
+      },
+      "review": "single_reviewer_checked_against_source_clause",
+      "correction_checked": false
+    },
+    {
+      "query_id": "travel-34-turn-5-clause-1",
+      "split": "train",
+      "source_group": "dcac72b5c416a6c3dde77000e565f3338858fa837d5d1b26ce94a6740b4c95f7",
+      "clause": "For lunch on the second day, I'm looking for a restaurant that costs at least $10 more than Mason's first-day dinner, serves Tea cuisine, and has a rating within 1.0.",
+      "reference": {
+        "person": "Mason",
+        "day": 1,
+        "slot": "dinner",
+        "kind": "comparison_reference",
+        "target_day": 2
+      },
+      "review": "single_reviewer_checked_against_source_clause",
+      "correction_checked": false
+    },
+    {
+      "query_id": "travel-35-turn-4-clause-5",
+      "split": "train",
+      "source_group": "433adf81e514cb6d76531ed0fdc930010fb7d4617d9b48bd4a4ea18b5d10bfd2",
+      "clause": "For lunch on the third day, I'd like a place that serves Desserts, costs more than Joseph's first-day dinner, and has a rating within 0.3 of it.",
+      "reference": {
+        "person": "Joseph",
+        "day": 1,
+        "slot": "dinner",
+        "kind": "comparison_reference",
+        "target_day": 3
+      },
+      "review": "single_reviewer_checked_against_source_clause",
+      "correction_checked": false
+    },
+    {
+      "query_id": "travel-36-turn-5-clause-2",
+      "split": "train",
+      "source_group": "f4f36f7e785f2be21541ddadbb834c14e3dbae021d8325faad78f52ffc6eff07",
+      "clause": "For lunch on the third day, I'd like to join John.",
+      "reference": {
+        "person": "John",
+        "day": 3,
+        "slot": "lunch",
+        "kind": "reuse_reference",
+        "target_day": 3
+      },
+      "review": "single_reviewer_checked_against_source_clause",
+      "correction_checked": false
+    },
+    {
+      "query_id": "travel-37-turn-4-clause-4",
+      "split": "train",
+      "source_group": "67652ca7b107962791277de76b9ffe81b63d27ccafaad4ef61b9a9a4c2393868",
+      "clause": "On day 4, I'm looking for a dinner spot that serves Pizza cuisine, costs at least 50% less than Julia's breakfast on day 5, and has a rating within 0.5.",
+      "reference": {
+        "person": "Julia",
+        "day": 5,
+        "slot": "breakfast",
+        "kind": "comparison_reference",
+        "target_day": 4
+      },
+      "review": "single_reviewer_checked_against_source_clause",
+      "correction_checked": false
+    },
+    {
+      "query_id": "travel-39-turn-4-clause-6",
+      "split": "train",
+      "source_group": "94152a11bb6cf85cd1d68abf4596db1f816857ef39ac57139edb6f1f8c006819",
+      "clause": "I'd like to join Michelle for dinner on day 4.",
+      "reference": {
+        "person": "Michelle",
+        "day": 4,
+        "slot": "dinner",
+        "kind": "reuse_reference",
+        "target_day": 4
+      },
+      "review": "single_reviewer_checked_against_source_clause",
+      "correction_checked": false
+    },
+    {
+      "query_id": "travel-4-turn-5-clause-2",
+      "split": "dev",
+      "source_group": "fc7a086b3e86788cfe6e14946ef0a1377b02583a146fe8eb6b39b156f46d49fb",
+      "clause": "On the second day, I want accommodation that, compared to Jennifer's second-day stay, is priced within 20%, shares at least one house rule, has the same room type, and is rated higher.",
+      "reference": {
+        "person": "Jennifer",
+        "day": 2,
+        "slot": "accommodation",
+        "kind": "comparison_reference",
+        "target_day": 2
+      },
+      "review": "single_reviewer_checked_against_source_clause",
+      "correction_checked": false
+    },
+    {
+      "query_id": "travel-40-turn-4-clause-7",
+      "split": "train",
+      "source_group": "59362be632d024a73b8ca7b650ce47484dbcd131fe537a76ce8c15face311e79",
+      "clause": "For breakfast on day 4, I'm looking for a restaurant that also serves Bakery cuisine, has a rating within 1.0 of Marge's third-day breakfast, and is priced within $20.",
+      "reference": {
+        "person": "Marge",
+        "day": 3,
+        "slot": "breakfast",
+        "kind": "comparison_reference",
+        "target_day": 4
+      },
+      "review": "single_reviewer_checked_against_source_clause",
+      "correction_checked": false
+    },
+    {
+      "query_id": "travel-6-turn-5-clause-0",
+      "split": "train",
+      "source_group": "7df22fe7293b12b32dbe7f0bfe4c5959dddf891075ce08d31e0ad29ffb9939ea",
+      "clause": "For my first-day accommodation, I want a place priced within $100 of Brenda's day-4 accommodation and rated at least as high.",
+      "reference": {
+        "person": "Brenda",
+        "day": 4,
+        "slot": "accommodation",
+        "kind": "comparison_reference",
+        "target_day": 1
+      },
+      "review": "single_reviewer_checked_against_source_clause",
+      "correction_checked": true
+    },
+    {
+      "query_id": "travel-6-turn-5-clause-2",
+      "split": "train",
+      "source_group": "7df22fe7293b12b32dbe7f0bfe4c5959dddf891075ce08d31e0ad29ffb9939ea",
+      "clause": "For breakfast on the third day, I'd like to join Kelly.",
+      "reference": {
+        "person": "Kelly",
+        "day": 3,
+        "slot": "breakfast",
+        "kind": "reuse_reference",
+        "target_day": 3
+      },
+      "review": "single_reviewer_checked_against_source_clause",
+      "correction_checked": false
+    },
+    {
+      "query_id": "travel-7-turn-4-clause-4",
+      "split": "dev",
+      "source_group": "4fdc3633f84ef59c37a557efc2ba74dcd16460b3e6637af8134b961408484339",
+      "clause": "On the third day, I want accommodation that costs at least 20% less than Laura's day-4 stay and is rated higher.",
+      "reference": {
+        "person": "Laura",
+        "day": 4,
+        "slot": "accommodation",
+        "kind": "comparison_reference",
+        "target_day": 3
+      },
+      "review": "single_reviewer_checked_against_source_clause",
+      "correction_checked": true
+    },
+    {
+      "query_id": "travel-7-turn-4-clause-6",
+      "split": "dev",
+      "source_group": "4fdc3633f84ef59c37a557efc2ba74dcd16460b3e6637af8134b961408484339",
+      "clause": "For accommodation on day 4, I'd like a place that costs at least $100 less than Isabella's second-day stay and has the same room type.",
+      "reference": {
+        "person": "Isabella",
+        "day": 2,
+        "slot": "accommodation",
+        "kind": "comparison_reference",
+        "target_day": 4
+      },
+      "review": "single_reviewer_checked_against_source_clause",
+      "correction_checked": false
+    },
+    {
+      "query_id": "travel-72-turn-5-clause-10",
+      "split": "train",
+      "source_group": "7b26279cd69b03ec1f52e968b1775628ed3fbb31c42b870bb577652994c2726e",
+      "clause": "On day 7, for lunch, I'm looking for a spot that costs at least 20% more than Zoey's day-6 lunch, is rated higher, and also serves American cuisine.",
+      "reference": {
+        "person": "Zoey",
+        "day": 6,
+        "slot": "lunch",
+        "kind": "comparison_reference",
+        "target_day": 7
+      },
+      "review": "single_reviewer_checked_against_source_clause",
+      "correction_checked": true
+    },
+    {
+      "query_id": "travel-72-turn-5-clause-6",
+      "split": "train",
+      "source_group": "7b26279cd69b03ec1f52e968b1775628ed3fbb31c42b870bb577652994c2726e",
+      "clause": "For breakfast on day 6, I want a place rated higher than Blake's day-5 breakfast, also serving Desserts cuisine, and priced within 50% of it.",
+      "reference": {
+        "person": "Blake",
+        "day": 5,
+        "slot": "breakfast",
+        "kind": "comparison_reference",
+        "target_day": 6
+      },
+      "review": "single_reviewer_checked_against_source_clause",
+      "correction_checked": true
+    },
+    {
+      "query_id": "travel-74-turn-2-clause-12",
+      "split": "train",
+      "source_group": "952c2428e945d57d245c27aa2cd7d7e4da3a0bc60c0c39bca1825107fb9d2f66",
+      "clause": "For my accommodation on day 6, I prefer a place priced within $100 of Sophia's day-4 accommodation and rated higher.",
+      "reference": {
+        "person": "Sophia",
+        "day": 4,
+        "slot": "accommodation",
+        "kind": "comparison_reference",
+        "target_day": 6
+      },
+      "review": "single_reviewer_checked_against_source_clause",
+      "correction_checked": true
+    },
+    {
+      "query_id": "travel-74-turn-2-clause-6",
+      "split": "train",
+      "source_group": "952c2428e945d57d245c27aa2cd7d7e4da3a0bc60c0c39bca1825107fb9d2f66",
+      "clause": "For my accommodation on day 4, I want a place that costs at least $150 less than Sophia's day-5 accommodation, has a different room type, shares at least one house rule, and has a rating within 1.0 of hers.",
+      "reference": {
+        "person": "Sophia",
+        "day": 5,
+        "slot": "accommodation",
+        "kind": "comparison_reference",
+        "target_day": 4
+      },
+      "review": "single_reviewer_checked_against_source_clause",
+      "correction_checked": true
+    },
+    {
+      "query_id": "travel-81-turn-5-clause-6",
+      "split": "train",
+      "source_group": "f4f36f7e785f2be21541ddadbb834c14e3dbae021d8325faad78f52ffc6eff07",
+      "clause": "On the third day, I want accommodation that costs at least $50 less than Walter's day-4 stay, has a rating within 0.5, and offers the same room type.",
+      "reference": {
+        "person": "Walter",
+        "day": 4,
+        "slot": "accommodation",
+        "kind": "comparison_reference",
+        "target_day": 3
+      },
+      "review": "single_reviewer_checked_against_source_clause",
+      "correction_checked": true
+    },
+    {
+      "query_id": "travel-9-turn-5-clause-2",
+      "split": "train",
+      "source_group": "55f195eacc56df6c0c1cfa6722897abe0f88348247243ee32cbc99badfde300c",
+      "clause": "For breakfast on the third day, I'm looking for a spot that serves Seafood cuisine, is priced within $15 of Chandler's dinner on day 4, and is rated higher.",
+      "reference": {
+        "person": "Chandler",
+        "day": 4,
+        "slot": "dinner",
+        "kind": "comparison_reference",
+        "target_day": 3
+      },
+      "review": "single_reviewer_checked_against_source_clause",
+      "correction_checked": false
+    }
+  ],
+  "review_scope": "Person, source day, source slot and reuse/comparison meaning; not actual worker utility",
+  "corrections": [
+    "same rule / price range is constraint reference, not same-choice reuse",
+    "day-6 syntax must not fall back to current day 5"
+  ],
+  "test_content_manually_reviewed": false
+}

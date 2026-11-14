@@ -1,0 +1,41 @@
+{
+  "at": "2026-11-07T10:31:04.469954+00:00",
+  "model_api_calls": 0,
+  "specification": {
+    "probe_id": "sphinx-alias-qualified_known",
+    "context_task": "sphinx-doc__sphinx-8627",
+    "mechanism": "namespace_resolution",
+    "fixture": {
+      "annotation": "qualified_known",
+      "namespace_present": true
+    },
+    "interpreter": "/opt/miniconda3/envs/testbed/bin/python",
+    "program": "import types\nfrom sphinx.util.typing import get_type_hints\nclass Example:pass\nExample.__annotations__={'value':'example.Alias'}\nnamespace={'example':types.SimpleNamespace(Alias=str)}\nannotations=get_type_hints(Example,globalns=namespace)\nvalue=annotations['value']\nresult={'value_repr':repr(value),'resolved_to_str_type':value is str,'returned_unresolved_string':isinstance(value,str)}\n"
+  },
+  "public_context_file": "datasets/memory_relations/20261107-discovery-v1/evidence/public-code/sphinx-doc__sphinx-8627.json",
+  "image_id": "sha256:04021b2c427e043e32f595a6de6c91e0f575eec3b23fbe50a42fc7c9249f0498",
+  "executed_program_sha256": "f18b62f2480679bb62ccd085058ee31af580324f6ab4197170291823cc2000e9",
+  "observed": {
+    "kind": "returned",
+    "result": {
+      "resolved_to_str_type": true,
+      "returned_unresolved_string": false,
+      "value_repr": "<class 'str'>"
+    }
+  },
+  "execution": {
+    "returncode": 0,
+    "stdout": "MEMORY_RELATION_RESULT:{\"kind\": \"returned\", \"result\": {\"resolved_to_str_type\": true, \"returned_unresolved_string\": false, \"value_repr\": \"<class 'str'>\"}}\n",
+    "stderr": "",
+    "seconds": 0.6840892189939041,
+    "image_id": "sha256:04021b2c427e043e32f595a6de6c91e0f575eec3b23fbe50a42fc7c9249f0498",
+    "interpreter": "/opt/miniconda3/envs/testbed/bin/python",
+    "resources": {
+      "cpus": 1,
+      "memory": "1g",
+      "network": "none",
+      "root_filesystem": "read-only"
+    }
+  },
+  "interpretation": "Controlled mechanism probe. Expected validation exceptions are observed outcomes, not infrastructure failures. Shell success is not treated as semantic success. No actor or memory policy was evaluated."
+}

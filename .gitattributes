@@ -8,3 +8,6 @@
 
 # The original literature CSV includes a BOM and intentional CRLF endings.
 /docs/references/literature/papers.csv -text whitespace=cr-at-eol
+
+# Frozen working-tree dataset snapshots retain original bytes and formatting.
+/archive/** -text -whitespace

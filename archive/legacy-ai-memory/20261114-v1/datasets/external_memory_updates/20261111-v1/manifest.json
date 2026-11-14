@@ -1,0 +1,49 @@
+{
+  "schema": "external-memory-updates-v1",
+  "sha256": {
+    "cases.jsonl": "66df13347ab0c4b6ffec85613385ed33e191626eddfc638e2e05f54b28eb34d9",
+    "annotations.jsonl": "97dfd54c835d5b613ad202f0e1e732ad5dbcc0c30abad06ed1193919bfd844a7",
+    "decisions.jsonl": "2e239af17a3496d04bae0c9ce86303b2ea1d5de20d58993d3fd6ad805e183422",
+    "jobs.jsonl": "87efd5d301d12b922482a86f247ee6166288d493c371249fb408253b949802e5",
+    "selector-inputs.jsonl": "422b85bdeb5dc6cf178877366d226d4f202a603f384ebad202fb2e16dc7baf9d",
+    "selector-labels.jsonl": "8c8bfa1fe2552805b59aedeeafb0ffb17f765b1b92374ddd4a63b0d3ae56a774",
+    "exclusions.jsonl": "48ca30db5631971dc8e0543d4468ab96c48faf90254d86f9c0aa98ff0c05305b",
+    "protocol.json": "d241a8a664e7c2e7ef0dc5bfe8c644c8295fc018b27f84e7ea0c1670a87c0588",
+    "source-provenance.json": "90698a47a141769c2a727a247f94dbbe5620f539075b2f28b84af3ddf5a05075"
+  },
+  "summary": {
+    "questions": {
+      "beam": 180,
+      "longmemeval_s": 72
+    },
+    "cases": {
+      "beam/confirm": 64,
+      "beam/dev": 29,
+      "beam/train": 28,
+      "longmemeval_s/design": 47
+    },
+    "families": {
+      "beam/confirm": 44,
+      "beam/dev": 18,
+      "beam/train": 19,
+      "longmemeval_s/design": 47
+    },
+    "cases_with_stale_value": {
+      "beam/confirm": 35,
+      "beam/dev": 18,
+      "beam/train": 17
+    },
+    "excluded": {
+      "answer_also_in_old_evidence": 2,
+      "answer_not_in_new_evidence": 30,
+      "answer_too_long_for_value_matching": 6,
+      "evidence_record_too_long": 1,
+      "evidence_turn_not_marked": 2,
+      "no_evidence_ids": 1,
+      "old_or_new_ids_missing_or_overlapping": 16,
+      "rubric_not_one_short_value": 26
+    },
+    "decisions": 1344,
+    "distinct_jobs": 1206
+  }
+}

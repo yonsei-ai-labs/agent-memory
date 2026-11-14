@@ -1,0 +1,1008 @@
+[
+  {
+    "id": "1",
+    "run": "9b-plans-27b-works",
+    "text": "Delivery path, 27B: the quoted log beats its own turns",
+    "checks": [
+      {
+        "kind": "verdict",
+        "first": "own_turns",
+        "second": "quoted_log",
+        "part": "needs_memory",
+        "expected": [
+          "difference"
+        ],
+        "direction": "up",
+        "observed": {
+          "verdict": "difference",
+          "net": 33,
+          "states": 172,
+          "units_up": 30,
+          "units_down": 1,
+          "sign_test_p": 2.9802322387695312e-08
+        },
+        "holds": true
+      }
+    ],
+    "holds": true
+  },
+  {
+    "id": "2",
+    "run": "9b-plans-9b-works",
+    "text": "Delivery path, 9B: no difference",
+    "checks": [
+      {
+        "kind": "verdict",
+        "first": "own_turns",
+        "second": "quoted_log",
+        "part": "needs_memory",
+        "expected": [
+          "no difference seen",
+          "uncertain"
+        ],
+        "observed": {
+          "verdict": "no difference seen",
+          "net": 1,
+          "states": 172,
+          "units_up": 8,
+          "units_down": 7,
+          "sign_test_p": 1.0
+        },
+        "holds": true
+      }
+    ],
+    "holds": true
+  },
+  {
+    "id": "3a",
+    "run": "9b-plans-9b-works",
+    "text": "Form, 9B: records beat the quoted log",
+    "checks": [
+      {
+        "kind": "verdict",
+        "first": "quoted_log",
+        "second": "all_records",
+        "part": "needs_memory",
+        "expected": [
+          "difference"
+        ],
+        "direction": "up",
+        "observed": {
+          "verdict": "difference",
+          "net": 35,
+          "states": 172,
+          "units_up": 27,
+          "units_down": 4,
+          "sign_test_p": 3.39532271027565e-05
+        },
+        "holds": true
+      }
+    ],
+    "holds": true
+  },
+  {
+    "id": "3b",
+    "run": "9b-plans-27b-works",
+    "text": "Form, 27B: records beat the quoted log",
+    "checks": [
+      {
+        "kind": "verdict",
+        "first": "quoted_log",
+        "second": "all_records",
+        "part": "needs_memory",
+        "expected": [
+          "difference"
+        ],
+        "direction": "up",
+        "observed": {
+          "verdict": "uncertain",
+          "net": 16,
+          "states": 172,
+          "units_up": 16,
+          "units_down": 1,
+          "sign_test_p": 0.000274658203125
+        },
+        "holds": false
+      }
+    ],
+    "holds": false
+  },
+  {
+    "id": "4a",
+    "run": "9b-plans-9b-works",
+    "text": "Amount, 9B: only the needed records beat every record",
+    "checks": [
+      {
+        "kind": "verdict",
+        "first": "all_records",
+        "second": "needed_records",
+        "part": "needs_memory",
+        "expected": [
+          "difference"
+        ],
+        "direction": "up",
+        "observed": {
+          "verdict": "difference",
+          "net": 58,
+          "states": 172,
+          "units_up": 43,
+          "units_down": 0,
+          "sign_test_p": 2.2737367544323206e-13
+        },
+        "holds": true
+      }
+    ],
+    "holds": true
+  },
+  {
+    "id": "4b",
+    "run": "9b-plans-27b-works",
+    "text": "Amount, 27B: no difference",
+    "checks": [
+      {
+        "kind": "verdict",
+        "first": "all_records",
+        "second": "needed_records",
+        "part": "needs_memory",
+        "expected": [
+          "no difference seen"
+        ],
+        "observed": {
+          "verdict": "no difference seen",
+          "net": 2,
+          "states": 172,
+          "units_up": 2,
+          "units_down": 0,
+          "sign_test_p": 0.5
+        },
+        "holds": true
+      }
+    ],
+    "holds": true
+  },
+  {
+    "id": "5a",
+    "run": "9b-plans-9b-works",
+    "text": "First plan failed, every record, 9B: at most 4 of 43",
+    "checks": [
+      {
+        "kind": "success",
+        "condition": "all_records",
+        "cell": [
+          "retry_branch",
+          1
+        ],
+        "max": 4,
+        "observed": {
+          "success": 1,
+          "states": 43
+        },
+        "holds": true
+      }
+    ],
+    "holds": true
+  },
+  {
+    "id": "5b",
+    "run": "9b-plans-27b-works",
+    "text": "First plan failed, every record, 27B: at least 39 of 43",
+    "checks": [
+      {
+        "kind": "success",
+        "condition": "all_records",
+        "cell": [
+          "retry_branch",
+          1
+        ],
+        "min": 39,
+        "observed": {
+          "success": 41,
+          "states": 43
+        },
+        "holds": true
+      }
+    ],
+    "holds": true
+  },
+  {
+    "id": "6",
+    "run": "9b-plans-27b-works",
+    "text": "Where the 27B path difference sits: the dinner read from its own turns is withheld",
+    "checks": [
+      {
+        "kind": "success",
+        "condition": "own_turns",
+        "cell": [
+          "observed_component",
+          1
+        ],
+        "max": 21,
+        "observed": {
+          "success": 16,
+          "states": 43
+        },
+        "holds": true
+      },
+      {
+        "kind": "success",
+        "condition": "quoted_log",
+        "cell": [
+          "observed_component",
+          1
+        ],
+        "min": 37,
+        "observed": {
+          "success": 41,
+          "states": 43
+        },
+        "holds": true
+      },
+      {
+        "kind": "success",
+        "condition": "own_turns",
+        "cell": [
+          "observed_component",
+          0
+        ],
+        "min": 37,
+        "observed": {
+          "success": 43,
+          "states": 43
+        },
+        "holds": true
+      },
+      {
+        "kind": "kind_share",
+        "condition": "own_turns",
+        "cell": [
+          "observed_component",
+          1
+        ],
+        "slot": "dinner",
+        "value": "withheld",
+        "min": 0.7,
+        "observed": {
+          "withheld": 27,
+          "not_correct": 27,
+          "share": 1.0
+        },
+        "holds": true
+      }
+    ],
+    "holds": true
+  },
+  {
+    "id": "7a",
+    "run": "9b-plans-9b-works",
+    "text": "Already-sufficient states, 9B: turns and log break at most 3 of 86, every record breaks 3 to 12",
+    "checks": [
+      {
+        "kind": "broken",
+        "condition": "own_turns",
+        "max": 3,
+        "observed": {
+          "broken": 0,
+          "solved_without_memory": 86
+        },
+        "holds": true
+      },
+      {
+        "kind": "broken",
+        "condition": "quoted_log",
+        "max": 3,
+        "observed": {
+          "broken": 0,
+          "solved_without_memory": 86
+        },
+        "holds": true
+      },
+      {
+        "kind": "broken",
+        "condition": "all_records",
+        "min": 3,
+        "max": 12,
+        "observed": {
+          "broken": 3,
+          "solved_without_memory": 86
+        },
+        "holds": true
+      }
+    ],
+    "holds": true
+  },
+  {
+    "id": "7b",
+    "run": "9b-plans-27b-works",
+    "text": "Already-sufficient states, 27B: no condition breaks more than 2 of 86",
+    "checks": [
+      {
+        "kind": "broken",
+        "condition": "own_turns",
+        "max": 2,
+        "observed": {
+          "broken": 0,
+          "solved_without_memory": 86
+        },
+        "holds": true
+      },
+      {
+        "kind": "broken",
+        "condition": "quoted_log",
+        "max": 2,
+        "observed": {
+          "broken": 0,
+          "solved_without_memory": 86
+        },
+        "holds": true
+      },
+      {
+        "kind": "broken",
+        "condition": "all_records",
+        "max": 2,
+        "observed": {
+          "broken": 0,
+          "solved_without_memory": 86
+        },
+        "holds": true
+      },
+      {
+        "kind": "broken",
+        "condition": "needed_records",
+        "max": 2,
+        "observed": {
+          "broken": 0,
+          "solved_without_memory": 86
+        },
+        "holds": true
+      }
+    ],
+    "holds": true
+  },
+  {
+    "id": "levels-9b",
+    "run": "9b-plans-9b-works",
+    "text": "Expected levels, 9B, of 172 states that need memory",
+    "checks": [
+      {
+        "kind": "success",
+        "condition": "none",
+        "max": 12,
+        "observed": {
+          "success": 8,
+          "states": 172
+        },
+        "holds": true
+      },
+      {
+        "kind": "success",
+        "condition": "own_turns",
+        "min": 65,
+        "max": 100,
+        "observed": {
+          "success": 78,
+          "states": 172
+        },
+        "holds": true
+      },
+      {
+        "kind": "success",
+        "condition": "quoted_log",
+        "min": 65,
+        "max": 100,
+        "observed": {
+          "success": 79,
+          "states": 172
+        },
+        "holds": true
+      },
+      {
+        "kind": "success",
+        "condition": "all_records",
+        "min": 105,
+        "max": 140,
+        "observed": {
+          "success": 114,
+          "states": 172
+        },
+        "holds": true
+      },
+      {
+        "kind": "success",
+        "condition": "needed_records",
+        "min": 168,
+        "observed": {
+          "success": 172,
+          "states": 172
+        },
+        "holds": true
+      }
+    ],
+    "holds": true
+  },
+  {
+    "id": "levels-27b",
+    "run": "9b-plans-27b-works",
+    "text": "Expected levels, 27B, of 172 states that need memory",
+    "checks": [
+      {
+        "kind": "success",
+        "condition": "none",
+        "max": 5,
+        "observed": {
+          "success": 0,
+          "states": 172
+        },
+        "holds": true
+      },
+      {
+        "kind": "success",
+        "condition": "own_turns",
+        "min": 85,
+        "max": 120,
+        "observed": {
+          "success": 121,
+          "states": 172
+        },
+        "holds": false
+      },
+      {
+        "kind": "success",
+        "condition": "quoted_log",
+        "min": 130,
+        "max": 160,
+        "observed": {
+          "success": 154,
+          "states": 172
+        },
+        "holds": true
+      },
+      {
+        "kind": "success",
+        "condition": "all_records",
+        "min": 165,
+        "observed": {
+          "success": 170,
+          "states": 172
+        },
+        "holds": true
+      },
+      {
+        "kind": "success",
+        "condition": "needed_records",
+        "min": 168,
+        "observed": {
+          "success": 172,
+          "states": 172
+        },
+        "holds": true
+      }
+    ],
+    "holds": false
+  },
+  {
+    "id": "8",
+    "run": "27b-plans-27b-works",
+    "lean": true,
+    "text": "Author control (lean, about 65%): the 27B reading past plans it wrote itself still does better from the log",
+    "checks": [
+      {
+        "kind": "verdict",
+        "first": "own_turns",
+        "second": "quoted_log",
+        "part": "needs_memory",
+        "expected": [
+          "difference"
+        ],
+        "direction": "up",
+        "observed": {
+          "verdict": "difference",
+          "net": 37,
+          "states": 168,
+          "units_up": 31,
+          "units_down": 0,
+          "sign_test_p": 9.313225746154785e-10
+        },
+        "holds": true
+      },
+      {
+        "kind": "success",
+        "condition": "own_turns",
+        "min": 92,
+        "max": 121,
+        "observed": {
+          "success": 115,
+          "states": 168
+        },
+        "holds": true
+      },
+      {
+        "kind": "success",
+        "condition": "quoted_log",
+        "min": 134,
+        "max": 155,
+        "observed": {
+          "success": 152,
+          "states": 168
+        },
+        "holds": true
+      }
+    ],
+    "holds": null,
+    "lean_went_as_expected": true
+  },
+  {
+    "id": "9a",
+    "run": "9b-plans-9b-works",
+    "text": "A weak selector hurts the 9B: its own first-instruction choices are worse than every record",
+    "checks": [
+      {
+        "kind": "verdict",
+        "first": "all_records",
+        "second": "selected_by_9b",
+        "part": "needs_memory",
+        "expected": [
+          "difference"
+        ],
+        "direction": "down",
+        "observed": {
+          "verdict": "difference",
+          "net": -81,
+          "states": 172,
+          "units_up": 0,
+          "units_down": 39,
+          "sign_test_p": 3.637978807091713e-12
+        },
+        "holds": true
+      },
+      {
+        "kind": "success",
+        "condition": "selected_by_9b",
+        "min": 15,
+        "max": 50,
+        "observed": {
+          "success": 33,
+          "states": 172
+        },
+        "holds": true
+      },
+      {
+        "kind": "broken",
+        "condition": "selected_by_9b",
+        "min": 4,
+        "max": 20,
+        "observed": {
+          "broken": 10,
+          "solved_without_memory": 86
+        },
+        "holds": true
+      }
+    ],
+    "holds": true
+  },
+  {
+    "id": "9b",
+    "run": "9b-plans-27b-works",
+    "text": "A weak selector hurts the 27B: the 9B's first-instruction choices are worse than every record",
+    "checks": [
+      {
+        "kind": "verdict",
+        "first": "all_records",
+        "second": "selected_by_9b",
+        "part": "needs_memory",
+        "expected": [
+          "difference"
+        ],
+        "direction": "down",
+        "observed": {
+          "verdict": "difference",
+          "net": -141,
+          "states": 172,
+          "units_up": 0,
+          "units_down": 43,
+          "sign_test_p": 2.2737367544323206e-13
+        },
+        "holds": true
+      },
+      {
+        "kind": "success",
+        "condition": "selected_by_9b",
+        "min": 12,
+        "max": 50,
+        "observed": {
+          "success": 29,
+          "states": 172
+        },
+        "holds": true
+      },
+      {
+        "kind": "broken",
+        "condition": "selected_by_9b",
+        "max": 4,
+        "observed": {
+          "broken": 1,
+          "solved_without_memory": 86
+        },
+        "holds": true
+      }
+    ],
+    "holds": true
+  },
+  {
+    "id": "10",
+    "run": "9b-plans-9b-works",
+    "text": "A strong selector under the first instruction is not clearly better than every record for the 9B",
+    "checks": [
+      {
+        "kind": "total_gap",
+        "first": "all_records",
+        "second": "selected_by_27b",
+        "max": 26,
+        "observed": {
+          "all_records": 197,
+          "selected_by_27b": 185,
+          "gap": 12
+        },
+        "holds": true
+      },
+      {
+        "kind": "success",
+        "condition": "selected_by_27b",
+        "min": 115,
+        "max": 150,
+        "observed": {
+          "success": 126,
+          "states": 172
+        },
+        "holds": true
+      },
+      {
+        "kind": "broken",
+        "condition": "selected_by_27b",
+        "min": 12,
+        "max": 32,
+        "observed": {
+          "broken": 27,
+          "solved_without_memory": 86
+        },
+        "holds": true
+      }
+    ],
+    "holds": true
+  },
+  {
+    "id": "11",
+    "run": "9b-plans-9b-works",
+    "text": "CENTRAL: the 27B solving first and naming its records lifts the 9B to the labelled level",
+    "checks": [
+      {
+        "kind": "verdict",
+        "first": "all_records",
+        "second": "selected_by_27b_solve_first",
+        "part": "needs_memory",
+        "expected": [
+          "difference"
+        ],
+        "direction": "up",
+        "observed": {
+          "verdict": "difference",
+          "net": 53,
+          "states": 172,
+          "units_up": 42,
+          "units_down": 0,
+          "sign_test_p": 4.547473508864641e-13
+        },
+        "holds": true
+      },
+      {
+        "kind": "verdict",
+        "first": "needed_records",
+        "second": "selected_by_27b_solve_first",
+        "part": "needs_memory",
+        "expected": [
+          "no difference seen"
+        ],
+        "observed": {
+          "verdict": "no difference seen",
+          "net": -5,
+          "states": 172,
+          "units_up": 0,
+          "units_down": 5,
+          "sign_test_p": 0.0625
+        },
+        "holds": true
+      },
+      {
+        "kind": "success",
+        "condition": "selected_by_27b_solve_first",
+        "min": 160,
+        "observed": {
+          "success": 167,
+          "states": 172
+        },
+        "holds": true
+      },
+      {
+        "kind": "broken",
+        "condition": "selected_by_27b_solve_first",
+        "max": 3,
+        "observed": {
+          "broken": 2,
+          "solved_without_memory": 86
+        },
+        "holds": true
+      }
+    ],
+    "holds": true
+  },
+  {
+    "id": "12",
+    "run": "9b-plans-9b-works",
+    "text": "Not a matter of one wording: the same under the state-first instruction",
+    "checks": [
+      {
+        "kind": "verdict",
+        "first": "all_records",
+        "second": "selected_by_27b_state_first",
+        "part": "needs_memory",
+        "expected": [
+          "difference"
+        ],
+        "direction": "up",
+        "observed": {
+          "verdict": "difference",
+          "net": 52,
+          "states": 172,
+          "units_up": 41,
+          "units_down": 0,
+          "sign_test_p": 9.094947017729282e-13
+        },
+        "holds": true
+      },
+      {
+        "kind": "verdict",
+        "first": "needed_records",
+        "second": "selected_by_27b_state_first",
+        "part": "needs_memory",
+        "expected": [
+          "no difference seen"
+        ],
+        "observed": {
+          "verdict": "no difference seen",
+          "net": -6,
+          "states": 172,
+          "units_up": 0,
+          "units_down": 6,
+          "sign_test_p": 0.03125
+        },
+        "holds": true
+      },
+      {
+        "kind": "success",
+        "condition": "selected_by_27b_state_first",
+        "min": 160,
+        "observed": {
+          "success": 166,
+          "states": 172
+        },
+        "holds": true
+      },
+      {
+        "kind": "broken",
+        "condition": "selected_by_27b_state_first",
+        "max": 3,
+        "observed": {
+          "broken": 1,
+          "solved_without_memory": 86
+        },
+        "holds": true
+      }
+    ],
+    "holds": true
+  },
+  {
+    "id": "13",
+    "run": "9b-plans-9b-works",
+    "text": "A better instruction alone does not rescue the weak selector: the 9B solving first and reading its own choices does not beat every record",
+    "checks": [
+      {
+        "kind": "net",
+        "first": "all_records",
+        "second": "selected_by_9b_solve_first",
+        "part": "needs_memory",
+        "max": 17,
+        "observed": {
+          "net": 0,
+          "states": 172
+        },
+        "holds": true
+      },
+      {
+        "kind": "verdict",
+        "first": "selected_by_27b_solve_first",
+        "second": "selected_by_9b_solve_first",
+        "part": "needs_memory",
+        "expected": [
+          "difference"
+        ],
+        "direction": "down",
+        "observed": {
+          "verdict": "difference",
+          "net": -53,
+          "states": 172,
+          "units_up": 0,
+          "units_down": 40,
+          "sign_test_p": 1.8189894035458565e-12
+        },
+        "holds": true
+      },
+      {
+        "kind": "success",
+        "condition": "selected_by_9b_solve_first",
+        "min": 100,
+        "max": 135,
+        "observed": {
+          "success": 114,
+          "states": 172
+        },
+        "holds": true
+      },
+      {
+        "kind": "broken",
+        "condition": "selected_by_9b_solve_first",
+        "min": 2,
+        "max": 12,
+        "observed": {
+          "broken": 3,
+          "solved_without_memory": 86
+        },
+        "holds": true
+      }
+    ],
+    "holds": true
+  },
+  {
+    "id": "14a",
+    "run": "9b-plans-27b-works",
+    "text": "Selection quality, 27B solving first: almost no needed record missing, almost no other plan handed over",
+    "checks": [
+      {
+        "kind": "selection",
+        "condition": "selected_by_27b_solve_first",
+        "field": "missing_needed",
+        "max": 5,
+        "observed": {
+          "missing_needed": 7,
+          "states": 258
+        },
+        "holds": false
+      },
+      {
+        "kind": "selection",
+        "condition": "selected_by_27b_solve_first",
+        "field": "other_plan_in_conditional_states",
+        "max": 5,
+        "observed": {
+          "other_plan_in_conditional_states": 2,
+          "states": 129
+        },
+        "holds": true
+      },
+      {
+        "kind": "selector_answers",
+        "min": 250,
+        "observed": {
+          "right": 251,
+          "states": 258
+        },
+        "holds": true
+      }
+    ],
+    "holds": false
+  },
+  {
+    "id": "14b",
+    "run": "9b-plans-9b-works",
+    "text": "Selection quality, 9B solving first: its own decisions are right in 60 to 85% and almost never when the first plan failed",
+    "checks": [
+      {
+        "kind": "selector_answers",
+        "min": 155,
+        "max": 219,
+        "observed": {
+          "right": 196,
+          "states": 258
+        },
+        "holds": true
+      },
+      {
+        "kind": "selector_answers",
+        "cell": [
+          "retry_branch",
+          1
+        ],
+        "max": 6,
+        "observed": {
+          "right": 1,
+          "states": 43
+        },
+        "holds": true
+      }
+    ],
+    "holds": true
+  },
+  {
+    "id": "own-27b-v1",
+    "run": "9b-plans-27b-works",
+    "text": "The 27B reading its own first-instruction choices: 135 to 160, at most 5 broken",
+    "checks": [
+      {
+        "kind": "success",
+        "condition": "selected_by_27b",
+        "min": 135,
+        "max": 160,
+        "observed": {
+          "success": 140,
+          "states": 172
+        },
+        "holds": true
+      },
+      {
+        "kind": "broken",
+        "condition": "selected_by_27b",
+        "max": 5,
+        "observed": {
+          "broken": 1,
+          "solved_without_memory": 86
+        },
+        "holds": true
+      }
+    ],
+    "holds": true
+  },
+  {
+    "id": "own-27b-solve_first",
+    "run": "9b-plans-27b-works",
+    "text": "The 27B reading its own solve-first choices: at least 160, at most 3 broken, no different from every record",
+    "checks": [
+      {
+        "kind": "success",
+        "condition": "selected_by_27b_solve_first",
+        "min": 160,
+        "observed": {
+          "success": 167,
+          "states": 172
+        },
+        "holds": true
+      },
+      {
+        "kind": "broken",
+        "condition": "selected_by_27b_solve_first",
+        "max": 3,
+        "observed": {
+          "broken": 0,
+          "solved_without_memory": 86
+        },
+        "holds": true
+      },
+      {
+        "kind": "verdict",
+        "first": "all_records",
+        "second": "selected_by_27b_solve_first",
+        "part": "needs_memory",
+        "expected": [
+          "no difference seen"
+        ],
+        "observed": {
+          "verdict": "no difference seen",
+          "net": -3,
+          "states": 172,
+          "units_up": 1,
+          "units_down": 4,
+          "sign_test_p": 0.375
+        },
+        "holds": true
+      }
+    ],
+    "holds": true
+  }
+]

@@ -1,0 +1,56 @@
+{
+  "scope": "Existing 4B train outcomes only; eight single-memory actions per state.",
+  "new_worker_outcomes": 0,
+  "input_sha256": {
+    "datasets/api_worker_utility/20261108-v3/judgments.jsonl": "8c72921f8c9e86037182de8647360eb32a4642d7df62470b90f895a0c93ce64d",
+    "datasets/api_transfer/20261108-v1/train.jsonl": "b11b62ae51656c44591adb9aaad9529eb86e94f2210f46c63fd0f79761ffaad0"
+  },
+  "states": 50,
+  "state_baseline": {
+    "baseline_fail": 30,
+    "baseline_pass": 20
+  },
+  "candidate_pairs": 400,
+  "four_case_labels": {
+    "both_fail": 218,
+    "both_pass": 97,
+    "harm": 63,
+    "help": 22
+  },
+  "neutral_fraction_in_three_level_gain": 0.7875,
+  "by_family": {
+    "numpy": {
+      "both_fail": 48,
+      "both_pass": 52,
+      "harm": 36,
+      "help": 8
+    },
+    "pillow": {
+      "both_fail": 60,
+      "both_pass": 12,
+      "harm": 4,
+      "help": 4
+    },
+    "scipy": {
+      "both_fail": 58,
+      "both_pass": 11,
+      "harm": 5,
+      "help": 6
+    },
+    "stdlib": {
+      "both_fail": 52,
+      "both_pass": 22,
+      "harm": 18,
+      "help": 4
+    }
+  },
+  "extra_worker_tokens_min": -9,
+  "extra_worker_tokens_max": 391,
+  "repeat_rows_excluded": 3,
+  "independence_unit": "State/source family, not each of the eight derived action pairs.",
+  "limitations": [
+    "One fixed greedy worker outcome per state-action, not an estimated stochastic success probability.",
+    "Four-case targets are observed paired outcomes under this protocol, not identified individual causal types in arbitrary logs.",
+    "No development/test scores, model fitting, or threshold selection in this audit."
+  ]
+}

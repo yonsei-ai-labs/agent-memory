@@ -1,0 +1,12 @@
+{
+  "stage": "Discovery amendment after inspecting the original 12 target problem statements and base code",
+  "reason": "Same-repository oldest-source/latest-target pairing mostly yielded different mechanisms. Preserve those controls; search remaining problem statements against the already frozen source cards instead of writing target-specific memories.",
+  "source_cards_remain_frozen": true,
+  "candidate_pool": "All other distinct issue IDs in row group zero for the 12 selected repositories, excluding all 24 source candidates and the 12 original targets. A candidate must have a PR created_at later than the selected memory source's PR created_at.",
+  "input": "Pinned SWE-rebench task columns from intake-plan.json only; no additional trajectories, target solutions or outcome columns",
+  "retention_rule": "Record the complete candidate pool. Promote for code review only when the visible problem description exposes the specific condition or a close competing contract of one frozen memory. Do not require predicted benefit, and do not manufacture a matching condition.",
+  "review_order": "Repository order in intake-plan.json, then ascending created_at and instance_id",
+  "budget": "At most 52 additional issue statements, at most six promoted current targets for detailed base-code review. No worker/model calls, training or GPU allocation.",
+  "status": "discovery_only_not_a_preregistered_confirmation_set",
+  "effect_labels": null
+}

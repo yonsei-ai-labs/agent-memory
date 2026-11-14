@@ -1,0 +1,870 @@
+[
+  {
+    "source_id": "source-networkx-add-edge-mutate-receiver",
+    "case_id": "networkx-add-edge",
+    "family": "networkx",
+    "goal": "mutate",
+    "recipe": "receiver",
+    "text": "Past successful experience (networkx 3.6.1):\nInput and fitted state:\ndata = nx.DiGraph([(0, 1), (1, 2)])\nPast operation(data):\n    return data.add_edge(0, 2)\nPast requirement: Add the directed edge zero to two. Return the transformed result. The original input object itself must contain the transformed result after the call.\nReusable procedure:\noperation(data)\nreturn data\nObserved returned value: {\"type\":\"DiGraph\",\"nodes\":[[0,{}],[1,{}],[2,{}]],\"edges\":[[0,1],[0,2],[1,2]]}\nObserved original after execution: {\"type\":\"DiGraph\",\"nodes\":[[0,{}],[1,{}],[2,{}]],\"edges\":[[0,1],[0,2],[1,2]]}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "networkx-add-edge",
+      0,
+      "mutate",
+      "receiver"
+    ]
+  },
+  {
+    "source_id": "source-networkx-add-edge-preserve-copied_receiver",
+    "case_id": "networkx-add-edge",
+    "family": "networkx",
+    "goal": "preserve",
+    "recipe": "copied_receiver",
+    "text": "Past successful experience (networkx 3.6.1):\nInput and fitted state:\ndata = nx.DiGraph([(0, 1), (1, 2)])\nPast operation(data):\n    return data.add_edge(0, 2)\nPast requirement: Add the directed edge zero to two. Return the transformed result. The original input must remain unchanged.\nReusable procedure:\nwork = copy.deepcopy(data)\noperation(work)\nreturn work\nObserved returned value: {\"type\":\"DiGraph\",\"nodes\":[[0,{}],[1,{}],[2,{}]],\"edges\":[[0,1],[0,2],[1,2]]}\nObserved original after execution: {\"type\":\"DiGraph\",\"nodes\":[[0,{}],[1,{}],[2,{}]],\"edges\":[[0,1],[1,2]]}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "networkx-add-edge",
+      0,
+      "preserve",
+      "copied_receiver"
+    ]
+  },
+  {
+    "source_id": "source-networkx-relabel-false-mutate-receiver",
+    "case_id": "networkx-relabel-false",
+    "family": "networkx",
+    "goal": "mutate",
+    "recipe": "receiver",
+    "text": "Past successful experience (networkx 3.6.1):\nInput and fitted state:\ndata = nx.DiGraph([(0, 1), (1, 2)])\nPast operation(data):\n    return nx.relabel_nodes(data, {0: 10}, copy=False)\nPast requirement: Rename node zero to ten, retaining directed edges. Return the transformed result. The original input object itself must contain the transformed result after the call.\nReusable procedure:\noperation(data)\nreturn data\nObserved returned value: {\"type\":\"DiGraph\",\"nodes\":[[1,{}],[2,{}],[10,{}]],\"edges\":[[1,2],[10,1]]}\nObserved original after execution: {\"type\":\"DiGraph\",\"nodes\":[[1,{}],[2,{}],[10,{}]],\"edges\":[[1,2],[10,1]]}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "networkx-relabel-false",
+      0,
+      "mutate",
+      "receiver"
+    ]
+  },
+  {
+    "source_id": "source-networkx-relabel-false-mutate-returned",
+    "case_id": "networkx-relabel-false",
+    "family": "networkx",
+    "goal": "mutate",
+    "recipe": "returned",
+    "text": "Past successful experience (networkx 3.6.1):\nInput and fitted state:\ndata = nx.DiGraph([(0, 1), (1, 2)])\nPast operation(data):\n    return nx.relabel_nodes(data, {0: 10}, copy=False)\nPast requirement: Rename node zero to ten, retaining directed edges. Return the transformed result. The original input object itself must contain the transformed result after the call.\nReusable procedure:\nresult = operation(data)\nreturn result\nObserved returned value: {\"type\":\"DiGraph\",\"nodes\":[[1,{}],[2,{}],[10,{}]],\"edges\":[[1,2],[10,1]]}\nObserved original after execution: {\"type\":\"DiGraph\",\"nodes\":[[1,{}],[2,{}],[10,{}]],\"edges\":[[1,2],[10,1]]}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "networkx-relabel-false",
+      0,
+      "mutate",
+      "returned"
+    ]
+  },
+  {
+    "source_id": "source-networkx-relabel-false-preserve-copied_receiver",
+    "case_id": "networkx-relabel-false",
+    "family": "networkx",
+    "goal": "preserve",
+    "recipe": "copied_receiver",
+    "text": "Past successful experience (networkx 3.6.1):\nInput and fitted state:\ndata = nx.DiGraph([(0, 1), (1, 2)])\nPast operation(data):\n    return nx.relabel_nodes(data, {0: 10}, copy=False)\nPast requirement: Rename node zero to ten, retaining directed edges. Return the transformed result. The original input must remain unchanged.\nReusable procedure:\nwork = copy.deepcopy(data)\noperation(work)\nreturn work\nObserved returned value: {\"type\":\"DiGraph\",\"nodes\":[[1,{}],[2,{}],[10,{}]],\"edges\":[[1,2],[10,1]]}\nObserved original after execution: {\"type\":\"DiGraph\",\"nodes\":[[0,{}],[1,{}],[2,{}]],\"edges\":[[0,1],[1,2]]}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "networkx-relabel-false",
+      0,
+      "preserve",
+      "copied_receiver"
+    ]
+  },
+  {
+    "source_id": "source-networkx-relabel-false-preserve-copied_returned",
+    "case_id": "networkx-relabel-false",
+    "family": "networkx",
+    "goal": "preserve",
+    "recipe": "copied_returned",
+    "text": "Past successful experience (networkx 3.6.1):\nInput and fitted state:\ndata = nx.DiGraph([(0, 1), (1, 2)])\nPast operation(data):\n    return nx.relabel_nodes(data, {0: 10}, copy=False)\nPast requirement: Rename node zero to ten, retaining directed edges. Return the transformed result. The original input must remain unchanged.\nReusable procedure:\nwork = copy.deepcopy(data)\nresult = operation(work)\nreturn result\nObserved returned value: {\"type\":\"DiGraph\",\"nodes\":[[1,{}],[2,{}],[10,{}]],\"edges\":[[1,2],[10,1]]}\nObserved original after execution: {\"type\":\"DiGraph\",\"nodes\":[[0,{}],[1,{}],[2,{}]],\"edges\":[[0,1],[1,2]]}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "networkx-relabel-false",
+      0,
+      "preserve",
+      "copied_returned"
+    ]
+  },
+  {
+    "source_id": "source-networkx-relabel-true-preserve-copied_returned",
+    "case_id": "networkx-relabel-true",
+    "family": "networkx",
+    "goal": "preserve",
+    "recipe": "copied_returned",
+    "text": "Past successful experience (networkx 3.6.1):\nInput and fitted state:\ndata = nx.DiGraph([(0, 1), (1, 2)])\nPast operation(data):\n    return nx.relabel_nodes(data, {0: 10}, copy=True)\nPast requirement: Rename node zero to ten, retaining directed edges. Return the transformed result. The original input must remain unchanged.\nReusable procedure:\nwork = copy.deepcopy(data)\nresult = operation(work)\nreturn result\nObserved returned value: {\"type\":\"DiGraph\",\"nodes\":[[1,{}],[2,{}],[10,{}]],\"edges\":[[1,2],[10,1]]}\nObserved original after execution: {\"type\":\"DiGraph\",\"nodes\":[[0,{}],[1,{}],[2,{}]],\"edges\":[[0,1],[1,2]]}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "networkx-relabel-true",
+      0,
+      "preserve",
+      "copied_returned"
+    ]
+  },
+  {
+    "source_id": "source-networkx-relabel-true-preserve-returned",
+    "case_id": "networkx-relabel-true",
+    "family": "networkx",
+    "goal": "preserve",
+    "recipe": "returned",
+    "text": "Past successful experience (networkx 3.6.1):\nInput and fitted state:\ndata = nx.DiGraph([(0, 1), (1, 2)])\nPast operation(data):\n    return nx.relabel_nodes(data, {0: 10}, copy=True)\nPast requirement: Rename node zero to ten, retaining directed edges. Return the transformed result. The original input must remain unchanged.\nReusable procedure:\nresult = operation(data)\nreturn result\nObserved returned value: {\"type\":\"DiGraph\",\"nodes\":[[1,{}],[2,{}],[10,{}]],\"edges\":[[1,2],[10,1]]}\nObserved original after execution: {\"type\":\"DiGraph\",\"nodes\":[[0,{}],[1,{}],[2,{}]],\"edges\":[[0,1],[1,2]]}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "networkx-relabel-true",
+      0,
+      "preserve",
+      "returned"
+    ]
+  },
+  {
+    "source_id": "source-networkx-reverse-preserve-copied_returned",
+    "case_id": "networkx-reverse",
+    "family": "networkx",
+    "goal": "preserve",
+    "recipe": "copied_returned",
+    "text": "Past successful experience (networkx 3.6.1):\nInput and fitted state:\ndata = nx.DiGraph([(0, 1), (1, 2)])\nPast operation(data):\n    return data.reverse(copy=True)\nPast requirement: Reverse all directed edges. Return the transformed result. The original input must remain unchanged.\nReusable procedure:\nwork = copy.deepcopy(data)\nresult = operation(work)\nreturn result\nObserved returned value: {\"type\":\"DiGraph\",\"nodes\":[[0,{}],[1,{}],[2,{}]],\"edges\":[[1,0],[2,1]]}\nObserved original after execution: {\"type\":\"DiGraph\",\"nodes\":[[0,{}],[1,{}],[2,{}]],\"edges\":[[0,1],[1,2]]}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "networkx-reverse",
+      0,
+      "preserve",
+      "copied_returned"
+    ]
+  },
+  {
+    "source_id": "source-networkx-reverse-preserve-returned",
+    "case_id": "networkx-reverse",
+    "family": "networkx",
+    "goal": "preserve",
+    "recipe": "returned",
+    "text": "Past successful experience (networkx 3.6.1):\nInput and fitted state:\ndata = nx.DiGraph([(0, 1), (1, 2)])\nPast operation(data):\n    return data.reverse(copy=True)\nPast requirement: Reverse all directed edges. Return the transformed result. The original input must remain unchanged.\nReusable procedure:\nresult = operation(data)\nreturn result\nObserved returned value: {\"type\":\"DiGraph\",\"nodes\":[[0,{}],[1,{}],[2,{}]],\"edges\":[[1,0],[2,1]]}\nObserved original after execution: {\"type\":\"DiGraph\",\"nodes\":[[0,{}],[1,{}],[2,{}]],\"edges\":[[0,1],[1,2]]}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "networkx-reverse",
+      0,
+      "preserve",
+      "returned"
+    ]
+  },
+  {
+    "source_id": "source-numpy-replace-nan-false-mutate-receiver",
+    "case_id": "numpy-replace-nan-false",
+    "family": "numpy",
+    "goal": "mutate",
+    "recipe": "receiver",
+    "text": "Past successful experience (numpy 2.4.6):\nInput and fitted state:\ndata = np.array([np.nan, 2., -1.])\nPast operation(data):\n    return np.nan_to_num(data, copy=False, nan=0.)\nPast requirement: Replace NaN with zero, preserving the other values. Return the transformed result. The original input object itself must contain the transformed result after the call.\nReusable procedure:\noperation(data)\nreturn data\nObserved returned value: {\"type\":\"ndarray\",\"dtype\":\"float64\",\"values\":[0.0,2.0,-1.0]}\nObserved original after execution: {\"type\":\"ndarray\",\"dtype\":\"float64\",\"values\":[0.0,2.0,-1.0]}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "numpy-replace-nan-false",
+      0,
+      "mutate",
+      "receiver"
+    ]
+  },
+  {
+    "source_id": "source-numpy-replace-nan-false-mutate-returned",
+    "case_id": "numpy-replace-nan-false",
+    "family": "numpy",
+    "goal": "mutate",
+    "recipe": "returned",
+    "text": "Past successful experience (numpy 2.4.6):\nInput and fitted state:\ndata = np.array([np.nan, 2., -1.])\nPast operation(data):\n    return np.nan_to_num(data, copy=False, nan=0.)\nPast requirement: Replace NaN with zero, preserving the other values. Return the transformed result. The original input object itself must contain the transformed result after the call.\nReusable procedure:\nresult = operation(data)\nreturn result\nObserved returned value: {\"type\":\"ndarray\",\"dtype\":\"float64\",\"values\":[0.0,2.0,-1.0]}\nObserved original after execution: {\"type\":\"ndarray\",\"dtype\":\"float64\",\"values\":[0.0,2.0,-1.0]}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "numpy-replace-nan-false",
+      0,
+      "mutate",
+      "returned"
+    ]
+  },
+  {
+    "source_id": "source-numpy-replace-nan-false-preserve-copied_receiver",
+    "case_id": "numpy-replace-nan-false",
+    "family": "numpy",
+    "goal": "preserve",
+    "recipe": "copied_receiver",
+    "text": "Past successful experience (numpy 2.4.6):\nInput and fitted state:\ndata = np.array([np.nan, 2., -1.])\nPast operation(data):\n    return np.nan_to_num(data, copy=False, nan=0.)\nPast requirement: Replace NaN with zero, preserving the other values. Return the transformed result. The original input must remain unchanged.\nReusable procedure:\nwork = copy.deepcopy(data)\noperation(work)\nreturn work\nObserved returned value: {\"type\":\"ndarray\",\"dtype\":\"float64\",\"values\":[0.0,2.0,-1.0]}\nObserved original after execution: {\"type\":\"ndarray\",\"dtype\":\"float64\",\"values\":[{\"nonfinite\":\"nan\"},2.0,-1.0]}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "numpy-replace-nan-false",
+      0,
+      "preserve",
+      "copied_receiver"
+    ]
+  },
+  {
+    "source_id": "source-numpy-replace-nan-false-preserve-copied_returned",
+    "case_id": "numpy-replace-nan-false",
+    "family": "numpy",
+    "goal": "preserve",
+    "recipe": "copied_returned",
+    "text": "Past successful experience (numpy 2.4.6):\nInput and fitted state:\ndata = np.array([np.nan, 2., -1.])\nPast operation(data):\n    return np.nan_to_num(data, copy=False, nan=0.)\nPast requirement: Replace NaN with zero, preserving the other values. Return the transformed result. The original input must remain unchanged.\nReusable procedure:\nwork = copy.deepcopy(data)\nresult = operation(work)\nreturn result\nObserved returned value: {\"type\":\"ndarray\",\"dtype\":\"float64\",\"values\":[0.0,2.0,-1.0]}\nObserved original after execution: {\"type\":\"ndarray\",\"dtype\":\"float64\",\"values\":[{\"nonfinite\":\"nan\"},2.0,-1.0]}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "numpy-replace-nan-false",
+      0,
+      "preserve",
+      "copied_returned"
+    ]
+  },
+  {
+    "source_id": "source-numpy-replace-nan-true-preserve-copied_returned",
+    "case_id": "numpy-replace-nan-true",
+    "family": "numpy",
+    "goal": "preserve",
+    "recipe": "copied_returned",
+    "text": "Past successful experience (numpy 2.4.6):\nInput and fitted state:\ndata = np.array([np.nan, 2., -1.])\nPast operation(data):\n    return np.nan_to_num(data, copy=True, nan=0.)\nPast requirement: Replace NaN with zero, preserving the other values. Return the transformed result. The original input must remain unchanged.\nReusable procedure:\nwork = copy.deepcopy(data)\nresult = operation(work)\nreturn result\nObserved returned value: {\"type\":\"ndarray\",\"dtype\":\"float64\",\"values\":[0.0,2.0,-1.0]}\nObserved original after execution: {\"type\":\"ndarray\",\"dtype\":\"float64\",\"values\":[{\"nonfinite\":\"nan\"},2.0,-1.0]}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "numpy-replace-nan-true",
+      0,
+      "preserve",
+      "copied_returned"
+    ]
+  },
+  {
+    "source_id": "source-numpy-replace-nan-true-preserve-returned",
+    "case_id": "numpy-replace-nan-true",
+    "family": "numpy",
+    "goal": "preserve",
+    "recipe": "returned",
+    "text": "Past successful experience (numpy 2.4.6):\nInput and fitted state:\ndata = np.array([np.nan, 2., -1.])\nPast operation(data):\n    return np.nan_to_num(data, copy=True, nan=0.)\nPast requirement: Replace NaN with zero, preserving the other values. Return the transformed result. The original input must remain unchanged.\nReusable procedure:\nresult = operation(data)\nreturn result\nObserved returned value: {\"type\":\"ndarray\",\"dtype\":\"float64\",\"values\":[0.0,2.0,-1.0]}\nObserved original after execution: {\"type\":\"ndarray\",\"dtype\":\"float64\",\"values\":[{\"nonfinite\":\"nan\"},2.0,-1.0]}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "numpy-replace-nan-true",
+      0,
+      "preserve",
+      "returned"
+    ]
+  },
+  {
+    "source_id": "source-numpy-round-out-mutate-receiver",
+    "case_id": "numpy-round-out",
+    "family": "numpy",
+    "goal": "mutate",
+    "recipe": "receiver",
+    "text": "Past successful experience (numpy 2.4.6):\nInput and fitted state:\ndata = np.array([1.2, 2.8])\nPast operation(data):\n    return np.round(data, decimals=0, out=data)\nPast requirement: Round values to the nearest integer. Return the transformed result. The original input object itself must contain the transformed result after the call.\nReusable procedure:\noperation(data)\nreturn data\nObserved returned value: {\"type\":\"ndarray\",\"dtype\":\"float64\",\"values\":[1.0,3.0]}\nObserved original after execution: {\"type\":\"ndarray\",\"dtype\":\"float64\",\"values\":[1.0,3.0]}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "numpy-round-out",
+      0,
+      "mutate",
+      "receiver"
+    ]
+  },
+  {
+    "source_id": "source-numpy-round-out-mutate-returned",
+    "case_id": "numpy-round-out",
+    "family": "numpy",
+    "goal": "mutate",
+    "recipe": "returned",
+    "text": "Past successful experience (numpy 2.4.6):\nInput and fitted state:\ndata = np.array([1.2, 2.8])\nPast operation(data):\n    return np.round(data, decimals=0, out=data)\nPast requirement: Round values to the nearest integer. Return the transformed result. The original input object itself must contain the transformed result after the call.\nReusable procedure:\nresult = operation(data)\nreturn result\nObserved returned value: {\"type\":\"ndarray\",\"dtype\":\"float64\",\"values\":[1.0,3.0]}\nObserved original after execution: {\"type\":\"ndarray\",\"dtype\":\"float64\",\"values\":[1.0,3.0]}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "numpy-round-out",
+      0,
+      "mutate",
+      "returned"
+    ]
+  },
+  {
+    "source_id": "source-numpy-round-out-preserve-copied_receiver",
+    "case_id": "numpy-round-out",
+    "family": "numpy",
+    "goal": "preserve",
+    "recipe": "copied_receiver",
+    "text": "Past successful experience (numpy 2.4.6):\nInput and fitted state:\ndata = np.array([1.2, 2.8])\nPast operation(data):\n    return np.round(data, decimals=0, out=data)\nPast requirement: Round values to the nearest integer. Return the transformed result. The original input must remain unchanged.\nReusable procedure:\nwork = copy.deepcopy(data)\noperation(work)\nreturn work\nObserved returned value: {\"type\":\"ndarray\",\"dtype\":\"float64\",\"values\":[1.0,3.0]}\nObserved original after execution: {\"type\":\"ndarray\",\"dtype\":\"float64\",\"values\":[1.2,2.8]}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "numpy-round-out",
+      0,
+      "preserve",
+      "copied_receiver"
+    ]
+  },
+  {
+    "source_id": "source-numpy-round-out-preserve-copied_returned",
+    "case_id": "numpy-round-out",
+    "family": "numpy",
+    "goal": "preserve",
+    "recipe": "copied_returned",
+    "text": "Past successful experience (numpy 2.4.6):\nInput and fitted state:\ndata = np.array([1.2, 2.8])\nPast operation(data):\n    return np.round(data, decimals=0, out=data)\nPast requirement: Round values to the nearest integer. Return the transformed result. The original input must remain unchanged.\nReusable procedure:\nwork = copy.deepcopy(data)\nresult = operation(work)\nreturn result\nObserved returned value: {\"type\":\"ndarray\",\"dtype\":\"float64\",\"values\":[1.0,3.0]}\nObserved original after execution: {\"type\":\"ndarray\",\"dtype\":\"float64\",\"values\":[1.2,2.8]}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "numpy-round-out",
+      0,
+      "preserve",
+      "copied_returned"
+    ]
+  },
+  {
+    "source_id": "source-pandas-drop-false-preserve-copied_returned",
+    "case_id": "pandas-drop-false",
+    "family": "pandas",
+    "goal": "preserve",
+    "recipe": "copied_returned",
+    "text": "Past successful experience (pandas 3.1.0):\nInput and fitted state:\ndata = pd.DataFrame({'value': [3, 1, 2], 'extra': [9, 8, 7]})\nPast operation(data):\n    return data.drop(columns=['extra'], inplace=False)\nPast requirement: Remove the extra column, retaining row order. Return the transformed result. The original input must remain unchanged.\nReusable procedure:\nwork = copy.deepcopy(data)\nresult = operation(work)\nreturn result\nObserved returned value: {\"type\":\"DataFrame\",\"columns\":[\"value\"],\"index\":[0,1,2],\"values\":[[3],[1],[2]]}\nObserved original after execution: {\"type\":\"DataFrame\",\"columns\":[\"value\",\"extra\"],\"index\":[0,1,2],\"values\":[[3,9],[1,8],[2,7]]}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "pandas-drop-false",
+      0,
+      "preserve",
+      "copied_returned"
+    ]
+  },
+  {
+    "source_id": "source-pandas-drop-false-preserve-returned",
+    "case_id": "pandas-drop-false",
+    "family": "pandas",
+    "goal": "preserve",
+    "recipe": "returned",
+    "text": "Past successful experience (pandas 3.1.0):\nInput and fitted state:\ndata = pd.DataFrame({'value': [3, 1, 2], 'extra': [9, 8, 7]})\nPast operation(data):\n    return data.drop(columns=['extra'], inplace=False)\nPast requirement: Remove the extra column, retaining row order. Return the transformed result. The original input must remain unchanged.\nReusable procedure:\nresult = operation(data)\nreturn result\nObserved returned value: {\"type\":\"DataFrame\",\"columns\":[\"value\"],\"index\":[0,1,2],\"values\":[[3],[1],[2]]}\nObserved original after execution: {\"type\":\"DataFrame\",\"columns\":[\"value\",\"extra\"],\"index\":[0,1,2],\"values\":[[3,9],[1,8],[2,7]]}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "pandas-drop-false",
+      0,
+      "preserve",
+      "returned"
+    ]
+  },
+  {
+    "source_id": "source-pandas-drop-true-mutate-receiver",
+    "case_id": "pandas-drop-true",
+    "family": "pandas",
+    "goal": "mutate",
+    "recipe": "receiver",
+    "text": "Past successful experience (pandas 3.1.0):\nInput and fitted state:\ndata = pd.DataFrame({'value': [3, 1, 2], 'extra': [9, 8, 7]})\nPast operation(data):\n    return data.drop(columns=['extra'], inplace=True)\nPast requirement: Remove the extra column, retaining row order. Return the transformed result. The original input object itself must contain the transformed result after the call.\nReusable procedure:\noperation(data)\nreturn data\nObserved returned value: {\"type\":\"DataFrame\",\"columns\":[\"value\"],\"index\":[0,1,2],\"values\":[[3],[1],[2]]}\nObserved original after execution: {\"type\":\"DataFrame\",\"columns\":[\"value\"],\"index\":[0,1,2],\"values\":[[3],[1],[2]]}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "pandas-drop-true",
+      0,
+      "mutate",
+      "receiver"
+    ]
+  },
+  {
+    "source_id": "source-pandas-drop-true-preserve-copied_receiver",
+    "case_id": "pandas-drop-true",
+    "family": "pandas",
+    "goal": "preserve",
+    "recipe": "copied_receiver",
+    "text": "Past successful experience (pandas 3.1.0):\nInput and fitted state:\ndata = pd.DataFrame({'value': [3, 1, 2], 'extra': [9, 8, 7]})\nPast operation(data):\n    return data.drop(columns=['extra'], inplace=True)\nPast requirement: Remove the extra column, retaining row order. Return the transformed result. The original input must remain unchanged.\nReusable procedure:\nwork = copy.deepcopy(data)\noperation(work)\nreturn work\nObserved returned value: {\"type\":\"DataFrame\",\"columns\":[\"value\"],\"index\":[0,1,2],\"values\":[[3],[1],[2]]}\nObserved original after execution: {\"type\":\"DataFrame\",\"columns\":[\"value\",\"extra\"],\"index\":[0,1,2],\"values\":[[3,9],[1,8],[2,7]]}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "pandas-drop-true",
+      0,
+      "preserve",
+      "copied_receiver"
+    ]
+  },
+  {
+    "source_id": "source-pandas-fill-false-preserve-copied_returned",
+    "case_id": "pandas-fill-false",
+    "family": "pandas",
+    "goal": "preserve",
+    "recipe": "copied_returned",
+    "text": "Past successful experience (pandas 3.1.0):\nInput and fitted state:\ndata = pd.DataFrame({'value': [1., np.nan, 3.]})\nPast operation(data):\n    return data.fillna(0., inplace=False)\nPast requirement: Fill missing numeric values with zero. Return the transformed result. The original input must remain unchanged.\nReusable procedure:\nwork = copy.deepcopy(data)\nresult = operation(work)\nreturn result\nObserved returned value: {\"type\":\"DataFrame\",\"columns\":[\"value\"],\"index\":[0,1,2],\"values\":[[1.0],[0.0],[3.0]]}\nObserved original after execution: {\"type\":\"DataFrame\",\"columns\":[\"value\"],\"index\":[0,1,2],\"values\":[[1.0],[null],[3.0]]}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "pandas-fill-false",
+      0,
+      "preserve",
+      "copied_returned"
+    ]
+  },
+  {
+    "source_id": "source-pandas-fill-false-preserve-returned",
+    "case_id": "pandas-fill-false",
+    "family": "pandas",
+    "goal": "preserve",
+    "recipe": "returned",
+    "text": "Past successful experience (pandas 3.1.0):\nInput and fitted state:\ndata = pd.DataFrame({'value': [1., np.nan, 3.]})\nPast operation(data):\n    return data.fillna(0., inplace=False)\nPast requirement: Fill missing numeric values with zero. Return the transformed result. The original input must remain unchanged.\nReusable procedure:\nresult = operation(data)\nreturn result\nObserved returned value: {\"type\":\"DataFrame\",\"columns\":[\"value\"],\"index\":[0,1,2],\"values\":[[1.0],[0.0],[3.0]]}\nObserved original after execution: {\"type\":\"DataFrame\",\"columns\":[\"value\"],\"index\":[0,1,2],\"values\":[[1.0],[null],[3.0]]}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "pandas-fill-false",
+      0,
+      "preserve",
+      "returned"
+    ]
+  },
+  {
+    "source_id": "source-pandas-fill-true-mutate-receiver",
+    "case_id": "pandas-fill-true",
+    "family": "pandas",
+    "goal": "mutate",
+    "recipe": "receiver",
+    "text": "Past successful experience (pandas 3.1.0):\nInput and fitted state:\ndata = pd.DataFrame({'value': [1., np.nan, 3.]})\nPast operation(data):\n    return data.fillna(0., inplace=True)\nPast requirement: Fill missing numeric values with zero. Return the transformed result. The original input object itself must contain the transformed result after the call.\nReusable procedure:\noperation(data)\nreturn data\nObserved returned value: {\"type\":\"DataFrame\",\"columns\":[\"value\"],\"index\":[0,1,2],\"values\":[[1.0],[0.0],[3.0]]}\nObserved original after execution: {\"type\":\"DataFrame\",\"columns\":[\"value\"],\"index\":[0,1,2],\"values\":[[1.0],[0.0],[3.0]]}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "pandas-fill-true",
+      0,
+      "mutate",
+      "receiver"
+    ]
+  },
+  {
+    "source_id": "source-pandas-fill-true-preserve-copied_receiver",
+    "case_id": "pandas-fill-true",
+    "family": "pandas",
+    "goal": "preserve",
+    "recipe": "copied_receiver",
+    "text": "Past successful experience (pandas 3.1.0):\nInput and fitted state:\ndata = pd.DataFrame({'value': [1., np.nan, 3.]})\nPast operation(data):\n    return data.fillna(0., inplace=True)\nPast requirement: Fill missing numeric values with zero. Return the transformed result. The original input must remain unchanged.\nReusable procedure:\nwork = copy.deepcopy(data)\noperation(work)\nreturn work\nObserved returned value: {\"type\":\"DataFrame\",\"columns\":[\"value\"],\"index\":[0,1,2],\"values\":[[1.0],[0.0],[3.0]]}\nObserved original after execution: {\"type\":\"DataFrame\",\"columns\":[\"value\"],\"index\":[0,1,2],\"values\":[[1.0],[null],[3.0]]}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "pandas-fill-true",
+      0,
+      "preserve",
+      "copied_receiver"
+    ]
+  },
+  {
+    "source_id": "source-pillow-crop-preserve-copied_returned",
+    "case_id": "pillow-crop",
+    "family": "pillow",
+    "goal": "preserve",
+    "recipe": "copied_returned",
+    "text": "Past successful experience (Pillow 13.0.0):\nInput and fitted state:\ndata = Image.new('RGB', (4, 4), color=(3, 4, 5))\nPast operation(data):\n    return data.crop((0, 0, 2, 2))\nPast requirement: Produce the upper-left two by two crop. Return the transformed result. The original input must remain unchanged.\nReusable procedure:\nwork = copy.deepcopy(data)\nresult = operation(work)\nreturn result\nObserved returned value: {\"type\":\"Image\",\"mode\":\"RGB\",\"size\":[2,2],\"pixels\":[[3,4,5],[3,4,5],[3,4,5],[3,4,5]]}\nObserved original after execution: {\"type\":\"Image\",\"mode\":\"RGB\",\"size\":[4,4],\"pixels\":[[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5]]}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "pillow-crop",
+      0,
+      "preserve",
+      "copied_returned"
+    ]
+  },
+  {
+    "source_id": "source-pillow-crop-preserve-returned",
+    "case_id": "pillow-crop",
+    "family": "pillow",
+    "goal": "preserve",
+    "recipe": "returned",
+    "text": "Past successful experience (Pillow 13.0.0):\nInput and fitted state:\ndata = Image.new('RGB', (4, 4), color=(3, 4, 5))\nPast operation(data):\n    return data.crop((0, 0, 2, 2))\nPast requirement: Produce the upper-left two by two crop. Return the transformed result. The original input must remain unchanged.\nReusable procedure:\nresult = operation(data)\nreturn result\nObserved returned value: {\"type\":\"Image\",\"mode\":\"RGB\",\"size\":[2,2],\"pixels\":[[3,4,5],[3,4,5],[3,4,5],[3,4,5]]}\nObserved original after execution: {\"type\":\"Image\",\"mode\":\"RGB\",\"size\":[4,4],\"pixels\":[[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5]]}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "pillow-crop",
+      0,
+      "preserve",
+      "returned"
+    ]
+  },
+  {
+    "source_id": "source-pillow-paste-mutate-receiver",
+    "case_id": "pillow-paste",
+    "family": "pillow",
+    "goal": "mutate",
+    "recipe": "receiver",
+    "text": "Past successful experience (Pillow 13.0.0):\nInput and fitted state:\ndata = Image.new('RGB', (4, 4), color=(3, 4, 5))\nPast operation(data):\n    return data.paste((9, 8, 7), (0, 0, 4, 4))\nPast requirement: Replace all pixels with the specified new color. Return the transformed result. The original input object itself must contain the transformed result after the call.\nReusable procedure:\noperation(data)\nreturn data\nObserved returned value: {\"type\":\"Image\",\"mode\":\"RGB\",\"size\":[4,4],\"pixels\":[[9,8,7],[9,8,7],[9,8,7],[9,8,7],[9,8,7],[9,8,7],[9,8,7],[9,8,7],[9,8,7],[9,8,7],[9,8,7],[9,8,7],[9,8,7],[9,8,7],[9,8,7],[9,8,7]]}\nObserved original after execution: {\"type\":\"Image\",\"mode\":\"RGB\",\"size\":[4,4],\"pixels\":[[9,8,7],[9,8,7],[9,8,7],[9,8,7],[9,8,7],[9,8,7],[9,8,7],[9,8,7],[9,8,7],[9,8,7],[9,8,7],[9,8,7],[9,8,7],[9,8,7],[9,8,7],[9,8,7]]}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "pillow-paste",
+      0,
+      "mutate",
+      "receiver"
+    ]
+  },
+  {
+    "source_id": "source-pillow-paste-preserve-copied_receiver",
+    "case_id": "pillow-paste",
+    "family": "pillow",
+    "goal": "preserve",
+    "recipe": "copied_receiver",
+    "text": "Past successful experience (Pillow 13.0.0):\nInput and fitted state:\ndata = Image.new('RGB', (4, 4), color=(3, 4, 5))\nPast operation(data):\n    return data.paste((9, 8, 7), (0, 0, 4, 4))\nPast requirement: Replace all pixels with the specified new color. Return the transformed result. The original input must remain unchanged.\nReusable procedure:\nwork = copy.deepcopy(data)\noperation(work)\nreturn work\nObserved returned value: {\"type\":\"Image\",\"mode\":\"RGB\",\"size\":[4,4],\"pixels\":[[9,8,7],[9,8,7],[9,8,7],[9,8,7],[9,8,7],[9,8,7],[9,8,7],[9,8,7],[9,8,7],[9,8,7],[9,8,7],[9,8,7],[9,8,7],[9,8,7],[9,8,7],[9,8,7]]}\nObserved original after execution: {\"type\":\"Image\",\"mode\":\"RGB\",\"size\":[4,4],\"pixels\":[[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5]]}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "pillow-paste",
+      0,
+      "preserve",
+      "copied_receiver"
+    ]
+  },
+  {
+    "source_id": "source-pillow-resize-preserve-copied_returned",
+    "case_id": "pillow-resize",
+    "family": "pillow",
+    "goal": "preserve",
+    "recipe": "copied_returned",
+    "text": "Past successful experience (Pillow 13.0.0):\nInput and fitted state:\ndata = Image.new('RGB', (4, 4), color=(3, 4, 5))\nPast operation(data):\n    return data.resize((2, 2), resample=Image.Resampling.NEAREST)\nPast requirement: Produce a two by two image with the same solid color. Return the transformed result. The original input must remain unchanged.\nReusable procedure:\nwork = copy.deepcopy(data)\nresult = operation(work)\nreturn result\nObserved returned value: {\"type\":\"Image\",\"mode\":\"RGB\",\"size\":[2,2],\"pixels\":[[3,4,5],[3,4,5],[3,4,5],[3,4,5]]}\nObserved original after execution: {\"type\":\"Image\",\"mode\":\"RGB\",\"size\":[4,4],\"pixels\":[[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5]]}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "pillow-resize",
+      0,
+      "preserve",
+      "copied_returned"
+    ]
+  },
+  {
+    "source_id": "source-pillow-resize-preserve-returned",
+    "case_id": "pillow-resize",
+    "family": "pillow",
+    "goal": "preserve",
+    "recipe": "returned",
+    "text": "Past successful experience (Pillow 13.0.0):\nInput and fitted state:\ndata = Image.new('RGB', (4, 4), color=(3, 4, 5))\nPast operation(data):\n    return data.resize((2, 2), resample=Image.Resampling.NEAREST)\nPast requirement: Produce a two by two image with the same solid color. Return the transformed result. The original input must remain unchanged.\nReusable procedure:\nresult = operation(data)\nreturn result\nObserved returned value: {\"type\":\"Image\",\"mode\":\"RGB\",\"size\":[2,2],\"pixels\":[[3,4,5],[3,4,5],[3,4,5],[3,4,5]]}\nObserved original after execution: {\"type\":\"Image\",\"mode\":\"RGB\",\"size\":[4,4],\"pixels\":[[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5]]}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "pillow-resize",
+      0,
+      "preserve",
+      "returned"
+    ]
+  },
+  {
+    "source_id": "source-pillow-thumbnail-mutate-receiver",
+    "case_id": "pillow-thumbnail",
+    "family": "pillow",
+    "goal": "mutate",
+    "recipe": "receiver",
+    "text": "Past successful experience (Pillow 13.0.0):\nInput and fitted state:\ndata = Image.new('RGB', (4, 4), color=(3, 4, 5))\nPast operation(data):\n    return data.thumbnail((2, 2), resample=Image.Resampling.NEAREST)\nPast requirement: Produce a two by two image with the same solid color. Return the transformed result. The original input object itself must contain the transformed result after the call.\nReusable procedure:\noperation(data)\nreturn data\nObserved returned value: {\"type\":\"Image\",\"mode\":\"RGB\",\"size\":[2,2],\"pixels\":[[3,4,5],[3,4,5],[3,4,5],[3,4,5]]}\nObserved original after execution: {\"type\":\"Image\",\"mode\":\"RGB\",\"size\":[2,2],\"pixels\":[[3,4,5],[3,4,5],[3,4,5],[3,4,5]]}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "pillow-thumbnail",
+      0,
+      "mutate",
+      "receiver"
+    ]
+  },
+  {
+    "source_id": "source-pillow-thumbnail-preserve-copied_receiver",
+    "case_id": "pillow-thumbnail",
+    "family": "pillow",
+    "goal": "preserve",
+    "recipe": "copied_receiver",
+    "text": "Past successful experience (Pillow 13.0.0):\nInput and fitted state:\ndata = Image.new('RGB', (4, 4), color=(3, 4, 5))\nPast operation(data):\n    return data.thumbnail((2, 2), resample=Image.Resampling.NEAREST)\nPast requirement: Produce a two by two image with the same solid color. Return the transformed result. The original input must remain unchanged.\nReusable procedure:\nwork = copy.deepcopy(data)\noperation(work)\nreturn work\nObserved returned value: {\"type\":\"Image\",\"mode\":\"RGB\",\"size\":[2,2],\"pixels\":[[3,4,5],[3,4,5],[3,4,5],[3,4,5]]}\nObserved original after execution: {\"type\":\"Image\",\"mode\":\"RGB\",\"size\":[4,4],\"pixels\":[[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5],[3,4,5]]}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "pillow-thumbnail",
+      0,
+      "preserve",
+      "copied_receiver"
+    ]
+  },
+  {
+    "source_id": "source-scipy-multiply-preserve-copied_returned",
+    "case_id": "scipy-multiply",
+    "family": "scipy",
+    "goal": "preserve",
+    "recipe": "copied_returned",
+    "text": "Past successful experience (scipy 1.17.1):\nInput and fitted state:\ndata = sp.csr_matrix(np.array([[1., 2.]]))\nPast operation(data):\n    return data.multiply(2).tocsr()\nPast requirement: Double every matrix value. Return the transformed result. The original input must remain unchanged.\nReusable procedure:\nwork = copy.deepcopy(data)\nresult = operation(work)\nreturn result\nObserved returned value: {\"type\":\"csr_matrix\",\"dtype\":\"float64\",\"values\":[[2.0,4.0]],\"indices\":[0,1],\"indptr\":[0,2],\"sorted_indices\":true}\nObserved original after execution: {\"type\":\"csr_matrix\",\"dtype\":\"float64\",\"values\":[[1.0,2.0]],\"indices\":[0,1],\"indptr\":[0,2],\"sorted_indices\":true}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "scipy-multiply",
+      0,
+      "preserve",
+      "copied_returned"
+    ]
+  },
+  {
+    "source_id": "source-scipy-multiply-preserve-returned",
+    "case_id": "scipy-multiply",
+    "family": "scipy",
+    "goal": "preserve",
+    "recipe": "returned",
+    "text": "Past successful experience (scipy 1.17.1):\nInput and fitted state:\ndata = sp.csr_matrix(np.array([[1., 2.]]))\nPast operation(data):\n    return data.multiply(2).tocsr()\nPast requirement: Double every matrix value. Return the transformed result. The original input must remain unchanged.\nReusable procedure:\nresult = operation(data)\nreturn result\nObserved returned value: {\"type\":\"csr_matrix\",\"dtype\":\"float64\",\"values\":[[2.0,4.0]],\"indices\":[0,1],\"indptr\":[0,2],\"sorted_indices\":true}\nObserved original after execution: {\"type\":\"csr_matrix\",\"dtype\":\"float64\",\"values\":[[1.0,2.0]],\"indices\":[0,1],\"indptr\":[0,2],\"sorted_indices\":true}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "scipy-multiply",
+      0,
+      "preserve",
+      "returned"
+    ]
+  },
+  {
+    "source_id": "source-scipy-setdiag-mutate-receiver",
+    "case_id": "scipy-setdiag",
+    "family": "scipy",
+    "goal": "mutate",
+    "recipe": "receiver",
+    "text": "Past successful experience (scipy 1.17.1):\nInput and fitted state:\ndata = sp.csr_matrix(np.array([[1., 2.], [3., 4.]]))\nPast operation(data):\n    return data.setdiag([5., 6.])\nPast requirement: Replace diagonal entries with five and six. Return the transformed result. The original input object itself must contain the transformed result after the call.\nReusable procedure:\noperation(data)\nreturn data\nObserved returned value: {\"type\":\"csr_matrix\",\"dtype\":\"float64\",\"values\":[[5.0,2.0],[3.0,6.0]],\"indices\":[0,1,0,1],\"indptr\":[0,2,4],\"sorted_indices\":true}\nObserved original after execution: {\"type\":\"csr_matrix\",\"dtype\":\"float64\",\"values\":[[5.0,2.0],[3.0,6.0]],\"indices\":[0,1,0,1],\"indptr\":[0,2,4],\"sorted_indices\":true}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "scipy-setdiag",
+      0,
+      "mutate",
+      "receiver"
+    ]
+  },
+  {
+    "source_id": "source-scipy-setdiag-preserve-copied_receiver",
+    "case_id": "scipy-setdiag",
+    "family": "scipy",
+    "goal": "preserve",
+    "recipe": "copied_receiver",
+    "text": "Past successful experience (scipy 1.17.1):\nInput and fitted state:\ndata = sp.csr_matrix(np.array([[1., 2.], [3., 4.]]))\nPast operation(data):\n    return data.setdiag([5., 6.])\nPast requirement: Replace diagonal entries with five and six. Return the transformed result. The original input must remain unchanged.\nReusable procedure:\nwork = copy.deepcopy(data)\noperation(work)\nreturn work\nObserved returned value: {\"type\":\"csr_matrix\",\"dtype\":\"float64\",\"values\":[[5.0,2.0],[3.0,6.0]],\"indices\":[0,1,0,1],\"indptr\":[0,2,4],\"sorted_indices\":true}\nObserved original after execution: {\"type\":\"csr_matrix\",\"dtype\":\"float64\",\"values\":[[1.0,2.0],[3.0,4.0]],\"indices\":[0,1,0,1],\"indptr\":[0,2,4],\"sorted_indices\":true}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "scipy-setdiag",
+      0,
+      "preserve",
+      "copied_receiver"
+    ]
+  },
+  {
+    "source_id": "source-scipy-sort-indices-mutate-receiver",
+    "case_id": "scipy-sort-indices",
+    "family": "scipy",
+    "goal": "mutate",
+    "recipe": "receiver",
+    "text": "Past successful experience (scipy 1.17.1):\nInput and fitted state:\ndata = sp.csr_matrix((np.array([3., 1., 2.]), np.array([2, 0, 1]), np.array([0, 3])), shape=(1, 3))\nPast operation(data):\n    return data.sort_indices()\nPast requirement: Sort sparse column indices without changing matrix entries. Return the transformed result. The original input object itself must contain the transformed result after the call.\nReusable procedure:\noperation(data)\nreturn data\nObserved returned value: {\"type\":\"csr_matrix\",\"dtype\":\"float64\",\"values\":[[1.0,2.0,3.0]],\"indices\":[0,1,2],\"indptr\":[0,3],\"sorted_indices\":true}\nObserved original after execution: {\"type\":\"csr_matrix\",\"dtype\":\"float64\",\"values\":[[1.0,2.0,3.0]],\"indices\":[0,1,2],\"indptr\":[0,3],\"sorted_indices\":true}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "scipy-sort-indices",
+      0,
+      "mutate",
+      "receiver"
+    ]
+  },
+  {
+    "source_id": "source-scipy-sort-indices-preserve-copied_receiver",
+    "case_id": "scipy-sort-indices",
+    "family": "scipy",
+    "goal": "preserve",
+    "recipe": "copied_receiver",
+    "text": "Past successful experience (scipy 1.17.1):\nInput and fitted state:\ndata = sp.csr_matrix((np.array([3., 1., 2.]), np.array([2, 0, 1]), np.array([0, 3])), shape=(1, 3))\nPast operation(data):\n    return data.sort_indices()\nPast requirement: Sort sparse column indices without changing matrix entries. Return the transformed result. The original input must remain unchanged.\nReusable procedure:\nwork = copy.deepcopy(data)\noperation(work)\nreturn work\nObserved returned value: {\"type\":\"csr_matrix\",\"dtype\":\"float64\",\"values\":[[1.0,2.0,3.0]],\"indices\":[0,1,2],\"indptr\":[0,3],\"sorted_indices\":true}\nObserved original after execution: {\"type\":\"csr_matrix\",\"dtype\":\"float64\",\"values\":[[1.0,2.0,3.0]],\"indices\":[2,0,1],\"indptr\":[0,3],\"sorted_indices\":false}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "scipy-sort-indices",
+      0,
+      "preserve",
+      "copied_receiver"
+    ]
+  },
+  {
+    "source_id": "source-scipy-sorted-indices-preserve-copied_returned",
+    "case_id": "scipy-sorted-indices",
+    "family": "scipy",
+    "goal": "preserve",
+    "recipe": "copied_returned",
+    "text": "Past successful experience (scipy 1.17.1):\nInput and fitted state:\ndata = sp.csr_matrix((np.array([3., 1., 2.]), np.array([2, 0, 1]), np.array([0, 3])), shape=(1, 3))\nPast operation(data):\n    return data.sorted_indices()\nPast requirement: Sort sparse column indices without changing matrix entries. Return the transformed result. The original input must remain unchanged.\nReusable procedure:\nwork = copy.deepcopy(data)\nresult = operation(work)\nreturn result\nObserved returned value: {\"type\":\"csr_matrix\",\"dtype\":\"float64\",\"values\":[[1.0,2.0,3.0]],\"indices\":[0,1,2],\"indptr\":[0,3],\"sorted_indices\":true}\nObserved original after execution: {\"type\":\"csr_matrix\",\"dtype\":\"float64\",\"values\":[[1.0,2.0,3.0]],\"indices\":[2,0,1],\"indptr\":[0,3],\"sorted_indices\":false}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "scipy-sorted-indices",
+      0,
+      "preserve",
+      "copied_returned"
+    ]
+  },
+  {
+    "source_id": "source-scipy-sorted-indices-preserve-returned",
+    "case_id": "scipy-sorted-indices",
+    "family": "scipy",
+    "goal": "preserve",
+    "recipe": "returned",
+    "text": "Past successful experience (scipy 1.17.1):\nInput and fitted state:\ndata = sp.csr_matrix((np.array([3., 1., 2.]), np.array([2, 0, 1]), np.array([0, 3])), shape=(1, 3))\nPast operation(data):\n    return data.sorted_indices()\nPast requirement: Sort sparse column indices without changing matrix entries. Return the transformed result. The original input must remain unchanged.\nReusable procedure:\nresult = operation(data)\nreturn result\nObserved returned value: {\"type\":\"csr_matrix\",\"dtype\":\"float64\",\"values\":[[1.0,2.0,3.0]],\"indices\":[0,1,2],\"indptr\":[0,3],\"sorted_indices\":true}\nObserved original after execution: {\"type\":\"csr_matrix\",\"dtype\":\"float64\",\"values\":[[1.0,2.0,3.0]],\"indices\":[2,0,1],\"indptr\":[0,3],\"sorted_indices\":false}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "scipy-sorted-indices",
+      0,
+      "preserve",
+      "returned"
+    ]
+  },
+  {
+    "source_id": "source-sklearn-normalize-false-mutate-receiver",
+    "case_id": "sklearn-normalize-false",
+    "family": "sklearn",
+    "goal": "mutate",
+    "recipe": "receiver",
+    "text": "Past successful experience (scikit-learn 1.8.0):\nInput and fitted state:\ndata = np.array([[2., 2.], [1., 3.]])\nmodel = Normalizer(norm=\"l1\").fit(np.array([[1., 1.]]))\nPast operation(data):\n    return model.transform(data, copy=False)\nPast requirement: Normalize each row to unit L1 norm. Return the transformed result. The original input object itself must contain the transformed result after the call.\nReusable procedure:\noperation(data)\nreturn data\nObserved returned value: {\"type\":\"ndarray\",\"dtype\":\"float64\",\"values\":[[0.5,0.5],[0.25,0.75]]}\nObserved original after execution: {\"type\":\"ndarray\",\"dtype\":\"float64\",\"values\":[[0.5,0.5],[0.25,0.75]]}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "sklearn-normalize-false",
+      0,
+      "mutate",
+      "receiver"
+    ]
+  },
+  {
+    "source_id": "source-sklearn-normalize-false-mutate-returned",
+    "case_id": "sklearn-normalize-false",
+    "family": "sklearn",
+    "goal": "mutate",
+    "recipe": "returned",
+    "text": "Past successful experience (scikit-learn 1.8.0):\nInput and fitted state:\ndata = np.array([[2., 2.], [1., 3.]])\nmodel = Normalizer(norm=\"l1\").fit(np.array([[1., 1.]]))\nPast operation(data):\n    return model.transform(data, copy=False)\nPast requirement: Normalize each row to unit L1 norm. Return the transformed result. The original input object itself must contain the transformed result after the call.\nReusable procedure:\nresult = operation(data)\nreturn result\nObserved returned value: {\"type\":\"ndarray\",\"dtype\":\"float64\",\"values\":[[0.5,0.5],[0.25,0.75]]}\nObserved original after execution: {\"type\":\"ndarray\",\"dtype\":\"float64\",\"values\":[[0.5,0.5],[0.25,0.75]]}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "sklearn-normalize-false",
+      0,
+      "mutate",
+      "returned"
+    ]
+  },
+  {
+    "source_id": "source-sklearn-normalize-false-preserve-copied_receiver",
+    "case_id": "sklearn-normalize-false",
+    "family": "sklearn",
+    "goal": "preserve",
+    "recipe": "copied_receiver",
+    "text": "Past successful experience (scikit-learn 1.8.0):\nInput and fitted state:\ndata = np.array([[2., 2.], [1., 3.]])\nmodel = Normalizer(norm=\"l1\").fit(np.array([[1., 1.]]))\nPast operation(data):\n    return model.transform(data, copy=False)\nPast requirement: Normalize each row to unit L1 norm. Return the transformed result. The original input must remain unchanged.\nReusable procedure:\nwork = copy.deepcopy(data)\noperation(work)\nreturn work\nObserved returned value: {\"type\":\"ndarray\",\"dtype\":\"float64\",\"values\":[[0.5,0.5],[0.25,0.75]]}\nObserved original after execution: {\"type\":\"ndarray\",\"dtype\":\"float64\",\"values\":[[2.0,2.0],[1.0,3.0]]}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "sklearn-normalize-false",
+      0,
+      "preserve",
+      "copied_receiver"
+    ]
+  },
+  {
+    "source_id": "source-sklearn-normalize-false-preserve-copied_returned",
+    "case_id": "sklearn-normalize-false",
+    "family": "sklearn",
+    "goal": "preserve",
+    "recipe": "copied_returned",
+    "text": "Past successful experience (scikit-learn 1.8.0):\nInput and fitted state:\ndata = np.array([[2., 2.], [1., 3.]])\nmodel = Normalizer(norm=\"l1\").fit(np.array([[1., 1.]]))\nPast operation(data):\n    return model.transform(data, copy=False)\nPast requirement: Normalize each row to unit L1 norm. Return the transformed result. The original input must remain unchanged.\nReusable procedure:\nwork = copy.deepcopy(data)\nresult = operation(work)\nreturn result\nObserved returned value: {\"type\":\"ndarray\",\"dtype\":\"float64\",\"values\":[[0.5,0.5],[0.25,0.75]]}\nObserved original after execution: {\"type\":\"ndarray\",\"dtype\":\"float64\",\"values\":[[2.0,2.0],[1.0,3.0]]}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "sklearn-normalize-false",
+      0,
+      "preserve",
+      "copied_returned"
+    ]
+  },
+  {
+    "source_id": "source-sklearn-normalize-true-preserve-copied_returned",
+    "case_id": "sklearn-normalize-true",
+    "family": "sklearn",
+    "goal": "preserve",
+    "recipe": "copied_returned",
+    "text": "Past successful experience (scikit-learn 1.8.0):\nInput and fitted state:\ndata = np.array([[2., 2.], [1., 3.]])\nmodel = Normalizer(norm=\"l1\").fit(np.array([[1., 1.]]))\nPast operation(data):\n    return model.transform(data, copy=True)\nPast requirement: Normalize each row to unit L1 norm. Return the transformed result. The original input must remain unchanged.\nReusable procedure:\nwork = copy.deepcopy(data)\nresult = operation(work)\nreturn result\nObserved returned value: {\"type\":\"ndarray\",\"dtype\":\"float64\",\"values\":[[0.5,0.5],[0.25,0.75]]}\nObserved original after execution: {\"type\":\"ndarray\",\"dtype\":\"float64\",\"values\":[[2.0,2.0],[1.0,3.0]]}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "sklearn-normalize-true",
+      0,
+      "preserve",
+      "copied_returned"
+    ]
+  },
+  {
+    "source_id": "source-sklearn-normalize-true-preserve-returned",
+    "case_id": "sklearn-normalize-true",
+    "family": "sklearn",
+    "goal": "preserve",
+    "recipe": "returned",
+    "text": "Past successful experience (scikit-learn 1.8.0):\nInput and fitted state:\ndata = np.array([[2., 2.], [1., 3.]])\nmodel = Normalizer(norm=\"l1\").fit(np.array([[1., 1.]]))\nPast operation(data):\n    return model.transform(data, copy=True)\nPast requirement: Normalize each row to unit L1 norm. Return the transformed result. The original input must remain unchanged.\nReusable procedure:\nresult = operation(data)\nreturn result\nObserved returned value: {\"type\":\"ndarray\",\"dtype\":\"float64\",\"values\":[[0.5,0.5],[0.25,0.75]]}\nObserved original after execution: {\"type\":\"ndarray\",\"dtype\":\"float64\",\"values\":[[2.0,2.0],[1.0,3.0]]}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "sklearn-normalize-true",
+      0,
+      "preserve",
+      "returned"
+    ]
+  },
+  {
+    "source_id": "source-sklearn-scale-float-false-mutate-receiver",
+    "case_id": "sklearn-scale-float-false",
+    "family": "sklearn",
+    "goal": "mutate",
+    "recipe": "receiver",
+    "text": "Past successful experience (scikit-learn 1.8.0):\nInput and fitted state:\ndata = np.array([[3, 6], [5, 10]], dtype=float)\nmodel = StandardScaler().fit(np.array([[0., 0.], [2., 4.]]))\nPast operation(data):\n    return model.transform(data, copy=False)\nPast requirement: Apply the already fitted scaler; return a floating transformed array. Return the transformed result. The original input object itself must contain the transformed result after the call.\nReusable procedure:\noperation(data)\nreturn data\nObserved returned value: {\"type\":\"ndarray\",\"dtype\":\"float64\",\"values\":[[2.0,2.0],[4.0,4.0]]}\nObserved original after execution: {\"type\":\"ndarray\",\"dtype\":\"float64\",\"values\":[[2.0,2.0],[4.0,4.0]]}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "sklearn-scale-float-false",
+      0,
+      "mutate",
+      "receiver"
+    ]
+  },
+  {
+    "source_id": "source-sklearn-scale-float-false-mutate-returned",
+    "case_id": "sklearn-scale-float-false",
+    "family": "sklearn",
+    "goal": "mutate",
+    "recipe": "returned",
+    "text": "Past successful experience (scikit-learn 1.8.0):\nInput and fitted state:\ndata = np.array([[3, 6], [5, 10]], dtype=float)\nmodel = StandardScaler().fit(np.array([[0., 0.], [2., 4.]]))\nPast operation(data):\n    return model.transform(data, copy=False)\nPast requirement: Apply the already fitted scaler; return a floating transformed array. Return the transformed result. The original input object itself must contain the transformed result after the call.\nReusable procedure:\nresult = operation(data)\nreturn result\nObserved returned value: {\"type\":\"ndarray\",\"dtype\":\"float64\",\"values\":[[2.0,2.0],[4.0,4.0]]}\nObserved original after execution: {\"type\":\"ndarray\",\"dtype\":\"float64\",\"values\":[[2.0,2.0],[4.0,4.0]]}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "sklearn-scale-float-false",
+      0,
+      "mutate",
+      "returned"
+    ]
+  },
+  {
+    "source_id": "source-sklearn-scale-float-false-preserve-copied_receiver",
+    "case_id": "sklearn-scale-float-false",
+    "family": "sklearn",
+    "goal": "preserve",
+    "recipe": "copied_receiver",
+    "text": "Past successful experience (scikit-learn 1.8.0):\nInput and fitted state:\ndata = np.array([[3, 6], [5, 10]], dtype=float)\nmodel = StandardScaler().fit(np.array([[0., 0.], [2., 4.]]))\nPast operation(data):\n    return model.transform(data, copy=False)\nPast requirement: Apply the already fitted scaler; return a floating transformed array. Return the transformed result. The original input must remain unchanged.\nReusable procedure:\nwork = copy.deepcopy(data)\noperation(work)\nreturn work\nObserved returned value: {\"type\":\"ndarray\",\"dtype\":\"float64\",\"values\":[[2.0,2.0],[4.0,4.0]]}\nObserved original after execution: {\"type\":\"ndarray\",\"dtype\":\"float64\",\"values\":[[3.0,6.0],[5.0,10.0]]}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "sklearn-scale-float-false",
+      0,
+      "preserve",
+      "copied_receiver"
+    ]
+  },
+  {
+    "source_id": "source-sklearn-scale-float-false-preserve-copied_returned",
+    "case_id": "sklearn-scale-float-false",
+    "family": "sklearn",
+    "goal": "preserve",
+    "recipe": "copied_returned",
+    "text": "Past successful experience (scikit-learn 1.8.0):\nInput and fitted state:\ndata = np.array([[3, 6], [5, 10]], dtype=float)\nmodel = StandardScaler().fit(np.array([[0., 0.], [2., 4.]]))\nPast operation(data):\n    return model.transform(data, copy=False)\nPast requirement: Apply the already fitted scaler; return a floating transformed array. Return the transformed result. The original input must remain unchanged.\nReusable procedure:\nwork = copy.deepcopy(data)\nresult = operation(work)\nreturn result\nObserved returned value: {\"type\":\"ndarray\",\"dtype\":\"float64\",\"values\":[[2.0,2.0],[4.0,4.0]]}\nObserved original after execution: {\"type\":\"ndarray\",\"dtype\":\"float64\",\"values\":[[3.0,6.0],[5.0,10.0]]}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "sklearn-scale-float-false",
+      0,
+      "preserve",
+      "copied_returned"
+    ]
+  },
+  {
+    "source_id": "source-stdlib-dict-union-preserve-copied_returned",
+    "case_id": "stdlib-dict-union",
+    "family": "stdlib",
+    "goal": "preserve",
+    "recipe": "copied_returned",
+    "text": "Past successful experience (python 3.11.14):\nInput and fitted state:\ndata = {'a': 1}\nPast operation(data):\n    return data | {'b': 2}\nPast requirement: Add the b mapping while preserving the a mapping. Return the transformed result. The original input must remain unchanged.\nReusable procedure:\nwork = copy.deepcopy(data)\nresult = operation(work)\nreturn result\nObserved returned value: {\"type\":\"dict\",\"values\":{\"a\":1,\"b\":2}}\nObserved original after execution: {\"type\":\"dict\",\"values\":{\"a\":1}}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "stdlib-dict-union",
+      0,
+      "preserve",
+      "copied_returned"
+    ]
+  },
+  {
+    "source_id": "source-stdlib-dict-union-preserve-returned",
+    "case_id": "stdlib-dict-union",
+    "family": "stdlib",
+    "goal": "preserve",
+    "recipe": "returned",
+    "text": "Past successful experience (python 3.11.14):\nInput and fitted state:\ndata = {'a': 1}\nPast operation(data):\n    return data | {'b': 2}\nPast requirement: Add the b mapping while preserving the a mapping. Return the transformed result. The original input must remain unchanged.\nReusable procedure:\nresult = operation(data)\nreturn result\nObserved returned value: {\"type\":\"dict\",\"values\":{\"a\":1,\"b\":2}}\nObserved original after execution: {\"type\":\"dict\",\"values\":{\"a\":1}}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "stdlib-dict-union",
+      0,
+      "preserve",
+      "returned"
+    ]
+  },
+  {
+    "source_id": "source-stdlib-dict-update-mutate-receiver",
+    "case_id": "stdlib-dict-update",
+    "family": "stdlib",
+    "goal": "mutate",
+    "recipe": "receiver",
+    "text": "Past successful experience (python 3.11.14):\nInput and fitted state:\ndata = {'a': 1}\nPast operation(data):\n    return data.update({'b': 2})\nPast requirement: Add the b mapping while preserving the a mapping. Return the transformed result. The original input object itself must contain the transformed result after the call.\nReusable procedure:\noperation(data)\nreturn data\nObserved returned value: {\"type\":\"dict\",\"values\":{\"a\":1,\"b\":2}}\nObserved original after execution: {\"type\":\"dict\",\"values\":{\"a\":1,\"b\":2}}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "stdlib-dict-update",
+      0,
+      "mutate",
+      "receiver"
+    ]
+  },
+  {
+    "source_id": "source-stdlib-dict-update-preserve-copied_receiver",
+    "case_id": "stdlib-dict-update",
+    "family": "stdlib",
+    "goal": "preserve",
+    "recipe": "copied_receiver",
+    "text": "Past successful experience (python 3.11.14):\nInput and fitted state:\ndata = {'a': 1}\nPast operation(data):\n    return data.update({'b': 2})\nPast requirement: Add the b mapping while preserving the a mapping. Return the transformed result. The original input must remain unchanged.\nReusable procedure:\nwork = copy.deepcopy(data)\noperation(work)\nreturn work\nObserved returned value: {\"type\":\"dict\",\"values\":{\"a\":1,\"b\":2}}\nObserved original after execution: {\"type\":\"dict\",\"values\":{\"a\":1}}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "stdlib-dict-update",
+      0,
+      "preserve",
+      "copied_receiver"
+    ]
+  },
+  {
+    "source_id": "source-stdlib-sort-mutate-receiver",
+    "case_id": "stdlib-sort",
+    "family": "stdlib",
+    "goal": "mutate",
+    "recipe": "receiver",
+    "text": "Past successful experience (python 3.11.14):\nInput and fitted state:\ndata = [3, 1, 2]\nPast operation(data):\n    return data.sort()\nPast requirement: Sort the numbers ascending. Return the transformed result. The original input object itself must contain the transformed result after the call.\nReusable procedure:\noperation(data)\nreturn data\nObserved returned value: {\"type\":\"list\",\"values\":[1,2,3]}\nObserved original after execution: {\"type\":\"list\",\"values\":[1,2,3]}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "stdlib-sort",
+      0,
+      "mutate",
+      "receiver"
+    ]
+  },
+  {
+    "source_id": "source-stdlib-sort-preserve-copied_receiver",
+    "case_id": "stdlib-sort",
+    "family": "stdlib",
+    "goal": "preserve",
+    "recipe": "copied_receiver",
+    "text": "Past successful experience (python 3.11.14):\nInput and fitted state:\ndata = [3, 1, 2]\nPast operation(data):\n    return data.sort()\nPast requirement: Sort the numbers ascending. Return the transformed result. The original input must remain unchanged.\nReusable procedure:\nwork = copy.deepcopy(data)\noperation(work)\nreturn work\nObserved returned value: {\"type\":\"list\",\"values\":[1,2,3]}\nObserved original after execution: {\"type\":\"list\",\"values\":[3,1,2]}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "stdlib-sort",
+      0,
+      "preserve",
+      "copied_receiver"
+    ]
+  },
+  {
+    "source_id": "source-stdlib-sorted-preserve-copied_returned",
+    "case_id": "stdlib-sorted",
+    "family": "stdlib",
+    "goal": "preserve",
+    "recipe": "copied_returned",
+    "text": "Past successful experience (python 3.11.14):\nInput and fitted state:\ndata = [3, 1, 2]\nPast operation(data):\n    return sorted(data)\nPast requirement: Sort the numbers ascending. Return the transformed result. The original input must remain unchanged.\nReusable procedure:\nwork = copy.deepcopy(data)\nresult = operation(work)\nreturn result\nObserved returned value: {\"type\":\"list\",\"values\":[1,2,3]}\nObserved original after execution: {\"type\":\"list\",\"values\":[3,1,2]}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "stdlib-sorted",
+      0,
+      "preserve",
+      "copied_returned"
+    ]
+  },
+  {
+    "source_id": "source-stdlib-sorted-preserve-returned",
+    "case_id": "stdlib-sorted",
+    "family": "stdlib",
+    "goal": "preserve",
+    "recipe": "returned",
+    "text": "Past successful experience (python 3.11.14):\nInput and fitted state:\ndata = [3, 1, 2]\nPast operation(data):\n    return sorted(data)\nPast requirement: Sort the numbers ascending. Return the transformed result. The original input must remain unchanged.\nReusable procedure:\nresult = operation(data)\nreturn result\nObserved returned value: {\"type\":\"list\",\"values\":[1,2,3]}\nObserved original after execution: {\"type\":\"list\",\"values\":[3,1,2]}\nThe returned value and original-object requirement both passed in that past execution.",
+    "evidence_key": [
+      "stdlib-sorted",
+      0,
+      "preserve",
+      "returned"
+    ]
+  }
+]

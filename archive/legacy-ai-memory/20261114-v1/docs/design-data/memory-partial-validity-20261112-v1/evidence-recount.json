@@ -1,0 +1,141 @@
+{
+  "source_file": "evaluation/results/external-update-masking-20261111-v1/case-effects.csv",
+  "source_sha256": "31d595fc6881655ac1f4f2200874f03b7edf89f4d520ddf4f80ce9b14ef3b772",
+  "recount_code_sha256": "12964a5a31d99acde13f3f11d172b9657b3344655ea00e39a720eb9bf9f72f94",
+  "scope": "Existing development outputs only; no relabeling or new model execution",
+  "family_note": "Counts of stored IDs; semantic independence is not established by counting IDs",
+  "by_source": {
+    "beam": {
+      "n": 15,
+      "recorded_family_ids": 11,
+      "scores": {
+        "current_new": {
+          "correct": 11,
+          "unknown": 4,
+          "incorrect_nonabstention": 0
+        },
+        "current_new_plus_old": {
+          "correct": 10,
+          "unknown": 0,
+          "incorrect_nonabstention": 5
+        },
+        "old_values_marked": {
+          "correct": 10,
+          "unknown": 0,
+          "incorrect_nonabstention": 5
+        },
+        "old_values_masked": {
+          "correct": 5,
+          "unknown": 10,
+          "incorrect_nonabstention": 0
+        }
+      },
+      "paired_transitions": {
+        "current_new_to_current_new_plus_old": {
+          "gain_ids": [
+            "beam:1M-19:ku1"
+          ],
+          "harm_ids": [
+            "beam:100K-16:ku1",
+            "beam:500K-20:ku2"
+          ]
+        },
+        "current_new_plus_old_to_old_values_masked": {
+          "gain_ids": [
+            "beam:500K-20:ku2"
+          ],
+          "harm_ids": [
+            "beam:100K-16:ku2",
+            "beam:100K-18:ku1",
+            "beam:1M-12:ku2",
+            "beam:1M-19:ku1",
+            "beam:1M-2:ku1",
+            "beam:500K-21:ku1"
+          ]
+        },
+        "old_values_marked_to_old_values_masked": {
+          "gain_ids": [
+            "beam:500K-20:ku2"
+          ],
+          "harm_ids": [
+            "beam:100K-16:ku2",
+            "beam:100K-18:ku1",
+            "beam:1M-12:ku2",
+            "beam:1M-19:ku1",
+            "beam:1M-2:ku1",
+            "beam:500K-21:ku1"
+          ]
+        }
+      }
+    },
+    "longmemeval_s": {
+      "n": 32,
+      "recorded_family_ids": 32,
+      "scores": {
+        "current_new": {
+          "correct": 31,
+          "unknown": 1,
+          "incorrect_nonabstention": 0
+        },
+        "current_new_plus_old": {
+          "correct": 28,
+          "unknown": 0,
+          "incorrect_nonabstention": 4
+        },
+        "old_values_marked": {
+          "correct": 28,
+          "unknown": 2,
+          "incorrect_nonabstention": 2
+        },
+        "old_values_masked": {
+          "correct": 24,
+          "unknown": 8,
+          "incorrect_nonabstention": 0
+        }
+      },
+      "paired_transitions": {
+        "current_new_to_current_new_plus_old": {
+          "gain_ids": [
+            "lme:89941a93"
+          ],
+          "harm_ids": [
+            "lme:0f05491a",
+            "lme:2133c1b5",
+            "lme:26bdc477",
+            "lme:4b24c848"
+          ]
+        },
+        "current_new_plus_old_to_old_values_masked": {
+          "gain_ids": [
+            "lme:0f05491a",
+            "lme:2133c1b5",
+            "lme:26bdc477"
+          ],
+          "harm_ids": [
+            "lme:4d6b87c8",
+            "lme:6a27ffc2",
+            "lme:6aeb4375",
+            "lme:89941a93",
+            "lme:a2f3aa27",
+            "lme:affe2881",
+            "lme:db467c8c"
+          ]
+        },
+        "old_values_marked_to_old_values_masked": {
+          "gain_ids": [
+            "lme:2133c1b5",
+            "lme:26bdc477"
+          ],
+          "harm_ids": [
+            "lme:4d6b87c8",
+            "lme:6a27ffc2",
+            "lme:6aeb4375",
+            "lme:a2f3aa27",
+            "lme:affe2881",
+            "lme:db467c8c"
+          ]
+        }
+      }
+    }
+  }
+}

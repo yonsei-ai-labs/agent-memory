@@ -1,0 +1,38 @@
+{
+  "at": "2026-11-07T10:31:01.823936+00:00",
+  "model_api_calls": 0,
+  "specification": {
+    "probe_id": "label-encoder-unseen_label",
+    "context_task": "scikit-learn__scikit-learn-12471",
+    "mechanism": "validation_order",
+    "fixture": {
+      "mode": "unseen_label"
+    },
+    "interpreter": "/opt/miniconda3/envs/testbed/bin/python",
+    "program": "from sklearn.preprocessing import LabelEncoder\nimport numpy as np\nencoder=LabelEncoder()\nencoder.fit(['a','b'])\nvalues=['missing']\noutput=encoder.transform(values)\nresult={'values':output.tolist(),'dtype':str(output.dtype),'size':int(output.size)}\n"
+  },
+  "public_context_file": "datasets/memory_relations/20261107-discovery-v1/evidence/public-code/scikit-learn__scikit-learn-12471.json",
+  "image_id": "sha256:a64885c975df6dc88571c92acbd9efc6af4c0e4a8e0841e0b24710acc152cfd3",
+  "executed_program_sha256": "232826ac239f96aee30e52ec1227871a1a8a782a1df1ea190415d4801854679e",
+  "observed": {
+    "exception_type": "ValueError",
+    "kind": "exception",
+    "message": "y contains previously unseen labels: ['missing']",
+    "traceback": "Traceback (most recent call last):\n  File \"<string>\", line 8, in <module>\n  File \"/testbed/sklearn/preprocessing/label.py\", line 257, in transform\n    _, y = _encode(y, uniques=self.classes_, encode=True)\n  File \"/testbed/sklearn/preprocessing/label.py\", line 110, in _encode\n    return _encode_numpy(values, uniques, encode)\n  File \"/testbed/sklearn/preprocessing/label.py\", line 53, in _encode_numpy\n    % str(diff))\nValueError: y contains previously unseen labels: ['missing']\n"
+  },
+  "execution": {
+    "returncode": 0,
+    "stdout": "MEMORY_RELATION_RESULT:{\"exception_type\": \"ValueError\", \"kind\": \"exception\", \"message\": \"y contains previously unseen labels: ['missing']\", \"traceback\": \"Traceback (most recent call last):\\n  File \\\"<string>\\\", line 8, in <module>\\n  File \\\"/testbed/sklearn/preprocessing/label.py\\\", line 257, in transform\\n    _, y = _encode(y, uniques=self.classes_, encode=True)\\n  File \\\"/testbed/sklearn/preprocessing/label.py\\\", line 110, in _encode\\n    return _encode_numpy(values, uniques, encode)\\n  File \\\"/testbed/sklearn/preprocessing/label.py\\\", line 53, in _encode_numpy\\n    % str(diff))\\nValueError: y contains previously unseen labels: ['missing']\\n\"}\n",
+    "stderr": "",
+    "seconds": 1.2590223890147172,
+    "image_id": "sha256:a64885c975df6dc88571c92acbd9efc6af4c0e4a8e0841e0b24710acc152cfd3",
+    "interpreter": "/opt/miniconda3/envs/testbed/bin/python",
+    "resources": {
+      "cpus": 1,
+      "memory": "1g",
+      "network": "none",
+      "root_filesystem": "read-only"
+    }
+  },
+  "interpretation": "Controlled mechanism probe. Expected validation exceptions are observed outcomes, not infrastructure failures. Shell success is not treated as semantic success. No actor or memory policy was evaluated."
+}

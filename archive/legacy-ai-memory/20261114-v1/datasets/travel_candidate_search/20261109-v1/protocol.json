@@ -1,0 +1,51 @@
+{
+  "task": "train_candidate_retriever_keep_reader_fixed",
+  "primary_arms": [
+    "fixed-hybrid-32",
+    "fixed-hybrid-64",
+    "learned-hybrid-32"
+  ],
+  "secondary_arms": [
+    "fixed-dense-32",
+    "learned-dense-32"
+  ],
+  "history_mode": "public_reference_history",
+  "test_labels_included": false,
+  "source_index_sha256": "4e77511202949ac1a63e386524cb2550875df49a914570a49afdb8cb00db7bad",
+  "prior_run": "training/memory_selector/outputs/travel-full-request-retrieval-20261109-a100",
+  "prior_archives_sha256": {
+    "upload.zip": "31eddd1d684b06168374fd9f319768586e38f7b4b87b671b44877f5839d6cdea",
+    "results.zip": "edfee485318ef4196d8fd968094bc4eda0b6a2303ae96b038ee143282d097ac9"
+  },
+  "fixed_reader_sha256": {
+    "fixed-reader/head-weights.npz": "d93e46ce918cbd1326cedbca52b456cd59fd546fd0d6532aa5fc712f5ecefd18",
+    "fixed-reader/adapter/adapter_config.json": "14bf6b274d7518aed1b9754ddb9916e45e2f5f8a3f90e439465ecadcb14de0c6",
+    "fixed-reader/adapter/adapter_model.safetensors": "5046ca5258295da4d657b9c09765836d6bd1e62e1b23182ebee5b6c27f6d2bda"
+  },
+  "latency_queries": [
+    "travel-bank-142-turn-2",
+    "travel-bank-232-turn-4",
+    "travel-bank-232-turn-8",
+    "travel-bank-116-turn-2",
+    "travel-bank-161-turn-5",
+    "travel-bank-206-turn-8",
+    "travel-bank-123-turn-2",
+    "travel-bank-213-turn-5",
+    "travel-bank-33-turn-8",
+    "travel-bank-1-turn-2",
+    "travel-bank-1-turn-5",
+    "travel-bank-46-turn-8",
+    "travel-bank-101-turn-2",
+    "travel-bank-101-turn-5",
+    "travel-bank-236-turn-8",
+    "travel-bank-128-turn-2",
+    "travel-bank-128-turn-5",
+    "travel-bank-83-turn-7",
+    "travel-bank-139-turn-2",
+    "travel-bank-229-turn-5",
+    "travel-bank-49-turn-8"
+  ],
+  "latency_sampling": "Three dev queries per plan by bank size: smallest, median, largest; seed-blocked primary-arm order, warm resident models, prebuilt document indexes.",
+  "training": "New shared query/document LoRA initialized from base; all query positives, 75% hard and remaining random negatives, no in-batch negatives.",
+  "diagnostic_limits": "Same previously exposed 8 test plans, one seed; no new independent sources, worker outcomes or abstention-risk evaluation."
+}

@@ -1,0 +1,870 @@
+{
+  "at": "2026-11-07T10:56:17.600042+00:00",
+  "observations": 116,
+  "unique_run_ids": 116,
+  "unknown_outcomes": 1,
+  "cohorts": {
+    "framing12": 12,
+    "transfer24": 24,
+    "prescription32": 32,
+    "replication16": 16,
+    "restoration32": 32
+  },
+  "panel": [
+    {
+      "cohort": "framing12",
+      "task_id": "django__django-16910",
+      "observed_rate_variation": true,
+      "has_unknown_outcome": false,
+      "variation_comparison": "Only arms with completely observed outcomes; missingness bounds are not observed gains.",
+      "all_complete_actions_successful": false,
+      "all_observed_outcomes_failed": false,
+      "normal_no_submission": 0,
+      "cells": [
+        {
+          "cohort": "framing12",
+          "task_id": "django__django-16910",
+          "source_instance_id": "django__django-14667",
+          "action": "directive",
+          "assigned": 2,
+          "successes": 0,
+          "unknown_outcomes": 0,
+          "success_rate_lower": 0.0,
+          "success_rate_upper": 0.0,
+          "no_submission": 0,
+          "mean_api_cost_usd": 0.01028869
+        },
+        {
+          "cohort": "framing12",
+          "task_id": "django__django-16910",
+          "source_instance_id": "django__django-14667",
+          "action": "informational",
+          "assigned": 2,
+          "successes": 0,
+          "unknown_outcomes": 0,
+          "success_rate_lower": 0.0,
+          "success_rate_upper": 0.0,
+          "no_submission": 0,
+          "mean_api_cost_usd": 0.0075867725
+        },
+        {
+          "cohort": "framing12",
+          "task_id": "django__django-16910",
+          "source_instance_id": "django__django-14667",
+          "action": "none",
+          "assigned": 2,
+          "successes": 1,
+          "unknown_outcomes": 0,
+          "success_rate_lower": 0.5,
+          "success_rate_upper": 0.5,
+          "no_submission": 0,
+          "mean_api_cost_usd": 0.01063091
+        }
+      ],
+      "interpretation": "Descriptive small-sample panel only. Arm differences are not useful/harmful labels. Do not pool different cohorts,reader budgets,or memory packages to train a universal gain label."
+    },
+    {
+      "cohort": "framing12",
+      "task_id": "sphinx-doc__sphinx-8627",
+      "observed_rate_variation": true,
+      "has_unknown_outcome": false,
+      "variation_comparison": "Only arms with completely observed outcomes; missingness bounds are not observed gains.",
+      "all_complete_actions_successful": false,
+      "all_observed_outcomes_failed": false,
+      "normal_no_submission": 0,
+      "cells": [
+        {
+          "cohort": "framing12",
+          "task_id": "sphinx-doc__sphinx-8627",
+          "source_instance_id": "sphinx-doc__sphinx-8435",
+          "action": "directive",
+          "assigned": 2,
+          "successes": 2,
+          "unknown_outcomes": 0,
+          "success_rate_lower": 1.0,
+          "success_rate_upper": 1.0,
+          "no_submission": 0,
+          "mean_api_cost_usd": 0.0103248225
+        },
+        {
+          "cohort": "framing12",
+          "task_id": "sphinx-doc__sphinx-8627",
+          "source_instance_id": "sphinx-doc__sphinx-8435",
+          "action": "informational",
+          "assigned": 2,
+          "successes": 2,
+          "unknown_outcomes": 0,
+          "success_rate_lower": 1.0,
+          "success_rate_upper": 1.0,
+          "no_submission": 0,
+          "mean_api_cost_usd": 0.009837430000000001
+        },
+        {
+          "cohort": "framing12",
+          "task_id": "sphinx-doc__sphinx-8627",
+          "source_instance_id": "sphinx-doc__sphinx-8435",
+          "action": "none",
+          "assigned": 2,
+          "successes": 1,
+          "unknown_outcomes": 0,
+          "success_rate_lower": 0.5,
+          "success_rate_upper": 0.5,
+          "no_submission": 0,
+          "mean_api_cost_usd": 0.0104276575
+        }
+      ],
+      "interpretation": "Descriptive small-sample panel only. Arm differences are not useful/harmful labels. Do not pool different cohorts,reader budgets,or memory packages to train a universal gain label."
+    },
+    {
+      "cohort": "prescription32",
+      "task_id": "sympy__sympy-24213",
+      "observed_rate_variation": true,
+      "has_unknown_outcome": false,
+      "variation_comparison": "Only arms with completely observed outcomes; missingness bounds are not observed gains.",
+      "all_complete_actions_successful": false,
+      "all_observed_outcomes_failed": false,
+      "normal_no_submission": 7,
+      "cells": [
+        {
+          "cohort": "prescription32",
+          "task_id": "sympy__sympy-24213",
+          "source_instance_id": "sympy__sympy-24066",
+          "action": "F",
+          "assigned": 4,
+          "successes": 1,
+          "unknown_outcomes": 0,
+          "success_rate_lower": 0.25,
+          "success_rate_upper": 0.25,
+          "no_submission": 3,
+          "mean_api_cost_usd": 0.0029295912499999995
+        },
+        {
+          "cohort": "prescription32",
+          "task_id": "sympy__sympy-24213",
+          "source_instance_id": "sympy__sympy-24066",
+          "action": "FP",
+          "assigned": 4,
+          "successes": 3,
+          "unknown_outcomes": 0,
+          "success_rate_lower": 0.75,
+          "success_rate_upper": 0.75,
+          "no_submission": 1,
+          "mean_api_cost_usd": 0.0028395925
+        },
+        {
+          "cohort": "prescription32",
+          "task_id": "sympy__sympy-24213",
+          "source_instance_id": "sympy__sympy-24066",
+          "action": "FPA",
+          "assigned": 4,
+          "successes": 3,
+          "unknown_outcomes": 0,
+          "success_rate_lower": 0.75,
+          "success_rate_upper": 0.75,
+          "no_submission": 1,
+          "mean_api_cost_usd": 0.0028399524999999995
+        },
+        {
+          "cohort": "prescription32",
+          "task_id": "sympy__sympy-24213",
+          "source_instance_id": "sympy__sympy-24066",
+          "action": "N",
+          "assigned": 4,
+          "successes": 2,
+          "unknown_outcomes": 0,
+          "success_rate_lower": 0.5,
+          "success_rate_upper": 0.5,
+          "no_submission": 2,
+          "mean_api_cost_usd": 0.0027566050000000005
+        }
+      ],
+      "interpretation": "Descriptive small-sample panel only. Arm differences are not useful/harmful labels. Do not pool different cohorts,reader budgets,or memory packages to train a universal gain label."
+    },
+    {
+      "cohort": "prescription32",
+      "task_id": "sympy__sympy-24909",
+      "observed_rate_variation": false,
+      "has_unknown_outcome": false,
+      "variation_comparison": "Only arms with completely observed outcomes; missingness bounds are not observed gains.",
+      "all_complete_actions_successful": false,
+      "all_observed_outcomes_failed": true,
+      "normal_no_submission": 5,
+      "cells": [
+        {
+          "cohort": "prescription32",
+          "task_id": "sympy__sympy-24909",
+          "source_instance_id": "sympy__sympy-24066",
+          "action": "F",
+          "assigned": 4,
+          "successes": 0,
+          "unknown_outcomes": 0,
+          "success_rate_lower": 0.0,
+          "success_rate_upper": 0.0,
+          "no_submission": 1,
+          "mean_api_cost_usd": 0.0038035025
+        },
+        {
+          "cohort": "prescription32",
+          "task_id": "sympy__sympy-24909",
+          "source_instance_id": "sympy__sympy-24066",
+          "action": "FP",
+          "assigned": 4,
+          "successes": 0,
+          "unknown_outcomes": 0,
+          "success_rate_lower": 0.0,
+          "success_rate_upper": 0.0,
+          "no_submission": 3,
+          "mean_api_cost_usd": 0.0036478887499999998
+        },
+        {
+          "cohort": "prescription32",
+          "task_id": "sympy__sympy-24909",
+          "source_instance_id": "sympy__sympy-24066",
+          "action": "FPA",
+          "assigned": 4,
+          "successes": 0,
+          "unknown_outcomes": 0,
+          "success_rate_lower": 0.0,
+          "success_rate_upper": 0.0,
+          "no_submission": 1,
+          "mean_api_cost_usd": 0.0037411337500000003
+        },
+        {
+          "cohort": "prescription32",
+          "task_id": "sympy__sympy-24909",
+          "source_instance_id": "sympy__sympy-24066",
+          "action": "N",
+          "assigned": 4,
+          "successes": 0,
+          "unknown_outcomes": 0,
+          "success_rate_lower": 0.0,
+          "success_rate_upper": 0.0,
+          "no_submission": 0,
+          "mean_api_cost_usd": 0.0034243487499999994
+        }
+      ],
+      "interpretation": "Descriptive small-sample panel only. Arm differences are not useful/harmful labels. Do not pool different cohorts,reader budgets,or memory packages to train a universal gain label."
+    },
+    {
+      "cohort": "replication16",
+      "task_id": "sympy__sympy-24213",
+      "observed_rate_variation": true,
+      "has_unknown_outcome": false,
+      "variation_comparison": "Only arms with completely observed outcomes; missingness bounds are not observed gains.",
+      "all_complete_actions_successful": false,
+      "all_observed_outcomes_failed": false,
+      "normal_no_submission": 2,
+      "cells": [
+        {
+          "cohort": "replication16",
+          "task_id": "sympy__sympy-24213",
+          "source_instance_id": "sympy__sympy-24066",
+          "action": "F",
+          "assigned": 2,
+          "successes": 2,
+          "unknown_outcomes": 0,
+          "success_rate_lower": 1.0,
+          "success_rate_upper": 1.0,
+          "no_submission": 0,
+          "mean_api_cost_usd": 0.0025791425
+        },
+        {
+          "cohort": "replication16",
+          "task_id": "sympy__sympy-24213",
+          "source_instance_id": "sympy__sympy-24066",
+          "action": "FP",
+          "assigned": 2,
+          "successes": 2,
+          "unknown_outcomes": 0,
+          "success_rate_lower": 1.0,
+          "success_rate_upper": 1.0,
+          "no_submission": 0,
+          "mean_api_cost_usd": 0.0031392074999999995
+        },
+        {
+          "cohort": "replication16",
+          "task_id": "sympy__sympy-24213",
+          "source_instance_id": "sympy__sympy-24066",
+          "action": "FPA",
+          "assigned": 2,
+          "successes": 1,
+          "unknown_outcomes": 0,
+          "success_rate_lower": 0.5,
+          "success_rate_upper": 0.5,
+          "no_submission": 1,
+          "mean_api_cost_usd": 0.0029869175
+        },
+        {
+          "cohort": "replication16",
+          "task_id": "sympy__sympy-24213",
+          "source_instance_id": "sympy__sympy-24066",
+          "action": "N",
+          "assigned": 2,
+          "successes": 1,
+          "unknown_outcomes": 0,
+          "success_rate_lower": 0.5,
+          "success_rate_upper": 0.5,
+          "no_submission": 1,
+          "mean_api_cost_usd": 0.002867245
+        }
+      ],
+      "interpretation": "Descriptive small-sample panel only. Arm differences are not useful/harmful labels. Do not pool different cohorts,reader budgets,or memory packages to train a universal gain label."
+    },
+    {
+      "cohort": "replication16",
+      "task_id": "sympy__sympy-24909",
+      "observed_rate_variation": false,
+      "has_unknown_outcome": false,
+      "variation_comparison": "Only arms with completely observed outcomes; missingness bounds are not observed gains.",
+      "all_complete_actions_successful": false,
+      "all_observed_outcomes_failed": true,
+      "normal_no_submission": 4,
+      "cells": [
+        {
+          "cohort": "replication16",
+          "task_id": "sympy__sympy-24909",
+          "source_instance_id": "sympy__sympy-24066",
+          "action": "F",
+          "assigned": 2,
+          "successes": 0,
+          "unknown_outcomes": 0,
+          "success_rate_lower": 0.0,
+          "success_rate_upper": 0.0,
+          "no_submission": 1,
+          "mean_api_cost_usd": 0.0035181175
+        },
+        {
+          "cohort": "replication16",
+          "task_id": "sympy__sympy-24909",
+          "source_instance_id": "sympy__sympy-24066",
+          "action": "FP",
+          "assigned": 2,
+          "successes": 0,
+          "unknown_outcomes": 0,
+          "success_rate_lower": 0.0,
+          "success_rate_upper": 0.0,
+          "no_submission": 2,
+          "mean_api_cost_usd": 0.004489385
+        },
+        {
+          "cohort": "replication16",
+          "task_id": "sympy__sympy-24909",
+          "source_instance_id": "sympy__sympy-24066",
+          "action": "FPA",
+          "assigned": 2,
+          "successes": 0,
+          "unknown_outcomes": 0,
+          "success_rate_lower": 0.0,
+          "success_rate_upper": 0.0,
+          "no_submission": 0,
+          "mean_api_cost_usd": 0.0036134675
+        },
+        {
+          "cohort": "replication16",
+          "task_id": "sympy__sympy-24909",
+          "source_instance_id": "sympy__sympy-24066",
+          "action": "N",
+          "assigned": 2,
+          "successes": 0,
+          "unknown_outcomes": 0,
+          "success_rate_lower": 0.0,
+          "success_rate_upper": 0.0,
+          "no_submission": 1,
+          "mean_api_cost_usd": 0.00399671
+        }
+      ],
+      "interpretation": "Descriptive small-sample panel only. Arm differences are not useful/harmful labels. Do not pool different cohorts,reader budgets,or memory packages to train a universal gain label."
+    },
+    {
+      "cohort": "restoration32",
+      "task_id": "django__django-14534",
+      "observed_rate_variation": false,
+      "has_unknown_outcome": true,
+      "variation_comparison": "Only arms with completely observed outcomes; missingness bounds are not observed gains.",
+      "all_complete_actions_successful": false,
+      "all_observed_outcomes_failed": true,
+      "normal_no_submission": 0,
+      "cells": [
+        {
+          "cohort": "restoration32",
+          "task_id": "django__django-14534",
+          "source_instance_id": "django__django-11019",
+          "action": "M",
+          "assigned": 2,
+          "successes": 0,
+          "unknown_outcomes": 0,
+          "success_rate_lower": 0.0,
+          "success_rate_upper": 0.0,
+          "no_submission": 0,
+          "mean_api_cost_usd": 0.0041261025
+        },
+        {
+          "cohort": "restoration32",
+          "task_id": "django__django-14534",
+          "source_instance_id": "django__django-11019",
+          "action": "N",
+          "assigned": 2,
+          "successes": 0,
+          "unknown_outcomes": 0,
+          "success_rate_lower": 0.0,
+          "success_rate_upper": 0.0,
+          "no_submission": 0,
+          "mean_api_cost_usd": 0.004416445000000001
+        },
+        {
+          "cohort": "restoration32",
+          "task_id": "django__django-14534",
+          "source_instance_id": "django__django-11019",
+          "action": "R",
+          "assigned": 2,
+          "successes": 0,
+          "unknown_outcomes": 0,
+          "success_rate_lower": 0.0,
+          "success_rate_upper": 0.0,
+          "no_submission": 0,
+          "mean_api_cost_usd": 0.004517465
+        },
+        {
+          "cohort": "restoration32",
+          "task_id": "django__django-14534",
+          "source_instance_id": "django__django-11019",
+          "action": "S",
+          "assigned": 2,
+          "successes": 0,
+          "unknown_outcomes": 1,
+          "success_rate_lower": 0.0,
+          "success_rate_upper": 0.5,
+          "no_submission": 0,
+          "mean_api_cost_usd": null
+        }
+      ],
+      "interpretation": "Descriptive small-sample panel only. Arm differences are not useful/harmful labels. Do not pool different cohorts,reader budgets,or memory packages to train a universal gain label."
+    },
+    {
+      "cohort": "restoration32",
+      "task_id": "django__django-16041",
+      "observed_rate_variation": false,
+      "has_unknown_outcome": false,
+      "variation_comparison": "Only arms with completely observed outcomes; missingness bounds are not observed gains.",
+      "all_complete_actions_successful": true,
+      "all_observed_outcomes_failed": false,
+      "normal_no_submission": 0,
+      "cells": [
+        {
+          "cohort": "restoration32",
+          "task_id": "django__django-16041",
+          "source_instance_id": "django__django-11019",
+          "action": "M",
+          "assigned": 2,
+          "successes": 2,
+          "unknown_outcomes": 0,
+          "success_rate_lower": 1.0,
+          "success_rate_upper": 1.0,
+          "no_submission": 0,
+          "mean_api_cost_usd": 0.0028090600000000004
+        },
+        {
+          "cohort": "restoration32",
+          "task_id": "django__django-16041",
+          "source_instance_id": "django__django-11019",
+          "action": "N",
+          "assigned": 2,
+          "successes": 2,
+          "unknown_outcomes": 0,
+          "success_rate_lower": 1.0,
+          "success_rate_upper": 1.0,
+          "no_submission": 0,
+          "mean_api_cost_usd": 0.0029908975
+        },
+        {
+          "cohort": "restoration32",
+          "task_id": "django__django-16041",
+          "source_instance_id": "django__django-11019",
+          "action": "R",
+          "assigned": 2,
+          "successes": 2,
+          "unknown_outcomes": 0,
+          "success_rate_lower": 1.0,
+          "success_rate_upper": 1.0,
+          "no_submission": 0,
+          "mean_api_cost_usd": 0.0029057300000000005
+        },
+        {
+          "cohort": "restoration32",
+          "task_id": "django__django-16041",
+          "source_instance_id": "django__django-11019",
+          "action": "S",
+          "assigned": 2,
+          "successes": 2,
+          "unknown_outcomes": 0,
+          "success_rate_lower": 1.0,
+          "success_rate_upper": 1.0,
+          "no_submission": 0,
+          "mean_api_cost_usd": 0.0032270050000000002
+        }
+      ],
+      "interpretation": "Descriptive small-sample panel only. Arm differences are not useful/harmful labels. Do not pool different cohorts,reader budgets,or memory packages to train a universal gain label."
+    },
+    {
+      "cohort": "restoration32",
+      "task_id": "scikit-learn__scikit-learn-13142",
+      "observed_rate_variation": false,
+      "has_unknown_outcome": false,
+      "variation_comparison": "Only arms with completely observed outcomes; missingness bounds are not observed gains.",
+      "all_complete_actions_successful": true,
+      "all_observed_outcomes_failed": false,
+      "normal_no_submission": 0,
+      "cells": [
+        {
+          "cohort": "restoration32",
+          "task_id": "scikit-learn__scikit-learn-13142",
+          "source_instance_id": "scikit-learn__scikit-learn-11281",
+          "action": "M",
+          "assigned": 2,
+          "successes": 2,
+          "unknown_outcomes": 0,
+          "success_rate_lower": 1.0,
+          "success_rate_upper": 1.0,
+          "no_submission": 0,
+          "mean_api_cost_usd": 0.002416685
+        },
+        {
+          "cohort": "restoration32",
+          "task_id": "scikit-learn__scikit-learn-13142",
+          "source_instance_id": "scikit-learn__scikit-learn-11281",
+          "action": "N",
+          "assigned": 2,
+          "successes": 2,
+          "unknown_outcomes": 0,
+          "success_rate_lower": 1.0,
+          "success_rate_upper": 1.0,
+          "no_submission": 0,
+          "mean_api_cost_usd": 0.00221963
+        },
+        {
+          "cohort": "restoration32",
+          "task_id": "scikit-learn__scikit-learn-13142",
+          "source_instance_id": "scikit-learn__scikit-learn-11281",
+          "action": "R",
+          "assigned": 2,
+          "successes": 2,
+          "unknown_outcomes": 0,
+          "success_rate_lower": 1.0,
+          "success_rate_upper": 1.0,
+          "no_submission": 0,
+          "mean_api_cost_usd": 0.0025651225
+        },
+        {
+          "cohort": "restoration32",
+          "task_id": "scikit-learn__scikit-learn-13142",
+          "source_instance_id": "scikit-learn__scikit-learn-11281",
+          "action": "S",
+          "assigned": 2,
+          "successes": 2,
+          "unknown_outcomes": 0,
+          "success_rate_lower": 1.0,
+          "success_rate_upper": 1.0,
+          "no_submission": 0,
+          "mean_api_cost_usd": 0.00215378
+        }
+      ],
+      "interpretation": "Descriptive small-sample panel only. Arm differences are not useful/harmful labels. Do not pool different cohorts,reader budgets,or memory packages to train a universal gain label."
+    },
+    {
+      "cohort": "restoration32",
+      "task_id": "scikit-learn__scikit-learn-15512",
+      "observed_rate_variation": false,
+      "has_unknown_outcome": false,
+      "variation_comparison": "Only arms with completely observed outcomes; missingness bounds are not observed gains.",
+      "all_complete_actions_successful": true,
+      "all_observed_outcomes_failed": false,
+      "normal_no_submission": 0,
+      "cells": [
+        {
+          "cohort": "restoration32",
+          "task_id": "scikit-learn__scikit-learn-15512",
+          "source_instance_id": "scikit-learn__scikit-learn-11281",
+          "action": "M",
+          "assigned": 2,
+          "successes": 2,
+          "unknown_outcomes": 0,
+          "success_rate_lower": 1.0,
+          "success_rate_upper": 1.0,
+          "no_submission": 0,
+          "mean_api_cost_usd": 0.003578355
+        },
+        {
+          "cohort": "restoration32",
+          "task_id": "scikit-learn__scikit-learn-15512",
+          "source_instance_id": "scikit-learn__scikit-learn-11281",
+          "action": "N",
+          "assigned": 2,
+          "successes": 2,
+          "unknown_outcomes": 0,
+          "success_rate_lower": 1.0,
+          "success_rate_upper": 1.0,
+          "no_submission": 0,
+          "mean_api_cost_usd": 0.0032839899999999997
+        },
+        {
+          "cohort": "restoration32",
+          "task_id": "scikit-learn__scikit-learn-15512",
+          "source_instance_id": "scikit-learn__scikit-learn-11281",
+          "action": "R",
+          "assigned": 2,
+          "successes": 2,
+          "unknown_outcomes": 0,
+          "success_rate_lower": 1.0,
+          "success_rate_upper": 1.0,
+          "no_submission": 0,
+          "mean_api_cost_usd": 0.004779552499999999
+        },
+        {
+          "cohort": "restoration32",
+          "task_id": "scikit-learn__scikit-learn-15512",
+          "source_instance_id": "scikit-learn__scikit-learn-11281",
+          "action": "S",
+          "assigned": 2,
+          "successes": 2,
+          "unknown_outcomes": 0,
+          "success_rate_lower": 1.0,
+          "success_rate_upper": 1.0,
+          "no_submission": 0,
+          "mean_api_cost_usd": 0.0032458125000000004
+        }
+      ],
+      "interpretation": "Descriptive small-sample panel only. Arm differences are not useful/harmful labels. Do not pool different cohorts,reader budgets,or memory packages to train a universal gain label."
+    },
+    {
+      "cohort": "transfer24",
+      "task_id": "pytest-dev__pytest-7432",
+      "observed_rate_variation": false,
+      "has_unknown_outcome": false,
+      "variation_comparison": "Only arms with completely observed outcomes; missingness bounds are not observed gains.",
+      "all_complete_actions_successful": true,
+      "all_observed_outcomes_failed": false,
+      "normal_no_submission": 0,
+      "cells": [
+        {
+          "cohort": "transfer24",
+          "task_id": "pytest-dev__pytest-7432",
+          "source_instance_id": "pytest-dev__pytest-7373",
+          "action": "directive",
+          "assigned": 2,
+          "successes": 2,
+          "unknown_outcomes": 0,
+          "success_rate_lower": 1.0,
+          "success_rate_upper": 1.0,
+          "no_submission": 0,
+          "mean_api_cost_usd": 0.002381865
+        },
+        {
+          "cohort": "transfer24",
+          "task_id": "pytest-dev__pytest-7432",
+          "source_instance_id": "pytest-dev__pytest-7373",
+          "action": "informational",
+          "assigned": 2,
+          "successes": 2,
+          "unknown_outcomes": 0,
+          "success_rate_lower": 1.0,
+          "success_rate_upper": 1.0,
+          "no_submission": 0,
+          "mean_api_cost_usd": 0.0026311699999999995
+        },
+        {
+          "cohort": "transfer24",
+          "task_id": "pytest-dev__pytest-7432",
+          "source_instance_id": "pytest-dev__pytest-7373",
+          "action": "none",
+          "assigned": 2,
+          "successes": 2,
+          "unknown_outcomes": 0,
+          "success_rate_lower": 1.0,
+          "success_rate_upper": 1.0,
+          "no_submission": 0,
+          "mean_api_cost_usd": 0.0022033275
+        }
+      ],
+      "interpretation": "Descriptive small-sample panel only. Arm differences are not useful/harmful labels. Do not pool different cohorts,reader budgets,or memory packages to train a universal gain label."
+    },
+    {
+      "cohort": "transfer24",
+      "task_id": "pytest-dev__pytest-8906",
+      "observed_rate_variation": false,
+      "has_unknown_outcome": false,
+      "variation_comparison": "Only arms with completely observed outcomes; missingness bounds are not observed gains.",
+      "all_complete_actions_successful": false,
+      "all_observed_outcomes_failed": true,
+      "normal_no_submission": 0,
+      "cells": [
+        {
+          "cohort": "transfer24",
+          "task_id": "pytest-dev__pytest-8906",
+          "source_instance_id": "pytest-dev__pytest-7373",
+          "action": "directive",
+          "assigned": 2,
+          "successes": 0,
+          "unknown_outcomes": 0,
+          "success_rate_lower": 0.0,
+          "success_rate_upper": 0.0,
+          "no_submission": 0,
+          "mean_api_cost_usd": 0.003110385
+        },
+        {
+          "cohort": "transfer24",
+          "task_id": "pytest-dev__pytest-8906",
+          "source_instance_id": "pytest-dev__pytest-7373",
+          "action": "informational",
+          "assigned": 2,
+          "successes": 0,
+          "unknown_outcomes": 0,
+          "success_rate_lower": 0.0,
+          "success_rate_upper": 0.0,
+          "no_submission": 0,
+          "mean_api_cost_usd": 0.00225838
+        },
+        {
+          "cohort": "transfer24",
+          "task_id": "pytest-dev__pytest-8906",
+          "source_instance_id": "pytest-dev__pytest-7373",
+          "action": "none",
+          "assigned": 2,
+          "successes": 0,
+          "unknown_outcomes": 0,
+          "success_rate_lower": 0.0,
+          "success_rate_upper": 0.0,
+          "no_submission": 0,
+          "mean_api_cost_usd": 0.00222727
+        }
+      ],
+      "interpretation": "Descriptive small-sample panel only. Arm differences are not useful/harmful labels. Do not pool different cohorts,reader budgets,or memory packages to train a universal gain label."
+    },
+    {
+      "cohort": "transfer24",
+      "task_id": "scikit-learn__scikit-learn-12471",
+      "observed_rate_variation": false,
+      "has_unknown_outcome": false,
+      "variation_comparison": "Only arms with completely observed outcomes; missingness bounds are not observed gains.",
+      "all_complete_actions_successful": true,
+      "all_observed_outcomes_failed": false,
+      "normal_no_submission": 0,
+      "cells": [
+        {
+          "cohort": "transfer24",
+          "task_id": "scikit-learn__scikit-learn-12471",
+          "source_instance_id": "scikit-learn__scikit-learn-10508",
+          "action": "directive",
+          "assigned": 2,
+          "successes": 2,
+          "unknown_outcomes": 0,
+          "success_rate_lower": 1.0,
+          "success_rate_upper": 1.0,
+          "no_submission": 0,
+          "mean_api_cost_usd": 0.0024917925000000002
+        },
+        {
+          "cohort": "transfer24",
+          "task_id": "scikit-learn__scikit-learn-12471",
+          "source_instance_id": "scikit-learn__scikit-learn-10508",
+          "action": "informational",
+          "assigned": 2,
+          "successes": 2,
+          "unknown_outcomes": 0,
+          "success_rate_lower": 1.0,
+          "success_rate_upper": 1.0,
+          "no_submission": 0,
+          "mean_api_cost_usd": 0.00277642
+        },
+        {
+          "cohort": "transfer24",
+          "task_id": "scikit-learn__scikit-learn-12471",
+          "source_instance_id": "scikit-learn__scikit-learn-10508",
+          "action": "none",
+          "assigned": 2,
+          "successes": 2,
+          "unknown_outcomes": 0,
+          "success_rate_lower": 1.0,
+          "success_rate_upper": 1.0,
+          "no_submission": 0,
+          "mean_api_cost_usd": 0.00262045
+        }
+      ],
+      "interpretation": "Descriptive small-sample panel only. Arm differences are not useful/harmful labels. Do not pool different cohorts,reader budgets,or memory packages to train a universal gain label."
+    },
+    {
+      "cohort": "transfer24",
+      "task_id": "scikit-learn__scikit-learn-15535",
+      "observed_rate_variation": false,
+      "has_unknown_outcome": false,
+      "variation_comparison": "Only arms with completely observed outcomes; missingness bounds are not observed gains.",
+      "all_complete_actions_successful": true,
+      "all_observed_outcomes_failed": false,
+      "normal_no_submission": 0,
+      "cells": [
+        {
+          "cohort": "transfer24",
+          "task_id": "scikit-learn__scikit-learn-15535",
+          "source_instance_id": "scikit-learn__scikit-learn-10508",
+          "action": "directive",
+          "assigned": 2,
+          "successes": 2,
+          "unknown_outcomes": 0,
+          "success_rate_lower": 1.0,
+          "success_rate_upper": 1.0,
+          "no_submission": 0,
+          "mean_api_cost_usd": 0.0030317525
+        },
+        {
+          "cohort": "transfer24",
+          "task_id": "scikit-learn__scikit-learn-15535",
+          "source_instance_id": "scikit-learn__scikit-learn-10508",
+          "action": "informational",
+          "assigned": 2,
+          "successes": 2,
+          "unknown_outcomes": 0,
+          "success_rate_lower": 1.0,
+          "success_rate_upper": 1.0,
+          "no_submission": 0,
+          "mean_api_cost_usd": 0.0032885450000000004
+        },
+        {
+          "cohort": "transfer24",
+          "task_id": "scikit-learn__scikit-learn-15535",
+          "source_instance_id": "scikit-learn__scikit-learn-10508",
+          "action": "none",
+          "assigned": 2,
+          "successes": 2,
+          "unknown_outcomes": 0,
+          "success_rate_lower": 1.0,
+          "success_rate_upper": 1.0,
+          "no_submission": 0,
+          "mean_api_cost_usd": 0.0025058800000000003
+        }
+      ],
+      "interpretation": "Descriptive small-sample panel only. Arm differences are not useful/harmful labels. Do not pool different cohorts,reader budgets,or memory packages to train a universal gain label."
+    }
+  ],
+  "original_results": [
+    {
+      "path": "docs/reports/data/framing-smoke-20261105/final-results.json",
+      "sha256": "c6990133080350d8c221b6fa3d2f97969098de61ea6a14718bac6e4a3afa9dd7"
+    },
+    {
+      "path": "docs/reports/data/new-content-transfer-20261105/final-results.json",
+      "sha256": "5f6a3452ebfd0178bfbb72cbe13047cc609e94a61b68f7e801230bf9b49aac94"
+    },
+    {
+      "path": "docs/reports/data/prescription-validation-20261107/final-results.json",
+      "sha256": "fcc8a64db73ec9e002e3aadd524282ac9e6b340994c1ab3f40d885969a46bbc6"
+    },
+    {
+      "path": "docs/reports/data/prescription-replication-20261107/final-results.json",
+      "sha256": "514ce4fdffcde3fafd03efa5fbb659cbb34e1d0522ae38fa1b5d808e09caad92"
+    },
+    {
+      "path": "docs/reports/data/process-restoration-20261107/results.json",
+      "sha256": "2694b5d67d0eb3e759ae6d34785d84f7cbc77c113bcf0ceb7cd43ece3abd9f48"
+    }
+  ],
+  "interpretation": "Existing action outcomes only; no new SWE agent experiment. Success/cost are factual labels for assigned actions, not both potential outcomes of one execution. Reported differences remain exploratory and include sampling/submission effects."
+}

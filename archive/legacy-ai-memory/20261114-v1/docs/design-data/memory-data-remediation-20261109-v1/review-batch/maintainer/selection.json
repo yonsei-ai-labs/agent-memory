@@ -1,0 +1,27 @@
+{
+  "status": "prepared_unannotated",
+  "scope": "Existing training split only; no dev/test current rows.",
+  "selection": {
+    "seed": 731,
+    "old_label_counts": {
+      "insufficient_connection": 23,
+      "shared_diagnostic_mechanism": 18,
+      "different_mechanism": 23
+    },
+    "negative_proposal": "Token-overlap ranking, one per query until 23 candidates. Not verified hard negatives."
+  },
+  "rows": 64,
+  "current_issues": 27,
+  "memories": 16,
+  "new_source_families": 0,
+  "new_supervised_labels": 0,
+  "independent_reviews_completed": 0,
+  "training_allowed": false,
+  "source_files": {
+    "inputs.jsonl": "0d94c5c38ce589e053430cdb0eddc2702263b1c847d3fb56e5339e0b5c117b1b",
+    "supervision.jsonl": "ee08b4868813dab899b7b216733535f73221c9e0cd1599c562f58ca6c5c81252",
+    "source-evidence.json": "98a80dda5543a13b6c67b1849a73c2fc11ddc3a2e58ad5ec7f6fef71e5320fff"
+  },
+  "preserves_original_labels": true,
+  "blinding": "Share reviewer/ only. An agent with access to the parent repository must be instructed not to inspect original labels."
+}

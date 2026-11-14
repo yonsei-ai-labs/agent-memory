@@ -1,0 +1,349 @@
+{
+ "budgets_tokens": {
+  "bm25_2k": 2048,
+  "bm25_8k": 8192
+ },
+ "cases": 552,
+ "code_files_sha256": {
+  "data_pipeline/__init__.py": "699f4e8dec351e6d0053338597a75f5c11fd4a7d9c75bc0d74d03821e2721a67",
+  "data_pipeline/memory_decision_dataset.py": "b43e994429035ff0457acc46cf6eab12393e47fa7323881b138dea4896f0d446",
+  "data_pipeline/prepare_memory_need_data.py": "54a1c44d22b582ed4f606ee12482079a8a53bba504b63f35401c6bdc5b1a5f99",
+  "data_pipeline/prepare_memory_need_sources.py": "7e03fc057454490b2eecb8fb47f5d35645868d3314e3004cd8eea95ff4b1bb64",
+  "data_pipeline/prepare_memory_state_screen.py": "227928288ea3728cd3224d68819290d110820161574dfe07b00d74546c15ffa5",
+  "experiments/delivery_path/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "experiments/delivery_path/colab/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "experiments/delivery_path/colab/delivery_path_protocol.py": "a3d53cd19917e113c720a5d6c3cca8d334df64e4fbca4e617f8cdf5f46acb03b",
+  "experiments/delivery_path/families.py": "deefe61535bbd15103bd61bde22e65c9b1f9e2a09f3b195cbecb65b2d39f9b6e",
+  "experiments/delivery_path/scoring.py": "df78457a9d194546c8e7d675f0caa27197f39441b44439e48092e2f8ce1d10a4",
+  "experiments/delivery_path/sessions.py": "dae76e965a2f5de6057eaf6caa90098f7bbece32187c090da0e04447fd362797",
+  "experiments/delivery_path/sources.py": "c7e65162e7af19dcd38b79d4733a72ee8466ed3aa1090bbdb2bd6b8e2efe4c3c",
+  "experiments/delivery_path/stage1.py": "c97f7589742089be2e1f57807908ffd9a08aa39a5cb48b3a5cffc8618d4dc93b",
+  "experiments/delivery_path/stage2.py": "189fabc6bc9499a51989acd9f50682dd63ae243e267c04311372e32a1ef4f93e",
+  "experiments/delivery_path/validity_specs.py": "f63b831bc0f7b2201352e73d6c159e742540ca3818c7cb6eb02f2d604303f01a",
+  "experiments/hidden_traps/__init__.py": "12f3fbba722f46044d53e19a43a9e8bdae7ac538fcb7e97ffdc8304da8786fb4",
+  "experiments/hidden_traps/build.py": "16e28a00cb8daeb8f87139e2fa72ce6c04128abded852c83262232a3f0ef1842",
+  "experiments/hidden_traps/inputs.py": "93f1d63645bb624d2147edb4c7b09a23ef84c83f153fe7ee416e215556702352",
+  "experiments/hidden_traps/inventory.py": "f12395429573a1e15c18c9e2fddabc6d3b178ab8fdb375edcc2ba68c9bb49332",
+  "experiments/hidden_traps/labels.py": "4aedc5dc4656375425255880f43bf950444434acfb252e3999d29d0cf694cf51",
+  "experiments/hidden_traps/packet.py": "59d151f890c46eb47d39695cd10dac9066f6c209c7ac897f031cd65ba81dbe08",
+  "experiments/hidden_traps/script.py": "f96e9f9abc9f989af44a50e44ec30eb4dc20f3773236fe1c74bc62fac0771344",
+  "experiments/hidden_traps/surface.py": "680d8b78830b996ef5288c902aad1158d9f5feaac3ed771517fbf62c9b0e6a9e",
+  "experiments/hidden_traps/tiers.py": "4d98e2a9e7c80b5975c076a612537c6fd697297ef106fad4f79172008bce39f2",
+  "training/memory_selector/memory_need_worker_protocol.py": "155c65ff5d0067a39c4d4dfa6fcf46bc68c5c2dfd09a3105ae54c61bf6cb71a0",
+  "training/memory_selector/travel_state_protocol.py": "5473ffb05beb4c892aa765cab86a710d799d247e3770ff619bdb251f1a214fe2",
+  "training/memory_selector/worker_contract_protocol.py": "59eff274a5ac897ede972aae670b5baebeadf292f49fdddc9c631570b2cf5042"
+ },
+ "code_sha256": "2bc4a07ae65d1581f7730b154e6c8a8e0487763df61f93b61bfbd8c5a24e8aa0",
+ "conditions": [
+  "none",
+  "full_history",
+  "sitting_plus_records",
+  "record_list",
+  "latest_surface",
+  "marked_surface",
+  "bm25_2k",
+  "bm25_8k",
+  "needed_only",
+  "invalid_removed"
+ ],
+ "cues": [
+  "cancel",
+  "cancelled",
+  "canceled",
+  "replaces",
+  "replaced",
+  "no longer applies",
+  "has changed plans"
+ ],
+ "decision_states": 92,
+ "decisions_by_trap": {
+  "absent": 8,
+  "complement": 8,
+  "constraint": 8,
+  "control": 32,
+  "exception": 8,
+  "history": 8,
+  "lookalike": 8,
+  "void": 12
+ },
+ "distinct_inputs": {
+  "L": 1419,
+  "M": 1353,
+  "S": 1090
+ },
+ "families": [
+  "440026eaebdcd261d33d77ead5c7c123d2d8aa8dbf80ede7ac23558568ac3fb0",
+  "1458a961a030d80acf4210ae9a1334da0d78ad5fb17aa6bb0f5188024c6bb1f7",
+  "39394ddf8bb107b6cb1d9c50c00751395d18b26d58d39d4a3eba4851db9accd8",
+  "6036ccddb632e8f8b8500ab277845dc4c8aa6c0404e48c1c4be25752a6ef173d"
+ ],
+ "forbidden_words": {
+  "complement": [
+   "cancel",
+   "cancelled",
+   "canceled",
+   "replaces",
+   "replaced",
+   "no longer applies",
+   "has changed plans",
+   "change",
+   "changed",
+   "instead of",
+   "replace"
+  ],
+  "exception_book": [
+   "cancel",
+   "cancelled",
+   "canceled",
+   "replaces",
+   "replaced",
+   "no longer applies",
+   "has changed plans",
+   "exception"
+  ],
+  "preference": [
+   "cancel",
+   "cancelled",
+   "canceled",
+   "replaces",
+   "replaced",
+   "no longer applies",
+   "has changed plans"
+  ],
+  "void": [
+   "cancel",
+   "cancelled",
+   "canceled",
+   "replaces",
+   "replaced",
+   "no longer applies",
+   "has changed plans",
+   "change",
+   "changed",
+   "drop",
+   "dropped",
+   "no longer",
+   "off",
+   "void",
+   "not going ahead",
+   "use",
+   "used",
+   "using",
+   "won't",
+   "will not"
+  ]
+ },
+ "identical_inputs": {
+  "explicit/L": {
+   "full_history=sitting_plus_records": 9,
+   "invalid_removed=latest_surface": 12,
+   "invalid_removed=marked_surface": 25,
+   "invalid_removed=record_list": 72,
+   "invalid_removed=sitting_plus_records": 4,
+   "latest_surface=marked_surface": 11,
+   "latest_surface=record_list": 11,
+   "marked_surface=record_list": 25,
+   "marked_surface=sitting_plus_records": 1,
+   "needed_only=none": 8,
+   "record_list=sitting_plus_records": 4
+  },
+  "explicit/M": {
+   "bm25_2k=bm25_8k": 2,
+   "bm25_2k=invalid_removed": 2,
+   "bm25_2k=latest_surface": 2,
+   "bm25_2k=marked_surface": 2,
+   "bm25_2k=record_list": 2,
+   "bm25_8k=invalid_removed": 29,
+   "bm25_8k=latest_surface": 11,
+   "bm25_8k=marked_surface": 17,
+   "bm25_8k=record_list": 31,
+   "full_history=sitting_plus_records": 9,
+   "invalid_removed=latest_surface": 12,
+   "invalid_removed=marked_surface": 25,
+   "invalid_removed=record_list": 72,
+   "invalid_removed=sitting_plus_records": 4,
+   "latest_surface=marked_surface": 11,
+   "latest_surface=record_list": 11,
+   "marked_surface=record_list": 25,
+   "marked_surface=sitting_plus_records": 1,
+   "needed_only=none": 8,
+   "record_list=sitting_plus_records": 4
+  },
+  "explicit/S": {
+   "bm25_2k=bm25_8k": 73,
+   "bm25_2k=invalid_removed": 61,
+   "bm25_2k=latest_surface": 11,
+   "bm25_2k=marked_surface": 25,
+   "bm25_2k=record_list": 73,
+   "bm25_2k=sitting_plus_records": 4,
+   "bm25_8k=invalid_removed": 72,
+   "bm25_8k=latest_surface": 11,
+   "bm25_8k=marked_surface": 25,
+   "bm25_8k=record_list": 92,
+   "bm25_8k=sitting_plus_records": 4,
+   "full_history=sitting_plus_records": 9,
+   "invalid_removed=latest_surface": 12,
+   "invalid_removed=marked_surface": 25,
+   "invalid_removed=record_list": 72,
+   "invalid_removed=sitting_plus_records": 4,
+   "latest_surface=marked_surface": 11,
+   "latest_surface=record_list": 11,
+   "marked_surface=record_list": 25,
+   "marked_surface=sitting_plus_records": 1,
+   "needed_only=none": 8,
+   "record_list=sitting_plus_records": 4
+  },
+  "hidden/L": {
+   "full_history=sitting_plus_records": 9,
+   "invalid_removed=latest_surface": 12,
+   "invalid_removed=marked_surface": 37,
+   "invalid_removed=record_list": 72,
+   "invalid_removed=sitting_plus_records": 4,
+   "latest_surface=marked_surface": 11,
+   "latest_surface=record_list": 11,
+   "marked_surface=record_list": 38,
+   "marked_surface=sitting_plus_records": 3,
+   "needed_only=none": 8,
+   "record_list=sitting_plus_records": 4
+  },
+  "hidden/M": {
+   "bm25_2k=bm25_8k": 2,
+   "bm25_2k=invalid_removed": 2,
+   "bm25_2k=latest_surface": 2,
+   "bm25_2k=marked_surface": 2,
+   "bm25_2k=record_list": 2,
+   "bm25_8k=invalid_removed": 29,
+   "bm25_8k=latest_surface": 11,
+   "bm25_8k=marked_surface": 24,
+   "bm25_8k=record_list": 31,
+   "full_history=sitting_plus_records": 9,
+   "invalid_removed=latest_surface": 12,
+   "invalid_removed=marked_surface": 37,
+   "invalid_removed=record_list": 72,
+   "invalid_removed=sitting_plus_records": 4,
+   "latest_surface=marked_surface": 11,
+   "latest_surface=record_list": 11,
+   "marked_surface=record_list": 38,
+   "marked_surface=sitting_plus_records": 3,
+   "needed_only=none": 8,
+   "record_list=sitting_plus_records": 4
+  },
+  "hidden/S": {
+   "bm25_2k=bm25_8k": 72,
+   "bm25_2k=invalid_removed": 60,
+   "bm25_2k=latest_surface": 11,
+   "bm25_2k=marked_surface": 38,
+   "bm25_2k=record_list": 72,
+   "bm25_2k=sitting_plus_records": 4,
+   "bm25_8k=invalid_removed": 72,
+   "bm25_8k=latest_surface": 11,
+   "bm25_8k=marked_surface": 38,
+   "bm25_8k=record_list": 92,
+   "bm25_8k=sitting_plus_records": 4,
+   "full_history=sitting_plus_records": 9,
+   "invalid_removed=latest_surface": 12,
+   "invalid_removed=marked_surface": 37,
+   "invalid_removed=record_list": 72,
+   "invalid_removed=sitting_plus_records": 4,
+   "latest_surface=marked_surface": 11,
+   "latest_surface=record_list": 11,
+   "marked_surface=record_list": 38,
+   "marked_surface=sitting_plus_records": 3,
+   "needed_only=none": 8,
+   "record_list=sitting_plus_records": 4
+  }
+ },
+ "never_model_input": {
+  "fields": {
+   "cases.jsonl": [
+    "case_id",
+    "state_id",
+    "session_id",
+    "family_id",
+    "split",
+    "index",
+    "kind",
+    "trap",
+    "candidate_bank",
+    "conditions.*.delivered_memory_ids",
+    "conditions.*.tokens"
+   ],
+   "records.jsonl": [
+    "memory_id",
+    "session_id",
+    "surface",
+    "tier",
+    "index",
+    "sitting"
+   ]
+  },
+  "files": [
+   "source-inventory.jsonl",
+   "sessions.jsonl",
+   "events.jsonl",
+   "relations.jsonl",
+   "contrasts.jsonl",
+   "review-key.jsonl"
+  ],
+  "model_input": "only the messages in inputs-<tier>.jsonl.gz, joined to cases by conditions.*.input_sha256"
+ },
+ "notes": [
+  "The past is fixed: earlier turns carry the script answers; a hidden void is answered NONE.",
+  "Records hold booking confirmations, change confirmations (\"this replaces\"), explicit cancellations and the user's own words: event turns, an exception booking's request next to its confirmation, and every side message word for word. Never script-only facts.",
+  "Side-message records are irrelevant to every decision by construction and are not listed in candidate_relations.",
+  "By construction: no memory gives the answer wherever it is UNKNOWN (needs_memory false: ref_void, absent); a hidden void note names its traveller and day, so latest_surface keeps it in place of the voided booking, and a complement note displaces its booking there in the same way; marked_surface never marks a hidden void.",
+  "identical_inputs counts, per surface and tier, the cases in which two conditions give the same input; a run needs each input once.",
+  "Token counts are content tokens of the worker tokenizer, without the chat template.",
+  "ambiguous is null until the human review; utility is null everywhere: no worker has run.",
+  "new-b families are sealed and not read; main first-dataset families (incl. Codex augmentation) are not used."
+ ],
+ "role": "pilot",
+ "sessions": [
+  "d162ac5d80bba9d70adbdf89",
+  "58357e6d94c7d840607cf928",
+  "859fd63bd45dfbeb6d40a808",
+  "6c7a98b527fa8683cc79ef1b"
+ ],
+ "side_message_lines": {
+  "L": 90,
+  "M": 60
+ },
+ "side_messages_per_sitting": {
+  "L": 10,
+  "M": 3,
+  "S": 0
+ },
+ "source_sha256": {
+  "datasets/memory_need_sources/20261111-v1/families.json": "11e4e6915622b2533def087cae456ac71755e2cb94721d08cee47bfcf976652a",
+  "datasets/travel_state_transfer/20261109-v1/source-specifications.zip": "53f6f53ecce29e3ae88e356c2f496a4569ef8757457a0d72631bcd7d17267d09",
+  "experiments/delivery_path/data/families/new-a/stage1/27b-plans-27b-works/decisions.jsonl": "e2e7ea537d38c9b8519d00010272268ee9de27c9e3395590fb336869c37c4268",
+  "experiments/delivery_path/data/families/new-a/stage1/9b-plans-9b-works/decisions.jsonl": "15710e25619b19b8b0b7ff07ef2ec5dae663797c016b388ecf0e01073a5fb03e",
+  "experiments/delivery_path/results/dataset-20261112/travel/sessions.jsonl": "60aaf930ffc56aab4e6dabe814c02b44dce51406b1b328febc67bd0691d68946",
+  "experiments/hidden_traps/data/codex-augmentation-families.json": "5085f47c2481b2df48e0b02afcda8819b7f97e5c357f521f3c70e00fb187b98f"
+ },
+ "surfaces": [
+  "explicit",
+  "hidden"
+ ],
+ "tier_targets_tokens": {
+  "L": [
+   80000,
+   130000
+  ],
+  "M": [
+   25000,
+   40000
+  ],
+  "S": [
+   2000,
+   9000
+  ]
+ },
+ "tiers": [
+  "S",
+  "M",
+  "L"
+ ],
+ "tokenizer_sha256": "a5cd9732badce41de57e6efce8302930ded1c1188c5f81feb2bd6c24c4a1941f",
+ "version": "hidden-traps-20261112-v1"
+}

@@ -34,6 +34,11 @@ def markdown_files() -> list[Path]:
     files = set(ROOT.glob("*.md"))
     for folder in roots[1:]:
         files.update(folder.rglob("*.md"))
+    # Validate new archive guidance, while leaving historical Markdown unchanged.
+    for name in ("archive/AGENTS.md", "archive/legacy-ai-memory/README.md"):
+        path = ROOT / name
+        if path.is_file():
+            files.add(path)
     return sorted(files)
 
 

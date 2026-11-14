@@ -1,0 +1,19 @@
+{
+  "schema": "external-update-masking-v1",
+  "source_manifest_sha256": "9894bcf089cb2ec5af518b3375b9d72e017de59d10a0eb1ed3395c8f8b658942",
+  "selection_sha256": "3360984509a4a0034a987d67f26d7fd3856c3c80624a0c3a0affce8eb1b21472",
+  "tokenizer_sha256": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+  "conditions": [
+    "current_new",
+    "current_new_plus_old",
+    "old_values_marked",
+    "old_values_masked"
+  ],
+  "primary": "old_values_marked versus old_values_masked within each source; quantity_only subset",
+  "secondary": "all cases; original versus marked; current_new versus masked",
+  "confirmation_executed": false,
+  "labels_uploaded": false,
+  "no_new_facts_inserted": true,
+  "max_memory_records": 8,
+  "max_memory_tokens": 1024
+}

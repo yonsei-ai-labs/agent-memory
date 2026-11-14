@@ -1,0 +1,344 @@
+{
+  "at": "2026-11-07T10:37:02.986993+00:00",
+  "model_api_calls": 0,
+  "probes": 28,
+  "rows": [
+    {
+      "probe_id": "django-init-missing",
+      "reused": true,
+      "outcome": {
+        "exception_type": "ImproperlyConfigured",
+        "kind": "exception",
+        "message": "Requested setting USE_I18N, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings.",
+        "traceback": "Traceback (most recent call last):\n  File \"<string>\", line 6, in <module>\n  File \"/testbed/django/forms/forms.py\", line 98, in __init__\n    self.label_suffix = label_suffix if label_suffix is not None else _(\":\")\n  File \"/testbed/django/utils/translation/__init__.py\", line 95, in gettext\n    return _trans.gettext(message)\n  File \"/testbed/django/utils/translation/__init__.py\", line 65, in __getattr__\n    if settings.USE_I18N:\n  File \"/testbed/django/conf/__init__.py\", line 92, in __getattr__\n    self._setup(name)\n  File \"/testbed/django/conf/__init__.py\", line 72, in _setup\n    raise ImproperlyConfigured(\ndjango.core.exceptions.ImproperlyConfigured: Requested setting USE_I18N, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings.\n"
+      }
+    },
+    {
+      "probe_id": "django-init-settings_only",
+      "reused": true,
+      "outcome": {
+        "exception_type": "AppRegistryNotReady",
+        "kind": "exception",
+        "message": "The translation infrastructure cannot be initialized before the apps registry is ready. Check that you don't make non-lazy gettext calls at import time.",
+        "traceback": "Traceback (most recent call last):\n  File \"/testbed/django/utils/translation/trans_real.py\", line 210, in _add_installed_apps_translations\n    app_configs = reversed(apps.get_app_configs())\n  File \"/testbed/django/apps/registry.py\", line 147, in get_app_configs\n    self.check_apps_ready()\n  File \"/testbed/django/apps/registry.py\", line 138, in check_apps_ready\n    raise AppRegistryNotReady(\"Apps aren't loaded yet.\")\ndjango.core.exceptions.AppRegistryNotReady: Apps aren't loaded yet.\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"<string>\", line 8, in <module>\n  File \"/testbed/django/forms/forms.py\", line 98, in __init__\n    self.label_suffix = label_suffix if label_suffix is not None else _(\":\")\n  File \"/testbed/django/utils/translation/__init__.py\", line 95, in gettext\n    return _trans.gettext(message)\n  File \"/testbed/django/utils/translation/trans_real.py\", line 374, in gettext\n    _default = _default or translation(settings.LANGUAGE_CODE)\n  File \"/testbed/django/utils/translation/trans_real.py\", line 287, in translation\n    _translations[language] = DjangoTranslation(language)\n  File \"/testbed/django/utils/translation/trans_real.py\", line 164, in __init__\n    self._add_installed_apps_translations()\n  File \"/testbed/django/utils/translation/trans_real.py\", line 212, in _add_installed_apps_translations\n    raise AppRegistryNotReady(\ndjango.core.exceptions.AppRegistryNotReady: The translation infrastructure cannot be initialized before the apps registry is ready. Check that you don't make non-lazy gettext calls at import time.\n"
+      }
+    },
+    {
+      "probe_id": "django-init-full",
+      "reused": true,
+      "outcome": {
+        "kind": "returned",
+        "result": {
+          "rendered": true
+        }
+      }
+    },
+    {
+      "probe_id": "label-encoder-fitted_empty",
+      "reused": true,
+      "outcome": {
+        "kind": "returned",
+        "result": {
+          "dtype": "float64",
+          "size": 0,
+          "values": []
+        }
+      }
+    },
+    {
+      "probe_id": "label-encoder-fitted_nonempty",
+      "reused": true,
+      "outcome": {
+        "kind": "returned",
+        "result": {
+          "dtype": "int64",
+          "size": 1,
+          "values": [
+            0
+          ]
+        }
+      }
+    },
+    {
+      "probe_id": "label-encoder-unfitted_empty",
+      "reused": true,
+      "outcome": {
+        "exception_type": "NotFittedError",
+        "kind": "exception",
+        "message": "This LabelEncoder instance is not fitted yet. Call 'fit' with appropriate arguments before using this method.",
+        "traceback": "Traceback (most recent call last):\n  File \"<string>\", line 7, in <module>\n  File \"/testbed/sklearn/preprocessing/label.py\", line 251, in transform\n    check_is_fitted(self, 'classes_')\n  File \"/testbed/sklearn/utils/validation.py\", line 951, in check_is_fitted\n    raise NotFittedError(msg % {'name': type(estimator).__name__})\nsklearn.exceptions.NotFittedError: This LabelEncoder instance is not fitted yet. Call 'fit' with appropriate arguments before using this method.\n"
+      }
+    },
+    {
+      "probe_id": "label-encoder-invalid_shape",
+      "reused": true,
+      "outcome": {
+        "exception_type": "ValueError",
+        "kind": "exception",
+        "message": "bad input shape (1, 0)",
+        "traceback": "Traceback (most recent call last):\n  File \"<string>\", line 8, in <module>\n  File \"/testbed/sklearn/preprocessing/label.py\", line 252, in transform\n    y = column_or_1d(y, warn=True)\n  File \"/testbed/sklearn/utils/validation.py\", line 797, in column_or_1d\n    raise ValueError(\"bad input shape {0}\".format(shape))\nValueError: bad input shape (1, 0)\n"
+      }
+    },
+    {
+      "probe_id": "label-encoder-unseen_label",
+      "reused": true,
+      "outcome": {
+        "exception_type": "ValueError",
+        "kind": "exception",
+        "message": "y contains previously unseen labels: ['missing']",
+        "traceback": "Traceback (most recent call last):\n  File \"<string>\", line 8, in <module>\n  File \"/testbed/sklearn/preprocessing/label.py\", line 257, in transform\n    _, y = _encode(y, uniques=self.classes_, encode=True)\n  File \"/testbed/sklearn/preprocessing/label.py\", line 110, in _encode\n    return _encode_numpy(values, uniques, encode)\n  File \"/testbed/sklearn/preprocessing/label.py\", line 53, in _encode_numpy\n    % str(diff))\nValueError: y contains previously unseen labels: ['missing']\n"
+      }
+    },
+    {
+      "probe_id": "pvlib-zero-guard-zero",
+      "reused": true,
+      "outcome": {
+        "kind": "returned",
+        "result": {
+          "ghi_is_exact_zero": true,
+          "is_finite": true,
+          "is_zero": false,
+          "output_repr": "93.30127018922194"
+        }
+      }
+    },
+    {
+      "probe_id": "pvlib-zero-guard-nan",
+      "reused": true,
+      "outcome": {
+        "kind": "returned",
+        "result": {
+          "ghi_is_exact_zero": false,
+          "is_finite": false,
+          "is_zero": false,
+          "output_repr": "nan"
+        }
+      }
+    },
+    {
+      "probe_id": "pvlib-zero-guard-positive",
+      "reused": true,
+      "outcome": {
+        "kind": "returned",
+        "result": {
+          "ghi_is_exact_zero": false,
+          "is_finite": true,
+          "is_zero": false,
+          "output_repr": "93.30127018922194"
+        }
+      }
+    },
+    {
+      "probe_id": "pytest-namespace-different",
+      "reused": true,
+      "outcome": {
+        "kind": "returned",
+        "result": {
+          "module_a_value": true,
+          "module_b_value": false,
+          "same_result": false
+        }
+      }
+    },
+    {
+      "probe_id": "pytest-namespace-same_true",
+      "reused": true,
+      "outcome": {
+        "kind": "returned",
+        "result": {
+          "module_a_value": true,
+          "module_b_value": true,
+          "same_result": true
+        }
+      }
+    },
+    {
+      "probe_id": "pytest-namespace-same_false",
+      "reused": true,
+      "outcome": {
+        "kind": "returned",
+        "result": {
+          "module_a_value": false,
+          "module_b_value": false,
+          "same_result": true
+        }
+      }
+    },
+    {
+      "probe_id": "sphinx-alias-known",
+      "reused": true,
+      "outcome": {
+        "kind": "returned",
+        "result": {
+          "resolved_to_str_type": true,
+          "returned_unresolved_string": false,
+          "value_repr": "<class 'str'>"
+        }
+      }
+    },
+    {
+      "probe_id": "sphinx-alias-missing",
+      "reused": true,
+      "outcome": {
+        "kind": "returned",
+        "result": {
+          "resolved_to_str_type": false,
+          "returned_unresolved_string": true,
+          "value_repr": "'Alias'"
+        }
+      }
+    },
+    {
+      "probe_id": "sphinx-alias-qualified_known",
+      "reused": true,
+      "outcome": {
+        "kind": "returned",
+        "result": {
+          "resolved_to_str_type": true,
+          "returned_unresolved_string": false,
+          "value_repr": "<class 'str'>"
+        }
+      }
+    },
+    {
+      "probe_id": "sphinx-config-none",
+      "reused": true,
+      "outcome": {
+        "kind": "returned",
+        "result": {
+          "output": "(value)",
+          "suppression_guard_active": true
+        }
+      }
+    },
+    {
+      "probe_id": "sphinx-config-description",
+      "reused": true,
+      "outcome": {
+        "kind": "returned",
+        "result": {
+          "output": "(value)",
+          "suppression_guard_active": true
+        }
+      }
+    },
+    {
+      "probe_id": "sphinx-config-signature",
+      "reused": true,
+      "outcome": {
+        "kind": "returned",
+        "result": {
+          "output": "(value: int) -> str",
+          "suppression_guard_active": false
+        }
+      }
+    },
+    {
+      "probe_id": "sympy-dimension-ratio",
+      "reused": true,
+      "outcome": {
+        "kind": "returned",
+        "result": {
+          "dimension": "Dimension(time/(capacitance*impedance))",
+          "dimensionless": true,
+          "factor": "1"
+        }
+      }
+    },
+    {
+      "probe_id": "sympy-dimension-second",
+      "reused": true,
+      "outcome": {
+        "kind": "returned",
+        "result": {
+          "dimension": "Dimension(time, T)",
+          "dimensionless": false,
+          "factor": "1"
+        }
+      }
+    },
+    {
+      "probe_id": "sympy-dimension-velocity",
+      "reused": true,
+      "outcome": {
+        "kind": "returned",
+        "result": {
+          "dimension": "Dimension(length/time)",
+          "dimensionless": false,
+          "factor": "1"
+        }
+      }
+    },
+    {
+      "probe_id": "sklearn-alias-15512",
+      "reused": true,
+      "outcome": {
+        "kind": "returned",
+        "result": {
+          "canonical_module": "sklearn.preprocessing._label",
+          "definition_file": "/testbed/sklearn/preprocessing/_label.py",
+          "legacy_alias_same_class": true,
+          "legacy_module_file": "/testbed/sklearn/preprocessing/label.py"
+        }
+      }
+    },
+    {
+      "probe_id": "sklearn-alias-15535",
+      "reused": true,
+      "outcome": {
+        "kind": "returned",
+        "result": {
+          "canonical_module": "sklearn.preprocessing._label",
+          "definition_file": "/testbed/sklearn/preprocessing/_label.py",
+          "legacy_alias_same_class": true,
+          "legacy_module_file": "/testbed/sklearn/preprocessing/label.py"
+        }
+      }
+    },
+    {
+      "probe_id": "pvlib-zero-guard-consistent_zero",
+      "reused": false,
+      "outcome": {
+        "kind": "returned",
+        "result": {
+          "ghi_is_exact_zero": true,
+          "is_finite": true,
+          "is_zero": true,
+          "output_repr": "0.0"
+        }
+      }
+    },
+    {
+      "probe_id": "sympy-block-inferred_shape",
+      "reused": false,
+      "outcome": {
+        "kind": "returned",
+        "result": {
+          "cell_is_matrix": false,
+          "cell_repr": "1",
+          "cell_type": "One",
+          "grid_shape": [
+            2,
+            2
+          ]
+        }
+      }
+    },
+    {
+      "probe_id": "sympy-block-explicit_shape",
+      "reused": false,
+      "outcome": {
+        "kind": "returned",
+        "result": {
+          "cell_is_matrix": true,
+          "cell_repr": "Matrix([\n[1, 2],\n[3, 4]])",
+          "cell_type": "ImmutableDenseMatrix",
+          "grid_shape": [
+            1,
+            1
+          ]
+        }
+      }
+    }
+  ]
+}

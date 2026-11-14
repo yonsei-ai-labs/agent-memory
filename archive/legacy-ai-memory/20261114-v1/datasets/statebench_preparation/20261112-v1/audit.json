@@ -1,0 +1,66 @@
+{
+  "by_domain": {
+    "customer_support": {
+      "trajectories": 100,
+      "development": 20,
+      "memory_source": 80,
+      "user_checkpoints": 280,
+      "tool_calls": 716,
+      "explicit_error_calls": 8,
+      "trajectories_with_explicit_error": 8,
+      "repeated_identical_calls": 47,
+      "policy_calls": 176,
+      "median_chars": 9260.5,
+      "duplicate_normalized_initial_request_groups": []
+    },
+    "shopping_assistant": {
+      "trajectories": 100,
+      "development": 21,
+      "memory_source": 79,
+      "user_checkpoints": 238,
+      "tool_calls": 672,
+      "explicit_error_calls": 7,
+      "trajectories_with_explicit_error": 7,
+      "repeated_identical_calls": 26,
+      "policy_calls": 43,
+      "median_chars": 4240.5,
+      "duplicate_normalized_initial_request_groups": [
+        [
+          "8607af90afecda69c751",
+          "e9aebe50fe9e46cbab7e"
+        ],
+        [
+          "cb32d48429350623eb76",
+          "aa2effd6558d98e2c513"
+        ],
+        [
+          "ccf45885a299e5f491ff",
+          "93ad36fe0aead5908695"
+        ]
+      ]
+    },
+    "travel": {
+      "trajectories": 100,
+      "development": 20,
+      "memory_source": 80,
+      "user_checkpoints": 342,
+      "tool_calls": 1454,
+      "explicit_error_calls": 101,
+      "trajectories_with_explicit_error": 12,
+      "repeated_identical_calls": 197,
+      "policy_calls": 91,
+      "median_chars": 9279.5,
+      "duplicate_normalized_initial_request_groups": []
+    }
+  },
+  "total_trajectories": 300,
+  "total_checkpoints": 860,
+  "total_tool_calls": 2842,
+  "unique_observed_policy_payloads": 62,
+  "candidate_status": "unreviewed observations, not a deployed memory bank or supervised labels",
+  "official_test_tasks_read": 0,
+  "actual_utility_labels": 0,
+  "paid_calls": 0,
+  "duplicate_grouping_limit": "normalized initial requests only; no claim of semantic family independence",
+  "repeated_call_limit": "repeat counts include legitimate state checks; not wasted-call labels"
+}

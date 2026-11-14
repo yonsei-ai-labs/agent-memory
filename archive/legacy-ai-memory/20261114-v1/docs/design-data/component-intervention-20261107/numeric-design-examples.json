@@ -1,0 +1,53 @@
+{
+  "synthetic": true,
+  "empirical_observations": false,
+  "model_calls": 0,
+  "interpretation": "Illustrative probabilities and analytic uncertainty bounds; not new experiment results or a power guarantee.",
+  "probabilities": {
+    "N": 0.4,
+    "O": 0.7,
+    "C": 0.35,
+    "M": 0.6
+  },
+  "effects": {
+    "net_memory": 0.19999999999999996,
+    "concrete_given_operational": -0.09999999999999998,
+    "operational_given_concrete": 0.25,
+    "interaction": -0.04999999999999993
+  },
+  "sensitivity": {
+    "alpha": 0.05,
+    "formula": "sqrt(log(2/alpha)/(J*R))",
+    "rows": [
+      {
+        "cases": 8,
+        "repeats_per_arm": 2,
+        "arms": 4,
+        "total_runs": 64,
+        "hoeffding_halfwidth": 0.48016139565996035
+      },
+      {
+        "cases": 32,
+        "repeats_per_arm": 2,
+        "arms": 4,
+        "total_runs": 256,
+        "hoeffding_halfwidth": 0.24008069782998018
+      },
+      {
+        "cases": 64,
+        "repeats_per_arm": 2,
+        "arms": 4,
+        "total_runs": 512,
+        "hoeffding_halfwidth": 0.16976268946757744
+      }
+    ],
+    "assumptions": [
+      "Fixed preselected case panel",
+      "Equal case weights",
+      "Independent Bernoulli trials within each treatment/case",
+      "One prespecified contrast",
+      "No claim of generalization to new source/task populations"
+    ]
+  },
+  "cases_not_independent_warning": "Shared baselines, crossed memories, source clusters and drift require their own covariance/uncertainty treatment."
+}

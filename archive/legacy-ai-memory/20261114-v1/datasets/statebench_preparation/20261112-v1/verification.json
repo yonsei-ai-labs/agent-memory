@@ -1,0 +1,52 @@
+{
+  "status": "passed",
+  "data": {
+    "status": "passed",
+    "trajectories": 300,
+    "checkpoints": 860,
+    "tool_observations": 2842,
+    "official_test_content_read": false,
+    "checks": [
+      "source hashes",
+      "frozen artifacts",
+      "source-group boundary",
+      "exact visible prefixes",
+      "tool provenance",
+      "no invented utility labels"
+    ]
+  },
+  "saved_policy_decisions": 567,
+  "by_policy": {
+    "none": 189,
+    "bm25_goal": 189,
+    "bm25_state": 189
+  },
+  "max_memory_tokens": 1024,
+  "checks": [
+    "saved artifact hashes",
+    "complete policy/checkpoint coverage",
+    "same candidate pools",
+    "source exclusion",
+    "exact visible query",
+    "selected record identity",
+    "exact injected text and token budget"
+  ],
+  "retrieval_scores_recomputed": false,
+  "task_outcomes_evaluated": false,
+  "model_calls": 0,
+  "fresh_shared_copy": true,
+  "upstream_imported_from_shared_copy": true,
+  "integration_tests": {
+    "command": "python -m unittest tests.test_statebench tests.test_statebench_integration -v",
+    "passed": 17,
+    "skipped": 0,
+    "runtime_python": "3.12.3",
+    "tool_environments": "synthetic fixtures, not benchmark task replays"
+  },
+  "scope_limits": [
+    "no learned-model inference or training",
+    "no actual task-success or memory-utility labels",
+    "no official test task or environment contents",
+    "token budget checked with fixed worker tokenizer; selector-specific input cap still to be fixed"
+  ]
+}

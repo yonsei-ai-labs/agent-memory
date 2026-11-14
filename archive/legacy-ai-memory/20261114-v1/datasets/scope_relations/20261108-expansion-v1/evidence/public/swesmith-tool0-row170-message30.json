@@ -1,0 +1,45 @@
+{
+  "dataset": "SWE-bench/SWE-smith-trajectories",
+  "hub_revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+  "parquet_file": "data/tool-00000-of-00008.parquet",
+  "parquet_sha256": "ac76e9efe75978f83d4daec98a55604587dd58b0f1509364893b8778cbf5b487",
+  "parquet_row_index": 170,
+  "instance_id": "life4__textdistance.c3aca916.func_pm_op_change_const__j1nrey18",
+  "traj_id": "life4__textdistance.c3aca916.func_pm_op_change_const__j1nrey18.8qa84d2e",
+  "repository": "life4/textdistance",
+  "upstream_revision": "c3aca916",
+  "raw_messages_sha256": "b98cc596d255e5bdc8b69529bc58067c50e3df1df218b8c65be2ac242f96a143",
+  "message_index": 30,
+  "tool_call": {
+    "index": 1,
+    "function": {
+      "arguments": "{\"command\": \"cd /testbed && python -m pytest tests/test_edit/test_strcmp95.py -v\"}",
+      "name": "bash"
+    },
+    "id": "toolu_01REwEnGx9THDa8HeQqksNs3",
+    "type": "function"
+  },
+  "observation_index": 31,
+  "observation": {
+    "role": "tool",
+    "content": [
+      {
+        "type": "text",
+        "text": "OBSERVATION:\n============================= test session starts ==============================\r\nplatform linux -- Python 3.10.16, pytest-8.3.4, pluggy-1.5.0 -- /opt/miniconda3/envs/testbed/bin/python\r\ncachedir: .pytest_cache\r\nhypothesis profile 'default' -> database=DirectoryBasedExampleDatabase(PosixPath('/testbed/.hypothesis/examples'))\r\nrootdir: /testbed\r\nconfigfile: setup.cfg\r\nplugins: hypothesis-6.126.0\r\ncollecting ... \rcollected 4 items                                                              \r\n\r\ntests/test_edit/test_strcmp95.py::test_distance[MARTHA-MARHTA-0.9611111111111111] PASSED [ 25%]\r\ntests/test_edit/test_strcmp95.py::test_distance[DWAYNE-DUANE-0.873] PASSED [ 50%]\r\ntests/test_edit/test_strcmp95.py::test_distance[DIXON-DICKSONX-0.839333333] PASSED [ 75%]\r\ntests/test_edit/test_strcmp95.py::test_distance[TEST-TEXT-0.9066666666666666] PASSED [100%]\r\n\r\n============================== 4 passed in 0.49s ==============================="
+      }
+    ],
+    "agent": "main",
+    "message_type": "observation",
+    "tool_call_ids": [
+      "toolu_01REwEnGx9THDa8HeQqksNs3"
+    ]
+  },
+  "created_paths_in_trace": [
+    "/testbed/edge_cases.py",
+    "/testbed/reproduce_error.py"
+  ],
+  "observed_whole_scope_selection": [
+    "tests/test_edit/test_strcmp95.py"
+  ],
+  "observed_target_state_or_memory_utility": false
+}

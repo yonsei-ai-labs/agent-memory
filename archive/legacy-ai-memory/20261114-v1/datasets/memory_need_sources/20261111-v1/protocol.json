@@ -1,0 +1,33 @@
+{
+  "families": 24,
+  "fit_splits": {
+    "train": 12,
+    "dev": 6,
+    "confirmation": 6
+  },
+  "source_jobs": 72,
+  "unused_train_before_selection": 48,
+  "original_dev_and_test_used": false,
+  "source_archive_sha256": "53f6f53ecce29e3ae88e356c2f496a4569ef8757457a0d72631bcd7d17267d09",
+  "selection": "hash order within 3/5/7-day groups; 4 train, 2 dev, 2 confirmation each",
+  "scope": "New request families in the same source pool; shared catalogs/cities remain. Historical choices newly generated; current statuses are controlled interventions.",
+  "worker": {
+    "model_id": "Qwen/Qwen3.5-9B",
+    "resolved_revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "config_sha256": "d0883072e01861ed0b2d47be3c16c36a8e81c224c7ffaa310c6558fb3f932b05",
+    "weight_sha256": {
+      "model.safetensors-00001-of-00004.safetensors": "db6f444b43d318c92f360a13a25561a6a65b10c0631b8ed305a426dbaa6c380e",
+      "model.safetensors-00002-of-00004.safetensors": "31c7d7e2dd5d207840b31cc59083c8f4c4718959149e0358c0364052bb9a0330",
+      "model.safetensors-00003-of-00004.safetensors": "7ec36ba3a4176a44c3c0876ad80c56a2f70c84bf008d82e9501df642f17dadec",
+      "model.safetensors-00004-of-00004.safetensors": "b62b0c4cd7e44edee103ee8f4fe225f246d5e768e07bfd5f25b63a8aa1fdd0c6"
+    }
+  },
+  "frozen_model_sha256": {
+    "reader/adapter/adapter_config.json": "14bf6b274d7518aed1b9754ddb9916e45e2f5f8a3f90e439465ecadcb14de0c6",
+    "reader/adapter/adapter_model.safetensors": "5046ca5258295da4d657b9c09765836d6bd1e62e1b23182ebee5b6c27f6d2bda",
+    "reader/head-weights.npz": "d93e46ce918cbd1326cedbca52b456cd59fd546fd0d6532aa5fc712f5ecefd18",
+    "retriever/adapter/adapter_config.json": "14bf6b274d7518aed1b9754ddb9916e45e2f5f8a3f90e439465ecadcb14de0c6",
+    "retriever/adapter/adapter_model.safetensors": "60c125c1b90f2593f9c7ab8b922f42ce7b5aa0de9c01a08c9bc4e1602d1370e3"
+  },
+  "eligibility": "Keep every selected source prediction. Derive contrasts only where valid distinct dinner/hotel choices exist; disclose attrition without replacement."
+}

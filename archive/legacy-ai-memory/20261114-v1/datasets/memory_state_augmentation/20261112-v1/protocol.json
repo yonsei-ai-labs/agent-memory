@@ -1,0 +1,19 @@
+{
+  "experiment": "memory-state-augmentation-20261112-v1",
+  "dimensions": {
+    "source_families": 11,
+    "branch_states": 2,
+    "observation_subsets": 16,
+    "wording_forms": 3
+  },
+  "model_input": "goal + selection_context + one original memory text; no hidden labels or branch metadata",
+  "source_policy": "All existing train families only. No dev/confirmation transformation and no new-b access.",
+  "utility_policy": "All augmented utility labels remain null. Text/state changes require new worker measurement; no cache copying.",
+  "independent_sources_added": 0,
+  "new_worker_calls": 0,
+  "new_training": 0,
+  "evaluation_scope": "Training augmentation only; original evaluation is preserved and already observed, not a fresh confirmation.",
+  "wording_review": "Rule-checked controlled English templates; independent semantic review pending",
+  "sampling": "Primary training pairs cover the four mentioned references; unrelated full-bank negatives are separate.",
+  "budget_policy": "No new worker budget imposed. Freeze a common context budget and always-provide baseline before future outcome measurement."
+}

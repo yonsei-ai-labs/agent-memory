@@ -1,0 +1,151 @@
+{
+  "provisional_reviews": 8,
+  "adjudicated_gold": 0,
+  "training_eligible": false,
+  "reviews": [
+    {
+      "state_id": "015f64adf40542a3--case-0--needed",
+      "ordered_selected_memory_ids": [],
+      "requirement_locations": {
+        "dinner_decision": "in_candidates",
+        "accommodation_decision": "in_candidates"
+      },
+      "missing_requirement_ids": [
+        "dinner_decision",
+        "accommodation_decision"
+      ],
+      "bundle_sufficiency": "insufficient",
+      "training_eligible": false,
+      "actual_worker_outcome_available": true,
+      "observed_task_success": 0,
+      "observed_delta_vs_none": 0
+    },
+    {
+      "state_id": "015f64adf40542a3--case-0--needed",
+      "ordered_selected_memory_ids": [
+        "015f64adf405-p0-d3-dinner"
+      ],
+      "requirement_locations": {
+        "dinner_decision": "in_selected_bundle",
+        "accommodation_decision": "in_candidates"
+      },
+      "missing_requirement_ids": [
+        "accommodation_decision"
+      ],
+      "bundle_sufficiency": "insufficient",
+      "training_eligible": false,
+      "actual_worker_outcome_available": false,
+      "observed_task_success": null,
+      "observed_delta_vs_none": null
+    },
+    {
+      "state_id": "015f64adf40542a3--case-0--needed",
+      "ordered_selected_memory_ids": [
+        "015f64adf405-p1-d3-accommodation"
+      ],
+      "requirement_locations": {
+        "dinner_decision": "in_candidates",
+        "accommodation_decision": "in_selected_bundle"
+      },
+      "missing_requirement_ids": [
+        "dinner_decision"
+      ],
+      "bundle_sufficiency": "insufficient",
+      "training_eligible": false,
+      "actual_worker_outcome_available": false,
+      "observed_task_success": null,
+      "observed_delta_vs_none": null
+    },
+    {
+      "state_id": "015f64adf40542a3--case-0--needed",
+      "ordered_selected_memory_ids": [
+        "015f64adf405-p0-d3-dinner",
+        "015f64adf405-p1-d3-accommodation"
+      ],
+      "requirement_locations": {
+        "dinner_decision": "in_selected_bundle",
+        "accommodation_decision": "in_selected_bundle"
+      },
+      "missing_requirement_ids": [],
+      "bundle_sufficiency": "sufficient",
+      "training_eligible": false,
+      "actual_worker_outcome_available": true,
+      "observed_task_success": 1,
+      "observed_delta_vs_none": 1
+    },
+    {
+      "state_id": "015f64adf40542a3--case-0--visible",
+      "ordered_selected_memory_ids": [],
+      "requirement_locations": {
+        "dinner_decision": "already_observed",
+        "accommodation_decision": "already_observed"
+      },
+      "missing_requirement_ids": [],
+      "bundle_sufficiency": "sufficient",
+      "training_eligible": false,
+      "actual_worker_outcome_available": true,
+      "observed_task_success": 1,
+      "observed_delta_vs_none": 0
+    },
+    {
+      "state_id": "015f64adf40542a3--case-0--visible",
+      "ordered_selected_memory_ids": [
+        "015f64adf405-p0-d3-dinner",
+        "015f64adf405-p1-d3-accommodation"
+      ],
+      "requirement_locations": {
+        "dinner_decision": "already_observed",
+        "accommodation_decision": "already_observed"
+      },
+      "missing_requirement_ids": [],
+      "bundle_sufficiency": "sufficient",
+      "training_eligible": false,
+      "actual_worker_outcome_available": true,
+      "observed_task_success": 1,
+      "observed_delta_vs_none": 0
+    },
+    {
+      "state_id": "015f64adf40542a3--case-0--changed",
+      "ordered_selected_memory_ids": [
+        "015f64adf405-p0-d3-dinner",
+        "015f64adf405-p1-d3-accommodation"
+      ],
+      "requirement_locations": {
+        "dinner_decision": "in_selected_bundle",
+        "accommodation_decision": "in_selected_bundle"
+      },
+      "missing_requirement_ids": [],
+      "bundle_sufficiency": "sufficient",
+      "training_eligible": false,
+      "actual_worker_outcome_available": true,
+      "observed_task_success": 1,
+      "observed_delta_vs_none": 0
+    },
+    {
+      "state_id": "015f64adf40542a3--case-0--missing",
+      "ordered_selected_memory_ids": [],
+      "requirement_locations": {
+        "dinner_decision": "not_found_in_reviewed_bank",
+        "accommodation_decision": "not_found_in_reviewed_bank"
+      },
+      "missing_requirement_ids": [
+        "dinner_decision",
+        "accommodation_decision"
+      ],
+      "bundle_sufficiency": "insufficient",
+      "training_eligible": false,
+      "actual_worker_outcome_available": true,
+      "observed_task_success": 0,
+      "observed_delta_vs_none": 0
+    }
+  ],
+  "independent_reviewers": 0,
+  "independent_source_families_added": 0,
+  "selection_rule": "First lexicographic existing family, reuse case; none/A/B/A+B and visible/changed/missing conditions, not selected by success.",
+  "source_sha256": {
+    "selector-inputs.jsonl": "cc4129036ac0ac68ee5d3a5623b133aa52aad851d196fb2070166226f4721163",
+    "memories.jsonl": "f9954a4e46a965d2f7c3be2ea1a26255d4b857c2c64bf2de6ca047f38504e96a",
+    "supervision.jsonl": "caeae6c39ab9b7d38fc54181a8cfa4c3f4c2000c15e2822f2c18f7469e8344a2",
+    "provisional-reviews.jsonl": "f1a12e3de2230bb0339bb998b1be6055a1a2b0653363ad1dceb547cb9101612e"
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "target_trajectory_row_index": 356,
+  "task": {
+    "instance_id": "Pylons__webob-332",
+    "repo": "Pylons/webob",
+    "base_commit": "b2e78a53af7abe866b90a532479cf5c0ae00301b",
+    "created_at": "2017-06-30 20:28:31",
+    "problem_statement": "IPv6 support\nParts of WebOb haven't been adapted to work in IPv6 environment:\r\n- request.domain will split IPv6 addresses incorrectly\r\n- request.host_port will split IPv6 addresses incorrectly\r\n- request.host_url will split IPv6 addresses incorrectly\r\n- .. maybe more places, I haven't checked all sources\r\n\r\nThis issue is similar to #174 however there it's about mitigating potential vulnerabilities and this issue is only about making API work correctly. Software using WebOb can workaround this by parsing the Host header manually, but it's just wasteful because everybody has to repeat the same work, that should be done by WebOb (as promised by the API)\r\n\r\n",
+    "version": "1.7",
+    "environment_setup_commit": "b2e78a53af7abe866b90a532479cf5c0ae00301b",
+    "license_name": null,
+    "docker_image": "swerebench/sweb.eval.x86_64.pylons_1776_webob-332",
+    "image_name": "swerebench/sweb.eval.x86_64.pylons_1776_webob-332",
+    "dataset": "nebius/SWE-rebench",
+    "revision": "89cdfbab4ab1bd8f5a658bb212d1b63624f4f881",
+    "file": "data/test-00000-of-00002.parquet",
+    "row_index": 2411
+  },
+  "base_code": [
+    {
+      "path": "src/webob/request.py",
+      "repository": "Pylons/webob",
+      "base_commit": "b2e78a53af7abe866b90a532479cf5c0ae00301b",
+      "git_blob_sha": "011617cec88ab21c4dc1a8ff73b2559589d36c98",
+      "full_content_sha256": "75544e53922d9e6c7789908c1d8a3d8df20b8c7047db8c9e6104d46f65309301",
+      "source_url": "https://github.com/Pylons/webob/blob/b2e78a53af7abe866b90a532479cf5c0ae00301b/src/webob/request.py",
+      "spans": [
+        {
+          "start_line": 402,
+          "end_line": 453,
+          "text": "    def host_port(self):\n        \"\"\"\n        The effective server port number as a string.  If the ``HTTP_HOST``\n        header exists in the WSGI environ, this attribute returns the port\n        number present in that header. If the ``HTTP_HOST`` header exists but\n        contains no explicit port number: if the WSGI url scheme is \"https\" ,\n        this attribute returns \"443\", if the WSGI url scheme is \"http\", this\n        attribute returns \"80\" .  If no ``HTTP_HOST`` header is present in\n        the environ at all, this attribute will return the value of the\n        ``SERVER_PORT`` header (which is guaranteed to be present).\n        \"\"\"\n        e = self.environ\n        host = e.get('HTTP_HOST')\n        if host is not None:\n            if ':' in host:\n                host, port = host.split(':', 1)\n            else:\n                url_scheme = e['wsgi.url_scheme']\n                if url_scheme == 'https':\n                    port = '443'\n                else:\n                    port = '80'\n        else:\n            port = e['SERVER_PORT']\n        return port\n\n    @property\n    def host_url(self):\n        \"\"\"\n        The URL through the host (no path)\n        \"\"\"\n        e = self.environ\n        scheme = e.get('wsgi.url_scheme')\n        url = scheme + '://'\n        host = e.get('HTTP_HOST')\n        if host is not None:\n            if ':' in host:\n                host, port = host.split(':', 1)\n            else:\n                port = None\n        else:\n            host = e.get('SERVER_NAME')\n            port = e.get('SERVER_PORT')\n        if scheme == 'https':\n            if port == '443':\n                port = None\n        elif scheme == 'http':\n            if port == '80':\n                port = None\n        url += host\n        if port:\n            url += ':%s' % port\n",
+          "sha256": "7aeb157e59029eaa375c11470feed2a6ede28b4318fe956cd7f995b5d8b6ea28"
+        },
+        {
+          "start_line": 664,
+          "end_line": 675,
+          "text": "    def domain(self):\n        \"\"\" Returns the domain portion of the host value.  Equivalent to:\n\n        .. code-block:: python\n\n           domain = request.host\n           if ':' in domain:\n               domain = domain.split(':', 1)[0]\n\n        This will be equivalent to the domain portion of the ``HTTP_HOST``\n        value in the environment if it exists, or the ``SERVER_NAME`` value in\n        the environment if it doesn't.  For example, if the environment\n",
+          "sha256": "f79c45e0e2293f22b641df79811683991aa23127b9200968965c58c1478ddfaf"
+        },
+        {
+          "start_line": 1710,
+          "end_line": 1731,
+          "text": "    def transcode_fs(self, fs, content_type):\n        # transcode FieldStorage\n        if PY2:\n            def decode(b):\n                if b is not None:\n                    return b.decode(self.charset, self.errors)\n                else:\n                    return b\n        else:\n            def decode(b):\n                return b\n\n        data = []\n        for field in fs.list or ():\n            field.name = decode(field.name)\n            if field.filename:\n                field.filename = decode(field.filename)\n                data.append((field.name, field))\n            else:\n                data.append((field.name, decode(field.value)))\n\n        # TODO: transcode big requests to temp file\n",
+          "sha256": "c681e3583dde5b1a7613ba1dad488b069edf5c9cb63c0b49d674930b4f88d03b"
+        }
+      ]
+    }
+  ],
+  "observation_kind": "researcher_read_of_pinned_pre_patch_code",
+  "worker_initial_inspection_performed": false,
+  "restorable_worker_snapshot": null,
+  "target_trajectory_loaded": false,
+  "gold_patch_or_hidden_tests_loaded": false
+}

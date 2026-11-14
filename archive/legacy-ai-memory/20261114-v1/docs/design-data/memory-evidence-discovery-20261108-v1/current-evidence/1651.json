@@ -1,0 +1,48 @@
+{
+  "target_trajectory_row_index": 1651,
+  "task": {
+    "instance_id": "briancurtin__deprecation-47",
+    "repo": "briancurtin/deprecation",
+    "base_commit": "264e8cd469cdcfc793afedb80d224f48d350a360",
+    "created_at": "2020-01-31 22:17:03",
+    "problem_statement": "Allow removed_in to be a date\nDepending on the versioning scheme used by a project, it can be difficult to tell in advance the version number at which code can be removed. Sometimes, though, it is easier to tell *when* it should be removed. Google Guava, for example, guarantees all methods marked deprecated will be kept around for two years post-deprecation.\r\n\r\nIt would be convenient to handle this by allowing a date (in some TBD format) to be passed for the `removed_in` argument.",
+    "version": "2.0",
+    "environment_setup_commit": "264e8cd469cdcfc793afedb80d224f48d350a360",
+    "license_name": "Apache License 2.0",
+    "docker_image": "swerebench/sweb.eval.x86_64.briancurtin_1776_deprecation-47",
+    "image_name": "swerebench/sweb.eval.x86_64.briancurtin_1776_deprecation-47",
+    "dataset": "nebius/SWE-rebench",
+    "revision": "89cdfbab4ab1bd8f5a658bb212d1b63624f4f881",
+    "file": "data/test-00000-of-00002.parquet",
+    "row_index": 4806
+  },
+  "base_code": [
+    {
+      "path": "deprecation.py",
+      "repository": "briancurtin/deprecation",
+      "base_commit": "264e8cd469cdcfc793afedb80d224f48d350a360",
+      "git_blob_sha": "ccb7f6678cbd82f792d9514339c1888ddbed55d6",
+      "full_content_sha256": "f2e73cb36eb089e3e0b548d86b99191519e3220a05f60c798bfbbfea6b9ac82f",
+      "source_url": "https://github.com/briancurtin/deprecation/blob/264e8cd469cdcfc793afedb80d224f48d350a360/deprecation.py",
+      "spans": [
+        {
+          "start_line": 145,
+          "end_line": 175,
+          "text": "    # building up the docstring weird.\n    if deprecated_in is None and removed_in is not None:\n        raise TypeError(\"Cannot set removed_in to a value \"\n                        \"without also setting deprecated_in\")\n\n    # Only warn when it's appropriate. There may be cases when it makes sense\n    # to add this decorator before a formal deprecation period begins.\n    # In CPython, PendingDeprecatedWarning gets used in that period,\n    # so perhaps mimick that at some point.\n    is_deprecated = False\n    is_unsupported = False\n\n    # StrictVersion won't take a None or a \"\", so make whatever goes to it\n    # is at least *something*.\n    if current_version:\n        current_version = version.parse(current_version)\n\n        if (removed_in\n                and current_version >= version.parse(removed_in)):\n            is_unsupported = True\n        elif (deprecated_in\n              and current_version >= version.parse(deprecated_in)):\n            is_deprecated = True\n    else:\n        # If we can't actually calculate that we're in a period of\n        # deprecation...well, they used the decorator, so it's deprecated.\n        # This will cover the case of someone just using\n        # @deprecated(\"1.0\") without the other advantages.\n        is_deprecated = True\n\n    should_warn = any([is_deprecated, is_unsupported])\n",
+          "sha256": "296c622a9d2a8c5dfb1d5f29672517508fb2df5fd66807a5d0bcec9de6cfc9c0"
+        },
+        {
+          "start_line": 197,
+          "end_line": 232,
+          "text": "\n            # default location for insertion of deprecation note\n            loc = 1\n\n            # split docstring at first occurrence of newline\n            string_list = existing_docstring.split(\"\\n\", 1)\n\n            if len(string_list) > 1:\n                # With a multi-line docstring, when we modify\n                # existing_docstring to add our deprecation_note,\n                # if we're not careful we'll interfere with the\n                # indentation levels of the contents below the\n                # first line, or as PEP 257 calls it, the summary\n                # line. Since the summary line can start on the\n                # same line as the \"\"\", dedenting the whole thing\n                # won't help. Split the summary and contents up,\n                # dedent the contents independently, then join\n                # summary, dedent'ed contents, and our\n                # deprecation_note.\n\n                # in-place dedent docstring content\n                string_list[1] = textwrap.dedent(string_list[1])\n\n                # we need another newline\n                string_list.insert(loc, \"\\n\")\n\n                # change the message_location if we add to end of docstring\n                # do this always if not \"top\"\n                if message_location != \"top\":\n                    loc = 3\n\n            # insert deprecation note and dual newline\n            string_list.insert(loc, deprecation_note)\n            string_list.insert(loc, \"\\n\\n\")\n\n            function.__doc__ = \"\".join(string_list)\n",
+          "sha256": "234e47b4fe1de87ac0176c63eab5ebf8c680a20abf7f3559e3aa0d57f9bd9b35"
+        }
+      ]
+    }
+  ],
+  "observation_kind": "researcher_read_of_pinned_pre_patch_code",
+  "worker_initial_inspection_performed": false,
+  "restorable_worker_snapshot": null,
+  "target_trajectory_loaded": false,
+  "gold_patch_or_hidden_tests_loaded": false
+}

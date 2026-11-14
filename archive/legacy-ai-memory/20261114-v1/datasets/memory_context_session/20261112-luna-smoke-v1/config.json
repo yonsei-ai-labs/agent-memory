@@ -1,0 +1,30 @@
+{
+  "format": "context-session-setup-v1",
+  "model": "openai/gpt-6-luna",
+  "provider": "openai",
+  "expected_provider_snapshot": "gpt-6-luna-20260922",
+  "reasoning_effort": "none",
+  "max_output_tokens": 256,
+  "max_provider_input_tokens": 6144,
+  "reference_encoding": "o200k_base",
+  "reference_encoding_is_native": false,
+  "recent_only_budget": 4096,
+  "recent_memory_budget": 2048,
+  "memory_budget": 2048,
+  "max_calls": 26,
+  "max_cost_usd": 0.1,
+  "timeout_seconds": 45,
+  "session_id": "58357e6d94c7d840607cf928",
+  "questions": 4,
+  "modes": [
+    "isolated",
+    "cumulative"
+  ],
+  "policies": [
+    "recent_only",
+    "fixed_memory"
+  ],
+  "parent_manifest_sha256": "a097c765a1100c1c1f4e8c3e624697107a55e642e13e9d81e21a4efa03d472ff",
+  "schedule": "Sparse four-question setup schedule; unasked questions and scripted answers are omitted.",
+  "full_study_auto_run": false
+}

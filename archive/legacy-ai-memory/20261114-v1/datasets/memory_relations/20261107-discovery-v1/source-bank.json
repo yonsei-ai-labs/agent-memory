@@ -1,0 +1,674 @@
+{
+  "at": "2026-11-07T10:56:17.527635+00:00",
+  "memory_cards": [
+    {
+      "memory_id": "pvlib-reindl-facts",
+      "kind": "facts",
+      "text": "For pvlib issue pvlib__pvlib-python-1154, `reindl()` computed `term3` using `sqrt(HB / ghi)`, so zero GHI could produce NaN/Inf; the existing test expected NaN for its zero-GHI sample. A trial change substituted infinity for exactly zero GHI, then masked the result to zero. A manual check observed zero for scalar zero-GHI inputs and zero entries in mixed NumPy-array and pandas-Series inputs, with finite outputs in those examples. The targeted existing test failed because it still expected NaN; 95 tests excluding Reindl passed, which does not validate the change. Behavior for NaN or negative GHI and other invalid inputs was not established.",
+      "text_sha256": "a79db5497b0e9fca83b61dfe579d3be9748e606fe721bd801184d2baab3e9c7f",
+      "source_instance_id": "pvlib__pvlib-python-1154",
+      "source_run": "20261103T135629Z-3cafeecc",
+      "repo": "pvlib/pvlib-python",
+      "available_at": "2021-02-02T21:35:28Z",
+      "eligible_target_ids": [
+        "pvlib__pvlib-python-1606",
+        "pvlib__pvlib-python-1707"
+      ],
+      "actual_source_official_resolved": true,
+      "original_card_source_outcome": true,
+      "source_evaluation_complete": true,
+      "source_evidence": {
+        "path": "datasets/memory_relations/20261107-discovery-v1/evidence/source-episodes/pvlib__pvlib-python-1154.json",
+        "sha256": "aa9ba5c84955a04550dcf235f4d2c38ae3e2c69ec600744fe464fcd4dd476880"
+      },
+      "original_card_file": {
+        "path": "runs/memory-author-20261103T135832Z-79453a/candidate-bank.json",
+        "sha256": "b3d2d7c275477aa7b2e2d87d154f91d408afb4d5fa84e7dad0297f812e09f9a1"
+      },
+      "focused_observation": {
+        "command": "python -m pytest -q pvlib/tests/test_irradiance.py -k reindl --disable-warnings --maxfail=1",
+        "returncode": 1,
+        "output_excerpt": "    # values from matlab 1.4 code\n>       assert_allclose(result, [np.nan, 27.9412, 104.1317, 34.1663], atol=1e-4)\nE       AssertionError: \nE       Not equal to tolerance rtol=1e-07, atol=0.0001\nE       \nE       x and y nan location mismatch:\nE        x: array([  0.      ,  27.94117 , 104.131724,  34.166258])\nE        y: array([     nan,  27.9412, 104.1317,  34.1663])\n\npvlib/tests/test_irradiance.py:206: AssertionError\n=========================== short test summary info ============================\nFAILED pvlib/tests/test_irradiance.py::test_reindl - AssertionError: \n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed, 95 deselected, 2 warnings in 0.15s\n",
+        "agent_command_index": 11,
+        "jsonl_line": 14
+      },
+      "memory_origin": "original_agent_written_card_no_rewrite"
+    },
+    {
+      "memory_id": "pvlib-reindl-procedure",
+      "kind": "procedure",
+      "text": "For the reported `reindl()` zero-GHI sky-diffuse problem, a tentative approach was to avoid the `HB / ghi` zero denominator by replacing exactly zero GHI with infinity for that quotient, then force corresponding output entries to zero. A manual check showed this produced zero for scalar and mixed array/Series examples, including an inconsistent scalar case with nonzero DHI and zero DNI/GHI. This was not a successful test-suite fix: the existing targeted test failed because its expected zero-GHI value was NaN. If revisiting, update or add an expectation for the reported zero-GHI behavior and run relevant tests. Do not assume this handles NaN GHI or other invalid values; those cases were unverified.",
+      "text_sha256": "eac56883d79f8d808d0f59eff113b7353be9121279f73f23a87292e47eaa36a9",
+      "source_instance_id": "pvlib__pvlib-python-1154",
+      "source_run": "20261103T135629Z-3cafeecc",
+      "repo": "pvlib/pvlib-python",
+      "available_at": "2021-02-02T21:35:28Z",
+      "eligible_target_ids": [
+        "pvlib__pvlib-python-1606",
+        "pvlib__pvlib-python-1707"
+      ],
+      "actual_source_official_resolved": true,
+      "original_card_source_outcome": true,
+      "source_evaluation_complete": true,
+      "source_evidence": {
+        "path": "datasets/memory_relations/20261107-discovery-v1/evidence/source-episodes/pvlib__pvlib-python-1154.json",
+        "sha256": "aa9ba5c84955a04550dcf235f4d2c38ae3e2c69ec600744fe464fcd4dd476880"
+      },
+      "original_card_file": {
+        "path": "runs/memory-author-20261103T135832Z-79453a/candidate-bank.json",
+        "sha256": "b3d2d7c275477aa7b2e2d87d154f91d408afb4d5fa84e7dad0297f812e09f9a1"
+      },
+      "focused_observation": {
+        "command": "python -m pytest -q pvlib/tests/test_irradiance.py -k reindl --disable-warnings --maxfail=1",
+        "returncode": 1,
+        "output_excerpt": "    # values from matlab 1.4 code\n>       assert_allclose(result, [np.nan, 27.9412, 104.1317, 34.1663], atol=1e-4)\nE       AssertionError: \nE       Not equal to tolerance rtol=1e-07, atol=0.0001\nE       \nE       x and y nan location mismatch:\nE        x: array([  0.      ,  27.94117 , 104.131724,  34.166258])\nE        y: array([     nan,  27.9412, 104.1317,  34.1663])\n\npvlib/tests/test_irradiance.py:206: AssertionError\n=========================== short test summary info ============================\nFAILED pvlib/tests/test_irradiance.py::test_reindl - AssertionError: \n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed, 95 deselected, 2 warnings in 0.15s\n",
+        "agent_command_index": 11,
+        "jsonl_line": 14
+      },
+      "memory_origin": "original_agent_written_card_no_rewrite"
+    },
+    {
+      "memory_id": "sphinx8282-facts",
+      "kind": "facts",
+      "text": "Source problem: in Sphinx 3.3, autodoc_typehints='none' was reported not to suppress annotations on overloaded callables; the requested behavior was for overloads to obey the setting. In sphinx/ext/autodoc/__init__.py, FunctionDocumenter, ClassDocumenter, and MethodDocumenter each format overload signatures in separate branches; ordinary function and method format_args already disable annotations for 'none' and 'description' (indices 0–2). The submitted diff adds show_annotation=False in those three overload branches for those settings (indices 8, 20). Earlier agent-local checks: the focused overload/typehints pytest invocation passed 3 tests (index 14); a separate Sphinx text-build reproducer printed two unannotated example.foo(x) signatures, with a duplicate-meta warning (index 16). A broader local pytest run failed at test_autodoc because of a duplicate-meta warning (index 10), not an overload assertion. Actual final official outcome: unresolved/failed (official_resolved=false); local checks did not make the submission officially successful.",
+      "text_sha256": "b79563ebe2da957f3cdfed6cadae3d9afd69ef5f6a49e070d52de13b207afa92",
+      "source_instance_id": "sphinx-doc__sphinx-8282",
+      "source_run": "20261103T150718Z-8bb04726",
+      "repo": "sphinx-doc/sphinx",
+      "available_at": "2020-10-28T02:02:27Z",
+      "eligible_target_ids": [
+        "sphinx-doc__sphinx-8627",
+        "sphinx-doc__sphinx-10451"
+      ],
+      "actual_source_official_resolved": false,
+      "original_card_source_outcome": false,
+      "source_evaluation_complete": true,
+      "source_evidence": {
+        "path": "datasets/memory_relations/20261107-discovery-v1/evidence/source-episodes/sphinx-doc__sphinx-8282.json",
+        "sha256": "c05053bec0d0307ddd610de400d68d81cb4fbe2c295b717ce5497615a4be17a8"
+      },
+      "original_card_file": {
+        "path": "runs/memory-author-20261103T151432Z-8ff603/candidate-bank.json",
+        "sha256": "a950e617ce0c75948448c0c98993166eec469e88d1b19df9e5613e0d6df39dd2"
+      },
+      "focused_observation": {
+        "command": "cd /testbed && python -m pytest -q tests/test_ext_autodoc.py::test_overload tests/test_ext_autodoc.py::test_overload2 tests/test_ext_autodoc_configs.py::test_autodoc_typehints_none --disable-warnings",
+        "returncode": 0,
+        "output_excerpt": "...                                                                      [100%]\n3 passed, 7 warnings in 0.29s\n",
+        "agent_command_index": 14,
+        "jsonl_line": 17
+      },
+      "memory_origin": "original_agent_written_card_no_rewrite"
+    },
+    {
+      "memory_id": "sphinx8282-procedure",
+      "kind": "procedure",
+      "text": "Source problem: Sphinx 3.3 autodoc_typehints='none' did not suppress annotations in overloaded callable signatures, despite that being the requested behavior. In this observed case, a tentative approach was to find where overload signatures bypass the ordinary format_args path, then pass show_annotation=False to stringify_signature in each relevant overload branch when the setting is 'none' or 'description'. The submitted edit did this for FunctionDocumenter, ClassDocumenter, and MethodDocumenter (indices 2, 8). The focused local pytest command for test_overload, test_overload2, and test_autodoc_typehints_none passed (index 14), and a local text-build reproducer displayed unannotated overloads (index 16). These are agent-local checks, not official evaluation. The broader local suite had a failure caused by a duplicate-meta warning assertion (index 10). Limits: the evidence does not verify other autodoc APIs, settings, versions, or inputs, and the local reproducer emitted a warning. Actual final official outcome: unresolved/failed (official_resolved=false), despite those local checks.",
+      "text_sha256": "40d4a96882cda98b1705a888dd576ffac81e196163966aeb92a417fb590ca0b9",
+      "source_instance_id": "sphinx-doc__sphinx-8282",
+      "source_run": "20261103T150718Z-8bb04726",
+      "repo": "sphinx-doc/sphinx",
+      "available_at": "2020-10-28T02:02:27Z",
+      "eligible_target_ids": [
+        "sphinx-doc__sphinx-8627",
+        "sphinx-doc__sphinx-10451"
+      ],
+      "actual_source_official_resolved": false,
+      "original_card_source_outcome": false,
+      "source_evaluation_complete": true,
+      "source_evidence": {
+        "path": "datasets/memory_relations/20261107-discovery-v1/evidence/source-episodes/sphinx-doc__sphinx-8282.json",
+        "sha256": "c05053bec0d0307ddd610de400d68d81cb4fbe2c295b717ce5497615a4be17a8"
+      },
+      "original_card_file": {
+        "path": "runs/memory-author-20261103T151432Z-8ff603/candidate-bank.json",
+        "sha256": "a950e617ce0c75948448c0c98993166eec469e88d1b19df9e5613e0d6df39dd2"
+      },
+      "focused_observation": {
+        "command": "cd /testbed && python -m pytest -q tests/test_ext_autodoc.py::test_overload tests/test_ext_autodoc.py::test_overload2 tests/test_ext_autodoc_configs.py::test_autodoc_typehints_none --disable-warnings",
+        "returncode": 0,
+        "output_excerpt": "...                                                                      [100%]\n3 passed, 7 warnings in 0.29s\n",
+        "agent_command_index": 14,
+        "jsonl_line": 17
+      },
+      "memory_origin": "original_agent_written_card_no_rewrite"
+    },
+    {
+      "memory_id": "sphinx8435-facts",
+      "kind": "facts",
+      "text": "Source problem: in Sphinx 3.4, `autodoc_type_aliases` did not affect annotated module variables or class attributes. In `sphinx/ext/autodoc/__init__.py`, `DataDocumenter` and `AttributeDocumenter` obtained parent annotations with `get_type_hints()` and formatted them with `stringify_typehint`; unlike signature handling, those paths did not pass the configured aliases (indices 2–3). An initial temporary build with `String: example.MyString` still rendered `String` for both attributes; after the submitted change, the same kind of build rendered `example.MyString` for both (indices 14, 20). Local `tests/test_ext_autodoc_configs.py` passed (index 23); a combined run had 67 passes and one failure asserting no warnings, with a duplicate `meta` registration warning in the output (index 21). That local failure is distinct from the later official evaluation, which marked the submission resolved: true.",
+      "text_sha256": "19756a0aef1d0bf0905193d9aaed6bfabe37325798a82dfa9e944b71c5da1da4",
+      "source_instance_id": "sphinx-doc__sphinx-8435",
+      "source_run": "20261103T150854Z-467436f4",
+      "repo": "sphinx-doc/sphinx",
+      "available_at": "2020-11-17T13:42:39Z",
+      "eligible_target_ids": [
+        "sphinx-doc__sphinx-8627",
+        "sphinx-doc__sphinx-10451"
+      ],
+      "actual_source_official_resolved": true,
+      "original_card_source_outcome": true,
+      "source_evaluation_complete": true,
+      "source_evidence": {
+        "path": "datasets/memory_relations/20261107-discovery-v1/evidence/source-episodes/sphinx-doc__sphinx-8435.json",
+        "sha256": "f553063047b6ae5f53b8050a8760efe94326c7b3db9ab579f3124acca8370025"
+      },
+      "original_card_file": {
+        "path": "runs/memory-author-20261103T151442Z-a03591/candidate-bank.json",
+        "sha256": "a32c82daa03f8dd6b99f4afa4bbfff1e22bc5b332009510de5e4ad46ccf8ea4a"
+      },
+      "focused_observation": {
+        "command": "python -m pytest -q tests/test_ext_autodoc_configs.py",
+        "returncode": 0,
+        "output_excerpt": "lock):  # type: nodes.literal_block\n\ntests/test_ext_autodoc_configs.py::test_autodoc_typehints_description\n  /testbed/sphinx/transforms/post_transforms/code.py:99: PendingDeprecationWarning: nodes.Node.traverse() is obsoleted by Node.findall().\n    for dbnode in self.document.traverse(nodes.doctest_block):  # type: nodes.doctest_block\n\ntests/test_ext_autodoc_configs.py::test_autodoc_typehints_description\n  /testbed/sphinx/environment/__init__.py:540: PendingDeprecationWarning: nodes.Node.traverse() is obsoleted by Node.findall().\n    for toctreenode in doctree.traverse(addnodes.toctree):\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n17 passed, 64 warnings in 0.74s\n",
+        "agent_command_index": 27,
+        "jsonl_line": 30
+      },
+      "memory_origin": "original_agent_written_card_no_rewrite"
+    },
+    {
+      "memory_id": "sphinx8435-procedure",
+      "kind": "procedure",
+      "text": "Source problem: Sphinx 3.4 autodoc ignored `autodoc_type_aliases` for annotated module variables and class attributes. A tentative approach observed here was to trace the data/attribute documenters’ annotation paths, then handle both evaluated annotations and analyzer-provided annotation strings: pass the configured aliases to `get_type_hints()` and apply a bounded alias substitution when formatting/outputting annotations. In this case, `get_type_hints()` with the qualified target `example.MyString` raised `NameError` in the small reproducer, so relying on that lookup alone did not fix the output (indices 17, 19). The submitted implementation added `_apply_type_aliases` and used it in both documenters; a Sphinx text build then showed the qualified alias on both variables, and the autodoc config tests passed (indices 20, 27). Limits: this was observed for this Sphinx tree and reproducer, not established for other APIs, alias formats, Python versions, or inputs. The combined local run’s warning assertion failure was not the official result; official evaluation marked the submission resolved: true.",
+      "text_sha256": "940d2b7fb3f76bad89dc87683eb5a18e2202e22fa8a45ebcba6205d2737a2f7b",
+      "source_instance_id": "sphinx-doc__sphinx-8435",
+      "source_run": "20261103T150854Z-467436f4",
+      "repo": "sphinx-doc/sphinx",
+      "available_at": "2020-11-17T13:42:39Z",
+      "eligible_target_ids": [
+        "sphinx-doc__sphinx-8627",
+        "sphinx-doc__sphinx-10451"
+      ],
+      "actual_source_official_resolved": true,
+      "original_card_source_outcome": true,
+      "source_evaluation_complete": true,
+      "source_evidence": {
+        "path": "datasets/memory_relations/20261107-discovery-v1/evidence/source-episodes/sphinx-doc__sphinx-8435.json",
+        "sha256": "f553063047b6ae5f53b8050a8760efe94326c7b3db9ab579f3124acca8370025"
+      },
+      "original_card_file": {
+        "path": "runs/memory-author-20261103T151442Z-a03591/candidate-bank.json",
+        "sha256": "a32c82daa03f8dd6b99f4afa4bbfff1e22bc5b332009510de5e4ad46ccf8ea4a"
+      },
+      "focused_observation": {
+        "command": "python -m pytest -q tests/test_ext_autodoc_configs.py",
+        "returncode": 0,
+        "output_excerpt": "lock):  # type: nodes.literal_block\n\ntests/test_ext_autodoc_configs.py::test_autodoc_typehints_description\n  /testbed/sphinx/transforms/post_transforms/code.py:99: PendingDeprecationWarning: nodes.Node.traverse() is obsoleted by Node.findall().\n    for dbnode in self.document.traverse(nodes.doctest_block):  # type: nodes.doctest_block\n\ntests/test_ext_autodoc_configs.py::test_autodoc_typehints_description\n  /testbed/sphinx/environment/__init__.py:540: PendingDeprecationWarning: nodes.Node.traverse() is obsoleted by Node.findall().\n    for toctreenode in doctree.traverse(addnodes.toctree):\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n17 passed, 64 warnings in 0.74s\n",
+        "agent_command_index": 27,
+        "jsonl_line": 30
+      },
+      "memory_origin": "original_agent_written_card_no_rewrite"
+    },
+    {
+      "memory_id": "django14667-facts",
+      "kind": "facts",
+      "text": "The source problem was that chaining `.defer(\"name\")` after `.only(\"name\")` did not clear the deferred field as expected; the report expected only the primary key to be selected. In `django/db/models/sql/query.py`, `deferred_to_data()` read `(field_names, defer)` and returned early whenever `field_names` was empty. The submitted change narrowed that return to `if not field_names and defer`. An initial test command used the wrong path (`python runtests.py`, index 8); `python tests/runtests.py defer --verbosity 2` then passed all 29 defer tests locally (index 11). This local pass was not the official result: official evaluation marked the submission unresolved (`official_resolved: false`; F2P 0/1, P2P 28/1).",
+      "text_sha256": "766b2b3553bfcf27f5a16a9890496b3e6195d432a60faef807952af1d3afbc41",
+      "source_instance_id": "django__django-14667",
+      "source_run": "20261103T151201Z-08fad502",
+      "repo": "django/django",
+      "available_at": "2021-07-20T11:38:25Z",
+      "eligible_target_ids": [
+        "django__django-16910"
+      ],
+      "actual_source_official_resolved": false,
+      "original_card_source_outcome": false,
+      "source_evaluation_complete": true,
+      "source_evidence": {
+        "path": "datasets/memory_relations/20261107-discovery-v1/evidence/source-episodes/django__django-14667.json",
+        "sha256": "45380da68fd017749102abddfd8a2f83f8c43fdfd9f38ea88217806065420fb6"
+      },
+      "original_card_file": {
+        "path": "runs/memory-author-20261103T151504Z-46823f/candidate-bank.json",
+        "sha256": "bbafe6cb629e9cb71550d6ddd5190524d452417360d643831e125bb08d10fa33"
+      },
+      "focused_observation": {
+        "command": "cd /testbed && python tests/runtests.py defer --verbosity 2",
+        "returncode": 0,
+        "output_excerpt": "d')...\nDestroying test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...\nDestroying test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...\nDestroying test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...\nDestroying test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...\nDestroying test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...\nDestroying test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...\nDestroying test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...\n",
+        "agent_command_index": 11,
+        "jsonl_line": 14
+      },
+      "memory_origin": "original_agent_written_card_no_rewrite"
+    },
+    {
+      "memory_id": "django14667-procedure",
+      "kind": "procedure",
+      "text": "For the reported Django 4.0 `only()`/`defer()` chaining issue, a tentative investigation path was to trace `QuerySet.only()` and `.defer()` into `Query.add_immediate_loading()` / `add_deferred_loading()`, then inspect how `deferred_to_data()` handles the stored `(field_names, defer)` state. In this instance, the agent changed its empty-name early return to apply only when `defer` was true, then ran `python tests/runtests.py defer --verbosity 2`; all 29 local defer tests passed. That local suite result does not establish the reported SQL behavior on every input, and no separate SQL reproducer result is recorded here. The official evaluation nevertheless marked this submission unresolved (`official_resolved: false`; F2P 0/1, P2P 28/1), with no cause established by this evidence.",
+      "text_sha256": "cab480e30288e096ecd4216aa3135126b0e38d48bef3c3d733edb59b3a5fffc8",
+      "source_instance_id": "django__django-14667",
+      "source_run": "20261103T151201Z-08fad502",
+      "repo": "django/django",
+      "available_at": "2021-07-20T11:38:25Z",
+      "eligible_target_ids": [
+        "django__django-16910"
+      ],
+      "actual_source_official_resolved": false,
+      "original_card_source_outcome": false,
+      "source_evaluation_complete": true,
+      "source_evidence": {
+        "path": "datasets/memory_relations/20261107-discovery-v1/evidence/source-episodes/django__django-14667.json",
+        "sha256": "45380da68fd017749102abddfd8a2f83f8c43fdfd9f38ea88217806065420fb6"
+      },
+      "original_card_file": {
+        "path": "runs/memory-author-20261103T151504Z-46823f/candidate-bank.json",
+        "sha256": "bbafe6cb629e9cb71550d6ddd5190524d452417360d643831e125bb08d10fa33"
+      },
+      "focused_observation": {
+        "command": "cd /testbed && python tests/runtests.py defer --verbosity 2",
+        "returncode": 0,
+        "output_excerpt": "d')...\nDestroying test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...\nDestroying test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...\nDestroying test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...\nDestroying test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...\nDestroying test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...\nDestroying test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...\nDestroying test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...\n",
+        "agent_command_index": 11,
+        "jsonl_line": 14
+      },
+      "memory_origin": "original_agent_written_card_no_rewrite"
+    },
+    {
+      "memory_id": "pytest7373-facts",
+      "kind": "facts",
+      "text": "Source problem: in pytest 5.4.3/current master, skipif/xfail string conditions were cached by expression alone, although evaluation uses each item's globals; the report's two-module example said both tests could be skipped incorrectly. In `src/_pytest/mark/evaluate.py`, `cached_eval` used a config-store dictionary keyed by expression, and `MarkEvaluator._getglobals` added the test object's globals. The submitted change removed that cache and compiled/evaluated the expression in `_istrue`. An agent-local two-module skipif reproducer then produced one skipped test and one failing test, as expected for the example's `assert False` bodies; `PYTHONPATH=src python -m pytest -q testing/test_skipping.py` passed (76 tests), and compileall plus `git diff --check` succeeded. These are local checks, distinct from the later official evaluation, which resolved true.",
+      "text_sha256": "0e26352c5840b3c785fa8c5e4e4db69fab030915d32b73161b999325ed3d79ae",
+      "source_instance_id": "pytest-dev__pytest-7373",
+      "source_run": "20261105T140548Z-bdd50d0b",
+      "repo": "pytest-dev/pytest",
+      "available_at": "2020-06-16T09:39:36Z",
+      "eligible_target_ids": [
+        "pytest-dev__pytest-7432",
+        "pytest-dev__pytest-8906"
+      ],
+      "actual_source_official_resolved": true,
+      "original_card_source_outcome": true,
+      "source_evaluation_complete": true,
+      "source_evidence": {
+        "path": "datasets/memory_relations/20261107-discovery-v1/evidence/source-episodes/pytest-dev__pytest-7373.json",
+        "sha256": "e563d1e5442704e8e492fdb0036f3035cb966231620bb4297af06d18c11cd5f8"
+      },
+      "original_card_file": {
+        "path": "runs/memory-author-20261105T141043Z-27b165/candidate-bank.json",
+        "sha256": "3d2f94b7823d8b885d0a894d329529967c2b554533675326d8a4186cdbf82f3b"
+      },
+      "focused_observation": {
+        "command": "cd /testbed && PYTHONPATH=src python -m pytest -q testing/test_skipping.py",
+        "returncode": 0,
+        "output_excerpt": "........................................................................ [ 94%]\n....                                                                     [100%]\n76 passed in 4.23s\n",
+        "agent_command_index": 6,
+        "jsonl_line": 9
+      },
+      "memory_origin": "original_agent_written_card_no_rewrite"
+    },
+    {
+      "memory_id": "pytest7373-procedure",
+      "kind": "procedure",
+      "text": "Source problem: skipif/xfail string expressions could reuse a result across test modules despite depending on item globals. In the observed pytest source, a tentative approach was to inspect `src/_pytest/mark/evaluate.py`, especially `cached_eval`, `_getglobals`, and `MarkEvaluator._istrue`, then try evaluating each string expression against the current item's globals rather than caching its result by expression alone. The submitted patch removed `cached_eval` and used `_pytest._code.compile(..., mode=\"eval\")` followed by `eval`. Validation in this case included a two-module skipif reproducer and `PYTHONPATH=src python -m pytest -q testing/test_skipping.py` (76 passed); these agent-local checks are not the official result. The later official evaluation resolved true. This is a historical, tentative observation; it does not establish behavior for other APIs, versions, or inputs.",
+      "text_sha256": "53d67a2dfe406c55c6c8e507dd6028298bde824b6f6fb67b6cc54a249101cfbe",
+      "source_instance_id": "pytest-dev__pytest-7373",
+      "source_run": "20261105T140548Z-bdd50d0b",
+      "repo": "pytest-dev/pytest",
+      "available_at": "2020-06-16T09:39:36Z",
+      "eligible_target_ids": [
+        "pytest-dev__pytest-7432",
+        "pytest-dev__pytest-8906"
+      ],
+      "actual_source_official_resolved": true,
+      "original_card_source_outcome": true,
+      "source_evaluation_complete": true,
+      "source_evidence": {
+        "path": "datasets/memory_relations/20261107-discovery-v1/evidence/source-episodes/pytest-dev__pytest-7373.json",
+        "sha256": "e563d1e5442704e8e492fdb0036f3035cb966231620bb4297af06d18c11cd5f8"
+      },
+      "original_card_file": {
+        "path": "runs/memory-author-20261105T141043Z-27b165/candidate-bank.json",
+        "sha256": "3d2f94b7823d8b885d0a894d329529967c2b554533675326d8a4186cdbf82f3b"
+      },
+      "focused_observation": {
+        "command": "cd /testbed && PYTHONPATH=src python -m pytest -q testing/test_skipping.py",
+        "returncode": 0,
+        "output_excerpt": "........................................................................ [ 94%]\n....                                                                     [100%]\n76 passed in 4.23s\n",
+        "agent_command_index": 6,
+        "jsonl_line": 9
+      },
+      "memory_origin": "original_agent_written_card_no_rewrite"
+    },
+    {
+      "memory_id": "sklearn10508-facts",
+      "kind": "facts",
+      "text": "Source problem: LabelEncoder.transform([]) reportedly worked after fitting numeric labels but raised a NumPy TypeError after fitting string labels; the report named Python 3.6.3 and scikit-learn 0.19.1. In the inspected repository, sklearn/preprocessing/label.py’s LabelEncoder.transform checks fitted state, applies column_or_1d, then uses np.unique and np.searchsorted. A local reproducer showed numeric fitting returned an empty int64 array while string fitting raised the reported casting TypeError. An edit added an empty-input return; its local reproducer and edge checks passed, and `pytest -q sklearn/preprocessing/tests/test_label.py` reported 19 passed, 3 xfailed. These are agent-local checks, not official evaluation. The submitted patch’s actual official outcome was unresolved: official_resolved=false (f2p 0/2, p2p 18/18).",
+      "text_sha256": "603301f471bd9340c4be1e611e05097c57dded342cd1d97d5a65c46e0582023b",
+      "source_instance_id": "scikit-learn__scikit-learn-10508",
+      "source_run": "20261105T140701Z-28974fd0",
+      "repo": "scikit-learn/scikit-learn",
+      "available_at": "2018-01-23T02:53:50Z",
+      "eligible_target_ids": [
+        "scikit-learn__scikit-learn-12471",
+        "scikit-learn__scikit-learn-15535"
+      ],
+      "actual_source_official_resolved": false,
+      "original_card_source_outcome": false,
+      "source_evaluation_complete": true,
+      "source_evidence": {
+        "path": "datasets/memory_relations/20261107-discovery-v1/evidence/source-episodes/scikit-learn__scikit-learn-10508.json",
+        "sha256": "954a274c00c88f3a8bec2fa60714b31c5b2d603c247b17ebdbf0381cfe22b324"
+      },
+      "original_card_file": {
+        "path": "runs/memory-author-20261105T141051Z-4fd777/candidate-bank.json",
+        "sha256": "f42b49360604e6467f41de163598ec5d382710e47966246ee014cb658dfa0356"
+      },
+      "focused_observation": {
+        "command": "cd /testbed && pytest -q sklearn/preprocessing/tests/test_label.py",
+        "returncode": 0,
+        "output_excerpt": ".................xxx..                                                   [100%]\n19 passed, 3 xfailed, 13 warnings in 0.40s\n",
+        "agent_command_index": 4,
+        "jsonl_line": 7
+      },
+      "memory_origin": "original_agent_written_card_no_rewrite"
+    },
+    {
+      "memory_id": "sklearn10508-procedure",
+      "kind": "procedure",
+      "text": "Source problem: empty-list transformation in LabelEncoder behaved differently after numeric versus string fitting, with the report showing a TypeError for string classes. In this repository and local environment, a tentative approach was to check for zero-length input in LabelEncoder.transform after fitted-state and column_or_1d validation, then return an empty np.intp array before np.unique/searchsorted. The local reproducer covered fitting [1, 2] and ['a', 'b']; added checks also covered ordinary string transformation and rejection of an unseen label. The agent-local test file run, `pytest -q sklearn/preprocessing/tests/test_label.py`, passed 19 tests with 3 xfailed. These local results do not establish broader behavior or compatibility; other APIs, input forms, and versions were not verified. The actual official outcome for the submitted patch was unresolved, official_resolved=false, despite those local checks.",
+      "text_sha256": "99cf5c98180ed9652a070c617be8f1b69abdd75cd2cdbf01112e0db7b03425d1",
+      "source_instance_id": "scikit-learn__scikit-learn-10508",
+      "source_run": "20261105T140701Z-28974fd0",
+      "repo": "scikit-learn/scikit-learn",
+      "available_at": "2018-01-23T02:53:50Z",
+      "eligible_target_ids": [
+        "scikit-learn__scikit-learn-12471",
+        "scikit-learn__scikit-learn-15535"
+      ],
+      "actual_source_official_resolved": false,
+      "original_card_source_outcome": false,
+      "source_evaluation_complete": true,
+      "source_evidence": {
+        "path": "datasets/memory_relations/20261107-discovery-v1/evidence/source-episodes/scikit-learn__scikit-learn-10508.json",
+        "sha256": "954a274c00c88f3a8bec2fa60714b31c5b2d603c247b17ebdbf0381cfe22b324"
+      },
+      "original_card_file": {
+        "path": "runs/memory-author-20261105T141051Z-4fd777/candidate-bank.json",
+        "sha256": "f42b49360604e6467f41de163598ec5d382710e47966246ee014cb658dfa0356"
+      },
+      "focused_observation": {
+        "command": "cd /testbed && pytest -q sklearn/preprocessing/tests/test_label.py",
+        "returncode": 0,
+        "output_excerpt": ".................xxx..                                                   [100%]\n19 passed, 3 xfailed, 13 warnings in 0.40s\n",
+        "agent_command_index": 4,
+        "jsonl_line": 7
+      },
+      "memory_origin": "original_agent_written_card_no_rewrite"
+    },
+    {
+      "memory_id": "sympy24066-facts",
+      "kind": "facts",
+      "text": "Source problem: SymPy issue sympy__sympy-24066 reported that SI._collect_factor_and_dimension() failed to treat a dimensionless exponent inside exp as dimensionless. In sympy/physics/units/unitsystem.py, the Function branch returned argument dimensions without checking them; DimensionSystem.is_dimensionless() was defined in dimensions.py. The reported seconds/(ohm*farad) expression collected as (1, Dimension(time/(capacitance*impedance))) and was dimensionless according to SI, yet adding exp(expr) to 100 raised ValueError. The submitted change normalized dimensionless Function-argument dimensions to Dimension(1). A corrected local reproducer passed, as did bin/test sympy/physics/units/tests/test_quantities.py (31 passed, 1 expected failure); python -m pytest could not run because pytest was unavailable. These are agent-local checks, distinct from the later official evaluation, which resolved the submission: official_resolved=true.",
+      "text_sha256": "1d82f0f104a4c2bf86ab9b1ae08fc5659ae57a747a607dbe8e959efdbbc66199",
+      "source_instance_id": "sympy__sympy-24066",
+      "source_run": "20261107T013550Z-8989373b",
+      "repo": "sympy/sympy",
+      "available_at": "2022-10-24T17:30:26Z",
+      "eligible_target_ids": [
+        "sympy__sympy-24213",
+        "sympy__sympy-24909"
+      ],
+      "actual_source_official_resolved": true,
+      "original_card_source_outcome": true,
+      "source_evaluation_complete": true,
+      "source_evidence": {
+        "path": "datasets/memory_relations/20261107-discovery-v1/evidence/source-episodes/sympy__sympy-24066.json",
+        "sha256": "94018380204440e86da334bf68148d54e1ce4b5eb191040fd13b62a96512ec21"
+      },
+      "original_card_file": {
+        "path": "runs/memory-author-20261107T013717Z-5e802d/candidate-bank.json",
+        "sha256": "60b6d3cee9a12e3a91fb3eb8957de5b6d71802001ea1a3da4cbcc42a7e09f7a9"
+      },
+      "focused_observation": {
+        "command": "cd /testbed && bin/test sympy/physics/units/tests/test_quantities.py",
+        "returncode": 0,
+        "output_excerpt": "============================= test process starts ==============================\nexecutable:         /opt/miniconda3/envs/testbed/bin/python  (3.9.20-final-0) [CPython]\narchitecture:       64-bit\ncache:              yes\nground types:       python \nnumpy:              None\nrandom seed:        8535162\nhash randomization: on (PYTHONHASHSEED=4215270766)\n\nsympy/physics/units/tests/test_quantities.py[32] ..................f............\n.                                                                           [OK]\n\n======== tests finished: 31 passed, 1 expected to fail, in 0.34 seconds ========\n",
+        "agent_command_index": 11,
+        "jsonl_line": 14
+      },
+      "memory_origin": "original_agent_written_card_no_rewrite"
+    },
+    {
+      "memory_id": "sympy24066-procedure",
+      "kind": "procedure",
+      "text": "Source problem: SymPy issue sympy__sympy-24066 concerned a dimensionless SI exponent being treated as dimensionful when collecting dimensions through exp. For this observed case, inspect the Function branch of SI._collect_factor_and_dimension() and compare its argument dimensions with DimensionSystem.is_dimensionless(); the submitted tentative approach mapped dimensionless argument dimensions to Dimension(1), leaving non-dimensionless ones unchanged. Check the reported seconds/(ohm*farad) expression inside 100 + exp(expr), and also check that exp(second) still raises when added to a dimensionless number. The corrected local reproducer passed, and the local quantities test command reported 31 passed and 1 expected failure; these agent-local checks are not the official result. Limits: the evidence does not establish behavior for other APIs, dimension systems, functions, or inputs. Actual official evaluation resolved the submission: official_resolved=true.",
+      "text_sha256": "6b96c9e1995657e6bf3a372cb4d08afb8be77902f8ca641ead32118f72638bf6",
+      "source_instance_id": "sympy__sympy-24066",
+      "source_run": "20261107T013550Z-8989373b",
+      "repo": "sympy/sympy",
+      "available_at": "2022-10-24T17:30:26Z",
+      "eligible_target_ids": [
+        "sympy__sympy-24213",
+        "sympy__sympy-24909"
+      ],
+      "actual_source_official_resolved": true,
+      "original_card_source_outcome": true,
+      "source_evaluation_complete": true,
+      "source_evidence": {
+        "path": "datasets/memory_relations/20261107-discovery-v1/evidence/source-episodes/sympy__sympy-24066.json",
+        "sha256": "94018380204440e86da334bf68148d54e1ce4b5eb191040fd13b62a96512ec21"
+      },
+      "original_card_file": {
+        "path": "runs/memory-author-20261107T013717Z-5e802d/candidate-bank.json",
+        "sha256": "60b6d3cee9a12e3a91fb3eb8957de5b6d71802001ea1a3da4cbcc42a7e09f7a9"
+      },
+      "focused_observation": {
+        "command": "cd /testbed && bin/test sympy/physics/units/tests/test_quantities.py",
+        "returncode": 0,
+        "output_excerpt": "============================= test process starts ==============================\nexecutable:         /opt/miniconda3/envs/testbed/bin/python  (3.9.20-final-0) [CPython]\narchitecture:       64-bit\ncache:              yes\nground types:       python \nnumpy:              None\nrandom seed:        8535162\nhash randomization: on (PYTHONHASHSEED=4215270766)\n\nsympy/physics/units/tests/test_quantities.py[32] ..................f............\n.                                                                           [OK]\n\n======== tests finished: 31 passed, 1 expected to fail, in 0.34 seconds ========\n",
+        "agent_command_index": 11,
+        "jsonl_line": 14
+      },
+      "memory_origin": "original_agent_written_card_no_rewrite"
+    },
+    {
+      "memory_id": "process18621-facts",
+      "kind": "facts",
+      "text": "Problem: in SymPy, converting a one-element BlockDiagMatrix containing a 2×2 Matrix back with Matrix(D) raised TypeError: 'One' object is not subscriptable; the two-element example worked. In this checkout, BlockDiagMatrix.blocks built a nested list passed to ImmutableDenseMatrix(data), and a one-block case flattened the matrix entries: blocks[0, 0] was the scalar 1 rather than the 2×2 block. The submitted change builds a row-major flat block list and calls ImmutableDenseMatrix(len(mats), len(mats), data). An agent-local reproducer then passed for one and two numeric blocks, an empty block diagonal, and one symbolic block. `python -m pytest .../test_blockmatrix.py -q` could not run because pytest was unavailable; `bin/test sympy/matrices/expressions/tests/test_blockmatrix.py` passed all 16 tests. Later official evaluation marked the submission resolved=true (f2p 1/0, p2p 15/0).",
+      "text_sha256": "ce7caed8a823ab8ff1369eb6d02c81926203af3a22ac60441cf97de1cece1887",
+      "source_instance_id": "sympy__sympy-18621",
+      "source_run": "20261107T042122Z-6551858d",
+      "repo": "sympy/sympy",
+      "available_at": "2020-02-10T18:57:09Z",
+      "eligible_target_ids": [
+        "sympy__sympy-19007",
+        "sympy__sympy-22840"
+      ],
+      "actual_source_official_resolved": true,
+      "original_card_source_outcome": true,
+      "source_evaluation_complete": true,
+      "source_evidence": {
+        "path": "datasets/memory_relations/20261107-discovery-v1/evidence/source-episodes/sympy__sympy-18621.json",
+        "sha256": "71d3701aefb4138ff65354d5164b26c4eea82136dcace17022a5d6d26dba3d27"
+      },
+      "original_card_file": {
+        "path": "runs/memory-author-20261107T042655Z-f7451a/candidate-bank.json",
+        "sha256": "98e66775604da84b298bfed8e10040f3914104c3725f1783da1a2fbb4256ce40"
+      },
+      "focused_observation": {
+        "command": "bin/test sympy/matrices/expressions/tests/test_blockmatrix.py",
+        "returncode": 0,
+        "output_excerpt": "============================= test process starts ==============================\nexecutable:         /opt/miniconda3/envs/testbed/bin/python  (3.9.20-final-0) [CPython]\narchitecture:       64-bit\ncache:              yes\nground types:       python \nnumpy:              None\nrandom seed:        762739\nhash randomization: on (PYTHONHASHSEED=4269020218)\n\nsympy/matrices/expressions/tests/test_blockmatrix.py[16] ................   [OK]\n\n================== tests finished: 16 passed, in 0.25 seconds ==================\n",
+        "agent_command_index": 9,
+        "jsonl_line": 13
+      },
+      "memory_origin": "original_agent_written_card_no_rewrite"
+    },
+    {
+      "memory_id": "process18621-procedure",
+      "kind": "procedure",
+      "text": "Problem: a one-block BlockDiagMatrix containing a Matrix failed conversion through Matrix(D), with a scalar-subscript TypeError. For this observed case, inspect the `blocks` property and verify whether the dense matrix constructor treats nested block contents as matrix rows; construct the block grid with explicit dimensions and row-major flat block entries, then check Matrix(D) for one and multiple blocks. The agent-local numeric and symbolic reproductions passed after the submitted change, and `bin/test sympy/matrices/expressions/tests/test_blockmatrix.py` passed 16 tests; pytest itself was unavailable. These are local checks, not the final verdict: later official evaluation passed (resolved=true; f2p 1/0, p2p 15/0). This is a tentative approach observed in this SymPy checkout only; other inputs, APIs, and versions were not established.",
+      "text_sha256": "2ab055a21909f547be307cb5aab41648cede50084cfd15576229bbde11ef2976",
+      "source_instance_id": "sympy__sympy-18621",
+      "source_run": "20261107T042122Z-6551858d",
+      "repo": "sympy/sympy",
+      "available_at": "2020-02-10T18:57:09Z",
+      "eligible_target_ids": [
+        "sympy__sympy-19007",
+        "sympy__sympy-22840"
+      ],
+      "actual_source_official_resolved": true,
+      "original_card_source_outcome": true,
+      "source_evaluation_complete": true,
+      "source_evidence": {
+        "path": "datasets/memory_relations/20261107-discovery-v1/evidence/source-episodes/sympy__sympy-18621.json",
+        "sha256": "71d3701aefb4138ff65354d5164b26c4eea82136dcace17022a5d6d26dba3d27"
+      },
+      "original_card_file": {
+        "path": "runs/memory-author-20261107T042655Z-f7451a/candidate-bank.json",
+        "sha256": "98e66775604da84b298bfed8e10040f3914104c3725f1783da1a2fbb4256ce40"
+      },
+      "focused_observation": {
+        "command": "bin/test sympy/matrices/expressions/tests/test_blockmatrix.py",
+        "returncode": 0,
+        "output_excerpt": "============================= test process starts ==============================\nexecutable:         /opt/miniconda3/envs/testbed/bin/python  (3.9.20-final-0) [CPython]\narchitecture:       64-bit\ncache:              yes\nground types:       python \nnumpy:              None\nrandom seed:        762739\nhash randomization: on (PYTHONHASHSEED=4269020218)\n\nsympy/matrices/expressions/tests/test_blockmatrix.py[16] ................   [OK]\n\n================== tests finished: 16 passed, in 0.25 seconds ==================\n",
+        "agent_command_index": 9,
+        "jsonl_line": 13
+      },
+      "memory_origin": "original_agent_written_card_no_rewrite"
+    },
+    {
+      "memory_id": "process11281-facts",
+      "kind": "facts",
+      "text": "Source problem: whether mixture models should share the clusterer interface, including training labels and fit_predict. In this scikit-learn 0.20-era tree, GaussianMixture and BayesianGaussianMixture inherit BaseMixture in sklearn/mixture/base.py; that base had fit and predict but did not inherit ClusterMixin or assign labels_. The submitted change added ClusterMixin to BaseMixture and set labels_ = predict(X) after fitting. An agent-local synthetic check exercised both classes and found labels_ matched predict(X), with fit_predict returning 40 labels. Agent-local `python -m pytest -q sklearn/mixture/tests/test_gaussian_mixture.py sklearn/mixture/tests/test_bayesian_mixture.py --disable-warnings --maxfail=1` reported 42 passed, 8 warnings. Separately, the later official evaluation resolved the submission: true (2 F2P successes, 0 failures; 43 P2P successes, 0 failures).",
+      "text_sha256": "71c96dbf5a597dfc06f5e789555e836fc23eac531954ea5ec8d8aba1d7d0687b",
+      "source_instance_id": "scikit-learn__scikit-learn-11281",
+      "source_run": "20261107T042240Z-c040822f",
+      "repo": "scikit-learn/scikit-learn",
+      "available_at": "2018-07-03T02:43:26Z",
+      "eligible_target_ids": [
+        "scikit-learn__scikit-learn-13142",
+        "scikit-learn__scikit-learn-15512"
+      ],
+      "actual_source_official_resolved": true,
+      "original_card_source_outcome": true,
+      "source_evaluation_complete": true,
+      "source_evidence": {
+        "path": "datasets/memory_relations/20261107-discovery-v1/evidence/source-episodes/scikit-learn__scikit-learn-11281.json",
+        "sha256": "befa846e05c2c6e032b0f0ef08ca07fa9a99b95d724751e7ca21a0faf096db87"
+      },
+      "original_card_file": {
+        "path": "runs/memory-author-20261107T042702Z-21e7b4/candidate-bank.json",
+        "sha256": "b2c0105bbce0e021517dd0f65834da155d503a010e10843c58cee63cfdab22f0"
+      },
+      "focused_observation": {
+        "command": "python -m pytest -q sklearn/mixture/tests/test_gaussian_mixture.py sklearn/mixture/tests/test_bayesian_mixture.py --disable-warnings --maxfail=1",
+        "returncode": 0,
+        "output_excerpt": "..........................................                               [100%]\n42 passed, 8 warnings in 4.06s\n",
+        "agent_command_index": 14,
+        "jsonl_line": 18
+      },
+      "memory_origin": "original_agent_written_card_no_rewrite"
+    },
+    {
+      "memory_id": "process11281-procedure",
+      "kind": "procedure",
+      "text": "Source problem: deciding whether mixture models should match the clusterer API. In this 0.20-era repository, a tentative approach was to inspect the shared BaseMixture and the existing ClusterMixin contract, then add the mixin and populate labels_ from the fitted model's predict(X); this targeted GaussianMixture and BayesianGaussianMixture, the classes observed to inherit BaseMixture. Local synthetic checks and the two mixture test files passed as reported by the agent, but these checks do not establish behavior for deprecated GMM/DPGMM APIs, other inputs, or other versions. The later official evaluation—not the local checks—resolved the submission as true (2 F2P successes, 0 failures; 43 P2P successes, 0 failures).",
+      "text_sha256": "354595b04410fe11f16ed5a6e921d54b04ddccb0f856a10b148a67b10d703f7d",
+      "source_instance_id": "scikit-learn__scikit-learn-11281",
+      "source_run": "20261107T042240Z-c040822f",
+      "repo": "scikit-learn/scikit-learn",
+      "available_at": "2018-07-03T02:43:26Z",
+      "eligible_target_ids": [
+        "scikit-learn__scikit-learn-13142",
+        "scikit-learn__scikit-learn-15512"
+      ],
+      "actual_source_official_resolved": true,
+      "original_card_source_outcome": true,
+      "source_evaluation_complete": true,
+      "source_evidence": {
+        "path": "datasets/memory_relations/20261107-discovery-v1/evidence/source-episodes/scikit-learn__scikit-learn-11281.json",
+        "sha256": "befa846e05c2c6e032b0f0ef08ca07fa9a99b95d724751e7ca21a0faf096db87"
+      },
+      "original_card_file": {
+        "path": "runs/memory-author-20261107T042702Z-21e7b4/candidate-bank.json",
+        "sha256": "b2c0105bbce0e021517dd0f65834da155d503a010e10843c58cee63cfdab22f0"
+      },
+      "focused_observation": {
+        "command": "python -m pytest -q sklearn/mixture/tests/test_gaussian_mixture.py sklearn/mixture/tests/test_bayesian_mixture.py --disable-warnings --maxfail=1",
+        "returncode": 0,
+        "output_excerpt": "..........................................                               [100%]\n42 passed, 8 warnings in 4.06s\n",
+        "agent_command_index": 14,
+        "jsonl_line": 18
+      },
+      "memory_origin": "original_agent_written_card_no_rewrite"
+    },
+    {
+      "memory_id": "process11019-facts",
+      "kind": "facts",
+      "text": "Source problem: merging three or more Django form Media objects could invent an ordering between independent assets, emit a misleading MediaOrderConflictWarning, and produce the wrong JavaScript order; the example expected text-editor.js, text-editor-extras.js, color-picker.js. In django/forms/widgets.py, Media.__add__ keeps CSS/JS lists, while _css and _js resolve them; the existing Media.merge() merges two lists and warns on opposite ordering (command 0). tests/forms_tests/tests/test_media.py has merge and three-way tests (commands 1, 4–5). The submitted patch added merge_lists() using ordering constraints and a heap, with Media.merge() fallback for cycles (command 23). Agent-local `python tests/runtests.py --settings=test_sqlite forms_tests.tests.test_media --verbosity 1` passed 17 tests (command 22); a broader local forms run had one explicit UnicodeEncodeError in test_unicode_filename (command 21). Later official evaluation was evaluation_incomplete and official_resolved=false: 2 F2P successes, 14 failures, 58 P2P successes, 0 failures. Ten expected tests were explicitly reported failed, including test_combine_media and test_merge_warning; four expected labels were missing/unparsed, not established as failures. Local passes did not make the official result successful.",
+      "text_sha256": "e3fe1c57cba123eeb1831e754cd34d371f7443cd2710cf83ef4fe52e54de5efb",
+      "source_instance_id": "django__django-11019",
+      "source_run": "20261107T043844Z-c1316dac",
+      "repo": "django/django",
+      "available_at": "2019-02-27T22:16:02Z",
+      "eligible_target_ids": [
+        "django__django-14534",
+        "django__django-16041"
+      ],
+      "actual_source_official_resolved": false,
+      "original_card_source_outcome": false,
+      "source_evaluation_complete": false,
+      "source_evidence": {
+        "path": "datasets/memory_relations/20261107-discovery-v1/evidence/source-episodes/django__django-11019.json",
+        "sha256": "c080d876d877a5ac27bd02418ae8158a33edd049b84152550d73f5a5028de11f"
+      },
+      "original_card_file": {
+        "path": "runs/memory-author-20261107T044516Z-5ad125/candidate-bank.json",
+        "sha256": "2187fb5fe753f53691bec847dcb592a5cdb015fdba062c269b23fff355d329e6"
+      },
+      "focused_observation": {
+        "command": "cd /testbed && python tests/runtests.py --settings=test_sqlite forms_tests.tests.test_media --verbosity 1",
+        "returncode": 0,
+        "output_excerpt": ".................Testing against Django installed in '/testbed/django' with up to 16 processes\nSystem check identified no issues (0 silenced).\n\n----------------------------------------------------------------------\nRan 17 tests in 0.006s\n\nOK\n",
+        "agent_command_index": 22,
+        "jsonl_line": 28
+      },
+      "memory_origin": "original_agent_written_card_no_rewrite"
+    },
+    {
+      "memory_id": "process11019-procedure",
+      "kind": "procedure",
+      "text": "Source problem: three-way Media additions could impose false relative-order constraints and warn for independent assets, although the supplied form should order text-editor.js, text-editor-extras.js, color-picker.js. In this Django 3.0 repository, the observed tentative approach was to retain asset lists during Media.__add__, resolve them together in _css/_js, and use a topological ordering with first-seen tie-breaking; on a cycle, the submitted code falls back to pairwise Media.merge() (commands 6, 16, 23). After the changes, the agent-local focused test command passed all 17 media tests (command 22), and a local reproducer printed the expected order with zero MediaOrderConflictWarnings (command 17). This does not establish success for other inputs or APIs: official evaluation later remained evaluation_incomplete and official_resolved=false, with ten explicitly failed expected tests and four expected labels unparsed. Treat the local checks as earlier agent observations, not the official outcome; the cause of official failures is not established here.",
+      "text_sha256": "8de216627a5866971be29501e77b72ad4faae734ff53ccca0dff4442472aa989",
+      "source_instance_id": "django__django-11019",
+      "source_run": "20261107T043844Z-c1316dac",
+      "repo": "django/django",
+      "available_at": "2019-02-27T22:16:02Z",
+      "eligible_target_ids": [
+        "django__django-14534",
+        "django__django-16041"
+      ],
+      "actual_source_official_resolved": false,
+      "original_card_source_outcome": false,
+      "source_evaluation_complete": false,
+      "source_evidence": {
+        "path": "datasets/memory_relations/20261107-discovery-v1/evidence/source-episodes/django__django-11019.json",
+        "sha256": "c080d876d877a5ac27bd02418ae8158a33edd049b84152550d73f5a5028de11f"
+      },
+      "original_card_file": {
+        "path": "runs/memory-author-20261107T044516Z-5ad125/candidate-bank.json",
+        "sha256": "2187fb5fe753f53691bec847dcb592a5cdb015fdba062c269b23fff355d329e6"
+      },
+      "focused_observation": {
+        "command": "cd /testbed && python tests/runtests.py --settings=test_sqlite forms_tests.tests.test_media --verbosity 1",
+        "returncode": 0,
+        "output_excerpt": ".................Testing against Django installed in '/testbed/django' with up to 16 processes\nSystem check identified no issues (0 silenced).\n\n----------------------------------------------------------------------\nRan 17 tests in 0.006s\n\nOK\n",
+        "agent_command_index": 22,
+        "jsonl_line": 28
+      },
+      "memory_origin": "original_agent_written_card_no_rewrite"
+    }
+  ],
+  "source_tasks": 10,
+  "repositories": [
+    "django/django",
+    "pvlib/pvlib-python",
+    "pytest-dev/pytest",
+    "scikit-learn/scikit-learn",
+    "sphinx-doc/sphinx",
+    "sympy/sympy"
+  ],
+  "model_api_calls": 0,
+  "interpretation": "Original20 facts/procedure cards from10 historical agent source episodes. No new writer,teacher,or paraphrase calls."
+}

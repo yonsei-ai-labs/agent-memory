@@ -1,0 +1,23 @@
+{
+  "schema": "external-update-controls-v2",
+  "source_manifest_sha256": "565c85227ecf2fdf0bb067043b1bb84c00a462650e0bf456b5fb153ae41c639a",
+  "conditions": [
+    "none",
+    "new_only",
+    "old_only",
+    "both",
+    "current_new",
+    "current_new_plus_old",
+    "current_new_plus_repeat",
+    "current_new_plus_distractor"
+  ],
+  "max_memory_records": 8,
+  "max_memory_tokens": 1024,
+  "system_prompt_sha256": "956ad177349fdfc54eea5aa0b50060cf3f8a21ebe64173ad47aec271b4ed2455",
+  "matching": "equal record counts; both control lengths within max(16, 0.25 * old tokens) of old bundle",
+  "distractor_time": "strictly before every new-evidence record; absent condition if no equal-count bundle",
+  "roles_are_not_effect_labels": true,
+  "source_texts_unchanged": true,
+  "grading": "external_update_validation; one asserted quantity or explicit text-hashed review",
+  "primary_cases": "numeric references; matched controls reported separately; content review required before export"
+}

@@ -1,0 +1,78 @@
+{
+  "at": "2026-11-07T10:37:36.587141+00:00",
+  "jobs": [
+    {
+      "task": {
+        "instance_id": "scikit-learn__scikit-learn-12471",
+        "repo": "scikit-learn/scikit-learn",
+        "base_commit": "02dc9ed680e7f53f1b0d410dcdd37341c7958eb1",
+        "created_at": "2018-10-27T10:43:48Z",
+        "version": "0.21",
+        "problem_statement": "OneHotEncoder ignore unknown error when categories are strings \n#### Description\r\n\r\nThis bug is very specific, but it happens when you set OneHotEncoder to ignore unknown entries.\r\nand your labels are strings. The memory of the arrays is not handled safely and it can lead to a ValueError\r\n\r\nBasically, when you call the transform method it will sets all the unknown strings on your array to OneHotEncoder.categories_[i][0] which is the first category alphabetically sorted given for fit\r\nIf this OneHotEncoder.categories_[i][0] is a long string, and the array that you want to transform has small strings, then it is impossible to fit the whole  OneHotEncoder.categories_[i][0] into the entries of the array we want to transform. So  OneHotEncoder.categories_[i][0]  is truncated and this raise the ValueError.\r\n\r\n\r\n\r\n#### Steps/Code to Reproduce\r\n```\r\n\r\nimport numpy as np\r\nfrom sklearn.preprocessing import OneHotEncoder\r\n\r\n\r\n# It needs to be numpy arrays, the error does not appear \r\n# is you have lists of lists because it gets treated like an array of objects.\r\ntrain  = np.array([ '22','333','4444','11111111' ]).reshape((-1,1))\r\ntest   = np.array([ '55555',  '22' ]).reshape((-1,1))\r\n\r\nohe = OneHotEncoder(dtype=bool,handle_unknown='ignore')\r\n\r\nohe.fit( train )\r\nenc_test = ohe.transform( test )\r\n\r\n```\r\n\r\n\r\n#### Expected Results\r\nHere we should get an sparse matrix 2x4 false everywhere except at (1,1) the '22' that is known\r\n\r\n#### Actual Results\r\n\r\n> ValueError: y contains previously unseen labels: ['111111']\r\n\r\n\r\n#### Versions\r\nSystem:\r\n    python: 2.7.12 (default, Dec  4 2017, 14:50:18)  [GCC 5.4.0 20160609]\r\n   machine: Linux-4.4.0-138-generic-x86_64-with-Ubuntu-16.04-xenial\r\nexecutable: /usr/bin/python\r\n\r\nBLAS:\r\n    macros: HAVE_CBLAS=None\r\ncblas_libs: openblas, openblas\r\n  lib_dirs: /usr/lib\r\n\r\nPython deps:\r\n    Cython: 0.25.2\r\n     scipy: 0.18.1\r\nsetuptools: 36.7.0\r\n       pip: 9.0.1\r\n     numpy: 1.15.2\r\n    pandas: 0.19.1\r\n   sklearn: 0.21.dev0\r\n\r\n\r\n\r\n#### Comments\r\n\r\nI already implemented a fix for this issue, where I check the size of the elements in the array before, and I cast them into objects if necessary.\n"
+      },
+      "image_id": "sha256:a64885c975df6dc88571c92acbd9efc6af4c0e4a8e0841e0b24710acc152cfd3",
+      "paths": [
+        "sklearn/mixture/gaussian_mixture.py",
+        "sklearn/mixture/_gaussian_mixture.py",
+        "sklearn/mixture/bayesian_mixture.py",
+        "sklearn/mixture/_bayesian_mixture.py",
+        "sklearn/cluster/affinity_propagation_.py",
+        "sklearn/cluster/_affinity_propagation.py"
+      ],
+      "prior_actor_target": true,
+      "output_subdirectory": "public-extra-code",
+      "provenance": {
+        "reason": "Public class definitions for the source BaseMixture inheritance requirement. No target patch or test expectations."
+      }
+    },
+    {
+      "task": {
+        "instance_id": "scikit-learn__scikit-learn-13142",
+        "repo": "scikit-learn/scikit-learn",
+        "base_commit": "1c8668b0a021832386470ddf740d834e02c66f69",
+        "created_at": "2019-02-12T14:32:37Z",
+        "version": "0.21",
+        "problem_statement": "GaussianMixture predict and fit_predict disagree when n_init>1\n#### Description\r\nWhen `n_init` is specified in GaussianMixture, the results of fit_predict(X) and predict(X) are often different.  The `test_gaussian_mixture_fit_predict` unit test doesn't catch this because it does not set `n_init`.\r\n\r\n#### Steps/Code to Reproduce\r\n```\r\npython\r\nfrom sklearn.mixture import GaussianMixture\r\nfrom sklearn.utils.testing import assert_array_equal\r\nimport numpy\r\nX = numpy.random.randn(1000,5)\r\nprint 'no n_init'\r\ngm = GaussianMixture(n_components=5)\r\nc1 = gm.fit_predict(X)\r\nc2 = gm.predict(X)\r\nassert_array_equal(c1,c2)\r\nprint 'n_init=5'\r\ngm = GaussianMixture(n_components=5, n_init=5)\r\nc1 = gm.fit_predict(X)\r\nc2 = gm.predict(X)\r\nassert_array_equal(c1,c2)\r\n```\r\n\r\n#### Expected Results\r\n```\r\nno n_init\r\nn_init=5\r\n```\r\nNo exceptions.\r\n\r\n#### Actual Results\r\n```\r\nno n_init\r\nn_init=5\r\nTraceback (most recent call last):\r\n  File \"test_gm.py\", line 17, in <module>\r\n    assert_array_equal(c1,c2)\r\n  File \"/home/scott/.local/lib/python2.7/site-packages/numpy/testing/_private/utils.py\", line 872, in assert_array_equal\r\n    verbose=verbose, header='Arrays are not equal')\r\n  File \"/home/scott/.local/lib/python2.7/site-packages/numpy/testing/_private/utils.py\", line 796, in assert_array_compare\r\n    raise AssertionError(msg)\r\nAssertionError: \r\nArrays are not equal\r\n\r\n(mismatch 88.6%)\r\n x: array([4, 0, 1, 1, 1, 3, 3, 4, 4, 2, 0, 0, 1, 2, 0, 2, 0, 1, 3, 1, 1, 3,\r\n       2, 1, 0, 2, 1, 0, 2, 0, 3, 1, 2, 3, 3, 1, 0, 2, 2, 0, 3, 0, 2, 0,\r\n       4, 2, 3, 0, 4, 2, 4, 1, 0, 2, 2, 1, 3, 2, 1, 4, 0, 2, 2, 1, 1, 2,...\r\n y: array([4, 1, 0, 2, 2, 1, 1, 4, 4, 0, 4, 1, 0, 3, 1, 0, 2, 2, 1, 2, 0, 0,\r\n       1, 0, 4, 1, 0, 4, 0, 1, 1, 2, 3, 1, 4, 0, 1, 4, 4, 4, 0, 1, 0, 2,\r\n       4, 1, 1, 2, 4, 3, 4, 0, 2, 3, 2, 3, 0, 0, 2, 3, 3, 3, 3, 0, 3, 2,...\r\n```\r\n\r\n#### Versions\r\n```\r\nSystem:\r\n    python: 2.7.15rc1 (default, Nov 12 2018, 14:31:15)  [GCC 7.3.0]\r\n   machine: Linux-4.15.0-43-generic-x86_64-with-Ubuntu-18.04-bionic\r\nexecutable: /usr/bin/python\r\n\r\nBLAS:\r\n    macros: HAVE_CBLAS=None, NO_ATLAS_INFO=-1\r\ncblas_libs: cblas\r\n  lib_dirs: /usr/lib/x86_64-linux-gnu\r\n\r\nPython deps:\r\n    Cython: 0.28.5\r\n     scipy: 1.2.0\r\nsetuptools: 39.0.1\r\n       pip: 19.0.1\r\n     numpy: 1.16.0\r\n    pandas: 0.23.1\r\n   sklearn: 0.20.2\r\n```\n"
+      },
+      "image_id": "sha256:c059f731cc7f27dbfbed7f5555dd64c06b1baa3a1648ea6026d42136c62a3800",
+      "paths": [
+        "sklearn/mixture/gaussian_mixture.py",
+        "sklearn/mixture/_gaussian_mixture.py",
+        "sklearn/mixture/bayesian_mixture.py",
+        "sklearn/mixture/_bayesian_mixture.py",
+        "sklearn/cluster/affinity_propagation_.py",
+        "sklearn/cluster/_affinity_propagation.py"
+      ],
+      "prior_actor_target": true,
+      "output_subdirectory": "public-extra-code",
+      "provenance": {
+        "reason": "Public class definitions for the source BaseMixture inheritance requirement. No target patch or test expectations."
+      }
+    },
+    {
+      "task": {
+        "instance_id": "scikit-learn__scikit-learn-15512",
+        "repo": "scikit-learn/scikit-learn",
+        "base_commit": "b8a4da8baa1137f173e7035f104067c7d2ffde22",
+        "created_at": "2019-11-02T22:28:57Z",
+        "version": "0.22",
+        "problem_statement": "Return values of non converged affinity propagation clustering\nThe affinity propagation Documentation states: \r\n\"When the algorithm does not converge, it returns an empty array as cluster_center_indices and -1 as label for each training sample.\"\r\n\r\nExample:\r\n```python\r\nfrom sklearn.cluster import AffinityPropagation\r\nimport pandas as pd\r\n\r\ndata = pd.DataFrame([[1,0,0,0,0,0],[0,1,1,1,0,0],[0,0,1,0,0,1]])\r\naf = AffinityPropagation(affinity='euclidean', verbose=True, copy=False, max_iter=2).fit(data)\r\n\r\nprint(af.cluster_centers_indices_)\r\nprint(af.labels_)\r\n\r\n```\r\nI would expect that the clustering here (which does not converge) prints first an empty List and then [-1,-1,-1], however, I get [2] as cluster center and [0,0,0] as cluster labels. \r\nThe only way I currently know if the clustering fails is if I use the verbose option, however that is very unhandy. A hacky solution is to check if max_iter == n_iter_ but it could have converged exactly 15 iterations before max_iter (although unlikely).\r\nI am not sure if this is intended behavior and the documentation is wrong?\r\n\r\nFor my use-case within a bigger script, I would prefer to get back -1 values or have a property to check if it has converged, as otherwise, a user might not be aware that the clustering never converged.\r\n\r\n\r\n#### Versions\r\nSystem:\r\n    python: 3.6.7 | packaged by conda-forge | (default, Nov 21 2018, 02:32:25)  [GCC 4.8.2 20140120 (Red Hat 4.8.2-15)]\r\nexecutable: /home/jenniferh/Programs/anaconda3/envs/TF_RDKit_1_19/bin/python\r\n   machine: Linux-4.15.0-52-generic-x86_64-with-debian-stretch-sid\r\nBLAS:\r\n    macros: SCIPY_MKL_H=None, HAVE_CBLAS=None\r\n  lib_dirs: /home/jenniferh/Programs/anaconda3/envs/TF_RDKit_1_19/lib\r\ncblas_libs: mkl_rt, pthread\r\nPython deps:\r\n    pip: 18.1\r\n   setuptools: 40.6.3\r\n   sklearn: 0.20.3\r\n   numpy: 1.15.4\r\n   scipy: 1.2.0\r\n   Cython: 0.29.2\r\n   pandas: 0.23.4\r\n\r\n\n"
+      },
+      "image_id": "sha256:b00fb0720648e6e5eeb49de31a1eedc15ea047a2edd4444e3f1b17b5dce50b0b",
+      "paths": [
+        "sklearn/mixture/gaussian_mixture.py",
+        "sklearn/mixture/_gaussian_mixture.py",
+        "sklearn/mixture/bayesian_mixture.py",
+        "sklearn/mixture/_bayesian_mixture.py",
+        "sklearn/cluster/affinity_propagation_.py",
+        "sklearn/cluster/_affinity_propagation.py"
+      ],
+      "prior_actor_target": true,
+      "output_subdirectory": "public-extra-code",
+      "provenance": {
+        "reason": "Public class definitions for the source BaseMixture inheritance requirement. No target patch or test expectations."
+      }
+    }
+  ],
+  "model_api_calls": 0
+}

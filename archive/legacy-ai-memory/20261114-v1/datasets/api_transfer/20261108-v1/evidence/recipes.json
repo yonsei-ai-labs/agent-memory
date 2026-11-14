@@ -1,0 +1,6 @@
+{
+  "returned": "result = operation(data)\nreturn result",
+  "receiver": "operation(data)\nreturn data",
+  "copied_returned": "work = copy.deepcopy(data)\nresult = operation(work)\nreturn result",
+  "copied_receiver": "work = copy.deepcopy(data)\noperation(work)\nreturn work"
+}

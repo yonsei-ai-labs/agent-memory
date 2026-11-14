@@ -1,0 +1,28 @@
+{
+  "review_type": "Assistant evidence review; not independent human annotation or utility supervision",
+  "window": "Each trigger and up to eight linked subsequent tool calls; original observations may be clipped",
+  "accepted_status_meaning": "Keep as a source evidence candidate only; target state and paired memory intervention are absent",
+  "utility_labels": null,
+  "rows": [
+    {"row":1024,"message":6,"decision":"keep_evidence","episode":"pydantic-jsonschema","reason":"External jsonschema is missing in conftest. Installation is observed and the next identical pytest command reaches a different internal import failure. No source edit occurs between these commands.","limitation":"The preceding editable installation also changes pydantic and dependencies; this is not an isolated causal intervention or proof that the suite passes."},
+    {"row":1024,"message":14,"decision":"exclude","reason":"FieldValidatorModes is an internal pydantic symbol; the next attempted repair edits functional_validators.py. It is not an established missing external dependency."},
+    {"row":1024,"message":22,"decision":"keep_evidence","episode":"pydantic-benchmark-plugin","reason":"Configured benchmark arguments are rejected. Changing PYTHONPATH and narrowing the test scope do not remove the error; after pytest-benchmark installation, the runner recognizes the plugin and advances to a dirty_equals import error.","limitation":"The retest is narrower and verbose. The evidence supports the plugin prerequisite, not successful full-suite validation."},
+    {"row":1024,"message":24,"decision":"duplicate_episode","episode":"pydantic-benchmark-plugin","reason":"The same runner-option blocker as message 22 in the same trajectory; PYTHONPATH is changed but the plugin remains missing."},
+    {"row":1024,"message":26,"decision":"duplicate_episode","episode":"pydantic-benchmark-plugin","reason":"The same runner-option blocker as message 22; narrowing the test target does not satisfy the plugin prerequisite."},
+    {"row":1024,"message":30,"decision":"keep_evidence","episode":"pydantic-dirty-equals","reason":"dirty_equals prevents collection. After installing dirty-equals, the identical test command reports 186 passed and 5 skipped; no intervening source edit is present.","limitation":"This is one test file in one historical environment, not the whole task or a counterfactual memory benefit."},
+    {"row":1024,"message":36,"decision":"keep_evidence","episode":"pydantic-collection-dependencies","reason":"Three collection errors name pytz and pytest_examples. After their installation, the identical full-suite command collects 6247 items and begins execution.","limitation":"The later observation is clipped and includes other fixture errors. Only progression beyond collection is supported; full-suite success is not."},
+    {"row":1024,"message":54,"decision":"keep_evidence","episode":"pydantic-faker-fixture","reason":"Eight north-star fixture setup errors name missing faker. Installation is followed by a full-suite run whose visible prefix shows those same eight tests passing.","limitation":"The scope changes from that file to the full suite, and the latter observation is clipped. This is a local prerequisite transition, not a full-task success label."},
+    {"row":1028,"message":48,"decision":"exclude","reason":"Internal moto base_decorator import; the following attempted repair edits application source repeatedly. No external dependency prerequisite is established."},
+    {"row":1028,"message":60,"decision":"exclude","reason":"Internal moto mock_aws import after source edits; the proposed correction changes symbols in application code."},
+    {"row":1028,"message":66,"decision":"exclude","reason":"Internal BackendDict/BaseBackend imports; subsequent commands edit their import locations in application code."},
+    {"row":1028,"message":70,"decision":"exclude","reason":"Internal BaseBackend import; subsequent source inspection and edits are required, rather than a demonstrated environment procedure."},
+    {"row":1028,"message":84,"decision":"exclude","reason":"Repeated internal mock_aws import failure during application-source edits; not an independent prerequisite episode."},
+    {"row":1028,"message":90,"decision":"exclude","reason":"Repeated internal mock_aws import failure; the follow-up changes both import and implementation code."},
+    {"row":1041,"message":8,"decision":"exclude","reason":"The agent-created reproduce.py imports nonexistent dvc.cli.main. The script is edited before retry; adding PYTHONPATH concurrently cannot be credited as the repair."},
+    {"row":1055,"message":12,"decision":"exclude","reason":"The agent-created test imports moto.mock_elbv2 and is then rewritten. No successful environment repair is shown in the review window."},
+    {"row":1055,"message":16,"decision":"exclude","reason":"The rewritten script imports an unavailable internal mock symbol; the next rewrite also fails."},
+    {"row":1055,"message":20,"decision":"exclude","reason":"moto.core.mock_aws is unavailable in this script; subsequent inspection and submission provide no successful prerequisite transition."},
+    {"row":1056,"message":14,"decision":"exclude","reason":"The agent-created reproduction imports obsolete or unavailable mock symbols, then changes the import and decorators. This is a script/API mismatch, not demonstrated package absence."},
+    {"row":1056,"message":20,"decision":"exclude","reason":"The rewritten reproduction imports nonexistent moto.aws. A different reproduction script is created afterward, so this cannot be labeled as an environment-only repair."}
+  ]
+}

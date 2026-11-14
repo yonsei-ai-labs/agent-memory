@@ -1,0 +1,373 @@
+{
+  "reason": "Initial 20 triggers include only three connected families, and all five retained prerequisite episodes come from a single trajectory. Expand evidence review by source family, not by the apparent success of a repair.",
+  "selection_rule": "First trigger in each previously unreviewed connected family, ascending row/message order; first 16 such families from the same frozen 1024-row interval. No outcome-dependent replacements if a case is excluded.",
+  "review_limit": 16,
+  "selection_before_reading_selected_observations": true,
+  "previously_reviewed_families": [
+    "getmoto/moto@694ce1f4",
+    "iterative/dvc@1d6ea681",
+    "pydantic/pydantic@acb0f10f"
+  ],
+  "selected": [
+    {
+      "candidate_id": "swesmith-tool0-row1082-message24",
+      "dataset": "SWE-bench/SWE-smith-trajectories",
+      "hub_revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+      "parquet_file": "data/tool-00000-of-00008.parquet",
+      "parquet_sha256": "ac76e9efe75978f83d4daec98a55604587dd58b0f1509364893b8778cbf5b487",
+      "row_index": 1082,
+      "instance_id": "tox-dev__pipdeptree.c31b6418.pr_357",
+      "traj_id": "tox-dev__pipdeptree.c31b6418.pr_357.1cm1w3ln",
+      "repository": "tox-dev/pipdeptree",
+      "upstream_revision": "c31b6418",
+      "connected_family": "tox-dev/pipdeptree@c31b6418",
+      "raw_messages_sha256": "74381f2afe32a054dd3e79a691202270469dc068bf45caf4bd8ea4e58d4c1c2b",
+      "message_index": 24,
+      "observation_index": 25,
+      "candidate_categories": [
+        "missing_import"
+      ],
+      "review_status": "unreviewed_discovery_candidate",
+      "utility_label": null,
+      "target_state_provided": false
+    },
+    {
+      "candidate_id": "swesmith-tool0-row1088-message14",
+      "dataset": "SWE-bench/SWE-smith-trajectories",
+      "hub_revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+      "parquet_file": "data/tool-00000-of-00008.parquet",
+      "parquet_sha256": "ac76e9efe75978f83d4daec98a55604587dd58b0f1509364893b8778cbf5b487",
+      "row_index": 1088,
+      "instance_id": "dask__dask.5f61e423.pr_8954",
+      "traj_id": "dask__dask.5f61e423.pr_8954.1cm1w3ln",
+      "repository": "dask/dask",
+      "upstream_revision": "5f61e423",
+      "connected_family": "dask/dask@5f61e423",
+      "raw_messages_sha256": "d60c87f1d06aaa2774728cdd8a3baf40b3d2dd04f4b2bc5754ae53a7ffb065a2",
+      "message_index": 14,
+      "observation_index": 15,
+      "candidate_categories": [
+        "runner_contract"
+      ],
+      "review_status": "unreviewed_discovery_candidate",
+      "utility_label": null,
+      "target_state_provided": false
+    },
+    {
+      "candidate_id": "swesmith-tool0-row1112-message6",
+      "dataset": "SWE-bench/SWE-smith-trajectories",
+      "hub_revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+      "parquet_file": "data/tool-00000-of-00008.parquet",
+      "parquet_sha256": "ac76e9efe75978f83d4daec98a55604587dd58b0f1509364893b8778cbf5b487",
+      "row_index": 1112,
+      "instance_id": "agronholm__exceptiongroup.0b4f4937.pr_69",
+      "traj_id": "agronholm__exceptiongroup.0b4f4937.pr_69.1cm1w3ln",
+      "repository": "agronholm/exceptiongroup",
+      "upstream_revision": "0b4f4937",
+      "connected_family": "agronholm/exceptiongroup@0b4f4937",
+      "raw_messages_sha256": "f1a045ceb9bfa534eb868bd28b0ff700bab4609152e52bdf64b3deb23c73c60a",
+      "message_index": 6,
+      "observation_index": 7,
+      "candidate_categories": [
+        "missing_import"
+      ],
+      "review_status": "unreviewed_discovery_candidate",
+      "utility_label": null,
+      "target_state_provided": false
+    },
+    {
+      "candidate_id": "swesmith-tool0-row1114-message14",
+      "dataset": "SWE-bench/SWE-smith-trajectories",
+      "hub_revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+      "parquet_file": "data/tool-00000-of-00008.parquet",
+      "parquet_sha256": "ac76e9efe75978f83d4daec98a55604587dd58b0f1509364893b8778cbf5b487",
+      "row_index": 1114,
+      "instance_id": "encode__starlette.db5063c2.pr_2812",
+      "traj_id": "encode__starlette.db5063c2.pr_2812.1cm1w3ln",
+      "repository": "encode/starlette",
+      "upstream_revision": "db5063c2",
+      "connected_family": "encode/starlette@db5063c2",
+      "raw_messages_sha256": "43d2b5aa2d8b88fdcee7457a0c513b7e3f39ecfab33bdd1e541b5f2fdc3f514e",
+      "message_index": 14,
+      "observation_index": 15,
+      "candidate_categories": [
+        "missing_import"
+      ],
+      "review_status": "unreviewed_discovery_candidate",
+      "utility_label": null,
+      "target_state_provided": false
+    },
+    {
+      "candidate_id": "swesmith-tool0-row1118-message56",
+      "dataset": "SWE-bench/SWE-smith-trajectories",
+      "hub_revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+      "parquet_file": "data/tool-00000-of-00008.parquet",
+      "parquet_sha256": "ac76e9efe75978f83d4daec98a55604587dd58b0f1509364893b8778cbf5b487",
+      "row_index": 1118,
+      "instance_id": "pandas-dev__pandas.95280573.pr_54996",
+      "traj_id": "pandas-dev__pandas.95280573.pr_54996.1cm1w3ln",
+      "repository": "pandas-dev/pandas",
+      "upstream_revision": "95280573",
+      "connected_family": "pandas-dev/pandas@95280573",
+      "raw_messages_sha256": "df25e2fa6300491e12ad2ac3630de2eeaebc8341d59dae825344e8c788b08cd7",
+      "message_index": 56,
+      "observation_index": 57,
+      "candidate_categories": [
+        "missing_import"
+      ],
+      "review_status": "unreviewed_discovery_candidate",
+      "utility_label": null,
+      "target_state_provided": false
+    },
+    {
+      "candidate_id": "swesmith-tool0-row1180-message6",
+      "dataset": "SWE-bench/SWE-smith-trajectories",
+      "hub_revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+      "parquet_file": "data/tool-00000-of-00008.parquet",
+      "parquet_sha256": "ac76e9efe75978f83d4daec98a55604587dd58b0f1509364893b8778cbf5b487",
+      "row_index": 1180,
+      "instance_id": "pndurette__gTTS.dbcda4f3.pr_394",
+      "traj_id": "pndurette__gTTS.dbcda4f3.pr_394.1cm1w3ln",
+      "repository": "pndurette/gTTS",
+      "upstream_revision": "dbcda4f3",
+      "connected_family": "pndurette/gTTS@dbcda4f3",
+      "raw_messages_sha256": "439a6ceb506ca78c1f28eb335781948ccdb7d80a8fd93d39ced6c3c6694b273f",
+      "message_index": 6,
+      "observation_index": 7,
+      "candidate_categories": [
+        "missing_import"
+      ],
+      "review_status": "unreviewed_discovery_candidate",
+      "utility_label": null,
+      "target_state_provided": false
+    },
+    {
+      "candidate_id": "swesmith-tool0-row1183-message12",
+      "dataset": "SWE-bench/SWE-smith-trajectories",
+      "hub_revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+      "parquet_file": "data/tool-00000-of-00008.parquet",
+      "parquet_sha256": "ac76e9efe75978f83d4daec98a55604587dd58b0f1509364893b8778cbf5b487",
+      "row_index": 1183,
+      "instance_id": "python__mypy.e93f06ce.pr_10036",
+      "traj_id": "python__mypy.e93f06ce.pr_10036.1cm1w3ln",
+      "repository": "python/mypy",
+      "upstream_revision": "e93f06ce",
+      "connected_family": "python/mypy@e93f06ce",
+      "raw_messages_sha256": "1ea67caf804c6b93043a478fefde09e461fd3380aa9f9a3461a10d3e9f20f923",
+      "message_index": 12,
+      "observation_index": 13,
+      "candidate_categories": [
+        "missing_import"
+      ],
+      "review_status": "unreviewed_discovery_candidate",
+      "utility_label": null,
+      "target_state_provided": false
+    },
+    {
+      "candidate_id": "swesmith-tool0-row1216-message6",
+      "dataset": "SWE-bench/SWE-smith-trajectories",
+      "hub_revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+      "parquet_file": "data/tool-00000-of-00008.parquet",
+      "parquet_sha256": "ac76e9efe75978f83d4daec98a55604587dd58b0f1509364893b8778cbf5b487",
+      "row_index": 1216,
+      "instance_id": "mozillazg__python-pinyin.e42dede5.pr_318",
+      "traj_id": "mozillazg__python-pinyin.e42dede5.pr_318.1cm1w3ln",
+      "repository": "mozillazg/python-pinyin",
+      "upstream_revision": "e42dede5",
+      "connected_family": "mozillazg/python-pinyin@e42dede5",
+      "raw_messages_sha256": "cabbff7aaf326de7e090244f402570e3009ad7680922a973b4e00fa0cc35f8cc",
+      "message_index": 6,
+      "observation_index": 7,
+      "candidate_categories": [
+        "runner_contract"
+      ],
+      "review_status": "unreviewed_discovery_candidate",
+      "utility_label": null,
+      "target_state_provided": false
+    },
+    {
+      "candidate_id": "swesmith-tool0-row1224-message28",
+      "dataset": "SWE-bench/SWE-smith-trajectories",
+      "hub_revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+      "parquet_file": "data/tool-00000-of-00008.parquet",
+      "parquet_sha256": "ac76e9efe75978f83d4daec98a55604587dd58b0f1509364893b8778cbf5b487",
+      "row_index": 1224,
+      "instance_id": "facebookresearch__hydra.0f03eb60.pr_1915",
+      "traj_id": "facebookresearch__hydra.0f03eb60.pr_1915.1cm1w3ln",
+      "repository": "facebookresearch/hydra",
+      "upstream_revision": "0f03eb60",
+      "connected_family": "facebookresearch/hydra@0f03eb60",
+      "raw_messages_sha256": "ddd1cc06e2d8ed872fa5b013c7df8f9325f23724db10080f235055e3e322660c",
+      "message_index": 28,
+      "observation_index": 29,
+      "candidate_categories": [
+        "missing_import"
+      ],
+      "review_status": "unreviewed_discovery_candidate",
+      "utility_label": null,
+      "target_state_provided": false
+    },
+    {
+      "candidate_id": "swesmith-tool0-row1257-message4",
+      "dataset": "SWE-bench/SWE-smith-trajectories",
+      "hub_revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+      "parquet_file": "data/tool-00000-of-00008.parquet",
+      "parquet_sha256": "ac76e9efe75978f83d4daec98a55604587dd58b0f1509364893b8778cbf5b487",
+      "row_index": 1257,
+      "instance_id": "pylint-dev__astroid.b114f6b5.pr_2328",
+      "traj_id": "pylint-dev__astroid.b114f6b5.pr_2328.1cm1w3ln",
+      "repository": "pylint-dev/astroid",
+      "upstream_revision": "b114f6b5",
+      "connected_family": "pylint-dev/astroid@b114f6b5",
+      "raw_messages_sha256": "c29063624438fe7b5a14823f1b3b4d75a99cfe7ab4fca6397bc98c9aec7a0c32",
+      "message_index": 4,
+      "observation_index": 5,
+      "candidate_categories": [
+        "missing_import"
+      ],
+      "review_status": "unreviewed_discovery_candidate",
+      "utility_label": null,
+      "target_state_provided": false
+    },
+    {
+      "candidate_id": "swesmith-tool0-row1296-message12",
+      "dataset": "SWE-bench/SWE-smith-trajectories",
+      "hub_revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+      "parquet_file": "data/tool-00000-of-00008.parquet",
+      "parquet_sha256": "ac76e9efe75978f83d4daec98a55604587dd58b0f1509364893b8778cbf5b487",
+      "row_index": 1296,
+      "instance_id": "john-kurkowski__tldextract.3d1bf184.pr_309",
+      "traj_id": "john-kurkowski__tldextract.3d1bf184.pr_309.1cm1w3ln",
+      "repository": "john-kurkowski/tldextract",
+      "upstream_revision": "3d1bf184",
+      "connected_family": "john-kurkowski/tldextract@3d1bf184",
+      "raw_messages_sha256": "c8b97d33b0a9621366fa2d2d4c218a60b39788dc85aa5e4a364439062ae92a69",
+      "message_index": 12,
+      "observation_index": 13,
+      "candidate_categories": [
+        "missing_import"
+      ],
+      "review_status": "unreviewed_discovery_candidate",
+      "utility_label": null,
+      "target_state_provided": false
+    },
+    {
+      "candidate_id": "swesmith-tool0-row1318-message12",
+      "dataset": "SWE-bench/SWE-smith-trajectories",
+      "hub_revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+      "parquet_file": "data/tool-00000-of-00008.parquet",
+      "parquet_sha256": "ac76e9efe75978f83d4daec98a55604587dd58b0f1509364893b8778cbf5b487",
+      "row_index": 1318,
+      "instance_id": "jd__tenacity.0d40e76f.pr_384",
+      "traj_id": "jd__tenacity.0d40e76f.pr_384.1cm1w3ln",
+      "repository": "jd/tenacity",
+      "upstream_revision": "0d40e76f",
+      "connected_family": "jd/tenacity@0d40e76f",
+      "raw_messages_sha256": "b72a4e0e803b24570e5a70076db45762f3f8ae1a62d7269042275678b0ad8416",
+      "message_index": 12,
+      "observation_index": 13,
+      "candidate_categories": [
+        "missing_import"
+      ],
+      "review_status": "unreviewed_discovery_candidate",
+      "utility_label": null,
+      "target_state_provided": false
+    },
+    {
+      "candidate_id": "swesmith-tool0-row1342-message12",
+      "dataset": "SWE-bench/SWE-smith-trajectories",
+      "hub_revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+      "parquet_file": "data/tool-00000-of-00008.parquet",
+      "parquet_sha256": "ac76e9efe75978f83d4daec98a55604587dd58b0f1509364893b8778cbf5b487",
+      "row_index": 1342,
+      "instance_id": "cookiecutter__cookiecutter.b4451231.pr_1950",
+      "traj_id": "cookiecutter__cookiecutter.b4451231.pr_1950.1cm1w3ln",
+      "repository": "cookiecutter/cookiecutter",
+      "upstream_revision": "b4451231",
+      "connected_family": "cookiecutter/cookiecutter@b4451231",
+      "raw_messages_sha256": "1ab60e188df187551593387c3c16822c6cdba6b2c2dd40b48746a41cda7e1aea",
+      "message_index": 12,
+      "observation_index": 13,
+      "candidate_categories": [
+        "missing_import"
+      ],
+      "review_status": "unreviewed_discovery_candidate",
+      "utility_label": null,
+      "target_state_provided": false
+    },
+    {
+      "candidate_id": "swesmith-tool0-row1349-message24",
+      "dataset": "SWE-bench/SWE-smith-trajectories",
+      "hub_revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+      "parquet_file": "data/tool-00000-of-00008.parquet",
+      "parquet_sha256": "ac76e9efe75978f83d4daec98a55604587dd58b0f1509364893b8778cbf5b487",
+      "row_index": 1349,
+      "instance_id": "Cog-Creators__Red-DiscordBot.33e0eac7.pr_5969",
+      "traj_id": "Cog-Creators__Red-DiscordBot.33e0eac7.pr_5969.1cm1w3ln",
+      "repository": "Cog-Creators/Red-DiscordBot",
+      "upstream_revision": "33e0eac7",
+      "connected_family": "Cog-Creators/Red-DiscordBot@33e0eac7",
+      "raw_messages_sha256": "1aaac18897bc11bf9cab375ac00de28a99d0a601fa24eaedfa4c4a20433e1baa",
+      "message_index": 24,
+      "observation_index": 25,
+      "candidate_categories": [
+        "missing_import"
+      ],
+      "review_status": "unreviewed_discovery_candidate",
+      "utility_label": null,
+      "target_state_provided": false
+    },
+    {
+      "candidate_id": "swesmith-tool0-row1355-message28",
+      "dataset": "SWE-bench/SWE-smith-trajectories",
+      "hub_revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+      "parquet_file": "data/tool-00000-of-00008.parquet",
+      "parquet_sha256": "ac76e9efe75978f83d4daec98a55604587dd58b0f1509364893b8778cbf5b487",
+      "row_index": 1355,
+      "instance_id": "conan-io__conan.86f29e13.pr_16350",
+      "traj_id": "conan-io__conan.86f29e13.pr_16350.1cm1w3ln",
+      "repository": "conan-io/conan",
+      "upstream_revision": "86f29e13",
+      "connected_family": "conan-io/conan@86f29e13",
+      "raw_messages_sha256": "2b3af7827711f392f240735b25b0d91a05dfaa47b7e0a161321fc44d3457ba2a",
+      "message_index": 28,
+      "observation_index": 29,
+      "candidate_categories": [
+        "missing_import"
+      ],
+      "review_status": "unreviewed_discovery_candidate",
+      "utility_label": null,
+      "target_state_provided": false
+    },
+    {
+      "candidate_id": "swesmith-tool0-row1400-message12",
+      "dataset": "SWE-bench/SWE-smith-trajectories",
+      "hub_revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+      "parquet_file": "data/tool-00000-of-00008.parquet",
+      "parquet_sha256": "ac76e9efe75978f83d4daec98a55604587dd58b0f1509364893b8778cbf5b487",
+      "row_index": 1400,
+      "instance_id": "agronholm__typeguard.b6a7e438.pr_298",
+      "traj_id": "agronholm__typeguard.b6a7e438.pr_298.1cm1w3ln",
+      "repository": "agronholm/typeguard",
+      "upstream_revision": "b6a7e438",
+      "connected_family": "agronholm/typeguard@b6a7e438",
+      "raw_messages_sha256": "65c5937dda531dec1d53cb2141eac1e8621e7ae219e5ead692432176429b120f",
+      "message_index": 12,
+      "observation_index": 13,
+      "candidate_categories": [
+        "missing_import"
+      ],
+      "review_status": "unreviewed_discovery_candidate",
+      "utility_label": null,
+      "target_state_provided": false
+    }
+  ],
+  "loaded_columns": [
+    "instance_id",
+    "traj_id",
+    "messages"
+  ],
+  "commands_executed": 0,
+  "utility_labels": null,
+  "new_training_examples": 0
+}

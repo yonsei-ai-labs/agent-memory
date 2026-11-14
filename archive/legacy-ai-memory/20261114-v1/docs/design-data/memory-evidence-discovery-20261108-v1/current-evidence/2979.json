@@ -1,0 +1,48 @@
+{
+  "target_trajectory_row_index": 2979,
+  "task": {
+    "instance_id": "omni-us__jsonargparse-625",
+    "repo": "omni-us/jsonargparse",
+    "base_commit": "150caf8157fa5fb2e5e30045353784f90853ad69",
+    "created_at": "2024-11-18 06:35:36",
+    "problem_statement": "Parsing to a list of dataclasses with nested dataclass fails\n<!-- If you like this project, please ⭐ star it https://github.com/omni-us/jsonargparse/ -->\r\n\r\n## 🐛 Bug report\r\n\r\nParsing a configuration to a list of dataclasses which contain nested dataclass fails.\r\n\r\n### To reproduce\r\n\r\nRun following code: \r\n\r\n```python\r\nimport jsonargparse\r\nfrom dataclasses import dataclass\r\n\r\n@dataclass\r\nclass B:\r\n    # THIS WORKS\r\n    # an_int: int = 7\r\n    # THIS CAUSES AN ERROR\r\n    an_int: int\r\n\r\n@dataclass\r\nclass A:\r\n    b: B\r\n\r\ndef fun(a: list[A]):\r\n    print(a)\r\n\r\njsonargparse.CLI(fun)\r\n```\r\n\r\nLike so:\r\n```\r\npython python-jsonargparse-list-of-dataclasses.py '[{b: {an_int: 3}}]'\r\n```\r\n\r\nI'm seeing an error:\r\n```\r\nargparse.ArgumentError: Validation failed: Key \"b.an_int\" is required but not included in config object or its value is None.\r\n```\r\nAttaching full traceback.\r\n[traceback.txt](https://github.com/user-attachments/files/17618428/traceback.txt)\r\n\r\n\r\n### Expected behavior\r\n\r\nWe should see following printed to the stdout:\r\n```\r\n[A(b=B(an_int=3))]\r\n```\r\n\r\n### Environment\r\n\r\n- jsonargparse version: 4.33.2\r\n- Python version: 3.10.12\r\n- How jsonargparse was installed: `pip install --user --update jsonargparse`\r\n- OS: Ubuntu 22.04.4 LTS\r\n",
+    "version": "4.34",
+    "environment_setup_commit": "a2b4e3d36625f4860be69e2c7e6dd0598e1b07ae",
+    "license_name": "MIT License",
+    "docker_image": "swerebench/sweb.eval.x86_64.omni-us_1776_jsonargparse-625",
+    "image_name": "swerebench/sweb.eval.x86_64.omni-us_1776_jsonargparse-625",
+    "dataset": "nebius/SWE-rebench",
+    "revision": "89cdfbab4ab1bd8f5a658bb212d1b63624f4f881",
+    "file": "data/test-00001-of-00002.parquet",
+    "row_index": 2609
+  },
+  "base_code": [
+    {
+      "path": "jsonargparse/_cli.py",
+      "repository": "mauvilsa/jsonargparse",
+      "base_commit": "150caf8157fa5fb2e5e30045353784f90853ad69",
+      "git_blob_sha": "18053476659e35ab0d2040c62bd73e2042ff9338",
+      "full_content_sha256": "564cfcd0b492db1d42c19986391ddcdaa875c7dd0175d3a09957c8f67abb0531",
+      "source_url": "https://github.com/mauvilsa/jsonargparse/blob/150caf8157fa5fb2e5e30045353784f90853ad69/jsonargparse/_cli.py",
+      "spans": [
+        {
+          "start_line": 160,
+          "end_line": 190,
+          "text": "    parser: ArgumentParser,\n    as_positional: bool,\n    fail_untyped: bool,\n    config_help: str,\n):\n    kwargs: dict = dict(as_positional=as_positional, fail_untyped=fail_untyped, sub_configs=True)\n    if inspect.isclass(component):\n        class_methods = [k for k, v in inspect.getmembers(component) if callable(v) and k[0] != \"_\"]\n        if not class_methods:\n            added_args = parser.add_class_arguments(component, as_group=False, **kwargs)\n            if not parser.description:\n                parser.description = get_help_str(component, parser.logger)\n            return added_args\n        added_args = parser.add_class_arguments(component, **kwargs)\n        subcommands = parser.add_subcommands(required=True)\n        for method in class_methods:\n            method_object = getattr(component, method)\n            description = get_help_str(method_object, parser.logger)\n            subparser = type(parser)(description=description)\n            if not has_parameter(getattr(component, method), \"config\"):\n                subparser.add_argument(\"--config\", action=ActionConfigFile, help=config_help)\n            added_subargs = subparser.add_method_arguments(component, method, as_group=False, **kwargs)\n            added_args += [f\"{method}.{a}\" for a in added_subargs]\n            if not added_subargs:\n                remove_actions(subparser, (ActionConfigFile, _ActionPrintConfig))\n            subcommands.add_subcommand(method, subparser, help=get_help_str(method_object, parser.logger))\n    else:\n        added_args = parser.add_function_arguments(component, as_group=False, **kwargs)\n        if not parser.description:\n            parser.description = get_help_str(component, parser.logger)\n    return added_args\n",
+          "sha256": "24786920cdffb25475a54f547536381e489fe45c51dedca50eecf8b859a2cb96"
+        },
+        {
+          "start_line": 193,
+          "end_line": 204,
+          "text": "def _run_component(component, cfg):\n    cfg.pop(\"config\", None)\n    subcommand = cfg.pop(\"subcommand\")\n    if inspect.isclass(component) and subcommand:\n        subcommand_cfg = cfg.pop(subcommand, {})\n        subcommand_cfg.pop(\"config\", None)\n        component_obj = component(**cfg)\n        component = getattr(component_obj, subcommand)\n        cfg = subcommand_cfg\n    if inspect.iscoroutinefunction(component):\n        return __import__(\"asyncio\").run(component(**cfg))\n    return component(**cfg)\n",
+          "sha256": "96ca469b2061121d1e6ab9b625a2e2c8280fc273cb1faee7ba88de08738077f0"
+        }
+      ]
+    }
+  ],
+  "observation_kind": "researcher_read_of_pinned_pre_patch_code",
+  "worker_initial_inspection_performed": false,
+  "restorable_worker_snapshot": null,
+  "target_trajectory_loaded": false,
+  "gold_patch_or_hidden_tests_loaded": false
+}

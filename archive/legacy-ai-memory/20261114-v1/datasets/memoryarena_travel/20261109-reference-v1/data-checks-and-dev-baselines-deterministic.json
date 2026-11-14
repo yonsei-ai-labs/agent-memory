@@ -1,0 +1,86 @@
+{
+  "data_checks": {
+    "status": "passed",
+    "rows": 38286,
+    "base_plans": 45,
+    "exact_cross_split_input_duplicates": 0,
+    "future_memory_records": 0,
+    "source_index_sha256": "9863e9f6bce5961d76b9b4dc04462eea587cd99f7c0aabf6ce5dee0028a1c5e2",
+    "worker_utility_labels": 0
+  },
+  "baselines": [
+    {
+      "split": "dev",
+      "method": "annotation_rule_consistency_ceiling",
+      "queries": 940,
+      "reference_top1": 1.0,
+      "source_macro_top1": 1.0,
+      "reference_value_match": 1.0,
+      "worker_utility_evaluated": false
+    },
+    {
+      "split": "dev",
+      "method": "bm25",
+      "queries": 940,
+      "reference_top1": 0.425531914893617,
+      "source_macro_top1": 0.4199615391768062,
+      "reference_value_match": 0.46063829787234045,
+      "worker_utility_evaluated": false
+    },
+    {
+      "split": "dev",
+      "method": "bm25_ordinal_normalized",
+      "queries": 940,
+      "reference_top1": 0.5063829787234042,
+      "source_macro_top1": 0.5075445019539704,
+      "reference_value_match": 0.5382978723404256,
+      "worker_utility_evaluated": false
+    },
+    {
+      "split": "dev",
+      "method": "random",
+      "queries": 940,
+      "reference_top1": 0.1574468085106383,
+      "source_macro_top1": 0.158978305513867,
+      "reference_value_match": 0.3478723404255319,
+      "worker_utility_evaluated": false
+    },
+    {
+      "split": "train",
+      "method": "annotation_rule_consistency_ceiling",
+      "queries": 4288,
+      "reference_top1": 1.0,
+      "source_macro_top1": 1.0,
+      "reference_value_match": 1.0,
+      "worker_utility_evaluated": false
+    },
+    {
+      "split": "train",
+      "method": "bm25",
+      "queries": 4288,
+      "reference_top1": 0.35494402985074625,
+      "source_macro_top1": 0.3472898232502572,
+      "reference_value_match": 0.38899253731343286,
+      "worker_utility_evaluated": false
+    },
+    {
+      "split": "train",
+      "method": "bm25_ordinal_normalized",
+      "queries": 4288,
+      "reference_top1": 0.4204757462686567,
+      "source_macro_top1": 0.4203286507490327,
+      "reference_value_match": 0.4528917910447761,
+      "worker_utility_evaluated": false
+    },
+    {
+      "split": "train",
+      "method": "random",
+      "queries": 4288,
+      "reference_top1": 0.17210820895522388,
+      "source_macro_top1": 0.16913182095452114,
+      "reference_value_match": 0.33698694029850745,
+      "worker_utility_evaluated": false
+    }
+  ],
+  "held_out_scored": false
+}

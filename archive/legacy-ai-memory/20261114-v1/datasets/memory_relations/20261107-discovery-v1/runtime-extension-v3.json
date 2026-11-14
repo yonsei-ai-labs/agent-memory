@@ -1,0 +1,16 @@
+{
+  "jobs": [
+    {
+      "probe_id": "sklearn-alias-12471",
+      "context_task": "scikit-learn__scikit-learn-12471",
+      "mechanism": "compatibility_alias",
+      "fixture": {
+        "module": "sklearn.preprocessing.label"
+      },
+      "interpreter": "/opt/miniconda3/envs/testbed/bin/python",
+      "program": "import inspect,importlib,os\nfrom sklearn.preprocessing import LabelEncoder\nlegacy=importlib.import_module('sklearn.preprocessing.label')\nresult={'canonical_module':LabelEncoder.__module__,'definition_file':inspect.getfile(LabelEncoder),'legacy_module_file':getattr(legacy,'__file__',None),'legacy_alias_same_class':legacy.LabelEncoder is LabelEncoder}\n"
+    }
+  ],
+  "model_api_calls": 0,
+  "reason": "Forward-dated older module version contrast for canonical implementation path. Added after verifying the generated compatibility aliases in newer versions; discovery,not confirmation."
+}

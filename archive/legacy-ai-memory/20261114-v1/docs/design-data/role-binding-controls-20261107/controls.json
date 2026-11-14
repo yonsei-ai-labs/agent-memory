@@ -1,0 +1,2146 @@
+{
+  "dataset": "synthetic-role-binding-controls-20261107-v1",
+  "purpose": "Frozen-model role and surface-cue diagnostic; not a new real-source benchmark.",
+  "labels": {
+    "compatibility": [
+      "compatible",
+      "conflict",
+      "unknown"
+    ],
+    "redundancy": [
+      "not_already_present",
+      "already_present",
+      "unknown"
+    ]
+  },
+  "scope_characters": 19,
+  "token_lengths_verified_equal": false,
+  "independent_source_experiences": 0,
+  "base_conditions": 48,
+  "model_predictions_available": false,
+  "existing_scope_profile_compatible": false,
+  "partition": "diagnostic_only_no_train_test_claim",
+  "counts_by_stratum": {
+    "both_match": 6,
+    "both_unknown": 6,
+    "completed_only_matches": 12,
+    "completed_unknown": 18,
+    "neither_matches": 24,
+    "requested_only_matches": 12,
+    "requested_unknown": 18
+  },
+  "rows": [
+    {
+      "sample_id": "role-control-m0-q0-c0-A",
+      "base_condition_id": "m0-q0-c0",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "A",
+      "selected_scope": "tests/test_alpha.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_alpha.py",
+        "completed_scope": "tests/test_alpha.py"
+      },
+      "stratum": "both_match",
+      "input": {
+        "state_text": "Current verification target: tests/test_alpha.py.\nEntire test scope already checked on the current working tree: tests/test_alpha.py.\nWhen available, this is the complete list of checked scopes. No code changed afterwards.",
+        "candidate_text": "The earlier command explicitly selected this whole test scope: tests/test_alpha.py."
+      },
+      "labels": [
+        0,
+        1
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m0-q0-c0-B",
+      "base_condition_id": "m0-q0-c0",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "B",
+      "selected_scope": "tests/test_alpha.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_alpha.py",
+        "completed_scope": "tests/test_alpha.py"
+      },
+      "stratum": "both_match",
+      "input": {
+        "state_text": "For the next verification, the requested test scope is tests/test_alpha.py.\nOn this unchanged working tree, the record of fully checked scopes is: tests/test_alpha.py.\nAn available record lists every scope checked so far.",
+        "candidate_text": "A previous test command included the entire scope tests/test_alpha.py in its explicit selection."
+      },
+      "labels": [
+        0,
+        1
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m0-q0-c1-A",
+      "base_condition_id": "m0-q0-c1",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "A",
+      "selected_scope": "tests/test_alpha.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_alpha.py",
+        "completed_scope": "tests/test_bravo.py"
+      },
+      "stratum": "requested_only_matches",
+      "input": {
+        "state_text": "Current verification target: tests/test_alpha.py.\nEntire test scope already checked on the current working tree: tests/test_bravo.py.\nWhen available, this is the complete list of checked scopes. No code changed afterwards.",
+        "candidate_text": "The earlier command explicitly selected this whole test scope: tests/test_alpha.py."
+      },
+      "labels": [
+        0,
+        0
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m0-q0-c1-B",
+      "base_condition_id": "m0-q0-c1",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "B",
+      "selected_scope": "tests/test_alpha.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_alpha.py",
+        "completed_scope": "tests/test_bravo.py"
+      },
+      "stratum": "requested_only_matches",
+      "input": {
+        "state_text": "For the next verification, the requested test scope is tests/test_alpha.py.\nOn this unchanged working tree, the record of fully checked scopes is: tests/test_bravo.py.\nAn available record lists every scope checked so far.",
+        "candidate_text": "A previous test command included the entire scope tests/test_alpha.py in its explicit selection."
+      },
+      "labels": [
+        0,
+        0
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m0-q0-c2-A",
+      "base_condition_id": "m0-q0-c2",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "A",
+      "selected_scope": "tests/test_alpha.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_alpha.py",
+        "completed_scope": "tests/test_delta.py"
+      },
+      "stratum": "requested_only_matches",
+      "input": {
+        "state_text": "Current verification target: tests/test_alpha.py.\nEntire test scope already checked on the current working tree: tests/test_delta.py.\nWhen available, this is the complete list of checked scopes. No code changed afterwards.",
+        "candidate_text": "The earlier command explicitly selected this whole test scope: tests/test_alpha.py."
+      },
+      "labels": [
+        0,
+        0
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m0-q0-c2-B",
+      "base_condition_id": "m0-q0-c2",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "B",
+      "selected_scope": "tests/test_alpha.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_alpha.py",
+        "completed_scope": "tests/test_delta.py"
+      },
+      "stratum": "requested_only_matches",
+      "input": {
+        "state_text": "For the next verification, the requested test scope is tests/test_alpha.py.\nOn this unchanged working tree, the record of fully checked scopes is: tests/test_delta.py.\nAn available record lists every scope checked so far.",
+        "candidate_text": "A previous test command included the entire scope tests/test_alpha.py in its explicit selection."
+      },
+      "labels": [
+        0,
+        0
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m0-q0-c3-A",
+      "base_condition_id": "m0-q0-c3",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "A",
+      "selected_scope": "tests/test_alpha.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_alpha.py",
+        "completed_scope": null
+      },
+      "stratum": "completed_unknown",
+      "input": {
+        "state_text": "Current verification target: tests/test_alpha.py.\nEntire test scope already checked on the current working tree: record unavailable.\nWhen available, this is the complete list of checked scopes. No code changed afterwards.",
+        "candidate_text": "The earlier command explicitly selected this whole test scope: tests/test_alpha.py."
+      },
+      "labels": [
+        0,
+        2
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m0-q0-c3-B",
+      "base_condition_id": "m0-q0-c3",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "B",
+      "selected_scope": "tests/test_alpha.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_alpha.py",
+        "completed_scope": null
+      },
+      "stratum": "completed_unknown",
+      "input": {
+        "state_text": "For the next verification, the requested test scope is tests/test_alpha.py.\nOn this unchanged working tree, the record of fully checked scopes is: record unavailable.\nAn available record lists every scope checked so far.",
+        "candidate_text": "A previous test command included the entire scope tests/test_alpha.py in its explicit selection."
+      },
+      "labels": [
+        0,
+        2
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m0-q1-c0-A",
+      "base_condition_id": "m0-q1-c0",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "A",
+      "selected_scope": "tests/test_alpha.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_bravo.py",
+        "completed_scope": "tests/test_alpha.py"
+      },
+      "stratum": "completed_only_matches",
+      "input": {
+        "state_text": "Current verification target: tests/test_bravo.py.\nEntire test scope already checked on the current working tree: tests/test_alpha.py.\nWhen available, this is the complete list of checked scopes. No code changed afterwards.",
+        "candidate_text": "The earlier command explicitly selected this whole test scope: tests/test_alpha.py."
+      },
+      "labels": [
+        1,
+        1
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m0-q1-c0-B",
+      "base_condition_id": "m0-q1-c0",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "B",
+      "selected_scope": "tests/test_alpha.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_bravo.py",
+        "completed_scope": "tests/test_alpha.py"
+      },
+      "stratum": "completed_only_matches",
+      "input": {
+        "state_text": "For the next verification, the requested test scope is tests/test_bravo.py.\nOn this unchanged working tree, the record of fully checked scopes is: tests/test_alpha.py.\nAn available record lists every scope checked so far.",
+        "candidate_text": "A previous test command included the entire scope tests/test_alpha.py in its explicit selection."
+      },
+      "labels": [
+        1,
+        1
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m0-q1-c1-A",
+      "base_condition_id": "m0-q1-c1",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "A",
+      "selected_scope": "tests/test_alpha.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_bravo.py",
+        "completed_scope": "tests/test_bravo.py"
+      },
+      "stratum": "neither_matches",
+      "input": {
+        "state_text": "Current verification target: tests/test_bravo.py.\nEntire test scope already checked on the current working tree: tests/test_bravo.py.\nWhen available, this is the complete list of checked scopes. No code changed afterwards.",
+        "candidate_text": "The earlier command explicitly selected this whole test scope: tests/test_alpha.py."
+      },
+      "labels": [
+        1,
+        0
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m0-q1-c1-B",
+      "base_condition_id": "m0-q1-c1",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "B",
+      "selected_scope": "tests/test_alpha.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_bravo.py",
+        "completed_scope": "tests/test_bravo.py"
+      },
+      "stratum": "neither_matches",
+      "input": {
+        "state_text": "For the next verification, the requested test scope is tests/test_bravo.py.\nOn this unchanged working tree, the record of fully checked scopes is: tests/test_bravo.py.\nAn available record lists every scope checked so far.",
+        "candidate_text": "A previous test command included the entire scope tests/test_alpha.py in its explicit selection."
+      },
+      "labels": [
+        1,
+        0
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m0-q1-c2-A",
+      "base_condition_id": "m0-q1-c2",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "A",
+      "selected_scope": "tests/test_alpha.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_bravo.py",
+        "completed_scope": "tests/test_delta.py"
+      },
+      "stratum": "neither_matches",
+      "input": {
+        "state_text": "Current verification target: tests/test_bravo.py.\nEntire test scope already checked on the current working tree: tests/test_delta.py.\nWhen available, this is the complete list of checked scopes. No code changed afterwards.",
+        "candidate_text": "The earlier command explicitly selected this whole test scope: tests/test_alpha.py."
+      },
+      "labels": [
+        1,
+        0
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m0-q1-c2-B",
+      "base_condition_id": "m0-q1-c2",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "B",
+      "selected_scope": "tests/test_alpha.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_bravo.py",
+        "completed_scope": "tests/test_delta.py"
+      },
+      "stratum": "neither_matches",
+      "input": {
+        "state_text": "For the next verification, the requested test scope is tests/test_bravo.py.\nOn this unchanged working tree, the record of fully checked scopes is: tests/test_delta.py.\nAn available record lists every scope checked so far.",
+        "candidate_text": "A previous test command included the entire scope tests/test_alpha.py in its explicit selection."
+      },
+      "labels": [
+        1,
+        0
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m0-q1-c3-A",
+      "base_condition_id": "m0-q1-c3",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "A",
+      "selected_scope": "tests/test_alpha.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_bravo.py",
+        "completed_scope": null
+      },
+      "stratum": "completed_unknown",
+      "input": {
+        "state_text": "Current verification target: tests/test_bravo.py.\nEntire test scope already checked on the current working tree: record unavailable.\nWhen available, this is the complete list of checked scopes. No code changed afterwards.",
+        "candidate_text": "The earlier command explicitly selected this whole test scope: tests/test_alpha.py."
+      },
+      "labels": [
+        1,
+        2
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m0-q1-c3-B",
+      "base_condition_id": "m0-q1-c3",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "B",
+      "selected_scope": "tests/test_alpha.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_bravo.py",
+        "completed_scope": null
+      },
+      "stratum": "completed_unknown",
+      "input": {
+        "state_text": "For the next verification, the requested test scope is tests/test_bravo.py.\nOn this unchanged working tree, the record of fully checked scopes is: record unavailable.\nAn available record lists every scope checked so far.",
+        "candidate_text": "A previous test command included the entire scope tests/test_alpha.py in its explicit selection."
+      },
+      "labels": [
+        1,
+        2
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m0-q2-c0-A",
+      "base_condition_id": "m0-q2-c0",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "A",
+      "selected_scope": "tests/test_alpha.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_delta.py",
+        "completed_scope": "tests/test_alpha.py"
+      },
+      "stratum": "completed_only_matches",
+      "input": {
+        "state_text": "Current verification target: tests/test_delta.py.\nEntire test scope already checked on the current working tree: tests/test_alpha.py.\nWhen available, this is the complete list of checked scopes. No code changed afterwards.",
+        "candidate_text": "The earlier command explicitly selected this whole test scope: tests/test_alpha.py."
+      },
+      "labels": [
+        1,
+        1
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m0-q2-c0-B",
+      "base_condition_id": "m0-q2-c0",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "B",
+      "selected_scope": "tests/test_alpha.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_delta.py",
+        "completed_scope": "tests/test_alpha.py"
+      },
+      "stratum": "completed_only_matches",
+      "input": {
+        "state_text": "For the next verification, the requested test scope is tests/test_delta.py.\nOn this unchanged working tree, the record of fully checked scopes is: tests/test_alpha.py.\nAn available record lists every scope checked so far.",
+        "candidate_text": "A previous test command included the entire scope tests/test_alpha.py in its explicit selection."
+      },
+      "labels": [
+        1,
+        1
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m0-q2-c1-A",
+      "base_condition_id": "m0-q2-c1",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "A",
+      "selected_scope": "tests/test_alpha.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_delta.py",
+        "completed_scope": "tests/test_bravo.py"
+      },
+      "stratum": "neither_matches",
+      "input": {
+        "state_text": "Current verification target: tests/test_delta.py.\nEntire test scope already checked on the current working tree: tests/test_bravo.py.\nWhen available, this is the complete list of checked scopes. No code changed afterwards.",
+        "candidate_text": "The earlier command explicitly selected this whole test scope: tests/test_alpha.py."
+      },
+      "labels": [
+        1,
+        0
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m0-q2-c1-B",
+      "base_condition_id": "m0-q2-c1",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "B",
+      "selected_scope": "tests/test_alpha.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_delta.py",
+        "completed_scope": "tests/test_bravo.py"
+      },
+      "stratum": "neither_matches",
+      "input": {
+        "state_text": "For the next verification, the requested test scope is tests/test_delta.py.\nOn this unchanged working tree, the record of fully checked scopes is: tests/test_bravo.py.\nAn available record lists every scope checked so far.",
+        "candidate_text": "A previous test command included the entire scope tests/test_alpha.py in its explicit selection."
+      },
+      "labels": [
+        1,
+        0
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m0-q2-c2-A",
+      "base_condition_id": "m0-q2-c2",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "A",
+      "selected_scope": "tests/test_alpha.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_delta.py",
+        "completed_scope": "tests/test_delta.py"
+      },
+      "stratum": "neither_matches",
+      "input": {
+        "state_text": "Current verification target: tests/test_delta.py.\nEntire test scope already checked on the current working tree: tests/test_delta.py.\nWhen available, this is the complete list of checked scopes. No code changed afterwards.",
+        "candidate_text": "The earlier command explicitly selected this whole test scope: tests/test_alpha.py."
+      },
+      "labels": [
+        1,
+        0
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m0-q2-c2-B",
+      "base_condition_id": "m0-q2-c2",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "B",
+      "selected_scope": "tests/test_alpha.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_delta.py",
+        "completed_scope": "tests/test_delta.py"
+      },
+      "stratum": "neither_matches",
+      "input": {
+        "state_text": "For the next verification, the requested test scope is tests/test_delta.py.\nOn this unchanged working tree, the record of fully checked scopes is: tests/test_delta.py.\nAn available record lists every scope checked so far.",
+        "candidate_text": "A previous test command included the entire scope tests/test_alpha.py in its explicit selection."
+      },
+      "labels": [
+        1,
+        0
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m0-q2-c3-A",
+      "base_condition_id": "m0-q2-c3",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "A",
+      "selected_scope": "tests/test_alpha.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_delta.py",
+        "completed_scope": null
+      },
+      "stratum": "completed_unknown",
+      "input": {
+        "state_text": "Current verification target: tests/test_delta.py.\nEntire test scope already checked on the current working tree: record unavailable.\nWhen available, this is the complete list of checked scopes. No code changed afterwards.",
+        "candidate_text": "The earlier command explicitly selected this whole test scope: tests/test_alpha.py."
+      },
+      "labels": [
+        1,
+        2
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m0-q2-c3-B",
+      "base_condition_id": "m0-q2-c3",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "B",
+      "selected_scope": "tests/test_alpha.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_delta.py",
+        "completed_scope": null
+      },
+      "stratum": "completed_unknown",
+      "input": {
+        "state_text": "For the next verification, the requested test scope is tests/test_delta.py.\nOn this unchanged working tree, the record of fully checked scopes is: record unavailable.\nAn available record lists every scope checked so far.",
+        "candidate_text": "A previous test command included the entire scope tests/test_alpha.py in its explicit selection."
+      },
+      "labels": [
+        1,
+        2
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m0-q3-c0-A",
+      "base_condition_id": "m0-q3-c0",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "A",
+      "selected_scope": "tests/test_alpha.py",
+      "controlled_state": {
+        "requested_scope": null,
+        "completed_scope": "tests/test_alpha.py"
+      },
+      "stratum": "requested_unknown",
+      "input": {
+        "state_text": "Current verification target: not specified.\nEntire test scope already checked on the current working tree: tests/test_alpha.py.\nWhen available, this is the complete list of checked scopes. No code changed afterwards.",
+        "candidate_text": "The earlier command explicitly selected this whole test scope: tests/test_alpha.py."
+      },
+      "labels": [
+        2,
+        1
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m0-q3-c0-B",
+      "base_condition_id": "m0-q3-c0",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "B",
+      "selected_scope": "tests/test_alpha.py",
+      "controlled_state": {
+        "requested_scope": null,
+        "completed_scope": "tests/test_alpha.py"
+      },
+      "stratum": "requested_unknown",
+      "input": {
+        "state_text": "For the next verification, the requested test scope is not specified.\nOn this unchanged working tree, the record of fully checked scopes is: tests/test_alpha.py.\nAn available record lists every scope checked so far.",
+        "candidate_text": "A previous test command included the entire scope tests/test_alpha.py in its explicit selection."
+      },
+      "labels": [
+        2,
+        1
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m0-q3-c1-A",
+      "base_condition_id": "m0-q3-c1",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "A",
+      "selected_scope": "tests/test_alpha.py",
+      "controlled_state": {
+        "requested_scope": null,
+        "completed_scope": "tests/test_bravo.py"
+      },
+      "stratum": "requested_unknown",
+      "input": {
+        "state_text": "Current verification target: not specified.\nEntire test scope already checked on the current working tree: tests/test_bravo.py.\nWhen available, this is the complete list of checked scopes. No code changed afterwards.",
+        "candidate_text": "The earlier command explicitly selected this whole test scope: tests/test_alpha.py."
+      },
+      "labels": [
+        2,
+        0
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m0-q3-c1-B",
+      "base_condition_id": "m0-q3-c1",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "B",
+      "selected_scope": "tests/test_alpha.py",
+      "controlled_state": {
+        "requested_scope": null,
+        "completed_scope": "tests/test_bravo.py"
+      },
+      "stratum": "requested_unknown",
+      "input": {
+        "state_text": "For the next verification, the requested test scope is not specified.\nOn this unchanged working tree, the record of fully checked scopes is: tests/test_bravo.py.\nAn available record lists every scope checked so far.",
+        "candidate_text": "A previous test command included the entire scope tests/test_alpha.py in its explicit selection."
+      },
+      "labels": [
+        2,
+        0
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m0-q3-c2-A",
+      "base_condition_id": "m0-q3-c2",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "A",
+      "selected_scope": "tests/test_alpha.py",
+      "controlled_state": {
+        "requested_scope": null,
+        "completed_scope": "tests/test_delta.py"
+      },
+      "stratum": "requested_unknown",
+      "input": {
+        "state_text": "Current verification target: not specified.\nEntire test scope already checked on the current working tree: tests/test_delta.py.\nWhen available, this is the complete list of checked scopes. No code changed afterwards.",
+        "candidate_text": "The earlier command explicitly selected this whole test scope: tests/test_alpha.py."
+      },
+      "labels": [
+        2,
+        0
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m0-q3-c2-B",
+      "base_condition_id": "m0-q3-c2",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "B",
+      "selected_scope": "tests/test_alpha.py",
+      "controlled_state": {
+        "requested_scope": null,
+        "completed_scope": "tests/test_delta.py"
+      },
+      "stratum": "requested_unknown",
+      "input": {
+        "state_text": "For the next verification, the requested test scope is not specified.\nOn this unchanged working tree, the record of fully checked scopes is: tests/test_delta.py.\nAn available record lists every scope checked so far.",
+        "candidate_text": "A previous test command included the entire scope tests/test_alpha.py in its explicit selection."
+      },
+      "labels": [
+        2,
+        0
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m0-q3-c3-A",
+      "base_condition_id": "m0-q3-c3",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "A",
+      "selected_scope": "tests/test_alpha.py",
+      "controlled_state": {
+        "requested_scope": null,
+        "completed_scope": null
+      },
+      "stratum": "both_unknown",
+      "input": {
+        "state_text": "Current verification target: not specified.\nEntire test scope already checked on the current working tree: record unavailable.\nWhen available, this is the complete list of checked scopes. No code changed afterwards.",
+        "candidate_text": "The earlier command explicitly selected this whole test scope: tests/test_alpha.py."
+      },
+      "labels": [
+        2,
+        2
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m0-q3-c3-B",
+      "base_condition_id": "m0-q3-c3",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "B",
+      "selected_scope": "tests/test_alpha.py",
+      "controlled_state": {
+        "requested_scope": null,
+        "completed_scope": null
+      },
+      "stratum": "both_unknown",
+      "input": {
+        "state_text": "For the next verification, the requested test scope is not specified.\nOn this unchanged working tree, the record of fully checked scopes is: record unavailable.\nAn available record lists every scope checked so far.",
+        "candidate_text": "A previous test command included the entire scope tests/test_alpha.py in its explicit selection."
+      },
+      "labels": [
+        2,
+        2
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m1-q0-c0-A",
+      "base_condition_id": "m1-q0-c0",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "A",
+      "selected_scope": "tests/test_bravo.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_alpha.py",
+        "completed_scope": "tests/test_alpha.py"
+      },
+      "stratum": "neither_matches",
+      "input": {
+        "state_text": "Current verification target: tests/test_alpha.py.\nEntire test scope already checked on the current working tree: tests/test_alpha.py.\nWhen available, this is the complete list of checked scopes. No code changed afterwards.",
+        "candidate_text": "The earlier command explicitly selected this whole test scope: tests/test_bravo.py."
+      },
+      "labels": [
+        1,
+        0
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m1-q0-c0-B",
+      "base_condition_id": "m1-q0-c0",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "B",
+      "selected_scope": "tests/test_bravo.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_alpha.py",
+        "completed_scope": "tests/test_alpha.py"
+      },
+      "stratum": "neither_matches",
+      "input": {
+        "state_text": "For the next verification, the requested test scope is tests/test_alpha.py.\nOn this unchanged working tree, the record of fully checked scopes is: tests/test_alpha.py.\nAn available record lists every scope checked so far.",
+        "candidate_text": "A previous test command included the entire scope tests/test_bravo.py in its explicit selection."
+      },
+      "labels": [
+        1,
+        0
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m1-q0-c1-A",
+      "base_condition_id": "m1-q0-c1",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "A",
+      "selected_scope": "tests/test_bravo.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_alpha.py",
+        "completed_scope": "tests/test_bravo.py"
+      },
+      "stratum": "completed_only_matches",
+      "input": {
+        "state_text": "Current verification target: tests/test_alpha.py.\nEntire test scope already checked on the current working tree: tests/test_bravo.py.\nWhen available, this is the complete list of checked scopes. No code changed afterwards.",
+        "candidate_text": "The earlier command explicitly selected this whole test scope: tests/test_bravo.py."
+      },
+      "labels": [
+        1,
+        1
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m1-q0-c1-B",
+      "base_condition_id": "m1-q0-c1",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "B",
+      "selected_scope": "tests/test_bravo.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_alpha.py",
+        "completed_scope": "tests/test_bravo.py"
+      },
+      "stratum": "completed_only_matches",
+      "input": {
+        "state_text": "For the next verification, the requested test scope is tests/test_alpha.py.\nOn this unchanged working tree, the record of fully checked scopes is: tests/test_bravo.py.\nAn available record lists every scope checked so far.",
+        "candidate_text": "A previous test command included the entire scope tests/test_bravo.py in its explicit selection."
+      },
+      "labels": [
+        1,
+        1
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m1-q0-c2-A",
+      "base_condition_id": "m1-q0-c2",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "A",
+      "selected_scope": "tests/test_bravo.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_alpha.py",
+        "completed_scope": "tests/test_delta.py"
+      },
+      "stratum": "neither_matches",
+      "input": {
+        "state_text": "Current verification target: tests/test_alpha.py.\nEntire test scope already checked on the current working tree: tests/test_delta.py.\nWhen available, this is the complete list of checked scopes. No code changed afterwards.",
+        "candidate_text": "The earlier command explicitly selected this whole test scope: tests/test_bravo.py."
+      },
+      "labels": [
+        1,
+        0
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m1-q0-c2-B",
+      "base_condition_id": "m1-q0-c2",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "B",
+      "selected_scope": "tests/test_bravo.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_alpha.py",
+        "completed_scope": "tests/test_delta.py"
+      },
+      "stratum": "neither_matches",
+      "input": {
+        "state_text": "For the next verification, the requested test scope is tests/test_alpha.py.\nOn this unchanged working tree, the record of fully checked scopes is: tests/test_delta.py.\nAn available record lists every scope checked so far.",
+        "candidate_text": "A previous test command included the entire scope tests/test_bravo.py in its explicit selection."
+      },
+      "labels": [
+        1,
+        0
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m1-q0-c3-A",
+      "base_condition_id": "m1-q0-c3",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "A",
+      "selected_scope": "tests/test_bravo.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_alpha.py",
+        "completed_scope": null
+      },
+      "stratum": "completed_unknown",
+      "input": {
+        "state_text": "Current verification target: tests/test_alpha.py.\nEntire test scope already checked on the current working tree: record unavailable.\nWhen available, this is the complete list of checked scopes. No code changed afterwards.",
+        "candidate_text": "The earlier command explicitly selected this whole test scope: tests/test_bravo.py."
+      },
+      "labels": [
+        1,
+        2
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m1-q0-c3-B",
+      "base_condition_id": "m1-q0-c3",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "B",
+      "selected_scope": "tests/test_bravo.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_alpha.py",
+        "completed_scope": null
+      },
+      "stratum": "completed_unknown",
+      "input": {
+        "state_text": "For the next verification, the requested test scope is tests/test_alpha.py.\nOn this unchanged working tree, the record of fully checked scopes is: record unavailable.\nAn available record lists every scope checked so far.",
+        "candidate_text": "A previous test command included the entire scope tests/test_bravo.py in its explicit selection."
+      },
+      "labels": [
+        1,
+        2
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m1-q1-c0-A",
+      "base_condition_id": "m1-q1-c0",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "A",
+      "selected_scope": "tests/test_bravo.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_bravo.py",
+        "completed_scope": "tests/test_alpha.py"
+      },
+      "stratum": "requested_only_matches",
+      "input": {
+        "state_text": "Current verification target: tests/test_bravo.py.\nEntire test scope already checked on the current working tree: tests/test_alpha.py.\nWhen available, this is the complete list of checked scopes. No code changed afterwards.",
+        "candidate_text": "The earlier command explicitly selected this whole test scope: tests/test_bravo.py."
+      },
+      "labels": [
+        0,
+        0
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m1-q1-c0-B",
+      "base_condition_id": "m1-q1-c0",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "B",
+      "selected_scope": "tests/test_bravo.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_bravo.py",
+        "completed_scope": "tests/test_alpha.py"
+      },
+      "stratum": "requested_only_matches",
+      "input": {
+        "state_text": "For the next verification, the requested test scope is tests/test_bravo.py.\nOn this unchanged working tree, the record of fully checked scopes is: tests/test_alpha.py.\nAn available record lists every scope checked so far.",
+        "candidate_text": "A previous test command included the entire scope tests/test_bravo.py in its explicit selection."
+      },
+      "labels": [
+        0,
+        0
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m1-q1-c1-A",
+      "base_condition_id": "m1-q1-c1",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "A",
+      "selected_scope": "tests/test_bravo.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_bravo.py",
+        "completed_scope": "tests/test_bravo.py"
+      },
+      "stratum": "both_match",
+      "input": {
+        "state_text": "Current verification target: tests/test_bravo.py.\nEntire test scope already checked on the current working tree: tests/test_bravo.py.\nWhen available, this is the complete list of checked scopes. No code changed afterwards.",
+        "candidate_text": "The earlier command explicitly selected this whole test scope: tests/test_bravo.py."
+      },
+      "labels": [
+        0,
+        1
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m1-q1-c1-B",
+      "base_condition_id": "m1-q1-c1",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "B",
+      "selected_scope": "tests/test_bravo.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_bravo.py",
+        "completed_scope": "tests/test_bravo.py"
+      },
+      "stratum": "both_match",
+      "input": {
+        "state_text": "For the next verification, the requested test scope is tests/test_bravo.py.\nOn this unchanged working tree, the record of fully checked scopes is: tests/test_bravo.py.\nAn available record lists every scope checked so far.",
+        "candidate_text": "A previous test command included the entire scope tests/test_bravo.py in its explicit selection."
+      },
+      "labels": [
+        0,
+        1
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m1-q1-c2-A",
+      "base_condition_id": "m1-q1-c2",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "A",
+      "selected_scope": "tests/test_bravo.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_bravo.py",
+        "completed_scope": "tests/test_delta.py"
+      },
+      "stratum": "requested_only_matches",
+      "input": {
+        "state_text": "Current verification target: tests/test_bravo.py.\nEntire test scope already checked on the current working tree: tests/test_delta.py.\nWhen available, this is the complete list of checked scopes. No code changed afterwards.",
+        "candidate_text": "The earlier command explicitly selected this whole test scope: tests/test_bravo.py."
+      },
+      "labels": [
+        0,
+        0
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m1-q1-c2-B",
+      "base_condition_id": "m1-q1-c2",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "B",
+      "selected_scope": "tests/test_bravo.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_bravo.py",
+        "completed_scope": "tests/test_delta.py"
+      },
+      "stratum": "requested_only_matches",
+      "input": {
+        "state_text": "For the next verification, the requested test scope is tests/test_bravo.py.\nOn this unchanged working tree, the record of fully checked scopes is: tests/test_delta.py.\nAn available record lists every scope checked so far.",
+        "candidate_text": "A previous test command included the entire scope tests/test_bravo.py in its explicit selection."
+      },
+      "labels": [
+        0,
+        0
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m1-q1-c3-A",
+      "base_condition_id": "m1-q1-c3",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "A",
+      "selected_scope": "tests/test_bravo.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_bravo.py",
+        "completed_scope": null
+      },
+      "stratum": "completed_unknown",
+      "input": {
+        "state_text": "Current verification target: tests/test_bravo.py.\nEntire test scope already checked on the current working tree: record unavailable.\nWhen available, this is the complete list of checked scopes. No code changed afterwards.",
+        "candidate_text": "The earlier command explicitly selected this whole test scope: tests/test_bravo.py."
+      },
+      "labels": [
+        0,
+        2
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m1-q1-c3-B",
+      "base_condition_id": "m1-q1-c3",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "B",
+      "selected_scope": "tests/test_bravo.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_bravo.py",
+        "completed_scope": null
+      },
+      "stratum": "completed_unknown",
+      "input": {
+        "state_text": "For the next verification, the requested test scope is tests/test_bravo.py.\nOn this unchanged working tree, the record of fully checked scopes is: record unavailable.\nAn available record lists every scope checked so far.",
+        "candidate_text": "A previous test command included the entire scope tests/test_bravo.py in its explicit selection."
+      },
+      "labels": [
+        0,
+        2
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m1-q2-c0-A",
+      "base_condition_id": "m1-q2-c0",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "A",
+      "selected_scope": "tests/test_bravo.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_delta.py",
+        "completed_scope": "tests/test_alpha.py"
+      },
+      "stratum": "neither_matches",
+      "input": {
+        "state_text": "Current verification target: tests/test_delta.py.\nEntire test scope already checked on the current working tree: tests/test_alpha.py.\nWhen available, this is the complete list of checked scopes. No code changed afterwards.",
+        "candidate_text": "The earlier command explicitly selected this whole test scope: tests/test_bravo.py."
+      },
+      "labels": [
+        1,
+        0
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m1-q2-c0-B",
+      "base_condition_id": "m1-q2-c0",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "B",
+      "selected_scope": "tests/test_bravo.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_delta.py",
+        "completed_scope": "tests/test_alpha.py"
+      },
+      "stratum": "neither_matches",
+      "input": {
+        "state_text": "For the next verification, the requested test scope is tests/test_delta.py.\nOn this unchanged working tree, the record of fully checked scopes is: tests/test_alpha.py.\nAn available record lists every scope checked so far.",
+        "candidate_text": "A previous test command included the entire scope tests/test_bravo.py in its explicit selection."
+      },
+      "labels": [
+        1,
+        0
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m1-q2-c1-A",
+      "base_condition_id": "m1-q2-c1",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "A",
+      "selected_scope": "tests/test_bravo.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_delta.py",
+        "completed_scope": "tests/test_bravo.py"
+      },
+      "stratum": "completed_only_matches",
+      "input": {
+        "state_text": "Current verification target: tests/test_delta.py.\nEntire test scope already checked on the current working tree: tests/test_bravo.py.\nWhen available, this is the complete list of checked scopes. No code changed afterwards.",
+        "candidate_text": "The earlier command explicitly selected this whole test scope: tests/test_bravo.py."
+      },
+      "labels": [
+        1,
+        1
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m1-q2-c1-B",
+      "base_condition_id": "m1-q2-c1",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "B",
+      "selected_scope": "tests/test_bravo.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_delta.py",
+        "completed_scope": "tests/test_bravo.py"
+      },
+      "stratum": "completed_only_matches",
+      "input": {
+        "state_text": "For the next verification, the requested test scope is tests/test_delta.py.\nOn this unchanged working tree, the record of fully checked scopes is: tests/test_bravo.py.\nAn available record lists every scope checked so far.",
+        "candidate_text": "A previous test command included the entire scope tests/test_bravo.py in its explicit selection."
+      },
+      "labels": [
+        1,
+        1
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m1-q2-c2-A",
+      "base_condition_id": "m1-q2-c2",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "A",
+      "selected_scope": "tests/test_bravo.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_delta.py",
+        "completed_scope": "tests/test_delta.py"
+      },
+      "stratum": "neither_matches",
+      "input": {
+        "state_text": "Current verification target: tests/test_delta.py.\nEntire test scope already checked on the current working tree: tests/test_delta.py.\nWhen available, this is the complete list of checked scopes. No code changed afterwards.",
+        "candidate_text": "The earlier command explicitly selected this whole test scope: tests/test_bravo.py."
+      },
+      "labels": [
+        1,
+        0
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m1-q2-c2-B",
+      "base_condition_id": "m1-q2-c2",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "B",
+      "selected_scope": "tests/test_bravo.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_delta.py",
+        "completed_scope": "tests/test_delta.py"
+      },
+      "stratum": "neither_matches",
+      "input": {
+        "state_text": "For the next verification, the requested test scope is tests/test_delta.py.\nOn this unchanged working tree, the record of fully checked scopes is: tests/test_delta.py.\nAn available record lists every scope checked so far.",
+        "candidate_text": "A previous test command included the entire scope tests/test_bravo.py in its explicit selection."
+      },
+      "labels": [
+        1,
+        0
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m1-q2-c3-A",
+      "base_condition_id": "m1-q2-c3",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "A",
+      "selected_scope": "tests/test_bravo.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_delta.py",
+        "completed_scope": null
+      },
+      "stratum": "completed_unknown",
+      "input": {
+        "state_text": "Current verification target: tests/test_delta.py.\nEntire test scope already checked on the current working tree: record unavailable.\nWhen available, this is the complete list of checked scopes. No code changed afterwards.",
+        "candidate_text": "The earlier command explicitly selected this whole test scope: tests/test_bravo.py."
+      },
+      "labels": [
+        1,
+        2
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m1-q2-c3-B",
+      "base_condition_id": "m1-q2-c3",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "B",
+      "selected_scope": "tests/test_bravo.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_delta.py",
+        "completed_scope": null
+      },
+      "stratum": "completed_unknown",
+      "input": {
+        "state_text": "For the next verification, the requested test scope is tests/test_delta.py.\nOn this unchanged working tree, the record of fully checked scopes is: record unavailable.\nAn available record lists every scope checked so far.",
+        "candidate_text": "A previous test command included the entire scope tests/test_bravo.py in its explicit selection."
+      },
+      "labels": [
+        1,
+        2
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m1-q3-c0-A",
+      "base_condition_id": "m1-q3-c0",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "A",
+      "selected_scope": "tests/test_bravo.py",
+      "controlled_state": {
+        "requested_scope": null,
+        "completed_scope": "tests/test_alpha.py"
+      },
+      "stratum": "requested_unknown",
+      "input": {
+        "state_text": "Current verification target: not specified.\nEntire test scope already checked on the current working tree: tests/test_alpha.py.\nWhen available, this is the complete list of checked scopes. No code changed afterwards.",
+        "candidate_text": "The earlier command explicitly selected this whole test scope: tests/test_bravo.py."
+      },
+      "labels": [
+        2,
+        0
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m1-q3-c0-B",
+      "base_condition_id": "m1-q3-c0",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "B",
+      "selected_scope": "tests/test_bravo.py",
+      "controlled_state": {
+        "requested_scope": null,
+        "completed_scope": "tests/test_alpha.py"
+      },
+      "stratum": "requested_unknown",
+      "input": {
+        "state_text": "For the next verification, the requested test scope is not specified.\nOn this unchanged working tree, the record of fully checked scopes is: tests/test_alpha.py.\nAn available record lists every scope checked so far.",
+        "candidate_text": "A previous test command included the entire scope tests/test_bravo.py in its explicit selection."
+      },
+      "labels": [
+        2,
+        0
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m1-q3-c1-A",
+      "base_condition_id": "m1-q3-c1",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "A",
+      "selected_scope": "tests/test_bravo.py",
+      "controlled_state": {
+        "requested_scope": null,
+        "completed_scope": "tests/test_bravo.py"
+      },
+      "stratum": "requested_unknown",
+      "input": {
+        "state_text": "Current verification target: not specified.\nEntire test scope already checked on the current working tree: tests/test_bravo.py.\nWhen available, this is the complete list of checked scopes. No code changed afterwards.",
+        "candidate_text": "The earlier command explicitly selected this whole test scope: tests/test_bravo.py."
+      },
+      "labels": [
+        2,
+        1
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m1-q3-c1-B",
+      "base_condition_id": "m1-q3-c1",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "B",
+      "selected_scope": "tests/test_bravo.py",
+      "controlled_state": {
+        "requested_scope": null,
+        "completed_scope": "tests/test_bravo.py"
+      },
+      "stratum": "requested_unknown",
+      "input": {
+        "state_text": "For the next verification, the requested test scope is not specified.\nOn this unchanged working tree, the record of fully checked scopes is: tests/test_bravo.py.\nAn available record lists every scope checked so far.",
+        "candidate_text": "A previous test command included the entire scope tests/test_bravo.py in its explicit selection."
+      },
+      "labels": [
+        2,
+        1
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m1-q3-c2-A",
+      "base_condition_id": "m1-q3-c2",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "A",
+      "selected_scope": "tests/test_bravo.py",
+      "controlled_state": {
+        "requested_scope": null,
+        "completed_scope": "tests/test_delta.py"
+      },
+      "stratum": "requested_unknown",
+      "input": {
+        "state_text": "Current verification target: not specified.\nEntire test scope already checked on the current working tree: tests/test_delta.py.\nWhen available, this is the complete list of checked scopes. No code changed afterwards.",
+        "candidate_text": "The earlier command explicitly selected this whole test scope: tests/test_bravo.py."
+      },
+      "labels": [
+        2,
+        0
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m1-q3-c2-B",
+      "base_condition_id": "m1-q3-c2",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "B",
+      "selected_scope": "tests/test_bravo.py",
+      "controlled_state": {
+        "requested_scope": null,
+        "completed_scope": "tests/test_delta.py"
+      },
+      "stratum": "requested_unknown",
+      "input": {
+        "state_text": "For the next verification, the requested test scope is not specified.\nOn this unchanged working tree, the record of fully checked scopes is: tests/test_delta.py.\nAn available record lists every scope checked so far.",
+        "candidate_text": "A previous test command included the entire scope tests/test_bravo.py in its explicit selection."
+      },
+      "labels": [
+        2,
+        0
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m1-q3-c3-A",
+      "base_condition_id": "m1-q3-c3",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "A",
+      "selected_scope": "tests/test_bravo.py",
+      "controlled_state": {
+        "requested_scope": null,
+        "completed_scope": null
+      },
+      "stratum": "both_unknown",
+      "input": {
+        "state_text": "Current verification target: not specified.\nEntire test scope already checked on the current working tree: record unavailable.\nWhen available, this is the complete list of checked scopes. No code changed afterwards.",
+        "candidate_text": "The earlier command explicitly selected this whole test scope: tests/test_bravo.py."
+      },
+      "labels": [
+        2,
+        2
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m1-q3-c3-B",
+      "base_condition_id": "m1-q3-c3",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "B",
+      "selected_scope": "tests/test_bravo.py",
+      "controlled_state": {
+        "requested_scope": null,
+        "completed_scope": null
+      },
+      "stratum": "both_unknown",
+      "input": {
+        "state_text": "For the next verification, the requested test scope is not specified.\nOn this unchanged working tree, the record of fully checked scopes is: record unavailable.\nAn available record lists every scope checked so far.",
+        "candidate_text": "A previous test command included the entire scope tests/test_bravo.py in its explicit selection."
+      },
+      "labels": [
+        2,
+        2
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m2-q0-c0-A",
+      "base_condition_id": "m2-q0-c0",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "A",
+      "selected_scope": "tests/test_delta.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_alpha.py",
+        "completed_scope": "tests/test_alpha.py"
+      },
+      "stratum": "neither_matches",
+      "input": {
+        "state_text": "Current verification target: tests/test_alpha.py.\nEntire test scope already checked on the current working tree: tests/test_alpha.py.\nWhen available, this is the complete list of checked scopes. No code changed afterwards.",
+        "candidate_text": "The earlier command explicitly selected this whole test scope: tests/test_delta.py."
+      },
+      "labels": [
+        1,
+        0
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m2-q0-c0-B",
+      "base_condition_id": "m2-q0-c0",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "B",
+      "selected_scope": "tests/test_delta.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_alpha.py",
+        "completed_scope": "tests/test_alpha.py"
+      },
+      "stratum": "neither_matches",
+      "input": {
+        "state_text": "For the next verification, the requested test scope is tests/test_alpha.py.\nOn this unchanged working tree, the record of fully checked scopes is: tests/test_alpha.py.\nAn available record lists every scope checked so far.",
+        "candidate_text": "A previous test command included the entire scope tests/test_delta.py in its explicit selection."
+      },
+      "labels": [
+        1,
+        0
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m2-q0-c1-A",
+      "base_condition_id": "m2-q0-c1",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "A",
+      "selected_scope": "tests/test_delta.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_alpha.py",
+        "completed_scope": "tests/test_bravo.py"
+      },
+      "stratum": "neither_matches",
+      "input": {
+        "state_text": "Current verification target: tests/test_alpha.py.\nEntire test scope already checked on the current working tree: tests/test_bravo.py.\nWhen available, this is the complete list of checked scopes. No code changed afterwards.",
+        "candidate_text": "The earlier command explicitly selected this whole test scope: tests/test_delta.py."
+      },
+      "labels": [
+        1,
+        0
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m2-q0-c1-B",
+      "base_condition_id": "m2-q0-c1",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "B",
+      "selected_scope": "tests/test_delta.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_alpha.py",
+        "completed_scope": "tests/test_bravo.py"
+      },
+      "stratum": "neither_matches",
+      "input": {
+        "state_text": "For the next verification, the requested test scope is tests/test_alpha.py.\nOn this unchanged working tree, the record of fully checked scopes is: tests/test_bravo.py.\nAn available record lists every scope checked so far.",
+        "candidate_text": "A previous test command included the entire scope tests/test_delta.py in its explicit selection."
+      },
+      "labels": [
+        1,
+        0
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m2-q0-c2-A",
+      "base_condition_id": "m2-q0-c2",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "A",
+      "selected_scope": "tests/test_delta.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_alpha.py",
+        "completed_scope": "tests/test_delta.py"
+      },
+      "stratum": "completed_only_matches",
+      "input": {
+        "state_text": "Current verification target: tests/test_alpha.py.\nEntire test scope already checked on the current working tree: tests/test_delta.py.\nWhen available, this is the complete list of checked scopes. No code changed afterwards.",
+        "candidate_text": "The earlier command explicitly selected this whole test scope: tests/test_delta.py."
+      },
+      "labels": [
+        1,
+        1
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m2-q0-c2-B",
+      "base_condition_id": "m2-q0-c2",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "B",
+      "selected_scope": "tests/test_delta.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_alpha.py",
+        "completed_scope": "tests/test_delta.py"
+      },
+      "stratum": "completed_only_matches",
+      "input": {
+        "state_text": "For the next verification, the requested test scope is tests/test_alpha.py.\nOn this unchanged working tree, the record of fully checked scopes is: tests/test_delta.py.\nAn available record lists every scope checked so far.",
+        "candidate_text": "A previous test command included the entire scope tests/test_delta.py in its explicit selection."
+      },
+      "labels": [
+        1,
+        1
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m2-q0-c3-A",
+      "base_condition_id": "m2-q0-c3",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "A",
+      "selected_scope": "tests/test_delta.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_alpha.py",
+        "completed_scope": null
+      },
+      "stratum": "completed_unknown",
+      "input": {
+        "state_text": "Current verification target: tests/test_alpha.py.\nEntire test scope already checked on the current working tree: record unavailable.\nWhen available, this is the complete list of checked scopes. No code changed afterwards.",
+        "candidate_text": "The earlier command explicitly selected this whole test scope: tests/test_delta.py."
+      },
+      "labels": [
+        1,
+        2
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m2-q0-c3-B",
+      "base_condition_id": "m2-q0-c3",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "B",
+      "selected_scope": "tests/test_delta.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_alpha.py",
+        "completed_scope": null
+      },
+      "stratum": "completed_unknown",
+      "input": {
+        "state_text": "For the next verification, the requested test scope is tests/test_alpha.py.\nOn this unchanged working tree, the record of fully checked scopes is: record unavailable.\nAn available record lists every scope checked so far.",
+        "candidate_text": "A previous test command included the entire scope tests/test_delta.py in its explicit selection."
+      },
+      "labels": [
+        1,
+        2
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m2-q1-c0-A",
+      "base_condition_id": "m2-q1-c0",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "A",
+      "selected_scope": "tests/test_delta.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_bravo.py",
+        "completed_scope": "tests/test_alpha.py"
+      },
+      "stratum": "neither_matches",
+      "input": {
+        "state_text": "Current verification target: tests/test_bravo.py.\nEntire test scope already checked on the current working tree: tests/test_alpha.py.\nWhen available, this is the complete list of checked scopes. No code changed afterwards.",
+        "candidate_text": "The earlier command explicitly selected this whole test scope: tests/test_delta.py."
+      },
+      "labels": [
+        1,
+        0
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m2-q1-c0-B",
+      "base_condition_id": "m2-q1-c0",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "B",
+      "selected_scope": "tests/test_delta.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_bravo.py",
+        "completed_scope": "tests/test_alpha.py"
+      },
+      "stratum": "neither_matches",
+      "input": {
+        "state_text": "For the next verification, the requested test scope is tests/test_bravo.py.\nOn this unchanged working tree, the record of fully checked scopes is: tests/test_alpha.py.\nAn available record lists every scope checked so far.",
+        "candidate_text": "A previous test command included the entire scope tests/test_delta.py in its explicit selection."
+      },
+      "labels": [
+        1,
+        0
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m2-q1-c1-A",
+      "base_condition_id": "m2-q1-c1",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "A",
+      "selected_scope": "tests/test_delta.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_bravo.py",
+        "completed_scope": "tests/test_bravo.py"
+      },
+      "stratum": "neither_matches",
+      "input": {
+        "state_text": "Current verification target: tests/test_bravo.py.\nEntire test scope already checked on the current working tree: tests/test_bravo.py.\nWhen available, this is the complete list of checked scopes. No code changed afterwards.",
+        "candidate_text": "The earlier command explicitly selected this whole test scope: tests/test_delta.py."
+      },
+      "labels": [
+        1,
+        0
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m2-q1-c1-B",
+      "base_condition_id": "m2-q1-c1",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "B",
+      "selected_scope": "tests/test_delta.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_bravo.py",
+        "completed_scope": "tests/test_bravo.py"
+      },
+      "stratum": "neither_matches",
+      "input": {
+        "state_text": "For the next verification, the requested test scope is tests/test_bravo.py.\nOn this unchanged working tree, the record of fully checked scopes is: tests/test_bravo.py.\nAn available record lists every scope checked so far.",
+        "candidate_text": "A previous test command included the entire scope tests/test_delta.py in its explicit selection."
+      },
+      "labels": [
+        1,
+        0
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m2-q1-c2-A",
+      "base_condition_id": "m2-q1-c2",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "A",
+      "selected_scope": "tests/test_delta.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_bravo.py",
+        "completed_scope": "tests/test_delta.py"
+      },
+      "stratum": "completed_only_matches",
+      "input": {
+        "state_text": "Current verification target: tests/test_bravo.py.\nEntire test scope already checked on the current working tree: tests/test_delta.py.\nWhen available, this is the complete list of checked scopes. No code changed afterwards.",
+        "candidate_text": "The earlier command explicitly selected this whole test scope: tests/test_delta.py."
+      },
+      "labels": [
+        1,
+        1
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m2-q1-c2-B",
+      "base_condition_id": "m2-q1-c2",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "B",
+      "selected_scope": "tests/test_delta.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_bravo.py",
+        "completed_scope": "tests/test_delta.py"
+      },
+      "stratum": "completed_only_matches",
+      "input": {
+        "state_text": "For the next verification, the requested test scope is tests/test_bravo.py.\nOn this unchanged working tree, the record of fully checked scopes is: tests/test_delta.py.\nAn available record lists every scope checked so far.",
+        "candidate_text": "A previous test command included the entire scope tests/test_delta.py in its explicit selection."
+      },
+      "labels": [
+        1,
+        1
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m2-q1-c3-A",
+      "base_condition_id": "m2-q1-c3",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "A",
+      "selected_scope": "tests/test_delta.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_bravo.py",
+        "completed_scope": null
+      },
+      "stratum": "completed_unknown",
+      "input": {
+        "state_text": "Current verification target: tests/test_bravo.py.\nEntire test scope already checked on the current working tree: record unavailable.\nWhen available, this is the complete list of checked scopes. No code changed afterwards.",
+        "candidate_text": "The earlier command explicitly selected this whole test scope: tests/test_delta.py."
+      },
+      "labels": [
+        1,
+        2
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m2-q1-c3-B",
+      "base_condition_id": "m2-q1-c3",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "B",
+      "selected_scope": "tests/test_delta.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_bravo.py",
+        "completed_scope": null
+      },
+      "stratum": "completed_unknown",
+      "input": {
+        "state_text": "For the next verification, the requested test scope is tests/test_bravo.py.\nOn this unchanged working tree, the record of fully checked scopes is: record unavailable.\nAn available record lists every scope checked so far.",
+        "candidate_text": "A previous test command included the entire scope tests/test_delta.py in its explicit selection."
+      },
+      "labels": [
+        1,
+        2
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m2-q2-c0-A",
+      "base_condition_id": "m2-q2-c0",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "A",
+      "selected_scope": "tests/test_delta.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_delta.py",
+        "completed_scope": "tests/test_alpha.py"
+      },
+      "stratum": "requested_only_matches",
+      "input": {
+        "state_text": "Current verification target: tests/test_delta.py.\nEntire test scope already checked on the current working tree: tests/test_alpha.py.\nWhen available, this is the complete list of checked scopes. No code changed afterwards.",
+        "candidate_text": "The earlier command explicitly selected this whole test scope: tests/test_delta.py."
+      },
+      "labels": [
+        0,
+        0
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m2-q2-c0-B",
+      "base_condition_id": "m2-q2-c0",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "B",
+      "selected_scope": "tests/test_delta.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_delta.py",
+        "completed_scope": "tests/test_alpha.py"
+      },
+      "stratum": "requested_only_matches",
+      "input": {
+        "state_text": "For the next verification, the requested test scope is tests/test_delta.py.\nOn this unchanged working tree, the record of fully checked scopes is: tests/test_alpha.py.\nAn available record lists every scope checked so far.",
+        "candidate_text": "A previous test command included the entire scope tests/test_delta.py in its explicit selection."
+      },
+      "labels": [
+        0,
+        0
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m2-q2-c1-A",
+      "base_condition_id": "m2-q2-c1",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "A",
+      "selected_scope": "tests/test_delta.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_delta.py",
+        "completed_scope": "tests/test_bravo.py"
+      },
+      "stratum": "requested_only_matches",
+      "input": {
+        "state_text": "Current verification target: tests/test_delta.py.\nEntire test scope already checked on the current working tree: tests/test_bravo.py.\nWhen available, this is the complete list of checked scopes. No code changed afterwards.",
+        "candidate_text": "The earlier command explicitly selected this whole test scope: tests/test_delta.py."
+      },
+      "labels": [
+        0,
+        0
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m2-q2-c1-B",
+      "base_condition_id": "m2-q2-c1",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "B",
+      "selected_scope": "tests/test_delta.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_delta.py",
+        "completed_scope": "tests/test_bravo.py"
+      },
+      "stratum": "requested_only_matches",
+      "input": {
+        "state_text": "For the next verification, the requested test scope is tests/test_delta.py.\nOn this unchanged working tree, the record of fully checked scopes is: tests/test_bravo.py.\nAn available record lists every scope checked so far.",
+        "candidate_text": "A previous test command included the entire scope tests/test_delta.py in its explicit selection."
+      },
+      "labels": [
+        0,
+        0
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m2-q2-c2-A",
+      "base_condition_id": "m2-q2-c2",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "A",
+      "selected_scope": "tests/test_delta.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_delta.py",
+        "completed_scope": "tests/test_delta.py"
+      },
+      "stratum": "both_match",
+      "input": {
+        "state_text": "Current verification target: tests/test_delta.py.\nEntire test scope already checked on the current working tree: tests/test_delta.py.\nWhen available, this is the complete list of checked scopes. No code changed afterwards.",
+        "candidate_text": "The earlier command explicitly selected this whole test scope: tests/test_delta.py."
+      },
+      "labels": [
+        0,
+        1
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m2-q2-c2-B",
+      "base_condition_id": "m2-q2-c2",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "B",
+      "selected_scope": "tests/test_delta.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_delta.py",
+        "completed_scope": "tests/test_delta.py"
+      },
+      "stratum": "both_match",
+      "input": {
+        "state_text": "For the next verification, the requested test scope is tests/test_delta.py.\nOn this unchanged working tree, the record of fully checked scopes is: tests/test_delta.py.\nAn available record lists every scope checked so far.",
+        "candidate_text": "A previous test command included the entire scope tests/test_delta.py in its explicit selection."
+      },
+      "labels": [
+        0,
+        1
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m2-q2-c3-A",
+      "base_condition_id": "m2-q2-c3",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "A",
+      "selected_scope": "tests/test_delta.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_delta.py",
+        "completed_scope": null
+      },
+      "stratum": "completed_unknown",
+      "input": {
+        "state_text": "Current verification target: tests/test_delta.py.\nEntire test scope already checked on the current working tree: record unavailable.\nWhen available, this is the complete list of checked scopes. No code changed afterwards.",
+        "candidate_text": "The earlier command explicitly selected this whole test scope: tests/test_delta.py."
+      },
+      "labels": [
+        0,
+        2
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m2-q2-c3-B",
+      "base_condition_id": "m2-q2-c3",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "B",
+      "selected_scope": "tests/test_delta.py",
+      "controlled_state": {
+        "requested_scope": "tests/test_delta.py",
+        "completed_scope": null
+      },
+      "stratum": "completed_unknown",
+      "input": {
+        "state_text": "For the next verification, the requested test scope is tests/test_delta.py.\nOn this unchanged working tree, the record of fully checked scopes is: record unavailable.\nAn available record lists every scope checked so far.",
+        "candidate_text": "A previous test command included the entire scope tests/test_delta.py in its explicit selection."
+      },
+      "labels": [
+        0,
+        2
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m2-q3-c0-A",
+      "base_condition_id": "m2-q3-c0",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "A",
+      "selected_scope": "tests/test_delta.py",
+      "controlled_state": {
+        "requested_scope": null,
+        "completed_scope": "tests/test_alpha.py"
+      },
+      "stratum": "requested_unknown",
+      "input": {
+        "state_text": "Current verification target: not specified.\nEntire test scope already checked on the current working tree: tests/test_alpha.py.\nWhen available, this is the complete list of checked scopes. No code changed afterwards.",
+        "candidate_text": "The earlier command explicitly selected this whole test scope: tests/test_delta.py."
+      },
+      "labels": [
+        2,
+        0
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m2-q3-c0-B",
+      "base_condition_id": "m2-q3-c0",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "B",
+      "selected_scope": "tests/test_delta.py",
+      "controlled_state": {
+        "requested_scope": null,
+        "completed_scope": "tests/test_alpha.py"
+      },
+      "stratum": "requested_unknown",
+      "input": {
+        "state_text": "For the next verification, the requested test scope is not specified.\nOn this unchanged working tree, the record of fully checked scopes is: tests/test_alpha.py.\nAn available record lists every scope checked so far.",
+        "candidate_text": "A previous test command included the entire scope tests/test_delta.py in its explicit selection."
+      },
+      "labels": [
+        2,
+        0
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m2-q3-c1-A",
+      "base_condition_id": "m2-q3-c1",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "A",
+      "selected_scope": "tests/test_delta.py",
+      "controlled_state": {
+        "requested_scope": null,
+        "completed_scope": "tests/test_bravo.py"
+      },
+      "stratum": "requested_unknown",
+      "input": {
+        "state_text": "Current verification target: not specified.\nEntire test scope already checked on the current working tree: tests/test_bravo.py.\nWhen available, this is the complete list of checked scopes. No code changed afterwards.",
+        "candidate_text": "The earlier command explicitly selected this whole test scope: tests/test_delta.py."
+      },
+      "labels": [
+        2,
+        0
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m2-q3-c1-B",
+      "base_condition_id": "m2-q3-c1",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "B",
+      "selected_scope": "tests/test_delta.py",
+      "controlled_state": {
+        "requested_scope": null,
+        "completed_scope": "tests/test_bravo.py"
+      },
+      "stratum": "requested_unknown",
+      "input": {
+        "state_text": "For the next verification, the requested test scope is not specified.\nOn this unchanged working tree, the record of fully checked scopes is: tests/test_bravo.py.\nAn available record lists every scope checked so far.",
+        "candidate_text": "A previous test command included the entire scope tests/test_delta.py in its explicit selection."
+      },
+      "labels": [
+        2,
+        0
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m2-q3-c2-A",
+      "base_condition_id": "m2-q3-c2",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "A",
+      "selected_scope": "tests/test_delta.py",
+      "controlled_state": {
+        "requested_scope": null,
+        "completed_scope": "tests/test_delta.py"
+      },
+      "stratum": "requested_unknown",
+      "input": {
+        "state_text": "Current verification target: not specified.\nEntire test scope already checked on the current working tree: tests/test_delta.py.\nWhen available, this is the complete list of checked scopes. No code changed afterwards.",
+        "candidate_text": "The earlier command explicitly selected this whole test scope: tests/test_delta.py."
+      },
+      "labels": [
+        2,
+        1
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m2-q3-c2-B",
+      "base_condition_id": "m2-q3-c2",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "B",
+      "selected_scope": "tests/test_delta.py",
+      "controlled_state": {
+        "requested_scope": null,
+        "completed_scope": "tests/test_delta.py"
+      },
+      "stratum": "requested_unknown",
+      "input": {
+        "state_text": "For the next verification, the requested test scope is not specified.\nOn this unchanged working tree, the record of fully checked scopes is: tests/test_delta.py.\nAn available record lists every scope checked so far.",
+        "candidate_text": "A previous test command included the entire scope tests/test_delta.py in its explicit selection."
+      },
+      "labels": [
+        2,
+        1
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m2-q3-c3-A",
+      "base_condition_id": "m2-q3-c3",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "A",
+      "selected_scope": "tests/test_delta.py",
+      "controlled_state": {
+        "requested_scope": null,
+        "completed_scope": null
+      },
+      "stratum": "both_unknown",
+      "input": {
+        "state_text": "Current verification target: not specified.\nEntire test scope already checked on the current working tree: record unavailable.\nWhen available, this is the complete list of checked scopes. No code changed afterwards.",
+        "candidate_text": "The earlier command explicitly selected this whole test scope: tests/test_delta.py."
+      },
+      "labels": [
+        2,
+        2
+      ],
+      "utility_label": null
+    },
+    {
+      "sample_id": "role-control-m2-q3-c3-B",
+      "base_condition_id": "m2-q3-c3",
+      "family_id": "synthetic-equal-character-length-scopes",
+      "annotation_kind": "synthetic_role_binding_control_no_observed_execution",
+      "template": "B",
+      "selected_scope": "tests/test_delta.py",
+      "controlled_state": {
+        "requested_scope": null,
+        "completed_scope": null
+      },
+      "stratum": "both_unknown",
+      "input": {
+        "state_text": "For the next verification, the requested test scope is not specified.\nOn this unchanged working tree, the record of fully checked scopes is: record unavailable.\nAn available record lists every scope checked so far.",
+        "candidate_text": "A previous test command included the entire scope tests/test_delta.py in its explicit selection."
+      },
+      "labels": [
+        2,
+        2
+      ],
+      "utility_label": null
+    }
+  ]
+}

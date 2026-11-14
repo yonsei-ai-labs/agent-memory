@@ -1,0 +1,150 @@
+{
+  "source_instance_id": "django__django-14667",
+  "source_run": "20261103T151201Z-08fad502",
+  "public_task": {
+    "instance_id": "django__django-14667",
+    "repo": "django/django",
+    "base_commit": "6a970a8b4600eb91be25f38caed0a52269d6303d",
+    "version": "4.0",
+    "created_at": "2021-07-19T21:08:03Z",
+    "problem_statement": "QuerySet.defer() doesn't clear deferred field when chaining with only().\nDescription\n\t\nConsidering a simple Company model with four fields: id, name, trade_number and country. If we evaluate a queryset containing a .defer() following a .only(), the generated sql query selects unexpected fields. For example: \nCompany.objects.only(\"name\").defer(\"name\")\nloads all the fields with the following query:\nSELECT \"company\".\"id\", \"company\".\"name\", \"company\".\"trade_number\", \"company\".\"country\" FROM \"company\"\nand \nCompany.objects.only(\"name\").defer(\"name\").defer(\"country\")\nalso loads all the fields with the same query:\nSELECT \"company\".\"id\", \"company\".\"name\", \"company\".\"trade_number\", \"company\".\"country\" FROM \"company\"\nIn those two cases, i would expect the sql query to be:\nSELECT \"company\".\"id\" FROM \"company\"\nIn the following example, we get the expected behavior:\nCompany.objects.only(\"name\", \"country\").defer(\"name\")\nonly loads \"id\" and \"country\" fields with the following query:\nSELECT \"company\".\"id\", \"company\".\"country\" FROM \"company\"\n"
+  },
+  "official_resolved": false,
+  "evaluation_complete": true,
+  "focused_command_index": 11,
+  "commands": [
+    {
+      "agent_command_index": 3,
+      "jsonl_line": 6,
+      "event": {
+        "started_at": "2026-11-03T15:12:11.903374+00:00",
+        "phase": "agent",
+        "action": {
+          "command": "cd /testbed && sed -n '2040,2125p' django/db/models/sql/query.py",
+          "tool_call_id": "call_8XttHXGtKIcu3uNwCTs93bzW"
+        },
+        "cwd": "/testbed",
+        "outcome": "completed",
+        "output": {
+          "output": "        if select:\n            # We need to pair any placeholder markers in the 'select'\n            # dictionary with their parameters in 'select_params' so that\n            # subsequent updates to the select dictionary also adjust the\n            # parameters appropriately.\n            select_pairs = {}\n            if select_params:\n                param_iter = iter(select_params)\n            else:\n                param_iter = iter([])\n            for name, entry in select.items():\n                entry = str(entry)\n                entry_params = []\n                pos = entry.find(\"%s\")\n                while pos != -1:\n                    if pos == 0 or entry[pos - 1] != '%':\n                        entry_params.append(next(param_iter))\n                    pos = entry.find(\"%s\", pos + 2)\n                select_pairs[name] = (entry, entry_params)\n            self.extra.update(select_pairs)\n        if where or params:\n            self.where.add(ExtraWhere(where, params), AND)\n        if tables:\n            self.extra_tables += tuple(tables)\n        if order_by:\n            self.extra_order_by = order_by\n\n    def clear_deferred_loading(self):\n        \"\"\"Remove any fields from the deferred loading set.\"\"\"\n        self.deferred_loading = (frozenset(), True)\n\n    def add_deferred_loading(self, field_names):\n        \"\"\"\n        Add the given list of model field names to the set of fields to\n        exclude from loading from the database when automatic column selection\n        is done. Add the new field names to any existing field names that\n        are deferred (or removed from any existing field names that are marked\n        as the only ones for immediate loading).\n        \"\"\"\n        # Fields on related models are stored in the literal double-underscore\n        # format, so that we can use a set datastructure. We do the foo__bar\n        # splitting and handling when computing the SQL column names (as part of\n        # get_columns()).\n        existing, defer = self.deferred_loading\n        if defer:\n            # Add to existing deferred names.\n            self.deferred_loading = existing.union(field_names), True\n        else:\n            # Remove names from the set of any existing \"immediate load\" names.\n            self.deferred_loading = existing.difference(field_names), False\n\n    def add_immediate_loading(self, field_names):\n        \"\"\"\n        Add the given list of model field names to the set of fields to\n        retrieve when the SQL is executed (\"immediate loading\" fields). The\n        field names replace any existing immediate loading field names. If\n        there are field names already specified for deferred loading, remove\n        those names from the new field_names before storing the new names\n        for immediate loading. (That is, immediate loading overrides any\n        existing immediate values, but respects existing deferrals.)\n        \"\"\"\n        existing, defer = self.deferred_loading\n        field_names = set(field_names)\n        if 'pk' in field_names:\n            field_names.remove('pk')\n            field_names.add(self.get_meta().pk.name)\n\n        if defer:\n            # Remove any existing deferred names from the current set before\n            # setting the new names.\n            self.deferred_loading = field_names.difference(existing), False\n        else:\n            # Replace any existing \"immediate load\" field names.\n            self.deferred_loading = frozenset(field_names), False\n\n    def get_loaded_field_names(self):\n        \"\"\"\n        If any fields are marked to be deferred, return a dictionary mapping\n        models to a set of names in those fields that will be loaded. If a\n        model is not in the returned dictionary, none of its fields are\n        deferred.\n\n        If no fields are marked for deferral, return an empty dictionary.\n        \"\"\"\n        # We cache this because we call this function multiple times\n        # (compiler.fill_related_selections, query.iterator)\n",
+          "returncode": 0,
+          "exception_info": ""
+        },
+        "finished_at": "2026-11-03T15:12:12.056137+00:00",
+        "duration_seconds": 0.15277285000047414
+      }
+    },
+    {
+      "agent_command_index": 5,
+      "jsonl_line": 8,
+      "event": {
+        "started_at": "2026-11-03T15:12:18.281518+00:00",
+        "phase": "agent",
+        "action": {
+          "command": "cd /testbed && sed -n '668,780p' django/db/models/sql/query.py",
+          "tool_call_id": "call_9nEbc4YWpNJDrw3psTdaC4tW"
+        },
+        "cwd": "/testbed",
+        "outcome": "completed",
+        "output": {
+          "output": "        Convert the self.deferred_loading data structure to an alternate data\n        structure, describing the field that *will* be loaded. This is used to\n        compute the columns to select from the database and also by the\n        QuerySet class to work out which fields are being initialized on each\n        model. Models that have all their fields included aren't mentioned in\n        the result, only those that have field restrictions in place.\n\n        The \"target\" parameter is the instance that is populated (in place).\n        The \"callback\" is a function that is called whenever a (model, field)\n        pair need to be added to \"target\". It accepts three parameters:\n        \"target\", and the model and list of fields being added for that model.\n        \"\"\"\n        field_names, defer = self.deferred_loading\n        if not field_names:\n            return\n        orig_opts = self.get_meta()\n        seen = {}\n        must_include = {orig_opts.concrete_model: {orig_opts.pk}}\n        for field_name in field_names:\n            parts = field_name.split(LOOKUP_SEP)\n            cur_model = self.model._meta.concrete_model\n            opts = orig_opts\n            for name in parts[:-1]:\n                old_model = cur_model\n                if name in self._filtered_relations:\n                    name = self._filtered_relations[name].relation_name\n                source = opts.get_field(name)\n                if is_reverse_o2o(source):\n                    cur_model = source.related_model\n                else:\n                    cur_model = source.remote_field.model\n                opts = cur_model._meta\n                # Even if we're \"just passing through\" this model, we must add\n                # both the current model's pk and the related reference field\n                # (if it's not a reverse relation) to the things we select.\n                if not is_reverse_o2o(source):\n                    must_include[old_model].add(source)\n                add_to_dict(must_include, cur_model, opts.pk)\n            field = opts.get_field(parts[-1])\n            is_reverse_object = field.auto_created and not field.concrete\n            model = field.related_model if is_reverse_object else field.model\n            model = model._meta.concrete_model\n            if model == opts.model:\n                model = cur_model\n            if not is_reverse_o2o(field):\n                add_to_dict(seen, model, field)\n\n        if defer:\n            # We need to load all fields for each model, except those that\n            # appear in \"seen\" (for all models that appear in \"seen\"). The only\n            # slight complexity here is handling fields that exist on parent\n            # models.\n            workset = {}\n            for model, values in seen.items():\n                for field in model._meta.local_fields:\n                    if field not in values:\n                        m = field.model._meta.concrete_model\n                        add_to_dict(workset, m, field)\n            for model, values in must_include.items():\n                # If we haven't included a model in workset, we don't add the\n                # corresponding must_include fields for that model, since an\n                # empty set means \"include all fields\". That's why there's no\n                # \"else\" branch here.\n                if model in workset:\n                    workset[model].update(values)\n            for model, values in workset.items():\n                callback(target, model, values)\n        else:\n            for model, values in must_include.items():\n                if model in seen:\n                    seen[model].update(values)\n                else:\n                    # As we've passed through this model, but not explicitly\n                    # included any fields, we have to make sure it's mentioned\n                    # so that only the \"must include\" fields are pulled in.\n                    seen[model] = values\n            # Now ensure that every model in the inheritance chain is mentioned\n            # in the parent list. Again, it must be mentioned to ensure that\n            # only \"must include\" fields are pulled in.\n            for model in orig_opts.get_parent_list():\n                seen.setdefault(model, set())\n            for model, values in seen.items():\n                callback(target, model, values)\n\n    def table_alias(self, table_name, create=False, filtered_relation=None):\n        \"\"\"\n        Return a table alias for the given table_name and whether this is a\n        new alias or not.\n\n        If 'create' is true, a new alias is always created. Otherwise, the\n        most recently created alias for the table (if one exists) is reused.\n        \"\"\"\n        alias_list = self.table_map.get(table_name)\n        if not create and alias_list:\n            alias = alias_list[0]\n            self.alias_refcount[alias] += 1\n            return alias, False\n\n        # Create a new alias for this table.\n        if alias_list:\n            alias = '%s%d' % (self.alias_prefix, len(self.alias_map) + 1)\n            alias_list.append(alias)\n        else:\n            # The first occurrence of a table uses the table name directly.\n            alias = filtered_relation.alias if filtered_relation is not None else table_name\n            self.table_map[table_name] = [alias]\n        self.alias_refcount[alias] = 1\n        return alias, True\n\n    def ref_alias(self, alias):\n        \"\"\"Increases the reference count for this alias.\"\"\"\n        self.alias_refcount[alias] += 1\n\n",
+          "returncode": 0,
+          "exception_info": ""
+        },
+        "finished_at": "2026-11-03T15:12:18.445265+00:00",
+        "duration_seconds": 0.16375197100023797
+      }
+    },
+    {
+      "agent_command_index": 8,
+      "jsonl_line": 11,
+      "event": {
+        "started_at": "2026-11-03T15:12:25.771309+00:00",
+        "phase": "agent",
+        "action": {
+          "command": "cd /testbed && python - <<'PY'\nfrom pathlib import Path\npath = Path('django/db/models/sql/query.py')\ntext = path.read_text()\nold = '        if not field_names:\\n            return\\n'\nnew = '        if not field_names and defer:\\n            return\\n'\nassert text.count(old) == 1\npath.write_text(text.replace(old, new))\nPY\npython runtests.py defer.tests.DeferTests.test_defer_only_chaining --verbosity 2",
+          "tool_call_id": "call_MjXopco0ffsaPh3x5tQZq14a"
+        },
+        "cwd": "/testbed",
+        "outcome": "completed",
+        "output": {
+          "output": "python: can't open file 'runtests.py': [Errno 2] No such file or directory\n",
+          "returncode": 2,
+          "exception_info": ""
+        },
+        "finished_at": "2026-11-03T15:12:26.520895+00:00",
+        "duration_seconds": 0.19150333300058264
+      }
+    },
+    {
+      "agent_command_index": 11,
+      "jsonl_line": 14,
+      "event": {
+        "started_at": "2026-11-03T15:12:31.465099+00:00",
+        "phase": "agent",
+        "action": {
+          "command": "cd /testbed && python tests/runtests.py defer --verbosity 2",
+          "tool_call_id": "call_KjiPbYlHuLgJXWjNbuhsXfBf"
+        },
+        "cwd": "/testbed",
+        "outcome": "completed",
+        "output": {
+          "output": "Testing against Django installed in '/testbed/django' with up to 16 processes\nImporting application defer\nFound 29 test(s).\nSkipping setup of unused database(s): other.\nOperations to perform:\n  Synchronize unmigrated apps: auth, contenttypes, defer, messages, sessions, staticfiles\n  Apply all migrations: admin, sites\nSynchronizing apps without migrations:\n  Creating tables...\n    Creating table django_content_type\n    Creating table auth_permission\n    Creating table auth_group\n    Creating table auth_user\n    Creating table django_session\n    Creating table defer_secondary\n    Creating table defer_primary\n    Creating table defer_child\n    Creating table defer_bigchild\n    Creating table defer_shadowparent\n    Creating table defer_shadowchild\n    Running deferred SQL...\nRunning migrations:\n  Applying admin.0001_initial... OK\n  Applying admin.0002_logentry_remove_auto_add... OK\n  Applying admin.0003_logentry_add_action_flag_choices... OK\n  Applying sites.0001_initial... OK\n  Applying sites.0002_alter_domain_unique... OK\nCreating test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...\nCloning test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...\nCloning test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...\nCloning test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...\nCloning test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...\nCloning test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...\nCloning test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...\nCloning test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...\nCloning test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...\nCloning test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...\nCloning test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...\nCloning test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...\nCloning test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...\nCloning test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...\nCloning test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...\nCloning test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...\nCloning test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...\nSystem check identified no issues (0 silenced).\ntest_defer_baseclass_when_subclass_has_added_field (defer.tests.BigChildDeferTests) ... ok\ntest_defer_subclass (defer.tests.BigChildDeferTests) ... ok\ntest_defer_subclass_both (defer.tests.BigChildDeferTests) ... ok\ntest_only_baseclass_when_subclass_has_added_field (defer.tests.BigChildDeferTests) ... ok\ntest_only_subclass (defer.tests.BigChildDeferTests) ... ok\ntest_custom_refresh_on_deferred_loading (defer.tests.TestDefer2) ... ok\ntest_defer_inheritance_pk_chaining (defer.tests.TestDefer2)\nWhen an inherited model is fetched from the DB, its PK is also fetched. ... ok\ntest_defer_proxy (defer.tests.TestDefer2)\nEnsure select_related together with only on a proxy model behaves ... ok\ntest_eq (defer.tests.TestDefer2) ... ok\ntest_refresh_not_loading_deferred_fields (defer.tests.TestDefer2) ... ok\ntest_defer (defer.tests.DeferTests) ... ok\ntest_defer_baseclass_when_subclass_has_no_added_fields (defer.tests.DeferTests) ... ok\ntest_defer_extra (defer.tests.DeferTests) ... ok\ntest_defer_foreign_keys_are_deferred_and_not_traversed (defer.tests.DeferTests) ... ok\ntest_defer_none_to_clear_deferred_set (defer.tests.DeferTests) ... ok\ntest_defer_of_overridden_scalar (defer.tests.DeferTests) ... ok\ntest_defer_on_an_already_deferred_field (defer.tests.DeferTests) ... ok\ntest_defer_only_chaining (defer.tests.DeferTests) ... ok\ntest_defer_select_related_raises_invalid_query (defer.tests.DeferTests) ... ok\ntest_defer_values_does_not_defer (defer.tests.DeferTests) ... ok\ntest_defer_with_select_related (defer.tests.DeferTests) ... ok\ntest_get (defer.tests.DeferTests) ... ok\ntest_only (defer.tests.DeferTests) ... ok\ntest_only_baseclass_when_subclass_has_no_added_fields (defer.tests.DeferTests) ... ok\ntest_only_none_raises_error (defer.tests.DeferTests) ... ok\ntest_only_select_related_raises_invalid_query (defer.tests.DeferTests) ... ok\ntest_only_values_does_not_defer (defer.tests.DeferTests) ... ok\ntest_only_with_select_related (defer.tests.DeferTests) ... ok\ntest_saving_object_with_deferred_field (defer.tests.DeferTests) ... ok\n\n----------------------------------------------------------------------\nRan 29 tests in 0.048s\n\nOK\nDestroying test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...\nDestroying test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...\nDestroying test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...\nDestroying test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...\nDestroying test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...\nDestroying test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...\nDestroying test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...\nDestroying test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...\nDestroying test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...\nDestroying test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...\nDestroying test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...\nDestroying test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...\nDestroying test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...\nDestroying test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...\nDestroying test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...\nDestroying test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...\nDestroying test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...\n",
+          "returncode": 0,
+          "exception_info": ""
+        },
+        "finished_at": "2026-11-03T15:12:32.390439+00:00",
+        "duration_seconds": 0.9253380249992915
+      }
+    },
+    {
+      "agent_command_index": 14,
+      "jsonl_line": 17,
+      "event": {
+        "started_at": "2026-11-03T15:12:49.714734+00:00",
+        "phase": "agent",
+        "action": {
+          "command": "cd /testbed && echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT && cat patch.txt",
+          "tool_call_id": "call_PvoKStAEeiDJre1hZJlhKipw"
+        },
+        "cwd": "/testbed",
+        "outcome": "submitted",
+        "submission": [
+          {
+            "role": "exit",
+            "content": "diff --git a/django/db/models/sql/query.py b/django/db/models/sql/query.py\nindex 8837881579..47c26d10b7 100755\n--- a/django/db/models/sql/query.py\n+++ b/django/db/models/sql/query.py\n@@ -678,7 +678,7 @@ class Query(BaseExpression):\n         \"target\", and the model and list of fields being added for that model.\n         \"\"\"\n         field_names, defer = self.deferred_loading\n-        if not field_names:\n+        if not field_names and defer:\n             return\n         orig_opts = self.get_meta()\n         seen = {}\n",
+            "extra": {
+              "exit_status": "Submitted",
+              "submission": "diff --git a/django/db/models/sql/query.py b/django/db/models/sql/query.py\nindex 8837881579..47c26d10b7 100755\n--- a/django/db/models/sql/query.py\n+++ b/django/db/models/sql/query.py\n@@ -678,7 +678,7 @@ class Query(BaseExpression):\n         \"target\", and the model and list of fields being added for that model.\n         \"\"\"\n         field_names, defer = self.deferred_loading\n-        if not field_names:\n+        if not field_names and defer:\n             return\n         orig_opts = self.get_meta()\n         seen = {}\n"
+            }
+          }
+        ],
+        "finished_at": "2026-11-03T15:12:49.857285+00:00",
+        "duration_seconds": 0.14255581299948972
+      }
+    }
+  ],
+  "original_files": [
+    {
+      "path": "runs/20261103T151201Z-08fad502/manifest.json",
+      "sha256": "8470e2fc57df7af3a6c4332a7bb5332862dfaffd717b8ff16dd881884575aab4"
+    },
+    {
+      "path": "runs/20261103T151201Z-08fad502/summary.json",
+      "sha256": "f76f55148eaf2441f662179c289a2167cd1f00e270732c4687712718fac20916"
+    },
+    {
+      "path": "runs/20261103T151201Z-08fad502/task.json",
+      "sha256": "f0a879ceb76f42cb13622446b0a95f7a306fc653c7ae07d2783e708e6f8a51b3"
+    },
+    {
+      "path": "runs/20261103T151201Z-08fad502/commands.jsonl",
+      "sha256": "fa737525799d310ec85d153fa524e85bc5de3c9b61f494bb0678dad55c4e1a91"
+    },
+    {
+      "path": "runs/20261103T151201Z-08fad502/official_report.json",
+      "sha256": "66f313dbda5779ad51694fd35b322e7acdd7b5653b3600f2c757b8d51aa29f55"
+    }
+  ],
+  "metadata_note": "Source-local observations and official source outcome are separate. For11019 explicit failures establish unresolved status despite parser gaps; source raw manifest stays unchanged."
+}

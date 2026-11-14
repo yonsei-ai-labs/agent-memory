@@ -1,0 +1,8 @@
+{
+  "timing": "Before any v1/v2 worker generation; during v2 training. Selector rendering and training labels unchanged.",
+  "reason": "Annotation keys meaning/signifier repeat the expected values and must not become worker-visible answer hints.",
+  "change": "Use field_1, field_2, ... in requested JSON schema for every case and policy; map back to semantic annotations only in evaluator.",
+  "training_effect": "None: pair_text uses goal, observations and memory text, never requested_fields keys.",
+  "worker_input_handling": "Training process imported earlier module code; preserve its unexecuted worker-input as worker-input-before-anonymous-keys, then regenerate with this reviewed schema before launching worker.",
+  "protocol_source_sha256": "9c308ca3062bd531a102a32643a8104938175e900dfa92d94e2f72f28dd2cb5d"
+}

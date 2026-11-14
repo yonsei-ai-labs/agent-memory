@@ -1,0 +1,50 @@
+{
+  "status": "mechanical_checks_passed",
+  "sources": 4,
+  "root_families": 4,
+  "cases": 399,
+  "candidate_inputs": 5686,
+  "unique_inputs": 5666,
+  "judgments": {
+    "not_needed": 5383,
+    "needed": 263,
+    "insufficient": 40
+  },
+  "evidence_spans_checked": 17003,
+  "utility_labels": 0,
+  "source_split_overlap": 0,
+  "contradictory_inputs": 0,
+  "semantic_completeness_verified": false,
+  "independent_human_review": false,
+  "tokenizer_or_truncation_verified": false,
+  "scope": "Declared evidence offsets, source/scenario/time, input identity and null utility only; not independent semantic validation or worker benefit.",
+  "selector_tokens": {
+    "min": 1208,
+    "max": 3582,
+    "exceeding_4096": 0
+  },
+  "source_families": 4,
+  "relation_cases": 168,
+  "relation_targets": 5472,
+  "masked_ambiguous_relation_targets": 18,
+  "missing_premise_probes": 40,
+  "controlled_pairs": 96,
+  "controlled_states": 192,
+  "masked_unreviewed_occurrences": 5726,
+  "worker_assignments": 1152,
+  "unique_worker_inputs": 402,
+  "independent_human_reviews": 0,
+  "shortcut_diagnostics": {
+    "scope": "Finite controlled table, not model performance or a population bound.",
+    "observation_only": {
+      "groups": 41,
+      "conflicting_groups": 41,
+      "best_lookup_accuracy": 0.5
+    },
+    "goal_and_focal_without_observation": {
+      "groups": 29,
+      "conflicting_groups": 29,
+      "best_lookup_accuracy": 0.5
+    }
+  }
+}

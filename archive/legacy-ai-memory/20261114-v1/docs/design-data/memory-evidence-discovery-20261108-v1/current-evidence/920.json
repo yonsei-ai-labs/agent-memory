@@ -1,0 +1,48 @@
+{
+  "target_trajectory_row_index": 920,
+  "task": {
+    "instance_id": "PyCQA__pyflakes-765",
+    "repo": "PyCQA/pyflakes",
+    "base_commit": "e9324649874a7124a08c3826d4cf78a4dc3aa32c",
+    "created_at": "2023-01-31 18:34:43",
+    "problem_statement": "Regression with version 3.0 ('bool' object is not subscriptable)\nHello! I found a regression with version 3.0\r\n\r\nThis snippet:\r\n```\r\ntest: int\r\n\r\ntest.__dict__\r\n\r\n\r\ndef fn():\r\n    test = 1\r\n```\r\n\r\nRaises the following exception with version 3.0.1:\r\n```\r\nTraceback (most recent call last):\r\n  File \"/opt/homebrew/bin/pyflakes\", line 8, in <module>\r\n    sys.exit(main())\r\n  File \"/opt/homebrew/lib/python3.10/site-packages/pyflakes/api.py\", line 182, in main\r\n    warnings = checkRecursive(args, reporter)\r\n  File \"/opt/homebrew/lib/python3.10/site-packages/pyflakes/api.py\", line 127, in checkRecursive\r\n    warnings += checkPath(sourcePath, reporter)\r\n  File \"/opt/homebrew/lib/python3.10/site-packages/pyflakes/api.py\", line 71, in checkPath\r\n    return check(codestr, filename, reporter)\r\n  File \"/opt/homebrew/lib/python3.10/site-packages/pyflakes/api.py\", line 47, in check\r\n    w = checker.Checker(tree, filename=filename)\r\n  File \"/opt/homebrew/lib/python3.10/site-packages/pyflakes/checker.py\", line 789, in __init__\r\n    self.runDeferred(self._deferredFunctions)\r\n  File \"/opt/homebrew/lib/python3.10/site-packages/pyflakes/checker.py\", line 832, in runDeferred\r\n    handler()\r\n  File \"/opt/homebrew/lib/python3.10/site-packages/pyflakes/checker.py\", line 1998, in runFunction\r\n    self.handleChildren(node, omit=['decorator_list', 'returns'])\r\n  File \"/opt/homebrew/lib/python3.10/site-packages/pyflakes/checker.py\", line 1238, in handleChildren\r\n    self.handleNode(node, tree)\r\n  File \"/opt/homebrew/lib/python3.10/site-packages/pyflakes/checker.py\", line 1283, in handleNode\r\n    handler(node)\r\n  File \"/opt/homebrew/lib/python3.10/site-packages/pyflakes/checker.py\", line 1238, in handleChildren\r\n    self.handleNode(node, tree)\r\n  File \"/opt/homebrew/lib/python3.10/site-packages/pyflakes/checker.py\", line 1283, in handleNode\r\n    handler(node)\r\n  File \"/opt/homebrew/lib/python3.10/site-packages/pyflakes/checker.py\", line 1889, in NAME\r\n    self.handleNodeStore(node)\r\n  File \"/opt/homebrew/lib/python3.10/site-packages/pyflakes/checker.py\", line 1163, in handleNodeStore\r\n    if used and used[0] is self.scope and name not in self.scope.globals:\r\nTypeError: 'bool' object is not subscriptable\r\n```\r\n\r\nBut it is correctly handled by version 2.5.0, that returns the correct errors:\r\n\r\n```\r\ntest.py:3:1: undefined name 'test'\r\ntest.py:7:5: local variable 'test' is assigned to but never used\r\n```\r\n\r\nThe snippet does not cause exceptions when any part of it is removed (for example the type annotation or the `test.__dict__` or the assignment in the function)\r\n",
+    "version": "3.0",
+    "environment_setup_commit": "e19886e583637a7e2eec428cc036094b9630f2d0",
+    "license_name": "MIT License",
+    "docker_image": "swerebench/sweb.eval.x86_64.pycqa_1776_pyflakes-765",
+    "image_name": "swerebench/sweb.eval.x86_64.pycqa_1776_pyflakes-765",
+    "dataset": "nebius/SWE-rebench",
+    "revision": "89cdfbab4ab1bd8f5a658bb212d1b63624f4f881",
+    "file": "data/test-00000-of-00002.parquet",
+    "row_index": 2347
+  },
+  "base_code": [
+    {
+      "path": "pyflakes/checker.py",
+      "repository": "PyCQA/pyflakes",
+      "base_commit": "e9324649874a7124a08c3826d4cf78a4dc3aa32c",
+      "git_blob_sha": "4d778a8c42681d3e957c41d2e384df633078da31",
+      "full_content_sha256": "9f075b15ab1b91de44240fa5750f8ad1944a615161304f7f924dc16323375bca",
+      "source_url": "https://github.com/PyCQA/pyflakes/blob/e9324649874a7124a08c3826d4cf78a4dc3aa32c/pyflakes/checker.py",
+      "spans": [
+        {
+          "start_line": 1050,
+          "end_line": 1073,
+          "text": "    def handleNodeLoad(self, node, parent):\n        name = getNodeName(node)\n        if not name:\n            return\n\n        in_generators = None\n        importStarred = None\n\n        # try enclosing function scopes and global scope\n        for scope in self.scopeStack[-1::-1]:\n            if isinstance(scope, ClassScope):\n                if name == '__class__':\n                    return\n                elif in_generators is False:\n                    # only generators used in a class scope can access the\n                    # names of the class. this is skipped during the first\n                    # iteration\n                    continue\n\n            binding = scope.get(name, None)\n            if isinstance(binding, Annotation) and not self._in_postponed_annotation:\n                scope[name].used = True\n                continue\n\n",
+          "sha256": "55d586450be327c001799138bafc9c156259ba1f2e7ced9069d68bd858ab8e7d"
+        },
+        {
+          "start_line": 1127,
+          "end_line": 1145,
+          "text": "    def handleNodeStore(self, node):\n        name = getNodeName(node)\n        if not name:\n            return\n        # if the name hasn't already been defined in the current scope\n        if isinstance(self.scope, FunctionScope) and name not in self.scope:\n            # for each function or module scope above us\n            for scope in self.scopeStack[:-1]:\n                if not isinstance(scope, (FunctionScope, ModuleScope)):\n                    continue\n                # if the name was defined in that scope, and the name has\n                # been accessed already in the current scope, and hasn't\n                # been declared global\n                used = name in scope and scope[name].used\n                if used and used[0] is self.scope and name not in self.scope.globals:\n                    # then it's probably a mistake\n                    self.report(messages.UndefinedLocal,\n                                scope[name].used[1], name, scope[name].source)\n                    break\n",
+          "sha256": "4dc210b2a782d08dc105772fde9efdcbc27030eeca4ecfcdf5d6c9f6d096d972"
+        }
+      ]
+    }
+  ],
+  "observation_kind": "researcher_read_of_pinned_pre_patch_code",
+  "worker_initial_inspection_performed": false,
+  "restorable_worker_snapshot": null,
+  "target_trajectory_loaded": false,
+  "gold_patch_or_hidden_tests_loaded": false
+}

@@ -1,0 +1,79 @@
+{
+  "model": "openai/gpt-6-luna",
+  "messages": [
+    {
+      "role": "system",
+      "content": "합성 계약 예시. 현재 요청에 필요한 기억을 확인한다."
+    },
+    {
+      "role": "user",
+      "content": "배송지 변경 요청을 처리해야 한다."
+    },
+    {
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "id": "call_12ab",
+          "type": "function",
+          "function": {
+            "name": "memory_list",
+            "arguments": "{}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_12ab",
+      "content": "{\"status\":\"ok\",\"items\":[{\"id\":\"m_7fd1bc39\",\"title\":\"배송지 변경 확인\",\"version\":\"v_4c2e8a16\"}],\"next_cursor\":null,\"head_revision\":1}"
+    }
+  ],
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "memory_list",
+        "description": "List accessible memory titles.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "cursor": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "limit": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 1
+            }
+          },
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "memory_get",
+        "description": "Read one accessible memory.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "id"
+          ],
+          "additionalProperties": false
+        }
+      }
+    }
+  ]
+}

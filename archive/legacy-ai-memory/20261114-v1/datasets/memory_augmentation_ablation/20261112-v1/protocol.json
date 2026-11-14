@@ -1,0 +1,86 @@
+{
+  "experiment": "memory-augmentation-ablation-20261112-v1",
+  "status": "frozen_before_new_training",
+  "question": "With packing, facts, per-row need labels, unique input count, initial weights and updates matched, does exposing compound records under partial observation improve need decisions over format exposure alone?",
+  "data_scope": "Literal spans from pinned Mem2Act user passages. Controlled requests and observations. Atomic versus compound concatenations conserve the same two facts. Minimal banks, not a retrieval competition or live tool benchmark.",
+  "partition": "Reuse the original train/dev/test source partition. Test source groups remain absent from training, but their results have already been inspected; this is a mechanism diagnostic, not fresh confirmation.",
+  "labels": "goal_link = supplies a requested attribute regardless of current observations; needed_now = supplies a requested attribute not already confirmed. Explicit coverage and source spans are audited separately. Actual worker effects never replace these labels.",
+  "states": "Eight frozen requested/observed attribute combinations, each paired across atomic and compound packing.",
+  "renderings": [
+    "direct (train/dev/test)",
+    "prose (test only)"
+  ],
+  "budget": {
+    "memory_tokens": 512,
+    "max_records": 12,
+    "selector_input_tokens": 1536,
+    "worker_input_tokens": 2048
+  },
+  "initial_model": "Corresponding seed of memory-incremental-evidence-20261111-v2/single",
+  "base_model": "microsoft/harrier-oss-v1-0.6b",
+  "base_revision": "f9b9dc8d367d443f2479d27aa5d8d2850c0774ee",
+  "training": {
+    "arms": [
+      "repeat",
+      "format",
+      "relation"
+    ],
+    "seeds": [
+      731,
+      1729
+    ],
+    "epochs": 2,
+    "final_checkpoint": "last epoch, no checkpoint selection",
+    "state_batch_size": 4,
+    "microbatch_size": 4,
+    "adapter_lr": 5e-05,
+    "head_lr": 0.001,
+    "lora": "continue rank8 q/v from prior single for the same seed",
+    "anchor_states": 80,
+    "loss": "Unchanged parent need-only weighted cross entropy; 400 state entries, batch 4, 200 updates. Format/relation have identical per-row candidate labels and therefore identical loss weights. Repeat retains the original atomic replay data."
+  },
+  "selection": "Primary fixed threshold 0.5. No threshold, checkpoint, arm or seed selected on evaluation outcomes.",
+  "baselines": [
+    "none",
+    "bm25_top2",
+    "lexical_dedup_top2",
+    "budget_fill",
+    "reviewed_support_diagnostic"
+  ],
+  "evaluation": "Reuse all 384 prior test states as a previously observed diagnostic. Primary 48 partly observed compound states; also all states, atomic controls and old BEAM development regression. Score all models after training and freeze their hashes first.",
+  "worker": {
+    "model_id": "Qwen/Qwen3.5-4B",
+    "revision": "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
+    "greedy": true,
+    "thinking": false,
+    "max_new_tokens": 128,
+    "task": "Recover requested fields as a JSON object; never execute an external tool."
+  },
+  "worker_policy": "Reuse exact-message-hash cached Qwen3.5-4B outputs for all 96 compound/prose states. Missing cache entries stop evaluation; no new worker calls.",
+  "bounds": {
+    "max_training_seconds": 7200,
+    "max_unique_worker_calls": 0,
+    "paid_api_calls": 0,
+    "colab_allocations": 0
+  },
+  "resource_rule": "One local GPU process at a time, require native BF16 and >=10GiB free before loading; never interrupt another user's process. Exit after bounded work and preserve incomplete status on failure.",
+  "reporting": "Primary contrast is relation minus format. Repeat is an additional descriptive reference, with fewer unique inputs and a different packing distribution. Form/rel have identical banks, requested facts, per-row need/goal labels and common atomic/anchor rows. Observation information differs by design in 80 rows; selector text length is not exactly matched. No general retrieval superiority or fresh-source confirmation claim.",
+  "baseline_note": "With at most two records, dense_top2 and any unfiltered top2 equal budget_fill. No separate dense inference needed; this equality does not support a retrieval superiority claim.",
+  "primary_contrast": {
+    "arms": [
+      "format",
+      "relation"
+    ],
+    "threshold": 0.5,
+    "metric": "compound_partial_retained / 48",
+    "secondary": [
+      "complete_missing_coverage / 240",
+      "source_macro_balanced_accuracy",
+      "no_need_abstained",
+      "unnecessary_records",
+      "cached_worker_supported_correct / 96",
+      "old_context_false_positive"
+    ],
+    "direction": "Report both seeds and every stratum, regardless of direction; no outcome-dependent extension."
+  }
+}

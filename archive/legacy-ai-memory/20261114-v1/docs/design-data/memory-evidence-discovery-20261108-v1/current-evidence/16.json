@@ -1,0 +1,54 @@
+{
+  "target_trajectory_row_index": 16,
+  "task": {
+    "instance_id": "getsentry__responses-673",
+    "repo": "getsentry/responses",
+    "base_commit": "9c0d1ac3d72f2e2a79798b9e9239688bc77c243b",
+    "created_at": "2023-09-22 23:01:31",
+    "problem_statement": "Setting explicit Content-Type header in addition to json body results in comma-delimited Content-Type\n### Describe the bug\n\nWhen passing a JSON payload to a response object as `json=...`, the content-type is automatically set to `application/json`.\r\nAttempting to set Content-Type explicitly results in a malformed header, with the content-type values comma-separated.\n\n### Additional context\n\nExplicitly setting `Content-Type: application/json` causes this, but is easily rectified by removing that value and relying on `json=...`.\r\nHowever, setting a specialized JSON media type is not supported via this path, e.g. `application/custom+json; my-parameter`.\r\n\r\nIt is possible to work around this today by using `body=...` and avoiding `json=...` entirely, but this violates the principle of least-surprise. One would expect a valid Content-Type to come out of the combination of `json=..., headers=...`.\n\n### Version of `responses`\n\n0.23.1\n\n### Steps to Reproduce\n\n```python\r\nimport requests\r\nimport responses\r\n\r\nresponses.add(\r\n    responses.GET,\r\n    \"https://example.org/\",\r\n    json={},\r\n    headers={\"Content-Type\": \"application/json\"},\r\n)\r\nresponses.start()\r\n\r\nr = requests.get(\"https://example.org/\")\r\nprint(r.headers.get(\"Content-Type\"))  # \"application/json, application/json\"\r\n```\r\n\r\nThis happens with any Content-Type value, not only the JSON one. e.g. Setting `Content-Type: foo` results in `application/json, foo`.\n\n### Expected Result\n\nContent-Type should only ever have a single value, although some HTTP client implementations attempt to parse it as a list for broader compatibility with malformed data. ([Relevant section of RFC 9110](https://www.rfc-editor.org/rfc/rfc9110#field.content-type).)\r\n\r\nThere are various behaviors which could be chosen here. e.g. Any match for `application/.*\\+json;.*` could be used as a replacement, but headers could be otherwise concatenated.\r\n\r\nHowever, the least surprising behavior would be for the explicit `Content-Type` header to _always_ override the implicit one from `json=...`.\n\n### Actual Result\n\nContent-Type header values are comma-joined, producing a header which does not consistently parse as JSON depending on the mimetype detection algorithm used.",
+    "version": "0.23",
+    "environment_setup_commit": "9c0d1ac3d72f2e2a79798b9e9239688bc77c243b",
+    "license_name": "Apache License 2.0",
+    "docker_image": "swerebench/sweb.eval.x86_64.getsentry_1776_responses-673",
+    "image_name": "swerebench/sweb.eval.x86_64.getsentry_1776_responses-673",
+    "dataset": "nebius/SWE-rebench",
+    "revision": "89cdfbab4ab1bd8f5a658bb212d1b63624f4f881",
+    "file": "data/test-00000-of-00002.parquet",
+    "row_index": 8204
+  },
+  "base_code": [
+    {
+      "path": "responses/__init__.py",
+      "repository": "getsentry/responses",
+      "base_commit": "9c0d1ac3d72f2e2a79798b9e9239688bc77c243b",
+      "git_blob_sha": "ea7009dd856236440a62d63f2b732edeb6daee26",
+      "full_content_sha256": "a0df1a6cad4d98ac34ca32957ae7968fd16c26597664329a203d09677d0713a9",
+      "source_url": "https://github.com/getsentry/responses/blob/9c0d1ac3d72f2e2a79798b9e9239688bc77c243b/responses/__init__.py",
+      "spans": [
+        {
+          "start_line": 492,
+          "end_line": 498,
+          "text": "    def get_headers(self) -> HTTPHeaderDict:\n        headers = HTTPHeaderDict()  # Duplicate headers are legal\n        if self.content_type is not None:\n            headers[\"Content-Type\"] = self.content_type\n        if self.headers:\n            headers.extend(self.headers)\n        return headers\n",
+          "sha256": "84e0b3ae260ba63d73359bd0e6de7dfd1fc3acfdfd5d01a24e3b3ed76c37d0d3"
+        },
+        {
+          "start_line": 553,
+          "end_line": 573,
+          "text": "        content_type: Union[str, object] = _UNSET,\n        auto_calculate_content_length: bool = False,\n        **kwargs: Any,\n    ) -> None:\n        # if we were passed a `json` argument,\n        # override the body and content_type\n        if json is not None:\n            assert not body\n            body = json_module.dumps(json)\n            if content_type is _UNSET:\n                content_type = \"application/json\"\n\n        if content_type is _UNSET:\n            if isinstance(body, str) and _has_unicode(body):\n                content_type = \"text/plain; charset=utf-8\"\n            else:\n                content_type = \"text/plain\"\n\n        self.body: \"_Body\" = body\n        self.status: int = status\n        self.headers: Optional[Mapping[str, str]] = headers\n",
+          "sha256": "f2cdff5e193496dc02397c975cec935de265315b35ed802578daa84f7e9cfcb5"
+        },
+        {
+          "start_line": 640,
+          "end_line": 653,
+          "text": "    def get_response(self, request: \"PreparedRequest\") -> HTTPResponse:\n        headers = self.get_headers()\n\n        result = self.callback(request)\n        if isinstance(result, Exception):\n            raise result\n\n        status, r_headers, body = result\n        if isinstance(body, Exception):\n            raise body\n\n        # If the callback set a content-type remove the one\n        # set in add_callback() so that we don't have multiple\n        # content type values.\n",
+          "sha256": "2c26a5747193cdd8bb0268ce8c85eec2a97699997a752583f4857fd8d7b72268"
+        }
+      ]
+    }
+  ],
+  "observation_kind": "researcher_read_of_pinned_pre_patch_code",
+  "worker_initial_inspection_performed": false,
+  "restorable_worker_snapshot": null,
+  "target_trajectory_loaded": false,
+  "gold_patch_or_hidden_tests_loaded": false
+}

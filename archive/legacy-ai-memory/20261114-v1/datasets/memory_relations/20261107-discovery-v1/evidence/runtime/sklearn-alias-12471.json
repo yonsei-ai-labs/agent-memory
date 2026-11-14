@@ -1,0 +1,41 @@
+{
+  "at": "2026-11-07T10:42:52.440475+00:00",
+  "model_api_calls": 0,
+  "specification": {
+    "probe_id": "sklearn-alias-12471",
+    "context_task": "scikit-learn__scikit-learn-12471",
+    "mechanism": "compatibility_alias",
+    "fixture": {
+      "module": "sklearn.preprocessing.label"
+    },
+    "interpreter": "/opt/miniconda3/envs/testbed/bin/python",
+    "program": "import inspect,importlib,os\nfrom sklearn.preprocessing import LabelEncoder\nlegacy=importlib.import_module('sklearn.preprocessing.label')\nresult={'canonical_module':LabelEncoder.__module__,'definition_file':inspect.getfile(LabelEncoder),'legacy_module_file':getattr(legacy,'__file__',None),'legacy_alias_same_class':legacy.LabelEncoder is LabelEncoder}\n"
+  },
+  "public_context_file": "datasets/memory_relations/20261107-discovery-v1/evidence/public-code/scikit-learn__scikit-learn-12471.json",
+  "image_id": "sha256:a64885c975df6dc88571c92acbd9efc6af4c0e4a8e0841e0b24710acc152cfd3",
+  "executed_program_sha256": "abb43156babb6589fbc13ce8e2a1aa33d9f4cc7006d1e92f11a477ac4887c9c5",
+  "observed": {
+    "kind": "returned",
+    "result": {
+      "canonical_module": "sklearn.preprocessing.label",
+      "definition_file": "/testbed/sklearn/preprocessing/label.py",
+      "legacy_alias_same_class": true,
+      "legacy_module_file": "/testbed/sklearn/preprocessing/label.py"
+    }
+  },
+  "execution": {
+    "returncode": 0,
+    "stdout": "MEMORY_RELATION_RESULT:{\"kind\": \"returned\", \"result\": {\"canonical_module\": \"sklearn.preprocessing.label\", \"definition_file\": \"/testbed/sklearn/preprocessing/label.py\", \"legacy_alias_same_class\": true, \"legacy_module_file\": \"/testbed/sklearn/preprocessing/label.py\"}}\n",
+    "stderr": "",
+    "seconds": 1.4598442320129834,
+    "image_id": "sha256:a64885c975df6dc88571c92acbd9efc6af4c0e4a8e0841e0b24710acc152cfd3",
+    "interpreter": "/opt/miniconda3/envs/testbed/bin/python",
+    "resources": {
+      "cpus": 1,
+      "memory": "1g",
+      "network": "none",
+      "root_filesystem": "read-only"
+    }
+  },
+  "interpretation": "Controlled mechanism probe. Expected validation exceptions are observed outcomes, not infrastructure failures. Shell success is not treated as semantic success. No actor or memory policy was evaluated."
+}

@@ -1,0 +1,42 @@
+{
+  "at": "2026-11-07T10:31:00.520442+00:00",
+  "model_api_calls": 0,
+  "specification": {
+    "probe_id": "label-encoder-fitted_nonempty",
+    "context_task": "scikit-learn__scikit-learn-12471",
+    "mechanism": "validation_order",
+    "fixture": {
+      "mode": "fitted_nonempty"
+    },
+    "interpreter": "/opt/miniconda3/envs/testbed/bin/python",
+    "program": "from sklearn.preprocessing import LabelEncoder\nimport numpy as np\nencoder=LabelEncoder()\nencoder.fit(['a','b'])\nvalues=['a']\noutput=encoder.transform(values)\nresult={'values':output.tolist(),'dtype':str(output.dtype),'size':int(output.size)}\n"
+  },
+  "public_context_file": "datasets/memory_relations/20261107-discovery-v1/evidence/public-code/scikit-learn__scikit-learn-12471.json",
+  "image_id": "sha256:a64885c975df6dc88571c92acbd9efc6af4c0e4a8e0841e0b24710acc152cfd3",
+  "executed_program_sha256": "62cbbc2185908c4404f591272464b032a386bb2f481206417428080637df3848",
+  "observed": {
+    "kind": "returned",
+    "result": {
+      "dtype": "int64",
+      "size": 1,
+      "values": [
+        0
+      ]
+    }
+  },
+  "execution": {
+    "returncode": 0,
+    "stdout": "MEMORY_RELATION_RESULT:{\"kind\": \"returned\", \"result\": {\"dtype\": \"int64\", \"size\": 1, \"values\": [0]}}\n",
+    "stderr": "",
+    "seconds": 1.315146540000569,
+    "image_id": "sha256:a64885c975df6dc88571c92acbd9efc6af4c0e4a8e0841e0b24710acc152cfd3",
+    "interpreter": "/opt/miniconda3/envs/testbed/bin/python",
+    "resources": {
+      "cpus": 1,
+      "memory": "1g",
+      "network": "none",
+      "root_filesystem": "read-only"
+    }
+  },
+  "interpretation": "Controlled mechanism probe. Expected validation exceptions are observed outcomes, not infrastructure failures. Shell success is not treated as semantic success. No actor or memory policy was evaluated."
+}

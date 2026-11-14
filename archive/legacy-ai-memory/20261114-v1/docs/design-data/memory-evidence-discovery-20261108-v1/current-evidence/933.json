@@ -1,0 +1,48 @@
+{
+  "target_trajectory_row_index": 933,
+  "task": {
+    "instance_id": "asottile__pyupgrade-707",
+    "repo": "asottile/pyupgrade",
+    "base_commit": "d9461f58d40a68b07879bf36190185d57b078c7d",
+    "created_at": "2022-09-17 20:46:40",
+    "problem_statement": "super() calls in nested classes aren't updated\nIt appears that calls to `super()` within inner/nested classes aren't updated as I would expect.\r\n\r\nMinimal reproduction:\r\n\r\n`.pre-commit-config.yaml`:\r\n```yaml\r\nrepos:\r\n-   repo: https://github.com/asottile/pyupgrade\r\n    rev: v2.37.3\r\n    hooks:\r\n    -   id: pyupgrade\r\n        args: [--py3-plus]\r\n```\r\n\r\n`test.py`:\r\n```python\r\nclass A:\r\n    def __init__(self):\r\n        super(A, self).__init__()\r\n\r\n    class B:\r\n        def __init__(self):\r\n            super(A.B, self).__init__()\r\n```\r\n\r\n\r\n```diff\r\n>git init\r\n>git add test.py\r\n>pre-commit run\r\npyupgrade................................................................Failed\r\n- hook id: pyupgrade\r\n- exit code: 1\r\n- files were modified by this hook\r\n\r\nRewriting test.py\r\n\r\n>git diff -U10\r\ndiff --git a/test.py b/test.py\r\nindex a58b7cd..abdff2e 100644\r\n--- a/test.py\r\n+++ b/test.py\r\n@@ -1,7 +1,7 @@\r\n class A:\r\n     def __init__(self):\r\n-        super(A, self).__init__()\r\n+        super().__init__()\r\n\r\n     class B:\r\n         def __init__(self):\r\n             super(A.B, self).__init__()\r\n```\r\n\r\nI would have expected to instead see:\r\n```diff\r\ndiff --git a/test.py b/test.py\r\nindex a58b7cd..b2e4b1b 100644\r\n--- a/test.py\r\n+++ b/test.py\r\n@@ -1,7 +1,7 @@\r\n class A:\r\n     def __init__(self):\r\n-        super(A, self).__init__()\r\n+        super().__init__()\r\n\r\n     class B:\r\n         def __init__(self):\r\n-            super(A.B, self).__init__()\r\n+            super().__init__()\r\n```\r\n\r\nThere is a [test case](https://github.com/asottile/pyupgrade/blob/ad5d9db9a206bfd221760fd81e407bf6040c808c/tests/features/super_test.py#L86-L95) for nested classes, but I don't believe it is valid.\r\n\r\nIn this test case, the reference to `C` in the super call will lead to `NameError: name 'C' is not defined`. It instead needs to be `Outer.C`.\r\n```python\r\nclass Outer:\r\n    class C(Base):\r\n        def f(self):\r\n            super(C, self).f()\r\n```",
+    "version": "2.38",
+    "environment_setup_commit": "d9461f58d40a68b07879bf36190185d57b078c7d",
+    "license_name": "MIT License",
+    "docker_image": "swerebench/sweb.eval.x86_64.asottile_1776_pyupgrade-707",
+    "image_name": "swerebench/sweb.eval.x86_64.asottile_1776_pyupgrade-707",
+    "dataset": "nebius/SWE-rebench",
+    "revision": "89cdfbab4ab1bd8f5a658bb212d1b63624f4f881",
+    "file": "data/test-00000-of-00002.parquet",
+    "row_index": 3949
+  },
+  "base_code": [
+    {
+      "path": "pyupgrade/_plugins/legacy.py",
+      "repository": "asottile/pyupgrade",
+      "base_commit": "d9461f58d40a68b07879bf36190185d57b078c7d",
+      "git_blob_sha": "4c7897ea31c334baa8b24e5add2d7f1ca5074b5e",
+      "full_content_sha256": "49ea83758eb68bfaaac9df305f48c240ae548daf7c5c2d4f361964504b383aef",
+      "source_url": "https://github.com/asottile/pyupgrade/blob/d9461f58d40a68b07879bf36190185d57b078c7d/pyupgrade/_plugins/legacy.py",
+      "spans": [
+        {
+          "start_line": 88,
+          "end_line": 116,
+          "text": "    def __init__(self) -> None:\n        self._scopes: list[Scope] = []\n        self.super_offsets: set[Offset] = set()\n        self.yield_offsets: set[Offset] = set()\n\n    @contextlib.contextmanager\n    def _scope(self, node: ast.AST) -> Generator[None, None, None]:\n        self._scopes.append(Scope(node))\n        try:\n            yield\n        finally:\n            info = self._scopes.pop()\n            # discard any that were referenced outside of the loop\n            for name in info.reads:\n                offsets = info.yield_from_names[name]\n                info.yield_from_fors.difference_update(offsets)\n            self.yield_offsets.update(info.yield_from_fors)\n            if self._scopes:\n                cell_reads = info.reads - info.writes\n                self._scopes[-1].reads.update(cell_reads)\n\n    def _visit_scope(self, node: ast.AST) -> None:\n        with self._scope(node):\n            self.generic_visit(node)\n\n    visit_ClassDef = _visit_scope\n    visit_Lambda = visit_FunctionDef = visit_AsyncFunctionDef = _visit_scope\n    visit_ListComp = visit_SetComp = _visit_scope\n    visit_DictComp = visit_GeneratorExp = _visit_scope\n",
+          "sha256": "916e85648f7464e328c01fe127cbc79f52f9f4bfe03776059531fcfdc6d0e545"
+        },
+        {
+          "start_line": 129,
+          "end_line": 148,
+          "text": "    def visit_Call(self, node: ast.Call) -> None:\n        if (\n                isinstance(node.func, ast.Name) and\n                node.func.id == 'super' and\n                len(node.args) == 2 and\n                isinstance(node.args[0], ast.Name) and\n                isinstance(node.args[1], ast.Name) and\n                # there are at least two scopes\n                len(self._scopes) >= 2 and\n                # the second to last scope is the class in arg1\n                isinstance(self._scopes[-2].node, ast.ClassDef) and\n                node.args[0].id == self._scopes[-2].node.name and\n                # the last scope is a function where the first arg is arg2\n                isinstance(self._scopes[-1].node, FUNC_TYPES) and\n                self._scopes[-1].node.args.args and\n                node.args[1].id == self._scopes[-1].node.args.args[0].arg\n        ):\n            self.super_offsets.add(ast_to_offset(node))\n\n        self.generic_visit(node)\n",
+          "sha256": "f41c3f0521e772660fadee39a9ae49c741bb519d0e48e7df1e1b8c874c43b6c8"
+        }
+      ]
+    }
+  ],
+  "observation_kind": "researcher_read_of_pinned_pre_patch_code",
+  "worker_initial_inspection_performed": false,
+  "restorable_worker_snapshot": null,
+  "target_trajectory_loaded": false,
+  "gold_patch_or_hidden_tests_loaded": false
+}

@@ -1,0 +1,56 @@
+{
+  "schema": "external-update-masking-preregistration-v1",
+  "frozen_utc": "2026-11-11T02:46:14.089889+00:00",
+  "prior_v2_outputs_observed": true,
+  "new_masking_outputs_observed": false,
+  "files_sha256": {
+    "data_pipeline/prepare_external_update_masking.py": "35ae916c1e5ddd907fe0aea3ab8fddaa7b0844acdbdeb21f3054e8dabe7ece02",
+    "evaluation/external_update_masking.py": "d10c7037fdda004646f7bf17e5e1fb282abc428a209700be8bdb55ebceda75dc",
+    "evaluation/external_update_validation.py": "18f630750dd0657c4fadcd749f56720c492cabdb0f2012ef4e6330c7237b366f",
+    "evaluation/memory_need_worker.py": "492bdbf5e14a0cf1283e4c81ebd48cd802c511fb07a63df0780527ea0acac2e7",
+    "evaluation/export_external_update_validation.py": "cd1951fd4d6db69a218087b71f2ae8146d268e6fbe1df246c57f90cfbf6a0edf",
+    "evaluation/tests/test_external_update_masking.py": "903f998c48c42dc4c7d663757afc2681514390a45fd1aba664054bcf7db934f2",
+    "docs/ai-memory-external-update-masking-2026-11-11.md": "7ce625c949cd93fc96c62b1eec00d66ac338de85679b80c358393ffd7eaeb43d",
+    "docs/design-data/external-update-masking-20261111-v1/span-reviews.jsonl": "0d6d4164b78817882b3d1e1eb5b4e5e7dfb85a34e04621dfae4c941bc3c75591",
+    "datasets/external_memory_updates/20261111-masking-v1/manifest.json": "952f15428c2bf5c3df80c725f26c9c48cd4d96b781359e2fb4312450bde99096",
+    "datasets/external_memory_updates/20261111-v2/manifest.json": "9894bcf089cb2ec5af518b3375b9d72e017de59d10a0eb1ed3395c8f8b658942",
+    "evaluation/results/external-memory-updates-20261111-v2/manifest.json": "7180690682b80dc585ab164271c60204f34223a7d636d0714dc0f86b533f6432",
+    "evaluation/results/external-memory-updates-20261111-v2/predictions.zip": "3f3e0644f1ba593d9e9f75269a6a478b4d720c56ae9722e47a0c8205b0dc0cb3",
+    "training/memory_selector/external_updates_protocol.py": "c0a806248a6083d6078b814b3b30cec780f49b49636cab7538f47524410ee089",
+    "training/memory_selector/run_external_updates.py": "4273e8c5a011d9758e1c93d36b06c04aec23ebd15b1399aaf9286e24d1b29bbb",
+    "training/memory_selector/worker_message_batch.py": "d9b6cfc664847dc005c3ca26cdac285d294c6660548225eb63595f2233eda528",
+    "training/memory_selector/worker_contract_protocol.py": "59eff274a5ac897ede972aae670b5baebeadf292f49fdddc9c631570b2cf5042",
+    "training/memory_selector/run_worker_batch_colab.py": "72a8f63b521b371ce11e6ac6c51e49a98f8022f08a7e8be8809b0b40264ab23f",
+    "training/memory_selector/requirements-travel-worker.txt": "c300f718cb678e40e8a4a8c659f589521d20dd675d3022665640758616d54013",
+    "training/memory_selector/external_update_masking_bootstrap.py": "9005fbb759d91f6dcaf940a8bd97b8c3861318b0807e08fbdb76e97cce7e097f",
+    "training/memory_selector/run_external_update_masking_colab.py": "9f9a75640dd17795d107e1d0d61515f5f603122e9790983c842675e5e106bb7a",
+    "runs/external-update-masking-20261111-v1/design-inputs/config.json": "efd2e2508d177a6030f64d22a012a282fa80c5aa7f8e0bc36d2547de37f82365",
+    "runs/external-update-masking-20261111-v1/design-inputs/input-manifest.json": "f1d0850135e5feaa3f144a637dc77958537922ef6e5bb8f72bcdd8fd3e7005eb",
+    "runs/external-update-masking-20261111-v1/design-inputs/inputs.jsonl": "3fc6b62823427b9854033631124993b946b60770f1b1bcd6e8c4908160bc449d",
+    "runs/external-update-masking-20261111-v1/design-inputs/selection.json": "f279f90767ad0294c463c89e8a3f0af51533419fdea157e0bed5a83756e3b91e",
+    "runs/external-update-masking-20261111-v1/design-inputs/worker-provenance.json": "61a7950e6fffb323747534e2056e00468f8aaaaf00ff7be67363ae35194fa431"
+  },
+  "primary": "marked versus masked within source; quantity-only cases (45), all cases secondary (47)",
+  "controls": [
+    "unchanged current_new",
+    "unchanged current_new_plus_old",
+    "marked old quantity values"
+  ],
+  "worker_calls": {
+    "fresh_design": 94,
+    "cached_design": 94,
+    "greedy_repeats": 2,
+    "confirmation": 0
+  },
+  "no_training": true,
+  "outcome_based_exclusions": false,
+  "next_phase": "No automatic confirmation in this design intervention. Preserve the untouched 33 confirm cases.",
+  "limitations": [
+    "source-aware manual masking, not learned selection",
+    "single-reviewer spans",
+    "same already observed design cases",
+    "marking and masking alter text distribution",
+    "exact old value may constrain a lower bound after masking",
+    "source labels retained despite possible contextual ambiguity"
+  ]
+}

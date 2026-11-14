@@ -1,0 +1,36 @@
+{
+  "at": "2026-11-07T10:29:33.132340+00:00",
+  "model_api_calls": 0,
+  "specification": {
+    "probe_id": "sympy-dimension-ratio",
+    "context_task": "sympy__sympy-24213",
+    "mechanism": "physical_dimension_guard",
+    "fixture": {
+      "expression": "units.second/(units.ohm*units.farad)"
+    },
+    "program": "from sympy.physics import units\nfrom sympy.physics.units.systems.si import SI\nexpr=units.second/(units.ohm*units.farad)\nfactor,dimension=SI._collect_factor_and_dimension(expr)\nresult={'factor':str(factor),'dimension':str(dimension),'dimensionless':bool(SI.get_dimension_system().is_dimensionless(dimension))}\n"
+  },
+  "public_context_file": "datasets/memory_relations/20261107-discovery-v1/evidence/public-code/sympy__sympy-24213.json",
+  "image_id": "sha256:18923da5948aaa9695423806c79e35ac223d64667d7e0809ffde1e4199789b21",
+  "executed_program_sha256": "85cce177f455fc0ed2a3d7c10585e271fe4ed6bee0d7a1bc7f8a379d8262e4c6",
+  "observed": {
+    "exception_type": "ImportError",
+    "kind": "exception",
+    "message": "SymPy now depends on mpmath as an external library. See https://docs.sympy.org/latest/install.html#mpmath for more information.",
+    "traceback": "Traceback (most recent call last):\n  File \"/testbed/sympy/__init__.py\", line 22, in <module>\n    import mpmath\nModuleNotFoundError: No module named 'mpmath'\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"<string>\", line 3, in <module>\n  File \"/testbed/sympy/__init__.py\", line 24, in <module>\n    raise ImportError(\"SymPy now depends on mpmath as an external library. \"\nImportError: SymPy now depends on mpmath as an external library. See https://docs.sympy.org/latest/install.html#mpmath for more information.\n"
+  },
+  "execution": {
+    "returncode": 0,
+    "stdout": "MEMORY_RELATION_RESULT:{\"exception_type\": \"ImportError\", \"kind\": \"exception\", \"message\": \"SymPy now depends on mpmath as an external library. See https://docs.sympy.org/latest/install.html#mpmath for more information.\", \"traceback\": \"Traceback (most recent call last):\\n  File \\\"/testbed/sympy/__init__.py\\\", line 22, in <module>\\n    import mpmath\\nModuleNotFoundError: No module named 'mpmath'\\n\\nDuring handling of the above exception, another exception occurred:\\n\\nTraceback (most recent call last):\\n  File \\\"<string>\\\", line 3, in <module>\\n  File \\\"/testbed/sympy/__init__.py\\\", line 24, in <module>\\n    raise ImportError(\\\"SymPy now depends on mpmath as an external library. \\\"\\nImportError: SymPy now depends on mpmath as an external library. See https://docs.sympy.org/latest/install.html#mpmath for more information.\\n\"}\n",
+    "stderr": "",
+    "seconds": 0.5555917970195878,
+    "image_id": "sha256:18923da5948aaa9695423806c79e35ac223d64667d7e0809ffde1e4199789b21",
+    "resources": {
+      "cpus": 1,
+      "memory": "1g",
+      "network": "none",
+      "root_filesystem": "read-only"
+    }
+  },
+  "interpretation": "Controlled mechanism probe. Expected validation exceptions are observed outcomes, not infrastructure failures. Shell success is not treated as semantic success. No actor or memory policy was evaluated."
+}

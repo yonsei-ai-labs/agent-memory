@@ -1,0 +1,53 @@
+{
+  "schema": "external-update-preregistration-v2",
+  "frozen_utc": "2026-11-11T01:55:38.977432+00:00",
+  "no_worker_outputs_observed": true,
+  "files_sha256": {
+    "data_pipeline/prepare_external_update_controls.py": "d7f08e40bf21b4d6006f117e1e9f41ed3c38e94ac4c707746cbd13c224c701e7",
+    "evaluation/external_update_validation.py": "18f630750dd0657c4fadcd749f56720c492cabdb0f2012ef4e6330c7237b366f",
+    "training/memory_selector/external_updates_protocol.py": "c0a806248a6083d6078b814b3b30cec780f49b49636cab7538f47524410ee089",
+    "training/memory_selector/external_updates_bootstrap.py": "8438a26982fa66d2f74edfd0ec34e15a1b4e53c639f8ab3123f019bca81ea835",
+    "training/memory_selector/run_external_updates_colab.py": "66e81aaf747003f9388ec51020e501a52da66a753e378daaa73c3a53f8517604",
+    "training/memory_selector/run_external_updates.py": "4273e8c5a011d9758e1c93d36b06c04aec23ebd15b1399aaf9286e24d1b29bbb",
+    "training/memory_selector/worker_message_batch.py": "d9b6cfc664847dc005c3ca26cdac285d294c6660548225eb63595f2233eda528",
+    "training/memory_selector/worker_contract_protocol.py": "59eff274a5ac897ede972aae670b5baebeadf292f49fdddc9c631570b2cf5042",
+    "training/memory_selector/run_worker_batch_colab.py": "72a8f63b521b371ce11e6ac6c51e49a98f8022f08a7e8be8809b0b40264ab23f",
+    "training/memory_selector/requirements-travel-worker.txt": "c300f718cb678e40e8a4a8c659f589521d20dd675d3022665640758616d54013",
+    "datasets/external_memory_updates/20261111-v2/manifest.json": "9894bcf089cb2ec5af518b3375b9d72e017de59d10a0eb1ed3395c8f8b658942",
+    "docs/design-data/external-update-validation-20261111-v2/content-reviews.jsonl": "4a59cf85a27e43699b083c6037333012f0d2047baaf126f05547c4f00efa73da",
+    "docs/ai-memory-external-update-validation-2026-11-11.md": "75fdc97dc4aa843f032a1d9876a36851385e3a765fbe472b984f65b4049ec28b",
+    "runs/external-memory-updates-20261111-v2/design-inputs/inputs.jsonl": "f2e0848237a24bb67a1c93c67e67fdee1c5ad1b6bcd4a501170899ff3cab4352",
+    "runs/external-memory-updates-20261111-v2/design-inputs/input-manifest.json": "adb9bbf657927181878efeccf6af9576153c9f7d6fc8bcd32ef7944fc0044459",
+    "runs/external-memory-updates-20261111-v2/design-inputs/config.json": "e44187fb0aa3ddab4671883c85dd7609ab17319181ab4ad0a1cbd1d0a9dd9d28",
+    "runs/external-memory-updates-20261111-v2/design-inputs/selection.json": "3360984509a4a0034a987d67f26d7fd3856c3c80624a0c3a0affce8eb1b21472",
+    "runs/external-memory-updates-20261111-v2/design-inputs/worker-provenance.json": "61a7950e6fffb323747534e2056e00468f8aaaaf00ff7be67363ae35194fa431",
+    "runs/external-memory-updates-20261111-v2/confirm-inputs/inputs.jsonl": "680e602c0d6210a7cd034e30a3a27e6a4155eea6608feb06aa2968774e45002a",
+    "runs/external-memory-updates-20261111-v2/confirm-inputs/input-manifest.json": "9340948bdf1f24e5852e45c6c9b7cf07614da213f509fa8c8e8c5a570f88886f",
+    "runs/external-memory-updates-20261111-v2/confirm-inputs/config.json": "593915a00702aab99e4505a6d1e2c37a1e79707a18fd4df3899572bc783f5658",
+    "runs/external-memory-updates-20261111-v2/confirm-inputs/selection.json": "669c9273aa6d693ce6aaec7182449831acb525681f7c6b9f04286b28a67503d6",
+    "runs/external-memory-updates-20261111-v2/confirm-inputs/worker-provenance.json": "61a7950e6fffb323747534e2056e00468f8aaaaf00ff7be67363ae35194fa431"
+  },
+  "primary": "same-case correct current_new answer becomes incorrect after adding an old record",
+  "controls": "repeat and non-answer distractor; report same-count length-matched subset separately",
+  "design_gate": {
+    "datasets": [
+      "longmemeval_s/design",
+      "beam/dev"
+    ],
+    "minimum_success_rate_each": 0.8,
+    "conditions": [
+      "new_only",
+      "current_new"
+    ],
+    "all_outputs_and_answer_reviews_complete": true,
+    "harm_count_is_not_a_gate": true
+  },
+  "worker_calls_maximum": {
+    "design": 372,
+    "confirm": 256,
+    "repeats_per_phase": 2
+  },
+  "no_training": true,
+  "confirmation_runs": 1,
+  "label_review": "single-agent source-content review before model outputs; confirm labels inspected for input validity, not model tuning"
+}

@@ -1,0 +1,34 @@
+{
+  "schema": "memory-relation-review-v2",
+  "rows": 91,
+  "diagnostic_rows": 64,
+  "remaining_negative_control_rows": 27,
+  "current_issues": 27,
+  "memory_sources": 16,
+  "split": "train",
+  "clipped_rows": 21,
+  "old_label_counts": {
+    "insufficient_connection": 23,
+    "shared_diagnostic_mechanism": 18,
+    "different_mechanism": 50
+  },
+  "cohort_labels_visible_to_reviewer": false,
+  "independent_reviews_completed": 0,
+  "new_source_families": 0,
+  "new_supervised_labels": 0,
+  "training_allowed": false,
+  "source_files_sha256": {
+    "annotation-review.json": "971909dddd12184351d05e02418932527d37f675a0f4a21ce0cd4b5bb5ecce03",
+    "design.json": "c1a59aa486a647c884a0f34af03e2e5b7654466b9bc88460c2af01f1a59adc6e",
+    "inputs.jsonl": "0d94c5c38ce589e053430cdb0eddc2702263b1c847d3fb56e5339e0b5c117b1b",
+    "memory-bank.json": "6c52460ecff083a3b08deaa35cdf88f0716b8a23e7a33b1932a03aca44a6125e",
+    "pretraining-amendment.json": "8bfb8620656eb6e774369a2f9c21488c5c35fe195f7c2a58013c6a650dd07a69",
+    "review-packet.json": "a5a25f70659e066680368c584038fca23383b1e085cd19e0e1cd4d307c921725",
+    "review-summary.json": "668d440eff23c807a170a9f8908b5bc2083541c3044bdd3922f4e1899421fdae",
+    "source-evidence.json": "98a80dda5543a13b6c67b1849a73c2fc11ddc3a2e58ad5ec7f6fef71e5320fff",
+    "supervision.jsonl": "ee08b4868813dab899b7b216733535f73221c9e0cd1599c562f58ca6c5c81252"
+  },
+  "guidelines_sha256": "b6acbf049f3e8ddf77bccb7476188d7d0984ae59a14c0d01497ddcd65f6d6b92",
+  "historical_issue_contexts_sha256": "5a34230b88042522d2ca08effab4b2fdbce5abbf8ca36e8785ad284fcc77ed72",
+  "sampling": "Diagnostic census of train positives/unknowns plus 23 lexical negatives; separately one uniform residual negative per current query. Not a simple random sample of all pairs."
+}

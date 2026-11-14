@@ -1,0 +1,82 @@
+{
+  "status": "data and adapter readiness; no neural training or task evaluation yet",
+  "upstream_revision": "5644b1838d96bc4483da29642d058ecaa6f80f7f",
+  "study_question": "With the same worker, memory bank and context budget, does goal plus observed progress/failures improve memory selection and actual task outcomes?",
+  "initial_live_domains": [
+    "customer_support",
+    "shopping_assistant"
+  ],
+  "official_test_tasks_per_domain": 50,
+  "official_test_content_read": false,
+  "upstream_train_partition": {
+    "memory_source": 239,
+    "development": 61,
+    "grouping": "domain + normalized initial request; semantic family independence not established"
+  },
+  "frozen_comparisons": [
+    "no_memory",
+    "Harrier_goal",
+    "Harrier_goal_and_observed_state",
+    "learned_goal",
+    "learned_goal_and_observed_state"
+  ],
+  "same_information_baseline": true,
+  "worker_model": "Qwen3.5-4B fixed candidate; tool-use readiness not yet tested with real model",
+  "schedule": "once before each nonterminal user turn; no retrieval inside the following tool loop",
+  "memory_limit": {
+    "max_items": 3,
+    "max_tokens": 1024,
+    "tokenizer": "Qwen/Qwen3.5-4B",
+    "revision": "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
+    "count_guidance_and_delimiters": true,
+    "truncate_records": false
+  },
+  "selector_input_allowlist": [
+    "domain",
+    "initial user request",
+    "current user request",
+    "prior observed canonical conversation including completed tool calls"
+  ],
+  "forbidden_inputs": [
+    "task file",
+    "environment DB snapshot",
+    "task_summary",
+    "state_requirements",
+    "task_requirements",
+    "future transcript",
+    "scoring result"
+  ],
+  "representation_controls": [
+    "verbatim past observations",
+    "reviewed experience with explicit conditions",
+    "policy-only baseline"
+  ],
+  "labels": {
+    "source_grounding": "single-review provenance; not usefulness",
+    "applicability": null,
+    "actual_utility": null
+  },
+  "direct_effect_measurement": "requires capture and independent cloning of complete environment and simulator state before selection; saved prefixes alone are not resumable",
+  "end_to_end_measurement": "same initial tasks, fixed worker/bank and repeated policy runs; subsequent trajectories may diverge",
+  "outcomes": [
+    "task success",
+    "paired gain/harm and both-success/both-failure",
+    "unnecessary repeated actions after validation",
+    "worker+selector tokens, latency and cost"
+  ],
+  "official_protocol_distinction": "controlled injection schedule and token cap are our variant; no official leaderboard claim",
+  "execution_dependency": {
+    "simulator_and_judge": "GPT-5.4 locked by upstream protocol",
+    "repeats_for_official_track": 5,
+    "current_endpoint_configuration": "checked separately; no calls made"
+  },
+  "training_gate": "do not train on raw errors, following actions, or assistant claims as utility gold; first validate memory source conditions and actual paired effects on train-derived states",
+  "confirmatory_gate": "freeze bank, representations, worker, selection parameters and metrics before held-out task execution; retain all preregistered tasks including neutral/failing ones",
+  "previous_evaluations": "ConvoMem/AMA stay as retrieval regression evidence; do not discard their negative results",
+  "pre_live_representation_checks": {
+    "raw_source_observations": 2297,
+    "raw_standalone_over_budget": 825,
+    "max_observed_selector_query_tokens_worker_tokenizer": 7991,
+    "required": "review evidence-preserving units shared by all selectors; fix selector input cap and truncation on development; report lost evidence"
+  }
+}

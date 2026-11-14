@@ -1,0 +1,368 @@
+{
+  "same_memory_question_changed_current_with_label_change": [
+    {
+      "source_instance_id": "django__django-11019",
+      "question": "Does the staged program already satisfy BOTH the settings and app-registry setup prerequisites illustrated by this memory?",
+      "sample_ids": [
+        "django-init-missing:initialization_prerequisites",
+        "django-init-settings_only:initialization_prerequisites",
+        "django-init-full:initialization_prerequisites"
+      ],
+      "labels": [
+        "contradicted",
+        "contradicted",
+        "supported"
+      ]
+    },
+    {
+      "source_instance_id": "scikit-learn__scikit-learn-10508",
+      "question": "Does the staged call reach the empty-result path after the fitted-state and shape validations described by memory?",
+      "sample_ids": [
+        "label-encoder-fitted_empty:validation_before_shortcut",
+        "label-encoder-fitted_nonempty:validation_before_shortcut",
+        "label-encoder-unfitted_empty:validation_before_shortcut",
+        "label-encoder-invalid_shape:validation_before_shortcut",
+        "label-encoder-unseen_label:validation_before_shortcut"
+      ],
+      "labels": [
+        "supported",
+        "contradicted",
+        "contradicted",
+        "contradicted",
+        "contradicted"
+      ]
+    },
+    {
+      "source_instance_id": "pvlib__pvlib-python-1154",
+      "question": "Does the staged input satisfy the exact-zero condition that triggered the source workaround?",
+      "sample_ids": [
+        "pvlib-zero-guard-zero:numeric_guard_scope",
+        "pvlib-zero-guard-nan:numeric_guard_scope",
+        "pvlib-zero-guard-positive:numeric_guard_scope",
+        "pvlib-zero-guard-consistent_zero:numeric_guard_scope"
+      ],
+      "labels": [
+        "supported",
+        "contradicted",
+        "contradicted",
+        "supported"
+      ]
+    },
+    {
+      "source_instance_id": "pvlib__pvlib-python-1154",
+      "question": "Does the source zero-output observation carry over to this displayed zero-GHI call in the current implementation?",
+      "sample_ids": [
+        "pvlib-zero-guard-zero:source_observation_transfer",
+        "pvlib-zero-guard-consistent_zero:source_observation_transfer"
+      ],
+      "labels": [
+        "contradicted",
+        "supported"
+      ]
+    },
+    {
+      "source_instance_id": "pytest-dev__pytest-7373",
+      "question": "Would reusing one expression-only result preserve the outcomes of these TWO displayed module evaluations?",
+      "sample_ids": [
+        "pytest-namespace-different:namespace_reuse",
+        "pytest-namespace-same_true:namespace_reuse",
+        "pytest-namespace-same_false:namespace_reuse"
+      ],
+      "labels": [
+        "contradicted",
+        "supported",
+        "supported"
+      ]
+    },
+    {
+      "source_instance_id": "sphinx-doc__sphinx-8435",
+      "question": "Does the current namespace allow the source-related lookup to resolve the annotation to a type rather than leave its string unresolved?",
+      "sample_ids": [
+        "sphinx-alias-known:lookup_resolution",
+        "sphinx-alias-missing:lookup_resolution",
+        "sphinx-alias-qualified_known:lookup_resolution"
+      ],
+      "labels": [
+        "supported",
+        "contradicted",
+        "supported"
+      ]
+    },
+    {
+      "source_instance_id": "sphinx-doc__sphinx-8282",
+      "question": "Does the current setting fall within the annotation-suppression conditions specified by memory?",
+      "sample_ids": [
+        "sphinx-config-none:config_guard",
+        "sphinx-config-description:config_guard",
+        "sphinx-config-signature:config_guard"
+      ],
+      "labels": [
+        "supported",
+        "supported",
+        "contradicted"
+      ]
+    },
+    {
+      "source_instance_id": "sympy__sympy-24066",
+      "question": "Does the displayed expression meet the eligibility condition for the historical normalization?",
+      "sample_ids": [
+        "sympy-dimension-ratio:dimension_normalization_guard",
+        "sympy-dimension-second:dimension_normalization_guard",
+        "sympy-dimension-velocity:dimension_normalization_guard"
+      ],
+      "labels": [
+        "supported",
+        "contradicted",
+        "contradicted"
+      ]
+    },
+    {
+      "source_instance_id": "sympy__sympy-18621",
+      "question": "Does the displayed construction preserve an entire matrix as one outer block-grid cell,as required by the source recipe?",
+      "sample_ids": [
+        "sympy-block-inferred_shape:container_representation",
+        "sympy-block-explicit_shape:container_representation"
+      ],
+      "labels": [
+        "contradicted",
+        "supported"
+      ]
+    },
+    {
+      "source_instance_id": "scikit-learn__scikit-learn-10508",
+      "question": "Is the current canonical class implementation still located in the original module path named by this memory?",
+      "sample_ids": [
+        "sklearn-alias-12471:canonical_module_change",
+        "sklearn-alias-15512:canonical_module_change",
+        "sklearn-alias-15535:canonical_module_change"
+      ],
+      "labels": [
+        "supported",
+        "contradicted",
+        "contradicted"
+      ]
+    },
+    {
+      "source_instance_id": "sphinx-doc__sphinx-8282",
+      "question": "Does this current callable explicitly declare the keyword parameter used by the historical rendering prescription?",
+      "sample_ids": [
+        "sphinx-doc__sphinx-8627:stringify_signature:keyword",
+        "sphinx-doc__sphinx-8627:stringify:keyword",
+        "sphinx-doc__sphinx-10451:stringify_signature:keyword",
+        "sphinx-doc__sphinx-10451:stringify:keyword"
+      ],
+      "labels": [
+        "supported",
+        "contradicted",
+        "supported",
+        "contradicted"
+      ]
+    },
+    {
+      "source_instance_id": "django__django-14667",
+      "question": "Does the concrete Query inspection helper with the empty-name early return described by memory still exist in this current class?",
+      "sample_ids": [
+        "django__django-15213:query-helper",
+        "django__django-16041:query-helper",
+        "django__django-16910:query-helper"
+      ],
+      "labels": [
+        "supported",
+        "contradicted",
+        "contradicted"
+      ]
+    },
+    {
+      "source_instance_id": "scikit-learn__scikit-learn-11281",
+      "question": "Does the selected current estimator directly use the shared base implementation targeted by the historical change?",
+      "sample_ids": [
+        "scikit-learn__scikit-learn-13142:GaussianMixture:inheritance",
+        "scikit-learn__scikit-learn-13142:BayesianGaussianMixture:inheritance",
+        "scikit-learn__scikit-learn-13142:AffinityPropagation:inheritance",
+        "scikit-learn__scikit-learn-15512:GaussianMixture:inheritance",
+        "scikit-learn__scikit-learn-15512:BayesianGaussianMixture:inheritance",
+        "scikit-learn__scikit-learn-15512:AffinityPropagation:inheritance"
+      ],
+      "labels": [
+        "supported",
+        "supported",
+        "contradicted",
+        "supported",
+        "supported",
+        "contradicted"
+      ]
+    },
+    {
+      "source_instance_id": "scikit-learn__scikit-learn-10508",
+      "question": "Is the inspected class in the implementation family whose methods the historical tentative edit targeted?",
+      "sample_ids": [
+        "scikit-learn__scikit-learn-12471:LabelEncoder:family:scikit-learn__scikit-learn-10508",
+        "scikit-learn__scikit-learn-13142:GaussianMixture:family:scikit-learn__scikit-learn-10508"
+      ],
+      "labels": [
+        "supported",
+        "contradicted"
+      ]
+    },
+    {
+      "source_instance_id": "scikit-learn__scikit-learn-11281",
+      "question": "Is the inspected class in the implementation family whose methods the historical tentative edit targeted?",
+      "sample_ids": [
+        "scikit-learn__scikit-learn-12471:LabelEncoder:family:scikit-learn__scikit-learn-11281",
+        "scikit-learn__scikit-learn-13142:GaussianMixture:family:scikit-learn__scikit-learn-11281"
+      ],
+      "labels": [
+        "contradicted",
+        "supported"
+      ]
+    },
+    {
+      "source_instance_id": "django__django-14667",
+      "question": "Is the inspected class in the implementation family whose methods the historical tentative edit targeted?",
+      "sample_ids": [
+        "django__django-16041:Query:family:django__django-14667",
+        "django__django-16041:Media:family:django__django-14667"
+      ],
+      "labels": [
+        "supported",
+        "contradicted"
+      ]
+    },
+    {
+      "source_instance_id": "django__django-11019",
+      "question": "Is the inspected class in the implementation family whose methods the historical tentative edit targeted?",
+      "sample_ids": [
+        "django__django-16041:Query:family:django__django-11019",
+        "django__django-16041:Media:family:django__django-11019"
+      ],
+      "labels": [
+        "contradicted",
+        "supported"
+      ]
+    }
+  ],
+  "same_state_changed_memory": [
+    {
+      "sample_ids": [
+        "label-encoder-fitted_empty:validation_before_shortcut",
+        "label-encoder-fitted_empty:validation_before_shortcut:different_memory"
+      ],
+      "labels": [
+        "supported",
+        "not_established"
+      ],
+      "contains_unknown_control": true
+    },
+    {
+      "sample_ids": [
+        "sympy-dimension-ratio:dimension_normalization_guard",
+        "sympy-dimension-ratio:dimension_normalization_guard:different_memory"
+      ],
+      "labels": [
+        "supported",
+        "not_established"
+      ],
+      "contains_unknown_control": true
+    },
+    {
+      "sample_ids": [
+        "sphinx-doc__sphinx-8627:stringify_signature:keyword",
+        "sphinx-doc__sphinx-8627:stringify_signature:keyword:different_memory"
+      ],
+      "labels": [
+        "supported",
+        "not_established"
+      ],
+      "contains_unknown_control": true
+    },
+    {
+      "sample_ids": [
+        "django__django-16910:query-helper",
+        "django__django-16910:query-helper:different_memory"
+      ],
+      "labels": [
+        "contradicted",
+        "not_established"
+      ],
+      "contains_unknown_control": true
+    },
+    {
+      "sample_ids": [
+        "scikit-learn__scikit-learn-13142:GaussianMixture:inheritance",
+        "scikit-learn__scikit-learn-13142:GaussianMixture:inheritance:different_memory"
+      ],
+      "labels": [
+        "supported",
+        "not_established"
+      ],
+      "contains_unknown_control": true
+    },
+    {
+      "sample_ids": [
+        "scikit-learn__scikit-learn-12471:LabelEncoder:family:scikit-learn__scikit-learn-10508",
+        "scikit-learn__scikit-learn-12471:LabelEncoder:family:scikit-learn__scikit-learn-11281"
+      ],
+      "labels": [
+        "supported",
+        "contradicted"
+      ],
+      "contains_unknown_control": false
+    },
+    {
+      "sample_ids": [
+        "scikit-learn__scikit-learn-13142:GaussianMixture:family:scikit-learn__scikit-learn-10508",
+        "scikit-learn__scikit-learn-13142:GaussianMixture:family:scikit-learn__scikit-learn-11281"
+      ],
+      "labels": [
+        "contradicted",
+        "supported"
+      ],
+      "contains_unknown_control": false
+    },
+    {
+      "sample_ids": [
+        "django__django-16041:Query:family:django__django-14667",
+        "django__django-16041:Query:family:django__django-11019"
+      ],
+      "labels": [
+        "supported",
+        "contradicted"
+      ],
+      "contains_unknown_control": false
+    },
+    {
+      "sample_ids": [
+        "django__django-16041:Media:family:django__django-14667",
+        "django__django-16041:Media:family:django__django-11019"
+      ],
+      "labels": [
+        "contradicted",
+        "supported"
+      ],
+      "contains_unknown_control": false
+    }
+  ],
+  "missing_memory_premise_controls": [
+    {
+      "parent": "scikit-learn__scikit-learn-13142:GaussianMixture:inheritance",
+      "counter": "scikit-learn__scikit-learn-13142:GaussianMixture:inheritance:different_memory"
+    },
+    {
+      "parent": "sphinx-doc__sphinx-8627:stringify_signature:keyword",
+      "counter": "sphinx-doc__sphinx-8627:stringify_signature:keyword:different_memory"
+    },
+    {
+      "parent": "django__django-16910:query-helper",
+      "counter": "django__django-16910:query-helper:different_memory"
+    },
+    {
+      "parent": "sympy-dimension-ratio:dimension_normalization_guard",
+      "counter": "sympy-dimension-ratio:dimension_normalization_guard:different_memory"
+    },
+    {
+      "parent": "label-encoder-fitted_empty:validation_before_shortcut",
+      "counter": "label-encoder-fitted_empty:validation_before_shortcut:different_memory"
+    }
+  ],
+  "warning": "Mechanism relation contrasts,not observed performance counterfactuals."
+}

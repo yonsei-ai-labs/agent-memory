@@ -1,0 +1,45 @@
+{
+  "dataset": "SWE-bench/SWE-smith-trajectories",
+  "hub_revision": "08e109b4a59eaeebf80e4675cd125d42e7ac99a4",
+  "parquet_file": "data/tool-00000-of-00008.parquet",
+  "parquet_sha256": "ac76e9efe75978f83d4daec98a55604587dd58b0f1509364893b8778cbf5b487",
+  "parquet_row_index": 113,
+  "instance_id": "PyCQA__flake8.cf1542ce.func_pm_remove_cond__c7i9mnxb",
+  "traj_id": "PyCQA__flake8.cf1542ce.func_pm_remove_cond__c7i9mnxb.8qa84d2e",
+  "repository": "PyCQA/flake8",
+  "upstream_revision": "cf1542ce",
+  "raw_messages_sha256": "be488d4ebdd1a565dd52a14bfdb1174ac3ac2931ed9ef44868314750e2f838da",
+  "message_index": 36,
+  "tool_call": {
+    "index": 1,
+    "function": {
+      "arguments": "{\"command\": \"cd /testbed && python -m pytest tests/unit/test_discover_files.py -v\"}",
+      "name": "bash"
+    },
+    "id": "toolu_012YuVZ4QE6HrAi62huD1Coy",
+    "type": "function"
+  },
+  "observation_index": 37,
+  "observation": {
+    "role": "tool",
+    "content": [
+      {
+        "type": "text",
+        "text": "OBSERVATION:\n============================= test session starts ==============================\r\nplatform linux -- Python 3.10.15, pytest-8.3.4, pluggy-1.5.0 -- /opt/miniconda3/envs/testbed/bin/python\r\ncachedir: .pytest_cache\r\nrootdir: /testbed\r\nconfigfile: pytest.ini\r\ncollecting ... \rcollected 13 items                                                             \r\n\r\ntests/unit/test_discover_files.py::test_filenames_from_a_directory PASSED [  7%]\r\ntests/unit/test_discover_files.py::test_filenames_from_a_directory_with_a_predicate PASSED [ 15%]\r\ntests/unit/test_discover_files.py::test_filenames_from_a_directory_with_a_predicate_from_the_current_dir PASSED [ 23%]\r\ntests/unit/test_discover_files.py::test_filenames_from_a_single_file PASSED [ 30%]\r\ntests/unit/test_discover_files.py::test_filenames_from_a_single_file_does_not_exist PASSED [ 38%]\r\ntests/unit/test_discover_files.py::test_filenames_from_exclude_doesnt_exclude_directory_names PASSED [ 46%]\r\ntests/unit/test_discover_files.py::test_filenames_from_predicate_applies_to_initial_arg PASSED [ 53%]\r\ntests/unit/test_discover_files.py::test_filenames_from_predicate_applies_to_dirname PASSED [ 61%]\r\ntests/unit/test_discover_files.py::test_expand_paths_honors_exclude PASSED [ 69%]\r\ntests/unit/test_discover_files.py::test_expand_paths_defaults_to_dot PASSED [ 76%]\r\ntests/unit/test_discover_files.py::test_default_stdin_name_is_not_filtered PASSED [ 84%]\r\ntests/unit/test_discover_files.py::test_alternate_stdin_name_is_filtered PASSED [ 92%]\r\ntests/unit/test_discover_files.py::test_filename_included_even_if_not_matching_include PASSED [100%]\r\n\r\n============================== 13 passed in 0.03s =============================="
+      }
+    ],
+    "agent": "main",
+    "message_type": "observation",
+    "tool_call_ids": [
+      "toolu_012YuVZ4QE6HrAi62huD1Coy"
+    ]
+  },
+  "created_paths_in_trace": [
+    "/testbed/reproduce_bug.py",
+    "/testbed/test_edge_cases.py"
+  ],
+  "observed_whole_scope_selection": [
+    "tests/unit/test_discover_files.py"
+  ],
+  "observed_target_state_or_memory_utility": false
+}

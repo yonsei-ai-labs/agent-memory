@@ -1,0 +1,33 @@
+{
+  "schema": "external-memory-updates-v1",
+  "max_record_tokens": 512,
+  "distractors": 6,
+  "split_cycle": [
+    "confirm",
+    "confirm",
+    "train",
+    "dev"
+  ],
+  "conditions": [
+    "none",
+    "new_only",
+    "old_only",
+    "both",
+    "current_new",
+    "current_new_plus_old",
+    "lexical_top2",
+    "latest_of_top2"
+  ],
+  "system_prompt_sha256": "d62d604c2e7a3ba0f73f05900e4daef80346a7dbf791e4ce2d44f340d5dd51f7",
+  "inclusion": [
+    "BEAM: knowledge_update questions of the listed sizes with separate, non-overlapping original_info and updated_info message ids",
+    "BEAM: exactly one rubric item of the form \"LLM response should state: X\" with X of at most five words",
+    "LongMemEval-S: answerable knowledge-update questions whose two evidence sessions both have a marked turn",
+    "LongMemEval-S: every answer alternative has at most five words, so it can be recognised by its value",
+    "the new evidence states an accepted answer value and the old evidence states none",
+    "every old message precedes every new message",
+    "no evidence message is longer than max_record_tokens",
+    "distractors: best lexical matches among other user messages (BEAM: same conversation; LongMemEval-S: other sessions) that state neither an accepted nor the superseded value"
+  ],
+  "labels": "Roles and \"needed\" are read from the source annotations. They are not measured effects of supplying a record to a worker."
+}

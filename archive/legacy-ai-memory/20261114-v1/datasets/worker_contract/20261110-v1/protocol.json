@@ -1,0 +1,44 @@
+{
+  "experiment": "memory-worker-contract-20261110-v1",
+  "source_archive_sha256": "b03a70797bfb7d490c5a5a9e9bc9bce9170d9e08d10aa415d087ea131a6bda66",
+  "prepared_before_inference": true,
+  "cases": 72,
+  "main_calls": 144,
+  "repeat_calls": 2,
+  "splits": {
+    "development": 36,
+    "confirmation": 36
+  },
+  "contracts": [
+    "plain",
+    "structured"
+  ],
+  "primary": "Confirmation answer/status accuracy by answerable/infeasible/insufficient, paired per original parent case.",
+  "gates": {
+    "confirmation_unknown_min_correct_of_24": 20,
+    "unknown_must_improve_over_plain": true,
+    "confirmation_answerable_min_correct_of_24": 22,
+    "confirmation_infeasible_min_correct_of_24": 20,
+    "known_answer_max_regression_vs_plain_of_48": 2,
+    "confirmation_required_citation_min_correct_of_48": 44,
+    "confirmation_max_invalid_of_36": 1,
+    "confirmation_max_token_limits": 0
+  },
+  "gate_scope": "Predeclared engineering checks, not statistical generalization claims.",
+  "differences_from_old_canary": [
+    "Both arms get opaque evidence IDs.",
+    "Common max_new_tokens=256 instead of 64.",
+    "Structured arm changes system instructions and output schema together; not an isolated schema causal claim."
+  ],
+  "confirmation_scope": "Constructed price/name/ID/order/wording variants of the same 36 controls, not new independent source families.",
+  "no_adaptive_tuning": "Both arms and all cases frozen before inference; no prompt search after inspecting development.",
+  "scope": "Worker functionality only; no selector training, main travel relabeling, or full MemoryArena score.",
+  "local_sha256": {
+    "cases.json": "19fb7577f1b597255e40410d540ac4bd983fb90345117ddb6d4967c046abf860",
+    "targets.json": "67a16943265baba7f42e2923478b4ba5c183b5b009bb25d9c202a2f2d84fcaed"
+  },
+  "source_sha256": {
+    "data_pipeline/prepare_worker_contract.py": "1dbae0294ea4972f397de03e04d38ab2b1b45a3d02f85775b9acb140212aad86",
+    "training/memory_selector/worker_contract_protocol.py": "59eff274a5ac897ede972aae670b5baebeadf292f49fdddc9c631570b2cf5042"
+  }
+}

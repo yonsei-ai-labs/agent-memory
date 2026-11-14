@@ -1,0 +1,76 @@
+{
+  "created_at": "2026-11-07T00:59:55.782125+00:00",
+  "status": "draft_not_executed",
+  "purpose": "Review-only example using an already analyzed source, not a runnable memory bank or confirmation experiment.",
+  "model_calls": 0,
+  "experiment_manifest_created": false,
+  "source_annotations": "docs/reports/data/memory-content-analysis-20261106/content-units.json",
+  "source_annotations_sha256": "f955d3a722c98ab9a4c298d1057f04d07c8f0d4fc42c9cd52585df18da221f1b",
+  "source_instance_id": "scikit-learn__scikit-learn-10508",
+  "original_source_body_sha256": "99cf5c98180ed9652a070c617be8f1b69abdd75cd2cdbf01112e0db7b03425d1",
+  "common_base_instruction": "Investigate the current problem and verify proposed changes against current code and tests.",
+  "shared_memory_metadata": "Same source card ID, source official outcome, historical validation notice and delivery position in all memory variants; no arm label or content hash rendered.",
+  "component_F": {
+    "unit_ids": [
+      "sklearn10508-procedure:u1",
+      "sklearn10508-procedure:u3",
+      "sklearn10508-procedure:u4",
+      "sklearn10508-procedure:u5",
+      "sklearn10508-procedure:u6"
+    ],
+    "text": "Source problem: empty-list transformation in LabelEncoder behaved differently after numeric versus string fitting, with the report showing a TypeError for string classes. The local reproducer covered fitting [1, 2] and ['a', 'b']; added checks also covered ordinary string transformation and rejection of an unseen label. The agent-local test file run, `pytest -q sklearn/preprocessing/tests/test_label.py`, passed 19 tests with 3 xfailed. These local results do not establish broader behavior or compatibility; other APIs, input forms, and versions were not verified. The actual official outcome for the submitted patch was unresolved, official_resolved=false, despite those local checks.",
+    "interpretation": "Source observations, local validation, limitations and official outcome. Source attempt implementation detail P is omitted; this is not a current-task validation result."
+  },
+  "component_P": {
+    "unit_id": "sklearn10508-procedure:u2",
+    "text": "In this repository and local environment, a tentative approach was to check for zero-length input in LabelEncoder.transform after fitted-state and column_or_1d validation, then return an empty np.intp array before np.unique/searchsorted. ",
+    "interpretation": "Verbatim description of a specific source attempt, not a universally verified fix or a pure imperative-only intervention."
+  },
+  "component_A": {
+    "text": "Applicability check: before transferring the source's empty-input return, establish that the current failure involves zero-length input in a compatible LabelEncoder.transform path and that fitted-state and shape validation are preserved. If the failure is on non-empty inputs or in another API, do not treat that empty-input return as a fix for it.",
+    "provenance": "Researcher-authored scope instruction derived from source constraints; not source-observed prose or target-solution information."
+  },
+  "variants": {
+    "N": {
+      "rendered_experience": "",
+      "characters": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "F": {
+      "rendered_experience": "<past_experience id=\"sklearn10508-procedure\">\nVerified source metadata: scikit-learn__scikit-learn-10508; official_resolved=false.\nThis is a record of a past source attempt. Local checks and official outcomes concern that attempt. Verify applicability against the current code.\n\nSource problem: empty-list transformation in LabelEncoder behaved differently after numeric versus string fitting, with the report showing a TypeError for string classes. The local reproducer covered fitting [1, 2] and ['a', 'b']; added checks also covered ordinary string transformation and rejection of an unseen label. The agent-local test file run, `pytest -q sklearn/preprocessing/tests/test_label.py`, passed 19 tests with 3 xfailed. These local results do not establish broader behavior or compatibility; other APIs, input forms, and versions were not verified. The actual official outcome for the submitted patch was unresolved, official_resolved=false, despite those local checks.\n</past_experience>",
+      "characters": 987,
+      "sha256": "065160bb82b86c4b56f4498a85359b72d82cc900b83cd3be9e294ad9a651fd42"
+    },
+    "FP": {
+      "rendered_experience": "<past_experience id=\"sklearn10508-procedure\">\nVerified source metadata: scikit-learn__scikit-learn-10508; official_resolved=false.\nThis is a record of a past source attempt. Local checks and official outcomes concern that attempt. Verify applicability against the current code.\n\nSource problem: empty-list transformation in LabelEncoder behaved differently after numeric versus string fitting, with the report showing a TypeError for string classes. In this repository and local environment, a tentative approach was to check for zero-length input in LabelEncoder.transform after fitted-state and column_or_1d validation, then return an empty np.intp array before np.unique/searchsorted. The local reproducer covered fitting [1, 2] and ['a', 'b']; added checks also covered ordinary string transformation and rejection of an unseen label. The agent-local test file run, `pytest -q sklearn/preprocessing/tests/test_label.py`, passed 19 tests with 3 xfailed. These local results do not establish broader behavior or compatibility; other APIs, input forms, and versions were not verified. The actual official outcome for the submitted patch was unresolved, official_resolved=false, despite those local checks.\n</past_experience>",
+      "characters": 1225,
+      "sha256": "91a48943d404ee54e99e05a93f77d9f611436eefda8a854d165a890385333de5"
+    },
+    "FPA": {
+      "rendered_experience": "<past_experience id=\"sklearn10508-procedure\">\nVerified source metadata: scikit-learn__scikit-learn-10508; official_resolved=false.\nThis is a record of a past source attempt. Local checks and official outcomes concern that attempt. Verify applicability against the current code.\n\nSource problem: empty-list transformation in LabelEncoder behaved differently after numeric versus string fitting, with the report showing a TypeError for string classes. In this repository and local environment, a tentative approach was to check for zero-length input in LabelEncoder.transform after fitted-state and column_or_1d validation, then return an empty np.intp array before np.unique/searchsorted. The local reproducer covered fitting [1, 2] and ['a', 'b']; added checks also covered ordinary string transformation and rejection of an unseen label. The agent-local test file run, `pytest -q sklearn/preprocessing/tests/test_label.py`, passed 19 tests with 3 xfailed. These local results do not establish broader behavior or compatibility; other APIs, input forms, and versions were not verified. The actual official outcome for the submitted patch was unresolved, official_resolved=false, despite those local checks.\n\nApplicability check: before transferring the source's empty-input return, establish that the current failure involves zero-length input in a compatible LabelEncoder.transform path and that fitted-state and shape validation are preserved. If the failure is on non-empty inputs or in another API, do not treat that empty-input return as a fix for it.\n</past_experience>",
+      "characters": 1575,
+      "sha256": "c9072888a73a97def3e131c0288acdfe96572c32a4067021a447548daaf7ae9c"
+    }
+  },
+  "validation": {
+    "original_body_preserved_in_FP": true,
+    "only_P_differs_between_F_and_FP": true,
+    "only_A_differs_between_FP_and_FPA": true,
+    "source_outcome_constant_across_memory_variants": true
+  },
+  "estimands": {
+    "primary": "p(FP)-p(F): incremental source-prescription package effect conditional on F.",
+    "secondary": [
+      "p(F)-p(N): whole F provision package, including source metadata and notice.",
+      "p(FPA)-p(FP): added concrete applicability cue effect conditional on prescription."
+    ],
+    "not_identified": "Prescription-by-cue interaction requires the additional F+A condition."
+  },
+  "limitations": [
+    "F, P and the cue are visible design materials, not new experimental outcomes.",
+    "P addition changes information specificity and length; this is not a pure instruction-tone effect.",
+    "The source officially failed; the omitted diagnosis of inverse_transform failure is not retroactively added.",
+    "The current previously studied targets do not establish a compatible positive-transfer case.",
+    "New source/target selection, sample size, model settings, budgets, order, outcomes and stopping rules remain to be frozen before any paid run."
+  ]
+}

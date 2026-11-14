@@ -1,0 +1,1448 @@
+[
+  {
+    "task_id": "qa_169",
+    "source_group": "mem2act:273729908b7ff5aa53db",
+    "split": "train",
+    "new_group": true,
+    "original_goal": "How’s the market treating my favorite tech giant right now—can you pull up the live trading details like you did yesterday?",
+    "paragraph": {
+      "text": "Can you please tell me the current stock price and trading details of Microsoft listed on NASDAQ?",
+      "source_id": "toolace_7835",
+      "session_id": "session_00011",
+      "turn": 24,
+      "full_turn": "Can you please tell me the current stock price and trading details of Microsoft listed on NASDAQ?",
+      "char_start": 0,
+      "char_end": 97
+    },
+    "facts": [
+      {
+        "key": "attribute_1",
+        "description": "company whose stock was requested",
+        "value": "Microsoft",
+        "quote": "of Microsoft",
+        "char_start": 67,
+        "char_end": 79,
+        "case_sensitive": false,
+        "aliases": []
+      },
+      {
+        "key": "attribute_2",
+        "description": "stock exchange",
+        "value": "NASDAQ",
+        "quote": "listed on NASDAQ",
+        "char_start": 80,
+        "char_end": 96,
+        "case_sensitive": false,
+        "aliases": []
+      }
+    ],
+    "review": "Same-agent source reading; explicit independent roles, no inferred outcome. Request narrowed to field recovery."
+  },
+  {
+    "task_id": "qa_215",
+    "source_group": "mem2act:c598f8e0157b2403af4d",
+    "split": "train",
+    "new_group": true,
+    "original_goal": "Show me the latest videos comparing the newer model to the older one we talked about—focus on what actually got better.",
+    "paragraph": {
+      "text": "Write a code in javascript to create a roulette where the participants, or what is being raffled, can be uploaded using a csv",
+      "source_id": "oss_7929",
+      "session_id": "session_00131",
+      "turn": 18,
+      "full_turn": "Write a code in javascript to create a roulette where the participants, or what is being raffled, can be uploaded using a csv",
+      "char_start": 0,
+      "char_end": 125
+    },
+    "facts": [
+      {
+        "key": "attribute_1",
+        "description": "implementation language",
+        "value": "javascript",
+        "quote": "code in javascript",
+        "char_start": 8,
+        "char_end": 26,
+        "case_sensitive": false,
+        "aliases": []
+      },
+      {
+        "key": "attribute_2",
+        "description": "participant input file format",
+        "value": "csv",
+        "quote": "uploaded using a csv",
+        "char_start": 105,
+        "char_end": 125,
+        "case_sensitive": false,
+        "aliases": []
+      }
+    ],
+    "review": "Same-agent source reading; explicit independent roles, no inferred outcome. Request narrowed to field recovery."
+  },
+  {
+    "task_id": "qa_025",
+    "source_group": "mem2act:63cbb21a5421e8c175ad",
+    "split": "train",
+    "new_group": true,
+    "original_goal": "Can you pull up the full lineup and venue info for that show I asked about earlier?",
+    "paragraph": {
+      "text": "Great. Now, please compile a summary report listing each event, its date, and whether it conflicts with the June 30th deadline. Save it as 'event_summary_q3.txt' in the reports folder.",
+      "source_id": "toolace_4900",
+      "session_id": "session_00308",
+      "turn": 29,
+      "full_turn": "Great. Now, please compile a summary report listing each event, its date, and whether it conflicts with the June 30th deadline. Save it as 'event_summary_q3.txt' in the reports folder.",
+      "char_start": 0,
+      "char_end": 184
+    },
+    "facts": [
+      {
+        "key": "attribute_1",
+        "description": "event summary filename",
+        "value": "event_summary_q3.txt",
+        "quote": "Save it as 'event_summary_q3.txt'",
+        "char_start": 128,
+        "char_end": 161,
+        "case_sensitive": true,
+        "aliases": []
+      },
+      {
+        "key": "attribute_2",
+        "description": "event summary output folder",
+        "value": "reports",
+        "quote": "in the reports folder",
+        "char_start": 162,
+        "char_end": 183,
+        "case_sensitive": false,
+        "aliases": []
+      }
+    ],
+    "review": "Same-agent source reading; explicit independent roles, no inferred outcome. Request narrowed to field recovery."
+  },
+  {
+    "task_id": "qa_331",
+    "source_group": "mem2act:1a2218032473e010845d",
+    "split": "train",
+    "new_group": true,
+    "original_goal": "Can you pull up the details for that Starline app we set up the token for?",
+    "paragraph": {
+      "text": "I have several tasks scheduled for today. Could you help me by retrieving a specific task with ID '123TaskID' to view and reword the PDF associated with it? Also, verify if the phone number '+491234567890' is a WhatsApp business account, obtain an application token for 'Starline' app with the ID 'app123' and secret 's3cr3t', and convert the HSV color code (120, 40, 75) into HSL format.",
+      "source_id": "toolace_7340",
+      "session_id": "session_00379",
+      "turn": 12,
+      "full_turn": "I have several tasks scheduled for today. Could you help me by retrieving a specific task with ID '123TaskID' to view and reword the PDF associated with it? Also, verify if the phone number '+491234567890' is a WhatsApp business account, obtain an application token for 'Starline' app with the ID 'app123' and secret 's3cr3t', and convert the HSV color code (120, 40, 75) into HSL format.",
+      "char_start": 0,
+      "char_end": 388
+    },
+    "facts": [
+      {
+        "key": "attribute_1",
+        "description": "application name",
+        "value": "Starline",
+        "quote": "for 'Starline' app",
+        "char_start": 266,
+        "char_end": 284,
+        "case_sensitive": false,
+        "aliases": []
+      },
+      {
+        "key": "attribute_2",
+        "description": "application identifier",
+        "value": "app123",
+        "quote": "with the ID 'app123'",
+        "char_start": 285,
+        "char_end": 305,
+        "case_sensitive": true,
+        "aliases": []
+      }
+    ],
+    "review": "Same-agent source reading; explicit independent roles, no inferred outcome. Request narrowed to field recovery."
+  },
+  {
+    "task_id": "qa_045",
+    "source_group": "mem2act:02eda3ca5aaf2fb97b51",
+    "split": "train",
+    "new_group": true,
+    "original_goal": "Can you pull the latest momentum stats for the three stocks I always track?",
+    "paragraph": {
+      "text": "Perfect. Now, please export this comparison into a CSV file named 'momentum_comparison.csv' in the reports folder.",
+      "source_id": "toolace_3343",
+      "session_id": "session_00148",
+      "turn": 8,
+      "full_turn": "Perfect. Now, please export this comparison into a CSV file named 'momentum_comparison.csv' in the reports folder.",
+      "char_start": 0,
+      "char_end": 114
+    },
+    "facts": [
+      {
+        "key": "attribute_1",
+        "description": "comparison filename",
+        "value": "momentum_comparison.csv",
+        "quote": "CSV file named 'momentum_comparison.csv'",
+        "char_start": 51,
+        "char_end": 91,
+        "case_sensitive": true,
+        "aliases": []
+      },
+      {
+        "key": "attribute_2",
+        "description": "comparison output folder",
+        "value": "reports",
+        "quote": "in the reports folder",
+        "char_start": 92,
+        "char_end": 113,
+        "case_sensitive": false,
+        "aliases": []
+      }
+    ],
+    "review": "Same-agent source reading; explicit independent roles, no inferred outcome. Request narrowed to field recovery."
+  },
+  {
+    "task_id": "qa_163",
+    "source_group": "mem2act:24015f7a6c04f935a533",
+    "split": "train",
+    "new_group": true,
+    "original_goal": "Can you pull up the profile picture for that travel account we were just talking about?",
+    "paragraph": {
+      "text": "Could you please retrieve the profile picture of the Instagram user with the username \"travelwithme\"?",
+      "source_id": "toolace_4828",
+      "session_id": "session_00263",
+      "turn": 20,
+      "full_turn": "Could you please retrieve the profile picture of the Instagram user with the username \"travelwithme\"?",
+      "char_start": 0,
+      "char_end": 101
+    },
+    "facts": [
+      {
+        "key": "attribute_1",
+        "description": "profile-picture platform",
+        "value": "Instagram",
+        "quote": "the Instagram user",
+        "char_start": 49,
+        "char_end": 67,
+        "case_sensitive": false,
+        "aliases": []
+      },
+      {
+        "key": "attribute_2",
+        "description": "profile username",
+        "value": "travelwithme",
+        "quote": "with the username \"travelwithme\"",
+        "char_start": 68,
+        "char_end": 100,
+        "case_sensitive": false,
+        "aliases": []
+      }
+    ],
+    "review": "Same-agent source reading; explicit independent roles, no inferred outcome. Request narrowed to field recovery."
+  },
+  {
+    "task_id": "qa_041",
+    "source_group": "mem2act:0c3adccebe4299a11928",
+    "split": "train",
+    "new_group": true,
+    "original_goal": "How many repos does that user have again?",
+    "paragraph": {
+      "text": "I'd like to know what units of weight are available, get a list of active programming languages, find the repositories of the GitHub user \"octocat\", and retrieve endpoint data for user ID \"1001\" and endpoint ID \"3498\".",
+      "source_id": "toolace_818",
+      "session_id": "session_00070",
+      "turn": 14,
+      "full_turn": "I'd like to know what units of weight are available, get a list of active programming languages, find the repositories of the GitHub user \"octocat\", and retrieve endpoint data for user ID \"1001\" and endpoint ID \"3498\".",
+      "char_start": 0,
+      "char_end": 218
+    },
+    "facts": [
+      {
+        "key": "attribute_1",
+        "description": "endpoint account user identifier",
+        "value": "1001",
+        "quote": "user ID \"1001\"",
+        "char_start": 180,
+        "char_end": 194,
+        "case_sensitive": true,
+        "aliases": []
+      },
+      {
+        "key": "attribute_2",
+        "description": "endpoint identifier",
+        "value": "3498",
+        "quote": "endpoint ID \"3498\"",
+        "char_start": 199,
+        "char_end": 217,
+        "case_sensitive": true,
+        "aliases": []
+      }
+    ],
+    "review": "Same-agent source reading; explicit independent roles, no inferred outcome. Request narrowed to field recovery."
+  },
+  {
+    "task_id": "qa_098",
+    "source_group": "mem2act:f73f7ae687e264fa653f",
+    "split": "train",
+    "new_group": true,
+    "original_goal": "Can you pull up the Japanese details for the hotel I picked near the airport for my September trip?",
+    "paragraph": {
+      "text": "I'm planning a business trip to Tokyo for next month. Can you find me a list of flights from LAX to HND departing on September 15th, book a hotel nearby HND with good ratings for September 15th to 20th, and also suggest some high-rated sushi restaurants in that area?",
+      "source_id": "toolace_5437",
+      "session_id": "session_00372",
+      "turn": 0,
+      "full_turn": "I'm planning a business trip to Tokyo for next month. Can you find me a list of flights from LAX to HND departing on September 15th, book a hotel nearby HND with good ratings for September 15th to 20th, and also suggest some high-rated sushi restaurants in that area?",
+      "char_start": 0,
+      "char_end": 267
+    },
+    "facts": [
+      {
+        "key": "attribute_1",
+        "description": "flight departure airport code",
+        "value": "LAX",
+        "quote": "flights from LAX",
+        "char_start": 80,
+        "char_end": 96,
+        "case_sensitive": false,
+        "aliases": []
+      },
+      {
+        "key": "attribute_2",
+        "description": "flight arrival airport code",
+        "value": "HND",
+        "quote": "to HND",
+        "char_start": 97,
+        "char_end": 103,
+        "case_sensitive": false,
+        "aliases": []
+      }
+    ],
+    "review": "Same-agent source reading; explicit independent roles, no inferred outcome. Request narrowed to field recovery."
+  },
+  {
+    "task_id": "qa_167",
+    "source_group": "mem2act:b94f71b79e794510ce5b",
+    "split": "train",
+    "new_group": true,
+    "original_goal": "Can you pull the short interest for the first symbol we looked at?",
+    "paragraph": {
+      "text": "Great! Save this table as 'short_interest_summary.csv' in the reports folder.",
+      "source_id": "toolace_3884",
+      "session_id": "session_00068",
+      "turn": 32,
+      "full_turn": "Great! Save this table as 'short_interest_summary.csv' in the reports folder.",
+      "char_start": 0,
+      "char_end": 77
+    },
+    "facts": [
+      {
+        "key": "attribute_1",
+        "description": "short-interest summary filename",
+        "value": "short_interest_summary.csv",
+        "quote": "Save this table as 'short_interest_summary.csv'",
+        "char_start": 7,
+        "char_end": 54,
+        "case_sensitive": true,
+        "aliases": []
+      },
+      {
+        "key": "attribute_2",
+        "description": "summary output folder",
+        "value": "reports",
+        "quote": "in the reports folder",
+        "char_start": 55,
+        "char_end": 76,
+        "case_sensitive": false,
+        "aliases": []
+      }
+    ],
+    "review": "Same-agent source reading; explicit independent roles, no inferred outcome. Request narrowed to field recovery."
+  },
+  {
+    "task_id": "qa_338",
+    "source_group": "mem2act:cdbf0391ba427598f769",
+    "split": "train",
+    "new_group": true,
+    "original_goal": "What are the upcoming fixtures for the club we were just talking about transfers for?",
+    "paragraph": {
+      "text": "The team ID for Manchester United is \"MU123\" and for Liverpool, it's \"LFC456\".",
+      "source_id": "toolace_5158",
+      "session_id": "session_00243",
+      "turn": 0,
+      "full_turn": "Role definition:\n Inquirer: A user who raises an inquiry.\n Response assistant: Communicates with the inquirer and provides answers and solutions.\n\n Historical dialog data is as follows:\nInquirer: Could you check the recent transfers for the Manchester United team and also verify the transfers for Liverpool?\nResponse assistant: Can you please provide the team IDs for Manchester United and Liverpool so that I can check their recent transfers?\nInquirer: The team ID for Manchester United is \"MU123\" and for Liverpool, it's \"LFC456\".\n\n Please continue your answer given the historical dialog. Your role is the Response assistant.",
+      "char_start": 455,
+      "char_end": 533
+    },
+    "facts": [
+      {
+        "key": "attribute_1",
+        "description": "Manchester United team identifier",
+        "value": "MU123",
+        "quote": "The team ID for Manchester United is \"MU123\"",
+        "char_start": 0,
+        "char_end": 44,
+        "case_sensitive": true,
+        "aliases": []
+      },
+      {
+        "key": "attribute_2",
+        "description": "Liverpool team identifier",
+        "value": "LFC456",
+        "quote": "for Liverpool, it's \"LFC456\"",
+        "char_start": 49,
+        "char_end": 77,
+        "case_sensitive": true,
+        "aliases": []
+      }
+    ],
+    "review": "Same-agent source reading; explicit independent roles, no inferred outcome. Request narrowed to field recovery."
+  },
+  {
+    "task_id": "qa_006",
+    "source_group": "mem2act:2d33ee37b68e9b7cabda",
+    "split": "train",
+    "new_group": true,
+    "original_goal": "Can you pull up the details for that product we were discussing earlier?",
+    "paragraph": {
+      "text": "I have several tasks that need assistance. First, could you fetch the stock market data for NASDAQ from the beginning of this year to today? Additionally, I need details about the indicators for subgroups under group ID 12. I'm also curious about a specific cement report's attributes with report ID 'cement145'. Furthermore, could you check the status and details of an AliExpress shipping order with the ID 'AE10056893'? Lastly, I need product information for product ID 7589 and the order details by ID 'ORD45678' from our commerce system.",
+      "source_id": "toolace_5304",
+      "session_id": "session_00290",
+      "turn": 46,
+      "full_turn": "I have several tasks that need assistance. First, could you fetch the stock market data for NASDAQ from the beginning of this year to today? Additionally, I need details about the indicators for subgroups under group ID 12. I'm also curious about a specific cement report's attributes with report ID 'cement145'. Furthermore, could you check the status and details of an AliExpress shipping order with the ID 'AE10056893'? Lastly, I need product information for product ID 7589 and the order details by ID 'ORD45678' from our commerce system.",
+      "char_start": 0,
+      "char_end": 542
+    },
+    "facts": [
+      {
+        "key": "attribute_1",
+        "description": "commerce product identifier",
+        "value": "7589",
+        "quote": "product ID 7589",
+        "char_start": 462,
+        "char_end": 477,
+        "case_sensitive": true,
+        "aliases": []
+      },
+      {
+        "key": "attribute_2",
+        "description": "commerce order identifier",
+        "value": "ORD45678",
+        "quote": "order details by ID 'ORD45678'",
+        "char_start": 486,
+        "char_end": 516,
+        "case_sensitive": true,
+        "aliases": []
+      }
+    ],
+    "review": "Same-agent source reading; explicit independent roles, no inferred outcome. Request narrowed to field recovery."
+  },
+  {
+    "task_id": "qa_306",
+    "source_group": "mem2act:e34b9f6782aeb68d023c",
+    "split": "train",
+    "new_group": true,
+    "original_goal": "Could you show me the logo for that cricket league we talked about earlier?",
+    "paragraph": {
+      "text": "Great! Now download both logos and save them in a new folder called 'cricket_logos' under the 'assets' directory.",
+      "source_id": "toolace_2909",
+      "session_id": "session_00159",
+      "turn": 4,
+      "full_turn": "Great! Now download both logos and save them in a new folder called 'cricket_logos' under the 'assets' directory.",
+      "char_start": 0,
+      "char_end": 113
+    },
+    "facts": [
+      {
+        "key": "attribute_1",
+        "description": "download folder name",
+        "value": "cricket_logos",
+        "quote": "new folder called 'cricket_logos'",
+        "char_start": 50,
+        "char_end": 83,
+        "case_sensitive": false,
+        "aliases": []
+      },
+      {
+        "key": "attribute_2",
+        "description": "parent directory",
+        "value": "assets",
+        "quote": "under the 'assets' directory",
+        "char_start": 84,
+        "char_end": 112,
+        "case_sensitive": false,
+        "aliases": []
+      }
+    ],
+    "review": "Same-agent source reading; explicit independent roles, no inferred outcome. Request narrowed to field recovery."
+  },
+  {
+    "task_id": "qa_089",
+    "source_group": "mem2act:2b9c62496f9a54418952",
+    "split": "dev",
+    "new_group": true,
+    "original_goal": "I’m running low on fuel—where’s the closest place to fill up near the theater we always go to?",
+    "paragraph": {
+      "text": "I would like a regular drama movie at Regal Crow Canyon which locates at San Ramon.",
+      "source_id": "live_multiple_419-141-8",
+      "session_id": "session_00015",
+      "turn": 4,
+      "full_turn": "I would like a regular drama movie at Regal Crow Canyon which locates at San Ramon.",
+      "char_start": 0,
+      "char_end": 83
+    },
+    "facts": [
+      {
+        "key": "attribute_1",
+        "description": "movie venue name",
+        "value": "Regal Crow Canyon",
+        "quote": "at Regal Crow Canyon",
+        "char_start": 35,
+        "char_end": 55,
+        "case_sensitive": false,
+        "aliases": []
+      },
+      {
+        "key": "attribute_2",
+        "description": "movie venue city",
+        "value": "San Ramon",
+        "quote": "locates at San Ramon",
+        "char_start": 62,
+        "char_end": 82,
+        "case_sensitive": false,
+        "aliases": []
+      }
+    ],
+    "review": "Same-agent source reading; explicit independent roles, no inferred outcome. Request narrowed to field recovery."
+  },
+  {
+    "task_id": "qa_258",
+    "source_group": "mem2act:83f91923f33d2b526a9c",
+    "split": "dev",
+    "new_group": true,
+    "original_goal": "Can you whip up the code snippet we talked about earlier for the library I always use?",
+    "paragraph": {
+      "text": "in livelooping there is this concept called First Loop, which is setting the tempo based on the time between a start and end point. knowing this could you write me some code for a basic first loop setter in base javascript?",
+      "source_id": "oss_4617",
+      "session_id": "session_00128",
+      "turn": 26,
+      "full_turn": "in livelooping there is this concept called First Loop, which is setting the tempo based on the time between a start and end point. knowing this could you write me some code for a basic first loop setter in base javascript?",
+      "char_start": 0,
+      "char_end": 223
+    },
+    "facts": [
+      {
+        "key": "attribute_1",
+        "description": "loop-setting concept name",
+        "value": "First Loop",
+        "quote": "concept called First Loop",
+        "char_start": 29,
+        "char_end": 54,
+        "case_sensitive": false,
+        "aliases": []
+      },
+      {
+        "key": "attribute_2",
+        "description": "loop setter implementation language",
+        "value": "javascript",
+        "quote": "in base javascript",
+        "char_start": 204,
+        "char_end": 222,
+        "case_sensitive": false,
+        "aliases": []
+      }
+    ],
+    "review": "Same-agent source reading; explicit independent roles, no inferred outcome. Request narrowed to field recovery."
+  },
+  {
+    "task_id": "qa_015",
+    "source_group": "mem2act:c5cea475b5f785f8392a",
+    "split": "dev",
+    "new_group": true,
+    "original_goal": "Can you compile the C++ snippet we talked about earlier so I can drop it straight into my project?",
+    "paragraph": {
+      "text": "Write a C++ function that takes a reference to a std::string containing markdown formatted text and returns a std::string containing html formatted text.",
+      "source_id": "oss_4279",
+      "session_id": "session_00223",
+      "turn": 0,
+      "full_turn": "Write a C++ function that takes a reference to a std::string containing markdown formatted text and returns a std::string containing html formatted text.",
+      "char_start": 0,
+      "char_end": 153
+    },
+    "facts": [
+      {
+        "key": "attribute_1",
+        "description": "input text format",
+        "value": "markdown",
+        "quote": "containing markdown formatted text",
+        "char_start": 61,
+        "char_end": 95,
+        "case_sensitive": false,
+        "aliases": []
+      },
+      {
+        "key": "attribute_2",
+        "description": "returned text format",
+        "value": "html",
+        "quote": "containing html formatted text",
+        "char_start": 122,
+        "char_end": 152,
+        "case_sensitive": false,
+        "aliases": []
+      }
+    ],
+    "review": "Same-agent source reading; explicit independent roles, no inferred outcome. Request narrowed to field recovery."
+  },
+  {
+    "task_id": "qa_243",
+    "source_group": "mem2act:e48ae9e28b22cdb43c39",
+    "split": "dev",
+    "new_group": true,
+    "original_goal": "Could you pull up the atmospheric outlook for the next few days there, like we talked about earlier?",
+    "paragraph": {
+      "text": "The coordinates for Central Park are latitude 40.785091 and longitude -73.968285.",
+      "source_id": "toolace_1034",
+      "session_id": "session_00229",
+      "turn": 16,
+      "full_turn": "The coordinates for Central Park are latitude 40.785091 and longitude -73.968285.",
+      "char_start": 0,
+      "char_end": 81
+    },
+    "facts": [
+      {
+        "key": "attribute_1",
+        "description": "Central Park latitude",
+        "value": "40.785091",
+        "quote": "latitude 40.785091",
+        "char_start": 37,
+        "char_end": 55,
+        "case_sensitive": false,
+        "aliases": []
+      },
+      {
+        "key": "attribute_2",
+        "description": "Central Park longitude",
+        "value": "-73.968285",
+        "quote": "longitude -73.968285",
+        "char_start": 60,
+        "char_end": 80,
+        "case_sensitive": false,
+        "aliases": []
+      }
+    ],
+    "review": "Same-agent source reading; explicit independent roles, no inferred outcome. Request narrowed to field recovery."
+  },
+  {
+    "task_id": "qa_293",
+    "source_group": "mem2act:d57d30680cd7942d8919",
+    "split": "dev",
+    "new_group": true,
+    "original_goal": "How’s my healthcare bot holding up right now—battery and everything?",
+    "paragraph": {
+      "text": "Can you provide the current status and battery level of the healthcare robot with ID \"RBT-1234\"?",
+      "source_id": "toolace_5767",
+      "session_id": "session_00304",
+      "turn": 6,
+      "full_turn": "Can you provide the current status and battery level of the healthcare robot with ID \"RBT-1234\"?",
+      "char_start": 0,
+      "char_end": 96
+    },
+    "facts": [
+      {
+        "key": "attribute_1",
+        "description": "robot category",
+        "value": "healthcare",
+        "quote": "the healthcare robot",
+        "char_start": 56,
+        "char_end": 76,
+        "case_sensitive": false,
+        "aliases": []
+      },
+      {
+        "key": "attribute_2",
+        "description": "robot identifier",
+        "value": "RBT-1234",
+        "quote": "with ID \"RBT-1234\"",
+        "char_start": 77,
+        "char_end": 95,
+        "case_sensitive": true,
+        "aliases": []
+      }
+    ],
+    "review": "Same-agent source reading; explicit independent roles, no inferred outcome. Request narrowed to field recovery."
+  },
+  {
+    "task_id": "qa_394",
+    "source_group": "mem2act:d65dabb9f86e24205ae4",
+    "split": "dev",
+    "new_group": true,
+    "original_goal": "Can you pull up the summary for that place I asked about earlier?",
+    "paragraph": {
+      "text": "Can you provide summaries for three hotels? I need info on the Grand Palace Hotel in Paris, Royal Resort in Rome, and Emerald Bay Hotel in Sydney.",
+      "source_id": "toolace_1580",
+      "session_id": "session_00049",
+      "turn": 12,
+      "full_turn": "Role definition:\n Inquirer: A user who raises an inquiry.\n Response assistant: Communicates with the inquirer and provides answers and solutions.\n\n Historical dialog data is as follows:\nInquirer: Can you provide summaries for three hotels? I need info on the Grand Palace Hotel in Paris, Royal Resort in Rome, and Emerald Bay Hotel in Sydney.\nResponse assistant: Could you please provide me with the IDs for these hotels? I need the IDs for the Grand Palace Hotel in Paris, Royal Resort in Rome, and Emerald Bay Hotel in Sydney to retrieve their summaries.\nInquirer: The ID for the Grand Palace Hotel is 245, the Royal Resort is 982, and the Emerald Bay Hotel is 367.\n\n Please continue your answer given the historical dialog. Your role is the Response assistant.",
+      "char_start": 196,
+      "char_end": 342
+    },
+    "facts": [
+      {
+        "key": "attribute_1",
+        "description": "Grand Palace Hotel city",
+        "value": "Paris",
+        "quote": "Grand Palace Hotel in Paris",
+        "char_start": 63,
+        "char_end": 90,
+        "case_sensitive": false,
+        "aliases": []
+      },
+      {
+        "key": "attribute_2",
+        "description": "Royal Resort city",
+        "value": "Rome",
+        "quote": "Royal Resort in Rome",
+        "char_start": 92,
+        "char_end": 112,
+        "case_sensitive": false,
+        "aliases": []
+      }
+    ],
+    "review": "Same-agent source reading; explicit independent roles, no inferred outcome. Request narrowed to field recovery."
+  },
+  {
+    "task_id": "qa_383",
+    "source_group": "mem2act:8975debd4219735dffd5",
+    "split": "test",
+    "new_group": true,
+    "original_goal": "Can you pull up the insider info for that stock I mentioned earlier?",
+    "paragraph": {
+      "text": "Use AAPL for insider info. My user_id is U12345, currency is USD. And check for address verification status as 'completed'.",
+      "source_id": "toolace_3231",
+      "session_id": "session_00173",
+      "turn": 27,
+      "full_turn": "Use AAPL for insider info. My user_id is U12345, currency is USD. And check for address verification status as 'completed'.",
+      "char_start": 0,
+      "char_end": 123
+    },
+    "facts": [
+      {
+        "key": "attribute_1",
+        "description": "net-worth user identifier",
+        "value": "U12345",
+        "quote": "My user_id is U12345",
+        "char_start": 27,
+        "char_end": 47,
+        "case_sensitive": true,
+        "aliases": []
+      },
+      {
+        "key": "attribute_2",
+        "description": "net-worth report currency",
+        "value": "USD",
+        "quote": "currency is USD",
+        "char_start": 49,
+        "char_end": 64,
+        "case_sensitive": false,
+        "aliases": []
+      }
+    ],
+    "review": "Same-agent source reading; explicit independent roles, no inferred outcome. Request narrowed to field recovery."
+  },
+  {
+    "task_id": "qa_106",
+    "source_group": "mem2act:d3917a49f5b04abc4ed9",
+    "split": "test",
+    "new_group": true,
+    "original_goal": "How far is that place I'm thinking of visiting from where I live, in kilometers?",
+    "paragraph": {
+      "text": "I've been thinking of visiting Autumnville for a while now, but I'm not sure how far it is from here in Crescent Hollow. Can you help me figure this out so I can plan my trip accordingly?",
+      "source_id": "multi_turn_base_57",
+      "session_id": "session_00313",
+      "turn": 30,
+      "full_turn": "I've been thinking of visiting Autumnville for a while now, but I'm not sure how far it is from here in Crescent Hollow. Can you help me figure this out so I can plan my trip accordingly?",
+      "char_start": 0,
+      "char_end": 187
+    },
+    "facts": [
+      {
+        "key": "attribute_1",
+        "description": "intended destination city",
+        "value": "Autumnville",
+        "quote": "visiting Autumnville",
+        "char_start": 22,
+        "char_end": 42,
+        "case_sensitive": false,
+        "aliases": []
+      },
+      {
+        "key": "attribute_2",
+        "description": "current origin city",
+        "value": "Crescent Hollow",
+        "quote": "from here in Crescent Hollow",
+        "char_start": 91,
+        "char_end": 119,
+        "case_sensitive": false,
+        "aliases": []
+      }
+    ],
+    "review": "Same-agent source reading; explicit independent roles, no inferred outcome. Request narrowed to field recovery."
+  },
+  {
+    "task_id": "qa_198",
+    "source_group": "mem2act:5cc9bf370928ea21252e",
+    "split": "test",
+    "new_group": true,
+    "original_goal": "Can you pull up the 10-day outlook for those coordinates we always use?",
+    "paragraph": {
+      "text": "Of course, the latitude is 40.7128 and the longitude is -74.0060.",
+      "source_id": "toolace_245",
+      "session_id": "session_00022",
+      "turn": 6,
+      "full_turn": "Of course, the latitude is 40.7128 and the longitude is -74.0060.",
+      "char_start": 0,
+      "char_end": 65
+    },
+    "facts": [
+      {
+        "key": "attribute_1",
+        "description": "location latitude",
+        "value": "40.7128",
+        "quote": "the latitude is 40.7128",
+        "char_start": 11,
+        "char_end": 34,
+        "case_sensitive": false,
+        "aliases": []
+      },
+      {
+        "key": "attribute_2",
+        "description": "location longitude",
+        "value": "-74.0060",
+        "quote": "the longitude is -74.0060",
+        "char_start": 39,
+        "char_end": 64,
+        "case_sensitive": false,
+        "aliases": []
+      }
+    ],
+    "review": "Same-agent source reading; explicit independent roles, no inferred outcome. Request narrowed to field recovery."
+  },
+  {
+    "task_id": "qa_094",
+    "source_group": "mem2act:f73f94c8460d0d591d0e",
+    "split": "test",
+    "new_group": true,
+    "original_goal": "Can you spin up that new cloud box for me with the usual setup we talked about?",
+    "paragraph": {
+      "text": "I need to set up a new cloud server using the Ubuntu template with a medium configuration.",
+      "source_id": "toolace_6037",
+      "session_id": "session_00142",
+      "turn": 0,
+      "full_turn": "I need to set up a new cloud server using the Ubuntu template with a medium configuration.",
+      "char_start": 0,
+      "char_end": 90
+    },
+    "facts": [
+      {
+        "key": "attribute_1",
+        "description": "server template",
+        "value": "Ubuntu",
+        "quote": "the Ubuntu template",
+        "char_start": 42,
+        "char_end": 61,
+        "case_sensitive": false,
+        "aliases": []
+      },
+      {
+        "key": "attribute_2",
+        "description": "server configuration size",
+        "value": "medium",
+        "quote": "with a medium configuration",
+        "char_start": 62,
+        "char_end": 89,
+        "case_sensitive": false,
+        "aliases": []
+      }
+    ],
+    "review": "Same-agent source reading; explicit independent roles, no inferred outcome. Request narrowed to field recovery."
+  },
+  {
+    "task_id": "qa_093",
+    "source_group": "mem2act:1409c3bfdbe9ffc831cc",
+    "split": "test",
+    "new_group": true,
+    "original_goal": "What should I be eating more of these days to get my defenses back up?",
+    "paragraph": {
+      "text": "I'm trying to adjust my diet to boost my immune system as I've been feeling a bit under the weather lately. Can you recommend some immune-boosting foods for a vegetarian diet during the autumn season?",
+      "source_id": "toolace_5409",
+      "session_id": "session_00037",
+      "turn": 26,
+      "full_turn": "I'm trying to adjust my diet to boost my immune system as I've been feeling a bit under the weather lately. Can you recommend some immune-boosting foods for a vegetarian diet during the autumn season?",
+      "char_start": 0,
+      "char_end": 200
+    },
+    "facts": [
+      {
+        "key": "attribute_1",
+        "description": "dietary constraint",
+        "value": "vegetarian",
+        "quote": "a vegetarian diet",
+        "char_start": 157,
+        "char_end": 174,
+        "case_sensitive": false,
+        "aliases": []
+      },
+      {
+        "key": "attribute_2",
+        "description": "season of the food request",
+        "value": "autumn",
+        "quote": "during the autumn season",
+        "char_start": 175,
+        "char_end": 199,
+        "case_sensitive": false,
+        "aliases": []
+      }
+    ],
+    "review": "Same-agent source reading; explicit independent roles, no inferred outcome. Request narrowed to field recovery."
+  },
+  {
+    "task_id": "qa_104",
+    "source_group": "mem2act:e597916fea4cb2c25ed4",
+    "split": "test",
+    "new_group": true,
+    "original_goal": "Can you pull up the last ten spins for that game we were tracking earlier?",
+    "paragraph": {
+      "text": "I recently watched a game show and got interested in playing some online games. Can you fetch the last 10 spins history for game ID 123? Also, could you get the latest outcome for Crazy Time game with game ID 456 and round ID 789? Additionally, I would like to know more about the Steam app with ID 9638. Lastly, I remember watching an interesting TV series but forgot its name, I only remember the slug 'drama-series'. Can you help me find it?",
+      "source_id": "toolace_5484",
+      "session_id": "session_00237",
+      "turn": 31,
+      "full_turn": "I recently watched a game show and got interested in playing some online games. Can you fetch the last 10 spins history for game ID 123? Also, could you get the latest outcome for Crazy Time game with game ID 456 and round ID 789? Additionally, I would like to know more about the Steam app with ID 9638. Lastly, I remember watching an interesting TV series but forgot its name, I only remember the slug 'drama-series'. Can you help me find it?",
+      "char_start": 0,
+      "char_end": 444
+    },
+    "facts": [
+      {
+        "key": "attribute_1",
+        "description": "Crazy Time game identifier",
+        "value": "456",
+        "quote": "Crazy Time game with game ID 456",
+        "char_start": 180,
+        "char_end": 212,
+        "case_sensitive": true,
+        "aliases": []
+      },
+      {
+        "key": "attribute_2",
+        "description": "Crazy Time round identifier",
+        "value": "789",
+        "quote": "round ID 789",
+        "char_start": 217,
+        "char_end": 229,
+        "case_sensitive": true,
+        "aliases": []
+      }
+    ],
+    "review": "Same-agent source reading; explicit independent roles, no inferred outcome. Request narrowed to field recovery."
+  },
+  {
+    "task_id": "qa_385",
+    "source_group": "mem2act:d62aaf8b7634cdc8a3e8",
+    "split": "test",
+    "new_group": true,
+    "original_goal": "Can you pull up the full specs for that trim I mentioned earlier?",
+    "paragraph": {
+      "text": "I'm considering buying a new car and want detailed information about a specific vehicle trim with the ID 101. Also, can you provide the current gas prices for Missouri for today?",
+      "source_id": "toolace_2700",
+      "session_id": "session_00353",
+      "turn": 28,
+      "full_turn": "I'm considering buying a new car and want detailed information about a specific vehicle trim with the ID 101. Also, can you provide the current gas prices for Missouri for today?",
+      "char_start": 0,
+      "char_end": 178
+    },
+    "facts": [
+      {
+        "key": "attribute_1",
+        "description": "vehicle trim identifier",
+        "value": "101",
+        "quote": "vehicle trim with the ID 101",
+        "char_start": 80,
+        "char_end": 108,
+        "case_sensitive": true,
+        "aliases": []
+      },
+      {
+        "key": "attribute_2",
+        "description": "gas-price state",
+        "value": "Missouri",
+        "quote": "gas prices for Missouri",
+        "char_start": 144,
+        "char_end": 167,
+        "case_sensitive": false,
+        "aliases": []
+      }
+    ],
+    "review": "Same-agent source reading; explicit independent roles, no inferred outcome. Request narrowed to field recovery."
+  },
+  {
+    "task_id": "qa_107",
+    "source_group": "mem2act:112950b0bf83b8e36fa2",
+    "split": "test",
+    "new_group": true,
+    "original_goal": "Before I tweak the services for that user, can you pull up their current wallets like usual?",
+    "paragraph": {
+      "text": "I have received an alert on my management console, but I don't have enough details. The alert ID is 'XYZ123'. Could you fetch detailed information about this alert? Also, I need to modify the services for a user in my system. His user ID is 'abc789'. Can you get the rich menu ID of this user?",
+      "source_id": "toolace_5685",
+      "session_id": "session_00405",
+      "turn": 19,
+      "full_turn": "I have received an alert on my management console, but I don't have enough details. The alert ID is 'XYZ123'. Could you fetch detailed information about this alert? Also, I need to modify the services for a user in my system. His user ID is 'abc789'. Can you get the rich menu ID of this user?",
+      "char_start": 0,
+      "char_end": 293
+    },
+    "facts": [
+      {
+        "key": "attribute_1",
+        "description": "console alert identifier",
+        "value": "XYZ123",
+        "quote": "The alert ID is 'XYZ123'",
+        "char_start": 84,
+        "char_end": 108,
+        "case_sensitive": true,
+        "aliases": []
+      },
+      {
+        "key": "attribute_2",
+        "description": "service user identifier",
+        "value": "abc789",
+        "quote": "His user ID is 'abc789'",
+        "char_start": 226,
+        "char_end": 249,
+        "case_sensitive": true,
+        "aliases": []
+      }
+    ],
+    "review": "Same-agent source reading; explicit independent roles, no inferred outcome. Request narrowed to field recovery."
+  },
+  {
+    "task_id": "qa_305",
+    "source_group": "mem2act:3b794d790612412bf81f",
+    "split": "test",
+    "new_group": true,
+    "original_goal": "Can you pull up the current altitude and speed for that flight we were tracking earlier?",
+    "paragraph": {
+      "text": "I am tracking flight AA123, which is an Airbus A320. Could you first retrieve the current altitude and velocity of this flight? Then based on these parameters, calculate its precise position.",
+      "source_id": "toolace_702",
+      "session_id": "session_00294",
+      "turn": 25,
+      "full_turn": "I am tracking flight AA123, which is an Airbus A320. Could you first retrieve the current altitude and velocity of this flight? Then based on these parameters, calculate its precise position.",
+      "char_start": 0,
+      "char_end": 191
+    },
+    "facts": [
+      {
+        "key": "attribute_1",
+        "description": "tracked flight number",
+        "value": "AA123",
+        "quote": "tracking flight AA123",
+        "char_start": 5,
+        "char_end": 26,
+        "case_sensitive": false,
+        "aliases": []
+      },
+      {
+        "key": "attribute_2",
+        "description": "aircraft model",
+        "value": "Airbus A320",
+        "quote": "which is an Airbus A320",
+        "char_start": 28,
+        "char_end": 51,
+        "case_sensitive": false,
+        "aliases": []
+      }
+    ],
+    "review": "Same-agent source reading; explicit independent roles, no inferred outcome. Request narrowed to field recovery."
+  },
+  {
+    "task_id": "qa_217",
+    "source_group": "mem2act:5a3e6fad9fa13aaa236e",
+    "split": "test",
+    "new_group": true,
+    "original_goal": "Show me some photos from that time of day when we took those shots.",
+    "paragraph": {
+      "text": "I have two sets of images from my robot's vision system. I need to identify the objects in the images and find the depth to them. The time of the day for both sets was in the Evening. The first set has a recognition sensitivity setting of 0.75 and the second set has a setting of 0.6. The stereo camera setup used a focal length of 12mm and a baseline of 65mm.",
+      "source_id": "toolace_2367",
+      "session_id": "session_00167",
+      "turn": 4,
+      "full_turn": "Role definition:\n Inquirer: A user who raises an inquiry.\n Response assistant: Communicates with the inquirer and provides answers and solutions.\n\n Historical dialog data is as follows:\nInquirer: I have two sets of images from my robot's vision system. I need to identify the objects in the images and find the depth to them. The time of the day for both sets was in the Evening. The first set has a recognition sensitivity setting of 0.75 and the second set has a setting of 0.6. The stereo camera setup used a focal length of 12mm and a baseline of 65mm.\nResponse assistant: Please provide the image data for both sets of images.\nInquirer: The base64 encoded image data for the first set are for the left image 'abc123' and for the right image 'xyz789'. For the second set, the left image data is 'lmnopq456' and the right image is 'rstuv987'.\n\n Please continue your answer given the historical dialog. Your role is the Response assistant.",
+      "char_start": 196,
+      "char_end": 556
+    },
+    "facts": [
+      {
+        "key": "attribute_1",
+        "description": "stereo camera focal length",
+        "value": "12mm",
+        "quote": "a focal length of 12mm",
+        "char_start": 314,
+        "char_end": 336,
+        "case_sensitive": false,
+        "aliases": [
+          "12 mm"
+        ]
+      },
+      {
+        "key": "attribute_2",
+        "description": "stereo camera baseline",
+        "value": "65mm",
+        "quote": "a baseline of 65mm",
+        "char_start": 341,
+        "char_end": 359,
+        "case_sensitive": false,
+        "aliases": [
+          "65 mm"
+        ]
+      }
+    ],
+    "review": "Same-agent source reading; explicit independent roles, no inferred outcome. Request narrowed to field recovery."
+  },
+  {
+    "task_id": "qa_285",
+    "source_group": "mem2act:6b98c3b1e3c881f44119",
+    "split": "test",
+    "new_group": true,
+    "original_goal": "Can you give me the preservation guidance for that cultural heritage site we looked at before, the one tied to the artifact timeline?",
+    "paragraph": {
+      "text": "I'm conducting research on a specific historical artifact, Artifact ID 'artifact123'. Can you generate a detailed timeline for it, and based on that timeline, provide preservation advice for its associated cultural heritage site, Site ID 'site456'? The time period for the timeline I need is '01-01' to '12-31'.",
+      "source_id": "toolace_697",
+      "session_id": "session_00240",
+      "turn": 11,
+      "full_turn": "I'm conducting research on a specific historical artifact, Artifact ID 'artifact123'. Can you generate a detailed timeline for it, and based on that timeline, provide preservation advice for its associated cultural heritage site, Site ID 'site456'? The time period for the timeline I need is '01-01' to '12-31'.",
+      "char_start": 0,
+      "char_end": 311
+    },
+    "facts": [
+      {
+        "key": "attribute_1",
+        "description": "historical artifact identifier",
+        "value": "artifact123",
+        "quote": "Artifact ID 'artifact123'",
+        "char_start": 59,
+        "char_end": 84,
+        "case_sensitive": true,
+        "aliases": []
+      },
+      {
+        "key": "attribute_2",
+        "description": "heritage site identifier",
+        "value": "site456",
+        "quote": "Site ID 'site456'",
+        "char_start": 230,
+        "char_end": 247,
+        "case_sensitive": true,
+        "aliases": []
+      }
+    ],
+    "review": "Same-agent source reading; explicit independent roles, no inferred outcome. Request narrowed to field recovery."
+  },
+  {
+    "task_id": "qa_136",
+    "source_group": "mem2act:b662fc77a7e29ad0a92b",
+    "split": "test",
+    "new_group": true,
+    "original_goal": "Can you pull up the media profile for that ice-hockey manager we keep talking about?",
+    "paragraph": {
+      "text": "Thanks! Now get the details for manager ID 289 as well, and save all three data points into a single JSON file called 'presentation_data.json' in the analytics folder.",
+      "source_id": "toolace_2840",
+      "session_id": "session_00281",
+      "turn": 33,
+      "full_turn": "Thanks! Now get the details for manager ID 289 as well, and save all three data points into a single JSON file called 'presentation_data.json' in the analytics folder.",
+      "char_start": 0,
+      "char_end": 167
+    },
+    "facts": [
+      {
+        "key": "attribute_1",
+        "description": "presentation JSON filename",
+        "value": "presentation_data.json",
+        "quote": "JSON file called 'presentation_data.json'",
+        "char_start": 101,
+        "char_end": 142,
+        "case_sensitive": true,
+        "aliases": []
+      },
+      {
+        "key": "attribute_2",
+        "description": "presentation output folder",
+        "value": "analytics",
+        "quote": "in the analytics folder",
+        "char_start": 143,
+        "char_end": 166,
+        "case_sensitive": false,
+        "aliases": []
+      }
+    ],
+    "review": "Same-agent source reading; explicit independent roles, no inferred outcome. Request narrowed to field recovery."
+  },
+  {
+    "task_id": "qa_351",
+    "source_group": "mem2act:59f7dd79a38f958db9a4",
+    "split": "train",
+    "new_group": false,
+    "original_goal": "What’s the outlook for the next few days between the currencies we talked about earlier?",
+    "paragraph": {
+      "text": "I am also interested in understanding the current exchange rate forecast between the US Dollar (USD) and the Euro (EUR) for the next 5 days. Could you provide that information?",
+      "parent_record_id": "m-3e89ea20acbe715dd6"
+    },
+    "facts": [
+      {
+        "key": "attribute_1",
+        "description": "currencies named in the exchange-rate forecast request",
+        "value": "US Dollar (USD) and the Euro (EUR)",
+        "quote": "between the US Dollar (USD) and the Euro (EUR)",
+        "char_start": 73,
+        "char_end": 119,
+        "case_sensitive": false,
+        "aliases": []
+      },
+      {
+        "key": "attribute_2",
+        "description": "forecast horizon in days",
+        "value": "5",
+        "quote": "for the next 5 days",
+        "char_start": 120,
+        "char_end": 139,
+        "case_sensitive": false,
+        "aliases": []
+      }
+    ],
+    "review": "Reuses reviewed v2 train facts; two role-specific literal spans, no inferred currency direction."
+  },
+  {
+    "task_id": "qa_342",
+    "source_group": "mem2act:897fdf589482a784bb6e",
+    "split": "train",
+    "new_group": false,
+    "original_goal": "Can you show me some good places to eat there with the cuisine and budget we talked about?",
+    "paragraph": {
+      "text": "I'd like to find Spanish restaurants in Barcelona with a price range of moderate. Can you help me with that?",
+      "parent_record_id": "m-f754395a67f92a0ea2"
+    },
+    "facts": [
+      {
+        "key": "attribute_1",
+        "description": "restaurant cuisine",
+        "value": "Spanish",
+        "quote": "Spanish restaurants",
+        "char_start": 17,
+        "char_end": 36,
+        "case_sensitive": false,
+        "aliases": []
+      },
+      {
+        "key": "attribute_2",
+        "description": "restaurant city",
+        "value": "Barcelona",
+        "quote": "restaurants in Barcelona",
+        "char_start": 25,
+        "char_end": 49,
+        "case_sensitive": false,
+        "aliases": []
+      }
+    ],
+    "review": "Reuses reviewed v2 train facts; two role-specific literal spans, no inferred currency direction."
+  },
+  {
+    "task_id": "qa_220",
+    "source_group": "mem2act:08e80b5bb5eca592be8a",
+    "split": "train",
+    "new_group": false,
+    "original_goal": "Can you show me the kitten image with the dimensions we settled on earlier?",
+    "paragraph": {
+      "text": "Can you check the view count for my Twitch channel “ABCgames”? I also want to suggest a movie to my subscribers based on the movie with ID 45732. Can you generate a random kitten image with 400 width and 600 height? And fetch the bio of the Hacker News user named “techmaster23”. Finally, I would like to convert a welcoming text to speech in English language. Could you get my account details, including my recent downloads, from the platform, my user ID is 98532.",
+      "parent_record_id": "m-8794ec9c153edde43a"
+    },
+    "facts": [
+      {
+        "key": "attribute_1",
+        "description": "kitten image width",
+        "value": "400",
+        "quote": "400 width",
+        "char_start": 190,
+        "char_end": 199,
+        "case_sensitive": false,
+        "aliases": []
+      },
+      {
+        "key": "attribute_2",
+        "description": "kitten image height",
+        "value": "600",
+        "quote": "600 height",
+        "char_start": 204,
+        "char_end": 214,
+        "case_sensitive": false,
+        "aliases": []
+      }
+    ],
+    "review": "Reuses reviewed v2 train facts; two role-specific literal spans, no inferred currency direction."
+  },
+  {
+    "task_id": "qa_035",
+    "source_group": "mem2act:bd20262e6476a283907a",
+    "split": "train",
+    "new_group": false,
+    "original_goal": "Show me the top challenges again, sorted the way I like.",
+    "paragraph": {
+      "text": "Great! Now sort those challenges by prize amount in descending order and show me the top 2.",
+      "parent_record_id": "m-b5f352906564432d70"
+    },
+    "facts": [
+      {
+        "key": "attribute_1",
+        "description": "number of top challenges",
+        "value": "2",
+        "quote": "show me the top 2",
+        "char_start": 73,
+        "char_end": 90,
+        "case_sensitive": false,
+        "aliases": []
+      },
+      {
+        "key": "attribute_2",
+        "description": "challenge prize sorting direction",
+        "value": "descending",
+        "quote": "sort those challenges by prize amount in descending order",
+        "char_start": 11,
+        "char_end": 68,
+        "case_sensitive": false,
+        "aliases": []
+      }
+    ],
+    "review": "Reuses reviewed v2 train facts; two role-specific literal spans, no inferred currency direction."
+  },
+  {
+    "task_id": "qa_034",
+    "source_group": "mem2act:79740de64ebd8d3bb5b0",
+    "split": "train",
+    "new_group": false,
+    "original_goal": "Could you pull up the list for my word game again? I need the same prefix batch we talked about earlier.",
+    "paragraph": {
+      "text": "Can you fetch me a list of ten words that start with the prefix \"mis\"? It could help me in the word game I am playing.",
+      "parent_record_id": "m-e6338ed37aa237e711"
+    },
+    "facts": [
+      {
+        "key": "attribute_1",
+        "description": "requested number of words",
+        "value": "ten",
+        "quote": "a list of ten words",
+        "char_start": 17,
+        "char_end": 36,
+        "case_sensitive": false,
+        "aliases": []
+      },
+      {
+        "key": "attribute_2",
+        "description": "required word prefix",
+        "value": "mis",
+        "quote": "the prefix \"mis\"",
+        "char_start": 53,
+        "char_end": 69,
+        "case_sensitive": false,
+        "aliases": []
+      }
+    ],
+    "review": "Reuses reviewed v2 train facts; two role-specific literal spans, no inferred currency direction."
+  },
+  {
+    "task_id": "qa_266",
+    "source_group": "mem2act:9dc53734c431868e52a0",
+    "split": "train",
+    "new_group": false,
+    "original_goal": "Could you analyze how the concept I’m focusing on is treated within the framework we’ve been using for the paper, especially under the philosopher whose influence we keep citing?",
+    "paragraph": {
+      "text": "I am preparing a paper on the concept of 'free will' across various philosophical eras under Kant's framework, mainly focusing on how 'time' has influenced its interpretation. Can you help analyze its existence and attributes in Kant's philosophy and the relevance of time to 'free will' through different eras?",
+      "parent_record_id": "m-c83d3e9bbfd85e5bcc"
+    },
+    "facts": [
+      {
+        "key": "attribute_1",
+        "description": "paper's central concept",
+        "value": "free will",
+        "quote": "the concept of 'free will'",
+        "char_start": 26,
+        "char_end": 52,
+        "case_sensitive": false,
+        "aliases": []
+      },
+      {
+        "key": "attribute_2",
+        "description": "philosopher whose framework is used",
+        "value": "Kant",
+        "quote": "Kant's framework",
+        "char_start": 93,
+        "char_end": 109,
+        "case_sensitive": false,
+        "aliases": []
+      }
+    ],
+    "review": "Reuses reviewed v2 train facts; two role-specific literal spans, no inferred currency direction."
+  },
+  {
+    "task_id": "qa_113",
+    "source_group": "mem2act:caf2c00d429f4e2d7196",
+    "split": "train",
+    "new_group": false,
+    "original_goal": "Can you pull up the profile details for the account we’ve been working with all week?",
+    "paragraph": {
+      "text": "I need to verify the status of some tasks in our system, check if a specific website is accessible from China, and scrape all the links from a URL for my research. Can you help with these?\n\nFor the tasks:\n- Task Codes: T123;T456;T789\n- Company ID: 42\n- Team ID: 7\n- Username: johndoe\n\nFor the website, the domain is example.com.\n\nFor scraping, the URL is http://example.com/research",
+      "parent_record_id": "m-5cb0808baf67487130"
+    },
+    "facts": [
+      {
+        "key": "attribute_1",
+        "description": "company ID",
+        "value": "42",
+        "quote": "Company ID: 42",
+        "char_start": 236,
+        "char_end": 250,
+        "case_sensitive": true,
+        "aliases": []
+      },
+      {
+        "key": "attribute_2",
+        "description": "team ID",
+        "value": "7",
+        "quote": "Team ID: 7",
+        "char_start": 253,
+        "char_end": 263,
+        "case_sensitive": true,
+        "aliases": []
+      }
+    ],
+    "review": "Reuses reviewed v2 train facts; two role-specific literal spans, no inferred currency direction."
+  },
+  {
+    "task_id": "qa_272",
+    "source_group": "mem2act:8760339d42f7b4f48867",
+    "split": "train",
+    "new_group": false,
+    "original_goal": "Can you grab that license document from my account like we did before?",
+    "paragraph": {
+      "text": "Can you download my driving license document from my customer account? The account ID is '12345abc' and the document ID is 'gew768', and then could you get a 1-year report on my net worth in USD? My user ID is 'u7890'.",
+      "parent_record_id": "m-cee13572255d3fa8f4"
+    },
+    "facts": [
+      {
+        "key": "attribute_1",
+        "description": "customer account ID",
+        "value": "12345abc",
+        "quote": "The account ID is '12345abc'",
+        "char_start": 71,
+        "char_end": 99,
+        "case_sensitive": true,
+        "aliases": []
+      },
+      {
+        "key": "attribute_2",
+        "description": "driving-license document ID",
+        "value": "gew768",
+        "quote": "the document ID is 'gew768'",
+        "char_start": 104,
+        "char_end": 131,
+        "case_sensitive": true,
+        "aliases": []
+      }
+    ],
+    "review": "Reuses reviewed v2 train facts; two role-specific literal spans, no inferred currency direction."
+  }
+]

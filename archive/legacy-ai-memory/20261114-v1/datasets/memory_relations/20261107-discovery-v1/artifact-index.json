@@ -1,0 +1,782 @@
+{
+  "at": "2026-11-07T11:09:56.576443+00:00",
+  "model_api_calls": 0,
+  "files": [
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/README.md",
+      "bytes": 9354,
+      "sha256": "c9ed8279e23d9ae920ce6b6b876711082cd92bfebe084f6fe2d6da57938c5d9e"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/audit_dataset.py",
+      "bytes": 18668,
+      "sha256": "61d9c1b35ae598f288ef6e352f89598b0f8b99bcd94e8b12f34a0a333377e8fd"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/audit_preservation.py",
+      "bytes": 2577,
+      "sha256": "483d4358c272e329861761a86ea24eba3365cbdf038d79e5c6d50fcfebdb7228"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/baseline-diagnostics.json",
+      "bytes": 11805,
+      "sha256": "d6876b7b500bcd6d6d269fda2429a21dc7bbf12707843a26b9669b768deded2f"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/build_relations.py",
+      "bytes": 34363,
+      "sha256": "854c66109486cf50b2e714666e9428673e33b9a227dad76d884c6f90a74297c0"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/build_sources_and_effects.py",
+      "bytes": 12187,
+      "sha256": "61549cb4fde47e7d253b29640b65bbe6eac575ffcfa18857e797de8a2f377abd"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/case-table.csv",
+      "bytes": 31861,
+      "sha256": "cfa4332720e036c0cbb218e8e5bc3705abc85a59051cef552bd1ae2c4482ad35"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/collect_compatibility_wrappers.py",
+      "bytes": 1707,
+      "sha256": "df979701ac63e30d9d7b71f7d4eca6839f382622e58efe2426829a245ad1a40d"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/collect_extra_public_code.py",
+      "bytes": 1796,
+      "sha256": "989f01d9b4f995168d44f38122be4af5ed5b39d9a02daa61f2bd37326385875d"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/collect_public_contexts.py",
+      "bytes": 8211,
+      "sha256": "6b6659508f5d2fb35b454c9a7d665bdb1580a502d431b3358d4cdc159927a014"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/collect_runtime_contexts.py",
+      "bytes": 10157,
+      "sha256": "adcb683c8b7e2063918ee070dc9c3c7f750a777161ef0e137c12c26cc240d3b3"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/collection-plan.json",
+      "bytes": 51826,
+      "sha256": "a2a3ee4b83b56f11b671b38eba9bbfbaaeb65ea4733b59e738c9b7d5833d2111"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/coverage.json",
+      "bytes": 2738,
+      "sha256": "01fcbc9e38b27d1573e62a21b30eddd87823fcd23552207b70f2e9e56b8ce6ce"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/effect-cells.csv",
+      "bytes": 5109,
+      "sha256": "ce3ff4765b91ef873564a5df387051b687833f865f372e0c59913d05ebe3d534"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/effect-observations.jsonl",
+      "bytes": 167021,
+      "sha256": "b3746efe5f6216fb8754650111cea26c5170e400df74449e68cdb07358dd1527"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/compatibility-wrappers/scikit-learn__scikit-learn-12471.json",
+      "bytes": 34715,
+      "sha256": "e6ab6fb1af90a42bb9f6e18ab33244f727b951647ed6a532a496ee941aa84ba0"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/compatibility-wrappers/scikit-learn__scikit-learn-15512.json",
+      "bytes": 1246,
+      "sha256": "4c8c1ab07af6d0395aa59cf8873fda594b4217d95e8bb824cdac477f75b9e0b4"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/compatibility-wrappers/scikit-learn__scikit-learn-15535.json",
+      "bytes": 1407,
+      "sha256": "b5124b622f3a7e95aa56f27ce4d8124b03d1210976428fd8440d6a717f1c99dd"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/public-code/django__django-14534.json",
+      "bytes": 188515,
+      "sha256": "43ec3aecdbbdbb66efa4ae0d48c2c38a3add273a94bc811af68213d05cec6a9a"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/public-code/django__django-15213.json",
+      "bytes": 116608,
+      "sha256": "e11ea682be04592d1ea586ca15f1d8d440c53016f9bcc1db722cc0eb4979776c"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/public-code/django__django-16041.json",
+      "bytes": 196613,
+      "sha256": "c79e590ed3b1ac6872c97baac033e8746eb5b781506f6a4832a384661f1d010d"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/public-code/django__django-16910.json",
+      "bytes": 198566,
+      "sha256": "28607af2cd2593aac4b63f1691071005fa276cc034e5ebbef4ed774a0336fd0c"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/public-code/pvlib__pvlib-python-1606.json",
+      "bytes": 168947,
+      "sha256": "9cfc44e130749c6f5d353eb977f44913d37ebac0a41e07c3d3d6f2cfe60173e7"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/public-code/pvlib__pvlib-python-1707.json",
+      "bytes": 168983,
+      "sha256": "49868278f6680c47e6f2481b325f79337e37afbcd6c3d533ad196083b7373aeb"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/public-code/pytest-dev__pytest-7432.json",
+      "bytes": 85073,
+      "sha256": "d3170b78de1226b8f00c7aae21506265e37bfc1c76806fbedeaea9cb511589a2"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/public-code/pytest-dev__pytest-8906.json",
+      "bytes": 89583,
+      "sha256": "2ebdce8df1edfc3fa2aeca741a5119a8c00c293b1bb4f7b33e9a49f307029bd7"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/public-code/scikit-learn__scikit-learn-12471.json",
+      "bytes": 144902,
+      "sha256": "bf2986ddcdcb21afc4460474171bd82257e0599467b5725e8ebf8e62cf7ef989"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/public-code/scikit-learn__scikit-learn-13142.json",
+      "bytes": 143708,
+      "sha256": "009c46c7e64e407344521fa131fcc30db076beb6ada8650d45def7d357762ad3"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/public-code/scikit-learn__scikit-learn-15512.json",
+      "bytes": 129740,
+      "sha256": "bd5ae9f5e0aa0c6ad8f428ad88e06f18b6846dbd22c3748f6ab1b5b2838dc2aa"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/public-code/scikit-learn__scikit-learn-15535.json",
+      "bytes": 128354,
+      "sha256": "820812311dd51fd5e851297b27f1c0e364715a01bdd4834433209e0b64a6639f"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/public-code/sphinx-doc__sphinx-10325.json",
+      "bytes": 200787,
+      "sha256": "161fab93827e0b7c62b7d31045fac69dc1e979d2f4db5ff3e57629e5669b1375"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/public-code/sphinx-doc__sphinx-10451.json",
+      "bytes": 198228,
+      "sha256": "3735cefaede3a44ffd22ccd1e637c4741392beacab934f2e70f806a14b92b2cc"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/public-code/sphinx-doc__sphinx-8595.json",
+      "bytes": 181747,
+      "sha256": "e33f8eb9c8fc7846f88f41d0f14680d68658768322e6ab658edf00ad531a27b1"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/public-code/sphinx-doc__sphinx-8627.json",
+      "bytes": 182174,
+      "sha256": "11a7f71b64d3ea38414bd05ee4b0c44b3d5a8d3594abf7120a18197dbe0a32db"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/public-code/sphinx-doc__sphinx-8721.json",
+      "bytes": 186310,
+      "sha256": "67625f9af0c290e9b9643c2f2efcaeb53faa2c8201ffdf25f89ebdb922830cb5"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/public-code/sphinx-doc__sphinx-8801.json",
+      "bytes": 187658,
+      "sha256": "d750ecd9a8115b44d4820ac5b22d9708be40c6247097e3eb4677bb882f17ba7d"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/public-code/sympy__sympy-19007.json",
+      "bytes": 59208,
+      "sha256": "5e5b5fe3405418d00dc75f840bcf240949ee59b66c154729e704af10633dd49a"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/public-code/sympy__sympy-22840.json",
+      "bytes": 77225,
+      "sha256": "d164be54bed98b08cddc2adc277cbc1bf7aca95cf86090ce579f0c71f4e5bef8"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/public-code/sympy__sympy-24213.json",
+      "bytes": 71324,
+      "sha256": "394c94ccd68b0ba60a292aac596974a9feca5e56808a5f2073375cf3f050fd61"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/public-code/sympy__sympy-24909.json",
+      "bytes": 71605,
+      "sha256": "5dbe4af4ded68427a054db8cce937831ca2941c025c0e6c8bfa40c4b61521e2e"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/public-extra-code/scikit-learn__scikit-learn-12471.json",
+      "bytes": 82691,
+      "sha256": "1ffd3dc1cbe96ee629e377f01e73c03c069ea8115dabccb3ed30c1b8faaa4618"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/public-extra-code/scikit-learn__scikit-learn-13142.json",
+      "bytes": 82796,
+      "sha256": "2ed6321c737ba0ef3babe6533ed72c4d72c26203e52bae2baafff9a973ad2c9d"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/public-extra-code/scikit-learn__scikit-learn-15512.json",
+      "bytes": 82981,
+      "sha256": "e3620616089aa924035dcb5227415cbfd7c30ecfbd445462932c45666c213160"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/runtime/django-init-full.json",
+      "bytes": 2123,
+      "sha256": "d97d322c880445d789531168a3a3cb8e7ce3da807d4f9c7fdffb11765fabf6ab"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/runtime/django-init-missing.json",
+      "bytes": 3842,
+      "sha256": "46a17fe9d64f1717b23953d5c17e6c1fd70c07b9ae70994405745194bdbaffee"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/runtime/django-init-settings_only.json",
+      "bytes": 5498,
+      "sha256": "cee4910350609b12b731667beeed976e855ef69d439e8050d7f2420eae687601"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/runtime/label-encoder-fitted_empty.json",
+      "bytes": 1799,
+      "sha256": "babd7faa82fdc1facb181efc7055bdfdf2904ea23fe1c5abf75ba20dffced030"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/runtime/label-encoder-fitted_nonempty.json",
+      "bytes": 1821,
+      "sha256": "c82365d9d1aea94fb8c3f5bcf082496a196a0c12a7d7983132e19b05c526a8a4"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/runtime/label-encoder-invalid_shape.json",
+      "bytes": 2609,
+      "sha256": "e66767219601f26f62a73db2cf75fe2711702355570cc6765eb7d9a94c6d3f78"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/runtime/label-encoder-unfitted_empty.json",
+      "bytes": 2998,
+      "sha256": "4ff98d7234f3c345a86bcbd3922e5bbecf84f916b294714fdf5dc8f5087f174d"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/runtime/label-encoder-unseen_label.json",
+      "bytes": 2925,
+      "sha256": "ce09ab5aa82344a65dd71897653b379fcf476f3fbe8dc28d6412221fc6d51563"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/runtime/pvlib-zero-guard-consistent_zero.json",
+      "bytes": 1960,
+      "sha256": "b9b58ad22e0990c9afc68d88fc4c12454ca78b97df778f4c8efd80d471d5fadb"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/runtime/pvlib-zero-guard-nan.json",
+      "bytes": 1869,
+      "sha256": "1340cec8511278d7ac46d99aded70f735cc6ea274f3babebe1e007bcd87ab5ab"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/runtime/pvlib-zero-guard-positive.json",
+      "bytes": 1898,
+      "sha256": "f328225ce4e6342d27b0631420278d0fd7d1f76b1af6507944c332f744204743"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/runtime/pvlib-zero-guard-zero.json",
+      "bytes": 1886,
+      "sha256": "93ac3ba4cb310fa7d96348e81041b839d69611f74471dafbb7462e3ce4955ca7"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/runtime/pytest-namespace-different.json",
+      "bytes": 1896,
+      "sha256": "64f7b387f0849396592f99f87fbdd90b68b46c8547880cb43c52e2553f5027cb"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/runtime/pytest-namespace-same_false.json",
+      "bytes": 1899,
+      "sha256": "4981ca38232e2466c3019a7e3753c8f60ffeaab984171c8c5650647ce6e8e1f8"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/runtime/pytest-namespace-same_true.json",
+      "bytes": 1890,
+      "sha256": "6dfe99bc0b2aa9045da76fb6c59609de46b154c013a518ecfd3b45d0164300b1"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/runtime/sklearn-alias-12471.json",
+      "bytes": 2266,
+      "sha256": "d6584bbff4a3d63e7d50f6526368a53196bb6ab8c77edf297c26498a648c6f8c"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/runtime/sklearn-alias-15512.json",
+      "bytes": 2661,
+      "sha256": "9e5feda42770c10722e7efc7ab66908c36c0d939600a1e47fa38a6d8be9c3853"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/runtime/sklearn-alias-15535.json",
+      "bytes": 2662,
+      "sha256": "0d3c6a5b3d80e4103840c43c4b4c076fd5ea626319e16d7b9b2475e0618d4d26"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/runtime/sphinx-alias-known.json",
+      "bytes": 2024,
+      "sha256": "e7cb2bf6c2134177b02ee9c2be0d1e0cfd203fbb38d74bf0604bd6176e84578a"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/runtime/sphinx-alias-missing.json",
+      "bytes": 2006,
+      "sha256": "a47a2c3fba6ed085fecc71e3585735366fabddf4432d67c5da2a01da7dcd4c41"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/runtime/sphinx-alias-qualified_known.json",
+      "bytes": 2083,
+      "sha256": "d1ddb44cec21a5ab23eaf01a9f0eaa4dfe2683fe1feacec2719105f47a0fd7a4"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/runtime/sphinx-config-description.json",
+      "bytes": 1883,
+      "sha256": "a2a65508bb5b9c147aacb095e699751a89235cf6c232a7383cf5a0fbb2d1e7b2"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/runtime/sphinx-config-none.json",
+      "bytes": 1862,
+      "sha256": "9fa7d28b500e7c343f829dd17c9be0c56a985e8d03ad89f260c95c98352d001c"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/runtime/sphinx-config-signature.json",
+      "bytes": 1903,
+      "sha256": "1d924fb82073dbc2d17dde8c3b0e1ebeebd08e219573afb97a2627b7e591e6b8"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/runtime/sympy-block-explicit_shape.json",
+      "bytes": 2071,
+      "sha256": "9ed5ec9b1be0c7e295564d51071e9130c573400880fdf7a74a0b1dc116a12e8b"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/runtime/sympy-block-inferred_shape.json",
+      "bytes": 1982,
+      "sha256": "b93b796ecec9c35aeee0e48b24be48bbd8cdb50115a0d452b4485a515d0a428a"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/runtime/sympy-dimension-ratio.json",
+      "bytes": 1972,
+      "sha256": "5106b65627b6371318101e76986128e2336a54e4e55796e651b810e058c4b82e"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/runtime/sympy-dimension-second.json",
+      "bytes": 1885,
+      "sha256": "840faf2e36ed93524c70960f860375a4bf923f41588f2c35c1cd7e5a27a4f64c"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/runtime/sympy-dimension-velocity.json",
+      "bytes": 1919,
+      "sha256": "16335226fc769873c63900889a11688807794b8a3f81a6608cd6f6b6d945daef"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/source-episodes/django__django-11019.json",
+      "bytes": 35162,
+      "sha256": "c080d876d877a5ac27bd02418ae8158a33edd049b84152550d73f5a5028de11f"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/source-episodes/django__django-14667.json",
+      "bytes": 23818,
+      "sha256": "45380da68fd017749102abddfd8a2f83f8c43fdfd9f38ea88217806065420fb6"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/source-episodes/pvlib__pvlib-python-1154.json",
+      "bytes": 4607,
+      "sha256": "aa9ba5c84955a04550dcf235f4d2c38ae3e2c69ec600744fe464fcd4dd476880"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/source-episodes/pytest-dev__pytest-7373.json",
+      "bytes": 19619,
+      "sha256": "e563d1e5442704e8e492fdb0036f3035cb966231620bb4297af06d18c11cd5f8"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/source-episodes/scikit-learn__scikit-learn-10508.json",
+      "bytes": 15237,
+      "sha256": "954a274c00c88f3a8bec2fa60714b31c5b2d603c247b17ebdbf0381cfe22b324"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/source-episodes/scikit-learn__scikit-learn-11281.json",
+      "bytes": 30182,
+      "sha256": "befa846e05c2c6e032b0f0ef08ca07fa9a99b95d724751e7ca21a0faf096db87"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/source-episodes/sphinx-doc__sphinx-8282.json",
+      "bytes": 29204,
+      "sha256": "c05053bec0d0307ddd610de400d68d81cb4fbe2c295b717ce5497615a4be17a8"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/source-episodes/sphinx-doc__sphinx-8435.json",
+      "bytes": 56379,
+      "sha256": "f553063047b6ae5f53b8050a8760efe94326c7b3db9ab579f3124acca8370025"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/source-episodes/sympy__sympy-18621.json",
+      "bytes": 24396,
+      "sha256": "71d3701aefb4138ff65354d5164b26c4eea82136dcace17022a5d6d26dba3d27"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/evidence/source-episodes/sympy__sympy-24066.json",
+      "bytes": 20894,
+      "sha256": "94018380204440e86da334bf68148d54e1ce4b5eb191040fd13b62a96512ec21"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/execution-logs/manifest.json",
+      "bytes": 2213,
+      "sha256": "e3b5d117127bb232ef49ffc88532ea1e60cfbe51739a70a810732aaf1cf01d2a"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/execution-logs/memory-relations-extra-code-20261107.log",
+      "bytes": 45,
+      "sha256": "c806ac62076cd6febc7044e46ee9dc9c5d3edc3e4e1b0aaba46a97f0a9b26ec0"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/execution-logs/memory-relations-public-collection-20261107.log",
+      "bytes": 123,
+      "sha256": "f326e538b47b2156ce9b23c9f8ae5c70ffadb92a1edadd3f0b19c97e6d0c23ef"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/execution-logs/memory-relations-runtime-collection-20261107.log",
+      "bytes": 70,
+      "sha256": "79a4ed3968aaea9d11de509ad47c9bdc0e6815b94cb2d4bcab65c65b3a7aee21"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/execution-logs/memory-relations-runtime-testbed-20261107.log",
+      "bytes": 70,
+      "sha256": "bd31787343fcba5ec1060f1892bcd7d17fbf1fdfc429697acb14fd52e372cd1e"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/execution-logs/memory-relations-runtime-testbed-v2-20261107.log",
+      "bytes": 70,
+      "sha256": "21dd0cb5511595163510aec0669c1be73bf9624af2990c202db4f011ff3afa3b"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/execution-logs/memory-relations-sources-effects-20261107.log",
+      "bytes": 148,
+      "sha256": "bb7ad137f3de8f242b703ee30db446c2752e2c321b328a46b52c5bdb06b559b5"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/execution-logs/memory-relations-wrapper-collection-20261107.log",
+      "bytes": 33,
+      "sha256": "badde7d66000f1836bc3e4fcb199fb78538e4dfc5b8f360712432a133d7869a8"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/extra-code-collection.json",
+      "bytes": 674,
+      "sha256": "b37c77ee8eaab145f656fd37f3de026b1463d4d1a3bd61aa106ddf2db75ab3b1"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/extra-code-plan.json",
+      "bytes": 9720,
+      "sha256": "3761032e810cb7288ca91a9e545a6563aeec04153573ada71cdfeb8e26cf5f50"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/freeze_dataset.py",
+      "bytes": 1542,
+      "sha256": "b371457a92818ac57b0b7cdc5218016f65770bd85ef9994c477735ce87e652fc"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/group-splits.json",
+      "bytes": 37543,
+      "sha256": "ed8a5e812a6f249c0aca597eff3c4e470bbf3055e31d12335ba207cfb71436e9"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/historical-signal-map.json",
+      "bytes": 31829,
+      "sha256": "17dff9ecf4d14b9c28945e7509e70543d3cdfeee45c171ab83617cda0bf68ab1"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/interpreter-preflight.json",
+      "bytes": 465,
+      "sha256": "105f6baca58a76c30c38416e30a0e3bd7ac4b1c30bb0966c3696e6c3309ed665"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/learner-inputs.jsonl",
+      "bytes": 172709,
+      "sha256": "85ad49966b21f213536a25e07b6e2e57012f84e8d587167b7255a0611084237e"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/next-experiments.json",
+      "bytes": 17677,
+      "sha256": "6b9b5c94c759c70909cdc2ee41877d68d14f073e85ed4b0724e2521ef96fb153"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/paired-contrasts.json",
+      "bytes": 12679,
+      "sha256": "06e908dc33ac79124917f4dca9d06f8332aff249aaa2779df8c2057ce7410c3e"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/preparation-failure-default-python/collect_public_contexts.py",
+      "bytes": 8125,
+      "sha256": "333170ae3f4b9a5182f93b81479ec8e29a16920da0e1a5b368f8968b162ffb4d"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/preparation-failure-default-python/collect_runtime_contexts.py",
+      "bytes": 8814,
+      "sha256": "d68b961c1dc2134d9c68b30ff81014130d8f90f796d949e6e98b2cbd7514b0dc"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/preparation-failure-default-python/evidence/runtime/django-init-full.json",
+      "bytes": 3314,
+      "sha256": "b19fcde1a85b8dcef62cae3d3e5c9df1fc6c74076280604be717150b6781739f"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/preparation-failure-default-python/evidence/runtime/django-init-missing.json",
+      "bytes": 3151,
+      "sha256": "c6f5b36b0972d5f38965390730a3bbab5df51017591549f7450f55c3f1051c03"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/preparation-failure-default-python/evidence/runtime/django-init-settings_only.json",
+      "bytes": 2471,
+      "sha256": "d9eca50f88603f40d84f8dfe53cf1a18187cc49af26e75f6412b9e003c3b5ae4"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/preparation-failure-default-python/evidence/runtime/label-encoder-fitted_empty.json",
+      "bytes": 6354,
+      "sha256": "7c484564ffa81154e408046fcfb27d330d5205852d44d1e7280d853bbab26636"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/preparation-failure-default-python/evidence/runtime/label-encoder-fitted_nonempty.json",
+      "bytes": 6363,
+      "sha256": "49f2a083b2ce2f539f62b05fe2c4c03ad8376832cc2cbb3225f51d6766b48c42"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/preparation-failure-default-python/evidence/runtime/label-encoder-invalid_shape.json",
+      "bytes": 6369,
+      "sha256": "71d4be10f7d13fa8ef4cee6519a64e5b12dbbc2378987d3e770228c574697ba1"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/preparation-failure-default-python/evidence/runtime/label-encoder-unfitted_empty.json",
+      "bytes": 6334,
+      "sha256": "4091f03d0983799d429efdbdb0ef4843eb2774fb7be30f7e50a0fc6e92f9d0cb"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/preparation-failure-default-python/evidence/runtime/label-encoder-unseen_label.json",
+      "bytes": 6363,
+      "sha256": "dcb47a19f7bc0b0780a03bf1a8ff7d70c86b1d161543524a38987d4f7493714b"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/preparation-failure-default-python/evidence/runtime/pvlib-zero-guard-nan.json",
+      "bytes": 2929,
+      "sha256": "99ba8bcc4cbdf8efb83b51ca66c90b32cbf6f0d0df7a34ec0ca861ed8a279c32"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/preparation-failure-default-python/evidence/runtime/pvlib-zero-guard-positive.json",
+      "bytes": 2932,
+      "sha256": "b5937c622622683852ebd9d916c92e90471045116d557e1202c5c992d8000d28"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/preparation-failure-default-python/evidence/runtime/pvlib-zero-guard-zero.json",
+      "bytes": 2922,
+      "sha256": "0b5e37ce588a672a8d65d4d43354164538e2a811cb122a34dffb55ee50079735"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/preparation-failure-default-python/evidence/runtime/pytest-namespace-different.json",
+      "bytes": 1771,
+      "sha256": "21867ce3ed59ed142a54557dbd499775c2cac0d286cc4c6e09af518dbef91eab"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/preparation-failure-default-python/evidence/runtime/pytest-namespace-same_false.json",
+      "bytes": 1775,
+      "sha256": "2a1205a70d09de1bec760c330c4b03ef4b914b17b24956a370b0a60087cd10e5"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/preparation-failure-default-python/evidence/runtime/pytest-namespace-same_true.json",
+      "bytes": 1766,
+      "sha256": "48e18782e23d122ed891fc8827aadbe8027e9b72f438ed278c97d7b6df2be9f2"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/preparation-failure-default-python/evidence/runtime/sklearn-alias-15512.json",
+      "bytes": 6477,
+      "sha256": "93fc412688d3b2c8aee84229a5d2125683b9029f0bcefee8698f19ebe25b0da0"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/preparation-failure-default-python/evidence/runtime/sklearn-alias-15535.json",
+      "bytes": 6477,
+      "sha256": "a9003463e7ecad94a9f7c11a8d2e4ec5f427f2e6ba7a0a703601b68a55a1211e"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/preparation-failure-default-python/evidence/runtime/sphinx-alias-known.json",
+      "bytes": 2682,
+      "sha256": "98edc45a58fe942dda4f008c3b4c023c0c273e5cea60f54ae71a8c16641b63cc"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/preparation-failure-default-python/evidence/runtime/sphinx-alias-missing.json",
+      "bytes": 2676,
+      "sha256": "08120b1ab33e31514661379229d360bd5d61bf8f7e1dbadec3e960697e115c4b"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/preparation-failure-default-python/evidence/runtime/sphinx-alias-qualified_known.json",
+      "bytes": 2741,
+      "sha256": "ce86cf43e9bebe95ccab9fcb21180eed3ffab8c16c046adf5ef24f20c2d4c001"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/preparation-failure-default-python/evidence/runtime/sphinx-config-description.json",
+      "bytes": 2635,
+      "sha256": "f23f29e3282232770f9ab54208c37c57bb356279a9d8654f804e3445ef00844c"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/preparation-failure-default-python/evidence/runtime/sphinx-config-none.json",
+      "bytes": 2614,
+      "sha256": "69616a4635490ef5c9ee645957ae8865c12237ca36045d3a391ce404f7d243eb"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/preparation-failure-default-python/evidence/runtime/sphinx-config-signature.json",
+      "bytes": 2629,
+      "sha256": "acb49c7250deb4aab4cbcdc662505eb6390e47618b52bb9c33f9e56a9c6a3a1e"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/preparation-failure-default-python/evidence/runtime/sympy-dimension-ratio.json",
+      "bytes": 3228,
+      "sha256": "cd55689e7c518d8815541a8861489c12c90000f53c69900d71c81e93186d7943"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/preparation-failure-default-python/evidence/runtime/sympy-dimension-second.json",
+      "bytes": 3181,
+      "sha256": "402c8f49c62b3f54079435702282e5b0ac3dc97abdf7043d79965d651598ab65"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/preparation-failure-default-python/evidence/runtime/sympy-dimension-velocity.json",
+      "bytes": 3206,
+      "sha256": "26cbb739b6bd071a593cbb91a29af90ae3b2bb78f39576bc3bc0647913cfd419"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/preparation-failure-default-python/execution.log",
+      "bytes": 70,
+      "sha256": "79a4ed3968aaea9d11de509ad47c9bdc0e6815b94cb2d4bcab65c65b3a7aee21"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/preparation-failure-default-python/preserved-files.json",
+      "bytes": 4864,
+      "sha256": "11fdf218b5e62ce8686e945a0c14d150dba7445e3459c325d90ccddd1789d4bc"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/preparation-failure-default-python/runtime-collection.json",
+      "bytes": 30595,
+      "sha256": "713aa4cb18f55ed4c429ca053c6c4a1898114df3e487d4dea325a093e285ee18"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/preparation-failure-default-python/runtime-plan.json",
+      "bytes": 13387,
+      "sha256": "aa98bf95501b73e7c4b2649da038bef6cf553bafa2a246ae78c99b3ad94a04f7"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/prepare_next_experiments.py",
+      "bytes": 7719,
+      "sha256": "7394b38d73f82976ea25fb88c8b0054699e809255601a9cc7b009a090c9c8255"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/preservation-audit.json",
+      "bytes": 1832,
+      "sha256": "f56219971b91692d245148b46c2fa1615bc448f6febd9af198eda5fda1574e8c"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/probe-revisions/testbed-v1/collect_runtime_contexts.py",
+      "bytes": 8954,
+      "sha256": "43cf7c5fb257fa1d31d837dd485d2af517ddcbaeaf9ac79e32988fa8057701c9"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/probe-revisions/testbed-v1/runtime-collection.json",
+      "bytes": 11326,
+      "sha256": "32753ded3478b0353f4b397de91f4870c67b64893e9d90662bda247338d91771"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/probe-revisions/testbed-v1/runtime-plan.json",
+      "bytes": 14987,
+      "sha256": "40474e9621a221a91bcbb4d93c1a1134cca9a03150ce8a37db8ae679eddca9ed"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/public-collection.json",
+      "bytes": 3305,
+      "sha256": "eb90059cc427fc8eb491a1e5305304def52686337438ea6a0efda257c304b079"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/relations.jsonl",
+      "bytes": 318915,
+      "sha256": "4d4ddef2bc6e76270597abaa3e112a05b96538e5ff02bb3a1a98d900395f366a"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/runtime-collection.json",
+      "bytes": 12300,
+      "sha256": "c8b0db905f8eae437d21782a3902c012fab0dbc24de7b5500dad0f08f4fa9ba3"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/runtime-extension-v3-results.json",
+      "bytes": 359,
+      "sha256": "1f336bd1170aa87d861a4fbdcca937cdefa8704f12d5f724f0e21db2c6dfc7dd"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/runtime-extension-v3.json",
+      "bytes": 912,
+      "sha256": "24a580d478116f92dd59561f39420044a82d499c5dd3a1accd0acffcd0cefc4f"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/runtime-plan-v2.json",
+      "bytes": 16998,
+      "sha256": "2e6ae28941ce416f7d570ec311243a122d555425e3f8fdff48c0e71eea95d0e3"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/runtime-plan.json",
+      "bytes": 14987,
+      "sha256": "40474e9621a221a91bcbb4d93c1a1134cca9a03150ce8a37db8ae679eddca9ed"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/source-bank.json",
+      "bytes": 54615,
+      "sha256": "30fe3554c2721546404245bd24191ae82212b8b03ad8878b3b4e2e245af19c98"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/source-provenance-audits.jsonl",
+      "bytes": 40367,
+      "sha256": "5c00699ff1381d8ca9f469427a62a5f75153a01ff2eecd2a23c9163403ad37ad"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/supervision.jsonl",
+      "bytes": 21275,
+      "sha256": "c5f1ffa951d3190bd8d6a9ede82b726026593a6c26254a8571ba71ed6e213b04"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/supplemental-context-plan.json",
+      "bytes": 1810,
+      "sha256": "2e43837a6e2cd0b59396c38c7b0fbdaf15c3ff0630b796b5958fa096d3502862"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/supplemental-public-collection.json",
+      "bytes": 228,
+      "sha256": "a3f85ab17aefbd23f0f045b54a04080a4b11f50092ead21abef6e01650603585"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/task-contract.json",
+      "bytes": 1604,
+      "sha256": "e26275ecf23f5d52005bffbbbe838a44073021df4be33ca36ff41712464c3600"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/token-audit.json",
+      "bytes": 9386,
+      "sha256": "2a5b4c35903b59aabff5bc8e902ae11c77ee57101cbcd8554dd0496a800cde47"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/transfer-candidates.jsonl",
+      "bytes": 147210,
+      "sha256": "b3a8ec8b9dca07a385df9cbb62147f27b7e3156b5ecffcd6ad5bfbf1c0378a6c"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/validation.json",
+      "bytes": 984,
+      "sha256": "6394540c2ea2f64930266edab65d4d38c9cfcf8e179c860f59e9bcbeb0feb56e"
+    },
+    {
+      "path": "datasets/memory_relations/20261107-discovery-v1/verify_frozen.py",
+      "bytes": 1947,
+      "sha256": "b52b808d624d336dec5489d910697b581ddcb7c4ecdfad7e07a0f79c3a971112"
+    },
+    {
+      "path": "docs/reports/2026-11-07-memory-relation-case-expansion.md",
+      "bytes": 14057,
+      "sha256": "d3b9d5cd6618604864156779c5de81035631a1eb0651f02c2e08d465efdfed96"
+    },
+    {
+      "path": "training/memory_selector/handoffs/2026-11-07-memory-relations.md",
+      "bytes": 5560,
+      "sha256": "2e68857409a6d73d3e1c6ff1cac8e427fb8029de633881f03c37c6da6110757e"
+    }
+  ],
+  "exclusions": [
+    "artifact-index.json itself",
+    "__pycache__ and pyc",
+    "mutable root/training README and experiment-log navigation"
+  ],
+  "interpretation": "Discovery evidence and data only. No new SWE actor efficacy experiment or neural training in this package."
+}

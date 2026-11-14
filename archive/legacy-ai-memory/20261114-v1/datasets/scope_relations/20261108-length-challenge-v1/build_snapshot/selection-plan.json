@@ -1,0 +1,47 @@
+{
+  "kind": "posthoc provenance-driven challenge design, before any challenge model predictions",
+  "reason": "Existing character-matched controls have differing token lengths; existing external identifiers are separable by both length rules.",
+  "candidate_shard": "data/tool-00000-of-00008.parquet",
+  "candidate_parquet_sha256": "ac76e9efe75978f83d4daec98a55604587dd58b0f1509364893b8778cbf5b487",
+  "candidate_row_range_inclusive": [
+    256,
+    1023
+  ],
+  "excluded_repositories": [
+    "PyCQA/flake8",
+    "amueller/word_cloud",
+    "django/django",
+    "life4/textdistance",
+    "marshmallow-code/apispec",
+    "marshmallow-code/marshmallow",
+    "pvlib/pvlib-python",
+    "python-openxml/python-docx",
+    "scikit-learn/scikit-learn",
+    "sphinx-doc/sphinx",
+    "sympy/sympy"
+  ],
+  "target_new_repository_revision_pools": 3,
+  "eligibility": [
+    "Same repository and upstream revision, at least two distinct whole-file scopes selected by logged commands with uniquely linked tool responses.",
+    "Neither selected file was created by that trajectory agent; verify both in the pinned upstream Git tree before freezing.",
+    "Paired identifiers must have identical character length and identical token count in the pinned Harrier tokenizer.",
+    "Known rendered inputs must also have identical whole-state and whole-memory token lengths within each repository/template."
+  ],
+  "selection": "Eligible pools ordered by first source row; first three new repositories. Within pool select lexicographically first eligible scope pair, keeping actual command/response evidence.",
+  "loaded_columns": [
+    "instance_id",
+    "traj_id",
+    "messages"
+  ],
+  "outcomes_and_patches_used": false,
+  "training_use": false,
+  "templates": [
+    "A",
+    "B",
+    "C"
+  ],
+  "constructed_current_states": true,
+  "utility_labels": null,
+  "preserve_original_108_holdout": true,
+  "model_selection": "Keep existing dev-based architecture/checkpoint selection. Do not tune using this challenge."
+}

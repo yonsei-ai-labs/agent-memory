@@ -1,0 +1,58 @@
+{
+  "target_trajectory_row_index": 2356,
+  "task": {
+    "instance_id": "pypa__wheel-641",
+    "repo": "pypa/wheel",
+    "base_commit": "c81f5c954a8ca7698e6df9de39cf0013295949fa",
+    "created_at": "2024-11-07 21:43:28",
+    "problem_statement": "`wheel tags` command displays invalid filenames on stdout\nTo quote `python -m wheel tags --help`:\r\n\r\n> The output filename(s) will be displayed on stdout for further processing.\r\n\r\nThis should make usage in shell scripts like `FIXED_WHEEL_PATH=$(python -m wheel tags ...)` (with single input file) possible.\r\n\r\nHowever, instead, the stdout is spammed with \"added: 'module/some/file.py'\" lines, which are not valid filenames. Such logging should be sent to stderr instead.\r\n\r\n<details>\r\n<summary>Example output of `python -m wheel tags`</summary>\r\n\r\n```terminal\r\n$ python -m wheel tags --python-tag py3 --abi-tag none --platform-tag manylinux2014_x86_64.manylinux_2_17_x86_64 dist/impuls-0.6.0-cp312-cp312-linux_x86_64.whl 2>/dev/null\r\nadding 'impuls-0.6.0.dist-info/METADATA'\r\nadding 'impuls-0.6.0.dist-info/WHEEL'\r\nadding 'impuls/extern/libextern.so'\r\nadding 'impuls/extern/__init__.py'\r\nadding 'impuls/model/meta/__init__.py'\r\nadding 'impuls/model/meta/entity.py'\r\nadding 'impuls/model/meta/sql_builder.py'\r\nadding 'impuls/model/meta/utility_types.py'\r\nadding 'impuls/model/__init__.py'\r\nadding 'impuls/model/agency.py'\r\nadding 'impuls/model/attribution.py'\r\nadding 'impuls/model/calendar_exception.py'\r\nadding 'impuls/model/calendar.py'\r\nadding 'impuls/model/fare_attribute.py'\r\nadding 'impuls/model/fare_rule.py'\r\nadding 'impuls/model/feed_info.py'\r\nadding 'impuls/model/frequency.py'\r\nadding 'impuls/model/route.py'\r\nadding 'impuls/model/shape_point.py'\r\nadding 'impuls/model/stop.py'\r\nadding 'impuls/model/stop_time.py'\r\nadding 'impuls/model/transfer.py'\r\nadding 'impuls/model/translation.py'\r\nadding 'impuls/model/trip.py'\r\nadding 'impuls/tasks/__init__.py'\r\nadding 'impuls/tasks/add_entity.py'\r\nadding 'impuls/tasks/exec_sql.py'\r\nadding 'impuls/tasks/generate_trip_headsign.py'\r\nadding 'impuls/tasks/load_busman.py'\r\nadding 'impuls/tasks/load_gtfs.py'\r\nadding 'impuls/tasks/merge.py'\r\nadding 'impuls/tasks/modify_from_csv.py'\r\nadding 'impuls/tasks/remove_unused_entities.py'\r\nadding 'impuls/tasks/save_db.py'\r\nadding 'impuls/tasks/save_gtfs.py'\r\nadding 'impuls/tasks/truncate_calendars.py'\r\nadding 'impuls/tools/__init__.py'\r\nadding 'impuls/tools/color.py'\r\nadding 'impuls/tools/geo.py'\r\nadding 'impuls/tools/iteration.py'\r\nadding 'impuls/tools/logs.py'\r\nadding 'impuls/tools/machine_load.py'\r\nadding 'impuls/tools/polish_calendar_exceptions.py'\r\nadding 'impuls/tools/strings.py'\r\nadding 'impuls/tools/temporal.py'\r\nadding 'impuls/tools/testing_mocks.py'\r\nadding 'impuls/tools/types.py'\r\nadding 'impuls/__init__.py'\r\nadding 'impuls/app.py'\r\nadding 'impuls/db.py'\r\nadding 'impuls/errors.py'\r\nadding 'impuls/multi_file.py'\r\nadding 'impuls/options.py'\r\nadding 'impuls/pipeline.py'\r\nadding 'impuls/py.typed'\r\nadding 'impuls/resource.py'\r\nadding 'impuls/task.py'\r\nadding 'impuls-0.6.0.dist-info/RECORD'\r\nimpuls-0.6.0-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl\r\n```\r\n</details>",
+    "version": "0.44",
+    "environment_setup_commit": "c81f5c954a8ca7698e6df9de39cf0013295949fa",
+    "license_name": "MIT License",
+    "docker_image": "swerebench/sweb.eval.x86_64.pypa_1776_wheel-641",
+    "image_name": "swerebench/sweb.eval.x86_64.pypa_1776_wheel-641",
+    "dataset": "nebius/SWE-rebench",
+    "revision": "89cdfbab4ab1bd8f5a658bb212d1b63624f4f881",
+    "file": "data/test-00001-of-00002.parquet",
+    "row_index": 4648
+  },
+  "base_code": [
+    {
+      "path": "src/wheel/cli/__init__.py",
+      "repository": "pypa/wheel",
+      "base_commit": "c81f5c954a8ca7698e6df9de39cf0013295949fa",
+      "git_blob_sha": "6ba1217f5bdb6106c37ecc2be74d53ef2237b717",
+      "full_content_sha256": "369abafe32a2d3776121c46799bb85870be2549c703b4b5812712158cbfd709a",
+      "source_url": "https://github.com/pypa/wheel/blob/c81f5c954a8ca7698e6df9de39cf0013295949fa/src/wheel/cli/__init__.py",
+      "spans": [
+        {
+          "start_line": 35,
+          "end_line": 51,
+          "text": "def tags_f(args: argparse.Namespace) -> None:\n    from .tags import tags\n\n    names = (\n        tags(\n            wheel,\n            args.python_tag,\n            args.abi_tag,\n            args.platform_tag,\n            args.build,\n            args.remove,\n        )\n        for wheel in args.wheel\n    )\n\n    for name in names:\n        print(name)\n",
+          "sha256": "8542ef6c2e6af6e53d1743d5696ced4eb2d044ffb651fc4cd2a5ea76d02713f4"
+        }
+      ]
+    },
+    {
+      "path": "src/wheel/wheelfile.py",
+      "repository": "pypa/wheel",
+      "base_commit": "c81f5c954a8ca7698e6df9de39cf0013295949fa",
+      "git_blob_sha": "0a0f4596c566420135991713ee75ca29c4cff3ed",
+      "full_content_sha256": "5120adb4d949c1a7f1b79d5860514a1bb8e7c73f1d7e16f2a8064bea331303db",
+      "source_url": "https://github.com/pypa/wheel/blob/c81f5c954a8ca7698e6df9de39cf0013295949fa/src/wheel/wheelfile.py",
+      "spans": [
+        {
+          "start_line": 193,
+          "end_line": 207,
+          "text": "            zinfo_or_arcname.external_attr = (0o664 | stat.S_IFREG) << 16\n\n        if isinstance(data, str):\n            data = data.encode(\"utf-8\")\n\n        ZipFile.writestr(self, zinfo_or_arcname, data, compress_type)\n        fname = (\n            zinfo_or_arcname.filename\n            if isinstance(zinfo_or_arcname, ZipInfo)\n            else zinfo_or_arcname\n        )\n        log.info(f\"adding '{fname}'\")\n        if fname != self.record_path:\n            hash_ = self._default_algorithm(data)\n            self._file_hashes[fname] = (\n",
+          "sha256": "a38a228e29e98d27a5e3b3f09e53e025f272b6c0989deb9973da41aac095427d"
+        }
+      ]
+    }
+  ],
+  "observation_kind": "researcher_read_of_pinned_pre_patch_code",
+  "worker_initial_inspection_performed": false,
+  "restorable_worker_snapshot": null,
+  "target_trajectory_loaded": false,
+  "gold_patch_or_hidden_tests_loaded": false
+}

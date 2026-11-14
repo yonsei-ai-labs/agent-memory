@@ -1,0 +1,34 @@
+[
+  {
+    "memory_id": "connection_ownership",
+    "status": "proposed_not_replaced",
+    "finding": "incorrect_option_in_observed_edit",
+    "reason": "원문 이슈는 auto_close_connection_pool을 보고하지만, 인용된 메시지 112의 수정은 single_connection_client만 분리함. 문제 보고와 실제 수정 대상을 혼합한 요약임.",
+    "original_text": "Historical experience: Factory forwarding and connection ownership\nObserved attempt: Redis.from_url passed kwargs to the connection pool while a client-level auto-close option controlled resource lifetime. The observed edit separated that option from pool construction and set it on the client.\nDiagnostic use and boundary: For convenience constructors, inspect which layer consumes each option and who owns cleanup. This differs from unconditionally closing or resetting every client.\nOverall source success is not asserted.",
+    "proposed_text": "Historical experience: Route factory options to the consuming constructor\nReported source issue: Redis.from_url forwarded kwargs to the connection pool; the issue mentioned auto_close_connection_pool.\nObserved attempt: The supplied edit separated single_connection_client from pool kwargs and passed it to the Redis constructor. This edit does not show a change to auto_close_connection_pool.\nDiagnostic use and boundary: Inspect which constructor consumes an option. This evidence alone does not establish a resource-cleanup fix or a successful outcome.",
+    "source_raw_record_sha256": "bbb0d0ebdbedabc3087e014832557d8485c817086f281a682d993802404db7f6",
+    "source_issue_message_index": 1,
+    "source_event_indices": [
+      0
+    ],
+    "existing_pair_rows_requiring_review_if_replaced": 40,
+    "old_labels_transfer_allowed": false,
+    "training_allowed": false
+  },
+  {
+    "memory_id": "introspection_version",
+    "status": "proposed_not_replaced",
+    "finding": "missing_issue_context_and_overbroad_edit_summary",
+    "reason": "Python 3.13 문맥은 원문 이슈로 복원됨. 실제 메시지 116의 수정은 공백만 있는 docstring을 걸러내는 조건이며 일반적인 앞뒤 공백 제거 또는 실제 3.13 실행 검증으로 확대하면 안 됨.",
+    "original_text": "Historical experience: Runtime changes to introspection metadata\nObserved attempt: Python 3.13 changed docstring trimming behavior. The trace revised deprecation docstring processing to avoid assumptions about old leading or trailing whitespace.\nDiagnostic use and boundary: If introspection breaks across runtime versions, inspect metadata returned by that runtime and assumptions in lookup or formatting code. A version difference alone does not establish this cause.\nOverall source success is not asserted.",
+    "proposed_text": "Historical experience: Inspect the actual form of runtime metadata\nReported source issue: Python 3.13 trims docstrings and deprecation helpers needed adaptation.\nObserved attempt: The supplied edit changed _appendToDocstring to treat a whitespace-only docstring as absent before splitlines(). The edit response confirms the change, not runtime compatibility or task completion.\nDiagnostic use and boundary: Compare the actual metadata with assumptions in formatting or lookup code. A version change alone does not identify the failing assumption; this source contains no observation about code-object line numbers.",
+    "source_raw_record_sha256": "be5b88b7630b498356793fada64f25eaaa1ed057fcc8d310cc0334a0924c1e6a",
+    "source_issue_message_index": 1,
+    "source_event_indices": [
+      0
+    ],
+    "existing_pair_rows_requiring_review_if_replaced": 40,
+    "old_labels_transfer_allowed": false,
+    "training_allowed": false
+  }
+]

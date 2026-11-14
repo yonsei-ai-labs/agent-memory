@@ -1,0 +1,389 @@
+{
+  "at": "2026-11-07T11:07:49.122157+00:00",
+  "protocol": "Leave one repository out; fit each trivial baseline on other repositories only.",
+  "aggregate": [
+    {
+      "baseline": "training_majority",
+      "subset": "all_views",
+      "n": 74,
+      "accuracy": 0.40540540540540543,
+      "macro_f1_over_present_labels": 0.24788922661263088
+    },
+    {
+      "baseline": "training_majority",
+      "subset": "known_current_evidence",
+      "n": 62,
+      "accuracy": 0.4838709677419355,
+      "macro_f1_over_present_labels": 0.4095238095238095
+    },
+    {
+      "baseline": "source_outcome_only",
+      "subset": "all_views",
+      "n": 74,
+      "accuracy": 0.4189189189189189,
+      "macro_f1_over_present_labels": 0.2974539584709076
+    },
+    {
+      "baseline": "source_outcome_only",
+      "subset": "known_current_evidence",
+      "n": 62,
+      "accuracy": 0.5,
+      "macro_f1_over_present_labels": 0.4892373106563912
+    },
+    {
+      "baseline": "question_template_lookup",
+      "subset": "all_views",
+      "n": 74,
+      "accuracy": 0.40540540540540543,
+      "macro_f1_over_present_labels": 0.2647342995169082
+    },
+    {
+      "baseline": "question_template_lookup",
+      "subset": "known_current_evidence",
+      "n": 62,
+      "accuracy": 0.4838709677419355,
+      "macro_f1_over_present_labels": 0.43636363636363634
+    },
+    {
+      "baseline": "missing_current_cue_then_majority",
+      "subset": "all_views",
+      "n": 74,
+      "accuracy": 0.5,
+      "macro_f1_over_present_labels": 0.5076243824639204
+    },
+    {
+      "baseline": "missing_current_cue_then_majority",
+      "subset": "known_current_evidence",
+      "n": 62,
+      "accuracy": 0.4838709677419355,
+      "macro_f1_over_present_labels": 0.4095238095238095
+    },
+    {
+      "baseline": "state_length_stump",
+      "subset": "all_views",
+      "n": 74,
+      "accuracy": 0.4864864864864865,
+      "macro_f1_over_present_labels": 0.48201942693584243
+    },
+    {
+      "baseline": "state_length_stump",
+      "subset": "known_current_evidence",
+      "n": 62,
+      "accuracy": 0.4838709677419355,
+      "macro_f1_over_present_labels": 0.4095238095238095
+    },
+    {
+      "baseline": "candidate_length_stump",
+      "subset": "all_views",
+      "n": 74,
+      "accuracy": 0.4189189189189189,
+      "macro_f1_over_present_labels": 0.21568627450980393
+    },
+    {
+      "baseline": "candidate_length_stump",
+      "subset": "known_current_evidence",
+      "n": 62,
+      "accuracy": 0.5,
+      "macro_f1_over_present_labels": 0.35997335997336
+    }
+  ],
+  "folds": [
+    {
+      "held_repository": "django/django",
+      "baseline": "training_majority",
+      "n": 12,
+      "accuracy": 0.3333333333333333,
+      "macro_f1_over_present_labels": 0.16666666666666666
+    },
+    {
+      "held_repository": "django/django",
+      "baseline": "source_outcome_only",
+      "n": 12,
+      "accuracy": 0.5,
+      "macro_f1_over_present_labels": 0.2222222222222222
+    },
+    {
+      "held_repository": "django/django",
+      "baseline": "question_template_lookup",
+      "n": 12,
+      "accuracy": 0.3333333333333333,
+      "macro_f1_over_present_labels": 0.16666666666666666
+    },
+    {
+      "held_repository": "django/django",
+      "baseline": "missing_current_cue_then_majority",
+      "n": 12,
+      "accuracy": 0.4166666666666667,
+      "macro_f1_over_present_labels": 0.39999999999999997
+    },
+    {
+      "held_repository": "django/django",
+      "baseline": "state_length_stump",
+      "n": 12,
+      "accuracy": 0.4166666666666667,
+      "macro_f1_over_present_labels": 0.39999999999999997
+    },
+    {
+      "held_repository": "django/django",
+      "baseline": "candidate_length_stump",
+      "n": 12,
+      "accuracy": 0.4166666666666667,
+      "macro_f1_over_present_labels": 0.2738095238095238
+    },
+    {
+      "held_repository": "pvlib/pvlib-python",
+      "baseline": "training_majority",
+      "n": 7,
+      "accuracy": 0.42857142857142855,
+      "macro_f1_over_present_labels": 0.19999999999999998
+    },
+    {
+      "held_repository": "pvlib/pvlib-python",
+      "baseline": "source_outcome_only",
+      "n": 7,
+      "accuracy": 0.42857142857142855,
+      "macro_f1_over_present_labels": 0.19999999999999998
+    },
+    {
+      "held_repository": "pvlib/pvlib-python",
+      "baseline": "question_template_lookup",
+      "n": 7,
+      "accuracy": 0.42857142857142855,
+      "macro_f1_over_present_labels": 0.19999999999999998
+    },
+    {
+      "held_repository": "pvlib/pvlib-python",
+      "baseline": "missing_current_cue_then_majority",
+      "n": 7,
+      "accuracy": 0.5714285714285714,
+      "macro_f1_over_present_labels": 0.5555555555555555
+    },
+    {
+      "held_repository": "pvlib/pvlib-python",
+      "baseline": "state_length_stump",
+      "n": 7,
+      "accuracy": 0.5714285714285714,
+      "macro_f1_over_present_labels": 0.5555555555555555
+    },
+    {
+      "held_repository": "pvlib/pvlib-python",
+      "baseline": "candidate_length_stump",
+      "n": 7,
+      "accuracy": 0.42857142857142855,
+      "macro_f1_over_present_labels": 0.19999999999999998
+    },
+    {
+      "held_repository": "pytest-dev/pytest",
+      "baseline": "training_majority",
+      "n": 5,
+      "accuracy": 0.6,
+      "macro_f1_over_present_labels": 0.375
+    },
+    {
+      "held_repository": "pytest-dev/pytest",
+      "baseline": "source_outcome_only",
+      "n": 5,
+      "accuracy": 0.4,
+      "macro_f1_over_present_labels": 0.2857142857142857
+    },
+    {
+      "held_repository": "pytest-dev/pytest",
+      "baseline": "question_template_lookup",
+      "n": 5,
+      "accuracy": 0.6,
+      "macro_f1_over_present_labels": 0.375
+    },
+    {
+      "held_repository": "pytest-dev/pytest",
+      "baseline": "missing_current_cue_then_majority",
+      "n": 5,
+      "accuracy": 0.6,
+      "macro_f1_over_present_labels": 0.375
+    },
+    {
+      "held_repository": "pytest-dev/pytest",
+      "baseline": "state_length_stump",
+      "n": 5,
+      "accuracy": 0.6,
+      "macro_f1_over_present_labels": 0.375
+    },
+    {
+      "held_repository": "pytest-dev/pytest",
+      "baseline": "candidate_length_stump",
+      "n": 5,
+      "accuracy": 0.6,
+      "macro_f1_over_present_labels": 0.375
+    },
+    {
+      "held_repository": "scikit-learn/scikit-learn",
+      "baseline": "training_majority",
+      "n": 25,
+      "accuracy": 0.44,
+      "macro_f1_over_present_labels": 0.20370370370370372
+    },
+    {
+      "held_repository": "scikit-learn/scikit-learn",
+      "baseline": "source_outcome_only",
+      "n": 25,
+      "accuracy": 0.44,
+      "macro_f1_over_present_labels": 0.20370370370370372
+    },
+    {
+      "held_repository": "scikit-learn/scikit-learn",
+      "baseline": "question_template_lookup",
+      "n": 25,
+      "accuracy": 0.44,
+      "macro_f1_over_present_labels": 0.27638888888888885
+    },
+    {
+      "held_repository": "scikit-learn/scikit-learn",
+      "baseline": "missing_current_cue_then_majority",
+      "n": 25,
+      "accuracy": 0.48,
+      "macro_f1_over_present_labels": 0.3761904761904762
+    },
+    {
+      "held_repository": "scikit-learn/scikit-learn",
+      "baseline": "state_length_stump",
+      "n": 25,
+      "accuracy": 0.48,
+      "macro_f1_over_present_labels": 0.3761904761904762
+    },
+    {
+      "held_repository": "scikit-learn/scikit-learn",
+      "baseline": "candidate_length_stump",
+      "n": 25,
+      "accuracy": 0.44,
+      "macro_f1_over_present_labels": 0.20370370370370372
+    },
+    {
+      "held_repository": "sphinx-doc/sphinx",
+      "baseline": "training_majority",
+      "n": 17,
+      "accuracy": 0.35294117647058826,
+      "macro_f1_over_present_labels": 0.17391304347826086
+    },
+    {
+      "held_repository": "sphinx-doc/sphinx",
+      "baseline": "source_outcome_only",
+      "n": 17,
+      "accuracy": 0.4117647058823529,
+      "macro_f1_over_present_labels": 0.29971988795518206
+    },
+    {
+      "held_repository": "sphinx-doc/sphinx",
+      "baseline": "question_template_lookup",
+      "n": 17,
+      "accuracy": 0.35294117647058826,
+      "macro_f1_over_present_labels": 0.17391304347826086
+    },
+    {
+      "held_repository": "sphinx-doc/sphinx",
+      "baseline": "missing_current_cue_then_majority",
+      "n": 17,
+      "accuracy": 0.47058823529411764,
+      "macro_f1_over_present_labels": 0.45714285714285713
+    },
+    {
+      "held_repository": "sphinx-doc/sphinx",
+      "baseline": "state_length_stump",
+      "n": 17,
+      "accuracy": 0.4117647058823529,
+      "macro_f1_over_present_labels": 0.34848484848484845
+    },
+    {
+      "held_repository": "sphinx-doc/sphinx",
+      "baseline": "candidate_length_stump",
+      "n": 17,
+      "accuracy": 0.35294117647058826,
+      "macro_f1_over_present_labels": 0.17391304347826086
+    },
+    {
+      "held_repository": "sympy/sympy",
+      "baseline": "training_majority",
+      "n": 8,
+      "accuracy": 0.375,
+      "macro_f1_over_present_labels": 0.1818181818181818
+    },
+    {
+      "held_repository": "sympy/sympy",
+      "baseline": "source_outcome_only",
+      "n": 8,
+      "accuracy": 0.25,
+      "macro_f1_over_present_labels": 0.13333333333333333
+    },
+    {
+      "held_repository": "sympy/sympy",
+      "baseline": "question_template_lookup",
+      "n": 8,
+      "accuracy": 0.375,
+      "macro_f1_over_present_labels": 0.1818181818181818
+    },
+    {
+      "held_repository": "sympy/sympy",
+      "baseline": "missing_current_cue_then_majority",
+      "n": 8,
+      "accuracy": 0.625,
+      "macro_f1_over_present_labels": 0.48888888888888893
+    },
+    {
+      "held_repository": "sympy/sympy",
+      "baseline": "state_length_stump",
+      "n": 8,
+      "accuracy": 0.625,
+      "macro_f1_over_present_labels": 0.48888888888888893
+    },
+    {
+      "held_repository": "sympy/sympy",
+      "baseline": "candidate_length_stump",
+      "n": 8,
+      "accuracy": 0.375,
+      "macro_f1_over_present_labels": 0.1818181818181818
+    }
+  ],
+  "identical_input_ceilings": [
+    {
+      "input_side": "state_text",
+      "subset": "all_views",
+      "n": 74,
+      "empirical_identical_input_accuracy_ceiling": 0.8783783783783784,
+      "conflicting_identical_input_groups": 9
+    },
+    {
+      "input_side": "state_text",
+      "subset": "known_current_evidence",
+      "n": 62,
+      "empirical_identical_input_accuracy_ceiling": 0.9354838709677419,
+      "conflicting_identical_input_groups": 4
+    },
+    {
+      "input_side": "candidate_text",
+      "subset": "all_views",
+      "n": 74,
+      "empirical_identical_input_accuracy_ceiling": 0.5,
+      "conflicting_identical_input_groups": 11
+    },
+    {
+      "input_side": "candidate_text",
+      "subset": "known_current_evidence",
+      "n": 62,
+      "empirical_identical_input_accuracy_ceiling": 0.5806451612903226,
+      "conflicting_identical_input_groups": 11
+    },
+    {
+      "input_side": "question_plus_candidate_text",
+      "subset": "all_views",
+      "n": 74,
+      "empirical_identical_input_accuracy_ceiling": 0.6351351351351351,
+      "conflicting_identical_input_groups": 17
+    },
+    {
+      "input_side": "question_plus_candidate_text",
+      "subset": "known_current_evidence",
+      "n": 62,
+      "empirical_identical_input_accuracy_ceiling": 0.6774193548387096,
+      "conflicting_identical_input_groups": 17
+    }
+  ],
+  "warning": "Tiny discovery diagnostics,not neural-model scores. Ceilings are in-sample information bounds,not cross-validation accuracy. For a fair memory-only ablation retain the question but remove current observations; candidate_text alone also removes task identity. Missing-current language deliberately reveals its control condition; report the seven withheld views separately. Facet templates and source outcome/length may remain shortcuts. Strong rule/execution baselines are still required for any model claim."
+}

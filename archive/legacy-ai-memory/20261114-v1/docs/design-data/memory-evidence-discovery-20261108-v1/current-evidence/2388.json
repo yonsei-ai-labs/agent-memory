@@ -1,0 +1,54 @@
+{
+  "target_trajectory_row_index": 2388,
+  "task": {
+    "instance_id": "astanin__python-tabulate-151",
+    "repo": "astanin/python-tabulate",
+    "base_commit": "792bfdd1557d99fda5bc99453ccb3b96889083a1",
+    "created_at": "2021-10-14 10:13:32",
+    "problem_statement": "Proposed new tablefmt \"fancy\"\nTHANK YOU for an awesome library. I'm proposing a PR I'd like to write for you:\r\n\r\nI like the existing tablefmt=\"fancy_grid\". But the horizontal lines between each table row take up a lot of vertical space. How would you feel if I were to submit a PR adding a new table format, like \"fancy_grid\", but without the horizontal lines? eg:\r\n\r\nThe existing \"fancy_grid\":\r\n\r\n```\r\n>>> print(tabulate(table, headers, tablefmt=\"fancy_grid\"))\r\n╒════════╤═══════╕\r\n│ item   │   qty │\r\n╞════════╪═══════╡\r\n│ spam   │    42 │\r\n├────────┼───────┤\r\n│ eggs   │   451 │\r\n├────────┼───────┤\r\n│ bacon  │     0 │\r\n╘════════╧═══════╛\r\n```\r\n\r\nvs the proposed new format:\r\n\r\n```\r\n>>> print(tabulate(table, headers, tablefmt=\"fancy\"))\r\n╒════════╤═══════╕\r\n│ item   │   qty │\r\n╞════════╪═══════╡\r\n│ spam   │    42 │\r\n│ eggs   │   451 │\r\n│ bacon  │     0 │\r\n╘════════╧═══════╛\r\n```\r\n\r\nAny opinions about what the new table format should be called? I like \"fancy\", hence the existing \"fancy_grid\" format would be just like \"fancy\", but with extra **grid** lines between each table row.\r\n",
+    "version": "0.8",
+    "environment_setup_commit": "3f0757e117ed2ca1171bbf84b61793f353d67282",
+    "license_name": "MIT License",
+    "docker_image": "swerebench/sweb.eval.x86_64.astanin_1776_python-tabulate-151",
+    "image_name": "swerebench/sweb.eval.x86_64.astanin_1776_python-tabulate-151",
+    "dataset": "nebius/SWE-rebench",
+    "revision": "89cdfbab4ab1bd8f5a658bb212d1b63624f4f881",
+    "file": "data/test-00000-of-00002.parquet",
+    "row_index": 3985
+  },
+  "base_code": [
+    {
+      "path": "tabulate.py",
+      "repository": "astanin/python-tabulate",
+      "base_commit": "792bfdd1557d99fda5bc99453ccb3b96889083a1",
+      "git_blob_sha": "a0b2dc22e11105a6bf628e89c00668b243fa2819",
+      "full_content_sha256": "95b594184c9eb1cf844e2b57bc75f59c09018ccb7ac728a3dfe5cdc33be71f27",
+      "source_url": "https://github.com/astanin/python-tabulate/blob/792bfdd1557d99fda5bc99453ccb3b96889083a1/tabulate.py",
+      "spans": [
+        {
+          "start_line": 313,
+          "end_line": 332,
+          "text": "    \"fancy_grid\": TableFormat(\n        lineabove=Line(\"╒\", \"═\", \"╤\", \"╕\"),\n        linebelowheader=Line(\"╞\", \"═\", \"╪\", \"╡\"),\n        linebetweenrows=Line(\"├\", \"─\", \"┼\", \"┤\"),\n        linebelow=Line(\"╘\", \"═\", \"╧\", \"╛\"),\n        headerrow=DataRow(\"│\", \"│\", \"│\"),\n        datarow=DataRow(\"│\", \"│\", \"│\"),\n        padding=1,\n        with_header_hide=None,\n    ),\n    \"fancy_outline\": TableFormat(\n        lineabove=Line(\"╒\", \"═\", \"╤\", \"╕\"),\n        linebelowheader=Line(\"╞\", \"═\", \"╪\", \"╡\"),\n        linebetweenrows=None,\n        linebelow=Line(\"╘\", \"═\", \"╧\", \"╛\"),\n        headerrow=DataRow(\"│\", \"│\", \"│\"),\n        datarow=DataRow(\"│\", \"│\", \"│\"),\n        padding=1,\n        with_header_hide=None,\n    ),\n",
+          "sha256": "9d6368e337b5fa1b69f00b239f66f1b4b58d017eac0560e8a4850685f7e1fc0e"
+        },
+        {
+          "start_line": 562,
+          "end_line": 571,
+          "text": "_invisible_codes = re.compile(\n    r\"\\x1b\\[\\d+[;\\d]*m|\\x1b\\[\\d*\\;\\d*\\;\\d*m|\\x1b\\]8;;(.*?)\\x1b\\\\\"\n)  # ANSI color codes\n_invisible_codes_bytes = re.compile(\n    b\"\\x1b\\\\[\\\\d+\\\\[;\\\\d]*m|\\x1b\\\\[\\\\d*;\\\\d*;\\\\d*m|\\\\x1b\\\\]8;;(.*?)\\\\x1b\\\\\\\\\"\n)  # ANSI color codes\n_invisible_codes_link = re.compile(\n    r\"\\x1B]8;[a-zA-Z0-9:]*;[^\\x1B]+\\x1B\\\\([^\\x1b]+)\\x1B]8;;\\x1B\\\\\"\n)  # Terminal hyperlinks\n\n",
+          "sha256": "32dc79ff0aa462d94d2ec895bb030011052a1102785f42c8e0ab9024ccb61cc1"
+        },
+        {
+          "start_line": 795,
+          "end_line": 808,
+          "text": "def _strip_invisible(s):\n    r\"\"\"Remove invisible ANSI color codes.\n\n    >>> str(_strip_invisible('\\x1B]8;;https://example.com\\x1B\\\\This is a link\\x1B]8;;\\x1B\\\\'))\n    'This is a link'\n\n    \"\"\"\n    if isinstance(s, _text_type):\n        links_removed = re.sub(_invisible_codes_link, \"\\\\1\", s)\n        return re.sub(_invisible_codes, \"\", links_removed)\n    else:  # a bytestring\n        return re.sub(_invisible_codes_bytes, \"\", s)\n\n\n",
+          "sha256": "f9fb5e38f40ad0d8e951c2018bba63cd6f1c5727e9b60a05c2dda48c6a93d4f4"
+        }
+      ]
+    }
+  ],
+  "observation_kind": "researcher_read_of_pinned_pre_patch_code",
+  "worker_initial_inspection_performed": false,
+  "restorable_worker_snapshot": null,
+  "target_trajectory_loaded": false,
+  "gold_patch_or_hidden_tests_loaded": false
+}

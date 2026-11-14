@@ -1,0 +1,4770 @@
+[
+  {
+    "case_id": "pandas-fill-false",
+    "fixture_id": 0,
+    "recipe": "returned",
+    "goal": "preserve",
+    "before": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          1.0
+        ],
+        [
+          null
+        ],
+        [
+          3.0
+        ]
+      ]
+    },
+    "expected": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          1.0
+        ],
+        [
+          0.0
+        ],
+        [
+          3.0
+        ]
+      ]
+    },
+    "output": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          1.0
+        ],
+        [
+          0.0
+        ],
+        [
+          3.0
+        ]
+      ]
+    },
+    "after": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          1.0
+        ],
+        [
+          null
+        ],
+        [
+          3.0
+        ]
+      ]
+    },
+    "exception": null,
+    "operation_calls": 1,
+    "output_pass": true,
+    "effect_pass": true,
+    "passed": true,
+    "elapsed_seconds": 0.0006526840152218938,
+    "warnings": []
+  },
+  {
+    "case_id": "pandas-fill-false",
+    "fixture_id": 0,
+    "recipe": "receiver",
+    "goal": "preserve",
+    "before": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          1.0
+        ],
+        [
+          null
+        ],
+        [
+          3.0
+        ]
+      ]
+    },
+    "expected": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          1.0
+        ],
+        [
+          0.0
+        ],
+        [
+          3.0
+        ]
+      ]
+    },
+    "output": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          1.0
+        ],
+        [
+          null
+        ],
+        [
+          3.0
+        ]
+      ]
+    },
+    "after": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          1.0
+        ],
+        [
+          null
+        ],
+        [
+          3.0
+        ]
+      ]
+    },
+    "exception": null,
+    "operation_calls": 1,
+    "output_pass": false,
+    "effect_pass": true,
+    "passed": false,
+    "elapsed_seconds": 0.000674783019348979,
+    "warnings": []
+  },
+  {
+    "case_id": "pandas-fill-false",
+    "fixture_id": 0,
+    "recipe": "copied_returned",
+    "goal": "preserve",
+    "before": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          1.0
+        ],
+        [
+          null
+        ],
+        [
+          3.0
+        ]
+      ]
+    },
+    "expected": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          1.0
+        ],
+        [
+          0.0
+        ],
+        [
+          3.0
+        ]
+      ]
+    },
+    "output": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          1.0
+        ],
+        [
+          0.0
+        ],
+        [
+          3.0
+        ]
+      ]
+    },
+    "after": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          1.0
+        ],
+        [
+          null
+        ],
+        [
+          3.0
+        ]
+      ]
+    },
+    "exception": null,
+    "operation_calls": 1,
+    "output_pass": true,
+    "effect_pass": true,
+    "passed": true,
+    "elapsed_seconds": 0.0006699829827994108,
+    "warnings": []
+  },
+  {
+    "case_id": "pandas-fill-false",
+    "fixture_id": 0,
+    "recipe": "copied_receiver",
+    "goal": "preserve",
+    "before": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          1.0
+        ],
+        [
+          null
+        ],
+        [
+          3.0
+        ]
+      ]
+    },
+    "expected": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          1.0
+        ],
+        [
+          0.0
+        ],
+        [
+          3.0
+        ]
+      ]
+    },
+    "output": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          1.0
+        ],
+        [
+          null
+        ],
+        [
+          3.0
+        ]
+      ]
+    },
+    "after": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          1.0
+        ],
+        [
+          null
+        ],
+        [
+          3.0
+        ]
+      ]
+    },
+    "exception": null,
+    "operation_calls": 1,
+    "output_pass": false,
+    "effect_pass": true,
+    "passed": false,
+    "elapsed_seconds": 0.0007058820046950132,
+    "warnings": []
+  },
+  {
+    "case_id": "pandas-fill-false",
+    "fixture_id": 0,
+    "recipe": "returned",
+    "goal": "mutate",
+    "before": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          1.0
+        ],
+        [
+          null
+        ],
+        [
+          3.0
+        ]
+      ]
+    },
+    "expected": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          1.0
+        ],
+        [
+          0.0
+        ],
+        [
+          3.0
+        ]
+      ]
+    },
+    "output": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          1.0
+        ],
+        [
+          0.0
+        ],
+        [
+          3.0
+        ]
+      ]
+    },
+    "after": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          1.0
+        ],
+        [
+          null
+        ],
+        [
+          3.0
+        ]
+      ]
+    },
+    "exception": null,
+    "operation_calls": 1,
+    "output_pass": true,
+    "effect_pass": false,
+    "passed": false,
+    "elapsed_seconds": 0.0013776659907307476,
+    "warnings": []
+  },
+  {
+    "case_id": "pandas-fill-false",
+    "fixture_id": 0,
+    "recipe": "receiver",
+    "goal": "mutate",
+    "before": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          1.0
+        ],
+        [
+          null
+        ],
+        [
+          3.0
+        ]
+      ]
+    },
+    "expected": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          1.0
+        ],
+        [
+          0.0
+        ],
+        [
+          3.0
+        ]
+      ]
+    },
+    "output": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          1.0
+        ],
+        [
+          null
+        ],
+        [
+          3.0
+        ]
+      ]
+    },
+    "after": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          1.0
+        ],
+        [
+          null
+        ],
+        [
+          3.0
+        ]
+      ]
+    },
+    "exception": null,
+    "operation_calls": 1,
+    "output_pass": false,
+    "effect_pass": false,
+    "passed": false,
+    "elapsed_seconds": 0.0006867829943075776,
+    "warnings": []
+  },
+  {
+    "case_id": "pandas-fill-false",
+    "fixture_id": 0,
+    "recipe": "copied_returned",
+    "goal": "mutate",
+    "before": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          1.0
+        ],
+        [
+          null
+        ],
+        [
+          3.0
+        ]
+      ]
+    },
+    "expected": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          1.0
+        ],
+        [
+          0.0
+        ],
+        [
+          3.0
+        ]
+      ]
+    },
+    "output": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          1.0
+        ],
+        [
+          0.0
+        ],
+        [
+          3.0
+        ]
+      ]
+    },
+    "after": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          1.0
+        ],
+        [
+          null
+        ],
+        [
+          3.0
+        ]
+      ]
+    },
+    "exception": null,
+    "operation_calls": 1,
+    "output_pass": true,
+    "effect_pass": false,
+    "passed": false,
+    "elapsed_seconds": 0.0007084830140229315,
+    "warnings": []
+  },
+  {
+    "case_id": "pandas-fill-false",
+    "fixture_id": 0,
+    "recipe": "copied_receiver",
+    "goal": "mutate",
+    "before": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          1.0
+        ],
+        [
+          null
+        ],
+        [
+          3.0
+        ]
+      ]
+    },
+    "expected": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          1.0
+        ],
+        [
+          0.0
+        ],
+        [
+          3.0
+        ]
+      ]
+    },
+    "output": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          1.0
+        ],
+        [
+          null
+        ],
+        [
+          3.0
+        ]
+      ]
+    },
+    "after": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          1.0
+        ],
+        [
+          null
+        ],
+        [
+          3.0
+        ]
+      ]
+    },
+    "exception": null,
+    "operation_calls": 1,
+    "output_pass": false,
+    "effect_pass": false,
+    "passed": false,
+    "elapsed_seconds": 0.0007259819831233472,
+    "warnings": []
+  },
+  {
+    "case_id": "pandas-fill-false",
+    "fixture_id": 1,
+    "recipe": "returned",
+    "goal": "preserve",
+    "before": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          -1.0
+        ],
+        [
+          null
+        ],
+        [
+          7.0
+        ]
+      ]
+    },
+    "expected": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          -1.0
+        ],
+        [
+          0.0
+        ],
+        [
+          7.0
+        ]
+      ]
+    },
+    "output": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          -1.0
+        ],
+        [
+          0.0
+        ],
+        [
+          7.0
+        ]
+      ]
+    },
+    "after": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          -1.0
+        ],
+        [
+          null
+        ],
+        [
+          7.0
+        ]
+      ]
+    },
+    "exception": null,
+    "operation_calls": 1,
+    "output_pass": true,
+    "effect_pass": true,
+    "passed": true,
+    "elapsed_seconds": 0.0006453850073739886,
+    "warnings": []
+  },
+  {
+    "case_id": "pandas-fill-false",
+    "fixture_id": 1,
+    "recipe": "receiver",
+    "goal": "preserve",
+    "before": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          -1.0
+        ],
+        [
+          null
+        ],
+        [
+          7.0
+        ]
+      ]
+    },
+    "expected": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          -1.0
+        ],
+        [
+          0.0
+        ],
+        [
+          7.0
+        ]
+      ]
+    },
+    "output": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          -1.0
+        ],
+        [
+          null
+        ],
+        [
+          7.0
+        ]
+      ]
+    },
+    "after": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          -1.0
+        ],
+        [
+          null
+        ],
+        [
+          7.0
+        ]
+      ]
+    },
+    "exception": null,
+    "operation_calls": 1,
+    "output_pass": false,
+    "effect_pass": true,
+    "passed": false,
+    "elapsed_seconds": 0.0006872829981148243,
+    "warnings": []
+  },
+  {
+    "case_id": "pandas-fill-false",
+    "fixture_id": 1,
+    "recipe": "copied_returned",
+    "goal": "preserve",
+    "before": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          -1.0
+        ],
+        [
+          null
+        ],
+        [
+          7.0
+        ]
+      ]
+    },
+    "expected": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          -1.0
+        ],
+        [
+          0.0
+        ],
+        [
+          7.0
+        ]
+      ]
+    },
+    "output": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          -1.0
+        ],
+        [
+          0.0
+        ],
+        [
+          7.0
+        ]
+      ]
+    },
+    "after": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          -1.0
+        ],
+        [
+          null
+        ],
+        [
+          7.0
+        ]
+      ]
+    },
+    "exception": null,
+    "operation_calls": 1,
+    "output_pass": true,
+    "effect_pass": true,
+    "passed": true,
+    "elapsed_seconds": 0.000690582994138822,
+    "warnings": []
+  },
+  {
+    "case_id": "pandas-fill-false",
+    "fixture_id": 1,
+    "recipe": "copied_receiver",
+    "goal": "preserve",
+    "before": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          -1.0
+        ],
+        [
+          null
+        ],
+        [
+          7.0
+        ]
+      ]
+    },
+    "expected": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          -1.0
+        ],
+        [
+          0.0
+        ],
+        [
+          7.0
+        ]
+      ]
+    },
+    "output": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          -1.0
+        ],
+        [
+          null
+        ],
+        [
+          7.0
+        ]
+      ]
+    },
+    "after": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          -1.0
+        ],
+        [
+          null
+        ],
+        [
+          7.0
+        ]
+      ]
+    },
+    "exception": null,
+    "operation_calls": 1,
+    "output_pass": false,
+    "effect_pass": true,
+    "passed": false,
+    "elapsed_seconds": 0.000733482011128217,
+    "warnings": []
+  },
+  {
+    "case_id": "pandas-fill-false",
+    "fixture_id": 1,
+    "recipe": "returned",
+    "goal": "mutate",
+    "before": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          -1.0
+        ],
+        [
+          null
+        ],
+        [
+          7.0
+        ]
+      ]
+    },
+    "expected": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          -1.0
+        ],
+        [
+          0.0
+        ],
+        [
+          7.0
+        ]
+      ]
+    },
+    "output": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          -1.0
+        ],
+        [
+          0.0
+        ],
+        [
+          7.0
+        ]
+      ]
+    },
+    "after": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          -1.0
+        ],
+        [
+          null
+        ],
+        [
+          7.0
+        ]
+      ]
+    },
+    "exception": null,
+    "operation_calls": 1,
+    "output_pass": true,
+    "effect_pass": false,
+    "passed": false,
+    "elapsed_seconds": 0.0006737830117344856,
+    "warnings": []
+  },
+  {
+    "case_id": "pandas-fill-false",
+    "fixture_id": 1,
+    "recipe": "receiver",
+    "goal": "mutate",
+    "before": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          -1.0
+        ],
+        [
+          null
+        ],
+        [
+          7.0
+        ]
+      ]
+    },
+    "expected": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          -1.0
+        ],
+        [
+          0.0
+        ],
+        [
+          7.0
+        ]
+      ]
+    },
+    "output": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          -1.0
+        ],
+        [
+          null
+        ],
+        [
+          7.0
+        ]
+      ]
+    },
+    "after": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          -1.0
+        ],
+        [
+          null
+        ],
+        [
+          7.0
+        ]
+      ]
+    },
+    "exception": null,
+    "operation_calls": 1,
+    "output_pass": false,
+    "effect_pass": false,
+    "passed": false,
+    "elapsed_seconds": 0.0007119819929357618,
+    "warnings": []
+  },
+  {
+    "case_id": "pandas-fill-false",
+    "fixture_id": 1,
+    "recipe": "copied_returned",
+    "goal": "mutate",
+    "before": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          -1.0
+        ],
+        [
+          null
+        ],
+        [
+          7.0
+        ]
+      ]
+    },
+    "expected": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          -1.0
+        ],
+        [
+          0.0
+        ],
+        [
+          7.0
+        ]
+      ]
+    },
+    "output": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          -1.0
+        ],
+        [
+          0.0
+        ],
+        [
+          7.0
+        ]
+      ]
+    },
+    "after": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          -1.0
+        ],
+        [
+          null
+        ],
+        [
+          7.0
+        ]
+      ]
+    },
+    "exception": null,
+    "operation_calls": 1,
+    "output_pass": true,
+    "effect_pass": false,
+    "passed": false,
+    "elapsed_seconds": 0.000988574989605695,
+    "warnings": []
+  },
+  {
+    "case_id": "pandas-fill-false",
+    "fixture_id": 1,
+    "recipe": "copied_receiver",
+    "goal": "mutate",
+    "before": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          -1.0
+        ],
+        [
+          null
+        ],
+        [
+          7.0
+        ]
+      ]
+    },
+    "expected": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          -1.0
+        ],
+        [
+          0.0
+        ],
+        [
+          7.0
+        ]
+      ]
+    },
+    "output": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          -1.0
+        ],
+        [
+          null
+        ],
+        [
+          7.0
+        ]
+      ]
+    },
+    "after": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          -1.0
+        ],
+        [
+          null
+        ],
+        [
+          7.0
+        ]
+      ]
+    },
+    "exception": null,
+    "operation_calls": 1,
+    "output_pass": false,
+    "effect_pass": false,
+    "passed": false,
+    "elapsed_seconds": 0.0006892829842399806,
+    "warnings": []
+  },
+  {
+    "case_id": "pandas-sort-true",
+    "fixture_id": 0,
+    "recipe": "returned",
+    "goal": "preserve",
+    "before": {
+      "type": "DataFrame",
+      "columns": [
+        "value",
+        "extra"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          3,
+          9
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          2,
+          7
+        ]
+      ]
+    },
+    "expected": {
+      "type": "DataFrame",
+      "columns": [
+        "value",
+        "extra"
+      ],
+      "index": [
+        1,
+        2,
+        0
+      ],
+      "values": [
+        [
+          1,
+          8
+        ],
+        [
+          2,
+          7
+        ],
+        [
+          3,
+          9
+        ]
+      ]
+    },
+    "output": {
+      "type": "None"
+    },
+    "after": {
+      "type": "DataFrame",
+      "columns": [
+        "value",
+        "extra"
+      ],
+      "index": [
+        1,
+        2,
+        0
+      ],
+      "values": [
+        [
+          1,
+          8
+        ],
+        [
+          2,
+          7
+        ],
+        [
+          3,
+          9
+        ]
+      ]
+    },
+    "exception": null,
+    "operation_calls": 1,
+    "output_pass": false,
+    "effect_pass": false,
+    "passed": false,
+    "elapsed_seconds": 0.0005028870073147118,
+    "warnings": []
+  },
+  {
+    "case_id": "pandas-sort-true",
+    "fixture_id": 0,
+    "recipe": "receiver",
+    "goal": "preserve",
+    "before": {
+      "type": "DataFrame",
+      "columns": [
+        "value",
+        "extra"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          3,
+          9
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          2,
+          7
+        ]
+      ]
+    },
+    "expected": {
+      "type": "DataFrame",
+      "columns": [
+        "value",
+        "extra"
+      ],
+      "index": [
+        1,
+        2,
+        0
+      ],
+      "values": [
+        [
+          1,
+          8
+        ],
+        [
+          2,
+          7
+        ],
+        [
+          3,
+          9
+        ]
+      ]
+    },
+    "output": {
+      "type": "DataFrame",
+      "columns": [
+        "value",
+        "extra"
+      ],
+      "index": [
+        1,
+        2,
+        0
+      ],
+      "values": [
+        [
+          1,
+          8
+        ],
+        [
+          2,
+          7
+        ],
+        [
+          3,
+          9
+        ]
+      ]
+    },
+    "after": {
+      "type": "DataFrame",
+      "columns": [
+        "value",
+        "extra"
+      ],
+      "index": [
+        1,
+        2,
+        0
+      ],
+      "values": [
+        [
+          1,
+          8
+        ],
+        [
+          2,
+          7
+        ],
+        [
+          3,
+          9
+        ]
+      ]
+    },
+    "exception": null,
+    "operation_calls": 1,
+    "output_pass": true,
+    "effect_pass": false,
+    "passed": false,
+    "elapsed_seconds": 0.0007353819964919239,
+    "warnings": []
+  },
+  {
+    "case_id": "pandas-sort-true",
+    "fixture_id": 0,
+    "recipe": "copied_returned",
+    "goal": "preserve",
+    "before": {
+      "type": "DataFrame",
+      "columns": [
+        "value",
+        "extra"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          3,
+          9
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          2,
+          7
+        ]
+      ]
+    },
+    "expected": {
+      "type": "DataFrame",
+      "columns": [
+        "value",
+        "extra"
+      ],
+      "index": [
+        1,
+        2,
+        0
+      ],
+      "values": [
+        [
+          1,
+          8
+        ],
+        [
+          2,
+          7
+        ],
+        [
+          3,
+          9
+        ]
+      ]
+    },
+    "output": {
+      "type": "None"
+    },
+    "after": {
+      "type": "DataFrame",
+      "columns": [
+        "value",
+        "extra"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          3,
+          9
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          2,
+          7
+        ]
+      ]
+    },
+    "exception": null,
+    "operation_calls": 1,
+    "output_pass": false,
+    "effect_pass": true,
+    "passed": false,
+    "elapsed_seconds": 0.0004942879895679653,
+    "warnings": []
+  },
+  {
+    "case_id": "pandas-sort-true",
+    "fixture_id": 0,
+    "recipe": "copied_receiver",
+    "goal": "preserve",
+    "before": {
+      "type": "DataFrame",
+      "columns": [
+        "value",
+        "extra"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          3,
+          9
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          2,
+          7
+        ]
+      ]
+    },
+    "expected": {
+      "type": "DataFrame",
+      "columns": [
+        "value",
+        "extra"
+      ],
+      "index": [
+        1,
+        2,
+        0
+      ],
+      "values": [
+        [
+          1,
+          8
+        ],
+        [
+          2,
+          7
+        ],
+        [
+          3,
+          9
+        ]
+      ]
+    },
+    "output": {
+      "type": "DataFrame",
+      "columns": [
+        "value",
+        "extra"
+      ],
+      "index": [
+        1,
+        2,
+        0
+      ],
+      "values": [
+        [
+          1,
+          8
+        ],
+        [
+          2,
+          7
+        ],
+        [
+          3,
+          9
+        ]
+      ]
+    },
+    "after": {
+      "type": "DataFrame",
+      "columns": [
+        "value",
+        "extra"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          3,
+          9
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          2,
+          7
+        ]
+      ]
+    },
+    "exception": null,
+    "operation_calls": 1,
+    "output_pass": true,
+    "effect_pass": true,
+    "passed": true,
+    "elapsed_seconds": 0.0007530820148531348,
+    "warnings": []
+  },
+  {
+    "case_id": "pandas-sort-true",
+    "fixture_id": 0,
+    "recipe": "returned",
+    "goal": "mutate",
+    "before": {
+      "type": "DataFrame",
+      "columns": [
+        "value",
+        "extra"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          3,
+          9
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          2,
+          7
+        ]
+      ]
+    },
+    "expected": {
+      "type": "DataFrame",
+      "columns": [
+        "value",
+        "extra"
+      ],
+      "index": [
+        1,
+        2,
+        0
+      ],
+      "values": [
+        [
+          1,
+          8
+        ],
+        [
+          2,
+          7
+        ],
+        [
+          3,
+          9
+        ]
+      ]
+    },
+    "output": {
+      "type": "None"
+    },
+    "after": {
+      "type": "DataFrame",
+      "columns": [
+        "value",
+        "extra"
+      ],
+      "index": [
+        1,
+        2,
+        0
+      ],
+      "values": [
+        [
+          1,
+          8
+        ],
+        [
+          2,
+          7
+        ],
+        [
+          3,
+          9
+        ]
+      ]
+    },
+    "exception": null,
+    "operation_calls": 1,
+    "output_pass": false,
+    "effect_pass": true,
+    "passed": false,
+    "elapsed_seconds": 0.00044678899575956166,
+    "warnings": []
+  },
+  {
+    "case_id": "pandas-sort-true",
+    "fixture_id": 0,
+    "recipe": "receiver",
+    "goal": "mutate",
+    "before": {
+      "type": "DataFrame",
+      "columns": [
+        "value",
+        "extra"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          3,
+          9
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          2,
+          7
+        ]
+      ]
+    },
+    "expected": {
+      "type": "DataFrame",
+      "columns": [
+        "value",
+        "extra"
+      ],
+      "index": [
+        1,
+        2,
+        0
+      ],
+      "values": [
+        [
+          1,
+          8
+        ],
+        [
+          2,
+          7
+        ],
+        [
+          3,
+          9
+        ]
+      ]
+    },
+    "output": {
+      "type": "DataFrame",
+      "columns": [
+        "value",
+        "extra"
+      ],
+      "index": [
+        1,
+        2,
+        0
+      ],
+      "values": [
+        [
+          1,
+          8
+        ],
+        [
+          2,
+          7
+        ],
+        [
+          3,
+          9
+        ]
+      ]
+    },
+    "after": {
+      "type": "DataFrame",
+      "columns": [
+        "value",
+        "extra"
+      ],
+      "index": [
+        1,
+        2,
+        0
+      ],
+      "values": [
+        [
+          1,
+          8
+        ],
+        [
+          2,
+          7
+        ],
+        [
+          3,
+          9
+        ]
+      ]
+    },
+    "exception": null,
+    "operation_calls": 1,
+    "output_pass": true,
+    "effect_pass": true,
+    "passed": true,
+    "elapsed_seconds": 0.0007507810078095645,
+    "warnings": []
+  },
+  {
+    "case_id": "pandas-sort-true",
+    "fixture_id": 0,
+    "recipe": "copied_returned",
+    "goal": "mutate",
+    "before": {
+      "type": "DataFrame",
+      "columns": [
+        "value",
+        "extra"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          3,
+          9
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          2,
+          7
+        ]
+      ]
+    },
+    "expected": {
+      "type": "DataFrame",
+      "columns": [
+        "value",
+        "extra"
+      ],
+      "index": [
+        1,
+        2,
+        0
+      ],
+      "values": [
+        [
+          1,
+          8
+        ],
+        [
+          2,
+          7
+        ],
+        [
+          3,
+          9
+        ]
+      ]
+    },
+    "output": {
+      "type": "None"
+    },
+    "after": {
+      "type": "DataFrame",
+      "columns": [
+        "value",
+        "extra"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          3,
+          9
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          2,
+          7
+        ]
+      ]
+    },
+    "exception": null,
+    "operation_calls": 1,
+    "output_pass": false,
+    "effect_pass": false,
+    "passed": false,
+    "elapsed_seconds": 0.0004644879954867065,
+    "warnings": []
+  },
+  {
+    "case_id": "pandas-sort-true",
+    "fixture_id": 0,
+    "recipe": "copied_receiver",
+    "goal": "mutate",
+    "before": {
+      "type": "DataFrame",
+      "columns": [
+        "value",
+        "extra"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          3,
+          9
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          2,
+          7
+        ]
+      ]
+    },
+    "expected": {
+      "type": "DataFrame",
+      "columns": [
+        "value",
+        "extra"
+      ],
+      "index": [
+        1,
+        2,
+        0
+      ],
+      "values": [
+        [
+          1,
+          8
+        ],
+        [
+          2,
+          7
+        ],
+        [
+          3,
+          9
+        ]
+      ]
+    },
+    "output": {
+      "type": "DataFrame",
+      "columns": [
+        "value",
+        "extra"
+      ],
+      "index": [
+        1,
+        2,
+        0
+      ],
+      "values": [
+        [
+          1,
+          8
+        ],
+        [
+          2,
+          7
+        ],
+        [
+          3,
+          9
+        ]
+      ]
+    },
+    "after": {
+      "type": "DataFrame",
+      "columns": [
+        "value",
+        "extra"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          3,
+          9
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          2,
+          7
+        ]
+      ]
+    },
+    "exception": null,
+    "operation_calls": 1,
+    "output_pass": true,
+    "effect_pass": false,
+    "passed": false,
+    "elapsed_seconds": 0.0007562810205854475,
+    "warnings": []
+  },
+  {
+    "case_id": "pandas-sort-true",
+    "fixture_id": 1,
+    "recipe": "returned",
+    "goal": "preserve",
+    "before": {
+      "type": "DataFrame",
+      "columns": [
+        "value",
+        "extra"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          4,
+          -2
+        ],
+        [
+          2,
+          -3
+        ],
+        [
+          3,
+          -4
+        ]
+      ]
+    },
+    "expected": {
+      "type": "DataFrame",
+      "columns": [
+        "value",
+        "extra"
+      ],
+      "index": [
+        1,
+        2,
+        0
+      ],
+      "values": [
+        [
+          2,
+          -3
+        ],
+        [
+          3,
+          -4
+        ],
+        [
+          4,
+          -2
+        ]
+      ]
+    },
+    "output": {
+      "type": "None"
+    },
+    "after": {
+      "type": "DataFrame",
+      "columns": [
+        "value",
+        "extra"
+      ],
+      "index": [
+        1,
+        2,
+        0
+      ],
+      "values": [
+        [
+          2,
+          -3
+        ],
+        [
+          3,
+          -4
+        ],
+        [
+          4,
+          -2
+        ]
+      ]
+    },
+    "exception": null,
+    "operation_calls": 1,
+    "output_pass": false,
+    "effect_pass": false,
+    "passed": false,
+    "elapsed_seconds": 0.0004413890128489584,
+    "warnings": []
+  },
+  {
+    "case_id": "pandas-sort-true",
+    "fixture_id": 1,
+    "recipe": "receiver",
+    "goal": "preserve",
+    "before": {
+      "type": "DataFrame",
+      "columns": [
+        "value",
+        "extra"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          4,
+          -2
+        ],
+        [
+          2,
+          -3
+        ],
+        [
+          3,
+          -4
+        ]
+      ]
+    },
+    "expected": {
+      "type": "DataFrame",
+      "columns": [
+        "value",
+        "extra"
+      ],
+      "index": [
+        1,
+        2,
+        0
+      ],
+      "values": [
+        [
+          2,
+          -3
+        ],
+        [
+          3,
+          -4
+        ],
+        [
+          4,
+          -2
+        ]
+      ]
+    },
+    "output": {
+      "type": "DataFrame",
+      "columns": [
+        "value",
+        "extra"
+      ],
+      "index": [
+        1,
+        2,
+        0
+      ],
+      "values": [
+        [
+          2,
+          -3
+        ],
+        [
+          3,
+          -4
+        ],
+        [
+          4,
+          -2
+        ]
+      ]
+    },
+    "after": {
+      "type": "DataFrame",
+      "columns": [
+        "value",
+        "extra"
+      ],
+      "index": [
+        1,
+        2,
+        0
+      ],
+      "values": [
+        [
+          2,
+          -3
+        ],
+        [
+          3,
+          -4
+        ],
+        [
+          4,
+          -2
+        ]
+      ]
+    },
+    "exception": null,
+    "operation_calls": 1,
+    "output_pass": true,
+    "effect_pass": false,
+    "passed": false,
+    "elapsed_seconds": 0.0008054799982346594,
+    "warnings": []
+  },
+  {
+    "case_id": "pandas-sort-true",
+    "fixture_id": 1,
+    "recipe": "copied_returned",
+    "goal": "preserve",
+    "before": {
+      "type": "DataFrame",
+      "columns": [
+        "value",
+        "extra"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          4,
+          -2
+        ],
+        [
+          2,
+          -3
+        ],
+        [
+          3,
+          -4
+        ]
+      ]
+    },
+    "expected": {
+      "type": "DataFrame",
+      "columns": [
+        "value",
+        "extra"
+      ],
+      "index": [
+        1,
+        2,
+        0
+      ],
+      "values": [
+        [
+          2,
+          -3
+        ],
+        [
+          3,
+          -4
+        ],
+        [
+          4,
+          -2
+        ]
+      ]
+    },
+    "output": {
+      "type": "None"
+    },
+    "after": {
+      "type": "DataFrame",
+      "columns": [
+        "value",
+        "extra"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          4,
+          -2
+        ],
+        [
+          2,
+          -3
+        ],
+        [
+          3,
+          -4
+        ]
+      ]
+    },
+    "exception": null,
+    "operation_calls": 1,
+    "output_pass": false,
+    "effect_pass": true,
+    "passed": false,
+    "elapsed_seconds": 0.00047928799176588655,
+    "warnings": []
+  },
+  {
+    "case_id": "pandas-sort-true",
+    "fixture_id": 1,
+    "recipe": "copied_receiver",
+    "goal": "preserve",
+    "before": {
+      "type": "DataFrame",
+      "columns": [
+        "value",
+        "extra"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          4,
+          -2
+        ],
+        [
+          2,
+          -3
+        ],
+        [
+          3,
+          -4
+        ]
+      ]
+    },
+    "expected": {
+      "type": "DataFrame",
+      "columns": [
+        "value",
+        "extra"
+      ],
+      "index": [
+        1,
+        2,
+        0
+      ],
+      "values": [
+        [
+          2,
+          -3
+        ],
+        [
+          3,
+          -4
+        ],
+        [
+          4,
+          -2
+        ]
+      ]
+    },
+    "output": {
+      "type": "DataFrame",
+      "columns": [
+        "value",
+        "extra"
+      ],
+      "index": [
+        1,
+        2,
+        0
+      ],
+      "values": [
+        [
+          2,
+          -3
+        ],
+        [
+          3,
+          -4
+        ],
+        [
+          4,
+          -2
+        ]
+      ]
+    },
+    "after": {
+      "type": "DataFrame",
+      "columns": [
+        "value",
+        "extra"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          4,
+          -2
+        ],
+        [
+          2,
+          -3
+        ],
+        [
+          3,
+          -4
+        ]
+      ]
+    },
+    "exception": null,
+    "operation_calls": 1,
+    "output_pass": true,
+    "effect_pass": true,
+    "passed": true,
+    "elapsed_seconds": 0.0008017799991648644,
+    "warnings": []
+  },
+  {
+    "case_id": "pandas-sort-true",
+    "fixture_id": 1,
+    "recipe": "returned",
+    "goal": "mutate",
+    "before": {
+      "type": "DataFrame",
+      "columns": [
+        "value",
+        "extra"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          4,
+          -2
+        ],
+        [
+          2,
+          -3
+        ],
+        [
+          3,
+          -4
+        ]
+      ]
+    },
+    "expected": {
+      "type": "DataFrame",
+      "columns": [
+        "value",
+        "extra"
+      ],
+      "index": [
+        1,
+        2,
+        0
+      ],
+      "values": [
+        [
+          2,
+          -3
+        ],
+        [
+          3,
+          -4
+        ],
+        [
+          4,
+          -2
+        ]
+      ]
+    },
+    "output": {
+      "type": "None"
+    },
+    "after": {
+      "type": "DataFrame",
+      "columns": [
+        "value",
+        "extra"
+      ],
+      "index": [
+        1,
+        2,
+        0
+      ],
+      "values": [
+        [
+          2,
+          -3
+        ],
+        [
+          3,
+          -4
+        ],
+        [
+          4,
+          -2
+        ]
+      ]
+    },
+    "exception": null,
+    "operation_calls": 1,
+    "output_pass": false,
+    "effect_pass": true,
+    "passed": false,
+    "elapsed_seconds": 0.00046588899567723274,
+    "warnings": []
+  },
+  {
+    "case_id": "pandas-sort-true",
+    "fixture_id": 1,
+    "recipe": "receiver",
+    "goal": "mutate",
+    "before": {
+      "type": "DataFrame",
+      "columns": [
+        "value",
+        "extra"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          4,
+          -2
+        ],
+        [
+          2,
+          -3
+        ],
+        [
+          3,
+          -4
+        ]
+      ]
+    },
+    "expected": {
+      "type": "DataFrame",
+      "columns": [
+        "value",
+        "extra"
+      ],
+      "index": [
+        1,
+        2,
+        0
+      ],
+      "values": [
+        [
+          2,
+          -3
+        ],
+        [
+          3,
+          -4
+        ],
+        [
+          4,
+          -2
+        ]
+      ]
+    },
+    "output": {
+      "type": "DataFrame",
+      "columns": [
+        "value",
+        "extra"
+      ],
+      "index": [
+        1,
+        2,
+        0
+      ],
+      "values": [
+        [
+          2,
+          -3
+        ],
+        [
+          3,
+          -4
+        ],
+        [
+          4,
+          -2
+        ]
+      ]
+    },
+    "after": {
+      "type": "DataFrame",
+      "columns": [
+        "value",
+        "extra"
+      ],
+      "index": [
+        1,
+        2,
+        0
+      ],
+      "values": [
+        [
+          2,
+          -3
+        ],
+        [
+          3,
+          -4
+        ],
+        [
+          4,
+          -2
+        ]
+      ]
+    },
+    "exception": null,
+    "operation_calls": 1,
+    "output_pass": true,
+    "effect_pass": true,
+    "passed": true,
+    "elapsed_seconds": 0.0007909800042398274,
+    "warnings": []
+  },
+  {
+    "case_id": "pandas-sort-true",
+    "fixture_id": 1,
+    "recipe": "copied_returned",
+    "goal": "mutate",
+    "before": {
+      "type": "DataFrame",
+      "columns": [
+        "value",
+        "extra"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          4,
+          -2
+        ],
+        [
+          2,
+          -3
+        ],
+        [
+          3,
+          -4
+        ]
+      ]
+    },
+    "expected": {
+      "type": "DataFrame",
+      "columns": [
+        "value",
+        "extra"
+      ],
+      "index": [
+        1,
+        2,
+        0
+      ],
+      "values": [
+        [
+          2,
+          -3
+        ],
+        [
+          3,
+          -4
+        ],
+        [
+          4,
+          -2
+        ]
+      ]
+    },
+    "output": {
+      "type": "None"
+    },
+    "after": {
+      "type": "DataFrame",
+      "columns": [
+        "value",
+        "extra"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          4,
+          -2
+        ],
+        [
+          2,
+          -3
+        ],
+        [
+          3,
+          -4
+        ]
+      ]
+    },
+    "exception": null,
+    "operation_calls": 1,
+    "output_pass": false,
+    "effect_pass": false,
+    "passed": false,
+    "elapsed_seconds": 0.0004997880023438483,
+    "warnings": []
+  },
+  {
+    "case_id": "pandas-sort-true",
+    "fixture_id": 1,
+    "recipe": "copied_receiver",
+    "goal": "mutate",
+    "before": {
+      "type": "DataFrame",
+      "columns": [
+        "value",
+        "extra"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          4,
+          -2
+        ],
+        [
+          2,
+          -3
+        ],
+        [
+          3,
+          -4
+        ]
+      ]
+    },
+    "expected": {
+      "type": "DataFrame",
+      "columns": [
+        "value",
+        "extra"
+      ],
+      "index": [
+        1,
+        2,
+        0
+      ],
+      "values": [
+        [
+          2,
+          -3
+        ],
+        [
+          3,
+          -4
+        ],
+        [
+          4,
+          -2
+        ]
+      ]
+    },
+    "output": {
+      "type": "DataFrame",
+      "columns": [
+        "value",
+        "extra"
+      ],
+      "index": [
+        1,
+        2,
+        0
+      ],
+      "values": [
+        [
+          2,
+          -3
+        ],
+        [
+          3,
+          -4
+        ],
+        [
+          4,
+          -2
+        ]
+      ]
+    },
+    "after": {
+      "type": "DataFrame",
+      "columns": [
+        "value",
+        "extra"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          4,
+          -2
+        ],
+        [
+          2,
+          -3
+        ],
+        [
+          3,
+          -4
+        ]
+      ]
+    },
+    "exception": null,
+    "operation_calls": 1,
+    "output_pass": true,
+    "effect_pass": false,
+    "passed": false,
+    "elapsed_seconds": 0.0007796809950377792,
+    "warnings": []
+  },
+  {
+    "case_id": "pandas-fill-true",
+    "fixture_id": 0,
+    "recipe": "returned",
+    "goal": "preserve",
+    "before": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          1.0
+        ],
+        [
+          null
+        ],
+        [
+          3.0
+        ]
+      ]
+    },
+    "expected": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          1.0
+        ],
+        [
+          0.0
+        ],
+        [
+          3.0
+        ]
+      ]
+    },
+    "output": {
+      "type": "None"
+    },
+    "after": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          1.0
+        ],
+        [
+          0.0
+        ],
+        [
+          3.0
+        ]
+      ]
+    },
+    "exception": null,
+    "operation_calls": 1,
+    "output_pass": false,
+    "effect_pass": false,
+    "passed": false,
+    "elapsed_seconds": 0.0004272889927960932,
+    "warnings": []
+  },
+  {
+    "case_id": "pandas-fill-true",
+    "fixture_id": 0,
+    "recipe": "receiver",
+    "goal": "preserve",
+    "before": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          1.0
+        ],
+        [
+          null
+        ],
+        [
+          3.0
+        ]
+      ]
+    },
+    "expected": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          1.0
+        ],
+        [
+          0.0
+        ],
+        [
+          3.0
+        ]
+      ]
+    },
+    "output": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          1.0
+        ],
+        [
+          0.0
+        ],
+        [
+          3.0
+        ]
+      ]
+    },
+    "after": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          1.0
+        ],
+        [
+          0.0
+        ],
+        [
+          3.0
+        ]
+      ]
+    },
+    "exception": null,
+    "operation_calls": 1,
+    "output_pass": true,
+    "effect_pass": false,
+    "passed": false,
+    "elapsed_seconds": 0.0006630830175708979,
+    "warnings": []
+  },
+  {
+    "case_id": "pandas-fill-true",
+    "fixture_id": 0,
+    "recipe": "copied_returned",
+    "goal": "preserve",
+    "before": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          1.0
+        ],
+        [
+          null
+        ],
+        [
+          3.0
+        ]
+      ]
+    },
+    "expected": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          1.0
+        ],
+        [
+          0.0
+        ],
+        [
+          3.0
+        ]
+      ]
+    },
+    "output": {
+      "type": "None"
+    },
+    "after": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          1.0
+        ],
+        [
+          null
+        ],
+        [
+          3.0
+        ]
+      ]
+    },
+    "exception": null,
+    "operation_calls": 1,
+    "output_pass": false,
+    "effect_pass": true,
+    "passed": false,
+    "elapsed_seconds": 0.00037879101000726223,
+    "warnings": []
+  },
+  {
+    "case_id": "pandas-fill-true",
+    "fixture_id": 0,
+    "recipe": "copied_receiver",
+    "goal": "preserve",
+    "before": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          1.0
+        ],
+        [
+          null
+        ],
+        [
+          3.0
+        ]
+      ]
+    },
+    "expected": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          1.0
+        ],
+        [
+          0.0
+        ],
+        [
+          3.0
+        ]
+      ]
+    },
+    "output": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          1.0
+        ],
+        [
+          0.0
+        ],
+        [
+          3.0
+        ]
+      ]
+    },
+    "after": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          1.0
+        ],
+        [
+          null
+        ],
+        [
+          3.0
+        ]
+      ]
+    },
+    "exception": null,
+    "operation_calls": 1,
+    "output_pass": true,
+    "effect_pass": true,
+    "passed": true,
+    "elapsed_seconds": 0.0006689830042887479,
+    "warnings": []
+  },
+  {
+    "case_id": "pandas-fill-true",
+    "fixture_id": 0,
+    "recipe": "returned",
+    "goal": "mutate",
+    "before": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          1.0
+        ],
+        [
+          null
+        ],
+        [
+          3.0
+        ]
+      ]
+    },
+    "expected": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          1.0
+        ],
+        [
+          0.0
+        ],
+        [
+          3.0
+        ]
+      ]
+    },
+    "output": {
+      "type": "None"
+    },
+    "after": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          1.0
+        ],
+        [
+          0.0
+        ],
+        [
+          3.0
+        ]
+      ]
+    },
+    "exception": null,
+    "operation_calls": 1,
+    "output_pass": false,
+    "effect_pass": true,
+    "passed": false,
+    "elapsed_seconds": 0.0003640910144895315,
+    "warnings": []
+  },
+  {
+    "case_id": "pandas-fill-true",
+    "fixture_id": 0,
+    "recipe": "receiver",
+    "goal": "mutate",
+    "before": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          1.0
+        ],
+        [
+          null
+        ],
+        [
+          3.0
+        ]
+      ]
+    },
+    "expected": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          1.0
+        ],
+        [
+          0.0
+        ],
+        [
+          3.0
+        ]
+      ]
+    },
+    "output": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          1.0
+        ],
+        [
+          0.0
+        ],
+        [
+          3.0
+        ]
+      ]
+    },
+    "after": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          1.0
+        ],
+        [
+          0.0
+        ],
+        [
+          3.0
+        ]
+      ]
+    },
+    "exception": null,
+    "operation_calls": 1,
+    "output_pass": true,
+    "effect_pass": true,
+    "passed": true,
+    "elapsed_seconds": 0.0006288849981501698,
+    "warnings": []
+  },
+  {
+    "case_id": "pandas-fill-true",
+    "fixture_id": 0,
+    "recipe": "copied_returned",
+    "goal": "mutate",
+    "before": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          1.0
+        ],
+        [
+          null
+        ],
+        [
+          3.0
+        ]
+      ]
+    },
+    "expected": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          1.0
+        ],
+        [
+          0.0
+        ],
+        [
+          3.0
+        ]
+      ]
+    },
+    "output": {
+      "type": "None"
+    },
+    "after": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          1.0
+        ],
+        [
+          null
+        ],
+        [
+          3.0
+        ]
+      ]
+    },
+    "exception": null,
+    "operation_calls": 1,
+    "output_pass": false,
+    "effect_pass": false,
+    "passed": false,
+    "elapsed_seconds": 0.00039878999814391136,
+    "warnings": []
+  },
+  {
+    "case_id": "pandas-fill-true",
+    "fixture_id": 0,
+    "recipe": "copied_receiver",
+    "goal": "mutate",
+    "before": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          1.0
+        ],
+        [
+          null
+        ],
+        [
+          3.0
+        ]
+      ]
+    },
+    "expected": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          1.0
+        ],
+        [
+          0.0
+        ],
+        [
+          3.0
+        ]
+      ]
+    },
+    "output": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          1.0
+        ],
+        [
+          0.0
+        ],
+        [
+          3.0
+        ]
+      ]
+    },
+    "after": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          1.0
+        ],
+        [
+          null
+        ],
+        [
+          3.0
+        ]
+      ]
+    },
+    "exception": null,
+    "operation_calls": 1,
+    "output_pass": true,
+    "effect_pass": false,
+    "passed": false,
+    "elapsed_seconds": 0.0006716840143781155,
+    "warnings": []
+  },
+  {
+    "case_id": "pandas-fill-true",
+    "fixture_id": 1,
+    "recipe": "returned",
+    "goal": "preserve",
+    "before": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          -1.0
+        ],
+        [
+          null
+        ],
+        [
+          7.0
+        ]
+      ]
+    },
+    "expected": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          -1.0
+        ],
+        [
+          0.0
+        ],
+        [
+          7.0
+        ]
+      ]
+    },
+    "output": {
+      "type": "None"
+    },
+    "after": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          -1.0
+        ],
+        [
+          0.0
+        ],
+        [
+          7.0
+        ]
+      ]
+    },
+    "exception": null,
+    "operation_calls": 1,
+    "output_pass": false,
+    "effect_pass": false,
+    "passed": false,
+    "elapsed_seconds": 0.0003704909759107977,
+    "warnings": []
+  },
+  {
+    "case_id": "pandas-fill-true",
+    "fixture_id": 1,
+    "recipe": "receiver",
+    "goal": "preserve",
+    "before": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          -1.0
+        ],
+        [
+          null
+        ],
+        [
+          7.0
+        ]
+      ]
+    },
+    "expected": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          -1.0
+        ],
+        [
+          0.0
+        ],
+        [
+          7.0
+        ]
+      ]
+    },
+    "output": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          -1.0
+        ],
+        [
+          0.0
+        ],
+        [
+          7.0
+        ]
+      ]
+    },
+    "after": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          -1.0
+        ],
+        [
+          0.0
+        ],
+        [
+          7.0
+        ]
+      ]
+    },
+    "exception": null,
+    "operation_calls": 1,
+    "output_pass": true,
+    "effect_pass": false,
+    "passed": false,
+    "elapsed_seconds": 0.000650683999992907,
+    "warnings": []
+  },
+  {
+    "case_id": "pandas-fill-true",
+    "fixture_id": 1,
+    "recipe": "copied_returned",
+    "goal": "preserve",
+    "before": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          -1.0
+        ],
+        [
+          null
+        ],
+        [
+          7.0
+        ]
+      ]
+    },
+    "expected": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          -1.0
+        ],
+        [
+          0.0
+        ],
+        [
+          7.0
+        ]
+      ]
+    },
+    "output": {
+      "type": "None"
+    },
+    "after": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          -1.0
+        ],
+        [
+          null
+        ],
+        [
+          7.0
+        ]
+      ]
+    },
+    "exception": null,
+    "operation_calls": 1,
+    "output_pass": false,
+    "effect_pass": true,
+    "passed": false,
+    "elapsed_seconds": 0.0004072900046594441,
+    "warnings": []
+  },
+  {
+    "case_id": "pandas-fill-true",
+    "fixture_id": 1,
+    "recipe": "copied_receiver",
+    "goal": "preserve",
+    "before": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          -1.0
+        ],
+        [
+          null
+        ],
+        [
+          7.0
+        ]
+      ]
+    },
+    "expected": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          -1.0
+        ],
+        [
+          0.0
+        ],
+        [
+          7.0
+        ]
+      ]
+    },
+    "output": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          -1.0
+        ],
+        [
+          0.0
+        ],
+        [
+          7.0
+        ]
+      ]
+    },
+    "after": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          -1.0
+        ],
+        [
+          null
+        ],
+        [
+          7.0
+        ]
+      ]
+    },
+    "exception": null,
+    "operation_calls": 1,
+    "output_pass": true,
+    "effect_pass": true,
+    "passed": true,
+    "elapsed_seconds": 0.0006713829934597015,
+    "warnings": []
+  },
+  {
+    "case_id": "pandas-fill-true",
+    "fixture_id": 1,
+    "recipe": "returned",
+    "goal": "mutate",
+    "before": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          -1.0
+        ],
+        [
+          null
+        ],
+        [
+          7.0
+        ]
+      ]
+    },
+    "expected": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          -1.0
+        ],
+        [
+          0.0
+        ],
+        [
+          7.0
+        ]
+      ]
+    },
+    "output": {
+      "type": "None"
+    },
+    "after": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          -1.0
+        ],
+        [
+          0.0
+        ],
+        [
+          7.0
+        ]
+      ]
+    },
+    "exception": null,
+    "operation_calls": 1,
+    "output_pass": false,
+    "effect_pass": true,
+    "passed": false,
+    "elapsed_seconds": 0.0003676910127978772,
+    "warnings": []
+  },
+  {
+    "case_id": "pandas-fill-true",
+    "fixture_id": 1,
+    "recipe": "receiver",
+    "goal": "mutate",
+    "before": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          -1.0
+        ],
+        [
+          null
+        ],
+        [
+          7.0
+        ]
+      ]
+    },
+    "expected": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          -1.0
+        ],
+        [
+          0.0
+        ],
+        [
+          7.0
+        ]
+      ]
+    },
+    "output": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          -1.0
+        ],
+        [
+          0.0
+        ],
+        [
+          7.0
+        ]
+      ]
+    },
+    "after": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          -1.0
+        ],
+        [
+          0.0
+        ],
+        [
+          7.0
+        ]
+      ]
+    },
+    "exception": null,
+    "operation_calls": 1,
+    "output_pass": true,
+    "effect_pass": true,
+    "passed": true,
+    "elapsed_seconds": 0.0006224839889910072,
+    "warnings": []
+  },
+  {
+    "case_id": "pandas-fill-true",
+    "fixture_id": 1,
+    "recipe": "copied_returned",
+    "goal": "mutate",
+    "before": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          -1.0
+        ],
+        [
+          null
+        ],
+        [
+          7.0
+        ]
+      ]
+    },
+    "expected": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          -1.0
+        ],
+        [
+          0.0
+        ],
+        [
+          7.0
+        ]
+      ]
+    },
+    "output": {
+      "type": "None"
+    },
+    "after": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          -1.0
+        ],
+        [
+          null
+        ],
+        [
+          7.0
+        ]
+      ]
+    },
+    "exception": null,
+    "operation_calls": 1,
+    "output_pass": false,
+    "effect_pass": false,
+    "passed": false,
+    "elapsed_seconds": 0.0003831899957731366,
+    "warnings": []
+  },
+  {
+    "case_id": "pandas-fill-true",
+    "fixture_id": 1,
+    "recipe": "copied_receiver",
+    "goal": "mutate",
+    "before": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          -1.0
+        ],
+        [
+          null
+        ],
+        [
+          7.0
+        ]
+      ]
+    },
+    "expected": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          -1.0
+        ],
+        [
+          0.0
+        ],
+        [
+          7.0
+        ]
+      ]
+    },
+    "output": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          -1.0
+        ],
+        [
+          0.0
+        ],
+        [
+          7.0
+        ]
+      ]
+    },
+    "after": {
+      "type": "DataFrame",
+      "columns": [
+        "value"
+      ],
+      "index": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        [
+          -1.0
+        ],
+        [
+          null
+        ],
+        [
+          7.0
+        ]
+      ]
+    },
+    "exception": null,
+    "operation_calls": 1,
+    "output_pass": true,
+    "effect_pass": false,
+    "passed": false,
+    "elapsed_seconds": 0.0006454840186052024,
+    "warnings": []
+  }
+]

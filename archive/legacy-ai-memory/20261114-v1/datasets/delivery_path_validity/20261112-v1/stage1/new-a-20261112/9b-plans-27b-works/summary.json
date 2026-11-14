@@ -1,0 +1,622 @@
+{
+  "new-a": {
+    "group": "new-a",
+    "units": 43,
+    "states": 258,
+    "unreadable_answers": {
+      "none": 0,
+      "own_turns": 0,
+      "quoted_log": 0,
+      "all_records": 0,
+      "selected_by_27b": 0,
+      "selected_by_27b_solve_first": 0,
+      "selected_by_9b": 0,
+      "needed_records": 0
+    },
+    "success": {
+      "needs_memory": {
+        "own_turns": {
+          "states": 172,
+          "success": 121
+        },
+        "quoted_log": {
+          "states": 172,
+          "success": 154
+        },
+        "all_records": {
+          "states": 172,
+          "success": 170
+        },
+        "needed_records": {
+          "states": 172,
+          "success": 172
+        },
+        "none": {
+          "states": 172,
+          "success": 0
+        },
+        "selected_by_9b": {
+          "states": 172,
+          "success": 29
+        },
+        "selected_by_27b": {
+          "states": 172,
+          "success": 140
+        },
+        "selected_by_27b_solve_first": {
+          "states": 172,
+          "success": 167
+        }
+      },
+      "already_sufficient": {
+        "own_turns": {
+          "states": 86,
+          "success": 86
+        },
+        "quoted_log": {
+          "states": 86,
+          "success": 86
+        },
+        "all_records": {
+          "states": 86,
+          "success": 86
+        },
+        "needed_records": {
+          "states": 86,
+          "success": 86
+        },
+        "none": {
+          "states": 86,
+          "success": 86
+        },
+        "selected_by_9b": {
+          "states": 86,
+          "success": 85
+        },
+        "selected_by_27b": {
+          "states": 86,
+          "success": 85
+        },
+        "selected_by_27b_solve_first": {
+          "states": 86,
+          "success": 86
+        }
+      }
+    },
+    "neighbours": {
+      "needs_memory": {
+        "own_turns -> quoted_log": {
+          "states": 172,
+          "broke": 1,
+          "fixed": 34,
+          "both": 120,
+          "neither": 17,
+          "net": 33,
+          "units": 43,
+          "units_down": 1,
+          "units_up": 30,
+          "units_changed": 31,
+          "verdict": "difference"
+        },
+        "quoted_log -> all_records": {
+          "states": 172,
+          "broke": 1,
+          "fixed": 17,
+          "both": 153,
+          "neither": 1,
+          "net": 16,
+          "units": 43,
+          "units_down": 1,
+          "units_up": 16,
+          "units_changed": 17,
+          "verdict": "uncertain"
+        },
+        "all_records -> needed_records": {
+          "states": 172,
+          "broke": 0,
+          "fixed": 2,
+          "both": 170,
+          "neither": 0,
+          "net": 2,
+          "units": 43,
+          "units_down": 0,
+          "units_up": 2,
+          "units_changed": 2,
+          "verdict": "no difference seen"
+        },
+        "all_records -> selected_by_27b": {
+          "states": 172,
+          "broke": 31,
+          "fixed": 1,
+          "both": 139,
+          "neither": 1,
+          "net": -30,
+          "units": 43,
+          "units_down": 27,
+          "units_up": 0,
+          "units_changed": 27,
+          "verdict": "difference"
+        },
+        "all_records -> selected_by_27b_solve_first": {
+          "states": 172,
+          "broke": 4,
+          "fixed": 1,
+          "both": 166,
+          "neither": 1,
+          "net": -3,
+          "units": 43,
+          "units_down": 4,
+          "units_up": 1,
+          "units_changed": 5,
+          "verdict": "no difference seen"
+        },
+        "all_records -> selected_by_9b": {
+          "states": 172,
+          "broke": 141,
+          "fixed": 0,
+          "both": 29,
+          "neither": 2,
+          "net": -141,
+          "units": 43,
+          "units_down": 43,
+          "units_up": 0,
+          "units_changed": 43,
+          "verdict": "difference"
+        },
+        "selected_by_27b -> selected_by_27b_solve_first": {
+          "states": 172,
+          "broke": 4,
+          "fixed": 31,
+          "both": 136,
+          "neither": 1,
+          "net": 27,
+          "units": 43,
+          "units_down": 2,
+          "units_up": 26,
+          "units_changed": 28,
+          "verdict": "difference"
+        },
+        "selected_by_27b -> selected_by_9b": {
+          "states": 172,
+          "broke": 113,
+          "fixed": 2,
+          "both": 27,
+          "neither": 30,
+          "net": -111,
+          "units": 43,
+          "units_down": 42,
+          "units_up": 0,
+          "units_changed": 42,
+          "verdict": "difference"
+        },
+        "selected_by_27b_solve_first -> selected_by_9b": {
+          "states": 172,
+          "broke": 138,
+          "fixed": 0,
+          "both": 29,
+          "neither": 5,
+          "net": -138,
+          "units": 43,
+          "units_down": 43,
+          "units_up": 0,
+          "units_changed": 43,
+          "verdict": "difference"
+        },
+        "needed_records -> selected_by_27b": {
+          "states": 172,
+          "broke": 32,
+          "fixed": 0,
+          "both": 140,
+          "neither": 0,
+          "net": -32,
+          "units": 43,
+          "units_down": 28,
+          "units_up": 0,
+          "units_changed": 28,
+          "verdict": "difference"
+        },
+        "needed_records -> selected_by_27b_solve_first": {
+          "states": 172,
+          "broke": 5,
+          "fixed": 0,
+          "both": 167,
+          "neither": 0,
+          "net": -5,
+          "units": 43,
+          "units_down": 5,
+          "units_up": 0,
+          "units_changed": 5,
+          "verdict": "no difference seen"
+        },
+        "needed_records -> selected_by_9b": {
+          "states": 172,
+          "broke": 143,
+          "fixed": 0,
+          "both": 29,
+          "neither": 0,
+          "net": -143,
+          "units": 43,
+          "units_down": 43,
+          "units_up": 0,
+          "units_changed": 43,
+          "verdict": "difference"
+        }
+      },
+      "already_sufficient": {
+        "own_turns -> quoted_log": {
+          "states": 86,
+          "broke": 0,
+          "fixed": 0,
+          "both": 86,
+          "neither": 0,
+          "net": 0,
+          "units": 43,
+          "units_down": 0,
+          "units_up": 0,
+          "units_changed": 0,
+          "verdict": "no difference seen"
+        },
+        "quoted_log -> all_records": {
+          "states": 86,
+          "broke": 0,
+          "fixed": 0,
+          "both": 86,
+          "neither": 0,
+          "net": 0,
+          "units": 43,
+          "units_down": 0,
+          "units_up": 0,
+          "units_changed": 0,
+          "verdict": "no difference seen"
+        },
+        "all_records -> needed_records": {
+          "states": 86,
+          "broke": 0,
+          "fixed": 0,
+          "both": 86,
+          "neither": 0,
+          "net": 0,
+          "units": 43,
+          "units_down": 0,
+          "units_up": 0,
+          "units_changed": 0,
+          "verdict": "no difference seen"
+        },
+        "all_records -> selected_by_27b": {
+          "states": 86,
+          "broke": 1,
+          "fixed": 0,
+          "both": 85,
+          "neither": 0,
+          "net": -1,
+          "units": 43,
+          "units_down": 1,
+          "units_up": 0,
+          "units_changed": 1,
+          "verdict": "no difference seen"
+        },
+        "all_records -> selected_by_27b_solve_first": {
+          "states": 86,
+          "broke": 0,
+          "fixed": 0,
+          "both": 86,
+          "neither": 0,
+          "net": 0,
+          "units": 43,
+          "units_down": 0,
+          "units_up": 0,
+          "units_changed": 0,
+          "verdict": "no difference seen"
+        },
+        "all_records -> selected_by_9b": {
+          "states": 86,
+          "broke": 1,
+          "fixed": 0,
+          "both": 85,
+          "neither": 0,
+          "net": -1,
+          "units": 43,
+          "units_down": 1,
+          "units_up": 0,
+          "units_changed": 1,
+          "verdict": "no difference seen"
+        },
+        "selected_by_27b -> selected_by_27b_solve_first": {
+          "states": 86,
+          "broke": 0,
+          "fixed": 1,
+          "both": 85,
+          "neither": 0,
+          "net": 1,
+          "units": 43,
+          "units_down": 0,
+          "units_up": 1,
+          "units_changed": 1,
+          "verdict": "no difference seen"
+        },
+        "selected_by_27b -> selected_by_9b": {
+          "states": 86,
+          "broke": 0,
+          "fixed": 0,
+          "both": 85,
+          "neither": 1,
+          "net": 0,
+          "units": 43,
+          "units_down": 0,
+          "units_up": 0,
+          "units_changed": 0,
+          "verdict": "no difference seen"
+        },
+        "selected_by_27b_solve_first -> selected_by_9b": {
+          "states": 86,
+          "broke": 1,
+          "fixed": 0,
+          "both": 85,
+          "neither": 0,
+          "net": -1,
+          "units": 43,
+          "units_down": 1,
+          "units_up": 0,
+          "units_changed": 1,
+          "verdict": "no difference seen"
+        },
+        "needed_records -> selected_by_27b": {
+          "states": 86,
+          "broke": 1,
+          "fixed": 0,
+          "both": 85,
+          "neither": 0,
+          "net": -1,
+          "units": 43,
+          "units_down": 1,
+          "units_up": 0,
+          "units_changed": 1,
+          "verdict": "no difference seen"
+        },
+        "needed_records -> selected_by_27b_solve_first": {
+          "states": 86,
+          "broke": 0,
+          "fixed": 0,
+          "both": 86,
+          "neither": 0,
+          "net": 0,
+          "units": 43,
+          "units_down": 0,
+          "units_up": 0,
+          "units_changed": 0,
+          "verdict": "no difference seen"
+        },
+        "needed_records -> selected_by_9b": {
+          "states": 86,
+          "broke": 1,
+          "fixed": 0,
+          "both": 85,
+          "neither": 0,
+          "net": -1,
+          "units": 43,
+          "units_down": 1,
+          "units_up": 0,
+          "units_changed": 1,
+          "verdict": "no difference seen"
+        }
+      }
+    },
+    "harm": {
+      "own_turns": {
+        "solved_without_memory": 86,
+        "broken": 0,
+        "units_with_a_break": 0
+      },
+      "quoted_log": {
+        "solved_without_memory": 86,
+        "broken": 0,
+        "units_with_a_break": 0
+      },
+      "all_records": {
+        "solved_without_memory": 86,
+        "broken": 0,
+        "units_with_a_break": 0
+      },
+      "selected_by_27b": {
+        "solved_without_memory": 86,
+        "broken": 1,
+        "units_with_a_break": 1
+      },
+      "selected_by_27b_solve_first": {
+        "solved_without_memory": 86,
+        "broken": 0,
+        "units_with_a_break": 0
+      },
+      "selected_by_9b": {
+        "solved_without_memory": 86,
+        "broken": 1,
+        "units_with_a_break": 1
+      },
+      "needed_records": {
+        "solved_without_memory": 86,
+        "broken": 0,
+        "units_with_a_break": 0
+      }
+    },
+    "harm_by_problem_type": {
+      "observed_component": {
+        "own_turns": {
+          "solved_without_memory": 43,
+          "broken": 0,
+          "units_with_a_break": 0
+        },
+        "quoted_log": {
+          "solved_without_memory": 43,
+          "broken": 0,
+          "units_with_a_break": 0
+        },
+        "all_records": {
+          "solved_without_memory": 43,
+          "broken": 0,
+          "units_with_a_break": 0
+        },
+        "selected_by_27b": {
+          "solved_without_memory": 43,
+          "broken": 0,
+          "units_with_a_break": 0
+        },
+        "selected_by_27b_solve_first": {
+          "solved_without_memory": 43,
+          "broken": 0,
+          "units_with_a_break": 0
+        },
+        "selected_by_9b": {
+          "solved_without_memory": 43,
+          "broken": 0,
+          "units_with_a_break": 0
+        },
+        "needed_records": {
+          "solved_without_memory": 43,
+          "broken": 0,
+          "units_with_a_break": 0
+        }
+      },
+      "retry_branch": {
+        "own_turns": {
+          "solved_without_memory": 43,
+          "broken": 0,
+          "units_with_a_break": 0
+        },
+        "quoted_log": {
+          "solved_without_memory": 43,
+          "broken": 0,
+          "units_with_a_break": 0
+        },
+        "all_records": {
+          "solved_without_memory": 43,
+          "broken": 0,
+          "units_with_a_break": 0
+        },
+        "selected_by_27b": {
+          "solved_without_memory": 43,
+          "broken": 1,
+          "units_with_a_break": 1
+        },
+        "selected_by_27b_solve_first": {
+          "solved_without_memory": 43,
+          "broken": 0,
+          "units_with_a_break": 0
+        },
+        "selected_by_9b": {
+          "solved_without_memory": 43,
+          "broken": 1,
+          "units_with_a_break": 1
+        },
+        "needed_records": {
+          "solved_without_memory": 43,
+          "broken": 0,
+          "units_with_a_break": 0
+        }
+      }
+    },
+    "kinds": {
+      "none": {
+        "correct": 259,
+        "withheld": 256,
+        "counter_record": 1
+      },
+      "own_turns": {
+        "correct": 459,
+        "withheld": 27,
+        "other_record": 13,
+        "counter_record": 17
+      },
+      "quoted_log": {
+        "correct": 495,
+        "other_record": 8,
+        "counter_record": 12,
+        "withheld": 1
+      },
+      "all_records": {
+        "correct": 513,
+        "other_record": 1,
+        "counter_record": 2
+      },
+      "selected_by_27b": {
+        "correct": 482,
+        "withheld": 29,
+        "counter_record": 2,
+        "other_record": 3
+      },
+      "selected_by_27b_solve_first": {
+        "correct": 511,
+        "counter_record": 2,
+        "other_record": 3
+      },
+      "selected_by_9b": {
+        "correct": 323,
+        "withheld": 123,
+        "counter_record": 51,
+        "other_record": 17,
+        "no_record": 2
+      },
+      "needed_records": {
+        "correct": 516
+      }
+    },
+    "kinds_already_sufficient": {
+      "none": {
+        "correct": 172
+      },
+      "own_turns": {
+        "correct": 172
+      },
+      "quoted_log": {
+        "correct": 172
+      },
+      "all_records": {
+        "correct": 172
+      },
+      "selected_by_27b": {
+        "correct": 170,
+        "counter_record": 2
+      },
+      "selected_by_27b_solve_first": {
+        "correct": 172
+      },
+      "selected_by_9b": {
+        "correct": 170,
+        "counter_record": 2
+      },
+      "needed_records": {
+        "correct": 172
+      }
+    }
+  },
+  "selection": {
+    "new-a": {
+      "selected_by_9b": {
+        "exact": 74,
+        "exact_in_states_that_need_memory": 16,
+        "missing_needed": 145,
+        "extra_only": 39,
+        "unreadable": 0,
+        "includes_counter_record": 62,
+        "empty_in_states_that_need_memory": 96
+      },
+      "selected_by_27b": {
+        "exact": 133,
+        "exact_in_states_that_need_memory": 85,
+        "missing_needed": 32,
+        "extra_only": 93,
+        "unreadable": 0,
+        "includes_counter_record": 96,
+        "empty_in_states_that_need_memory": 29
+      },
+      "selected_by_27b_solve_first": {
+        "exact": 112,
+        "exact_in_states_that_need_memory": 102,
+        "missing_needed": 7,
+        "extra_only": 139,
+        "unreadable": 0,
+        "includes_counter_record": 65,
+        "empty_in_states_that_need_memory": 0
+      }
+    }
+  }
+}
