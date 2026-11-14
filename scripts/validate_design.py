@@ -43,6 +43,7 @@ def main() -> None:
         "plan": read_json(ROOT / "schemas" / "run-plan.schema.json"),
         "event": read_json(ROOT / "schemas" / "event.schema.json"),
         "connection-check": read_json(ROOT / "schemas" / "connection-check.schema.json"),
+        "connection-check-v1.1": read_json(ROOT / "schemas" / "connection-check-v1.1.schema.json"),
     }
     validators = {}
     for name, schema in schemas.items():
@@ -50,7 +51,8 @@ def main() -> None:
         validators[name] = Draft202012Validator(schema, format_checker=FormatChecker())
 
     plan = read_json(ROOT / "protocols" / "drafts" / "tau2-two-pass.json")
-    validators["connection-check"].validate(read_json(ROOT / "protocols" / "checks" / "openrouter-tau2-smoke.json"))
+    validators["connection-check"].validate(read_json(ROOT / "protocols" / "checks" / "openrouter-tau2-smoke-v1.0.json"))
+    validators["connection-check-v1.1"].validate(read_json(ROOT / "protocols" / "checks" / "openrouter-tau2-smoke.json"))
     validators["plan"].validate(plan)
     if plan["plan_status"] != "draft":
         raise ValueError("The committed example must remain a draft")

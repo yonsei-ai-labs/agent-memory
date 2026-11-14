@@ -12,8 +12,8 @@ import time
 from unittest.mock import patch
 
 from agent_memory_eval.contracts.core import ContractError, RunContext, canonical, digest, new_id
-from agent_memory_eval.contracts.validation import ROOT
-from agent_memory_eval.models.openrouter import OpenRouterClient, SpendGuard, model_catalog, resolve_model
+from agent_memory_eval.contracts.connection import forward_seed, native_parameters, provider_route, validate_profile
+from agent_memory_eval.models.openrouter import OpenRouterClient, SpendGuard, model_catalog, model_endpoints, resolve_endpoint, resolve_model
 from agent_memory_eval.recording.provenance import RecordingGateway, SourceRegistry
 
 
@@ -62,7 +62,8 @@ class Tau2Bridge:
         self.registry = SourceRegistry(journal, ctx)
         self.gateway = RecordingGateway(journal)
         self.systems = dict(worker=orchestrator.agent.system_prompt, user_simulator=orchestrator.user.system_prompt)
-        self.clients = {role: OpenRouterClient(model, guard, **({"opener": opener} if opener else {})) for role, model in models.items()}
+        self.clients = {role: OpenRouterClient(model, guard, route=provider_route(config, role),
+            **({"opener": opener} if opener else {})) for role, model in models.items()}
         self.message_sources, self.costs = {}, {}
         self.active = None
         self.original_generate = self.utils.generate
@@ -70,8 +71,8 @@ class Tau2Bridge:
     def invoke(self, actor, *, model, messages, tools=None, tool_choice=None, call_name=None, **kwargs):
         if self.active is not None:
             raise ContractError("This connection check is single-threaded")
-        expected_model = self.config["worker" if actor == "worker" else "user_simulator"]["model_id"]
-        if model != expected_model or kwargs != self.config["worker" if actor == "worker" else "user_simulator"]["parameters"]:
+        expected_model = self.config[actor]["model_id"]
+        if model != expected_model or kwargs != native_parameters(self.config, actor):
             raise ContractError("Native model settings differ from the pinned connection profile")
         rendered = self.utils.to_litellm_messages(messages)
         if not rendered or rendered[0] != dict(role="system", content=self.systems[actor]):
@@ -97,7 +98,9 @@ class Tau2Bridge:
         if canonical(kwargs) != canonical(expected):
             raise ContractError("Native request wrapper changed approved content or parameters")
         config = {k: deepcopy(v) for k, v in expected.items() if k not in {"messages", "num_retries"} and v is not None}
-        config.update(provider=deepcopy(self.config["provider"]), stream=False)
+        if not forward_seed(self.config, actor):
+            del config["seed"]
+        config.update(provider=deepcopy(provider_route(self.config, actor)), stream=False)
         template = self.registry.template(config, roles=(actor,))
         entries = []
         for message in expected["messages"]:
@@ -125,7 +128,8 @@ class Tau2Bridge:
         allowed_models = {self.models[actor]["id"], self.models[actor].get("canonical_slug")}
         if response.get("model") not in allowed_models:
             raise ContractError("OpenRouter returned a different model identity")
-        if str(response.get("provider", "")).lower() != "openai":
+        expected_provider = self.models[actor]["selected_endpoint"]["provider_name"]
+        if response.get("provider") != expected_provider:
             raise ContractError("OpenRouter returned an unverified provider identity")
         from litellm import ModelResponse
         return ModelResponse(**response)
@@ -143,9 +147,7 @@ class Tau2Bridge:
 
 
 def prepare_native(config, checkout):
-    from jsonschema import Draft202012Validator
-    schema = json.loads((ROOT / "schemas/connection-check.schema.json").read_text())
-    Draft202012Validator(schema).validate(config)
+    validate_profile(config)
     if config.get("intent") != "connection_check" or config.get("memory_enabled") is not False:
         raise ContractError("This binding supports a no-memory connection check only")
     if config["benchmark"]["source_revision"] != PIN:
@@ -172,6 +174,11 @@ def prepare_native(config, checkout):
     catalog = model_catalog()
     models = {role: resolve_model(catalog, config[field]["model_id"], config[field]["parameters"])
               for role, field in (("worker", "worker"), ("user_simulator", "user_simulator"))}
+    for role, model in models.items():
+        parameters = dict(config[role]["parameters"])
+        if role == "worker":
+            parameters.update(tools=[], tool_choice="auto")
+        models[role] = resolve_endpoint(model, model_endpoints(model["id"]), provider_route(config, role), parameters)
     return orchestrator, native, models, modules
 
 

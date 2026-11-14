@@ -1,5 +1,5 @@
 {
-  "profile_version": "1.0",
+  "profile_version": "1.1",
   "intent": "connection_check",
   "memory_enabled": false,
   "benchmark": {
@@ -22,26 +22,37 @@
       },
       "max_completion_tokens": 2048,
       "seed": 0
-    }
+    },
+    "provider": {
+      "only": [
+        "openai"
+      ],
+      "allow_fallbacks": false,
+      "require_parameters": true
+    },
+    "forward_native_seed": true
   },
   "user_simulator": {
-    "model_id": "openai/gpt-4.1",
+    "model_id": "deepseek/deepseek-v4.1-flash-1017",
     "parameters": {
       "temperature": 0,
-      "max_completion_tokens": 512,
-      "seed": 0
-    }
+      "max_tokens": 512,
+      "reasoning": {
+        "enabled": false
+      }
+    },
+    "provider": {
+      "only": [
+        "fireworks"
+      ],
+      "allow_fallbacks": false,
+      "require_parameters": true
+    },
+    "forward_native_seed": false
   },
   "guards": {
     "max_model_requests": 24,
     "max_reported_cost_usd": 0.25,
     "max_seconds": 180
-  },
-  "provider": {
-    "only": [
-      "openai"
-    ],
-    "allow_fallbacks": false,
-    "require_parameters": true
   }
 }

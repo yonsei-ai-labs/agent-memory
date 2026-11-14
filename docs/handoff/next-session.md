@@ -33,6 +33,7 @@
 ## 이미 합의한 연구와 사용자 선호
 
 - 같은 작업자 Luna의 가중치를 고정해 저장·조회 정책의 차이를 비교한다. 시작은 τ²-bench, 확장은 AppWorld·BFCL이다.
+- 사용자 시뮬레이터는 **DeepSeek V4.1 Flash 1017**(`deepseek/deepseek-v4.1-flash-1017`)로 사용자가 지정했다. 현재 연결 프로필에서 OpenRouter → Fireworks 경로로 고정하며, GPT-4.1으로 되돌리지 않는다. DeepSeek 제공자 직접 경로는 계정 데이터 정책에 맞는 endpoint가 없다는 HTTP 404로 중단했고, 계정 정책은 바꾸지 않았다. Luna 작업자의 reasoning low는 유지한다. 모델별 파라미터·seed 전달 차이는 [연결 안내](../development/tau2-connection.md)를 따른다.
 - `memory_store`·`memory_list`·`memory_get`을 통해 LLM이 저장 내용·개수·조회 시점을 판단한다. 저장 시점은 없음·종료 후·수행 중·병행을 지원한다.
 - 1회차 경험에서 기억을 만들고, 2회차에는 새 세션·새 업무 환경에서 기억으로만 과거를 공유한다. 자기 경험 은행과 N개 혼합 풀은 같은 원천에서 작성한 동일 버전을 사용한다.
 - 평가마다 시작 snapshot을 복제한다. 허용된 2회차 쓰기는 해당 복제본에서만 일어나고 원은행·다른 평가에 반영하지 않는다.
@@ -61,11 +62,11 @@ uv run python scripts/verify_legacy_data.py
 uv run python -m unittest discover -s tests
 ```
 
-현재 명령은 모델 호출 없이 로컬 계약·링크·보관 파일과 오프라인 행동을 검증한다. unittest는 보관본 8개·계약 26개·오프라인 코어 26개·OpenRouter 전송 mock 7개와 선택적인 native mock 1개다. native 테스트는 τ² extra와 고정 checkout이 있을 때 실행하며 테스트 명령 자체는 유료 호출을 하지 않는다.
+현재 명령은 모델 호출 없이 로컬 계약·링크·보관 파일과 오프라인 행동을 검증한다. unittest는 보관본 8개·계약 26개·오프라인 코어 26개·OpenRouter 전송/프로필 mock 10개와 선택적인 native mock 2개다. native 테스트는 τ² extra와 고정 checkout이 있을 때 실행하며 테스트 명령 자체는 유료 호출을 하지 않는다.
 
 첫 오프라인 코어와 2원천·8 run 가짜 흐름은 구현했다. [실행 안내](../development/offline-core.md)에 따라 **새/빈 출력 폴더**에서 실행하고 `--analyze-only`로 원본을 바꾸지 않고 재계산할 수 있다. 예제의 페이지 4·run별 요청 12는 합성 builder 값이며 실제 draft를 채우지 않았다.
 
-OpenRouter·Luna 작업자/GPT-4.1 사용자·τ² 고정 commit의 제한된 무기억 연결 확인을 수행했다. [연결 프로토콜과 결과](../development/tau2-connection.md), [검증 기록](../../artifacts/connection-checks/20261114-openrouter-tau2.json)을 따른다. 다음은 실제 τ² 기억 호출의 내부 처리·혼합 순서·사후 작성과 두 회차 격리를 구현하고 연구용 계획 준비 검사를 연결하는 일이다. 추가 유료 실행도 해당 목적·과제·한도·사용량/실패를 고정해 별도로 기록한다. 전체 세션 복구·다중 실행 동시성·preload/가공·누적/교차/개입과 통계를 코어가 이미 구현한 것으로 취급하지 않는다.
+OpenRouter·Luna 작업자·τ² 고정 commit의 제한된 무기억 연결 확인을 수행했다. 현재 사용자 모델은 DeepSeek V4.1 Flash 1017이며 [연결 프로토콜과 결과](../development/tau2-connection.md)·[현재 확인 기록](../../artifacts/connection-checks/20261114-openrouter-tau2-deepseek1017.json)을 따른다. 성공 실행은 13요청·4업무 호출·native 성공이며 앞선 직접 제공자 404 실패 2건과 비용 미확인도 함께 보존했다. 이전 GPT-4.1 [검증 기록](../../artifacts/connection-checks/20261114-openrouter-tau2.json)은 보존한 이력이다. 다음은 실제 τ² 기억 호출의 내부 처리·혼합 순서·사후 작성과 두 회차 격리를 구현하고 연구용 계획 준비 검사를 연결하는 일이다. 추가 유료 실행도 해당 목적·과제·한도·사용량/실패를 고정해 별도로 기록한다. 전체 세션 복구·다중 실행 동시성·preload/가공·누적/교차/개입과 통계를 코어가 이미 구현한 것으로 취급하지 않는다.
 
 최근 구성·선행연구 탐색 질문은 [방향 논의 노트](../design/direction-notes.md), 구현 결정을 모은 기준은 [코어 계약](../design/core-contracts.md)이다. 자연 실행의 전체 정책 효과와 동일 경험의 저장 효과를 구분하고 현재 과제가 정상 제공하는 초기 대화는 유지한다.
 
@@ -95,7 +96,7 @@ OpenRouter·Luna 작업자/GPT-4.1 사용자·τ² 고정 commit의 제한된 �
 
 ## 미확정 값과 진행 가능한 작업
 
-[τ² 초안](../../protocols/drafts/tau2-two-pass-v1.1.json)은 `draft`다. 실제 벤치 commit·도메인·과제·사용자 시뮬레이터·native 한도·응답 캐시·adapter 설정·모델 파라미터·단계별 작성 지침·페이지 크기·반복/순서·중단 한도·주석/통계/비용 배분은 실제 실험 계획에서 고정해야 한다. 기본 표본 수·예산을 임의로 넣어 `ready`로 만들지 않는다.
+[τ² 초안](../../protocols/drafts/tau2-two-pass-v1.1.json)은 `draft`다. 실제 벤치 commit·도메인·과제·native 한도·응답 캐시·adapter 설정·모델 파라미터·단계별 작성 지침·페이지 크기·반복/순서·중단 한도·주석/통계/비용 배분은 실제 실험 계획에서 고정해야 한다. 사용자 모델은 위 DeepSeek 1017 지정을 반영하되, 연결 확인의 한도를 연구용 기본값으로 전용하지 않는다. 기본 표본 수·예산을 임의로 넣어 `ready`로 만들지 않는다.
 
 모든 `null`이 미확정은 아니다. 선택적 저장 한도 없음, on-demand에서 preload 선택기 없음, 원문 조회에서 재가공 없음은 합법적인 설정이다. `PlanCompiler`는 미정 값과 해당 없음·무제한을 구분해야 한다. 스키마 통과도 의미 검사나 실행 준비 완료를 뜻하지 않는다.
 

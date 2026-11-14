@@ -9,7 +9,7 @@ uv run python scripts/verify_legacy_data.py
 uv run python -m unittest discover -s tests
 ```
 
-오프라인 코어 26개·계약 26개·보관본 8개·OpenRouter 전송 mock 7개를 실행한다. τ² extra와 고정 checkout이 있으면 native mock 통합 1개도 실행한다. 새 기능/벤치 연결에는 관련 행동 테스트를 추가한다. 현재 지원 범위는 [오프라인 코어 안내](../docs/development/offline-core.md), 전체 목표는 [개발 계획](../docs/development/roadmap.md)과 [검증 시나리오](../docs/design/architecture.md#13-재개와-검증-시나리오)를 따른다.
+오프라인 코어 26개·계약 26개·보관본 8개·OpenRouter 전송/프로필 mock 10개를 실행한다. τ² extra와 고정 checkout이 있으면 현재 DeepSeek 1017과 보존된 v1.0 프로필의 native mock 통합 2개도 실행한다. 새 기능/벤치 연결에는 관련 행동 테스트를 추가한다. 현재 지원 범위는 [오프라인 코어 안내](../docs/development/offline-core.md), 전체 목표는 [개발 계획](../docs/development/roadmap.md)과 [검증 시나리오](../docs/design/architecture.md#13-재개와-검증-시나리오)를 따른다.
 
 [v1.1 테스트](test_contract_v11.py) 26개는 journal tail/손상/누락, 재전송 중복, 세션 ID·은행/고정 보기, 요청 출처/역할/시점/완전성, 자기 작성 인수, 공개 경험 접두부, 목록 메타데이터, 합성 혼합 호출 순서와 ready 설정 형식을 확인한다. 매 테스트는 작은 임시 fixture를 만든다. 실제 기록자·라우터·provider 요청을 생성하거나 실행하지 않는다.
 

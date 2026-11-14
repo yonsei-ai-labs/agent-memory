@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 
 from agent_memory_eval.contracts.core import ContractError, digest
+from agent_memory_eval.contracts.connection import forward_seed, provider_route, validate_profile
 from agent_memory_eval.contracts.validation import validate_manifest
 from agent_memory_eval.recording.journal import BlobStore, read_experiment
 
@@ -15,10 +16,12 @@ def audit_connection(root):
     scan, state, experiment = read_experiment(root)
     blobs = BlobStore(root)
     config = state["connection_check"]["requested"]
+    validate_profile(config)
     if config["intent"] != "connection_check" or config["memory_enabled"] is not False:
         raise ContractError("Expected a no-memory connection profile")
     requests, counts, total, tokens = {}, Counter(), Decimal(0), 0
     models, providers, statuses = Counter(), Counter(), Counter()
+    unknown_cost = False
     for event in scan["events"].values():
         if event["record_kind"] != "observed" or event["type"].startswith("memory."):
             raise ContractError("Connection trace has an unexpected record kind or memory event")
@@ -31,12 +34,15 @@ def audit_connection(root):
                 raise ContractError("Baseline connection unexpectedly includes memory spans")
             wire = blobs.get(payload["request_ref"])
             role = payload["actor_role"]
-            field = "worker" if role == "worker" else "user_simulator"
-            if wire["provider"] != config["provider"] or wire["model"] != config[field]["model_id"]:
+            if role not in {"worker", "user_simulator"}:
+                raise ContractError("Unexpected model role")
+            if wire["provider"] != provider_route(config, role) or wire["model"] != config[role]["model_id"]:
                 raise ContractError("Request route differs from the declared profile")
-            for key, value in config[field]["parameters"].items():
+            for key, value in config[role]["parameters"].items():
                 if wire.get(key) != value:
                     raise ContractError("Request parameters differ from the declared profile")
+            if not forward_seed(config, role) and "seed" in wire:
+                raise ContractError("Unsupported native seed was forwarded")
             if any(t["function"]["name"].startswith("memory_") for t in wire.get("tools", [])):
                 raise ContractError("Baseline exposed memory tools")
             requests[request_id] = role
@@ -45,8 +51,22 @@ def audit_connection(root):
             if payload["request_id"] not in requests:
                 raise ContractError("Completion has no request")
             statuses[payload["status"]] += 1
+            unknown_cost |= payload["cost_status"] == "unknown"
             if payload["status"] == "response":
                 response = blobs.get(payload["response_ref"])
+                role = requests[payload["request_id"]]
+                model = state["connection_check"]["model_catalog_entries"][role]
+                endpoint = model.get("selected_endpoint")
+                if endpoint is not None:
+                    if endpoint["tag"] != provider_route(config, role)["only"][0]:
+                        raise ContractError("Saved endpoint differs from the pinned role")
+                    expected_provider = endpoint["provider_name"]
+                elif config["profile_version"] == "1.0":
+                    expected_provider = "OpenAI"
+                else:
+                    raise ContractError("Provider endpoint metadata is missing")
+                if response.get("provider") != expected_provider or response.get("model") not in {model["id"], model.get("canonical_slug")}:
+                    raise ContractError("Response identity differs from the pinned role")
                 if payload["usage"] != response.get("usage"):
                     raise ContractError("Usage differs from provider response")
                 if payload["cost_status"] == "observed":
@@ -63,6 +83,8 @@ def audit_connection(root):
         raise ContractError("Summary request counts differ from the journal")
     if abs(Decimal(str(summary["reported_cost_usd"])) - total) > Decimal("0.000000001"):
         raise ContractError("Summary cost differs from provider records")
+    if summary["unknown_cost"] != unknown_cost:
+        raise ContractError("Summary unknown cost differs from provider records")
     outcomes = [e["payload"] for e in scan["events"].values()
                 if e["type"] == "outcome.scored" and e["run_id"] == summary["run_id"]]
     if len(outcomes) != 1:
@@ -82,7 +104,8 @@ def audit_connection(root):
     return dict(intent="connection_check", status="audit_passed", experiment_id=experiment,
         requests_by_role=dict(counts), completion_statuses=dict(statuses),
         returned_models=dict(models), returned_providers=dict(providers),
-        reported_cost_usd_decimal=str(total), reported_tokens=tokens, native_business_tool_calls=native_tool_calls,
+        reported_cost_usd_decimal=str(total), unknown_cost=unknown_cost,
+        reported_tokens=tokens, native_business_tool_calls=native_tool_calls,
         log_sha256=digest((root / "log.jsonl").read_bytes()),
         summary_sha256=digest((root / "connection-summary.json").read_bytes()),
         memory_enabled=False, official_success=summary.get("official_success"),

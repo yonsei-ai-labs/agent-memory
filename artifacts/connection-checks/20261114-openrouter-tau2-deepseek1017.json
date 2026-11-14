@@ -1,0 +1,538 @@
+{
+  "kind": "live_connection_check",
+  "record_kind": "observed",
+  "scope": "single_train_task_no_memory_not_policy_evaluation",
+  "run_directory": "runs/tau2-openrouter-luna-deepseek1017-check-03",
+  "requested_profile": {
+    "benchmark": {
+      "communicate_scorer": "substring",
+      "domain": "airline",
+      "localize_db": false,
+      "max_errors": 5,
+      "max_steps": 40,
+      "name": "tau2",
+      "seed": 0,
+      "source_revision": "c06b07dd7c4d4ec61ba6ff9bcdf0b15dd7ef36d4",
+      "split": "train",
+      "task_id": "0"
+    },
+    "guards": {
+      "max_model_requests": 24,
+      "max_reported_cost_usd": 0.25,
+      "max_seconds": 180
+    },
+    "intent": "connection_check",
+    "memory_enabled": false,
+    "profile_version": "1.1",
+    "user_simulator": {
+      "forward_native_seed": false,
+      "model_id": "deepseek/deepseek-v4.1-flash-1017",
+      "parameters": {
+        "max_tokens": 512,
+        "reasoning": {
+          "enabled": false
+        },
+        "temperature": 0
+      },
+      "provider": {
+        "allow_fallbacks": false,
+        "only": [
+          "fireworks"
+        ],
+        "require_parameters": true
+      }
+    },
+    "worker": {
+      "forward_native_seed": true,
+      "model_id": "openai/gpt-6-luna",
+      "parameters": {
+        "max_completion_tokens": 2048,
+        "reasoning": {
+          "effort": "low"
+        },
+        "seed": 0
+      },
+      "provider": {
+        "allow_fallbacks": false,
+        "only": [
+          "openai"
+        ],
+        "require_parameters": true
+      }
+    }
+  },
+  "model_catalog_entries": {
+    "user_simulator": {
+      "id": "deepseek/deepseek-v4.1-flash-1017",
+      "canonical_slug": "deepseek/deepseek-v4.1-flash-20261017",
+      "pricing": {
+        "completion": "0.0000005",
+        "input_cache_read": "0.00000001",
+        "prompt": "0.000000038"
+      },
+      "supported_parameters": [
+        "frequency_penalty",
+        "include_reasoning",
+        "logit_bias",
+        "logprobs",
+        "max_completion_tokens",
+        "max_tokens",
+        "min_p",
+        "parallel_tool_calls",
+        "presence_penalty",
+        "reasoning",
+        "reasoning_effort",
+        "repetition_penalty",
+        "response_format",
+        "seed",
+        "stop",
+        "structured_outputs",
+        "temperature",
+        "tool_choice",
+        "tools",
+        "top_k",
+        "top_logprobs",
+        "top_p"
+      ],
+      "reservation_pricing": {
+        "completion": 1.2e-06,
+        "prompt": 3e-07
+      },
+      "selected_endpoint": {
+        "tag": "fireworks",
+        "provider_name": "Fireworks",
+        "status": 0,
+        "pricing": {
+          "completion": "0.0000012",
+          "discount": 0,
+          "input_cache_read": "0.000000006",
+          "prompt": "0.0000003"
+        },
+        "supported_parameters": [
+          "reasoning",
+          "include_reasoning",
+          "max_tokens",
+          "temperature",
+          "top_p",
+          "stop",
+          "frequency_penalty",
+          "presence_penalty",
+          "top_k",
+          "repetition_penalty",
+          "logit_bias",
+          "logprobs",
+          "top_logprobs",
+          "response_format",
+          "structured_outputs",
+          "tools",
+          "tool_choice",
+          "reasoning_effort"
+        ]
+      }
+    },
+    "worker": {
+      "id": "openai/gpt-6-luna",
+      "canonical_slug": "openai/gpt-6-luna-20260922",
+      "pricing": {
+        "completion": "0.0000005",
+        "input_cache_read": "0.00000001",
+        "input_cache_write": "0.000000125",
+        "overrides": [
+          {
+            "completion": "0.00000075",
+            "input_cache_read": "0.00000002",
+            "input_cache_write": "0.00000025",
+            "min_prompt_tokens": 272000,
+            "prompt": "0.0000002"
+          }
+        ],
+        "prompt": "0.0000001",
+        "web_search": "0.01"
+      },
+      "supported_parameters": [
+        "include_reasoning",
+        "max_completion_tokens",
+        "max_tokens",
+        "reasoning",
+        "reasoning_effort",
+        "response_format",
+        "seed",
+        "structured_outputs",
+        "tool_choice",
+        "tools",
+        "verbosity"
+      ],
+      "reservation_pricing": {
+        "completion": 7.5e-07,
+        "prompt": 2e-07
+      },
+      "selected_endpoint": {
+        "tag": "openai",
+        "provider_name": "OpenAI",
+        "status": 0,
+        "pricing": {
+          "completion": "0.0000005",
+          "discount": 0,
+          "input_cache_read": "0.00000001",
+          "input_cache_write": "0.000000125",
+          "overrides": [
+            {
+              "completion": "0.00000075",
+              "input_cache_read": "0.00000002",
+              "input_cache_write": "0.00000025",
+              "min_prompt_tokens": 272000,
+              "prompt": "0.0000002"
+            }
+          ],
+          "prompt": "0.0000001",
+          "web_search": "0.01"
+        },
+        "supported_parameters": [
+          "reasoning",
+          "include_reasoning",
+          "seed",
+          "max_tokens",
+          "response_format",
+          "structured_outputs",
+          "tools",
+          "tool_choice",
+          "verbosity",
+          "reasoning_effort"
+        ]
+      }
+    }
+  },
+  "summary": {
+    "domain": "airline",
+    "error_code": null,
+    "grading_status": "graded",
+    "http_calls": 13,
+    "intent": "connection_check",
+    "memory_enabled": false,
+    "native_revision": "c06b07dd7c4d4ec61ba6ff9bcdf0b15dd7ef36d4",
+    "native_steps": 17,
+    "native_tool_errors": 0,
+    "official_score": 1.0,
+    "official_success": true,
+    "report_ref": {
+      "media_type": "application/json",
+      "path": "blobs/sha256/e543110165b25f310d64982d4aac4ff129b60c7d9c799b20593118b9697e4ac8",
+      "sha256": "e543110165b25f310d64982d4aac4ff129b60c7d9c799b20593118b9697e4ac8"
+    },
+    "reported_cost_usd": 0.0015058204,
+    "reported_tokens": 35036,
+    "requests_by_role": {
+      "user_simulator": 5,
+      "worker": 8
+    },
+    "returned_models": {
+      "deepseek/deepseek-v4.1-flash-1017": 5,
+      "openai/gpt-6-luna": 8
+    },
+    "returned_providers": {
+      "Fireworks": 5,
+      "OpenAI": 8
+    },
+    "run_id": "r_88dc957bda4a4e5fa2872333df3fdce1",
+    "status": "completed",
+    "task_id": "0",
+    "termination_reason": "user_stop",
+    "unknown_cost": false,
+    "user_simulator": "deepseek/deepseek-v4.1-flash-1017",
+    "worker": "openai/gpt-6-luna"
+  },
+  "audit": {
+    "intent": "connection_check",
+    "status": "audit_passed",
+    "experiment_id": "connection_16c6e4901ad7410c84f832f4d80e21fd",
+    "requests_by_role": {
+      "user_simulator": 5,
+      "worker": 8
+    },
+    "completion_statuses": {
+      "response": 13
+    },
+    "returned_models": {
+      "deepseek/deepseek-v4.1-flash-1017": 5,
+      "openai/gpt-6-luna": 8
+    },
+    "returned_providers": {
+      "Fireworks": 5,
+      "OpenAI": 8
+    },
+    "reported_cost_usd_decimal": "0.0015058204",
+    "unknown_cost": false,
+    "reported_tokens": 35036,
+    "native_business_tool_calls": 4,
+    "log_sha256": "25c8d951375ac771a3330a214745373790ba863576621009a69bf5836c8ae273",
+    "summary_sha256": "5d6e1da567686779315952c61165bc7e7b24494bdc8950cb11725dd5937f233b",
+    "memory_enabled": false,
+    "official_success": true,
+    "official_score": 1.0,
+    "native_revision": "c06b07dd7c4d4ec61ba6ff9bcdf0b15dd7ef36d4"
+  },
+  "reported_reasoning_tokens_by_call": {
+    "worker": [
+      28,
+      0,
+      0,
+      0,
+      48,
+      97,
+      0,
+      0
+    ],
+    "user_simulator": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "failed_attempts": [
+    {
+      "run_directory": "runs/tau2-openrouter-luna-deepseek1017-check-01",
+      "requested_profile": {
+        "benchmark": {
+          "communicate_scorer": "substring",
+          "domain": "airline",
+          "localize_db": false,
+          "max_errors": 5,
+          "max_steps": 40,
+          "name": "tau2",
+          "seed": 0,
+          "source_revision": "c06b07dd7c4d4ec61ba6ff9bcdf0b15dd7ef36d4",
+          "split": "train",
+          "task_id": "0"
+        },
+        "guards": {
+          "max_model_requests": 24,
+          "max_reported_cost_usd": 0.25,
+          "max_seconds": 180
+        },
+        "intent": "connection_check",
+        "memory_enabled": false,
+        "profile_version": "1.1",
+        "user_simulator": {
+          "forward_native_seed": false,
+          "model_id": "deepseek/deepseek-v4.1-flash-1017",
+          "parameters": {
+            "max_tokens": 512,
+            "reasoning": {
+              "enabled": false
+            },
+            "temperature": 0
+          },
+          "provider": {
+            "allow_fallbacks": false,
+            "only": [
+              "deepseek"
+            ],
+            "require_parameters": true
+          }
+        },
+        "worker": {
+          "forward_native_seed": true,
+          "model_id": "openai/gpt-6-luna",
+          "parameters": {
+            "max_completion_tokens": 2048,
+            "reasoning": {
+              "effort": "low"
+            },
+            "seed": 0
+          },
+          "provider": {
+            "allow_fallbacks": false,
+            "only": [
+              "openai"
+            ],
+            "require_parameters": true
+          }
+        }
+      },
+      "summary": {
+        "domain": "airline",
+        "error_code": "HTTP_404",
+        "grading_status": "incomplete",
+        "http_calls": 1,
+        "intent": "connection_check",
+        "memory_enabled": false,
+        "native_revision": "c06b07dd7c4d4ec61ba6ff9bcdf0b15dd7ef36d4",
+        "native_steps": 0,
+        "native_tool_errors": 0,
+        "official_score": null,
+        "official_success": null,
+        "report_ref": null,
+        "reported_cost_usd": 0.0,
+        "reported_tokens": 0,
+        "requests_by_role": {
+          "user_simulator": 1
+        },
+        "returned_models": {},
+        "returned_providers": {},
+        "run_id": "r_0969dac551b04149aef2d28250161b34",
+        "status": "error",
+        "task_id": "0",
+        "termination_reason": "connection_error",
+        "unknown_cost": true,
+        "user_simulator": "deepseek/deepseek-v4.1-flash-1017",
+        "worker": "openai/gpt-6-luna"
+      },
+      "sanitized_responses": [
+        {
+          "error": {
+            "code": 404
+          }
+        }
+      ],
+      "audit": {
+        "intent": "connection_check",
+        "status": "audit_passed",
+        "experiment_id": "connection_6c2a0cd500d84259b17c6cde33580c19",
+        "requests_by_role": {
+          "user_simulator": 1
+        },
+        "completion_statuses": {
+          "error": 1
+        },
+        "returned_models": {},
+        "returned_providers": {},
+        "reported_cost_usd_decimal": "0",
+        "unknown_cost": true,
+        "reported_tokens": 0,
+        "native_business_tool_calls": null,
+        "log_sha256": "a2f2cfceb94d6c92210b059e69abe7c0b33e665ac03e29dcdbd708b3b037e365",
+        "summary_sha256": "c3da1a78fbb686af59f2f49013cf0f47a3089d48bdd9bf2d1c9f6e1f1a534b5d",
+        "memory_enabled": false,
+        "official_success": null,
+        "official_score": null,
+        "native_revision": "c06b07dd7c4d4ec61ba6ff9bcdf0b15dd7ef36d4"
+      }
+    },
+    {
+      "run_directory": "runs/tau2-openrouter-luna-deepseek1017-check-02",
+      "requested_profile": {
+        "benchmark": {
+          "communicate_scorer": "substring",
+          "domain": "airline",
+          "localize_db": false,
+          "max_errors": 5,
+          "max_steps": 40,
+          "name": "tau2",
+          "seed": 0,
+          "source_revision": "c06b07dd7c4d4ec61ba6ff9bcdf0b15dd7ef36d4",
+          "split": "train",
+          "task_id": "0"
+        },
+        "guards": {
+          "max_model_requests": 24,
+          "max_reported_cost_usd": 0.25,
+          "max_seconds": 180
+        },
+        "intent": "connection_check",
+        "memory_enabled": false,
+        "profile_version": "1.1",
+        "user_simulator": {
+          "forward_native_seed": false,
+          "model_id": "deepseek/deepseek-v4.1-flash-1017",
+          "parameters": {
+            "max_tokens": 512,
+            "reasoning": {
+              "enabled": false
+            },
+            "temperature": 0
+          },
+          "provider": {
+            "allow_fallbacks": false,
+            "only": [
+              "deepseek"
+            ],
+            "require_parameters": true
+          }
+        },
+        "worker": {
+          "forward_native_seed": true,
+          "model_id": "openai/gpt-6-luna",
+          "parameters": {
+            "max_completion_tokens": 2048,
+            "reasoning": {
+              "effort": "low"
+            },
+            "seed": 0
+          },
+          "provider": {
+            "allow_fallbacks": false,
+            "only": [
+              "openai"
+            ],
+            "require_parameters": true
+          }
+        }
+      },
+      "summary": {
+        "domain": "airline",
+        "error_code": "HTTP_404",
+        "grading_status": "incomplete",
+        "http_calls": 1,
+        "intent": "connection_check",
+        "memory_enabled": false,
+        "native_revision": "c06b07dd7c4d4ec61ba6ff9bcdf0b15dd7ef36d4",
+        "native_steps": 0,
+        "native_tool_errors": 0,
+        "official_score": null,
+        "official_success": null,
+        "report_ref": null,
+        "reported_cost_usd": 0.0,
+        "reported_tokens": 0,
+        "requests_by_role": {
+          "user_simulator": 1
+        },
+        "returned_models": {},
+        "returned_providers": {},
+        "run_id": "r_2bcf80576b714844976f22c68e3268cd",
+        "status": "error",
+        "task_id": "0",
+        "termination_reason": "connection_error",
+        "unknown_cost": true,
+        "user_simulator": "deepseek/deepseek-v4.1-flash-1017",
+        "worker": "openai/gpt-6-luna"
+      },
+      "sanitized_responses": [
+        {
+          "error": {
+            "code": 404,
+            "routing_reason": "data_policy"
+          }
+        }
+      ],
+      "audit": {
+        "intent": "connection_check",
+        "status": "audit_passed",
+        "experiment_id": "connection_d2336b7cfc7d45c19f74748a4bf6edb4",
+        "requests_by_role": {
+          "user_simulator": 1
+        },
+        "completion_statuses": {
+          "error": 1
+        },
+        "returned_models": {},
+        "returned_providers": {},
+        "reported_cost_usd_decimal": "0",
+        "unknown_cost": true,
+        "reported_tokens": 0,
+        "native_business_tool_calls": null,
+        "log_sha256": "e58b55aae7e3263fda69470c7a634a4bb3b3b34ab42f18032e6ce3362aa150c0",
+        "summary_sha256": "30084181ad054e8ad93b2fe8cd996771195563adb9267363f0463a7f8fb09285",
+        "memory_enabled": false,
+        "official_success": null,
+        "official_score": null,
+        "native_revision": "c06b07dd7c4d4ec61ba6ff9bcdf0b15dd7ef36d4"
+      }
+    }
+  ],
+  "credential_scan": {
+    "files_checked": 150,
+    "secret_values_found": false
+  }
+}

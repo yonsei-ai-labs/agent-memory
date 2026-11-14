@@ -25,6 +25,8 @@ def main():
     if args.output.exists() and (not args.output.is_dir() or any(args.output.iterdir())):
         parser.error("Output must be new or empty")
     config = json.loads(args.config.read_text())
+    if args.live and config.get("profile_version") == "1.0":
+        parser.error("The historical GPT-4.1 profile is not enabled for live calls; use the current DeepSeek profile")
     prepared = prepare_native(config, args.checkout)
     with Journal(args.output, new_id("connection")) as journal:
         summary = run_native_check(journal, config, prepared, live=args.live)
