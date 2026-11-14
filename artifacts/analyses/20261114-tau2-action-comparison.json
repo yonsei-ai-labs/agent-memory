@@ -1,0 +1,130 @@
+{
+  "format": "agent-memory-tau2-action-supplement/v1",
+  "inference": "posthoc_descriptive_shared_runs_not_independent_pairs",
+  "source": {
+    "experiment_id": "autonomy-pilot_77006db2c2104dfbba2e386c64f56657",
+    "audit_status": "audit_passed",
+    "log_sha256": "01a58a1b4a1a64645a59a9941532ed91c8e2614b93858f96afdfffb7e5dea04d",
+    "summary_sha256": "2fa9d05a82c7b4f5c8845493990098413790f16ea737a7a2b0f54772c6e752a2"
+  },
+  "comparison_rule": {
+    "preserve": "ordered tool names and every other argument",
+    "excluded_arguments": [
+      {
+        "tool": "transfer_to_human_agents",
+        "argument": "summary"
+      }
+    ],
+    "interpretation": "difference is not a judgment of usefulness, harm or policy compliance"
+  },
+  "counts": {
+    "scheduled_pairs": 9,
+    "comparable_action_pairs": 9,
+    "raw_action_changes": 9,
+    "action_changes_without_transfer_summary": 7,
+    "transfer_summary_only_changes": 2,
+    "comparable_final_db_pairs": 9,
+    "final_db_changes": 0
+  },
+  "blocked_comparisons": [
+    {
+      "block_id": 1,
+      "baseline": "no_memory",
+      "treated": "empty_bank",
+      "baseline_run_id": "r_c9b99d9964ba4fe5b1eec6078ff9d100",
+      "treated_run_id": "r_53f9ceee5747451bab1f4f814558f2c2",
+      "raw_actions_changed": true,
+      "actions_changed_without_transfer_summary": true,
+      "transfer_summary_only_changed": false,
+      "final_db_changed": false
+    },
+    {
+      "block_id": 1,
+      "baseline": "no_memory",
+      "treated": "memory_bank",
+      "baseline_run_id": "r_c9b99d9964ba4fe5b1eec6078ff9d100",
+      "treated_run_id": "r_26043e2146d4476391d39427ca01dfbf",
+      "raw_actions_changed": true,
+      "actions_changed_without_transfer_summary": true,
+      "transfer_summary_only_changed": false,
+      "final_db_changed": false
+    },
+    {
+      "block_id": 1,
+      "baseline": "empty_bank",
+      "treated": "memory_bank",
+      "baseline_run_id": "r_53f9ceee5747451bab1f4f814558f2c2",
+      "treated_run_id": "r_26043e2146d4476391d39427ca01dfbf",
+      "raw_actions_changed": true,
+      "actions_changed_without_transfer_summary": true,
+      "transfer_summary_only_changed": false,
+      "final_db_changed": false
+    },
+    {
+      "block_id": 2,
+      "baseline": "no_memory",
+      "treated": "empty_bank",
+      "baseline_run_id": "r_acd408ea6889468391f35425b4c015bc",
+      "treated_run_id": "r_4ee99349d70949109f52cebf3d25dfbc",
+      "raw_actions_changed": true,
+      "actions_changed_without_transfer_summary": false,
+      "transfer_summary_only_changed": true,
+      "final_db_changed": false
+    },
+    {
+      "block_id": 2,
+      "baseline": "no_memory",
+      "treated": "memory_bank",
+      "baseline_run_id": "r_acd408ea6889468391f35425b4c015bc",
+      "treated_run_id": "r_c4ed4184e88e4ba69ecb017b84752a60",
+      "raw_actions_changed": true,
+      "actions_changed_without_transfer_summary": true,
+      "transfer_summary_only_changed": false,
+      "final_db_changed": false
+    },
+    {
+      "block_id": 2,
+      "baseline": "empty_bank",
+      "treated": "memory_bank",
+      "baseline_run_id": "r_4ee99349d70949109f52cebf3d25dfbc",
+      "treated_run_id": "r_c4ed4184e88e4ba69ecb017b84752a60",
+      "raw_actions_changed": true,
+      "actions_changed_without_transfer_summary": true,
+      "transfer_summary_only_changed": false,
+      "final_db_changed": false
+    },
+    {
+      "block_id": 3,
+      "baseline": "no_memory",
+      "treated": "empty_bank",
+      "baseline_run_id": "r_40c999c1e8b04acb8be5468f2838d15e",
+      "treated_run_id": "r_661b4c5c0b534a1ab01063f76c8c20a5",
+      "raw_actions_changed": true,
+      "actions_changed_without_transfer_summary": true,
+      "transfer_summary_only_changed": false,
+      "final_db_changed": false
+    },
+    {
+      "block_id": 3,
+      "baseline": "no_memory",
+      "treated": "memory_bank",
+      "baseline_run_id": "r_40c999c1e8b04acb8be5468f2838d15e",
+      "treated_run_id": "r_6cf1c6798cfc4163862ec44818872f95",
+      "raw_actions_changed": true,
+      "actions_changed_without_transfer_summary": false,
+      "transfer_summary_only_changed": true,
+      "final_db_changed": false
+    },
+    {
+      "block_id": 3,
+      "baseline": "empty_bank",
+      "treated": "memory_bank",
+      "baseline_run_id": "r_661b4c5c0b534a1ab01063f76c8c20a5",
+      "treated_run_id": "r_6cf1c6798cfc4163862ec44818872f95",
+      "raw_actions_changed": true,
+      "actions_changed_without_transfer_summary": true,
+      "transfer_summary_only_changed": false,
+      "final_db_changed": false
+    }
+  ]
+}

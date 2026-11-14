@@ -20,3 +20,5 @@ uv run python scripts/check_repository.py --verify-source-snapshot /path/to/ai-m
 데이터 본체는 `archive/`에 있으며 [보관 안내](../docs/data/legacy-datasets.md)를 따른다. `uv run python scripts/verify_legacy_data.py`로 원본 checkout 없이 모든 보관 파일의 무결성을 확인한다. 당시의 라벨 의미·실제 성능을 재검증하는 명령은 아니다.
 
 [experiment-handoff-import.json](experiment-handoff-import.json)은 다운로드 폴더의 실험팀 문서를 추가 반영한 기록이다. 원문 보관본의 bytes·SHA-256, 파생 검토/제안 문서, 확인한 공식 소스 commit·해시와 미열람 Library 연결을 남긴다. 기본 저장소 검사는 원문 보관본의 해시를 확인하며, 온라인 원문을 다시 조회하거나 실제 실험을 수행하지 않는다.
+
+[행동 보조 분석](analyses/20261114-tau2-action-comparison.json)은 기존 자율 조회 파일럿을 audit한 뒤 원본과 별도 버전으로 계산한 사후 기술 분석이다. 입력 로그·요약 해시와 이관 요약 인수만 제외하는 규칙을 담으며, 원래 `actions_changed`나 실행 원본을 바꾸지 않는다. [재계산 방법과 해석](../docs/development/tau2-autonomy-pilot.md#보고서용-행동-보조-분석)을 따른다.

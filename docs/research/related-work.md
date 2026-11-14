@@ -88,4 +88,4 @@ AppWorld는 여러 앱의 코드/API 실행과 DB 상태 기반 평가를 제공
 
 범위를 줄이기보다 연구 주장과 비교·수치·원본 근거를 연결한다. 새로운 지표의 개수나 기능의 개수를 노벨티로 삼지 않는다.
 
-자율 조회 파일럿 이후 추가로 확인한 문헌(MemUse·Delivery, Not Storage·MERIT 등)과 주장 후보의 재검토는 [진행 점검과 노벨티 검토 노트](novelty-direction-review.md)에 있다. 위 표를 보완하는 초록 수준의 확인이다.
+자율 조회 파일럿 이후 추가로 확인한 문헌(MemUse·Delivery, Not Storage·MERIT 등)과 우리 연구가 더할 수 있는 점은 [발전 방향 노트](novelty-direction-review.md)에 정리했다. 위 표를 보완하는 초록 수준의 확인이다.

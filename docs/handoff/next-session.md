@@ -28,7 +28,7 @@
 5. [관련 연구](../research/related-work.md), [보고서 네 장 구성](report-outline.md), [데이터 사용 안내](../data/legacy-datasets.md).
 6. [추가 실험팀 문서 검토](experiment-handoff-review.md)와 [파일럿 제안](../research/condition-sensitive-pilot.md).
 7. [방향 논의 노트](../design/direction-notes.md): 최근 구성 스케치·재검토와 아직 논의할 세부 사항.
-8. 다른 에이전트가 정리한 [진행 점검·노벨티 검토 노트](../research/novelty-direction-review.md): 추가 문헌과 후속 주장/비교의 제안이며 기존 범위·draft를 자동 교체하지 않는다.
+8. 다른 에이전트가 정리한 [파일럿 이후 발전 방향 노트](../research/novelty-direction-review.md): 추가 문헌과 후속 주장/비교의 제안이며 기존 범위·draft를 자동 교체하지 않는다.
 
 연구·프로토콜·설계가 현재 기준이다. `archive/`의 과거 문서와 `docs/references/literature/`의 이전 조사 해석을 현재 실행 지침으로 대체하지 않는다.
 
@@ -64,7 +64,7 @@ uv run python scripts/verify_legacy_data.py
 uv run python -m unittest discover -s tests
 ```
 
-현재 명령은 모델 호출 없이 로컬 계약·링크·보관 파일과 오프라인 행동을 검증한다. 기존 80개에 파일럿 준비 검사 3개·native mock 5개를 추가해 extra/checkout이 있는 전체 88개가 통과했다. native 테스트 명령 자체는 유료 호출을 하지 않는다.
+현재 명령은 모델 호출 없이 로컬 계약·링크·보관 파일과 오프라인 행동을 검증한다. 기존 80개에 파일럿 준비 검사 3개·native mock 5개·행동 보조 분석 5개를 추가해 extra/checkout이 있는 전체 93개가 통과했다. native 테스트 명령 자체는 유료 호출을 하지 않는다.
 
 첫 오프라인 코어와 2원천·8 run 가짜 흐름은 구현했다. [실행 안내](../development/offline-core.md)에 따라 **새/빈 출력 폴더**에서 실행하고 `--analyze-only`로 원본을 바꾸지 않고 재계산할 수 있다. 예제의 페이지 4·run별 요청 12는 합성 builder 값이며 실제 draft를 채우지 않았다.
 
@@ -73,6 +73,8 @@ OpenRouter·Luna 작업자·DeepSeek V4.1 Flash 1017 사용자·고정 τ²의 [
 이후 [자율 조회 파일럿](../development/tau2-autonomy-pilot.md)을 실제로 실행했다. 첫 시도는 선택적 사후 작성에서 저장 0으로 9개 평가를 source_empty로 생략했다. 조회 비교를 위해 기존 guided source의 기억 1개를 그대로 고정한 v1.1에서 조건별 3회·총 9회를 완료했다. 제목/본문 입력 포함은 전부 0, native 점수는 전부 1.0이었다. 이 과제는 명시적 취소 거절의 NL assertion이 reward_basis에 없으므로 이 점수로 거절 품질을 확정하지 않는다. 두 시도 보고 비용은 $0.0125059432이며 미확인 비용은 없다.
 
 다음은 미조회와 정보 가치의 구분, 업무 행동을 판별할 채점/주석, 일반 연구 계획 의미/준비 검사다. 현재 닫힌 파일럿의 준비 검사를 범용 PlanCompiler 완료로 보지 않는다. 과거에만 있는 정보가 있는 과제 등을 별도 프로필로 설계하고 1차 비교·표본/한도를 확정한다. 기존 진단끼리의 점수/단계 차이를 효과로 쓰지 않는다. 전체 세션 복구·다중 실행 동시성·preload/가공·누적/교차/개입과 통계를 이미 구현한 것으로 취급하지 않는다.
+
+사용자가 결과 해석과 다음 2주의 발전을 강조해 [진행 보고서 초안과 2주 계획](../reports/20261114-progress-and-two-week-plan.md)을 추가했다. 보고서용 [별도 행동 분석](../development/tau2-autonomy-pilot.md#보고서용-행동-보조-분석)은 이관 요약만 제외하면 호출 차이가 9/9에서 7/9쌍으로 줄어드는 것을 원본 audit 후 재계산한다. 원래 로그·요약·지표는 보존했다. 이 보완에서는 새 유료 실행을 하지 않았다. 다음 순서는 과제/채점 검토 → 본문 시작 제공·최소 설정 실행 구성 → 동결한 비교이며, 실제 과제·반복·비용 값은 새 프로토콜에서 확정한다.
 
 최근 구성·선행연구 탐색 질문은 [방향 논의 노트](../design/direction-notes.md), 구현 결정을 모은 기준은 [코어 계약](../design/core-contracts.md)이다. 자연 실행의 전체 정책 효과와 동일 경험의 저장 효과를 구분하고 현재 과제가 정상 제공하는 초기 대화는 유지한다.
 

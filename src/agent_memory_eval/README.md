@@ -11,6 +11,6 @@
 | `adapters` | `FakeBenchmark`, pinned τ² 무기억/기억 binding·업무 projection·사후 작성. AppWorld·BFCL은 후속 |
 | `models` | `FakeWorker`와 OpenRouter 전송·사용량/비용·호출/시간/금액 guard |
 | `recording` | `Journal`·`SourceRegistry`·Recording/OfflineGateway의 파일 원본·출처·자기 작성/반환/입력 포함 |
-| `analysis` | 합성 재계산, native 연결/파일럿의 출처·노출·비용·채점 audit와 조건별 기술 통계. 효과·근거 주석·통계 추론은 후속 |
+| `analysis` | 합성 재계산, native 연결/파일럿의 출처·노출·비용·채점 audit와 조건별 기술 통계, 원본과 버전을 분리한 이관 요약 제외 행동 비교. 효과·근거 주석·통계 추론은 후속 |
 
 [상세 설계](../../docs/design/architecture.md)와 [개발 계획](../../docs/development/roadmap.md)의 전체 연구 범위는 유지한다. 가짜 환경의 성공을 실제 모델/벤치의 성능으로 표시하지 않는다.
