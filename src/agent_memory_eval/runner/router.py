@@ -6,9 +6,10 @@ from agent_memory_eval.contracts.core import ContractError, canonical, digest, r
 
 
 class ToolRouter:
-    def __init__(self, journal, memory, benchmark, bank_id, policy):
+    def __init__(self, journal, memory, benchmark, bank_id, policy, *, business_dispatch=None):
         self.journal, self.memory, self.benchmark = journal, memory, benchmark
         self.bank_id, self.policy = bank_id, policy
+        self.business_dispatch = business_dispatch
 
     def _denied(self, ctx, call, code):
         wire = dict(role="tool", tool_call_id=call["id"],
@@ -18,7 +19,7 @@ class ToolRouter:
         self.journal.append([event])
         return wire, "policy_result", event["event_id"]
 
-    def dispatch(self, ctx, request_id, calls):
+    def dispatch(self, ctx, request_id, calls, *, public_prefix=None):
         ids = [call["id"] for call in calls]
         if not calls or len(set(ids)) != len(ids):
             raise ContractError("A dispatch needs distinct call IDs")
@@ -59,14 +60,17 @@ class ToolRouter:
                     op_id = "op_" + digest(canonical([ctx.run_id, request_id, call["id"], index]))
                     denial = "POLICY_DENIED" if ctx.phase == "solve" and self.benchmark.ended else None
                     result = self.memory.execute(ctx, self.bank_id, op_id, name, arguments,
-                                                 call_id=call["id"], denial=denial)
+                                                 call_id=call["id"], denial=denial, prefix=public_prefix)
                     results.append((result.wire, "memory_return", result.returned_event_id))
                 elif ctx.phase != "solve" or self.benchmark.ended:
                     results.append(self._denied(ctx, call, "POLICY_DENIED"))
                 else:
                     # Only this branch advances the business environment/user projection.
-                    value = self.benchmark.execute(name, arguments)
-                    wire = dict(role="tool", tool_call_id=call["id"], content=canonical(value).decode())
+                    if self.business_dispatch is None:
+                        value = self.benchmark.execute(name, arguments)
+                        wire = dict(role="tool", tool_call_id=call["id"], content=canonical(value).decode())
+                    else:
+                        wire = self.business_dispatch(call, arguments)
                     event = ctx.event("business.transition", dict(action=name, arguments=arguments,
                         public_message_ref=self.journal.blobs.put(wire),
                         business_step_index=self.benchmark.steps))

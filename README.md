@@ -4,13 +4,13 @@
 
 초기 작업자 모델은 Luna, 초기 실증 환경은 τ²-bench다. 기억 관리·실험 제어·기록·분석을 벤치 실행과 분리하고 AppWorld·BFCL로의 확장을 설계한다. 저장 시점·형태·조회 방식, 재시도·전이·누적 변화와 이득·손해를 연구 범위로 유지한다.
 
-현재는 **파일 기반 기억 서비스·기록자·입력 구성·도구 라우터·가짜 두 회차 실행과 원본 재계산**이 동작한다. [오프라인 코어 안내](docs/development/offline-core.md)에 실행 방법과 행동 검증을 정리했다. [OpenRouter·Luna·τ² 무기억 연결 확인](docs/development/tau2-connection.md)도 수행했다. 실제 외부 기억 통합과 정책 효과 실증은 [후속 작업](docs/development/roadmap.md)이다.
+현재는 **파일 기반 기억 서비스·기록자·입력 구성·도구 라우터·가짜 두 회차 실행과 원본 재계산**이 동작한다. [오프라인 코어 안내](docs/development/offline-core.md)에 실행 방법과 행동 검증을 정리했다. [OpenRouter·Luna·τ² 무기억 연결](docs/development/tau2-connection.md)에 이어 [native 기억 도구·두 회차 연결](docs/development/tau2-memory.md)을 구현했다. 일반 연구 계획 실행과 정책 효과 실증은 [후속 작업](docs/development/roadmap.md)이다.
 
 ## 먼저 읽기
 
 새 개발 세션은 [인수인계](docs/handoff/next-session.md)에서 현재 구현 상태·합의 사항·미정 값을 확인하고, [첫 구현 작업](docs/development/first-implementation.md)부터 이어간다.
 
-첫 구현은 **SQLite 없이 JSON·JSONL 파일로 가볍게 시작한다.** 단일 원본 로그·요청 출처·혼합 호출의 [코어 계약](docs/design/core-contracts.md)과 v1.1 합성 검증을 보완했다. 첫 오프라인 구현과 실제 무기억 연결 확인을 마쳤으며 τ² 기억 통합은 후속이다. 최근 탐색 질문은 [방향 논의 노트](docs/design/direction-notes.md)에 있다.
+첫 구현은 **SQLite 없이 JSON·JSONL 파일로 가볍게 시작한다.** 단일 원본 로그·요청 출처·혼합 호출의 [코어 계약](docs/design/core-contracts.md)과 v1.1 합성 검증을 보완했다. 오프라인 코어와 τ²의 제한된 연결 진단은 동작하며, 자율 기억 정책의 반복 비교는 후속이다. 최근 탐색 질문은 [방향 논의 노트](docs/design/direction-notes.md)에 있다.
 
 추가로 전달받은 실험팀 문서는 [검토·반영 내역](docs/handoff/experiment-handoff-review.md)과 [적용 조건 기억 파일럿 제안](docs/research/condition-sensitive-pilot.md)으로 정리했다. 기존 프로토콜·연구 범위를 유지하며, 제안을 실행 확정이나 성능 결과로 취급하지 않는다.
 

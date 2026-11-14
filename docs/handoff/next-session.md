@@ -10,10 +10,10 @@
 | --- | --- |
 | 연구·설계 | 연구 질문·프로토콜·지표·관련 연구·상세 설계 문서 있음 |
 | 계약 | 기존 v1.0/v1.1 예시 보존, 내부 상태 참조를 가진 별도 journal envelope v1.1 추가 |
-| 동작하는 코드 | 파일 코어·가짜 수집/평가·원본 재계산, 실제 OpenRouter 전송·τ² 무기억 binding·읽기 전용 연결 audit |
+| 동작하는 코드 | 파일 코어·가짜 수집/평가, OpenRouter·τ² 무기억/기억 binding·업무 projection·사후 작성·새 probe·읽기 전용 audit |
 | 패키지 | [구현 위치와 후속 범위](../../src/agent_memory_eval/README.md)를 구분 |
-| 미구현 | 연구용 계획 의미/준비 검사, τ² 외부 기억 통합·다른 벤치, preload/가공·누적·교차·개입·통계 분석 |
-| 실험 | 무기억 airline train 1과제의 실제 연결 확인 있음. 기억 정책 효과 실증은 없음 |
+| 미구현 | 연구용 계획 의미/준비 검사·일반 비교 실행·다른 벤치, preload/가공·누적·교차·개입·통계 분석 |
+| 실험 | 무기억 1과제와 guided 두 회차의 실제 기억 연결 확인 있음. 자율 기억 정책 효과 실증은 없음 |
 | 과거 자료 | [데이터 보관본](../data/legacy-datasets.md)에 원본 datasets·설계 자료·생성 코드·설명 문서 복사 |
 
 첫 저장소 초기화는 `172859cd4b2073440448ea9084c552758f3bd387`이다. 이 문서 이후 기능이 추가됐을 수 있으므로 `git status`, 최근 커밋, 실제 함수·테스트를 확인한다. 다음 기능 작업이 끝나면 이 표와 실행 방법·미완료 항목도 갱신한다.
@@ -23,7 +23,7 @@
 1. 루트 [AGENTS.md](../../AGENTS.md)와 [README](../../README.md).
 2. [연구 계획](../research/plan.md), [실험 프로토콜](../research/experiment-protocol.md), [측정](../research/metrics.md).
 3. [상세 설계](../design/architecture.md), [코어 계약](../design/core-contracts.md), [기록 계약](../design/recording.md).
-4. [실제 OpenRouter·τ² 연결](../development/tau2-connection.md), [현재 오프라인 실행/검증](../development/offline-core.md), [첫 구현 명세](../development/first-implementation.md)와 [전체 개발 계획](../development/roadmap.md).
+4. [OpenRouter·τ² 무기억 연결](../development/tau2-connection.md), [기억/두 회차 연결](../development/tau2-memory.md), [현재 오프라인 실행/검증](../development/offline-core.md), [첫 구현 명세](../development/first-implementation.md)와 [전체 개발 계획](../development/roadmap.md).
 5. [관련 연구](../research/related-work.md), [보고서 네 장 구성](report-outline.md), [데이터 사용 안내](../data/legacy-datasets.md).
 6. [추가 실험팀 문서 검토](experiment-handoff-review.md)와 [파일럿 제안](../research/condition-sensitive-pilot.md).
 7. [방향 논의 노트](../design/direction-notes.md): 최근 구성 스케치·재검토와 아직 논의할 세부 사항.
@@ -62,11 +62,13 @@ uv run python scripts/verify_legacy_data.py
 uv run python -m unittest discover -s tests
 ```
 
-현재 명령은 모델 호출 없이 로컬 계약·링크·보관 파일과 오프라인 행동을 검증한다. unittest는 보관본 8개·계약 26개·오프라인 코어 26개·OpenRouter 전송/프로필 mock 10개와 선택적인 native mock 2개다. native 테스트는 τ² extra와 고정 checkout이 있을 때 실행하며 테스트 명령 자체는 유료 호출을 하지 않는다.
+현재 명령은 모델 호출 없이 로컬 계약·링크·보관 파일과 오프라인 행동을 검증한다. unittest는 보관본 8개·계약 26개·오프라인 코어 26개·OpenRouter 전송/프로필 mock 10개와 선택적인 native 무기억 mock 2개·기억 mock 8개다. extra와 checkout이 있는 전체 80개를 검증했다. native 테스트 명령 자체는 유료 호출을 하지 않는다.
 
 첫 오프라인 코어와 2원천·8 run 가짜 흐름은 구현했다. [실행 안내](../development/offline-core.md)에 따라 **새/빈 출력 폴더**에서 실행하고 `--analyze-only`로 원본을 바꾸지 않고 재계산할 수 있다. 예제의 페이지 4·run별 요청 12는 합성 builder 값이며 실제 draft를 채우지 않았다.
 
-OpenRouter·Luna 작업자·τ² 고정 commit의 제한된 무기억 연결 확인을 수행했다. 현재 사용자 모델은 DeepSeek V4.1 Flash 1017이며 [연결 프로토콜과 결과](../development/tau2-connection.md)·[현재 확인 기록](../../artifacts/connection-checks/20261114-openrouter-tau2-deepseek1017.json)을 따른다. 성공 실행은 13요청·4업무 호출·native 성공이며 앞선 직접 제공자 404 실패 2건과 비용 미확인도 함께 보존했다. 이전 GPT-4.1 [검증 기록](../../artifacts/connection-checks/20261114-openrouter-tau2.json)은 보존한 이력이다. 다음은 실제 τ² 기억 호출의 내부 처리·혼합 순서·사후 작성과 두 회차 격리를 구현하고 연구용 계획 준비 검사를 연결하는 일이다. 추가 유료 실행도 해당 목적·과제·한도·사용량/실패를 고정해 별도로 기록한다. 전체 세션 복구·다중 실행 동시성·preload/가공·누적/교차/개입과 통계를 코어가 이미 구현한 것으로 취급하지 않는다.
+OpenRouter·Luna 작업자·DeepSeek V4.1 Flash 1017 사용자·고정 τ²의 [무기억 확인 기록](../../artifacts/connection-checks/20261114-openrouter-tau2-deepseek1017.json)에 이어 [기억 두 회차 확인](../development/tau2-memory.md)과 [원본 해시/비용 receipt](../../artifacts/connection-checks/20261114-openrouter-tau2-memory.json)를 남겼다. 1회차 사후 저장 1개, 새 2회차 list/get 각 1회, 20요청·$0.0026238194·두 업무 native 성공이다. 저장/조회를 지시한 guided_check로, 자율 조회율이나 기억 정책 효과로 해석하지 않는다. 이전 GPT-4.1 [검증 기록](../../artifacts/connection-checks/20261114-openrouter-tau2.json)과 404 실패도 이력으로 보존한다.
+
+다음은 연구용 계획 의미/준비 검사와 일반 비교 실행을 연결하는 일이다. 무기억·빈은행·기억 조건을 같은 binding/직렬화 경로로 비교하고 무기억 반복 변동을 먼저 측정해야 한다. 기존 진단끼리의 점수/단계 차이를 효과로 쓰지 않는다. 추가 유료 실행도 해당 목적·과제·한도·사용량/실패를 고정해 별도로 기록한다. 전체 세션 복구·다중 실행 동시성·preload/가공·누적/교차/개입과 통계를 이미 구현한 것으로 취급하지 않는다.
 
 최근 구성·선행연구 탐색 질문은 [방향 논의 노트](../design/direction-notes.md), 구현 결정을 모은 기준은 [코어 계약](../design/core-contracts.md)이다. 자연 실행의 전체 정책 효과와 동일 경험의 저장 효과를 구분하고 현재 과제가 정상 제공하는 초기 대화는 유지한다.
 
@@ -77,7 +79,7 @@ OpenRouter·Luna 작업자·τ² 고정 commit의 제한된 무기억 연결 확
 - 기억·모델 요청·업무·채점·run 수명주기를 하나의 `log.jsonl`에 확정한다. 자기/연결 해시·연속 순서와 불변 blob을 사용하며 은행·snapshot·사건 보기는 파생물이다.
 - 요청 구성 시 승인 출처 manifest를 만들고 최종 전송 요청과 대조한다. 자기 작성 인수는 `self_authored`, 조회는 `memory_return`으로 구분하고 공개 경험은 길이·해시를 고정한 접두부로 참조한다.
 - 공개 반환에서 은행 `head_revision`을 뺀다. 내부 revision·CAS와 불투명 커서는 유지한다.
-- 혼합 호출은 부작용/결과 순서를 보존하고 종료 도구가 섞인 batch는 실행 전에 모두 거절한다. 현재 native 무기억 binding은 있으며 외부 기억 혼합 호출 경로는 후속이다.
+- 혼합 호출은 부작용/결과 순서를 보존하고 종료 도구가 섞인 batch는 실행 전에 모두 거절한다. native 기억 binding에서 이를 행동 검증했고, 내부 기억 왕복은 사용자·native 단계/오류를 진행시키지 않는다. 수행 중/병행 작성은 native mock에서 검증하며 공개 guided 프로필의 실제 확인은 사후 작성/새 세션 조회다.
 - v1.1 계획은 사용자 시뮬레이터·native 한도·응답 캐시 확인·adapter 설정 해시와 단계별 지침을 받는다. 미정 실제 값은 draft에 남겼다.
 
 기존 v1.0 스키마·fixture·draft는 바꾸지 않았다. 새 v1.1 검증은 세션 ID 재사용·출처 위반·미래/변조된 경험·노출 누락·다른 은행/고정 버전·로그 손상을 합성 자료에서 검사한다. 과거 v1.0 검사 공백과 이번 확인 범위는 [계약 검증 설명](../design/core-contracts.md#5-합성-검증의-범위와-남은-구현)에 있다.
@@ -92,7 +94,7 @@ OpenRouter·Luna 작업자·τ² 고정 commit의 제한된 무기억 연결 확
 
 항공 33·36번을 등급 하나의 대조군으로 직접 쓰지 않는다. 새 진단쌍의 상태·인수·채점 의미를 먼저 검증하고, 변형 결과와 공식 원본 점수를 구분한다. 적용 가능성 필터는 작업자와 판정기의 정보 노출을 분리하고 적합 후보의 차단·미확정·추가 비용도 남긴다. Jev·계층 시간 기억·그래프는 후속 후보이며 기본 구현 의존성이 아니다.
 
-필터 전 후보·판정·worker 노출을 별도 기록할 때 필요한 역할/필드의 계약은 아직 구현하지 않았다. 실제 모델·과제쌍·반복/예산·실험 실행도 미확정이다. 첫 오프라인 코어와 native 무기억 연결 위에서 기억 통합 및 이 제안의 별도 draft를 준비한다.
+필터 전 후보·판정·worker 노출을 별도 기록할 때 필요한 역할/필드의 계약은 아직 구현하지 않았다. 이 제안의 실제 모델·과제쌍·반복/예산·실험 실행도 미확정이다. 오프라인 코어와 native 기억 연결 위에서 별도 파일럿 draft를 준비한다.
 
 ## 미확정 값과 진행 가능한 작업
 

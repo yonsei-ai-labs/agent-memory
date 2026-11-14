@@ -44,6 +44,7 @@ def main() -> None:
         "event": read_json(ROOT / "schemas" / "event.schema.json"),
         "connection-check": read_json(ROOT / "schemas" / "connection-check.schema.json"),
         "connection-check-v1.1": read_json(ROOT / "schemas" / "connection-check-v1.1.schema.json"),
+        "memory-connection-check": read_json(ROOT / "schemas" / "memory-connection-check.schema.json"),
     }
     validators = {}
     for name, schema in schemas.items():
@@ -53,6 +54,12 @@ def main() -> None:
     plan = read_json(ROOT / "protocols" / "drafts" / "tau2-two-pass.json")
     validators["connection-check"].validate(read_json(ROOT / "protocols" / "checks" / "openrouter-tau2-smoke-v1.0.json"))
     validators["connection-check-v1.1"].validate(read_json(ROOT / "protocols" / "checks" / "openrouter-tau2-smoke.json"))
+    memory_check = read_json(ROOT / "protocols" / "checks" / "openrouter-tau2-memory-smoke.json")
+    validators["memory-connection-check"].validate(memory_check)
+    for ref in [memory_check["connection_profile_ref"], *memory_check["instructions"].values()]:
+        path = (ROOT / ref["path"]).resolve()
+        if not path.is_relative_to(ROOT) or digest(path.read_bytes()) != ref["sha256"]:
+            raise ValueError("Memory connection profile has a changed or external asset")
     validators["plan"].validate(plan)
     if plan["plan_status"] != "draft":
         raise ValueError("The committed example must remain a draft")

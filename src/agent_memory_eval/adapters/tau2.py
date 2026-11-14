@@ -66,13 +66,24 @@ class Tau2Bridge:
             **({"opener": opener} if opener else {})) for role, model in models.items()}
         self.message_sources, self.costs = {}, {}
         self.active = None
+        self.last_response = None
         self.original_generate = self.utils.generate
+
+    def config_role(self, actor):
+        if actor not in {"worker", "user_simulator"}:
+            raise ContractError("Unsupported native actor")
+        return actor
+
+    def check_tools(self, actor, tools_schema):
+        if any(tool["function"]["name"].startswith("memory_") for tool in (tools_schema or [])):
+            raise ContractError("Native memory tool routing is not implemented in this baseline binding")
 
     def invoke(self, actor, *, model, messages, tools=None, tool_choice=None, call_name=None, **kwargs):
         if self.active is not None:
             raise ContractError("This connection check is single-threaded")
-        expected_model = self.config[actor]["model_id"]
-        if model != expected_model or kwargs != native_parameters(self.config, actor):
+        role = self.config_role(actor)
+        expected_model = self.config[role]["model_id"]
+        if model != expected_model or kwargs != native_parameters(self.config, role):
             raise ContractError("Native model settings differ from the pinned connection profile")
         rendered = self.utils.to_litellm_messages(messages)
         if not rendered or rendered[0] != dict(role="system", content=self.systems[actor]):
@@ -80,8 +91,7 @@ class Tau2Bridge:
         if any(m.get("role") == "system" for m in rendered[1:]):
             raise ContractError("Unapproved additional system message")
         tools_schema = [tool.openai_schema for tool in tools] if tools else None
-        if any(tool["function"]["name"].startswith("memory_") for tool in (tools_schema or [])):
-            raise ContractError("Native memory tool routing is not implemented in this baseline binding")
+        self.check_tools(actor, tools_schema)
         choice = tool_choice or ("auto" if tools_schema else None)
         expected = dict(model=model, messages=rendered, tools=tools_schema, tool_choice=choice, num_retries=0, **kwargs)
         self.active = (actor, expected)
@@ -91,19 +101,9 @@ class Tau2Bridge:
         finally:
             self.active = None
 
-    def completion(self, **kwargs):
-        if self.active is None:
-            raise ContractError("An untracked native model call was blocked")
-        actor, expected = self.active
-        if canonical(kwargs) != canonical(expected):
-            raise ContractError("Native request wrapper changed approved content or parameters")
-        config = {k: deepcopy(v) for k, v in expected.items() if k not in {"messages", "num_retries"} and v is not None}
-        if not forward_seed(self.config, actor):
-            del config["seed"]
-        config.update(provider=deepcopy(provider_route(self.config, actor)), stream=False)
-        template = self.registry.template(config, roles=(actor,))
+    def message_entries(self, actor, messages):
         entries = []
-        for message in expected["messages"]:
+        for message in messages:
             identity = (actor, digest(canonical(message)))
             if identity not in self.message_sources:
                 if message["role"] == "system":
@@ -116,12 +116,28 @@ class Tau2Bridge:
                     source = self.registry.add("benchmark_message", event["event_id"], roles=(actor,))
                     self.message_sources[identity] = (source, "")
             entries.append(self.message_sources[identity])
+        return entries
+
+    def completion(self, **kwargs):
+        if self.active is None:
+            raise ContractError("An untracked native model call was blocked")
+        actor, expected = self.active
+        if canonical(kwargs) != canonical(expected):
+            raise ContractError("Native request wrapper changed approved content or parameters")
+        role = self.config_role(actor)
+        config = {k: deepcopy(v) for k, v in expected.items() if k not in {"messages", "num_retries"} and v is not None}
+        if not forward_seed(self.config, role):
+            del config["seed"]
+        config.update(provider=deepcopy(provider_route(self.config, role)), stream=False)
+        template = self.registry.template(config, roles=(actor,))
+        entries = self.message_entries(actor, expected["messages"])
         began = time.monotonic()
         message, source, request_id = self.gateway.call(self.ctx, self.registry, actor, template, entries,
             self.clients[actor], max_requests=self.config["guards"]["max_model_requests"])
         finish = next(e for e in reversed(list(self.journal.events.values()))
                       if e["type"] == "model.request_finished" and e["payload"]["request_id"] == request_id)
         response = self.journal.blobs.get(finish["payload"]["response_ref"])
+        self.last_response = (message, source, request_id)
         self.journal.append([self.ctx.event("business.transition", dict(request_id=request_id,
             actor_role=actor, client_elapsed_seconds=time.monotonic() - began))])
         self.costs[response["id"]] = finish["payload"]["cost_usd"]

@@ -1,0 +1,50 @@
+{
+  "profile_version": "1.0",
+  "intent": "memory_connection_check",
+  "mode": "guided_check",
+  "connection_profile_ref": {
+    "path": "protocols/checks/openrouter-tau2-smoke.json",
+    "sha256": "fab9e52495a7fbc122ffcbcdc5fc9cfe59d8f61d18f421e822a1298a0de68d49"
+  },
+  "instructions": {
+    "collection_solve": {
+      "path": "protocols/instructions/tau2-collection-solve.txt",
+      "sha256": "952b98128bbc6d048cb7892b0b7cc493a5b440fe35cc32d40e75eae598c02a9b"
+    },
+    "post_task_write": {
+      "path": "protocols/instructions/tau2-post-task-write.txt",
+      "sha256": "b00f1544ec3e2b92b73ca9c97868bfa5d57577f713198c119fedf2fe57314cf7"
+    },
+    "probe_solve": {
+      "path": "protocols/instructions/tau2-probe-solve.txt",
+      "sha256": "0a422a5a23304c51a0c49b8e94c8711522357ed20791a90244e98172bbaaf330"
+    }
+  },
+  "policies": {
+    "collection": {
+      "enabled": true,
+      "write_timing": "post_task",
+      "same_episode_read": false,
+      "page_size": 4,
+      "read_mode": "none",
+      "max_items": null,
+      "max_payload_bytes": null,
+      "max_return_bytes": null
+    },
+    "probe": {
+      "enabled": true,
+      "write_timing": "none",
+      "same_episode_read": false,
+      "page_size": 4,
+      "read_mode": "on_demand",
+      "max_items": null,
+      "max_payload_bytes": null,
+      "max_return_bytes": null
+    }
+  },
+  "guards": {
+    "max_model_requests": 48,
+    "max_reported_cost_usd": 0.25,
+    "max_seconds": 360
+  }
+}

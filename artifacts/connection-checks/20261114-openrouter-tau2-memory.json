@@ -1,0 +1,394 @@
+{
+  "kind": "live_memory_connection_check",
+  "record_kind": "observed",
+  "mode": "guided_check",
+  "scope": "single_train_task_two_fresh_runs_not_policy_evaluation",
+  "run_directory": "runs/tau2-memory-luna-deepseek1017-check-01",
+  "requested_profile": {
+    "connection_profile_ref": {
+      "path": "protocols/checks/openrouter-tau2-smoke.json",
+      "sha256": "fab9e52495a7fbc122ffcbcdc5fc9cfe59d8f61d18f421e822a1298a0de68d49"
+    },
+    "guards": {
+      "max_model_requests": 48,
+      "max_reported_cost_usd": 0.25,
+      "max_seconds": 360
+    },
+    "instructions": {
+      "collection_solve": {
+        "path": "protocols/instructions/tau2-collection-solve.txt",
+        "sha256": "952b98128bbc6d048cb7892b0b7cc493a5b440fe35cc32d40e75eae598c02a9b"
+      },
+      "post_task_write": {
+        "path": "protocols/instructions/tau2-post-task-write.txt",
+        "sha256": "b00f1544ec3e2b92b73ca9c97868bfa5d57577f713198c119fedf2fe57314cf7"
+      },
+      "probe_solve": {
+        "path": "protocols/instructions/tau2-probe-solve.txt",
+        "sha256": "0a422a5a23304c51a0c49b8e94c8711522357ed20791a90244e98172bbaaf330"
+      }
+    },
+    "intent": "memory_connection_check",
+    "mode": "guided_check",
+    "policies": {
+      "collection": {
+        "enabled": true,
+        "max_items": null,
+        "max_payload_bytes": null,
+        "max_return_bytes": null,
+        "page_size": 4,
+        "read_mode": "none",
+        "same_episode_read": false,
+        "write_timing": "post_task"
+      },
+      "probe": {
+        "enabled": true,
+        "max_items": null,
+        "max_payload_bytes": null,
+        "max_return_bytes": null,
+        "page_size": 4,
+        "read_mode": "on_demand",
+        "same_episode_read": false,
+        "write_timing": "none"
+      }
+    },
+    "profile_version": "1.0"
+  },
+  "resolved_connection_profile": {
+    "benchmark": {
+      "communicate_scorer": "substring",
+      "domain": "airline",
+      "localize_db": false,
+      "max_errors": 5,
+      "max_steps": 40,
+      "name": "tau2",
+      "seed": 0,
+      "source_revision": "c06b07dd7c4d4ec61ba6ff9bcdf0b15dd7ef36d4",
+      "split": "train",
+      "task_id": "0"
+    },
+    "guards": {
+      "max_model_requests": 24,
+      "max_reported_cost_usd": 0.25,
+      "max_seconds": 180
+    },
+    "intent": "connection_check",
+    "memory_enabled": false,
+    "profile_version": "1.1",
+    "user_simulator": {
+      "forward_native_seed": false,
+      "model_id": "deepseek/deepseek-v4.1-flash-1017",
+      "parameters": {
+        "max_tokens": 512,
+        "reasoning": {
+          "enabled": false
+        },
+        "temperature": 0
+      },
+      "provider": {
+        "allow_fallbacks": false,
+        "only": [
+          "fireworks"
+        ],
+        "require_parameters": true
+      }
+    },
+    "worker": {
+      "forward_native_seed": true,
+      "model_id": "openai/gpt-6-luna",
+      "parameters": {
+        "max_completion_tokens": 2048,
+        "reasoning": {
+          "effort": "low"
+        },
+        "seed": 0
+      },
+      "provider": {
+        "allow_fallbacks": false,
+        "only": [
+          "openai"
+        ],
+        "require_parameters": true
+      }
+    }
+  },
+  "implementation_ref": {
+    "media_type": "application/json",
+    "path": "blobs/sha256/2a90e5133a8933edf0825fad7cc833e3636d3415fb276f107217f694756821f9",
+    "sha256": "2a90e5133a8933edf0825fad7cc833e3636d3415fb276f107217f694756821f9"
+  },
+  "model_catalog_entries": {
+    "user_simulator": {
+      "id": "deepseek/deepseek-v4.1-flash-1017",
+      "canonical_slug": "deepseek/deepseek-v4.1-flash-20261017",
+      "pricing": {
+        "completion": "0.0000005",
+        "input_cache_read": "0.00000001",
+        "prompt": "0.000000038"
+      },
+      "supported_parameters": [
+        "frequency_penalty",
+        "include_reasoning",
+        "logit_bias",
+        "logprobs",
+        "max_completion_tokens",
+        "max_tokens",
+        "min_p",
+        "parallel_tool_calls",
+        "presence_penalty",
+        "reasoning",
+        "reasoning_effort",
+        "repetition_penalty",
+        "response_format",
+        "seed",
+        "stop",
+        "structured_outputs",
+        "temperature",
+        "tool_choice",
+        "tools",
+        "top_k",
+        "top_logprobs",
+        "top_p"
+      ],
+      "reservation_pricing": {
+        "completion": 1.2e-06,
+        "prompt": 3e-07
+      },
+      "selected_endpoint": {
+        "tag": "fireworks",
+        "provider_name": "Fireworks",
+        "status": 0,
+        "pricing": {
+          "completion": "0.0000012",
+          "discount": 0,
+          "input_cache_read": "0.000000006",
+          "prompt": "0.0000003"
+        },
+        "supported_parameters": [
+          "reasoning",
+          "include_reasoning",
+          "max_tokens",
+          "temperature",
+          "top_p",
+          "stop",
+          "frequency_penalty",
+          "presence_penalty",
+          "top_k",
+          "repetition_penalty",
+          "logit_bias",
+          "logprobs",
+          "top_logprobs",
+          "response_format",
+          "structured_outputs",
+          "tools",
+          "tool_choice",
+          "reasoning_effort"
+        ]
+      }
+    },
+    "worker": {
+      "id": "openai/gpt-6-luna",
+      "canonical_slug": "openai/gpt-6-luna-20260922",
+      "pricing": {
+        "completion": "0.0000005",
+        "input_cache_read": "0.00000001",
+        "input_cache_write": "0.000000125",
+        "overrides": [
+          {
+            "completion": "0.00000075",
+            "input_cache_read": "0.00000002",
+            "input_cache_write": "0.00000025",
+            "min_prompt_tokens": 272000,
+            "prompt": "0.0000002"
+          }
+        ],
+        "prompt": "0.0000001",
+        "web_search": "0.01"
+      },
+      "supported_parameters": [
+        "include_reasoning",
+        "max_completion_tokens",
+        "max_tokens",
+        "reasoning",
+        "reasoning_effort",
+        "response_format",
+        "seed",
+        "structured_outputs",
+        "tool_choice",
+        "tools",
+        "verbosity"
+      ],
+      "reservation_pricing": {
+        "completion": 7.5e-07,
+        "prompt": 2e-07
+      },
+      "selected_endpoint": {
+        "tag": "openai",
+        "provider_name": "OpenAI",
+        "status": 0,
+        "pricing": {
+          "completion": "0.0000005",
+          "discount": 0,
+          "input_cache_read": "0.00000001",
+          "input_cache_write": "0.000000125",
+          "overrides": [
+            {
+              "completion": "0.00000075",
+              "input_cache_read": "0.00000002",
+              "input_cache_write": "0.00000025",
+              "min_prompt_tokens": 272000,
+              "prompt": "0.0000002"
+            }
+          ],
+          "prompt": "0.0000001",
+          "web_search": "0.01"
+        },
+        "supported_parameters": [
+          "reasoning",
+          "include_reasoning",
+          "seed",
+          "max_tokens",
+          "response_format",
+          "structured_outputs",
+          "tools",
+          "tool_choice",
+          "verbosity",
+          "reasoning_effort"
+        ]
+      }
+    }
+  },
+  "summary": {
+    "collection": {
+      "bank_id": "b_34460764a82c4ff4b93c3752e5e5db91",
+      "error_code": null,
+      "grading_status": "graded",
+      "memory_input_spans": 2,
+      "memory_returns": {
+        "create": 1
+      },
+      "memory_stores": 1,
+      "native_steps": 13,
+      "native_tool_errors": 0,
+      "official_score": 1.0,
+      "official_success": true,
+      "post_task_status": "completed",
+      "report_ref": {
+        "media_type": "application/json",
+        "path": "blobs/sha256/e3f38057e69b8ff9bb8915b4728a71083fcde22afb0f94431b0bb842ee47f6ff",
+        "sha256": "e3f38057e69b8ff9bb8915b4728a71083fcde22afb0f94431b0bb842ee47f6ff"
+      },
+      "requests_by_role": {
+        "user_simulator": 3,
+        "worker": 6,
+        "writer": 2
+      },
+      "run_id": "r_d709484a63c54236b66ae87723c4b876",
+      "snapshot_id": "snap_3f33fe153fe84888b1730be1fbe4ca3d",
+      "stage": "collection",
+      "status": "completed",
+      "termination_reason": "user_stop"
+    },
+    "http_calls": 20,
+    "intent": "memory_connection_check",
+    "memory_enabled": true,
+    "memory_roundtrip": true,
+    "mode": "guided_check",
+    "native_revision": "c06b07dd7c4d4ec61ba6ff9bcdf0b15dd7ef36d4",
+    "policy_effect_measured": false,
+    "probe": {
+      "bank_id": "b_d456e7311a7a4c80973550f89bb6e142",
+      "error_code": null,
+      "grading_status": "graded",
+      "memory_input_spans": 10,
+      "memory_returns": {
+        "get": 1,
+        "list": 1
+      },
+      "memory_stores": 0,
+      "native_steps": 9,
+      "native_tool_errors": 0,
+      "official_score": 1.0,
+      "official_success": true,
+      "post_task_status": "not_requested",
+      "report_ref": {
+        "media_type": "application/json",
+        "path": "blobs/sha256/c692db2177dfab88250d4f3f525ef13fa810b4b987894bf8a69130e1d94aeff5",
+        "sha256": "c692db2177dfab88250d4f3f525ef13fa810b4b987894bf8a69130e1d94aeff5"
+      },
+      "requests_by_role": {
+        "user_simulator": 3,
+        "worker": 6
+      },
+      "run_id": "r_adbcb16a83a74597b5b649041e0d74e1",
+      "snapshot_id": "snap_e4f24c23c676407cbe819e9bbac6b5ca",
+      "stage": "probe",
+      "status": "completed",
+      "termination_reason": "user_stop"
+    },
+    "probe_skipped_reason": null,
+    "reported_cost_usd": 0.0026238193999999996,
+    "status": "completed",
+    "unknown_cost": false
+  },
+  "audit": {
+    "intent": "memory_connection_check",
+    "mode": "guided_check",
+    "status": "audit_passed",
+    "experiment_id": "memory-connection_ef61e798a0594baa821cfbc3a15d76e8",
+    "run_count": 2,
+    "requests": 20,
+    "responses": 20,
+    "reported_cost_usd_decimal": "0.0026238194",
+    "unknown_cost": false,
+    "reported_tokens": 58325,
+    "memory_stores": 1,
+    "memory_return_calls": 3,
+    "retrieved_input_spans": 10,
+    "self_authored_input_spans": 2,
+    "business_calls": {
+      "r_d709484a63c54236b66ae87723c4b876": 4,
+      "r_adbcb16a83a74597b5b649041e0d74e1": 2
+    },
+    "memory_roundtrip": true,
+    "policy_effect_measured": false,
+    "log_sha256": "762fbeb6a903403512acae3eb061acb3a665964dee3f2dd5852f5c093e9cf0d0",
+    "summary_sha256": "c7e76c0c5b02a279530b36bed60ef7728072b46c191649bdda85b728eca69654"
+  },
+  "returned_providers": {
+    "Fireworks": 6,
+    "OpenAI": 14
+  },
+  "reported_reasoning_tokens_by_call": {
+    "worker": [
+      24,
+      0,
+      57,
+      8,
+      45,
+      0,
+      28,
+      0,
+      0,
+      18,
+      46,
+      0
+    ],
+    "writer": [
+      0,
+      0
+    ],
+    "user_simulator": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "credential_scan": {
+    "files_checked": 219,
+    "secret_values_found": false
+  }
+}

@@ -18,11 +18,14 @@ class OperationResult:
 
 
 class MemoryService:
-    def __init__(self, journal):
+    def __init__(self, journal, *, record_kind="illustrative"):
         self.journal = journal
+        if record_kind not in {"illustrative", "observed"}:
+            raise ContractError("Unknown memory record kind")
+        self.record_kind = record_kind
 
     def _controller(self):
-        return RunContext(self.journal.experiment_id, phase="seal")
+        return RunContext(self.journal.experiment_id, phase="seal", record_kind=self.record_kind)
 
     def _bank(self, state, bank_id):
         try:

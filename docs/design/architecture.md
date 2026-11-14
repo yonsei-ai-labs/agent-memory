@@ -4,7 +4,7 @@
 
 **경험을 저장·선택·조회하는 과정과 실제 입력 노출을 후속 행동·성공·실패·진척·비용에 연결한다.** 초기 작업자는 Luna, 초기 환경은 τ²-bench이며 AppWorld·BFCL 어댑터 확장을 목표로 한다.
 
-[연구 계획](../research/plan.md), [실험 프로토콜](../research/experiment-protocol.md), [측정](../research/metrics.md)과 연결되는 기술 계약이다. 첫 오프라인 실행기는 [구현/검증 안내](../development/offline-core.md)에 있고 실제 [OpenRouter·τ² 무기억 연결](../development/tau2-connection.md)은 확인했고 외부 기억 통합은 후속이다. [스키마](../../schemas/README.md)와 [v1.1 합성 fixture](../../tests/fixtures/contracts-v1.1/README.md)는 계약 검증 자료다.
+[연구 계획](../research/plan.md), [실험 프로토콜](../research/experiment-protocol.md), [측정](../research/metrics.md)과 연결되는 기술 계약이다. 첫 오프라인 실행기는 [구현/검증 안내](../development/offline-core.md)에 있고 [무기억 연결](../development/tau2-connection.md)과 [τ² 기억/두 회차 binding](../development/tau2-memory.md)을 구현했다. [스키마](../../schemas/README.md)와 [v1.1 합성 fixture](../../tests/fixtures/contracts-v1.1/README.md)는 계약 검증 자료다.
 
 ## 1 설계의 범위와 결정
 
