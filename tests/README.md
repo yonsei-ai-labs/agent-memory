@@ -1,5 +1,7 @@
 # 검증 자료와 테스트 배치
 
+[기억 도구 노출 진단](test_memory_visibility.py) 7개를 추가했다. 텍스트에 적힌 이름과 실제 schema 제공, `none`으로 막힌 선택, 원응답 호출과 텍스트 언급, 다른 run/ID/연산의 반환·누락/중복 반환, 기억 schema/auto/raw call의 HTTP 전송 보존, 저장 JSON의 구조 재현을 확인한다. 이 7개와 기존 native 라우팅·기억 오류·전송 관련 3개를 실행해 통과했다. 직전 전체 109개에 더한 현재 116개 전체는 이번에 다시 실행하지 않았다. 기존 기록 재검사는 [진단 보고서](../docs/reports/20261114-memory-retrieval-diagnosis.md)를 따른다.
+
 현재는 파일 코어·입력 구성·혼합 도구·가짜 두 회차의 [실제 오프라인 행동 테스트](test_offline_core.py), [v1.1 합성 계약 fixture](fixtures/contracts-v1.1/README.md)의 음성 사례, 보관본 손상 탐지를 제공한다. [기존 v1.0 fixture](fixtures/contracts/README.md)도 보존한다. 실제 모델·벤치 능력이나 정책 효과의 실증은 아니다.
 
 ```bash

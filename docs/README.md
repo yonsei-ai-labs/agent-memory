@@ -27,6 +27,7 @@
 | 다음 train 과제 후보·DB 누락 탐지·행동과 설명 주석 | [과제 후보와 채점 기준](research/tau2-task-selection-and-rubric.md) |
 | 고정 은행의 본문 시작 제공·자율 조회와 여러 과제/반복 실행 | [전달 비교 실행](development/tau2-delivery.md) |
 | 세 과제·네 조건 48회 결과·실패 경로·시나리오 제시·한계 | [전달 비교 결과](reports/20261114-tau2-delivery-development-results.md) |
+| 자율 조회 0회의 도구 노출·원응답·라우팅·설계 가설 재점검 | [기억 조회 진단](reports/20261114-memory-retrieval-diagnosis.md) |
 | 실행 전에 고정한 과제·조건·은행·예산과 분석 범위 | [개발 파일럿 프로토콜](research/delivery-development-pilot.md) |
 | 가져온 자료와 원본 연결·변환·제외 이유 | [이관 내역](migration.md) |
 | 기존 문헌 조사 표의 범위 | [문헌 자료](references/README.md) |
