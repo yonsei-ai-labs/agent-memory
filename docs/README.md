@@ -31,5 +31,6 @@
 | 가져온 자료와 원본 연결·변환·제외 이유 | [이관 내역](migration.md) |
 | 기존 문헌 조사 표의 범위 | [문헌 자료](references/README.md) |
 | 이전 datasets·설계 자료의 보관 범위·라벨 의미·재사용 | [데이터 보관 안내](data/legacy-datasets.md) |
+| 팀 Google Drive의 실행 원본·압축 해시·다운로드와 복원 | [팀 원본 공유 안내](data/team-run-sharing.md) |
 
 설정 초안은 [protocols](../protocols/README.md), 형식 계약은 [schemas](../schemas/README.md), 합성 예시는 [tests](../tests/README.md)에 있다. 실제 무기억 연결 확인은 있으며 기억 정책 효과의 실증은 아직 없다.

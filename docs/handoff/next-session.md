@@ -129,6 +129,8 @@ OpenRouter·Luna 작업자·DeepSeek V4.1 Flash 1017 사용자·고정 τ²의 [
 
 ## 자료와 출처 유지
 
+사용자가 지정한 Google Drive 팀 폴더에 [실행 원본 묶음과 복원 안내](../data/team-run-sharing.md)를 공유했다. 최신 48회와 이전 오류·준비 검사·합성 예제의 원본 폴더 15개를 보존했으며 업로드된 7개 파일을 다시 내려받아 검증했다. 링크·기준 코드 commit·해시는 [공유 registry](../../artifacts/data-releases/20261114-team-runs.json)에 있다. 복원 시 기준 코드와 자료 종류를 확인한다. 실행 중 기록을 Drive 동기화 경로로 옮긴 것은 아니다.
+
 [데이터 보관 안내](../data/legacy-datasets.md)에 무엇을 복사했는지, 미커밋 원본을 어떻게 식별했는지, 무엇이 원래 위치에 남았는지 정리했다. 보관 자료는 오프라인 코어의 설치·기본 실행 의존성이 아니다.
 
 [최초 설계 이관 manifest](../../artifacts/legacy-source-manifest.json)는 당시의 이력이다. `check_repository.py`의 `files_changed_since_migration`은 이후 정상 수정도 보고한다. 현재 파일 해시에 맞추려고 당시 manifest를 덮어쓰지 않는다. `--check-import-hashes`는 최초 이관 상태 확인용이며 이후 개발의 기본 통과 조건이 아니다.

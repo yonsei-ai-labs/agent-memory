@@ -61,6 +61,8 @@ archive/                # 과거 데이터·설계 근거의 고정 보관본
 
 ## 출처와 작업 원칙
 
+팀원이 전체 실행 원본을 내려받을 위치와 파일 검증·복원 절차는 [팀 원본 공유 안내](docs/data/team-run-sharing.md)에 있다. 압축 원본은 지정한 Google Drive 팀 폴더에, 링크·해시·기준 코드 commit은 Git에 보존한다.
+
 이 저장소는 기존 `ai-memory-lab`의 커밋 `d0044c6367e17c1488db4dae37f44e5b358342f9`에서 중요한 설계·계약을 선별해 재구성했다. [이관 내역](docs/migration.md)과 [출처 manifest](artifacts/legacy-source-manifest.json)에 원본 경로·해시·변환과 제외 이유를 기록한다.
 
 후속 요청으로 기존 datasets 전체와 설계 자료·생성 코드·설명 문서도 [보관본](docs/data/legacy-datasets.md)에 복사했다. 1,268파일·약 202.26MiB이며, 미커밋 작업 트리의 원본 bytes·Git 상태는 [별도 manifest](artifacts/legacy-datasets-manifest.json)로 보존한다. 원본 실행·학습 출력·가중치는 기존 위치에 남겼다.

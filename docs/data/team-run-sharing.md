@@ -1,0 +1,57 @@
+# 팀 실행 원본 공유와 복원
+
+2026-11-14 · 업로드와 재다운로드 검증 완료
+
+코드·문서·작은 관측 receipt는 비공개 Git 저장소에서 관리하고, 큰 실행 원본은 사용자가 지정한 Google Drive 팀 폴더에 공유한다. 실행 중 쓰기는 로컬에서 유지한다. 기존 실행이나 팀 폴더의 다른 자료를 덮어쓰지 않았고 공유 권한도 변경하지 않았다.
+
+## 공유 위치와 기준
+
+| 항목 | 값 |
+| --- | --- |
+| 사용자 지정 팀 폴더 | [2026 최신딥러닝 15조](https://drive.google.com/drive/folders/1f7FawOEsVUxwtZm47W9fd2ajB3NNqNbn) |
+| 이번 원본 묶음 | [agent-memory-runs-20261114-65a757f](https://drive.google.com/drive/folders/1W0VZxIgu_X1GYA8bWXs9wYE8Xq5xI9QX) |
+| 압축 파일 | [agent-memory-runs-20261114-65a757f.tar.gz](https://drive.google.com/file/d/1wbrn4_Bz7NZR6Lb8X0RaLPl9zB5ebR5E/view?usp=drivesdk) |
+| 기준 코드 commit | `65a757fcbda4e319f7b6748ea815f1ee998b95a3` |
+| 압축 파일 크기 | 61,140,217 bytes, 약 61MB |
+| 포함 자료 | 실행 폴더 15개와 관련 보고서·프로토콜·근거 등 파일 7,490개, 합계 874,525,357 bytes |
+| 업로드·검증 기록 | [Git 공유 registry](../../artifacts/data-releases/20261114-team-runs.json) |
+
+압축 파일의 SHA-256은 다음과 같다.
+
+```text
+2be07f90dffbeb7cb863fe34f71d5dd35dee8b85835cf67b0152510578de8ed2
+```
+
+최신 48회 비교뿐 아니라 이전 guided 연결·자율 조회·오류로 끝난 연결·준비 검사·합성 오프라인 예제를 보존했다. 이들을 하나의 실제 성능 표본으로 합산하지 않는다. 폴더별 상태·모델 요청 수·관측/합성 구분은 `EXPORT-MANIFEST.json`에 있다. 연구 해석은 [48회 결과](../reports/20261114-tau2-delivery-development-results.md)를 따른다.
+
+## 업로드한 파일
+
+| 파일 | 용도 |
+| --- | --- |
+| `agent-memory-runs-20261114-65a757f.tar.gz` | 원본과 관련 자료의 압축본 |
+| `EXPORT-MANIFEST.json` | 파일별 경로·크기·SHA-256, 실행별 상태와 종류 |
+| `SHA256SUMS` | 압축 파일과 외부 manifest의 해시 |
+| `RESTORE.md` | 압축 해제·파일 검증·고정 코드에서의 재감사 절차 |
+| `CODE_COMMIT.txt` | 자료를 검증할 기준 코드 commit |
+| `EXPORT-RECEIPT.json` | 압축본 작성 당시의 크기·해시·검증 상태 |
+| `UPLOAD-RECEIPT.json` | 업로드 파일 ID·링크·재다운로드 검증 결과 |
+
+export receipt와 압축본 안의 manifest는 **묶음 생성 시점**의 `not_uploaded` 상태를 보존한다. 이후 업로드 완료 상태는 별도 upload receipt와 Git registry에 기록했다. 압축본을 수정해 과거 해시를 바꾸지 않았다.
+
+## 팀원의 복원 순서
+
+1. 공유 폴더에서 압축 파일과 `EXPORT-MANIFEST.json`, `SHA256SUMS`, `RESTORE.md`를 내려받는다.
+2. 압축 해시를 대조하고 새 빈 폴더에 해제한다.
+3. `RESTORE.md`의 Python 명령으로 모든 포함 파일의 크기·해시를 검증한다.
+4. 코드 저장소의 위 기준 commit을 별도 checkout하고 검증한 `runs/`를 배치한다. 기존 동명의 실행 폴더는 덮어쓰지 않는다.
+5. Python 3.12/3.13·uv와 고정 τ² checkout을 준비한 뒤 재감사한다.
+
+```bash
+uv sync --frozen --extra tau2
+uv run --frozen --extra tau2 python scripts/setup_tau2.py
+uv run --frozen --extra tau2 python scripts/review_tau2_delivery_development.py
+```
+
+마지막 명령은 저장 자료만 검사하며 모델 호출이나 API 키가 필요하지 않다. 설치·소스 준비에는 네트워크를 사용한다. 비공개 코드 저장소의 접근 권한은 Drive 접근과 별도로 필요하다. [연결 환경 안내](../development/tau2-connection.md)도 참고한다.
+
+연결 계정으로 7개 파일을 모두 다시 내려받아 로컬 원본과 비교했다. Drive 목록의 ID·이름·크기·상위 폴더와 `shared` 상태도 대조했으며 다른 팀원 계정으로 별도 로그인한 시험은 하지 않았다. 로컬 `runs/`와 기존 실행·해시는 보존했다. 새 모델 실행은 하지 않았다.

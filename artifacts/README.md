@@ -1,5 +1,7 @@
 # 자료 출처와 연결
 
+[팀 원본 공유 registry](data-releases/20261114-team-runs.json)는 Google Drive에 업로드한 압축본·manifest·복원 안내의 파일 ID/링크와 기준 코드 commit을 보존한다. 7개 파일의 재다운로드·바이트/해시 대조, 폴더 위치·파일 크기 확인 결과를 담는다. 큰 압축본과 전체 inventory는 Git 밖에 두며 [다운로드·복원 안내](../docs/data/team-run-sharing.md)를 따른다.
+
 작은 manifest로 원본 위치·버전·해시·역할을 관리한다. 큰 데이터·원시 실행·가중치는 여기에 복사하지 않는다.
 
 [legacy-source-manifest.json](legacy-source-manifest.json)은 기존 레포의 고정 커밋에서 무엇을 가져왔는지 기록한다. 각 원본의 SHA-256, 새 경로, 복사·경로 수정·내용 통합·참조만 유지 등의 변환과 이관 당시 새 파일의 해시를 포함한다.
