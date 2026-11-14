@@ -13,6 +13,7 @@
 | 수치의 정의·분모·필요 근거·통계와 한계 | [측정과 분석](research/metrics.md) |
 | 유사 벤치·정책 연구와 기여 비교 | [관련 연구](research/related-work.md) |
 | 파일럿 이후 발전 방향·선행연구와의 관계·첫 주장 후보 | [발전 방향 노트](research/novelty-direction-review.md) |
+| 기억 실험으로 에이전트 행동을 보는 지표·개입·과제 제언 | [행동 연구 제언](research/agent-behavior-suggestions.md) |
 | 모듈·도구·은행·벤치·상태·오류·재개 | [상세 설계](design/architecture.md) |
 | 단일 원본 로그·요청 출처·혼합 호출·v1.1 기준 | [코어 계약](design/core-contracts.md) |
 | 실제 입력·원본·사용량·채점·결측의 기록 | [기록 설계](design/recording.md) |
