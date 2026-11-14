@@ -25,6 +25,7 @@
 3. [상세 설계](../design/architecture.md), [기록 계약](../design/recording.md).
 4. [첫 구현 작업 명세](../development/first-implementation.md)와 [전체 개발 계획](../development/roadmap.md).
 5. [관련 연구](../research/related-work.md), [보고서 네 장 구성](report-outline.md), [데이터 사용 안내](../data/legacy-datasets.md).
+6. [추가 실험팀 문서 검토](experiment-handoff-review.md)와 [파일럿 제안](../research/condition-sensitive-pilot.md).
 
 연구·프로토콜·설계가 현재 기준이다. `archive/`의 과거 문서와 `docs/references/literature/`의 이전 조사 해석을 현재 실행 지침으로 대체하지 않는다.
 
@@ -60,6 +61,16 @@ uv run python -m unittest discover -s tests -p 'test_legacy_data_archive.py'
 
 이후 [첫 구현 작업 명세](../development/first-implementation.md)의 계약 타입·SQLite 기억 서비스·도구 정책·사건/노출 기록과 가짜 두 회차 흐름을 구현한다. 이 일에는 API 키·GPU·벤치 도메인 결정이 필요하지 않다. 구현하지 않은 실행 CLI가 이미 있다고 설명하지 않는다.
 
+## 추가 인계 문서에서 남긴 후속 제안
+
+사용자가 다운로드 폴더의 `memory-evaluation-experiment-handoff.md`도 검토하도록 요청했다. [원문](../references/feedback/20261114-memory-evaluation-experiment-handoff.md)을 보존하고, 기존 설계와의 관계·공식 근거·미열람 연결 자료를 [검토 문서](experiment-handoff-review.md)에 기록했다.
+
+주요 추가안은 같은 공개 기록에서 일반 요약과 적용 조건·절차 기억을 작성해 비교하는 [파일럿](../research/condition-sensitive-pilot.md)이다. 종료 후 작성·시작 시 제공을 고정한 저장 진단에서 시작해 이후 조회 교차·1개/N개 후보로 이어갈 수 있다. 현재 draft의 자율 조회·네 저장 시점을 교체하지 않는다.
+
+항공 33·36번을 등급 하나의 대조군으로 직접 쓰지 않는다. 새 진단쌍의 상태·인수·채점 의미를 먼저 검증하고, 변형 결과와 공식 원본 점수를 구분한다. 적용 가능성 필터는 작업자와 판정기의 정보 노출을 분리하고 적합 후보의 차단·미확정·추가 비용도 남긴다. Jev·계층 시간 기억·그래프는 후속 후보이며 기본 구현 의존성이 아니다.
+
+필터 전 후보·판정·worker 노출을 별도 기록할 때 필요한 역할/필드의 계약은 아직 구현하지 않았다. 실제 모델·과제쌍·반복/예산·실험 실행도 미확정이다. 공통 코어 구현을 마친 뒤 τ² 연결과 이 제안의 별도 draft를 준비한다.
+
 ## 미확정 값과 진행 가능한 작업
 
 [τ² 초안](../../protocols/drafts/tau2-two-pass.json)은 `draft`다. 실제 벤치 commit·도메인·과제·사용자 설정·모델 파라미터·작성 지침·페이지 크기·반복/순서·중단 한도·주석/통계/비용 배분은 실제 실험 계획에서 고정해야 한다. 기본 표본 수·예산을 임의로 넣어 `ready`로 만들지 않는다.
@@ -80,4 +91,4 @@ uv run python -m unittest discover -s tests -p 'test_legacy_data_archive.py'
 
 ## 새 세션에 전달할 요청 예시
 
-> 이 저장소의 AGENTS.md와 docs/handoff/next-session.md, docs/development/first-implementation.md를 읽고 현재 코드·검증 상태를 확인해줘. 연구 범위를 유지하면서 오프라인 공통 코어와 가짜 두 회차 흐름부터 구현해줘. 보관 데이터·과거 라벨은 현재 실험 기본값으로 편입하지 말고, 미확정 실제 실험 숫자는 draft로 남겨줘. 구현·검증·문서 상태를 함께 갱신하고 main을 기준으로 작업해줘.
+> 이 저장소의 AGENTS.md와 docs/handoff/next-session.md, docs/development/first-implementation.md를 읽고 현재 코드·검증 상태를 확인해줘. 추가 실험팀 문서 검토와 적용 조건 기억 파일럿 제안도 후속 계획으로 참고해줘. 연구 범위를 유지하면서 오프라인 공통 코어와 가짜 두 회차 흐름부터 구현해줘. 보관 데이터·과거 라벨은 현재 실험 기본값으로 편입하지 말고, 미확정 실제 실험 숫자는 draft로 남겨줘. 구현·검증·문서 상태를 함께 갱신하고 main을 기준으로 작업해줘.

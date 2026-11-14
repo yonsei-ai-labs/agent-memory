@@ -10,6 +10,8 @@
 
 새 개발 세션은 [인수인계](docs/handoff/next-session.md)에서 현재 구현 상태·합의 사항·미정 값을 확인하고, [첫 구현 작업](docs/development/first-implementation.md)부터 이어간다.
 
+추가로 전달받은 실험팀 문서는 [검토·반영 내역](docs/handoff/experiment-handoff-review.md)과 [적용 조건 기억 파일럿 제안](docs/research/condition-sensitive-pilot.md)으로 정리했다. 기존 프로토콜·연구 범위를 유지하며, 제안을 실행 확정이나 성능 결과로 취급하지 않는다.
+
 1. [연구 계획](docs/research/plan.md): 문제·연구 질문·기여 목표·기대 효과와 결정 사항.
 2. [실험 프로토콜](docs/research/experiment-protocol.md): 두 회차·자기 경험과 혼합 은행·누적·교차·개입 비교.
 3. [측정과 분석](docs/research/metrics.md): 성공·회복·회귀·진척·기억 품질·노출·비용의 정의와 해석.

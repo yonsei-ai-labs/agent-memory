@@ -18,3 +18,5 @@ uv run python scripts/check_repository.py --verify-source-snapshot /path/to/ai-m
 [legacy-datasets-manifest.json](legacy-datasets-manifest.json)은 이후 요청받은 데이터 보관의 별도 기록이다. 고정 commit만 가져온 최초 설계 이관과 달리, 기존 작업 트리의 미커밋·미추적·ignore된 파일도 포함한다. 파일별 SHA-256·크기·역할·출처 Git 상태와 HEAD blob ID, 전체 선택·제외 범위를 기록한다.
 
 데이터 본체는 `archive/`에 있으며 [보관 안내](../docs/data/legacy-datasets.md)를 따른다. `uv run python scripts/verify_legacy_data.py`로 원본 checkout 없이 모든 보관 파일의 무결성을 확인한다. 당시의 라벨 의미·실제 성능을 재검증하는 명령은 아니다.
+
+[experiment-handoff-import.json](experiment-handoff-import.json)은 다운로드 폴더의 실험팀 문서를 추가 반영한 기록이다. 원문 보관본의 bytes·SHA-256, 파생 검토/제안 문서, 확인한 공식 소스 commit·해시와 미열람 Library 연결을 남긴다. 기본 저장소 검사는 원문 보관본의 해시를 확인하며, 온라인 원문을 다시 조회하거나 실제 실험을 수행하지 않는다.

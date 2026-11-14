@@ -141,6 +141,19 @@ def main() -> None:
     if len(rows) != review["scope"]["papers"] or {row["id"] for row in rows} != set(review["paper_ids"]):
         raise ValueError("Literature CSV and original review scope disagree")
 
+    feedback = json.loads((ROOT / "artifacts" / "experiment-handoff-import.json").read_text())
+    if feedback["format"] != "agent-memory-experiment-feedback-import/v1":
+        raise ValueError("Unsupported experiment feedback import format")
+    imported = feedback["imported_document"]
+    imported_bytes = local_path(imported["path"]).read_bytes()
+    if digest(imported_bytes) != imported["sha256"] or len(imported_bytes) != imported["bytes"]:
+        raise ValueError("Experiment feedback original copy mismatch")
+    if (imported["sha256"], imported["bytes"]) != (feedback["source"]["sha256"], feedback["source"]["bytes"]):
+        raise ValueError("Experiment feedback import differs from recorded source")
+    for name in feedback["derived_documents"]:
+        if not local_path(name).is_file():
+            raise ValueError(f"Missing feedback review destination: {name}")
+
     print(json.dumps({
         "status": "passed",
         "scope": "repository_links_migration_and_scaffold",
@@ -151,6 +164,7 @@ def main() -> None:
         "verbatim_files_verified": verified_copies,
         "legacy_source_hashes_verified": source_checks,
         "original_literature_papers": len(rows),
+        "experiment_feedback_original_copies_verified": 1,
         "files_changed_since_migration": sorted(drift),
         "benchmark_or_model_calls": 0,
     }, ensure_ascii=False, indent=2))

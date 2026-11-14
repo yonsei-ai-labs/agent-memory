@@ -5,8 +5,10 @@
 | 읽을 내용 | 문서 |
 | --- | --- |
 | 새 개발 세션의 시작점·실제 상태·합의·미정 값 | [인수인계](handoff/next-session.md) |
+| 추가 실험팀 문서의 제안·기존 합의·출처 검토 | [검토와 반영](handoff/experiment-handoff-review.md) |
 | 연구 목적·질문·기여·기대 효과와 미정 사항 | [연구 계획](research/plan.md) |
 | 저장·조회 조건, 두 회차, 자기 경험·혼합·누적·전이·개입 | [실험 프로토콜](research/experiment-protocol.md) |
+| 같은 경험의 일반 요약/조건·절차 비교와 선택적 필터 | [파일럿 제안](research/condition-sensitive-pilot.md) |
 | 수치의 정의·분모·필요 근거·통계와 한계 | [측정과 분석](research/metrics.md) |
 | 유사 벤치·정책 연구와 기여 비교 | [관련 연구](research/related-work.md) |
 | 모듈·도구·은행·벤치·상태·오류·재개 | [상세 설계](design/architecture.md) |
