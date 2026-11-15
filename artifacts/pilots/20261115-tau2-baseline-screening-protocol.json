@@ -1,0 +1,826 @@
+{
+  "format": "agent-memory-tau2-baseline-protocol-lock/v1",
+  "frozen_at_utc": "2026-11-15T10:41:34.037113Z",
+  "scope": "development_all_airline_train_no_memory_two_repetitions_not_policy_effect",
+  "authorization": {
+    "reported_cost_cap_usd": 1.0,
+    "basis": "User requested measurement after the assistant proposed a new $1 total cap.",
+    "user_instruction_ko": "측정먼저 해보자"
+  },
+  "profile_ref": {
+    "path": "protocols/pilots/tau2-baseline-screening-v1.json",
+    "sha256": "2fe60a87faebf455b635bc2779e44207a9f6193661305c202d274cb6ab3cfaca"
+  },
+  "protocol_note_ref": {
+    "path": "docs/research/baseline-screening-pilot.md",
+    "sha256": "c72b3dfa935782c80273f0f79425042d734cc4669026b7bc858784600acafdd1"
+  },
+  "base_connection_ref": {
+    "path": "protocols/checks/openrouter-tau2-smoke.json",
+    "sha256": "fab9e52495a7fbc122ffcbcdc5fc9cfe59d8f61d18f421e822a1298a0de68d49"
+  },
+  "implementation_commit": "1edc6d07e7203f1751c891ad1f7011f997fa6d8f",
+  "implementation_worktree_changed": false,
+  "implementation_files": [
+    {
+      "path": "pyproject.toml",
+      "sha256": "eacca6269ebd090c7c4c2c52c7a0379ad73670a25d34bc711a67a60c1584bf0d"
+    },
+    {
+      "path": "schemas/autonomy-pilot-v1.1.schema.json",
+      "sha256": "8e9f1aba795b84cc14881880bdd8f8b7f04a4cd7bf1169610d1b048da63ef4bb"
+    },
+    {
+      "path": "schemas/autonomy-pilot.schema.json",
+      "sha256": "210155cf3572805ca73476b9d5eed6d3699a7c4a7c64effa961f74cef129cf68"
+    },
+    {
+      "path": "schemas/baseline-screening.schema.json",
+      "sha256": "ccc62f1fbb53a94ec11b501b5bf14a62148ff2db842b215940d5582b510dd779"
+    },
+    {
+      "path": "schemas/connection-check-v1.1.schema.json",
+      "sha256": "948002925aeaaa7d71023511947a86866d480b2b4a2fa404cbe713f51073f90e"
+    },
+    {
+      "path": "schemas/connection-check.schema.json",
+      "sha256": "55cd4285921a68fe3961e0a8fc21a97ef0f76471312fbc22526dc7f3f7f23073"
+    },
+    {
+      "path": "schemas/delivery-comparison.schema.json",
+      "sha256": "d7506d8d2923f621dbe6cd12e3f155ef4207d4d370cbc88b020b4974638ec9e2"
+    },
+    {
+      "path": "schemas/event.schema.json",
+      "sha256": "7abce598a1bab6aa2a3c5e2c63a41927da8f74e8a4b2727779166cf2ca3448e8"
+    },
+    {
+      "path": "schemas/memory-connection-check.schema.json",
+      "sha256": "22b3b9245159556dddabcb3ca2223a45ca716490b22ddd08e49f8a060266834b"
+    },
+    {
+      "path": "schemas/run-plan.schema.json",
+      "sha256": "1c332cf9532abeb8d91d1fb9845294da5933468f21bc8006392d30981a346b74"
+    },
+    {
+      "path": "schemas/v1.1/event.schema.json",
+      "sha256": "678d2ae243582947c83dfce997b026b3ee2c8055e46b92efe1508f868f2e7885"
+    },
+    {
+      "path": "schemas/v1.1/input-manifest.schema.json",
+      "sha256": "0a265f38ad7b965766dc3f10368636ec5d743ce1848b7a83a3ba00d2be0f7669"
+    },
+    {
+      "path": "schemas/v1.1/journal-state.schema.json",
+      "sha256": "9fcabca671873718e743ceef3f3399a615627de23529e9aaf92e3413241ca095"
+    },
+    {
+      "path": "schemas/v1.1/journal.schema.json",
+      "sha256": "684f2433329f25a5bcf09b9e99c9442b7633766ccc0f9864ac7330d39b4a7794"
+    },
+    {
+      "path": "schemas/v1.1/run-plan.schema.json",
+      "sha256": "2ff835786bb0835a1a9a49f1c8fb1b4d0fe40b8cf32b0850baa6b029bf8a37b4"
+    },
+    {
+      "path": "schemas/v1.2/event.schema.json",
+      "sha256": "bc8303ca38f6cf691e684248437a3dbd7fc42c21e14e38866714a2f072b05c06"
+    },
+    {
+      "path": "schemas/v1.2/input-manifest.schema.json",
+      "sha256": "4ead0fe49367b3c132862582031f9c7271b5ef50470beff2c92201167bf8fd5c"
+    },
+    {
+      "path": "schemas/v1.2/journal-state.schema.json",
+      "sha256": "409f92b1162b8e2c083aa81cfe1c8ffd7f3d329f08dfc3846fd21852976c2d00"
+    },
+    {
+      "path": "scripts/analyze_tau2_pilot_actions.py",
+      "sha256": "84132295dc45befe6f77167575284c5f6e988f8a19951b1c2e4dc082400d9d27"
+    },
+    {
+      "path": "scripts/audit_tau2_memory_visibility.py",
+      "sha256": "a1e09fda8755760524ee7dd6b06ecabca1d30a4dbaaf746ef90949a099d97504"
+    },
+    {
+      "path": "scripts/check_repository.py",
+      "sha256": "30744f5f6bae38172d28d8ee4c76a9b8a425236f4a132ddec9fe1d7713b3636e"
+    },
+    {
+      "path": "scripts/contract_v11.py",
+      "sha256": "2eccec3573ef9dd264789e2ac9b3b09e2006063e3e7d517fef3a580bb727e9ce"
+    },
+    {
+      "path": "scripts/review_tau2_delivery_development.py",
+      "sha256": "c55bfecf590ac116d51a58c78fbce6fbbe022d8e0778e93cc1aa88ee4a2a0581"
+    },
+    {
+      "path": "scripts/run_offline_demo.py",
+      "sha256": "ff3be5d7ab152e00ec6d82f77a2dbddf1cf1b5e61c2d767e3f2d0bea0da7e63e"
+    },
+    {
+      "path": "scripts/run_tau2_autonomy_pilot.py",
+      "sha256": "5fedd25897e079d7d62e0f4f7908992ce39f776a5c8c7099030c5cab2abb3e70"
+    },
+    {
+      "path": "scripts/run_tau2_baseline.py",
+      "sha256": "e432d883f55c474c1a8917787de5ca3130e38988311149f27b8021001506abc5"
+    },
+    {
+      "path": "scripts/run_tau2_check.py",
+      "sha256": "0691c10f77bf6299d7ae60fa077161fc4f57cdfd0cd84f993adef3e417a926b9"
+    },
+    {
+      "path": "scripts/run_tau2_delivery.py",
+      "sha256": "3e12f12c3e32c0e1d34c52b29cc25c612a88d418a01a94a595a37e830eee3349"
+    },
+    {
+      "path": "scripts/run_tau2_memory_check.py",
+      "sha256": "5a1cc8de4cb5b82e54cdabff3d08d3207f4d484011f42e5d2ed21fd466c4d91e"
+    },
+    {
+      "path": "scripts/setup_tau2.py",
+      "sha256": "7d44f47420c9f6d976cbc12c8120f074b46fa7fea8c233d9b4f05cb5a397ddb5"
+    },
+    {
+      "path": "scripts/validate_design.py",
+      "sha256": "98cc10c05b81f0b863c92fd84cc7df376eb4fcad6eb86e4c720f44f82bbf06f5"
+    },
+    {
+      "path": "scripts/verify_legacy_data.py",
+      "sha256": "d6390631f3e4078ba10fe247a37e4bc30f7141538f47915fc5c45fb88ffd5583"
+    },
+    {
+      "path": "src/agent_memory_eval/__init__.py",
+      "sha256": "1ca22b911d9e4d412aeceea97bbee85fbe1d5bc142c3028dd8c83d41924eee10"
+    },
+    {
+      "path": "src/agent_memory_eval/adapters/__init__.py",
+      "sha256": "f5147dd4ab1fcf423c26fab26fb57a6c47e54f00cfac2cd6bbe20ba300f140b6"
+    },
+    {
+      "path": "src/agent_memory_eval/adapters/fake.py",
+      "sha256": "bc7bb530a62af9a55af53ac3d2029497763b42116ccf8332e59f8a080fc14e0c"
+    },
+    {
+      "path": "src/agent_memory_eval/adapters/tau2.py",
+      "sha256": "46d8cae900d6d372785535b51fd1241aa5820a65590e94ec34dd5f4b1d73c69d"
+    },
+    {
+      "path": "src/agent_memory_eval/adapters/tau2_memory.py",
+      "sha256": "a3dae05a22fcbda8468c3e71ebdd88d108f8c9e9d68009d7ac4fd07a6745664b"
+    },
+    {
+      "path": "src/agent_memory_eval/analysis/__init__.py",
+      "sha256": "bc64dac1fe2a34327e734b83d7609c9e58ca0fb4ed807b0aef7a1951f2dd8af2"
+    },
+    {
+      "path": "src/agent_memory_eval/analysis/action_comparison.py",
+      "sha256": "ee1a211361de37a33921c15279156020de8b781fde096f61aca7f67e6ca62888"
+    },
+    {
+      "path": "src/agent_memory_eval/analysis/connection.py",
+      "sha256": "4c29b3947442993844b1cfdc03a169363f10e74cb317eb76d5851b1e833e1e5e"
+    },
+    {
+      "path": "src/agent_memory_eval/analysis/memory_visibility.py",
+      "sha256": "aaf8bfbe2f8acc37d48adcc6505446757a7f3e7e1f6be6ca879736e0d05232d6"
+    },
+    {
+      "path": "src/agent_memory_eval/analysis/offline.py",
+      "sha256": "3ffbdadba8267a3783ec3d40c13a862328a023a1053b131709dd29a62a3c6a56"
+    },
+    {
+      "path": "src/agent_memory_eval/analysis/tau2_autonomy.py",
+      "sha256": "d041557d36fbd09e703a0b1013dbd592307c197f127433f9d85e1224a0fa01dc"
+    },
+    {
+      "path": "src/agent_memory_eval/analysis/tau2_baseline.py",
+      "sha256": "ef66f298ed116ddb354fd79cdb8ab1e92a0d3cd1f04726f1a63ac3627b577dd5"
+    },
+    {
+      "path": "src/agent_memory_eval/analysis/tau2_delivery.py",
+      "sha256": "ff05d3cd1f55945bee5c7c04d5237d8ee8a20791fadf8aab251b5e3a4201e738"
+    },
+    {
+      "path": "src/agent_memory_eval/analysis/tau2_memory.py",
+      "sha256": "59f05be28a40e4bc90c92043f75cdbd6c4485e62f675b682c8921b3cfbe44633"
+    },
+    {
+      "path": "src/agent_memory_eval/contracts/__init__.py",
+      "sha256": "9f4c9aec66e0271d7fa105c37de4819af2de45eeaf6a05efd1598ff275bedf75"
+    },
+    {
+      "path": "src/agent_memory_eval/contracts/connection.py",
+      "sha256": "72f425637c79992381d0c9b9a73f882efe3596319eb1c51ae529eeb6540fb892"
+    },
+    {
+      "path": "src/agent_memory_eval/contracts/core.py",
+      "sha256": "b15da909275b2a0391f554c98fd1af0d4c136875dabfdb302446ab31aa2ff013"
+    },
+    {
+      "path": "src/agent_memory_eval/contracts/validation.py",
+      "sha256": "eea5daa8cb5ca30a6d222dcb199b29ad211701fa70528d3c5d15a55f6fe4f8d6"
+    },
+    {
+      "path": "src/agent_memory_eval/memory/__init__.py",
+      "sha256": "168ad3c2c8038e1238c2cc8071a17008173ef76f2e1d092664a76e95e3d1e297"
+    },
+    {
+      "path": "src/agent_memory_eval/memory/imports.py",
+      "sha256": "64d10cab78d9998b3ee048fcb30a3422c6533b7c9edb4b5bf2369ffc5242e688"
+    },
+    {
+      "path": "src/agent_memory_eval/memory/service.py",
+      "sha256": "befdd5a34561bae52637a88124567a51a4cf4a2656e6a0b262e4f2565508376b"
+    },
+    {
+      "path": "src/agent_memory_eval/memory/tools.py",
+      "sha256": "9bd728d1593569be2f5be72545859cf5f2a47afb8eb8ff53ad07c4a3a7fcbe69"
+    },
+    {
+      "path": "src/agent_memory_eval/models/__init__.py",
+      "sha256": "b2e3c12d16e5dc2b71c9b3e029e2b31633ae7679c414f8423552bf55afa20efa"
+    },
+    {
+      "path": "src/agent_memory_eval/models/fake.py",
+      "sha256": "102826ad7559ccd14f4617bc5a10ae199ac392f672197f5ecf7de34cdfb1424d"
+    },
+    {
+      "path": "src/agent_memory_eval/models/openrouter.py",
+      "sha256": "0781638a889bb544bd6c454fdfe5b450d750f17b0099255bc1ccf9ecb61fd70a"
+    },
+    {
+      "path": "src/agent_memory_eval/policies/__init__.py",
+      "sha256": "4ae5dd1074e34c3d1bd9ed1dc0510a01ee8499e7c6a46398a48429c84614da81"
+    },
+    {
+      "path": "src/agent_memory_eval/recording/__init__.py",
+      "sha256": "21dd51654c0ded5e6361251296561f4aa3e89383754f6390b4c4f5cc225dd5c0"
+    },
+    {
+      "path": "src/agent_memory_eval/recording/journal.py",
+      "sha256": "19a4a006a0146789dcd83890ac64e5ae391d78ce32092342c27e58288987c222"
+    },
+    {
+      "path": "src/agent_memory_eval/recording/provenance.py",
+      "sha256": "c826be626d3c4bdb7291d72e3c27a7064119355dab97ac57aa5eaa8a4e50a396"
+    },
+    {
+      "path": "src/agent_memory_eval/runner/__init__.py",
+      "sha256": "68a9b1db7427e877a5f65c69d4fbac7e3b72da3aca9ffe3330ff299525269fa9"
+    },
+    {
+      "path": "src/agent_memory_eval/runner/offline.py",
+      "sha256": "74b379fbe5a4a23a585b956d7cf480f762b6ff3867c13461396c19453399574c"
+    },
+    {
+      "path": "src/agent_memory_eval/runner/router.py",
+      "sha256": "753b3823b99b95ddf187f191371ce58ca665620ec15933ad9f2bfa8e7f5f7cb3"
+    },
+    {
+      "path": "src/agent_memory_eval/runner/tau2_autonomy.py",
+      "sha256": "a69c236ee0f82af085f337e8f74d44df19c9f1de3110a9fd53d0e152d6c5372e"
+    },
+    {
+      "path": "src/agent_memory_eval/runner/tau2_baseline.py",
+      "sha256": "2ce87da2c70747c3b856255c4c29c7b50f4c67f64498e669fc420e95b35f6ecb"
+    },
+    {
+      "path": "src/agent_memory_eval/runner/tau2_delivery.py",
+      "sha256": "b09650bcb5681661e41f1c8555ba5734e22f0fb0d5b35e273c35c8668ec2c81a"
+    },
+    {
+      "path": "src/agent_memory_eval/runner/tau2_memory.py",
+      "sha256": "746f0d3daf5b5e7549b1e58855b6c95e37ec35f871d5555e058e0dc004315da6"
+    },
+    {
+      "path": "tests/contract_fixture_v11.py",
+      "sha256": "df1203bab7a138a97d65d2c1af24b4648d5adeee5c6d03837b2fd4ad64f99f92"
+    },
+    {
+      "path": "tests/test_action_comparison.py",
+      "sha256": "4fa9d431283bbcf6ff4dd32c44f3b0d60efa3e90c3a168f20f3473e5a9cd7122"
+    },
+    {
+      "path": "tests/test_contract_v11.py",
+      "sha256": "628e0466653c9abec7bf2e91c6a384e68b4ef9ad741418f1bf8ab23f9cd6bf75"
+    },
+    {
+      "path": "tests/test_legacy_data_archive.py",
+      "sha256": "7babc64922ee08ed54771c8d6cf9a2af16f4269d026e2fa525d8e8c54b8f5b36"
+    },
+    {
+      "path": "tests/test_memory_visibility.py",
+      "sha256": "ba6bf181c739f394134d4b3f1dcb04f4dae98b1a8c707d738fc6ee899cdc716a"
+    },
+    {
+      "path": "tests/test_offline_core.py",
+      "sha256": "8097ede17bc607b052a9f2e82bd19b83f5fbfb98b8db9a301aac8c1284051ec8"
+    },
+    {
+      "path": "tests/test_openrouter.py",
+      "sha256": "2e357f88322d0deb11ed5cfbafd0ae794826947bbb79414e886b6043b48d031f"
+    },
+    {
+      "path": "tests/test_preload.py",
+      "sha256": "b275ec5534b75f86eb0ed6a7e0df13b6146491ebd4c2202d747edccb44c7ef49"
+    },
+    {
+      "path": "tests/test_tau2_autonomy.py",
+      "sha256": "58456d6fe4bac91e8d77e38c14ee1e5fb67bc6678414d71d3a164d9bf94c4fb5"
+    },
+    {
+      "path": "tests/test_tau2_baseline.py",
+      "sha256": "3e1763ef7a9edeaa212d3bc791ef5ff2a829d711c434e9d1bfc8e9b6113641fa"
+    },
+    {
+      "path": "tests/test_tau2_connection.py",
+      "sha256": "35848c4b775f5aa74b12c4e35c354b2259cca86a4736f990715ba9454c795e52"
+    },
+    {
+      "path": "tests/test_tau2_delivery.py",
+      "sha256": "b06f919663537cd904dc4b1b24cb6a66bf173b2d946e10ca394da537c37503cd"
+    },
+    {
+      "path": "tests/test_tau2_memory.py",
+      "sha256": "9a915d70362775f9dd66d235ce0890c3901e79e81aa11f47bb55e1a432929713"
+    },
+    {
+      "path": "uv.lock",
+      "sha256": "b87ef58cf24c2e6d1ba07ed896676e31ecfb858b3840ef1bc5faf0c334ec62a6"
+    }
+  ],
+  "benchmark_asset_hashes": {
+    "data/tau2/domains/airline/tasks.json": "ccd8ba737b4cc371415af70151187788f728d6108d0916e73bb4317b40542052",
+    "data/tau2/domains/airline/split_tasks.json": "b22ced4d9a9850ac9aea31c53bdcb6d6009058140bd9acc7db37c1d36222ba8b",
+    "data/tau2/domains/airline/db.json": "1af9fea6e03ca7ca15a22bb3fcaf3e351393e3fc9070b6777947da8996f7531b",
+    "data/tau2/domains/airline/policy.md": "10dc0525421521208be39cee235bba84a16e2bcba9899eb93d92cd81d2f62fc4",
+    "src/tau2/domains/airline/tools.py": "6ec01c8c362ab0242eff658fc79547cf9519b93422ab113b6930cb627d202779",
+    "src/tau2/evaluator/evaluator.py": "adc929736ee3d75186fcd5c7cf5d5a4036814a9b73a845f7a513b39a44e9bc93",
+    "src/tau2/evaluator/evaluator_env.py": "e883703cb57120ac193af7b6cf2c7e1d1394db80591600824275a54ec0114989"
+  },
+  "train_task_ids": [
+    "0",
+    "1",
+    "3",
+    "4",
+    "5",
+    "7",
+    "9",
+    "10",
+    "11",
+    "12",
+    "14",
+    "15",
+    "17",
+    "20",
+    "21",
+    "23",
+    "27",
+    "28",
+    "33",
+    "34",
+    "36",
+    "38",
+    "39",
+    "40",
+    "41",
+    "42",
+    "43",
+    "46",
+    "47",
+    "49"
+  ],
+  "allocations": [
+    {
+      "allocation_id": "rep-001-pos-001",
+      "repetition": 1,
+      "position": 1,
+      "task_id": "33",
+      "native_seed": 0
+    },
+    {
+      "allocation_id": "rep-001-pos-002",
+      "repetition": 1,
+      "position": 2,
+      "task_id": "28",
+      "native_seed": 0
+    },
+    {
+      "allocation_id": "rep-001-pos-003",
+      "repetition": 1,
+      "position": 3,
+      "task_id": "47",
+      "native_seed": 0
+    },
+    {
+      "allocation_id": "rep-001-pos-004",
+      "repetition": 1,
+      "position": 4,
+      "task_id": "42",
+      "native_seed": 0
+    },
+    {
+      "allocation_id": "rep-001-pos-005",
+      "repetition": 1,
+      "position": 5,
+      "task_id": "17",
+      "native_seed": 0
+    },
+    {
+      "allocation_id": "rep-001-pos-006",
+      "repetition": 1,
+      "position": 6,
+      "task_id": "5",
+      "native_seed": 0
+    },
+    {
+      "allocation_id": "rep-001-pos-007",
+      "repetition": 1,
+      "position": 7,
+      "task_id": "49",
+      "native_seed": 0
+    },
+    {
+      "allocation_id": "rep-001-pos-008",
+      "repetition": 1,
+      "position": 8,
+      "task_id": "10",
+      "native_seed": 0
+    },
+    {
+      "allocation_id": "rep-001-pos-009",
+      "repetition": 1,
+      "position": 9,
+      "task_id": "20",
+      "native_seed": 0
+    },
+    {
+      "allocation_id": "rep-001-pos-010",
+      "repetition": 1,
+      "position": 10,
+      "task_id": "46",
+      "native_seed": 0
+    },
+    {
+      "allocation_id": "rep-001-pos-011",
+      "repetition": 1,
+      "position": 11,
+      "task_id": "36",
+      "native_seed": 0
+    },
+    {
+      "allocation_id": "rep-001-pos-012",
+      "repetition": 1,
+      "position": 12,
+      "task_id": "3",
+      "native_seed": 0
+    },
+    {
+      "allocation_id": "rep-001-pos-013",
+      "repetition": 1,
+      "position": 13,
+      "task_id": "14",
+      "native_seed": 0
+    },
+    {
+      "allocation_id": "rep-001-pos-014",
+      "repetition": 1,
+      "position": 14,
+      "task_id": "11",
+      "native_seed": 0
+    },
+    {
+      "allocation_id": "rep-001-pos-015",
+      "repetition": 1,
+      "position": 15,
+      "task_id": "27",
+      "native_seed": 0
+    },
+    {
+      "allocation_id": "rep-001-pos-016",
+      "repetition": 1,
+      "position": 16,
+      "task_id": "1",
+      "native_seed": 0
+    },
+    {
+      "allocation_id": "rep-001-pos-017",
+      "repetition": 1,
+      "position": 17,
+      "task_id": "4",
+      "native_seed": 0
+    },
+    {
+      "allocation_id": "rep-001-pos-018",
+      "repetition": 1,
+      "position": 18,
+      "task_id": "9",
+      "native_seed": 0
+    },
+    {
+      "allocation_id": "rep-001-pos-019",
+      "repetition": 1,
+      "position": 19,
+      "task_id": "21",
+      "native_seed": 0
+    },
+    {
+      "allocation_id": "rep-001-pos-020",
+      "repetition": 1,
+      "position": 20,
+      "task_id": "40",
+      "native_seed": 0
+    },
+    {
+      "allocation_id": "rep-001-pos-021",
+      "repetition": 1,
+      "position": 21,
+      "task_id": "15",
+      "native_seed": 0
+    },
+    {
+      "allocation_id": "rep-001-pos-022",
+      "repetition": 1,
+      "position": 22,
+      "task_id": "7",
+      "native_seed": 0
+    },
+    {
+      "allocation_id": "rep-001-pos-023",
+      "repetition": 1,
+      "position": 23,
+      "task_id": "34",
+      "native_seed": 0
+    },
+    {
+      "allocation_id": "rep-001-pos-024",
+      "repetition": 1,
+      "position": 24,
+      "task_id": "38",
+      "native_seed": 0
+    },
+    {
+      "allocation_id": "rep-001-pos-025",
+      "repetition": 1,
+      "position": 25,
+      "task_id": "43",
+      "native_seed": 0
+    },
+    {
+      "allocation_id": "rep-001-pos-026",
+      "repetition": 1,
+      "position": 26,
+      "task_id": "41",
+      "native_seed": 0
+    },
+    {
+      "allocation_id": "rep-001-pos-027",
+      "repetition": 1,
+      "position": 27,
+      "task_id": "39",
+      "native_seed": 0
+    },
+    {
+      "allocation_id": "rep-001-pos-028",
+      "repetition": 1,
+      "position": 28,
+      "task_id": "23",
+      "native_seed": 0
+    },
+    {
+      "allocation_id": "rep-001-pos-029",
+      "repetition": 1,
+      "position": 29,
+      "task_id": "0",
+      "native_seed": 0
+    },
+    {
+      "allocation_id": "rep-001-pos-030",
+      "repetition": 1,
+      "position": 30,
+      "task_id": "12",
+      "native_seed": 0
+    },
+    {
+      "allocation_id": "rep-002-pos-001",
+      "repetition": 2,
+      "position": 1,
+      "task_id": "3",
+      "native_seed": 1
+    },
+    {
+      "allocation_id": "rep-002-pos-002",
+      "repetition": 2,
+      "position": 2,
+      "task_id": "10",
+      "native_seed": 1
+    },
+    {
+      "allocation_id": "rep-002-pos-003",
+      "repetition": 2,
+      "position": 3,
+      "task_id": "33",
+      "native_seed": 1
+    },
+    {
+      "allocation_id": "rep-002-pos-004",
+      "repetition": 2,
+      "position": 4,
+      "task_id": "5",
+      "native_seed": 1
+    },
+    {
+      "allocation_id": "rep-002-pos-005",
+      "repetition": 2,
+      "position": 5,
+      "task_id": "40",
+      "native_seed": 1
+    },
+    {
+      "allocation_id": "rep-002-pos-006",
+      "repetition": 2,
+      "position": 6,
+      "task_id": "11",
+      "native_seed": 1
+    },
+    {
+      "allocation_id": "rep-002-pos-007",
+      "repetition": 2,
+      "position": 7,
+      "task_id": "39",
+      "native_seed": 1
+    },
+    {
+      "allocation_id": "rep-002-pos-008",
+      "repetition": 2,
+      "position": 8,
+      "task_id": "9",
+      "native_seed": 1
+    },
+    {
+      "allocation_id": "rep-002-pos-009",
+      "repetition": 2,
+      "position": 9,
+      "task_id": "38",
+      "native_seed": 1
+    },
+    {
+      "allocation_id": "rep-002-pos-010",
+      "repetition": 2,
+      "position": 10,
+      "task_id": "27",
+      "native_seed": 1
+    },
+    {
+      "allocation_id": "rep-002-pos-011",
+      "repetition": 2,
+      "position": 11,
+      "task_id": "4",
+      "native_seed": 1
+    },
+    {
+      "allocation_id": "rep-002-pos-012",
+      "repetition": 2,
+      "position": 12,
+      "task_id": "41",
+      "native_seed": 1
+    },
+    {
+      "allocation_id": "rep-002-pos-013",
+      "repetition": 2,
+      "position": 13,
+      "task_id": "43",
+      "native_seed": 1
+    },
+    {
+      "allocation_id": "rep-002-pos-014",
+      "repetition": 2,
+      "position": 14,
+      "task_id": "23",
+      "native_seed": 1
+    },
+    {
+      "allocation_id": "rep-002-pos-015",
+      "repetition": 2,
+      "position": 15,
+      "task_id": "49",
+      "native_seed": 1
+    },
+    {
+      "allocation_id": "rep-002-pos-016",
+      "repetition": 2,
+      "position": 16,
+      "task_id": "17",
+      "native_seed": 1
+    },
+    {
+      "allocation_id": "rep-002-pos-017",
+      "repetition": 2,
+      "position": 17,
+      "task_id": "46",
+      "native_seed": 1
+    },
+    {
+      "allocation_id": "rep-002-pos-018",
+      "repetition": 2,
+      "position": 18,
+      "task_id": "14",
+      "native_seed": 1
+    },
+    {
+      "allocation_id": "rep-002-pos-019",
+      "repetition": 2,
+      "position": 19,
+      "task_id": "12",
+      "native_seed": 1
+    },
+    {
+      "allocation_id": "rep-002-pos-020",
+      "repetition": 2,
+      "position": 20,
+      "task_id": "42",
+      "native_seed": 1
+    },
+    {
+      "allocation_id": "rep-002-pos-021",
+      "repetition": 2,
+      "position": 21,
+      "task_id": "47",
+      "native_seed": 1
+    },
+    {
+      "allocation_id": "rep-002-pos-022",
+      "repetition": 2,
+      "position": 22,
+      "task_id": "0",
+      "native_seed": 1
+    },
+    {
+      "allocation_id": "rep-002-pos-023",
+      "repetition": 2,
+      "position": 23,
+      "task_id": "20",
+      "native_seed": 1
+    },
+    {
+      "allocation_id": "rep-002-pos-024",
+      "repetition": 2,
+      "position": 24,
+      "task_id": "34",
+      "native_seed": 1
+    },
+    {
+      "allocation_id": "rep-002-pos-025",
+      "repetition": 2,
+      "position": 25,
+      "task_id": "1",
+      "native_seed": 1
+    },
+    {
+      "allocation_id": "rep-002-pos-026",
+      "repetition": 2,
+      "position": 26,
+      "task_id": "28",
+      "native_seed": 1
+    },
+    {
+      "allocation_id": "rep-002-pos-027",
+      "repetition": 2,
+      "position": 27,
+      "task_id": "7",
+      "native_seed": 1
+    },
+    {
+      "allocation_id": "rep-002-pos-028",
+      "repetition": 2,
+      "position": 28,
+      "task_id": "36",
+      "native_seed": 1
+    },
+    {
+      "allocation_id": "rep-002-pos-029",
+      "repetition": 2,
+      "position": 29,
+      "task_id": "15",
+      "native_seed": 1
+    },
+    {
+      "allocation_id": "rep-002-pos-030",
+      "repetition": 2,
+      "position": 30,
+      "task_id": "21",
+      "native_seed": 1
+    }
+  ],
+  "schedule_sha256": "dbb7abf3818b5b3cd8cea8fb1efa0583ef416180a7d1a7196d8eb623b64f3cb6",
+  "planned_runs": 60,
+  "planned_output": "runs/tau2-baseline-luna-deepseek1017-train-01",
+  "python": "3.12.3",
+  "validation_history": {
+    "full_offline_tests_passed": 128,
+    "implementation_commit": "1edc6d07e7203f1751c891ad1f7011f997fa6d8f",
+    "new_paid_model_requests_at_freeze": 0
+  }
+}
