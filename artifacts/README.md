@@ -2,6 +2,8 @@
 
 [무기억 기준선 결과 receipt](pilots/20261115-tau2-baseline-screening-results.json)와 [행동 검토](analyses/20261115-tau2-baseline-behavior-review.json)는 동결한 60배정 중 55회 채점·44회 공식 성공·오류 1회·미시작 4회를 기록한다. [DB 채점 진단](analyses/20261115-tau2-train-grading-diagnostic.json)은 모델 호출 없는 별도 점검이다. 공개 근거·단일 검토자의 주석과 고정 채점의 정합성 문제는 [결과 보고서](../docs/reports/20261115-tau2-baseline-screening-results.md)를 따른다. 분석 자료를 worker/writer 입력으로 사용하지 않는다.
 
+[새 측정 공유 registry](data-releases/20261115-baseline-screening.json)는 기존 보관본과 별도로 추가한 약 15.2MB의 원본·코드 사본 묶음이다. 7개 업로드 파일을 재다운로드해 바이트·해시와 위치를 검증했다. 기존 실행 보관본은 교체하지 않았으며 [공유·복원 안내](../docs/data/team-run-sharing.md)를 따른다.
+
 [기억 도구 노출 검사](analyses/20261114-memory-tool-visibility.json)는 기존 네 실행 폴더의 요청 744개를 읽어 도구 스키마·auto 선택·모델 원응답과 기억 반환의 대응을 검사한 분석 자료다. 원본 로그·요청/응답 해시와 run별 첫 요청을 남긴다. 새 모델 실험이나 미조회 원인의 인과 검증으로 취급하지 않으며 [진단 결과와 재검증 명령](../docs/reports/20261114-memory-retrieval-diagnosis.md)을 따른다.
 
 [팀 원본 공유 registry](data-releases/20261114-team-runs.json)는 Google Drive에 업로드한 압축본·manifest·복원 안내의 파일 ID/링크와 기준 코드 commit을 보존한다. 7개 파일의 재다운로드·바이트/해시 대조, 폴더 위치·파일 크기 확인 결과를 담는다. 큰 압축본과 전체 inventory는 Git 밖에 두며 [다운로드·복원 안내](../docs/data/team-run-sharing.md)를 따른다.

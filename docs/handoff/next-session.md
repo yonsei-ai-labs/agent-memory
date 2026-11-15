@@ -57,6 +57,8 @@
 
 원본은 `runs/tau2-baseline-luna-deepseek1017-train-01`이다. [결과 receipt](../../artifacts/pilots/20261115-tau2-baseline-screening-results.json)·[공개 근거/주석](../../artifacts/analyses/20261115-tau2-baseline-behavior-review.json)·[DB 채점 진단](../../artifacts/analyses/20261115-tau2-train-grading-diagnostic.json)을 연결했다. 공식 성공은 참조에 DB 변경이 있는 과제 12/23, 없는 과제 32/32다. 오류를 사후 제외해 기억 효과나 일반 난도를 확정하지 않는다. 저장 원본은 약 81.4MiB이며 이전 48회와 작업량이 달라 저장량 차이의 인과 효과를 주장하지 않는다.
 
+새 원본과 재검증용 코드 사본은 [팀 Drive 증분 묶음](https://drive.google.com/drive/folders/1ku0IRmXZYz34K1BlCuLjDAxX7Ly-f73l)에 공유했다. [registry](../../artifacts/data-releases/20261115-baseline-screening.json)와 [복원 안내](../data/team-run-sharing.md)를 따르며 이전 15개 실행의 보관본과 혼동하지 않는다. 약 15.2MB의 압축본과 안내 등 7개 업로드 파일은 모두 재다운로드·바이트/해시 검증했다.
+
 다음은 **7의 질문 시점/고정 금액, 39의 보험 조건, 11의 사용자 추가 제약을 독립 재검토**하고, 17·23·14·42·21에서 재사용할 절차와 원경험의 공개 범위를 정하는 일이다. 39의 두 번째 실패에는 실제 부적합 취소·누락이 있으므로 첫 반복의 채점 충돌 설명을 전체에 적용하지 않는다. 더 어려운 과제가 곧 기억 필요 과제는 아니다. 숨은 정답·분석 주석을 writer에 보충하지 않고, 개발 선정 기록과 확인용 새 반복을 분리한다. 이번 무기억 조건에는 기억 도구가 없어서 자율 조회 0회의 원인을 추가 식별한 것도 아니다.
 
 새 모델 호출 없이 `uv run --frozen --extra tau2 python scripts/review_tau2_baseline_screening.py`로 동결 참조·원본·receipt·주석 연결을 재검증한다. 전체 128개 테스트는 실제 호출 전 통과했고, 공개 분석 테스트 4개가 별도로 통과했다. 아래 과거 단계의 ‘추가 호출 없음’·미정 비용 설명은 해당 단계의 이력이다.

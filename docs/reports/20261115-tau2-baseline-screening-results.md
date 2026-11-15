@@ -83,6 +83,8 @@ run마다 native 200단계·오류 10회·요청 200회·보고 비용 $0.10·60
 
 원본은 `runs/tau2-baseline-luna-deepseek1017-train-01`에 있다. 파일 6,591개·약 81.4MiB이며, 고유 확정 state blob은 938개·약 21.5MiB다. 이전 48회와 작업량·기억 상태가 달라 저장량 비율을 최적화의 인과 효과로 주장하지 않는다. 완료 run의 출처는 과거 commit에 보존하면서 현재 head의 누적 복사를 줄이는 새 실행 경로를 사용했다.
 
+원본과 재검증용 코드 사본은 [팀 Drive의 새 묶음](https://drive.google.com/drive/folders/1ku0IRmXZYz34K1BlCuLjDAxX7Ly-f73l)에 공유했다. 압축 크기는 15,238,834 bytes이며 7개 업로드 파일의 재다운로드 검증을 마쳤다. [공유 registry](../../artifacts/data-releases/20261115-baseline-screening.json)와 [복원 안내](../data/team-run-sharing.md)를 따른다. 압축 안 코드는 결과 commit `7243fef` 시점이며 이 업로드 기록은 이후 Git에 추가했다.
+
 ## 이 측정으로 정하는 다음 단계
 
 1. **정답·시나리오 정합성을 먼저 정리한다.** 7의 질문 시점과 고정값, 39의 보장 사유, 11의 원래 결제수단 제약을 독립 검토할 자료로 남긴다. 현재 시각·사용자 제약을 고치는 진단이 필요하면 새 버전으로 분리한다.
