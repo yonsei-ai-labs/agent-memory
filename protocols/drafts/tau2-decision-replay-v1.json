@@ -1,0 +1,25 @@
+{
+  "profile_version": "1.0",
+  "intent": "retrospective_decision_replay",
+  "status": "draft",
+  "diagnosis_ref": {
+    "path": "artifacts/analyses/20261115-tau2-baseline-failure-diagnosis.json",
+    "sha256": "669583158504c06935e726b37786170578fb5bf79eb260b25ef667bce2481d83"
+  },
+  "memo_ref": {
+    "path": "protocols/diagnostics/decision-replay-researcher-memos-v1.json",
+    "sha256": "8228cd584ae2fdc293b4d5df11828cfbe0727d260aa1c3aa2f115b6a660e447f"
+  },
+  "repetitions": 20,
+  "schedule_seed": null,
+  "conditions": [
+    "original",
+    "reasoning_medium",
+    "memo_researcher"
+  ],
+  "guards": {
+    "max_model_requests": null,
+    "max_reported_cost_usd": null,
+    "max_seconds": null
+  }
+}

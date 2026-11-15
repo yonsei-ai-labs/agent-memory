@@ -1,0 +1,17 @@
+{
+  "format": "agent-memory-researcher-memos/v1",
+  "author_kind": "researcher_curated",
+  "author_blinded_to_outcome": false,
+  "author_access": "Failure traces and reference-based diagnostic analysis were visible to the author.",
+  "content_scope": "Procedural reminders grounded in the policy and visible decision context; no case-specific answers, reservation IDs, or unobserved flight times.",
+  "notes": {
+    "task-17-rep-1": "Separate changing flights from changing cabin. Basic economy restricts replacing flights, but the policy permits a cabin change while retaining all flights if no segment has been flown. Check the scope of the rule before refusing, and obtain confirmation for the actual permitted update.",
+    "task-23-rep-2": "Check payment-method limits before booking: at most one travel certificate per reservation. If the user wants to use several certificates, discuss separate reservations and obtain agreement on passengers and payments before any booking. A tool accepting a payment combination does not establish that the policy permits it.",
+    "task-14-rep-2": "A free checked-bag allowance is not a request to add that many bags. Do not add checked bags the user does not need. Confirm the actual total quantity if unclear and include the intended quantity in the booking details before obtaining approval.",
+    "task-42-rep-1": "Distinguish the account owner from the named passengers on every reservation. Do not assume that all bookings in one profile should be cancelled. Compare every relevant booking against all of the user's date and city constraints, and obtain approval for the specific reservations to change.",
+    "task-42-rep-2": "Before saying that an itinerary is absent, return to the actual reservation tool results. Check all relevant dates, origins, destinations and passengers against the user's stated constraints. An incomplete summary is not evidence that the remaining bookings do not exist.",
+    "task-39-rep-2": "Evaluate cancellation eligibility separately for every reservation using the simulated policy clock, actual booking timestamp, cabin, flight state and covered insurance reason. Insurance ownership alone is insufficient, and a booking several days old is not within 24 hours. Review the whole reservation list before declaring which flights are upcoming.",
+    "task-21-rep-1": "Before updating a same-day round trip, establish when the outbound trip arrives and ensure that the proposed return can depart after that arrival. If reservation details omit required times, retrieve the schedule before committing. When explaining a returned payment adjustment, check its sign so a refund is not described as a charge.",
+    "task-20-rep-1": "Ground date judgments in the simulated current time supplied by the policy. Do not substitute the real-world date or declare a requested date past without comparing it to that clock. Clarify the intended date without inventing a different travel year."
+  }
+}

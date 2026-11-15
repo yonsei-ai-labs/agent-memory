@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:agent-memory-eval:decision-replay:1.0",
+  "title": "Single-response retrospective diagnostic; no business tool execution",
+  "type": "object", "additionalProperties": false,
+  "required": ["profile_version", "intent", "status", "diagnosis_ref", "memo_ref", "repetitions", "schedule_seed", "conditions", "guards"],
+  "properties": {
+    "profile_version": {"const": "1.0"},
+    "intent": {"const": "retrospective_decision_replay"},
+    "status": {"enum": ["draft", "ready"]},
+    "diagnosis_ref": {"$ref": "#/$defs/ref"},
+    "memo_ref": {"$ref": "#/$defs/ref"},
+    "repetitions": {"type": ["integer", "null"], "minimum": 1},
+    "schedule_seed": {"type": ["integer", "null"], "minimum": 0},
+    "conditions": {"const": ["original", "reasoning_medium", "memo_researcher"]},
+    "guards": {
+      "type": "object", "additionalProperties": false,
+      "required": ["max_model_requests", "max_reported_cost_usd", "max_seconds"],
+      "properties": {
+        "max_model_requests": {"type": ["integer", "null"], "minimum": 1},
+        "max_reported_cost_usd": {"type": ["number", "null"], "exclusiveMinimum": 0},
+        "max_seconds": {"type": ["integer", "null"], "minimum": 1}
+      }
+    }
+  },
+  "$defs": {"ref": {"type": "object", "additionalProperties": false, "required": ["path", "sha256"],
+    "properties": {"path": {"type": "string", "minLength": 1}, "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}}}
+}
