@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:agent-memory-eval:baseline-screening:1.0",
+  "title": "Explicit no-memory development screening; journal remains v1.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["profile_version", "intent", "status", "connection_profile_ref", "selection", "repetitions", "native_seeds", "schedule_seed", "benchmark_limits", "run_guards", "guards"],
+  "properties": {
+    "profile_version": {"const": "1.0"},
+    "intent": {"const": "no_memory_screening"},
+    "status": {"enum": ["draft", "ready"]},
+    "connection_profile_ref": {
+      "type": "object", "additionalProperties": false, "required": ["path", "sha256"],
+      "properties": {"path": {"type": "string", "minLength": 1}, "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}
+    },
+    "selection": {
+      "type": "object", "additionalProperties": false, "required": ["mode", "task_ids"],
+      "properties": {
+        "mode": {"enum": ["all_train", "explicit_train"]},
+        "task_ids": {"type": ["array", "null"], "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
+      }
+    },
+    "repetitions": {"type": ["integer", "null"], "minimum": 1},
+    "native_seeds": {"type": ["array", "null"], "minItems": 1, "items": {"type": "integer", "minimum": 0}},
+    "schedule_seed": {"type": ["integer", "null"], "minimum": 0},
+    "benchmark_limits": {
+      "anyOf": [
+        {"type": "null"},
+        {"type": "object", "additionalProperties": false, "required": ["max_steps", "max_errors"],
+         "properties": {"max_steps": {"type": "integer", "minimum": 1}, "max_errors": {"type": "integer", "minimum": 1}}}
+      ]
+    },
+    "run_guards": {"$ref": "#/$defs/guards"},
+    "guards": {"$ref": "#/$defs/guards"}
+  },
+  "$defs": {
+    "guards": {
+      "anyOf": [
+        {"type": "null"},
+        {"type": "object", "additionalProperties": false, "required": ["max_model_requests", "max_reported_cost_usd", "max_seconds"],
+         "properties": {
+           "max_model_requests": {"type": ["integer", "null"], "minimum": 1},
+           "max_reported_cost_usd": {"type": ["number", "null"], "exclusiveMinimum": 0},
+           "max_seconds": {"type": ["integer", "null"], "minimum": 1}
+         }}
+      ]
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "profile_version": "1.0",
+  "intent": "no_memory_screening",
+  "status": "draft",
+  "connection_profile_ref": {
+    "path": "protocols/checks/openrouter-tau2-smoke.json",
+    "sha256": "fab9e52495a7fbc122ffcbcdc5fc9cfe59d8f61d18f421e822a1298a0de68d49"
+  },
+  "selection": {"mode": "all_train", "task_ids": null},
+  "repetitions": 2,
+  "native_seeds": [0, 1],
+  "schedule_seed": 20261115,
+  "benchmark_limits": {"max_steps": 200, "max_errors": 10},
+  "run_guards": {"max_model_requests": 200, "max_reported_cost_usd": 0.1, "max_seconds": 600},
+  "guards": {"max_model_requests": 12000, "max_reported_cost_usd": null, "max_seconds": 10800}
+}

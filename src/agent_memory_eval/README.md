@@ -14,3 +14,5 @@
 | `analysis` | 합성 재계산, native 연결/파일럿의 출처·노출·비용·채점 audit와 조건별 기술 통계, 원본과 버전을 분리한 이관 요약 제외 행동 비교. 효과·근거 주석·통계 추론은 후속 |
 
 [상세 설계](../../docs/design/architecture.md)와 [개발 계획](../../docs/development/roadmap.md)의 전체 연구 범위는 유지한다. 가짜 환경의 성공을 실제 모델/벤치의 성능으로 표시하지 않는다.
+
+[무기억 탐색 실행](../../docs/development/tau2-baseline.md)은 `runner/tau2_baseline.py`·`analysis/tau2_baseline.py`·별도 CLI로 준비 검사·배정·회차 격리·run/전체 중단·역할별 비용·원본 재검증을 구현했다. 실제 60회 실행은 아직 없으며, 비용이 미정인 draft는 live를 거부한다.
