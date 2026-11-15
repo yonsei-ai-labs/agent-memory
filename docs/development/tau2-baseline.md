@@ -1,8 +1,10 @@
 # τ² 무기억 탐색 실행기
 
-2026-11-15 · 오프라인 구현·native 모의 HTTP 검증 · 새 유료 실행 전
+2026-11-15 · 오프라인 구현·native 모의 HTTP 검증 · 실제 무기억 탐색 결과 연결
 
-**공식 train 과제의 무기억 반복을 단일 v1.1 journal에 기록하는 전용 실행기를 구현했다.** [다음 단계 초안](../research/tau2-baseline-screening-draft.md)의 실행 준비 부분이다. 실제 60회 수행·난도 측정·기억 정책 비교는 아직 하지 않았다.
+**공식 train 과제의 무기억 반복을 단일 v1.1 journal에 기록하는 전용 실행기를 구현했고, 별도로 동결한 프로필로 실제 측정했다.** [측정 결과](../reports/20261115-tau2-baseline-screening-results.md)는 계획 60회 중 56회 시작·55회 채점·44회 공식 성공이다. HTTP 503 요청의 비용 미확인으로 중단해 오류 1회·미시작 4회를 보존했다. 기억 정책 비교나 60회 전체 완료로 보고하지 않는다.
+
+원래 초안은 그대로 두고 [ready 프로필](../../protocols/pilots/tau2-baseline-screening-v1.json)과 [실행 전 동결 기록](../../artifacts/pilots/20261115-tau2-baseline-screening-protocol.json)에 새 $1 한도를 고정했다. 확인된 보고 비용은 $0.1055333152에 미확인 요청 1건이 더해진다. 중단한 원본을 자동 재개하지 않는다.
 
 ## 준비와 실행 방법
 
@@ -17,7 +19,7 @@ uv run --frozen --extra tau2 python scripts/run_tau2_baseline.py
 uv run --frozen --extra tau2 python scripts/run_tau2_baseline.py --preflight
 ```
 
-현재 preflight는 30과제·60배정과 미정 필드 `guards.max_reported_cost_usd`를 보고한다. 배정 해시는 `dbb7abf3818b5b3cd8cea8fb1efa0583ef416180a7d1a7196d8eb623b64f3cb6`이다. 실행 전 새 프로필의 모든 한도·비용·반복과 구현을 확정하고 해시를 보존한다. live는 ready 프로필과 새/빈 출력 폴더를 요구한다. 과거 폴더의 자동 재개·덮어쓰기는 지원하지 않는다.
+기본 초안의 preflight는 30과제·60배정과 미정 필드 `guards.max_reported_cost_usd`를 보고한다. 배정 해시는 `dbb7abf3818b5b3cd8cea8fb1efa0583ef416180a7d1a7196d8eb623b64f3cb6`이다. 실행 전 새 프로필의 모든 한도·비용·반복과 구현을 확정하고 해시를 보존한다. live는 ready 프로필과 새/빈 출력 폴더를 요구한다. 과거 폴더의 자동 재개·덮어쓰기는 지원하지 않는다.
 
 ## 실행 경로와 기록
 
@@ -45,4 +47,4 @@ uv run --frozen --extra tau2 python -m unittest discover -s tests -p 'test_tau2_
 
 [행동 검증](../../tests/test_tau2_baseline.py)은 fake HTTP를 사용한다. 과제별 실제 Luna 성공률·기억 효용·일반 전이의 결과와 구분한다. 실제 실행과 실패 경로 주석·경험 재사용 후보의 선정은 이 구현 뒤의 실증 단계다.
 
-새 12개를 포함한 전체 128개 테스트가 통과했다. 기본 설계·링크·보관본 검사, 새 배치 스키마의 메타 검증, 이전 48회 동결 파일 64개 해시 대조도 통과했다. 기존 실행 코드·동결 프로토콜·원본은 바꾸지 않았으며 새 유료 호출은 0이다.
+실제 호출 전 새 12개를 포함한 전체 128개 테스트가 통과했다. 기본 설계·링크·보관본 검사, 새 배치 스키마의 메타 검증, 이전 48회 동결 파일 64개 해시 대조도 통과했다. 이후 별도 ready 프로필의 측정과 읽기 전용 원본 감사가 완료됐다. [결과 receipt](../../artifacts/pilots/20261115-tau2-baseline-screening-results.json)·[행동 검토](../../artifacts/analyses/20261115-tau2-baseline-behavior-review.json)·[오프라인 DB 채점 진단](../../artifacts/analyses/20261115-tau2-train-grading-diagnostic.json)은 분석 전용이며 worker/writer 입력으로 사용하지 않는다. 새 공개 분석 테스트 4개는 기존 전체 128개 실행 이력과 별도로 통과했다.

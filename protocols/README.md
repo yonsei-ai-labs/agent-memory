@@ -1,5 +1,7 @@
 # 실험 계획
 
+[무기억 측정 ready 프로필](pilots/tau2-baseline-screening-v1.json)은 사용자 요청에 따라 새 전체 $1 한도를 확정한 별도 실행 설정이다. [프로토콜과 동결 기록](../docs/research/baseline-screening-pilot.md)을 유지한다. 실제 측정은 55회 채점 뒤 HTTP 503 비용 미확인으로 중단됐으며 [결과와 결측](../docs/reports/20261115-tau2-baseline-screening-results.md)을 보존한다. 과거 폴더를 자동 재개하는 지시가 아니다.
+
 [무기억 탐색 초안](drafts/tau2-baseline-screening-v1.json)은 별도 배치 실행기로 준비 검사·실행·감사를 지원한다. 공식 train 30개 × 2회와 반복별 seed·한도를 검토용으로 제안하며, 전체 비용 상한은 null이라 live가 차단된다. [구현과 검증](../docs/development/tau2-baseline.md)을 따르고 이전 48회의 승인·연결 스키마·원본은 유지한다.
 
 [현재 τ² 두 회차 초안 v1.1](drafts/tau2-two-pass-v1.1.json)은 같은 Luna 작업자에서 기억 없음·종료 후 작성·수행 중 작성·병행을 비교하는 설정 예시다. 자기 경험 은행과 여러 과제의 혼합 은행을 지원하는 방향으로 구성했다. [v1.0 초안](drafts/tau2-two-pass.json)은 호환 확인용으로 보존하며 동시에 현재 실행 계획으로 사용하지 않는다.

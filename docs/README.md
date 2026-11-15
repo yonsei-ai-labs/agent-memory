@@ -27,6 +27,7 @@
 | 다음 train 과제 후보·DB 누락 탐지·행동과 설명 주석 | [과제 후보와 채점 기준](research/tau2-task-selection-and-rubric.md) |
 | 전체 train 무기억 탐색·경험 재사용 후보표·미정 실행 한도 | [다음 단계 초안](research/tau2-baseline-screening-draft.md) |
 | 무기억 배치의 준비 검사·회차 격리·개별/전체 중단·원본 감사 | [무기억 탐색 실행](development/tau2-baseline.md) |
+| 공식 train 30개 무기억 측정: 55회 채점·44회 성공·실패 경로와 채점 한계 | [측정 결과](reports/20261115-tau2-baseline-screening-results.md) |
 | 고정 은행의 본문 시작 제공·자율 조회와 여러 과제/반복 실행 | [전달 비교 실행](development/tau2-delivery.md) |
 | 세 과제·네 조건 48회 결과·실패 경로·시나리오 제시·한계 | [전달 비교 결과](reports/20261114-tau2-delivery-development-results.md) |
 | 자율 조회 0회의 도구 노출·원응답·라우팅·설계 가설 재점검 | [기억 조회 진단](reports/20261114-memory-retrieval-diagnosis.md) |
