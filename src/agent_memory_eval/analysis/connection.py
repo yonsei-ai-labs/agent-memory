@@ -73,7 +73,7 @@ def audit_connection(root):
                     if payload["cost_usd"] != response["usage"].get("cost"):
                         raise ContractError("Cost differs from provider response")
                     total += Decimal(str(payload["cost_usd"]))
-                tokens += response.get("usage", {}).get("total_tokens", 0)
+                tokens += (response.get("usage") or {}).get("total_tokens", 0)
                 models[response["model"]] += 1
                 providers[str(response.get("provider", "unknown"))] += 1
     if scan["tail_bytes"] or scan["incomplete_runs"] or scan["pending_requests"]:

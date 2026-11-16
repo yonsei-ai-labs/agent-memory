@@ -28,7 +28,10 @@ class Tau2ConnectionTests(unittest.TestCase):
     def test_historical_v1_profile_still_runs_and_audits(self):
         self.native_conversation("openrouter-tau2-smoke-v1.0.json")
 
-    def native_conversation(self, filename):
+    def test_null_usage_is_preserved_in_native_summary_and_audit(self):
+        self.native_conversation("openrouter-tau2-smoke.json", null_usage=True)
+
+    def native_conversation(self, filename, *, null_usage=False):
         config = json.loads((ROOT/"protocols/checks"/filename).read_text())
         catalog = {"data": [dict(id=config[role]["model_id"],canonical_slug=config[role]["model_id"],
             supported_parameters=list(config[role]["parameters"]),pricing=dict(prompt="0.000001",completion="0.000001"))
@@ -51,6 +54,8 @@ class Tau2ConnectionTests(unittest.TestCase):
             wire=json.loads(request.data)
             network_requests.append(wire)
             body=response()
+            if null_usage and len(network_requests) == 1:
+                body["usage"] = None
             body["id"]="response-"+str(len(network_requests))
             body["model"]=wire["model"]
             if wire["model"]==config["user_simulator"]["model_id"]:
@@ -71,6 +76,19 @@ class Tau2ConnectionTests(unittest.TestCase):
         with TemporaryDirectory() as folder, patch.dict("os.environ",OPENROUTER_API_KEY="test-key-only"):
             with Journal(folder,"native-mock") as journal, patch.object(Tau2Bridge,"__init__",init):
                 report=run_native_check(journal,config,prepared,live=True)
+                if null_usage:
+                    self.assertTrue(report["unknown_cost"])
+                    self.assertEqual(report["http_calls"], 1)
+                    self.assertEqual(report["reported_tokens"], 0)
+                    finishes = [e["payload"] for e in journal.events.values() if e["type"] == "model.request_finished"]
+                    first = next(p for p in finishes if p["response_ref"] is not None)
+                    self.assertIsNone(journal.blobs.get(first["response_ref"])["usage"])
+                    self.assertEqual(first["cost_status"], "unknown")
+                    (Path(folder)/"connection-summary.json").write_bytes(canonical(report))
+                    audit = audit_connection(folder)
+                    self.assertTrue(audit["unknown_cost"])
+                    self.assertEqual(audit["reported_tokens"], 0)
+                    return
                 self.assertEqual(report["status"],"completed",report)
                 self.assertEqual(report["grading_status"],"graded")
                 self.assertIsInstance(report["official_success"],bool)

@@ -232,6 +232,17 @@ class NativeBaselineTests(unittest.TestCase):
             self.assertEqual(summary["runs"][0]["error_code"], "BATCH_CALL_LIMIT")
             audit_baseline(folder)
 
+    def test_exact_batch_cap_on_normal_completion_has_no_stop_reason(self):
+        profile = ready_profile()
+        profile["guards"]["max_model_requests"] = 16
+        with TemporaryDirectory() as folder:
+            summary = self.execute(folder, profile)
+            self.assertEqual(summary["http_calls"], 16)
+            self.assertEqual(summary["counts"]["graded"], 4)
+            self.assertEqual(summary["counts"]["skipped"], 0)
+            self.assertIsNone(summary["stop_reason"])
+            audit_baseline(folder)
+
     def test_missing_cost_stops_the_entire_batch(self):
         with TemporaryDirectory() as folder:
             summary = self.execute(folder, unknown=True)

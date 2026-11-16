@@ -90,7 +90,8 @@ class SpendGuard:
         self.calls += 1
 
     def after(self, response):
-        cost = response.get("usage", {}).get("cost")
+        usage = response.get("usage")
+        cost = usage.get("cost") if isinstance(usage, dict) else None
         if type(cost) not in (int, float) or not math.isfinite(cost) or cost < 0:
             self.unknown_cost = True
         else:

@@ -245,6 +245,6 @@ def run_native_check(journal, config, prepared, *, live):
         native_steps=orch.step_count, native_tool_errors=orch.num_errors,
         returned_models=dict(Counter(r.get("model", "unknown") for r in responses)),
         returned_providers=dict(Counter(str(r.get("provider", "unknown")) for r in responses)),
-        reported_tokens=sum(r.get("usage", {}).get("total_tokens", 0) for r in responses),
+        reported_tokens=sum((r.get("usage") or {}).get("total_tokens", 0) for r in responses),
         unknown_cost=guard.unknown_cost or any(e["payload"]["cost_status"] == "unknown" for e in finished),
         error_code=error_code, report_ref=report_ref, memory_enabled=False)

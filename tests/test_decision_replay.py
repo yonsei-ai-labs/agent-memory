@@ -117,6 +117,31 @@ class ArgumentScreenTests(unittest.TestCase):
         args = dict(flights=[dict(flight_number="out", date="2024-05-20"), dict(flight_number="back", date="2024-05-20")])
         self.assertEqual(screen_reply("21", dict(tool_calls=[tool("update_reservation_flights", args)]), db)["status"], "violation_detected")
 
+    def test_next_day_arrival_rejects_same_day_return_and_accepts_later_return(self):
+        db = dict(flights=dict(out=dict(scheduled_departure_time_est="22:00:00", scheduled_arrival_time_est="01:30:00+1"),
+            back=dict(scheduled_departure_time_est="02:00:00", scheduled_arrival_time_est="04:00:00")))
+        for date, expected in (("2024-05-20", "violation_detected"), ("2024-05-21", "argument_check_passed")):
+            with self.subTest(return_date=date):
+                args = dict(flights=[dict(flight_number="out", date="2024-05-20"), dict(flight_number="back", date=date)])
+                self.assertEqual(screen_reply("21", dict(tool_calls=[tool("update_reservation_flights", args)]), db)["status"], expected)
+
+    def test_day_suffix_is_applied_even_when_clock_is_later_and_legacy_overnight_is_retained(self):
+        db = dict(flights=dict(out=dict(scheduled_departure_time_est="04:00:00", scheduled_arrival_time_est="06:00:00+1"),
+            back=dict(scheduled_departure_time_est="07:00:00", scheduled_arrival_time_est="09:00:00")))
+        args = dict(flights=[dict(flight_number="out", date="2024-05-20"), dict(flight_number="back", date="2024-05-20")])
+        message = dict(tool_calls=[tool("update_reservation_flights", args)])
+        self.assertEqual(screen_reply("21", message, db)["status"], "violation_detected")
+        db["flights"]["out"].update(scheduled_departure_time_est="22:00:00", scheduled_arrival_time_est="01:30:00")
+        args["flights"][1]["date"] = "2024-05-21"
+        self.assertEqual(screen_reply("21", dict(tool_calls=[tool("update_reservation_flights", args)]), db)["status"], "argument_check_passed")
+
+    def test_invalid_day_suffix_and_time_remain_unparseable(self):
+        args = dict(flights=[dict(flight_number="out", date="2024-05-20")])
+        for arrival in ("01:30:00+invalid", "01:30:00+-1", "24:00:00+1", "01:30:00+1+1", "01:30:00+999999999999"):
+            with self.subTest(arrival=arrival):
+                db = dict(flights=dict(out=dict(scheduled_departure_time_est="22:00:00", scheduled_arrival_time_est=arrival)))
+                self.assertEqual(screen_reply("21", dict(tool_calls=[tool("update_reservation_flights", args)]), db)["status"], "unparseable_or_unknown_arguments")
+
     def test_text_snapshots_remain_manual_even_if_a_new_reply_uses_a_tool(self):
         for task in ["17", "20", "39", "42"]:
             self.assertEqual(screen_reply(task, dict(tool_calls=[tool("cancel_reservation", {})]), {})["status"], "manual_review_required")
@@ -156,6 +181,7 @@ class ReplayIntegrationTests(unittest.TestCase):
                 summary = replay.run_replay(journal, profile, prepared, opener=opener)
                 self.assertTrue(all(e["payload"]["official_score"] is None for e in journal.events.values() if e["type"]=="outcome.scored"))
             self.assertEqual(summary["counts"],dict(response=24))
+            self.assertIsNone(summary["stop_reason"])
             self.assertFalse(summary["business_tool_execution"])
             self.assertEqual(len(seen),24)
             load = replay.load_ref
@@ -215,6 +241,63 @@ class ReplayIntegrationTests(unittest.TestCase):
         self.assertEqual(summary["counts"],dict(response=24))
         self.assertEqual(summary["status"],"partial")
         self.assertEqual(summary["unknown_cost_requests"],1)
+        self.assertEqual(summary["stop_reason"], "unknown_cost")
+
+    def test_null_usage_preserves_the_reply_and_stops_remaining_allocations(self):
+        profile = ready()
+        seen = []
+        body = response()
+        body["usage"] = None
+        def opener(*args, **kwargs):
+            seen.append(1)
+            return Reply(body)
+        with TemporaryDirectory() as folder:
+            with Journal(folder, "test-replay-null-usage") as journal:
+                summary = replay.run_replay(journal, profile, self.prepared(profile), opener=opener)
+                self.assertEqual(journal.blobs.get(summary["runs"][0]["response_ref"]), body)
+            self.assertEqual(replay.audit_replay(folder), summary)
+        self.assertEqual(len(seen), 1)
+        self.assertEqual(summary["counts"], dict(response=1, skipped=23))
+        self.assertIsNone(summary["runs"][0]["usage"])
+        self.assertEqual(summary["unknown_cost_requests"], 1)
+        self.assertEqual(summary["stop_reason"], "unknown_cost")
+
+    def test_final_success_after_deadline_does_not_mark_a_batch_stop(self):
+        profile = ready()
+        profile["guards"]["max_model_requests"] = 100
+        prepared = self.prepared(profile)
+        original_guard = replay.spend_guard
+        guards, seen = [], []
+        def guard(limits):
+            result = original_guard(limits)
+            guards.append(result)
+            return result
+        def opener(*args, **kwargs):
+            seen.append(1)
+            if len(seen) == 24:
+                guards[0].deadline = 0
+            return Reply(response())
+        with TemporaryDirectory() as folder, patch.object(replay, "spend_guard", side_effect=guard):
+            with Journal(folder, "test-replay-final-deadline") as journal:
+                summary = replay.run_replay(journal, profile, prepared, opener=opener)
+        self.assertEqual(summary["counts"], dict(response=24))
+        self.assertEqual(summary["status"], "completed")
+        self.assertIsNone(summary["stop_reason"])
+
+    def test_final_service_error_keeps_the_real_stop_reason(self):
+        profile, seen = ready(), []
+        def opener(request, timeout):
+            seen.append(1)
+            if len(seen) == 24:
+                raise HTTPError(request.full_url, 503, "unavailable", None, io.BytesIO(b'{"error":{"message":"provider"}}'))
+            return Reply(response())
+        with TemporaryDirectory() as folder:
+            with Journal(folder, "test-replay-final-error") as journal:
+                summary = replay.run_replay(journal, profile, self.prepared(profile), opener=opener)
+        self.assertEqual(summary["counts"], dict(response=23, error=1))
+        self.assertEqual(summary["status"], "partial")
+        self.assertEqual(summary["unknown_cost_requests"], 1)
+        self.assertEqual(summary["stop_reason"], "unknown_cost")
 
 
 if __name__ == "__main__":

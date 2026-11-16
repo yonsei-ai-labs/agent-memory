@@ -170,7 +170,7 @@ def run_replay(journal, profile, prepared, *, opener=None):
     controller = RunContext(journal.experiment_id, None, None, None, "controller", "prepare", "observed")
     guard, gateway = spend_guard(profile["guards"]), RecordingGateway(journal)
     stopped = None
-    for allocation in schedule:
+    for allocation_index, allocation in enumerate(schedule):
         stopped = stopped or batch_stop(guard)
         if stopped:
             journal.append([controller.event("business.transition", dict(origin="decision_replay.skipped", **allocation, reason=stopped))])
@@ -213,6 +213,9 @@ def run_replay(journal, profile, prepared, *, opener=None):
         stopped = batch_stop(guard)
         if code:
             stopped = stopped or (code.lower() if code in {"SPEND_LIMIT", "CALL_LIMIT", "TIME_LIMIT"} else "runtime_error")
+        elif allocation_index + 1 == len(schedule) and not guard.unknown_cost:
+            # No pending allocation was interrupted after the final normal reply.
+            stopped = None
     state = deepcopy(journal.state)
     state["decision_replay"]["runtime_status"] = "finished"
     journal.append([controller.at("seal").event("business.transition", dict(origin="decision_replay.finished", stop_reason=stopped))], state=state)

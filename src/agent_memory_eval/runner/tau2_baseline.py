@@ -219,7 +219,7 @@ def run_baseline(journal, profile, prepared, *, opener=None):
     controller = RunContext(journal.experiment_id, None, None, None, "controller", "prepare", "observed")
     batch = spend_guard(profile["guards"])
     stopped = None
-    for row in schedule:
+    for allocation_index, row in enumerate(schedule):
         stopped = stopped or batch_stop(batch)
         if stopped:
             journal.append([controller.event("business.transition", dict(origin="baseline.allocation_skipped",
@@ -274,6 +274,9 @@ def run_baseline(journal, profile, prepared, *, opener=None):
             stopped = code.lower()
         elif code and not (code.startswith("RUN_") or code == "INPUT_SIZE_LIMIT"):
             stopped = stopped or "runtime_error"
+        if allocation_index + 1 == len(schedule) and code is None and not batch.unknown_cost:
+            # Reaching a guard exactly when all work completes is normal completion.
+            stopped = None
     state = deepcopy(journal.state)
     state["baseline_screening"]["runtime_status"] = "finished"
     journal.append([controller.at("seal").event("business.transition", dict(origin="baseline.batch_finished",

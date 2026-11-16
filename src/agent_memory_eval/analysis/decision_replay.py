@@ -20,13 +20,25 @@ def primary_train_ids(train_ids):
     return [str(t) for t in train_ids if str(t) not in PRIMARY_EXCLUSIONS]
 
 
+def _scheduled_at(date, value):
+    clock, separator, days = value.partition("+")
+    if separator and (not days.isascii() or not days.isdecimal()):
+        raise ValueError("Invalid scheduled day offset")
+    moment = datetime.fromisoformat(date + "T" + clock)
+    if moment.tzinfo is not None:
+        raise ValueError("The benchmark schedule uses naive EST clocks")
+    return moment + timedelta(days=int(days) if separator else 0)
+
+
 def _itinerary_order(arguments, db):
     previous = None
     for leg in arguments["flights"]:
         flight = db["flights"][leg["flight_number"]]
-        departure = datetime.fromisoformat(leg["date"] + "T" + flight["scheduled_departure_time_est"])
-        arrival = datetime.fromisoformat(leg["date"] + "T" + flight["scheduled_arrival_time_est"])
+        departure = _scheduled_at(leg["date"], flight["scheduled_departure_time_est"])
+        arrival = _scheduled_at(leg["date"], flight["scheduled_arrival_time_est"])
         if arrival < departure:
+            if "+" in flight["scheduled_arrival_time_est"]:
+                raise ValueError("Explicit scheduled arrival precedes departure")
             arrival += timedelta(days=1)
         if previous is not None and departure < previous:
             return True
@@ -69,7 +81,7 @@ def screen_reply(task_id, message, db):
                 violated = _itinerary_order(arguments, db)
             if violated:
                 violations.append(call["id"])
-    except (KeyError, TypeError, ValueError, AttributeError):
+    except (KeyError, TypeError, ValueError, AttributeError, OverflowError):
         return dict(status="unparseable_or_unknown_arguments", response_kind=kind, screen=screen,
             target_write_calls=len(relevant), violations=None)
     status = "no_target_write" if not relevant else "violation_detected" if violations else "argument_check_passed"

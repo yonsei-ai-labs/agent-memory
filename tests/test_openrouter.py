@@ -73,6 +73,55 @@ class OpenRouterTests(unittest.TestCase):
         self.assertEqual(self.guard.calls, 1)
         self.assertTrue(self.guard.unknown_cost)
 
+    def test_null_or_malformed_usage_preserves_response_and_blocks_next_http(self):
+        for usage in (None, [], ["invalid"], "unavailable"):
+            with self.subTest(usage=usage):
+                guard = SpendGuard(max_calls=3, max_usd=0.25, max_seconds=30)
+                body = response()
+                body["usage"] = usage
+                calls = []
+                def opener(*args, **kwargs):
+                    calls.append(1)
+                    return Reply(body)
+                client = OpenRouterClient(MODEL, guard, route=ROUTE, opener=opener)
+                self.assertEqual(client.respond(self.request), body)
+                self.assertTrue(guard.unknown_cost)
+                self.assertEqual(guard.reported_usd, 0)
+                with self.assertRaisesRegex(ProviderError, "UNKNOWN_COST_STOP"):
+                    client.respond(self.request)
+                self.assertEqual(len(calls), 1)
+
+    def test_gateway_records_null_usage_raw_response_and_unknown_cost(self):
+        body = response()
+        body["usage"] = None
+        calls = []
+        def opener(*args, **kwargs):
+            calls.append(1)
+            return Reply(body)
+        with TemporaryDirectory() as folder, Journal(folder, "null-usage") as journal:
+            ctx = RunContext("null-usage", "r", "s", "connection", "diagnostic", "solve", "observed")
+            public = dict(role="user", content="hello")
+            journal.append([ctx.event("run.started", dict(bank_id=None, start_snapshot_id=None,
+                fresh_session=True, source_run_ids=[], task_ref=journal.blobs.put(public)))])
+            registry = SourceRegistry(journal, ctx)
+            template = registry.template({k: v for k, v in self.request.items() if k != "messages"}, roles=("worker",))
+            message = registry.template(dict(message=public), roles=("worker",))
+            client = OpenRouterClient(MODEL, self.guard, route=ROUTE, opener=opener)
+            gateway = RecordingGateway(journal)
+            gateway.call(ctx, registry, "worker", template, [(message, "/message")], client, max_requests=3)
+            with self.assertRaisesRegex(ProviderError, "UNKNOWN_COST_STOP"):
+                gateway.call(ctx, registry, "worker", template, [(message, "/message")], client, max_requests=3)
+            finishes = [e["payload"] for e in journal.events.values() if e["type"] == "model.request_finished"]
+            first, blocked = finishes
+            self.assertEqual(first["status"], "response")
+            self.assertEqual(first["cost_status"], "unknown")
+            self.assertIsNone(first["usage"])
+            self.assertIsNone(first["cost_usd"])
+            self.assertEqual(journal.blobs.get(first["response_ref"]), body)
+            self.assertEqual(blocked["delivery_status"], "not_submitted")
+            self.assertEqual(blocked["cost_status"], "not_applicable")
+            self.assertEqual(len(calls), 1)
+
     def test_call_spend_and_deadline_guards_stop_before_http(self):
         for attribute, value, code in (("max_calls", 0, "CALL_LIMIT"), ("max_usd", 0, "SPEND_LIMIT"),
                                        ("deadline", 0, "TIME_LIMIT")):
