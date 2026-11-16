@@ -1,0 +1,993 @@
+{
+  "format": "agent-memory-shared-reproduction-evidence/v1",
+  "note": "Path-normalized evidence copy for review; original byte hashes refer to the original unmodified outputs, not to this transformed JSON.",
+  "source_receipt": {
+    "path": "outputs/reproductions/20261116-baseline-diagnosis-02/receipt.json",
+    "sha256": "4b939768655034719878923c0827360f47ae42cca94bcc68f51ecee243cbdec6"
+  },
+  "receipt": {
+    "format": "agent-memory-historical-reproduction-receipt/v1",
+    "status": "passed",
+    "experiment": "baseline_diagnosis",
+    "started_at_utc": "2026-11-16T12:16:09.138043+00:00",
+    "registry_ref": {
+      "path": "${REPOSITORY}/protocols/reproductions/historical-v1.json",
+      "sha256": "fdf7e93765d966e77ff1eb61cc5c3cfaf4e9ccb6e1311a3f1a13cf0db7663ecd"
+    },
+    "implementation_commit": "1edc6d07e7203f1751c891ad1f7011f997fa6d8f",
+    "reproduction_commit": "c31a9d607cea383f800d60526381c1581e7ea2c6",
+    "protocol_lock_ref": {
+      "path": "artifacts/pilots/20261115-tau2-baseline-screening-protocol.json",
+      "sha256": "c6c3d71c7ebf28190e3983260d8c0a946697fc395f2aa3ac633ae9b2c9a52732"
+    },
+    "review_script_ref": {
+      "path": "scripts/diagnose_tau2_baseline_failures.py",
+      "sha256": "dc13e0d5cde04d8f1bf8325e409d50286cdf2799e47e9f5b4e88ca6ff302e0ef"
+    },
+    "expected_outputs": [
+      {
+        "path": "artifacts/pilots/20261115-tau2-baseline-screening-results.json",
+        "sha256": "38239cc8896f53bc805eb4287d8e1be9561b3bb0bd857c9d89674620c9693487"
+      },
+      {
+        "path": "artifacts/analyses/20261115-tau2-baseline-behavior-review.json",
+        "sha256": "99b163e6175f2a0f95165983ee645744d80dbc8d07dedb8c0d89f4af30598dfa"
+      },
+      {
+        "path": "artifacts/analyses/20261115-tau2-baseline-failure-diagnosis.json",
+        "sha256": "669583158504c06935e726b37786170578fb5bf79eb260b25ef667bce2481d83"
+      }
+    ],
+    "environment_spec": {
+      "lock_ref": {
+        "path": "uv.lock",
+        "sha256": "b87ef58cf24c2e6d1ba07ed896676e31ecfb858b3840ef1bc5faf0c334ec62a6"
+      },
+      "project_ref": {
+        "path": "pyproject.toml",
+        "sha256": "eacca6269ebd090c7c4c2c52c7a0379ad73670a25d34bc711a67a60c1584bf0d"
+      },
+      "python_version": "3.12",
+      "extras": [
+        "tau2"
+      ]
+    },
+    "inputs_spec": [
+      {
+        "kind": "run",
+        "path": "runs/tau2-baseline-luna-deepseek1017-train-01",
+        "log_sha256": "ec0994a536729872ce8ee7ff06ae63c2e640e70091146b9a361535174ee8fbb5"
+      },
+      {
+        "kind": "git_checkout",
+        "path": "data/tau2-bench",
+        "commit": "c06b07dd7c4d4ec61ba6ff9bcdf0b15dd7ef36d4"
+      }
+    ],
+    "inputs_root": "${REPOSITORY}",
+    "worktree": "${REPOSITORY}/outputs/reproductions/20261116-baseline-diagnosis-02/checkout",
+    "source_inputs_preserved": true,
+    "staged_inputs_preserved": true,
+    "historical_code_preserved": true,
+    "steps": [
+      {
+        "phase": "create_worktree",
+        "timestamp_utc": "2026-11-16T12:16:09.184885+00:00"
+      },
+      {
+        "phase": "copy_inputs",
+        "timestamp_utc": "2026-11-16T12:16:10.551662+00:00"
+      },
+      {
+        "phase": "prepare_environment",
+        "timestamp_utc": "2026-11-16T12:16:23.553399+00:00"
+      },
+      {
+        "phase": "review",
+        "timestamp_utc": "2026-11-16T12:16:25.694041+00:00"
+      }
+    ],
+    "requested_timeout_seconds": 1800,
+    "cleanup": {
+      "status": "removed",
+      "input_copies_retained": false
+    },
+    "input_manifest_ref": {
+      "path": "inputs-manifest.json",
+      "sha256": "e955785463e5fa59257dbd4d50a49e9bbdac4a74a94fbe6cfb7d032cb173ff4b"
+    },
+    "launcher_sources": [
+      {
+        "path": "runner.py",
+        "sha256": "fe69abd5ea81711d47d6d0a46459c727e5644013984e2382556266f0cf52f48d"
+      },
+      {
+        "path": "_child.py",
+        "sha256": "284d281db791c19034f9c2d7fad16a39fd8a6402dcffd49a474bff473b2b6004"
+      }
+    ],
+    "launcher_head": "46b4e52d4f09f3640ebf7729d1ac3b975197e49f",
+    "environment": {
+      "command": [
+        "${USER_HOME}/.local/bin/uv",
+        "sync",
+        "--frozen",
+        "--offline",
+        "--no-python-downloads",
+        "--no-progress",
+        "--python",
+        "3.12",
+        "--extra",
+        "tau2"
+      ],
+      "offline": true,
+      "extras": [
+        "tau2"
+      ],
+      "uv_version": "uv 0.9.11"
+    },
+    "command": [
+      "${REPOSITORY}/outputs/reproductions/20261116-baseline-diagnosis-02/checkout/.venv/bin/python",
+      "-I",
+      "-B",
+      "${REPOSITORY}/src/agent_memory_eval/reproduction/_child.py",
+      "${REPOSITORY}/outputs/reproductions/20261116-baseline-diagnosis-02/checkout",
+      "${REPOSITORY}/outputs/reproductions/20261116-baseline-diagnosis-02/checkout/scripts/diagnose_tau2_baseline_failures.py",
+      "${REPOSITORY}/outputs/reproductions/20261116-baseline-diagnosis-02/child-report.json",
+      "${REPOSITORY}/outputs/reproductions/20261116-baseline-diagnosis-02/child-policy.json"
+    ],
+    "returncode": 0,
+    "child": {
+      "status": "passed",
+      "network_attempts": 0,
+      "process_attempts": 0,
+      "protected_write_attempts": 0,
+      "read_only_git_calls": [
+        [
+          "git",
+          "-C",
+          "${REPOSITORY}/outputs/reproductions/20261116-baseline-diagnosis-02/checkout/data/tau2-bench",
+          "rev-parse",
+          "HEAD"
+        ],
+        [
+          "git",
+          "-C",
+          "${REPOSITORY}/outputs/reproductions/20261116-baseline-diagnosis-02/checkout/data/tau2-bench",
+          "status",
+          "--porcelain"
+        ]
+      ],
+      "imported_modules": {
+        "agent_memory_eval": "src/agent_memory_eval/__init__.py",
+        "agent_memory_eval.adapters": "src/agent_memory_eval/adapters/__init__.py",
+        "agent_memory_eval.contracts": "src/agent_memory_eval/contracts/__init__.py",
+        "agent_memory_eval.contracts.validation": "src/agent_memory_eval/contracts/validation.py",
+        "agent_memory_eval.contracts.core": "src/agent_memory_eval/contracts/core.py",
+        "agent_memory_eval.contracts.connection": "src/agent_memory_eval/contracts/connection.py",
+        "agent_memory_eval.models": "src/agent_memory_eval/models/__init__.py",
+        "agent_memory_eval.models.openrouter": "src/agent_memory_eval/models/openrouter.py",
+        "agent_memory_eval.recording": "src/agent_memory_eval/recording/__init__.py",
+        "agent_memory_eval.recording.provenance": "src/agent_memory_eval/recording/provenance.py",
+        "agent_memory_eval.adapters.tau2": "src/agent_memory_eval/adapters/tau2.py",
+        "agent_memory_eval.recording.journal": "src/agent_memory_eval/recording/journal.py",
+        "agent_memory_eval.runner": "src/agent_memory_eval/runner/__init__.py",
+        "agent_memory_eval.runner.tau2_baseline": "src/agent_memory_eval/runner/tau2_baseline.py",
+        "agent_memory_eval.analysis": "src/agent_memory_eval/analysis/__init__.py",
+        "agent_memory_eval.analysis.tau2_baseline": "src/agent_memory_eval/analysis/tau2_baseline.py"
+      },
+      "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+      "executable": "${REPOSITORY}/outputs/reproductions/20261116-baseline-diagnosis-02/checkout/.venv/bin/python",
+      "prefix": "${REPOSITORY}/outputs/reproductions/20261116-baseline-diagnosis-02/checkout/.venv",
+      "isolated": true,
+      "assertions_enabled": true,
+      "api_role_keys_present": false,
+      "packages": [
+        {
+          "name": "addict",
+          "version": "2.4.0"
+        },
+        {
+          "name": "agent-memory-eval",
+          "version": "0.1.0a0"
+        },
+        {
+          "name": "agent-memory-eval",
+          "version": "0.1.0a0"
+        },
+        {
+          "name": "aiohappyeyeballs",
+          "version": "2.7.1"
+        },
+        {
+          "name": "aiohttp",
+          "version": "3.14.5"
+        },
+        {
+          "name": "aiosignal",
+          "version": "1.4.0"
+        },
+        {
+          "name": "annotated-doc",
+          "version": "0.0.6"
+        },
+        {
+          "name": "annotated-types",
+          "version": "0.8.0"
+        },
+        {
+          "name": "anyio",
+          "version": "4.16.0"
+        },
+        {
+          "name": "arrow",
+          "version": "1.4.0"
+        },
+        {
+          "name": "attrs",
+          "version": "26.1.0"
+        },
+        {
+          "name": "cachebox",
+          "version": "5.2.3"
+        },
+        {
+          "name": "certifi",
+          "version": "2026.10.23"
+        },
+        {
+          "name": "charset-normalizer",
+          "version": "3.5.2"
+        },
+        {
+          "name": "click",
+          "version": "8.5.1"
+        },
+        {
+          "name": "deepdiff",
+          "version": "9.1.0"
+        },
+        {
+          "name": "docstring_parser",
+          "version": "0.18.0"
+        },
+        {
+          "name": "fastapi",
+          "version": "0.162.7"
+        },
+        {
+          "name": "fastuuid",
+          "version": "0.14.0"
+        },
+        {
+          "name": "filelock",
+          "version": "4.2.10"
+        },
+        {
+          "name": "fqdn",
+          "version": "1.6.0"
+        },
+        {
+          "name": "frozenlist",
+          "version": "1.8.0"
+        },
+        {
+          "name": "fsspec",
+          "version": "2026.9.0"
+        },
+        {
+          "name": "h11",
+          "version": "0.16.0"
+        },
+        {
+          "name": "hf-xet",
+          "version": "1.8.0"
+        },
+        {
+          "name": "httpcore",
+          "version": "1.0.9"
+        },
+        {
+          "name": "httpcore2",
+          "version": "2.16.0"
+        },
+        {
+          "name": "httpx",
+          "version": "0.28.1"
+        },
+        {
+          "name": "httpx2",
+          "version": "2.16.0"
+        },
+        {
+          "name": "huggingface_hub",
+          "version": "2.4.0"
+        },
+        {
+          "name": "idna",
+          "version": "3.20"
+        },
+        {
+          "name": "importlib_metadata",
+          "version": "10.2.0"
+        },
+        {
+          "name": "isoduration",
+          "version": "20.11.0"
+        },
+        {
+          "name": "Jinja2",
+          "version": "3.1.6"
+        },
+        {
+          "name": "jiter",
+          "version": "0.19.0"
+        },
+        {
+          "name": "jsonpointer",
+          "version": "3.12"
+        },
+        {
+          "name": "jsonschema",
+          "version": "4.26.0"
+        },
+        {
+          "name": "jsonschema-specifications",
+          "version": "2025.9.1"
+        },
+        {
+          "name": "lark",
+          "version": "1.3.1"
+        },
+        {
+          "name": "lazy-importer",
+          "version": "0.1.0"
+        },
+        {
+          "name": "litellm",
+          "version": "1.82.6"
+        },
+        {
+          "name": "loguru",
+          "version": "0.8.0"
+        },
+        {
+          "name": "markdown-it-py",
+          "version": "4.3.0"
+        },
+        {
+          "name": "MarkupSafe",
+          "version": "3.0.4"
+        },
+        {
+          "name": "mdurl",
+          "version": "0.1.2"
+        },
+        {
+          "name": "multidict",
+          "version": "7.2.1"
+        },
+        {
+          "name": "numpy",
+          "version": "2.5.4"
+        },
+        {
+          "name": "openai",
+          "version": "3.51.0"
+        },
+        {
+          "name": "opentelemetry-api",
+          "version": "1.45.2"
+        },
+        {
+          "name": "orderly-set",
+          "version": "5.5.0"
+        },
+        {
+          "name": "packaging",
+          "version": "26.3"
+        },
+        {
+          "name": "pandas",
+          "version": "3.1.1"
+        },
+        {
+          "name": "propcache",
+          "version": "0.5.4"
+        },
+        {
+          "name": "psutil",
+          "version": "7.2.2"
+        },
+        {
+          "name": "pydantic",
+          "version": "2.14.3"
+        },
+        {
+          "name": "pydantic_core",
+          "version": "2.50.4"
+        },
+        {
+          "name": "Pygments",
+          "version": "2.21.0"
+        },
+        {
+          "name": "python-dateutil",
+          "version": "4.0.0"
+        },
+        {
+          "name": "python-dotenv",
+          "version": "1.2.4"
+        },
+        {
+          "name": "PyYAML",
+          "version": "6.0.3"
+        },
+        {
+          "name": "referencing",
+          "version": "0.37.0"
+        },
+        {
+          "name": "regex",
+          "version": "2026.11.9"
+        },
+        {
+          "name": "requests",
+          "version": "2.34.2"
+        },
+        {
+          "name": "rfc3339-validator",
+          "version": "0.1.4"
+        },
+        {
+          "name": "rfc3986-validator",
+          "version": "0.1.1"
+        },
+        {
+          "name": "rfc3987-syntax",
+          "version": "1.1.0"
+        },
+        {
+          "name": "rich",
+          "version": "15.0.0"
+        },
+        {
+          "name": "rpds-py",
+          "version": "2026.9.1"
+        },
+        {
+          "name": "shellingham",
+          "version": "1.5.4"
+        },
+        {
+          "name": "six",
+          "version": "1.17.0"
+        },
+        {
+          "name": "sniffio",
+          "version": "1.3.1"
+        },
+        {
+          "name": "starlette",
+          "version": "1.10.0"
+        },
+        {
+          "name": "tabulate",
+          "version": "0.10.0"
+        },
+        {
+          "name": "tau2",
+          "version": "2.0.0"
+        },
+        {
+          "name": "tenacity",
+          "version": "9.2.1"
+        },
+        {
+          "name": "tiktoken",
+          "version": "0.14.0"
+        },
+        {
+          "name": "tokenizers",
+          "version": "0.23.3"
+        },
+        {
+          "name": "toml",
+          "version": "0.10.2"
+        },
+        {
+          "name": "tqdm",
+          "version": "4.70.1"
+        },
+        {
+          "name": "truststore",
+          "version": "0.10.5"
+        },
+        {
+          "name": "typer",
+          "version": "0.29.1"
+        },
+        {
+          "name": "typing-inspection",
+          "version": "0.4.5"
+        },
+        {
+          "name": "typing_extensions",
+          "version": "4.16.0"
+        },
+        {
+          "name": "tzdata",
+          "version": "2026.6"
+        },
+        {
+          "name": "uri-template",
+          "version": "1.3.0"
+        },
+        {
+          "name": "urllib3",
+          "version": "2.8.0"
+        },
+        {
+          "name": "uvicorn",
+          "version": "0.54.0"
+        },
+        {
+          "name": "webcolors",
+          "version": "25.10.0"
+        },
+        {
+          "name": "yarl",
+          "version": "1.25.1"
+        },
+        {
+          "name": "zipp",
+          "version": "4.1.2"
+        }
+      ],
+      "bootstrap_sha256": "284d281db791c19034f9c2d7fad16a39fd8a6402dcffd49a474bff473b2b6004"
+    },
+    "finished_at_utc": "2026-11-16T12:17:38.305909+00:00",
+    "elapsed_seconds": 92.57671879898407,
+    "evidence_files": [
+      {
+        "path": "inputs-manifest.json",
+        "sha256": "e955785463e5fa59257dbd4d50a49e9bbdac4a74a94fbe6cfb7d032cb173ff4b",
+        "bytes": 2181167
+      },
+      {
+        "path": "environment.log",
+        "sha256": "867bdfa50e986c3b20276a1f140444fed593254647e51da5d985f8dd4313ea3c",
+        "bytes": 2446
+      },
+      {
+        "path": "review.stdout.log",
+        "sha256": "f858402c946890180c4328178600c9523c1c4207dd7c8a46511f1df6a231f64f",
+        "bytes": 195
+      },
+      {
+        "path": "review.stderr.log",
+        "sha256": "57fcf4c28e2fb5bb238204e849825f5d7ec1f036a72df98ff767489796f3b706",
+        "bytes": 140
+      },
+      {
+        "path": "child-report.json",
+        "sha256": "df7e9a8b7534acf189c7ff15610238fcf16fe4d5fc80752242db6a08c5e87bbf",
+        "bytes": 8299
+      },
+      {
+        "path": "child-policy.json",
+        "sha256": "9c4dd0c55396b8b37e937cbb595fa21ec51d45e88ba091bc45eea4291d7059ec",
+        "bytes": 147
+      }
+    ]
+  },
+  "child_report": {
+    "status": "passed",
+    "network_attempts": 0,
+    "process_attempts": 0,
+    "protected_write_attempts": 0,
+    "read_only_git_calls": [
+      [
+        "git",
+        "-C",
+        "${REPOSITORY}/outputs/reproductions/20261116-baseline-diagnosis-02/checkout/data/tau2-bench",
+        "rev-parse",
+        "HEAD"
+      ],
+      [
+        "git",
+        "-C",
+        "${REPOSITORY}/outputs/reproductions/20261116-baseline-diagnosis-02/checkout/data/tau2-bench",
+        "status",
+        "--porcelain"
+      ]
+    ],
+    "imported_modules": {
+      "agent_memory_eval": "src/agent_memory_eval/__init__.py",
+      "agent_memory_eval.adapters": "src/agent_memory_eval/adapters/__init__.py",
+      "agent_memory_eval.contracts": "src/agent_memory_eval/contracts/__init__.py",
+      "agent_memory_eval.contracts.validation": "src/agent_memory_eval/contracts/validation.py",
+      "agent_memory_eval.contracts.core": "src/agent_memory_eval/contracts/core.py",
+      "agent_memory_eval.contracts.connection": "src/agent_memory_eval/contracts/connection.py",
+      "agent_memory_eval.models": "src/agent_memory_eval/models/__init__.py",
+      "agent_memory_eval.models.openrouter": "src/agent_memory_eval/models/openrouter.py",
+      "agent_memory_eval.recording": "src/agent_memory_eval/recording/__init__.py",
+      "agent_memory_eval.recording.provenance": "src/agent_memory_eval/recording/provenance.py",
+      "agent_memory_eval.adapters.tau2": "src/agent_memory_eval/adapters/tau2.py",
+      "agent_memory_eval.recording.journal": "src/agent_memory_eval/recording/journal.py",
+      "agent_memory_eval.runner": "src/agent_memory_eval/runner/__init__.py",
+      "agent_memory_eval.runner.tau2_baseline": "src/agent_memory_eval/runner/tau2_baseline.py",
+      "agent_memory_eval.analysis": "src/agent_memory_eval/analysis/__init__.py",
+      "agent_memory_eval.analysis.tau2_baseline": "src/agent_memory_eval/analysis/tau2_baseline.py"
+    },
+    "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+    "executable": "${REPOSITORY}/outputs/reproductions/20261116-baseline-diagnosis-02/checkout/.venv/bin/python",
+    "prefix": "${REPOSITORY}/outputs/reproductions/20261116-baseline-diagnosis-02/checkout/.venv",
+    "isolated": true,
+    "assertions_enabled": true,
+    "api_role_keys_present": false,
+    "packages": [
+      {
+        "name": "addict",
+        "version": "2.4.0"
+      },
+      {
+        "name": "agent-memory-eval",
+        "version": "0.1.0a0"
+      },
+      {
+        "name": "agent-memory-eval",
+        "version": "0.1.0a0"
+      },
+      {
+        "name": "aiohappyeyeballs",
+        "version": "2.7.1"
+      },
+      {
+        "name": "aiohttp",
+        "version": "3.14.5"
+      },
+      {
+        "name": "aiosignal",
+        "version": "1.4.0"
+      },
+      {
+        "name": "annotated-doc",
+        "version": "0.0.6"
+      },
+      {
+        "name": "annotated-types",
+        "version": "0.8.0"
+      },
+      {
+        "name": "anyio",
+        "version": "4.16.0"
+      },
+      {
+        "name": "arrow",
+        "version": "1.4.0"
+      },
+      {
+        "name": "attrs",
+        "version": "26.1.0"
+      },
+      {
+        "name": "cachebox",
+        "version": "5.2.3"
+      },
+      {
+        "name": "certifi",
+        "version": "2026.10.23"
+      },
+      {
+        "name": "charset-normalizer",
+        "version": "3.5.2"
+      },
+      {
+        "name": "click",
+        "version": "8.5.1"
+      },
+      {
+        "name": "deepdiff",
+        "version": "9.1.0"
+      },
+      {
+        "name": "docstring_parser",
+        "version": "0.18.0"
+      },
+      {
+        "name": "fastapi",
+        "version": "0.162.7"
+      },
+      {
+        "name": "fastuuid",
+        "version": "0.14.0"
+      },
+      {
+        "name": "filelock",
+        "version": "4.2.10"
+      },
+      {
+        "name": "fqdn",
+        "version": "1.6.0"
+      },
+      {
+        "name": "frozenlist",
+        "version": "1.8.0"
+      },
+      {
+        "name": "fsspec",
+        "version": "2026.9.0"
+      },
+      {
+        "name": "h11",
+        "version": "0.16.0"
+      },
+      {
+        "name": "hf-xet",
+        "version": "1.8.0"
+      },
+      {
+        "name": "httpcore",
+        "version": "1.0.9"
+      },
+      {
+        "name": "httpcore2",
+        "version": "2.16.0"
+      },
+      {
+        "name": "httpx",
+        "version": "0.28.1"
+      },
+      {
+        "name": "httpx2",
+        "version": "2.16.0"
+      },
+      {
+        "name": "huggingface_hub",
+        "version": "2.4.0"
+      },
+      {
+        "name": "idna",
+        "version": "3.20"
+      },
+      {
+        "name": "importlib_metadata",
+        "version": "10.2.0"
+      },
+      {
+        "name": "isoduration",
+        "version": "20.11.0"
+      },
+      {
+        "name": "Jinja2",
+        "version": "3.1.6"
+      },
+      {
+        "name": "jiter",
+        "version": "0.19.0"
+      },
+      {
+        "name": "jsonpointer",
+        "version": "3.12"
+      },
+      {
+        "name": "jsonschema",
+        "version": "4.26.0"
+      },
+      {
+        "name": "jsonschema-specifications",
+        "version": "2025.9.1"
+      },
+      {
+        "name": "lark",
+        "version": "1.3.1"
+      },
+      {
+        "name": "lazy-importer",
+        "version": "0.1.0"
+      },
+      {
+        "name": "litellm",
+        "version": "1.82.6"
+      },
+      {
+        "name": "loguru",
+        "version": "0.8.0"
+      },
+      {
+        "name": "markdown-it-py",
+        "version": "4.3.0"
+      },
+      {
+        "name": "MarkupSafe",
+        "version": "3.0.4"
+      },
+      {
+        "name": "mdurl",
+        "version": "0.1.2"
+      },
+      {
+        "name": "multidict",
+        "version": "7.2.1"
+      },
+      {
+        "name": "numpy",
+        "version": "2.5.4"
+      },
+      {
+        "name": "openai",
+        "version": "3.51.0"
+      },
+      {
+        "name": "opentelemetry-api",
+        "version": "1.45.2"
+      },
+      {
+        "name": "orderly-set",
+        "version": "5.5.0"
+      },
+      {
+        "name": "packaging",
+        "version": "26.3"
+      },
+      {
+        "name": "pandas",
+        "version": "3.1.1"
+      },
+      {
+        "name": "propcache",
+        "version": "0.5.4"
+      },
+      {
+        "name": "psutil",
+        "version": "7.2.2"
+      },
+      {
+        "name": "pydantic",
+        "version": "2.14.3"
+      },
+      {
+        "name": "pydantic_core",
+        "version": "2.50.4"
+      },
+      {
+        "name": "Pygments",
+        "version": "2.21.0"
+      },
+      {
+        "name": "python-dateutil",
+        "version": "4.0.0"
+      },
+      {
+        "name": "python-dotenv",
+        "version": "1.2.4"
+      },
+      {
+        "name": "PyYAML",
+        "version": "6.0.3"
+      },
+      {
+        "name": "referencing",
+        "version": "0.37.0"
+      },
+      {
+        "name": "regex",
+        "version": "2026.11.9"
+      },
+      {
+        "name": "requests",
+        "version": "2.34.2"
+      },
+      {
+        "name": "rfc3339-validator",
+        "version": "0.1.4"
+      },
+      {
+        "name": "rfc3986-validator",
+        "version": "0.1.1"
+      },
+      {
+        "name": "rfc3987-syntax",
+        "version": "1.1.0"
+      },
+      {
+        "name": "rich",
+        "version": "15.0.0"
+      },
+      {
+        "name": "rpds-py",
+        "version": "2026.9.1"
+      },
+      {
+        "name": "shellingham",
+        "version": "1.5.4"
+      },
+      {
+        "name": "six",
+        "version": "1.17.0"
+      },
+      {
+        "name": "sniffio",
+        "version": "1.3.1"
+      },
+      {
+        "name": "starlette",
+        "version": "1.10.0"
+      },
+      {
+        "name": "tabulate",
+        "version": "0.10.0"
+      },
+      {
+        "name": "tau2",
+        "version": "2.0.0"
+      },
+      {
+        "name": "tenacity",
+        "version": "9.2.1"
+      },
+      {
+        "name": "tiktoken",
+        "version": "0.14.0"
+      },
+      {
+        "name": "tokenizers",
+        "version": "0.23.3"
+      },
+      {
+        "name": "toml",
+        "version": "0.10.2"
+      },
+      {
+        "name": "tqdm",
+        "version": "4.70.1"
+      },
+      {
+        "name": "truststore",
+        "version": "0.10.5"
+      },
+      {
+        "name": "typer",
+        "version": "0.29.1"
+      },
+      {
+        "name": "typing-inspection",
+        "version": "0.4.5"
+      },
+      {
+        "name": "typing_extensions",
+        "version": "4.16.0"
+      },
+      {
+        "name": "tzdata",
+        "version": "2026.6"
+      },
+      {
+        "name": "uri-template",
+        "version": "1.3.0"
+      },
+      {
+        "name": "urllib3",
+        "version": "2.8.0"
+      },
+      {
+        "name": "uvicorn",
+        "version": "0.54.0"
+      },
+      {
+        "name": "webcolors",
+        "version": "25.10.0"
+      },
+      {
+        "name": "yarl",
+        "version": "1.25.1"
+      },
+      {
+        "name": "zipp",
+        "version": "4.1.2"
+      }
+    ],
+    "bootstrap_sha256": "284d281db791c19034f9c2d7fad16a39fd8a6402dcffd49a474bff473b2b6004"
+  }
+}

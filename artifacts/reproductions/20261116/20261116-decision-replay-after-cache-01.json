@@ -1,0 +1,406 @@
+{
+  "format": "agent-memory-shared-reproduction-evidence/v1",
+  "note": "Path-normalized evidence copy for review; original byte hashes refer to the original unmodified outputs, not to this transformed JSON.",
+  "source_receipt": {
+    "path": "outputs/reproductions/20261116-decision-replay-after-cache-01/receipt.json",
+    "sha256": "37f3c99920027e039b1b1bc8d587a02fa2cc542c7847a0f21774026da652010f"
+  },
+  "receipt": {
+    "format": "agent-memory-historical-reproduction-receipt/v1",
+    "status": "passed",
+    "experiment": "decision_replay",
+    "started_at_utc": "2026-11-16T12:32:19.087486+00:00",
+    "registry_ref": {
+      "path": "${REPOSITORY}/protocols/reproductions/historical-v1.json",
+      "sha256": "fdf7e93765d966e77ff1eb61cc5c3cfaf4e9ccb6e1311a3f1a13cf0db7663ecd"
+    },
+    "implementation_commit": "8a339392619b5bb16cc4b719ae139554814c36b3",
+    "reproduction_commit": "c51165b7f7ba51da8959591079b75bab4f7fec3c",
+    "protocol_lock_ref": {
+      "path": "artifacts/pilots/20261116-decision-replay-protocol.json",
+      "sha256": "e7e2ef4d77fd494deca2f9c183d3ad6d47531c6171c002bd9627c60b893bb27f"
+    },
+    "review_script_ref": {
+      "path": "scripts/review_decision_replay_120.py",
+      "sha256": "1662f8208f34161a41960344ea20d6d9006f593fb70aad4188d9eaf449ad276a"
+    },
+    "expected_outputs": [
+      {
+        "path": "artifacts/pilots/20261116-decision-replay-results.json",
+        "sha256": "c37900bebed1e479c0d2bac181d72a19bdf76fbf775935426d4e0ffba54675c6"
+      },
+      {
+        "path": "artifacts/analyses/20261116-decision-replay-review.json",
+        "sha256": "6b3598dbcafed8626cd67ea29a062c7b9c4f4b1c8e49d005bdf96f0beda3e1f2"
+      }
+    ],
+    "environment_spec": {
+      "lock_ref": {
+        "path": "uv.lock",
+        "sha256": "b87ef58cf24c2e6d1ba07ed896676e31ecfb858b3840ef1bc5faf0c334ec62a6"
+      },
+      "project_ref": {
+        "path": "pyproject.toml",
+        "sha256": "eacca6269ebd090c7c4c2c52c7a0379ad73670a25d34bc711a67a60c1584bf0d"
+      },
+      "python_version": "3.12",
+      "extras": []
+    },
+    "inputs_spec": [
+      {
+        "kind": "run",
+        "path": "runs/tau2-decision-replay-luna-120-01",
+        "log_sha256": "a6cfac372d59f6463b984180b1db1ff3d678e89e49c09aebb4bf504c907d864f"
+      }
+    ],
+    "inputs_root": "${REPOSITORY}",
+    "worktree": "${REPOSITORY}/outputs/reproductions/20261116-decision-replay-after-cache-01/checkout",
+    "source_inputs_preserved": true,
+    "staged_inputs_preserved": true,
+    "historical_code_preserved": true,
+    "steps": [
+      {
+        "phase": "create_worktree",
+        "timestamp_utc": "2026-11-16T12:32:19.097966+00:00"
+      },
+      {
+        "phase": "copy_inputs",
+        "timestamp_utc": "2026-11-16T12:32:20.367747+00:00"
+      },
+      {
+        "phase": "prepare_environment",
+        "timestamp_utc": "2026-11-16T12:32:20.620788+00:00"
+      },
+      {
+        "phase": "review",
+        "timestamp_utc": "2026-11-16T12:32:22.039471+00:00"
+      }
+    ],
+    "requested_timeout_seconds": 1800,
+    "cleanup": {
+      "status": "removed",
+      "input_copies_retained": false
+    },
+    "input_manifest_ref": {
+      "path": "inputs-manifest.json",
+      "sha256": "b3586757b0717e694ce5dd9ee70e082d1b78fe52403095e34ae71277a15dc2ed"
+    },
+    "launcher_sources": [
+      {
+        "path": "runner.py",
+        "sha256": "fe69abd5ea81711d47d6d0a46459c727e5644013984e2382556266f0cf52f48d"
+      },
+      {
+        "path": "_child.py",
+        "sha256": "284d281db791c19034f9c2d7fad16a39fd8a6402dcffd49a474bff473b2b6004"
+      }
+    ],
+    "launcher_head": "fafccd0d87429e79c0f131d510cc8858a0ecc271",
+    "environment": {
+      "command": [
+        "${USER_HOME}/.local/bin/uv",
+        "sync",
+        "--frozen",
+        "--offline",
+        "--no-python-downloads",
+        "--no-progress",
+        "--python",
+        "3.12"
+      ],
+      "offline": true,
+      "extras": [],
+      "uv_version": "uv 0.9.11"
+    },
+    "command": [
+      "${REPOSITORY}/outputs/reproductions/20261116-decision-replay-after-cache-01/checkout/.venv/bin/python",
+      "-I",
+      "-B",
+      "${REPOSITORY}/src/agent_memory_eval/reproduction/_child.py",
+      "${REPOSITORY}/outputs/reproductions/20261116-decision-replay-after-cache-01/checkout",
+      "${REPOSITORY}/outputs/reproductions/20261116-decision-replay-after-cache-01/checkout/scripts/review_decision_replay_120.py",
+      "${REPOSITORY}/outputs/reproductions/20261116-decision-replay-after-cache-01/child-report.json",
+      "${REPOSITORY}/outputs/reproductions/20261116-decision-replay-after-cache-01/child-policy.json"
+    ],
+    "returncode": 0,
+    "child": {
+      "status": "passed",
+      "network_attempts": 0,
+      "process_attempts": 0,
+      "protected_write_attempts": 0,
+      "read_only_git_calls": [],
+      "imported_modules": {
+        "agent_memory_eval": "src/agent_memory_eval/__init__.py",
+        "agent_memory_eval.contracts": "src/agent_memory_eval/contracts/__init__.py",
+        "agent_memory_eval.contracts.validation": "src/agent_memory_eval/contracts/validation.py",
+        "agent_memory_eval.contracts.core": "src/agent_memory_eval/contracts/core.py",
+        "agent_memory_eval.recording": "src/agent_memory_eval/recording/__init__.py",
+        "agent_memory_eval.recording.journal": "src/agent_memory_eval/recording/journal.py",
+        "agent_memory_eval.runner": "src/agent_memory_eval/runner/__init__.py",
+        "agent_memory_eval.analysis": "src/agent_memory_eval/analysis/__init__.py",
+        "agent_memory_eval.analysis.decision_replay": "src/agent_memory_eval/analysis/decision_replay.py",
+        "agent_memory_eval.models": "src/agent_memory_eval/models/__init__.py",
+        "agent_memory_eval.models.openrouter": "src/agent_memory_eval/models/openrouter.py",
+        "agent_memory_eval.recording.provenance": "src/agent_memory_eval/recording/provenance.py",
+        "agent_memory_eval.adapters": "src/agent_memory_eval/adapters/__init__.py",
+        "agent_memory_eval.contracts.connection": "src/agent_memory_eval/contracts/connection.py",
+        "agent_memory_eval.adapters.tau2": "src/agent_memory_eval/adapters/tau2.py",
+        "agent_memory_eval.runner.tau2_baseline": "src/agent_memory_eval/runner/tau2_baseline.py",
+        "agent_memory_eval.runner.decision_replay": "src/agent_memory_eval/runner/decision_replay.py"
+      },
+      "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+      "executable": "${REPOSITORY}/outputs/reproductions/20261116-decision-replay-after-cache-01/checkout/.venv/bin/python",
+      "prefix": "${REPOSITORY}/outputs/reproductions/20261116-decision-replay-after-cache-01/checkout/.venv",
+      "isolated": true,
+      "assertions_enabled": true,
+      "api_role_keys_present": false,
+      "packages": [
+        {
+          "name": "agent-memory-eval",
+          "version": "0.1.0a0"
+        },
+        {
+          "name": "agent-memory-eval",
+          "version": "0.1.0a0"
+        },
+        {
+          "name": "arrow",
+          "version": "1.4.0"
+        },
+        {
+          "name": "attrs",
+          "version": "26.1.0"
+        },
+        {
+          "name": "fqdn",
+          "version": "1.6.0"
+        },
+        {
+          "name": "idna",
+          "version": "3.20"
+        },
+        {
+          "name": "isoduration",
+          "version": "20.11.0"
+        },
+        {
+          "name": "jsonpointer",
+          "version": "3.12"
+        },
+        {
+          "name": "jsonschema",
+          "version": "4.26.0"
+        },
+        {
+          "name": "jsonschema-specifications",
+          "version": "2025.9.1"
+        },
+        {
+          "name": "lark",
+          "version": "1.3.1"
+        },
+        {
+          "name": "python-dateutil",
+          "version": "4.0.0"
+        },
+        {
+          "name": "referencing",
+          "version": "0.37.0"
+        },
+        {
+          "name": "rfc3339-validator",
+          "version": "0.1.4"
+        },
+        {
+          "name": "rfc3986-validator",
+          "version": "0.1.1"
+        },
+        {
+          "name": "rfc3987-syntax",
+          "version": "1.1.0"
+        },
+        {
+          "name": "rpds-py",
+          "version": "2026.9.1"
+        },
+        {
+          "name": "six",
+          "version": "1.17.0"
+        },
+        {
+          "name": "typing_extensions",
+          "version": "4.16.0"
+        },
+        {
+          "name": "tzdata",
+          "version": "2026.6"
+        },
+        {
+          "name": "uri-template",
+          "version": "1.3.0"
+        },
+        {
+          "name": "webcolors",
+          "version": "25.10.0"
+        }
+      ],
+      "bootstrap_sha256": "284d281db791c19034f9c2d7fad16a39fd8a6402dcffd49a474bff473b2b6004"
+    },
+    "finished_at_utc": "2026-11-16T12:32:46.760019+00:00",
+    "elapsed_seconds": 27.81043394198059,
+    "evidence_files": [
+      {
+        "path": "inputs-manifest.json",
+        "sha256": "b3586757b0717e694ce5dd9ee70e082d1b78fe52403095e34ae71277a15dc2ed",
+        "bytes": 202886
+      },
+      {
+        "path": "environment.log",
+        "sha256": "310e3a41f3c79b121f19052c585216024ec34b56414e502e7eb11eb557c68ecc",
+        "bytes": 1002
+      },
+      {
+        "path": "review.stdout.log",
+        "sha256": "330ae2c3e836a91c8e9008f91cc77b6d6d4a30c02c60990ddc9bcbcec8272443",
+        "bytes": 193
+      },
+      {
+        "path": "review.stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "child-report.json",
+        "sha256": "1cbdab60d549c86be3a87c35b9c073518466a4dc4b37d16554586d2984ae04be",
+        "bytes": 3624
+      },
+      {
+        "path": "child-policy.json",
+        "sha256": "3017d53a7e54bb2ef64ec6d09e9e08118281fb7a213bf4a11197c3ab77cd4bb8",
+        "bytes": 36
+      }
+    ]
+  },
+  "child_report": {
+    "status": "passed",
+    "network_attempts": 0,
+    "process_attempts": 0,
+    "protected_write_attempts": 0,
+    "read_only_git_calls": [],
+    "imported_modules": {
+      "agent_memory_eval": "src/agent_memory_eval/__init__.py",
+      "agent_memory_eval.contracts": "src/agent_memory_eval/contracts/__init__.py",
+      "agent_memory_eval.contracts.validation": "src/agent_memory_eval/contracts/validation.py",
+      "agent_memory_eval.contracts.core": "src/agent_memory_eval/contracts/core.py",
+      "agent_memory_eval.recording": "src/agent_memory_eval/recording/__init__.py",
+      "agent_memory_eval.recording.journal": "src/agent_memory_eval/recording/journal.py",
+      "agent_memory_eval.runner": "src/agent_memory_eval/runner/__init__.py",
+      "agent_memory_eval.analysis": "src/agent_memory_eval/analysis/__init__.py",
+      "agent_memory_eval.analysis.decision_replay": "src/agent_memory_eval/analysis/decision_replay.py",
+      "agent_memory_eval.models": "src/agent_memory_eval/models/__init__.py",
+      "agent_memory_eval.models.openrouter": "src/agent_memory_eval/models/openrouter.py",
+      "agent_memory_eval.recording.provenance": "src/agent_memory_eval/recording/provenance.py",
+      "agent_memory_eval.adapters": "src/agent_memory_eval/adapters/__init__.py",
+      "agent_memory_eval.contracts.connection": "src/agent_memory_eval/contracts/connection.py",
+      "agent_memory_eval.adapters.tau2": "src/agent_memory_eval/adapters/tau2.py",
+      "agent_memory_eval.runner.tau2_baseline": "src/agent_memory_eval/runner/tau2_baseline.py",
+      "agent_memory_eval.runner.decision_replay": "src/agent_memory_eval/runner/decision_replay.py"
+    },
+    "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+    "executable": "${REPOSITORY}/outputs/reproductions/20261116-decision-replay-after-cache-01/checkout/.venv/bin/python",
+    "prefix": "${REPOSITORY}/outputs/reproductions/20261116-decision-replay-after-cache-01/checkout/.venv",
+    "isolated": true,
+    "assertions_enabled": true,
+    "api_role_keys_present": false,
+    "packages": [
+      {
+        "name": "agent-memory-eval",
+        "version": "0.1.0a0"
+      },
+      {
+        "name": "agent-memory-eval",
+        "version": "0.1.0a0"
+      },
+      {
+        "name": "arrow",
+        "version": "1.4.0"
+      },
+      {
+        "name": "attrs",
+        "version": "26.1.0"
+      },
+      {
+        "name": "fqdn",
+        "version": "1.6.0"
+      },
+      {
+        "name": "idna",
+        "version": "3.20"
+      },
+      {
+        "name": "isoduration",
+        "version": "20.11.0"
+      },
+      {
+        "name": "jsonpointer",
+        "version": "3.12"
+      },
+      {
+        "name": "jsonschema",
+        "version": "4.26.0"
+      },
+      {
+        "name": "jsonschema-specifications",
+        "version": "2025.9.1"
+      },
+      {
+        "name": "lark",
+        "version": "1.3.1"
+      },
+      {
+        "name": "python-dateutil",
+        "version": "4.0.0"
+      },
+      {
+        "name": "referencing",
+        "version": "0.37.0"
+      },
+      {
+        "name": "rfc3339-validator",
+        "version": "0.1.4"
+      },
+      {
+        "name": "rfc3986-validator",
+        "version": "0.1.1"
+      },
+      {
+        "name": "rfc3987-syntax",
+        "version": "1.1.0"
+      },
+      {
+        "name": "rpds-py",
+        "version": "2026.9.1"
+      },
+      {
+        "name": "six",
+        "version": "1.17.0"
+      },
+      {
+        "name": "typing_extensions",
+        "version": "4.16.0"
+      },
+      {
+        "name": "tzdata",
+        "version": "2026.6"
+      },
+      {
+        "name": "uri-template",
+        "version": "1.3.0"
+      },
+      {
+        "name": "webcolors",
+        "version": "25.10.0"
+      }
+    ],
+    "bootstrap_sha256": "284d281db791c19034f9c2d7fad16a39fd8a6402dcffd49a474bff473b2b6004"
+  }
+}

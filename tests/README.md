@@ -1,6 +1,8 @@
 # 검증 자료와 테스트 배치
 
-2026-11-16에 native extra와 고정 checkout이 있는 환경에서 **전체 182개가 488.026초에 통과**했다. 모든 모델 경로는 mock HTTP다. 직전 172개·373.041초와 아래 148·151개 등은 이전 단계의 검증 이력이며 서로 성능 비교에 쓰지 않는다.
+2026-11-16에 native extra와 고정 checkout이 있는 환경에서 **전체 197개가 417.496초에 통과**했다. 모든 모델 경로는 mock HTTP다. 직전 182개·488.026초, 172개·373.041초와 아래 148·151개 등은 이전 단계의 검증 이력이며 서로 성능 비교에 쓰지 않는다.
+
+새 [blob 캐시 검사](test_blob_verification_cache.py) 8개, [기억 작성 검사](test_memory_writing.py) 5개, [과정 trace·native 전달 통합](test_experience_transfer.py) 2개를 더했다. 손상·교체·삭제·하위 참조·재시도, 동일 공개 경험의 세 피드백 격리·정답/비공개 입력 차단·빈 기억·오류 보존, writer 작성→새 세션·DB 변경·공식 채점을 확인한다. 실제 모델 효과는 아니다. [검증 자료](../artifacts/analyses/20261116-worker-memory-validation.json)와 [구현 안내](../docs/development/worker-written-memory.md)를 따른다.
 
 이번 [실행 경계 버그 수정](../docs/development/runtime-edge-fixes.md)은 새 테스트 10개를 추가했다. OpenRouter 12개·결정 재전송 22개·native 연결 3개·baseline 13개, 관련 50개도 별도로 통과했다. null 사용량의 원응답·미확인 비용과 다음 전송 차단, `+1` 시각·기존 야간편·잘못된 날짜, 마지막 정상 배정의 완료 사유와 실제 오류 보존을 확인한다. 원본 세 실험의 최신 코드 호환 감사와 고정 commit의 재현 결과는 [검증 자료](../artifacts/analyses/20261116-runtime-edge-fixes-validation.json)에 연결한다.
 

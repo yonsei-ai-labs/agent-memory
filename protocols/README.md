@@ -1,5 +1,9 @@
 # 실험 계획
 
+[작업자 작성 기억 설계 초안](drafts/tau2-worker-written-memory-study-v1.json)은 같은 공개 경험·피드백 세 수준·공통 과거 메모 형식·대조·과정 판정을 준비하는 **실행 불가** 자료다. 새 API와 native mock 연결은 [구현 안내](../docs/development/worker-written-memory.md)를 따른다. 1차 비교·지침·비평·표본·역할별/입력/은행 한도·비용·독립 판정은 미정이며 live 준비가 끝난 프로필로 사용하지 않는다.
+
+[보존 원본 감사 기준값](reproductions/preserved-run-audits-v1.json)은 수정 전 `7f4d0f3`에서 계산한 원본 10개의 전체 감사 해시다. [현재 코드 호환 명령](../docs/development/preserved-run-audits.md)이 읽으며 새 모델 실행이나 과거 source 해시의 현재 고정을 요구하지 않는다.
+
 [과거 재현 registry](reproductions/historical-v1.json)는 전달 비교·무기억·결정 재전송의 실행 구현/분석 commit, 입력과 결과 해시를 연결한다. [별도 재현 실행기](../docs/development/historical-reproduction.md)만 읽으며 모델 실험·live 설정이 아니다. 새 프로토콜로 과거 동결 기록을 교체하지 않는다.
 
 [첫 120요청 ready 프로필](pilots/tau2-decision-replay-120-v1.json)은 8지점 × 5회 × 세 조건·새 $0.50 상한을 실행 전에 고정했다. [프로토콜](../docs/research/decision-replay-pilot-v1.md)·[동결 기록](../artifacts/pilots/20261116-decision-replay-protocol.json)과 [실제 결과](../docs/reports/20261116-decision-replay-results.md)를 연결한다. 120/120 정상 응답·보고 비용 $0.043359345이며 업무 도구·사용자 시뮬레이터는 실행하지 않았다. 아래 480요청 draft는 보존하며 자동 추가 실행하지 않는다.

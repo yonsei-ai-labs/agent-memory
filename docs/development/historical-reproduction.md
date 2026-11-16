@@ -6,6 +6,8 @@
 
 ## 실행
 
+처음 재현하는 팀원은 Python 3.12와 해당 lock의 패키지를 로컬 cache에 먼저 준비한다. 현재 네 분석 commit의 `uv.lock`은 main과 같으므로 main에서 `uv sync --frozen --extra tau2 --python 3.12`를 한 번 실행해 준비할 수 있다. 이 준비 설치는 네트워크를 사용할 수 있으며 재현 실행 자체의 offline 설치와 구분한다. 이후 lock이 달라지면 해당 고정 commit의 환경도 별도로 준비해야 한다. 원본·고정 τ² checkout은 [팀 복원 안내](../data/team-run-sharing.md)를 따른다.
+
 준비 검사는 Git blob의 동결 참조·분석 코드·잠금 파일과 원본 입력 해시·활성 writer를 확인한다. 작업 폴더나 환경을 만들지 않으며 모델·catalog를 호출하지 않는다.
 
 ```bash
@@ -41,6 +43,8 @@ uv run --frozen python scripts/reproduce_experiment.py --experiment baseline_dia
 [실제 네 명령 재현 기록](../../artifacts/analyses/20261116-historical-reproduction-results.json)은 세 결과 검토와 원인 진단이 각각 통과했음을 보존한다. [반영 보고서](../reports/20261116-reproduction-and-review-update.md)에 입력 준비에서 발견한 partial clone 처리와 원본 보존·정리를 함께 적었다. 재현 실행기의 18개 행동 테스트와 구분한다.
 
 출력 `receipt.json`은 실행/분석 commit·registry/코드/입력 해시·환경·명령·판정·원본 보존·정리 결과를 남긴다. `child-report.json`에는 실제 import 경로와 네트워크/쓰기 시도 수가 있다. 실패와 timeout도 로그·receipt를 보존한다. 완료된 실험의 원본 journal에 가짜 run이나 기억 사건을 추가하지 않는다.
+
+기존 7회(통과 6·실패 1)의 receipt와 child report는 [공유 증거 index](../../artifacts/reproductions/20261116/index.json)에 경로를 정리한 사본으로 보존했다. 원래 bytes 해시와 경로 치환을 구분하며 원본 receipt를 덮어쓰지 않는다. 이 사본은 검토용이며 자체로 재현을 다시 실행한 결과는 아니다. 쓰기 차단은 worktree 사본에 적용되며 원본 변경은 공유 writer 잠금과 전후 해시 대조로 점검한다. 원본 폴더의 OS 쓰기 권한을 제거하는 격리는 아니다.
 
 [행동 테스트](../../tests/test_historical_reproduction.py)는 실제 작은 Git 저장소·worktree·격리 Python으로 main 변경, 잘못된 import, 원본/해시/입력 오류, 활성 writer, 네트워크·쓰기·프로세스 시도, timeout·정리를 확인한다. 합성 테스트의 의존성 설치는 표준 라이브러리 fixture이며 실제 세 과거 명령의 uv 환경 검증과 구분한다.
 

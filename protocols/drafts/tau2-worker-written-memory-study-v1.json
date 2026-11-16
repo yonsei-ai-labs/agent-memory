@@ -1,0 +1,100 @@
+{
+  "format": "agent-memory-writing-study-draft/v1",
+  "status": "draft",
+  "executable": false,
+  "purpose": "Prepare a feedback-controlled comparison of worker-written memory. This file is not a ready run profile.",
+  "connection_profile_ref": {
+    "path": "protocols/checks/openrouter-tau2-smoke.json",
+    "sha256": "fab9e52495a7fbc122ffcbcdc5fc9cfe59d8f61d18f421e822a1298a0de68d49"
+  },
+  "source_collection": {
+    "domain": "airline",
+    "split": "train",
+    "task_candidates": [
+      "14"
+    ],
+    "source_run": null,
+    "source_policy": "no_memory",
+    "scope": "One graded, closed worker-public experience reused across writer conditions; a fresh collection is required by the current API.",
+    "historical_development_reference": {
+      "task_id": "14",
+      "repetition": 2,
+      "run_id": "r_1b1c08d270854ca1b230d23e75c04f77",
+      "path": "runs/tau2-baseline-luna-deepseek1017-train-01",
+      "usage": "Analysis reference only; not imported by the current writer API."
+    }
+  },
+  "feedback_levels": [
+    "none",
+    "result_only",
+    "critique"
+  ],
+  "critique_ref": null,
+  "writer_instruction_ref": null,
+  "primary_hypothesis": null,
+  "primary_comparison": null,
+  "controls": [
+    "empty_snapshot_with_matching_instructions",
+    "general_reminder",
+    "originally_correct_decision_state"
+  ],
+  "delivery": {
+    "format": "past-memory-json-context/v1",
+    "memory_role": "user",
+    "position": 1,
+    "attribution": "Shared explicit system notice: past notes, not a statement by the current customer; IDs are not current identification.",
+    "policy": "read_only_preload_without_query_tools",
+    "common_notice_for_all_memory_conditions": true,
+    "historical_replay_format": "The 120 historical requests retain their original system-note rendering; do not pool them with this format."
+  },
+  "outcomes": [
+    "narrow_call_arguments_with_screen_version",
+    "native_episode_DB_and_COMMUNICATE",
+    "memory_stores_and_empty_writes",
+    "returned_and_input_included_memory",
+    "user_id_process_trace_and_independent_semantic_review",
+    "cost_unknown_cost_skips_and_limits"
+  ],
+  "narrow_screen_version": "airline-argument-screen/v2-explicit-day-offset",
+  "identity_process": {
+    "source": "Native conversation excluding injected memory; literal ID appearance is a trace, not proof.",
+    "independent_question_and_lookup_judgment": null
+  },
+  "constraints": {
+    "role_request_limits": null,
+    "max_input_bytes": null,
+    "bank_preflight": null,
+    "reached_state_grading": null,
+    "limit_exceeded_aggregation": null,
+    "batch_guards": null
+  },
+  "sampling": {
+    "writer_repetitions": null,
+    "replay_repetitions": null,
+    "episode_repetitions": null,
+    "schedule_seed": null,
+    "power_and_cluster_plan": null,
+    "independent_annotation_plan": null
+  },
+  "excluded_primary_episode_tasks": [
+    "7",
+    "39"
+  ],
+  "freeze_requirements": [
+    "Commit implementation and require a clean Git worktree before freezing.",
+    "Record implementation_commit; add a separate reproduction registry entry after analysis is committed.",
+    "Verify the frozen analysis once using the historical reproduction launcher."
+  ],
+  "unresolved": [
+    "primary_hypothesis",
+    "primary_comparison",
+    "source_collection.source_run",
+    "writer_instruction_ref",
+    "critique_ref",
+    "constraints",
+    "sampling",
+    "identity_process.independent_question_and_lookup_judgment",
+    "paid_run_authorization"
+  ],
+  "new_model_or_catalog_calls": 0
+}

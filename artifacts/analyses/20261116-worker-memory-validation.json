@@ -1,0 +1,366 @@
+{
+  "format": "agent-memory-worker-memory-development-validation/v1",
+  "visibility": "analysis_only_never_worker_or_writer_input",
+  "recorded_at_utc": "2026-11-16T14:18:10.301374+00:00",
+  "implementation_commit": "dbd035b598e73cf7052f2b1e384aa19e6b3ebf92",
+  "implementation_refs": [
+    {
+      "path": "protocols/reproductions/preserved-run-audits-v1.json",
+      "sha256": "d1efd627935d85216bf12da573694fc6ed13bd8ea2c27ad5ea26882f9f2f95ff"
+    },
+    {
+      "path": "scripts/audit_preserved_runs.py",
+      "sha256": "ff9b29e3ad44bf5e101872793be29e10bda96563ce2636cc182549895cce051e"
+    },
+    {
+      "path": "src/agent_memory_eval/adapters/tau2_memory.py",
+      "sha256": "91472a8a4d4665315e600fb6766e9b8b97bbe0ad1a166b926ea6177d4cba582a"
+    },
+    {
+      "path": "src/agent_memory_eval/analysis/decision_replay.py",
+      "sha256": "5e7752fd3b36a292761a22b46cba4c5761fc567e5010d12e3ef1cf3901fb84d1"
+    },
+    {
+      "path": "src/agent_memory_eval/analysis/identity.py",
+      "sha256": "6fe9301401f9102b95499445cdc63dba4916e19609766bae35724be6948b4842"
+    },
+    {
+      "path": "src/agent_memory_eval/analysis/memory_writing.py",
+      "sha256": "6c9fcacd7c3700504f2fafe4d9d7d1023785ac432cdc25e79cd172e909454bc0"
+    },
+    {
+      "path": "src/agent_memory_eval/analysis/requests.py",
+      "sha256": "63829d525b6aadbcfa49b4cca1b1bedac920d477f1f6ac99fc602f603df3b0a8"
+    },
+    {
+      "path": "src/agent_memory_eval/memory/context.py",
+      "sha256": "81650a1fe340272688e3d8373dd746a4df7a445fd6c888aaec8be28791342ff2"
+    },
+    {
+      "path": "src/agent_memory_eval/memory/router.py",
+      "sha256": "ee22ee13d307d072d01a4c8955b8684bb28499fbde7f3c6689c4405e7cdf8e2c"
+    },
+    {
+      "path": "src/agent_memory_eval/memory/service.py",
+      "sha256": "b1b992ac030edfae726dbc1ccaae9414dbbe262bfb18e0394376e772ef0f4b3d"
+    },
+    {
+      "path": "src/agent_memory_eval/memory/writing.py",
+      "sha256": "0970474ca6da3885ede81e0d6ff80152bcb05ceeef99bb093f01a5f3028f3772"
+    },
+    {
+      "path": "src/agent_memory_eval/recording/journal.py",
+      "sha256": "bbb75661f615118c426e9eff39429a6f9d03adedc3c877488c4363b0971e21a7"
+    },
+    {
+      "path": "src/agent_memory_eval/runner/router.py",
+      "sha256": "912424f52ce4949777b658660517622ac864f317e09ecb4858db64ba7ff8d430"
+    },
+    {
+      "path": "tests/test_blob_verification_cache.py",
+      "sha256": "04ce4f050f037af0e09229caf464bf3be9ea519b9caf0f209825f3600b0aa9f7"
+    },
+    {
+      "path": "tests/test_experience_transfer.py",
+      "sha256": "92553c781af49bec9b09b7eeae08445eb000e161bcdd841a66d7b304398cc858"
+    },
+    {
+      "path": "tests/test_memory_writing.py",
+      "sha256": "f61c804e438fb4df25ac9469b04641acf10b7785034f0c1f0b792e2bfd62d1e8"
+    }
+  ],
+  "refs_policy": "Informational references to development code. This is not a paid protocol freeze and does not require future current trees to match.",
+  "tests": {
+    "command": "uv run --frozen --extra tau2 python -m unittest discover -s tests",
+    "status": "passed",
+    "exit_code": 0,
+    "tests_run": 197,
+    "elapsed_seconds": 417.496,
+    "new_tests": {
+      "blob_cache": 8,
+      "memory_writing": 5,
+      "identity_and_native_transfer": 2
+    },
+    "log_ref": {
+      "path": "outputs/writer-memory-20261116/full-suite.log",
+      "sha256": "e16bc553c881ccb0746a3a2b664c6a382d9884276bce76677e9212372f9d313b"
+    },
+    "recorded_result": "Ran 197 tests in 417.496s\n\nOK",
+    "http": "mock only"
+  },
+  "basic_checks": {
+    "design": {
+      "status": "passed",
+      "scope": "design_schemas_and_synthetic_references_only",
+      "jsonschema_version": "4.26.0",
+      "schemas_valid": 8,
+      "synthetic_events_valid": 13,
+      "artifact_files_hash_verified": 8,
+      "input_spans_verified": 4,
+      "invalid_contract_cases_rejected": 6,
+      "v1_1": {
+        "schemas_valid": 5,
+        "journal_records_valid": 28,
+        "synthetic_events_valid": 29,
+        "input_spans_verified": 6,
+        "tool_batches_verified": 2,
+        "runtime_readiness_verified": false,
+        "benchmark_or_model_calls": 0
+      },
+      "v1_2": {
+        "schemas_valid": 3,
+        "synthetic_events_valid": 17,
+        "input_spans_verified": 4
+      },
+      "runtime_readiness_verified": false,
+      "benchmark_or_model_calls": 0
+    },
+    "legacy_archive": {
+      "status": "passed",
+      "scope": "legacy_archive_bytes_and_inventory",
+      "snapshot_id": "legacy-ai-memory-20261114-v1",
+      "files": 1268,
+      "bytes": 212081023,
+      "files_by_role": {
+        "dataset": 853,
+        "design_evidence": 180,
+        "historical_documentation": 144,
+        "historical_pipeline_source": 91
+      },
+      "files_by_source_git_status": {
+        "  ": 995,
+        " M": 10,
+        "!!": 4,
+        "??": 259
+      },
+      "dataset_families": 34,
+      "current_source_files_verified": 0,
+      "semantic_labels_or_historical_results_validated": false,
+      "benchmark_or_model_calls": 0
+    },
+    "repository": {
+      "status": "passed",
+      "scope": "repository_links_migration_and_scaffold",
+      "markdown_files_checked": 63,
+      "local_links_checked": 731,
+      "source_entries": 25,
+      "migrated_targets": 30,
+      "verbatim_files_verified": 13,
+      "legacy_source_hashes_verified": 0,
+      "original_literature_papers": 12,
+      "experiment_feedback_original_copies_verified": 1,
+      "files_changed_since_migration": [
+        ".gitattributes",
+        "AGENTS.md",
+        "CONTRIBUTING.md",
+        "docs/design/architecture.md",
+        "docs/design/recording.md",
+        "docs/development/roadmap.md",
+        "docs/handoff/report-outline.md",
+        "docs/research/experiment-protocol.md",
+        "docs/research/metrics.md",
+        "docs/research/plan.md",
+        "docs/research/related-work.md",
+        "protocols/README.md",
+        "schemas/README.md",
+        "scripts/validate_design.py",
+        "tests/README.md"
+      ],
+      "benchmark_or_model_calls": 0
+    }
+  },
+  "preserved_runs": {
+    "registry_ref": {
+      "path": "protocols/reproductions/preserved-run-audits-v1.json",
+      "sha256": "d1efd627935d85216bf12da573694fc6ed13bd8ea2c27ad5ea26882f9f2f95ff"
+    },
+    "baseline_commit": "7f4d0f39a4b17a93b23d8ee6e13066c184a66627",
+    "baseline_actual_worktree_used": true,
+    "full_audit_outputs": {
+      "complete_audit_output_compared": true,
+      "format": "agent-memory-preserved-audit-suite/v1",
+      "new_model_or_catalog_calls": 0,
+      "runs": [
+        {
+          "audit_sha256": "923bf64219ff2e5eca5d8f9d685d696ab394c0461689ad5944b28375ea15ebd1",
+          "id": "decision-replay-120",
+          "input_files": 813,
+          "input_inventory_preserved": true,
+          "status": "passed"
+        },
+        {
+          "audit_sha256": "a3fcafc590afbac2a82669cb0b2e9dd0f0df8d3a0add96743347738a6a341278",
+          "id": "baseline-train",
+          "input_files": 6591,
+          "input_inventory_preserved": true,
+          "status": "passed"
+        },
+        {
+          "audit_sha256": "33bd7a74b301052ff2fbbfffdd8f96967e6b9a0bc7eaca0a62679b0d4fcae1a2",
+          "id": "delivery-48",
+          "input_files": 5076,
+          "input_inventory_preserved": true,
+          "status": "passed"
+        },
+        {
+          "audit_sha256": "7190ae5b6e21a8cb2099f3b9cd388c4f1c5073fccad1dd368ecb993f41ca97cf",
+          "id": "guided-memory",
+          "input_files": 196,
+          "input_inventory_preserved": true,
+          "status": "passed"
+        },
+        {
+          "audit_sha256": "5a8a222a8f840bd16c4ea4d91cc2ccd26fd4f6c053ca28cb4ae4a9ff95e0ceab",
+          "id": "autonomy-1",
+          "input_files": 138,
+          "input_inventory_preserved": true,
+          "status": "passed"
+        },
+        {
+          "audit_sha256": "faf386330d619952fea310ab3666a648e3b997c452e1f3e2e37957004d4584e6",
+          "id": "autonomy-2",
+          "input_files": 923,
+          "input_inventory_preserved": true,
+          "status": "passed"
+        },
+        {
+          "audit_sha256": "da327cd0d6b8d914ed39956ce466e633f6ae21b7f639d3b4be8b6c9e2172493b",
+          "id": "connection-1",
+          "input_files": 95,
+          "input_inventory_preserved": true,
+          "status": "passed"
+        },
+        {
+          "audit_sha256": "60adebf4c6ea10b8a6c8ed10d79c41f05630deed65b7809cbd387ce25187b54d",
+          "id": "connection-2",
+          "input_files": 15,
+          "input_inventory_preserved": true,
+          "status": "passed"
+        },
+        {
+          "audit_sha256": "02c25161eaad3ce8c27bcac847c418ff6654281e19313136e15a50699709f310",
+          "id": "connection-3",
+          "input_files": 15,
+          "input_inventory_preserved": true,
+          "status": "passed"
+        },
+        {
+          "audit_sha256": "2abf97d471874d1a5eb5a753124a1d9c94c9d02f60f2a8c25d417a06dd5dcb8b",
+          "id": "connection-4",
+          "input_files": 102,
+          "input_inventory_preserved": true,
+          "status": "passed"
+        }
+      ],
+      "status": "passed"
+    },
+    "command": "uv run --frozen python scripts/audit_preserved_runs.py",
+    "original_input_inventory_unchanged": true
+  },
+  "blob_cache": {
+    "source_log_sha256": "ec0994a536729872ce8ee7ff06ae63c2e640e70091146b9a361535174ee8fbb5",
+    "source_preserved": true,
+    "measurements": [
+      {
+        "cache_enabled": false,
+        "source_commits": 5002,
+        "appends": 3,
+        "seconds": [
+          0.4094296539842617,
+          0.31505445900256746,
+          0.38928545199451037
+        ],
+        "verification_get_calls": 27,
+        "verification_get_bytes": 23920647,
+        "final_state_sha256": "b4857d6f84adfd072a7190b801a15c2974584260f7ab352e084d04d3332bb380",
+        "median_seconds": 0.38928545199451037
+      },
+      {
+        "cache_enabled": true,
+        "source_commits": 5002,
+        "appends": 3,
+        "seconds": [
+          0.3656110310112126,
+          0.2713886840210762,
+          0.26157589597278275
+        ],
+        "verification_get_calls": 0,
+        "verification_get_bytes": 0,
+        "final_state_sha256": "b4857d6f84adfd072a7190b801a15c2974584260f7ab352e084d04d3332bb380",
+        "median_seconds": 0.2713886840210762
+      }
+    ],
+    "new_model_or_catalog_calls": 0,
+    "median_reduction_fraction": 0.30285428692335703,
+    "timing_scope": "Three unchanged-state appends per independent copy of the 5,002-commit baseline. Descriptive, ordered observations; setup excluded. Other local tests overlapped.",
+    "read_counter_scope": "BlobStore.get calls made by recursive commit verification only, not all I/O. Unchanged state and identical final state hashes checked.",
+    "safety_scope": "Writer-local file identity/size/mode/mtime_ns/ctime_ns with transitive reference checks. Cold writers/readers rehash. Not protection against forged filesystem metadata or arbitrary concurrent writers."
+  },
+  "writer_integration": {
+    "transport": "synthetic HTTP responses against pinned native tau2",
+    "source_task": "40",
+    "observations": "One closed source, optional writer, two independent probe environments; actual DB mutation and official grader run on scripted responses.",
+    "successful_path_sessions": 4,
+    "native_business_environments": 3,
+    "source_native_success": false,
+    "probe_native_success": [
+      true,
+      true
+    ],
+    "interpretation": "Programmed behavior verifies the connection only; these outcomes are not estimates of memory efficacy.",
+    "checks": [
+      "Same public experience across none/result_only/critique inputs.",
+      "No provider reasoning, private simulator prompt or grading answer in writer input.",
+      "Writer sees memory_store only; business calls denied; zero memories and partial/error writes retained.",
+      "Verified worker identity and returned endpoint enforced; unexpected provider rejected.",
+      "Probe banks and DB/session state are isolated; source transcript and writer feedback are not forwarded.",
+      "New replay and episode past-memory renderings agree; literal ID process trace uses native conversation only."
+    ]
+  },
+  "shared_reproduction_evidence": {
+    "index_ref": {
+      "path": "artifacts/reproductions/20261116/index.json",
+      "sha256": "3cfe42ef898dfcd4d1913150f4c0de0154ee7eb6d1d6a9899dbf88cd0cc1a41d"
+    },
+    "receipts": 7,
+    "passed": 6,
+    "failed": 1,
+    "note": "Path-normalized copies of existing receipts and child reports. No rerun claimed; original hashes retained and originals unchanged."
+  },
+  "preserved_protocols": [
+    {
+      "path": "artifacts/pilots/20261114-tau2-delivery-development-protocol.json",
+      "sha256": "2d283068c3b46aaf7f8a0e4ea57fc7111d10c87e639e7ee0e6307c245e5835e5",
+      "unchanged": true
+    },
+    {
+      "path": "artifacts/pilots/20261115-tau2-baseline-screening-protocol.json",
+      "sha256": "c6c3d71c7ebf28190e3983260d8c0a946697fc395f2aa3ac633ae9b2c9a52732",
+      "unchanged": true
+    },
+    {
+      "path": "artifacts/pilots/20261116-decision-replay-protocol.json",
+      "sha256": "e7e2ef4d77fd494deca2f9c183d3ad6d47531c6171c002bd9627c60b893bb27f",
+      "unchanged": true
+    }
+  ],
+  "methods": {
+    "blob_measurement": {
+      "sha256": "1182e3cb9cb559dca56aa38e68b6af527fef71e3456fc5a09367d9371099eb54",
+      "source": "import json,shutil,time\nfrom pathlib import Path\nfrom unittest.mock import patch\nfrom agent_memory_eval.contracts.core import canonical,digest\nfrom agent_memory_eval.recording.journal import BlobStore,Journal\nOUT=Path('outputs/writer-memory-20261116');source=Path('runs/tau2-baseline-luna-deepseek1017-train-01')\noriginal=digest((source/'log.jsonl').read_bytes());first=json.loads((source/'log.jsonl').open().readline());results=[]\nfor enabled in (False,True):\n target=OUT/('cache-on' if enabled else 'cache-off');shutil.copytree(source,target)\n try:\n  with Journal(target,first['experiment_id']) as journal:\n   verifier=journal.blobs if enabled else BlobStore(target)\n   if not enabled:journal.blobs.verify=verifier.verify\n   before_state=digest(canonical(journal.state))\n   count=[0,0];raw=verifier.get\n   def counted(ref):\n    count[0]+=1;count[1]+=(target/ref['path']).stat().st_size\n    return raw(ref)\n   samples=[]\n   with patch.object(verifier,'get',side_effect=counted):\n    for repeat in range(3):\n     start=time.perf_counter();journal.append([]);samples.append(time.perf_counter()-start)\n   assert digest(canonical(journal.state))==before_state\n   rows=dict(cache_enabled=enabled,source_commits=len(journal.scan['records'])-3,appends=3,seconds=samples,verification_get_calls=count[0],verification_get_bytes=count[1],final_state_sha256=digest(canonical(journal.state)))\n   results.append(rows);print(json.dumps(rows),flush=True)\n finally:shutil.rmtree(target)\nassert results[0]['final_state_sha256']==results[1]['final_state_sha256']\nassert digest((source/'log.jsonl').read_bytes())==original\n(OUT/'blob-cache-measurement.json').write_text(json.dumps(dict(source_log_sha256=original,source_preserved=True,measurements=results,new_model_or_catalog_calls=0),indent=2)+'\\n')\n"
+    },
+    "baseline_capture": {
+      "sha256": "3baf98a25f76e2cb554a49c9ce14f9839fac2a6d06a6a90a13ce096dd0817ebc",
+      "source": "import hashlib, importlib.util, json, sys, time\nfrom pathlib import Path\nROOT=Path.cwd()\nspec=importlib.util.spec_from_file_location('audit_preserved_runs',ROOT/'scripts/audit_preserved_runs.py')\nmodule=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)\nfunctions=module.auditors()\nfrom agent_memory_eval.recording.journal import Journal\nfrom agent_memory_eval.contracts.core import canonical,digest\nassert 'audit-baseline-code' in sys.modules[Journal.__module__].__file__\nrows=[('decision-replay-120','decision_replay','tau2-decision-replay-luna-120-01','decision-replay-summary.json'),('baseline-train','baseline','tau2-baseline-luna-deepseek1017-train-01','baseline-summary.json'),('delivery-48','delivery','tau2-delivery-luna-deepseek1017-development-01','delivery-summary.json'),('guided-memory','memory','tau2-memory-luna-deepseek1017-check-01','memory-summary.json')]\nrows += [('autonomy-'+str(i),'autonomy','tau2-autonomy-luna-deepseek1017-pilot-0'+str(i),'pilot-summary.json') for i in (1,2)]\nrows += [('connection-'+str(i),'connection',folder,'connection-summary.json') for i,folder in enumerate(['tau2-openrouter-luna-check-01','tau2-openrouter-luna-deepseek1017-check-01','tau2-openrouter-luna-deepseek1017-check-02','tau2-openrouter-luna-deepseek1017-check-03'],1)]\nentries=[]\nfor identity,auditor,folder,summary in rows:\n path=ROOT/'runs'/folder\n before=module.inventory(path);start=time.perf_counter();result=functions[auditor](path)\n assert module.inventory(path)==before\n refs=[dict(path=name,sha256=digest((path/name).read_bytes())) for name in ('log.jsonl',summary)]\n entry=dict(id=identity,auditor=auditor,path='runs/'+folder,input_refs=refs,audit_sha256=digest(canonical(result)))\n entries.append(entry)\n (ROOT/'outputs/writer-memory-20261116'/('baseline-'+identity+'.json')).write_bytes(canonical(result)+b'\\n')\n print(json.dumps(dict(id=identity,audit_sha256=entry['audit_sha256'],seconds=time.perf_counter()-start)),flush=True)\nregistry=dict(format='agent-memory-preserved-audit-baselines/v1',baseline_commit='7f4d0f33',baseline_source='Fixed Git worktree at 7f4d0f3; full existing auditor return values, no raw changes.',comparison='SHA-256 of the complete canonical JSON audit result, no field subset and no requirement to match current source hashes.',runs=entries)\nimport subprocess\nregistry['baseline_commit']=subprocess.check_output(['git','rev-parse','7f4d0f3'],text=True).strip()\nwith (ROOT/'protocols/reproductions/preserved-run-audits-v1.json').open('x') as f:json.dump(registry,f,indent=2);f.write('\\n')\n"
+    }
+  },
+  "paid_study_ready": false,
+  "remaining": [
+    "Primary hypothesis/comparison, writer instruction, permitted critique and collection source.",
+    "Role-specific request limits, reached-state grading, input/bank preflight and missingness aggregation.",
+    "Sampling, budget and independent semantic judgment; a clean-worktree freeze guard in any new paid entrypoint.",
+    "Historical baseline transcript import is not supported by the new API; fresh source collection is supported.",
+    "Incremental journal/index, baseline/delivery common loop and infrastructure continuation remain pending."
+  ],
+  "new_model_or_catalog_calls": 0
+}

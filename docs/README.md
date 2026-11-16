@@ -22,6 +22,9 @@
 | 고정 분석 commit·전용 환경·입력 사본으로 과거 세 실험을 재검증 | [과거 실험 재현 실행](development/historical-reproduction.md) |
 | 실제 과거 네 명령 재현·schema 캐시 49.80→5.87초·추가 코드/연구 리뷰 반영 | [구조 개선 진행 보고](reports/20261116-reproduction-and-review-update.md) |
 | null 사용량의 원응답·비용 미확인, `+1` 항공편 시각, 마지막 배정 완료 사유 | [실행 경계 버그 수정](development/runtime-edge-fixes.md) |
+| 보존 원본 10개의 전체 감사 출력 해시·현재 코드 호환 명령 | [원본 호환 검사](development/preserved-run-audits.md) |
+| writer의 blob 읽기 재사용·손상 탐지 범위·사본에서의 비용 측정 | [blob 검증 캐시](development/blob-verification-cache.md) |
+| 같은 공개 경험·세 피드백의 기억 작성·새 native 세션·과거 메모 표시 | [작업자 작성 기억 연결](development/worker-written-memory.md) |
 | 첫 구현 명세·가짜 실행·행동 검증의 요구 | [첫 구현 작업](development/first-implementation.md) |
 | 구현한 파일 코어·합성 실행 명령·검증 범위와 한계 | [오프라인 코어](development/offline-core.md) |
 | 실제 OpenRouter·Luna·τ² 단일 과제 연결과 사용량/비용 | [연결 확인](development/tau2-connection.md) |

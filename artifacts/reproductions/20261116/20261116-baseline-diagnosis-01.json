@@ -1,0 +1,115 @@
+{
+  "format": "agent-memory-shared-reproduction-evidence/v1",
+  "note": "Path-normalized evidence copy for review; original byte hashes refer to the original unmodified outputs, not to this transformed JSON.",
+  "source_receipt": {
+    "path": "outputs/reproductions/20261116-baseline-diagnosis-01/receipt.json",
+    "sha256": "e4ca9b86c6aab8a7c3fcc43074e7810049a22c19405da9effe6780969e63b019"
+  },
+  "receipt": {
+    "format": "agent-memory-historical-reproduction-receipt/v1",
+    "status": "failed",
+    "experiment": "baseline_diagnosis",
+    "started_at_utc": "2026-11-16T12:11:37.516157+00:00",
+    "registry_ref": {
+      "path": "${REPOSITORY}/protocols/reproductions/historical-v1.json",
+      "sha256": "fdf7e93765d966e77ff1eb61cc5c3cfaf4e9ccb6e1311a3f1a13cf0db7663ecd"
+    },
+    "implementation_commit": "1edc6d07e7203f1751c891ad1f7011f997fa6d8f",
+    "reproduction_commit": "c31a9d607cea383f800d60526381c1581e7ea2c6",
+    "protocol_lock_ref": {
+      "path": "artifacts/pilots/20261115-tau2-baseline-screening-protocol.json",
+      "sha256": "c6c3d71c7ebf28190e3983260d8c0a946697fc395f2aa3ac633ae9b2c9a52732"
+    },
+    "review_script_ref": {
+      "path": "scripts/diagnose_tau2_baseline_failures.py",
+      "sha256": "dc13e0d5cde04d8f1bf8325e409d50286cdf2799e47e9f5b4e88ca6ff302e0ef"
+    },
+    "expected_outputs": [
+      {
+        "path": "artifacts/pilots/20261115-tau2-baseline-screening-results.json",
+        "sha256": "38239cc8896f53bc805eb4287d8e1be9561b3bb0bd857c9d89674620c9693487"
+      },
+      {
+        "path": "artifacts/analyses/20261115-tau2-baseline-behavior-review.json",
+        "sha256": "99b163e6175f2a0f95165983ee645744d80dbc8d07dedb8c0d89f4af30598dfa"
+      },
+      {
+        "path": "artifacts/analyses/20261115-tau2-baseline-failure-diagnosis.json",
+        "sha256": "669583158504c06935e726b37786170578fb5bf79eb260b25ef667bce2481d83"
+      }
+    ],
+    "environment_spec": {
+      "lock_ref": {
+        "path": "uv.lock",
+        "sha256": "b87ef58cf24c2e6d1ba07ed896676e31ecfb858b3840ef1bc5faf0c334ec62a6"
+      },
+      "project_ref": {
+        "path": "pyproject.toml",
+        "sha256": "eacca6269ebd090c7c4c2c52c7a0379ad73670a25d34bc711a67a60c1584bf0d"
+      },
+      "python_version": "3.12",
+      "extras": [
+        "tau2"
+      ]
+    },
+    "inputs_spec": [
+      {
+        "kind": "run",
+        "path": "runs/tau2-baseline-luna-deepseek1017-train-01",
+        "log_sha256": "ec0994a536729872ce8ee7ff06ae63c2e640e70091146b9a361535174ee8fbb5"
+      },
+      {
+        "kind": "git_checkout",
+        "path": "data/tau2-bench",
+        "commit": "c06b07dd7c4d4ec61ba6ff9bcdf0b15dd7ef36d4"
+      }
+    ],
+    "inputs_root": "${REPOSITORY}",
+    "worktree": "${REPOSITORY}/outputs/reproductions/20261116-baseline-diagnosis-01/checkout",
+    "source_inputs_preserved": true,
+    "staged_inputs_preserved": false,
+    "historical_code_preserved": true,
+    "steps": [
+      {
+        "phase": "create_worktree",
+        "timestamp_utc": "2026-11-16T12:11:37.575200+00:00"
+      },
+      {
+        "phase": "copy_inputs",
+        "timestamp_utc": "2026-11-16T12:11:38.623380+00:00"
+      }
+    ],
+    "requested_timeout_seconds": 1800,
+    "cleanup": {
+      "status": "removed",
+      "input_copies_retained": false
+    },
+    "input_manifest_ref": {
+      "path": "inputs-manifest.json",
+      "sha256": "e955785463e5fa59257dbd4d50a49e9bbdac4a74a94fbe6cfb7d032cb173ff4b"
+    },
+    "launcher_sources": [
+      {
+        "path": "runner.py",
+        "sha256": "b5251149573f32e1dadce9714ea0ba7032c9ed7ffdb671647370688f49cd7d0a"
+      },
+      {
+        "path": "_child.py",
+        "sha256": "284d281db791c19034f9c2d7fad16a39fd8a6402dcffd49a474bff473b2b6004"
+      }
+    ],
+    "launcher_head": "103c53c94ff4a9c145d4c72b0683f9a7c2ab0f81",
+    "error_type": "ReproductionError",
+    "error": "Git command failed: Cloning into '${REPOSITORY}/outputs/reproductions/20261116-baseline-diagnosis-01/checkout/data/tau2-bench'...\nremote: warning: lazy fetching disabled; some objects may not be available        \nremote: fatal: could not fetch 48b342f12b9a8d66b9397b6402e329db579d8e43 from promisor remote        \nerror: git upload-pack: git-pack-objects died with error.\nfatal: git upload-pack: aborting due to possible repository corruption on the remote side.\nremote: aborting due to possible repository corruption on the remote side.\u0000\nfatal: early EOF\nfatal: fetch-pack: invalid index-pack output",
+    "finished_at_utc": "2026-11-16T12:11:47.734418+00:00",
+    "elapsed_seconds": 13.891280250012642,
+    "evidence_files": [
+      {
+        "path": "inputs-manifest.json",
+        "sha256": "e955785463e5fa59257dbd4d50a49e9bbdac4a74a94fbe6cfb7d032cb173ff4b",
+        "bytes": 2181167
+      }
+    ]
+  },
+  "child_report": null
+}
