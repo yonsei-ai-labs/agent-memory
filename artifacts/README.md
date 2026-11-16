@@ -1,5 +1,7 @@
 # 자료 출처와 연결
 
+[실행 경계 수정 검증](analyses/20261116-runtime-edge-fixes-validation.json)은 null 사용량·`+1` 시각·마지막 배정 완료 사유의 구현 참조, 전체 182개 mock 검사, 과거 세 실험 호환과 고정 commit 재현을 연결한다. 원천 항공편 300개·다음 날 도착 36개의 합성 순서 검사는 업무 성공률과 구분한다. 기존 raw·lock·결과는 보존했고 새 모델 호출은 없다. [수정 기록](../docs/development/runtime-edge-fixes.md)을 따른다.
+
 [고정 코드 재현 검증](analyses/20261116-historical-reproduction-results.json)은 세 실험 결과와 원인 진단 네 명령의 실제 통과·원본 보존·사본 정리와 개발 중 실패 한 건을 기록한다. [schema 캐시 측정](analyses/20261116-schema-validation-performance.json)은 같은 120요청 감사의 49.80→5.87초와 결과 해시 일치를 보존한다. 새 모델 실험·독립 의미 판정은 아니며 [진행 보고서](../docs/reports/20261116-reproduction-and-review-update.md)를 따른다.
 
 [재현 commit 대조](analyses/20261116-reproduction-commit-candidates.json)는 Git 객체로 과거 동결 참조와 분석 스크립트의 존재를 확인한 자료다. 실행 구현과 분석 재현 commit을 구분하며 기존 lock을 수정하지 않는다. 이후 [재현 registry](../protocols/reproductions/historical-v1.json)와 [실행기](../docs/development/historical-reproduction.md)가 환경·입력·원본 보존을 따로 검증한다.

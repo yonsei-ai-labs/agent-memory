@@ -1,0 +1,379 @@
+{
+  "format": "agent-memory-runtime-edge-fixes-validation/v1",
+  "visibility": "analysis_only_never_worker_or_writer_input",
+  "recorded_at_utc": "2026-11-16T13:25:35.247728+00:00",
+  "implementation_commit": "319780a4ea6abdacf7b92bfee52c5f1d843204b5",
+  "implementation_refs": [
+    {
+      "path": "src/agent_memory_eval/adapters/tau2.py",
+      "sha256": "d5666541312a6f9dd97ea21d254f373117baf2cc362b080ca6770316058ed03e"
+    },
+    {
+      "path": "src/agent_memory_eval/analysis/connection.py",
+      "sha256": "3dc6b4bdb36946438162ca4e12383f0072d1eb049d0a56965768655a93b446ee"
+    },
+    {
+      "path": "src/agent_memory_eval/analysis/decision_replay.py",
+      "sha256": "2b1366971550f4e83d41ef9f16985a91b0428a808670f46da9a5578777cde23d"
+    },
+    {
+      "path": "src/agent_memory_eval/models/openrouter.py",
+      "sha256": "4e20c3ed3e48101bc17acac38159d903180b2e8cb54afb4ccce222113330f265"
+    },
+    {
+      "path": "src/agent_memory_eval/runner/decision_replay.py",
+      "sha256": "0e645ecf7892cccd7a76d769a7a97901074ec5b680385e8bbff45eef79701380"
+    },
+    {
+      "path": "src/agent_memory_eval/runner/tau2_baseline.py",
+      "sha256": "e3ae6463b49f33757eeeca7b6552e1217f0c6097f9b381e952bb0ae53d6b54be"
+    },
+    {
+      "path": "tests/test_decision_replay.py",
+      "sha256": "4df2c98f194a6ae373c4e5a9349aafa1ba99af42375be69f423909f0a8944f95"
+    },
+    {
+      "path": "tests/test_openrouter.py",
+      "sha256": "5e4b1bffd322f9f10a44d9107e952823547d3f91a1ec1f79b9c1514269c4aa62"
+    },
+    {
+      "path": "tests/test_tau2_baseline.py",
+      "sha256": "2bf3da87886e02b4295b975b945bc7e109c11488a1103e6dd029c7af8aa1a153"
+    },
+    {
+      "path": "tests/test_tau2_connection.py",
+      "sha256": "3d85280fe72f26751c8f3cc08282418f5fe7af8d844fd3390d547bc0d1a877cf"
+    }
+  ],
+  "refs_policy": "Informational evidence at the implementation commit. Future current trees need not match these hashes.",
+  "changes": [
+    "Preserve usage:null responses and unknown-cost state through recording, native summaries and audits; prevent the next HTTP attempt.",
+    "Interpret explicit airline schedule +N as a day offset for the narrow task-21 call-argument order screen.",
+    "Clear batch stop_reason only after the final normal allocation with known cost; retain actual errors and unknown-cost reasons."
+  ],
+  "tests": {
+    "full_suite": {
+      "command": "uv run --frozen --extra tau2 python -m unittest discover -s tests",
+      "exit_code": 0,
+      "tests_run": 182,
+      "elapsed_seconds": 488.026,
+      "result": "OK",
+      "recorded_stdout": "Ran 182 tests in 488.026s\n\nOK\n",
+      "http": "mock only"
+    },
+    "related_suite": {
+      "tests_run": 50,
+      "new_tests": 10,
+      "modules": [
+        {
+          "path": "tests/test_openrouter.py",
+          "tests_run": 12,
+          "elapsed_seconds": 0.649
+        },
+        {
+          "path": "tests/test_decision_replay.py",
+          "tests_run": 22,
+          "elapsed_seconds": 83.365
+        },
+        {
+          "path": "tests/test_tau2_connection.py",
+          "tests_run": 3,
+          "elapsed_seconds": 17.77
+        },
+        {
+          "path": "tests/test_tau2_baseline.py",
+          "tests_run": 13,
+          "elapsed_seconds": 92.485
+        }
+      ],
+      "result": "passed",
+      "execution_note": "Separate module processes overlapped; elapsed values are observations, not a speed comparison."
+    },
+    "basic_checks": [
+      {
+        "command": "uv run --frozen python scripts/validate_design.py",
+        "result": "passed"
+      },
+      {
+        "command": "uv run --frozen python scripts/check_repository.py",
+        "result": "passed"
+      },
+      {
+        "command": "uv run --frozen python scripts/verify_legacy_data.py",
+        "result": "passed"
+      }
+    ]
+  },
+  "latest_code_compatibility": [
+    {
+      "experiment": "decision_replay",
+      "status": "passed",
+      "matches_preserved_audit": true,
+      "elapsed_seconds": 3.4401024320104625,
+      "audit_sha256": "923bf64219ff2e5eca5d8f9d685d696ab394c0461689ad5944b28375ea15ebd1",
+      "raw_log_sha256": "a6cfac372d59f6463b984180b1db1ff3d678e89e49c09aebb4bf504c907d864f",
+      "source_log_unchanged": true,
+      "legacy_stop_reason": "call_limit",
+      "reported_cost_usd": "0.043359345",
+      "full_result_ref": {
+        "path": "outputs/runtime-edge-fixes-20261116/decision_replay-audit.json",
+        "sha256": "78da7248d73962cd58d55d12b384dcf9d3f092996904daa8146b67fabb1ccc2e"
+      }
+    },
+    {
+      "experiment": "baseline",
+      "status": "passed",
+      "matches_preserved_audit": true,
+      "elapsed_seconds": 18.833910437009763,
+      "audit_sha256": "a3fcafc590afbac2a82669cb0b2e9dd0f0df8d3a0add96743347738a6a341278",
+      "raw_log_sha256": "ec0994a536729872ce8ee7ff06ae63c2e640e70091146b9a361535174ee8fbb5",
+      "source_log_unchanged": true,
+      "legacy_stop_reason": "unknown_cost",
+      "reported_cost_usd": "0.1055333152",
+      "full_result_ref": {
+        "path": "outputs/runtime-edge-fixes-20261116/baseline-audit.json",
+        "sha256": "97cd8c38f4535f22601a309144188cd8b68719e40ad0ae2018b06bc78f9b93c8"
+      }
+    },
+    {
+      "experiment": "delivery",
+      "status": "passed",
+      "matches_preserved_audit": true,
+      "elapsed_seconds": 57.000015092024114,
+      "audit_sha256": "33bd7a74b301052ff2fbbfffdd8f96967e6b9a0bc7eaca0a62679b0d4fcae1a2",
+      "raw_log_sha256": "d8a4307eb849cafd9e0b3e57e4393e9c92c795ef7e2e0fe815e06a8335645233",
+      "source_log_unchanged": true,
+      "legacy_stop_reason": null,
+      "reported_cost_usd": "0.0623010970",
+      "full_result_ref": {
+        "path": "outputs/runtime-edge-fixes-20261116/delivery-audit.json",
+        "sha256": "ddb2307419cb5ec07dbe1a24b128d7bc60b1770b0cdce6e0b2a58a288a5bc788"
+      }
+    }
+  ],
+  "schedule_coverage": {
+    "status": "passed",
+    "scope": "Synthetic narrow time-order checks only, no business tools or model calls.",
+    "db_ref": {
+      "path": "data/tau2-bench/data/tau2/domains/airline/db.json",
+      "sha256": "1af9fea6e03ca7ca15a22bb3fcaf3e351393e3fc9070b6777947da8996f7531b"
+    },
+    "source_flights": 300,
+    "next_day_arrivals": 36,
+    "same_day_returns_flagged": 36,
+    "next_day_returns_passed": 36
+  },
+  "frozen_protocol_refs": [
+    {
+      "path": "artifacts/pilots/20261114-tau2-delivery-development-protocol.json",
+      "sha256": "2d283068c3b46aaf7f8a0e4ea57fc7111d10c87e639e7ee0e6307c245e5835e5",
+      "unchanged": true
+    },
+    {
+      "path": "artifacts/pilots/20261115-tau2-baseline-screening-protocol.json",
+      "sha256": "c6c3d71c7ebf28190e3983260d8c0a946697fc395f2aa3ac633ae9b2c9a52732",
+      "unchanged": true
+    },
+    {
+      "path": "artifacts/pilots/20261116-decision-replay-protocol.json",
+      "sha256": "e7e2ef4d77fd494deca2f9c183d3ad6d47531c6171c002bd9627c60b893bb27f",
+      "unchanged": true
+    }
+  ],
+  "historical_reproduction": {
+    "receipt_ref": {
+      "path": "outputs/reproductions/20261116-runtime-edge-replay-01/receipt.json",
+      "sha256": "a5e9b54188382e0d2d07df651f7363157cf3ea844d76bd39791f471d62313df7"
+    },
+    "status": "passed",
+    "experiment": "decision_replay",
+    "started_at_utc": "2026-11-16T13:18:07.215004+00:00",
+    "finished_at_utc": "2026-11-16T13:18:39.666899+00:00",
+    "elapsed_seconds": 32.60772994198487,
+    "launcher_head": "319780a4ea6abdacf7b92bfee52c5f1d843204b5",
+    "implementation_commit": "8a339392619b5bb16cc4b719ae139554814c36b3",
+    "reproduction_commit": "c51165b7f7ba51da8959591079b75bab4f7fec3c",
+    "protocol_lock_ref": {
+      "path": "artifacts/pilots/20261116-decision-replay-protocol.json",
+      "sha256": "e7e2ef4d77fd494deca2f9c183d3ad6d47531c6171c002bd9627c60b893bb27f"
+    },
+    "review_script_ref": {
+      "path": "scripts/review_decision_replay_120.py",
+      "sha256": "1662f8208f34161a41960344ea20d6d9006f593fb70aad4188d9eaf449ad276a"
+    },
+    "expected_outputs": [
+      {
+        "path": "artifacts/pilots/20261116-decision-replay-results.json",
+        "sha256": "c37900bebed1e479c0d2bac181d72a19bdf76fbf775935426d4e0ffba54675c6"
+      },
+      {
+        "path": "artifacts/analyses/20261116-decision-replay-review.json",
+        "sha256": "6b3598dbcafed8626cd67ea29a062c7b9c4f4b1c8e49d005bdf96f0beda3e1f2"
+      }
+    ],
+    "environment_spec": {
+      "lock_ref": {
+        "path": "uv.lock",
+        "sha256": "b87ef58cf24c2e6d1ba07ed896676e31ecfb858b3840ef1bc5faf0c334ec62a6"
+      },
+      "project_ref": {
+        "path": "pyproject.toml",
+        "sha256": "eacca6269ebd090c7c4c2c52c7a0379ad73670a25d34bc711a67a60c1584bf0d"
+      },
+      "python_version": "3.12",
+      "extras": []
+    },
+    "inputs_spec": [
+      {
+        "kind": "run",
+        "path": "runs/tau2-decision-replay-luna-120-01",
+        "log_sha256": "a6cfac372d59f6463b984180b1db1ff3d678e89e49c09aebb4bf504c907d864f"
+      }
+    ],
+    "source_inputs_preserved": true,
+    "staged_inputs_preserved": true,
+    "historical_code_preserved": true,
+    "cleanup": {
+      "status": "removed",
+      "input_copies_retained": false
+    },
+    "returncode": 0,
+    "child": {
+      "status": "passed",
+      "network_attempts": 0,
+      "process_attempts": 0,
+      "protected_write_attempts": 0,
+      "read_only_git_calls": [],
+      "imported_modules": {
+        "agent_memory_eval": "src/agent_memory_eval/__init__.py",
+        "agent_memory_eval.contracts": "src/agent_memory_eval/contracts/__init__.py",
+        "agent_memory_eval.contracts.validation": "src/agent_memory_eval/contracts/validation.py",
+        "agent_memory_eval.contracts.core": "src/agent_memory_eval/contracts/core.py",
+        "agent_memory_eval.recording": "src/agent_memory_eval/recording/__init__.py",
+        "agent_memory_eval.recording.journal": "src/agent_memory_eval/recording/journal.py",
+        "agent_memory_eval.runner": "src/agent_memory_eval/runner/__init__.py",
+        "agent_memory_eval.analysis": "src/agent_memory_eval/analysis/__init__.py",
+        "agent_memory_eval.analysis.decision_replay": "src/agent_memory_eval/analysis/decision_replay.py",
+        "agent_memory_eval.models": "src/agent_memory_eval/models/__init__.py",
+        "agent_memory_eval.models.openrouter": "src/agent_memory_eval/models/openrouter.py",
+        "agent_memory_eval.recording.provenance": "src/agent_memory_eval/recording/provenance.py",
+        "agent_memory_eval.adapters": "src/agent_memory_eval/adapters/__init__.py",
+        "agent_memory_eval.contracts.connection": "src/agent_memory_eval/contracts/connection.py",
+        "agent_memory_eval.adapters.tau2": "src/agent_memory_eval/adapters/tau2.py",
+        "agent_memory_eval.runner.tau2_baseline": "src/agent_memory_eval/runner/tau2_baseline.py",
+        "agent_memory_eval.runner.decision_replay": "src/agent_memory_eval/runner/decision_replay.py"
+      },
+      "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+      "executable": "/home/depa/agent-memory/outputs/reproductions/20261116-runtime-edge-replay-01/checkout/.venv/bin/python",
+      "prefix": "/home/depa/agent-memory/outputs/reproductions/20261116-runtime-edge-replay-01/checkout/.venv",
+      "isolated": true,
+      "assertions_enabled": true,
+      "api_role_keys_present": false,
+      "packages": [
+        {
+          "name": "agent-memory-eval",
+          "version": "0.1.0a0"
+        },
+        {
+          "name": "agent-memory-eval",
+          "version": "0.1.0a0"
+        },
+        {
+          "name": "arrow",
+          "version": "1.4.0"
+        },
+        {
+          "name": "attrs",
+          "version": "26.1.0"
+        },
+        {
+          "name": "fqdn",
+          "version": "1.6.0"
+        },
+        {
+          "name": "idna",
+          "version": "3.20"
+        },
+        {
+          "name": "isoduration",
+          "version": "20.11.0"
+        },
+        {
+          "name": "jsonpointer",
+          "version": "3.12"
+        },
+        {
+          "name": "jsonschema",
+          "version": "4.26.0"
+        },
+        {
+          "name": "jsonschema-specifications",
+          "version": "2025.9.1"
+        },
+        {
+          "name": "lark",
+          "version": "1.3.1"
+        },
+        {
+          "name": "python-dateutil",
+          "version": "4.0.0"
+        },
+        {
+          "name": "referencing",
+          "version": "0.37.0"
+        },
+        {
+          "name": "rfc3339-validator",
+          "version": "0.1.4"
+        },
+        {
+          "name": "rfc3986-validator",
+          "version": "0.1.1"
+        },
+        {
+          "name": "rfc3987-syntax",
+          "version": "1.1.0"
+        },
+        {
+          "name": "rpds-py",
+          "version": "2026.9.1"
+        },
+        {
+          "name": "six",
+          "version": "1.17.0"
+        },
+        {
+          "name": "typing_extensions",
+          "version": "4.16.0"
+        },
+        {
+          "name": "tzdata",
+          "version": "2026.6"
+        },
+        {
+          "name": "uri-template",
+          "version": "1.3.0"
+        },
+        {
+          "name": "webcolors",
+          "version": "25.10.0"
+        }
+      ],
+      "bootstrap_sha256": "284d281db791c19034f9c2d7fad16a39fd8a6402dcffd49a474bff473b2b6004"
+    }
+  },
+  "compatibility_check": {
+    "command": "uv run --frozen --extra tau2 python outputs/runtime-edge-fixes-20261116/verify_compatibility.py",
+    "sha256": "7d70f7837ada7563f95dfb929eb0a2455a89734717c274f59fd1aff05baf8e09",
+    "source": "import hashlib,json,subprocess,time\nfrom pathlib import Path\nfrom agent_memory_eval.contracts.core import canonical\nfrom agent_memory_eval.analysis.tau2_baseline import audit_baseline\nfrom agent_memory_eval.analysis.tau2_delivery import audit_delivery\nfrom agent_memory_eval.runner.decision_replay import audit_replay\nfrom agent_memory_eval.analysis.decision_replay import screen_reply\nOUT=Path('outputs/runtime-edge-fixes-20261116')\ndef sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()\nchecks=[]\nfor name,folder,receipt,fn in [('decision_replay','tau2-decision-replay-luna-120-01','20261116-decision-replay-results.json',audit_replay),('baseline','tau2-baseline-luna-deepseek1017-train-01','20261115-tau2-baseline-screening-results.json',audit_baseline),('delivery','tau2-delivery-luna-deepseek1017-development-01','20261114-tau2-delivery-development-results.json',audit_delivery)]:\n root=Path('runs')/folder;before=sha(root/'log.jsonl');start=time.perf_counter();result=fn(root);expected=json.loads((Path('artifacts/pilots')/receipt).read_bytes())['audit']\n if name=='delivery':\n  for key in ('experiment_id','audit_status','log_sha256','summary_sha256'):assert result[key]==expected[key],key\n else:assert canonical(result)==canonical(expected),name\n assert sha(root/'log.jsonl')==before\n full=OUT/(name+'-audit.json');full.write_bytes(canonical(result)+b'\\n')\n row=dict(experiment=name,status='passed',matches_preserved_audit=True,elapsed_seconds=time.perf_counter()-start,audit_sha256=hashlib.sha256(canonical(result)).hexdigest(),raw_log_sha256=before,source_log_unchanged=True,legacy_stop_reason=result.get('stop_reason'),reported_cost_usd=result['reported_cost_usd_decimal'],full_result_ref=dict(path=str(full),sha256=sha(full)))\n checks.append(row);(OUT/'compatibility.json').write_text(json.dumps(checks,indent=2)+'\\n');print(json.dumps(row),flush=True)\ndb_path=Path('data/tau2-bench/data/tau2/domains/airline/db.json');db=json.loads(db_path.read_bytes());flights=db['flights'];single=[];pairs=[]\ndef screen(legs,data):\n return screen_reply('21',dict(tool_calls=[dict(id='synthetic-order-check',function=dict(name='update_reservation_flights',arguments=json.dumps(dict(flights=legs))))]),data)['status']\nfor number,flight in flights.items():\n status=screen([dict(flight_number=number,date='2024-05-20')],db);assert status=='argument_check_passed',(number,status);single.append(status)\n if '+' in flight['scheduled_arrival_time_est']:\n  probe=dict(flights={number:flight,'__return__':dict(scheduled_departure_time_est='23:59:59',scheduled_arrival_time_est='00:59:59')})\n  for date,wanted in [('2024-05-20','violation_detected'),('2024-05-21','argument_check_passed')]:\n   status=screen([dict(flight_number=number,date='2024-05-20'),dict(flight_number='__return__',date=date)],probe);assert status==wanted,(number,date,status);pairs.append(status)\nclock=dict(status='passed',scope='Synthetic narrow time-order checks only, no business tools or model calls.',db_ref=dict(path=str(db_path),sha256=sha(db_path)),source_flights=len(single),next_day_arrivals=len(pairs)//2,same_day_returns_flagged=pairs.count('violation_detected'),next_day_returns_passed=pairs.count('argument_check_passed'))\n(OUT/'clock-coverage.json').write_text(json.dumps(clock,indent=2)+'\\n');print(json.dumps(clock),flush=True)\n"
+  },
+  "limits": [
+    "Synthetic schedule coverage checks only time-order arguments; it does not execute business tools or establish episode success.",
+    "Exact historical analyses use their fixed reproduction commits. Future +1-containing submissions can receive corrected narrow-screen labels.",
+    "Old raw records, frozen protocols, saved summaries and dated result reports are preserved, including the legacy call_limit in the 120-request record.",
+    "End-to-end recording guarantees cover usage objects and null under the existing schema. Other malformed types are tested at the client/guard boundary only.",
+    "Full-suite time is a single observation with other local work present, not a performance regression comparison.",
+    "Writer blob caching, incremental journal, role-specific request limits, input-size protocol and infrastructure continuation remain pending."
+  ],
+  "new_model_or_catalog_calls": 0
+}

@@ -10,7 +10,7 @@
 | --- | --- |
 | 연구·설계 | 연구 질문·프로토콜·지표·관련 연구·상세 설계 문서 있음 |
 | 계약 | v1.0/v1.1 예시 보존, journal envelope v1.1, snapshot 자동 제공의 별도 journal/event/manifest v1.2 확장 |
-| 동작하는 코드 | 파일 코어, native 기억/두 회차, 세 조건 파일럿, 고정 은행 전달 비교, 무기억 배치, 고정 결정 지점 재전송, commit 기준 과거 재현·입력/환경 격리, schema validator 캐시 |
+| 동작하는 코드 | 파일 코어, native 기억/두 회차, 세 조건 파일럿, 고정 은행 전달 비교, 무기억 배치, 고정 결정 지점 재전송, commit 기준 과거 재현·입력/환경 격리, schema validator 캐시, null 사용량·시각 일수·정상 완료 사유 보완 |
 | 패키지 | [구현 위치와 후속 범위](../../src/agent_memory_eval/README.md)를 구분 |
 | 미구현 | 범용 연구 계획 의미/준비 검사·다른 벤치, 제목/선택기/가공 확장·누적·저장/조회 교차·전체 회차 복원/개입·자동 의미 주석·통계 추론 |
 | 실험 | 48회 전달 비교·55회 무기억 채점에 이어 고정 결정 지점 120요청 완료. 모두 정상 응답·보고 비용 $0.043359345. 업무 도구·사용자 시뮬레이터를 실행하지 않은 한 응답 진단이며 일반 기억 효과는 미확정 |
@@ -55,7 +55,9 @@
 
 [실험 계층 개선안](../development/experiment-layer-improvement-plan.md)에 코드 리뷰와 최근 실험을 함께 정리했다. [P0 실행기](../development/historical-reproduction.md)·[registry](../../protocols/reproductions/historical-v1.json)로 전달 비교 `65a757f`·무기억 `7243fef`·재전송 `c51165b`·원인 진단 `c31a9d6`의 **네 과거 명령을 실제 재현했다.** [검증 자료](../../artifacts/analyses/20261116-historical-reproduction-results.json)에 API 키 제거·금지된 I/O 0·원본/사본/코드 보존·사본 정리를 남겼다. 실제 작은 Git worktree 행동 테스트는 18개다. 이어 schema validator를 경로별 캐시해 동일한 120요청 감사가 49.80→5.87초로 줄었고 결과 해시는 같았다. [측정 자료](../../artifacts/analyses/20261116-schema-validation-performance.json)·[반영 보고서](../reports/20261116-reproduction-and-review-update.md)를 따른다. 캐시 테스트 3개를 포함해 전체 **172개가 373.041초에 통과**했고 기본 검사 3개도 통과했다. 모든 unittest는 mock HTTP이며 새 모델 호출은 없다.
 
-다음은 writer blob 검증 캐시의 안전 범위·journal 증분 검증/인덱스, baseline/delivery 공통 기능이다. 요청 한도/채점·64,000 bytes 한도는 신규 기억 비교 전에 프로토콜과 맞춘다. `+1` 시각·usage null·완료 stop 사유의 세 버그는 확인했으나 아직 수정하지 않았다. 인프라 재개도 미구현이다. 연구는 피드백 세 수준·일반 메모·원래 옳았던 상태 대조를 준비하고, 과거에만 있는 정보가 필요한 자율 조회·독립 판정·군집 표본/전체 예산을 구분한다. 새 유료 실행은 하지 않았고 journal v1.3은 필요를 측정한 뒤 결정한다.
+이어 `319780a`에서 `+1` 시각·usage null·완료 stop 사유의 세 버그를 수정했다. 관련 50개 검사에 이어 **전체 182개가 488.026초에 통과**했고 기본 검사 3개도 통과했다. 원천 항공편 300개·다음 날 도착 36개의 합성 순서 검사, 과거 세 실험의 최신 코드 감사와 고정 commit 재전송 재현도 통과했다. [수정·검증 기록](../development/runtime-edge-fixes.md)을 따른다. 새 모델 호출 없이 과거 결과와 동결 기록을 보존했다.
+
+다음은 writer blob 검증 캐시의 안전 범위·journal 증분 검증/인덱스, baseline/delivery 공통 기능이다. 요청 한도/채점·64,000 bytes 한도는 신규 기억 비교 전에 프로토콜과 맞춘다. 인프라 재개도 미구현이다. 연구는 피드백 세 수준·일반 메모·원래 옳았던 상태 대조를 준비하고, 과거에만 있는 정보가 필요한 자율 조회·독립 판정·군집 표본/전체 예산을 구분한다. 새 유료 실행은 하지 않았고 journal v1.3은 필요를 측정한 뒤 결정한다.
 
 현재 `validation.py`가 동결 해시와 달라진 `fafccd0`에서 P0의 재전송 검토를 다시 실행해 통과했다. `post_change_reproduction` 근거는 위 재현 검증 자료에 있다. 예전 broad 해시를 현재 코드에 맞춰 고치거나 현재 src를 옛 버전으로 되돌리지 않는다.
 

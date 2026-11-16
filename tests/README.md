@@ -1,6 +1,8 @@
 # 검증 자료와 테스트 배치
 
-2026-11-16에 native extra와 고정 checkout이 있는 환경에서 **전체 172개가 373.041초에 통과**했다. 이전 151개에 과거 재현 18개·schema 캐시 3개를 더한 결과이며 모든 모델 경로는 mock HTTP다. 아래 148·151개 등은 이전 단계의 검증 이력이다.
+2026-11-16에 native extra와 고정 checkout이 있는 환경에서 **전체 182개가 488.026초에 통과**했다. 모든 모델 경로는 mock HTTP다. 직전 172개·373.041초와 아래 148·151개 등은 이전 단계의 검증 이력이며 서로 성능 비교에 쓰지 않는다.
+
+이번 [실행 경계 버그 수정](../docs/development/runtime-edge-fixes.md)은 새 테스트 10개를 추가했다. OpenRouter 12개·결정 재전송 22개·native 연결 3개·baseline 13개, 관련 50개도 별도로 통과했다. null 사용량의 원응답·미확인 비용과 다음 전송 차단, `+1` 시각·기존 야간편·잘못된 날짜, 마지막 정상 배정의 완료 사유와 실제 오류 보존을 확인한다. 원본 세 실험의 최신 코드 호환 감사와 고정 commit의 재현 결과는 [검증 자료](../artifacts/analyses/20261116-runtime-edge-fixes-validation.json)에 연결한다.
 
 [schema 캐시 검사](test_validator_cache.py) 3개는 반복 컴파일 제거와 잘못된 기록의 거부, mapping 변경 격리·다른 schema root의 규칙 격리를 확인하며 통과했다. 성능은 실제 저장 결과의 별도 [전후 측정](../artifacts/analyses/20261116-schema-validation-performance.json)이며 모델 효과와 구분한다.
 
