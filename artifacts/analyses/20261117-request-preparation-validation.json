@@ -1,0 +1,184 @@
+{
+  "format": "agent-memory-offline-preparation-validation/v1",
+  "status": "passed",
+  "implementation": {
+    "format": "agent-memory-implementation-freeze/v1",
+    "implementation_commit": "48d2dde85b88eda1fd4a6bf72818a779ee90aeba",
+    "implementation_tree": "f773b26ddae6ec6ef93afa6d1cdf1142dfda2290",
+    "worktree_has_uncommitted_implementation": false,
+    "lock_ref": {
+      "path": "uv.lock",
+      "sha256": "b87ef58cf24c2e6d1ba07ed896676e31ecfb858b3840ef1bc5faf0c334ec62a6"
+    },
+    "reproduction_commit": null,
+    "scope": "implementation_identity_only_not_a_paid_protocol_or_run_authorization"
+  },
+  "scope": "Recorded public context import, isolated feedback request preparation and mock snapshot transfer; no empirical memory effect.",
+  "python_version": "3.12.3",
+  "preparation_ref": {
+    "path": "artifacts/analyses/20261117-worker-memory-preparation.json",
+    "sha256": "e72304a43cf48bff08fb36ade966838b18501d4b663cf968a89a065a69dd99bc"
+  },
+  "preparation_audit": {
+    "status": "passed",
+    "experiment_id": "worker-memory-request-preparation",
+    "preparations": [
+      {
+        "run_id": "prep_1b89b53cd9a9467791fe3a2a042428aa",
+        "kind": "writer",
+        "input_bytes": 42097,
+        "fits_input_limit": true,
+        "planned_memory_spans": 0,
+        "request_ref": {
+          "media_type": "application/json",
+          "path": "blobs/sha256/360411b636f32268cc2fa4ce650b00377bfac125baefdbe9689f371b2e1de2f8",
+          "sha256": "360411b636f32268cc2fa4ce650b00377bfac125baefdbe9689f371b2e1de2f8"
+        }
+      },
+      {
+        "run_id": "prep_3a91b55f0fbf4e5d8502f55a5f528162",
+        "kind": "writer",
+        "input_bytes": 42072,
+        "fits_input_limit": true,
+        "planned_memory_spans": 0,
+        "request_ref": {
+          "media_type": "application/json",
+          "path": "blobs/sha256/7cf001bd12aba7571e3963b5f11db1912daa1697039d3abbabcbc7e1b52acbe9",
+          "sha256": "7cf001bd12aba7571e3963b5f11db1912daa1697039d3abbabcbc7e1b52acbe9"
+        }
+      },
+      {
+        "run_id": "prep_6f2f8d69da6a42a3ba1cb88122aa0e47",
+        "kind": "snapshot_replay",
+        "input_bytes": 44619,
+        "fits_input_limit": true,
+        "planned_memory_spans": 0,
+        "request_ref": {
+          "media_type": "application/json",
+          "path": "blobs/sha256/37a819e81cebbf090188c21c08bb20717488ac9d3c55494c40d4cdde4a8b8f52",
+          "sha256": "37a819e81cebbf090188c21c08bb20717488ac9d3c55494c40d4cdde4a8b8f52"
+        }
+      }
+    ],
+    "preparation_model_requests": 0,
+    "preparation_memory_exposures": 0,
+    "all_model_requests": 0,
+    "scope": "offline_request_preparation_not_a_model_experiment"
+  },
+  "writing_inputs": [
+    {
+      "feedback_level": "result_only",
+      "request_sha256": "360411b636f32268cc2fa4ce650b00377bfac125baefdbe9689f371b2e1de2f8"
+    },
+    {
+      "feedback_level": "none",
+      "request_sha256": "7cf001bd12aba7571e3963b5f11db1912daa1697039d3abbabcbc7e1b52acbe9"
+    }
+  ],
+  "identical_writer_public_context": true,
+  "writer_public_context_sha256": "693bc3c23f0641ed0ba5dce8d43e21a4a2f5085d69044b112c019a3ecb35be05",
+  "full_suite": {
+    "command": "uv run --frozen --extra tau2 python -m unittest discover -s tests",
+    "tests": 222,
+    "seconds": 430.618,
+    "exit_code": 0,
+    "log_sha256": "d45ecdc114ee90e95a536df1cb490387828ae87fc4da9d5a33a2ffea5e7d3041",
+    "performance_scope": "Validation timing; preserved-input audits ran concurrently. Not a performance comparison."
+  },
+  "basic_checks": [
+    {
+      "command": "uv run --frozen python scripts/validate_design.py",
+      "status": "passed"
+    },
+    {
+      "command": "uv run --frozen python scripts/check_repository.py",
+      "status": "passed"
+    },
+    {
+      "command": "uv run --frozen python scripts/verify_legacy_data.py",
+      "status": "passed"
+    }
+  ],
+  "preserved_audits": {
+    "complete_audit_output_compared": true,
+    "format": "agent-memory-preserved-audit-suite/v1",
+    "new_model_or_catalog_calls": 0,
+    "runs": [
+      {
+        "audit_sha256": "923bf64219ff2e5eca5d8f9d685d696ab394c0461689ad5944b28375ea15ebd1",
+        "id": "decision-replay-120",
+        "input_files": 813,
+        "input_inventory_preserved": true,
+        "status": "passed"
+      },
+      {
+        "audit_sha256": "a3fcafc590afbac2a82669cb0b2e9dd0f0df8d3a0add96743347738a6a341278",
+        "id": "baseline-train",
+        "input_files": 6591,
+        "input_inventory_preserved": true,
+        "status": "passed"
+      },
+      {
+        "audit_sha256": "33bd7a74b301052ff2fbbfffdd8f96967e6b9a0bc7eaca0a62679b0d4fcae1a2",
+        "id": "delivery-48",
+        "input_files": 5076,
+        "input_inventory_preserved": true,
+        "status": "passed"
+      },
+      {
+        "audit_sha256": "7190ae5b6e21a8cb2099f3b9cd388c4f1c5073fccad1dd368ecb993f41ca97cf",
+        "id": "guided-memory",
+        "input_files": 196,
+        "input_inventory_preserved": true,
+        "status": "passed"
+      },
+      {
+        "audit_sha256": "5a8a222a8f840bd16c4ea4d91cc2ccd26fd4f6c053ca28cb4ae4a9ff95e0ceab",
+        "id": "autonomy-1",
+        "input_files": 138,
+        "input_inventory_preserved": true,
+        "status": "passed"
+      },
+      {
+        "audit_sha256": "faf386330d619952fea310ab3666a648e3b997c452e1f3e2e37957004d4584e6",
+        "id": "autonomy-2",
+        "input_files": 923,
+        "input_inventory_preserved": true,
+        "status": "passed"
+      },
+      {
+        "audit_sha256": "da327cd0d6b8d914ed39956ce466e633f6ae21b7f639d3b4be8b6c9e2172493b",
+        "id": "connection-1",
+        "input_files": 95,
+        "input_inventory_preserved": true,
+        "status": "passed"
+      },
+      {
+        "audit_sha256": "60adebf4c6ea10b8a6c8ed10d79c41f05630deed65b7809cbd387ce25187b54d",
+        "id": "connection-2",
+        "input_files": 15,
+        "input_inventory_preserved": true,
+        "status": "passed"
+      },
+      {
+        "audit_sha256": "02c25161eaad3ce8c27bcac847c418ff6654281e19313136e15a50699709f310",
+        "id": "connection-3",
+        "input_files": 15,
+        "input_inventory_preserved": true,
+        "status": "passed"
+      },
+      {
+        "audit_sha256": "2abf97d471874d1a5eb5a753124a1d9c94c9d02f60f2a8c25d417a06dd5dcb8b",
+        "id": "connection-4",
+        "input_files": 102,
+        "input_inventory_preserved": true,
+        "status": "passed"
+      }
+    ],
+    "status": "passed"
+  },
+  "new_model_or_catalog_calls": 0,
+  "new_paid_cost_usd": 0,
+  "empirical_worker_generated_memory": false,
+  "live_ready": false
+}

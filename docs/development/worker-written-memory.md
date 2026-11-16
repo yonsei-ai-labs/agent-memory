@@ -67,6 +67,8 @@ uv run --frozen python scripts/prepare_worker_memory.py \
 
 [오프라인 준비 기록](../../artifacts/analyses/20261117-worker-memory-preparation.json)은 실제 14·2 원본으로 만든 요청의 해시·크기·미정 항목을 담는다. 실제 Luna 작성 기억은 아직 없고, 모델 비용·효과도 측정하지 않았다. 테스트에서는 같은 준비 요청이 실제 작성기의 첫 요청과 일치하고 mock 작성 snapshot을 재전송 입력으로 옮기는 것까지 확인한다. 빈 작성도 보존한다.
 
+[검증 기록](../../artifacts/analyses/20261117-request-preparation-validation.json)은 커밋된 구현·실제 준비본의 재감사·공개 문맥 동일성·전체 테스트·보존 원본 감사를 연결한다. 테스트 소요 시간은 성능 비교로 해석하지 않는다.
+
 일반 주의 메모·빈 은행·원래 옳았던 상태를 대조에 두고 재전송으로 좁혀 전체 에피소드에서 확인하는 방향이다. 7·39는 에피소드 주 분석 제외 기준을 유지하며 17↔7 후보는 과정 판정에 한정한다. 14와 23의 동일 사용자·기억 속 ID가 절차에 미치는 영향도 분리한다. 어려운 과제를 고르는 것과 과거 정보가 필요한 과제를 만드는 것은 별도로 점검한다.
 
 새 유료 실행 CLI·범용 PlanCompiler·과거 중간 상태 복원은 이번 기능에 포함하지 않는다. [개선 계획](experiment-layer-improvement-plan.md)의 전체 연구 범위를 유지한다.
