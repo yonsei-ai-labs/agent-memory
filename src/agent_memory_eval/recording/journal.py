@@ -4,6 +4,7 @@ from copy import deepcopy
 import fcntl
 import os
 from pathlib import Path
+import stat
 import tempfile
 import threading
 
@@ -35,8 +36,10 @@ def safe_path(root, relative):
 
 
 class BlobStore:
-    def __init__(self, root):
+    def __init__(self, root, *, cache_verification=False):
         self.root = Path(root).absolute()
+        # Writer-local only. Independent readers always hash the stored bytes.
+        self._verified = {} if cache_verification else None
 
     def mkdir(self, path):
         if path.exists():
@@ -89,13 +92,50 @@ class BlobStore:
                 identity = (value["path"], value["sha256"])
                 if identity not in seen:
                     seen.add(identity)
-                    self.verify(self.get(value), seen)
+                    if self._verified is None:
+                        self.verify(self.get(value), seen)
+                    else:
+                        self._verify_cached(value, identity, seen)
             else:
                 for child in value.values():
                     self.verify(child, seen)
         elif isinstance(value, list):
             for child in value:
                 self.verify(child, seen)
+
+    def _fingerprint(self, ref):
+        info = safe_path(self.root, ref["path"]).stat(follow_symlinks=False)
+        if not stat.S_ISREG(info.st_mode):
+            raise ContractError("A blob must be a regular file")
+        return (info.st_dev, info.st_ino, info.st_mode, info.st_size,
+                info.st_mtime_ns, info.st_ctime_ns)
+
+    @staticmethod
+    def _references(value):
+        if isinstance(value, dict):
+            if {"path", "sha256", "media_type"} <= value.keys():
+                yield value
+            else:
+                for child in value.values():
+                    yield from BlobStore._references(child)
+        elif isinstance(value, list):
+            for child in value:
+                yield from BlobStore._references(child)
+
+    def _verify_cached(self, ref, identity, seen):
+        fingerprint = self._fingerprint(ref)
+        cached = self._verified.get(identity)
+        if cached is None or cached[0] != fingerprint:
+            self._verified.pop(identity, None)
+            children = tuple(self._references(self.get(ref)))
+            if self._fingerprint(ref) != fingerprint:
+                raise ContractError("Blob changed during verification")
+        else:
+            children = cached[1]
+        # A parent's unchanged metadata does not prove its descendants survived.
+        for child in children:
+            self.verify(child, seen)
+        self._verified[identity] = (fingerprint, children)
 
     def write_view(self, name, data):
         path = safe_path(self.root, "views/" + name)
@@ -154,7 +194,7 @@ class Journal:
         self.root = Path(root).absolute()
         if self.root.resolve() != self.root:
             raise ContractError("Experiment root must not traverse a symlink")
-        self.blobs = BlobStore(self.root)
+        self.blobs = BlobStore(self.root, cache_verification=True)
         self.blobs.mkdir(self.root)
         self.lock = threading.RLock()
         self.experiment_id = experiment_id
@@ -197,6 +237,8 @@ class Journal:
         if self._lease is not None:
             os.close(self._lease)
             self._lease = None
+        if self.blobs._verified is not None:
+            self.blobs._verified.clear()
 
     def __enter__(self):
         return self

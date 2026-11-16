@@ -1,7 +1,6 @@
 """Worker-private memory rounds around the pinned native tau2 agent and environment."""
 
 from copy import deepcopy
-from dataclasses import asdict
 from types import SimpleNamespace
 from unittest.mock import patch
 
@@ -9,7 +8,8 @@ from agent_memory_eval.adapters.tau2 import Tau2Bridge
 from agent_memory_eval.contracts.core import ContractError, canonical, digest
 from agent_memory_eval.contracts.connection import native_parameters
 from agent_memory_eval.memory.tools import memory_tools
-from agent_memory_eval.runner.router import ToolRouter
+from agent_memory_eval.memory.context import memory_system_suffix
+from agent_memory_eval.memory.router import ToolRouter
 
 
 class NativeBusiness:
@@ -32,7 +32,7 @@ class Tau2MemoryBridge(Tau2Bridge):
         self.memory, self.bank_id, self.policy = memory, bank_id, policy
         self.native_system = self.systems["worker"]
         if policy.enabled:
-            self.systems["worker"] += "\n<memory_policy>\n" + solve_instruction + "\n" + canonical(asdict(policy)).decode() + "\n</memory_policy>"
+            self.systems["worker"] += memory_system_suffix(policy, solve_instruction)
         elif solve_instruction or post_instruction:
             raise ContractError("The no-memory condition has no memory instructions")
         self.systems["writer"] = self.systems["worker"]

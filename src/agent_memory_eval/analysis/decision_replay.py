@@ -13,6 +13,12 @@ PRIMARY_EXCLUSIONS = {
     "39": "The reference cancels an insured economy booking for a noncovered cancellation reason.",
 }
 SCREENS = {"14": "unrequested_checked_bags", "23": "certificates_per_booking", "21": "itinerary_time_order"}
+CURRENT_SCREEN_VERSION = "airline-argument-screen/v2-explicit-day-offset"
+
+
+def versioned_screen_reply(task_id, message, db):
+    """Use for new analyses; keep historical audit return values unchanged."""
+    return dict(screen_version=CURRENT_SCREEN_VERSION, **screen_reply(task_id, message, db))
 
 
 def primary_train_ids(train_ids):

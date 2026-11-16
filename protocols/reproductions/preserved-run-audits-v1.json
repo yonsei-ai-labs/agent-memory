@@ -1,0 +1,168 @@
+{
+  "format": "agent-memory-preserved-audit-baselines/v1",
+  "baseline_commit": "7f4d0f39a4b17a93b23d8ee6e13066c184a66627",
+  "baseline_source": "Fixed Git worktree at 7f4d0f3; full existing auditor return values, no raw changes.",
+  "comparison": "SHA-256 of the complete canonical JSON audit result, no field subset and no requirement to match current source hashes.",
+  "runs": [
+    {
+      "id": "decision-replay-120",
+      "auditor": "decision_replay",
+      "path": "runs/tau2-decision-replay-luna-120-01",
+      "input_refs": [
+        {
+          "path": "log.jsonl",
+          "sha256": "a6cfac372d59f6463b984180b1db1ff3d678e89e49c09aebb4bf504c907d864f"
+        },
+        {
+          "path": "decision-replay-summary.json",
+          "sha256": "78da7248d73962cd58d55d12b384dcf9d3f092996904daa8146b67fabb1ccc2e"
+        }
+      ],
+      "audit_sha256": "923bf64219ff2e5eca5d8f9d685d696ab394c0461689ad5944b28375ea15ebd1"
+    },
+    {
+      "id": "baseline-train",
+      "auditor": "baseline",
+      "path": "runs/tau2-baseline-luna-deepseek1017-train-01",
+      "input_refs": [
+        {
+          "path": "log.jsonl",
+          "sha256": "ec0994a536729872ce8ee7ff06ae63c2e640e70091146b9a361535174ee8fbb5"
+        },
+        {
+          "path": "baseline-summary.json",
+          "sha256": "812aca7d5dd974492beddaa4b9310ffa871af0ae453b370517f28fd62f73537c"
+        }
+      ],
+      "audit_sha256": "a3fcafc590afbac2a82669cb0b2e9dd0f0df8d3a0add96743347738a6a341278"
+    },
+    {
+      "id": "delivery-48",
+      "auditor": "delivery",
+      "path": "runs/tau2-delivery-luna-deepseek1017-development-01",
+      "input_refs": [
+        {
+          "path": "log.jsonl",
+          "sha256": "d8a4307eb849cafd9e0b3e57e4393e9c92c795ef7e2e0fe815e06a8335645233"
+        },
+        {
+          "path": "delivery-summary.json",
+          "sha256": "8fc20c03a902e0585f5fef6289955de6563027e5a9565e43bf495f525f98eff7"
+        }
+      ],
+      "audit_sha256": "33bd7a74b301052ff2fbbfffdd8f96967e6b9a0bc7eaca0a62679b0d4fcae1a2"
+    },
+    {
+      "id": "guided-memory",
+      "auditor": "memory",
+      "path": "runs/tau2-memory-luna-deepseek1017-check-01",
+      "input_refs": [
+        {
+          "path": "log.jsonl",
+          "sha256": "762fbeb6a903403512acae3eb061acb3a665964dee3f2dd5852f5c093e9cf0d0"
+        },
+        {
+          "path": "memory-summary.json",
+          "sha256": "c7e76c0c5b02a279530b36bed60ef7728072b46c191649bdda85b728eca69654"
+        }
+      ],
+      "audit_sha256": "7190ae5b6e21a8cb2099f3b9cd388c4f1c5073fccad1dd368ecb993f41ca97cf"
+    },
+    {
+      "id": "autonomy-1",
+      "auditor": "autonomy",
+      "path": "runs/tau2-autonomy-luna-deepseek1017-pilot-01",
+      "input_refs": [
+        {
+          "path": "log.jsonl",
+          "sha256": "954df3c1c3eb0632b1eddd1f84f90354c9394bd9f8464ac43d61ff3a7cfd5066"
+        },
+        {
+          "path": "pilot-summary.json",
+          "sha256": "e23c28547afe551b9d054aefebae05a2809052a4efec3c37de846ecdc4bf6998"
+        }
+      ],
+      "audit_sha256": "5a8a222a8f840bd16c4ea4d91cc2ccd26fd4f6c053ca28cb4ae4a9ff95e0ceab"
+    },
+    {
+      "id": "autonomy-2",
+      "auditor": "autonomy",
+      "path": "runs/tau2-autonomy-luna-deepseek1017-pilot-02",
+      "input_refs": [
+        {
+          "path": "log.jsonl",
+          "sha256": "01a58a1b4a1a64645a59a9941532ed91c8e2614b93858f96afdfffb7e5dea04d"
+        },
+        {
+          "path": "pilot-summary.json",
+          "sha256": "2fa9d05a82c7b4f5c8845493990098413790f16ea737a7a2b0f54772c6e752a2"
+        }
+      ],
+      "audit_sha256": "faf386330d619952fea310ab3666a648e3b997c452e1f3e2e37957004d4584e6"
+    },
+    {
+      "id": "connection-1",
+      "auditor": "connection",
+      "path": "runs/tau2-openrouter-luna-check-01",
+      "input_refs": [
+        {
+          "path": "log.jsonl",
+          "sha256": "70772025ad776f1fd5be274906125e947079101d5571901ec903997c0092a2a3"
+        },
+        {
+          "path": "connection-summary.json",
+          "sha256": "fd3fdb6a0bfb98ccf56d83e2264a9adb53903f145e176dc50fe16adcda656495"
+        }
+      ],
+      "audit_sha256": "da327cd0d6b8d914ed39956ce466e633f6ae21b7f639d3b4be8b6c9e2172493b"
+    },
+    {
+      "id": "connection-2",
+      "auditor": "connection",
+      "path": "runs/tau2-openrouter-luna-deepseek1017-check-01",
+      "input_refs": [
+        {
+          "path": "log.jsonl",
+          "sha256": "a2f2cfceb94d6c92210b059e69abe7c0b33e665ac03e29dcdbd708b3b037e365"
+        },
+        {
+          "path": "connection-summary.json",
+          "sha256": "c3da1a78fbb686af59f2f49013cf0f47a3089d48bdd9bf2d1c9f6e1f1a534b5d"
+        }
+      ],
+      "audit_sha256": "60adebf4c6ea10b8a6c8ed10d79c41f05630deed65b7809cbd387ce25187b54d"
+    },
+    {
+      "id": "connection-3",
+      "auditor": "connection",
+      "path": "runs/tau2-openrouter-luna-deepseek1017-check-02",
+      "input_refs": [
+        {
+          "path": "log.jsonl",
+          "sha256": "e58b55aae7e3263fda69470c7a634a4bb3b3b34ab42f18032e6ce3362aa150c0"
+        },
+        {
+          "path": "connection-summary.json",
+          "sha256": "30084181ad054e8ad93b2fe8cd996771195563adb9267363f0463a7f8fb09285"
+        }
+      ],
+      "audit_sha256": "02c25161eaad3ce8c27bcac847c418ff6654281e19313136e15a50699709f310"
+    },
+    {
+      "id": "connection-4",
+      "auditor": "connection",
+      "path": "runs/tau2-openrouter-luna-deepseek1017-check-03",
+      "input_refs": [
+        {
+          "path": "log.jsonl",
+          "sha256": "25c8d951375ac771a3330a214745373790ba863576621009a69bf5836c8ae273"
+        },
+        {
+          "path": "connection-summary.json",
+          "sha256": "5d6e1da567686779315952c61165bc7e7b24494bdc8950cb11725dd5937f233b"
+        }
+      ],
+      "audit_sha256": "2abf97d471874d1a5eb5a753124a1d9c94c9d02f60f2a8c25d417a06dd5dcb8b"
+    }
+  ]
+}

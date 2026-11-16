@@ -6,6 +6,7 @@ from dataclasses import asdict, dataclass
 from agent_memory_eval.contracts.core import (ContractError, MemoryFault, MemoryPolicy,
                                               RunContext, canonical, digest, new_id, read_json)
 from agent_memory_eval.contracts.validation import read_public_prefix
+from agent_memory_eval.memory.context import snapshot_message
 
 
 @dataclass(frozen=True)
@@ -139,7 +140,7 @@ class MemoryService:
             state["return_bytes"][ctx.run_id] = used + len(content.encode())
             event = ctx.at("prepare").event("memory.preloaded", dict(bank_id=bank_id, snapshot_id=snapshot_id,
                 selector="all_snapshot_verbatim", snapshot_manifest_ref=producer["payload"]["manifest_ref"],
-                public_message_ref=self.journal.blobs.put(dict(role="user", content=content)), versions=versions,
+                public_message_ref=self.journal.blobs.put(snapshot_message(items)), versions=versions,
                 items=[dict(item_id=m["id"], version_id=m["version"], fields=["title", "body"]) for m in items]),
                 causes=[start["event_id"], producer["event_id"]])
             event["schema_version"] = "1.2"
