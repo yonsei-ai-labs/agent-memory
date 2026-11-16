@@ -26,7 +26,7 @@ uv run --frozen python scripts/reproduce_experiment.py --experiment baseline_dia
 ## 격리와 저장량
 
 1. 지정한 commit의 detached worktree를 만든다. Git branch나 현재 미커밋 변경을 checkout하지 않는다.
-2. 원본 run의 `writer.lock`에 공유 잠금을 잡고 입력 manifest를 만든다. 독립 파일 사본을 worktree에 넣는다. raw symlink·원본 hardlink·추적 파일 덮어쓰기를 거부한다. 진단의 native 소스는 로컬 Git clone으로 독립 준비하고 원래 checkout 안을 가리키는 추적 symlink만 보존한다. checkout 밖으로 나가는 링크는 거부한다.
+2. 원본 run의 `writer.lock`에 공유 잠금을 잡고 입력 manifest를 만든다. 독립 파일 사본을 worktree에 넣는다. raw symlink·원본 hardlink·추적 파일 덮어쓰기를 거부한다. 진단의 native 소스는 검증한 HEAD만 로컬 전송하는 shallow clone으로 준비해 partial clone에 없는 과거 객체를 요구하지 않는다. 원래 checkout 안을 가리키는 추적 symlink만 보존하며 checkout 밖으로 나가는 링크는 거부한다.
 3. 그 commit의 `uv.lock`으로 worktree 전용 `.venv`를 `uv sync --frozen --offline --no-python-downloads`로 준비한다. 결과 검토 세 개는 기본 의존성만 설치하고, 로컬 도구 재생을 하는 원인 진단은 고정 `tau2` extra를 설치한다. 로컬 uv cache가 부족하면 실패를 기록하고 자동으로 네트워크 설치하지 않는다.
 4. 전용 Python `-I -B`에서 과거 review 스크립트의 기본 검증 모드만 실행한다. 실제 패키지 import 경로·Python/설치 패키지·assert 활성 상태를 기록하고 API 역할 키를 전달하지 않는다.
 5. Python 감사 hook으로 등록된 검토 스크립트의 네트워크·중첩 프로세스·worktree 쓰기를 차단한다. 원인 진단만 등록한 native clone에 대한 정확한 `git rev-parse HEAD`·`git status --porcelain`을 허용하고 기록한다. Git 선택적 인덱스 갱신은 끈다. 시도를 잡아먹고 계속한 스크립트도 실패로 기록한다. 이는 신뢰하는 과거 스크립트의 우발적 I/O를 막는 장치이며 적대적 코드를 격리하는 OS 보안 sandbox가 아니다.

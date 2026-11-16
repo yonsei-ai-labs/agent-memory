@@ -257,7 +257,9 @@ def stage_inputs(base, worktree, inventory, entry):
         if target.exists():
             raise ReproductionError("Benchmark staging target already exists")
         target.parent.mkdir(parents=True, exist_ok=True)
-        git(source, "clone", "--no-hardlinks", "--no-checkout", str(source), str(target))
+        # Native sources can be partial clones lacking blobs from old history.
+        # Copy only their verified HEAD through local upload-pack, without fetching.
+        git(source, "clone", "--no-local", "--depth=1", "--no-checkout", str(source), str(target))
         git(target, "checkout", "--detach", item["commit"])
         checkouts.append(target)
     for row in inventory:

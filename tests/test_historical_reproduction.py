@@ -262,6 +262,7 @@ except RuntimeError:
         self.save_registry('''
 import subprocess
 native = root / "data/benchmark"
+assert (native / ".git/shallow").is_file()
 assert (native / "asset.txt").read_text() == "native source\\n"
 assert (native / "internal-link").is_symlink()
 assert (native / "internal-link").read_text() == "native source\\n"
