@@ -97,12 +97,17 @@ class FrozenBusiness:
     ended, steps, stop_tools = True, 0, frozenset()
 
 
+class UnknownWriterCost(ContractError):
+    code = "UNKNOWN_COST_STOP"
+
+
 def write_from_experience(journal, experience_ref, feedback, *, instruction, policy, client,
-                          model_config, max_requests, condition_id, run_id=None):
+                          model_config, max_requests, condition_id, run_id=None, execution_limits=None):
     """No collection rerun, source grading artifact, business tools or shared writer session."""
     if (not policy.enabled or policy.write_timing != "post_task" or policy.read_mode != "none"
             or policy.same_episode_read or not isinstance(instruction, str) or not instruction.strip()
-            or type(max_requests) is not int or max_requests < 1):
+            or (execution_limits is None and (type(max_requests) is not int or max_requests < 1))
+            or (execution_limits is not None and max_requests is not None)):
         raise ContractError("Writing requires explicit post-task-only policy, instruction and request limit")
     allowed = {"model", "temperature", "seed", "reasoning", "provider", "stream", "max_completion_tokens", "max_tokens"}
     if set(model_config) - allowed or not isinstance(model_config.get("model"), str):
@@ -115,12 +120,21 @@ def write_from_experience(journal, experience_ref, feedback, *, instruction, pol
     model = getattr(client, "model", None)
     if kind == "observed" and (not model or model["id"] != model_config["model"] or not model.get("selected_endpoint")):
         raise ContractError("Observed writing requires the verified worker model and endpoint")
+    if (kind == "observed" and execution_limits is not None
+            and getattr(client, "max_input_bytes", None) != execution_limits.max_input_bytes):
+        raise ContractError("Writer transport and declared input limits differ")
+    if run_id is not None and (not isinstance(run_id, str) or not run_id or run_id in journal.scan["starts"]):
+        raise ContractError("Writer run ID must be new and nonempty")
     ctx = RunContext(journal.experiment_id, run_id or new_id("r"), new_id("s"), condition_id,
                      "collection", "post_task_write", kind)
     memory = MemoryService(journal, record_kind=kind)
     bank = memory.create_bank(ctx.run_id, policy)
-    config = dict(experience_ref=experience_ref, feedback=asdict(feedback), instruction=instruction,
+    config = dict(response_projection="public-assistant/v1", experience_ref=experience_ref,
+                  feedback=asdict(feedback), instruction=instruction,
                   model_config=deepcopy(model_config), policy=asdict(policy), max_requests=max_requests, bank_id=bank)
+    if execution_limits is not None:
+        config["execution_limits"] = asdict(execution_limits)
+        config["execution_contract"] = "per-role-limits/v1"
     state = deepcopy(journal.state)
     state.setdefault("memory_writes", {})[ctx.run_id] = config
     journal.append([ctx.at("prepare").event("run.started", dict(bank_id=bank, start_snapshot_id=None,
@@ -139,7 +153,8 @@ def write_from_experience(journal, experience_ref, feedback, *, instruction, pol
     try:
         while True:
             message, source, request_id = gateway.call(ctx, registry, "writer", template, history, client,
-                                                       max_requests=max_requests)
+                                                       max_requests=max_requests, project_self_authored=True,
+                                                       execution_limits=execution_limits)
             if kind == "observed":
                 raw = journal.blobs.get(registry.sources[source]["artifact_ref"])
                 if (raw.get("model") not in {model["id"], model.get("canonical_slug")}
@@ -147,13 +162,19 @@ def write_from_experience(journal, experience_ref, feedback, *, instruction, pol
                     raise ContractError("Writer response model or provider differs from the verified worker")
             history.append((source, ""))
             calls = message.get("tool_calls") or []
+            unknown = journal.events[registry.sources[source]["producer_event_id"]]["payload"]["cost_status"] == "unknown"
             if not calls:
+                if unknown:
+                    raise UnknownWriterCost("Writer completion has an unverified cost")
                 break
             for _, source_kind, event_id in router.dispatch(ctx, request_id, calls):
                 history.append((registry.add(source_kind, event_id, roles=("writer",)), ""))
+            if unknown:
+                raise UnknownWriterCost("Writer response has an unverified cost")
     except Exception as error:
         status, error_code = "error", getattr(error, "code", type(error).__name__)
-        journal.append([ctx.event("runtime.error", dict(code=error_code))])
+        if getattr(error, "recorded_event_id", None) not in journal.events:
+            journal.append([ctx.event("runtime.error", dict(code=error_code))])
     snapshot = memory.freeze(bank)
     memory.seal(bank)
     stores = sum(e["run_id"] == ctx.run_id and e["type"] == "memory.stored" for e in journal.events.values())

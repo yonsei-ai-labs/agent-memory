@@ -17,6 +17,8 @@ from agent_memory_eval.contracts.connection import forward_seed, native_paramete
 from agent_memory_eval.models.openrouter import OpenRouterClient, ProviderError, SpendGuard, resolve_endpoint, resolve_model
 from agent_memory_eval.recording.journal import Journal
 from agent_memory_eval.recording.provenance import RecordingGateway, SourceRegistry
+from agent_memory_eval.analysis.requests import audit_requests
+from agent_memory_eval.recording.journal import read_experiment
 
 
 MODEL = dict(id="openai/gpt-6-luna", canonical_slug="openai/gpt-6-luna-test",
@@ -72,6 +74,64 @@ class OpenRouterTests(unittest.TestCase):
             client.respond(self.request)
         self.assertEqual(self.guard.calls, 1)
         self.assertTrue(self.guard.unknown_cost)
+
+    def test_nonfinite_budgets_and_invalid_reservation_prices_fail_before_http(self):
+        for values in ((True, 1, 1), (1.5, 1, 1), (1, float("nan"), 1), (1, float("inf"), 1), (1, 1, float("nan"))):
+            with self.subTest(values=values), self.assertRaises(ContractError):
+                SpendGuard(max_calls=values[0], max_usd=values[1], max_seconds=values[2])
+        for rate in ("NaN", "Infinity", "-1", "not-a-price"):
+            with self.subTest(rate=rate), self.assertRaisesRegex(ProviderError, "INVALID_RESERVATION_PRICING"):
+                client = OpenRouterClient(dict(MODEL, reservation_pricing=dict(prompt=rate, completion="0.1")),
+                    self.guard, route=ROUTE, opener=lambda *a, **kw: self.fail("HTTP attempted"))
+                client.respond(self.request)
+        self.assertEqual(self.guard.calls, 0)
+
+    def test_explicit_transport_input_and_timeout_limits(self):
+        calls = []
+        def opener(request, timeout):
+            calls.append(timeout)
+            return Reply(response())
+        request = dict(self.request, messages=[dict(role="user", content="x" * 65000)])
+        with self.assertRaisesRegex(ProviderError, "INPUT_SIZE_LIMIT"):
+            OpenRouterClient(MODEL, self.guard, route=ROUTE, opener=opener).respond(request)
+        self.assertEqual(calls, [])
+        OpenRouterClient(MODEL, self.guard, route=ROUTE, opener=opener,
+            max_input_bytes=100000, timeout_seconds=2).respond(request)
+        self.assertEqual(len(calls), 1)
+        self.assertLessEqual(calls[0], 2)
+
+    def test_malformed_json_shapes_and_usage_leave_closed_recordable_attempts(self):
+        variants = [None, [], "unavailable", dict(response(), usage=[]), dict(response(), usage="invalid")]
+        for body in variants:
+            with self.subTest(body_type=type(body).__name__), TemporaryDirectory() as folder, Journal(folder, "malformed") as journal:
+                guard = SpendGuard(max_calls=3, max_usd=1, max_seconds=30)
+                calls = []
+                def opener(*args, **kwargs):
+                    calls.append(1)
+                    return Reply(body)
+                client = OpenRouterClient(MODEL, guard, route=ROUTE, opener=opener)
+                ctx = RunContext("malformed", "r", "s", "check", "diagnostic", "solve", "observed")
+                message = dict(role="user", content="hello")
+                journal.append([ctx.event("run.started", dict(bank_id=None, start_snapshot_id=None,
+                    fresh_session=True, source_run_ids=[], task_ref=journal.blobs.put(message)))])
+                registry = SourceRegistry(journal, ctx)
+                template = registry.template({k:v for k,v in self.request.items() if k != "messages"}, roles=("worker",))
+                source = registry.template(dict(message=message), roles=("worker",))
+                gateway = RecordingGateway(journal)
+                with self.assertRaises(ContractError):
+                    gateway.call(ctx, registry, "worker", template, [(source, "/message")], client, max_requests=3)
+                first = [e["payload"] for e in journal.events.values() if e["type"] == "model.request_finished"][0]
+                self.assertEqual(first["status"], "error")
+                self.assertEqual(first["cost_status"], "unknown")
+                self.assertIsNone(first["usage"])
+                self.assertEqual(journal.blobs.get(first["response_ref"]), body)
+                with self.assertRaisesRegex(ProviderError, "UNKNOWN_COST_STOP"):
+                    gateway.call(ctx, registry, "worker", template, [(source, "/message")], client, max_requests=3)
+                self.assertEqual(len(calls), 1)
+                journal.append([ctx.at("seal").event("run.ended", dict(termination_reason="malformed_response",
+                    grading_status="incomplete", end_snapshot_id=None))])
+                self.assertEqual(read_experiment(folder)[0]["pending_requests"], [])
+                self.assertEqual(audit_requests(folder)["unknown_cost_requests"], 1)
 
     def test_null_or_malformed_usage_preserves_response_and_blocks_next_http(self):
         for usage in (None, [], ["invalid"], "unavailable"):

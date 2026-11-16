@@ -14,8 +14,9 @@ API_ROOT = "https://openrouter.ai/api/v1"
 
 
 class ProviderError(ContractError):
-    def __init__(self, code, response=None, submitted=False):
+    def __init__(self, code, response=None, submitted=False, *, response_available=None):
         self.code, self.response, self.submitted = code, response, submitted
+        self.response_available = response is not None if response_available is None else response_available
         super().__init__(code)
 
 
@@ -65,7 +66,8 @@ def resolve_endpoint(model, catalog, route, parameters):
 
 class SpendGuard:
     def __init__(self, *, max_calls, max_usd, max_seconds):
-        if max_calls < 1 or max_usd <= 0 or max_seconds <= 0:
+        if (type(max_calls) is not int or max_calls < 1
+                or any(type(v) not in (int, float) or not math.isfinite(v) or v <= 0 for v in (max_usd, max_seconds))):
             raise ContractError("A live check needs finite positive call, spend and time guards")
         self.max_calls, self.max_usd = max_calls, max_usd
         self.deadline = time.monotonic() + max_seconds
@@ -84,13 +86,19 @@ class SpendGuard:
         if type(output) is not int or output <= 0 or ("max_completion_tokens" in request and "max_tokens" in request):
             raise ProviderError("INVALID_OUTPUT_LIMIT")
         pricing = model.get("reservation_pricing", model["pricing"])
-        reserve = prompt_bound * float(pricing["prompt"]) + output * float(pricing["completion"])
+        try:
+            rates = [float(pricing[key]) for key in ("prompt", "completion")]
+        except (KeyError, TypeError, ValueError, OverflowError):
+            raise ProviderError("INVALID_RESERVATION_PRICING") from None
+        if any(not math.isfinite(rate) or rate < 0 for rate in rates):
+            raise ProviderError("INVALID_RESERVATION_PRICING")
+        reserve = prompt_bound * rates[0] + output * rates[1]
         if self.reported_usd + reserve > self.max_usd:
             raise ProviderError("SPEND_LIMIT")
         self.calls += 1
 
     def after(self, response):
-        usage = response.get("usage")
+        usage = response.get("usage") if isinstance(response, dict) else None
         cost = usage.get("cost") if isinstance(usage, dict) else None
         if type(cost) not in (int, float) or not math.isfinite(cost) or cost < 0:
             self.unknown_cost = True
@@ -101,8 +109,13 @@ class SpendGuard:
 class OpenRouterClient:
     offline = False
 
-    def __init__(self, model, guard, *, route, opener=urlopen):
+    def __init__(self, model, guard, *, route, opener=urlopen, max_input_bytes=64000, timeout_seconds=45):
         self.model, self.guard, self.opener = model, guard, opener
+        if type(max_input_bytes) is not int or max_input_bytes < 1:
+            raise ContractError("Input-byte limit must be a positive integer")
+        if type(timeout_seconds) not in (int, float) or not math.isfinite(timeout_seconds) or timeout_seconds <= 0:
+            raise ContractError("HTTP timeout must be finite and positive")
+        self.max_input_bytes, self.timeout_seconds = max_input_bytes, timeout_seconds
         if (set(route) != {"only", "allow_fallbacks", "require_parameters"}
                 or not isinstance(route["only"], list) or len(route["only"]) != 1
                 or not isinstance(route["only"][0], str) or not route["only"][0]
@@ -117,7 +130,7 @@ class OpenRouterClient:
             raise ProviderError("UNPINNED_ROUTE")
         if any(key in request for key in ("api_key", "previous_response_id", "conversation", "thread_id", "models", "plugins")):
             raise ProviderError("UNSUPPORTED_REQUEST_STATE")
-        if len(canonical(request)) > 64000:
+        if len(canonical(request)) > self.max_input_bytes:
             raise ProviderError("INPUT_SIZE_LIMIT")
         key = os.environ.get("OPENROUTER_API_KEY")
         if not key:
@@ -127,7 +140,7 @@ class OpenRouterClient:
             headers={"Authorization": "Bearer " + key, "Content-Type": "application/json",
                      "X-OpenRouter-Metadata": "enabled"})
         try:
-            with self.opener(wire, timeout=min(45, max(0.1, self.guard.deadline - time.monotonic()))) as response:
+            with self.opener(wire, timeout=min(self.timeout_seconds, max(0.1, self.guard.deadline - time.monotonic()))) as response:
                 body = response.read()
         except HTTPError as error:
             # Do not serialize headers, exceptions or raw errors that might echo a credential.
@@ -157,6 +170,8 @@ class OpenRouterClient:
             self.guard.unknown_cost = True
             raise ProviderError("INVALID_RESPONSE_JSON", submitted=True) from None
         self.guard.after(result)
+        if not isinstance(result, dict):
+            raise ProviderError("INVALID_RESPONSE_SHAPE", result, submitted=True, response_available=True)
         if "error" in result:
             raise ProviderError("PROVIDER_RESPONSE_ERROR", result, submitted=True)
         return result

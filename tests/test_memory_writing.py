@@ -5,11 +5,14 @@ import json
 from pathlib import Path
 from tempfile import TemporaryDirectory
 import unittest
+from unittest.mock import patch
 
 from agent_memory_eval.analysis.memory_writing import audit_memory_writes
 from agent_memory_eval.contracts.core import ContractError, MemoryPolicy, RunContext, canonical
+from agent_memory_eval.contracts.execution import ExecutionLimits
 from agent_memory_eval.memory.writing import WriterFeedback, freeze_public_experience, write_from_experience
 from agent_memory_eval.recording.journal import Journal
+from agent_memory_eval.recording.provenance import SourceRegistry
 
 
 class ScriptedWriter:
@@ -122,6 +125,83 @@ class MemoryWritingTests(unittest.TestCase):
         self.journal.scan = scan
         with self.assertRaisesRegex(ContractError, "closed"):
             freeze_public_experience(self.journal, "source")
+
+    def test_writer_reasoning_is_preserved_raw_but_not_reintroduced_as_history(self):
+        class ReasoningWriter(ScriptedWriter):
+            def respond(self, request):
+                result = super().respond(request)
+                message = result["choices"][0]["message"]
+                message["reasoning"] = "WRITER_PRIVATE_CHAIN"
+                message["reasoning_details"] = [dict(text="WRITER_PRIVATE_DETAIL")]
+                for call in message.get("tool_calls") or []:
+                    call["provider_metadata"] = "CALL_PRIVATE_METADATA"
+                return result
+        client = ReasoningWriter()
+        report = self.write(WriterFeedback("none"), client)
+        self.assertEqual(report["status"], "completed")
+        for wire in client.requests:
+            for secret in ("WRITER_PRIVATE_CHAIN", "WRITER_PRIVATE_DETAIL", "CALL_PRIVATE_METADATA"):
+                self.assertNotIn(secret, canonical(wire).decode())
+        responses = [e for e in self.journal.events.values() if e["run_id"] == report["run_id"]
+                     and e["type"] == "model.request_finished"]
+        self.assertIn("WRITER_PRIVATE_CHAIN", canonical(self.journal.blobs.get(responses[0]["payload"]["response_ref"])).decode())
+        audit_memory_writes(self.folder.name)
+
+    def test_audit_refuses_extra_context_even_with_valid_provenance(self):
+        original = SourceRegistry.prepare
+        def extra(registry, ctx, actor, template, messages, **kwargs):
+            source = registry.template(dict(message=dict(role="user", content="UNPERMITTED_GRADING_HINT")), roles=("writer",))
+            return original(registry, ctx, actor, template, messages + [(source, "/message")], **kwargs)
+        with patch.object(SourceRegistry, "prepare", extra):
+            self.write(WriterFeedback("none"))
+        with self.assertRaises(ContractError):
+            audit_memory_writes(self.folder.name)
+
+    def test_duplicate_writer_id_is_refused_before_creating_another_bank(self):
+        self.write(WriterFeedback("none"), ScriptedWriter(empty=True), run_id="fixed-writer")
+        before = self.journal.path.read_bytes()
+        banks = deepcopy(self.journal.state["banks"])
+        with self.assertRaises(ValueError):
+            self.write(WriterFeedback("none"), ScriptedWriter(empty=True), run_id="fixed-writer")
+        self.assertEqual(self.journal.path.read_bytes(), before)
+        self.assertEqual(self.journal.state["banks"], banks)
+
+    def test_audit_refuses_cost_that_differs_from_the_raw_response(self):
+        class CostWriter(ScriptedWriter):
+            def respond(self, request):
+                return dict(super().respond(request), usage=dict(cost=0.01))
+        original = self.journal.append
+        def altered(events, **kwargs):
+            events = deepcopy(events)
+            for event in events:
+                if event["type"] == "model.request_finished":
+                    event["payload"]["cost_usd"] = 9.0
+            return original(events, **kwargs)
+        with patch.object(self.journal, "append", altered):
+            self.write(WriterFeedback("none"), CostWriter())
+        with self.assertRaises(ContractError):
+            audit_memory_writes(self.folder.name)
+
+    def test_null_tool_calls_and_explicit_input_rejection_are_separate_outcomes(self):
+        class NullCalls(ScriptedWriter):
+            def respond(self, request):
+                return dict(choices=[dict(message=dict(role="assistant", content="No memory", tool_calls=None))])
+        empty = self.write(WriterFeedback("none"), NullCalls())
+        self.assertEqual(empty["status"], "empty")
+        client = ScriptedWriter()
+        blocked = self.write(WriterFeedback("none"), client, max_requests=None,
+            execution_limits=ExecutionLimits(0, 3, 0, 1))
+        self.assertEqual((blocked["status"], blocked["error_code"]), ("error", "INPUT_SIZE_LIMIT"))
+        self.assertEqual(client.requests, [])
+        self.assertEqual(len(audit_memory_writes(self.folder.name)["writes"]), 2)
+
+    def test_malformed_tool_shape_is_a_closed_error_not_a_partial_journal(self):
+        class Malformed(ScriptedWriter):
+            def respond(self, request):
+                return dict(choices=[dict(message=dict(role="assistant", content=None, tool_calls={"invalid": True}))])
+        result = self.write(WriterFeedback("none"), Malformed())
+        self.assertEqual((result["status"], result["memory_stores"]), ("error", 0))
+        self.assertEqual(audit_memory_writes(self.folder.name)["writes"][0]["termination_reason"], "memory_write_error")
 
 
 if __name__ == "__main__":

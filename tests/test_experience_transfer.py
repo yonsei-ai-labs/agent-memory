@@ -12,13 +12,14 @@ from agent_memory_eval.analysis.identity import identity_trace
 from agent_memory_eval.analysis.memory_writing import audit_memory_writes
 from agent_memory_eval.contracts.connection import native_parameters, provider_route
 from agent_memory_eval.contracts.core import MemoryPolicy, canonical, new_id
+from agent_memory_eval.contracts.execution import ExecutionLimits
 from agent_memory_eval.memory.context import past_memory_instruction, request_with_past_memory
 from agent_memory_eval.memory.writing import WriterFeedback, freeze_public_experience, write_from_experience
 from agent_memory_eval.models.openrouter import OpenRouterClient, SpendGuard
 from agent_memory_eval.recording.journal import Journal
 from agent_memory_eval.runner.tau2_memory import Tau2MemoryRunner, fresh_orchestrator
 from test_openrouter import Reply, response
-from test_tau2_memory import call
+from test_tau2_memory import Conversation, call
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -163,6 +164,57 @@ class NativeExperienceTransferTests(unittest.TestCase):
                 max_requests=4, condition_id="wrong-provider")
             self.assertEqual((wrong["status"], wrong["memory_stores"]), ("error", 0))
             self.assertEqual(len(audit_memory_writes(folder)["writes"]), 2)
+            def unknown_cost(request, timeout):
+                body = response()
+                body.update(model=self.config["worker"]["model_id"], provider="OpenAI", usage=None)
+                return Reply(body)
+            client.opener = unknown_cost
+            unknown = write_from_experience(journal, experience, WriterFeedback("none"),
+                instruction="Write optional observations.", policy=MemoryPolicy(True, "post_task", False, 2, read_mode="none"),
+                client=client, model_config=dict(model=self.config["worker"]["model_id"],
+                    provider=provider_route(self.config, "worker"), stream=False, **native_parameters(self.config, "worker")),
+                max_requests=4, condition_id="unknown-cost")
+            self.assertEqual((unknown["status"], unknown["error_code"], unknown["unknown_cost"]),
+                             ("error", "UNKNOWN_COST_STOP", True))
+            self.assertEqual(len(audit_memory_writes(folder)["writes"]), 3)
+
+    def test_policy_limit_assesses_reached_DB_without_claiming_official_success(self):
+        task = json.loads((ROOT / "data/tau2-bench/data/tau2/domains/airline/tasks.json").read_text())
+        update = next(t for t in task if t["id"] == "40")["evaluation_criteria"]["actions"][1]["arguments"]
+        def worker(wire):
+            previous = [c["function"]["name"] for m in wire["messages"] for c in m.get("tool_calls") or []]
+            name, args = (("get_reservation_details", dict(reservation_id="3RK2T9")) if not previous
+                          else ("update_reservation_passengers", update))
+            return dict(role="assistant", content=None, tool_calls=[call(name, args, "action-" + str(len(previous)))])
+        conversation = Conversation(worker)
+        with TemporaryDirectory() as folder, Journal(folder, "reached") as journal, \
+                patch.dict("os.environ", OPENROUTER_API_KEY="test-only"):
+            runner = Tau2MemoryRunner(journal, self.config, self.prepared,
+                SpendGuard(max_calls=20, max_usd=2, max_seconds=180), opener=conversation)
+            result = runner.episode(run_id=new_id("r"), stage="probe",
+                policy=MemoryPolicy(False, "none", False, 2, read_mode="none"), solve_instruction="", post_instruction="",
+                execution_limits=ExecutionLimits(2, 0, 1, 100000), assess_on_policy_limit=True)
+            self.assertEqual(result["error_code"], "ROLE_REQUEST_LIMIT")
+            self.assertIsNone(result["official_success"])
+            self.assertEqual(result["grading_status"], "incomplete")
+            assessment = journal.blobs.get(result["reached_state_assessment_ref"])
+            self.assertEqual(assessment["status"], "assessed", assessment)
+            self.assertTrue(assessment["db_component"]["db_check"]["db_match"])
+            self.assertEqual(assessment["model_calls"], 0)
+            self.assertEqual(len(conversation.wires), 3)
+
+    def test_user_limit_stays_incomplete_without_policy_state_assessment(self):
+        conversation = Conversation(lambda wire: dict(role="assistant", content="Please provide details."))
+        with TemporaryDirectory() as folder, Journal(folder, "user-limit") as journal, \
+                patch.dict("os.environ", OPENROUTER_API_KEY="test-only"):
+            runner = Tau2MemoryRunner(journal, self.config, self.prepared,
+                SpendGuard(max_calls=20, max_usd=2, max_seconds=180), opener=conversation)
+            result = runner.episode(run_id=new_id("r"), stage="probe",
+                policy=MemoryPolicy(False, "none", False, 2, read_mode="none"), solve_instruction="", post_instruction="",
+                execution_limits=ExecutionLimits(3, 0, 1, 100000), assess_on_policy_limit=True)
+            self.assertEqual(result["error_code"], "ROLE_REQUEST_LIMIT")
+            self.assertIsNone(result["reached_state_assessment_ref"])
+            self.assertIsNone(result["official_success"])
 
 
 if __name__ == "__main__":

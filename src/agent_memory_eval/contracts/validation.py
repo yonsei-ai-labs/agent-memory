@@ -288,7 +288,7 @@ def check_source_memory(source, value, events):
             if json.loads('"' + encoded + '"') != item[span["field"]]:
                 raise ValueError("Memory span does not identify its returned field")
     elif source["kind"] == "self_authored":
-        calls = value.get("tool_calls", [])
+        calls = value.get("tool_calls") or []
         expected = set()
         for i, call in enumerate(calls):
             if call["function"]["name"] != "memory_store":

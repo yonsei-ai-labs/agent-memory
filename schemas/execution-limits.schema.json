@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-memory-eval.local/contracts/per-role-limits/v1",
+  "title": "Explicit role request and input-byte limits, per-role-limits/v1",
+  "type": "object",
+  "required": ["worker_requests", "writer_requests", "user_simulator_requests", "max_input_bytes"],
+  "additionalProperties": false,
+  "properties": {
+    "worker_requests": {"type": "integer", "minimum": 0},
+    "writer_requests": {"type": "integer", "minimum": 0},
+    "user_simulator_requests": {"type": "integer", "minimum": 0},
+    "max_input_bytes": {"type": "integer", "minimum": 1}
+  }
+}

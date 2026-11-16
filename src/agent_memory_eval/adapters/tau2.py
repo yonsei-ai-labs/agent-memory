@@ -55,15 +55,17 @@ def native_modules(checkout):
 
 class Tau2Bridge:
     """Retain native prompt/message conversion, parsing and environment behavior."""
-    def __init__(self, journal, ctx, orchestrator, config, models, guard, modules, opener=None):
+    def __init__(self, journal, ctx, orchestrator, config, models, guard, modules, opener=None, *, execution_limits=None):
         self.journal, self.ctx, self.orchestrator = journal, ctx, orchestrator
         self.config, self.models, self.guard = config, models, guard
+        self.execution_limits = execution_limits
         self.agent_module, self.user_module, self.utils = modules
         self.registry = SourceRegistry(journal, ctx)
         self.gateway = RecordingGateway(journal)
         self.systems = dict(worker=orchestrator.agent.system_prompt, user_simulator=orchestrator.user.system_prompt)
         self.clients = {role: OpenRouterClient(model, guard, route=provider_route(config, role),
-            **({"opener": opener} if opener else {})) for role, model in models.items()}
+            **({"opener": opener} if opener else {}),
+            **({"max_input_bytes": execution_limits.max_input_bytes} if execution_limits else {})) for role, model in models.items()}
         self.message_sources, self.costs = {}, {}
         self.active = None
         self.last_response = None
@@ -133,7 +135,8 @@ class Tau2Bridge:
         entries = self.message_entries(actor, expected["messages"])
         began = time.monotonic()
         message, source, request_id = self.gateway.call(self.ctx, self.registry, actor, template, entries,
-            self.clients[actor], max_requests=self.config["guards"]["max_model_requests"])
+            self.clients[actor], max_requests=None if self.execution_limits else self.config["guards"]["max_model_requests"],
+            execution_limits=self.execution_limits)
         finish = next(e for e in reversed(list(self.journal.events.values()))
                       if e["type"] == "model.request_finished" and e["payload"]["request_id"] == request_id)
         response = self.journal.blobs.get(finish["payload"]["response_ref"])

@@ -221,6 +221,20 @@ class ReplayIntegrationTests(unittest.TestCase):
         self.assertTrue(summary["unknown_cost"])
         self.assertEqual(summary["stop_reason"],"unknown_cost")
 
+    def test_malformed_reply_remains_auditable_and_stops_the_batch(self):
+        for body in (None, [], dict(response(), usage="invalid")):
+            with self.subTest(body_type=type(body).__name__), TemporaryDirectory() as folder:
+                profile, seen = ready(), []
+                def opener(request, timeout):
+                    seen.append(1)
+                    return Reply(body)
+                with Journal(folder, "malformed-replay") as journal:
+                    summary = replay.run_replay(journal, profile, self.prepared(profile), opener=opener)
+                self.assertEqual(summary["counts"], dict(error=1, skipped=23))
+                self.assertEqual(summary["stop_reason"], "unknown_cost")
+                self.assertEqual(len(seen), 1)
+                self.assertEqual(replay.audit_replay(folder), summary)
+
     def test_spend_reservation_refusal_never_submits_http(self):
         profile=ready();profile["guards"]["max_reported_cost_usd"]=1e-9
         with TemporaryDirectory() as folder:

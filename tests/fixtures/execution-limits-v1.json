@@ -1,0 +1,12 @@
+{
+  "contract": "per-role-limits/v1",
+  "scope": "illustrative_test_only_not_experiment_defaults",
+  "limits": {
+    "worker_requests": 1,
+    "writer_requests": 1,
+    "user_simulator_requests": 2,
+    "max_input_bytes": 1000
+  },
+  "expected_calls": 4,
+  "expected_requests_by_role": {"worker": 1, "writer": 1, "user_simulator": 2}
+}

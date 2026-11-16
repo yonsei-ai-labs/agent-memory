@@ -14,6 +14,7 @@ from agent_memory_eval.contracts.core import ContractError, MemoryPolicy, RunCon
 from agent_memory_eval.contracts.validation import ROOT
 from agent_memory_eval.memory.service import MemoryService
 from agent_memory_eval.models.openrouter import SpendGuard
+from agent_memory_eval.recording.provenance import InputSizeLimit, RoleRequestLimit
 
 
 def checked_asset(ref):
@@ -50,8 +51,13 @@ class Tau2MemoryRunner:
         self.environments = {}
 
     def episode(self, *, run_id, stage, policy, solve_instruction, post_instruction, parent=None, sources=(),
-                condition_id=None, mode="guided_check", block_id=None):
+                condition_id=None, mode="guided_check", block_id=None, execution_limits=None,
+                assess_on_policy_limit=False):
         from tau2.runner.simulation import run_simulation
+        if type(assess_on_policy_limit) is not bool or (assess_on_policy_limit and execution_limits is None):
+            raise ContractError("Reached-state assessment requires explicit execution limits")
+        if run_id in self.journal.scan["starts"]:
+            raise ContractError("Native run ID must be new")
         orch = fresh_orchestrator(self.prepared)
         self.environments[run_id] = orch
         if not policy.enabled and (parent is not None or sources or solve_instruction or post_instruction):
@@ -63,14 +69,19 @@ class Tau2MemoryRunner:
         state["assignments"][run_id] = dict(stage=stage, mode=mode, policy=asdict(policy),
             bank_id=bank, parent_snapshot=parent, task_key=orch.task.id, block_id=block_id,
             condition_id=ctx.condition_id)
+        if execution_limits is not None:
+            state["assignments"][run_id].update(execution_limits=asdict(execution_limits),
+                assess_on_policy_limit=assess_on_policy_limit, execution_contract="per-role-limits/v1")
         self.journal.append([ctx.at("prepare").event("run.started", dict(bank_id=bank,
             start_snapshot_id=parent, fresh_session=True, source_run_ids=list(sources),
             task_ref=self.journal.blobs.put(dict(role="system", content=orch.agent.system_prompt))))], state=state)
         bridge = Tau2MemoryBridge(self.journal, ctx, orch, self.connection, self.prepared[2], self.guard,
             self.prepared[3], memory=self.memory, bank_id=bank, policy=policy,
-            solve_instruction=solve_instruction, post_instruction=post_instruction, opener=self.opener)
+            solve_instruction=solve_instruction, post_instruction=post_instruction, opener=self.opener,
+            execution_limits=execution_limits)
         grading, success, score, report_ref = "not_available", None, None, None
         termination, error_code, writing = "connection_error", None, "not_requested"
+        assessment_ref = None
         with bridge:
             try:
                 bridge.ensure_preload()
@@ -81,7 +92,15 @@ class Tau2MemoryRunner:
             except Exception as error:
                 error_code = getattr(error, "code", type(error).__name__)
                 grading = "error" if orch.done else "incomplete"
-                self.journal.append([ctx.event("runtime.error", dict(code=error_code))])
+                if getattr(error, "recorded_event_id", None) not in self.journal.events:
+                    self.journal.append([ctx.event("runtime.error", dict(code=error_code))])
+                if (assess_on_policy_limit and isinstance(error, (RoleRequestLimit, InputSizeLimit))
+                        and error.actor in {"worker", "writer"}):
+                    from agent_memory_eval.adapters.tau2_assessment import assess_reached_state
+                    assessment_ref = self.journal.blobs.put(assess_reached_state(orch, self.connection))
+                    self.journal.append([ctx.at("grade").event("business.transition", dict(
+                        origin="tau2.reached_state_assessment", assessment_ref=assessment_ref,
+                        limit_code=error_code, actor_role=error.actor))])
             native_counts = dict(native_steps=orch.step_count, native_tool_errors=orch.num_errors)
             final_db_hash = orch.environment.get_db_hash()
             self.journal.append([ctx.at("grade").event("business.transition", dict(origin="tau2_native_final",
@@ -112,7 +131,8 @@ class Tau2MemoryRunner:
             requests_by_role=dict(Counter(e["payload"]["actor_role"] for e in events if e["type"] == "model.request_started")),
             memory_stores=sum(e["type"] == "memory.stored" for e in events),
             memory_returns=dict(Counter(e["payload"]["operation"] for e in events if e["type"] == "memory.returned")),
-            memory_input_spans=sum(e["type"] == "memory.input_included" for e in events))
+            memory_input_spans=sum(e["type"] == "memory.input_included" for e in events),
+            **(dict(reached_state_assessment_ref=assessment_ref) if execution_limits is not None else {}))
 
 
 def run_memory_check(journal, profile, prepared, *, live, opener=None):

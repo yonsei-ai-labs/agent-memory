@@ -310,8 +310,15 @@ def audit_replay(root):
         calls += finish["delivery_status"] != "not_submitted"
         unknown |= finish["cost_status"] == "unknown"
         tokens += (finish.get("usage") or {}).get("total_tokens", 0)
-        if finish["response_ref"] is not None and blobs.get(finish["response_ref"]).get("usage") != finish["usage"]:
-            raise ContractError("Replay usage differs from the original response")
+        if finish["response_ref"] is not None:
+            raw = blobs.get(finish["response_ref"])
+            usage = raw.get("usage") if isinstance(raw, dict) else None
+            if usage is not None and not isinstance(usage, dict):
+                if finish["status"] == "response":
+                    raise ContractError("A successful replay cannot have malformed provider usage")
+                usage = None
+            if usage != finish["usage"]:
+                raise ContractError("Replay usage differs from the original response")
         if finish["cost_status"] == "observed":
             response = blobs.get(finish["response_ref"])
             if Decimal(str(response["usage"]["cost"])) != Decimal(str(finish["cost_usd"])):
