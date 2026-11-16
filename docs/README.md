@@ -31,6 +31,8 @@
 | 실패 11회의 실제 입력·strict 재생·채점/시나리오 정합성과 HTTP 503 진단 | [실패 원인 진단](reports/20261115-tau2-baseline-failure-diagnosis.md) |
 | 추가 검증 의견 반영: 14·11 분류 정정·향후 주 비교 범위·병행 진행 | [추가 리뷰 반영](reports/20261115-baseline-review-update.md) |
 | 원본/medium/연구자 메모의 한 응답 진단·업무 도구 미실행·draft 비용 차단 | [결정 지점 재전송](development/decision-replay.md) |
+| 첫 유료 진단의 동결한 120요청·$0.50 한도·조건 가림 판정 방법 | [120요청 프로토콜](research/decision-replay-pilot-v1.md) |
+| 실제 120/120 응답·수하물 교정·보류·새 오류·비용과 후속 방향 | [결정 지점 결과](reports/20261116-decision-replay-results.md) |
 | 고정 은행의 본문 시작 제공·자율 조회와 여러 과제/반복 실행 | [전달 비교 실행](development/tau2-delivery.md) |
 | 세 과제·네 조건 48회 결과·실패 경로·시나리오 제시·한계 | [전달 비교 결과](reports/20261114-tau2-delivery-development-results.md) |
 | 자율 조회 0회의 도구 노출·원응답·라우팅·설계 가설 재점검 | [기억 조회 진단](reports/20261114-memory-retrieval-diagnosis.md) |

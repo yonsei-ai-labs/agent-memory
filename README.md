@@ -8,6 +8,8 @@
 
 [고정 은행 전달 비교](docs/development/tau2-delivery.md)는 본문 시작 제공과 자율 조회를 여러 과제·조건·반복에 배정한다. [실제 48회 개발 결과](docs/reports/20261114-tau2-delivery-development-results.md)에서 본문 전달·미조회·필요한 수정 실패를 확인했다. 고정 은행 1개·세 train 과제의 관측이며 일반 정책 효과는 미확정이다. [보고서와 다음 2주 계획](docs/reports/20261114-progress-and-two-week-plan.md)을 함께 본다.
 
+최신 [결정 지점 120요청 결과](docs/reports/20261116-decision-replay-results.md)는 원본 요청·medium·연구자 메모를 비교했다. 120/120 정상 응답·보고 비용 $0.043359345이며, 수하물 인수의 교정·추가 확인으로의 보류·새 오류를 구분했다. 업무 도구를 실행하지 않은 한 응답 진단으로, 자율 기억·최종 업무 성공과 별도다.
+
 ## 먼저 읽기
 
 새 개발 세션은 [인수인계](docs/handoff/next-session.md)에서 현재 구현 상태·합의 사항·미정 값을 확인하고, [첫 구현 작업](docs/development/first-implementation.md)부터 이어간다.
