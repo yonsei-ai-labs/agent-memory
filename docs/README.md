@@ -25,6 +25,7 @@
 | 보존 원본 10개의 전체 감사 출력 해시·현재 코드 호환 명령 | [원본 호환 검사](development/preserved-run-audits.md) |
 | writer의 blob 읽기 재사용·손상 탐지 범위·사본에서의 비용 측정 | [blob 검증 캐시](development/blob-verification-cache.md) |
 | 같은 공개 경험·세 피드백의 기억 작성·새 native 세션·과거 메모 표시 | [작업자 작성 기억 연결](development/worker-written-memory.md) |
+| writer 추론 재입력·전체 대화/비용 감사·역할별/입력 한도·도달 상태·동결 검사 | [추가 실행 보완](development/runtime-hardening.md) |
 | 첫 구현 명세·가짜 실행·행동 검증의 요구 | [첫 구현 작업](development/first-implementation.md) |
 | 구현한 파일 코어·합성 실행 명령·검증 범위와 한계 | [오프라인 코어](development/offline-core.md) |
 | 실제 OpenRouter·Luna·τ² 단일 과제 연결과 사용량/비용 | [연결 확인](development/tau2-connection.md) |

@@ -1,0 +1,383 @@
+{
+  "format": "agent-memory-runtime-hardening-validation/v1",
+  "visibility": "analysis_only_never_worker_or_writer_input",
+  "started_local_date": "2026-11-16",
+  "completed_local_date": "2026-11-17",
+  "recorded_at_utc": "2026-11-16T15:05:55.029092+00:00",
+  "implementation_commit": "7636ab54d1cbedef047ba811330e79b629673d60",
+  "implementation_refs": [
+    {
+      "path": "schemas/execution-limits.schema.json",
+      "sha256": "a9f88174abedf70ad95b99ec20c05ee721c2591a994cae654d4b90128a92c733"
+    },
+    {
+      "path": "scripts/freeze_implementation.py",
+      "sha256": "e1ae60fcc32c1b576f59b80ca047841c9679f368e4d6be9533879a4e4a9aa470"
+    },
+    {
+      "path": "src/agent_memory_eval/adapters/tau2.py",
+      "sha256": "a6ce48144a13b3c7892b320e715ee82c55e8fff393ae5242793a80298a69ce53"
+    },
+    {
+      "path": "src/agent_memory_eval/adapters/tau2_assessment.py",
+      "sha256": "a6ad8375b829cdd8b7a2ce0439a97eba16de96d5dcaee1105a263842b0e557ac"
+    },
+    {
+      "path": "src/agent_memory_eval/analysis/memory_writing.py",
+      "sha256": "5c06dfc325e5c0150f23bd4cba7f535644e2293b945fd32eb5b05900b8c24ee7"
+    },
+    {
+      "path": "src/agent_memory_eval/analysis/requests.py",
+      "sha256": "6ec971ce4eed798ee64da57e9d01e675e6b61b9ec40ecf029f37b3709c0f3d1a"
+    },
+    {
+      "path": "src/agent_memory_eval/contracts/execution.py",
+      "sha256": "03c1c374c3564340bbe9a7e6681466b19025b223ef3f33e29d18654f5124e6d4"
+    },
+    {
+      "path": "src/agent_memory_eval/contracts/validation.py",
+      "sha256": "1cd7bb8c35444c13f894ccfd31844463466b9c3a352f2d3032e062e48bcb5e2a"
+    },
+    {
+      "path": "src/agent_memory_eval/memory/writing.py",
+      "sha256": "bf078f03b664e6cbd31260f4ef2f514d5801b4fd3170ece12dbe228b8641b814"
+    },
+    {
+      "path": "src/agent_memory_eval/models/openrouter.py",
+      "sha256": "8db81691028d23bf52e19ce794a4b5397ba8845c94ee68644c64df9cd436ab5a"
+    },
+    {
+      "path": "src/agent_memory_eval/recording/provenance.py",
+      "sha256": "2a4be082745ba17cffddf3bea918cd6bc2dea2226cb77278058be08bacfd541f"
+    },
+    {
+      "path": "src/agent_memory_eval/reproduction/freeze.py",
+      "sha256": "f55ec5f3ddc4a419089f6e916c18d28407930787e2c7e8b9044b10dac6223e73"
+    },
+    {
+      "path": "src/agent_memory_eval/runner/decision_replay.py",
+      "sha256": "b81543dbfb958f59d7951fe50f307feedf7bddaa7c34e001644dd000ed3dc1f3"
+    },
+    {
+      "path": "src/agent_memory_eval/runner/tau2_memory.py",
+      "sha256": "12e4e029a5b69d6758d38f20274c832c868efd27c22731364efd91ad7da4dff3"
+    },
+    {
+      "path": "tests/fixtures/execution-limits-v1.json",
+      "sha256": "dde681bb13b2a3d38278616b1d69d0f98f8f0505daf4acc322fcba26542b35fa"
+    },
+    {
+      "path": "tests/test_decision_replay.py",
+      "sha256": "1b9154e6b2b3685edfa241c7e1c616e7a301d5213861871c6954f8f2f71ab78a"
+    },
+    {
+      "path": "tests/test_execution_limits.py",
+      "sha256": "0015250ba3c6b552bf1eb1d54f42709135639b9b8d0cdcbe9db5b60782f93498"
+    },
+    {
+      "path": "tests/test_experience_transfer.py",
+      "sha256": "7b63bd9344a3303687246f1c7413c0d759c7ac32eb8155bfe704895ed65deb2a"
+    },
+    {
+      "path": "tests/test_implementation_freeze.py",
+      "sha256": "de3229568d287e33c98b1a42f0bbe324f06c0d65f20c37d1f840998dcdba1441"
+    },
+    {
+      "path": "tests/test_memory_writing.py",
+      "sha256": "a24c96144ffecd1a8790a7937d484732fd74e795f49b77f6977cc2bbb947d5f1"
+    },
+    {
+      "path": "tests/test_openrouter.py",
+      "sha256": "73ab8199c3f6374f70aa497719638bb387be56d8a836993c0330a3e13ee06396"
+    }
+  ],
+  "refs_policy": "Development verification references only. No requirement that future current code match these hashes; not a paid protocol freeze.",
+  "tests": {
+    "command": "uv run --frozen --extra tau2 python -m unittest discover -s tests",
+    "status": "passed",
+    "exit_code": 0,
+    "tests_run": 215,
+    "elapsed_seconds": 414.294,
+    "added_tests": 18,
+    "recorded_result": "Ran 215 tests in 414.294s\n\nOK",
+    "log_ref": {
+      "path": "outputs/runtime-hardening-20261116/full-suite.log",
+      "sha256": "1885528a638f7f57f5c6fc892a3307e859c868fabe52a50c1573a327458a0496"
+    },
+    "http": "mock only"
+  },
+  "prior_regressions": {
+    "status": "expected_failures_reproduced",
+    "baseline_commit": "1e59371",
+    "tests_run": 4,
+    "failures": 4,
+    "errors": 0,
+    "failed_tests": [
+      "test_writer_reasoning_is_preserved_raw_but_not_reintroduced_as_history",
+      "test_audit_refuses_extra_context_even_with_valid_provenance",
+      "test_duplicate_writer_id_is_refused_before_creating_another_bank",
+      "test_audit_refuses_cost_that_differs_from_the_raw_response"
+    ],
+    "prior_writing_source_sha256": "0970474ca6da3885ede81e0d6ff80152bcb05ceeef99bb093f01a5f3028f3772",
+    "method_source": "def test_writer_reasoning_is_preserved_raw_but_not_reintroduced_as_history(self):\n\n    class ReasoningWriter(ScriptedWriter):\n\n        def respond(self, request):\n            result = super().respond(request)\n            message = result['choices'][0]['message']\n            message['reasoning'] = 'WRITER_PRIVATE_CHAIN'\n            message['reasoning_details'] = [dict(text='WRITER_PRIVATE_DETAIL')]\n            for call in message.get('tool_calls') or []:\n                call['provider_metadata'] = 'CALL_PRIVATE_METADATA'\n            return result\n    client = ReasoningWriter()\n    report = self.write(WriterFeedback('none'), client)\n    self.assertEqual(report['status'], 'completed')\n    for wire in client.requests:\n        for secret in ('WRITER_PRIVATE_CHAIN', 'WRITER_PRIVATE_DETAIL', 'CALL_PRIVATE_METADATA'):\n            self.assertNotIn(secret, canonical(wire).decode())\n    responses = [e for e in self.journal.events.values() if e['run_id'] == report['run_id'] and e['type'] == 'model.request_finished']\n    self.assertIn('WRITER_PRIVATE_CHAIN', canonical(self.journal.blobs.get(responses[0]['payload']['response_ref'])).decode())\n    audit_memory_writes(self.folder.name)\n\ndef test_audit_refuses_extra_context_even_with_valid_provenance(self):\n    original = SourceRegistry.prepare\n\n    def extra(registry, ctx, actor, template, messages, **kwargs):\n        source = registry.template(dict(message=dict(role='user', content='UNPERMITTED_GRADING_HINT')), roles=('writer',))\n        return original(registry, ctx, actor, template, messages + [(source, '/message')], **kwargs)\n    with patch.object(SourceRegistry, 'prepare', extra):\n        self.write(WriterFeedback('none'))\n    with self.assertRaises(ContractError):\n        audit_memory_writes(self.folder.name)\n\ndef test_duplicate_writer_id_is_refused_before_creating_another_bank(self):\n    self.write(WriterFeedback('none'), ScriptedWriter(empty=True), run_id='fixed-writer')\n    before = self.journal.path.read_bytes()\n    banks = deepcopy(self.journal.state['banks'])\n    with self.assertRaises(ValueError):\n        self.write(WriterFeedback('none'), ScriptedWriter(empty=True), run_id='fixed-writer')\n    self.assertEqual(self.journal.path.read_bytes(), before)\n    self.assertEqual(self.journal.state['banks'], banks)\n\ndef test_audit_refuses_cost_that_differs_from_the_raw_response(self):\n\n    class CostWriter(ScriptedWriter):\n\n        def respond(self, request):\n            return dict(super().respond(request), usage=dict(cost=0.01))\n    original = self.journal.append\n\n    def altered(events, **kwargs):\n        events = deepcopy(events)\n        for event in events:\n            if event['type'] == 'model.request_finished':\n                event['payload']['cost_usd'] = 9.0\n        return original(events, **kwargs)\n    with patch.object(self.journal, 'append', altered):\n        self.write(WriterFeedback('none'), CostWriter())\n    with self.assertRaises(ContractError):\n        audit_memory_writes(self.folder.name)",
+    "new_model_or_catalog_calls": 0
+  },
+  "prior_regression_method": {
+    "source": "import ast,hashlib,importlib.util,io,json,sys,unittest\nfrom pathlib import Path\nfrom unittest.mock import patch\nROOT=Path.cwd();OUT=ROOT/'outputs/runtime-hardening-20261116';OLD=OUT/'prior-code'\nspec=importlib.util.spec_from_file_location('prior_writing_fixture', OLD/'tests/test_memory_writing.py')\nfixture=importlib.util.module_from_spec(spec);spec.loader.exec_module(fixture)\nfrom agent_memory_eval.memory import writing\nfrom agent_memory_eval.recording.provenance import SourceRegistry\nassert str(OLD/'src') in writing.__file__\nnames=['test_writer_reasoning_is_preserved_raw_but_not_reintroduced_as_history','test_audit_refuses_extra_context_even_with_valid_provenance','test_duplicate_writer_id_is_refused_before_creating_another_bank','test_audit_refuses_cost_that_differs_from_the_raw_response']\nparsed=ast.parse((ROOT/'tests/test_memory_writing.py').read_text())\nsource_class=next(node for node in parsed.body if isinstance(node,ast.ClassDef) and node.name=='MemoryWritingTests')\nmethods=[node for node in source_class.body if isinstance(node,ast.FunctionDef) and node.name in names]\nnamespace=dict(fixture.__dict__,patch=patch,SourceRegistry=SourceRegistry)\nexec(compile(ast.Module(body=methods,type_ignores=[]),'<current-regression-methods>','exec'),namespace)\nclass PriorRegressions(fixture.MemoryWritingTests):pass\nfor name in names:setattr(PriorRegressions,name,namespace[name])\nlog=io.StringIO();result=unittest.TextTestRunner(stream=log).run(unittest.TestSuite(PriorRegressions(name) for name in names))\nassert result.testsRun==4 and len(result.failures)==4 and not result.errors,log.getvalue()\n(OUT/'prior-failures.log').write_text(log.getvalue())\nreport=dict(status='expected_failures_reproduced',baseline_commit='1e59371',tests_run=result.testsRun,failures=len(result.failures),errors=len(result.errors),failed_tests=names,\n prior_writing_source_sha256=hashlib.sha256(Path(writing.__file__).read_bytes()).hexdigest(),\n method_source=ast.unparse(ast.Module(body=methods,type_ignores=[])),new_model_or_catalog_calls=0)\n(OUT/'prior-failures.json').write_text(json.dumps(report,indent=2)+'\\n');print(json.dumps({k:v for k,v in report.items() if k!='method_source'}))\n",
+    "sha256": "186dec2edf073bf48d49147bf2bacfe194480bd240bc6272f1029076b3afad7b",
+    "note": "Four current regression methods run with the fixture and package source from an actual detached worktree at 1e59371. Expected assertion failures only; temporary checkout removed."
+  },
+  "source_fixes": [
+    "Public-only writer history with leaf provenance bindings; raw provider reply retained.",
+    "Complete writer transcript/tool-order/configuration/termination reconstruction, not prefix-only checks.",
+    "Cross-check raw response usage, cost availability and reported amounts; classify memory spans by delivery.",
+    "Reject duplicate writer/native run IDs before creating banks or starting episodes.",
+    "Explicit independent worker/writer/user-simulator request caps and input-byte rejection without submission.",
+    "Separate model-free reached-state diagnostics after worker policy limits, preserving incomplete official outcomes.",
+    "Retain malformed JSON shapes/usage as closed error attempts with unknown cost; reject nonfinite budgets/pricing.",
+    "Refuse clean implementation identity capture with modified/staged/untracked source or documentation."
+  ],
+  "execution_contract": {
+    "version": "per-role-limits/v1",
+    "schema_ref": {
+      "path": "schemas/execution-limits.schema.json",
+      "sha256": "a9f88174abedf70ad95b99ec20c05ee721c2591a994cae654d4b90128a92c733"
+    },
+    "fixture_ref": {
+      "path": "tests/fixtures/execution-limits-v1.json",
+      "sha256": "dde681bb13b2a3d38278616b1d69d0f98f8f0505daf4acc322fcba26542b35fa"
+    },
+    "mode": "Explicit opt-in API; historical profiles keep legacy aggregate limits. No experimental cap values inferred."
+  },
+  "reached_state_test": {
+    "task_id": "40",
+    "transport": "scripted HTTP",
+    "worker_request_cap": 2,
+    "user_simulator_request_cap": 1,
+    "input_cap_bytes": 100000,
+    "scope": "Illustrative integration fixture only, not experimental defaults.",
+    "source": "tests/test_experience_transfer.py::NativeExperienceTransferTests.test_policy_limit_assesses_reached_DB_without_claiming_official_success",
+    "official_success": null,
+    "grading_status": "incomplete",
+    "reached_db_match": true,
+    "assessment_model_calls": 0,
+    "observations": "The configured mock updates the passenger DB before the next worker request is blocked. The state diagnostic matches the expected DB; it does not fabricate normal native termination."
+  },
+  "implementation_freeze_checks": {
+    "clean": {
+      "format": "agent-memory-implementation-freeze/v1",
+      "implementation_commit": "7636ab54d1cbedef047ba811330e79b629673d60",
+      "implementation_tree": "486f38bc34aa216dc4f649e1dba75bf26b130eed",
+      "lock_ref": {
+        "path": "uv.lock",
+        "sha256": "b87ef58cf24c2e6d1ba07ed896676e31ecfb858b3840ef1bc5faf0c334ec62a6"
+      },
+      "reproduction_commit": null,
+      "scope": "implementation_identity_only_not_a_paid_protocol_or_run_authorization",
+      "worktree_has_uncommitted_implementation": false
+    },
+    "dirty": {
+      "status": "dirty_checkout_refused",
+      "exit_code": 1,
+      "output_created": false,
+      "reason": "Commit all implementation, test, protocol and documentation changes before freezing"
+    },
+    "temporary_worktrees_removed": true
+  },
+  "preserved_original_audits": {
+    "complete_audit_output_compared": true,
+    "format": "agent-memory-preserved-audit-suite/v1",
+    "new_model_or_catalog_calls": 0,
+    "runs": [
+      {
+        "audit_sha256": "923bf64219ff2e5eca5d8f9d685d696ab394c0461689ad5944b28375ea15ebd1",
+        "id": "decision-replay-120",
+        "input_files": 813,
+        "input_inventory_preserved": true,
+        "status": "passed"
+      },
+      {
+        "audit_sha256": "a3fcafc590afbac2a82669cb0b2e9dd0f0df8d3a0add96743347738a6a341278",
+        "id": "baseline-train",
+        "input_files": 6591,
+        "input_inventory_preserved": true,
+        "status": "passed"
+      },
+      {
+        "audit_sha256": "33bd7a74b301052ff2fbbfffdd8f96967e6b9a0bc7eaca0a62679b0d4fcae1a2",
+        "id": "delivery-48",
+        "input_files": 5076,
+        "input_inventory_preserved": true,
+        "status": "passed"
+      },
+      {
+        "audit_sha256": "7190ae5b6e21a8cb2099f3b9cd388c4f1c5073fccad1dd368ecb993f41ca97cf",
+        "id": "guided-memory",
+        "input_files": 196,
+        "input_inventory_preserved": true,
+        "status": "passed"
+      },
+      {
+        "audit_sha256": "5a8a222a8f840bd16c4ea4d91cc2ccd26fd4f6c053ca28cb4ae4a9ff95e0ceab",
+        "id": "autonomy-1",
+        "input_files": 138,
+        "input_inventory_preserved": true,
+        "status": "passed"
+      },
+      {
+        "audit_sha256": "faf386330d619952fea310ab3666a648e3b997c452e1f3e2e37957004d4584e6",
+        "id": "autonomy-2",
+        "input_files": 923,
+        "input_inventory_preserved": true,
+        "status": "passed"
+      },
+      {
+        "audit_sha256": "da327cd0d6b8d914ed39956ce466e633f6ae21b7f639d3b4be8b6c9e2172493b",
+        "id": "connection-1",
+        "input_files": 95,
+        "input_inventory_preserved": true,
+        "status": "passed"
+      },
+      {
+        "audit_sha256": "60adebf4c6ea10b8a6c8ed10d79c41f05630deed65b7809cbd387ce25187b54d",
+        "id": "connection-2",
+        "input_files": 15,
+        "input_inventory_preserved": true,
+        "status": "passed"
+      },
+      {
+        "audit_sha256": "02c25161eaad3ce8c27bcac847c418ff6654281e19313136e15a50699709f310",
+        "id": "connection-3",
+        "input_files": 15,
+        "input_inventory_preserved": true,
+        "status": "passed"
+      },
+      {
+        "audit_sha256": "2abf97d471874d1a5eb5a753124a1d9c94c9d02f60f2a8c25d417a06dd5dcb8b",
+        "id": "connection-4",
+        "input_files": 102,
+        "input_inventory_preserved": true,
+        "status": "passed"
+      }
+    ],
+    "status": "passed"
+  },
+  "preserved_protocols": [
+    {
+      "path": "artifacts/pilots/20261114-tau2-delivery-development-protocol.json",
+      "sha256": "2d283068c3b46aaf7f8a0e4ea57fc7111d10c87e639e7ee0e6307c245e5835e5",
+      "unchanged": true
+    },
+    {
+      "path": "artifacts/pilots/20261115-tau2-baseline-screening-protocol.json",
+      "sha256": "c6c3d71c7ebf28190e3983260d8c0a946697fc395f2aa3ac633ae9b2c9a52732",
+      "unchanged": true
+    },
+    {
+      "path": "artifacts/pilots/20261116-decision-replay-protocol.json",
+      "sha256": "e7e2ef4d77fd494deca2f9c183d3ad6d47531c6171c002bd9627c60b893bb27f",
+      "unchanged": true
+    }
+  ],
+  "basic_checks": {
+    "design": {
+      "status": "passed",
+      "scope": "design_schemas_and_synthetic_references_only",
+      "jsonschema_version": "4.26.0",
+      "schemas_valid": 9,
+      "synthetic_events_valid": 13,
+      "artifact_files_hash_verified": 8,
+      "input_spans_verified": 4,
+      "invalid_contract_cases_rejected": 6,
+      "v1_1": {
+        "schemas_valid": 5,
+        "journal_records_valid": 28,
+        "synthetic_events_valid": 29,
+        "input_spans_verified": 6,
+        "tool_batches_verified": 2,
+        "runtime_readiness_verified": false,
+        "benchmark_or_model_calls": 0
+      },
+      "v1_2": {
+        "schemas_valid": 3,
+        "synthetic_events_valid": 17,
+        "input_spans_verified": 4
+      },
+      "execution_limits": {
+        "contract": "per-role-limits/v1",
+        "fixtures_valid": 1,
+        "invalid_cases_rejected": 3
+      },
+      "runtime_readiness_verified": false,
+      "benchmark_or_model_calls": 0
+    },
+    "repository": {
+      "status": "passed",
+      "scope": "repository_links_migration_and_scaffold",
+      "markdown_files_checked": 64,
+      "local_links_checked": 747,
+      "source_entries": 25,
+      "migrated_targets": 30,
+      "verbatim_files_verified": 13,
+      "legacy_source_hashes_verified": 0,
+      "original_literature_papers": 12,
+      "experiment_feedback_original_copies_verified": 1,
+      "files_changed_since_migration": [
+        ".gitattributes",
+        "AGENTS.md",
+        "CONTRIBUTING.md",
+        "docs/design/architecture.md",
+        "docs/design/recording.md",
+        "docs/development/roadmap.md",
+        "docs/handoff/report-outline.md",
+        "docs/research/experiment-protocol.md",
+        "docs/research/metrics.md",
+        "docs/research/plan.md",
+        "docs/research/related-work.md",
+        "protocols/README.md",
+        "schemas/README.md",
+        "scripts/validate_design.py",
+        "tests/README.md"
+      ],
+      "benchmark_or_model_calls": 0
+    },
+    "legacy_archive": {
+      "status": "passed",
+      "scope": "legacy_archive_bytes_and_inventory",
+      "snapshot_id": "legacy-ai-memory-20261114-v1",
+      "files": 1268,
+      "bytes": 212081023,
+      "files_by_role": {
+        "dataset": 853,
+        "design_evidence": 180,
+        "historical_documentation": 144,
+        "historical_pipeline_source": 91
+      },
+      "files_by_source_git_status": {
+        "  ": 995,
+        " M": 10,
+        "!!": 4,
+        "??": 259
+      },
+      "dataset_families": 34,
+      "current_source_files_verified": 0,
+      "semantic_labels_or_historical_results_validated": false,
+      "benchmark_or_model_calls": 0
+    }
+  },
+  "readiness": {
+    "new_paid_study_ready": false,
+    "pending": [
+      "Primary hypothesis/comparison, writer instructions/feedback and permitted critique.",
+      "Actual role/input/bank budget values, sampling and limit-end aggregation.",
+      "New study CLI using the freeze/limits APIs, old source transcript import and complete bank/input preflight.",
+      "Incremental journal/index, shared baseline/delivery loop, infrastructure continuation and independent judgment."
+    ]
+  },
+  "new_model_or_catalog_calls": 0,
+  "standalone_validation_script_ref": {
+    "path": "scripts/validate_design.py",
+    "sha256": "69385be2368c40f3d1c581c5a12456aa06cfbbd6b0b5b3eecd9852e08c1dfc36",
+    "scope": "Executed as a standalone basic check after adding the new execution schema and negative fixture checks."
+  }
+}

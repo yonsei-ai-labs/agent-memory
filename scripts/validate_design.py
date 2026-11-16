@@ -48,11 +48,20 @@ def main() -> None:
         "autonomy-pilot": read_json(ROOT / "schemas" / "autonomy-pilot.schema.json"),
         "autonomy-pilot-v1.1": read_json(ROOT / "schemas" / "autonomy-pilot-v1.1.schema.json"),
         "delivery-comparison": read_json(ROOT / "schemas" / "delivery-comparison.schema.json"),
+        "execution-limits": read_json(ROOT / "schemas" / "execution-limits.schema.json"),
     }
     validators = {}
     for name, schema in schemas.items():
         Draft202012Validator.check_schema(schema)
         validators[name] = Draft202012Validator(schema, format_checker=FormatChecker())
+
+    execution_fixture = read_json(ROOT / "tests/fixtures/execution-limits-v1.json")
+    if execution_fixture["contract"] != "per-role-limits/v1":
+        raise ValueError("Unknown execution limit fixture contract")
+    validators["execution-limits"].validate(execution_fixture["limits"])
+    for field, value in (("worker_requests", -1), ("writer_requests", None), ("max_input_bytes", 0)):
+        invalid_limits = dict(execution_fixture["limits"], **{field: value})
+        reject(validators["execution-limits"], invalid_limits, "invalid explicit execution limits")
 
     plan = read_json(ROOT / "protocols" / "drafts" / "tau2-two-pass.json")
     validators["connection-check"].validate(read_json(ROOT / "protocols" / "checks" / "openrouter-tau2-smoke-v1.0.json"))
@@ -249,6 +258,7 @@ def main() -> None:
         "invalid_contract_cases_rejected": 6,
         "v1_1": result_v11,
         "v1_2": dict(schemas_valid=3, synthetic_events_valid=len(scan_v12["events"]), input_spans_verified=len(expected_v12)),
+        "execution_limits": dict(contract="per-role-limits/v1", fixtures_valid=1, invalid_cases_rejected=3),
         "runtime_readiness_verified": False,
         "benchmark_or_model_calls": 0,
     }, ensure_ascii=False, indent=2))

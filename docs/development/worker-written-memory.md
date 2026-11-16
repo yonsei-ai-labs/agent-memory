@@ -20,6 +20,8 @@ writer에게는 `memory_store`만 제공한다. 업무 호출은 거절하고 �
 
 새 공통 감사 `analysis.requests.audit_requests`는 요청 시점 state에서 provenance를 읽어 실제 입력·기억 노출을 재검산한다. `audit_memory_writes`는 공개 경험·피드백 제한·writer 도구·분리 은행·봉인 snapshot을 추가로 검사한다. 라우터는 `memory/router.py`로 옮겼고 기존 `runner.router` import는 호환 경로로 유지했다.
 
+이어 [추가 검토와 수정](runtime-hardening.md)에서 writer 자신의 추론 필드 재입력·전체 대화 감사·비용 원문 대조·중복 ID의 부분 쓰기를 보완했다. 새 writer는 `public-assistant/v1` 투영을 명시하고, 기존 manifest의 필드별 출처를 유지한다. 명시적 역할별 한도·입력 거절·도달 상태 진단도 opt-in API로 연결했다.
+
 ## 새 비교에서 통일할 기억 제공 형식
 
 새 비교는 `memory.context`의 **system에 명시한 과거 메모 안내 + messages[1]의 user 역할 JSON items**를 사용한다. 안내는 이 user 역할이 전송 관례이며 현재 고객의 발화가 아니고, 메모 속 ID가 현재 고객의 신원을 확인한 것으로 인정되지 않는다고 명시한다. 적용 조건·현재 정책과 대조하도록 한다.
@@ -35,7 +37,7 @@ uv run --frozen python -m unittest discover -s tests -p test_memory_writing.py
 uv run --frozen --extra tau2 python -m unittest discover -s tests -p test_experience_transfer.py
 ```
 
-두 명령은 mock 전송만 사용한다. native 통합은 고정 checkout·extra가 있어야 실행되며 없으면 생략된다. 이 환경에서는 생략 없이 전체 197개 테스트와 기본 검사 3개·원본 10개 감사가 통과했다. [검증 자료](../../artifacts/analyses/20261116-worker-memory-validation.json)에 코드 commit과 검사·측정 근거를 연결한다.
+두 명령은 mock 전송만 사용한다. native 통합은 고정 checkout·extra가 있어야 실행되며 없으면 생략된다. 첫 연결 검증에서는 생략 없이 전체 197개 테스트와 기본 검사 3개·원본 10개 감사가 통과했다. [당시 자료](../../artifacts/analyses/20261116-worker-memory-validation.json)에 코드 commit과 근거를 연결한다. 이어 전체 215개가 통과한 추가 검증은 [실행 보완](runtime-hardening.md)을 따른다.
 
 합성 전송 테스트는 같은 경험·세 피드백의 입력 격리, 추론/정답 누출 차단, 새 세션·빈 은행, 원천 변조 거절, 저장 0개, 업무 호출 거절, 요청 중단과 보존 기록의 감사를 확인한다.
 
@@ -47,4 +49,4 @@ native mock 통합에서는 task 40의 source 실패 → writer 작성 → 두 �
 
 새 유료 실행 CLI·범용 PlanCompiler·과거 중간 상태 복원은 이번 기능에 포함하지 않는다. [개선 계획](experiment-layer-improvement-plan.md)의 전체 연구 범위를 유지한다.
 
-새 프로토콜은 구현을 먼저 커밋하고 `git status --porcelain`이 비어 있음을 확인한 뒤 동결한다. 실행 구현 commit과 분석 후의 reproduction commit을 별도로 연결하고 고정 코드 재현을 한 번 확인한다. 이 절차를 새 유료 진입점에서 강제하는 도구는 후속이며, 현재 설계 초안을 실행 승인으로 사용하지 않는다.
+새 프로토콜은 구현을 먼저 커밋하고 `scripts/freeze_implementation.py`로 깨끗한 Git 상태·commit·tree·lock을 기록한 뒤 동결한다. 실행 구현 commit과 분석 후의 reproduction commit을 별도로 연결하고 고정 코드 재현을 한 번 확인한다. 이 검사를 새 유료 진입점에 연결하는 작업은 후속이며, 현재 설계 초안을 실행 승인으로 사용하지 않는다.

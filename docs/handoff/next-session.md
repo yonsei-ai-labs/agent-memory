@@ -1,6 +1,6 @@
 # 새 개발 세션 인수인계
 
-2026-11-16 · 대화 이력 없이 개발을 이어가기 위한 기준
+2026-11-17 · 대화 이력 없이 개발을 이어가기 위한 기준
 
 작업 저장소는 `agent-memory`다. 기존 `ai-memory`는 원천 자료와 과거 실험의 저장소다. **프레임워크 구현은 여기에서 진행하며, 첫 오프라인 공통 코어와 가짜 환경은 동작하는 상태**이다. 연구 범위 전체를 유지한 채 구현 의존성에 따라 순서를 정한다.
 
@@ -61,7 +61,9 @@
 
 [원본 10개 전체 감사](../development/preserved-run-audits.md)는 수정 전 `7f4d0f3`의 기준값과 모두 같았다. 명령과 전체 JSON 해시 registry를 추적한다. [재현 receipt 공유 index](../../artifacts/reproductions/20261116/index.json)에 기존 7회 증거의 경로 정리 사본을 보존했다. 새 재전송 판정은 버전을 표시하며 과거 결과는 그대로 읽는다.
 
-다음은 [task 14 설계 초안](../../protocols/drafts/tau2-worker-written-memory-study-v1.json)의 1차 비교·지침·비평·표본·예산, 역할별 요청 한도·도달 상태 채점·입력/은행 사전 점검·한도 종료 집계다. 새 비교의 기억은 현재 고객 발화가 아닌 과거 기록으로 명시하고, ID 확인 과정·일반 메모·옳았던 상태를 대조한다. 현재 API는 새 source 수집을 지원하며 과거 baseline의 transcript 자동 import·새 유료 실행기는 미구현이다. 독립 판정·과거에만 있는 정보의 자율 조회 과제도 준비한다. 증분 journal/인덱스·baseline/delivery 공통 기능·인프라 재개는 후속이며 v1.3은 확정하지 않았다. 새 유료 호출은 없다.
+그 뒤 [추가 실행 보완](../development/runtime-hardening.md)에서 writer 추론 필드 재입력·전체 대화/비용 감사·중복 ID 부분 쓰기를 고쳤다. 이전 `1e59371` worktree에서 네 회귀를 재현했고 **전체 215개가 414.294초에 통과**했다. 새 API의 역할별 요청/입력 한도·worker 한도 뒤 도달 상태 진단·비정상 응답 보존·clean Git 동결 검사도 연결했다. 기존 합산 한도·원본·공식 결과는 보존한다.
+
+다음은 [task 14 설계 초안](../../protocols/drafts/tau2-worker-written-memory-study-v1.json)의 1차 비교·지침·비평·표본·예산과 새 한도 API의 실제 값, 은행/전체 입력 사전 점검·한도 종료 집계다. 도달 상태 진단을 공식 성공으로 세지 않는다. 현재 API는 새 source 수집을 지원하며 과거 baseline의 transcript 자동 import·새 유료 실행기와 동결 검사 연결은 미구현이다. 독립 판정·과거에만 있는 정보의 자율 조회 과제도 준비한다. 증분 journal/인덱스·baseline/delivery 공통 기능·인프라 재개는 후속이며 v1.3은 확정하지 않았다. 새 유료 호출은 없다.
 
 현재 `validation.py`가 동결 해시와 달라진 `fafccd0`에서 P0의 재전송 검토를 다시 실행해 통과했다. `post_change_reproduction` 근거는 위 재현 검증 자료에 있다. 예전 broad 해시를 현재 코드에 맞춰 고치거나 현재 src를 옛 버전으로 되돌리지 않는다.
 

@@ -1,6 +1,8 @@
 # 검증 자료와 테스트 배치
 
-2026-11-16에 native extra와 고정 checkout이 있는 환경에서 **전체 197개가 417.496초에 통과**했다. 모든 모델 경로는 mock HTTP다. 직전 182개·488.026초, 172개·373.041초와 아래 148·151개 등은 이전 단계의 검증 이력이며 서로 성능 비교에 쓰지 않는다.
+2026-11-16 착수한 추가 보완에서 native extra와 고정 checkout이 있는 환경의 **전체 215개가 414.294초에 통과**했다. 모든 모델 경로는 mock HTTP다. 직전 197개·417.496초, 182개·488.026초, 172개·373.041초와 아래 수치는 이전 검증 이력이며 서로 성능 비교에 쓰지 않는다.
+
+[추가 실행 보완](../docs/development/runtime-hardening.md)은 18개 검사를 더했다. writer 추론 필드 재입력·추가 문맥·비용 불일치·중복 ID의 회귀 4개를 이전 `1e59371` worktree에서도 다시 재현했다. 역할별/입력 한도, worker 중단 뒤의 DB 진단과 user 한도의 불완전 상태, 잘못된 provider 응답·usage, 비유한 비용 설정, 실제 Git의 clean/dirty 동결 검사도 확인한다. [근거](../artifacts/analyses/20261116-runtime-hardening-validation.json)를 따른다.
 
 새 [blob 캐시 검사](test_blob_verification_cache.py) 8개, [기억 작성 검사](test_memory_writing.py) 5개, [과정 trace·native 전달 통합](test_experience_transfer.py) 2개를 더했다. 손상·교체·삭제·하위 참조·재시도, 동일 공개 경험의 세 피드백 격리·정답/비공개 입력 차단·빈 기억·오류 보존, writer 작성→새 세션·DB 변경·공식 채점을 확인한다. 실제 모델 효과는 아니다. [검증 자료](../artifacts/analyses/20261116-worker-memory-validation.json)와 [구현 안내](../docs/development/worker-written-memory.md)를 따른다.
 

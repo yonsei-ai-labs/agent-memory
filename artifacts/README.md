@@ -1,5 +1,7 @@
 # 자료 출처와 연결
 
+[추가 실행 보완 검증](analyses/20261116-runtime-hardening-validation.json)은 이전 코드에서 재현한 네 회귀, 전체 215개 mock 검사, 역할별/입력 한도와 도달 상태 진단, malformed 응답 보존과 clean/dirty 동결 검사를 연결한다. 원본 10개의 전체 감사 해시와 과거 lock은 유지했다. 실제 모델 실험이나 공식 성공의 새 추정은 아니며 [구현 기록](../docs/development/runtime-hardening.md)을 따른다.
+
 [작업자 기억 개발 검증](analyses/20261116-worker-memory-validation.json)은 writer blob 캐시 측정, 전체 197개 mock 검사, 원본 10개 전체 감사 일치와 피드백별 작성→새 native 세션→업무 DB/채점 연결을 기록한다. 프로그래밍한 응답의 검증이며 실제 기억 효과·새 유료 실행 결과가 아니다. [구현 안내](../docs/development/worker-written-memory.md)를 따른다.
 
 [공유 재현 증거 index](reproductions/20261116/index.json)는 기존 7회 재현의 receipt·child report를 검토할 수 있는 경로 정리 사본으로 연결한다. 통과 6·실패 1과 원본 receipt의 byte 해시를 보존하며 새 재현 실행을 주장하지 않는다.

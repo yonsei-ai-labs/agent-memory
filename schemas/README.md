@@ -1,5 +1,7 @@
 # 설정과 사건 계약
 
+[execution-limits.schema.json](execution-limits.schema.json)은 새 API가 명시적으로 선택하는 `per-role-limits/v1` 계약이다. 작업자·작성자·사용자 시뮬레이터 요청 수와 입력 bytes를 각각 필수로 받는다. [합성 fixture](../tests/fixtures/execution-limits-v1.json)와 음성 사례를 기본 설계 검사에서 확인한다. 기존 프로필의 합산 한도·journal v1.1/v1.2를 바꾸지 않으며 [적용 범위](../docs/development/runtime-hardening.md)를 따른다.
+
 새 구현 기준은 **v1.1**이다. 기존 v1.0의 `$id`·내용·fixture·draft는 호환 확인용으로 그대로 보존한다. v1.1은 반환 참조·공개 경험·지침 필드의 의미도 바꾸므로 버전 없이 교환하지 않는다.
 
 자동 본문 제공은 기존 v1.1 사건을 유지하면서 **별도 v1.2 확장**을 쓴다. [event](v1.2/event.schema.json)는 `memory.preloaded`와 snapshot 출처의 입력 포함, [manifest](v1.2/input-manifest.schema.json)는 snapshot binding, [journal](v1.2/journal-state.schema.json)은 기존/확장 사건을 함께 담는다. 이전 로그를 새 버전으로 덮어쓰지 않는다. [실행 프로필](delivery-comparison.schema.json)의 버전 1.0은 이 기록 버전과 별개다. [동작과 한계](../docs/development/tau2-delivery.md)를 따른다.
