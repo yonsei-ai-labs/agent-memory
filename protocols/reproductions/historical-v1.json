@@ -1,0 +1,154 @@
+{
+  "format": "agent-memory-historical-reproduction-registry/v1",
+  "intent": "read_only_historical_review",
+  "experiments": {
+    "delivery": {
+      "reproduction_commit": "65a757fcbda4e319f7b6748ea815f1ee998b95a3",
+      "implementation_commit": "65a757fcbda4e319f7b6748ea815f1ee998b95a3",
+      "protocol_lock_ref": {
+        "path": "artifacts/pilots/20261114-tau2-delivery-development-protocol.json",
+        "sha256": "2d283068c3b46aaf7f8a0e4ea57fc7111d10c87e639e7ee0e6307c245e5835e5"
+      },
+      "review_script_ref": {
+        "path": "scripts/review_tau2_delivery_development.py",
+        "sha256": "c55bfecf590ac116d51a58c78fbce6fbbe022d8e0778e93cc1aa88ee4a2a0581"
+      },
+      "environment": {
+        "lock_ref": {
+          "path": "uv.lock",
+          "sha256": "b87ef58cf24c2e6d1ba07ed896676e31ecfb858b3840ef1bc5faf0c334ec62a6"
+        },
+        "project_ref": {
+          "path": "pyproject.toml",
+          "sha256": "eacca6269ebd090c7c4c2c52c7a0379ad73670a25d34bc711a67a60c1584bf0d"
+        },
+        "python_version": "3.12",
+        "extras": []
+      },
+      "expected_outputs": [
+        {
+          "path": "artifacts/pilots/20261114-tau2-delivery-development-results.json",
+          "sha256": "1df3849bdcc9a094b3254c57bc0a113a36e83299a6769ea1710561e925b14f82"
+        },
+        {
+          "path": "artifacts/analyses/20261114-tau2-delivery-behavior-review.json",
+          "sha256": "e6df8f40060686632cc6dfb2d159881b8a374d462d31cd5d612a209b18044353"
+        }
+      ],
+      "inputs": [
+        {
+          "kind": "run",
+          "path": "runs/tau2-delivery-luna-deepseek1017-development-01",
+          "log_sha256": "d8a4307eb849cafd9e0b3e57e4393e9c92c795ef7e2e0fe815e06a8335645233"
+        },
+        {
+          "kind": "run",
+          "path": "runs/tau2-memory-luna-deepseek1017-check-01",
+          "log_sha256": "762fbeb6a903403512acae3eb061acb3a665964dee3f2dd5852f5c093e9cf0d0"
+        },
+        {
+          "kind": "file",
+          "path": "data/tau2-bench/data/tau2/domains/airline/db.json",
+          "sha256": "1af9fea6e03ca7ca15a22bb3fcaf3e351393e3fc9070b6777947da8996f7531b"
+        },
+        {
+          "kind": "file",
+          "path": "data/tau2-bench/data/tau2/domains/airline/policy.md",
+          "sha256": "10dc0525421521208be39cee235bba84a16e2bcba9899eb93d92cd81d2f62fc4"
+        },
+        {
+          "kind": "file",
+          "path": "data/tau2-bench/data/tau2/domains/airline/split_tasks.json",
+          "sha256": "b22ced4d9a9850ac9aea31c53bdcb6d6009058140bd9acc7db37c1d36222ba8b"
+        },
+        {
+          "kind": "file",
+          "path": "data/tau2-bench/data/tau2/domains/airline/tasks.json",
+          "sha256": "ccd8ba737b4cc371415af70151187788f728d6108d0916e73bb4317b40542052"
+        }
+      ]
+    },
+    "baseline": {
+      "reproduction_commit": "7243fef085351ac6700f836f695234ad2bd0a5d1",
+      "implementation_commit": "1edc6d07e7203f1751c891ad1f7011f997fa6d8f",
+      "protocol_lock_ref": {
+        "path": "artifacts/pilots/20261115-tau2-baseline-screening-protocol.json",
+        "sha256": "c6c3d71c7ebf28190e3983260d8c0a946697fc395f2aa3ac633ae9b2c9a52732"
+      },
+      "review_script_ref": {
+        "path": "scripts/review_tau2_baseline_screening.py",
+        "sha256": "ea504e3912aa619609a492670744f2727a6a87f369343adb554b6f90f1e7bfc1"
+      },
+      "environment": {
+        "lock_ref": {
+          "path": "uv.lock",
+          "sha256": "b87ef58cf24c2e6d1ba07ed896676e31ecfb858b3840ef1bc5faf0c334ec62a6"
+        },
+        "project_ref": {
+          "path": "pyproject.toml",
+          "sha256": "eacca6269ebd090c7c4c2c52c7a0379ad73670a25d34bc711a67a60c1584bf0d"
+        },
+        "python_version": "3.12",
+        "extras": []
+      },
+      "expected_outputs": [
+        {
+          "path": "artifacts/pilots/20261115-tau2-baseline-screening-results.json",
+          "sha256": "38239cc8896f53bc805eb4287d8e1be9561b3bb0bd857c9d89674620c9693487"
+        },
+        {
+          "path": "artifacts/analyses/20261115-tau2-baseline-behavior-review.json",
+          "sha256": "99b163e6175f2a0f95165983ee645744d80dbc8d07dedb8c0d89f4af30598dfa"
+        }
+      ],
+      "inputs": [
+        {
+          "kind": "run",
+          "path": "runs/tau2-baseline-luna-deepseek1017-train-01",
+          "log_sha256": "ec0994a536729872ce8ee7ff06ae63c2e640e70091146b9a361535174ee8fbb5"
+        }
+      ]
+    },
+    "decision_replay": {
+      "reproduction_commit": "c51165b7f7ba51da8959591079b75bab4f7fec3c",
+      "implementation_commit": "8a339392619b5bb16cc4b719ae139554814c36b3",
+      "protocol_lock_ref": {
+        "path": "artifacts/pilots/20261116-decision-replay-protocol.json",
+        "sha256": "e7e2ef4d77fd494deca2f9c183d3ad6d47531c6171c002bd9627c60b893bb27f"
+      },
+      "review_script_ref": {
+        "path": "scripts/review_decision_replay_120.py",
+        "sha256": "1662f8208f34161a41960344ea20d6d9006f593fb70aad4188d9eaf449ad276a"
+      },
+      "environment": {
+        "lock_ref": {
+          "path": "uv.lock",
+          "sha256": "b87ef58cf24c2e6d1ba07ed896676e31ecfb858b3840ef1bc5faf0c334ec62a6"
+        },
+        "project_ref": {
+          "path": "pyproject.toml",
+          "sha256": "eacca6269ebd090c7c4c2c52c7a0379ad73670a25d34bc711a67a60c1584bf0d"
+        },
+        "python_version": "3.12",
+        "extras": []
+      },
+      "expected_outputs": [
+        {
+          "path": "artifacts/pilots/20261116-decision-replay-results.json",
+          "sha256": "c37900bebed1e479c0d2bac181d72a19bdf76fbf775935426d4e0ffba54675c6"
+        },
+        {
+          "path": "artifacts/analyses/20261116-decision-replay-review.json",
+          "sha256": "6b3598dbcafed8626cd67ea29a062c7b9c4f4b1c8e49d005bdf96f0beda3e1f2"
+        }
+      ],
+      "inputs": [
+        {
+          "kind": "run",
+          "path": "runs/tau2-decision-replay-luna-120-01",
+          "log_sha256": "a6cfac372d59f6463b984180b1db1ff3d678e89e49c09aebb4bf504c907d864f"
+        }
+      ]
+    }
+  }
+}

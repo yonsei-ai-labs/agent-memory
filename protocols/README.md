@@ -1,5 +1,7 @@
 # 실험 계획
 
+[과거 재현 registry](reproductions/historical-v1.json)는 전달 비교·무기억·결정 재전송의 실행 구현/분석 commit, 입력과 결과 해시를 연결한다. [별도 재현 실행기](../docs/development/historical-reproduction.md)만 읽으며 모델 실험·live 설정이 아니다. 새 프로토콜로 과거 동결 기록을 교체하지 않는다.
+
 [첫 120요청 ready 프로필](pilots/tau2-decision-replay-120-v1.json)은 8지점 × 5회 × 세 조건·새 $0.50 상한을 실행 전에 고정했다. [프로토콜](../docs/research/decision-replay-pilot-v1.md)·[동결 기록](../artifacts/pilots/20261116-decision-replay-protocol.json)과 [실제 결과](../docs/reports/20261116-decision-replay-results.md)를 연결한다. 120/120 정상 응답·보고 비용 $0.043359345이며 업무 도구·사용자 시뮬레이터는 실행하지 않았다. 아래 480요청 draft는 보존하며 자동 추가 실행하지 않는다.
 
 [결정 지점 재전송 초안](drafts/tau2-decision-replay-v1.json)은 원본 요청 8개와 medium·[연구자 메모](diagnostics/decision-replay-researcher-memos-v1.json)를 비교하는 한 응답 진단이다. 480요청은 제안이며 배정 seed·전체 요청/시간/비용 한도는 미정이라 live를 차단한다. 업무 도구를 실행하지 않으며 [구현·판정·한계](../docs/development/decision-replay.md)를 따른다. 자율 생성 기억이나 전체 에피소드 성공의 실증과 구분한다.

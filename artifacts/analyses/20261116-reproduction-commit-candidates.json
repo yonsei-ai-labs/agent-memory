@@ -1,0 +1,104 @@
+{
+  "format": "agent-memory-reproduction-commit-candidates/v1",
+  "visibility": "analysis_only_never_worker_or_writer_input",
+  "reviewed_head": "efd019dfeaef187fdc2596625dffc78862acdf7d",
+  "reviewed_at_utc": "2026-11-16T11:35:53.709935+00:00",
+  "method": "Read main HEAD ancestors with git ls-tree and git cat-file; compare SHA-256 of exact Git blob bytes against unmodified lock references.",
+  "experiments": [
+    {
+      "experiment": "delivery",
+      "protocol_lock_ref": {
+        "path": "artifacts/pilots/20261114-tau2-delivery-development-protocol.json",
+        "sha256": "2d283068c3b46aaf7f8a0e4ea57fc7111d10c87e639e7ee0e6307c245e5835e5"
+      },
+      "recorded_implementation_commit": null,
+      "recorded_head_commit": "c89e34b56e461ae8c9d3a51415ada77600e8c642",
+      "recorded_uncommitted_implementation": true,
+      "implementation_refs": 60,
+      "all_frozen_refs": 64,
+      "implementation_ref_groups": {
+        "src": 33,
+        "tests": 0,
+        "scripts": 11,
+        "schemas": 16
+      },
+      "first_implementation_match_in_head_history": "65a757fcbda4e319f7b6748ea815f1ee998b95a3",
+      "first_all_frozen_refs_match_in_head_history": "65a757fcbda4e319f7b6748ea815f1ee998b95a3",
+      "reproduction_commit_candidate": "65a757fcbda4e319f7b6748ea815f1ee998b95a3",
+      "review_script": "scripts/review_tau2_delivery_development.py",
+      "review_script_sha256_at_candidate": "c55bfecf590ac116d51a58c78fbce6fbbe022d8e0778e93cc1aa88ee4a2a0581",
+      "frozen_refs_all_match_candidate": true,
+      "review_script_exists_at_candidate": true,
+      "historical_command_executed": false,
+      "additional_inputs": [
+        "Pinned tau2 checkout assets used by the original review script.",
+        "Original guided memory source run referenced by frozen_source."
+      ],
+      "status": "git_object_mapping_verified_runtime_reproduction_pending"
+    },
+    {
+      "experiment": "baseline",
+      "protocol_lock_ref": {
+        "path": "artifacts/pilots/20261115-tau2-baseline-screening-protocol.json",
+        "sha256": "c6c3d71c7ebf28190e3983260d8c0a946697fc395f2aa3ac633ae9b2c9a52732"
+      },
+      "recorded_implementation_commit": "1edc6d07e7203f1751c891ad1f7011f997fa6d8f",
+      "recorded_head_commit": null,
+      "recorded_uncommitted_implementation": false,
+      "implementation_refs": 82,
+      "all_frozen_refs": 85,
+      "implementation_ref_groups": {
+        "src": 36,
+        "tests": 13,
+        "scripts": 14,
+        "schemas": 17
+      },
+      "first_implementation_match_in_head_history": "1edc6d07e7203f1751c891ad1f7011f997fa6d8f",
+      "first_all_frozen_refs_match_in_head_history": "086eb6f268e7b4f2e811a303118e34a05e8fd119",
+      "reproduction_commit_candidate": "7243fef085351ac6700f836f695234ad2bd0a5d1",
+      "review_script": "scripts/review_tau2_baseline_screening.py",
+      "review_script_sha256_at_candidate": "ea504e3912aa619609a492670744f2727a6a87f369343adb554b6f90f1e7bfc1",
+      "frozen_refs_all_match_candidate": true,
+      "review_script_exists_at_candidate": true,
+      "historical_command_executed": false,
+      "additional_inputs": [],
+      "status": "git_object_mapping_verified_runtime_reproduction_pending"
+    },
+    {
+      "experiment": "decision_replay",
+      "protocol_lock_ref": {
+        "path": "artifacts/pilots/20261116-decision-replay-protocol.json",
+        "sha256": "e7e2ef4d77fd494deca2f9c183d3ad6d47531c6171c002bd9627c60b893bb27f"
+      },
+      "recorded_implementation_commit": "8a339392619b5bb16cc4b719ae139554814c36b3",
+      "recorded_head_commit": null,
+      "recorded_uncommitted_implementation": false,
+      "implementation_refs": 128,
+      "all_frozen_refs": 133,
+      "implementation_ref_groups": {
+        "src": 38,
+        "tests": 50,
+        "scripts": 19,
+        "schemas": 18
+      },
+      "first_implementation_match_in_head_history": "8a339392619b5bb16cc4b719ae139554814c36b3",
+      "first_all_frozen_refs_match_in_head_history": "0bd1accef706645db79080421cbd7ea393864da3",
+      "reproduction_commit_candidate": "c51165b7f7ba51da8959591079b75bab4f7fec3c",
+      "review_script": "scripts/review_decision_replay_120.py",
+      "review_script_sha256_at_candidate": "1662f8208f34161a41960344ea20d6d9006f593fb70aad4188d9eaf449ad276a",
+      "frozen_refs_all_match_candidate": true,
+      "review_script_exists_at_candidate": true,
+      "historical_command_executed": false,
+      "additional_inputs": [],
+      "status": "git_object_mapping_verified_runtime_reproduction_pending"
+    }
+  ],
+  "limits": [
+    "Candidate records supplement old locks; no lock or historical raw is modified.",
+    "A matching code tree and existing review script do not establish working dependency, asset staging, or import isolation.",
+    "Reproduction must use the recorded analysis code and its environment; current-code compatibility audit is a distinct check."
+  ],
+  "benchmark_or_model_calls": 0,
+  "source_files_modified": false,
+  "worktrees_created": 0
+}

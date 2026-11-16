@@ -53,6 +53,8 @@
 
 ## 다음 세션에서 바로 할 일
 
+[실험 계층 개선안](../development/experiment-layer-improvement-plan.md)에 코드 리뷰와 최근 실험을 함께 정리했다. 실행 구현/분석 재현 commit을 구분하는 [P0 실행기](../development/historical-reproduction.md)·[registry](../../protocols/reproductions/historical-v1.json)와 행동 테스트 14개를 추가했다. [Git 객체 대조](../../artifacts/analyses/20261116-reproduction-commit-candidates.json)의 재현 후보는 전달 비교 `65a757f`·무기억 `7243fef`·재전송 `c51165b`다. 실제 세 과거 명령의 재현 검증은 이어서 진행한다. 이후 schema 재사용·blob 검증 캐시·journal 증분 검증/인덱스, baseline/delivery 공통 기능과 작업자 작성 기억으로 연결한다. 요청 한도/채점·64,000 bytes 한도는 신규 기억 비교 전에 프로토콜과 맞춘다. `+1` 시각·usage null·완료 stop 사유의 작은 수정과 인프라 재개는 별도 항목이다. 기존 동결 기록·원본은 유지하고 journal v1.3은 필요를 측정한 뒤 결정한다.
+
 **최신 결과는 [결정 지점 120요청 결과](../reports/20261116-decision-replay-results.md)다.** [새 프로필](../../protocols/pilots/tau2-decision-replay-120-v1.json)·[판정 방법](../research/decision-replay-pilot-v1.md)·[동결 기록](../../artifacts/pilots/20261116-decision-replay-protocol.json)을 실행 전에 고정했고 [receipt](../../artifacts/pilots/20261116-decision-replay-results.json)·[단일 분석 에이전트 주석](../../artifacts/analyses/20261116-decision-replay-review.json)을 보존했다. 120/120 정상 응답·$0.043359345·오류/생략/비용 미확인 0이다. `call_limit`은 120시도 완료를 뜻한다. 업무 도구는 실행하지 않았다. 수하물 규칙의 재사용을 첫 후보로 준비하되 17의 새 오류·21의 보류를 함께 추적한다. 현재 문맥만으로 충분한 대조·일반 메모·옳았던 상태를 준비하고 작업자 작성 기억과 연구자 메모를 구분한다. 42·1과 20은 한 응답 판정에 적합한지 다시 고른다. 새 유료 실행·480요청으로의 확대는 미승인이다.
 
 원본 `runs/tau2-decision-replay-luna-120-01`이 있으면 `uv run --frozen --extra tau2 python scripts/review_decision_replay_120.py`로 동결 참조·로그·검사·주석 연결을 모델 호출 없이 재검증한다. 실행 구현 128개 참조와 별도 판정/출처 참조를 보존한다. 아래는 그 이전 무기억 측정과 구현 단계의 이력이다.

@@ -10,6 +10,8 @@
 
 최신 [결정 지점 120요청 결과](docs/reports/20261116-decision-replay-results.md)는 원본 요청·medium·연구자 메모를 비교했다. 120/120 정상 응답·보고 비용 $0.043359345이며, 수하물 인수의 교정·추가 확인으로의 보류·새 오류를 구분했다. 업무 도구를 실행하지 않은 한 응답 진단으로, 자율 기억·최종 업무 성공과 별도다.
 
+[과거 재현 실행기](docs/development/historical-reproduction.md)는 분석 commit의 별도 worktree·잠금 환경·원본 사본으로 과거 결과를 검증한다. 현재 코드 수정과 과거 재현을 분리하며 새 모델 실험을 실행하지 않는다. [실험 계층 개선안](docs/development/experiment-layer-improvement-plan.md)에 후속 성능·공통 기능·실제 기억 흐름의 순서를 정리했다.
+
 ## 먼저 읽기
 
 새 개발 세션은 [인수인계](docs/handoff/next-session.md)에서 현재 구현 상태·합의 사항·미정 값을 확인하고, [첫 구현 작업](docs/development/first-implementation.md)부터 이어간다.
