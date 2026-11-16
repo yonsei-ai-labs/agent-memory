@@ -918,5 +918,41 @@
     "Python audit hooks cover trusted scripts; they are not an OS sandbox.",
     "Existing full-suite 151-test pass was reported by the external review; no claim of a rerun here."
   ],
-  "new_model_or_catalog_calls": 0
+  "new_model_or_catalog_calls": 0,
+  "post_change_reproduction": {
+    "status": "passed",
+    "purpose": "A real main runtime file changed, while the preserved review still used its fixed historical code.",
+    "receipt_ref": {
+      "path": "outputs/reproductions/20261116-decision-replay-after-cache-01/receipt.json",
+      "sha256": "37f3c99920027e039b1b1bc8d587a02fa2cc542c7847a0f21774026da652010f"
+    },
+    "launcher_head": "fafccd0d87429e79c0f131d510cc8858a0ecc271",
+    "reproduction_commit": "c51165b7f7ba51da8959591079b75bab4f7fec3c",
+    "modified_main_file_ref": {
+      "path": "src/agent_memory_eval/contracts/validation.py",
+      "sha256": "fbe3893780326f4277c08d372f1825d0a018050f844bbe71ba480c2671a2e02a"
+    },
+    "historical_file_ref": {
+      "path": "src/agent_memory_eval/contracts/validation.py",
+      "sha256": "eea5daa8cb5ca30a6d222dcb199b29ad211701fa70528d3c5d15a55f6fe4f8d6"
+    },
+    "validation_module_loaded": "src/agent_memory_eval/contracts/validation.py",
+    "source_inputs_preserved": true,
+    "staged_inputs_preserved": true,
+    "historical_code_preserved": true,
+    "cleanup": {
+      "status": "removed",
+      "input_copies_retained": false
+    },
+    "network_attempts": 0,
+    "process_attempts": 0,
+    "protected_write_attempts": 0
+  },
+  "full_test_suite": {
+    "command": "uv run --frozen --extra tau2 python -m unittest discover -s tests",
+    "tests": 172,
+    "passed": 172,
+    "seconds": 373.041,
+    "model_transport": "mock HTTP"
+  }
 }
