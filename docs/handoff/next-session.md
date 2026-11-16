@@ -57,6 +57,8 @@
 
 원본 `runs/tau2-decision-replay-luna-120-01`이 있으면 `uv run --frozen --extra tau2 python scripts/review_decision_replay_120.py`로 동결 참조·로그·검사·주석 연결을 모델 호출 없이 재검증한다. 실행 구현 128개 참조와 별도 판정/출처 참조를 보존한다. 아래는 그 이전 무기억 측정과 구현 단계의 이력이다.
 
+새 raw와 기준 코드 `c51165b` 사본은 [팀 Drive](https://drive.google.com/drive/folders/1hr7bEjZeAGegNeJiBouaaJOyYC05xk-O)에 약 3.0MB 증분 묶음으로 공유했다. [registry](../../artifacts/data-releases/20261116-decision-replay.json)·[복원 안내](../data/team-run-sharing.md)를 따른다. 7개 파일 모두 재다운로드·바이트/해시/위치 검증을 마쳤고, 새 묶음만 복원한 환경에서 API 역할 키·이전 raw 없이 결과 검사를 재현했다. 이전 공유본·원본·권한은 유지했다.
+
 [train 전체 무기억 측정](../reports/20261115-tau2-baseline-screening-results.md)은 별도 [ready 프로필](../../protocols/pilots/tau2-baseline-screening-v1.json)의 전체 $1 한도와 [85개 동결 참조](../../artifacts/pilots/20261115-tau2-baseline-screening-protocol.json)를 실행 전에 고정했다. 936 API 시도·확인된 보고 비용 $0.1055333152에 미확인 요청 1건이 있다. 과제 28의 두 번째 반복에서 사용자 시뮬레이터 HTTP 503이 발생했고, 뒤의 7·36·15·21 두 번째 반복을 생략했다. 전체 60회 완료·비용 전액 확인·오류 자동 재개로 해석하지 않는다.
 
 원본은 `runs/tau2-baseline-luna-deepseek1017-train-01`이다. [결과 receipt](../../artifacts/pilots/20261115-tau2-baseline-screening-results.json)·[공개 근거/주석](../../artifacts/analyses/20261115-tau2-baseline-behavior-review.json)·[DB 채점 진단](../../artifacts/analyses/20261115-tau2-train-grading-diagnostic.json)을 연결했다. 공식 성공은 참조에 DB 변경이 있는 과제 12/23, 없는 과제 32/32다. 오류를 사후 제외해 기억 효과나 일반 난도를 확정하지 않는다. 저장 원본은 약 81.4MiB이며 이전 48회와 작업량이 달라 저장량 차이의 인과 효과를 주장하지 않는다.

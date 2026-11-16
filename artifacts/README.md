@@ -1,5 +1,7 @@
 # 자료 출처와 연결
 
+[120요청 공유 registry](data-releases/20261116-decision-replay.json)는 새 raw·코드 사본의 약 3.0MB 증분 묶음을 연결한다. 7개 업로드 파일의 재다운로드·해시·위치를 검증했으며, 새 폴더 복원 뒤 API 키·이전 raw 없이 분석이 재현됐다. [공유·복원 안내](../docs/data/team-run-sharing.md)를 따른다.
+
 [120요청 진단의 동결 기록](pilots/20261116-decision-replay-protocol.json)은 실행 구현 128개와 프로필·프로토콜·판정·출처 참조, 배정을 보존한다. [결과 receipt](pilots/20261116-decision-replay-results.json)는 120/120 정상 응답·보고 비용 $0.043359345와 원본 감사에 연결한다. [분석과 주석](analyses/20261116-decision-replay-review.json)은 좁은 인수 검사 45개와 조건명을 가리고 분류한 공개 응답 75개를 구분한다. 단일 분석 에이전트의 주석이며 독립 재판정은 없다. [결과 보고서](../docs/reports/20261116-decision-replay-results.md)의 사례·한계·재검증 방법을 따른다.
 
 [결정 지점 비교 준비 기록](analyses/20261115-decision-replay-preparation.json)은 추가 리뷰의 8·1·2 분류, 이후 에피소드 주 비교의 7·39 제외 범위, 과거 토큰 관측과 재전송 스냅샷·구현을 연결한다. 새 모델 성능·비용 결과가 아니며 [리뷰 반영](../docs/reports/20261115-baseline-review-update.md)과 [재전송 안내](../docs/development/decision-replay.md)를 따른다.

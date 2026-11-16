@@ -1,10 +1,35 @@
 # 팀 실행 원본 공유와 복원
 
-2026-11-15 · 기존 보관본과 새 무기억 측정 묶음의 업로드·재다운로드 검증 완료
+2026-11-16 · 결정 지점 120요청 묶음 추가·업로드·재다운로드·복원 검증 완료
 
 코드·문서·작은 관측 receipt는 비공개 Git 저장소에서 관리하고, 큰 실행 원본은 사용자가 지정한 Google Drive 팀 폴더에 공유한다. 실행 중 쓰기는 로컬에서 유지한다. 기존 실행이나 팀 폴더의 다른 자료를 덮어쓰지 않았고 공유 권한도 변경하지 않았다.
 
-## 새 무기억 측정 묶음
+## 새 결정 지점 120요청 묶음
+
+| 항목 | 값 |
+| --- | --- |
+| 공유 폴더 | [agent-memory-decision-replay-20261116-c51165b](https://drive.google.com/drive/folders/1hr7bEjZeAGegNeJiBouaaJOyYC05xk-O) |
+| 압축 파일 | [agent-memory-decision-replay-20261116-c51165b.tar.gz](https://drive.google.com/file/d/19sXM2WEhxaqJx6QgNie5FIwwSQqEdLKF/view?usp=drivesdk) |
+| 기준 코드 commit | `c51165b7f7ba51da8959591079b75bab4f7fec3c` |
+| 압축 크기 | 3,023,043 bytes, 약 3.0MB |
+| 포함 자료 | 새 raw run 하나와 코드·문서·작은 자료의 commit 사본, 1,074개 파일·17,634,291 bytes |
+| 업로드·검증 기록 | [120요청 공유 registry](../../artifacts/data-releases/20261116-decision-replay.json) |
+
+압축 SHA-256은 `d6d5b0f49574d1ef71209ee0dfcf05b39c8790d883f864de1a0265f9f21a4e3f`다. 120/120 정상 응답·보고 비용 $0.043359345이며 오류·생략·비용 미확인은 없다. 업무 도구·사용자 시뮬레이터를 실행하지 않은 한 응답 진단으로 [결과 해석](../reports/20261116-decision-replay-results.md)을 따른다. 아래 이전 보관본은 유지했다.
+
+안내·해시·manifest를 포함한 7개 파일을 모두 재다운로드해 원본과 대조했다. 새 빈 폴더에 이 묶음만 복원하고 1,074개 포함 파일의 바이트·해시를 확인한 뒤, API 역할 키와 이전 baseline raw 없이 저장 결과·주석 재계산이 통과했다. API 키·`.git`·의존성 환경·다른 raw·`archive/`는 포함하지 않았다. 폴더 권한은 바꾸지 않았으며 별도 팀원 계정의 접근 시험은 하지 않았다.
+
+이 묶음의 `RESTORE.md`로 먼저 압축·포함 파일을 검증한다. 복원한 `repository/`에서 다음을 실행한다.
+
+```bash
+uv sync --frozen --extra tau2
+uv run --frozen --extra tau2 python scripts/run_decision_replay.py --audit-only --output runs/tau2-decision-replay-luna-120-01
+uv run --frozen --extra tau2 python scripts/review_decision_replay_120.py
+```
+
+의존성 설치는 네트워크를 쓸 수 있지만 두 감사 명령은 모델을 호출하지 않는다. 별도 τ² checkout·이전 실행 원본이 없어도 동작한다. 단일 검토자의 의미 판정 자체를 독립 검증한 것은 아니다. 압축 안 코드는 위 commit 시점이며 이후 공유 registry·링크 추가는 Git의 후속 commit에 있다.
+
+## 이전 무기억 측정 묶음
 
 | 항목 | 값 |
 | --- | --- |
@@ -78,4 +103,4 @@ uv run --frozen --extra tau2 python scripts/review_tau2_delivery_development.py
 
 마지막 명령은 저장 자료만 검사하며 모델 호출이나 API 키가 필요하지 않다. 설치·소스 준비에는 네트워크를 사용한다. 비공개 코드 저장소의 접근 권한은 Drive 접근과 별도로 필요하다. [연결 환경 안내](../development/tau2-connection.md)도 참고한다.
 
-두 묶음 각각 연결 계정으로 7개 파일을 모두 다시 내려받아 로컬 원본과 비교했다. Drive 메타데이터의 ID·이름·크기·상위 폴더와 `shared` 상태도 대조했으며 다른 팀원 계정으로 별도 로그인한 시험은 하지 않았다. 로컬 `runs/`와 기존 실행·해시는 보존했다. 압축·업로드·재검증 과정의 모델 호출은 없다.
+세 묶음 각각 연결 계정으로 7개 파일을 모두 다시 내려받아 로컬 원본과 비교했다. Drive 메타데이터의 ID·이름·크기·상위 폴더와 `shared` 상태도 대조했으며 다른 팀원 계정으로 별도 로그인한 시험은 하지 않았다. 로컬 `runs/`와 기존 실행·해시는 보존했다. 압축·업로드·재검증 과정의 모델 호출은 없다.
