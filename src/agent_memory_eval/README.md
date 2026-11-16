@@ -18,6 +18,6 @@
 
 [무기억 탐색 실행](../../docs/development/tau2-baseline.md)은 `runner/tau2_baseline.py`·`analysis/tau2_baseline.py`·별도 CLI로 준비 검사·배정·회차 격리·run/전체 중단·역할별 비용·원본 재검증을 구현했다. 실제 배정 60개 중 55회 채점·오류 1회·미시작 4회의 [기존 결과](../../docs/reports/20261115-tau2-baseline-screening-results.md)를 보존한다. 비용이 미정인 draft는 live를 거부한다.
 
-[작업자 작성 기억](../../docs/development/worker-written-memory.md)은 공통 API와 native mock 통합까지 검증했다. 새 유료 실행 프로필·실제 효과 측정·과거 baseline transcript 자동 import는 준비 전이다.
+[작업자 작성 기억](../../docs/development/worker-written-memory.md)은 공통 API·native mock 통합과 보존된 무기억 경험의 요청 준비를 지원한다. 새 유료 실행 프로필·실제 작업자 작성 기억의 효과 측정은 준비 전이다.
 
 [추가 실행 보완](../../docs/development/runtime-hardening.md)은 공개 writer 응답의 필드별 출처, 전체 대화/비용 감사, 역할별/입력 한도, 공식 성공과 구분한 도달 상태 진단과 clean 구현 동결 검사를 제공한다. 기존 batch 실행기는 legacy 한도를 사용하며 새 유료 진입점의 연결은 후속이다.

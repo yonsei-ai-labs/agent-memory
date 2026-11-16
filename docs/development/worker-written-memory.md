@@ -1,12 +1,12 @@
 # 같은 공개 경험에서 기억을 작성하고 새 세션에 전달하기
 
-2026-11-16 · 실제 기록·기억·native 연결의 mock 검증 · 실증 효과 미측정
+2026-11-17 · 보존 경험의 오프라인 요청 준비·mock 연결 · 실증 효과 미측정
 
 `memory.writing.freeze_public_experience`와 `write_from_experience`를 추가했다. 하나의 종료된 source run에서 공개 관측을 고정하고, 서로 다른 새 writer 세션·빈 은행에서 선택적으로 기억을 작성한다. 작성된 불변 snapshot은 기존 `Tau2MemoryRunner.episode`의 새 세션·새 DB·분기 은행으로 전달한다. 별도 실험별 실행기·스키마·CLI 묶음을 복제하지 않고 기존 게이트웨이·기억 서비스·라우터·native 채점을 사용한다.
 
 ## 작성 입력과 피드백
 
-원천은 같은 journal 안에서 종료·채점된 run이며, 아직 기억을 쓰지 않은 경험을 사용한다. 공개 task 문맥과 solve 단계의 `public_message_ref`만 투영한다. provider 추론 필드·사용자 시뮬레이터의 비공개 지침·채점 정답·분석 주석은 작성 입력에 넣지 않는다. 원천 종료 사건·commit 해시·관측 사건/참조를 별도 manifest에 고정하고 매 작성 전에 원천과 다시 대조한다.
+원천은 종료·채점됐고 아직 기억을 쓰지 않은 경험이다. 같은 journal의 `public_message_ref`를 고정하는 기존 경로와, 별도 journal의 마지막 작업자 요청·응답을 가져오는 경로를 지원한다. 공개 task 문맥과 대화만 투영하며 provider 추론 필드·사용자 시뮬레이터의 비공개 지침·채점 정답·분석 주석은 작성 입력에 넣지 않는다. 원천 종료 사건·commit 해시·관측 사건/참조를 고정하고 매 작성 전에 원천과 대조한다.
 
 | 피드백 | writer에게 추가로 제공하는 것 |
 | --- | --- |
@@ -43,7 +43,29 @@ uv run --frozen --extra tau2 python -m unittest discover -s tests -p test_experi
 
 native mock 통합에서는 task 40의 source 실패 → writer 작성 → 두 새 probe의 업무 DB 수정·공식 채점을 연결했다. source·probe의 초기 DB 해시는 같고 세 DB 객체·writer 세션은 독립이다. 모델 행동과 성공은 **테스트에서 지정한 응답**이므로 기억 효과의 실증이 아니다. probe와 사용자 시뮬레이터로 과거 transcript·writer 피드백이 넘어가지 않는 것, 잘못된 반환 provider의 거절도 검사한다.
 
-[task 14 중심 실험 준비 초안](../../protocols/drafts/tau2-worker-written-memory-study-v1.json)은 실행 불가능한 설계 자료다. 새 source 수집, 작성 지침·비평, 1차 비교·반복·예산, 역할별 요청 한도·도달 상태 채점, 입력/은행 사전 검사·한도 종료 집계와 독립 주석을 확정해야 한다. 과거 baseline 14·2는 분석 참고이며 현재 API는 그 원본의 `model_message_ref`/native report를 자동 import하지 않는다. 새 native source 수집 경로는 연결돼 있다.
+[task 14 중심 실험 준비 초안](../../protocols/drafts/tau2-worker-written-memory-study-v1.json)은 실행 불가능한 설계 자료다. 원천 선택·작성 지침·비평, 1차 비교·반복·예산, 역할별 요청 한도·도달 상태 채점, 입력/은행 사전 검사·한도 종료 집계와 독립 주석을 확정해야 한다. 아래 준비 명령은 과거 baseline 14·2를 재사용하지만 이를 확인용 표본이나 새 실험의 확정 원천으로 정하지 않는다.
+
+## 보존 경험으로 요청만 준비하기
+
+```bash
+uv run --frozen python scripts/prepare_worker_memory.py \
+  --source runs/tau2-baseline-luna-deepseek1017-train-01 \
+  --source-run r_1b1c08d270854ca1b230d23e75c04f77 \
+  --source-log-sha256 ec0994a536729872ce8ee7ff06ae63c2e640e70091146b9a361535174ee8fbb5 \
+  --decision-request-id request_16cc44dd47ca45dea03145aebd07f8d4 \
+  --writer-instruction protocols/instructions/optional-experience-writer-v1.txt \
+  --replay-instruction protocols/instructions/frozen-memory-replay-v1.txt \
+  --page-size 1 --max-input-bytes 64000 \
+  --output outputs/worker-memory-preparation-new
+```
+
+출력은 반드시 새 폴더다. 이 명령에는 유료 전송 경로가 없으며, 피드백 없음·결과만의 첫 작성 요청과 빈 snapshot 대조의 재전송 요청을 만든다. `--critique`와 `--critique-origin`을 함께 지정할 때만 비평 조건을 추가한다. 예시의 페이지 크기는 빈 은행의 명시적 설정이며, 64,000 bytes는 기존 전송 한도와의 호환 점검이다. 새 실험의 은행/입력 한도를 승인한 값으로 취급하지 않는다. 한도를 생략하면 적합 여부는 미정으로 남고, 초과 요청을 절단하거나 제출하지 않는다.
+
+`recording.experience`는 잠금 중인 원천을 거절하고 선택한 로그 해시·전체 원천 무결성을 검사한다. 복사하는 것은 원천 로그와 선택한 요청·응답·채점 artifact이며 누적 state와 전체 blob 저장소는 복사하지 않는다. 이 capsule은 선택한 문맥의 증거이며 원천 실험 전체의 독립 사본은 아니다. 원천 경로 없이도 capsule의 로그 연결과 생산 사건·참조를 검증할 수 있다. 채점 artifact는 근거 보관용이며 writer 입력에는 선택한 성공 boolean만 허용한다.
+
+새 보조 형식은 `recorded-context/v1`, `public-experience/v2`, `request-preparation/v1`이며 [스키마](../../schemas/recorded-preparation.schema.json)·[합성 형식 예시](../../tests/fixtures/recorded-preparation-v1.json)를 둔다. 기존 journal/event/manifest v1.1·v1.2는 바꾸지 않는다. 준비는 `business.transition`으로 기록하며 실제 `model.request_started`나 `memory.input_included`를 만들지 않는다. `analysis.preparation.audit_preparations`는 문맥 전체·피드백·출처·snapshot·크기를 다시 대조한다. 재전송의 기억 출처 구간은 계획된 구간이며 실제 노출이 아니다.
+
+[오프라인 준비 기록](../../artifacts/analyses/20261117-worker-memory-preparation.json)은 실제 14·2 원본으로 만든 요청의 해시·크기·미정 항목을 담는다. 실제 Luna 작성 기억은 아직 없고, 모델 비용·효과도 측정하지 않았다. 테스트에서는 같은 준비 요청이 실제 작성기의 첫 요청과 일치하고 mock 작성 snapshot을 재전송 입력으로 옮기는 것까지 확인한다. 빈 작성도 보존한다.
 
 일반 주의 메모·빈 은행·원래 옳았던 상태를 대조에 두고 재전송으로 좁혀 전체 에피소드에서 확인하는 방향이다. 7·39는 에피소드 주 분석 제외 기준을 유지하며 17↔7 후보는 과정 판정에 한정한다. 14와 23의 동일 사용자·기억 속 ID가 절차에 미치는 영향도 분리한다. 어려운 과제를 고르는 것과 과거 정보가 필요한 과제를 만드는 것은 별도로 점검한다.
 

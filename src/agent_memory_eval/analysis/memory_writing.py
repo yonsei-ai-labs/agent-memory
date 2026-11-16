@@ -18,7 +18,7 @@ def audit_memory_writes(root):
         start = scan["starts"][run]
         events = [e for e in scan["events"].values() if e["run_id"] == run]
         experience = read_public_experience(blobs, scan, config["experience_ref"])
-        if experience["source_end_seq"] >= start["event_seq"]:
+        if experience.get("local_ready_seq", experience["source_end_seq"]) >= start["event_seq"]:
             raise ContractError("Writing precedes its closed source experience")
         if start["payload"]["source_run_ids"] != [experience["source_run_id"]]:
             raise ContractError("Writer source run differs")

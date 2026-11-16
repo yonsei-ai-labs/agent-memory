@@ -10,6 +10,11 @@ from agent_memory_eval.memory.tools import memory_tools
 from agent_memory_eval.recording.provenance import RecordingGateway, SourceRegistry
 
 
+WRITER_MODEL_FIELDS = frozenset({
+    "model", "temperature", "seed", "reasoning", "provider", "stream", "max_completion_tokens", "max_tokens",
+})
+
+
 def public_message(value):
     """Project only text and public calls; never forward provider reasoning fields."""
     role = value.get("role")
@@ -58,6 +63,9 @@ def freeze_public_experience(journal, run_id):
 
 def read_public_experience(blobs, scan, ref):
     value = blobs.get(ref)
+    if value.get("format") == "agent-memory-public-experience/v2":
+        from agent_memory_eval.recording.experience import read_imported_experience
+        return read_imported_experience(blobs, scan, value)
     if canonical(value) != canonical(_experience(blobs, scan, value["source_run_id"])):
         raise ContractError("Frozen public experience differs from its source events")
     return value
@@ -84,13 +92,22 @@ def writer_inputs(blobs, scan, experience, feedback):
                    messages=[o["message"] for o in experience["observations"]])
     result = dict(kind="evaluation_feedback", level=feedback.level)
     if feedback.level != "none":
-        outcome = scan["events"][experience["outcome_event_id"]]["payload"]
+        outcome = (experience["recorded_outcome"] if experience["format"] == "agent-memory-public-experience/v2"
+                   else scan["events"][experience["outcome_event_id"]]["payload"])
         if outcome["grading_status"] != "graded" or type(outcome["official_success"]) is not bool:
             raise ContractError("Result feedback requires an available source outcome")
         result["success"] = outcome["official_success"]
     if feedback.level == "critique":
         result["critique"] = feedback.critique
     return [dict(role="user", content=canonical(value).decode()) for value in (context, result)]
+
+
+def writer_template(model_config, instruction):
+    if (set(model_config) - WRITER_MODEL_FIELDS or not isinstance(model_config.get("model"), str)
+            or not isinstance(instruction, str) or not instruction.strip()):
+        raise ContractError("Unexpected writer model configuration or instruction")
+    return dict(deepcopy(model_config), system=dict(role="system", content=instruction),
+                tools=memory_tools(["memory_store"]), tool_choice="auto")
 
 
 class FrozenBusiness:
@@ -109,9 +126,7 @@ def write_from_experience(journal, experience_ref, feedback, *, instruction, pol
             or (execution_limits is None and (type(max_requests) is not int or max_requests < 1))
             or (execution_limits is not None and max_requests is not None)):
         raise ContractError("Writing requires explicit post-task-only policy, instruction and request limit")
-    allowed = {"model", "temperature", "seed", "reasoning", "provider", "stream", "max_completion_tokens", "max_tokens"}
-    if set(model_config) - allowed or not isinstance(model_config.get("model"), str):
-        raise ContractError("Unexpected writer model configuration")
+    template_config = writer_template(model_config, instruction)
     experience = read_public_experience(journal.blobs, journal.scan, experience_ref)
     inputs = writer_inputs(journal.blobs, journal.scan, experience, feedback)
     kind = "illustrative" if getattr(client, "offline", False) else "observed"
@@ -140,8 +155,7 @@ def write_from_experience(journal, experience_ref, feedback, *, instruction, pol
     journal.append([ctx.at("prepare").event("run.started", dict(bank_id=bank, start_snapshot_id=None,
         fresh_session=True, source_run_ids=[experience["source_run_id"]], task_ref=experience["task_ref"]))], state=state)
     registry = SourceRegistry(journal, ctx)
-    template = registry.template(dict(model_config, system=dict(role="system", content=instruction),
-        tools=memory_tools(["memory_store"]), tool_choice="auto"), roles=("writer",))
+    template = registry.template(template_config, roles=("writer",))
     history = [(template, "/system")]
     for message in inputs:
         event = ctx.event("business.transition", dict(origin="memory_writer.input",

@@ -1,0 +1,222 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-memory-eval.local/recorded-preparation.schema.json",
+  "title": "Recorded evidence capsule and offline request preparation; journal contracts unchanged",
+  "$defs": {
+    "artifact": {
+      "type": "object",
+      "required": [
+        "path",
+        "sha256",
+        "media_type"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "type": "string",
+          "pattern": "^blobs/sha256/[a-f0-9]{64}$"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "media_type": {
+          "const": "application/json"
+        }
+      }
+    }
+  },
+  "oneOf": [
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "format",
+        "source_path",
+        "source_experiment_id",
+        "source_run_id",
+        "record_kind",
+        "source_log_ref",
+        "source_log_sha256",
+        "source_end_event_id",
+        "outcome_event_id",
+        "outcome_artifact_ref",
+        "request_event_id",
+        "response_event_id",
+        "request_ref",
+        "response_ref",
+        "task_ref"
+      ],
+      "properties": {
+        "format": {
+          "const": "agent-memory-recorded-context/v1"
+        },
+        "source_path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_experiment_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_run_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "record_kind": {
+          "enum": [
+            "illustrative",
+            "observed"
+          ]
+        },
+        "source_log_ref": {
+          "$ref": "#/$defs/artifact"
+        },
+        "source_log_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "source_end_event_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "outcome_event_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "outcome_artifact_ref": {
+          "$ref": "#/$defs/artifact"
+        },
+        "request_event_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "response_event_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "request_ref": {
+          "$ref": "#/$defs/artifact"
+        },
+        "response_ref": {
+          "$ref": "#/$defs/artifact"
+        },
+        "task_ref": {
+          "$ref": "#/$defs/artifact"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "format",
+        "archive_ref",
+        "import_event_id"
+      ],
+      "properties": {
+        "format": {
+          "const": "agent-memory-public-experience/v2"
+        },
+        "archive_ref": {
+          "$ref": "#/$defs/artifact"
+        },
+        "import_event_id": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "format",
+        "kind",
+        "run_id",
+        "actor_role",
+        "configuration_ref",
+        "request_ref",
+        "manifest_ref",
+        "validation_event_ref",
+        "sources_ref",
+        "approved_templates",
+        "input_bytes",
+        "max_input_bytes",
+        "fits_input_limit",
+        "planned_memory_spans",
+        "execution_mode",
+        "model_requests"
+      ],
+      "properties": {
+        "format": {
+          "const": "agent-memory-request-preparation/v1"
+        },
+        "kind": {
+          "enum": [
+            "writer",
+            "snapshot_replay"
+          ]
+        },
+        "run_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "actor_role": {
+          "enum": [
+            "worker",
+            "writer"
+          ]
+        },
+        "configuration_ref": {
+          "$ref": "#/$defs/artifact"
+        },
+        "request_ref": {
+          "$ref": "#/$defs/artifact"
+        },
+        "manifest_ref": {
+          "$ref": "#/$defs/artifact"
+        },
+        "validation_event_ref": {
+          "$ref": "#/$defs/artifact"
+        },
+        "sources_ref": {
+          "$ref": "#/$defs/artifact"
+        },
+        "approved_templates": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/artifact"
+          }
+        },
+        "input_bytes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max_input_bytes": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "fits_input_limit": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "planned_memory_spans": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "execution_mode": {
+          "const": "prepare_only"
+        },
+        "model_requests": {
+          "const": 0
+        }
+      }
+    }
+  ]
+}

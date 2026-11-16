@@ -49,6 +49,7 @@ def main() -> None:
         "autonomy-pilot-v1.1": read_json(ROOT / "schemas" / "autonomy-pilot-v1.1.schema.json"),
         "delivery-comparison": read_json(ROOT / "schemas" / "delivery-comparison.schema.json"),
         "execution-limits": read_json(ROOT / "schemas" / "execution-limits.schema.json"),
+        "recorded-preparation": read_json(ROOT / "schemas" / "recorded-preparation.schema.json"),
     }
     validators = {}
     for name, schema in schemas.items():
@@ -59,6 +60,11 @@ def main() -> None:
     if execution_fixture["contract"] != "per-role-limits/v1":
         raise ValueError("Unknown execution limit fixture contract")
     validators["execution-limits"].validate(execution_fixture["limits"])
+    preparation_fixture = read_json(ROOT / "tests/fixtures/recorded-preparation-v1.json")
+    for artifact in preparation_fixture["artifacts"]:
+        validators["recorded-preparation"].validate(artifact)
+    submitted = dict(preparation_fixture["artifacts"][-1], model_requests=1)
+    reject(validators["recorded-preparation"], submitted, "preparation claiming a model attempt")
     for field, value in (("worker_requests", -1), ("writer_requests", None), ("max_input_bytes", 0)):
         invalid_limits = dict(execution_fixture["limits"], **{field: value})
         reject(validators["execution-limits"], invalid_limits, "invalid explicit execution limits")
