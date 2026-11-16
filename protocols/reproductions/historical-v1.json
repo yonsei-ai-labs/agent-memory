@@ -149,6 +149,58 @@
           "log_sha256": "a6cfac372d59f6463b984180b1db1ff3d678e89e49c09aebb4bf504c907d864f"
         }
       ]
+    },
+    "baseline_diagnosis": {
+      "reproduction_commit": "c31a9d607cea383f800d60526381c1581e7ea2c6",
+      "implementation_commit": "1edc6d07e7203f1751c891ad1f7011f997fa6d8f",
+      "protocol_lock_ref": {
+        "path": "artifacts/pilots/20261115-tau2-baseline-screening-protocol.json",
+        "sha256": "c6c3d71c7ebf28190e3983260d8c0a946697fc395f2aa3ac633ae9b2c9a52732"
+      },
+      "review_script_ref": {
+        "path": "scripts/diagnose_tau2_baseline_failures.py",
+        "sha256": "dc13e0d5cde04d8f1bf8325e409d50286cdf2799e47e9f5b4e88ca6ff302e0ef"
+      },
+      "environment": {
+        "lock_ref": {
+          "path": "uv.lock",
+          "sha256": "b87ef58cf24c2e6d1ba07ed896676e31ecfb858b3840ef1bc5faf0c334ec62a6"
+        },
+        "project_ref": {
+          "path": "pyproject.toml",
+          "sha256": "eacca6269ebd090c7c4c2c52c7a0379ad73670a25d34bc711a67a60c1584bf0d"
+        },
+        "python_version": "3.12",
+        "extras": [
+          "tau2"
+        ]
+      },
+      "expected_outputs": [
+        {
+          "path": "artifacts/pilots/20261115-tau2-baseline-screening-results.json",
+          "sha256": "38239cc8896f53bc805eb4287d8e1be9561b3bb0bd857c9d89674620c9693487"
+        },
+        {
+          "path": "artifacts/analyses/20261115-tau2-baseline-behavior-review.json",
+          "sha256": "99b163e6175f2a0f95165983ee645744d80dbc8d07dedb8c0d89f4af30598dfa"
+        },
+        {
+          "path": "artifacts/analyses/20261115-tau2-baseline-failure-diagnosis.json",
+          "sha256": "669583158504c06935e726b37786170578fb5bf79eb260b25ef667bce2481d83"
+        }
+      ],
+      "inputs": [
+        {
+          "kind": "run",
+          "path": "runs/tau2-baseline-luna-deepseek1017-train-01",
+          "log_sha256": "ec0994a536729872ce8ee7ff06ae63c2e640e70091146b9a361535174ee8fbb5"
+        },
+        {
+          "kind": "git_checkout",
+          "path": "data/tau2-bench",
+          "commit": "c06b07dd7c4d4ec61ba6ff9bcdf0b15dd7ef36d4"
+        }
+      ]
     }
   }
 }

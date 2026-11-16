@@ -84,7 +84,7 @@ def checked_path(root, name):
 def clean_environment():
     allowed = ("PATH", "HOME", "LANG", "LC_ALL", "TZ", "TMPDIR", "TMP", "TEMP", "XDG_CACHE_HOME", "UV_CACHE_DIR")
     env = {key: os.environ[key] for key in allowed if key in os.environ}
-    env.update(UV_OFFLINE="1", UV_NO_PROGRESS="1", PYTHONDONTWRITEBYTECODE="1")
+    env.update(UV_OFFLINE="1", UV_NO_PROGRESS="1", PYTHONDONTWRITEBYTECODE="1", GIT_OPTIONAL_LOCKS="0")
     return env
 
 
@@ -166,6 +166,10 @@ def load_entry(repo, registry_path, experiment):
             reference(dict(path=row["path"] + "/log.jsonl", sha256=row["log_sha256"]))
         elif row["kind"] == "file":
             reference(row)
+        elif row["kind"] == "git_checkout":
+            if root.parts[0] != "data":
+                raise ReproductionError("Benchmark checkouts must stay under data/")
+            commit(row["commit"])
         else:
             raise ReproductionError("Unsupported input kind")
     return dict(repo=repo, entry=entry, experiment=experiment, required_refs=required,
@@ -200,10 +204,22 @@ def inventory_inputs(base, entry):
             if not path.is_dir():
                 raise ReproductionError("Missing raw run: " + item["path"])
             paths = sorted(path.rglob("*"))
+        elif item["kind"] == "git_checkout":
+            if git(path, "rev-parse", "HEAD").decode().strip() != item["commit"] or git(path, "status", "--porcelain"):
+                raise ReproductionError("Benchmark checkout must be clean at the registered commit")
+            names = git(path, "ls-files", "-z").decode().rstrip("\0").split("\0")
+            paths = [path / relative(name) for name in sorted(names) if name]
         else:
             paths = [path]
         for child in paths:
             name = child.relative_to(base).as_posix()
+            if item["kind"] == "git_checkout" and child.is_symlink():
+                if not child.resolve().is_relative_to(path):
+                    raise ReproductionError("Tracked benchmark symlink escapes its checkout")
+                target = os.readlink(child)
+                data = os.fsencode(target)
+                rows.append(dict(path=name, kind="symlink", target=target, bytes=len(data), sha256=sha(data)))
+                continue
             checked_path(base, name)
             mode = child.stat().st_mode
             if stat.S_ISDIR(mode):
@@ -211,6 +227,8 @@ def inventory_inputs(base, entry):
             if not stat.S_ISREG(mode):
                 raise ReproductionError("Input is not a regular file: " + name)
             rows.append(dict(path=name, bytes=child.stat().st_size, sha256=file_hash(child)))
+        if item["kind"] == "git_checkout":
+            continue
         expected_name = item["path"] + "/log.jsonl" if item["kind"] == "run" else item["path"]
         actual = next((row for row in rows if row["path"] == expected_name), None)
         expected = item.get("log_sha256", item.get("sha256"))
@@ -230,10 +248,32 @@ def preflight(config, inputs_root):
                 input_bytes=sum(row["bytes"] for row in rows), benchmark_or_model_calls=0)
 
 
-def stage_inputs(base, worktree, inventory):
+def stage_inputs(base, worktree, inventory, entry):
+    checkouts = []
+    for item in entry["inputs"]:
+        if item["kind"] != "git_checkout":
+            continue
+        source, target = checked_path(base, item["path"]), checked_path(worktree, item["path"])
+        if target.exists():
+            raise ReproductionError("Benchmark staging target already exists")
+        target.parent.mkdir(parents=True, exist_ok=True)
+        git(source, "clone", "--no-hardlinks", "--no-checkout", str(source), str(target))
+        git(target, "checkout", "--detach", item["commit"])
+        checkouts.append(target)
     for row in inventory:
+        if row.get("kind") == "symlink":
+            original, target = base / relative(row["path"]), worktree / relative(row["path"])
+            root = next((root for root in checkouts if root in target.parents), None)
+            if (root is None or not target.is_symlink() or os.readlink(target) != row["target"]
+                    or os.readlink(original) != row["target"] or not target.resolve().is_relative_to(root)):
+                raise ReproductionError("Tracked benchmark symlink copy differs or escapes its checkout")
+            continue
         original = checked_path(base, row["path"])
         target = checked_path(worktree, row["path"])
+        if any(root in target.parents for root in checkouts):
+            if target.samefile(original) or file_hash(target) != row["sha256"]:
+                raise ReproductionError("Local benchmark clone differs from its source")
+            continue
         if target.exists():
             raise ReproductionError("Staged input would overwrite a historical tracked file")
         target.parent.mkdir(parents=True, exist_ok=True)
@@ -296,6 +336,7 @@ def reproduce(config, inputs_root, output, *, keep_worktree=False, timeout_secon
             implementation_commit=entry["implementation_commit"], reproduction_commit=entry["reproduction_commit"],
             protocol_lock_ref=entry["protocol_lock_ref"], review_script_ref=entry["review_script_ref"],
             expected_outputs=entry["expected_outputs"], environment_spec=entry["environment"],
+            inputs_spec=entry["inputs"],
             inputs_root=str(base), worktree=str(worktree), source_inputs_preserved=False,
             staged_inputs_preserved=False, historical_code_preserved=False, steps=[],
             requested_timeout_seconds=timeout_seconds, cleanup=dict(status="not_created"))
@@ -319,15 +360,18 @@ def reproduce(config, inputs_root, output, *, keep_worktree=False, timeout_secon
             created = True
             verify_worktree(config, worktree)
             step("copy_inputs")
-            stage_inputs(base, worktree, inventory)
+            stage_inputs(base, worktree, inventory, entry)
             staged = True
             step("prepare_environment")
             factory = environment_factory or prepare_environment
             receipt["environment"] = factory(worktree, output, entry["environment"])
             verify_worktree(config, worktree)
             python = worktree / ".venv/bin/python"
+            policy_path = output / "child-policy.json"
+            write_json(policy_path, dict(read_only_git_checkouts=[str(worktree / row["path"])
+                for row in entry["inputs"] if row["kind"] == "git_checkout"]))
             command = [str(python), "-I", "-B", str(bootstrap), str(worktree),
-                       str(worktree / entry["review_script_ref"]["path"]), str(output / "child-report.json")]
+                       str(worktree / entry["review_script_ref"]["path"]), str(output / "child-report.json"), str(policy_path)]
             receipt["command"] = command
             step("review")
             with (output / "review.stdout.log").open("wb") as stdout, (output / "review.stderr.log").open("wb") as stderr:
@@ -366,6 +410,6 @@ def reproduce(config, inputs_root, output, *, keep_worktree=False, timeout_secon
             receipt.update(finished_at_utc=now(), elapsed_seconds=time.monotonic() - started)
             receipt["evidence_files"] = [dict(path=p.name, sha256=file_hash(p), bytes=p.stat().st_size)
                 for p in (manifest, output / "environment.log", output / "review.stdout.log",
-                          output / "review.stderr.log", output / "child-report.json") if p.exists()]
+                          output / "review.stderr.log", output / "child-report.json", output / "child-policy.json") if p.exists()]
             write_json(output / "receipt.json", receipt)
     return receipt

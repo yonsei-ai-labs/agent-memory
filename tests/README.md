@@ -1,6 +1,6 @@
 # 검증 자료와 테스트 배치
 
-[과거 재현 행동 검사](test_historical_reproduction.py) 14개는 실제 작은 Git worktree와 격리 Python으로 현재 main 변경·키 제거·잘못된 import·입력 변조/누락·활성 writer·네트워크/쓰기/프로세스 시도·timeout·사본 정리를 확인한다. 표준 라이브러리 fixture 환경을 사용하며 실제 세 과거 결과의 재현과 구분한다. [실행 안내](../docs/development/historical-reproduction.md)를 따른다.
+[과거 재현 행동 검사](test_historical_reproduction.py) 18개는 실제 작은 Git worktree와 격리 Python으로 현재 main 변경·키 제거·잘못된 import·입력 변조/누락·활성 writer·네트워크/쓰기/프로세스 시도·timeout·사본 정리를 확인한다. 로컬 native clone·허용된 Git 읽기/변경 거부·내부/외부 symlink·과거 이웃 스크립트 import도 검사한다. 표준 라이브러리 fixture 환경을 사용하며 실제 과거 결과의 재현과 구분한다. [실행 안내](../docs/development/historical-reproduction.md)를 따른다.
 
 [진단 검토 packet 검사](test_decision_review_packet.py) 3개는 안정적인 가림 ID와 공개 필드, 주석의 완전성·중복·범주·근거 일치를 확인하며 별도로 통과했다. 2026-11-16 유료 실행 전 기존 재전송 행동 테스트 16개도 다시 통과했다. 전체 151개를 재실행한 것은 아니다. [실제 120요청 결과](../docs/reports/20261116-decision-replay-results.md)는 이 오프라인 테스트와 별도다.
 

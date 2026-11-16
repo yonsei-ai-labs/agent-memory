@@ -241,6 +241,78 @@ except RuntimeError:
         self.assertEqual(result["child"]["process_attempts"], 1)
         self.assert_cleanup(result)
 
+    def native_fixture(self):
+        root = self.repo / "data/benchmark"
+        root.mkdir(parents=True)
+        def native_git(*args):
+            return subprocess.check_output(["git", "-C", str(root), *args], stderr=subprocess.PIPE, text=True)
+        native_git("init", "-q")
+        native_git("config", "user.name", "Offline Test")
+        native_git("config", "user.email", "offline@example.invalid")
+        (root / "asset.txt").write_text("native source\n")
+        (root / "internal-link").symlink_to("asset.txt")
+        native_git("add", ".")
+        native_git("commit", "-qm", "Pinned benchmark")
+        self.entry["inputs"].append(dict(kind="git_checkout", path="data/benchmark",
+                                        commit=native_git("rev-parse", "HEAD").strip()))
+        self.flush_registry()
+        return root
+
+    def test_registered_local_git_clone_permits_only_identity_and_status_reads(self):
+        self.save_registry('''
+import subprocess
+native = root / "data/benchmark"
+assert (native / "asset.txt").read_text() == "native source\\n"
+assert (native / "internal-link").is_symlink()
+assert (native / "internal-link").read_text() == "native source\\n"
+subprocess.run(["git", "-C", str(native), "rev-parse", "HEAD"], check=True, capture_output=True)
+assert not subprocess.run(["git", "-C", str(native), "status", "--porcelain"], check=True, capture_output=True).stdout
+''')
+        self.native_fixture()
+        result = self.run_review()
+        self.assertEqual(result["status"], "passed", result)
+        self.assertEqual(len(result["child"]["read_only_git_calls"]), 2)
+        self.assertEqual(result["child"]["process_attempts"], 0)
+        self.assertTrue(result["staged_inputs_preserved"])
+        self.assert_cleanup(result)
+
+    def test_registered_git_input_does_not_enable_mutating_subcommands(self):
+        self.save_registry('''
+import subprocess
+try:
+    subprocess.run(["git", "-C", str(root / "data/benchmark"), "reset", "--hard"])
+except RuntimeError:
+    pass
+''')
+        self.native_fixture()
+        result = self.run_review()
+        self.assertEqual(result["status"], "failed")
+        self.assertEqual(result["child"]["process_attempts"], 1)
+        self.assert_cleanup(result)
+
+    def test_benchmark_symlink_cannot_escape_its_registered_checkout(self):
+        root = self.native_fixture()
+        (root / "internal-link").unlink()
+        (root / "internal-link").symlink_to("../../artifacts/result.json")
+        subprocess.run(["git", "-C", str(root), "add", "internal-link"], check=True, capture_output=True)
+        subprocess.run(["git", "-C", str(root), "commit", "-qm", "Escaping link"], check=True, capture_output=True)
+        self.entry["inputs"][-1]["commit"] = subprocess.check_output(
+            ["git", "-C", str(root), "rev-parse", "HEAD"], text=True).strip()
+        self.flush_registry()
+        with self.assertRaisesRegex(ReproductionError, "symlink escapes"):
+            self.run_review()
+        self.assertFalse(self.output.exists())
+
+    def test_historical_neighbor_script_import_uses_fixed_worktree(self):
+        self.write("scripts/neighbor.py", 'VALUE = "old-neighbor"\n')
+        self.git("add", "scripts/neighbor.py")
+        self.save_registry('\nfrom neighbor import VALUE\nassert VALUE == "old-neighbor"\n')
+        self.write("scripts/neighbor.py", 'VALUE = "changed-main"\n')
+        result = self.run_review()
+        self.assertEqual(result["status"], "passed", result)
+        self.assertIn("changed-main", (self.repo / "scripts/neighbor.py").read_text())
+        self.assert_cleanup(result)
+
     def test_wrong_editable_import_path_is_rejected(self):
         wrong = self.base / "other"
         (wrong / "src/agent_memory_eval").mkdir(parents=True)

@@ -20,7 +20,11 @@ import traceback
 def main():
     worktree, script, report_path = (Path(p).absolute() for p in sys.argv[1:4])
     report = dict(status="failed", network_attempts=0, process_attempts=0,
-                  protected_write_attempts=0, imported_modules={})
+                  protected_write_attempts=0, read_only_git_calls=[], imported_modules={})
+    policy = json.loads(Path(sys.argv[4]).read_bytes()) if len(sys.argv) > 4 else {}
+    git_checkouts = [Path(path).resolve() for path in policy.get("read_only_git_checkouts", [])]
+    if any(not path.is_relative_to(worktree) for path in git_checkouts):
+        raise RuntimeError("Registered Git input must be inside the historical worktree")
 
     def inside(path):
         if not isinstance(path, (str, bytes, os.PathLike)):
@@ -32,6 +36,13 @@ def main():
             report["network_attempts"] += 1
             raise RuntimeError("Network access is disabled during historical review")
         if event in {"subprocess.Popen", "os.system", "os.exec", "os.posix_spawn", "os.fork"}:
+            if event == "subprocess.Popen":
+                command = args[1]
+                if (isinstance(command, (list, tuple)) and len(command) == 5
+                        and command[:2] == ["git", "-C"] and Path(command[2]).resolve() in git_checkouts
+                        and command[3:] in (["rev-parse", "HEAD"], ["status", "--porcelain"])):
+                    report["read_only_git_calls"].append(list(command))
+                    return
             report["process_attempts"] += 1
             raise RuntimeError("Child processes are disabled during historical review")
         targets = ()
@@ -70,6 +81,9 @@ def main():
                       bootstrap_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest())
         # Imported before installing the hook so failure reports can still be written.
         sys.addaudithook(block)
+        # Historical diagnostic scripts import neighboring review scripts.
+        # Only the fixed worktree's script directory is made importable.
+        sys.path.insert(0, str(script.parent))
         importlib.import_module("agent_memory_eval")
         check_imports()
         sys.argv = [str(script)]
