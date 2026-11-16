@@ -38,6 +38,8 @@ uv run --frozen python scripts/reproduce_experiment.py --experiment baseline_dia
 
 ## 결과와 검증
 
+[실제 네 명령 재현 기록](../../artifacts/analyses/20261116-historical-reproduction-results.json)은 세 결과 검토와 원인 진단이 각각 통과했음을 보존한다. [반영 보고서](../reports/20261116-reproduction-and-review-update.md)에 입력 준비에서 발견한 partial clone 처리와 원본 보존·정리를 함께 적었다. 재현 실행기의 18개 행동 테스트와 구분한다.
+
 출력 `receipt.json`은 실행/분석 commit·registry/코드/입력 해시·환경·명령·판정·원본 보존·정리 결과를 남긴다. `child-report.json`에는 실제 import 경로와 네트워크/쓰기 시도 수가 있다. 실패와 timeout도 로그·receipt를 보존한다. 완료된 실험의 원본 journal에 가짜 run이나 기억 사건을 추가하지 않는다.
 
 [행동 테스트](../../tests/test_historical_reproduction.py)는 실제 작은 Git 저장소·worktree·격리 Python으로 main 변경, 잘못된 import, 원본/해시/입력 오류, 활성 writer, 네트워크·쓰기·프로세스 시도, timeout·정리를 확인한다. 합성 테스트의 의존성 설치는 표준 라이브러리 fixture이며 실제 세 과거 명령의 uv 환경 검증과 구분한다.

@@ -1,0 +1,922 @@
+{
+  "format": "agent-memory-historical-reproduction-validation/v1",
+  "visibility": "analysis_only_never_worker_or_writer_input",
+  "experiments": [
+    {
+      "experiment": "delivery",
+      "status": "passed",
+      "reproduction_commit": "65a757fcbda4e319f7b6748ea815f1ee998b95a3",
+      "implementation_commit": "65a757fcbda4e319f7b6748ea815f1ee998b95a3",
+      "launcher_head": "cc5240df4dbb7b31ea9d91fc5887305aca9cec11",
+      "launcher_sources": [
+        {
+          "path": "runner.py",
+          "sha256": "8795ec6bff9f20b5a92da9e22b96dd867fa5a91ec192caaebfc7870ad259b4f6"
+        },
+        {
+          "path": "_child.py",
+          "sha256": "d96d8c76ff977dec10b604d8c3fa8a7a3b4d0a826fa1caad1ba48bbd6b9b9c3c"
+        }
+      ],
+      "receipt_ref": {
+        "path": "outputs/reproductions/20261116-delivery-01/receipt.json",
+        "sha256": "37b2d9a6c5feb189b852c580ba9b34ebf22c3671b14d76ecbea8377302eaff8e"
+      },
+      "input_manifest_ref": {
+        "path": "outputs/reproductions/20261116-delivery-01/inputs-manifest.json",
+        "sha256": "ab2c1bfaeabcd70ae8162c44f8f9e6ba4a7776092e77afde3872ce70e7445f88"
+      },
+      "input_files": 5276,
+      "input_bytes": 843610790,
+      "elapsed_seconds": 173.08320373599418,
+      "source_inputs_preserved": true,
+      "staged_inputs_preserved": true,
+      "historical_code_preserved": true,
+      "expected_outputs": [
+        {
+          "path": "artifacts/pilots/20261114-tau2-delivery-development-results.json",
+          "sha256": "1df3849bdcc9a094b3254c57bc0a113a36e83299a6769ea1710561e925b14f82"
+        },
+        {
+          "path": "artifacts/analyses/20261114-tau2-delivery-behavior-review.json",
+          "sha256": "e6df8f40060686632cc6dfb2d159881b8a374d462d31cd5d612a209b18044353"
+        }
+      ],
+      "read_only_git_calls": 0,
+      "forbidden_network_attempts": 0,
+      "forbidden_process_attempts": 0,
+      "protected_write_attempts": 0,
+      "api_role_keys_present": false,
+      "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+      "environment_spec": {
+        "lock_ref": {
+          "path": "uv.lock",
+          "sha256": "b87ef58cf24c2e6d1ba07ed896676e31ecfb858b3840ef1bc5faf0c334ec62a6"
+        },
+        "project_ref": {
+          "path": "pyproject.toml",
+          "sha256": "eacca6269ebd090c7c4c2c52c7a0379ad73670a25d34bc711a67a60c1584bf0d"
+        },
+        "python_version": "3.12",
+        "extras": []
+      },
+      "packages": [
+        {
+          "name": "agent-memory-eval",
+          "version": "0.1.0a0"
+        },
+        {
+          "name": "agent-memory-eval",
+          "version": "0.1.0a0"
+        },
+        {
+          "name": "arrow",
+          "version": "1.4.0"
+        },
+        {
+          "name": "attrs",
+          "version": "26.1.0"
+        },
+        {
+          "name": "fqdn",
+          "version": "1.6.0"
+        },
+        {
+          "name": "idna",
+          "version": "3.20"
+        },
+        {
+          "name": "isoduration",
+          "version": "20.11.0"
+        },
+        {
+          "name": "jsonpointer",
+          "version": "3.12"
+        },
+        {
+          "name": "jsonschema",
+          "version": "4.26.0"
+        },
+        {
+          "name": "jsonschema-specifications",
+          "version": "2025.9.1"
+        },
+        {
+          "name": "lark",
+          "version": "1.3.1"
+        },
+        {
+          "name": "python-dateutil",
+          "version": "4.0.0"
+        },
+        {
+          "name": "referencing",
+          "version": "0.37.0"
+        },
+        {
+          "name": "rfc3339-validator",
+          "version": "0.1.4"
+        },
+        {
+          "name": "rfc3986-validator",
+          "version": "0.1.1"
+        },
+        {
+          "name": "rfc3987-syntax",
+          "version": "1.1.0"
+        },
+        {
+          "name": "rpds-py",
+          "version": "2026.9.1"
+        },
+        {
+          "name": "six",
+          "version": "1.17.0"
+        },
+        {
+          "name": "typing_extensions",
+          "version": "4.16.0"
+        },
+        {
+          "name": "tzdata",
+          "version": "2026.6"
+        },
+        {
+          "name": "uri-template",
+          "version": "1.3.0"
+        },
+        {
+          "name": "webcolors",
+          "version": "25.10.0"
+        }
+      ],
+      "cleanup": {
+        "status": "removed",
+        "input_copies_retained": false
+      }
+    },
+    {
+      "experiment": "baseline",
+      "status": "passed",
+      "reproduction_commit": "7243fef085351ac6700f836f695234ad2bd0a5d1",
+      "implementation_commit": "1edc6d07e7203f1751c891ad1f7011f997fa6d8f",
+      "launcher_head": "cc5240df4dbb7b31ea9d91fc5887305aca9cec11",
+      "launcher_sources": [
+        {
+          "path": "runner.py",
+          "sha256": "8795ec6bff9f20b5a92da9e22b96dd867fa5a91ec192caaebfc7870ad259b4f6"
+        },
+        {
+          "path": "_child.py",
+          "sha256": "d96d8c76ff977dec10b604d8c3fa8a7a3b4d0a826fa1caad1ba48bbd6b9b9c3c"
+        }
+      ],
+      "receipt_ref": {
+        "path": "outputs/reproductions/20261116-baseline-01/receipt.json",
+        "sha256": "8c8a1bcc16a010937fa07f88c6b8c5679cf21dc199a7b92cd2a3e7e0e62e8d49"
+      },
+      "input_manifest_ref": {
+        "path": "outputs/reproductions/20261116-baseline-01/inputs-manifest.json",
+        "sha256": "37571a48224e360fd4a08f91575fec597b6cd94cb0a9eff5e8c85c222e5e54e9"
+      },
+      "input_files": 6591,
+      "input_bytes": 85395101,
+      "elapsed_seconds": 191.19760228099767,
+      "source_inputs_preserved": true,
+      "staged_inputs_preserved": true,
+      "historical_code_preserved": true,
+      "expected_outputs": [
+        {
+          "path": "artifacts/pilots/20261115-tau2-baseline-screening-results.json",
+          "sha256": "38239cc8896f53bc805eb4287d8e1be9561b3bb0bd857c9d89674620c9693487"
+        },
+        {
+          "path": "artifacts/analyses/20261115-tau2-baseline-behavior-review.json",
+          "sha256": "99b163e6175f2a0f95165983ee645744d80dbc8d07dedb8c0d89f4af30598dfa"
+        }
+      ],
+      "read_only_git_calls": 0,
+      "forbidden_network_attempts": 0,
+      "forbidden_process_attempts": 0,
+      "protected_write_attempts": 0,
+      "api_role_keys_present": false,
+      "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+      "environment_spec": {
+        "lock_ref": {
+          "path": "uv.lock",
+          "sha256": "b87ef58cf24c2e6d1ba07ed896676e31ecfb858b3840ef1bc5faf0c334ec62a6"
+        },
+        "project_ref": {
+          "path": "pyproject.toml",
+          "sha256": "eacca6269ebd090c7c4c2c52c7a0379ad73670a25d34bc711a67a60c1584bf0d"
+        },
+        "python_version": "3.12",
+        "extras": []
+      },
+      "packages": [
+        {
+          "name": "agent-memory-eval",
+          "version": "0.1.0a0"
+        },
+        {
+          "name": "agent-memory-eval",
+          "version": "0.1.0a0"
+        },
+        {
+          "name": "arrow",
+          "version": "1.4.0"
+        },
+        {
+          "name": "attrs",
+          "version": "26.1.0"
+        },
+        {
+          "name": "fqdn",
+          "version": "1.6.0"
+        },
+        {
+          "name": "idna",
+          "version": "3.20"
+        },
+        {
+          "name": "isoduration",
+          "version": "20.11.0"
+        },
+        {
+          "name": "jsonpointer",
+          "version": "3.12"
+        },
+        {
+          "name": "jsonschema",
+          "version": "4.26.0"
+        },
+        {
+          "name": "jsonschema-specifications",
+          "version": "2025.9.1"
+        },
+        {
+          "name": "lark",
+          "version": "1.3.1"
+        },
+        {
+          "name": "python-dateutil",
+          "version": "4.0.0"
+        },
+        {
+          "name": "referencing",
+          "version": "0.37.0"
+        },
+        {
+          "name": "rfc3339-validator",
+          "version": "0.1.4"
+        },
+        {
+          "name": "rfc3986-validator",
+          "version": "0.1.1"
+        },
+        {
+          "name": "rfc3987-syntax",
+          "version": "1.1.0"
+        },
+        {
+          "name": "rpds-py",
+          "version": "2026.9.1"
+        },
+        {
+          "name": "six",
+          "version": "1.17.0"
+        },
+        {
+          "name": "typing_extensions",
+          "version": "4.16.0"
+        },
+        {
+          "name": "tzdata",
+          "version": "2026.6"
+        },
+        {
+          "name": "uri-template",
+          "version": "1.3.0"
+        },
+        {
+          "name": "webcolors",
+          "version": "25.10.0"
+        }
+      ],
+      "cleanup": {
+        "status": "removed",
+        "input_copies_retained": false
+      }
+    },
+    {
+      "experiment": "decision_replay",
+      "status": "passed",
+      "reproduction_commit": "c51165b7f7ba51da8959591079b75bab4f7fec3c",
+      "implementation_commit": "8a339392619b5bb16cc4b719ae139554814c36b3",
+      "launcher_head": "cc5240df4dbb7b31ea9d91fc5887305aca9cec11",
+      "launcher_sources": [
+        {
+          "path": "runner.py",
+          "sha256": "8795ec6bff9f20b5a92da9e22b96dd867fa5a91ec192caaebfc7870ad259b4f6"
+        },
+        {
+          "path": "_child.py",
+          "sha256": "d96d8c76ff977dec10b604d8c3fa8a7a3b4d0a826fa1caad1ba48bbd6b9b9c3c"
+        }
+      ],
+      "receipt_ref": {
+        "path": "outputs/reproductions/20261116-decision-replay-01/receipt.json",
+        "sha256": "9105cb1da5f99351712c266586416539a42f8e7129941f5ecaad780bcf0beb17"
+      },
+      "input_manifest_ref": {
+        "path": "outputs/reproductions/20261116-decision-replay-01/inputs-manifest.json",
+        "sha256": "b3586757b0717e694ce5dd9ee70e082d1b78fe52403095e34ae71277a15dc2ed"
+      },
+      "input_files": 813,
+      "input_bytes": 13511086,
+      "elapsed_seconds": 28.585317438002676,
+      "source_inputs_preserved": true,
+      "staged_inputs_preserved": true,
+      "historical_code_preserved": true,
+      "expected_outputs": [
+        {
+          "path": "artifacts/pilots/20261116-decision-replay-results.json",
+          "sha256": "c37900bebed1e479c0d2bac181d72a19bdf76fbf775935426d4e0ffba54675c6"
+        },
+        {
+          "path": "artifacts/analyses/20261116-decision-replay-review.json",
+          "sha256": "6b3598dbcafed8626cd67ea29a062c7b9c4f4b1c8e49d005bdf96f0beda3e1f2"
+        }
+      ],
+      "read_only_git_calls": 0,
+      "forbidden_network_attempts": 0,
+      "forbidden_process_attempts": 0,
+      "protected_write_attempts": 0,
+      "api_role_keys_present": false,
+      "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+      "environment_spec": {
+        "lock_ref": {
+          "path": "uv.lock",
+          "sha256": "b87ef58cf24c2e6d1ba07ed896676e31ecfb858b3840ef1bc5faf0c334ec62a6"
+        },
+        "project_ref": {
+          "path": "pyproject.toml",
+          "sha256": "eacca6269ebd090c7c4c2c52c7a0379ad73670a25d34bc711a67a60c1584bf0d"
+        },
+        "python_version": "3.12",
+        "extras": []
+      },
+      "packages": [
+        {
+          "name": "agent-memory-eval",
+          "version": "0.1.0a0"
+        },
+        {
+          "name": "agent-memory-eval",
+          "version": "0.1.0a0"
+        },
+        {
+          "name": "arrow",
+          "version": "1.4.0"
+        },
+        {
+          "name": "attrs",
+          "version": "26.1.0"
+        },
+        {
+          "name": "fqdn",
+          "version": "1.6.0"
+        },
+        {
+          "name": "idna",
+          "version": "3.20"
+        },
+        {
+          "name": "isoduration",
+          "version": "20.11.0"
+        },
+        {
+          "name": "jsonpointer",
+          "version": "3.12"
+        },
+        {
+          "name": "jsonschema",
+          "version": "4.26.0"
+        },
+        {
+          "name": "jsonschema-specifications",
+          "version": "2025.9.1"
+        },
+        {
+          "name": "lark",
+          "version": "1.3.1"
+        },
+        {
+          "name": "python-dateutil",
+          "version": "4.0.0"
+        },
+        {
+          "name": "referencing",
+          "version": "0.37.0"
+        },
+        {
+          "name": "rfc3339-validator",
+          "version": "0.1.4"
+        },
+        {
+          "name": "rfc3986-validator",
+          "version": "0.1.1"
+        },
+        {
+          "name": "rfc3987-syntax",
+          "version": "1.1.0"
+        },
+        {
+          "name": "rpds-py",
+          "version": "2026.9.1"
+        },
+        {
+          "name": "six",
+          "version": "1.17.0"
+        },
+        {
+          "name": "typing_extensions",
+          "version": "4.16.0"
+        },
+        {
+          "name": "tzdata",
+          "version": "2026.6"
+        },
+        {
+          "name": "uri-template",
+          "version": "1.3.0"
+        },
+        {
+          "name": "webcolors",
+          "version": "25.10.0"
+        }
+      ],
+      "cleanup": {
+        "status": "removed",
+        "input_copies_retained": false
+      }
+    },
+    {
+      "experiment": "baseline_diagnosis",
+      "status": "passed",
+      "reproduction_commit": "c31a9d607cea383f800d60526381c1581e7ea2c6",
+      "implementation_commit": "1edc6d07e7203f1751c891ad1f7011f997fa6d8f",
+      "launcher_head": "46b4e52d4f09f3640ebf7729d1ac3b975197e49f",
+      "launcher_sources": [
+        {
+          "path": "runner.py",
+          "sha256": "fe69abd5ea81711d47d6d0a46459c727e5644013984e2382556266f0cf52f48d"
+        },
+        {
+          "path": "_child.py",
+          "sha256": "284d281db791c19034f9c2d7fad16a39fd8a6402dcffd49a474bff473b2b6004"
+        }
+      ],
+      "receipt_ref": {
+        "path": "outputs/reproductions/20261116-baseline-diagnosis-02/receipt.json",
+        "sha256": "4b939768655034719878923c0827360f47ae42cca94bcc68f51ecee243cbdec6"
+      },
+      "input_manifest_ref": {
+        "path": "outputs/reproductions/20261116-baseline-diagnosis-02/inputs-manifest.json",
+        "sha256": "e955785463e5fa59257dbd4d50a49e9bbdac4a74a94fbe6cfb7d032cb173ff4b"
+      },
+      "input_files": 8810,
+      "input_bytes": 1083154232,
+      "elapsed_seconds": 92.57671879898407,
+      "source_inputs_preserved": true,
+      "staged_inputs_preserved": true,
+      "historical_code_preserved": true,
+      "expected_outputs": [
+        {
+          "path": "artifacts/pilots/20261115-tau2-baseline-screening-results.json",
+          "sha256": "38239cc8896f53bc805eb4287d8e1be9561b3bb0bd857c9d89674620c9693487"
+        },
+        {
+          "path": "artifacts/analyses/20261115-tau2-baseline-behavior-review.json",
+          "sha256": "99b163e6175f2a0f95165983ee645744d80dbc8d07dedb8c0d89f4af30598dfa"
+        },
+        {
+          "path": "artifacts/analyses/20261115-tau2-baseline-failure-diagnosis.json",
+          "sha256": "669583158504c06935e726b37786170578fb5bf79eb260b25ef667bce2481d83"
+        }
+      ],
+      "read_only_git_calls": 2,
+      "forbidden_network_attempts": 0,
+      "forbidden_process_attempts": 0,
+      "protected_write_attempts": 0,
+      "api_role_keys_present": false,
+      "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+      "environment_spec": {
+        "lock_ref": {
+          "path": "uv.lock",
+          "sha256": "b87ef58cf24c2e6d1ba07ed896676e31ecfb858b3840ef1bc5faf0c334ec62a6"
+        },
+        "project_ref": {
+          "path": "pyproject.toml",
+          "sha256": "eacca6269ebd090c7c4c2c52c7a0379ad73670a25d34bc711a67a60c1584bf0d"
+        },
+        "python_version": "3.12",
+        "extras": [
+          "tau2"
+        ]
+      },
+      "packages": [
+        {
+          "name": "addict",
+          "version": "2.4.0"
+        },
+        {
+          "name": "agent-memory-eval",
+          "version": "0.1.0a0"
+        },
+        {
+          "name": "agent-memory-eval",
+          "version": "0.1.0a0"
+        },
+        {
+          "name": "aiohappyeyeballs",
+          "version": "2.7.1"
+        },
+        {
+          "name": "aiohttp",
+          "version": "3.14.5"
+        },
+        {
+          "name": "aiosignal",
+          "version": "1.4.0"
+        },
+        {
+          "name": "annotated-doc",
+          "version": "0.0.6"
+        },
+        {
+          "name": "annotated-types",
+          "version": "0.8.0"
+        },
+        {
+          "name": "anyio",
+          "version": "4.16.0"
+        },
+        {
+          "name": "arrow",
+          "version": "1.4.0"
+        },
+        {
+          "name": "attrs",
+          "version": "26.1.0"
+        },
+        {
+          "name": "cachebox",
+          "version": "5.2.3"
+        },
+        {
+          "name": "certifi",
+          "version": "2026.10.23"
+        },
+        {
+          "name": "charset-normalizer",
+          "version": "3.5.2"
+        },
+        {
+          "name": "click",
+          "version": "8.5.1"
+        },
+        {
+          "name": "deepdiff",
+          "version": "9.1.0"
+        },
+        {
+          "name": "docstring_parser",
+          "version": "0.18.0"
+        },
+        {
+          "name": "fastapi",
+          "version": "0.162.7"
+        },
+        {
+          "name": "fastuuid",
+          "version": "0.14.0"
+        },
+        {
+          "name": "filelock",
+          "version": "4.2.10"
+        },
+        {
+          "name": "fqdn",
+          "version": "1.6.0"
+        },
+        {
+          "name": "frozenlist",
+          "version": "1.8.0"
+        },
+        {
+          "name": "fsspec",
+          "version": "2026.9.0"
+        },
+        {
+          "name": "h11",
+          "version": "0.16.0"
+        },
+        {
+          "name": "hf-xet",
+          "version": "1.8.0"
+        },
+        {
+          "name": "httpcore",
+          "version": "1.0.9"
+        },
+        {
+          "name": "httpcore2",
+          "version": "2.16.0"
+        },
+        {
+          "name": "httpx",
+          "version": "0.28.1"
+        },
+        {
+          "name": "httpx2",
+          "version": "2.16.0"
+        },
+        {
+          "name": "huggingface_hub",
+          "version": "2.4.0"
+        },
+        {
+          "name": "idna",
+          "version": "3.20"
+        },
+        {
+          "name": "importlib_metadata",
+          "version": "10.2.0"
+        },
+        {
+          "name": "isoduration",
+          "version": "20.11.0"
+        },
+        {
+          "name": "Jinja2",
+          "version": "3.1.6"
+        },
+        {
+          "name": "jiter",
+          "version": "0.19.0"
+        },
+        {
+          "name": "jsonpointer",
+          "version": "3.12"
+        },
+        {
+          "name": "jsonschema",
+          "version": "4.26.0"
+        },
+        {
+          "name": "jsonschema-specifications",
+          "version": "2025.9.1"
+        },
+        {
+          "name": "lark",
+          "version": "1.3.1"
+        },
+        {
+          "name": "lazy-importer",
+          "version": "0.1.0"
+        },
+        {
+          "name": "litellm",
+          "version": "1.82.6"
+        },
+        {
+          "name": "loguru",
+          "version": "0.8.0"
+        },
+        {
+          "name": "markdown-it-py",
+          "version": "4.3.0"
+        },
+        {
+          "name": "MarkupSafe",
+          "version": "3.0.4"
+        },
+        {
+          "name": "mdurl",
+          "version": "0.1.2"
+        },
+        {
+          "name": "multidict",
+          "version": "7.2.1"
+        },
+        {
+          "name": "numpy",
+          "version": "2.5.4"
+        },
+        {
+          "name": "openai",
+          "version": "3.51.0"
+        },
+        {
+          "name": "opentelemetry-api",
+          "version": "1.45.2"
+        },
+        {
+          "name": "orderly-set",
+          "version": "5.5.0"
+        },
+        {
+          "name": "packaging",
+          "version": "26.3"
+        },
+        {
+          "name": "pandas",
+          "version": "3.1.1"
+        },
+        {
+          "name": "propcache",
+          "version": "0.5.4"
+        },
+        {
+          "name": "psutil",
+          "version": "7.2.2"
+        },
+        {
+          "name": "pydantic",
+          "version": "2.14.3"
+        },
+        {
+          "name": "pydantic_core",
+          "version": "2.50.4"
+        },
+        {
+          "name": "Pygments",
+          "version": "2.21.0"
+        },
+        {
+          "name": "python-dateutil",
+          "version": "4.0.0"
+        },
+        {
+          "name": "python-dotenv",
+          "version": "1.2.4"
+        },
+        {
+          "name": "PyYAML",
+          "version": "6.0.3"
+        },
+        {
+          "name": "referencing",
+          "version": "0.37.0"
+        },
+        {
+          "name": "regex",
+          "version": "2026.11.9"
+        },
+        {
+          "name": "requests",
+          "version": "2.34.2"
+        },
+        {
+          "name": "rfc3339-validator",
+          "version": "0.1.4"
+        },
+        {
+          "name": "rfc3986-validator",
+          "version": "0.1.1"
+        },
+        {
+          "name": "rfc3987-syntax",
+          "version": "1.1.0"
+        },
+        {
+          "name": "rich",
+          "version": "15.0.0"
+        },
+        {
+          "name": "rpds-py",
+          "version": "2026.9.1"
+        },
+        {
+          "name": "shellingham",
+          "version": "1.5.4"
+        },
+        {
+          "name": "six",
+          "version": "1.17.0"
+        },
+        {
+          "name": "sniffio",
+          "version": "1.3.1"
+        },
+        {
+          "name": "starlette",
+          "version": "1.10.0"
+        },
+        {
+          "name": "tabulate",
+          "version": "0.10.0"
+        },
+        {
+          "name": "tau2",
+          "version": "2.0.0"
+        },
+        {
+          "name": "tenacity",
+          "version": "9.2.1"
+        },
+        {
+          "name": "tiktoken",
+          "version": "0.14.0"
+        },
+        {
+          "name": "tokenizers",
+          "version": "0.23.3"
+        },
+        {
+          "name": "toml",
+          "version": "0.10.2"
+        },
+        {
+          "name": "tqdm",
+          "version": "4.70.1"
+        },
+        {
+          "name": "truststore",
+          "version": "0.10.5"
+        },
+        {
+          "name": "typer",
+          "version": "0.29.1"
+        },
+        {
+          "name": "typing-inspection",
+          "version": "0.4.5"
+        },
+        {
+          "name": "typing_extensions",
+          "version": "4.16.0"
+        },
+        {
+          "name": "tzdata",
+          "version": "2026.6"
+        },
+        {
+          "name": "uri-template",
+          "version": "1.3.0"
+        },
+        {
+          "name": "urllib3",
+          "version": "2.8.0"
+        },
+        {
+          "name": "uvicorn",
+          "version": "0.54.0"
+        },
+        {
+          "name": "webcolors",
+          "version": "25.10.0"
+        },
+        {
+          "name": "yarl",
+          "version": "1.25.1"
+        },
+        {
+          "name": "zipp",
+          "version": "4.1.2"
+        }
+      ],
+      "cleanup": {
+        "status": "removed",
+        "input_copies_retained": false
+      }
+    }
+  ],
+  "behavior_tests": {
+    "command": "uv run --frozen python -m unittest discover -s tests -p 'test_historical_reproduction.py'",
+    "passed": 18,
+    "scope": "Real temporary Git repositories, isolated Python, standard-library fixture environments."
+  },
+  "development_failure": {
+    "experiment": "baseline_diagnosis",
+    "phase": "copy_inputs",
+    "reason": "The first clone attempted unavailable historical objects from a partial native clone; fixed by staging only the verified HEAD.",
+    "receipt_ref": {
+      "path": "outputs/reproductions/20261116-baseline-diagnosis-01/receipt.json",
+      "sha256": "e4ca9b86c6aab8a7c3fcc43074e7810049a22c19405da9effe6780969e63b019"
+    },
+    "source_inputs_preserved": true,
+    "cleanup": {
+      "status": "removed",
+      "input_copies_retained": false
+    }
+  },
+  "limits": [
+    "Historical result reproduction, not new model performance or independent semantic adjudication.",
+    "The original diagnostic classifications and later 11/14 corrections remain separate preserved records.",
+    "Python audit hooks cover trusted scripts; they are not an OS sandbox.",
+    "Existing full-suite 151-test pass was reported by the external review; no claim of a rerun here."
+  ],
+  "new_model_or_catalog_calls": 0
+}

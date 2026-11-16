@@ -20,6 +20,7 @@
 | 구현 순서와 단계별 완료 기준 | [개발 계획](development/roadmap.md) |
 | 과거 재현과 현재 코드 분리·journal 성능·공통 실행 기능·다음 기억 실험의 개선 순서 | [실험 계층 개선안](development/experiment-layer-improvement-plan.md) |
 | 고정 분석 commit·전용 환경·입력 사본으로 과거 세 실험을 재검증 | [과거 실험 재현 실행](development/historical-reproduction.md) |
+| 실제 과거 네 명령 재현·schema 캐시 49.80→5.87초·추가 코드/연구 리뷰 반영 | [구조 개선 진행 보고](reports/20261116-reproduction-and-review-update.md) |
 | 첫 구현 명세·가짜 실행·행동 검증의 요구 | [첫 구현 작업](development/first-implementation.md) |
 | 구현한 파일 코어·합성 실행 명령·검증 범위와 한계 | [오프라인 코어](development/offline-core.md) |
 | 실제 OpenRouter·Luna·τ² 단일 과제 연결과 사용량/비용 | [연결 확인](development/tau2-connection.md) |

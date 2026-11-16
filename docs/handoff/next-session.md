@@ -10,7 +10,7 @@
 | --- | --- |
 | 연구·설계 | 연구 질문·프로토콜·지표·관련 연구·상세 설계 문서 있음 |
 | 계약 | v1.0/v1.1 예시 보존, journal envelope v1.1, snapshot 자동 제공의 별도 journal/event/manifest v1.2 확장 |
-| 동작하는 코드 | 파일 코어, native 기억/두 회차, 세 조건 파일럿, 고정 은행 전달 비교, 무기억 배치, 고정 결정 지점 한 응답 재전송·guard·읽기 전용 audit |
+| 동작하는 코드 | 파일 코어, native 기억/두 회차, 세 조건 파일럿, 고정 은행 전달 비교, 무기억 배치, 고정 결정 지점 재전송, commit 기준 과거 재현·입력/환경 격리, schema validator 캐시 |
 | 패키지 | [구현 위치와 후속 범위](../../src/agent_memory_eval/README.md)를 구분 |
 | 미구현 | 범용 연구 계획 의미/준비 검사·다른 벤치, 제목/선택기/가공 확장·누적·저장/조회 교차·전체 회차 복원/개입·자동 의미 주석·통계 추론 |
 | 실험 | 48회 전달 비교·55회 무기억 채점에 이어 고정 결정 지점 120요청 완료. 모두 정상 응답·보고 비용 $0.043359345. 업무 도구·사용자 시뮬레이터를 실행하지 않은 한 응답 진단이며 일반 기억 효과는 미확정 |
@@ -53,11 +53,13 @@
 
 ## 다음 세션에서 바로 할 일
 
-[실험 계층 개선안](../development/experiment-layer-improvement-plan.md)에 코드 리뷰와 최근 실험을 함께 정리했다. 실행 구현/분석 재현 commit을 구분하는 [P0 실행기](../development/historical-reproduction.md)·[registry](../../protocols/reproductions/historical-v1.json)와 행동 테스트 14개를 추가했다. [Git 객체 대조](../../artifacts/analyses/20261116-reproduction-commit-candidates.json)의 재현 후보는 전달 비교 `65a757f`·무기억 `7243fef`·재전송 `c51165b`다. 실제 세 과거 명령의 재현 검증은 이어서 진행한다. 이후 schema 재사용·blob 검증 캐시·journal 증분 검증/인덱스, baseline/delivery 공통 기능과 작업자 작성 기억으로 연결한다. 요청 한도/채점·64,000 bytes 한도는 신규 기억 비교 전에 프로토콜과 맞춘다. `+1` 시각·usage null·완료 stop 사유의 작은 수정과 인프라 재개는 별도 항목이다. 기존 동결 기록·원본은 유지하고 journal v1.3은 필요를 측정한 뒤 결정한다.
+[실험 계층 개선안](../development/experiment-layer-improvement-plan.md)에 코드 리뷰와 최근 실험을 함께 정리했다. [P0 실행기](../development/historical-reproduction.md)·[registry](../../protocols/reproductions/historical-v1.json)로 전달 비교 `65a757f`·무기억 `7243fef`·재전송 `c51165b`·원인 진단 `c31a9d6`의 **네 과거 명령을 실제 재현했다.** [검증 자료](../../artifacts/analyses/20261116-historical-reproduction-results.json)에 API 키 제거·금지된 I/O 0·원본/사본/코드 보존·사본 정리를 남겼다. 실제 작은 Git worktree 행동 테스트는 18개다. 이어 schema validator를 경로별 캐시해 동일한 120요청 감사가 49.80→5.87초로 줄었고 결과 해시는 같았다. [측정 자료](../../artifacts/analyses/20261116-schema-validation-performance.json)·[반영 보고서](../reports/20261116-reproduction-and-review-update.md)를 따른다. 캐시 테스트 3개를 포함해 전체 **172개가 373.041초에 통과**했고 기본 검사 3개도 통과했다. 모든 unittest는 mock HTTP이며 새 모델 호출은 없다.
+
+다음은 writer blob 검증 캐시의 안전 범위·journal 증분 검증/인덱스, baseline/delivery 공통 기능이다. 요청 한도/채점·64,000 bytes 한도는 신규 기억 비교 전에 프로토콜과 맞춘다. `+1` 시각·usage null·완료 stop 사유의 세 버그는 확인했으나 아직 수정하지 않았다. 인프라 재개도 미구현이다. 연구는 피드백 세 수준·일반 메모·원래 옳았던 상태 대조를 준비하고, 과거에만 있는 정보가 필요한 자율 조회·독립 판정·군집 표본/전체 예산을 구분한다. 새 유료 실행은 하지 않았고 journal v1.3은 필요를 측정한 뒤 결정한다.
 
 **최신 결과는 [결정 지점 120요청 결과](../reports/20261116-decision-replay-results.md)다.** [새 프로필](../../protocols/pilots/tau2-decision-replay-120-v1.json)·[판정 방법](../research/decision-replay-pilot-v1.md)·[동결 기록](../../artifacts/pilots/20261116-decision-replay-protocol.json)을 실행 전에 고정했고 [receipt](../../artifacts/pilots/20261116-decision-replay-results.json)·[단일 분석 에이전트 주석](../../artifacts/analyses/20261116-decision-replay-review.json)을 보존했다. 120/120 정상 응답·$0.043359345·오류/생략/비용 미확인 0이다. `call_limit`은 120시도 완료를 뜻한다. 업무 도구는 실행하지 않았다. 수하물 규칙의 재사용을 첫 후보로 준비하되 17의 새 오류·21의 보류를 함께 추적한다. 현재 문맥만으로 충분한 대조·일반 메모·옳았던 상태를 준비하고 작업자 작성 기억과 연구자 메모를 구분한다. 42·1과 20은 한 응답 판정에 적합한지 다시 고른다. 새 유료 실행·480요청으로의 확대는 미승인이다.
 
-원본 `runs/tau2-decision-replay-luna-120-01`이 있으면 `uv run --frozen --extra tau2 python scripts/review_decision_replay_120.py`로 동결 참조·로그·검사·주석 연결을 모델 호출 없이 재검증한다. 실행 구현 128개 참조와 별도 판정/출처 참조를 보존한다. 아래는 그 이전 무기억 측정과 구현 단계의 이력이다.
+원본이 있으면 `uv run --frozen python scripts/reproduce_experiment.py --experiment decision_replay --run --output outputs/reproductions/NEW_REPLAY_REVIEW`로 고정 코드의 동결 참조·로그·검사·주석을 재검증한다. 최신 코드의 원본 호환 감사는 `scripts/run_decision_replay.py --audit-only --output runs/tau2-decision-replay-luna-120-01`로 별도 실행한다. 실행 구현 128개와 별도 판정/출처 참조는 당시 코드에 보존한다. 아래의 과거 직접 review/diagnose 명령은 해당 고정 checkout·공유 코드 사본 기준이며 현재 main에서는 P0 실행기를 사용한다. 이하 무기억 측정과 구현 단계는 이전 이력이다.
 
 새 raw와 기준 코드 `c51165b` 사본은 [팀 Drive](https://drive.google.com/drive/folders/1hr7bEjZeAGegNeJiBouaaJOyYC05xk-O)에 약 3.0MB 증분 묶음으로 공유했다. [registry](../../artifacts/data-releases/20261116-decision-replay.json)·[복원 안내](../data/team-run-sharing.md)를 따른다. 7개 파일 모두 재다운로드·바이트/해시/위치 검증을 마쳤고, 새 묶음만 복원한 환경에서 API 역할 키·이전 raw 없이 결과 검사를 재현했다. 이전 공유본·원본·권한은 유지했다.
 

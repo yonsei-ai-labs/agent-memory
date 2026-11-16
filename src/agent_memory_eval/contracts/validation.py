@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from copy import deepcopy
+from functools import lru_cache
 import hashlib
 import json
 from pathlib import Path
@@ -39,10 +40,20 @@ def read_json(data: bytes):
 
 
 def validators():
+    """Return a caller-owned mapping of validators for immutable schema resources.
+
+    The resources are fixed for a process. Schema edits require a new process;
+    tests switching schema roots get their own cache entry.
+    """
+    return dict(_compiled_validators(SCHEMAS.resolve(), (ROOT / "schemas/v1.2").resolve()))
+
+
+@lru_cache(maxsize=8)
+def _compiled_validators(primary, extension):
     schemas = {path.stem.split(".")[0]: read_json(path.read_bytes())
-               for path in SCHEMAS.glob("*.schema.json")}
+               for path in primary.glob("*.schema.json")}
     schemas.update({path.stem.split(".")[0] + "-v1.2": read_json(path.read_bytes())
-                    for path in (ROOT / "schemas/v1.2").glob("*.schema.json")})
+                    for path in extension.glob("*.schema.json")})
     registry = Registry()
     for schema in schemas.values():
         Draft202012Validator.check_schema(schema)

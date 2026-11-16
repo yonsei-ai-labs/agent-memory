@@ -1,0 +1,48 @@
+{
+  "format": "agent-memory-schema-validation-performance/v1",
+  "visibility": "analysis_only_never_worker_or_writer_input",
+  "benchmark": "Cold-process cProfile measurement of audit_replay on the same preserved 120-request root.",
+  "before": {
+    "label": "before",
+    "wall_seconds": 49.799953902023844,
+    "audit_sha256": "923bf64219ff2e5eca5d8f9d685d696ab394c0461689ad5944b28375ea15ebd1",
+    "raw_log_sha256": "a6cfac372d59f6463b984180b1db1ff3d678e89e49c09aebb4bf504c907d864f",
+    "responses": {
+      "response": 120
+    },
+    "reported_cost_usd": "0.043359345",
+    "validation_source_sha256": "eea5daa8cb5ca30a6d222dcb199b29ad211701fa70528d3c5d15a55f6fe4f8d6",
+    "validators_calls": 121,
+    "validators_cumulative_seconds": 44.451279451000005,
+    "model_calls": 0,
+    "profiling_enabled": true
+  },
+  "after": {
+    "label": "after",
+    "wall_seconds": 5.874673871003324,
+    "audit_sha256": "923bf64219ff2e5eca5d8f9d685d696ab394c0461689ad5944b28375ea15ebd1",
+    "raw_log_sha256": "a6cfac372d59f6463b984180b1db1ff3d678e89e49c09aebb4bf504c907d864f",
+    "responses": {
+      "response": 120
+    },
+    "reported_cost_usd": "0.043359345",
+    "validation_source_sha256": "fbe3893780326f4277c08d372f1825d0a018050f844bbe71ba480c2671a2e02a",
+    "validators_calls": 121,
+    "validators_cumulative_seconds": 0.39230802200000003,
+    "model_calls": 0,
+    "profiling_enabled": true
+  },
+  "ratio_before_over_after": 8.47705847091025,
+  "time_reduction_fraction": 0.8820345520286801,
+  "audit_output_unchanged": true,
+  "measurement_script": {
+    "sha256": "1072872fadcb9efa4237d91e9408abd7590b06a8e3fe4973ca785d13c5857b36",
+    "source": "import cProfile,hashlib,json,pstats,sys,time\nfrom pathlib import Path\nfrom agent_memory_eval.runner.decision_replay import audit_replay\nfrom agent_memory_eval.contracts.core import canonical\nlabel=sys.argv[1];out=Path('outputs/performance/20261116-schema-cache')\nprofile=cProfile.Profile();start=time.perf_counter();profile.enable();audit=audit_replay(Path('runs/tau2-decision-replay-luna-120-01'));profile.disable();elapsed=time.perf_counter()-start\nrows=[(key,value) for key,value in pstats.Stats(profile).stats.items() if key[2]=='validators' and key[0].endswith('contracts/validation.py')]\nassert len(rows)==1\nv=dict(label=label,wall_seconds=elapsed,audit_sha256=hashlib.sha256(canonical(audit)).hexdigest(),raw_log_sha256=audit['log_sha256'],responses=audit['counts'],reported_cost_usd=audit['reported_cost_usd_decimal'],validation_source_sha256=hashlib.sha256(Path('src/agent_memory_eval/contracts/validation.py').read_bytes()).hexdigest(),validators_calls=rows[0][1][1],validators_cumulative_seconds=rows[0][1][3],model_calls=0,profiling_enabled=True)\nwith (out/(label+'.json')).open('x') as stream:json.dump(v,stream,indent=2);stream.write('\\n')\nprint(json.dumps(v))\n"
+  },
+  "limits": [
+    "One measured execution per version; descriptive timing on this machine, not a statistical benchmark.",
+    "Profiling enabled for both executions; includes full stored-result audit and not a model request.",
+    "Writer blob verification and journal reparsing remain separate pending bottlenecks."
+  ],
+  "new_model_or_catalog_calls": 0
+}
