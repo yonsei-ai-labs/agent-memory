@@ -1,0 +1,56 @@
+{
+  "record_kind": "illustrative",
+  "scope": "schema_examples_only_not_exported_run_or_model_evidence",
+  "artifacts": [
+    {
+      "format": "agent-memory-snapshot-replay-config/v1",
+      "record_kind": "illustrative",
+      "decision_ref": {
+        "path": "blobs/sha256/cc14aca17d8a6ceff444986e1b79683b4874c0ac0af0c7585c3f79a4db074224",
+        "sha256": "cc14aca17d8a6ceff444986e1b79683b4874c0ac0af0c7585c3f79a4db074224",
+        "media_type": "application/json"
+      },
+      "snapshot_id": "snap_65d48eba8bbb4bc498ca816adfba68ad",
+      "policy": {
+        "enabled": true,
+        "write_timing": "none",
+        "same_episode_read": false,
+        "page_size": 2,
+        "read_mode": "preload",
+        "max_items": null,
+        "max_payload_bytes": null,
+        "max_return_bytes": null
+      },
+      "instruction": "Use past notes only when applicable to this request.",
+      "expected_request_sha256": "d45fdbf000545c16d5328a4e1a25694d91e77d6718fa6194c7ed41e9487fdad7",
+      "execution_contract": "per-role-limits/v1",
+      "execution_limits": {
+        "worker_requests": 1,
+        "writer_requests": 0,
+        "user_simulator_requests": 0,
+        "max_input_bytes": 10000
+      },
+      "verified_model": null,
+      "response_projection": "public-assistant/v1",
+      "scope": "single_reply_no_business_execution_or_official_score"
+    },
+    {
+      "format": "agent-memory-snapshot-replay-result/v1",
+      "run_id": "replay_9b2f648742c44922adf9e3efe3c35b51",
+      "bank_id": "b_c6720d9186bd40ecb47b5e2bba8e7792",
+      "snapshot_id": "snap_cf002301f360402b817a7a8eed7dd358",
+      "request_id": "request_2a76ae855da743068a9aa30cbc34e58d",
+      "message_ref": {
+        "path": "blobs/sha256/3cedf54cd02528fbfea6ac4d795e2a4021de9baf27bbbb7dc4ffa6ba59e69618",
+        "sha256": "3cedf54cd02528fbfea6ac4d795e2a4021de9baf27bbbb7dc4ffa6ba59e69618",
+        "media_type": "application/json"
+      },
+      "status": "response",
+      "error_code": null,
+      "unknown_cost": false,
+      "stop_required": false,
+      "official_success": null,
+      "scope": "single_reply_no_business_execution_or_official_score"
+    }
+  ]
+}

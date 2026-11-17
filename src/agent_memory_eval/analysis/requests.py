@@ -71,6 +71,7 @@ def audit_requests(root, *, evidence=None):
     normal_spans = sum(deliveries[payload["request_id"]]["status"] == "response" for _, payload in actual.values())
     configurations = dict(state.get("assignments", {}))
     configurations.update(state.get("memory_writes", {}))
+    configurations.update(state.get("snapshot_replays", {}))
     for run, config in configurations.items():
         if "execution_limits" not in config:
             continue

@@ -1,0 +1,178 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-memory.local/schemas/written-comparison-rubrics.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format",
+    "status",
+    "packet_sha256",
+    "reviewer",
+    "cases",
+    "scope"
+  ],
+  "properties": {
+    "format": {
+      "const": "agent-memory-written-comparison-rubrics/v1"
+    },
+    "status": {
+      "enum": [
+        "provisional",
+        "reviewed"
+      ]
+    },
+    "packet_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "reviewer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "kind",
+        "independence_declared",
+        "historical_outcomes_visible"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "enum": [
+            "analysis_agent",
+            "human",
+            "panel"
+          ]
+        },
+        "independence_declared": {
+          "type": "boolean"
+        },
+        "historical_outcomes_visible": {
+          "type": "boolean"
+        }
+      }
+    },
+    "cases": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "case_id",
+          "baggage",
+          "certificates",
+          "approval_review",
+          "other_policy_review"
+        ],
+        "properties": {
+          "case_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "baggage": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "interpretation",
+              "expected_quantity",
+              "evidence",
+              "note"
+            ],
+            "properties": {
+              "interpretation": {
+                "enum": [
+                  "explicit_quantity",
+                  "unresolved"
+                ]
+              },
+              "expected_quantity": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "evidence": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "message_index",
+                  "message_sha256",
+                  "excerpt"
+                ],
+                "properties": {
+                  "message_index": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "message_sha256": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  },
+                  "excerpt": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              },
+              "note": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "certificates": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "max_per_reservation",
+              "evidence"
+            ],
+            "properties": {
+              "max_per_reservation": {
+                "const": 1
+              },
+              "evidence": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "message_index",
+                  "message_sha256",
+                  "excerpt"
+                ],
+                "properties": {
+                  "message_index": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "message_sha256": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  },
+                  "excerpt": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              }
+            }
+          },
+          "approval_review": {
+            "type": "string",
+            "minLength": 1
+          },
+          "other_policy_review": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "scope": {
+      "const": "public_quantity_and_certificate_checks_not_full_policy_or_episode_success"
+    }
+  }
+}

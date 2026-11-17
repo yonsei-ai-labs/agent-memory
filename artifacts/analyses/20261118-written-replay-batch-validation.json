@@ -1,0 +1,199 @@
+{
+  "format": "agent-memory-written-replay-batch-validation/v1",
+  "local_date": "2026-11-18",
+  "visibility": "analysis_only",
+  "scope": "Historical inputs were staged and audited offline. Replay responses in the behavioral tests came from mock HTTP.",
+  "implementation": {
+    "base_commit": "943fe949caaee2b1c0dad430ba1585c4ca62b686",
+    "state": "uncommitted_main_development_verification",
+    "file_sha256": {
+      "src/agent_memory_eval/experiments/replay_schedule.py": "ed441ed5af080f4f327ad331c4e90a08f419642a78c10cdba96eac6b3cf6baac",
+      "src/agent_memory_eval/experiments/replay_inputs.py": "0bc478a61b62607ee4ac56ca228a874c0bd11e0bfeecf445c47c770df1185580",
+      "src/agent_memory_eval/experiments/written_replay_batch.py": "23536b30f4855a3b56bbe762469cb8fa549300f7ede997ccb4ae553015c4f962",
+      "src/agent_memory_eval/analysis/written_replay_batch.py": "b29b22d508466184b2f398796baaea2b28c56f44ce83fae3ca3e47fa4a0a9349",
+      "src/agent_memory_eval/analysis/written_comparison.py": "c0ceec03e24200ae44be3acb2d7195905cd7714c4ed7a410671533b435370250",
+      "src/agent_memory_eval/runner/snapshot_replay.py": "2619fd92a1ec7a447a03363c7441e2c545e9d14fdd6a76f957f96262d33f6c0f",
+      "src/agent_memory_eval/analysis/snapshot_replay.py": "320064b51a13b567559f326f22fe20a8be746f2a58ce4985da2eef755d050e4b",
+      "src/agent_memory_eval/memory/imports.py": "da9e1dda931ab15bf56dc238240d123fa5057712736573e4fb86975e1937d234",
+      "src/agent_memory_eval/memory/preparation.py": "14e99697d44352408ace93d238fedeb75dcc39d14028400d244f2b4e09814d3e",
+      "src/agent_memory_eval/recording/experience.py": "6f60f911031f7ad5d3189329f5bbdc3659cc01ccae64835c8a44df6f3c4740c0",
+      "scripts/run_written_replay_batch.py": "86c5404e919393ffc7a52b2e19830b75d11efe8e6d979895fcefec864514ca65",
+      "scripts/validate_design.py": "09d7c34d14b08aed92c018e15a0d99c800e6ba9dd6c3bf1a1f030c6ada8179c0",
+      "tests/test_written_replay_batch.py": "c4ae74416de4bce7552a15dc0c59d11339582f03f008699f62ae6472438db679",
+      "tests/test_writing_exploration.py": "3249a64272193a41832ab1d319764c9867e549187afc2d2448c399a90f2586b4",
+      "schemas/written-replay-batch.schema.json": "115eaa8f229b8c407582dbee6418a19d0db04d22df769a926d7d14bc555cb124",
+      "protocols/drafts/tau2-written-memory-batch-v1.json": "3ad904220ab017339c692c722f7ea379ae8bfd365535c971154d74aae182108c",
+      "uv.lock": "b87ef58cf24c2e6d1ba07ed896676e31ecfb858b3840ef1bc5faf0c334ec62a6"
+    }
+  },
+  "source_file_sha256": {
+    "runs/tau2-baseline-luna-deepseek1017-train-01/log.jsonl": "ec0994a536729872ce8ee7ff06ae63c2e640e70091146b9a361535174ee8fbb5",
+    "runs/tau2-memory-writing-10-luna-feedback-01/log.jsonl": "0a883dc7709586e54438b4d9fdc392fbe204576baaa6c223dcf4c29c71478885",
+    "outputs/written-memory-validity-20261117-01/preparation.json": "f7d16aa41f6d5ab9c88259ea6094975ebad59401015a03d399992c0a8f86d7e4"
+  },
+  "verified_stage": {
+    "directory": "outputs/written-replay-batch-staged-20261118-02",
+    "log_sha256": "727cb461fa607f917cad8792071dc9cfcd3dc6b49f4a1117726e3d5ea3fe10ca",
+    "control_sha256": "c0cd158ef309551a26ffd028a3e1648d545b99fd682289d70739e520534797bb",
+    "journal_records": 53,
+    "events": 14,
+    "command": "uv run --frozen --no-sync python scripts/run_written_replay_batch.py --stage --preparation outputs/written-memory-validity-20261117-01 --output outputs/written-replay-batch-staged-20261118-02",
+    "audit_command": "uv run --frozen --no-sync python scripts/run_written_replay_batch.py --audit-only --details --config protocols/drafts/tau2-written-memory-batch-v1.json --output outputs/written-replay-batch-staged-20261118-02",
+    "audit_summary": {
+      "format": "agent-memory-written-replay-batch-audit/v1",
+      "experiment_id": "batch_5c3e0a33b981419b92d3a3ff0f2e878a",
+      "status": "staged",
+      "profile_sha256": "17b76c000adaecfef5b65ad3e2a6883633b163e481a7524fcf96770845d98883",
+      "preparation_sha256": "be612f00aa8622c2c265747c464a0848d1972240f77c330194bc177e8593a2b2",
+      "cases": 4,
+      "writer_allocations": 10,
+      "empty_writer_allocations": 1,
+      "input_snapshots": 13,
+      "logical_rows_per_repetition": 160,
+      "distinct_calls_per_repetition": 48,
+      "groups_per_case": {
+        "airline14-r1-booking": 12,
+        "airline14-r2-booking": 12,
+        "airline23-r1-first-booking": 12,
+        "airline23-r2-booking": 12
+      },
+      "input_bytes": {
+        "max": 46360,
+        "min": 36807
+      },
+      "groups_by_logical_row_count": {
+        "1": 36,
+        "10": 8,
+        "11": 4
+      },
+      "source_model_seed_by_case": {
+        "airline14-r2-booking": 1,
+        "airline14-r1-booking": 0,
+        "airline23-r2-booking": 1,
+        "airline23-r1-first-booking": 0
+      },
+      "planned_calls": null,
+      "unresolved_fields": [
+        "analysis_plan",
+        "bank_limits",
+        "control_note_review",
+        "max_input_bytes",
+        "max_model_requests",
+        "max_reported_cost_usd",
+        "max_seconds",
+        "paid_authorization",
+        "repetitions",
+        "schedule_seed",
+        "timeout_seconds",
+        "independent_case_review"
+      ],
+      "historical_writing_usage": {
+        "requests": 19,
+        "reported_cost_usd_decimal": "0.008262950",
+        "unknown_cost_requests": 0
+      },
+      "replay_model_requests": 0,
+      "submitted_requests": 0,
+      "observed_replies": 0,
+      "unknown_cost_requests": 0,
+      "reported_replay_cost_usd_decimal": "0",
+      "skipped_inputs": 0,
+      "errors": 0,
+      "stop_reason": null,
+      "official_scores_computed": false,
+      "business_tools_executed": false,
+      "policy_effect_estimated": false
+    },
+    "canonical_full_audit_sha256": "ce03210f01603f1b0fa8c58cae9739246c2de37fe75af083668e63fdb87cb8fa",
+    "staged_group_map_sha256": "6c665f3110a0ba38216104fd1257e14c7266c3a4b20798728b18862aef730d2b",
+    "links": 160
+  },
+  "runtime_wire_check": {
+    "status": "passed",
+    "implementation": "memory.preparation.snapshot_replay_input with the actual imported bank and recorded case",
+    "logical_rows_checked": 160,
+    "distinct_case_local_bank_combinations": 52,
+    "distinct_prepared_request_files": 48,
+    "empty_writer_control_pairs_verified": 4,
+    "all_canonical_bytes_equal": true,
+    "new_model_or_catalog_calls": 0,
+    "link_matrix_sha256": "1b523b52db4e789836b0668a84e92b4f243e3a72d9592b244af98fce6dcdf318",
+    "check_ref": {
+      "path": "outputs/written-replay-batch-validation-20261118-01/runtime-wire-check.json",
+      "sha256": "f9e0a60855867319520d7b8629a734a167965164bb268bf5523e476dcc35c89c"
+    },
+    "cli_audit_ref": {
+      "path": "outputs/written-replay-batch-validation-20261118-01/stage-audit.json",
+      "sha256": "9673d25dce35726afaab6eabd609d510f21860faf005941053d145a777ea4821"
+    }
+  },
+  "read_only_check": {
+    "status": "passed",
+    "cwd": "/tmp",
+    "original_source_and_preparation_opens": "denied",
+    "original_protocol_and_analysis_asset_opens_after_loading_external_anchor": "denied",
+    "socket_process_and_mutation_operations": "denied",
+    "forbidden_attempts": 0,
+    "journal_files_same_path_size_and_mtime_before_and_after": 489,
+    "journal_bytes": 23297262
+  },
+  "fresh_preflight": {
+    "status": "passed",
+    "all_shared_summary_fields_equal_to_portable_audit": true,
+    "command": "uv run --frozen --no-sync python scripts/run_written_replay_batch.py --preflight --preparation outputs/written-memory-validity-20261117-01",
+    "ref": {
+      "path": "outputs/written-replay-batch-validation-20261118-01/preflight.json",
+      "sha256": "b1f871ce16e3be5aea7ea453d04dedfcccf90d4482ff83c2a82596229785aee5"
+    }
+  },
+  "focused_tests": {
+    "command": "uv run --frozen --no-sync python -m unittest discover -s tests -p test_written_replay_batch.py",
+    "status": "passed",
+    "count": 13,
+    "seconds": 42.341,
+    "transport": "mock HTTP only"
+  },
+  "full_test_suite": {
+    "command": "uv run --frozen --no-sync python -m unittest discover -s tests",
+    "status": "passed",
+    "count": 307,
+    "seconds": 504.859,
+    "ref": {
+      "path": "outputs/written-replay-batch-validation-20261118-01/unittest.log",
+      "sha256": "0de6379bbe24e7587a54fed229c254da74bd192be89fc625176b318b326dbf60"
+    }
+  },
+  "design_check": {
+    "status": "passed",
+    "schemas_valid": 15,
+    "batch_draft_assets": 2,
+    "incomplete_ready_rejected": true
+  },
+  "repository_check": {
+    "status": "passed",
+    "markdown_files": 70,
+    "links": 831
+  },
+  "archive_check": {
+    "status": "passed",
+    "files": 1268,
+    "bytes": 212081023
+  },
+  "prior_delivery_compatibility": {
+    "status": "audit_passed",
+    "scope": "current code reading the preserved historical 48-run fixed-bank delivery study",
+    "command": "uv run --frozen --no-sync python scripts/run_tau2_delivery.py --audit-only --output runs/tau2-delivery-luna-deepseek1017-development-01",
+    "historical_runs": 48,
+    "historical_http_calls": 622,
+    "new_model_or_catalog_calls": 0,
+    "original_receipt_identifiers_log_and_summary_hashes_match": true,
+    "log_sha256": "d8a4307eb849cafd9e0b3e57e4393e9c92c795ef7e2e0fe815e06a8335645233",
+    "summary_sha256": "8fc20c03a902e0585f5fef6289955de6563027e5a9565e43bf495f525f98eff7",
+    "ref": {
+      "path": "outputs/written-replay-batch-validation-20261118-01/prior-delivery-audit.json",
+      "sha256": "0670b3652c1abe5b1e8b3bc7c3437ed4673b61fcba6f59e5b3522a9fb631a8ce"
+    }
+  },
+  "open_decisions": "Independent case and control-note review, primary analysis, repetitions and resource bounds, then separately authorized paid observation. Frozen original model seeds 0 and 1 stay in their case requests.",
+  "development_note": "The earlier local -01 staging attempt was interrupted during development as the draft schema gained the control-note review field. It has no staged or execution result. The verified journal is -02."
+}

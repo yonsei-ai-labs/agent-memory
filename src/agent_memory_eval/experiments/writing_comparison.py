@@ -4,8 +4,11 @@ from collections import Counter
 from copy import deepcopy
 from pathlib import Path
 
+from jsonschema import Draft202012Validator, ValidationError
+
 from agent_memory_eval.analysis.writing_export import collect
 from agent_memory_eval.contracts.core import ContractError, MemoryPolicy, canonical, digest, read_json
+from agent_memory_eval.contracts.validation import ROOT
 from agent_memory_eval.memory.context import request_with_past_memory
 from agent_memory_eval.memory.preparation import SnapshotBudgetExceeded
 from agent_memory_eval.recording.assets import asset_text
@@ -13,10 +16,18 @@ from agent_memory_eval.recording.journal import BlobStore, read_experiment, safe
 
 
 ARMS = ("empty", "generic", "model_written", "researcher")
+PROFILE_V2 = "agent-memory-written-replay-draft/v2"
 
 
 def _profile(profile):
-    if (profile.get("format") != "agent-memory-written-replay-draft/v1"
+    if profile.get("format") == PROFILE_V2:
+        try:
+            canonical(profile)
+            schema = read_json((ROOT / "schemas/written-memory-comparison-v2.schema.json").read_bytes())
+            Draft202012Validator(schema).validate(profile)
+        except (ValueError, TypeError, ValidationError) as error:
+            raise ContractError("Invalid written-memory comparison v2 profile") from error
+    if (profile.get("format") not in {"agent-memory-written-replay-draft/v1", PROFILE_V2}
             or profile.get("status") != "draft" or profile.get("executable") is not False
             or profile.get("arms") != list(ARMS)):
         raise ContractError("Only the explicit four-arm offline draft is supported")
@@ -39,6 +50,37 @@ def _profile(profile):
                 or any(not isinstance(v, str) or not v.strip() for v in memo.values())):
             raise ContractError("Each control note requires content and explicit analysis-only provenance")
     return policy
+
+
+def selected_action(events, blobs, case):
+    """Bind a v2 candidate to its declared occurrence, not just a valid request hash."""
+    selection = case["selection"]
+    ordinal, total = selection["request_ordinal"], selection["expected_request_count"]
+    if type(ordinal) is not int or type(total) is not int or not 1 <= ordinal <= total:
+        raise ContractError("Target action selection needs positive ordinal and total")
+    starts = {e["payload"]["request_id"]: e for e in events if e["type"] == "model.request_started"}
+    occurrences = []
+    for event in events:
+        if event["type"] != "model.request_finished" or event["payload"]["status"] != "response":
+            continue
+        start = starts.get(event["payload"]["request_id"])
+        if start is None or start["payload"]["actor_role"] != "worker":
+            continue
+        raw = blobs.get(event["payload"]["response_ref"])
+        choices = raw.get("choices", [])
+        if len(choices) != 1:
+            raise ContractError("Candidate source has ambiguous response choices")
+        calls = choices[0]["message"].get("tool_calls") or []
+        targets = [c for c in calls if c.get("function", {}).get("name") == selection["tool"]]
+        if targets:
+            if choices[0].get("finish_reason") != "tool_calls" or len(targets) != 1:
+                raise ContractError("Selected action must be one complete target call per response")
+            occurrences.append((event["payload"]["request_id"], targets[0]))
+    if (len(occurrences) != total or ordinal > len(occurrences)
+            or occurrences[ordinal - 1][0] != case["request_id"]):
+        raise ContractError("Candidate is not the declared target-action occurrence")
+    return dict(tool=selection["tool"], request_ordinal=ordinal, observed_request_count=len(occurrences),
+                call_id=occurrences[ordinal - 1][1]["id"])
 
 
 def _cases(profile, root):
@@ -89,6 +131,10 @@ def _cases(profile, root):
             original_finish_reason=raw["choices"][0]["finish_reason"],
             original_episode_success=outcomes[0]["payload"]["official_success"],
             decision_policy_adjudication="pending_independent_review"))
+        if profile["format"] == PROFILE_V2:
+            from agent_memory_eval.memory.writing import public_message
+            cases[-1]["verified_selection"] = selected_action(events, blobs, case)
+            cases[-1]["original_public_reply"] = public_message(raw["choices"][0]["message"])
     if (path / "log.jsonl").read_bytes() != before:
         raise ContractError("Decision source changed during preparation")
     return cases
@@ -148,12 +194,17 @@ def prepare_comparison(profile, root):
     root = Path(root).resolve()
     policy = _profile(profile)
     receipt = read_json(asset_text(root, profile["writing_result_ref"]).encode())
+    if receipt.get("format") != "agent-memory-writing-result/v1":
+        raise ContractError("Expected the anchored writing result receipt")
     source = safe_path(root, receipt["source_root"])
     before = (source / "log.jsonl").read_bytes()
     if digest(before) != receipt["raw_log_sha256"]:
         raise ContractError("Writing source log changed")
     exported = collect(source)
     banks = exported["metrics"]["runs"]
+    if (exported["metrics"]["audit"] != receipt["audit"]
+            or exported["metrics"]["by_feedback"] != receipt["by_feedback"]):
+        raise ContractError("Writing receipt differs from the complete source audit")
     if (len(banks) != receipt["audit"]["allocations"]
             or any(b["status"] not in {"completed", "empty"} or not b["replay_eligible"] for b in banks)
             or sum(b["final_items"] for b in banks) != sum(
@@ -179,6 +230,15 @@ def prepare_comparison(profile, root):
         semantic_outcomes_measured=False, exposure_events_recorded=False,
         scope="unreplicated_candidate_request_preparation_not_a_run_schedule_or_memory_effect_measurement",
         unresolved=deepcopy(profile["unresolved"]))
+    if profile["format"] == PROFILE_V2:
+        from agent_memory_eval.analysis.written_comparison import case_packet
+        manifest["format"] = "agent-memory-written-replay-preparation/v2"
+        manifest["profile"] = deepcopy(profile)
+        manifest["case_review_packet"] = case_packet(cases, profile)
+        manifest["case_review_packet_sha256"] = digest(canonical(manifest["case_review_packet"]))
+        manifest["claim_scope"] = "retrospective_single_reply_only"
+        manifest["writing_allocations"] = deepcopy(banks)
+        manifest["research_coverage"] = deepcopy(profile["research_coverage"])
     return manifest, requests
 
 
@@ -197,4 +257,31 @@ def export_comparison(profile, root, output):
     for key, wire in requests.items():
         (folder / (key + ".json")).write_bytes(canonical(wire))
     (output / "preparation.json").write_bytes(canonical(manifest) + b"\n")
-    return {k:v for k,v in manifest.items() if k not in {"rows", "candidate_cases", "identical_input_multiplicity"}}
+    return comparison_summary(manifest)
+
+
+def comparison_summary(manifest):
+    return {k:v for k,v in manifest.items() if k not in {
+        "rows", "candidate_cases", "identical_input_multiplicity", "case_review_packet", "profile", "writing_allocations"}}
+
+
+def audit_comparison(profile, root, output):
+    """Rebuild from anchored sources and compare every exported byte without writing."""
+    output = Path(output)
+    expected, requests = prepare_comparison(profile, root)
+    data = safe_path(output, "preparation.json").read_bytes()
+    if data != canonical(expected) + b"\n":
+        raise ContractError("Prepared comparison manifest differs from source reconstruction")
+    names = {"preparation.json", "requests"} | {"requests/" + k + ".json" for k in requests}
+    actual = set()
+    for path in output.rglob("*"):
+        if path.is_symlink():
+            raise ContractError("Preparation bundle contains a symlink")
+        actual.add(str(path.relative_to(output)))
+    if actual != names:
+        raise ContractError("Preparation bundle has missing or unexpected files")
+    for key, request in requests.items():
+        if safe_path(output, "requests/" + key + ".json").read_bytes() != canonical(request):
+            raise ContractError("Prepared request differs from its source and control arm")
+    return dict(comparison_summary(expected), status="audit_passed", source_reconstructed=True,
+                request_files_verified=len(requests))

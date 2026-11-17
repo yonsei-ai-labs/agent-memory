@@ -1,0 +1,305 @@
+{
+  "format": "agent-memory-written-comparison-validity-validation/v1",
+  "visibility": "analysis_only_never_worker_or_writer_input",
+  "base_commit": "943fe949caaee2b1c0dad430ba1585c4ca62b686",
+  "implementation_state": "uncommitted_working_tree",
+  "implementation_refs": [
+    {
+      "path": "src/agent_memory_eval/experiments/writing_comparison.py",
+      "sha256": "b3288460e4249eaa3b216687fcc9e5326a30a8c59ec75f3df457c169a15b8e16"
+    },
+    {
+      "path": "src/agent_memory_eval/analysis/written_comparison.py",
+      "sha256": "9e0175881e9189901fc3b8718bbb4dc5e0f3626fa23ffee6ef345114d0a82391"
+    },
+    {
+      "path": "scripts/prepare_written_memory_comparison.py",
+      "sha256": "7e5253e6fb324204fdcfc65044166dc82a46eab501ed278e46682cb1303a63e5"
+    },
+    {
+      "path": "scripts/review_written_memory_cases.py",
+      "sha256": "b5053272c0b3cbb9b13614913a9013046b661973e4dfd7a1a12b7b59d113c2a7"
+    },
+    {
+      "path": "scripts/validate_design.py",
+      "sha256": "b2282219a1581a60a8cd9812aef95b8efefb6d2b0d9c22e045b0689bb141bf74"
+    },
+    {
+      "path": "schemas/written-memory-comparison-v2.schema.json",
+      "sha256": "802d518d29da1e9d021ae09ab68a9a87e3773b0f66d20842095ad40411cfdc9c"
+    },
+    {
+      "path": "schemas/written-comparison-rubrics.schema.json",
+      "sha256": "dd6d0ab876cea5878121021602d47e926b120c55e1e004f1d8dd1326155ac718"
+    },
+    {
+      "path": "protocols/drafts/tau2-written-memory-replay-v2.json",
+      "sha256": "65b6fa41fed409074abd32dccdefd7540972a78dc2b210adce69054e65131276"
+    },
+    {
+      "path": "tests/test_written_comparison_validity.py",
+      "sha256": "ef585dd6898f5107c7d081cae43be5478a017d7334531e0baf870020c0a3f3ac"
+    },
+    {
+      "path": "tests/fixtures/written-comparison-validity-v1.json",
+      "sha256": "a1ce485019dec3f6527c3afd427da07f4eed766677ebe723ce9d35202f724a7d"
+    },
+    {
+      "path": "artifacts/analyses/20261117-written-memory-public-rubrics.json",
+      "sha256": "0698d59758932a8e3f83119ed97fe930ba08dc8e1ce3172d5b0d8c5fd1f3bf9c"
+    },
+    {
+      "path": "artifacts/analyses/20261117-written-memory-source-calibration.json",
+      "sha256": "bd5ae6bd2f8b7c70c24e7c02a78c0e147c652d84f9719ea3463b3c1d6e8eb39a"
+    },
+    {
+      "path": "uv.lock",
+      "sha256": "b87ef58cf24c2e6d1ba07ed896676e31ecfb858b3840ef1bc5faf0c334ec62a6"
+    }
+  ],
+  "refs_policy": "File byte hashes identify this development verification working tree. They are not a paid-protocol freeze or a requirement that future code match.",
+  "source_reconstruction": {
+    "command": "uv run --frozen --no-sync python scripts/prepare_written_memory_comparison.py --output outputs/written-memory-validity-20261117-01 --audit-only",
+    "implementation_function": "agent_memory_eval.experiments.writing_comparison.audit_comparison",
+    "observed_invocation": "Direct Python function call with sys.addaudithook refusing socket.*, subprocess.*, os.system/fork/posix_spawn/exec and write-mode open; source and output inventory compared before and after.",
+    "inventory_fields": [
+      "relative_path",
+      "st_size",
+      "st_mtime_ns"
+    ],
+    "result": {
+      "format": "agent-memory-written-replay-preparation/v2",
+      "status": "audit_passed",
+      "live_ready": false,
+      "profile_sha256": "34847d18d5d091b6edbafc9b12cbad3cd64b85d576c47a767e12a61089af34ae",
+      "writing_log_sha256": "0a883dc7709586e54438b4d9fdc392fbe204576baaa6c223dcf4c29c71478885",
+      "decision_log_sha256": "ec0994a536729872ce8ee7ff06ae63c2e640e70091146b9a361535174ee8fbb5",
+      "writer_allocations": 10,
+      "empty_writer_allocations": 1,
+      "preparation_rows": 160,
+      "unique_request_payloads": 48,
+      "max_input_bytes": null,
+      "input_bytes": {
+        "min": 36807,
+        "max": 46360
+      },
+      "new_model_or_catalog_calls": 0,
+      "business_tools_executed": false,
+      "official_scores_computed": false,
+      "semantic_outcomes_measured": false,
+      "exposure_events_recorded": false,
+      "scope": "unreplicated_candidate_request_preparation_not_a_run_schedule_or_memory_effect_measurement",
+      "unresolved": [
+        "common_baselines_and_natural_policy_comparison_are_outside_this_diagnostic",
+        "primary_comparison_and_endpoint",
+        "independent_case_and_control_note_review",
+        "case_specific_rubrics_and_screen_versions",
+        "sampling_and_cluster_analysis",
+        "live_role_input_and_bank_limits",
+        "current_model_endpoint_verification",
+        "live_recording_gateway_and_provenance_integration",
+        "budget_and_paid_authorization",
+        "clean_commit_and_frozen_ready_profile"
+      ],
+      "case_review_packet_sha256": "7545c8ecc2ec10dce1b4f9a465a2a88648c94c11ae40c2807e8f8d199aea22dc",
+      "claim_scope": "retrospective_single_reply_only",
+      "research_coverage": {
+        "comparison_kind": "common_experience_retrospective_diagnostic",
+        "source_scope": "one_shared_customer_development_group",
+        "primary_unit": "source_and_writer_bank_not_preparation_row",
+        "natural_policy_effect_measured": false,
+        "episode_success_measured": false,
+        "autonomous_retrieval_measured": false,
+        "held_out_transfer_measured": false,
+        "common_baselines": {
+          "no_memory_repetitions": "required_in_later_episode_comparison",
+          "original_experience_access": "required_in_later_writing_comparison",
+          "plain_summary": "required_in_later_writing_comparison"
+        },
+        "diagnostic_controls": [
+          "empty",
+          "generic",
+          "researcher"
+        ],
+        "preserved_research_axes": [
+          "during_and_post_task_writing",
+          "own_and_mixed_banks",
+          "write_read_cross",
+          "retry_and_transfer",
+          "continual_and_checkpoint_probes",
+          "gains_regressions_and_full_cost"
+        ],
+        "positive_effect_required_to_continue": false
+      },
+      "source_reconstructed": true,
+      "request_files_verified": 48
+    },
+    "source_and_output_inventory_preserved": {
+      "runs/tau2-baseline-luna-deepseek1017-train-01": 6591,
+      "runs/tau2-memory-writing-10-luna-feedback-01": 410,
+      "outputs/written-memory-validity-20261117-01": 49
+    },
+    "forbidden_io_attempts": [],
+    "seconds": 113.074560373032,
+    "scope": "Current preparation integrity from anchored preserved sources, not a new model experiment.",
+    "final_change_scope": "The later unknown-payment-type fix affects the reply screen only; preparation and source-audit code were unchanged."
+  },
+  "renderer_equivalence": {
+    "historical_renderer_commit": "943fe94",
+    "request_bytes_equal": 48,
+    "pairing_rows_equal": 160,
+    "new_model_calls": 0,
+    "scope": "Historical renderer function loaded from Git; shared dependencies from the current working tree. Not a full fixed-checkout historical reproduction."
+  },
+  "calibration_cli": {
+    "cli_result_matches_saved_calibration": true,
+    "cases": 4,
+    "statuses": {
+      "airline14-r2-booking": "unresolved_target_checks",
+      "airline14-r1-booking": "target_checks_passed",
+      "airline23-r2-booking": "target_violation_detected",
+      "airline23-r1-first-booking": "target_checks_passed"
+    },
+    "new_model_calls": 0
+  },
+  "final_calibration": {
+    "final_calibration_unchanged": true,
+    "cases": 4,
+    "new_model_calls": 0
+  },
+  "unknown_payment_regression": {
+    "scope": "New public-reply screen in this working tree, not a preexisting historical result.",
+    "test": "test_unknown_public_payment_type_is_not_counted_as_zero_certificates",
+    "before_fix": {
+      "suite_tests_run": 13,
+      "subtest_failures": 3,
+      "inputs": [
+        null,
+        "unknown",
+        ""
+      ],
+      "observed_status": "target_checks_passed"
+    },
+    "after_fix": {
+      "focused_suite_tests_run": 13,
+      "elapsed_seconds": 0.026,
+      "status": "passed",
+      "expected_status": "unresolved_target_checks",
+      "certificate_count": null
+    }
+  },
+  "basic_checks": {
+    "repository": {
+      "command": "uv run --frozen --no-sync python scripts/check_repository.py",
+      "exit_code": 0,
+      "result": {
+        "status": "passed",
+        "scope": "repository_links_migration_and_scaffold",
+        "markdown_files_checked": 68,
+        "local_links_checked": 799,
+        "benchmark_or_model_calls": 0
+      }
+    },
+    "design": {
+      "command": "uv run --frozen --no-sync python scripts/validate_design.py",
+      "exit_code": 0,
+      "result": {
+        "status": "passed",
+        "scope": "design_schemas_and_synthetic_references_only",
+        "jsonschema_version": "4.26.0",
+        "schemas_valid": 13,
+        "synthetic_events_valid": 13,
+        "artifact_files_hash_verified": 8,
+        "input_spans_verified": 4,
+        "invalid_contract_cases_rejected": 6,
+        "v1_1": {
+          "schemas_valid": 5,
+          "journal_records_valid": 28,
+          "synthetic_events_valid": 29,
+          "input_spans_verified": 6,
+          "tool_batches_verified": 2,
+          "runtime_readiness_verified": false,
+          "benchmark_or_model_calls": 0
+        },
+        "v1_2": {
+          "schemas_valid": 3,
+          "synthetic_events_valid": 17,
+          "input_spans_verified": 4
+        },
+        "execution_limits": {
+          "contract": "per-role-limits/v1",
+          "fixtures_valid": 1,
+          "invalid_cases_rejected": 3
+        },
+        "runtime_readiness_verified": false,
+        "benchmark_or_model_calls": 0
+      }
+    },
+    "legacy": {
+      "command": "uv run --frozen --no-sync python scripts/verify_legacy_data.py",
+      "exit_code": 0,
+      "result": {
+        "status": "passed",
+        "scope": "legacy_archive_bytes_and_inventory",
+        "snapshot_id": "legacy-ai-memory-20261114-v1",
+        "files": 1268,
+        "bytes": 212081023,
+        "files_by_role": {
+          "dataset": 853,
+          "design_evidence": 180,
+          "historical_documentation": 144,
+          "historical_pipeline_source": 91
+        },
+        "files_by_source_git_status": {
+          "  ": 995,
+          " M": 10,
+          "!!": 4,
+          "??": 259
+        },
+        "dataset_families": 34,
+        "current_source_files_verified": 0,
+        "semantic_labels_or_historical_results_validated": false,
+        "benchmark_or_model_calls": 0
+      }
+    }
+  },
+  "new_model_or_catalog_calls": 0,
+  "live_ready": false,
+  "scientific_scope": {
+    "source_groups": 1,
+    "candidate_decisions": 4,
+    "writer_allocations": 10,
+    "preparation_rows": 160,
+    "unique_request_payloads": 48,
+    "independent_adjudication": false,
+    "new_reply_effect_measured": false,
+    "official_episode_success_measured": false,
+    "autonomous_retrieval_effect_measured": false,
+    "held_out_transfer_measured": false,
+    "earlier_logs_results_profiles_and_journal_contracts_preserved": true,
+    "common_baselines_retained": [
+      "no_memory_repetitions",
+      "original_experience_access",
+      "plain_summary"
+    ]
+  },
+  "remaining": [
+    "Independent semantic review and a primary endpoint",
+    "A repeat/cluster analysis plan with explicit live limits",
+    "Live request recording and frozen execution protocol",
+    "Later full episodes, autonomous retrieval, independent transfer and continual evaluation"
+  ],
+  "refs_captured_at": "2026-11-17T23:28:16.036454+09:00",
+  "recorded_at_utc": "2026-11-17 14:34:18 UTC",
+  "tests": {
+    "command": "uv run --frozen --no-sync python -m unittest discover -s tests",
+    "status": "passed",
+    "exit_code": 0,
+    "tests_run": 273,
+    "elapsed_seconds": 443.869,
+    "added_tests": 13,
+    "recorded_result": "Ran 273 tests in 443.869s\n\nOK",
+    "http": "mock only; native tau2 and fixed checkout available",
+    "scope": "Functional regression verification, not model-memory efficacy"
+  }
+}

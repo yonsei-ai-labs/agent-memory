@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-memory.local/schemas/written-replay-batch.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["format", "status", "comparison_ref", "rubrics_ref", "preparation_sha256", "sampling_unit", "repetitions", "schedule_seed", "max_input_bytes", "bank_limits", "max_model_requests", "max_reported_cost_usd", "max_seconds", "timeout_seconds", "analysis_plan", "control_note_review", "paid_authorization"],
+  "properties": {
+    "format": {"const": "agent-memory-written-replay-batch/v1"},
+    "status": {"enum": ["draft", "ready"]},
+    "comparison_ref": {"$ref": "#/$defs/ref"},
+    "rubrics_ref": {"$ref": "#/$defs/ref"},
+    "preparation_sha256": {"$ref": "#/$defs/hash"},
+    "sampling_unit": {"const": "distinct_request_within_case_and_repetition"},
+    "repetitions": {"$ref": "#/$defs/positiveInt"},
+    "schedule_seed": {"type": ["integer", "null"]},
+    "max_input_bytes": {"$ref": "#/$defs/positiveInt"},
+    "bank_limits": {
+      "type": ["object", "null"], "additionalProperties": false,
+      "required": ["max_items", "max_payload_bytes", "max_return_bytes"],
+      "properties": {
+        "max_items": {"type": ["integer", "null"], "minimum": 0},
+        "max_payload_bytes": {"type": ["integer", "null"], "minimum": 0},
+        "max_return_bytes": {"type": ["integer", "null"], "minimum": 0}
+      }
+    },
+    "max_model_requests": {"$ref": "#/$defs/positiveInt"},
+    "max_reported_cost_usd": {"$ref": "#/$defs/positiveNumber"},
+    "max_seconds": {"$ref": "#/$defs/positiveNumber"},
+    "timeout_seconds": {"$ref": "#/$defs/positiveNumber"},
+    "analysis_plan": {"type": ["string", "null"], "pattern": "\\S"},
+    "control_note_review": {
+      "type": ["object", "null"], "additionalProperties": false,
+      "required": ["packet_sha256", "reviewer", "independence_declared", "generic", "researcher"],
+      "properties": {
+        "packet_sha256": {"$ref": "#/$defs/hash"},
+        "reviewer": {"type": "string", "pattern": "\\S"}, "independence_declared": {"const": true},
+        "generic": {"type": "string", "pattern": "\\S"}, "researcher": {"type": "string", "pattern": "\\S"}
+      }
+    },
+    "paid_authorization": {"type": ["string", "null"], "pattern": "\\S"}
+  },
+  "$defs": {
+    "hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "ref": {"type": "object", "additionalProperties": false, "required": ["path", "sha256"],
+      "properties": {"path": {"type": "string", "minLength": 1}, "sha256": {"$ref": "#/$defs/hash"}}},
+    "positiveInt": {"type": ["integer", "null"], "minimum": 1},
+    "positiveNumber": {"type": ["number", "null"], "exclusiveMinimum": 0}
+  },
+  "allOf": [{
+    "if": {"properties": {"status": {"const": "ready"}}},
+    "then": {"properties": {
+      "repetitions": {"type": "integer"}, "schedule_seed": {"type": "integer"}, "max_input_bytes": {"type": "integer"},
+      "bank_limits": {"type": "object"}, "max_model_requests": {"type": "integer"}, "max_reported_cost_usd": {"type": "number"},
+      "max_seconds": {"type": "number"}, "timeout_seconds": {"type": "number"}, "analysis_plan": {"type": "string"},
+      "control_note_review": {"type": "object"}, "paid_authorization": {"type": "string"}
+    }}
+  }]
+}

@@ -1,0 +1,35 @@
+{
+  "format": "agent-memory-written-replay-batch/v1",
+  "status": "ready",
+  "comparison_ref": {
+    "path": "protocols/drafts/tau2-written-memory-replay-v2.json",
+    "sha256": "65b6fa41fed409074abd32dccdefd7540972a78dc2b210adce69054e65131276"
+  },
+  "rubrics_ref": {
+    "path": "artifacts/analyses/20261118-written-replay-48-independent-rubrics.json",
+    "sha256": "0a2f3cc231232da757464ab13f933a4f356a411a9370be9f62e6353bb9a38a66"
+  },
+  "preparation_sha256": "be612f00aa8622c2c265747c464a0848d1972240f77c330194bc177e8593a2b2",
+  "sampling_unit": "distinct_request_within_case_and_repetition",
+  "repetitions": 1,
+  "schedule_seed": 1967507692,
+  "max_input_bytes": 46360,
+  "bank_limits": {
+    "max_items": 1,
+    "max_payload_bytes": 1636,
+    "max_return_bytes": 1737
+  },
+  "max_model_requests": 48,
+  "max_reported_cost_usd": 5,
+  "max_seconds": 5760,
+  "timeout_seconds": 120,
+  "analysis_plan": "Prespecified single-block descriptive comparison of all writing allocations to the contemporary empty reply for the certificate cap at 23-r2 and regression at 23-r1. Report deferral, newly proposed payment authorization, and baggage clarification at 14-r2 / explicit quantity at 14-r1 separately. Shared wire inputs count once per case. Full plan docs/research/written-replay-48-pilot.md file SHA-256 d379750d10a801126d517254df578abdbc3839906ae113b72d0a4049d7caf3b2.",
+  "control_note_review": {
+    "packet_sha256": "7545c8ecc2ec10dce1b4f9a465a2a88648c94c11ae40c2807e8f8d199aea22dc",
+    "reviewer": "independent_case_reviewer",
+    "independence_declared": true,
+    "generic": "The note asks the model to review public policy, requests and tool results, clarify missing details, and confirm changes. It names no airline, passenger, payment, quantity, branch, or case. The general instruction to confirm a change is consistent with system message 0 for a booking database update. This is an active procedural prompt. It may change willingness to ask a question. The author discloses access to prior analysis.",
+    "researcher": "The one-certificate number is explicit in public system message 0. That same policy defines baggage allowances, prohibits adding unneeded bags, and requires listing action details and obtaining approval. Asking which bags the traveler needs when the quantity is unresolved follows from these rules. The note does not supply a passenger count, requested bag count, private goal, answer for a particular case, or payment split. The note names the two issues used in this review and specifies the clarification behavior for ambiguity. Including the quantity in a confirmation is a reasonable procedure derived from the general confirmation rule. The policy does not prescribe a repeated baggage question when the traveler has already answered. The author discloses prior grading diagnoses, so issue selection is informed by that access."
+  },
+  "paid_authorization": "User requested the proposed single 48-request pilot on 2026-11-18 and explicitly authorized up to USD 5 for it. Preserve one block and all stop outcomes."
+}

@@ -56,9 +56,10 @@ class SnapshotBudgetExceeded(ContractError):
     code = "SNAPSHOT_BUDGET_EXCEEDED"
 
 
-def snapshot_replay_input(blobs, state, decision_ref, snapshot_id, *, policy, instruction, max_input_bytes):
+def snapshot_replay_input(blobs, state, decision_ref, snapshot_id, *, policy, instruction, max_input_bytes, context_reader=None):
     """Inspect the complete snapshot and rendered request without changing a bank."""
-    source = read_recorded_context(blobs, decision_ref)
+    read = context_reader.read if context_reader is not None else read_recorded_context
+    source = read(blobs, decision_ref)
     original = source["wire"]
     items = snapshot_items(blobs, state, snapshot_id)
     if policy.write_timing != "none" or policy.same_episode_read:

@@ -9,14 +9,15 @@ from agent_memory_eval.contracts.validation import ROOT, inspect_journal, read_p
 from agent_memory_eval.recording.journal import BlobStore, read_experiment
 
 
-def validate_source(root, descriptor, scan, state, log_bytes):
+def validate_source(root, descriptor, scan, state, log_bytes, *, allow_empty=False):
     if (digest(log_bytes) != descriptor["log_sha256"] or scan["tail_bytes"] or scan["incomplete_runs"] or scan["pending_requests"]
             or any(row["experiment_id"] != descriptor["experiment_id"] for row in scan["records"])
             or any(event["record_kind"] != "observed" for event in scan["events"].values())):
         raise ContractError("Frozen source is changed, unfinished or not observed")
     snapshot = state["snapshots"][descriptor["snapshot_id"]]
     bank = state["banks"][snapshot["bank_id"]]
-    if not snapshot["heads"] or not bank["sealed"] or bank["owner_run"] != descriptor["source_run_id"] or bank["heads"] != snapshot["heads"]:
+    if ((not snapshot["heads"] and not allow_empty) or not bank["sealed"]
+            or bank["owner_run"] != descriptor["source_run_id"] or bank["heads"] != snapshot["heads"]):
         raise ContractError("Frozen source is empty, unsealed or belongs to another run")
     blobs = BlobStore(root)
     produced = {event["payload"]["version_id"]:event for event in scan["events"].values()
@@ -40,32 +41,50 @@ def load_source(descriptor):
     return dict(root=root,scan=scan,state=state,log_bytes=data,snapshot=snapshot)
 
 
-def import_source(memory, descriptor, policy):
-    source = load_source(descriptor)
-    journal = memory.journal
+def copy_source_blobs(root, journal):
+    """Copy a content-addressed source once, retaining each original blob name."""
     count = 0
-    for path in sorted((source["root"]/"blobs/sha256").iterdir()):
+    for path in sorted((root/"blobs/sha256").iterdir()):
         if path.is_symlink() or not path.is_file():
             raise ContractError("Frozen source contains an unsafe blob path")
         ref = journal.blobs.put_bytes(path.read_bytes())
         if ref["sha256"] != path.name:
             raise ContractError("Frozen source blob name differs from its content")
         count += 1
-    source_state,snapshot = source["state"],source["snapshot"]
-    # This sealed controller bank is an import, never a new model-written memory.
-    bank_id = memory.create_bank(new_id("import"),policy)
-    state = deepcopy(journal.state)
-    for version in snapshot["heads"].values():
-        ref = source_state["versions"][version]
-        if version in state["versions"] and state["versions"][version] != ref:
+    return count
+
+
+def install_snapshot(memory, policy, heads, order, revision, versions, *, owner_run=None):
+    """Give imported versions a sealed local bank without minting new item identities."""
+    journal = memory.journal
+    if len(order) != len(set(order)) or set(order) != set(heads):
+        raise ContractError("Imported item order differs from the snapshot heads")
+    for item in order:
+        version = heads[item]
+        ref = versions[version]
+        value = journal.blobs.get(ref)
+        if (value["id"], value["version"]) != (item, version):
+            raise ContractError("Imported item differs from its immutable version")
+        if version in journal.state["versions"] and journal.state["versions"][version] != ref:
             raise ContractError("Imported version ID collides with another immutable version")
-        state["versions"][version] = ref
+    bank_id = memory.create_bank(owner_run or new_id("import"), policy)
+    state = deepcopy(journal.state)
+    state["versions"].update({v: versions[v] for v in heads.values()})
     bank = state["banks"][bank_id]
-    bank.update(heads=deepcopy(snapshot["heads"]),start_heads=deepcopy(snapshot["heads"]),
-                order=list(snapshot["order"]),start_order=list(snapshot["order"]),revision=snapshot["head_revision"])
+    bank.update(heads=dict(heads), start_heads=dict(heads), order=list(order), start_order=list(order), revision=revision)
     journal.append([],state=state)
     local_snapshot = memory.freeze(bank_id)
     memory.seal(bank_id)
+    return local_snapshot
+
+
+def import_source(memory, descriptor, policy):
+    source = load_source(descriptor)
+    journal = memory.journal
+    count = copy_source_blobs(source["root"], journal)
+    snapshot = source["snapshot"]
+    local_snapshot = install_snapshot(memory, policy, snapshot["heads"], snapshot["order"],
+                                      snapshot["head_revision"], source["state"]["versions"])
     finishes = [event["payload"] for event in source["scan"]["events"].values()
                 if event["type"] == "model.request_finished" and event["run_id"] == descriptor["source_run_id"]]
     cost = sum((Decimal(str(event["cost_usd"])) for event in finishes if event["cost_status"] == "observed"),Decimal(0))

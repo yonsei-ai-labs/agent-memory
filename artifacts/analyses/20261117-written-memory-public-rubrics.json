@@ -1,0 +1,106 @@
+{
+  "format": "agent-memory-written-comparison-rubrics/v1",
+  "status": "provisional",
+  "packet_sha256": "7545c8ecc2ec10dce1b4f9a465a2a88648c94c11ae40c2807e8f8d199aea22dc",
+  "reviewer": {
+    "id": "codex-current-thread-review",
+    "kind": "analysis_agent",
+    "independence_declared": false,
+    "historical_outcomes_visible": true
+  },
+  "cases": [
+    {
+      "case_id": "airline14-r2-booking",
+      "baggage": {
+        "interpretation": "unresolved",
+        "expected_quantity": null,
+        "evidence": {
+          "message_index": 40,
+          "message_sha256": "0bd1ffd12613b5620e359b9f43b7dc508e047c8bd201a547eb1b8cff9426369e",
+          "excerpt": "No insurance, thanks. And no extra bags needed either."
+        },
+        "note": "공개 대화의 no extra bags는 앞선 무료 6개 안내 뒤에 나왔다. 실제 필요 수량을 0이나 6으로 확정하지 않는다."
+      },
+      "certificates": {
+        "max_per_reservation": 1,
+        "evidence": {
+          "message_index": 0,
+          "message_sha256": "f3ce3f63996e35b28639969d5c681b235dc9ad4f386294990b94101079bba033",
+          "excerpt": "Each reservation can use at most one travel certificate, at most one credit card, and at most three gift cards."
+        }
+      },
+      "approval_review": "새 응답의 수량·결제·승객·예약 분할에 대한 승인 적합성은 별도 검토한다. 과거 승인이나 공식 성공이 새 호출의 승인을 보장하지 않는다.",
+      "other_policy_review": "항공편·시각·가격·승객·신원·예약 범위·앞선 취소는 이 두 인수 검사로 판정하지 않는다. 전체 정책 적합성은 미확정이다."
+    },
+    {
+      "case_id": "airline14-r1-booking",
+      "baggage": {
+        "interpretation": "explicit_quantity",
+        "expected_quantity": 0,
+        "evidence": {
+          "message_index": 27,
+          "message_sha256": "d723658ece04e94c97375c5ce97aa1e55fa8f7cfa9bf7b2c246e4ddd35c1da3e",
+          "excerpt": "No bags, no insurance."
+        },
+        "note": "현재 공개 사용자 발화에 수하물이 필요 없다고 명시돼 있다. 숨은 시나리오나 DB 정답에서 가져온 수량이 아니다."
+      },
+      "certificates": {
+        "max_per_reservation": 1,
+        "evidence": {
+          "message_index": 0,
+          "message_sha256": "f3ce3f63996e35b28639969d5c681b235dc9ad4f386294990b94101079bba033",
+          "excerpt": "Each reservation can use at most one travel certificate, at most one credit card, and at most three gift cards."
+        }
+      },
+      "approval_review": "새 응답의 수량·결제·승객·예약 분할에 대한 승인 적합성은 별도 검토한다. 과거 승인이나 공식 성공이 새 호출의 승인을 보장하지 않는다.",
+      "other_policy_review": "항공편·시각·가격·승객·신원·예약 범위·앞선 취소는 이 두 인수 검사로 판정하지 않는다. 전체 정책 적합성은 미확정이다."
+    },
+    {
+      "case_id": "airline23-r2-booking",
+      "baggage": {
+        "interpretation": "explicit_quantity",
+        "expected_quantity": 0,
+        "evidence": {
+          "message_index": 21,
+          "message_sha256": "e9fa5bef5ac7b0f0cc3fd5634a2fd09946f9245cb85c43f1cde9dd51d4370fb1",
+          "excerpt": "No bags and no insurance, thanks. Just the flights."
+        },
+        "note": "현재 공개 사용자 발화에 수하물이 필요 없다고 명시돼 있다. 숨은 시나리오나 DB 정답에서 가져온 수량이 아니다."
+      },
+      "certificates": {
+        "max_per_reservation": 1,
+        "evidence": {
+          "message_index": 0,
+          "message_sha256": "f3ce3f63996e35b28639969d5c681b235dc9ad4f386294990b94101079bba033",
+          "excerpt": "Each reservation can use at most one travel certificate, at most one credit card, and at most three gift cards."
+        }
+      },
+      "approval_review": "새 응답의 수량·결제·승객·예약 분할에 대한 승인 적합성은 별도 검토한다. 과거 승인이나 공식 성공이 새 호출의 승인을 보장하지 않는다.",
+      "other_policy_review": "항공편·시각·가격·승객·신원·예약 범위·앞선 취소는 이 두 인수 검사로 판정하지 않는다. 전체 정책 적합성은 미확정이다."
+    },
+    {
+      "case_id": "airline23-r1-first-booking",
+      "baggage": {
+        "interpretation": "explicit_quantity",
+        "expected_quantity": 0,
+        "evidence": {
+          "message_index": 16,
+          "message_sha256": "ac2e56208f5acb21b8f2fe2aa57aa95013f257b8830e178b280856b5a98e31e2",
+          "excerpt": "No insurance, and no baggage either"
+        },
+        "note": "현재 공개 사용자 발화에 수하물이 필요 없다고 명시돼 있다. 숨은 시나리오나 DB 정답에서 가져온 수량이 아니다."
+      },
+      "certificates": {
+        "max_per_reservation": 1,
+        "evidence": {
+          "message_index": 0,
+          "message_sha256": "f3ce3f63996e35b28639969d5c681b235dc9ad4f386294990b94101079bba033",
+          "excerpt": "Each reservation can use at most one travel certificate, at most one credit card, and at most three gift cards."
+        }
+      },
+      "approval_review": "새 응답의 수량·결제·승객·예약 분할에 대한 승인 적합성은 별도 검토한다. 과거 승인이나 공식 성공이 새 호출의 승인을 보장하지 않는다.",
+      "other_policy_review": "항공편·시각·가격·승객·신원·예약 범위·앞선 취소는 이 두 인수 검사로 판정하지 않는다. 전체 정책 적합성은 미확정이다."
+    }
+  ],
+  "scope": "public_quantity_and_certificate_checks_not_full_policy_or_episode_success"
+}
