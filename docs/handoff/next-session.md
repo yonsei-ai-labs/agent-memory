@@ -6,9 +6,11 @@
 
 ## 현재 실제 상태
 
+최신 실측은 [첫 기억 작성 결과](../reports/20261117-memory-writing-results.md)다. 같은 공개 경험의 피드백별 별도 작성 세션에서 실제 Luna 기억을 생성했고, 내용·빈 작성·입력 크기·비용을 감사했다. [receipt](../../artifacts/pilots/20261117-writing-10-results.json)와 [기억 원문·잠정 주석](../../artifacts/analyses/20261117-writing-10-content-review.json)을 기준으로 이어간다. 후속 업무의 기억 효과·자율 조회는 이번에 측정하지 않았다.
+
 최근 추가한 [보존 경험 요청 준비](../development/worker-written-memory.md#보존-경험으로-요청만-준비하기)는 실제 14·2 원본으로 피드백별 작성 입력과 빈 snapshot 재전송을 만든다. 모델 호출·실제 기억 작성·효과 측정은 없으며, 아래 이전 실행 이력과 구분한다. 비평 조건과 새 유료 프로토콜의 미정 항목은 준비 기록에 남겼다.
 
-이어 [작성 단독 실행](../development/worker-written-memory.md#작성만-먼저-측정하는-실행-경로)을 연결했다. 새 writer는 `writer-finish/v1`로 잘린 응답을 오류로 구분하고, 실제 snapshot의 후속 입력 크기를 검사한다. [새 초안](../../protocols/drafts/tau2-memory-writing-exploration-v1.json)은 미정 한도를 유지해 live를 차단하며, 실제 모델 작성은 아직 실행하지 않았다.
+이어 [작성 단독 실행](../development/worker-written-memory.md#작성만-먼저-측정하는-실행-경로)을 연결했다. 새 writer는 `writer-finish/v1`로 잘린 응답을 오류로 구분하고, 실제 snapshot의 후속 입력 크기를 검사한다. 일반 [초안](../../protocols/drafts/tau2-memory-writing-exploration-v1.json)은 미정 상태로 보존하고, 실제 작성은 별도 [10회 프로필](../../protocols/pilots/tau2-memory-writing-10-v1.json)로 실행했다.
 
 | 구분 | 인수인계 시점 상태 |
 | --- | --- |
@@ -17,7 +19,7 @@
 | 동작하는 코드 | 파일 코어, native 기억/두 회차·파일럿·전달 비교·무기억 배치·결정 재전송, commit 재현·schema/blob 캐시·원본 10개 감사, 공개 경험의 피드백별 기억 작성과 새 native probe의 mock 연결 |
 | 패키지 | [구현 위치와 후속 범위](../../src/agent_memory_eval/README.md)를 구분 |
 | 미구현 | 범용 연구 계획 의미/준비 검사·다른 벤치, 제목/선택기/가공 확장·누적·저장/조회 교차·전체 회차 복원/개입·자동 의미 주석·통계 추론 |
-| 실험 | 48회 전달 비교·55회 무기억 채점에 이어 고정 결정 지점 120요청 완료. 모두 정상 응답·보고 비용 $0.043359345. 업무 도구·사용자 시뮬레이터를 실행하지 않은 한 응답 진단이며 일반 기억 효과는 미확정 |
+| 실험 | 고정 은행 전달·무기억 기준선·결정 재전송에 이어 [작업자 사후 기억 작성 실측](../reports/20261117-memory-writing-results.md)을 완료. 표본·비용·상태는 각 결과 receipt를 따르며 일반 기억 효과는 미확정 |
 | 분석 | 인수 검사 45개·조건명을 가린 의미 주석 75개. 14의 메모 수하물 0개 호출 5/5, 21 medium은 쓰기 없이 확인/조회 5/5, 17 메모에 새 날짜 오류 4/5. 기존 실패 8·1·2 분류와 향후 에피소드 7·39 제외 기준·원본 집계 유지 |
 | 과거 자료 | [데이터 보관본](../data/legacy-datasets.md)에 원본 datasets·설계 자료·생성 코드·설명 문서 복사 |
 
@@ -67,7 +69,7 @@
 
 그 뒤 [추가 실행 보완](../development/runtime-hardening.md)에서 writer 추론 필드 재입력·전체 대화/비용 감사·중복 ID 부분 쓰기를 고쳤다. 이전 `1e59371` worktree에서 네 회귀를 재현했고 **전체 215개가 414.294초에 통과**했다. 새 API의 역할별 요청/입력 한도·worker 한도 뒤 도달 상태 진단·비정상 응답 보존·clean Git 동결 검사도 연결했다. 기존 합산 한도·원본·공식 결과는 보존한다.
 
-다음은 [작성 단독 초안](../../protocols/drafts/tau2-memory-writing-exploration-v1.json)의 미정 반복·호출/용량/금액/시간 값을 정하는 것이다. 보존된 무기억 경험의 import와 clean 구현 동결·작성 실행 연결은 구현했다. [전체 task 14 설계](../../protocols/drafts/tau2-worker-written-memory-study-v1.json)의 비평·1차 효과 비교·일반 메모/정상 상태 대조·독립 판정·재전송/에피소드 확인은 별도로 준비한다. 도달 상태 진단을 공식 성공으로 세지 않는다. 과거에만 있는 정보의 자율 조회 과제, 증분 journal/인덱스·baseline/delivery 공통 기능·인프라 재개도 후속이며 v1.3은 확정하지 않았다. 새 유료 호출은 없다.
+다음은 작성된 기억을 빈 기억·일반 메모·원래 옳았던 상태와 비교할 재전송의 프로토콜이다. 첫 작성에서 명시적인 수하물 필요량/허용량 구분은 관측하지 못했고, 공개 대화에는 수하물 0개라는 직접 요구도 없었다. 비평을 추가한다면 공개 자료에서 확인 가능한 절차 누락과 작성자의 정보 접근 범위를 명시한다. [전체 task 14 설계](../../protocols/drafts/tau2-worker-written-memory-study-v1.json)의 독립 판정·재전송/에피소드 확인은 후속이며 새 유료 재전송은 이번 승인에 포함하지 않았다. 도달 상태 진단을 공식 성공으로 세지 않는다. 과거에만 있는 정보의 자율 조회 과제, 증분 journal/인덱스·baseline/delivery 공통 기능·인프라 재개도 후속이며 v1.3은 확정하지 않았다.
 
 현재 `validation.py`가 동결 해시와 달라진 `fafccd0`에서 P0의 재전송 검토를 다시 실행해 통과했다. `post_change_reproduction` 근거는 위 재현 검증 자료에 있다. 예전 broad 해시를 현재 코드에 맞춰 고치거나 현재 src를 옛 버전으로 되돌리지 않는다.
 

@@ -92,4 +92,6 @@ uv run --frozen python -m unittest discover -s tests -p test_writing_exploration
 
 [작성 실행 검증 기록](../../artifacts/analyses/20261117-writing-exploration-validation.json)에 구현 commit·전체/행동 검사·보존 원본 감사·실제 source의 로컬 preflight·draft live 차단과 남은 설정을 연결한다.
 
+이후 별도 프로필로 [첫 10회 작성 실측](../reports/20261117-memory-writing-results.md)을 완료했다. 실제 기억 원문과 상태·비용·분석의 한계를 결과 자료에 보존하며, 이 관측을 후속 업무 효과로 해석하지 않는다.
+
 새 프로토콜은 구현을 먼저 커밋하고 `scripts/freeze_implementation.py`로 깨끗한 Git 상태·commit·tree·lock을 기록한 뒤 동결한다. 작성 전용 진입점은 같은 검사를 실행 전에 사용한다. 실행 구현 commit과 분석 후의 reproduction commit을 별도로 연결하고 고정 코드 재현을 확인한다. [첫 작성 실측의 검토 기준](../research/memory-writing-exploration-v1.md)은 내용 관찰 전에 고정하며, 미완성 프로필을 실행 승인으로 사용하지 않는다.

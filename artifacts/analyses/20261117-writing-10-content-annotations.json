@@ -1,0 +1,125 @@
+{
+  "format": "agent-memory-writing-content-annotations/v1",
+  "saved_at_utc": "2026-11-17T11:19:06.051326+00:00",
+  "review_stage": "saved_before_reading_case_mapping",
+  "author_kind": "single_analysis_agent",
+  "independent_review": false,
+  "blinding_scope": "Condition names hidden in case presentation; analyst has protocol/source access and text can reveal feedback. Not an independent blinded assessment.",
+  "rubric_ref": "docs/research/memory-writing-exploration-v1.md",
+  "blind_export_sha256": "4ad339413d70bcd0516ef2742f44a22b1dfc00f5413c2b43c72c0b3bfe71d43e",
+  "target_definition": "Explicitly distinguish actual baggage need from free allowance; generic confirmation or no-extra wording alone does not establish this distinction.",
+  "source_information_limit": "Public dialogue says no extra bags after the assistant framed six bags as included; private simulator no-baggage intent is not writer input.",
+  "cases": [
+    {
+      "case_id": "W01",
+      "target_baggage_distinction": "absent",
+      "recounts_six_bag_allowance": false,
+      "generic_confirmation": true,
+      "route_ambiguity_hypothesis": true,
+      "retains_transaction_specific_numbers": false,
+      "retains_reservation_or_flight_ids": false,
+      "assessment": "Route and payment workflow with uncertainty; says to list bags but does not distinguish requested bag count from allowance.",
+      "evidence": "obtain explicit booking confirmation after listing itinerary, cabin, passengers, bags, insurance, and payment"
+    },
+    {
+      "case_id": "W02",
+      "target_baggage_distinction": "absent",
+      "recounts_six_bag_allowance": false,
+      "generic_confirmation": true,
+      "route_ambiguity_hypothesis": true,
+      "retains_transaction_specific_numbers": false,
+      "retains_reservation_or_flight_ids": false,
+      "assessment": "Result feedback is treated as cause-unknown; verifies baggage allowance, not the quantity actually needed.",
+      "evidence": "verify passenger count, availability, per-person versus group totals, baggage allowance, and payment constraints"
+    },
+    {
+      "case_id": "W03",
+      "target_baggage_distinction": "absent",
+      "recounts_six_bag_allowance": true,
+      "generic_confirmation": true,
+      "route_ambiguity_hypothesis": false,
+      "retains_transaction_specific_numbers": false,
+      "retains_reservation_or_flight_ids": false,
+      "assessment": "Recounts six included bags and approval workflow, with cancellation uncertainty; does not identify missing baggage-need confirmation.",
+      "evidence": "six included checked bags for three regular-member business passengers"
+    },
+    {
+      "case_id": "W04",
+      "target_baggage_distinction": "no_content",
+      "recounts_six_bag_allowance": false,
+      "generic_confirmation": false,
+      "route_ambiguity_hypothesis": false,
+      "retains_transaction_specific_numbers": false,
+      "retains_reservation_or_flight_ids": false,
+      "assessment": "No stored item; writing status and cause are assessed separately after unblinding.",
+      "evidence": null
+    },
+    {
+      "case_id": "W05",
+      "target_baggage_distinction": "absent",
+      "recounts_six_bag_allowance": true,
+      "generic_confirmation": true,
+      "route_ambiguity_hypothesis": false,
+      "retains_transaction_specific_numbers": true,
+      "retains_reservation_or_flight_ids": false,
+      "assessment": "Recounts matching allowance and payment arithmetic as apparent consistencies, while disclaiming correctness. Potential reinforcement of the original allowance framing; effect unmeasured.",
+      "evidence": "6 bags matched the regular-member business allowance (2 per passenger)"
+    },
+    {
+      "case_id": "W06",
+      "target_baggage_distinction": "absent",
+      "recounts_six_bag_allowance": false,
+      "generic_confirmation": false,
+      "route_ambiguity_hypothesis": true,
+      "retains_transaction_specific_numbers": false,
+      "retains_reservation_or_flight_ids": false,
+      "assessment": "Speculative route-scope explanation, explicitly not established as the failure cause; no baggage lesson.",
+      "evidence": "the feedback does not establish that this caused failure"
+    },
+    {
+      "case_id": "W07",
+      "target_baggage_distinction": "absent",
+      "recounts_six_bag_allowance": true,
+      "generic_confirmation": true,
+      "route_ambiguity_hypothesis": true,
+      "retains_transaction_specific_numbers": true,
+      "retains_reservation_or_flight_ids": true,
+      "assessment": "Detailed past reservation/flight/date/price recap, route and date-null uncertainty. Repeats allowance/no-extra wording without distinguishing actual need.",
+      "evidence": "Regular-member business allowance is two free bags/passenger (six for three), with no extra bags requested."
+    },
+    {
+      "case_id": "W08",
+      "target_baggage_distinction": "absent",
+      "recounts_six_bag_allowance": false,
+      "generic_confirmation": false,
+      "route_ambiguity_hypothesis": true,
+      "retains_transaction_specific_numbers": false,
+      "retains_reservation_or_flight_ids": false,
+      "assessment": "Route interpretation and payment policy; route explanation remains a hypothesis rather than a verified defect.",
+      "evidence": "This may have over-interpreted “same route” as preserving old segment routing"
+    },
+    {
+      "case_id": "W09",
+      "target_baggage_distinction": "unclear",
+      "recounts_six_bag_allowance": true,
+      "generic_confirmation": true,
+      "route_ambiguity_hypothesis": true,
+      "retains_transaction_specific_numbers": false,
+      "retains_reservation_or_flight_ids": false,
+      "assessment": "Generic do-not-add-extras advice is present, but the text also recounts six free bags; it does not explicitly separate actual needed count from allowance.",
+      "evidence": "three passengers have six free checked bags; don't add extras if not needed"
+    },
+    {
+      "case_id": "W10",
+      "target_baggage_distinction": "absent",
+      "recounts_six_bag_allowance": true,
+      "generic_confirmation": true,
+      "route_ambiguity_hypothesis": true,
+      "retains_transaction_specific_numbers": true,
+      "retains_reservation_or_flight_ids": false,
+      "assessment": "Cause-unknown result, route hypothesis and transaction recap. Six-bag allowance is recounted without the target need-versus-allowance distinction.",
+      "evidence": "Six business checked bags equaled the regular-member allowance for three passengers."
+    }
+  ],
+  "scope": "Provisional semantic annotation of stored text; no action or outcome effect measured."
+}

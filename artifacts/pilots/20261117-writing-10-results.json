@@ -1,0 +1,163 @@
+{
+  "format": "agent-memory-writing-result/v1",
+  "source_root": "runs/tau2-memory-writing-10-luna-feedback-01",
+  "raw_log_sha256": "0a883dc7709586e54438b4d9fdc392fbe204576baaa6c223dcf4c29c71478885",
+  "implementation": {
+    "format": "agent-memory-implementation-freeze/v1",
+    "implementation_commit": "2d7a768c68e8949a7c5185791d1d03cc74da6c2e",
+    "implementation_tree": "f7226dad3a83e2ded8ee9731a5e56eda5b982d07",
+    "lock_ref": {
+      "path": "uv.lock",
+      "sha256": "b87ef58cf24c2e6d1ba07ed896676e31ecfb858b3840ef1bc5faf0c334ec62a6"
+    },
+    "reproduction_commit": null,
+    "scope": "implementation_identity_only_not_a_paid_protocol_or_run_authorization",
+    "worktree_has_uncommitted_implementation": false
+  },
+  "control_ref": {
+    "media_type": "application/json",
+    "path": "blobs/sha256/ccafdd50614dfc7b374b4a9e4adefe8d2fd52793f2a93e47c39335096bc0fa52",
+    "sha256": "ccafdd50614dfc7b374b4a9e4adefe8d2fd52793f2a93e47c39335096bc0fa52"
+  },
+  "profile": {
+    "bank_limits": {
+      "max_items": 4,
+      "max_payload_bytes": 16384,
+      "max_return_bytes": 32768
+    },
+    "completion_contract": "writer-finish/v1",
+    "connection_profile_ref": {
+      "path": "protocols/checks/openrouter-tau2-smoke.json",
+      "sha256": "fab9e52495a7fbc122ffcbcdc5fc9cfe59d8f61d18f421e822a1298a0de68d49"
+    },
+    "execution_limits": {
+      "max_input_bytes": 128000,
+      "user_simulator_requests": 0,
+      "worker_requests": 0,
+      "writer_requests": 4
+    },
+    "feedback_levels": [
+      "none",
+      "result_only"
+    ],
+    "format": "agent-memory-writing-exploration/v1",
+    "guards": {
+      "max_model_requests": 40,
+      "max_reported_cost_usd": 1.0,
+      "max_seconds": 1200
+    },
+    "instructions": {
+      "replay": {
+        "path": "protocols/instructions/frozen-memory-replay-v1.txt",
+        "sha256": "cd5d4dede32681b19eaa7eb1919d59b9a08ae2732170afba22cba35ab1d245e4"
+      },
+      "writer": {
+        "path": "protocols/instructions/optional-experience-writer-v1.txt",
+        "sha256": "9bcc840e1b766cc43a6df6f11370563467fdffab5b9a00e8469f004903d5fd98"
+      }
+    },
+    "limit_aggregation": "retain_error_partial_and_empty_no_replacement",
+    "page_size": 4,
+    "question": "What does the same worker retain from one public experience with no feedback versus result-only feedback?",
+    "repetitions": 5,
+    "schedule_seed": 20261117,
+    "source": {
+      "decision_request_id": "request_16cc44dd47ca45dea03145aebd07f8d4",
+      "log_sha256": "ec0994a536729872ce8ee7ff06ae63c2e640e70091146b9a361535174ee8fbb5",
+      "path": "runs/tau2-baseline-luna-deepseek1017-train-01",
+      "run_id": "r_1b1c08d270854ca1b230d23e75c04f77"
+    },
+    "source_selection": "known_development_failure_not_confirmation",
+    "status": "ready",
+    "timeout_seconds": 45
+  },
+  "audit": {
+    "allocations": 10,
+    "completed_writes": 9,
+    "empty_after_store_calls": 0,
+    "empty_without_store_calls": 1,
+    "empty_writes": 1,
+    "errors": 0,
+    "experiment_id": "writing_46a56b9c457844cab8a5f1bf85793f23",
+    "preparations": 12,
+    "proposed_memory_store_calls": 9,
+    "replay_eligible_snapshots": 10,
+    "request_audit": {
+      "memory_input_spans": 18,
+      "memory_spans_by_delivery": {
+        "response_received": 18
+      },
+      "normal_response_memory_spans": 18,
+      "observed_cost_usd_decimal": "0.008262950",
+      "requests": 19,
+      "requests_by_role": {
+        "writer": 19
+      },
+      "responses_by_status": {
+        "response": 19
+      },
+      "status": "passed",
+      "unknown_cost_requests": 0
+    },
+    "scope": "writing_only_no_memory_effect_measurement",
+    "skipped": 0,
+    "status": "completed"
+  },
+  "model_id": "openai/gpt-6-luna",
+  "canonical_slug": "openai/gpt-6-luna-20260922",
+  "provider": "OpenAI",
+  "by_feedback": {
+    "none": {
+      "allocations": 5,
+      "final_items": 4,
+      "memory_stores": 4,
+      "nonempty_banks": 4,
+      "payload_bytes": 5220,
+      "proposed_store_calls": 4,
+      "reported_cost_usd": "0.003743650",
+      "requests": 9,
+      "states": {
+        "completed": 4,
+        "empty": 1
+      },
+      "unknown_cost_requests": 0
+    },
+    "result_only": {
+      "allocations": 5,
+      "final_items": 5,
+      "memory_stores": 5,
+      "nonempty_banks": 5,
+      "payload_bytes": 5786,
+      "proposed_store_calls": 5,
+      "reported_cost_usd": "0.004519300",
+      "requests": 10,
+      "states": {
+        "completed": 5
+      },
+      "unknown_cost_requests": 0
+    }
+  },
+  "semantic_review_ref": {
+    "path": "artifacts/analyses/20261117-writing-10-content-review.json",
+    "sha256": "2662afe1bbf12d934c5cb542bb6955713d7c7e3a51f7d54a1abca9b62d452c63"
+  },
+  "raw_files": 410,
+  "raw_bytes": 21975201,
+  "scope": "actual_optional_post_task_writing_only_no_worker_replay_or_episode_effect",
+  "new_paid_requests": 19,
+  "reported_cost_usd": "0.008262950",
+  "unknown_cost_requests": 0,
+  "input_comparison_ref": {
+    "path": "artifacts/analyses/20261117-writing-10-input-comparison.json",
+    "sha256": "c34b9cecd23772f492370539980e1742d6ef81eb68a4725bf0d7f8f5cc3a7eb2"
+  },
+  "usage_totals": {
+    "prompt_tokens": 199749,
+    "completion_tokens": 7129,
+    "reasoning_tokens": 4641,
+    "reasoning_usage_records": 19
+  },
+  "first_model_request_at_utc": "2026-11-17T11:07:07.518920Z",
+  "last_model_response_at_utc": "2026-11-17T11:09:56.210898Z",
+  "writing_phase_seconds": 168.691978
+}

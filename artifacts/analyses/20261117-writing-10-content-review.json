@@ -1,0 +1,451 @@
+{
+  "format": "agent-memory-writing-content-review/v1",
+  "scope": "single_agent_descriptive_review_not_an_independent_judgment_or_effect_estimate",
+  "source_root": "runs/tau2-memory-writing-10-luna-feedback-01",
+  "source_log_sha256": "0a883dc7709586e54438b4d9fdc392fbe204576baaa6c223dcf4c29c71478885",
+  "implementation": {
+    "format": "agent-memory-implementation-freeze/v1",
+    "implementation_commit": "2d7a768c68e8949a7c5185791d1d03cc74da6c2e",
+    "implementation_tree": "f7226dad3a83e2ded8ee9731a5e56eda5b982d07",
+    "lock_ref": {
+      "path": "uv.lock",
+      "sha256": "b87ef58cf24c2e6d1ba07ed896676e31ecfb858b3840ef1bc5faf0c334ec62a6"
+    },
+    "reproduction_commit": null,
+    "scope": "implementation_identity_only_not_a_paid_protocol_or_run_authorization",
+    "worktree_has_uncommitted_implementation": false
+  },
+  "annotation_ref": {
+    "path": "artifacts/analyses/20261117-writing-10-content-annotations.json",
+    "sha256": "ec5605cc90a2ca58b0a8ce2002c5d4d1ed8c03785db9a855e52790de2aeb36b7"
+  },
+  "blind_export_sha256": "4ad339413d70bcd0516ef2742f44a22b1dfc00f5413c2b43c72c0b3bfe71d43e",
+  "by_feedback": {
+    "none": {
+      "allocations": 5,
+      "final_items": 4,
+      "memory_stores": 4,
+      "nonempty_banks": 4,
+      "payload_bytes": 5220,
+      "proposed_store_calls": 4,
+      "reported_cost_usd": "0.003743650",
+      "requests": 9,
+      "states": {
+        "completed": 4,
+        "empty": 1
+      },
+      "unknown_cost_requests": 0,
+      "target_baggage_distinction": {
+        "absent": 3,
+        "no_content": 1,
+        "unclear": 1
+      },
+      "recounts_six_bag_allowance": 3,
+      "route_ambiguity_hypothesis": 3,
+      "generic_confirmation": 3,
+      "retains_transaction_specific_numbers": 1,
+      "retains_reservation_or_flight_ids": 1
+    },
+    "result_only": {
+      "allocations": 5,
+      "final_items": 5,
+      "memory_stores": 5,
+      "nonempty_banks": 5,
+      "payload_bytes": 5786,
+      "proposed_store_calls": 5,
+      "reported_cost_usd": "0.004519300",
+      "requests": 10,
+      "states": {
+        "completed": 5
+      },
+      "unknown_cost_requests": 0,
+      "target_baggage_distinction": {
+        "absent": 5
+      },
+      "recounts_six_bag_allowance": 2,
+      "route_ambiguity_hypothesis": 4,
+      "generic_confirmation": 4,
+      "retains_transaction_specific_numbers": 2,
+      "retains_reservation_or_flight_ids": 0
+    }
+  },
+  "runs": [
+    {
+      "completion_tokens": 738,
+      "error_code": null,
+      "feedback_level": "result_only",
+      "final_items": 1,
+      "finish_reasons": {
+        "stop": 1,
+        "tool_calls": 1
+      },
+      "items": [
+        {
+          "body": "In a past airline-service interaction, the assistant correctly identified an existing itinerary with three flight segments (JFK–SFO, SFO–SEA, SEA–JFK) and treated the user's request for the same dates/route as preserving those segments when searching replacement business-class flights. For similar cases, compare prices by cabin across viable options for each segment and check seat availability for the full passenger count; clarify the intended routing if 'same route' could instead mean only origin/destination. The applicable policy allows at most one travel certificate per reservation, so a request to use multiple certificates cannot be fulfilled; choose the certificate/payment allocation transparently and obtain explicit booking confirmation after listing itinerary, cabin, passengers, bags, insurance, and payment. This is an observation from one interaction, not a verified evaluation explanation.",
+          "id": "m_405712eddd254a46a07200826a13ca3f",
+          "title": "Airline booking workflow observations",
+          "version": "v_947259bb5ac34575b2e11bbd9c32e353",
+          "version_ref": {
+            "media_type": "application/json",
+            "path": "blobs/sha256/d53d8d0aae929a49fa9fead30b5cbc6e81e3b458426a4d02755bf7003164097a",
+            "sha256": "d53d8d0aae929a49fa9fead30b5cbc6e81e3b458426a4d02755bf7003164097a"
+          }
+        }
+      ],
+      "memory_stores": 1,
+      "payload_bytes": 975,
+      "prompt_tokens": 20993,
+      "proposed_store_calls": 1,
+      "reasoning_tokens": 516,
+      "reasoning_usage_records": 2,
+      "repetition": 2,
+      "replay_eligible": true,
+      "reported_cost_usd": "0.000607875",
+      "requests": 2,
+      "run_id": "writer_5cc994b7ddb8408ab3c28a3bfaff9b4f",
+      "skip_reason": null,
+      "snapshot_id": "snap_91f69ff9f2054f4198c524641b5bb7a6",
+      "status": "completed",
+      "unknown_cost_requests": 0,
+      "case_id": "W01"
+    },
+    {
+      "completion_tokens": 903,
+      "error_code": null,
+      "feedback_level": "result_only",
+      "final_items": 1,
+      "finish_reasons": {
+        "stop": 1,
+        "tool_calls": 1
+      },
+      "items": [
+        {
+          "body": "In a past airline-service interaction, the user cancelled an eligible basic-economy reservation and then requested a new business-class round trip on the same dates and route. The prior itinerary contained three segments (JFK–SFO, SFO–SEA, SEA–JFK), so the agent searched/priced each of those segments, chose the lowest listed business fare per segment, and booked after explicit confirmation. The booking tool returned success. Separately supplied evaluation says the overall result was unsuccessful, but gives no reason; do not treat individual actions as confirmed correct or incorrect from that alone. For future similar cases, carefully restate and confirm what “same route” means when the prior itinerary’s segments create a non-obvious itinerary, and verify passenger count, availability, per-person versus group totals, baggage allowance, and payment constraints before quoting/booking. Policy limits a reservation to one travel certificate, one credit card, and three gift cards; when asked to use certificates first, explain the one-certificate limit and apply the largest available certificate if appropriate, then other requested tender in order. Avoid claiming an itinerary is the cheapest unless the searches cover the relevant route/options.",
+          "id": "m_fb288384ba9b49afa774190310adcf9a",
+          "title": "Airline booking workflow review: preserve itinerary and payment constraints",
+          "version": "v_c076c2fce2f4478b8010f701cae61642",
+          "version_ref": {
+            "media_type": "application/json",
+            "path": "blobs/sha256/47fc18df96c5b35bbb86b755f95d0ced9df7303bc576f2166d99ea2abc3eff87",
+            "sha256": "47fc18df96c5b35bbb86b755f95d0ced9df7303bc576f2166d99ea2abc3eff87"
+          }
+        }
+      ],
+      "memory_stores": 1,
+      "payload_bytes": 1365,
+      "prompt_tokens": 21069,
+      "proposed_store_calls": 1,
+      "reasoning_tokens": 609,
+      "reasoning_usage_records": 2,
+      "repetition": 5,
+      "replay_eligible": true,
+      "reported_cost_usd": "0.000699875",
+      "requests": 2,
+      "run_id": "writer_e7ef9fd6283f4ee0b5f84967256308eb",
+      "skip_reason": null,
+      "snapshot_id": "snap_fcd7ffd1173d4d5aa17e98d13e2ba6ff",
+      "status": "completed",
+      "unknown_cost_requests": 0,
+      "case_id": "W02"
+    },
+    {
+      "completion_tokens": 770,
+      "error_code": null,
+      "feedback_level": "none",
+      "final_items": 1,
+      "finish_reasons": {
+        "stop": 1,
+        "tool_calls": 1
+      },
+      "items": [
+        {
+          "body": "In the reviewed airline interaction, the agent retrieved the user's profile/reservation, totaled gift-card and certificate balances, explained that basic-economy flights cannot be changed, obtained cancellation reason and explicit confirmation before cancelling, then searched and booked a replacement itinerary after listing itinerary, costs, insurance, bags, and payment plan and receiving confirmation. The chosen payment plan respected the policy limit of one certificate, one credit card, and up to three gift cards; it used the largest certificate because the user wanted certificates first, then gift cards, then card. The replacement business itinerary had at least three business seats on each segment and six included checked bags for three regular-member business passengers. Potential care point, not established as an error: cancellation eligibility requires confirming no portion of the trip was already flown; the interaction checked flight status only for the first segment, although the listed itinerary dates were future relative to the stated current time. No separate evaluation feedback or grading details were provided, so correctness beyond observed tool results is unverified.",
+          "id": "m_c734bfb83c944f38b9ec3beebd2250ad",
+          "title": "Airline workflow review: booking and cancellation checks",
+          "version": "v_01f5a4dde7a44e81a89b03e4bba53817",
+          "version_ref": {
+            "media_type": "application/json",
+            "path": "blobs/sha256/3e1151480dab5dd48c1bdec4cbde4aff7c6c260b0e4585a4fff7513abc3f8ed1",
+            "sha256": "3e1151480dab5dd48c1bdec4cbde4aff7c6c260b0e4585a4fff7513abc3f8ed1"
+          }
+        }
+      ],
+      "memory_stores": 1,
+      "payload_bytes": 1278,
+      "prompt_tokens": 21031,
+      "proposed_store_calls": 1,
+      "reasoning_tokens": 503,
+      "reasoning_usage_records": 2,
+      "repetition": 1,
+      "replay_eligible": true,
+      "reported_cost_usd": "0.001821750",
+      "requests": 2,
+      "run_id": "writer_55ca98d304014803a88a3de9709adce5",
+      "skip_reason": null,
+      "snapshot_id": "snap_0e022043a2714686b009a29f02c9b28a",
+      "status": "completed",
+      "unknown_cost_requests": 0,
+      "case_id": "W03"
+    },
+    {
+      "completion_tokens": 421,
+      "error_code": null,
+      "feedback_level": "none",
+      "final_items": 0,
+      "finish_reasons": {
+        "stop": 1
+      },
+      "items": [],
+      "memory_stores": 0,
+      "payload_bytes": 0,
+      "prompt_tokens": 10368,
+      "proposed_store_calls": 0,
+      "reasoning_tokens": 398,
+      "reasoning_usage_records": 1,
+      "repetition": 2,
+      "replay_eligible": true,
+      "reported_cost_usd": "0.00031445",
+      "requests": 1,
+      "run_id": "writer_002e2b6e3ba0427fafc90e3558b82863",
+      "skip_reason": null,
+      "snapshot_id": "snap_3317bd5985e14e44ab8e2ef71ef82ce9",
+      "status": "empty",
+      "unknown_cost_requests": 0,
+      "case_id": "W04"
+    },
+    {
+      "completion_tokens": 884,
+      "error_code": null,
+      "feedback_level": "result_only",
+      "final_items": 1,
+      "finish_reasons": {
+        "stop": 1,
+        "tool_calls": 1
+      },
+      "items": [
+        {
+          "body": "A past airline-agent interaction received result-only evaluation feedback `success: false`; no failure reason or grading details were provided, so do not assume which behavior was wrong. The assistant completed a rebooking after cancellation. It selected one $500 travel certificate (policy allows at most one per reservation), both gift cards totaling $327, and Mastercard for the $1,786 balance of a $2,613 three-passenger business booking; payment arithmetic was consistent. It used three flight legs matching the canceled itinerary's routing/dates, and 6 bags matched the regular-member business allowance (2 per passenger); no insurance. Do not treat these apparent consistencies as proof the evaluated interaction was correct. In future, verify fare/seat availability and itinerary/date/connection details carefully, communicate the one-certificate constraint when payment options are requested, and get explicit confirmation after listing complete booking details before updating. Feedback does not identify an actual defect.",
+          "id": "m_ef5d0c538f2d4ac6a8ecc9d29e3b0d33",
+          "title": "Airline transaction review: failed result, cause unknown",
+          "version": "v_402ff7e80e2f49c3bc036c63ca810190",
+          "version_ref": {
+            "media_type": "application/json",
+            "path": "blobs/sha256/38438f576f50178c9e2546c77410cddc3cef958b46557281ee0bff36a10b38fd",
+            "sha256": "38438f576f50178c9e2546c77410cddc3cef958b46557281ee0bff36a10b38fd"
+          }
+        }
+      ],
+      "memory_stores": 1,
+      "payload_bytes": 1110,
+      "prompt_tokens": 21030,
+      "proposed_store_calls": 1,
+      "reasoning_tokens": 627,
+      "reasoning_usage_records": 2,
+      "repetition": 1,
+      "replay_eligible": true,
+      "reported_cost_usd": "0.00187805",
+      "requests": 2,
+      "run_id": "writer_79255aafaf7e4e3fad760dfb019b28d4",
+      "skip_reason": null,
+      "snapshot_id": "snap_2618b8c61d43497d922202ef1ee759bb",
+      "status": "completed",
+      "unknown_cost_requests": 0,
+      "case_id": "W05"
+    },
+    {
+      "completion_tokens": 984,
+      "error_code": null,
+      "feedback_level": "result_only",
+      "final_items": 1,
+      "finish_reasons": {
+        "stop": 1,
+        "tool_calls": 1
+      },
+      "items": [
+        {
+          "body": "In a past airline interaction (evaluation marked unsuccessful, with no diagnostic details), after cancellation the customer asked for the cheapest business round trip on the same dates and route as the cancelled trip, saying direct flights did not matter. The assistant searched prices for each of the cancelled itinerary's three segments independently (JFK–SFO, SFO–SEA, SEA–JFK) and booked the cheapest business option per segment. This may have over-interpreted 'same route' as preserving the old intermediate stop/segments rather than searching complete alternative itineraries between the route endpoints; the feedback does not establish that this caused failure. For similar requests, clarify whether the customer means endpoints only or the same connections, and compare complete valid itinerary options for the intended trip before presenting a cheapest claim. Preserve ambiguity if tools only return segment-level results.",
+          "id": "m_a153b2bc96ca4a5ca6aec254e73670cc",
+          "title": "Airline booking review: cheapest itinerary scope",
+          "version": "v_2f65ab7296104930a76830cecdc61e71",
+          "version_ref": {
+            "media_type": "application/json",
+            "path": "blobs/sha256/191757767ff4f381afb4e2a66c10917ecd3c1680b879064ec49829f4e0233b14",
+            "sha256": "191757767ff4f381afb4e2a66c10917ecd3c1680b879064ec49829f4e0233b14"
+          }
+        }
+      ],
+      "memory_stores": 1,
+      "payload_bytes": 1007,
+      "prompt_tokens": 21000,
+      "proposed_store_calls": 1,
+      "reasoning_tokens": 744,
+      "reasoning_usage_records": 2,
+      "repetition": 4,
+      "replay_eligible": true,
+      "reported_cost_usd": "0.00073175",
+      "requests": 2,
+      "run_id": "writer_7709bee7bac94d269a5a4bb816fee282",
+      "skip_reason": null,
+      "snapshot_id": "snap_6f43cd54043544178a5ef3ce8b87557a",
+      "status": "completed",
+      "unknown_cost_requests": 0,
+      "case_id": "W06"
+    },
+    {
+      "completion_tokens": 353,
+      "error_code": null,
+      "feedback_level": "none",
+      "final_items": 1,
+      "finish_reasons": {
+        "stop": 1,
+        "tool_calls": 1
+      },
+      "items": [
+        {
+          "body": "In the reviewed airline-agent interaction, reservation K1NW8N was basic economy; agent correctly treated it as non-modifiable for flight changes, gathered cancellation reason and explicit confirmation, then cancelled within 24 hours before any flight had flown. It subsequently searched JFK–SFO outbound and the actual return itinerary's SFO–SEA–JFK segments, and booked business for three passengers after confirmation. Be careful: searches for direct/onestop yielded options with seat counts and per-person fares; the selected business options HAT023 $364, HAT204 $248, HAT100 $259 total $871/person ($2,613 total). Payment calculation correctly applied only one certificate max ($500), both gift cards ($327), then Mastercard remainder $1,786; profile had $1,000 certificates total, but policy caps reservation at one certificate. Regular-member business allowance is two free bags/passenger (six for three), with no extra bags requested. Potential uncertainty/issue: initial outbound direct-search result returned date:null despite requested date; search-onestop results showed date. Do not assume such date-null result independently verifies date. Also the user asked for cheapest business round trip, but agent preserved three segments of original itinerary (including SFO–SEA on May 28), rather than looking for a simpler complete JFK–SFO round trip over those dates; confirm what 'same route' means / destination and return routing before restricting searches where needed. Evaluation feedback provided was level none, so no grading conclusions are available.",
+          "id": "m_9ca7d7993b384204b5adbb240d5ca4c6",
+          "title": "Airline booking workflow observations",
+          "version": "v_13bc885353e945cbb56e25f6cb986895",
+          "version_ref": {
+            "media_type": "application/json",
+            "path": "blobs/sha256/010f6ef9a1313a58f2548fb6c0917bb464fac605b77a0c28162a9f6e9e6e84d4",
+            "sha256": "010f6ef9a1313a58f2548fb6c0917bb464fac605b77a0c28162a9f6e9e6e84d4"
+          }
+        }
+      ],
+      "memory_stores": 1,
+      "payload_bytes": 1636,
+      "prompt_tokens": 21130,
+      "proposed_store_calls": 1,
+      "reasoning_tokens": 0,
+      "reasoning_usage_records": 2,
+      "repetition": 4,
+      "replay_eligible": true,
+      "reported_cost_usd": "0.00043365",
+      "requests": 2,
+      "run_id": "writer_b6e2b12a481d4e448203ad79da784794",
+      "skip_reason": null,
+      "snapshot_id": "snap_da4c43392f184c81b0a0f08e7acfd0ca",
+      "status": "completed",
+      "unknown_cost_requests": 0,
+      "case_id": "W07"
+    },
+    {
+      "completion_tokens": 700,
+      "error_code": null,
+      "feedback_level": "none",
+      "final_items": 1,
+      "finish_reasons": {
+        "stop": 1,
+        "tool_calls": 1
+      },
+      "items": [
+        {
+          "body": "In a past airline-service interaction, after a user canceled a JFK–SFO itinerary with segments JFK–SFO, SFO–SEA, SEA–JFK and then asked for a replacement business round trip on the same dates and “same route,” the assistant searched/booked the same three segments. This may have over-interpreted “same route” as preserving old segment routing: the user had said same route, not explicitly same connections/segments. The assistant then described cheapest options only “for the same three flight segments,” so cheapest JFK–SFO round-trip across all routings was not established. In similar cases, clarify whether the user means same origin/destination and dates or wants the same intermediate stop/segments, or search complete origin-to-destination outbound and return options before claiming cheapest. Separately, the booking’s payment arithmetic and one-certificate limit were consistent with the supplied policy (at most one certificate, three gift cards, one credit card); no separate evaluation feedback was supplied.",
+          "id": "m_ab6bb9eb247b4e23aa31c8e6664c440c",
+          "title": "Airline booking review: interpret route vs old segments",
+          "version": "v_279559520bf34131aeb09e9fe81b6a6a",
+          "version_ref": {
+            "media_type": "application/json",
+            "path": "blobs/sha256/6f413903b63d95e323e8edad52a548b1e18a4e3fa7d1201920f7480c0bfb0a85",
+            "sha256": "6f413903b63d95e323e8edad52a548b1e18a4e3fa7d1201920f7480c0bfb0a85"
+          }
+        }
+      ],
+      "memory_stores": 1,
+      "payload_bytes": 1121,
+      "prompt_tokens": 21031,
+      "proposed_store_calls": 1,
+      "reasoning_tokens": 421,
+      "reasoning_usage_records": 2,
+      "repetition": 5,
+      "replay_eligible": true,
+      "reported_cost_usd": "0.000594775",
+      "requests": 2,
+      "run_id": "writer_900d3ac1c488434e8d4a796405fcdb6d",
+      "skip_reason": null,
+      "snapshot_id": "snap_adc39f0a94de49468308b4834236d317",
+      "status": "completed",
+      "unknown_cost_requests": 0,
+      "case_id": "W08"
+    },
+    {
+      "completion_tokens": 668,
+      "error_code": null,
+      "feedback_level": "none",
+      "final_items": 1,
+      "finish_reasons": {
+        "stop": 1,
+        "tool_calls": 1
+      },
+      "items": [
+        {
+          "body": "In the reviewed airline-agent exchange, the customer cancelled an eligible basic-economy reservation (within 24 hours, flights not flown) after being told the cancellation reason and refund details, then booked a replacement itinerary after explicit confirmation. Useful policy checks for similar future tasks: booking can use at most one travel certificate, one credit card, and three gift cards; apply the largest/most useful eligible certificate only if consistent with customer preference, and calculate the remaining card charge before booking when asked. Regular-member business-class allowance is two checked bags per passenger, so three passengers have six free checked bags; don't add extras if not needed. Confirm all booking details before the database update. In this case the searched itinerary followed the cancelled reservation's three flight segments (JFK–SFO, SFO–SEA, SEA–JFK), though the phrase 'same route' could be ambiguous; clarify if route/segment interpretation is uncertain. No separate evaluation feedback was provided, so these are observations, not claims about grading.",
+          "id": "m_c9f1d0595ff14c338f6edcb51df2f65b",
+          "title": "Airline interaction review: booking constraints and checks",
+          "version": "v_c4c4098afac845d58a2b8588cdcd1a22",
+          "version_ref": {
+            "media_type": "application/json",
+            "path": "blobs/sha256/5fc929db295aae6384bfba1a47a5c1fcf85cdb30ac7b3c85a0395292c0ef3259",
+            "sha256": "5fc929db295aae6384bfba1a47a5c1fcf85cdb30ac7b3c85a0395292c0ef3259"
+          }
+        }
+      ],
+      "memory_stores": 1,
+      "payload_bytes": 1185,
+      "prompt_tokens": 21033,
+      "proposed_store_calls": 1,
+      "reasoning_tokens": 408,
+      "reasoning_usage_records": 2,
+      "repetition": 3,
+      "replay_eligible": true,
+      "reported_cost_usd": "0.000579025",
+      "requests": 2,
+      "run_id": "writer_5041873594984d8eb7875efac028252f",
+      "skip_reason": null,
+      "snapshot_id": "snap_1642c38b930040adaa60da84f2dbd0bd",
+      "status": "completed",
+      "unknown_cost_requests": 0,
+      "case_id": "W09"
+    },
+    {
+      "completion_tokens": 708,
+      "error_code": null,
+      "feedback_level": "result_only",
+      "final_items": 1,
+      "finish_reasons": {
+        "stop": 1,
+        "tool_calls": 1
+      },
+      "items": [
+        {
+          "body": "In a past airline-service interaction (evaluation marked unsuccessful, but gave no reason), the customer asked for the cheapest business round trip on the same dates and route as a cancelled itinerary, allowing connections. The agent preserved the exact three legs of the prior JFK–SFO–SEA–JFK itinerary and selected the cheapest business fare found per leg, then booked after explicit confirmation. The recorded search showed sufficient seats for three and fare arithmetic/payment split was consistent: $871/person, $2,613 total; one certificate allowed by policy ($500), gift cards ($327), Mastercard remainder ($1,786). Six business checked bags equaled the regular-member allowance for three passengers. Because the evaluation provided no rationale, do not treat this as proof that behavior was wrong or right. For future analogous tasks, clarify whether 'same route' means the same endpoints/trip dates or preserving the exact prior intermediate stops, and ensure the search establishes the lowest eligible itinerary across the customer's intended routing rather than assuming the former segments are required. Follow the tool's date/availability data carefully, and list full action details and obtain explicit confirmation before booking.",
+          "id": "m_5735cfbf2a8c4fe3bda9f6189a192fe9",
+          "title": "Airline booking experience and unknown evaluation result",
+          "version": "v_6ebcd3d56b744acba6212a316101bb36",
+          "version_ref": {
+            "media_type": "application/json",
+            "path": "blobs/sha256/2037477c3c8d8de35b840a2899488d4c32a36befc6654bbed4b873a651e4d14f",
+            "sha256": "2037477c3c8d8de35b840a2899488d4c32a36befc6654bbed4b873a651e4d14f"
+          }
+        }
+      ],
+      "memory_stores": 1,
+      "payload_bytes": 1329,
+      "prompt_tokens": 21064,
+      "proposed_store_calls": 1,
+      "reasoning_tokens": 415,
+      "reasoning_usage_records": 2,
+      "repetition": 3,
+      "replay_eligible": true,
+      "reported_cost_usd": "0.00060175",
+      "requests": 2,
+      "run_id": "writer_851c46c8d8c64fb5a8fb37b1a34edc5a",
+      "skip_reason": null,
+      "snapshot_id": "snap_6ee69bd2a34c4a479dfc06b7551c4398",
+      "status": "completed",
+      "unknown_cost_requests": 0,
+      "case_id": "W10"
+    }
+  ]
+}

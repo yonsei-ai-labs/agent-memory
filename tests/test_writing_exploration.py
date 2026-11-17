@@ -8,6 +8,7 @@ import unittest
 from unittest.mock import patch
 
 from agent_memory_eval.analysis.writing_exploration import audit_writing
+from agent_memory_eval.analysis.writing_export import export
 from agent_memory_eval.contracts.core import ContractError, RunContext, canonical, digest
 from agent_memory_eval.contracts.validation import ROOT
 from agent_memory_eval.contracts.writing import writing_profile
@@ -239,6 +240,28 @@ class WritingExplorationTests(unittest.TestCase):
         invalid["guards"]["max_seconds"] = float("nan")
         with self.assertRaises(ContractError):
             writing_profile(invalid)
+
+    def test_export_preserves_empty_and_error_allocations_and_hides_condition_labels(self):
+        self.run_study(unknown=True)
+        folder = self.base / "export"
+        export(self.output, folder)
+        metrics = json.loads((folder / "metrics.json").read_text())
+        blind = json.loads((folder / "blind.json").read_text())
+        mapping = json.loads((folder / "mapping.json").read_text())
+        self.assertEqual(len(metrics["runs"]), 2)
+        self.assertEqual({r["status"] for r in metrics["runs"]}, {"error", "skipped"})
+        self.assertEqual(sum(g["unknown_cost_requests"] for g in metrics["by_feedback"].values()), 1)
+        self.assertEqual(len(blind["cases"]), 2)
+        self.assertEqual(set(mapping["cases"]), {c["case_id"] for c in blind["cases"]})
+        self.assertTrue(all(set(c) == {"case_id", "items"} for c in blind["cases"]))
+        for c in blind["cases"]:
+            self.assertTrue(all(set(item) == {"title", "body"} for item in c["items"]))
+        self.assertNotIn("HIDDEN_GRADING_ANSWER", (folder / "public_context.json").read_text())
+
+    def test_export_refuses_writing_inside_preserved_run(self):
+        with self.assertRaises(ValueError):
+            export(self.source, self.source / "derived-export")
+        self.assertFalse((self.source / "derived-export").exists())
 
 
 if __name__ == "__main__":

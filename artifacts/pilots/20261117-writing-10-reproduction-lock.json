@@ -1,0 +1,41 @@
+{
+  "format": "agent-memory-writing-reproduction-supplement/v1",
+  "implementation_commit": "2d7a768c68e8949a7c5185791d1d03cc74da6c2e",
+  "supplement_created_after_execution": true,
+  "scope": "Post-run reproduction metadata; the pre-run freeze is in the immutable run control.",
+  "planned_output": "runs/tau2-memory-writing-10-luna-feedback-01",
+  "implementation_files": [
+    {
+      "path": "scripts/run_memory_writing.py",
+      "sha256": "abfad257ff8e055a69d8eb93313e32b767e45ff5561b1e37492fa5f08dc4ad94"
+    },
+    {
+      "path": "src/agent_memory_eval/experiments/writing.py",
+      "sha256": "b134a5a6ff5746691b21c8b57255f1370202316205d51995222948acca50ff40"
+    },
+    {
+      "path": "src/agent_memory_eval/memory/writing.py",
+      "sha256": "587e6cd2ea292a741aa6c500dc72f37c8069a4e3e0785cfd3e8e7cb9a3a80c6b"
+    },
+    {
+      "path": "src/agent_memory_eval/contracts/writing.py",
+      "sha256": "f95a2921b45eafde413966e380bedef508648f9f4b7045ea8d7441043b64e988"
+    },
+    {
+      "path": "schemas/writing-exploration.schema.json",
+      "sha256": "4b283c23d270981e81d1ee89c2402838d1d7d6fd136514ba02cec828ad9e1ce1"
+    }
+  ],
+  "profile_ref": {
+    "path": "protocols/pilots/tau2-memory-writing-10-v1.json",
+    "sha256": "2c67f6b0be6bfde0178c0e2b2b2b34c7a0be1fd42b2329d5dd0973f9f869137e"
+  },
+  "rubric_ref": {
+    "path": "docs/research/memory-writing-exploration-v1.md",
+    "sha256": "6149ebe99282db4388e84c14c7153d61a8c858965729dea79cac2f8658ce5387"
+  },
+  "results_ref": {
+    "path": "artifacts/pilots/20261117-writing-10-results.json",
+    "sha256": "46c399d95cdee55901bcead23903cf2791050c0a8997ec918a70a27f8271a316"
+  }
+}
