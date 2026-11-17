@@ -10,7 +10,10 @@ from unittest.mock import patch
 from agent_memory_eval.analysis.memory_writing import audit_memory_writes
 from agent_memory_eval.contracts.core import ContractError, MemoryPolicy, RunContext, canonical
 from agent_memory_eval.contracts.execution import ExecutionLimits
-from agent_memory_eval.memory.writing import WriterFeedback, freeze_public_experience, write_from_experience
+from agent_memory_eval.memory.writing import (
+    WRITER_COMPLETION_CONTRACT, WriterFeedback, freeze_public_experience, write_from_experience,
+    writer_reply_error, writer_response_error,
+)
 from agent_memory_eval.recording.journal import Journal
 from agent_memory_eval.recording.provenance import SourceRegistry
 
@@ -202,6 +205,63 @@ class MemoryWritingTests(unittest.TestCase):
         result = self.write(WriterFeedback("none"), Malformed())
         self.assertEqual((result["status"], result["memory_stores"]), ("error", 0))
         self.assertEqual(audit_memory_writes(self.folder.name)["writes"][0]["termination_reason"], "memory_write_error")
+
+    def test_truncated_empty_and_partially_written_runs_are_errors(self):
+        for empty in (True, False):
+            class TruncatedWriter(ScriptedWriter):
+                def respond(self, request):
+                    response = super().respond(request)
+                    choice = response["choices"][0]
+                    choice["finish_reason"] = "tool_calls" if choice["message"].get("tool_calls") else "length"
+                    return response
+            result = self.write(WriterFeedback("none"), TruncatedWriter(empty=empty))
+            self.assertEqual((result["status"], result["error_code"]), ("error", "WRITER_OUTPUT_TRUNCATED"))
+            self.assertEqual(result["memory_stores"], 0 if empty else 1)
+            self.assertTrue(self.journal.state["banks"][result["bank_id"]]["sealed"])
+        self.assertTrue(all(w["termination_reason"] == "memory_write_error"
+                            for w in audit_memory_writes(self.folder.name)["writes"]))
+
+    def test_truncated_tool_call_is_preserved_raw_and_never_dispatched(self):
+        class TruncatedTool(ScriptedWriter):
+            def respond(self, request):
+                response = super().respond(request)
+                response["choices"][0]["finish_reason"] = "length"
+                return response
+        result = self.write(WriterFeedback("none"), TruncatedTool())
+        self.assertEqual((result["status"], result["memory_stores"]), ("error", 0))
+        finish = next(e for e in self.journal.events.values() if e["run_id"] == result["run_id"]
+                      and e["type"] == "model.request_finished")
+        self.assertEqual(self.journal.blobs.get(finish["payload"]["response_ref"])["choices"][0]["finish_reason"], "length")
+        audit_memory_writes(self.folder.name)
+
+    def test_finish_contract_refuses_filtered_missing_and_invalid_provider_metadata(self):
+        fixture = json.loads((Path(__file__).resolve().parents[1] / "tests/fixtures/writer-finish-v1.json").read_text())
+        self.assertEqual(WRITER_COMPLETION_CONTRACT, fixture["contract"])
+        for case in fixture["cases"]:
+            message = dict(role="assistant", content="")
+            if case["calls"]:
+                message["tool_calls"] = [dict(id="synthetic-call")]
+            raw = dict(choices=[dict(finish_reason=case["finish_reason"], message=message)])
+            self.assertEqual(writer_reply_error(raw, require_finish_reason=case["observed"]), case["error"])
+
+    def test_audit_rejects_incomplete_reply_without_its_error_event(self):
+        class Filtered(ScriptedWriter):
+            def respond(self, request):
+                return dict(choices=[dict(finish_reason="content_filter", message=dict(role="assistant", content=""))])
+        original = self.journal.append
+        def omit_error(events, **kwargs):
+            return original([e for e in events if e["type"] != "runtime.error"], **kwargs)
+        with patch.object(self.journal, "append", omit_error):
+            self.write(WriterFeedback("none"), Filtered())
+        with self.assertRaisesRegex(ContractError, "explicit termination error"):
+            audit_memory_writes(self.folder.name)
+
+    def test_missing_model_cannot_match_an_absent_canonical_alias(self):
+        identity = dict(id="worker", canonical_slug=None, provider_name="Provider")
+        raw = dict(provider="Provider", choices=[dict(finish_reason="stop", message=dict(role="assistant", content="Done"))])
+        self.assertEqual(writer_response_error(raw, model_identity=identity, observed=True), "WRITER_MODEL_MISMATCH")
+        raw["model"] = "worker"
+        self.assertIsNone(writer_response_error(raw, model_identity=identity, observed=True))
 
 
 if __name__ == "__main__":

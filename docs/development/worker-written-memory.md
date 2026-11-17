@@ -1,8 +1,8 @@
 # 같은 공개 경험에서 기억을 작성하고 새 세션에 전달하기
 
-2026-11-17 · 보존 경험의 오프라인 요청 준비·mock 연결 · 실증 효과 미측정
+2026-11-17 · 보존 경험 요청 준비·작성 단독 실행 연결·mock 검증 · 실증 효과 미측정
 
-`memory.writing.freeze_public_experience`와 `write_from_experience`를 추가했다. 하나의 종료된 source run에서 공개 관측을 고정하고, 서로 다른 새 writer 세션·빈 은행에서 선택적으로 기억을 작성한다. 작성된 불변 snapshot은 기존 `Tau2MemoryRunner.episode`의 새 세션·새 DB·분기 은행으로 전달한다. 별도 실험별 실행기·스키마·CLI 묶음을 복제하지 않고 기존 게이트웨이·기억 서비스·라우터·native 채점을 사용한다.
+`memory.writing.freeze_public_experience`와 `write_from_experience`는 하나의 종료된 source run에서 공개 관측을 고정하고, 서로 다른 새 writer 세션·빈 은행에서 선택적으로 기억을 작성한다. 작성된 불변 snapshot은 기존 `Tau2MemoryRunner.episode`의 새 세션·새 DB·분기 은행으로 전달한다. 작성 단독 실행도 같은 게이트웨이·기억 서비스·라우터·공통 감사를 조합한다.
 
 ## 작성 입력과 피드백
 
@@ -17,6 +17,8 @@
 비평의 출처는 필수로 별도 기록하며 writer에게 연구 조건 라벨이나 출처 경로를 보내지 않는다. 결과가 없으면 결과 기반 피드백을 거절한다. 분석 파일을 자동으로 비평으로 전용하지 않는다. 어떤 비평을 허용할지는 새 실험 프로토콜에서 정한다.
 
 writer에게는 `memory_store`만 제공한다. 업무 호출은 거절하고 기억 0개도 `empty`로 보존한다. 요청 한도로 중단돼 일부 기억만 남은 경우는 `error`로 남기며 성공한 작성으로 대체하지 않는다. 실제 전송 경로를 사용할 때는 검증된 작업자 모델·endpoint와 반환 model/provider를 확인한다. 본문을 생성하도록 강제하거나 연구자가 사후 수정하지 않는다.
+
+새 작성은 `writer-finish/v1`을 기록한다. `length`·`content_filter`·알 수 없는 종료 사유는 오류로 종료하며 그 응답의 도구 호출을 실행하지 않는다. 앞서 저장한 부분 snapshot과 응답 원문은 보존하지만 정상 작성이나 자발적 빈 작성으로 세지 않는다. observed 응답에 종료 사유가 없는 경우도 오류다. 합성 transport의 기존 메타데이터 생략은 허용한다. 감사도 원문에서 같은 분류와 명시적 오류를 검산하며, 이 계약 표시가 없는 옛 기록은 종전 의미로 읽는다. [합성 종료 사례](../../tests/fixtures/writer-finish-v1.json)를 따른다. journal/event v1.1·v1.2는 변경하지 않는다.
 
 새 공통 감사 `analysis.requests.audit_requests`는 요청 시점 state에서 provenance를 읽어 실제 입력·기억 노출을 재검산한다. `audit_memory_writes`는 공개 경험·피드백 제한·writer 도구·분리 은행·봉인 snapshot을 추가로 검사한다. 라우터는 `memory/router.py`로 옮겼고 기존 `runner.router` import는 호환 경로로 유지했다.
 
@@ -71,6 +73,21 @@ uv run --frozen python scripts/prepare_worker_memory.py \
 
 일반 주의 메모·빈 은행·원래 옳았던 상태를 대조에 두고 재전송으로 좁혀 전체 에피소드에서 확인하는 방향이다. 7·39는 에피소드 주 분석 제외 기준을 유지하며 17↔7 후보는 과정 판정에 한정한다. 14와 23의 동일 사용자·기억 속 ID가 절차에 미치는 영향도 분리한다. 어려운 과제를 고르는 것과 과거 정보가 필요한 과제를 만드는 것은 별도로 점검한다.
 
-새 유료 실행 CLI·범용 PlanCompiler·과거 중간 상태 복원은 이번 기능에 포함하지 않는다. [개선 계획](experiment-layer-improvement-plan.md)의 전체 연구 범위를 유지한다.
+## 작성만 먼저 측정하는 실행 경로
+
+```bash
+uv run --frozen python scripts/run_memory_writing.py --preflight
+uv run --frozen python -m unittest discover -s tests -p test_writing_exploration.py
+```
+
+두 명령은 실제 모델을 호출하지 않는다. [작성 단독 초안](../../protocols/drafts/tau2-memory-writing-exploration-v1.json)은 같은 14·2 공개 경험에서 `none`/`result_only`를 비교하는 탐색 후보이며, [별도 스키마](../../schemas/writing-exploration.schema.json)로 제한된 실행 범위를 명시한다. 반복·순서 seed·writer 요청 수·입력 bytes·은행/반환 용량·페이지·전체 호출/금액/시간·HTTP timeout은 미정이다. 빈 값을 자동 기본값으로 채우지 않으며 `--live`는 거절한다. 비평 조건·효과 확인용 재전송·에피소드 실험은 기존 전체 설계 초안에서 별도로 준비한다.
+
+설정을 확정한 ready 프로필과 새 출력 폴더를 지정해야 실제 작성을 시작할 수 있다. 실행은 현재 checkout과 코드 위치·깨끗한 구현 commit, 고정 source/지침/연결 파일, 첫 요청 크기를 먼저 검사한다. 이어 현재 worker catalog·단일 endpoint의 도구/파라미터 지원을 검증하고, 입력을 다시 대조한 뒤 프로필·구현·선택 endpoint·배정표를 원본 로그에 고정한다. API 키는 전송 경로에서만 읽는다. `--preflight`는 키나 HTTP 없이 원본 검증과 직렬화 크기만 검사하며 `live_ready=false`를 유지한다.
+
+반복마다 두 피드백 순서를 seed로 섞고 새 writer 세션·빈 은행을 사용한다. `ExecutionLimits`가 writer 대화가 늘어나는 동안에도 입력/요청 한도를 적용하고 `SpendGuard`가 전체 API 시도·비용·시간을 제한한다. 전체 guard는 호출 수→시간→비용 미확인→보고 비용 순서로 확인하며, 요청 예약 단계의 금액 거절도 남은 배정을 중단한다. 완료·빈 작성·부분 오류를 모두 남기고 대체 실행하지 않는다. 비용 미확인이나 잘못된 provider 응답 뒤에는 나머지 배정을 생략한다. HTTP 시도 상한과 전송 전에 거절된 요청을 포함한 기록상의 요청 수는 구분한다. 모든 배정을 마쳤다면 호출 상한과 정확히 같아도 정상 완료다. 작성 오류/배정 생략이 있으면 CLI는 실패 종료 코드도 반환한다.
+
+각 생성 snapshot은 실제 보존 결정 요청으로 렌더링해 전체 크기·은행/반환 한도를 검사한다. 잘린 작성·부분 오류·용량 초과는 `replay_eligible=false`로 보존하며 본문을 자동 절단하거나 작업자에게 재작성시키지 않는다. 전체 작성 정책의 분모에는 오류·초과도 남긴다. 감사는 저장 호출 자체가 없었던 빈 작성과 호출 후 저장 0개인 경우를 구분하므로, 용량 거절·인수 오류를 자발적인 비저장으로 해석하지 않는다. 이는 후속 실행 가능성 검사이고 기억 노출이나 효과 측정이 아니다. `--audit-only --output runs/NEW_WRITING_RUN`은 원천 폴더·키·HTTP 없이 저장한 배정·작성·오류·snapshot 적합성을 다시 계산한다.
+
+작성 단독 단계에서는 사용자 시뮬레이터와 업무 도구를 새로 실행하지 않는다. 관측 대상은 기억 내용·빈 작성·오류·비용이며, 이 단계만으로 기억의 득실·자율 조회·전이를 주장하지 않는다. 범용 PlanCompiler·과거 중간 상태 복원은 후속이다. [개선 계획](experiment-layer-improvement-plan.md)의 전체 연구 범위를 유지한다.
 
 새 프로토콜은 구현을 먼저 커밋하고 `scripts/freeze_implementation.py`로 깨끗한 Git 상태·commit·tree·lock을 기록한 뒤 동결한다. 실행 구현 commit과 분석 후의 reproduction commit을 별도로 연결하고 고정 코드 재현을 한 번 확인한다. 이 검사를 새 유료 진입점에 연결하는 작업은 후속이며, 현재 설계 초안을 실행 승인으로 사용하지 않는다.

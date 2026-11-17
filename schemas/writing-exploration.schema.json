@@ -1,0 +1,270 @@
+{
+  "type": "object",
+  "required": [
+    "format",
+    "status",
+    "completion_contract",
+    "question",
+    "source",
+    "instructions",
+    "connection_profile_ref",
+    "feedback_levels",
+    "repetitions",
+    "schedule_seed",
+    "execution_limits",
+    "bank_limits",
+    "page_size",
+    "guards",
+    "timeout_seconds",
+    "limit_aggregation",
+    "source_selection"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format": {
+      "const": "agent-memory-writing-exploration/v1"
+    },
+    "status": {
+      "enum": [
+        "draft",
+        "ready"
+      ]
+    },
+    "completion_contract": {
+      "const": "writer-finish/v1"
+    },
+    "question": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source": {
+      "type": "object",
+      "required": [
+        "path",
+        "run_id",
+        "log_sha256",
+        "decision_request_id"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "run_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "log_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "decision_request_id": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "instructions": {
+      "type": "object",
+      "required": [
+        "writer",
+        "replay"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "writer": {
+          "type": "object",
+          "required": [
+            "path",
+            "sha256"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "path": {
+              "type": "string",
+              "minLength": 1
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          }
+        },
+        "replay": {
+          "type": "object",
+          "required": [
+            "path",
+            "sha256"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "path": {
+              "type": "string",
+              "minLength": 1
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          }
+        }
+      }
+    },
+    "connection_profile_ref": {
+      "type": "object",
+      "required": [
+        "path",
+        "sha256"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    },
+    "feedback_levels": {
+      "const": [
+        "none",
+        "result_only"
+      ]
+    },
+    "repetitions": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1
+    },
+    "schedule_seed": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "execution_limits": {
+      "type": "object",
+      "required": [
+        "worker_requests",
+        "writer_requests",
+        "user_simulator_requests",
+        "max_input_bytes"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "worker_requests": {
+          "const": 0
+        },
+        "writer_requests": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "user_simulator_requests": {
+          "const": 0
+        },
+        "max_input_bytes": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        }
+      }
+    },
+    "bank_limits": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "required": [
+            "max_items",
+            "max_payload_bytes",
+            "max_return_bytes"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "max_items": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "max_payload_bytes": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "max_return_bytes": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        }
+      ]
+    },
+    "page_size": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1
+    },
+    "guards": {
+      "type": "object",
+      "required": [
+        "max_model_requests",
+        "max_reported_cost_usd",
+        "max_seconds"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "max_model_requests": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "max_reported_cost_usd": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "exclusiveMinimum": 0
+        },
+        "max_seconds": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "exclusiveMinimum": 0
+        }
+      }
+    },
+    "timeout_seconds": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "exclusiveMinimum": 0
+    },
+    "limit_aggregation": {
+      "const": "retain_error_partial_and_empty_no_replacement"
+    },
+    "source_selection": {
+      "const": "known_development_failure_not_confirmation"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-memory-eval.local/writing-exploration.schema.json",
+  "title": "Bounded writing-only exploration; no replay or episode effect measurement"
+}

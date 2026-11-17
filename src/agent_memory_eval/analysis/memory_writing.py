@@ -4,7 +4,9 @@ from agent_memory_eval.analysis.requests import audit_requests
 from agent_memory_eval.contracts.core import ContractError, MemoryPolicy, canonical
 from agent_memory_eval.contracts.execution import ExecutionLimits
 from agent_memory_eval.memory.tools import memory_tools
-from agent_memory_eval.memory.writing import WriterFeedback, read_public_experience, writer_inputs
+from agent_memory_eval.memory.writing import (
+    WRITER_COMPLETION_CONTRACT, WriterFeedback, read_public_experience, writer_inputs, writer_response_error,
+)
 from agent_memory_eval.recording.journal import BlobStore, read_experiment
 from agent_memory_eval.recording.provenance import public_assistant_message
 
@@ -31,14 +33,19 @@ def audit_memory_writes(root):
         projection = config.get("response_projection")
         if projection not in (None, "public-assistant/v1"):
             raise ContractError("Unknown writer response projection")
+        completion = config.get("completion_contract")
+        if completion not in (None, WRITER_COMPLETION_CONTRACT):
+            raise ContractError("Unknown writer completion contract")
         requests = [e for e in events if e["type"] == "model.request_started"]
         limits = ExecutionLimits(**config["execution_limits"]) if "execution_limits" in config else None
         cap = limits.writer_requests if limits else config["max_requests"]
         if len(requests) > cap:
             raise ContractError("Writer exceeded the request limit")
-        history, pending, terminal = list(expected), [], False
+        history, pending, terminal, rejected = list(expected), [], False, None
         for event in events:
             payload, kind = event["payload"], event["type"]
+            if rejected and kind in {"memory.stored", "memory.returned", "policy.denied"}:
+                raise ContractError("An incomplete writer reply dispatched a tool call")
             if kind == "model.request_started":
                 wire = blobs.get(payload["request_ref"])
                 wanted = dict(config["model_config"], messages=history,
@@ -55,7 +62,17 @@ def audit_memory_writes(root):
                 if payload["status"] != "response":
                     terminal = True
                     continue
-                message = blobs.get(payload["response_ref"])["choices"][0]["message"]
+                raw = blobs.get(payload["response_ref"])
+                if completion:
+                    observed = event["record_kind"] == "observed"
+                    if observed and (not isinstance(config.get("verified_model"), dict)
+                            or config["verified_model"]["id"] != config["model_config"]["model"]):
+                        raise ContractError("Writer lacks its verified response identity")
+                    rejected = writer_response_error(raw, model_identity=config["verified_model"], observed=observed)
+                    if rejected:
+                        pending, terminal = [], True
+                        continue
+                message = raw["choices"][0]["message"]
                 history.append(public_assistant_message(message) if projection else message)
                 calls = message.get("tool_calls") or []
                 pending = [call["id"] for call in calls]
@@ -78,6 +95,8 @@ def audit_memory_writes(root):
         stores = [e for e in events if e["type"] == "memory.stored"]
         if any(e["phase"] != "post_task_write" or e["payload"]["bank_id"] != config["bank_id"] for e in stores):
             raise ContractError("Memory was written outside its writer bank and phase")
+        if rejected and not any(e["type"] == "runtime.error" and e["payload"]["code"] == rejected for e in events):
+            raise ContractError("Incomplete writer reply lacks its explicit termination error")
         failed = any(e["type"] == "runtime.error" or (e["type"] == "model.request_finished"
             and (e["payload"]["status"] != "response" or e["payload"]["cost_status"] == "unknown")) for e in events)
         expected_status = "error" if failed else "completed" if stores else "empty"

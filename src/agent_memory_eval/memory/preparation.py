@@ -52,26 +52,39 @@ def snapshot_items(blobs, state, snapshot_id):
     return [{k:value[k] for k in ("id", "version", "title", "body")} for value in values]
 
 
-def prepare_snapshot_replay(journal, decision_ref, snapshot_id, *, policy, instruction,
-                            condition_id, max_input_bytes=None):
-    if journal.contract_version != "1.2":
-        raise ContractError("Snapshot replay preparation requires the existing v1.2 contract")
-    source = read_recorded_context(journal.blobs, decision_ref)
+class SnapshotBudgetExceeded(ContractError):
+    code = "SNAPSHOT_BUDGET_EXCEEDED"
+
+
+def snapshot_replay_input(blobs, state, decision_ref, snapshot_id, *, policy, instruction, max_input_bytes):
+    """Inspect the complete snapshot and rendered request without changing a bank."""
+    source = read_recorded_context(blobs, decision_ref)
     original = source["wire"]
-    items = snapshot_items(journal.blobs, journal.state, snapshot_id)
+    items = snapshot_items(blobs, state, snapshot_id)
     if policy.write_timing != "none" or policy.same_episode_read:
         raise ContractError("Prepared replay uses a frozen read-only starting view")
     expected = request_with_past_memory(original, policy, items, instruction=instruction)
     if max_input_bytes is not None and (type(max_input_bytes) is not int or max_input_bytes < 1):
         raise ContractError("Preparation input cap must be positive or explicitly unresolved")
     if policy.max_return_bytes is not None and len(canonical(dict(items=items))) > policy.max_return_bytes:
-        raise ContractError("Snapshot exceeds the declared return-byte budget")
+        raise SnapshotBudgetExceeded("Snapshot exceeds the declared return-byte budget")
     payload = sum(len(canonical({k:item[k] for k in ("title", "body")})) for item in items)
     if ((policy.max_items is not None and len(items) > policy.max_items)
             or (policy.max_payload_bytes is not None and payload > policy.max_payload_bytes)):
-        raise ContractError("Snapshot exceeds the declared bank budget")
+        raise SnapshotBudgetExceeded("Snapshot exceeds the declared bank budget")
     if any(t["function"]["name"].startswith("memory_") for t in original.get("tools", [])):
         raise ContractError("Recorded source already contains memory tools")
+    return dict(source=source, request=expected, input_bytes=len(canonical(expected)),
+        fits_input_limit=None if max_input_bytes is None else len(canonical(expected)) <= max_input_bytes)
+
+
+def prepare_snapshot_replay(journal, decision_ref, snapshot_id, *, policy, instruction,
+                            condition_id, max_input_bytes=None):
+    if journal.contract_version != "1.2":
+        raise ContractError("Snapshot replay preparation requires the existing v1.2 contract")
+    planned = snapshot_replay_input(journal.blobs, journal.state, decision_ref, snapshot_id,
+        policy=policy, instruction=instruction, max_input_bytes=max_input_bytes)
+    source, expected = planned["source"], planned["request"]
     ctx = RunContext(journal.experiment_id, new_id("prep"), new_id("s"), condition_id,
         "diagnostic", "solve", source["archive"]["record_kind"])
     memory = MemoryService(journal, record_kind=ctx.record_kind)

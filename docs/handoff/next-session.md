@@ -8,6 +8,8 @@
 
 최근 추가한 [보존 경험 요청 준비](../development/worker-written-memory.md#보존-경험으로-요청만-준비하기)는 실제 14·2 원본으로 피드백별 작성 입력과 빈 snapshot 재전송을 만든다. 모델 호출·실제 기억 작성·효과 측정은 없으며, 아래 이전 실행 이력과 구분한다. 비평 조건과 새 유료 프로토콜의 미정 항목은 준비 기록에 남겼다.
 
+이어 [작성 단독 실행](../development/worker-written-memory.md#작성만-먼저-측정하는-실행-경로)을 연결했다. 새 writer는 `writer-finish/v1`로 잘린 응답을 오류로 구분하고, 실제 snapshot의 후속 입력 크기를 검사한다. [새 초안](../../protocols/drafts/tau2-memory-writing-exploration-v1.json)은 미정 한도를 유지해 live를 차단하며, 실제 모델 작성은 아직 실행하지 않았다.
+
 | 구분 | 인수인계 시점 상태 |
 | --- | --- |
 | 연구·설계 | 연구 질문·프로토콜·지표·관련 연구·상세 설계 문서 있음 |
@@ -65,7 +67,7 @@
 
 그 뒤 [추가 실행 보완](../development/runtime-hardening.md)에서 writer 추론 필드 재입력·전체 대화/비용 감사·중복 ID 부분 쓰기를 고쳤다. 이전 `1e59371` worktree에서 네 회귀를 재현했고 **전체 215개가 414.294초에 통과**했다. 새 API의 역할별 요청/입력 한도·worker 한도 뒤 도달 상태 진단·비정상 응답 보존·clean Git 동결 검사도 연결했다. 기존 합산 한도·원본·공식 결과는 보존한다.
 
-다음은 [task 14 설계 초안](../../protocols/drafts/tau2-worker-written-memory-study-v1.json)의 1차 비교·지침·비평·표본·예산과 새 한도 API의 실제 값, 은행/전체 입력 사전 점검·한도 종료 집계다. 도달 상태 진단을 공식 성공으로 세지 않는다. 현재 API는 새 source 수집을 지원하며 과거 baseline의 transcript 자동 import·새 유료 실행기와 동결 검사 연결은 미구현이다. 독립 판정·과거에만 있는 정보의 자율 조회 과제도 준비한다. 증분 journal/인덱스·baseline/delivery 공통 기능·인프라 재개는 후속이며 v1.3은 확정하지 않았다. 새 유료 호출은 없다.
+다음은 [작성 단독 초안](../../protocols/drafts/tau2-memory-writing-exploration-v1.json)의 미정 반복·호출/용량/금액/시간 값을 정하는 것이다. 보존된 무기억 경험의 import와 clean 구현 동결·작성 실행 연결은 구현했다. [전체 task 14 설계](../../protocols/drafts/tau2-worker-written-memory-study-v1.json)의 비평·1차 효과 비교·일반 메모/정상 상태 대조·독립 판정·재전송/에피소드 확인은 별도로 준비한다. 도달 상태 진단을 공식 성공으로 세지 않는다. 과거에만 있는 정보의 자율 조회 과제, 증분 journal/인덱스·baseline/delivery 공통 기능·인프라 재개도 후속이며 v1.3은 확정하지 않았다. 새 유료 호출은 없다.
 
 현재 `validation.py`가 동결 해시와 달라진 `fafccd0`에서 P0의 재전송 검토를 다시 실행해 통과했다. `post_change_reproduction` 근거는 위 재현 검증 자료에 있다. 예전 broad 해시를 현재 코드에 맞춰 고치거나 현재 src를 옛 버전으로 되돌리지 않는다.
 

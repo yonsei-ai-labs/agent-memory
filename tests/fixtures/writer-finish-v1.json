@@ -1,0 +1,15 @@
+{
+  "contract": "writer-finish/v1",
+  "scope": "synthetic_classification_cases_not_model_observations",
+  "cases": [
+    {"finish_reason": "length", "calls": false, "observed": true, "error": "WRITER_OUTPUT_TRUNCATED"},
+    {"finish_reason": "length", "calls": true, "observed": true, "error": "WRITER_OUTPUT_TRUNCATED"},
+    {"finish_reason": "content_filter", "calls": false, "observed": true, "error": "WRITER_CONTENT_FILTERED"},
+    {"finish_reason": null, "calls": false, "observed": true, "error": "WRITER_INVALID_FINISH_REASON"},
+    {"finish_reason": [], "calls": false, "observed": true, "error": "WRITER_INVALID_FINISH_REASON"},
+    {"finish_reason": "tool_calls", "calls": false, "observed": true, "error": "WRITER_INCOMPLETE_TOOL_CALLS"},
+    {"finish_reason": "tool_calls", "calls": true, "observed": true, "error": null},
+    {"finish_reason": "stop", "calls": false, "observed": true, "error": null},
+    {"finish_reason": null, "calls": false, "observed": false, "error": null}
+  ]
+}
