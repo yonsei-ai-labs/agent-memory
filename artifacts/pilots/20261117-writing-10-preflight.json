@@ -1,0 +1,114 @@
+{
+  "format": "agent-memory-writing-preflight/v1",
+  "status": "awaiting_budget",
+  "profile_ref": {
+    "path": "protocols/pilots/tau2-memory-writing-10-v1.json",
+    "sha256": "10f3f902d824688637938b34ea8e1163346c3ab8cb54535b0cd09d879b9fd47f"
+  },
+  "catalog": {
+    "status": "verified",
+    "checked_at_utc": "2026-11-17T08:20:15.676974+00:00",
+    "model_id": "openai/gpt-6-luna",
+    "canonical_slug": "openai/gpt-6-luna-20260922",
+    "context_length": 1050000,
+    "endpoint": "OpenAI",
+    "route": {
+      "only": [
+        "openai"
+      ],
+      "allow_fallbacks": false,
+      "require_parameters": true
+    },
+    "reservation_pricing": {
+      "prompt": 2e-07,
+      "completion": 7.5e-07
+    },
+    "pricing": {
+      "prompt": "0.0000001",
+      "completion": "0.0000005",
+      "web_search": "0.01",
+      "input_cache_read": "0.00000001",
+      "input_cache_write": "0.000000125",
+      "discount": 0,
+      "overrides": [
+        {
+          "min_prompt_tokens": 272000,
+          "prompt": "0.0000002",
+          "completion": "0.00000075",
+          "input_cache_read": "0.00000002",
+          "input_cache_write": "0.00000025"
+        }
+      ]
+    },
+    "requested_parameters": {
+      "reasoning": {
+        "effort": "low"
+      },
+      "max_completion_tokens": 2048,
+      "seed": 0,
+      "tools": [],
+      "tool_choice": "auto"
+    },
+    "model_supported_parameters": [
+      "include_reasoning",
+      "max_completion_tokens",
+      "max_tokens",
+      "reasoning",
+      "reasoning_effort",
+      "response_format",
+      "seed",
+      "structured_outputs",
+      "tool_choice",
+      "tools",
+      "verbosity"
+    ],
+    "public_catalog_calls": 2,
+    "chat_completion_calls": 0
+  },
+  "local_preflight": {
+    "local_ready": false,
+    "live_ready": false,
+    "unresolved_fields": [
+      "guards.max_reported_cost_usd"
+    ],
+    "initial_requests": [
+      {
+        "feedback_level": "none",
+        "input_bytes": 42072,
+        "fits_input_limit": true,
+        "request_sha256": "bb4b65c9492a2ea3480b9694758caaf3c6dbed6fd185f3cae6af21496f5135f5"
+      },
+      {
+        "feedback_level": "result_only",
+        "input_bytes": 42097,
+        "fits_input_limit": true,
+        "request_sha256": "9c0eac62ac5a5e6f55e9aa5cfb031014005a8d8ca0ab8e84067ba497be7a8e9b"
+      }
+    ],
+    "model_config": {
+      "model": "openai/gpt-6-luna",
+      "reasoning": {
+        "effort": "low"
+      },
+      "max_completion_tokens": 2048,
+      "seed": 0,
+      "provider": {
+        "only": [
+          "openai"
+        ],
+        "allow_fallbacks": false,
+        "require_parameters": true
+      },
+      "stream": false
+    },
+    "source_record_kind": "observed",
+    "current_endpoint_verified": false,
+    "new_model_or_catalog_calls": 0,
+    "scope": "writing_only_no_memory_effect_measurement"
+  },
+  "chat_completion_calls": 0,
+  "source_urls": {
+    "models": "https://openrouter.ai/api/v1/models",
+    "endpoints": "https://openrouter.ai/api/v1/models/openai/gpt-6-luna/endpoints"
+  }
+}

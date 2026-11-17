@@ -1,0 +1,52 @@
+{
+  "format": "agent-memory-writing-exploration/v1",
+  "status": "draft",
+  "completion_contract": "writer-finish/v1",
+  "question": "What does the same worker retain from one public experience with no feedback versus result-only feedback?",
+  "source": {
+    "path": "runs/tau2-baseline-luna-deepseek1017-train-01",
+    "run_id": "r_1b1c08d270854ca1b230d23e75c04f77",
+    "log_sha256": "ec0994a536729872ce8ee7ff06ae63c2e640e70091146b9a361535174ee8fbb5",
+    "decision_request_id": "request_16cc44dd47ca45dea03145aebd07f8d4"
+  },
+  "instructions": {
+    "writer": {
+      "path": "protocols/instructions/optional-experience-writer-v1.txt",
+      "sha256": "9bcc840e1b766cc43a6df6f11370563467fdffab5b9a00e8469f004903d5fd98"
+    },
+    "replay": {
+      "path": "protocols/instructions/frozen-memory-replay-v1.txt",
+      "sha256": "cd5d4dede32681b19eaa7eb1919d59b9a08ae2732170afba22cba35ab1d245e4"
+    }
+  },
+  "connection_profile_ref": {
+    "path": "protocols/checks/openrouter-tau2-smoke.json",
+    "sha256": "fab9e52495a7fbc122ffcbcdc5fc9cfe59d8f61d18f421e822a1298a0de68d49"
+  },
+  "feedback_levels": [
+    "none",
+    "result_only"
+  ],
+  "repetitions": 5,
+  "schedule_seed": 20261117,
+  "execution_limits": {
+    "worker_requests": 0,
+    "writer_requests": 4,
+    "user_simulator_requests": 0,
+    "max_input_bytes": 128000
+  },
+  "bank_limits": {
+    "max_items": 4,
+    "max_payload_bytes": 16384,
+    "max_return_bytes": 32768
+  },
+  "page_size": 4,
+  "guards": {
+    "max_model_requests": 40,
+    "max_reported_cost_usd": null,
+    "max_seconds": 1200
+  },
+  "timeout_seconds": 45,
+  "limit_aggregation": "retain_error_partial_and_empty_no_replacement",
+  "source_selection": "known_development_failure_not_confirmation"
+}
