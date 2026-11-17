@@ -1,0 +1,14 @@
+{
+  "format": "agent-memory-writing-data-release/v1",
+  "status": "local_package_prepared_not_uploaded",
+  "archive_path": "outputs/data-releases/20261117-writing-10/writing-10-raw-readonly.zip",
+  "archive_sha256": "81dd37f374ca64c856c96f62eff717c960177af2b4857afd3ca5a0d0f7f73e92",
+  "archive_bytes": 2961487,
+  "windows_download_name": "agent-memory-writing-10-20261117.zip",
+  "raw_files": 410,
+  "raw_bytes": 21975201,
+  "implementation_commit": "2d7a768c68e8949a7c5185791d1d03cc74da6c2e",
+  "reproduction_commit": "ea388ef9ccf2bf63b7f2a2ecd8b7c00595c8e839",
+  "credential_values_detected": false,
+  "restore": "Use Linux/WSL and Python 3.12; checkout reproduction_commit; extract into repository root; uv sync --frozen; uv run --frozen python scripts/review_writing_exploration.py. No API keys, network generation or original baseline folder are needed for the review."
+}

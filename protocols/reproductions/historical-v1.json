@@ -201,6 +201,55 @@
           "commit": "c06b07dd7c4d4ec61ba6ff9bcdf0b15dd7ef36d4"
         }
       ]
+    },
+    "writing_10": {
+      "reproduction_commit": "ea388ef9ccf2bf63b7f2a2ecd8b7c00595c8e839",
+      "implementation_commit": "2d7a768c68e8949a7c5185791d1d03cc74da6c2e",
+      "protocol_lock_ref": {
+        "path": "artifacts/pilots/20261117-writing-10-reproduction-lock.json",
+        "sha256": "3bded398b7d4e52e05b8698f3629a81ffc6e1f6c0dfb6b92bbeed43421f2ef7d"
+      },
+      "review_script_ref": {
+        "path": "scripts/review_writing_exploration.py",
+        "sha256": "6e6b448e0a5204bc55bde5e130f87ac7bf801d0b32987a9ed9b2f62c2965a27a"
+      },
+      "environment": {
+        "lock_ref": {
+          "path": "uv.lock",
+          "sha256": "b87ef58cf24c2e6d1ba07ed896676e31ecfb858b3840ef1bc5faf0c334ec62a6"
+        },
+        "project_ref": {
+          "path": "pyproject.toml",
+          "sha256": "eacca6269ebd090c7c4c2c52c7a0379ad73670a25d34bc711a67a60c1584bf0d"
+        },
+        "python_version": "3.12",
+        "extras": []
+      },
+      "expected_outputs": [
+        {
+          "path": "artifacts/pilots/20261117-writing-10-results.json",
+          "sha256": "46c399d95cdee55901bcead23903cf2791050c0a8997ec918a70a27f8271a316"
+        },
+        {
+          "path": "artifacts/analyses/20261117-writing-10-content-review.json",
+          "sha256": "2662afe1bbf12d934c5cb542bb6955713d7c7e3a51f7d54a1abca9b62d452c63"
+        },
+        {
+          "path": "artifacts/analyses/20261117-writing-10-content-annotations.json",
+          "sha256": "ec5605cc90a2ca58b0a8ce2002c5d4d1ed8c03785db9a855e52790de2aeb36b7"
+        },
+        {
+          "path": "artifacts/analyses/20261117-writing-10-input-comparison.json",
+          "sha256": "c34b9cecd23772f492370539980e1742d6ef81eb68a4725bf0d7f8f5cc3a7eb2"
+        }
+      ],
+      "inputs": [
+        {
+          "kind": "run",
+          "path": "runs/tau2-memory-writing-10-luna-feedback-01",
+          "log_sha256": "0a883dc7709586e54438b4d9fdc392fbe204576baaa6c223dcf4c29c71478885"
+        }
+      ]
     }
   }
 }
