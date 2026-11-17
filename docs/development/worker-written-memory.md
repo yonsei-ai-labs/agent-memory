@@ -90,4 +90,6 @@ uv run --frozen python -m unittest discover -s tests -p test_writing_exploration
 
 작성 단독 단계에서는 사용자 시뮬레이터와 업무 도구를 새로 실행하지 않는다. 관측 대상은 기억 내용·빈 작성·오류·비용이며, 이 단계만으로 기억의 득실·자율 조회·전이를 주장하지 않는다. 범용 PlanCompiler·과거 중간 상태 복원은 후속이다. [개선 계획](experiment-layer-improvement-plan.md)의 전체 연구 범위를 유지한다.
 
+[작성 실행 검증 기록](../../artifacts/analyses/20261117-writing-exploration-validation.json)에 구현 commit·전체/행동 검사·보존 원본 감사·실제 source의 로컬 preflight·draft live 차단과 남은 설정을 연결한다.
+
 새 프로토콜은 구현을 먼저 커밋하고 `scripts/freeze_implementation.py`로 깨끗한 Git 상태·commit·tree·lock을 기록한 뒤 동결한다. 실행 구현 commit과 분석 후의 reproduction commit을 별도로 연결하고 고정 코드 재현을 한 번 확인한다. 이 검사를 새 유료 진입점에 연결하는 작업은 후속이며, 현재 설계 초안을 실행 승인으로 사용하지 않는다.
