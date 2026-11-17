@@ -8,7 +8,7 @@ import unittest
 from unittest.mock import patch
 
 from agent_memory_eval.analysis.writing_exploration import audit_writing
-from agent_memory_eval.analysis.writing_export import export
+from agent_memory_eval.analysis.writing_export import collect, export
 from agent_memory_eval.contracts.core import ContractError, RunContext, canonical, digest
 from agent_memory_eval.contracts.validation import ROOT
 from agent_memory_eval.contracts.writing import writing_profile
@@ -262,6 +262,15 @@ class WritingExplorationTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             export(self.source, self.source / "derived-export")
         self.assertFalse((self.source / "derived-export").exists())
+
+    def test_in_memory_review_never_creates_or_deletes_a_file(self):
+        self.run_study(empty=True)
+        with patch.object(Path, "mkdir", side_effect=AssertionError("mkdir attempted")), \
+                patch("os.unlink", side_effect=AssertionError("unlink attempted")), \
+                patch("os.rmdir", side_effect=AssertionError("rmdir attempted")):
+            views = collect(self.output)
+        self.assertEqual(len(views["blind"]["cases"]), 2)
+        self.assertEqual(views["metrics"]["audit"]["empty_writes"], 2)
 
 
 if __name__ == "__main__":

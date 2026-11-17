@@ -11,10 +11,9 @@ from agent_memory_eval.memory.preparation import snapshot_items
 from agent_memory_eval.recording.journal import BlobStore, read_experiment
 
 
-def export(root, output):
-    root, output = Path(root), Path(output)
-    if output.exists() or output.resolve().is_relative_to(root.resolve()):
-        raise ValueError("Use a new export directory outside the immutable run")
+def collect(root):
+    """Build the views in memory; safe inside the historical read-only bootstrap."""
+    root = Path(root)
     audit = audit_writing(root)
     scan, state, _ = read_experiment(root)
     blobs = BlobStore(root)
@@ -65,7 +64,6 @@ def export(root, output):
         mapping[case] = {k:row[k] for k in ("run_id", "feedback_level", "repetition", "status", "snapshot_id")}
     first = next(e for e in scan["events"].values() if e["type"] == "model.request_started" and e["payload"]["actor_role"] == "writer")
     context = json.loads(blobs.get(first["payload"]["request_ref"])["messages"][1]["content"])
-    output.mkdir(parents=True)
     exports = dict(blind=dict(format="agent-memory-writing-blind/v1", cases=blind),
         mapping=dict(format="agent-memory-writing-review-map/v1", cases=mapping),
         metrics=dict(format="agent-memory-writing-descriptive/v1", audit=audit,
@@ -73,7 +71,15 @@ def export(root, output):
             implementation=control["implementation"], profile=control["profile"], model=control["model"],
             by_feedback=groups, runs=rows, scope="descriptive_writing_observation_no_memory_effect_measurement"),
         public_context=context)
+    return exports
+
+
+def export(root, output):
+    root, output = Path(root), Path(output)
+    if output.exists() or output.resolve().is_relative_to(root.resolve()):
+        raise ValueError("Use a new export directory outside the immutable run")
+    exports = collect(root)
+    output.mkdir(parents=True)
     for name, value in exports.items():
         (output / (name + ".json")).write_bytes(canonical(value) + b"\n")
-    return dict(status="exported", cases=len(rows), output=str(output))
-
+    return dict(status="exported", cases=len(exports["metrics"]["runs"]), output=str(output))
