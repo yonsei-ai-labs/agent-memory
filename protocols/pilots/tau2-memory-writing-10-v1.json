@@ -1,6 +1,6 @@
 {
   "format": "agent-memory-writing-exploration/v1",
-  "status": "draft",
+  "status": "ready",
   "completion_contract": "writer-finish/v1",
   "question": "What does the same worker retain from one public experience with no feedback versus result-only feedback?",
   "source": {
@@ -43,7 +43,7 @@
   "page_size": 4,
   "guards": {
     "max_model_requests": 40,
-    "max_reported_cost_usd": null,
+    "max_reported_cost_usd": 1.0,
     "max_seconds": 1200
   },
   "timeout_seconds": 45,
