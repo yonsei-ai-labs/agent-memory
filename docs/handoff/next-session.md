@@ -8,6 +8,10 @@
 
 최신 실측은 [첫 기억 작성 결과](../reports/20261117-memory-writing-results.md)다. 같은 공개 경험의 피드백별 별도 작성 세션에서 실제 Luna 기억을 생성했고, 내용·빈 작성·입력 크기·비용을 감사했다. [receipt](../../artifacts/pilots/20261117-writing-10-results.json)와 [기억 원문·잠정 주석](../../artifacts/analyses/20261117-writing-10-content-review.json)을 기준으로 이어간다. 후속 업무의 기억 효과·자율 조회는 이번에 측정하지 않았다.
 
+다음 단계는 [작성 기억의 네 조건 재전송 준비](../research/written-memory-replay-v1.md)다. 전체 10개 snapshot과 빈 작성, 14·23의 오류/성공 반복에서 고른 예약 결정 후보를 보존해 같은 renderer로 입력을 만든다. 성공 에피소드의 결정 적합성은 독립 심사 전이며 표본·비용·새 유료 승인은 미정이다. 이 경로는 모델/업무 도구를 호출하지 않고 입력만 준비한다.
+
+사용자가 요청한 현재 역할 분담은 **별도 에이전트가 후속 구현·실험 준비를 진행하고, 주 세션이 코드·설계·결과를 리뷰하는 것**이다. [첫 분리 리뷰 기록](../../artifacts/analyses/20261117-written-memory-preparation-review.json)을 기준으로 이어간다. 코드 리뷰를 독립 의미 판정으로 세지 않는다.
+
 최근 추가한 [보존 경험 요청 준비](../development/worker-written-memory.md#보존-경험으로-요청만-준비하기)는 실제 14·2 원본으로 피드백별 작성 입력과 빈 snapshot 재전송을 만든다. 모델 호출·실제 기억 작성·효과 측정은 없으며, 아래 이전 실행 이력과 구분한다. 비평 조건과 새 유료 프로토콜의 미정 항목은 준비 기록에 남겼다.
 
 이어 [작성 단독 실행](../development/worker-written-memory.md#작성만-먼저-측정하는-실행-경로)을 연결했다. 새 writer는 `writer-finish/v1`로 잘린 응답을 오류로 구분하고, 실제 snapshot의 후속 입력 크기를 검사한다. 일반 [초안](../../protocols/drafts/tau2-memory-writing-exploration-v1.json)은 미정 상태로 보존하고, 실제 작성은 별도 [10회 프로필](../../protocols/pilots/tau2-memory-writing-10-v1.json)로 실행했다.
@@ -73,7 +77,7 @@
 
 현재 `validation.py`가 동결 해시와 달라진 `fafccd0`에서 P0의 재전송 검토를 다시 실행해 통과했다. `post_change_reproduction` 근거는 위 재현 검증 자료에 있다. 예전 broad 해시를 현재 코드에 맞춰 고치거나 현재 src를 옛 버전으로 되돌리지 않는다.
 
-**최신 결과는 [결정 지점 120요청 결과](../reports/20261116-decision-replay-results.md)다.** [새 프로필](../../protocols/pilots/tau2-decision-replay-120-v1.json)·[판정 방법](../research/decision-replay-pilot-v1.md)·[동결 기록](../../artifacts/pilots/20261116-decision-replay-protocol.json)을 실행 전에 고정했고 [receipt](../../artifacts/pilots/20261116-decision-replay-results.json)·[단일 분석 에이전트 주석](../../artifacts/analyses/20261116-decision-replay-review.json)을 보존했다. 120/120 정상 응답·$0.043359345·오류/생략/비용 미확인 0이다. `call_limit`은 120시도 완료를 뜻한다. 업무 도구는 실행하지 않았다. 수하물 규칙의 재사용을 첫 후보로 준비하되 17의 새 오류·21의 보류를 함께 추적한다. 현재 문맥만으로 충분한 대조·일반 메모·옳았던 상태를 준비하고 작업자 작성 기억과 연구자 메모를 구분한다. 42·1과 20은 한 응답 판정에 적합한지 다시 고른다. 새 유료 실행·480요청으로의 확대는 미승인이다.
+**이전 결정 지점 결과는 [120요청 결과](../reports/20261116-decision-replay-results.md)다.** [새 프로필](../../protocols/pilots/tau2-decision-replay-120-v1.json)·[판정 방법](../research/decision-replay-pilot-v1.md)·[동결 기록](../../artifacts/pilots/20261116-decision-replay-protocol.json)을 실행 전에 고정했고 [receipt](../../artifacts/pilots/20261116-decision-replay-results.json)·[단일 분석 에이전트 주석](../../artifacts/analyses/20261116-decision-replay-review.json)을 보존했다. 120/120 정상 응답·$0.043359345·오류/생략/비용 미확인 0이다. `call_limit`은 120시도 완료를 뜻한다. 업무 도구는 실행하지 않았다. 수하물 규칙의 재사용을 첫 후보로 준비하되 17의 새 오류·21의 보류를 함께 추적한다. 현재 문맥만으로 충분한 대조·일반 메모·옳았던 상태를 준비하고 작업자 작성 기억과 연구자 메모를 구분한다. 42·1과 20은 한 응답 판정에 적합한지 다시 고른다. 새 유료 실행·480요청으로의 확대는 미승인이다.
 
 원본이 있으면 `uv run --frozen python scripts/reproduce_experiment.py --experiment decision_replay --run --output outputs/reproductions/NEW_REPLAY_REVIEW`로 고정 코드의 동결 참조·로그·검사·주석을 재검증한다. 최신 코드의 원본 호환 감사는 `scripts/run_decision_replay.py --audit-only --output runs/tau2-decision-replay-luna-120-01`로 별도 실행한다. 실행 구현 128개와 별도 판정/출처 참조는 당시 코드에 보존한다. 아래의 과거 직접 review/diagnose 명령은 해당 고정 checkout·공유 코드 사본 기준이며 현재 main에서는 P0 실행기를 사용한다. 이하 무기억 측정과 구현 단계는 이전 이력이다.
 

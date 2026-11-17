@@ -1,0 +1,145 @@
+{
+  "format": "agent-memory-written-replay-draft/v1",
+  "status": "draft",
+  "executable": false,
+  "question": "Do the ten retained writing allocations change a later decision beyond an empty bank or a generic reminder, and do they introduce errors in candidate correct states?",
+  "primary_comparison": null,
+  "writing_result_ref": {
+    "path": "artifacts/pilots/20261117-writing-10-results.json",
+    "sha256": "46c399d95cdee55901bcead23903cf2791050c0a8997ec918a70a27f8271a316"
+  },
+  "replay_instruction_ref": {
+    "path": "protocols/instructions/frozen-memory-replay-v1.txt",
+    "sha256": "cd5d4dede32681b19eaa7eb1919d59b9a08ae2732170afba22cba35ab1d245e4"
+  },
+  "decision_source": {
+    "path": "runs/tau2-baseline-luna-deepseek1017-train-01",
+    "log_sha256": "ec0994a536729872ce8ee7ff06ae63c2e640e70091146b9a361535174ee8fbb5"
+  },
+  "arms": ["empty", "generic", "model_written", "researcher"],
+  "delivery": {
+    "format": "past-memory-json-context/v1",
+    "policy": {
+      "enabled": true,
+      "write_timing": "none",
+      "same_episode_read": false,
+      "page_size": 4,
+      "read_mode": "preload",
+      "max_items": null,
+      "max_payload_bytes": null,
+      "max_return_bytes": null
+    },
+    "max_input_bytes": null,
+    "scope": "Common rendering for offline candidates only. Page size is copied from the writing profile; null bank caps and input cap are not approved live limits.",
+    "memory_role": "user",
+    "position": 1,
+    "common_notice": "Shared memory/context.py system notice; notes are fallible past work, not current customer speech or identity.",
+    "original_tools_and_parameters": "preserve exactly, including original reasoning low and route",
+    "historical_system_note_replay": "Different renderer; do not pool its 120 responses with this comparison."
+  },
+  "control_notes": {
+    "generic": {
+      "title": "Notes from earlier work",
+      "body": "Before taking an action, review the current policy, the customer's actual request, and the available tool results. Check the proposed action and its arguments, and ask for clarification when a necessary detail is unresolved. Confirm changes with the customer before applying them.",
+      "origin": "Researcher-authored generic caution control; not worker-generated memory.",
+      "information_access": "Analyst has seen prior analysis; this note contains general process guidance and no task-specific answer. Independent content review is pending."
+    },
+    "researcher": {
+      "title": "Notes from earlier work",
+      "body": "For an airline booking, the free checked-bag allowance does not specify how many bags the customer needs. Do not infer the requested quantity from that allowance. If the actual quantity is unclear, ask for it and include the quantity in the confirmation before booking. Apply the current policy's limit of one certificate per reservation when assembling payment methods. Recheck all other booking details against the current conversation.",
+      "origin": "Researcher-authored public-policy procedural control; not an upper bound or a verified causal explanation.",
+      "information_access": "Analyst has seen prior grading diagnoses. The note is restricted to public policy and missing quantity confirmation; it does not supply the hidden baggage count. Independent verification of that restriction is pending."
+    }
+  },
+  "cases": [
+    {
+      "case_id": "airline14-r2-booking",
+      "task_id": "14",
+      "repetition": 2,
+      "run_id": "r_1b1c08d270854ca1b230d23e75c04f77",
+      "request_id": "request_16cc44dd47ca45dea03145aebd07f8d4",
+      "request_sha256": "8c79005310b58455fdf209b5ee1ac526caa5f2d4b6423f80cf271d639f02773e",
+      "response_sha256": "2a8a0a759acecd72d4f7b7c828c6aaba6e68a7d21467e8bd81e146b8d4cb3490",
+      "candidate_use": "Previously diagnosed baggage/confirmation error; no hidden zero-count answer is supplied.",
+      "selection_rule": "The preserved request immediately before the only booking call in this run.",
+      "information_relation": "Same task and same source trajectory used for writing; retrospective local intervention, not held-out transfer.",
+      "dependence_group": "airline14-23-shared-customer-development",
+      "automatic_screen": null
+    },
+    {
+      "case_id": "airline14-r1-booking",
+      "task_id": "14",
+      "repetition": 1,
+      "run_id": "r_1632a75e5ee74cae889ee991cc589003",
+      "request_id": "request_6ea6cac85c494a6c94ddb54675c6d358",
+      "request_sha256": "eb93431dd63061078503c66d07f61a85580c92cffcf522ab231f69c5ab4f5178",
+      "response_sha256": "4076f958059266cdb3078606b2402619663acc091c4a186b06c6f620c6399e79",
+      "candidate_use": "Candidate originally correct state from a successful episode; decision policy compliance still requires independent review.",
+      "selection_rule": "The preserved request immediately before the only booking call in this run, not its final assistant response.",
+      "information_relation": "Another trajectory of the same task/customer; not a statistically independent transfer task.",
+      "dependence_group": "airline14-23-shared-customer-development",
+      "automatic_screen": null
+    },
+    {
+      "case_id": "airline23-r2-booking",
+      "task_id": "23",
+      "repetition": 2,
+      "run_id": "r_03c5b9b2afeb4aa49aa1207e6207ec18",
+      "request_id": "request_bdfb0affa0f94e9b89b838521bd310a7",
+      "request_sha256": "e9b1c9483cf019b118e6796d432def75c2f00b69e03f840017794f18f5ec1aee",
+      "response_sha256": "65a0230dbeb2abb5f118749cd7bea9f21cb37895643ef867e59f7b523ecc852d",
+      "candidate_use": "Previously diagnosed three-certificates-in-one-booking error; target the payment rule actually retained in memories.",
+      "selection_rule": "The preserved request immediately before the only booking call in this run.",
+      "information_relation": "The one-certificate rule is already in the current policy: rule reminder, not new-information transfer. Same customer as task 14.",
+      "dependence_group": "airline14-23-shared-customer-development",
+      "automatic_screen": null
+    },
+    {
+      "case_id": "airline23-r1-first-booking",
+      "task_id": "23",
+      "repetition": 1,
+      "run_id": "r_ebe376c9de3d4433909026bedc1ed3de",
+      "request_id": "request_028930986839490382fb13234546a9f0",
+      "request_sha256": "855ad377adf65ea6c349aee1d0bf6b08293d070136b541959cb551d33fe36fa7",
+      "response_sha256": "7eb9fb8c668d625fff7b18787fea7cc8f0b690fdce0f218fb25b9bf94b5ad865",
+      "candidate_use": "Candidate originally correct payment state from a successful episode; full decision policy compliance is unadjudicated.",
+      "selection_rule": "The first of three booking calls, before earlier split bookings alter the balance and reservation state. Later booking requests are not substituted.",
+      "information_relation": "Current-policy rule reminder and shared customer; not independent new-information transfer.",
+      "dependence_group": "airline14-23-shared-customer-development",
+      "automatic_screen": null
+    }
+  ],
+  "analysis": {
+    "all_writer_allocations": "Retain all ten, including the empty writing; never select banks by observed usefulness.",
+    "pairing": "Four arms per candidate decision and writer run. Common empty/generic/researcher inputs repeat across writer runs; identical hashes are dependence groups, not extra independent memories.",
+    "decision_outcomes": ["target_rule_correction", "new_error", "clarification", "read_or_defer", "unjudgeable"],
+    "automatic_screen": "None selected. The historical task-14 total_baggages>0 screen is not valid for arbitrary correct/changed states.",
+    "completion": "One response cannot establish final tool execution or official episode success. Check those separately in a later episode protocol.",
+    "identity": "All candidates occur after the current user ID was already supplied. Common notice rendering cannot verify authentication behavior; assess early-turn or full-episode identity procedures separately.",
+    "control_note_length": "Natural lengths differ; generic comparison does not fully control token count, specificity or style.",
+    "semantic_annotation": "Condition-hidden independent review and case-specific rubrics are pending; no effects are measured in offline preparation."
+  },
+  "sampling": {
+    "replay_repetitions": null,
+    "schedule_seed": null,
+    "power_and_cluster_plan": null
+  },
+  "guards": {
+    "max_model_requests": null,
+    "max_reported_cost_usd": null,
+    "max_seconds": null,
+    "timeout_seconds": null
+  },
+  "paid_authorization": null,
+  "unresolved": [
+    "primary_comparison_and_endpoint",
+    "independent_case_and_control_note_review",
+    "case_specific_rubrics_and_screen_versions",
+    "sampling_and_cluster_analysis",
+    "live_role_input_and_bank_limits",
+    "current_model_endpoint_verification",
+    "live_recording_gateway_and_provenance_integration",
+    "budget_and_paid_authorization",
+    "clean_commit_and_frozen_ready_profile"
+  ]
+}

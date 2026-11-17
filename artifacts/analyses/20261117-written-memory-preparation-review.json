@@ -1,0 +1,95 @@
+{
+  "format": "agent-memory-written-comparison-code-review/v1",
+  "status": "passed_for_offline_preparation",
+  "roles": {
+    "implementation": "next_memory_comparison agent",
+    "review": "root agent",
+    "independent_semantic_adjudication": false
+  },
+  "base_commit": "d0fce595a07218671a9806d6b72ba88e019fb58f",
+  "execution_scope": "Offline candidate preparation from uncommitted development code; no paid run or live protocol freeze.",
+  "profile_ref": {
+    "path": "protocols/drafts/tau2-written-memory-replay-v1.json",
+    "sha256": "18bb3fb8e8e761e5bf617113828603419989f906b3824b07cfd14b279fc32483"
+  },
+  "canonical_profile_sha256": "bd672cf6867c6597356dc5c69480a3840778438b82cf480db58a9c164f2bbb51",
+  "implementation_refs": [
+    {
+      "path": "src/agent_memory_eval/experiments/writing_comparison.py",
+      "sha256": "3eae536eed59d08bfbe398c39253dc6103e31403acbc189404c44df9ed8918d9"
+    },
+    {
+      "path": "scripts/prepare_written_memory_comparison.py",
+      "sha256": "49ab2828356922d7a7625e1866a11d728fe0bc8134325b1823a21471d396dab2"
+    },
+    {
+      "path": "tests/test_writing_comparison.py",
+      "sha256": "221dceb3cb49b99766c826beb8892ae16d67ada604159acf93a9c6113f010545"
+    }
+  ],
+  "resolved_review_findings": [
+    "Enforce complete item/payload/return budgets without truncation; reject invalid input caps.",
+    "Reject declared delivery format, role or position that differs from the shared renderer.",
+    "Do not apply the historical zero-baggage argument screen to arbitrary correct states.",
+    "Select the first of three task-23 successful booking calls explicitly; keep episode success distinct from decision compliance."
+  ],
+  "independent_execution": {
+    "status": "passed",
+    "scope": "independent_offline_preparation_review_not_semantic_adjudication_or_model_effect",
+    "preparation_rows": 160,
+    "unique_request_payloads": 48,
+    "writing_allocations_preserved": 10,
+    "empty_writing_allocations_preserved": 1,
+    "original_snapshot_items_preserved": true,
+    "common_system_suffix_variants": 1,
+    "tools_parameters_and_original_conversations_preserved": true,
+    "control_provenance_excluded_from_requests": true,
+    "shared_inputs_and_pairing_verified": true,
+    "cross_run_request_and_changed_hash_rejected": true,
+    "source_files_sizes_mtimes_and_logs_preserved": {
+      "runs/tau2-baseline-luna-deepseek1017-train-01": 6591,
+      "runs/tau2-memory-writing-10-luna-feedback-01": 410
+    },
+    "api_role_keys_present": false,
+    "network_attempts": 0,
+    "subprocess_attempts": 0,
+    "model_effect_measured": false,
+    "seconds": 125.482
+  },
+  "serialized_request_file_hashes_verified": 48,
+  "input_bytes": {
+    "max": 46360,
+    "min": 36807
+  },
+  "checks": {
+    "targeted_tests": {
+      "count": 14,
+      "seconds": 0.017,
+      "status": "passed",
+      "scope": "pure rendering, source binding, refusal and file hash tests; no HTTP/native episodes"
+    },
+    "design": "passed",
+    "repository_links": "passed",
+    "legacy_archive": "passed",
+    "whitespace": "passed"
+  },
+  "performance_observation": {
+    "export_including_source_audits_seconds": 110.653,
+    "single_local_measurement": true,
+    "profiling_performed": false
+  },
+  "unresolved_before_paid_run": [
+    "primary_comparison_and_endpoint",
+    "independent_case_and_control_note_review",
+    "case_specific_rubrics_and_screen_versions",
+    "sampling_and_cluster_analysis",
+    "live_role_input_and_bank_limits",
+    "current_model_endpoint_verification",
+    "live_recording_gateway_and_provenance_integration",
+    "budget_and_paid_authorization",
+    "clean_commit_and_frozen_ready_profile"
+  ],
+  "live_ready": false,
+  "memory_effect_measured": false,
+  "new_paid_calls": 0
+}
