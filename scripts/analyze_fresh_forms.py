@@ -181,7 +181,7 @@ def inspect_stage(run, design, plan, cfg, checkout, workspace):
     )
 
 
-def analyze(workspace, root, config_path, report):
+def analyze(workspace, root, config_path, report, *, continuation=False):
     raw = config_path.read_bytes()
     cfg = read_json(raw)
     checkout = workspace / "data/tau2-bench"
@@ -189,7 +189,16 @@ def analyze(workspace, root, config_path, report):
     for stage in ("source", "comparison"):
         d, plan = prepare_study(root, workspace, checkout, cfg, digest(raw), stage)
         run = safe_path(workspace, "runs/" + cfg[stage + "_name"])
-        inspected = inspect_stage(run, d, plan, cfg, checkout, workspace)
+        stage_cfg = cfg
+        if stage == "comparison" and continuation:
+            from agent_memory_eval.experiments.fresh_continuation import AMENDMENT, verify_continuation
+            amendment = read_json((root / AMENDMENT).read_bytes())
+            run = safe_path(workspace, "runs/" + amendment["destination"])
+            maximum = verify_continuation(root, workspace, run)
+            stage_cfg = dict(cfg, unpriced_http=dict(cfg["unpriced_http"], maximum_per_stage=maximum))
+        inspected = inspect_stage(run, d, plan, stage_cfg, checkout, workspace)
+        if stage == "comparison" and continuation:
+            inspected["continuation"] = read_json((run / "control.json").read_bytes())["continuation"]
         if inspected["config_sha256"] != digest(raw):
             raise ContractError("Stage configuration hash differs from original")
         stages[stage] = inspected
@@ -267,12 +276,13 @@ def main():
     parser.add_argument("report", type=Path)
     parser.add_argument("output", type=Path)
     parser.add_argument("--workspace", type=Path, default=ROOT)
+    parser.add_argument("--continuation", action="store_true", help="Verify the original prefix and include the untouched-slot continuation")
     parser.add_argument("--config", type=Path, default=ROOT / "protocols/pilots/tau2-new-customer-forms-v1.json")
     a = parser.parse_args()
     target = a.output.resolve()
     if target.exists() or target.is_relative_to((a.workspace / "runs").resolve()):
         raise ContractError("Use a new output outside the sealed runs")
-    data = analyze(a.workspace.resolve(), ROOT, a.config, a.report.resolve())
+    data = analyze(a.workspace.resolve(), ROOT, a.config, a.report.resolve(), continuation=a.continuation)
     target.parent.mkdir(parents=True, exist_ok=True)
     with TemporaryDirectory(dir=target.parent) as tmp:
         for n, v in data.items():
