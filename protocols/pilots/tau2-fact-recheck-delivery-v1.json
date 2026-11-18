@@ -1,0 +1,14 @@
+{
+  "format": "agent-memory-prompt-delivery/v1",
+  "status": "ready",
+  "name": "tau2-fact-recheck-delivery-01",
+  "parent_config_ref": {
+    "path": "protocols/pilots/tau2-fact-recheck-v1.json",
+    "sha256": "95d6da63b2770a6772f085019e6c8f0871e0bec2f25781eb543854ccb08d2af7"
+  },
+  "read_modes": ["preload", "on_demand"],
+  "instruction_ref": {
+    "path": "protocols/instructions/tau2-delivery-memory.txt",
+    "sha256": "050147f01a4ae531d38f0d8a85b2bec2fcc07df51e7cf3076d8f1735526fca1d"
+  }
+}

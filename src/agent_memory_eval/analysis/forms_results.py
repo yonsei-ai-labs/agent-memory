@@ -12,6 +12,7 @@ from agent_memory_eval.contracts.core import ContractError, MemoryPolicy, digest
 from agent_memory_eval.experiments.forms_batch import FORMS, ordered_jobs
 from agent_memory_eval.memory.context import memory_system_suffix, past_memory_instruction, snapshot_message
 from agent_memory_eval.memory.preparation import snapshot_items
+from agent_memory_eval.memory.tools import memory_tools
 from agent_memory_eval.recording.journal import BlobStore, read_experiment, safe_path
 
 
@@ -70,7 +71,7 @@ def contrast(rows, treatment, control, groups, *, resamples=5000, seed=20261118)
                       for key in ("gain", "loss", "both_success", "both_failure")})
 
 
-def checked_rows(output):
+def checked_rows(output, *, observe_job=None, observe_parent=None):
     output = Path(output).resolve()
     read = lambda name: read_json(safe_path(output, name).read_bytes())
     control, completion, rows = read("control.json"), read("completion.json"), read("allocations.json")
@@ -87,6 +88,22 @@ def checked_rows(output):
     sources = {r["task_id"]: r for r in design["source"]["cohort"]}
     prompt_hashes = {c["id"]: c["writer_instruction_sha256"] for c in design.get("conditions", [])}
     written = {}
+    delivery_arms = design.get("delivery_arms", {})
+    if delivery_arms:
+        from agent_memory_eval.experiments.prompt_delivery import source_banks
+        pin = design["writer_parent"]
+        parent = safe_path(output.parent, pin["name"])
+        _, _, original_writers, banks = source_banks(parent, pin)
+        for (rep, task, arm), bank in banks.items():
+            written[task, rep, arm] = bank["run_id"], bank["snapshot_id"], bank["items"]
+            if bank["public_context_sha256"] != sources[task]["public_context_sha256"]:
+                raise ContractError("Imported writer refers to a different public experience")
+        if observe_parent:
+            for row in original_writers:
+                if row["status"] in {"completed", "empty"}:
+                    folder = safe_path(parent, row["directory"])
+                    scan, state, _ = read_experiment(folder)
+                    observe_parent(row, folder, scan, state, BlobStore(folder))
     for row in rows:
         folder = safe_path(output, row["directory"])
         if row["status"] == "not_started":
@@ -121,11 +138,17 @@ def checked_rows(output):
         else:
             cfg = state["assignments"][run]
             arm = row["arm"]
+            delivery = delivery_arms.get(arm)
             if (cfg["task_id"], cfg["repetition"], cfg["arm"]) != key:
                 raise ContractError("Native assignment differs from the planned cell")
             items = snapshot_items(blobs, state, start["start_snapshot_id"]) if arm != "no_memory" else []
-            if arm in design["writing"]["lines"]:
-                if written.get(key) != (cfg["source_writer_run_id"], cfg["source_writer_snapshot_id"], items):
+            policy = MemoryPolicy(**cfg["policy"])
+            if delivery and (cfg.get("fixed_bank_delivery") != delivery or policy.read_mode != delivery["read_mode"]
+                             or policy.write_timing != "none" or not policy.enabled):
+                raise ContractError("The observed read policy differs from the frozen-bank comparison")
+            if delivery or arm in design["writing"]["lines"]:
+                writer_key = (key[0], key[1], delivery["writer"]) if delivery else key
+                if written.get(writer_key) != (cfg["source_writer_run_id"], cfg["source_writer_snapshot_id"], items):
                     raise ContractError("Delivered memory differs from the assigned sealed writer snapshot")
             elif arm == "public_record":
                 if (len(items) != 1 or items[0]["title"] != "Earlier public interaction"
@@ -138,18 +161,30 @@ def checked_rows(output):
                 instruction = blobs.get(cfg["instruction_ref"])
                 if digest(instruction.encode()) != design["second_pass"]["solve_instruction_ref"]["sha256"]:
                     raise ContractError("Solve instruction changed")
-                system += memory_system_suffix(MemoryPolicy(**cfg["policy"]), past_memory_instruction(instruction))
+                system += memory_system_suffix(policy, instruction if delivery else past_memory_instruction(instruction))
             for e in scan["events"].values():
+                if delivery and e["type"] == "memory.returned":
+                    p = e["payload"]
+                    heads = {item["id"]: item["version"] for item in items}
+                    if (p["bank_id"] != start["bank_id"] or p["operation"] not in {"list", "get"}
+                            or policy.read_mode != "on_demand"
+                            or any(heads.get(v["item_id"]) != v["version_id"] for v in p["items"])):
+                        raise ContractError("A memory lookup escaped the assigned bank or read mode")
+                if delivery and e["type"] == "memory.preloaded" and not policy.preloads:
+                    raise ContractError("The query condition received an automatic preload")
                 if e["type"] != "model.request_started":
                     continue
                 payload = e["payload"]
                 wire = blobs.get(payload["request_ref"])
-                if any(t["function"]["name"].startswith("memory_") for t in (wire.get("tools") or ())):
-                    raise ContractError("Memory tool exposed during native solve")
+                allowed = memory_tools(policy.tools("solve")) if delivery and payload["actor_role"] == "worker" else []
+                if [t for t in (wire.get("tools") or ()) if t["function"]["name"].startswith("memory_")] != allowed:
+                    raise ContractError("Memory tools differ from the declared retrieval policy")
                 if payload["actor_role"] == "worker":
                     if wire["messages"][0] != dict(role="system", content=system) or (
-                            arm != "no_memory" and wire["messages"][1] != snapshot_message(items)):
+                            policy.preloads and wire["messages"][1] != snapshot_message(items)):
                         raise ContractError("Worker wire differs from the assigned policy and full snapshot")
+                    if delivery and not policy.preloads and snapshot_message(items) in wire["messages"][1:]:
+                        raise ContractError("An entire snapshot leaked into a query-only worker input")
                 elif payload["actor_role"] != "user_simulator" or "seed" in wire:
                     raise ContractError("Unexpected role or simulator wire seed")
             if result["memory_input_spans"] != audit["memory_input_spans"]:
@@ -175,6 +210,8 @@ def checked_rows(output):
             total = usage[actor]
             for key in total:
                 total[key] += Decimal(values[key]) if key == "reported_usd" else values[key]
+        if observe_job is not None:
+            observe_job(row, folder, scan, state, blobs)
     known = sum(v["reported_usd"] for v in usage.values())
     if (sum(v["http_calls"] for v in usage.values()) != completion["http_calls"]
             or abs(known - Decimal(str(completion["reported_usd"]))) > Decimal("0.00000001")

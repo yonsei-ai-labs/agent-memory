@@ -28,7 +28,7 @@ DESIGN = "protocols/drafts/tau2-two-pass-memory-forms-v1.json"
 
 
 def ordered_jobs(design):
-    if design.get("format") == "agent-memory-prompt-comparison-design/v1":
+    if design.get("format") in {"agent-memory-prompt-comparison-design/v1", "agent-memory-prompt-delivery-design/v1"}:
         from agent_memory_eval.experiments.prompt_comparison import comparison_jobs
         return comparison_jobs(design)
     allocation = design["allocation"]
@@ -193,9 +193,9 @@ def prepare(root, workspace, checkout, design):
                 instruction=instruction)
 
 
-def run_jobs(rows, execute, guard, persist, *, written_arms=(*FORMS, "summary")):
+def run_jobs(rows, execute, guard, persist, *, written_arms=(*FORMS, "summary"), initial_writers=None):
     """Persist all assignments before HTTP, a start before side effects, and every terminal disposition."""
-    writers = {}
+    writers = dict(initial_writers or {})
     persist(rows)
     stop = None
     for row in rows:
@@ -268,11 +268,13 @@ def run_batch(profile, workspace, checkout):
     return execute_prepared(profile, root, destination, identity, design, plan, models, guard)
 
 
-def execute_prepared(profile, root, destination, identity, design, plan, models, guard):
+def execute_prepared(profile, root, destination, identity, design, plan, models, guard, *, imported_writers=None):
     """Execute a verified schedule once, preserving every job's original journal."""
     from agent_memory_eval.experiments.forms_solve import run_forms_solve
     from agent_memory_eval.experiments.forms_write import read_form_bank, run_form_writer
     written_arms = tuple(design["writing"]["lines"])
+    delivery_arms = design.get("delivery_arms", {})
+    writer_root, bindings = imported_writers or (destination, {})
     rows = [dict(row, status="planned", directory=f'jobs/{row["index"]:04d}', run_id=new_id("r")) for row in plan["jobs"]]
     destination.mkdir(exist_ok=False)
     (destination / "jobs").mkdir()
@@ -300,14 +302,14 @@ def execute_prepared(profile, root, destination, identity, design, plan, models,
                 arm = row["arm"]
                 cfg = solve_connection(plan["connection"], design, row, guard.max_usd)
                 orch, native = build_baseline_orchestrator(cfg, plan["tasks"][row["task_id"]])
-                bank = (read_form_bank(destination / writer["directory"], expected_log_sha256=writer["result"]["log_sha256"])
+                bank = (read_form_bank(safe_path(writer_root, writer["directory"]), expected_log_sha256=writer["result"]["log_sha256"])
                         if writer else None)
                 result = run_forms_solve(journal, arm=arm, task_id=row["task_id"], repetition=row["repetition"],
                     run_id=row["run_id"], connection=cfg, prepared=(orch, native, models, plan["modules"]),
                     guard=guard, clients=episode_clients, limits=limits, instruction=plan["instruction"] if arm != "no_memory" else "",
                     writer_bank=bank, public_record=source.public_context if arm == "public_record" else None,
                     public_context_sha256=source.public_context_sha256 if arm not in {"no_memory", "empty_preload"} else None,
-                    written_arms=written_arms)
+                    written_arms=written_arms, delivery=delivery_arms.get(arm))
             if result["run_id"] != row["run_id"]:
                 raise ContractError("Run differs from preallocated identity")
             result["log_sha256"] = digest(journal.path.read_bytes())
@@ -319,7 +321,8 @@ def execute_prepared(profile, root, destination, identity, design, plan, models,
                 raise ContractError("Per-job provider ledger differs from journal accounting")
         return result
     ledger = destination / "allocations.json"
-    stop = run_jobs(rows, execute, guard, lambda values: write_json(ledger, values), written_arms=written_arms)
+    stop = run_jobs(rows, execute, guard, lambda values: write_json(ledger, values),
+                    written_arms=delivery_arms or written_arms, initial_writers=bindings)
     summary = dict(stop_reason=stop, http_calls=guard.calls, reported_usd=guard.reported_usd,
         unknown_cost=guard.unknown_cost, ended_at=datetime.now(timezone.utc).isoformat(),
         allocation_sha256=digest(ledger.read_bytes()), control_sha256=digest((destination / "control.json").read_bytes()))

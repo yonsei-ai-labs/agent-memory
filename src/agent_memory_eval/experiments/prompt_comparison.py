@@ -24,6 +24,7 @@ def _keys(value, keys, name):
 def _schedule(design):
     namespace = design["allocation"]["namespace"]
     conditions = [c["id"] for c in design["conditions"]]
+    delivery = design.get("delivery_arms")
     blocks = []
     for seeds in design["model"]["seed_pairs"]:
         rep = seeds["repetition"]
@@ -32,8 +33,8 @@ def _schedule(design):
         tasks = [t["task_id"] for t in design["source"]["cohort"]]
         for task in sorted(tasks, key=lambda t: rank(t, "block")):
             blocks.append(dict(task_id=task, repetition=rep,
-                write=sorted(conditions, key=lambda a: rank(task, "write", a)),
-                solve=sorted([*conditions, *CONTROLS], key=lambda a: rank(task, "solve", a))))
+                write=[] if delivery else sorted(conditions, key=lambda a: rank(task, "write", a)),
+                solve=sorted(delivery or [*conditions, *CONTROLS], key=lambda a: rank(task, "solve", a))))
     sequence = [[phase, b["repetition"], b["task_id"], arm] for phase in ("write", "solve")
                 for b in blocks for arm in b[phase]]
     return blocks, sequence

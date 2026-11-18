@@ -205,7 +205,7 @@ def _usage(journal, run_id):
 
 def run_forms_solve(journal, *, arm, task_id, repetition, run_id, connection, prepared, guard, limits,
                     instruction, writer_bank=None, public_record=None, public_context_sha256=None, opener=None, clients=None,
-                    written_arms=WRITTEN_ARMS):
+                    written_arms=WRITTEN_ARMS, delivery=None):
     """Run one assigned episode in a new per-job journal with a batch guard and verified input.
 
     The caller verifies a writer bank against its sealed journal and supplies the cohort's public hash.
@@ -218,7 +218,10 @@ def run_forms_solve(journal, *, arm, task_id, repetition, run_id, connection, pr
     if not isinstance(instruction, str) or (instruction != "" if arm == "no_memory" else not instruction.strip()):
         raise ContractError("Memory arms require the common instruction and pure no-memory requires none")
     _prepared_for_job(connection, prepared, limits, task_id)
-    items, revision = _bank_input(arm, task_id, repetition, writer_bank, public_record, public_context_sha256,
+    if delivery is not None and (delivery["read_mode"] not in {"preload", "on_demand"} or arm in {"no_memory", "empty_preload"}):
+        raise ContractError("A frozen-bank delivery must declare its writer and read policy")
+    writer_condition = delivery["writer"] if delivery else arm
+    items, revision = _bank_input(writer_condition, task_id, repetition, writer_bank, public_record, public_context_sha256,
                                   written_arms=written_arms)
     execution = ExecutionLimits(**{k: limits[k] for k in (
         "worker_requests", "user_simulator_requests", "writer_requests", "max_input_bytes")})
@@ -229,7 +232,8 @@ def run_forms_solve(journal, *, arm, task_id, repetition, run_id, connection, pr
             "read_bank_items", "read_bank_payload_bytes", "read_bank_return_bytes")):
         raise ContractError("Read banks require finite item, payload and return-byte limits")
     policy = MemoryPolicy(arm != "no_memory", "none", False, page_size=max(1, limits["read_bank_items"]),
-                          read_mode="none" if arm == "no_memory" else "preload", max_items=limits["read_bank_items"],
+                          read_mode=delivery["read_mode"] if delivery else ("none" if arm == "no_memory" else "preload"),
+                          max_items=limits["read_bank_items"],
                           max_payload_bytes=limits["read_bank_payload_bytes"], max_return_bytes=limits["read_bank_return_bytes"])
     local_guard = _EpisodeGuard(guard, limits)
     if clients is not None and (opener is not None or set(clients) != set(ROLES)
@@ -259,6 +263,8 @@ def run_forms_solve(journal, *, arm, task_id, repetition, run_id, connection, pr
         source_writer_run_id=writer_bank["run_id"] if writer_bank else None,
         source_writer_bank_sha256=digest(canonical(writer_bank)) if writer_bank else None,
         input_items_sha256=digest(canonical(items)) if policy.enabled else None)
+    if delivery:
+        state["assignments"][run_id]["fixed_bank_delivery"] = dict(delivery)
     journal.append([ctx.at("prepare").event("run.started", dict(bank_id=bank, start_snapshot_id=parent,
         fresh_session=True, source_run_ids=[writer_bank["run_id"]] if writer_bank else [],
         task_ref=journal.blobs.put(dict(role="system", content=prepared[0].agent.system_prompt))))], state=state)
@@ -269,16 +275,24 @@ def run_forms_solve(journal, *, arm, task_id, repetition, run_id, connection, pr
         if bank_sizes and any(size > getattr(policy, "max_" + key) for key, size in bank_sizes.items()):
             raise SnapshotBudgetExceeded("Read bank exceeds its item, payload or return limit")
         orch = fresh_orchestrator(prepared)
-        bridge_type = _PreloadBridge if policy.enabled else Tau2Bridge
         # The stock bridge also accepts the model's canonical slug. A missing alias must never admit a missing model ID.
         models = {r: dict(m, canonical_slug=m.get("canonical_slug") or m["id"]) for r, m in prepared[2].items()}
-        bridge = bridge_type(journal, ctx, orch, connection, models, local_guard, prepared[3],
-                             opener=opener, execution_limits=execution)
+        if delivery:
+            from agent_memory_eval.adapters.tau2_memory import Tau2MemoryBridge
+            bridge = Tau2MemoryBridge(journal, ctx, orch, connection, models, local_guard, prepared[3], opener=opener,
+                execution_limits=execution, memory=memory, bank_id=bank, policy=policy,
+                solve_instruction=instruction, post_instruction="")
+        else:
+            bridge_type = _PreloadBridge if policy.enabled else Tau2Bridge
+            bridge = bridge_type(journal, ctx, orch, connection, models, local_guard, prepared[3],
+                                 opener=opener, execution_limits=execution)
         if clients is not None:
             bridge.clients = {r: copy(c) for r, c in clients.items()}
             for client in bridge.clients.values():
                 client.guard = local_guard
-        if policy.enabled:
+        if delivery:
+            bridge.ensure_preload()
+        elif policy.enabled:
             bridge.prepare_preload(memory, bank, policy, instruction)
         from tau2.runner.simulation import run_simulation
         with bridge:
