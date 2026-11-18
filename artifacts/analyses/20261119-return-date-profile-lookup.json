@@ -1,0 +1,293 @@
+{
+  "scope": "Post hoc single-customer review of date-bearing original notes. Benchmark reads were reconstructed offline. The observed model replies end at the first proposed tool call.",
+  "input_result": {
+    "path": "artifacts/analyses/20261118-format-content-decisions.json",
+    "sha256": "864b8bf8822638a4225e4f833537685533d2db8cf45800473ae0365f97b1d132"
+  },
+  "case": "previous_date",
+  "customer_query": "This is Mia Kim, user ID mia_kim_4397. Please search for direct flights from SEA to JFK for the return date we used on my previous Seattle booking. I'd like to see the available options. Please don't book anything.",
+  "same_request_without_snapshot_sha256": "e07dce1fafb4a7ce2491ddfa27317b754ff194466db18a2b7a856f36bb2d46a0",
+  "banks": [
+    {
+      "arm": "written_episode_1",
+      "item_sha256": "907b32a7ae145e3b6417803c4428888ac4d92863015e55d8a36c73717b7660e5",
+      "wire_sha256": "f413386d3357beebbeb507e90a3ede7d58e3561ac65828f5920de650254d5ffd",
+      "body_characters": 1454,
+      "date_literal": "May 20–25",
+      "date_character_offset": 475,
+      "flight_character_offset": 546,
+      "first_actions": {
+        "get_user_details": 4
+      },
+      "trials": [
+        {
+          "repeat": 1,
+          "slot": 51,
+          "action": "get_user_details",
+          "response_sha256": "cd2287d9896ab2bd20c741f2e16dcf197bdf83d5dd8508c90c76df43fe0146b5"
+        },
+        {
+          "repeat": 2,
+          "slot": 90,
+          "action": "get_user_details",
+          "response_sha256": "65471dca5ef474e0a74b0ae9f475df29f2de65b332a30c65a8aebf65c1dfcb36"
+        },
+        {
+          "repeat": 3,
+          "slot": 131,
+          "action": "get_user_details",
+          "response_sha256": "8e9c00eaf30b689e2dedc389cc3eb8f3faf6875b88dab738780de821e1db594e"
+        },
+        {
+          "repeat": 4,
+          "slot": 178,
+          "action": "get_user_details",
+          "response_sha256": "9fac3ff7779ec4bb95c8af1600a3aa6b32f6db699264681d679aca751f68e41c"
+        }
+      ]
+    },
+    {
+      "arm": "written_episode_2",
+      "item_sha256": "ec87de24efcd6c60279a49902c5f60a2bab08ea966a916931ccec89fe4848525",
+      "wire_sha256": "c2d81be5f3b54d58b64e3368e8442ece64d57386f3903dc7a9cfde90d23940a7",
+      "body_characters": 1259,
+      "date_literal": "May 20–25",
+      "date_character_offset": 478,
+      "flight_character_offset": 572,
+      "first_actions": {
+        "search_direct_flight": 2,
+        "get_user_details": 2
+      },
+      "trials": [
+        {
+          "repeat": 1,
+          "slot": 46,
+          "action": "search_direct_flight",
+          "response_sha256": "90319d83892b24149d24fb6f397f42d4a3a5602bfe1a8aece9540b01f3dde1e2"
+        },
+        {
+          "repeat": 2,
+          "slot": 95,
+          "action": "get_user_details",
+          "response_sha256": "b3bcdcf8f2369b69ed96ef8bc6796d979cb8b05a02448396ae5b6d055f8273dd"
+        },
+        {
+          "repeat": 3,
+          "slot": 140,
+          "action": "search_direct_flight",
+          "response_sha256": "20eed0f43edd54f3150e439c8135b47ce1ff972706e41ae677cce4c5b1a26542"
+        },
+        {
+          "repeat": 4,
+          "slot": 169,
+          "action": "get_user_details",
+          "response_sha256": "d9e1ebf06fca62ffd29d7156493106c1bc466084bc8e0d826b157c94c78993c7"
+        }
+      ]
+    },
+    {
+      "arm": "written_fact_1",
+      "item_sha256": "c6f4247d87afebe51148a80a1f0730421da37b72378b340c1ae29bb2f51a9849",
+      "wire_sha256": "a87a068d2fb4d89a9c58dc947417bae65e7513bebe3cf11cb2e80f3e4700f1b9",
+      "body_characters": 1676,
+      "date_literal": "May 25",
+      "date_character_offset": 1078,
+      "flight_character_offset": 1060,
+      "first_actions": {
+        "get_user_details": 4
+      },
+      "trials": [
+        {
+          "repeat": 1,
+          "slot": 48,
+          "action": "get_user_details",
+          "response_sha256": "33c7334dde10f15ef8675d79395154b460b76051303c9208f99f7f56d0081510"
+        },
+        {
+          "repeat": 2,
+          "slot": 93,
+          "action": "get_user_details",
+          "response_sha256": "88754b24ab965a4b5501fd025bb3e90632260f7659d59f06725059872f1fb42d"
+        },
+        {
+          "repeat": 3,
+          "slot": 128,
+          "action": "get_user_details",
+          "response_sha256": "d1dbf29e9a8b05f85f21ae178cd2d3d35cd28d2b4ba347b56c0350a616120a5a"
+        },
+        {
+          "repeat": 4,
+          "slot": 181,
+          "action": "get_user_details",
+          "response_sha256": "eecd8a02fdd7933e5c087b089d4a373caa778d03061c1b9379805c500a382f68"
+        }
+      ]
+    },
+    {
+      "arm": "written_fact_2",
+      "item_sha256": "127cf1746c20726863a9b11dab96bbd03d94ec7892f921e9e186e45d3d9ae67e",
+      "wire_sha256": "c4a7057d320e4e9a3a93ee8fec1eca5921779f8fb0cebb5ec6f2b2b7ae5a3900",
+      "body_characters": 1515,
+      "date_literal": "2024-05-25",
+      "date_character_offset": 610,
+      "flight_character_offset": 621,
+      "first_actions": {
+        "get_user_details": 1,
+        "search_direct_flight": 3
+      },
+      "trials": [
+        {
+          "repeat": 1,
+          "slot": 55,
+          "action": "get_user_details",
+          "response_sha256": "b8f38312060b7ac9e20d04231ad058ca0e65da4c2329fd1f6834501556c26ded"
+        },
+        {
+          "repeat": 2,
+          "slot": 86,
+          "action": "search_direct_flight",
+          "response_sha256": "a82184eecb28c1a17bdafd1144c216708a6ba59955e102ccd92fd8dca9234155"
+        },
+        {
+          "repeat": 3,
+          "slot": 135,
+          "action": "search_direct_flight",
+          "response_sha256": "eb4756be34b24dd6f6135537e8cea40ac67078343bd923f87e528bf22048042e"
+        },
+        {
+          "repeat": 4,
+          "slot": 174,
+          "action": "search_direct_flight",
+          "response_sha256": "0d2834dea1d82be7ce9079960890dd1b5fdc2a63bb74d7b0854abb398f1fce49"
+        }
+      ]
+    }
+  ],
+  "native_read_check": {
+    "benchmark_commit": "c06b07dd7c4d4ec61ba6ff9bcdf0b15dd7ef36d4",
+    "db_sha256": "1af9fea6e03ca7ca15a22bb3fcaf3e351393e3fc9070b6777947da8996f7531b",
+    "state_hash_before_and_after": "124e39a664b56402bcd09cb8a6a9cece6acb8462337c969799d5658e3250f263",
+    "original_booking": "HATHAT",
+    "original_booking_present_after_reset": false,
+    "earlier_public_wire_sha256": "cecfad9ba04da7d50001e77e02d52c04336b9ce140f2cec6aacc63bacaddd8d5",
+    "verified_returns": {
+      "get_user_details": {
+        "arguments": {
+          "user_id": "mia_kim_4397"
+        },
+        "archived_message_index": 34,
+        "return_sha256": "404cf239d759f8604ac8a6e6751adcbfe313406b85ccc0c0f56ed99604ad1e2f"
+      },
+      "search_direct_flight": {
+        "arguments": {
+          "date": "2024-05-25",
+          "destination": "JFK",
+          "origin": "SEA"
+        },
+        "archived_message_index": 30,
+        "return_sha256": "ac9c46a5799abf65452f53853f9f39ddfe60bbe17c386a4e8780187404288978"
+      }
+    },
+    "profile_reservations": {
+      "C4GP7M": [
+        {
+          "origin": "MIA",
+          "destination": "JFK",
+          "date": "2024-05-17",
+          "flight_number": "HAT198"
+        },
+        {
+          "origin": "JFK",
+          "destination": "ATL",
+          "date": "2024-05-17",
+          "flight_number": "HAT136"
+        },
+        {
+          "origin": "ATL",
+          "destination": "JFK",
+          "date": "2024-05-19",
+          "flight_number": "HAT285"
+        },
+        {
+          "origin": "JFK",
+          "destination": "MIA",
+          "date": "2024-05-19",
+          "flight_number": "HAT060"
+        }
+      ],
+      "XL2C75": [
+        {
+          "origin": "MSP",
+          "destination": "DTW",
+          "date": "2024-05-16",
+          "flight_number": "HAT127"
+        },
+        {
+          "origin": "DTW",
+          "destination": "MSP",
+          "date": "2024-05-17",
+          "flight_number": "HAT210"
+        },
+        {
+          "origin": "MSP",
+          "destination": "DTW",
+          "date": "2024-05-21",
+          "flight_number": "HAT248"
+        },
+        {
+          "origin": "DTW",
+          "destination": "MSP",
+          "date": "2024-05-21",
+          "flight_number": "HAT125"
+        }
+      ],
+      "H9ZU1C": [
+        {
+          "origin": "MIA",
+          "destination": "EWR",
+          "date": "2024-05-24",
+          "flight_number": "HAT192"
+        },
+        {
+          "origin": "EWR",
+          "destination": "IAH",
+          "date": "2024-05-25",
+          "flight_number": "HAT166"
+        }
+      ]
+    },
+    "matching_return_in_profile_reservations": false,
+    "search_options": [
+      {
+        "origin": "SEA",
+        "destination": "JFK",
+        "date": null,
+        "flight_number": "HAT021",
+        "status": "available"
+      },
+      {
+        "origin": "SEA",
+        "destination": "JFK",
+        "date": null,
+        "flight_number": "HAT089",
+        "status": "available"
+      },
+      {
+        "origin": "SEA",
+        "destination": "JFK",
+        "date": null,
+        "flight_number": "HAT100",
+        "status": "available"
+      },
+      {
+        "origin": "SEA",
+        "destination": "JFK",
+        "date": null,
+        "flight_number": "HAT276",
+        "status": "available"
+      }
+    ],
+    "search_date_argument": "2024-05-25",
+    "target_available_for_queried_date": true
+  }
+}
