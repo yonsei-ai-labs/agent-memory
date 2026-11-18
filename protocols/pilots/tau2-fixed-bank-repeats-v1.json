@@ -1,0 +1,119 @@
+{
+  "format": "agent-memory-fixed-bank-repeats/v1",
+  "name": "tau2-fixed-bank-repeats-01",
+  "status": "ready",
+  "parent": "tau2-two-pass-forms-luna-deepseek-01",
+  "parent_completion_sha256": "3528eed073199e62e38b2b30959f6b368c3a00e4e6a54021270de548e8b91381",
+  "split": "train",
+  "tasks": [
+    "0",
+    "3",
+    "14",
+    "17",
+    "42"
+  ],
+  "selection": "In the original 28-task cohort take the smallest numeric ID in each stratum, in the listed order. All are previously observed development cases. Select by first-pass outcome and benchmark operation, without filtering by saved text, prior second-pass success or reversals.",
+  "strata": [
+    "first_success_no_reference_write_no_required_communication",
+    "first_success_no_reference_write_with_required_communication",
+    "first_success_new_booking",
+    "first_failure_flight_update_without_new_booking",
+    "first_failure_cancel_without_new_booking"
+  ],
+  "forms": [
+    "fact",
+    "episode",
+    "lesson",
+    "procedure"
+  ],
+  "controls": [
+    "no_memory",
+    "empty_preload"
+  ],
+  "writer_repetitions": [
+    1,
+    2
+  ],
+  "solver_seeds_by_wave_and_writer": [
+    [
+      4,
+      5
+    ],
+    [
+      5,
+      4
+    ]
+  ],
+  "delivery": "preload",
+  "order": "Within each task and wave, sort writer blocks then arms by SHA-256 of canonical JSON [study, task, wave, writer, 'block' or arm]. Each solver seed is crossed with both original writers and each control is run independently in every block.",
+  "scope": "Same-task native episodes on five previously observed customer groups. Transfer and unseen-customer evaluation are separate. Only the simulator receives its original task instructions. Banks, including voluntary empty ones, come from the same first-pass public interaction for each task.",
+  "primary": "Pair each form with the native no-memory control in its task, writer block and wave. Report gains, losses, both successful, both failed, unavailable and task-equal percentage-point differences. Controls are shared across forms. Separate first-pass recovery from losing a first-pass success.",
+  "secondary": "Repeat the contrasts against matched empty preload. Compare the same frozen writer bank across two solver seeds; compare the two independently written banks within the same task, form and solver seed. Report control variability, title/body exposure, final DB vs required communication, matched outcome cases, worker and simulator usage. Historical writer cost is counted once and separated from new solver expense.",
+  "per_task_wave_guards": {
+    "max_calls": 900,
+    "max_usd": 0.2,
+    "max_seconds": 3600
+  },
+  "total_usd_limit": 2,
+  "max_concurrent_tasks": 5,
+  "http_timeout_seconds": 150,
+  "unpriced_http": {
+    "codes": [
+      429,
+      502,
+      503,
+      504
+    ],
+    "maximum_per_stage": 12
+  },
+  "failure_policy": "Each of ten disjoint task-wave ledgers has its own spend, call and time cap. A received, recorded unpriced listed HTTP error reserves its wire-specific maximum within that ledger and the episode remains ungraded. Other unpriced sends stop that ledger. Submitted episodes are never retried. Missing or unstarted episodes stay in the denominator.",
+  "analyst_opportunities": {
+    "0": {
+      "message": 7,
+      "excerpt": "I was told I didn't need to get insurance",
+      "source_to_target": "0 -> 0",
+      "reusable": "A prior trip had insurance. Check the present reservation, timing and reason before cancellation.",
+      "current_evidence": "Current policy, reservation tools and customer are sufficient. Correctly withholding a write preserves the DB; DB alone cannot grade the explanation."
+    },
+    "3": {
+      "message": 8,
+      "excerpt": "You said 1 checked suitcase, then 4?",
+      "source_to_target": "3 -> 3",
+      "reusable": "An allowance depends on membership, cabin and passenger count. Prior self-reported tier conflicted with the profile.",
+      "current_evidence": "Current profile, itinerary and policy permit the calculation. Distinguish a correct numerical answer from substring scoring."
+    },
+    "14": {
+      "message": 33,
+      "excerpt": "bookings allow only one travel certificate",
+      "source_to_target": "14 -> 14",
+      "reusable": "The certificate limit and split-payment sequence can be reused. Recheck current fares, balances, consent and the new transaction.",
+      "current_evidence": "Public policy, current tools and customer can establish prices and authorized payment. Check both the DB and required communications."
+    },
+    "17": {
+      "message": 1,
+      "excerpt": "add 3 checked bags, change the passenger to myself",
+      "source_to_target": "17 -> 17",
+      "reusable": "A multi-field change requires checking the currently requested passenger, class, baggage and payment.",
+      "current_evidence": "Current customer and profile provide the inputs. Verified partial changes can coexist with official failure."
+    },
+    "42": {
+      "message": 21,
+      "excerpt": "I'm arriving in New York from Dallas on May 17",
+      "source_to_target": "42 -> 42",
+      "reusable": "Disambiguate itineraries by date and passenger before confirming the current cancellation set.",
+      "current_evidence": "The current reservation list, passengers and customer approval can establish the targets."
+    }
+  },
+  "future_transfer_candidates": [
+    {
+      "source": "0",
+      "target": "26",
+      "question": "Will the eligibility check carry to another customer while booking-specific details change?"
+    },
+    {
+      "source": "17",
+      "target": "18",
+      "question": "Will checking cabin, flight and consent carry from an upgrade to a downgrade with current savings?"
+    }
+  ]
+}
