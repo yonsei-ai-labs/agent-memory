@@ -1,0 +1,30 @@
+{
+  "format": "agent-memory-baggage-text-review/v1",
+  "queries": {
+    "previous_tier": "This is Mia Kim, user ID mia_kim_4397. I am comparing baggage costs for a hypothetical Seattle booking. Use the same membership tier I had on my previous Seattle booking. Both passengers would fly economy, and each would check four bags. Across the whole booking, how many of those bags would be free, how many paid, and how much would the paid bags cost? Please give the totals as free=<number>, paid=<number>, fee_usd=<number>. It's only a quote.",
+    "changed_tier": "This is Mia Kim, user ID mia_kim_4397. I am comparing baggage costs for a hypothetical Seattle booking. Use gold membership this time, whatever tier I had on my previous Seattle booking. Both passengers would fly economy, and each would check four bags. Across the whole booking, how many of those bags would be free, how many paid, and how much would the paid bags cost? Please give the totals as free=<number>, paid=<number>, fee_usd=<number>. It's only a quote."
+  },
+  "unit": "Distinct trimmed customer-facing text within case. Assignment, frequency, memory and ordering withheld.",
+  "replies": {
+    "3625e8675988b7254af092010f27dc61dfed1357c81095d805b4ce188721b854": {
+      "case": "changed_tier",
+      "text": "free=6, paid=2, fee_usd=100"
+    },
+    "439e607448fedb62dc0b22aa1af32d5fb51435dd3468541a56c6531ec9d70c88": {
+      "case": "previous_tier",
+      "text": "{\"free\":4,\"paid\":4,\"fee_usd\":200}"
+    },
+    "c8d42f5e4b7bd14a139345aad5dd119735d27101edac3e35521345eceef0f7e2": {
+      "case": "changed_tier",
+      "text": "For a gold member flying economy, each passenger gets 3 free checked bags. For 2 passengers checking 4 bags each, that’s 6 free and 2 paid bags at $50 each.\n\nfree=6, paid=2, fee_usd=100"
+    },
+    "ef7995054854fa23968b86f6b4fea07f011d397a471bc0cd5bea64d74639430e": {
+      "case": "changed_tier",
+      "text": "{\"free\":6,\"paid\":2,\"fee_usd\":100}"
+    },
+    "fa089cb2804e5c9d1b03a684f1d64f431a2ce165279012a2cf26af8d74223f5b": {
+      "case": "changed_tier",
+      "text": "For a gold member flying economy, 3 checked bags per passenger are free. Across 2 passengers, 6 of the 8 bags would be free and 2 would be paid at $50 each.\n\n{\"free\":6,\"paid\":2,\"fee_usd\":100}"
+    }
+  }
+}
