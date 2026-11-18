@@ -192,7 +192,8 @@ def solve_recorded_row(row, raw, destination, plan, design, models, clients, gua
             connection=cfg, prepared=(orch, native, models, plan["modules"]), guard=guard, clients=clients,
             limits=limits, instruction=plan["instruction"] if arm != "no_memory" else "", writer_bank=bank,
             public_record=source.public_context if arm == "public_record" else None,
-            public_context_sha256=source.public_context_sha256 if arm not in {"no_memory", "empty_preload"} else None)
+            public_context_sha256=source.public_context_sha256 if arm not in {"no_memory", "empty_preload"} else None,
+            expected_split=design["source"].get("split", "train"))
         result["log_sha256"] = digest(journal.path.read_bytes())
         result["billing_by_role"] = request_usage(journal)
         billed = totals([dict(result=result)])

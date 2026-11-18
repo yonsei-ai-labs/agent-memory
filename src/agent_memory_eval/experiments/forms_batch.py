@@ -204,7 +204,7 @@ def run_jobs(rows, execute, guard, persist, *, written_arms=(*FORMS, "summary"),
     writers = dict(initial_writers or {})
     persist(rows)
     stop = None
-    for row in rows:
+    for position, row in enumerate(rows):
         if stop is None:
             stop = guard.stop()
         key = (row["repetition"], row["task_id"], row["arm"])
@@ -229,7 +229,7 @@ def run_jobs(rows, execute, guard, persist, *, written_arms=(*FORMS, "summary"),
         except Exception as error:
             stop = guard.stop() or "controller_error"
             row.update(status="interrupted", reason=stop, error_type=type(error).__name__)
-            for pending in rows[row["index"]:]:
+            for pending in rows[position + 1:]:
                 pending.update(status="not_started", reason=stop)
             persist(rows)
             raise

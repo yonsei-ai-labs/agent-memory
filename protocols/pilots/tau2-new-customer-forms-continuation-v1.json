@@ -1,0 +1,12 @@
+{
+  "format": "agent-memory-new-customer-continuation/v1",
+  "parent": "tau2-new-customer-forms-01",
+  "parent_completion_sha256": "dc180852dcd21fe0dca7d9dd9ad867abd589bce6fff2583945a39223e534f446",
+  "config_sha256": "0a73306f4ccb6f6a2e7a648c02b70e4fef274f2a7574e9a136dac06132c2062e",
+  "destination": "tau2-new-customer-forms-continuation-01",
+  "first_untouched": 79,
+  "last_untouched": 120,
+  "received_unpriced_parent_jobs": [76, 77, 78],
+  "cooldown_seconds": [60, 120, 240, 300],
+  "rule": "Carry the original 78 job journals and preserve all grades and ungraded jobs. Only assignments 79 through 120 may be sent, once each. Charge every identified, received 429/502/503/504 up to its actual failed wire maximum against the original shared USD, elapsed time and request caps. Wait after provider errors, including the transport retry-after if longer. Any other unpriced request stops the continuation. Combined totals include the original once."
+}
