@@ -1,0 +1,56 @@
+{
+  "format": "agent-memory-two-pass-forms-supplement-preflight/v1",
+  "implementation_commit": "5d3895d8bbfeb93fca3131603651e9b825f8137a",
+  "checked_at": "2026-11-18T04:45:27.497142+00:00",
+  "parent": {
+    "parent_completion_sha256": "3528eed073199e62e38b2b30959f6b368c3a00e4e6a54021270de548e8b91381",
+    "parent_implementation": "7e30fa24b2d4481e0a91fa30209debccba1c175f",
+    "parent_guards": {
+      "max_calls": 16000,
+      "max_usd": 5,
+      "max_seconds": 129600
+    },
+    "started_at": "2026-11-18T03:24:23.089730+00:00",
+    "untouched": 308,
+    "sealed_writer_banks_required": 203,
+    "scope": [
+      277,
+      584
+    ],
+    "http_calls": 1075,
+    "known_usd": "0.2310443024",
+    "unknown_calls": 1,
+    "original_429": {
+      "request_id": "request_4236e2f4c30b42dfaba3a6d01aad725f",
+      "actor": "user_simulator",
+      "request_sha256": "64e6a42d59d88f0201a78679f849805adceeeb583a7cc37df379bcd41e7f80af",
+      "response_sha256": "f1e2ec842fcd2177eaebbb6c0132763e7e2f48ebde6a216579ed87cdaa049213",
+      "cost_status": "unknown",
+      "reserved_usd": "0.0018567",
+      "retry_after_seconds": null,
+      "retry_after_utc": null
+    },
+    "pending_sha256": "ab802945fcd50189a1eb27afa7c3a1d3df638653c4d6410d7de739d9c3f3cf1f"
+  },
+  "network_model_completions": 0,
+  "offline_checks": {
+    "scoped_frozen_tests": 48,
+    "elapsed_seconds": 128.102,
+    "all_scoped_tests_executed": true,
+    "coverage": [
+      "HTTP 429 with or without a reported cost, safe generation ID and Retry-After capture.",
+      "Cumulative original calls, time and reservations. No repeated sends after an error. Unrecognized unknown billing stops the suffix.",
+      "Pinned native full-episode scorer including public first-pass source to separate writer and fresh solver and true success and true failure."
+    ],
+    "post_error_full_suite_before_supplement": {
+      "passed": 338,
+      "seconds": 637.146
+    },
+    "repository_checks": {
+      "design": "passed",
+      "repository": "passed",
+      "legacy": "passed"
+    }
+  },
+  "note": "Public endpoint terms and original native/source preflight are checked again immediately before a first live HTTP completion."
+}
