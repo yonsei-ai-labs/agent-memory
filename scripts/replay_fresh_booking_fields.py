@@ -1,7 +1,6 @@
-"""Replay observed flight, payment and baggage differences for split-payment bookings without model calls."""
+"""Replay each differing argument of a split-payment booking, then all differing arguments together."""
 
 import argparse
-from itertools import combinations
 from pathlib import Path
 
 from agent_memory_eval.adapters.tau2 import native_modules, verify_checkout
@@ -23,15 +22,17 @@ def sealed_allocations(run, config_hash):
 
 def edit_booking(factory, original, replacements, reference):
     results = []
-    for size in range(1, len(replacements) + 1):
-        for keys in combinations(replacements, size):
-            args = dict(original.arguments, **{k: replacements[k] for k in keys})
-            env = factory()
-            reply = env.get_response(original.model_copy(update={"arguments": args}))
-            hashes = state_hashes(env)
-            results.append(dict(fields=list(keys), tool_error=bool(reply.error),
-                                error=reply.content if reply.error else None,
-                                final_db_sha256=hashes[0], matches_reference=hashes == reference))
+    groups = [[key] for key in replacements]
+    if len(replacements) > 1:
+        groups.append(list(replacements))
+    for keys in groups:
+        args = dict(original.arguments, **{k: replacements[k] for k in keys})
+        env = factory()
+        reply = env.get_response(original.model_copy(update={"arguments": args}))
+        hashes = state_hashes(env)
+        results.append(dict(fields=keys, tool_error=bool(reply.error),
+                            error=reply.content if reply.error else None,
+                            final_db_sha256=hashes[0], matches_reference=hashes == reference))
     return results
 
 
@@ -122,10 +123,11 @@ def probe(workspace, config, *, continuation=False):
                     first[task] = factory, call, reference, r["index"]
                 cell["eligibility"] = "first_pass_booking"
                 continue
-            keys = [k for k in ("flights", "payment_methods", "total_baggages", "nonfree_baggages")
-                    if call.arguments[k] != expected[k]]
+            if set(call.arguments) != set(expected):
+                raise ContractError("An accepted booking has a different native argument schema")
+            keys = [k for k, v in expected.items() if call.arguments[k] != v]
             if cell["official_success"] or not keys:
-                cell["eligibility"] = "official_success" if cell["official_success"] else "no_selected_argument_difference"
+                cell["eligibility"] = "official_success" if cell["official_success"] else "no_booking_argument_difference"
                 continue
             cell["eligibility"] = "observed_difference"
             exp = dict(task_id=task, job=r["index"], fields=keys,
@@ -139,7 +141,7 @@ def probe(workspace, config, *, continuation=False):
     return dict(format="agent-memory-new-customer-booking-field-replay/v1", config_sha256=config_hash,
                 method_sha256=digest(Path(__file__).read_bytes()), stage_completion_sha256=stages,
                 task_ids=sorted(targets, key=int), coverage=cells, comparisons=experiments,
-                scope="Exploratory field selection after reading comparison jobs 69 (flight and payment) and 91 (baggage). For all assigned single-booking, split-payment tasks, replace differing flights, payment methods, total or paid baggage counts separately and in combinations in a local database. Original model decisions, conversations, approvals and grades are preserved.")
+                scope="Exploratory diagnosis developed from comparison jobs 69, 91 and 105. For every failed single-booking, split-payment task with one accepted booking for the intended customer, swap each differing native booking argument individually and all together, in both directions when a successful first pass exists. Original conversations, approvals and grades are preserved.")
 
 
 def main():
