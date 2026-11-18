@@ -1,0 +1,31 @@
+{
+  "format": "agent-memory-new-customer-forms/v1",
+  "status": "ready",
+  "source_name": "tau2-new-customer-source-01",
+  "comparison_name": "tau2-new-customer-forms-01",
+  "base_design_ref": {"path": "protocols/drafts/tau2-two-pass-memory-forms-v1.json", "sha256": "d4b06f72f4bcf5f656587e80645e042e7cf77e687cd5d1c38a20e2aff2cc373a"},
+  "endpoint_ref": {"path": "artifacts/pilots/20261118-two-pass-forms-endpoints.json", "sha256": "9b5bd1d9898ede15030b062fa81e451875fee0adff31d3a279d974a74435a872"},
+  "split": "test",
+  "native_assets": {
+    "tasks.json": "ccd8ba737b4cc371415af70151187788f728d6108d0916e73bb4317b40542052",
+    "split_tasks.json": "b22ced4d9a9850ac9aea31c53bdcb6d6009058140bd9acc7db37c1d36222ba8b",
+    "db.json": "1af9fea6e03ca7ca15a22bb3fcaf3e351393e3fc9070b6777947da8996f7531b"
+  },
+  "customer_selection": "Every official test task with a customer absent from all train scenarios, a state-changing reference action, empty required communication, DB and COMMUNICATE reward basis, and a different final reference DB. Identify the customer from public IDs of the synthetic database in the scenario. Keep all six regardless of first-pass success.",
+  "tasks": ["19","24","25","29","30","32"],
+  "write_tools": ["book_reservation", "cancel_reservation", "update_reservation_baggages", "update_reservation_flights", "update_reservation_passengers", "send_certificate"],
+  "forms": ["fact","episode","lesson","procedure"],
+  "controls": ["no_memory","empty_preload"],
+  "read_mode": "preload",
+  "source_seed": 0,
+  "seed_pairs": [{"repetition":1,"writer":0,"native_and_solver":2},{"repetition":2,"writer":1,"native_and_solver":3}],
+  "source_guards": {"max_calls":1200,"max_usd":0.30,"max_seconds":7200},
+  "comparison_guards": {"max_calls":6500,"max_usd":1.70,"max_seconds":21600},
+  "http_timeout_seconds": 180,
+  "unpriced_http": {"codes":[429,502,503,504],"maximum_per_stage":2,"rule":"Reserve the exact failed wire's maximum token cost, exclude the ungraded job and never resubmit it. Other unpriced outcomes stop the stage. The two spend caps sum to USD 2 including reservations."},
+  "analysis": {
+    "primary": "Official complete native reward. Pair each written form with no memory and with empty preload within task/repetition. Report gain, loss, both success/failure, missing and equal-task average. Separate first-pass success/failure; fixed denominator and optional empty writes.",
+    "secondary": "All six direct pairwise comparisons among forms are descriptive. No population ranking from six customers. Never assign a numerical failure to an ungraded episode.",
+    "behavior": "For each reference state-changing action, match one non-error executed action with the same tool and reservation_id (or booking user_id), in order within that target. Count missing actions and extra writes. Compare ordered flight numbers and dates, route/type, cabin, passengers and payments as multisets where order is irrelevant, baggage counts, insurance and payment ID. Absent action fails applicable fields. Keep official action checks and final DB separately. Analyst-only benchmark references and scores."
+  }
+}

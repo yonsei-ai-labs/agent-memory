@@ -86,7 +86,8 @@ def checked_rows(output, *, observe_job=None, observe_parent=None):
         raise ContractError("The final ledger differs from the frozen allocation")
     usage = defaultdict(lambda: dict(http_calls=0, reported_usd=Decimal(0), total_tokens=0, unknown_count=0))
     sources = {r["task_id"]: r for r in design["source"]["cohort"]}
-    prompt_hashes = {c["id"]: c["writer_instruction_sha256"] for c in design.get("conditions", [])}
+    prompt_hashes = (design.get("writer_prompt_hashes")
+                     or {c["id"]: c["writer_instruction_sha256"] for c in design.get("conditions", [])})
     written = {}
     delivery_arms = design.get("delivery_arms", {})
     if delivery_arms:
@@ -141,6 +142,12 @@ def checked_rows(output, *, observe_job=None, observe_parent=None):
             delivery = delivery_arms.get(arm)
             if (cfg["task_id"], cfg["repetition"], cfg["arm"]) != key:
                 raise ContractError("Native assignment differs from the planned cell")
+            if design.get("format") == "agent-memory-new-customer-design/v1":
+                native = blobs.get(cfg["native_config_ref"])
+                connection = blobs.get(cfg["connection_ref"])
+                if (native["task_split_name"] != design["source"]["split"] or native["task_ids"] != [row["task_id"]]
+                        or connection["benchmark"]["split"] != native["task_split_name"]):
+                    raise ContractError("Fresh-customer episode was not run on its official split")
             items = snapshot_items(blobs, state, start["start_snapshot_id"]) if arm != "no_memory" else []
             policy = MemoryPolicy(**cfg["policy"])
             if delivery and (cfg.get("fixed_bank_delivery") != delivery or policy.read_mode != delivery["read_mode"]

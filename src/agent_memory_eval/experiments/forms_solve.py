@@ -122,12 +122,12 @@ class _PreloadBridge(Tau2Bridge):
         return entries
 
 
-def _prepared_for_job(connection, prepared, limits, task_id):
+def _prepared_for_job(connection, prepared, limits, task_id, expected_split="train"):
     template, native, models, _ = prepared
     bench = connection["benchmark"]
     criteria = template.task.evaluation_criteria
-    if ((bench["domain"], bench["split"], bench["source_revision"], bench["communicate_scorer"])
-            != ("airline", "train", PIN, "substring")
+    if (expected_split not in {"train", "test"} or (bench["domain"], bench["split"], bench["source_revision"], bench["communicate_scorer"])
+            != ("airline", expected_split, PIN, "substring")
             or criteria is None or set(criteria.reward_basis) != {"DB", "COMMUNICATE"}
             or bench["task_id"] != task_id or template.task.id != task_id or native != native_config(connection)
             or (native.max_steps, native.max_errors, native.timeout) != (
@@ -205,7 +205,7 @@ def _usage(journal, run_id):
 
 def run_forms_solve(journal, *, arm, task_id, repetition, run_id, connection, prepared, guard, limits,
                     instruction, writer_bank=None, public_record=None, public_context_sha256=None, opener=None, clients=None,
-                    written_arms=WRITTEN_ARMS, delivery=None):
+                    written_arms=WRITTEN_ARMS, delivery=None, expected_split="train"):
     """Run one assigned episode in a new per-job journal with a batch guard and verified input.
 
     The caller verifies a writer bank against its sealed journal and supplies the cohort's public hash.
@@ -217,7 +217,7 @@ def run_forms_solve(journal, *, arm, task_id, repetition, run_id, connection, pr
         raise ContractError("Missing solve allocation identity")
     if not isinstance(instruction, str) or (instruction != "" if arm == "no_memory" else not instruction.strip()):
         raise ContractError("Memory arms require the common instruction and pure no-memory requires none")
-    _prepared_for_job(connection, prepared, limits, task_id)
+    _prepared_for_job(connection, prepared, limits, task_id, expected_split)
     if delivery is not None and (delivery["read_mode"] not in {"preload", "on_demand"} or arm in {"no_memory", "empty_preload"}):
         raise ContractError("A frozen-bank delivery must declare its writer and read policy")
     writer_condition = delivery["writer"] if delivery else arm

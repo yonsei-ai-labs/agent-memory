@@ -122,7 +122,8 @@ def _import(journal, design, source, repetition, arm, run_id, record_kind):
     row = next((r for r in design["source"]["cohort"] if r["task_id"] == source.task_id), None)
     data = source.public_context.encode()
     context = read_json(data)
-    if (row is None or source.source_run_id != row["run_id"] or source.source_log_sha256 != design["source"]["log_sha256"]
+    if (row is None or source.source_run_id != row["run_id"]
+            or source.source_log_sha256 != row.get("source_log_sha256", design["source"].get("log_sha256"))
             or source.public_context_sha256 != row["public_context_sha256"] or len(data) != row["public_context_bytes"]
             or len(data) != source.public_context_bytes or digest(data) != source.public_context_sha256
             or canonical(context) != data):

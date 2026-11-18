@@ -28,6 +28,9 @@ DESIGN = "protocols/drafts/tau2-two-pass-memory-forms-v1.json"
 
 
 def ordered_jobs(design):
+    if design.get("format") == "agent-memory-new-customer-design/v1":
+        from agent_memory_eval.experiments.fresh_forms import planned_jobs
+        return planned_jobs(design)
     if design.get("format") in {"agent-memory-prompt-comparison-design/v1", "agent-memory-prompt-delivery-design/v1"}:
         from agent_memory_eval.experiments.prompt_comparison import comparison_jobs
         return comparison_jobs(design)
@@ -119,6 +122,8 @@ def solve_connection(connection, design, row, cap):
     seed = next(s["native_and_solver"] for s in design["model"]["seed_pairs"] if s["repetition"] == row["repetition"])
     cfg["worker"]["parameters"]["seed"] = seed
     cfg["benchmark"].update(task_id=row["task_id"], seed=seed, max_steps=limits["native_steps"], max_errors=limits["native_errors"])
+    if design.get("format") == "agent-memory-new-customer-design/v1":
+        cfg["benchmark"]["split"] = design["source"]["split"]
     cfg["guards"] = dict(max_seconds=limits["episode_seconds"], max_model_requests=limits["max_total_requests_per_episode"],
                          max_reported_cost_usd=cap)
     return cfg
@@ -193,7 +198,8 @@ def prepare(root, workspace, checkout, design):
                 instruction=instruction)
 
 
-def run_jobs(rows, execute, guard, persist, *, written_arms=(*FORMS, "summary"), initial_writers=None):
+def run_jobs(rows, execute, guard, persist, *, written_arms=(*FORMS, "summary"), initial_writers=None,
+             missing_sources=(), close_cost=None):
     """Persist all assignments before HTTP, a start before side effects, and every terminal disposition."""
     writers = dict(initial_writers or {})
     persist(rows)
@@ -205,6 +211,9 @@ def run_jobs(rows, execute, guard, persist, *, written_arms=(*FORMS, "summary"),
         writer = writers.get(key)
         if stop:
             row.update(status="not_started", reason=stop)
+            continue
+        if row["task_id"] in missing_sources:
+            row.update(status="not_started", reason="first_pass_ungraded")
             continue
         if row["phase"] == "solve" and row["arm"] in written_arms:
             if writer is None:
@@ -228,7 +237,7 @@ def run_jobs(rows, execute, guard, persist, *, written_arms=(*FORMS, "summary"),
         if row["phase"] == "write":
             writers[key] = row
         if data["unknown_cost"]:
-            guard.unknown_cost = True
+            guard.unknown_cost = not (close_cost and close_cost(row))
         stop = guard.stop()
         persist(rows)
     persist(rows)
@@ -268,7 +277,8 @@ def run_batch(profile, workspace, checkout):
     return execute_prepared(profile, root, destination, identity, design, plan, models, guard)
 
 
-def execute_prepared(profile, root, destination, identity, design, plan, models, guard, *, imported_writers=None):
+def execute_prepared(profile, root, destination, identity, design, plan, models, guard, *, imported_writers=None,
+                     close_cost=None):
     """Execute a verified schedule once, preserving every job's original journal."""
     from agent_memory_eval.experiments.forms_solve import run_forms_solve
     from agent_memory_eval.experiments.forms_write import read_form_bank, run_form_writer
@@ -279,7 +289,8 @@ def execute_prepared(profile, root, destination, identity, design, plan, models,
     destination.mkdir(exist_ok=False)
     (destination / "jobs").mkdir()
     control = dict(profile=profile, implementation=identity, model_catalog_entries=models,
-                   source_outcomes={task: source.official_success for task, source in plan["sources"].items()},
+                   source_outcomes={**dict.fromkeys(plan.get("missing_sources", [])),
+                                    **{task: source.official_success for task, source in plan["sources"].items()}},
                    preflight=plan["summary"], design=design, started_at=datetime.now(timezone.utc).isoformat())
     write_json(destination / "control.json", control)
     writer_limits = design["writing"]["proposed_limits"]
@@ -291,7 +302,7 @@ def execute_prepared(profile, root, destination, identity, design, plan, models,
     episode_clients = {role: make_client(role, limits["max_input_bytes"]) for role in models}
     def execute(row, writer):
         folder = destination / row["directory"]
-        source = plan["sources"][row["task_id"]]
+        source = plan["sources"].get(row["task_id"])
         scope_calls, previous_cost = guard.calls, guard.reported_usd
         with Journal(folder, new_id("forms"), contract_version="1.2") as journal:
             if row["phase"] == "write":
@@ -309,7 +320,8 @@ def execute_prepared(profile, root, destination, identity, design, plan, models,
                     guard=guard, clients=episode_clients, limits=limits, instruction=plan["instruction"] if arm != "no_memory" else "",
                     writer_bank=bank, public_record=source.public_context if arm == "public_record" else None,
                     public_context_sha256=source.public_context_sha256 if arm not in {"no_memory", "empty_preload"} else None,
-                    written_arms=written_arms, delivery=delivery_arms.get(arm))
+                    written_arms=written_arms, delivery=delivery_arms.get(arm),
+                    expected_split=design["source"].get("split", "train"))
             if result["run_id"] != row["run_id"]:
                 raise ContractError("Run differs from preallocated identity")
             result["log_sha256"] = digest(journal.path.read_bytes())
@@ -322,10 +334,14 @@ def execute_prepared(profile, root, destination, identity, design, plan, models,
         return result
     ledger = destination / "allocations.json"
     stop = run_jobs(rows, execute, guard, lambda values: write_json(ledger, values),
-                    written_arms=delivery_arms or written_arms, initial_writers=bindings)
+                    written_arms=delivery_arms or written_arms, initial_writers=bindings,
+                    missing_sources=plan.get("missing_sources", ()), close_cost=close_cost)
     summary = dict(stop_reason=stop, http_calls=guard.calls, reported_usd=guard.reported_usd,
         unknown_cost=guard.unknown_cost, ended_at=datetime.now(timezone.utc).isoformat(),
         allocation_sha256=digest(ledger.read_bytes()), control_sha256=digest((destination / "control.json").read_bytes()))
+    if close_cost:
+        summary.update(unknown_cost=any(r.get("result", {}).get("unknown_cost") for r in rows),
+                       reserved_usd=str(close_cost.reserved))
     write_json(destination / "completion.json", summary)
     return summary
 

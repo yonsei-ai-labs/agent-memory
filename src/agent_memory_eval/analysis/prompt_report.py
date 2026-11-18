@@ -1,7 +1,7 @@
 """Build an offline, browsable comparison from verified writing and native episode journals."""
 from collections import Counter, defaultdict, deque
 from decimal import Decimal
-from itertools import zip_longest
+from itertools import combinations, zip_longest
 import os
 from pathlib import Path
 from tempfile import TemporaryDirectory
@@ -252,6 +252,13 @@ def _make_report(run, staged, destination, annotation_path):
         a, b = [c["id"] for c in design["conditions"]]
         comparisons = [(ids[w, "on_demand"], ids[w, "preload"]) for w in (a, b)]
         comparisons += [(ids[b, mode], ids[a, mode]) for mode in ("preload", "on_demand")]
+        sets = {"all": list(groups), **design["task_sets"]}
+    elif design.get("format") == "agent-memory-new-customer-design/v1":
+        if design["stage"] != "comparison":
+            raise ContractError("Choose the complete comparison run for the paired report")
+        forms = design["second_pass"]["primary_arms"]
+        comparisons = [(a, c) for a in forms for c in design["second_pass"]["matched_controls"]]
+        comparisons += list(combinations(forms, 2)) + [("empty_preload", "no_memory")]
         sets = {"all": list(groups), **design["task_sets"]}
     elif "conditions" in design:
         a, b = [c["id"] for c in design["conditions"]]
