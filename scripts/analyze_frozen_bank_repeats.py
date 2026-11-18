@@ -14,6 +14,7 @@ from agent_memory_eval.experiments.forms_batch import FORMS, write_json
 from agent_memory_eval.memory.context import memory_system_suffix, past_memory_instruction, snapshot_message
 from agent_memory_eval.memory.preparation import snapshot_items
 from agent_memory_eval.recording.journal import BlobStore, read_experiment, safe_path
+from analyze_fresh_forms import accounting
 from run_frozen_bank_repeats import prepare, sealed
 from regrade_two_pass_forms import regrade
 
@@ -99,9 +100,13 @@ def verify_shard(args):
                 elif p['actor_role'] != 'user_simulator' or 'seed' in wire or any(m == snapshot_message(items) for m in wire['messages']):
                     raise ContractError('Unexpected simulator seed, role or memory')
         billed = res['billing_by_role']
-        if (sum(Decimal(v['reported_usd']) for v in billed.values()) != Decimal(audit['observed_cost_usd_decimal'])
+        unknown, reservation = accounting(row, scan, blobs, control['model_catalog_entries'])
+        if (len(unknown) != audit['unknown_cost_requests']
+                or sum(Decimal(v['reported_usd']) for v in billed.values()) != Decimal(audit['observed_cost_usd_decimal'])
                 or sum(v['unknown_count'] for v in billed.values()) != audit['unknown_cost_requests']
-                or audit['memory_input_spans'] != res['memory_input_spans']):
+                or audit['memory_input_spans'] != res['memory_input_spans']
+                or audit['normal_response_memory_spans'] != res['normal_response_memory_spans']
+                or res['normal_response_memory_spans'] != 2 * len(items) * res['usage_by_role']['worker']['responses']):
             raise ContractError('Recorded price or exposure differs from the provider journal')
         outcome, = [e['payload'] for e in scan['events'].values() if e['type'] == 'outcome.scored']
         if any(outcome[k] != res[k] for k in ('official_score', 'official_success', 'grading_status')):
@@ -111,7 +116,7 @@ def verify_shard(args):
                      error_code=res['error_code'], native_steps=res['native_steps'], normal_spans=res['normal_response_memory_spans'],
                      body_exposed=res['normal_response_memory_spans'] > 0,
                      known_usd=audit['observed_cost_usd_decimal'], billing_by_role=billed, http_calls=res['http_calls'],
-                     reservation=res.get('unpriced_reservation'), first_worker_request_sha256=res['first_worker_request_sha256'],
+                     reservation=reservation, first_worker_request_sha256=res['first_worker_request_sha256'],
                      journal_path=str((folder/'log.jsonl').relative_to(workspace)), journal_sha256=res['log_sha256'])
         if row['index'] in grades:
             g = grades[row['index']]
@@ -145,6 +150,24 @@ def variability(rows, by):
         label = 'ungraded' if x is None or y is None else 'different' if x != y else 'both_success' if x else 'both_failure'
         counts[a['arm']][label] += 1
     return dict(counts)
+
+
+def empty_writer_comparisons(episodes, manifest):
+    empty_banks = {b['run'] for b in manifest['banks'] if b['item_count'] == 0}
+    blanks = {(r['task_id'], r['repetition']): r for r in episodes if r['arm'] == 'empty_preload'}
+    pairs = []
+    for r in episodes:
+        if r['source_writer_run_id'] not in empty_banks:
+            continue
+        blank = blanks[r['task_id'], r['repetition']]
+        a, b = r['official_success'], blank['official_success']
+        wire = r.get('first_worker_request_sha256')
+        pairs.append(dict(episode=r['index'], empty_control=blank['index'],
+                          both_graded=a is not None and b is not None,
+                          different_outcome=None if a is None or b is None else a != b,
+                          identical_first_worker_wire=(wire == blank.get('first_worker_request_sha256'))
+                          if wire and blank.get('first_worker_request_sha256') else None))
+    return pairs
 
 
 def analyze(workspace):
@@ -182,6 +205,10 @@ def analyze(workspace):
         transitions[e['arm']][src+'__'+dst] += 1
     unknown = sum(v['unknown_count'] for e in started for v in e['billing_by_role'].values())
     reserved_count = sum(bool(e.get('reservation')) for e in started)
+    arms = [*FORMS, *state['cfg']['controls']]
+    costs = {arm: {role: str(sum((Decimal(e['billing_by_role'].get(role, {}).get('reported_usd', '0'))
+                                 for e in started if e['arm'] == arm), Decimal(0)))
+                   for role in ('worker', 'user_simulator')} for arm in arms}
     return dict(study=manifest['study'], protocol_sha256=manifest['protocol_sha256'], implementation=registered['implementation'],
                 preflight_sha256=digest(canonical(manifest)), completion_sha256=digest((run/'completion.json').read_bytes()),
                 original_writer_usd=str(sum(Decimal(b['writer_usd']) for b in manifest['banks'])),
@@ -191,7 +218,8 @@ def analyze(workspace):
                 http_calls=sum(e['http_calls'] for e in started), unique_model_replies=len(generations),
                 strict_regrades=sum(s['verified'] for s in results), regrade_network_attempts=sum(s['network'] for s in results),
                 strict_regrade_methods=sorted({s['native_method'] for s in results}),
-                task_outcomes=tabulate_groups(episodes, {t:[t] for t in groups}, [*FORMS, *state['cfg']['controls']]),
+                task_outcomes=tabulate_groups(episodes, {'all': list(groups), **{t:[t] for t in groups}}, arms),
+                new_known_usd_by_arm_and_role=costs, empty_writers_vs_matched_blank=empty_writer_comparisons(episodes, manifest),
                 source_transitions=dict(transitions), contrasts=contrasts, both_controls=both_controls(episodes, FORMS),
                 reference_field_rates=field_rates(episodes), same_bank_across_solver_seeds=variability(episodes, ('task_id','arm','writer_block')),
                 two_writer_blocks_at_same_solver_seed=variability(episodes, ('task_id','arm','solver_seed')), episodes=episodes)
