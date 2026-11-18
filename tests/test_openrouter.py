@@ -1,6 +1,7 @@
 """Mock HTTP only. Unit tests never use the real keys or make network calls."""
 
 from copy import deepcopy
+from http.client import HTTPException, IncompleteRead
 import io
 import json
 import os
@@ -243,6 +244,46 @@ class OpenRouterTests(unittest.TestCase):
         self.assertEqual(caught.exception.response, dict(usage=dict(prompt_tokens=2), error=dict(code=429,
                          routing_reason="provider", retry_after_utc="2026-11-18T04:22:45+00:00")))
         self.assertTrue(self.guard.unknown_cost)
+
+    def test_truncated_429_body_preserves_received_status_and_retry_after(self):
+        body = io.BytesIO()
+        def opener(*args, **kwargs):
+            raise HTTPError("https://openrouter.ai", 429, "limited", {"Retry-After": "90"}, body)
+
+        client = OpenRouterClient(MODEL, self.guard, route=ROUTE, opener=opener)
+        with patch.object(body, "read", side_effect=IncompleteRead(b"test-router-secret")):
+            with self.assertRaisesRegex(ProviderError, "HTTP_429") as caught:
+                client.respond(self.request)
+        self.assertIs(caught.exception.submitted, True)
+        self.assertEqual(caught.exception.response, {"error": {"code": 429, "retry_after_seconds": 90}})
+        self.assertTrue(self.guard.unknown_cost)
+        with self.assertRaisesRegex(ProviderError, "UNKNOWN_COST_STOP"):
+            client.respond(self.request)
+        self.assertEqual(self.guard.calls, 1)
+
+    def test_truncated_success_body_records_submission_without_billing_or_partial_data(self):
+        body = io.BytesIO()
+        client = OpenRouterClient(MODEL, self.guard, route=ROUTE, opener=lambda *a, **kw: body)
+        with patch.object(body, "read", side_effect=IncompleteRead(b"test-router-secret")):
+            with self.assertRaisesRegex(ProviderError, "TRANSPORT_UNKNOWN") as caught:
+                client.respond(self.request)
+        self.assertIs(caught.exception.submitted, True)
+        self.assertIsNone(caught.exception.response)
+        self.assertTrue(self.guard.unknown_cost)
+        with self.assertRaisesRegex(ProviderError, "UNKNOWN_COST_STOP"):
+            client.respond(self.request)
+        self.assertEqual(self.guard.calls, 1)
+
+    def test_http_protocol_error_before_headers_leaves_delivery_unknown(self):
+        def opener(*args, **kwargs):
+            raise HTTPException("malformed headers")
+
+        with self.assertRaisesRegex(ProviderError, "TRANSPORT_UNKNOWN") as caught:
+            OpenRouterClient(MODEL, self.guard, route=ROUTE, opener=opener).respond(self.request)
+        self.assertIsNone(caught.exception.submitted)
+        self.assertIsNone(caught.exception.response)
+        self.assertTrue(self.guard.unknown_cost)
+        self.assertEqual(self.guard.calls, 1)
 
     def test_unsupported_model_parameters_are_not_silently_dropped(self):
         catalog = dict(data=[MODEL])

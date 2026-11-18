@@ -4,6 +4,7 @@ from copy import deepcopy
 from datetime import timezone
 from decimal import Decimal
 from email.utils import parsedate_to_datetime
+from http.client import HTTPException
 import math
 import os
 import re
@@ -43,7 +44,7 @@ def _http_error_receipt(error, secrets):
                 pass
     try:
         decoded = read_json(error.read(16384))
-    except (ValueError, UnicodeError, OSError):
+    except (ValueError, UnicodeError, OSError, HTTPException):
         return receipt
     if not isinstance(decoded, dict):
         return receipt
@@ -196,16 +197,18 @@ class OpenRouterClient:
         wire = Request(API_ROOT + "/chat/completions", data=canonical(request), method="POST",
             headers={"Authorization": "Bearer " + key, "Content-Type": "application/json",
                      "X-OpenRouter-Metadata": "enabled"})
+        received_headers = False
         try:
             with self.opener(wire, timeout=min(self.timeout_seconds, max(0.1, self.guard.deadline - time.monotonic()))) as response:
+                received_headers = True
                 body = response.read()
         except HTTPError as error:
             receipt = _http_error_receipt(error, (key, os.environ.get("OPENAI_API_KEY")))
             self.guard.after(receipt)
             raise ProviderError("HTTP_" + str(error.code), receipt, submitted=True) from None
-        except (URLError, TimeoutError, OSError):
+        except (URLError, TimeoutError, OSError, HTTPException):
             self.guard.unknown_cost = True
-            raise ProviderError("TRANSPORT_UNKNOWN", submitted=None) from None
+            raise ProviderError("TRANSPORT_UNKNOWN", submitted=True if received_headers else None) from None
         if any(secret and secret.encode() in body for secret in (key, os.environ.get("OPENAI_API_KEY"))):
             self.guard.unknown_cost = True
             raise ProviderError("CREDENTIAL_IN_RESPONSE", submitted=True)

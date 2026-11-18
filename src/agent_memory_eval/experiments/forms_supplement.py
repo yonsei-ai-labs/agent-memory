@@ -108,7 +108,7 @@ class SupplementGuard(BatchGuard):
         self.study_cap = Decimal(str(limits["max_usd"]))
         self.calls = carry["http_calls"]
         self.reported_usd = float(carry["known_usd"])
-        self.reserved = Decimal(carry["original_429"]["reserved_usd"])
+        self.reserved = Decimal(carry.get("reserved_usd", carry["original_429"]["reserved_usd"]))
         self.max_usd = float(self.study_cap - self.reserved)
 
     def close_job(self, result, receipt):
@@ -131,7 +131,7 @@ def cooldown_seconds(receipt, minimum, now):
     return max(minimum, external)
 
 
-def run_pending(rows, execute, guard, persist, cooldown, sleep=time.sleep):
+def run_pending(rows, execute, guard, persist, cooldown, sleep=time.sleep, *, error_field="http_429"):
     for row in rows:
         row["status"] = "planned"
     persist(rows)
@@ -148,7 +148,7 @@ def run_pending(rows, execute, guard, persist, cooldown, sleep=time.sleep):
             result, receipt = execute(row)
             row.update(result=result, status=result["status"])
             if receipt:
-                row["http_429"] = receipt
+                row[error_field] = receipt
             guard.close_job(result, receipt)
             persist(rows)
         except Exception as error:
@@ -175,6 +175,32 @@ def preflight(workspace):
     return dict(parent_completion_sha256=COMPLETION, parent_implementation=BASE_COMMIT,
                 parent_guards=control["profile"]["guards"], started_at=control["started_at"], untouched=len(rows),
                 sealed_writer_banks_required=len(relevant), scope=[rows[0]["index"], rows[-1]["index"]], **carry)
+
+
+def solve_recorded_row(row, raw, destination, plan, design, models, clients, guard, writers, study_cap, classify):
+    """Run an untouched allocation against its original sealed bank and reconcile the provider ledger."""
+    limits = design["second_pass"]["proposed_limits"]
+    task, rep, arm = row["task_id"], row["repetition"], row["arm"]
+    cfg = solve_connection(plan["connection"], design, row, study_cap)
+    orch, native = build_baseline_orchestrator(cfg, plan["tasks"][task])
+    writer = writers.get((task, rep, arm))
+    bank = read_form_bank(raw / writer["directory"], expected_log_sha256=writer["result"]["log_sha256"]) if writer else None
+    source = plan["sources"][task]
+    before_calls, before_cost = guard.calls, guard.reported_usd
+    with Journal(destination / row["directory"], new_id("forms"), contract_version="1.2") as journal:
+        result = run_forms_solve(journal, arm=arm, task_id=task, repetition=rep, run_id=row["run_id"],
+            connection=cfg, prepared=(orch, native, models, plan["modules"]), guard=guard, clients=clients,
+            limits=limits, instruction=plan["instruction"] if arm != "no_memory" else "", writer_bank=bank,
+            public_record=source.public_context if arm == "public_record" else None,
+            public_context_sha256=source.public_context_sha256 if arm not in {"no_memory", "empty_preload"} else None)
+        result["log_sha256"] = digest(journal.path.read_bytes())
+        result["billing_by_role"] = request_usage(journal)
+        billed = totals([dict(result=result)])
+        if (result["run_id"] != row["run_id"] or billed["http_calls"] != guard.calls - before_calls
+                or abs(float(billed["known_usd"]) - (guard.reported_usd - before_cost)) > 1e-8):
+            raise ContractError("Supplement run identity or per-job billing differs from the journal")
+        receipt = classify(result, journal.events.values(), journal.blobs, models)
+    return result, receipt
 
 
 def run_supplement(profile, workspace, checkout):
@@ -221,27 +247,8 @@ def run_supplement(profile, workspace, checkout):
         model_catalog_entries=models, source_completion_sha256=COMPLETION, source_root=SOURCE_ROOT))
 
     def execute(row):
-        task, rep, arm = row["task_id"], row["repetition"], row["arm"]
-        cfg = solve_connection(plan["connection"], design, row, parent_profile["guards"]["max_usd"])
-        orch, native = build_baseline_orchestrator(cfg, plan["tasks"][task])
-        writer = writers.get((task, rep, arm))
-        bank = read_form_bank(raw / writer["directory"], expected_log_sha256=writer["result"]["log_sha256"]) if writer else None
-        source = plan["sources"][task]
-        before_calls, before_cost = guard.calls, guard.reported_usd
-        with Journal(destination / row["directory"], new_id("forms"), contract_version="1.2") as journal:
-            result = run_forms_solve(journal, arm=arm, task_id=task, repetition=rep, run_id=row["run_id"],
-                connection=cfg, prepared=(orch, native, models, plan["modules"]), guard=guard, clients=clients,
-                limits=limits, instruction=plan["instruction"] if arm != "no_memory" else "", writer_bank=bank,
-                public_record=source.public_context if arm == "public_record" else None,
-                public_context_sha256=source.public_context_sha256 if arm not in {"no_memory", "empty_preload"} else None)
-            result["log_sha256"] = digest(journal.path.read_bytes())
-            result["billing_by_role"] = request_usage(journal)
-            billed = totals([dict(result=result)])
-            if (result["run_id"] != row["run_id"] or billed["http_calls"] != guard.calls - before_calls
-                    or abs(float(billed["known_usd"]) - (guard.reported_usd - before_cost)) > 1e-8):
-                raise ContractError("Supplement run identity or per-job billing differs from the journal")
-            receipt = rate_limit_evidence(result, journal.events.values(), journal.blobs, models)
-        return result, receipt
+        return solve_recorded_row(row, raw, destination, plan, design, models, clients, guard, writers,
+                                  parent_profile["guards"]["max_usd"], rate_limit_evidence)
 
     ledger = destination / "allocations.json"
     reason = run_pending(rows, execute, guard, lambda rs: write_json(ledger, rs), profile["http_429_cooldown_seconds"])
