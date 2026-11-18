@@ -92,9 +92,12 @@ class FormsPipelineTests(unittest.TestCase):
             (workspace / endpoint).parent.mkdir(parents=True)
             copyfile(ROOT / endpoint, workspace / endpoint)
             (workspace / "runs").mkdir()
+            verification = canonical(dict(implementation_commit="local-transport-fixture", native_and_source=plan["summary"]))
+            (workspace / "verification.json").write_bytes(verification)
             profile = dict(format="agent-memory-two-pass-memory-forms-ready/v1", status="ready",
                 implementation_commit="local-transport-fixture", endpoint_ref=ref(endpoint), design_ref=ref(DESIGN),
                 research_ref=ref("docs/research/two-pass-memory-forms-v1.md"), output_root="runs/fixture",
+                preflight_ref=dict(path="verification.json", sha256=digest(verification)), http_timeout_seconds=20,
                 guards=dict(max_calls=10, max_usd=1, max_seconds=60))
             ns = "agent_memory_eval.experiments.forms_batch."
             with patch.dict("os.environ", OPENROUTER_API_KEY="never-a-live-key"), patch.object(OpenRouterClient, "__init__", inject), \

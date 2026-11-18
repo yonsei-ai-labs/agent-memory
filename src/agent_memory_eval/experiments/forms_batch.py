@@ -245,6 +245,9 @@ def run_batch(profile, workspace, checkout):
     design = read_json(asset_text(root, profile["design_ref"]).encode())
     asset_text(root, profile["research_ref"])
     endpoint_receipt = read_json(asset_text(workspace, profile["endpoint_ref"]).encode())
+    verified = read_json(asset_text(workspace, profile["preflight_ref"]).encode())
+    if verified["implementation_commit"] != identity["implementation_commit"]:
+        raise ContractError("Preflight and running implementation commits differ")
     destination = safe_path(workspace, profile["output_root"])
     if (destination.parent != workspace / "runs" or destination.exists()
             or destination.is_relative_to(safe_path(workspace, design["source"]["root"]))):
@@ -254,6 +257,8 @@ def run_batch(profile, workspace, checkout):
     guard_config = profile["guards"]
     guard = BatchGuard(**guard_config)
     plan = prepare(root, workspace, checkout, design)
+    if plan["summary"] != verified["native_and_source"]:
+        raise ContractError("Fresh source and wire preflight differs from the frozen receipt")
     models = live_models(plan["connection"])
     if endpoint_terms(models) != endpoint_terms(endpoint_receipt["models"]):
         raise ContractError("Endpoint or price changed after the ready profile was frozen")
@@ -267,9 +272,12 @@ def run_batch(profile, workspace, checkout):
                    preflight=plan["summary"], design=design, started_at=datetime.now(timezone.utc).isoformat())
     write_json(destination / "control.json", control)
     writer_limits = design["writing"]["proposed_limits"]
-    client = OpenRouterClient(models["worker"], guard, route=plan["connection"]["worker"]["provider"],
-                              max_input_bytes=writer_limits["input_bytes"])
     limits = design["second_pass"]["proposed_limits"]
+    def make_client(role, byte_limit):
+        return OpenRouterClient(models[role], guard, route=plan["connection"][role]["provider"],
+                                max_input_bytes=byte_limit, timeout_seconds=profile["http_timeout_seconds"])
+    client = make_client("worker", writer_limits["input_bytes"])
+    episode_clients = {role: make_client(role, limits["max_input_bytes"]) for role in models}
     def execute(row, writer):
         folder = destination / row["directory"]
         source = plan["sources"][row["task_id"]]
@@ -287,7 +295,7 @@ def run_batch(profile, workspace, checkout):
                         if writer else None)
                 result = run_forms_solve(journal, arm=arm, task_id=row["task_id"], repetition=row["repetition"],
                     run_id=row["run_id"], connection=cfg, prepared=(orch, native, models, plan["modules"]),
-                    guard=guard, limits=limits, instruction=plan["instruction"] if arm != "no_memory" else "",
+                    guard=guard, clients=episode_clients, limits=limits, instruction=plan["instruction"] if arm != "no_memory" else "",
                     writer_bank=bank, public_record=source.public_context if arm == "public_record" else None,
                     public_context_sha256=source.public_context_sha256 if arm not in {"no_memory", "empty_preload"} else None)
             if result["run_id"] != row["run_id"]:
