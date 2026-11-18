@@ -1,0 +1,2308 @@
+{
+  "format": "agent-memory-two-pass-native-strict-replay/v1",
+  "benchmark_revision": "c06b07dd7c4d4ec61ba6ff9bcdf0b15dd7ef36d4",
+  "method_sha256": "2bee4736efac915e412c35a63ee6d33bf165efe1c833c78f87766127345c0446",
+  "benchmark_task_file_sha256": "ccd8ba737b4cc371415af70151187788f728d6108d0916e73bb4317b40542052",
+  "allocation_sha256": "5e0fcecee283400b06f6e9f31de17d7230ea4807e84ea99cc1a247996eed771b",
+  "official_results_checked": 66,
+  "successes": 58,
+  "new_model_or_network_attempts": 0,
+  "failure_components": {
+    "db_only": 8,
+    "communication_only": 0,
+    "both": 0,
+    "both_passed": 58
+  },
+  "grades": [
+    {
+      "index": 233,
+      "task_id": "15",
+      "repetition": 1,
+      "arm": "procedure",
+      "official_score": 1.0,
+      "db_match": true,
+      "communication_required": 0,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "636d6c73a6bb7bf819fb8339d29d931f660a07c26b74b03ba9f495b81c1de2fa",
+      "replayed_reward_sha256": "997c06fd9f7828dcba2d7e22aa5d754b3fd3b9359ab5d331fc53732bc8904285"
+    },
+    {
+      "index": 234,
+      "task_id": "15",
+      "repetition": 1,
+      "arm": "episode",
+      "official_score": 0.0,
+      "db_match": false,
+      "communication_required": 0,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "abe0e6cdfe5cd7bc5137c815240c05f5132c14d434f998e158392d090c518e2b",
+      "replayed_reward_sha256": "d5bd9837f6253fcacac91d31e151d486df44c2aa01db5c67ce7eb563232ce5bd"
+    },
+    {
+      "index": 235,
+      "task_id": "15",
+      "repetition": 1,
+      "arm": "no_memory",
+      "official_score": 0.0,
+      "db_match": false,
+      "communication_required": 0,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "cde788f6f0d7f42665cbf0e735efd95ffdad7daba505a6e69cd8a5af3e93abcc",
+      "replayed_reward_sha256": "d5bd9837f6253fcacac91d31e151d486df44c2aa01db5c67ce7eb563232ce5bd"
+    },
+    {
+      "index": 236,
+      "task_id": "15",
+      "repetition": 1,
+      "arm": "empty_preload",
+      "official_score": 0.0,
+      "db_match": false,
+      "communication_required": 0,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "47ec0afa69853a654d4947c3a0ae6fa375e12fa043d43303463bf4638d112623",
+      "replayed_reward_sha256": "d5bd9837f6253fcacac91d31e151d486df44c2aa01db5c67ce7eb563232ce5bd"
+    },
+    {
+      "index": 237,
+      "task_id": "15",
+      "repetition": 1,
+      "arm": "fact",
+      "official_score": 0.0,
+      "db_match": false,
+      "communication_required": 0,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "6e046be9876496030282ca8af721eeda2a788ede92ae7391fa9977afbd1f7a9c",
+      "replayed_reward_sha256": "d5bd9837f6253fcacac91d31e151d486df44c2aa01db5c67ce7eb563232ce5bd"
+    },
+    {
+      "index": 238,
+      "task_id": "15",
+      "repetition": 1,
+      "arm": "lesson",
+      "official_score": 0.0,
+      "db_match": false,
+      "communication_required": 0,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "c687325383bb0ea6778332cebca92986fa7db50e4f03edebeee29300ac0727ea",
+      "replayed_reward_sha256": "d5bd9837f6253fcacac91d31e151d486df44c2aa01db5c67ce7eb563232ce5bd"
+    },
+    {
+      "index": 239,
+      "task_id": "43",
+      "repetition": 1,
+      "arm": "empty_preload",
+      "official_score": 1.0,
+      "db_match": true,
+      "communication_required": 0,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "a3711c79389acfeea30aeaa0c5a21acba6d5b2c9d9ca8f5b282903041d962e29",
+      "replayed_reward_sha256": "153315e26ee3e14a59fec7301c4c9382009549f1546bdaca2b076ff8b2175d20"
+    },
+    {
+      "index": 240,
+      "task_id": "43",
+      "repetition": 1,
+      "arm": "episode",
+      "official_score": 1.0,
+      "db_match": true,
+      "communication_required": 0,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "72762f67bde8d521cd1349884945cb21f5bdbf55aa4b8f99ceeb9626f381569b",
+      "replayed_reward_sha256": "34524ece92f8de6e3226f8e4e36a23e54dbbfe44acd0a5d1acc679cbd6d0af3c"
+    },
+    {
+      "index": 241,
+      "task_id": "43",
+      "repetition": 1,
+      "arm": "fact",
+      "official_score": 1.0,
+      "db_match": true,
+      "communication_required": 0,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "409c3a4b9b727ed5dfac02bb5bc9f05d58bfb40f04bb7cdcb03fc51bd07ee322",
+      "replayed_reward_sha256": "153315e26ee3e14a59fec7301c4c9382009549f1546bdaca2b076ff8b2175d20"
+    },
+    {
+      "index": 242,
+      "task_id": "43",
+      "repetition": 1,
+      "arm": "no_memory",
+      "official_score": 1.0,
+      "db_match": true,
+      "communication_required": 0,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "63f311dd87b97c30f9f4c635764686ea8dcd8b76b0adbb2fb0c4841aead862ce",
+      "replayed_reward_sha256": "153315e26ee3e14a59fec7301c4c9382009549f1546bdaca2b076ff8b2175d20"
+    },
+    {
+      "index": 243,
+      "task_id": "43",
+      "repetition": 1,
+      "arm": "procedure",
+      "official_score": 1.0,
+      "db_match": true,
+      "communication_required": 0,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "50cc4a9af4ff70ecbc70b59a89beaf4191167a1af488132b5d2b40dfa5f363d8",
+      "replayed_reward_sha256": "153315e26ee3e14a59fec7301c4c9382009549f1546bdaca2b076ff8b2175d20"
+    },
+    {
+      "index": 244,
+      "task_id": "43",
+      "repetition": 1,
+      "arm": "lesson",
+      "official_score": 1.0,
+      "db_match": true,
+      "communication_required": 0,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "1f35de1a411722af682d44ea16818d5342dce80b94d0a8c90e0e7dcf7d012663",
+      "replayed_reward_sha256": "153315e26ee3e14a59fec7301c4c9382009549f1546bdaca2b076ff8b2175d20"
+    },
+    {
+      "index": 245,
+      "task_id": "17",
+      "repetition": 1,
+      "arm": "fact",
+      "official_score": 0.0,
+      "db_match": false,
+      "communication_required": 0,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "8d499ade1294326f189e81624d331dbba49950ff94854620000baba7d9051362",
+      "replayed_reward_sha256": "7e728cb7026a43e52b2c7a1bf1d3fe7d940bc1518accf2ff7d7a8942907dbf40"
+    },
+    {
+      "index": 246,
+      "task_id": "17",
+      "repetition": 1,
+      "arm": "public_record",
+      "official_score": 1.0,
+      "db_match": true,
+      "communication_required": 0,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "90fc7f2997a8b737de9d9da68324c2716928969b25a45afc97cda0809946e5e1",
+      "replayed_reward_sha256": "2c6ca21b6a961e135468128320f6e0efcb24ec56739c44d6e1c2f18903fe1ece"
+    },
+    {
+      "index": 247,
+      "task_id": "17",
+      "repetition": 1,
+      "arm": "summary",
+      "official_score": 0.0,
+      "db_match": false,
+      "communication_required": 0,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "77053a91cb2447fef88adf9ae93cdad25a8a5a61b6372f63b528d2252bb4a7c6",
+      "replayed_reward_sha256": "6d3de9a173d81d717f1c74e5aeae31c2c110c97b871932fbb9715b3ef4579fb3"
+    },
+    {
+      "index": 248,
+      "task_id": "17",
+      "repetition": 1,
+      "arm": "procedure",
+      "official_score": 1.0,
+      "db_match": true,
+      "communication_required": 0,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "cf9f6a05ed5d55418ce7ab384e0ad226a2f23bd25b2b8f050bfb5292da31c9b1",
+      "replayed_reward_sha256": "2c6ca21b6a961e135468128320f6e0efcb24ec56739c44d6e1c2f18903fe1ece"
+    },
+    {
+      "index": 249,
+      "task_id": "17",
+      "repetition": 1,
+      "arm": "empty_preload",
+      "official_score": 1.0,
+      "db_match": true,
+      "communication_required": 0,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "c1b6fd578b5e08411af8bfc3ab5340ce09d05bc9195aef0fcb876afcae46e288",
+      "replayed_reward_sha256": "2c6ca21b6a961e135468128320f6e0efcb24ec56739c44d6e1c2f18903fe1ece"
+    },
+    {
+      "index": 250,
+      "task_id": "17",
+      "repetition": 1,
+      "arm": "lesson",
+      "official_score": 1.0,
+      "db_match": true,
+      "communication_required": 0,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "fc835f2e5b6c8c382dabf3a0cbb71c05f1e003c204955c09afdb91ae3d9f1ccc",
+      "replayed_reward_sha256": "2c6ca21b6a961e135468128320f6e0efcb24ec56739c44d6e1c2f18903fe1ece"
+    },
+    {
+      "index": 251,
+      "task_id": "17",
+      "repetition": 1,
+      "arm": "no_memory",
+      "official_score": 1.0,
+      "db_match": true,
+      "communication_required": 0,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "564825625c5504eb75ad5b79384126d9486e1ad5b6b33e9777089e20483608a5",
+      "replayed_reward_sha256": "2c6ca21b6a961e135468128320f6e0efcb24ec56739c44d6e1c2f18903fe1ece"
+    },
+    {
+      "index": 252,
+      "task_id": "17",
+      "repetition": 1,
+      "arm": "episode",
+      "official_score": 1.0,
+      "db_match": true,
+      "communication_required": 0,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "a67910f3ed4c3d9a6282b027409f8d3c4075ff6e7c2912a2b8e3f1620e89617f",
+      "replayed_reward_sha256": "2c6ca21b6a961e135468128320f6e0efcb24ec56739c44d6e1c2f18903fe1ece"
+    },
+    {
+      "index": 253,
+      "task_id": "41",
+      "repetition": 1,
+      "arm": "fact",
+      "official_score": 1.0,
+      "db_match": true,
+      "communication_required": 0,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "93502612148f82a236e23f4d14e1fe2db2689cdef1e01f1692944c6c09a7535e",
+      "replayed_reward_sha256": "af1d8d38db664b6ef6bc1ae85a736a625b193d03eea3e3cfe98de9036c4083c8"
+    },
+    {
+      "index": 254,
+      "task_id": "41",
+      "repetition": 1,
+      "arm": "lesson",
+      "official_score": 1.0,
+      "db_match": true,
+      "communication_required": 0,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "dc7f0c57463177a6cdc90827e8fc3861b86025e85e5d283efa0425207039c37f",
+      "replayed_reward_sha256": "2ff8fee3f00ecc6cc9e1dd49329c89a2e8ce6b15f4533da7e4731410088ac967"
+    },
+    {
+      "index": 255,
+      "task_id": "41",
+      "repetition": 1,
+      "arm": "procedure",
+      "official_score": 1.0,
+      "db_match": true,
+      "communication_required": 0,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "09688e2c12b45488bb284cdd4b9734631d2d0ff1302082563617abd3cda4e651",
+      "replayed_reward_sha256": "af1d8d38db664b6ef6bc1ae85a736a625b193d03eea3e3cfe98de9036c4083c8"
+    },
+    {
+      "index": 256,
+      "task_id": "41",
+      "repetition": 1,
+      "arm": "no_memory",
+      "official_score": 1.0,
+      "db_match": true,
+      "communication_required": 0,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "d0bd0b09c2440336671a0bcfe76ed1a8b152b92b2702c2dff7f3e94f94270946",
+      "replayed_reward_sha256": "af1d8d38db664b6ef6bc1ae85a736a625b193d03eea3e3cfe98de9036c4083c8"
+    },
+    {
+      "index": 257,
+      "task_id": "41",
+      "repetition": 1,
+      "arm": "episode",
+      "official_score": 1.0,
+      "db_match": true,
+      "communication_required": 0,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "0a635d16fa96186dbfb040c1f2ea6a7c1d35b2ea7dd2a19c985a9c6b9f3443d5",
+      "replayed_reward_sha256": "af1d8d38db664b6ef6bc1ae85a736a625b193d03eea3e3cfe98de9036c4083c8"
+    },
+    {
+      "index": 258,
+      "task_id": "41",
+      "repetition": 1,
+      "arm": "empty_preload",
+      "official_score": 1.0,
+      "db_match": true,
+      "communication_required": 0,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "aefa60553e55e490378e482d46686c5d45d1cb31c17a27c3f04c1458cb4755ba",
+      "replayed_reward_sha256": "af1d8d38db664b6ef6bc1ae85a736a625b193d03eea3e3cfe98de9036c4083c8"
+    },
+    {
+      "index": 259,
+      "task_id": "47",
+      "repetition": 1,
+      "arm": "episode",
+      "official_score": 1.0,
+      "db_match": true,
+      "communication_required": 0,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "27d52e220eb351a663225b0b768b04cb0394e5a81f8beba0dfa922f42759ec40",
+      "replayed_reward_sha256": "0a4f960b354af3f548227032ddbb6868595d6d8a3aeb086928ce6717e964c479"
+    },
+    {
+      "index": 260,
+      "task_id": "47",
+      "repetition": 1,
+      "arm": "fact",
+      "official_score": 1.0,
+      "db_match": true,
+      "communication_required": 0,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "6aaca557df1fad7a0510a7104a8ebc9f23a29aab40f3ee344d452489587a6c89",
+      "replayed_reward_sha256": "0a4f960b354af3f548227032ddbb6868595d6d8a3aeb086928ce6717e964c479"
+    },
+    {
+      "index": 261,
+      "task_id": "47",
+      "repetition": 1,
+      "arm": "procedure",
+      "official_score": 1.0,
+      "db_match": true,
+      "communication_required": 0,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "691aa2f5005f5f6b1c188859dc85d6c37c8d87d28ebafd7fd9338b6976038582",
+      "replayed_reward_sha256": "0a4f960b354af3f548227032ddbb6868595d6d8a3aeb086928ce6717e964c479"
+    },
+    {
+      "index": 262,
+      "task_id": "47",
+      "repetition": 1,
+      "arm": "no_memory",
+      "official_score": 1.0,
+      "db_match": true,
+      "communication_required": 0,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "abb5807588614fa9131fb270b4166c2594db4e635b87e2bd32e4005900cfc56b",
+      "replayed_reward_sha256": "0a4f960b354af3f548227032ddbb6868595d6d8a3aeb086928ce6717e964c479"
+    },
+    {
+      "index": 263,
+      "task_id": "47",
+      "repetition": 1,
+      "arm": "empty_preload",
+      "official_score": 1.0,
+      "db_match": true,
+      "communication_required": 0,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "9d280ce3875f08fdb8873c2c1824c36cf679245105c94e94d8f793c455e029a2",
+      "replayed_reward_sha256": "0a4f960b354af3f548227032ddbb6868595d6d8a3aeb086928ce6717e964c479"
+    },
+    {
+      "index": 264,
+      "task_id": "47",
+      "repetition": 1,
+      "arm": "lesson",
+      "official_score": 1.0,
+      "db_match": true,
+      "communication_required": 0,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "ccdf8005d6e7bac9ce7e99a7b11b59b4b87f212407596bf675120161fe4e4e82",
+      "replayed_reward_sha256": "0a4f960b354af3f548227032ddbb6868595d6d8a3aeb086928ce6717e964c479"
+    },
+    {
+      "index": 265,
+      "task_id": "40",
+      "repetition": 1,
+      "arm": "no_memory",
+      "official_score": 1.0,
+      "db_match": true,
+      "communication_required": 0,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "20ab3dd8f282c286e3e6984a7a5104ab637ca1c1a554c05a6507c1f38ad8b613",
+      "replayed_reward_sha256": "bfc1e0e445ec3e7ffb7a19dd10aa602aaa30d6aa9f1d9e906b5f36ffe7d0a215"
+    },
+    {
+      "index": 266,
+      "task_id": "40",
+      "repetition": 1,
+      "arm": "fact",
+      "official_score": 1.0,
+      "db_match": true,
+      "communication_required": 0,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "89c7aaf514ce115ff39bcf274bcd2d413afb63347b54905d12c0c92c92c6d625",
+      "replayed_reward_sha256": "bfc1e0e445ec3e7ffb7a19dd10aa602aaa30d6aa9f1d9e906b5f36ffe7d0a215"
+    },
+    {
+      "index": 267,
+      "task_id": "40",
+      "repetition": 1,
+      "arm": "lesson",
+      "official_score": 1.0,
+      "db_match": true,
+      "communication_required": 0,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "fe0e34e24cc96ff53f1a3ba77d8f9fb18059d1604fe8f024278f160041aa553f",
+      "replayed_reward_sha256": "bfc1e0e445ec3e7ffb7a19dd10aa602aaa30d6aa9f1d9e906b5f36ffe7d0a215"
+    },
+    {
+      "index": 268,
+      "task_id": "40",
+      "repetition": 1,
+      "arm": "episode",
+      "official_score": 1.0,
+      "db_match": true,
+      "communication_required": 0,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "cfe97b71e1d56ddffaf89dd327c0bdea8b7f2e47427aef2810c86f82a2accfe2",
+      "replayed_reward_sha256": "bfc1e0e445ec3e7ffb7a19dd10aa602aaa30d6aa9f1d9e906b5f36ffe7d0a215"
+    },
+    {
+      "index": 269,
+      "task_id": "40",
+      "repetition": 1,
+      "arm": "empty_preload",
+      "official_score": 0.0,
+      "db_match": false,
+      "communication_required": 0,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "eb3d80f594f527ae76f9db8d8867f41415b9a09974afa7668827866bfd84cb3f",
+      "replayed_reward_sha256": "3a509858534015c755db16af826cd9fe0dad44448b9ccc96bd5067413aae3df7"
+    },
+    {
+      "index": 270,
+      "task_id": "40",
+      "repetition": 1,
+      "arm": "procedure",
+      "official_score": 1.0,
+      "db_match": true,
+      "communication_required": 0,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "dce01349a056188091c6be052c2a356bf23309e77dd717aa1a8f8149c625597d",
+      "replayed_reward_sha256": "bfc1e0e445ec3e7ffb7a19dd10aa602aaa30d6aa9f1d9e906b5f36ffe7d0a215"
+    },
+    {
+      "index": 271,
+      "task_id": "9",
+      "repetition": 1,
+      "arm": "no_memory",
+      "official_score": 1.0,
+      "db_match": true,
+      "communication_required": 0,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "27393587d039c341f896212d62ae180f31b966d0b796e5e3d5ba145e4868e8c9",
+      "replayed_reward_sha256": "e44d4c481bca3214ca9e58c422bf5280fccb5ee4e2c7e1158c983f7287e0efa9"
+    },
+    {
+      "index": 272,
+      "task_id": "9",
+      "repetition": 1,
+      "arm": "episode",
+      "official_score": 1.0,
+      "db_match": true,
+      "communication_required": 0,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "b972d623faf42c1ed51f54089367948fc4166b6d4beb954b36603f0e94f7b993",
+      "replayed_reward_sha256": "e44d4c481bca3214ca9e58c422bf5280fccb5ee4e2c7e1158c983f7287e0efa9"
+    },
+    {
+      "index": 273,
+      "task_id": "9",
+      "repetition": 1,
+      "arm": "lesson",
+      "official_score": 1.0,
+      "db_match": true,
+      "communication_required": 0,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "f8165bf5d823bdcc86a4f9c9a21ec97ff028a36bfa9362d5dd73eee6fa398a98",
+      "replayed_reward_sha256": "e44d4c481bca3214ca9e58c422bf5280fccb5ee4e2c7e1158c983f7287e0efa9"
+    },
+    {
+      "index": 274,
+      "task_id": "9",
+      "repetition": 1,
+      "arm": "fact",
+      "official_score": 1.0,
+      "db_match": true,
+      "communication_required": 0,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "6a954aa7a0d7a1cd5856e1240cb274df1de5f4f5b5ac0c667449129b0ec6cfec",
+      "replayed_reward_sha256": "e44d4c481bca3214ca9e58c422bf5280fccb5ee4e2c7e1158c983f7287e0efa9"
+    },
+    {
+      "index": 275,
+      "task_id": "9",
+      "repetition": 1,
+      "arm": "empty_preload",
+      "official_score": 1.0,
+      "db_match": true,
+      "communication_required": 0,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "0fb09cc657267b75172872310ce79a0c6b9fbee3012cdb6d25da04302f2148a7",
+      "replayed_reward_sha256": "e44d4c481bca3214ca9e58c422bf5280fccb5ee4e2c7e1158c983f7287e0efa9"
+    },
+    {
+      "index": 277,
+      "task_id": "3",
+      "repetition": 1,
+      "arm": "procedure",
+      "official_score": 1.0,
+      "db_match": true,
+      "communication_required": 1,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "2ece3f0b942abcd0c344e91d49473b392fe5fcdab0be461228de0452e96a597f",
+      "replayed_reward_sha256": "188e3beddc341f413b11454b7f9662fbcdca92254ad4deab9ba0eeb8cb919089"
+    },
+    {
+      "index": 278,
+      "task_id": "3",
+      "repetition": 1,
+      "arm": "summary",
+      "official_score": 1.0,
+      "db_match": true,
+      "communication_required": 1,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "68095a9605d794ca66862ae4f7824588ba03c1609d06e3f4700fee3a01293ad9",
+      "replayed_reward_sha256": "244d9fa993284499d2bcea27c15fa0cf1ae5494884acc200f08b17c4f6879de8"
+    },
+    {
+      "index": 279,
+      "task_id": "3",
+      "repetition": 1,
+      "arm": "episode",
+      "official_score": 1.0,
+      "db_match": true,
+      "communication_required": 1,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "007abdd9ba3a747cf51d7bf5bad2f7bc837e5b7d3f178ee1d6559458a5e680d8",
+      "replayed_reward_sha256": "17369a5dc078f2f7c2f537f114c47d11a803590a02eb868cc2146828ddc5da81"
+    },
+    {
+      "index": 280,
+      "task_id": "3",
+      "repetition": 1,
+      "arm": "public_record",
+      "official_score": 1.0,
+      "db_match": true,
+      "communication_required": 1,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "02445f77fc9d18691c46d11acd2a27249e532a49512aa88afc5697a616f2b13b",
+      "replayed_reward_sha256": "10d0a9116c816c70ecffa24e86cf8d54f05e66306b669cc0ff6a7a9d7af5c7c0"
+    },
+    {
+      "index": 281,
+      "task_id": "3",
+      "repetition": 1,
+      "arm": "fact",
+      "official_score": 1.0,
+      "db_match": true,
+      "communication_required": 1,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "8a00b238e9f88e5c62f16c81ed240cf0a6ef9ddaf8092eae1e94563b01dd80d9",
+      "replayed_reward_sha256": "556b338ebac3ea0e6cb3512615647f1369ed9b0f9634a5868029703b0b4df728"
+    },
+    {
+      "index": 282,
+      "task_id": "3",
+      "repetition": 1,
+      "arm": "empty_preload",
+      "official_score": 1.0,
+      "db_match": true,
+      "communication_required": 1,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "906a328a06608da90bd545529b8a1992dbc09caef8b65c77f8a56cad561e4531",
+      "replayed_reward_sha256": "1869855e51e86a175da8431f77e650489e2a3b9f47beddcb6109c2a8c667bf8f"
+    },
+    {
+      "index": 283,
+      "task_id": "3",
+      "repetition": 1,
+      "arm": "no_memory",
+      "official_score": 1.0,
+      "db_match": true,
+      "communication_required": 1,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "c2a696ff3999398681e0038d2b1b8debea3d86d438204820bee4429a01922779",
+      "replayed_reward_sha256": "4534fda4bba8634c15d050b76abced4d7b2b0e06da614c1f9f1e124021b3520d"
+    },
+    {
+      "index": 284,
+      "task_id": "3",
+      "repetition": 1,
+      "arm": "lesson",
+      "official_score": 1.0,
+      "db_match": true,
+      "communication_required": 1,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "6d5612f721cff1fb4923f339e21914f82af35866606900df5b0e0e825bbbb2c4",
+      "replayed_reward_sha256": "72ac4e803b63bf178c78f98b4c89a6439718894417c606b82e4c7e861bbcd3e4"
+    },
+    {
+      "index": 285,
+      "task_id": "5",
+      "repetition": 1,
+      "arm": "procedure",
+      "official_score": 1.0,
+      "db_match": true,
+      "communication_required": 0,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "eec235d752ae99e372e5e10d93a5f07daf561269cc37e8f28e5361c3bb26ecc1",
+      "replayed_reward_sha256": "0debdf14a3369f1e7bf0b683dd6ec33115ee6382b38bbed5b08a0e594f02e370"
+    },
+    {
+      "index": 286,
+      "task_id": "5",
+      "repetition": 1,
+      "arm": "fact",
+      "official_score": 1.0,
+      "db_match": true,
+      "communication_required": 0,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "d59ee70a697e71939fa92a49e67d0a4af3b5c1f7cec9b5cfb8d1df5a5f62ccc3",
+      "replayed_reward_sha256": "0debdf14a3369f1e7bf0b683dd6ec33115ee6382b38bbed5b08a0e594f02e370"
+    },
+    {
+      "index": 287,
+      "task_id": "5",
+      "repetition": 1,
+      "arm": "episode",
+      "official_score": 1.0,
+      "db_match": true,
+      "communication_required": 0,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "1ae8f6ccc150501588ad4a4b41b0c6251014206c2c1cbad8f0017aee48a66f78",
+      "replayed_reward_sha256": "0debdf14a3369f1e7bf0b683dd6ec33115ee6382b38bbed5b08a0e594f02e370"
+    },
+    {
+      "index": 288,
+      "task_id": "5",
+      "repetition": 1,
+      "arm": "empty_preload",
+      "official_score": 1.0,
+      "db_match": true,
+      "communication_required": 0,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "5cc4e92af9b0805c6166b926be5618d2c4f2f61856573cf2ced110c8d9259903",
+      "replayed_reward_sha256": "0debdf14a3369f1e7bf0b683dd6ec33115ee6382b38bbed5b08a0e594f02e370"
+    },
+    {
+      "index": 289,
+      "task_id": "5",
+      "repetition": 1,
+      "arm": "no_memory",
+      "official_score": 1.0,
+      "db_match": true,
+      "communication_required": 0,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "e6c4e2dc3c61556ff8109402f397e89ca2d91d36a9f9c78140a8f00d8ebd7fe1",
+      "replayed_reward_sha256": "0debdf14a3369f1e7bf0b683dd6ec33115ee6382b38bbed5b08a0e594f02e370"
+    },
+    {
+      "index": 290,
+      "task_id": "5",
+      "repetition": 1,
+      "arm": "lesson",
+      "official_score": 1.0,
+      "db_match": true,
+      "communication_required": 0,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "a1bd89307368817ceebcd07bf523aba8b49252df84e8a0cfe5823ee0fb70d758",
+      "replayed_reward_sha256": "0debdf14a3369f1e7bf0b683dd6ec33115ee6382b38bbed5b08a0e594f02e370"
+    },
+    {
+      "index": 291,
+      "task_id": "0",
+      "repetition": 1,
+      "arm": "episode",
+      "official_score": 1.0,
+      "db_match": true,
+      "communication_required": 0,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "c99f205c7a091fbf57f828dfa10e0219c66d28e85945b3ebb37c3aa4cba1c8a2",
+      "replayed_reward_sha256": "8bad32aeea5e3d4c93e626926fa5d366f421f7efddb9a59a9d0c2b49785f2d1b"
+    },
+    {
+      "index": 292,
+      "task_id": "0",
+      "repetition": 1,
+      "arm": "procedure",
+      "official_score": 1.0,
+      "db_match": true,
+      "communication_required": 0,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "b9d4f7c5b347528989026b66acf1ce748c38699c218c5633e2b24ebf3183a400",
+      "replayed_reward_sha256": "8bad32aeea5e3d4c93e626926fa5d366f421f7efddb9a59a9d0c2b49785f2d1b"
+    },
+    {
+      "index": 293,
+      "task_id": "0",
+      "repetition": 1,
+      "arm": "fact",
+      "official_score": 1.0,
+      "db_match": true,
+      "communication_required": 0,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "c04f04e3ce12598ff9acb2b84f8d4103039ff0b7542bf1425b6fbf360bec028f",
+      "replayed_reward_sha256": "8bad32aeea5e3d4c93e626926fa5d366f421f7efddb9a59a9d0c2b49785f2d1b"
+    },
+    {
+      "index": 294,
+      "task_id": "0",
+      "repetition": 1,
+      "arm": "empty_preload",
+      "official_score": 1.0,
+      "db_match": true,
+      "communication_required": 0,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "51b8969a4a2034990764452ebb97a394fa00961c9245ddead7f89293fc5b66d8",
+      "replayed_reward_sha256": "8bad32aeea5e3d4c93e626926fa5d366f421f7efddb9a59a9d0c2b49785f2d1b"
+    },
+    {
+      "index": 295,
+      "task_id": "0",
+      "repetition": 1,
+      "arm": "no_memory",
+      "official_score": 1.0,
+      "db_match": true,
+      "communication_required": 0,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "695e8d4cfbb7f9a4ee5f2db2a5921673374670f12f53256d6641e15af5531417",
+      "replayed_reward_sha256": "8bad32aeea5e3d4c93e626926fa5d366f421f7efddb9a59a9d0c2b49785f2d1b"
+    },
+    {
+      "index": 296,
+      "task_id": "0",
+      "repetition": 1,
+      "arm": "lesson",
+      "official_score": 1.0,
+      "db_match": true,
+      "communication_required": 0,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "38486e61461b2af2574122da59f38916c806aaafaed99a52aea918e188389190",
+      "replayed_reward_sha256": "8bad32aeea5e3d4c93e626926fa5d366f421f7efddb9a59a9d0c2b49785f2d1b"
+    },
+    {
+      "index": 297,
+      "task_id": "36",
+      "repetition": 1,
+      "arm": "episode",
+      "official_score": 1.0,
+      "db_match": true,
+      "communication_required": 0,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "93ebb02c38d1ae13d7ac1b5314a6897041881dfc9123ad31f545dff8d519d415",
+      "replayed_reward_sha256": "697368ed3870a2c60b4ce4a43d107c84f11a21d28f14bb4b0d0edd28cd081dba"
+    },
+    {
+      "index": 298,
+      "task_id": "36",
+      "repetition": 1,
+      "arm": "no_memory",
+      "official_score": 1.0,
+      "db_match": true,
+      "communication_required": 0,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "7e34a671e4f574120926cd29464eab555ad5c18bdf8c8e1f100adbb39b419b0b",
+      "replayed_reward_sha256": "697368ed3870a2c60b4ce4a43d107c84f11a21d28f14bb4b0d0edd28cd081dba"
+    },
+    {
+      "index": 300,
+      "task_id": "36",
+      "repetition": 1,
+      "arm": "fact",
+      "official_score": 1.0,
+      "db_match": true,
+      "communication_required": 0,
+      "communication_passed": true,
+      "missing_communication": [],
+      "report_sha256": "bec13daee5bbabe7a30e90f8c693ebc29c05769ba7677f4cf6d40e724cd22cb5",
+      "replayed_reward_sha256": "697368ed3870a2c60b4ce4a43d107c84f11a21d28f14bb4b0d0edd28cd081dba"
+    }
+  ],
+  "unavailable": [
+    {
+      "index": 276,
+      "status": "error",
+      "reason": "HTTP_429"
+    },
+    {
+      "index": 299,
+      "status": "error",
+      "reason": "NATIVE_MAX_STEPS"
+    },
+    {
+      "index": 301,
+      "status": "error",
+      "reason": "NATIVE_MAX_STEPS"
+    },
+    {
+      "index": 302,
+      "status": "error",
+      "reason": "PROVIDER_RESPONSE_ERROR"
+    },
+    {
+      "index": 303,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 304,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 305,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 306,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 307,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 308,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 309,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 310,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 311,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 312,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 313,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 314,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 315,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 316,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 317,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 318,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 319,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 320,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 321,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 322,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 323,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 324,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 325,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 326,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 327,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 328,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 329,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 330,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 331,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 332,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 333,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 334,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 335,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 336,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 337,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 338,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 339,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 340,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 341,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 342,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 343,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 344,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 345,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 346,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 347,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 348,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 349,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 350,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 351,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 352,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 353,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 354,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 355,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 356,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 357,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 358,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 359,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 360,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 361,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 362,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 363,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 364,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 365,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 366,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 367,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 368,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 369,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 370,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 371,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 372,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 373,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 374,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 375,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 376,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 377,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 378,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 379,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 380,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 381,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 382,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 383,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 384,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 385,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 386,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 387,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 388,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 389,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 390,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 391,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 392,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 393,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 394,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 395,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 396,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 397,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 398,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 399,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 400,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 401,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 402,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 403,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 404,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 405,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 406,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 407,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 408,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 409,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 410,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 411,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 412,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 413,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 414,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 415,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 416,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 417,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 418,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 419,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 420,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 421,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 422,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 423,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 424,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 425,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 426,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 427,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 428,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 429,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 430,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 431,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 432,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 433,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 434,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 435,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 436,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 437,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 438,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 439,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 440,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 441,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 442,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 443,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 444,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 445,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 446,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 447,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 448,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 449,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 450,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 451,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 452,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 453,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 454,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 455,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 456,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 457,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 458,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 459,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 460,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 461,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 462,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 463,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 464,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 465,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 466,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 467,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 468,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 469,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 470,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 471,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 472,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 473,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 474,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 475,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 476,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 477,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 478,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 479,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 480,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 481,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 482,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 483,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 484,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 485,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 486,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 487,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 488,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 489,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 490,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 491,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 492,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 493,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 494,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 495,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 496,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 497,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 498,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 499,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 500,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 501,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 502,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 503,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 504,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 505,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 506,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 507,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 508,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 509,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 510,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 511,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 512,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 513,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 514,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 515,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 516,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 517,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 518,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 519,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 520,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 521,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 522,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 523,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 524,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 525,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 526,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 527,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 528,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 529,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 530,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 531,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 532,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 533,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 534,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 535,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 536,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 537,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 538,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 539,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 540,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 541,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 542,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 543,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 544,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 545,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 546,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 547,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 548,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 549,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 550,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 551,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 552,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 553,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 554,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 555,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 556,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 557,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 558,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 559,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 560,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 561,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 562,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 563,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 564,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 565,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 566,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 567,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 568,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 569,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 570,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 571,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 572,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 573,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 574,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 575,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 576,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 577,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 578,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 579,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 580,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 581,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 582,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 583,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    },
+    {
+      "index": 584,
+      "status": "not_started",
+      "reason": "unknown_cost"
+    }
+  ]
+}
