@@ -28,6 +28,9 @@ DESIGN = "protocols/drafts/tau2-two-pass-memory-forms-v1.json"
 
 
 def ordered_jobs(design):
+    if design.get("format") == "agent-memory-prompt-comparison-design/v1":
+        from agent_memory_eval.experiments.prompt_comparison import comparison_jobs
+        return comparison_jobs(design)
     allocation = design["allocation"]
     cohort = design["source"]["cohort"]
     tasks = [s["task_id"] for s in cohort]
@@ -153,11 +156,11 @@ def preflight_sizes(jobs, design, sources, tasks, connection, instruction, commo
                     or len(canonical(dict(items=items))) > s["read_bank_return_bytes"]):
                 raise ContractError("Public record exceeds the frozen read bank")
             solve_stress.append(size)
-    if max(writer_sizes) > w["proposed_limits"]["input_bytes"] or max(solve_stress) > s["max_input_bytes"]:
+    if max(writer_sizes) > w["proposed_limits"]["input_bytes"] or max(solve_stress, default=0) > s["max_input_bytes"]:
         raise ContractError("Preflight request exceeds the frozen input budget")
     return dict(writer_initial_wires=len(writer_sizes), writer_initial_wire_bytes=[min(writer_sizes), max(writer_sizes)],
                 public_record_archived_final_wire_checks=len(solve_stress),
-                public_record_archived_final_wire_bytes=[min(solve_stress), max(solve_stress)])
+                public_record_archived_final_wire_bytes=[min(solve_stress), max(solve_stress)] if solve_stress else [])
 
 
 def prepare(root, workspace, checkout, design):
@@ -190,7 +193,7 @@ def prepare(root, workspace, checkout, design):
                 instruction=instruction)
 
 
-def run_jobs(rows, execute, guard, persist):
+def run_jobs(rows, execute, guard, persist, *, written_arms=(*FORMS, "summary")):
     """Persist all assignments before HTTP, a start before side effects, and every terminal disposition."""
     writers = {}
     persist(rows)
@@ -203,7 +206,7 @@ def run_jobs(rows, execute, guard, persist):
         if stop:
             row.update(status="not_started", reason=stop)
             continue
-        if row["phase"] == "solve" and row["arm"] in (*FORMS, "summary"):
+        if row["phase"] == "solve" and row["arm"] in written_arms:
             if writer is None:
                 raise ContractError("Solver allocation precedes its writer")
             if writer["status"] not in {"completed", "empty"}:
@@ -233,8 +236,6 @@ def run_jobs(rows, execute, guard, persist):
 
 
 def run_batch(profile, workspace, checkout):
-    from agent_memory_eval.experiments.forms_solve import run_forms_solve
-    from agent_memory_eval.experiments.forms_write import read_form_bank, run_form_writer
     root, workspace = ROOT.resolve(), Path(workspace).resolve()
     if (profile.get("format") != "agent-memory-two-pass-memory-forms-ready/v1" or profile.get("status") != "ready"
             or profile["design_ref"]["path"] != DESIGN):
@@ -264,6 +265,14 @@ def run_batch(profile, workspace, checkout):
         raise ContractError("Endpoint or price changed after the ready profile was frozen")
     if implementation_identity(root) != identity:
         raise ContractError("Runtime changed before allocation")
+    return execute_prepared(profile, root, destination, identity, design, plan, models, guard)
+
+
+def execute_prepared(profile, root, destination, identity, design, plan, models, guard):
+    """Execute a verified schedule once, preserving every job's original journal."""
+    from agent_memory_eval.experiments.forms_solve import run_forms_solve
+    from agent_memory_eval.experiments.forms_write import read_form_bank, run_form_writer
+    written_arms = tuple(design["writing"]["lines"])
     rows = [dict(row, status="planned", directory=f'jobs/{row["index"]:04d}', run_id=new_id("r")) for row in plan["jobs"]]
     destination.mkdir(exist_ok=False)
     (destination / "jobs").mkdir()
@@ -297,7 +306,8 @@ def run_batch(profile, workspace, checkout):
                     run_id=row["run_id"], connection=cfg, prepared=(orch, native, models, plan["modules"]),
                     guard=guard, clients=episode_clients, limits=limits, instruction=plan["instruction"] if arm != "no_memory" else "",
                     writer_bank=bank, public_record=source.public_context if arm == "public_record" else None,
-                    public_context_sha256=source.public_context_sha256 if arm not in {"no_memory", "empty_preload"} else None)
+                    public_context_sha256=source.public_context_sha256 if arm not in {"no_memory", "empty_preload"} else None,
+                    written_arms=written_arms)
             if result["run_id"] != row["run_id"]:
                 raise ContractError("Run differs from preallocated identity")
             result["log_sha256"] = digest(journal.path.read_bytes())
@@ -309,7 +319,7 @@ def run_batch(profile, workspace, checkout):
                 raise ContractError("Per-job provider ledger differs from journal accounting")
         return result
     ledger = destination / "allocations.json"
-    stop = run_jobs(rows, execute, guard, lambda values: write_json(ledger, values))
+    stop = run_jobs(rows, execute, guard, lambda values: write_json(ledger, values), written_arms=written_arms)
     summary = dict(stop_reason=stop, http_calls=guard.calls, reported_usd=guard.reported_usd,
         unknown_cost=guard.unknown_cost, ended_at=datetime.now(timezone.utc).isoformat(),
         allocation_sha256=digest(ledger.read_bytes()), control_sha256=digest((destination / "control.json").read_bytes()))

@@ -1,0 +1,36 @@
+{
+  "format": "agent-memory-prompt-comparison/v1",
+  "status": "ready",
+  "name": "tau2-fact-recheck-01",
+  "base_design_ref": {
+    "path": "protocols/drafts/tau2-two-pass-memory-forms-v1.json",
+    "sha256": "d4b06f72f4bcf5f656587e80645e042e7cf77e687cd5d1c38a20e2aff2cc373a"
+  },
+  "endpoint_ref": {
+    "path": "artifacts/pilots/20261118-two-pass-forms-endpoints.json",
+    "sha256": "9b5bd1d9898ede15030b062fa81e451875fee0adff31d3a279d974a74435a872"
+  },
+  "conditions": [
+    {
+      "id": "fact_original",
+      "representation": "fact",
+      "prompt_version": "fact-v1",
+      "prompt": "If you write, record directly observed facts and values, their scope, and any uncertainty about them."
+    },
+    {
+      "id": "fact_recheck",
+      "representation": "fact",
+      "prompt_version": "fact-recheck-v1",
+      "prompt": "If you write, record directly observed facts and values, their scope, and any uncertainty about them. Mark which values observed in this case should be checked again during a later task."
+    }
+  ],
+  "read_mode": "preload",
+  "task_sets": {"development": ["17", "20"], "evaluation": ["3", "5"]},
+  "selection_reason": "17 and 20 motivated the hypothesis. Exclude customer groups of prior focal tasks 1,10,11,12,14,15,17,20,21,23,33,42,47. Rank remaining baseline customer groups by SHA-256 of UTF-8 fact-recheck-v1/<group>, take the first two and the lowest numeric eligible task in each. Evaluation is prospective for this prompt comparison within a previously observed cohort.",
+  "seed_pairs": [
+    {"repetition": 1, "writer": 0, "native_and_solver": 2},
+    {"repetition": 2, "writer": 1, "native_and_solver": 3}
+  ],
+  "guards": {"max_calls": 2400, "max_usd": 1.0, "max_seconds": 21600},
+  "http_timeout_seconds": 180
+}

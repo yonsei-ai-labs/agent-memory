@@ -85,6 +85,7 @@ def checked_rows(output):
         raise ContractError("The final ledger differs from the frozen allocation")
     usage = defaultdict(lambda: dict(http_calls=0, reported_usd=Decimal(0), total_tokens=0, unknown_count=0))
     sources = {r["task_id"]: r for r in design["source"]["cohort"]}
+    prompt_hashes = {c["id"]: c["writer_instruction_sha256"] for c in design.get("conditions", [])}
     written = {}
     for row in rows:
         folder = safe_path(output, row["directory"])
@@ -108,6 +109,8 @@ def checked_rows(output):
         start = scan["starts"][run]["payload"]
         if row["phase"] == "write":
             cfg = state["memory_writes"][run]
+            if prompt_hashes and digest(cfg["instruction"].encode()) != prompt_hashes[row["arm"]]:
+                raise ContractError("The complete writer instruction differs from its configured version")
             if (start["source_run_ids"] != [sources[row["task_id"]]["run_id"]]
                     or cfg["feedback"]["level"] != "none" or cfg["completion_contract"] != "writer-finish/v1"
                     or not cfg["instruction"].endswith("\n" + design["writing"]["lines"][row["arm"]])):
@@ -121,7 +124,7 @@ def checked_rows(output):
             if (cfg["task_id"], cfg["repetition"], cfg["arm"]) != key:
                 raise ContractError("Native assignment differs from the planned cell")
             items = snapshot_items(blobs, state, start["start_snapshot_id"]) if arm != "no_memory" else []
-            if arm in (*FORMS, "summary"):
+            if arm in design["writing"]["lines"]:
                 if written.get(key) != (cfg["source_writer_run_id"], cfg["source_writer_snapshot_id"], items):
                     raise ContractError("Delivered memory differs from the assigned sealed writer snapshot")
             elif arm == "public_record":

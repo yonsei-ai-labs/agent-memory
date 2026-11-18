@@ -229,7 +229,7 @@ def run_form_writer(journal, design, source, *, repetition, arm, client, guard, 
             or arm not in writing["lines"]):
         raise ContractError("Unknown writer assignment or seed")
     line = writing["lines"][arm]
-    if not isinstance(line, str) or not line.strip() or "\n" in line or "\r" in line:
+    if not isinstance(line, str) or not line.strip() or (("\n" in line or "\r" in line) and "conditions" not in design):
         raise ContractError("Each writing form requires a single instruction line")
     root = Path(root).absolute()
     instruction = asset_text(root, writing["common_instruction_ref"]).rstrip("\r\n") + "\n" + line

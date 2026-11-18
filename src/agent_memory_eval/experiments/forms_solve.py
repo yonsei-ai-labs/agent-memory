@@ -27,12 +27,12 @@ WRITTEN_ARMS = {"fact", "episode", "lesson", "procedure", "summary"}
 ROLES = ("worker", "user_simulator")
 
 
-def _bank_input(arm, task_id, repetition, writer_bank, public_record, expected_hash):
+def _bank_input(arm, task_id, repetition, writer_bank, public_record, expected_hash, *, written_arms=WRITTEN_ARMS):
     if expected_hash is not None and (not isinstance(expected_hash, str) or not re.fullmatch(r"[0-9a-f]{64}", expected_hash)):
         raise ContractError("Invalid public context digest")
-    if (arm in WRITTEN_ARMS) != (writer_bank is not None) or (arm == "public_record") != (public_record is not None):
+    if (arm in written_arms) != (writer_bank is not None) or (arm == "public_record") != (public_record is not None):
         raise ContractError("This allocation requires its own specified source input")
-    if arm in WRITTEN_ARMS:
+    if arm in written_arms:
         bank = writer_bank
         required = {"arm", "task_id", "repetition", "public_context_sha256", "snapshot_id", "run_id", "items", "head_revision", "status"}
         if not isinstance(bank, dict) or not required <= bank.keys():
@@ -204,7 +204,8 @@ def _usage(journal, run_id):
 
 
 def run_forms_solve(journal, *, arm, task_id, repetition, run_id, connection, prepared, guard, limits,
-                    instruction, writer_bank=None, public_record=None, public_context_sha256=None, opener=None, clients=None):
+                    instruction, writer_bank=None, public_record=None, public_context_sha256=None, opener=None, clients=None,
+                    written_arms=WRITTEN_ARMS):
     """Run one assigned episode in a new per-job journal with a batch guard and verified input.
 
     The caller verifies a writer bank against its sealed journal and supplies the cohort's public hash.
@@ -217,7 +218,8 @@ def run_forms_solve(journal, *, arm, task_id, repetition, run_id, connection, pr
     if not isinstance(instruction, str) or (instruction != "" if arm == "no_memory" else not instruction.strip()):
         raise ContractError("Memory arms require the common instruction and pure no-memory requires none")
     _prepared_for_job(connection, prepared, limits, task_id)
-    items, revision = _bank_input(arm, task_id, repetition, writer_bank, public_record, public_context_sha256)
+    items, revision = _bank_input(arm, task_id, repetition, writer_bank, public_record, public_context_sha256,
+                                  written_arms=written_arms)
     execution = ExecutionLimits(**{k: limits[k] for k in (
         "worker_requests", "user_simulator_requests", "writer_requests", "max_input_bytes")})
     if execution.writer_requests or any(type(limits[k]) is not int or limits[k] < 1 for k in (
