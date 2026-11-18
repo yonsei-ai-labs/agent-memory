@@ -1,4 +1,4 @@
-"""Replay observed flight/payment differences for single-booking, split-payment tasks without model calls."""
+"""Replay observed flight, payment and baggage differences for split-payment bookings without model calls."""
 
 import argparse
 from itertools import combinations
@@ -122,9 +122,10 @@ def probe(workspace, config, *, continuation=False):
                     first[task] = factory, call, reference, r["index"]
                 cell["eligibility"] = "first_pass_booking"
                 continue
-            keys = [k for k in ("flights", "payment_methods") if call.arguments[k] != expected[k]]
+            keys = [k for k in ("flights", "payment_methods", "total_baggages", "nonfree_baggages")
+                    if call.arguments[k] != expected[k]]
             if cell["official_success"] or not keys:
-                cell["eligibility"] = "official_success" if cell["official_success"] else "no_flight_or_payment_difference"
+                cell["eligibility"] = "official_success" if cell["official_success"] else "no_selected_argument_difference"
                 continue
             cell["eligibility"] = "observed_difference"
             exp = dict(task_id=task, job=r["index"], fields=keys,
@@ -138,7 +139,7 @@ def probe(workspace, config, *, continuation=False):
     return dict(format="agent-memory-new-customer-booking-field-replay/v1", config_sha256=config_hash,
                 method_sha256=digest(Path(__file__).read_bytes()), stage_completion_sha256=stages,
                 task_ids=sorted(targets, key=int), coverage=cells, comparisons=experiments,
-                scope="Exploratory policy chosen after reading comparison job 69. For all assigned split-payment single-booking tasks, replace observed flight and payment arguments separately and together in a local database. Original model decisions, conversations, approvals and scores are preserved.")
+                scope="Exploratory field selection after reading comparison jobs 69 (flight and payment) and 91 (baggage). For all assigned single-booking, split-payment tasks, replace differing flights, payment methods, total or paid baggage counts separately and in combinations in a local database. Original model decisions, conversations, approvals and grades are preserved.")
 
 
 def main():
