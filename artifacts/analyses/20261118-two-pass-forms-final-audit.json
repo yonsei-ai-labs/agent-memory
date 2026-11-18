@@ -1,0 +1,149 @@
+{
+  "format": "two-pass-forms-followon-audit/v1",
+  "status": "passed",
+  "sources": {
+    "original": {
+      "path": "runs/tau2-two-pass-forms-luna-deepseek-01",
+      "completion_sha256": "3528eed073199e62e38b2b30959f6b368c3a00e4e6a54021270de548e8b91381"
+    },
+    "supplement": {
+      "path": "runs/tau2-two-pass-forms-luna-deepseek-supplement-01",
+      "completion_sha256": "40004aaf9f1d127940bf9782864abe1cb6080796a73fa7bd1141a0e4652a5756"
+    },
+    "followon": {
+      "path": "runs/tau2-two-pass-forms-luna-deepseek-supplement-02",
+      "completion_sha256": "44f67d55b2dcd4b5c75224a67bc2b30ab552e30bccaf0e81535679dad662a358"
+    }
+  },
+  "ready_profile_sha256": "9c2751f6790ef922c955cea384c309f7b94aefadaa35a7b6d2211a1c81253ebd",
+  "approval": "The user selected continued execution of the 282 never-started assignments. Reserve confirmed HTTP 429 and received 504 errors with a valid generation ID when an individual charge is unknown. Preserve every prior attempted job and the shared USD 5 cap.",
+  "guards": {
+    "max_calls": 16000,
+    "max_usd": 5,
+    "max_seconds": 129600
+  },
+  "original_started_at": "2026-11-18T03:24:23.089730+00:00",
+  "pending_sha256": "8b1dec09800c15fee7cca142e3fac0a127088b853cc81ae7dc070483672f65ec",
+  "previous_as_sealed": {
+    "writer_allocations": 232,
+    "episode_allocations": 352,
+    "attempted_episodes": 70,
+    "graded_episodes": 66,
+    "ungraded_started_episodes": 4,
+    "successful_episodes": 58,
+    "unstarted_episodes": 282,
+    "http_calls": 1861,
+    "known_usd": "0.2916642358",
+    "unknown_calls": 2,
+    "reserved_usd": "0.0018567"
+  },
+  "carry": {
+    "http_calls": 1861,
+    "known_usd": "0.2916642358",
+    "unknown_calls": 2,
+    "reserved_usd": "0.0100881",
+    "original_429": {
+      "request_id": "request_4236e2f4c30b42dfaba3a6d01aad725f",
+      "actor": "user_simulator",
+      "request_sha256": "64e6a42d59d88f0201a78679f849805adceeeb583a7cc37df379bcd41e7f80af",
+      "response_sha256": "f1e2ec842fcd2177eaebbb6c0132763e7e2f48ebde6a216579ed87cdaa049213",
+      "cost_status": "unknown",
+      "reserved_usd": "0.0018567",
+      "retry_after_seconds": null,
+      "retry_after_utc": null
+    },
+    "prior_504": {
+      "request_id": "request_f8ca7648c54e4a3a83d76d13561ecc30",
+      "actor": "user_simulator",
+      "request_sha256": "d7c8584c40db8af872e0a667cdf7ba677fd2d6fde01c0367f19f6b46a1e9493f",
+      "response_sha256": "578031de5d6c09144faa39b900ebaeff45a3f67b80d2d91ecfd0b78ed3c2241c",
+      "code": 504,
+      "cost_status": "unknown",
+      "reserved_usd": "0.0082314",
+      "generation_id": "gen-1794979345-RjatDnqrDGwFcU2ztl5v",
+      "retry_after_seconds": null,
+      "retry_after_utc": null
+    },
+    "pending_sha256": "8b1dec09800c15fee7cca142e3fac0a127088b853cc81ae7dc070483672f65ec"
+  },
+  "original": {
+    "writer_allocations": 232,
+    "episode_allocations": 352,
+    "attempted_episodes": 44,
+    "graded_episodes": 43,
+    "ungraded_started_episodes": 1,
+    "successful_episodes": 35,
+    "unstarted_episodes": 308,
+    "http_calls": 1075,
+    "known_usd": "0.2310443024",
+    "unknown_calls": 1,
+    "reserved_usd": "0.0018567",
+    "http_429": {
+      "276": {
+        "request_id": "request_4236e2f4c30b42dfaba3a6d01aad725f",
+        "actor": "user_simulator",
+        "request_sha256": "64e6a42d59d88f0201a78679f849805adceeeb583a7cc37df379bcd41e7f80af",
+        "response_sha256": "f1e2ec842fcd2177eaebbb6c0132763e7e2f48ebde6a216579ed87cdaa049213",
+        "cost_status": "unknown",
+        "reserved_usd": "0.0018567",
+        "retry_after_seconds": null,
+        "retry_after_utc": null
+      }
+    }
+  },
+  "supplement": {
+    "writer_allocations": 0,
+    "episode_allocations": 308,
+    "attempted_episodes": 26,
+    "graded_episodes": 23,
+    "ungraded_started_episodes": 3,
+    "successful_episodes": 23,
+    "unstarted_episodes": 282,
+    "http_calls": 786,
+    "known_usd": "0.0606199334",
+    "unknown_calls": 1,
+    "reserved_usd": "0E-7",
+    "http_429": {}
+  },
+  "followon": {
+    "writer_allocations": 0,
+    "episode_allocations": 282,
+    "attempted_episodes": 169,
+    "graded_episodes": 168,
+    "ungraded_started_episodes": 1,
+    "successful_episodes": 127,
+    "unstarted_episodes": 113,
+    "http_calls": 2806,
+    "known_usd": "0.4938995936",
+    "unknown_calls": 1,
+    "reserved_usd": "0E-7",
+    "provider_errors": {}
+  },
+  "combined": {
+    "writer_allocations": 232,
+    "episode_allocations": 352,
+    "attempted_episodes": 239,
+    "graded_episodes": 234,
+    "ungraded_started_episodes": 5,
+    "successful_episodes": 185,
+    "unstarted_episodes": 113,
+    "http_calls": 4667,
+    "known_usd": "0.7855638294",
+    "unknown_calls": 3,
+    "reserved_usd": "0.0100881"
+  },
+  "role_settings_sha256": {
+    "writer": [
+      "0cd07fde1938293df0e5a72deb6d8cc63b5f99d6b8db65b07359cfac1a9bf07a"
+    ],
+    "user_simulator": [
+      "44d4c44dea1301e6025e516d6a390a24fc027565a4d05c13865ee16e2a355bdd"
+    ],
+    "worker": [
+      "8671a1115fd1f3535af11e4d30afecc07ad2306430c9732ebb92bd84abb9fe91"
+    ]
+  },
+  "input_file_count": 41313,
+  "input_manifest_sha256": "7f14ed693144d015a26ac1a05d7014c6b00f84b184942dfbc88c5f74fd842712",
+  "combined_view_completion_sha256": "22fdade5e0aa229335f608fc7e33ef68e1fda448fc46e6cbb7942b4780d22972"
+}

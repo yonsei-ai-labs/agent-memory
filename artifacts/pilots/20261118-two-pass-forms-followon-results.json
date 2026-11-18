@@ -1,0 +1,4173 @@
+{
+  "format": "agent-memory-two-pass-memory-forms-results/v1",
+  "completion": {
+    "stop_reason": "unknown_cost",
+    "ended_at": "2026-11-18T08:10:45.972827+00:00",
+    "allocation_sha256": "bccc992e061cdd0d833222e862204e2dab402f5593efe4a7bed7eee6cecfbd36",
+    "control_sha256": "9595ac718d715c6d33abdc15ac138a1d6641bfc5d44b5aa4e29503fcd26202a0",
+    "http_calls": 2806,
+    "reported_usd": 0.4938995936,
+    "known_usd_decimal": "0.4938995936",
+    "unknown_cost": true,
+    "unknown_cost_requests": 1,
+    "reserved_usd": "0E-7"
+  },
+  "usage_by_role": {
+    "user_simulator": {
+      "http_calls": 1078,
+      "reported_usd": "0.2305487436",
+      "total_tokens": 1349119,
+      "unknown_count": 1
+    },
+    "worker": {
+      "http_calls": 1728,
+      "reported_usd": "0.263350850",
+      "total_tokens": 10128001,
+      "unknown_count": 0
+    }
+  },
+  "by_arm": [
+    {
+      "phase": "solve",
+      "arm": "empty_preload",
+      "planned": 45,
+      "statuses": {
+        "completed": 27,
+        "not_started": 18
+      },
+      "graded": 27,
+      "successful": 22,
+      "http_calls": 485,
+      "reported_tokens": 2003089,
+      "known_cost_usd": "0.0830022588",
+      "unknown_cost_requests": 0
+    },
+    {
+      "phase": "solve",
+      "arm": "episode",
+      "planned": 45,
+      "statuses": {
+        "completed": 27,
+        "error": 1,
+        "not_started": 17
+      },
+      "graded": 27,
+      "successful": 21,
+      "http_calls": 409,
+      "reported_tokens": 1542278,
+      "known_cost_usd": "0.0693033120",
+      "unknown_cost_requests": 1
+    },
+    {
+      "phase": "solve",
+      "arm": "fact",
+      "planned": 45,
+      "statuses": {
+        "completed": 27,
+        "not_started": 18
+      },
+      "graded": 27,
+      "successful": 20,
+      "http_calls": 415,
+      "reported_tokens": 1632466,
+      "known_cost_usd": "0.0747796226",
+      "unknown_cost_requests": 0
+    },
+    {
+      "phase": "solve",
+      "arm": "lesson",
+      "planned": 45,
+      "statuses": {
+        "completed": 27,
+        "not_started": 18
+      },
+      "graded": 27,
+      "successful": 21,
+      "http_calls": 520,
+      "reported_tokens": 2128410,
+      "known_cost_usd": "0.0882380154",
+      "unknown_cost_requests": 0
+    },
+    {
+      "phase": "solve",
+      "arm": "no_memory",
+      "planned": 45,
+      "statuses": {
+        "completed": 27,
+        "not_started": 18
+      },
+      "graded": 27,
+      "successful": 20,
+      "http_calls": 433,
+      "reported_tokens": 1566099,
+      "known_cost_usd": "0.0738431254",
+      "unknown_cost_requests": 0
+    },
+    {
+      "phase": "solve",
+      "arm": "procedure",
+      "planned": 45,
+      "statuses": {
+        "completed": 27,
+        "not_started": 18
+      },
+      "graded": 27,
+      "successful": 20,
+      "http_calls": 434,
+      "reported_tokens": 1869851,
+      "known_cost_usd": "0.0795029400",
+      "unknown_cost_requests": 0
+    },
+    {
+      "phase": "solve",
+      "arm": "public_record",
+      "planned": 6,
+      "statuses": {
+        "completed": 3,
+        "not_started": 3
+      },
+      "graded": 3,
+      "successful": 2,
+      "http_calls": 58,
+      "reported_tokens": 513360,
+      "known_cost_usd": "0.0144168294",
+      "unknown_cost_requests": 0
+    },
+    {
+      "phase": "solve",
+      "arm": "summary",
+      "planned": 6,
+      "statuses": {
+        "completed": 3,
+        "not_started": 3
+      },
+      "graded": 3,
+      "successful": 1,
+      "http_calls": 52,
+      "reported_tokens": 221567,
+      "known_cost_usd": "0.010813490",
+      "unknown_cost_requests": 0
+    }
+  ],
+  "paired_contrasts": [
+    {
+      "treatment": "fact",
+      "control": "no_memory",
+      "planned_pairs": 45,
+      "jointly_graded_pairs": 27,
+      "tasks_with_pairs": 21,
+      "customer_groups_with_pairs": 16,
+      "counts": {
+        "gain": 3,
+        "loss": 3,
+        "both_success": 17,
+        "both_failure": 4,
+        "ungraded": 18
+      },
+      "task_equal_difference_pp": -2.380952,
+      "possible_difference_pp": [
+        -44.642857,
+        44.642857
+      ],
+      "descriptive_cluster_interval_pp": [
+        -20.0,
+        17.5
+      ],
+      "leave_one_group_out_pp": {
+        "g01": -2.5,
+        "g02": -5.0,
+        "g03": -2.631579,
+        "g04": -2.777778,
+        "g06": -2.5,
+        "g07": -7.5,
+        "g08": -2.5,
+        "g09": -5.0,
+        "g10": 2.631579,
+        "g13": 2.5,
+        "g14": -2.5,
+        "g15": -2.5,
+        "g16": -2.5,
+        "g17": 0.0,
+        "g19": -2.5,
+        "g21": -2.5
+      },
+      "task_difference_pp": {
+        "0": 0.0,
+        "1": 50.0,
+        "10": 100.0,
+        "11": 0.0,
+        "12": 50.0,
+        "14": 0.0,
+        "20": -100.0,
+        "21": 0.0,
+        "23": -100.0,
+        "27": 0.0,
+        "28": 0.0,
+        "3": 0.0,
+        "33": -50.0,
+        "34": 0.0,
+        "38": 0.0,
+        "4": 0.0,
+        "42": 0.0,
+        "46": 0.0,
+        "47": 0.0,
+        "49": 0.0,
+        "9": 0.0
+      },
+      "review_cases": {
+        "gain": [
+          {
+            "task_id": "12",
+            "repetition": 1,
+            "treatment_job": 368,
+            "control_job": 369
+          },
+          {
+            "task_id": "10",
+            "repetition": 1,
+            "treatment_job": 388,
+            "control_job": 386
+          },
+          {
+            "task_id": "1",
+            "repetition": 2,
+            "treatment_job": 411,
+            "control_job": 414
+          }
+        ],
+        "loss": [
+          {
+            "task_id": "23",
+            "repetition": 1,
+            "treatment_job": 323,
+            "control_job": 326
+          },
+          {
+            "task_id": "20",
+            "repetition": 1,
+            "treatment_job": 376,
+            "control_job": 371
+          },
+          {
+            "task_id": "33",
+            "repetition": 2,
+            "treatment_job": 429,
+            "control_job": 431
+          }
+        ],
+        "both_success": [
+          {
+            "task_id": "46",
+            "repetition": 1,
+            "treatment_job": 305,
+            "control_job": 303
+          }
+        ],
+        "both_failure": [
+          {
+            "task_id": "14",
+            "repetition": 1,
+            "treatment_job": 334,
+            "control_job": 333
+          }
+        ]
+      }
+    },
+    {
+      "treatment": "episode",
+      "control": "no_memory",
+      "planned_pairs": 45,
+      "jointly_graded_pairs": 27,
+      "tasks_with_pairs": 21,
+      "customer_groups_with_pairs": 16,
+      "counts": {
+        "gain": 5,
+        "loss": 4,
+        "both_success": 16,
+        "both_failure": 2,
+        "ungraded": 18
+      },
+      "task_equal_difference_pp": 7.142857,
+      "possible_difference_pp": [
+        -42.857143,
+        46.428571
+      ],
+      "descriptive_cluster_interval_pp": [
+        -13.636364,
+        31.578947
+      ],
+      "leave_one_group_out_pp": {
+        "g01": 7.5,
+        "g02": 5.0,
+        "g03": 7.894737,
+        "g04": 8.333333,
+        "g06": 7.5,
+        "g07": 2.5,
+        "g08": 2.5,
+        "g09": 7.5,
+        "g10": 7.894737,
+        "g13": 12.5,
+        "g14": 2.5,
+        "g15": 7.5,
+        "g16": 7.5,
+        "g17": 13.157895,
+        "g19": 7.5,
+        "g21": 7.5
+      },
+      "task_difference_pp": {
+        "0": 0.0,
+        "1": 50.0,
+        "10": 100.0,
+        "11": 100.0,
+        "12": 0.0,
+        "14": 100.0,
+        "20": -100.0,
+        "21": 100.0,
+        "23": -100.0,
+        "27": 0.0,
+        "28": 0.0,
+        "3": 0.0,
+        "33": -100.0,
+        "34": 0.0,
+        "38": 0.0,
+        "4": 0.0,
+        "42": 0.0,
+        "46": 0.0,
+        "47": 0.0,
+        "49": 0.0,
+        "9": 0.0
+      },
+      "review_cases": {
+        "gain": [
+          {
+            "task_id": "14",
+            "repetition": 1,
+            "treatment_job": 330,
+            "control_job": 333
+          },
+          {
+            "task_id": "21",
+            "repetition": 1,
+            "treatment_job": 342,
+            "control_job": 341
+          },
+          {
+            "task_id": "10",
+            "repetition": 1,
+            "treatment_job": 385,
+            "control_job": 386
+          },
+          {
+            "task_id": "11",
+            "repetition": 1,
+            "treatment_job": 404,
+            "control_job": 403
+          },
+          {
+            "task_id": "1",
+            "repetition": 2,
+            "treatment_job": 409,
+            "control_job": 414
+          }
+        ],
+        "loss": [
+          {
+            "task_id": "23",
+            "repetition": 1,
+            "treatment_job": 322,
+            "control_job": 326
+          },
+          {
+            "task_id": "33",
+            "repetition": 1,
+            "treatment_job": 362,
+            "control_job": 363
+          },
+          {
+            "task_id": "20",
+            "repetition": 1,
+            "treatment_job": 375,
+            "control_job": 371
+          },
+          {
+            "task_id": "33",
+            "repetition": 2,
+            "treatment_job": 433,
+            "control_job": 431
+          }
+        ],
+        "both_success": [
+          {
+            "task_id": "46",
+            "repetition": 1,
+            "treatment_job": 306,
+            "control_job": 303
+          }
+        ],
+        "both_failure": [
+          {
+            "task_id": "12",
+            "repetition": 1,
+            "treatment_job": 366,
+            "control_job": 369
+          }
+        ]
+      }
+    },
+    {
+      "treatment": "lesson",
+      "control": "no_memory",
+      "planned_pairs": 45,
+      "jointly_graded_pairs": 27,
+      "tasks_with_pairs": 21,
+      "customer_groups_with_pairs": 16,
+      "counts": {
+        "gain": 4,
+        "loss": 3,
+        "both_success": 17,
+        "both_failure": 3,
+        "ungraded": 18
+      },
+      "task_equal_difference_pp": 4.761905,
+      "possible_difference_pp": [
+        -42.857143,
+        46.428571
+      ],
+      "descriptive_cluster_interval_pp": [
+        -9.090909,
+        21.052632
+      ],
+      "leave_one_group_out_pp": {
+        "g01": 5.0,
+        "g02": 2.5,
+        "g03": 5.263158,
+        "g04": 5.555556,
+        "g06": 5.0,
+        "g07": 0.0,
+        "g08": 5.0,
+        "g09": 2.5,
+        "g10": 5.263158,
+        "g13": 5.0,
+        "g14": 5.0,
+        "g15": 5.0,
+        "g16": 5.0,
+        "g17": 10.526316,
+        "g19": 5.0,
+        "g21": 5.0
+      },
+      "task_difference_pp": {
+        "0": 0.0,
+        "1": 50.0,
+        "10": 100.0,
+        "11": 0.0,
+        "12": 50.0,
+        "14": 100.0,
+        "20": 0.0,
+        "21": 0.0,
+        "23": -100.0,
+        "27": 0.0,
+        "28": 0.0,
+        "3": 0.0,
+        "33": -100.0,
+        "34": 0.0,
+        "38": 0.0,
+        "4": 0.0,
+        "42": 0.0,
+        "46": 0.0,
+        "47": 0.0,
+        "49": 0.0,
+        "9": 0.0
+      },
+      "review_cases": {
+        "gain": [
+          {
+            "task_id": "14",
+            "repetition": 1,
+            "treatment_job": 331,
+            "control_job": 333
+          },
+          {
+            "task_id": "12",
+            "repetition": 1,
+            "treatment_job": 370,
+            "control_job": 369
+          },
+          {
+            "task_id": "10",
+            "repetition": 1,
+            "treatment_job": 390,
+            "control_job": 386
+          },
+          {
+            "task_id": "1",
+            "repetition": 2,
+            "treatment_job": 413,
+            "control_job": 414
+          }
+        ],
+        "loss": [
+          {
+            "task_id": "23",
+            "repetition": 1,
+            "treatment_job": 328,
+            "control_job": 326
+          },
+          {
+            "task_id": "33",
+            "repetition": 1,
+            "treatment_job": 364,
+            "control_job": 363
+          },
+          {
+            "task_id": "33",
+            "repetition": 2,
+            "treatment_job": 432,
+            "control_job": 431
+          }
+        ],
+        "both_success": [
+          {
+            "task_id": "46",
+            "repetition": 1,
+            "treatment_job": 307,
+            "control_job": 303
+          }
+        ],
+        "both_failure": [
+          {
+            "task_id": "21",
+            "repetition": 1,
+            "treatment_job": 346,
+            "control_job": 341
+          }
+        ]
+      }
+    },
+    {
+      "treatment": "procedure",
+      "control": "no_memory",
+      "planned_pairs": 45,
+      "jointly_graded_pairs": 27,
+      "tasks_with_pairs": 21,
+      "customer_groups_with_pairs": 16,
+      "counts": {
+        "gain": 5,
+        "loss": 5,
+        "both_success": 15,
+        "both_failure": 2,
+        "ungraded": 18
+      },
+      "task_equal_difference_pp": 2.380952,
+      "possible_difference_pp": [
+        -46.428571,
+        42.857143
+      ],
+      "descriptive_cluster_interval_pp": [
+        -19.047619,
+        27.777778
+      ],
+      "leave_one_group_out_pp": {
+        "g01": 2.5,
+        "g02": 0.0,
+        "g03": 2.631579,
+        "g04": 8.333333,
+        "g06": 2.5,
+        "g07": -2.5,
+        "g08": 2.5,
+        "g09": 2.5,
+        "g10": -2.631579,
+        "g13": 7.5,
+        "g14": 2.5,
+        "g15": 2.5,
+        "g16": 2.5,
+        "g17": 7.894737,
+        "g19": 2.5,
+        "g21": -2.5
+      },
+      "task_difference_pp": {
+        "0": 0.0,
+        "1": 50.0,
+        "10": 100.0,
+        "11": 0.0,
+        "12": 0.0,
+        "14": 100.0,
+        "20": -100.0,
+        "21": 0.0,
+        "23": 0.0,
+        "27": 0.0,
+        "28": 0.0,
+        "3": 0.0,
+        "33": -100.0,
+        "34": 0.0,
+        "38": 0.0,
+        "4": 0.0,
+        "42": 100.0,
+        "46": 0.0,
+        "47": -100.0,
+        "49": 0.0,
+        "9": 0.0
+      },
+      "review_cases": {
+        "gain": [
+          {
+            "task_id": "14",
+            "repetition": 1,
+            "treatment_job": 329,
+            "control_job": 333
+          },
+          {
+            "task_id": "12",
+            "repetition": 1,
+            "treatment_job": 365,
+            "control_job": 369
+          },
+          {
+            "task_id": "42",
+            "repetition": 1,
+            "treatment_job": 377,
+            "control_job": 384
+          },
+          {
+            "task_id": "10",
+            "repetition": 1,
+            "treatment_job": 387,
+            "control_job": 386
+          },
+          {
+            "task_id": "1",
+            "repetition": 2,
+            "treatment_job": 412,
+            "control_job": 414
+          }
+        ],
+        "loss": [
+          {
+            "task_id": "33",
+            "repetition": 1,
+            "treatment_job": 360,
+            "control_job": 363
+          },
+          {
+            "task_id": "20",
+            "repetition": 1,
+            "treatment_job": 373,
+            "control_job": 371
+          },
+          {
+            "task_id": "12",
+            "repetition": 2,
+            "treatment_job": 427,
+            "control_job": 426
+          },
+          {
+            "task_id": "33",
+            "repetition": 2,
+            "treatment_job": 434,
+            "control_job": 431
+          },
+          {
+            "task_id": "47",
+            "repetition": 2,
+            "treatment_job": 445,
+            "control_job": 444
+          }
+        ],
+        "both_success": [
+          {
+            "task_id": "46",
+            "repetition": 1,
+            "treatment_job": 304,
+            "control_job": 303
+          }
+        ],
+        "both_failure": [
+          {
+            "task_id": "21",
+            "repetition": 1,
+            "treatment_job": 345,
+            "control_job": 341
+          }
+        ]
+      }
+    },
+    {
+      "treatment": "fact",
+      "control": "empty_preload",
+      "planned_pairs": 45,
+      "jointly_graded_pairs": 27,
+      "tasks_with_pairs": 21,
+      "customer_groups_with_pairs": 16,
+      "counts": {
+        "gain": 0,
+        "loss": 2,
+        "both_success": 20,
+        "both_failure": 5,
+        "ungraded": 18
+      },
+      "task_equal_difference_pp": -9.52381,
+      "possible_difference_pp": [
+        -48.214286,
+        41.071429
+      ],
+      "descriptive_cluster_interval_pp": [
+        -25.0,
+        0.0
+      ],
+      "leave_one_group_out_pp": {
+        "g01": -10.0,
+        "g02": -10.0,
+        "g03": -10.526316,
+        "g04": -11.111111,
+        "g06": -10.0,
+        "g07": -10.0,
+        "g08": -5.0,
+        "g09": -10.0,
+        "g10": -10.526316,
+        "g13": -5.0,
+        "g14": -10.0,
+        "g15": -10.0,
+        "g16": -10.0,
+        "g17": -10.526316,
+        "g19": -10.0,
+        "g21": -10.0
+      },
+      "task_difference_pp": {
+        "0": 0.0,
+        "1": 0.0,
+        "10": 0.0,
+        "11": -100.0,
+        "12": 0.0,
+        "14": 0.0,
+        "20": -100.0,
+        "21": 0.0,
+        "23": 0.0,
+        "27": 0.0,
+        "28": 0.0,
+        "3": 0.0,
+        "33": 0.0,
+        "34": 0.0,
+        "38": 0.0,
+        "4": 0.0,
+        "42": 0.0,
+        "46": 0.0,
+        "47": 0.0,
+        "49": 0.0,
+        "9": 0.0
+      },
+      "review_cases": {
+        "gain": [],
+        "loss": [
+          {
+            "task_id": "20",
+            "repetition": 1,
+            "treatment_job": 376,
+            "control_job": 372
+          },
+          {
+            "task_id": "11",
+            "repetition": 1,
+            "treatment_job": 406,
+            "control_job": 407
+          }
+        ],
+        "both_success": [
+          {
+            "task_id": "46",
+            "repetition": 1,
+            "treatment_job": 305,
+            "control_job": 308
+          }
+        ],
+        "both_failure": [
+          {
+            "task_id": "23",
+            "repetition": 1,
+            "treatment_job": 323,
+            "control_job": 327
+          }
+        ]
+      }
+    },
+    {
+      "treatment": "episode",
+      "control": "empty_preload",
+      "planned_pairs": 45,
+      "jointly_graded_pairs": 27,
+      "tasks_with_pairs": 21,
+      "customer_groups_with_pairs": 16,
+      "counts": {
+        "gain": 2,
+        "loss": 3,
+        "both_success": 19,
+        "both_failure": 3,
+        "ungraded": 18
+      },
+      "task_equal_difference_pp": 0.0,
+      "possible_difference_pp": [
+        -46.428571,
+        42.857143
+      ],
+      "descriptive_cluster_interval_pp": [
+        -18.181818,
+        18.429276
+      ],
+      "leave_one_group_out_pp": {
+        "g01": 0.0,
+        "g02": 0.0,
+        "g03": 0.0,
+        "g04": 0.0,
+        "g06": 0.0,
+        "g07": 0.0,
+        "g08": 0.0,
+        "g09": 2.5,
+        "g10": -5.263158,
+        "g13": 5.0,
+        "g14": -5.0,
+        "g15": 0.0,
+        "g16": 0.0,
+        "g17": 2.631579,
+        "g19": 0.0,
+        "g21": 0.0
+      },
+      "task_difference_pp": {
+        "0": 0.0,
+        "1": 0.0,
+        "10": 0.0,
+        "11": 0.0,
+        "12": -50.0,
+        "14": 100.0,
+        "20": -100.0,
+        "21": 100.0,
+        "23": 0.0,
+        "27": 0.0,
+        "28": 0.0,
+        "3": 0.0,
+        "33": -50.0,
+        "34": 0.0,
+        "38": 0.0,
+        "4": 0.0,
+        "42": 0.0,
+        "46": 0.0,
+        "47": 0.0,
+        "49": 0.0,
+        "9": 0.0
+      },
+      "review_cases": {
+        "gain": [
+          {
+            "task_id": "14",
+            "repetition": 1,
+            "treatment_job": 330,
+            "control_job": 332
+          },
+          {
+            "task_id": "21",
+            "repetition": 1,
+            "treatment_job": 342,
+            "control_job": 343
+          }
+        ],
+        "loss": [
+          {
+            "task_id": "33",
+            "repetition": 1,
+            "treatment_job": 362,
+            "control_job": 359
+          },
+          {
+            "task_id": "12",
+            "repetition": 1,
+            "treatment_job": 366,
+            "control_job": 367
+          },
+          {
+            "task_id": "20",
+            "repetition": 1,
+            "treatment_job": 375,
+            "control_job": 372
+          }
+        ],
+        "both_success": [
+          {
+            "task_id": "46",
+            "repetition": 1,
+            "treatment_job": 306,
+            "control_job": 308
+          }
+        ],
+        "both_failure": [
+          {
+            "task_id": "23",
+            "repetition": 1,
+            "treatment_job": 322,
+            "control_job": 327
+          }
+        ]
+      }
+    },
+    {
+      "treatment": "lesson",
+      "control": "empty_preload",
+      "planned_pairs": 45,
+      "jointly_graded_pairs": 27,
+      "tasks_with_pairs": 21,
+      "customer_groups_with_pairs": 16,
+      "counts": {
+        "gain": 1,
+        "loss": 2,
+        "both_success": 20,
+        "both_failure": 4,
+        "ungraded": 18
+      },
+      "task_equal_difference_pp": -2.380952,
+      "possible_difference_pp": [
+        -46.428571,
+        42.857143
+      ],
+      "descriptive_cluster_interval_pp": [
+        -18.004545,
+        10.869565
+      ],
+      "leave_one_group_out_pp": {
+        "g01": -2.5,
+        "g02": -2.5,
+        "g03": -2.631579,
+        "g04": -2.777778,
+        "g06": -2.5,
+        "g07": -2.5,
+        "g08": 2.5,
+        "g09": -2.5,
+        "g10": -7.894737,
+        "g13": -2.5,
+        "g14": -2.5,
+        "g15": -2.5,
+        "g16": -2.5,
+        "g17": 0.0,
+        "g19": -2.5,
+        "g21": -2.5
+      },
+      "task_difference_pp": {
+        "0": 0.0,
+        "1": 0.0,
+        "10": 0.0,
+        "11": -100.0,
+        "12": 0.0,
+        "14": 100.0,
+        "20": 0.0,
+        "21": 0.0,
+        "23": 0.0,
+        "27": 0.0,
+        "28": 0.0,
+        "3": 0.0,
+        "33": -50.0,
+        "34": 0.0,
+        "38": 0.0,
+        "4": 0.0,
+        "42": 0.0,
+        "46": 0.0,
+        "47": 0.0,
+        "49": 0.0,
+        "9": 0.0
+      },
+      "review_cases": {
+        "gain": [
+          {
+            "task_id": "14",
+            "repetition": 1,
+            "treatment_job": 331,
+            "control_job": 332
+          }
+        ],
+        "loss": [
+          {
+            "task_id": "33",
+            "repetition": 1,
+            "treatment_job": 364,
+            "control_job": 359
+          },
+          {
+            "task_id": "11",
+            "repetition": 1,
+            "treatment_job": 408,
+            "control_job": 407
+          }
+        ],
+        "both_success": [
+          {
+            "task_id": "46",
+            "repetition": 1,
+            "treatment_job": 307,
+            "control_job": 308
+          }
+        ],
+        "both_failure": [
+          {
+            "task_id": "23",
+            "repetition": 1,
+            "treatment_job": 328,
+            "control_job": 327
+          }
+        ]
+      }
+    },
+    {
+      "treatment": "procedure",
+      "control": "empty_preload",
+      "planned_pairs": 45,
+      "jointly_graded_pairs": 27,
+      "tasks_with_pairs": 21,
+      "customer_groups_with_pairs": 16,
+      "counts": {
+        "gain": 3,
+        "loss": 5,
+        "both_success": 17,
+        "both_failure": 2,
+        "ungraded": 18
+      },
+      "task_equal_difference_pp": -4.761905,
+      "possible_difference_pp": [
+        -50.0,
+        39.285714
+      ],
+      "descriptive_cluster_interval_pp": [
+        -29.172794,
+        23.913043
+      ],
+      "leave_one_group_out_pp": {
+        "g01": -5.0,
+        "g02": -5.0,
+        "g03": -5.263158,
+        "g04": 0.0,
+        "g06": -5.0,
+        "g07": -5.0,
+        "g08": 0.0,
+        "g09": -2.5,
+        "g10": -15.789474,
+        "g13": 0.0,
+        "g14": -5.0,
+        "g15": -5.0,
+        "g16": -5.0,
+        "g17": -2.631579,
+        "g19": -5.0,
+        "g21": -10.0
+      },
+      "task_difference_pp": {
+        "0": 0.0,
+        "1": 0.0,
+        "10": 0.0,
+        "11": -100.0,
+        "12": -50.0,
+        "14": 100.0,
+        "20": -100.0,
+        "21": 0.0,
+        "23": 100.0,
+        "27": 0.0,
+        "28": 0.0,
+        "3": 0.0,
+        "33": -50.0,
+        "34": 0.0,
+        "38": 0.0,
+        "4": 0.0,
+        "42": 100.0,
+        "46": 0.0,
+        "47": -100.0,
+        "49": 0.0,
+        "9": 0.0
+      },
+      "review_cases": {
+        "gain": [
+          {
+            "task_id": "23",
+            "repetition": 1,
+            "treatment_job": 324,
+            "control_job": 327
+          },
+          {
+            "task_id": "14",
+            "repetition": 1,
+            "treatment_job": 329,
+            "control_job": 332
+          },
+          {
+            "task_id": "42",
+            "repetition": 1,
+            "treatment_job": 377,
+            "control_job": 383
+          }
+        ],
+        "loss": [
+          {
+            "task_id": "33",
+            "repetition": 1,
+            "treatment_job": 360,
+            "control_job": 359
+          },
+          {
+            "task_id": "20",
+            "repetition": 1,
+            "treatment_job": 373,
+            "control_job": 372
+          },
+          {
+            "task_id": "11",
+            "repetition": 1,
+            "treatment_job": 405,
+            "control_job": 407
+          },
+          {
+            "task_id": "12",
+            "repetition": 2,
+            "treatment_job": 427,
+            "control_job": 428
+          },
+          {
+            "task_id": "47",
+            "repetition": 2,
+            "treatment_job": 445,
+            "control_job": 446
+          }
+        ],
+        "both_success": [
+          {
+            "task_id": "46",
+            "repetition": 1,
+            "treatment_job": 304,
+            "control_job": 308
+          }
+        ],
+        "both_failure": [
+          {
+            "task_id": "21",
+            "repetition": 1,
+            "treatment_job": 345,
+            "control_job": 343
+          }
+        ]
+      }
+    },
+    {
+      "treatment": "fact",
+      "control": "episode",
+      "planned_pairs": 45,
+      "jointly_graded_pairs": 27,
+      "tasks_with_pairs": 21,
+      "customer_groups_with_pairs": 16,
+      "counts": {
+        "gain": 2,
+        "loss": 3,
+        "both_success": 18,
+        "both_failure": 4,
+        "ungraded": 18
+      },
+      "task_equal_difference_pp": -9.52381,
+      "possible_difference_pp": [
+        -46.428571,
+        42.857143
+      ],
+      "descriptive_cluster_interval_pp": [
+        -28.947368,
+        6.818182
+      ],
+      "leave_one_group_out_pp": {
+        "g01": -10.0,
+        "g02": -10.0,
+        "g03": -10.526316,
+        "g04": -11.111111,
+        "g06": -10.0,
+        "g07": -10.0,
+        "g08": -5.0,
+        "g09": -12.5,
+        "g10": -5.263158,
+        "g13": -10.0,
+        "g14": -5.0,
+        "g15": -10.0,
+        "g16": -10.0,
+        "g17": -13.157895,
+        "g19": -10.0,
+        "g21": -10.0
+      },
+      "task_difference_pp": {
+        "0": 0.0,
+        "1": 0.0,
+        "10": 0.0,
+        "11": -100.0,
+        "12": 50.0,
+        "14": -100.0,
+        "20": 0.0,
+        "21": -100.0,
+        "23": 0.0,
+        "27": 0.0,
+        "28": 0.0,
+        "3": 0.0,
+        "33": 50.0,
+        "34": 0.0,
+        "38": 0.0,
+        "4": 0.0,
+        "42": 0.0,
+        "46": 0.0,
+        "47": 0.0,
+        "49": 0.0,
+        "9": 0.0
+      },
+      "review_cases": {
+        "gain": [
+          {
+            "task_id": "33",
+            "repetition": 1,
+            "treatment_job": 361,
+            "control_job": 362
+          },
+          {
+            "task_id": "12",
+            "repetition": 1,
+            "treatment_job": 368,
+            "control_job": 366
+          }
+        ],
+        "loss": [
+          {
+            "task_id": "14",
+            "repetition": 1,
+            "treatment_job": 334,
+            "control_job": 330
+          },
+          {
+            "task_id": "21",
+            "repetition": 1,
+            "treatment_job": 344,
+            "control_job": 342
+          },
+          {
+            "task_id": "11",
+            "repetition": 1,
+            "treatment_job": 406,
+            "control_job": 404
+          }
+        ],
+        "both_success": [
+          {
+            "task_id": "46",
+            "repetition": 1,
+            "treatment_job": 305,
+            "control_job": 306
+          }
+        ],
+        "both_failure": [
+          {
+            "task_id": "23",
+            "repetition": 1,
+            "treatment_job": 323,
+            "control_job": 322
+          }
+        ]
+      }
+    },
+    {
+      "treatment": "fact",
+      "control": "lesson",
+      "planned_pairs": 45,
+      "jointly_graded_pairs": 27,
+      "tasks_with_pairs": 21,
+      "customer_groups_with_pairs": 16,
+      "counts": {
+        "gain": 1,
+        "loss": 2,
+        "both_success": 19,
+        "both_failure": 5,
+        "ungraded": 18
+      },
+      "task_equal_difference_pp": -7.142857,
+      "possible_difference_pp": [
+        -46.428571,
+        42.857143
+      ],
+      "descriptive_cluster_interval_pp": [
+        -22.222222,
+        4.761905
+      ],
+      "leave_one_group_out_pp": {
+        "g01": -7.5,
+        "g02": -7.5,
+        "g03": -7.894737,
+        "g04": -8.333333,
+        "g06": -7.5,
+        "g07": -7.5,
+        "g08": -7.5,
+        "g09": -7.5,
+        "g10": -2.631579,
+        "g13": -2.5,
+        "g14": -7.5,
+        "g15": -7.5,
+        "g16": -7.5,
+        "g17": -10.526316,
+        "g19": -7.5,
+        "g21": -7.5
+      },
+      "task_difference_pp": {
+        "0": 0.0,
+        "1": 0.0,
+        "10": 0.0,
+        "11": 0.0,
+        "12": 0.0,
+        "14": -100.0,
+        "20": -100.0,
+        "21": 0.0,
+        "23": 0.0,
+        "27": 0.0,
+        "28": 0.0,
+        "3": 0.0,
+        "33": 50.0,
+        "34": 0.0,
+        "38": 0.0,
+        "4": 0.0,
+        "42": 0.0,
+        "46": 0.0,
+        "47": 0.0,
+        "49": 0.0,
+        "9": 0.0
+      },
+      "review_cases": {
+        "gain": [
+          {
+            "task_id": "33",
+            "repetition": 1,
+            "treatment_job": 361,
+            "control_job": 364
+          }
+        ],
+        "loss": [
+          {
+            "task_id": "14",
+            "repetition": 1,
+            "treatment_job": 334,
+            "control_job": 331
+          },
+          {
+            "task_id": "20",
+            "repetition": 1,
+            "treatment_job": 376,
+            "control_job": 374
+          }
+        ],
+        "both_success": [
+          {
+            "task_id": "46",
+            "repetition": 1,
+            "treatment_job": 305,
+            "control_job": 307
+          }
+        ],
+        "both_failure": [
+          {
+            "task_id": "23",
+            "repetition": 1,
+            "treatment_job": 323,
+            "control_job": 328
+          }
+        ]
+      }
+    },
+    {
+      "treatment": "fact",
+      "control": "procedure",
+      "planned_pairs": 45,
+      "jointly_graded_pairs": 27,
+      "tasks_with_pairs": 21,
+      "customer_groups_with_pairs": 16,
+      "counts": {
+        "gain": 3,
+        "loss": 3,
+        "both_success": 17,
+        "both_failure": 4,
+        "ungraded": 18
+      },
+      "task_equal_difference_pp": -4.761905,
+      "possible_difference_pp": [
+        -42.857143,
+        46.428571
+      ],
+      "descriptive_cluster_interval_pp": [
+        -30.952381,
+        15.217391
+      ],
+      "leave_one_group_out_pp": {
+        "g01": -5.0,
+        "g02": -5.0,
+        "g03": -5.263158,
+        "g04": -11.111111,
+        "g06": -5.0,
+        "g07": -5.0,
+        "g08": -5.0,
+        "g09": -7.5,
+        "g10": 5.263158,
+        "g13": -5.0,
+        "g14": -5.0,
+        "g15": -5.0,
+        "g16": -5.0,
+        "g17": -7.894737,
+        "g19": -5.0,
+        "g21": 0.0
+      },
+      "task_difference_pp": {
+        "0": 0.0,
+        "1": 0.0,
+        "10": 0.0,
+        "11": 0.0,
+        "12": 50.0,
+        "14": -100.0,
+        "20": 0.0,
+        "21": 0.0,
+        "23": -100.0,
+        "27": 0.0,
+        "28": 0.0,
+        "3": 0.0,
+        "33": 50.0,
+        "34": 0.0,
+        "38": 0.0,
+        "4": 0.0,
+        "42": -100.0,
+        "46": 0.0,
+        "47": 100.0,
+        "49": 0.0,
+        "9": 0.0
+      },
+      "review_cases": {
+        "gain": [
+          {
+            "task_id": "33",
+            "repetition": 1,
+            "treatment_job": 361,
+            "control_job": 360
+          },
+          {
+            "task_id": "12",
+            "repetition": 2,
+            "treatment_job": 423,
+            "control_job": 427
+          },
+          {
+            "task_id": "47",
+            "repetition": 2,
+            "treatment_job": 443,
+            "control_job": 445
+          }
+        ],
+        "loss": [
+          {
+            "task_id": "23",
+            "repetition": 1,
+            "treatment_job": 323,
+            "control_job": 324
+          },
+          {
+            "task_id": "14",
+            "repetition": 1,
+            "treatment_job": 334,
+            "control_job": 329
+          },
+          {
+            "task_id": "42",
+            "repetition": 1,
+            "treatment_job": 378,
+            "control_job": 377
+          }
+        ],
+        "both_success": [
+          {
+            "task_id": "46",
+            "repetition": 1,
+            "treatment_job": 305,
+            "control_job": 304
+          }
+        ],
+        "both_failure": [
+          {
+            "task_id": "21",
+            "repetition": 1,
+            "treatment_job": 344,
+            "control_job": 345
+          }
+        ]
+      }
+    },
+    {
+      "treatment": "episode",
+      "control": "lesson",
+      "planned_pairs": 45,
+      "jointly_graded_pairs": 27,
+      "tasks_with_pairs": 21,
+      "customer_groups_with_pairs": 16,
+      "counts": {
+        "gain": 2,
+        "loss": 2,
+        "both_success": 19,
+        "both_failure": 4,
+        "ungraded": 18
+      },
+      "task_equal_difference_pp": 2.380952,
+      "possible_difference_pp": [
+        -44.642857,
+        44.642857
+      ],
+      "descriptive_cluster_interval_pp": [
+        -15.0,
+        21.428571
+      ],
+      "leave_one_group_out_pp": {
+        "g01": 2.5,
+        "g02": 2.5,
+        "g03": 2.631579,
+        "g04": 2.777778,
+        "g06": 2.5,
+        "g07": 2.5,
+        "g08": -2.5,
+        "g09": 5.0,
+        "g10": 2.631579,
+        "g13": 7.5,
+        "g14": -2.5,
+        "g15": 2.5,
+        "g16": 2.5,
+        "g17": 2.631579,
+        "g19": 2.5,
+        "g21": 2.5
+      },
+      "task_difference_pp": {
+        "0": 0.0,
+        "1": 0.0,
+        "10": 0.0,
+        "11": 100.0,
+        "12": -50.0,
+        "14": 0.0,
+        "20": -100.0,
+        "21": 100.0,
+        "23": 0.0,
+        "27": 0.0,
+        "28": 0.0,
+        "3": 0.0,
+        "33": 0.0,
+        "34": 0.0,
+        "38": 0.0,
+        "4": 0.0,
+        "42": 0.0,
+        "46": 0.0,
+        "47": 0.0,
+        "49": 0.0,
+        "9": 0.0
+      },
+      "review_cases": {
+        "gain": [
+          {
+            "task_id": "21",
+            "repetition": 1,
+            "treatment_job": 342,
+            "control_job": 346
+          },
+          {
+            "task_id": "11",
+            "repetition": 1,
+            "treatment_job": 404,
+            "control_job": 408
+          }
+        ],
+        "loss": [
+          {
+            "task_id": "12",
+            "repetition": 1,
+            "treatment_job": 366,
+            "control_job": 370
+          },
+          {
+            "task_id": "20",
+            "repetition": 1,
+            "treatment_job": 375,
+            "control_job": 374
+          }
+        ],
+        "both_success": [
+          {
+            "task_id": "46",
+            "repetition": 1,
+            "treatment_job": 306,
+            "control_job": 307
+          }
+        ],
+        "both_failure": [
+          {
+            "task_id": "23",
+            "repetition": 1,
+            "treatment_job": 322,
+            "control_job": 328
+          }
+        ]
+      }
+    },
+    {
+      "treatment": "episode",
+      "control": "procedure",
+      "planned_pairs": 45,
+      "jointly_graded_pairs": 27,
+      "tasks_with_pairs": 21,
+      "customer_groups_with_pairs": 16,
+      "counts": {
+        "gain": 4,
+        "loss": 3,
+        "both_success": 17,
+        "both_failure": 3,
+        "ungraded": 18
+      },
+      "task_equal_difference_pp": 4.761905,
+      "possible_difference_pp": [
+        -41.071429,
+        48.214286
+      ],
+      "descriptive_cluster_interval_pp": [
+        -15.789474,
+        25.0
+      ],
+      "leave_one_group_out_pp": {
+        "g01": 5.0,
+        "g02": 5.0,
+        "g03": 5.263158,
+        "g04": 0.0,
+        "g06": 5.0,
+        "g07": 5.0,
+        "g08": 0.0,
+        "g09": 5.0,
+        "g10": 10.526316,
+        "g13": 5.0,
+        "g14": 0.0,
+        "g15": 5.0,
+        "g16": 5.0,
+        "g17": 5.263158,
+        "g19": 5.0,
+        "g21": 10.0
+      },
+      "task_difference_pp": {
+        "0": 0.0,
+        "1": 0.0,
+        "10": 0.0,
+        "11": 100.0,
+        "12": 0.0,
+        "14": 0.0,
+        "20": 0.0,
+        "21": 100.0,
+        "23": -100.0,
+        "27": 0.0,
+        "28": 0.0,
+        "3": 0.0,
+        "33": 0.0,
+        "34": 0.0,
+        "38": 0.0,
+        "4": 0.0,
+        "42": -100.0,
+        "46": 0.0,
+        "47": 100.0,
+        "49": 0.0,
+        "9": 0.0
+      },
+      "review_cases": {
+        "gain": [
+          {
+            "task_id": "21",
+            "repetition": 1,
+            "treatment_job": 342,
+            "control_job": 345
+          },
+          {
+            "task_id": "11",
+            "repetition": 1,
+            "treatment_job": 404,
+            "control_job": 405
+          },
+          {
+            "task_id": "12",
+            "repetition": 2,
+            "treatment_job": 424,
+            "control_job": 427
+          },
+          {
+            "task_id": "47",
+            "repetition": 2,
+            "treatment_job": 442,
+            "control_job": 445
+          }
+        ],
+        "loss": [
+          {
+            "task_id": "23",
+            "repetition": 1,
+            "treatment_job": 322,
+            "control_job": 324
+          },
+          {
+            "task_id": "12",
+            "repetition": 1,
+            "treatment_job": 366,
+            "control_job": 365
+          },
+          {
+            "task_id": "42",
+            "repetition": 1,
+            "treatment_job": 382,
+            "control_job": 377
+          }
+        ],
+        "both_success": [
+          {
+            "task_id": "46",
+            "repetition": 1,
+            "treatment_job": 306,
+            "control_job": 304
+          }
+        ],
+        "both_failure": [
+          {
+            "task_id": "33",
+            "repetition": 1,
+            "treatment_job": 362,
+            "control_job": 360
+          }
+        ]
+      }
+    },
+    {
+      "treatment": "lesson",
+      "control": "procedure",
+      "planned_pairs": 45,
+      "jointly_graded_pairs": 27,
+      "tasks_with_pairs": 21,
+      "customer_groups_with_pairs": 16,
+      "counts": {
+        "gain": 3,
+        "loss": 2,
+        "both_success": 18,
+        "both_failure": 4,
+        "ungraded": 18
+      },
+      "task_equal_difference_pp": 2.380952,
+      "possible_difference_pp": [
+        -41.071429,
+        48.214286
+      ],
+      "descriptive_cluster_interval_pp": [
+        -17.503676,
+        20.833333
+      ],
+      "leave_one_group_out_pp": {
+        "g01": 2.5,
+        "g02": 2.5,
+        "g03": 2.631579,
+        "g04": -2.777778,
+        "g06": 2.5,
+        "g07": 2.5,
+        "g08": 2.5,
+        "g09": 0.0,
+        "g10": 7.894737,
+        "g13": -2.5,
+        "g14": 2.5,
+        "g15": 2.5,
+        "g16": 2.5,
+        "g17": 2.631579,
+        "g19": 2.5,
+        "g21": 7.5
+      },
+      "task_difference_pp": {
+        "0": 0.0,
+        "1": 0.0,
+        "10": 0.0,
+        "11": 0.0,
+        "12": 50.0,
+        "14": 0.0,
+        "20": 100.0,
+        "21": 0.0,
+        "23": -100.0,
+        "27": 0.0,
+        "28": 0.0,
+        "3": 0.0,
+        "33": 0.0,
+        "34": 0.0,
+        "38": 0.0,
+        "4": 0.0,
+        "42": -100.0,
+        "46": 0.0,
+        "47": 100.0,
+        "49": 0.0,
+        "9": 0.0
+      },
+      "review_cases": {
+        "gain": [
+          {
+            "task_id": "20",
+            "repetition": 1,
+            "treatment_job": 374,
+            "control_job": 373
+          },
+          {
+            "task_id": "12",
+            "repetition": 2,
+            "treatment_job": 425,
+            "control_job": 427
+          },
+          {
+            "task_id": "47",
+            "repetition": 2,
+            "treatment_job": 441,
+            "control_job": 445
+          }
+        ],
+        "loss": [
+          {
+            "task_id": "23",
+            "repetition": 1,
+            "treatment_job": 328,
+            "control_job": 324
+          },
+          {
+            "task_id": "42",
+            "repetition": 1,
+            "treatment_job": 381,
+            "control_job": 377
+          }
+        ],
+        "both_success": [
+          {
+            "task_id": "46",
+            "repetition": 1,
+            "treatment_job": 307,
+            "control_job": 304
+          }
+        ],
+        "both_failure": [
+          {
+            "task_id": "21",
+            "repetition": 1,
+            "treatment_job": 346,
+            "control_job": 345
+          }
+        ]
+      }
+    },
+    {
+      "treatment": "no_memory",
+      "control": "empty_preload",
+      "planned_pairs": 45,
+      "jointly_graded_pairs": 27,
+      "tasks_with_pairs": 21,
+      "customer_groups_with_pairs": 16,
+      "counts": {
+        "gain": 2,
+        "loss": 4,
+        "both_success": 18,
+        "both_failure": 3,
+        "ungraded": 18
+      },
+      "task_equal_difference_pp": -7.142857,
+      "possible_difference_pp": [
+        -48.214286,
+        41.071429
+      ],
+      "descriptive_cluster_interval_pp": [
+        -28.125,
+        9.090909
+      ],
+      "leave_one_group_out_pp": {
+        "g01": -7.5,
+        "g02": -5.0,
+        "g03": -7.894737,
+        "g04": -8.333333,
+        "g06": -7.5,
+        "g07": -2.5,
+        "g08": -2.5,
+        "g09": -5.0,
+        "g10": -13.157895,
+        "g13": -7.5,
+        "g14": -7.5,
+        "g15": -7.5,
+        "g16": -7.5,
+        "g17": -10.526316,
+        "g19": -7.5,
+        "g21": -7.5
+      },
+      "task_difference_pp": {
+        "0": 0.0,
+        "1": -50.0,
+        "10": -100.0,
+        "11": -100.0,
+        "12": -50.0,
+        "14": 0.0,
+        "20": 0.0,
+        "21": 0.0,
+        "23": 100.0,
+        "27": 0.0,
+        "28": 0.0,
+        "3": 0.0,
+        "33": 50.0,
+        "34": 0.0,
+        "38": 0.0,
+        "4": 0.0,
+        "42": 0.0,
+        "46": 0.0,
+        "47": 0.0,
+        "49": 0.0,
+        "9": 0.0
+      },
+      "review_cases": {
+        "gain": [
+          {
+            "task_id": "23",
+            "repetition": 1,
+            "treatment_job": 326,
+            "control_job": 327
+          },
+          {
+            "task_id": "33",
+            "repetition": 2,
+            "treatment_job": 431,
+            "control_job": 430
+          }
+        ],
+        "loss": [
+          {
+            "task_id": "12",
+            "repetition": 1,
+            "treatment_job": 369,
+            "control_job": 367
+          },
+          {
+            "task_id": "10",
+            "repetition": 1,
+            "treatment_job": 386,
+            "control_job": 389
+          },
+          {
+            "task_id": "11",
+            "repetition": 1,
+            "treatment_job": 403,
+            "control_job": 407
+          },
+          {
+            "task_id": "1",
+            "repetition": 2,
+            "treatment_job": 414,
+            "control_job": 410
+          }
+        ],
+        "both_success": [
+          {
+            "task_id": "46",
+            "repetition": 1,
+            "treatment_job": 303,
+            "control_job": 308
+          }
+        ],
+        "both_failure": [
+          {
+            "task_id": "14",
+            "repetition": 1,
+            "treatment_job": 333,
+            "control_job": 332
+          }
+        ]
+      }
+    },
+    {
+      "treatment": "fact",
+      "control": "summary",
+      "planned_pairs": 6,
+      "jointly_graded_pairs": 3,
+      "tasks_with_pairs": 3,
+      "customer_groups_with_pairs": 3,
+      "counts": {
+        "gain": 0,
+        "loss": 0,
+        "both_success": 1,
+        "both_failure": 2,
+        "ungraded": 3
+      },
+      "task_equal_difference_pp": 0.0,
+      "possible_difference_pp": [
+        -50.0,
+        50.0
+      ],
+      "descriptive_cluster_interval_pp": [
+        0.0,
+        0.0
+      ],
+      "leave_one_group_out_pp": {
+        "g03": 0.0,
+        "g10": 0.0,
+        "g21": 0.0
+      },
+      "task_difference_pp": {
+        "23": 0.0,
+        "3": 0.0,
+        "42": 0.0
+      },
+      "review_cases": {
+        "gain": [],
+        "loss": [],
+        "both_success": [
+          {
+            "task_id": "3",
+            "repetition": 2,
+            "treatment_job": 420,
+            "control_job": 417
+          }
+        ],
+        "both_failure": [
+          {
+            "task_id": "23",
+            "repetition": 1,
+            "treatment_job": 323,
+            "control_job": 321
+          }
+        ]
+      }
+    },
+    {
+      "treatment": "episode",
+      "control": "summary",
+      "planned_pairs": 6,
+      "jointly_graded_pairs": 3,
+      "tasks_with_pairs": 3,
+      "customer_groups_with_pairs": 3,
+      "counts": {
+        "gain": 0,
+        "loss": 0,
+        "both_success": 1,
+        "both_failure": 2,
+        "ungraded": 3
+      },
+      "task_equal_difference_pp": 0.0,
+      "possible_difference_pp": [
+        -50.0,
+        50.0
+      ],
+      "descriptive_cluster_interval_pp": [
+        0.0,
+        0.0
+      ],
+      "leave_one_group_out_pp": {
+        "g03": 0.0,
+        "g10": 0.0,
+        "g21": 0.0
+      },
+      "task_difference_pp": {
+        "23": 0.0,
+        "3": 0.0,
+        "42": 0.0
+      },
+      "review_cases": {
+        "gain": [],
+        "loss": [],
+        "both_success": [
+          {
+            "task_id": "3",
+            "repetition": 2,
+            "treatment_job": 422,
+            "control_job": 417
+          }
+        ],
+        "both_failure": [
+          {
+            "task_id": "23",
+            "repetition": 1,
+            "treatment_job": 322,
+            "control_job": 321
+          }
+        ]
+      }
+    },
+    {
+      "treatment": "lesson",
+      "control": "summary",
+      "planned_pairs": 6,
+      "jointly_graded_pairs": 3,
+      "tasks_with_pairs": 3,
+      "customer_groups_with_pairs": 3,
+      "counts": {
+        "gain": 0,
+        "loss": 0,
+        "both_success": 1,
+        "both_failure": 2,
+        "ungraded": 3
+      },
+      "task_equal_difference_pp": 0.0,
+      "possible_difference_pp": [
+        -50.0,
+        50.0
+      ],
+      "descriptive_cluster_interval_pp": [
+        0.0,
+        0.0
+      ],
+      "leave_one_group_out_pp": {
+        "g03": 0.0,
+        "g10": 0.0,
+        "g21": 0.0
+      },
+      "task_difference_pp": {
+        "23": 0.0,
+        "3": 0.0,
+        "42": 0.0
+      },
+      "review_cases": {
+        "gain": [],
+        "loss": [],
+        "both_success": [
+          {
+            "task_id": "3",
+            "repetition": 2,
+            "treatment_job": 415,
+            "control_job": 417
+          }
+        ],
+        "both_failure": [
+          {
+            "task_id": "23",
+            "repetition": 1,
+            "treatment_job": 328,
+            "control_job": 321
+          }
+        ]
+      }
+    },
+    {
+      "treatment": "procedure",
+      "control": "summary",
+      "planned_pairs": 6,
+      "jointly_graded_pairs": 3,
+      "tasks_with_pairs": 3,
+      "customer_groups_with_pairs": 3,
+      "counts": {
+        "gain": 2,
+        "loss": 0,
+        "both_success": 1,
+        "both_failure": 0,
+        "ungraded": 3
+      },
+      "task_equal_difference_pp": 66.666667,
+      "possible_difference_pp": [
+        -25.0,
+        75.0
+      ],
+      "descriptive_cluster_interval_pp": [
+        0.0,
+        100.0
+      ],
+      "leave_one_group_out_pp": {
+        "g03": 100.0,
+        "g10": 50.0,
+        "g21": 50.0
+      },
+      "task_difference_pp": {
+        "23": 100.0,
+        "3": 0.0,
+        "42": 100.0
+      },
+      "review_cases": {
+        "gain": [
+          {
+            "task_id": "23",
+            "repetition": 1,
+            "treatment_job": 324,
+            "control_job": 321
+          },
+          {
+            "task_id": "42",
+            "repetition": 1,
+            "treatment_job": 377,
+            "control_job": 379
+          }
+        ],
+        "loss": [],
+        "both_success": [
+          {
+            "task_id": "3",
+            "repetition": 2,
+            "treatment_job": 421,
+            "control_job": 417
+          }
+        ],
+        "both_failure": []
+      }
+    },
+    {
+      "treatment": "no_memory",
+      "control": "summary",
+      "planned_pairs": 6,
+      "jointly_graded_pairs": 3,
+      "tasks_with_pairs": 3,
+      "customer_groups_with_pairs": 3,
+      "counts": {
+        "gain": 1,
+        "loss": 0,
+        "both_success": 1,
+        "both_failure": 1,
+        "ungraded": 3
+      },
+      "task_equal_difference_pp": 33.333333,
+      "possible_difference_pp": [
+        -37.5,
+        62.5
+      ],
+      "descriptive_cluster_interval_pp": [
+        0.0,
+        100.0
+      ],
+      "leave_one_group_out_pp": {
+        "g03": 50.0,
+        "g10": 0.0,
+        "g21": 50.0
+      },
+      "task_difference_pp": {
+        "23": 100.0,
+        "3": 0.0,
+        "42": 0.0
+      },
+      "review_cases": {
+        "gain": [
+          {
+            "task_id": "23",
+            "repetition": 1,
+            "treatment_job": 326,
+            "control_job": 321
+          }
+        ],
+        "loss": [],
+        "both_success": [
+          {
+            "task_id": "3",
+            "repetition": 2,
+            "treatment_job": 418,
+            "control_job": 417
+          }
+        ],
+        "both_failure": [
+          {
+            "task_id": "42",
+            "repetition": 1,
+            "treatment_job": 384,
+            "control_job": 379
+          }
+        ]
+      }
+    },
+    {
+      "treatment": "empty_preload",
+      "control": "summary",
+      "planned_pairs": 6,
+      "jointly_graded_pairs": 3,
+      "tasks_with_pairs": 3,
+      "customer_groups_with_pairs": 3,
+      "counts": {
+        "gain": 0,
+        "loss": 0,
+        "both_success": 1,
+        "both_failure": 2,
+        "ungraded": 3
+      },
+      "task_equal_difference_pp": 0.0,
+      "possible_difference_pp": [
+        -50.0,
+        50.0
+      ],
+      "descriptive_cluster_interval_pp": [
+        0.0,
+        0.0
+      ],
+      "leave_one_group_out_pp": {
+        "g03": 0.0,
+        "g10": 0.0,
+        "g21": 0.0
+      },
+      "task_difference_pp": {
+        "23": 0.0,
+        "3": 0.0,
+        "42": 0.0
+      },
+      "review_cases": {
+        "gain": [],
+        "loss": [],
+        "both_success": [
+          {
+            "task_id": "3",
+            "repetition": 2,
+            "treatment_job": 419,
+            "control_job": 417
+          }
+        ],
+        "both_failure": [
+          {
+            "task_id": "23",
+            "repetition": 1,
+            "treatment_job": 327,
+            "control_job": 321
+          }
+        ]
+      }
+    },
+    {
+      "treatment": "fact",
+      "control": "public_record",
+      "planned_pairs": 6,
+      "jointly_graded_pairs": 3,
+      "tasks_with_pairs": 3,
+      "customer_groups_with_pairs": 3,
+      "counts": {
+        "gain": 0,
+        "loss": 1,
+        "both_success": 1,
+        "both_failure": 1,
+        "ungraded": 3
+      },
+      "task_equal_difference_pp": -33.333333,
+      "possible_difference_pp": [
+        -62.5,
+        37.5
+      ],
+      "descriptive_cluster_interval_pp": [
+        -100.0,
+        0.0
+      ],
+      "leave_one_group_out_pp": {
+        "g03": -50.0,
+        "g10": 0.0,
+        "g21": -50.0
+      },
+      "task_difference_pp": {
+        "23": -100.0,
+        "3": 0.0,
+        "42": 0.0
+      },
+      "review_cases": {
+        "gain": [],
+        "loss": [
+          {
+            "task_id": "23",
+            "repetition": 1,
+            "treatment_job": 323,
+            "control_job": 325
+          }
+        ],
+        "both_success": [
+          {
+            "task_id": "3",
+            "repetition": 2,
+            "treatment_job": 420,
+            "control_job": 416
+          }
+        ],
+        "both_failure": [
+          {
+            "task_id": "42",
+            "repetition": 1,
+            "treatment_job": 378,
+            "control_job": 380
+          }
+        ]
+      }
+    },
+    {
+      "treatment": "episode",
+      "control": "public_record",
+      "planned_pairs": 6,
+      "jointly_graded_pairs": 3,
+      "tasks_with_pairs": 3,
+      "customer_groups_with_pairs": 3,
+      "counts": {
+        "gain": 0,
+        "loss": 1,
+        "both_success": 1,
+        "both_failure": 1,
+        "ungraded": 3
+      },
+      "task_equal_difference_pp": -33.333333,
+      "possible_difference_pp": [
+        -62.5,
+        37.5
+      ],
+      "descriptive_cluster_interval_pp": [
+        -100.0,
+        0.0
+      ],
+      "leave_one_group_out_pp": {
+        "g03": -50.0,
+        "g10": 0.0,
+        "g21": -50.0
+      },
+      "task_difference_pp": {
+        "23": -100.0,
+        "3": 0.0,
+        "42": 0.0
+      },
+      "review_cases": {
+        "gain": [],
+        "loss": [
+          {
+            "task_id": "23",
+            "repetition": 1,
+            "treatment_job": 322,
+            "control_job": 325
+          }
+        ],
+        "both_success": [
+          {
+            "task_id": "3",
+            "repetition": 2,
+            "treatment_job": 422,
+            "control_job": 416
+          }
+        ],
+        "both_failure": [
+          {
+            "task_id": "42",
+            "repetition": 1,
+            "treatment_job": 382,
+            "control_job": 380
+          }
+        ]
+      }
+    },
+    {
+      "treatment": "lesson",
+      "control": "public_record",
+      "planned_pairs": 6,
+      "jointly_graded_pairs": 3,
+      "tasks_with_pairs": 3,
+      "customer_groups_with_pairs": 3,
+      "counts": {
+        "gain": 0,
+        "loss": 1,
+        "both_success": 1,
+        "both_failure": 1,
+        "ungraded": 3
+      },
+      "task_equal_difference_pp": -33.333333,
+      "possible_difference_pp": [
+        -62.5,
+        37.5
+      ],
+      "descriptive_cluster_interval_pp": [
+        -100.0,
+        0.0
+      ],
+      "leave_one_group_out_pp": {
+        "g03": -50.0,
+        "g10": 0.0,
+        "g21": -50.0
+      },
+      "task_difference_pp": {
+        "23": -100.0,
+        "3": 0.0,
+        "42": 0.0
+      },
+      "review_cases": {
+        "gain": [],
+        "loss": [
+          {
+            "task_id": "23",
+            "repetition": 1,
+            "treatment_job": 328,
+            "control_job": 325
+          }
+        ],
+        "both_success": [
+          {
+            "task_id": "3",
+            "repetition": 2,
+            "treatment_job": 415,
+            "control_job": 416
+          }
+        ],
+        "both_failure": [
+          {
+            "task_id": "42",
+            "repetition": 1,
+            "treatment_job": 381,
+            "control_job": 380
+          }
+        ]
+      }
+    },
+    {
+      "treatment": "procedure",
+      "control": "public_record",
+      "planned_pairs": 6,
+      "jointly_graded_pairs": 3,
+      "tasks_with_pairs": 3,
+      "customer_groups_with_pairs": 3,
+      "counts": {
+        "gain": 1,
+        "loss": 0,
+        "both_success": 2,
+        "both_failure": 0,
+        "ungraded": 3
+      },
+      "task_equal_difference_pp": 33.333333,
+      "possible_difference_pp": [
+        -37.5,
+        62.5
+      ],
+      "descriptive_cluster_interval_pp": [
+        0.0,
+        100.0
+      ],
+      "leave_one_group_out_pp": {
+        "g03": 50.0,
+        "g10": 50.0,
+        "g21": 0.0
+      },
+      "task_difference_pp": {
+        "23": 0.0,
+        "3": 0.0,
+        "42": 100.0
+      },
+      "review_cases": {
+        "gain": [
+          {
+            "task_id": "42",
+            "repetition": 1,
+            "treatment_job": 377,
+            "control_job": 380
+          }
+        ],
+        "loss": [],
+        "both_success": [
+          {
+            "task_id": "23",
+            "repetition": 1,
+            "treatment_job": 324,
+            "control_job": 325
+          }
+        ],
+        "both_failure": []
+      }
+    },
+    {
+      "treatment": "no_memory",
+      "control": "public_record",
+      "planned_pairs": 6,
+      "jointly_graded_pairs": 3,
+      "tasks_with_pairs": 3,
+      "customer_groups_with_pairs": 3,
+      "counts": {
+        "gain": 0,
+        "loss": 0,
+        "both_success": 2,
+        "both_failure": 1,
+        "ungraded": 3
+      },
+      "task_equal_difference_pp": 0.0,
+      "possible_difference_pp": [
+        -50.0,
+        50.0
+      ],
+      "descriptive_cluster_interval_pp": [
+        0.0,
+        0.0
+      ],
+      "leave_one_group_out_pp": {
+        "g03": 0.0,
+        "g10": 0.0,
+        "g21": 0.0
+      },
+      "task_difference_pp": {
+        "23": 0.0,
+        "3": 0.0,
+        "42": 0.0
+      },
+      "review_cases": {
+        "gain": [],
+        "loss": [],
+        "both_success": [
+          {
+            "task_id": "23",
+            "repetition": 1,
+            "treatment_job": 326,
+            "control_job": 325
+          }
+        ],
+        "both_failure": [
+          {
+            "task_id": "42",
+            "repetition": 1,
+            "treatment_job": 384,
+            "control_job": 380
+          }
+        ]
+      }
+    },
+    {
+      "treatment": "empty_preload",
+      "control": "public_record",
+      "planned_pairs": 6,
+      "jointly_graded_pairs": 3,
+      "tasks_with_pairs": 3,
+      "customer_groups_with_pairs": 3,
+      "counts": {
+        "gain": 0,
+        "loss": 1,
+        "both_success": 1,
+        "both_failure": 1,
+        "ungraded": 3
+      },
+      "task_equal_difference_pp": -33.333333,
+      "possible_difference_pp": [
+        -62.5,
+        37.5
+      ],
+      "descriptive_cluster_interval_pp": [
+        -100.0,
+        0.0
+      ],
+      "leave_one_group_out_pp": {
+        "g03": -50.0,
+        "g10": 0.0,
+        "g21": -50.0
+      },
+      "task_difference_pp": {
+        "23": -100.0,
+        "3": 0.0,
+        "42": 0.0
+      },
+      "review_cases": {
+        "gain": [],
+        "loss": [
+          {
+            "task_id": "23",
+            "repetition": 1,
+            "treatment_job": 327,
+            "control_job": 325
+          }
+        ],
+        "both_success": [
+          {
+            "task_id": "3",
+            "repetition": 2,
+            "treatment_job": 419,
+            "control_job": 416
+          }
+        ],
+        "both_failure": [
+          {
+            "task_id": "42",
+            "repetition": 1,
+            "treatment_job": 383,
+            "control_job": 380
+          }
+        ]
+      }
+    },
+    {
+      "treatment": "summary",
+      "control": "public_record",
+      "planned_pairs": 6,
+      "jointly_graded_pairs": 3,
+      "tasks_with_pairs": 3,
+      "customer_groups_with_pairs": 3,
+      "counts": {
+        "gain": 0,
+        "loss": 1,
+        "both_success": 1,
+        "both_failure": 1,
+        "ungraded": 3
+      },
+      "task_equal_difference_pp": -33.333333,
+      "possible_difference_pp": [
+        -62.5,
+        37.5
+      ],
+      "descriptive_cluster_interval_pp": [
+        -100.0,
+        0.0
+      ],
+      "leave_one_group_out_pp": {
+        "g03": -50.0,
+        "g10": 0.0,
+        "g21": -50.0
+      },
+      "task_difference_pp": {
+        "23": -100.0,
+        "3": 0.0,
+        "42": 0.0
+      },
+      "review_cases": {
+        "gain": [],
+        "loss": [
+          {
+            "task_id": "23",
+            "repetition": 1,
+            "treatment_job": 321,
+            "control_job": 325
+          }
+        ],
+        "both_success": [
+          {
+            "task_id": "3",
+            "repetition": 2,
+            "treatment_job": 417,
+            "control_job": 416
+          }
+        ],
+        "both_failure": [
+          {
+            "task_id": "42",
+            "repetition": 1,
+            "treatment_job": 379,
+            "control_job": 380
+          }
+        ]
+      }
+    }
+  ],
+  "strata": {
+    "reference_db_write=True": [
+      {
+        "treatment": "fact",
+        "control": "no_memory",
+        "planned_pairs": 19,
+        "jointly_graded_pairs": 10,
+        "tasks_with_pairs": 8,
+        "customer_groups_with_pairs": 7,
+        "counts": {
+          "gain": 1,
+          "loss": 3,
+          "both_success": 2,
+          "both_failure": 4,
+          "ungraded": 9
+        },
+        "task_equal_difference_pp": -25.0,
+        "possible_difference_pp": [
+          -63.636364,
+          45.454545
+        ],
+        "descriptive_cluster_interval_pp": [
+          -55.555556,
+          7.142857
+        ],
+        "leave_one_group_out_pp": {
+          "g08": -28.571429,
+          "g09": -35.714286,
+          "g10": -16.666667,
+          "g13": -14.285714,
+          "g14": -28.571429,
+          "g17": -21.428571,
+          "g21": -28.571429
+        },
+        "task_difference_pp": {
+          "11": 0.0,
+          "12": 50.0,
+          "14": 0.0,
+          "20": -100.0,
+          "21": 0.0,
+          "23": -100.0,
+          "33": -50.0,
+          "42": 0.0
+        },
+        "review_cases": {
+          "gain": [
+            {
+              "task_id": "12",
+              "repetition": 1,
+              "treatment_job": 368,
+              "control_job": 369
+            }
+          ],
+          "loss": [
+            {
+              "task_id": "23",
+              "repetition": 1,
+              "treatment_job": 323,
+              "control_job": 326
+            },
+            {
+              "task_id": "20",
+              "repetition": 1,
+              "treatment_job": 376,
+              "control_job": 371
+            },
+            {
+              "task_id": "33",
+              "repetition": 2,
+              "treatment_job": 429,
+              "control_job": 431
+            }
+          ],
+          "both_success": [
+            {
+              "task_id": "33",
+              "repetition": 1,
+              "treatment_job": 361,
+              "control_job": 363
+            }
+          ],
+          "both_failure": [
+            {
+              "task_id": "14",
+              "repetition": 1,
+              "treatment_job": 334,
+              "control_job": 333
+            }
+          ]
+        }
+      },
+      {
+        "treatment": "episode",
+        "control": "no_memory",
+        "planned_pairs": 19,
+        "jointly_graded_pairs": 10,
+        "tasks_with_pairs": 8,
+        "customer_groups_with_pairs": 7,
+        "counts": {
+          "gain": 3,
+          "loss": 4,
+          "both_success": 1,
+          "both_failure": 2,
+          "ungraded": 9
+        },
+        "task_equal_difference_pp": 0.0,
+        "possible_difference_pp": [
+          -59.090909,
+          50.0
+        ],
+        "descriptive_cluster_interval_pp": [
+          -50.0,
+          50.0
+        ],
+        "leave_one_group_out_pp": {
+          "g08": -14.285714,
+          "g09": 0.0,
+          "g10": 0.0,
+          "g13": 14.285714,
+          "g14": -14.285714,
+          "g17": 14.285714,
+          "g21": 0.0
+        },
+        "task_difference_pp": {
+          "11": 100.0,
+          "12": 0.0,
+          "14": 100.0,
+          "20": -100.0,
+          "21": 100.0,
+          "23": -100.0,
+          "33": -100.0,
+          "42": 0.0
+        },
+        "review_cases": {
+          "gain": [
+            {
+              "task_id": "14",
+              "repetition": 1,
+              "treatment_job": 330,
+              "control_job": 333
+            },
+            {
+              "task_id": "21",
+              "repetition": 1,
+              "treatment_job": 342,
+              "control_job": 341
+            },
+            {
+              "task_id": "11",
+              "repetition": 1,
+              "treatment_job": 404,
+              "control_job": 403
+            }
+          ],
+          "loss": [
+            {
+              "task_id": "23",
+              "repetition": 1,
+              "treatment_job": 322,
+              "control_job": 326
+            },
+            {
+              "task_id": "33",
+              "repetition": 1,
+              "treatment_job": 362,
+              "control_job": 363
+            },
+            {
+              "task_id": "20",
+              "repetition": 1,
+              "treatment_job": 375,
+              "control_job": 371
+            },
+            {
+              "task_id": "33",
+              "repetition": 2,
+              "treatment_job": 433,
+              "control_job": 431
+            }
+          ],
+          "both_success": [
+            {
+              "task_id": "12",
+              "repetition": 2,
+              "treatment_job": 424,
+              "control_job": 426
+            }
+          ],
+          "both_failure": [
+            {
+              "task_id": "12",
+              "repetition": 1,
+              "treatment_job": 366,
+              "control_job": 369
+            }
+          ]
+        }
+      },
+      {
+        "treatment": "lesson",
+        "control": "no_memory",
+        "planned_pairs": 19,
+        "jointly_graded_pairs": 10,
+        "tasks_with_pairs": 8,
+        "customer_groups_with_pairs": 7,
+        "counts": {
+          "gain": 2,
+          "loss": 3,
+          "both_success": 2,
+          "both_failure": 3,
+          "ungraded": 9
+        },
+        "task_equal_difference_pp": -6.25,
+        "possible_difference_pp": [
+          -59.090909,
+          50.0
+        ],
+        "descriptive_cluster_interval_pp": [
+          -37.5,
+          18.75
+        ],
+        "leave_one_group_out_pp": {
+          "g08": -7.142857,
+          "g09": -14.285714,
+          "g10": -8.333333,
+          "g13": -7.142857,
+          "g14": -7.142857,
+          "g17": 7.142857,
+          "g21": -7.142857
+        },
+        "task_difference_pp": {
+          "11": 0.0,
+          "12": 50.0,
+          "14": 100.0,
+          "20": 0.0,
+          "21": 0.0,
+          "23": -100.0,
+          "33": -100.0,
+          "42": 0.0
+        },
+        "review_cases": {
+          "gain": [
+            {
+              "task_id": "14",
+              "repetition": 1,
+              "treatment_job": 331,
+              "control_job": 333
+            },
+            {
+              "task_id": "12",
+              "repetition": 1,
+              "treatment_job": 370,
+              "control_job": 369
+            }
+          ],
+          "loss": [
+            {
+              "task_id": "23",
+              "repetition": 1,
+              "treatment_job": 328,
+              "control_job": 326
+            },
+            {
+              "task_id": "33",
+              "repetition": 1,
+              "treatment_job": 364,
+              "control_job": 363
+            },
+            {
+              "task_id": "33",
+              "repetition": 2,
+              "treatment_job": 432,
+              "control_job": 431
+            }
+          ],
+          "both_success": [
+            {
+              "task_id": "20",
+              "repetition": 1,
+              "treatment_job": 374,
+              "control_job": 371
+            }
+          ],
+          "both_failure": [
+            {
+              "task_id": "21",
+              "repetition": 1,
+              "treatment_job": 346,
+              "control_job": 341
+            }
+          ]
+        }
+      },
+      {
+        "treatment": "procedure",
+        "control": "no_memory",
+        "planned_pairs": 19,
+        "jointly_graded_pairs": 10,
+        "tasks_with_pairs": 8,
+        "customer_groups_with_pairs": 7,
+        "counts": {
+          "gain": 3,
+          "loss": 4,
+          "both_success": 1,
+          "both_failure": 2,
+          "ungraded": 9
+        },
+        "task_equal_difference_pp": 0.0,
+        "possible_difference_pp": [
+          -59.090909,
+          50.0
+        ],
+        "descriptive_cluster_interval_pp": [
+          -57.142857,
+          44.444444
+        ],
+        "leave_one_group_out_pp": {
+          "g08": 0.0,
+          "g09": 0.0,
+          "g10": -16.666667,
+          "g13": 14.285714,
+          "g14": 0.0,
+          "g17": 14.285714,
+          "g21": -14.285714
+        },
+        "task_difference_pp": {
+          "11": 0.0,
+          "12": 0.0,
+          "14": 100.0,
+          "20": -100.0,
+          "21": 0.0,
+          "23": 0.0,
+          "33": -100.0,
+          "42": 100.0
+        },
+        "review_cases": {
+          "gain": [
+            {
+              "task_id": "14",
+              "repetition": 1,
+              "treatment_job": 329,
+              "control_job": 333
+            },
+            {
+              "task_id": "12",
+              "repetition": 1,
+              "treatment_job": 365,
+              "control_job": 369
+            },
+            {
+              "task_id": "42",
+              "repetition": 1,
+              "treatment_job": 377,
+              "control_job": 384
+            }
+          ],
+          "loss": [
+            {
+              "task_id": "33",
+              "repetition": 1,
+              "treatment_job": 360,
+              "control_job": 363
+            },
+            {
+              "task_id": "20",
+              "repetition": 1,
+              "treatment_job": 373,
+              "control_job": 371
+            },
+            {
+              "task_id": "12",
+              "repetition": 2,
+              "treatment_job": 427,
+              "control_job": 426
+            },
+            {
+              "task_id": "33",
+              "repetition": 2,
+              "treatment_job": 434,
+              "control_job": 431
+            }
+          ],
+          "both_success": [
+            {
+              "task_id": "23",
+              "repetition": 1,
+              "treatment_job": 324,
+              "control_job": 326
+            }
+          ],
+          "both_failure": [
+            {
+              "task_id": "21",
+              "repetition": 1,
+              "treatment_job": 345,
+              "control_job": 341
+            }
+          ]
+        }
+      }
+    ],
+    "reference_db_write=False": [
+      {
+        "treatment": "fact",
+        "control": "no_memory",
+        "planned_pairs": 26,
+        "jointly_graded_pairs": 17,
+        "tasks_with_pairs": 13,
+        "customer_groups_with_pairs": 10,
+        "counts": {
+          "gain": 2,
+          "loss": 0,
+          "both_success": 15,
+          "both_failure": 0,
+          "ungraded": 9
+        },
+        "task_equal_difference_pp": 11.538462,
+        "possible_difference_pp": [
+          -32.352941,
+          44.117647
+        ],
+        "descriptive_cluster_interval_pp": [
+          0.0,
+          33.333333
+        ],
+        "leave_one_group_out_pp": {
+          "g01": 12.5,
+          "g02": 8.333333,
+          "g03": 13.636364,
+          "g04": 15.0,
+          "g06": 12.5,
+          "g07": 4.166667,
+          "g15": 12.5,
+          "g16": 12.5,
+          "g17": 12.5,
+          "g19": 12.5
+        },
+        "task_difference_pp": {
+          "0": 0.0,
+          "1": 50.0,
+          "10": 100.0,
+          "27": 0.0,
+          "28": 0.0,
+          "3": 0.0,
+          "34": 0.0,
+          "38": 0.0,
+          "4": 0.0,
+          "46": 0.0,
+          "47": 0.0,
+          "49": 0.0,
+          "9": 0.0
+        },
+        "review_cases": {
+          "gain": [
+            {
+              "task_id": "10",
+              "repetition": 1,
+              "treatment_job": 388,
+              "control_job": 386
+            },
+            {
+              "task_id": "1",
+              "repetition": 2,
+              "treatment_job": 411,
+              "control_job": 414
+            }
+          ],
+          "loss": [],
+          "both_success": [
+            {
+              "task_id": "46",
+              "repetition": 1,
+              "treatment_job": 305,
+              "control_job": 303
+            }
+          ],
+          "both_failure": []
+        }
+      },
+      {
+        "treatment": "episode",
+        "control": "no_memory",
+        "planned_pairs": 26,
+        "jointly_graded_pairs": 17,
+        "tasks_with_pairs": 13,
+        "customer_groups_with_pairs": 10,
+        "counts": {
+          "gain": 2,
+          "loss": 0,
+          "both_success": 15,
+          "both_failure": 0,
+          "ungraded": 9
+        },
+        "task_equal_difference_pp": 11.538462,
+        "possible_difference_pp": [
+          -32.352941,
+          44.117647
+        ],
+        "descriptive_cluster_interval_pp": [
+          0.0,
+          33.333333
+        ],
+        "leave_one_group_out_pp": {
+          "g01": 12.5,
+          "g02": 8.333333,
+          "g03": 13.636364,
+          "g04": 15.0,
+          "g06": 12.5,
+          "g07": 4.166667,
+          "g15": 12.5,
+          "g16": 12.5,
+          "g17": 12.5,
+          "g19": 12.5
+        },
+        "task_difference_pp": {
+          "0": 0.0,
+          "1": 50.0,
+          "10": 100.0,
+          "27": 0.0,
+          "28": 0.0,
+          "3": 0.0,
+          "34": 0.0,
+          "38": 0.0,
+          "4": 0.0,
+          "46": 0.0,
+          "47": 0.0,
+          "49": 0.0,
+          "9": 0.0
+        },
+        "review_cases": {
+          "gain": [
+            {
+              "task_id": "10",
+              "repetition": 1,
+              "treatment_job": 385,
+              "control_job": 386
+            },
+            {
+              "task_id": "1",
+              "repetition": 2,
+              "treatment_job": 409,
+              "control_job": 414
+            }
+          ],
+          "loss": [],
+          "both_success": [
+            {
+              "task_id": "46",
+              "repetition": 1,
+              "treatment_job": 306,
+              "control_job": 303
+            }
+          ],
+          "both_failure": []
+        }
+      },
+      {
+        "treatment": "lesson",
+        "control": "no_memory",
+        "planned_pairs": 26,
+        "jointly_graded_pairs": 17,
+        "tasks_with_pairs": 13,
+        "customer_groups_with_pairs": 10,
+        "counts": {
+          "gain": 2,
+          "loss": 0,
+          "both_success": 15,
+          "both_failure": 0,
+          "ungraded": 9
+        },
+        "task_equal_difference_pp": 11.538462,
+        "possible_difference_pp": [
+          -32.352941,
+          44.117647
+        ],
+        "descriptive_cluster_interval_pp": [
+          0.0,
+          33.333333
+        ],
+        "leave_one_group_out_pp": {
+          "g01": 12.5,
+          "g02": 8.333333,
+          "g03": 13.636364,
+          "g04": 15.0,
+          "g06": 12.5,
+          "g07": 4.166667,
+          "g15": 12.5,
+          "g16": 12.5,
+          "g17": 12.5,
+          "g19": 12.5
+        },
+        "task_difference_pp": {
+          "0": 0.0,
+          "1": 50.0,
+          "10": 100.0,
+          "27": 0.0,
+          "28": 0.0,
+          "3": 0.0,
+          "34": 0.0,
+          "38": 0.0,
+          "4": 0.0,
+          "46": 0.0,
+          "47": 0.0,
+          "49": 0.0,
+          "9": 0.0
+        },
+        "review_cases": {
+          "gain": [
+            {
+              "task_id": "10",
+              "repetition": 1,
+              "treatment_job": 390,
+              "control_job": 386
+            },
+            {
+              "task_id": "1",
+              "repetition": 2,
+              "treatment_job": 413,
+              "control_job": 414
+            }
+          ],
+          "loss": [],
+          "both_success": [
+            {
+              "task_id": "46",
+              "repetition": 1,
+              "treatment_job": 307,
+              "control_job": 303
+            }
+          ],
+          "both_failure": []
+        }
+      },
+      {
+        "treatment": "procedure",
+        "control": "no_memory",
+        "planned_pairs": 26,
+        "jointly_graded_pairs": 17,
+        "tasks_with_pairs": 13,
+        "customer_groups_with_pairs": 10,
+        "counts": {
+          "gain": 2,
+          "loss": 1,
+          "both_success": 14,
+          "both_failure": 0,
+          "ungraded": 9
+        },
+        "task_equal_difference_pp": 3.846154,
+        "possible_difference_pp": [
+          -38.235294,
+          38.235294
+        ],
+        "descriptive_cluster_interval_pp": [
+          -14.285714,
+          31.818182
+        ],
+        "leave_one_group_out_pp": {
+          "g01": 4.166667,
+          "g02": 0.0,
+          "g03": 4.545455,
+          "g04": 15.0,
+          "g06": 4.166667,
+          "g07": -4.166667,
+          "g15": 4.166667,
+          "g16": 4.166667,
+          "g17": 4.166667,
+          "g19": 4.166667
+        },
+        "task_difference_pp": {
+          "0": 0.0,
+          "1": 50.0,
+          "10": 100.0,
+          "27": 0.0,
+          "28": 0.0,
+          "3": 0.0,
+          "34": 0.0,
+          "38": 0.0,
+          "4": 0.0,
+          "46": 0.0,
+          "47": -100.0,
+          "49": 0.0,
+          "9": 0.0
+        },
+        "review_cases": {
+          "gain": [
+            {
+              "task_id": "10",
+              "repetition": 1,
+              "treatment_job": 387,
+              "control_job": 386
+            },
+            {
+              "task_id": "1",
+              "repetition": 2,
+              "treatment_job": 412,
+              "control_job": 414
+            }
+          ],
+          "loss": [
+            {
+              "task_id": "47",
+              "repetition": 2,
+              "treatment_job": 445,
+              "control_job": 444
+            }
+          ],
+          "both_success": [
+            {
+              "task_id": "46",
+              "repetition": 1,
+              "treatment_job": 304,
+              "control_job": 303
+            }
+          ],
+          "both_failure": []
+        }
+      }
+    ],
+    "source_official_success=True": [
+      {
+        "treatment": "fact",
+        "control": "no_memory",
+        "planned_pairs": 38,
+        "jointly_graded_pairs": 24,
+        "tasks_with_pairs": 18,
+        "customer_groups_with_pairs": 13,
+        "counts": {
+          "gain": 3,
+          "loss": 2,
+          "both_success": 17,
+          "both_failure": 2,
+          "ungraded": 14
+        },
+        "task_equal_difference_pp": 2.777778,
+        "possible_difference_pp": [
+          -39.583333,
+          43.75
+        ],
+        "descriptive_cluster_interval_pp": [
+          -13.888889,
+          23.529412
+        ],
+        "leave_one_group_out_pp": {
+          "g01": 2.941176,
+          "g02": 0.0,
+          "g03": 3.125,
+          "g04": 3.333333,
+          "g06": 2.941176,
+          "g07": -2.941176,
+          "g08": 2.941176,
+          "g09": 0.0,
+          "g10": 9.375,
+          "g15": 2.941176,
+          "g16": 2.941176,
+          "g17": 6.25,
+          "g19": 2.941176
+        },
+        "task_difference_pp": {
+          "0": 0.0,
+          "1": 50.0,
+          "10": 100.0,
+          "11": 0.0,
+          "12": 50.0,
+          "14": 0.0,
+          "23": -100.0,
+          "27": 0.0,
+          "28": 0.0,
+          "3": 0.0,
+          "33": -50.0,
+          "34": 0.0,
+          "38": 0.0,
+          "4": 0.0,
+          "46": 0.0,
+          "47": 0.0,
+          "49": 0.0,
+          "9": 0.0
+        },
+        "review_cases": {
+          "gain": [
+            {
+              "task_id": "12",
+              "repetition": 1,
+              "treatment_job": 368,
+              "control_job": 369
+            },
+            {
+              "task_id": "10",
+              "repetition": 1,
+              "treatment_job": 388,
+              "control_job": 386
+            },
+            {
+              "task_id": "1",
+              "repetition": 2,
+              "treatment_job": 411,
+              "control_job": 414
+            }
+          ],
+          "loss": [
+            {
+              "task_id": "23",
+              "repetition": 1,
+              "treatment_job": 323,
+              "control_job": 326
+            },
+            {
+              "task_id": "33",
+              "repetition": 2,
+              "treatment_job": 429,
+              "control_job": 431
+            }
+          ],
+          "both_success": [
+            {
+              "task_id": "46",
+              "repetition": 1,
+              "treatment_job": 305,
+              "control_job": 303
+            }
+          ],
+          "both_failure": [
+            {
+              "task_id": "14",
+              "repetition": 1,
+              "treatment_job": 334,
+              "control_job": 333
+            }
+          ]
+        }
+      },
+      {
+        "treatment": "episode",
+        "control": "no_memory",
+        "planned_pairs": 38,
+        "jointly_graded_pairs": 24,
+        "tasks_with_pairs": 18,
+        "customer_groups_with_pairs": 13,
+        "counts": {
+          "gain": 4,
+          "loss": 3,
+          "both_success": 16,
+          "both_failure": 1,
+          "ungraded": 14
+        },
+        "task_equal_difference_pp": 8.333333,
+        "possible_difference_pp": [
+          -39.583333,
+          43.75
+        ],
+        "descriptive_cluster_interval_pp": [
+          -9.52381,
+          31.25
+        ],
+        "leave_one_group_out_pp": {
+          "g01": 8.823529,
+          "g02": 5.882353,
+          "g03": 9.375,
+          "g04": 10.0,
+          "g06": 8.823529,
+          "g07": 2.941176,
+          "g08": 2.941176,
+          "g09": 8.823529,
+          "g10": 9.375,
+          "g15": 8.823529,
+          "g16": 8.823529,
+          "g17": 15.625,
+          "g19": 8.823529
+        },
+        "task_difference_pp": {
+          "0": 0.0,
+          "1": 50.0,
+          "10": 100.0,
+          "11": 100.0,
+          "12": 0.0,
+          "14": 100.0,
+          "23": -100.0,
+          "27": 0.0,
+          "28": 0.0,
+          "3": 0.0,
+          "33": -100.0,
+          "34": 0.0,
+          "38": 0.0,
+          "4": 0.0,
+          "46": 0.0,
+          "47": 0.0,
+          "49": 0.0,
+          "9": 0.0
+        },
+        "review_cases": {
+          "gain": [
+            {
+              "task_id": "14",
+              "repetition": 1,
+              "treatment_job": 330,
+              "control_job": 333
+            },
+            {
+              "task_id": "10",
+              "repetition": 1,
+              "treatment_job": 385,
+              "control_job": 386
+            },
+            {
+              "task_id": "11",
+              "repetition": 1,
+              "treatment_job": 404,
+              "control_job": 403
+            },
+            {
+              "task_id": "1",
+              "repetition": 2,
+              "treatment_job": 409,
+              "control_job": 414
+            }
+          ],
+          "loss": [
+            {
+              "task_id": "23",
+              "repetition": 1,
+              "treatment_job": 322,
+              "control_job": 326
+            },
+            {
+              "task_id": "33",
+              "repetition": 1,
+              "treatment_job": 362,
+              "control_job": 363
+            },
+            {
+              "task_id": "33",
+              "repetition": 2,
+              "treatment_job": 433,
+              "control_job": 431
+            }
+          ],
+          "both_success": [
+            {
+              "task_id": "46",
+              "repetition": 1,
+              "treatment_job": 306,
+              "control_job": 303
+            }
+          ],
+          "both_failure": [
+            {
+              "task_id": "12",
+              "repetition": 1,
+              "treatment_job": 366,
+              "control_job": 369
+            }
+          ]
+        }
+      },
+      {
+        "treatment": "lesson",
+        "control": "no_memory",
+        "planned_pairs": 38,
+        "jointly_graded_pairs": 24,
+        "tasks_with_pairs": 18,
+        "customer_groups_with_pairs": 13,
+        "counts": {
+          "gain": 4,
+          "loss": 3,
+          "both_success": 16,
+          "both_failure": 1,
+          "ungraded": 14
+        },
+        "task_equal_difference_pp": 5.555556,
+        "possible_difference_pp": [
+          -39.583333,
+          43.75
+        ],
+        "descriptive_cluster_interval_pp": [
+          -10.0,
+          25.0
+        ],
+        "leave_one_group_out_pp": {
+          "g01": 5.882353,
+          "g02": 2.941176,
+          "g03": 6.25,
+          "g04": 6.666667,
+          "g06": 5.882353,
+          "g07": 0.0,
+          "g08": 5.882353,
+          "g09": 2.941176,
+          "g10": 6.25,
+          "g15": 5.882353,
+          "g16": 5.882353,
+          "g17": 12.5,
+          "g19": 5.882353
+        },
+        "task_difference_pp": {
+          "0": 0.0,
+          "1": 50.0,
+          "10": 100.0,
+          "11": 0.0,
+          "12": 50.0,
+          "14": 100.0,
+          "23": -100.0,
+          "27": 0.0,
+          "28": 0.0,
+          "3": 0.0,
+          "33": -100.0,
+          "34": 0.0,
+          "38": 0.0,
+          "4": 0.0,
+          "46": 0.0,
+          "47": 0.0,
+          "49": 0.0,
+          "9": 0.0
+        },
+        "review_cases": {
+          "gain": [
+            {
+              "task_id": "14",
+              "repetition": 1,
+              "treatment_job": 331,
+              "control_job": 333
+            },
+            {
+              "task_id": "12",
+              "repetition": 1,
+              "treatment_job": 370,
+              "control_job": 369
+            },
+            {
+              "task_id": "10",
+              "repetition": 1,
+              "treatment_job": 390,
+              "control_job": 386
+            },
+            {
+              "task_id": "1",
+              "repetition": 2,
+              "treatment_job": 413,
+              "control_job": 414
+            }
+          ],
+          "loss": [
+            {
+              "task_id": "23",
+              "repetition": 1,
+              "treatment_job": 328,
+              "control_job": 326
+            },
+            {
+              "task_id": "33",
+              "repetition": 1,
+              "treatment_job": 364,
+              "control_job": 363
+            },
+            {
+              "task_id": "33",
+              "repetition": 2,
+              "treatment_job": 432,
+              "control_job": 431
+            }
+          ],
+          "both_success": [
+            {
+              "task_id": "46",
+              "repetition": 1,
+              "treatment_job": 307,
+              "control_job": 303
+            }
+          ],
+          "both_failure": [
+            {
+              "task_id": "11",
+              "repetition": 1,
+              "treatment_job": 408,
+              "control_job": 403
+            }
+          ]
+        }
+      },
+      {
+        "treatment": "procedure",
+        "control": "no_memory",
+        "planned_pairs": 38,
+        "jointly_graded_pairs": 24,
+        "tasks_with_pairs": 18,
+        "customer_groups_with_pairs": 13,
+        "counts": {
+          "gain": 4,
+          "loss": 4,
+          "both_success": 15,
+          "both_failure": 1,
+          "ungraded": 14
+        },
+        "task_equal_difference_pp": 2.777778,
+        "possible_difference_pp": [
+          -43.75,
+          39.583333
+        ],
+        "descriptive_cluster_interval_pp": [
+          -16.666667,
+          26.666667
+        ],
+        "leave_one_group_out_pp": {
+          "g01": 2.941176,
+          "g02": 0.0,
+          "g03": 3.125,
+          "g04": 10.0,
+          "g06": 2.941176,
+          "g07": -2.941176,
+          "g08": 2.941176,
+          "g09": 2.941176,
+          "g10": -3.125,
+          "g15": 2.941176,
+          "g16": 2.941176,
+          "g17": 9.375,
+          "g19": 2.941176
+        },
+        "task_difference_pp": {
+          "0": 0.0,
+          "1": 50.0,
+          "10": 100.0,
+          "11": 0.0,
+          "12": 0.0,
+          "14": 100.0,
+          "23": 0.0,
+          "27": 0.0,
+          "28": 0.0,
+          "3": 0.0,
+          "33": -100.0,
+          "34": 0.0,
+          "38": 0.0,
+          "4": 0.0,
+          "46": 0.0,
+          "47": -100.0,
+          "49": 0.0,
+          "9": 0.0
+        },
+        "review_cases": {
+          "gain": [
+            {
+              "task_id": "14",
+              "repetition": 1,
+              "treatment_job": 329,
+              "control_job": 333
+            },
+            {
+              "task_id": "12",
+              "repetition": 1,
+              "treatment_job": 365,
+              "control_job": 369
+            },
+            {
+              "task_id": "10",
+              "repetition": 1,
+              "treatment_job": 387,
+              "control_job": 386
+            },
+            {
+              "task_id": "1",
+              "repetition": 2,
+              "treatment_job": 412,
+              "control_job": 414
+            }
+          ],
+          "loss": [
+            {
+              "task_id": "33",
+              "repetition": 1,
+              "treatment_job": 360,
+              "control_job": 363
+            },
+            {
+              "task_id": "12",
+              "repetition": 2,
+              "treatment_job": 427,
+              "control_job": 426
+            },
+            {
+              "task_id": "33",
+              "repetition": 2,
+              "treatment_job": 434,
+              "control_job": 431
+            },
+            {
+              "task_id": "47",
+              "repetition": 2,
+              "treatment_job": 445,
+              "control_job": 444
+            }
+          ],
+          "both_success": [
+            {
+              "task_id": "46",
+              "repetition": 1,
+              "treatment_job": 304,
+              "control_job": 303
+            }
+          ],
+          "both_failure": [
+            {
+              "task_id": "11",
+              "repetition": 1,
+              "treatment_job": 405,
+              "control_job": 403
+            }
+          ]
+        }
+      }
+    ],
+    "source_official_success=False": [
+      {
+        "treatment": "fact",
+        "control": "no_memory",
+        "planned_pairs": 7,
+        "jointly_graded_pairs": 3,
+        "tasks_with_pairs": 3,
+        "customer_groups_with_pairs": 3,
+        "counts": {
+          "gain": 0,
+          "loss": 1,
+          "both_success": 0,
+          "both_failure": 2,
+          "ungraded": 4
+        },
+        "task_equal_difference_pp": -33.333333,
+        "possible_difference_pp": [
+          -75.0,
+          50.0
+        ],
+        "descriptive_cluster_interval_pp": [
+          -100.0,
+          0.0
+        ],
+        "leave_one_group_out_pp": {
+          "g13": 0.0,
+          "g14": -50.0,
+          "g21": -50.0
+        },
+        "task_difference_pp": {
+          "20": -100.0,
+          "21": 0.0,
+          "42": 0.0
+        },
+        "review_cases": {
+          "gain": [],
+          "loss": [
+            {
+              "task_id": "20",
+              "repetition": 1,
+              "treatment_job": 376,
+              "control_job": 371
+            }
+          ],
+          "both_success": [],
+          "both_failure": [
+            {
+              "task_id": "21",
+              "repetition": 1,
+              "treatment_job": 344,
+              "control_job": 341
+            }
+          ]
+        }
+      },
+      {
+        "treatment": "episode",
+        "control": "no_memory",
+        "planned_pairs": 7,
+        "jointly_graded_pairs": 3,
+        "tasks_with_pairs": 3,
+        "customer_groups_with_pairs": 3,
+        "counts": {
+          "gain": 1,
+          "loss": 1,
+          "both_success": 0,
+          "both_failure": 1,
+          "ungraded": 4
+        },
+        "task_equal_difference_pp": 0.0,
+        "possible_difference_pp": [
+          -62.5,
+          62.5
+        ],
+        "descriptive_cluster_interval_pp": [
+          -100.0,
+          100.0
+        ],
+        "leave_one_group_out_pp": {
+          "g13": 50.0,
+          "g14": -50.0,
+          "g21": 0.0
+        },
+        "task_difference_pp": {
+          "20": -100.0,
+          "21": 100.0,
+          "42": 0.0
+        },
+        "review_cases": {
+          "gain": [
+            {
+              "task_id": "21",
+              "repetition": 1,
+              "treatment_job": 342,
+              "control_job": 341
+            }
+          ],
+          "loss": [
+            {
+              "task_id": "20",
+              "repetition": 1,
+              "treatment_job": 375,
+              "control_job": 371
+            }
+          ],
+          "both_success": [],
+          "both_failure": [
+            {
+              "task_id": "42",
+              "repetition": 1,
+              "treatment_job": 382,
+              "control_job": 384
+            }
+          ]
+        }
+      },
+      {
+        "treatment": "lesson",
+        "control": "no_memory",
+        "planned_pairs": 7,
+        "jointly_graded_pairs": 3,
+        "tasks_with_pairs": 3,
+        "customer_groups_with_pairs": 3,
+        "counts": {
+          "gain": 0,
+          "loss": 0,
+          "both_success": 1,
+          "both_failure": 2,
+          "ungraded": 4
+        },
+        "task_equal_difference_pp": 0.0,
+        "possible_difference_pp": [
+          -62.5,
+          62.5
+        ],
+        "descriptive_cluster_interval_pp": [
+          0.0,
+          0.0
+        ],
+        "leave_one_group_out_pp": {
+          "g13": 0.0,
+          "g14": 0.0,
+          "g21": 0.0
+        },
+        "task_difference_pp": {
+          "20": 0.0,
+          "21": 0.0,
+          "42": 0.0
+        },
+        "review_cases": {
+          "gain": [],
+          "loss": [],
+          "both_success": [
+            {
+              "task_id": "20",
+              "repetition": 1,
+              "treatment_job": 374,
+              "control_job": 371
+            }
+          ],
+          "both_failure": [
+            {
+              "task_id": "21",
+              "repetition": 1,
+              "treatment_job": 346,
+              "control_job": 341
+            }
+          ]
+        }
+      },
+      {
+        "treatment": "procedure",
+        "control": "no_memory",
+        "planned_pairs": 7,
+        "jointly_graded_pairs": 3,
+        "tasks_with_pairs": 3,
+        "customer_groups_with_pairs": 3,
+        "counts": {
+          "gain": 1,
+          "loss": 1,
+          "both_success": 0,
+          "both_failure": 1,
+          "ungraded": 4
+        },
+        "task_equal_difference_pp": 0.0,
+        "possible_difference_pp": [
+          -62.5,
+          62.5
+        ],
+        "descriptive_cluster_interval_pp": [
+          -100.0,
+          100.0
+        ],
+        "leave_one_group_out_pp": {
+          "g13": 50.0,
+          "g14": 0.0,
+          "g21": -50.0
+        },
+        "task_difference_pp": {
+          "20": -100.0,
+          "21": 0.0,
+          "42": 100.0
+        },
+        "review_cases": {
+          "gain": [
+            {
+              "task_id": "42",
+              "repetition": 1,
+              "treatment_job": 377,
+              "control_job": 384
+            }
+          ],
+          "loss": [
+            {
+              "task_id": "20",
+              "repetition": 1,
+              "treatment_job": 373,
+              "control_job": 371
+            }
+          ],
+          "both_success": [],
+          "both_failure": [
+            {
+              "task_id": "21",
+              "repetition": 1,
+              "treatment_job": 345,
+              "control_job": 341
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "baseline_repetition": {
+    "planned_tasks": 28,
+    "tasks_with_both_scores": 6,
+    "flipped": 2
+  },
+  "assignment_statuses": {
+    "completed": 168,
+    "error": 1,
+    "not_started": 113
+  }
+}
