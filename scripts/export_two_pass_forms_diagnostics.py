@@ -31,7 +31,9 @@ def public_messages(messages):
 
 def timeline(messages, task, past_ids):
     public = public_messages(messages)
-    replies = {m["tool_call_id"]: (i, decode(m.get("content"))) for i, m in enumerate(public) if m["role"] == "tool"}
+    # Public wire projections name the identifier tool_call_id. Native ToolMessage uses id.
+    replies = {(m["tool_call_id"] if "tool_call_id" in m else m["id"]): (i, decode(m.get("content")))
+               for i, m in enumerate(public) if m["role"] == "tool"}
     profiles, lookups, writes, dialogue = [], [], [], []
     first_mention = {}
     for i, m in enumerate(public):

@@ -1,9 +1,28 @@
 import unittest
 
 from agent_memory_eval.analysis.forms_results import contrast
+from scripts.export_two_pass_forms_diagnostics import timeline
 
 
 class PairingTests(unittest.TestCase):
+    def test_payment_timeline_links_native_and_public_tool_replies(self):
+        name = "get_user_details"
+        args = {"user_id": "sample"}
+        response = '{"user_id":"sample","reservations":["A"],"payment_methods":{}}'
+        native = [
+            {"role": "assistant", "tool_calls": [{"id": "x", "name": name, "arguments": args}]},
+            {"role": "tool", "id": "x", "content": response},
+        ]
+        projected = [
+            {"role": "assistant", "tool_calls": [{"id": "x", "function": {
+                "name": name, "arguments": '{"user_id":"sample"}'}}]},
+            {"role": "tool", "tool_call_id": "x", "content": response},
+        ]
+        evidence = timeline(native, "23", [])
+        self.assertEqual(evidence, timeline(projected, "23", []))
+        self.assertEqual(evidence["profiles"][0]["result_index"], 1)
+        self.assertEqual(evidence["profiles"][0]["returned_reservation_ids"], ["A"])
+
     def test_partial_pairs_keep_task_weights_and_tight_missing_bounds(self):
         rows = []
         for t, rep, data in [("A", 1, [True, False]), ("A", 2, [True, False]),
