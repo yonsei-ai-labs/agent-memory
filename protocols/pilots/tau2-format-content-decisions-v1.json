@@ -1,0 +1,137 @@
+{
+  "format": "agent-memory-format-content-decisions/v1",
+  "study": "tau2-format-content-decisions-01",
+  "purpose": "Compare four ways of presenting identical content and separately the eight existing autonomous writer banks at four fixed first decisions.",
+  "prior_protocol_ref": {
+    "path": "protocols/pilots/tau2-return-date-calibration-v1.json",
+    "sha256": "ddfdd659ddd6d34729a33e12e920d4229ba362eda0fcbf1173e53fdda762ac07"
+  },
+  "prior_calibration_result_ref": {
+    "path": "artifacts/analyses/20261118-return-date-calibration.json",
+    "sha256": "0ce51e2b9c6d1829de50744c6f7616b251c692080fd7199aa43ea779f1721356"
+  },
+  "writer_inventory_ref": {
+    "path": "artifacts/analyses/20261118-return-date-existing-writes.json",
+    "sha256": "6b0c3a4594a36162d9569a0eab3047b240a8d7164260632e83dd5a74f416ff6f"
+  },
+  "writer_root": "runs/tau2-new-customer-forms-continuation-01",
+  "first_pass_final": {
+    "request_id": "request_13141ace516e473fbbbb906bfe075211",
+    "wire_sha256": "df2344f2d6d6fe0e4dce6872e0c8eb317cc1bb883760e950135489cadb56c91d"
+  },
+  "cases": {
+    "previous_date": {
+      "origin": "authored_first_customer_query",
+      "text": "This is Mia Kim, user ID mia_kim_4397. Please search for direct flights from SEA to JFK for the return date we used on my previous Seattle booking. I'd like to see the available options. Please don't book anything.",
+      "expected_search_date": "2024-05-25",
+      "kind": "date"
+    },
+    "changed_date": {
+      "origin": "authored_first_customer_query",
+      "text": "This is Mia Kim, user ID mia_kim_4397. Please search for direct flights from SEA to JFK for May 26, 2024 instead of the return date we used on my previous Seattle booking. I'd like to see the available options. Please don't book anything.",
+      "expected_search_date": "2024-05-26",
+      "kind": "date"
+    },
+    "previous_tier": {
+      "kind": "baggage",
+      "origin": "authored_first_customer_query",
+      "text": "This is Mia Kim, user ID mia_kim_4397. I am comparing baggage costs for a hypothetical Seattle booking. Use the same membership tier I had on my previous Seattle booking. Both passengers would fly economy, and each would check four bags. Across the whole booking, how many of those bags would be free, how many paid, and how much would the paid bags cost? Please give the totals as free=<number>, paid=<number>, fee_usd=<number>. It's only a quote.",
+      "membership": "silver",
+      "cabin": "economy",
+      "passengers": 2,
+      "requested_per_passenger": 4,
+      "allowance_per_passenger": 2,
+      "price_each": 50,
+      "expected": {
+        "free": 4,
+        "paid": 4,
+        "fee_usd": 200
+      }
+    },
+    "changed_tier": {
+      "kind": "baggage",
+      "origin": "authored_first_customer_query",
+      "text": "This is Mia Kim, user ID mia_kim_4397. I am comparing baggage costs for a hypothetical Seattle booking. Use gold membership this time, whatever tier I had on my previous Seattle booking. Both passengers would fly economy, and each would check four bags. Across the whole booking, how many of those bags would be free, how many paid, and how much would the paid bags cost? Please give the totals as free=<number>, paid=<number>, fee_usd=<number>. It's only a quote.",
+      "membership": "gold",
+      "cabin": "economy",
+      "passengers": 2,
+      "requested_per_passenger": 4,
+      "allowance_per_passenger": 3,
+      "price_each": 50,
+      "expected": {
+        "free": 6,
+        "paid": 2,
+        "fee_usd": 100
+      }
+    }
+  },
+  "controlled_title": "Previous call",
+  "propositions": [
+    "The previous return was SEA to JFK on 2024-05-25, flight HAT276.",
+    "The booking user had silver membership and booked one basic-economy passenger.",
+    "The initial quote of two free checked bags was corrected to one, which the booking included.",
+    "Use the date, membership tier and cabin applicable to the current request.",
+    "Read the free allowance per passenger for that tier and cabin in the current policy, then count only the checked bags each passenger needs.",
+    "Each additional checked bag costs $50 under that policy."
+  ],
+  "renderings": {
+    "fact": "Itinerary: {0}\nBooking: {1}\nCorrection: {2}\nApplicability: {3}\nAllowance: {4}\nExcess fee: {5}",
+    "episode": "My notes from the call\n{0} {1}\nI recorded the correction. {2}\nI kept the following reminders for later. {3} {4} {5}",
+    "lesson": "Example behind the lesson\n{0} {1} {2}\nLesson for a future request\n{3} {4} {5}",
+    "procedure": "1. Identify the earlier itinerary and booking conditions. {0} {1}\n2. Check the correction. {2}\n3. Apply the current conditions. {3} {4} {5}"
+  },
+  "neutral_note": {
+    "title": "Previous call",
+    "body": "On the previous call, the customer asked to remove Ethan from reservation H9ZU1C."
+  },
+  "arms": [
+    "empty",
+    "other_fact",
+    "matched_fact",
+    "matched_episode",
+    "matched_lesson",
+    "matched_procedure",
+    "written_fact_1",
+    "written_fact_2",
+    "written_episode_1",
+    "written_episode_2",
+    "written_lesson_1",
+    "written_lesson_2",
+    "written_procedure_1",
+    "written_procedure_2"
+  ],
+  "policy": {
+    "enabled": true,
+    "write_timing": "none",
+    "same_episode_read": false,
+    "page_size": 1,
+    "read_mode": "preload",
+    "max_items": 1,
+    "max_payload_bytes": 4096,
+    "max_return_bytes": 4608
+  },
+  "instruction": "You may use the supplied notes when relevant to the current request.",
+  "schedule_seed": "airline24-format-content-20261118",
+  "repetitions": 4,
+  "schedule": "Four case orders formed by rotating one deterministic permutation. Within case use a hashed permutation of 14 arms, its reverse, an even cyclic shift by four, then its reverse. Each arm is sent independently four times per case at four different positions with identical mean order. Retain every slot.",
+  "model": "openai/gpt-6-luna",
+  "canonical_slug": "openai/gpt-6-luna-20260922",
+  "max_input_bytes": 64000,
+  "max_usd": 5,
+  "max_seconds": 7200,
+  "timeout_seconds": 100,
+  "unpriced_http": [
+    429,
+    502,
+    503,
+    504
+  ],
+  "billing": "One submission per allocation. Preserve errors as missing. Reserve the per-wire maximum for an unpriced listed HTTP error bearing its original status and obey Retry-After with at least five seconds. Stop on other unpriced or invalid responses. Freeze endpoint and check that the entire planned allocation fits the cost cap before any submission.",
+  "rubric": {
+    "date": "One search_direct_flight with exactly the requested SEA-JFK route and date and no accompanying customer message. Preserve lookups, stale-date searches and other alternatives.",
+    "baggage": "One direct customer answer giving all three unconditional totals for the specified whole booking, without a business tool call. Read numerical meaning regardless of wording, order or carrier JSON. A lookup, clarification or calculation tool is a distinct first step. In previous_tier it may be a reasonable information-seeking action.",
+    "masked_review": "Before opening arm-level outcomes, group every distinct customer-facing baggage text without calls by case and exact trimmed public content. Review with labels and frequencies withheld. Record the three values asserted, tagging conditional, unclear or contradictory replies. Score a complete direct quote only if all three values equal the policy-derived reference. Automatically check exact key/value or JSON triples against the masked coding. Identical responses share a text annotation but remain separate requests.",
+    "harm": "Record stale-date searches, any proposal to change the database on quote or search queries, and direct changed-tier quotes matching the prior silver totals. Count paired gains and losses against the contemporary empty condition, with missing replies reported separately.",
+    "reporting": "Report each of 14 arms per case and repetition. Display the four matched templates separately from the two original writer banks per form, with item strings and exposure verified. Four repeated decisions on one bank are not four independently written notes. Describe exact action frequencies and sensitivity to changed conditions without a cross-case or overall best-form rank."
+  }
+}

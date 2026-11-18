@@ -103,7 +103,7 @@ def stage(journal, workspace, profile):
                               source_wire_sha256=first["wire_sha256"]))
 
 
-def classify(case, rule, message):
+def public_action(message):
     text = (message.get("content") or "").strip()
     if text.startswith("{"):
         try:
@@ -120,6 +120,11 @@ def classify(case, rule, message):
         except ValueError:
             args = None
         calls.append(dict(name=fn["name"], arguments=args))
+    return text, calls
+
+
+def classify(case, rule, message):
+    text, calls = public_action(message)
     single = calls[0] if len(calls) == 1 and not text else {}
     booking = "expected_booking" in rule
     name = "book_reservation" if booking else "search_direct_flight"
