@@ -1,8 +1,13 @@
 """Small stateless OpenRouter transport. Credentials never enter request artifacts."""
 
 from copy import deepcopy
+from datetime import timezone
+from decimal import Decimal
+from email.utils import parsedate_to_datetime
 import math
 import os
+import re
+from sys import float_info
 import time
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
@@ -18,6 +23,54 @@ class ProviderError(ContractError):
         self.code, self.response, self.submitted = code, response, submitted
         self.response_available = response is not None if response_available is None else response_available
         super().__init__(code)
+
+
+def _http_error_receipt(error, secrets):
+    """Keep verifiable billing and retry metadata while excluding raw messages and headers."""
+    detail = dict(code=error.code)
+    receipt = dict(error=detail)
+    headers = error.headers or {}
+    retry = headers.get("Retry-After") or headers.get("retry-after")
+    if isinstance(retry, str):
+        if re.fullmatch(r"[0-9]{1,10}", retry):
+            detail["retry_after_seconds"] = int(retry)
+        else:
+            try:
+                date = parsedate_to_datetime(retry)
+                if date.tzinfo is not None:
+                    detail["retry_after_utc"] = date.astimezone(timezone.utc).isoformat()
+            except (ValueError, OverflowError, TypeError):
+                pass
+    try:
+        decoded = read_json(error.read(16384))
+    except (ValueError, UnicodeError, OSError):
+        return receipt
+    if not isinstance(decoded, dict):
+        return receipt
+    remote = decoded.get("error")
+    metadata = remote.get("metadata") if isinstance(remote, dict) else None
+    message = str(remote.get("message", "")).lower() if isinstance(remote, dict) else ""
+    for phrase, reason in (("data policy", "data_policy"), ("parameters", "parameters"),
+                           ("provider", "provider"), ("no endpoints", "no_endpoint"), ("model", "model")):
+        if phrase in message:
+            detail["routing_reason"] = reason
+            break
+    for gen in (decoded.get("id"), decoded.get("generation_id"),
+                metadata.get("generation_id") if isinstance(metadata, dict) else None):
+        if (isinstance(gen, str) and re.fullmatch(r"gen-[A-Za-z0-9-]{1,124}", gen)
+                and not any(secret and secret in gen for secret in secrets)):
+            receipt["id"] = gen
+            break
+    usage = decoded.get("usage")
+    if isinstance(usage, dict):
+        safe = {key: usage[key] for key in ("prompt_tokens", "completion_tokens", "total_tokens")
+                if type(usage.get(key)) is int and usage[key] >= 0}
+        cost = usage.get("cost")
+        if type(cost) in (int, float) and 0 <= cost <= float_info.max:
+            safe["cost"] = cost
+        if safe:
+            receipt["usage"] = safe
+    return receipt
 
 
 def model_catalog():
@@ -64,6 +117,22 @@ def resolve_endpoint(model, catalog, route, parameters):
     return resolved
 
 
+def request_reservation_usd(request, model):
+    """Estimate this wire's reservation from byte length and the pinned endpoint rates."""
+    prompt_bound = len(canonical(request)) + 64 * len(request["messages"])
+    output = request.get("max_completion_tokens", request.get("max_tokens"))
+    if type(output) is not int or output <= 0 or ("max_completion_tokens" in request and "max_tokens" in request):
+        raise ProviderError("INVALID_OUTPUT_LIMIT")
+    pricing = model.get("reservation_pricing", model["pricing"])
+    try:
+        rates = [float(pricing[key]) for key in ("prompt", "completion")]
+    except (KeyError, TypeError, ValueError, OverflowError):
+        raise ProviderError("INVALID_RESERVATION_PRICING") from None
+    if any(not math.isfinite(rate) or rate < 0 for rate in rates):
+        raise ProviderError("INVALID_RESERVATION_PRICING")
+    return prompt_bound * Decimal(str(rates[0])) + output * Decimal(str(rates[1]))
+
+
 class SpendGuard:
     def __init__(self, *, max_calls, max_usd, max_seconds):
         if (type(max_calls) is not int or max_calls < 1
@@ -81,26 +150,14 @@ class SpendGuard:
         if self.unknown_cost:
             raise ProviderError("UNKNOWN_COST_STOP")
         # Conservative byte-based reservation; not a provider-enforced monetary cap.
-        prompt_bound = len(canonical(request)) + 64 * len(request["messages"])
-        output = request.get("max_completion_tokens", request.get("max_tokens"))
-        if type(output) is not int or output <= 0 or ("max_completion_tokens" in request and "max_tokens" in request):
-            raise ProviderError("INVALID_OUTPUT_LIMIT")
-        pricing = model.get("reservation_pricing", model["pricing"])
-        try:
-            rates = [float(pricing[key]) for key in ("prompt", "completion")]
-        except (KeyError, TypeError, ValueError, OverflowError):
-            raise ProviderError("INVALID_RESERVATION_PRICING") from None
-        if any(not math.isfinite(rate) or rate < 0 for rate in rates):
-            raise ProviderError("INVALID_RESERVATION_PRICING")
-        reserve = prompt_bound * rates[0] + output * rates[1]
-        if self.reported_usd + reserve > self.max_usd:
+        if Decimal(str(self.reported_usd)) + request_reservation_usd(request, model) > Decimal(str(self.max_usd)):
             raise ProviderError("SPEND_LIMIT")
         self.calls += 1
 
     def after(self, response):
         usage = response.get("usage") if isinstance(response, dict) else None
         cost = usage.get("cost") if isinstance(usage, dict) else None
-        if type(cost) not in (int, float) or not math.isfinite(cost) or cost < 0:
+        if type(cost) not in (int, float) or not 0 <= cost <= float_info.max:
             self.unknown_cost = True
         else:
             self.reported_usd += cost
@@ -143,21 +200,9 @@ class OpenRouterClient:
             with self.opener(wire, timeout=min(self.timeout_seconds, max(0.1, self.guard.deadline - time.monotonic()))) as response:
                 body = response.read()
         except HTTPError as error:
-            # Do not serialize headers, exceptions or raw errors that might echo a credential.
-            self.guard.unknown_cost = True
-            detail = dict(code=error.code)
-            try:
-                decoded = read_json(error.read(16384))
-                remote = decoded.get("error") if isinstance(decoded, dict) else None
-                message = str(remote.get("message", "")).lower() if isinstance(remote, dict) else ""
-                for phrase, reason in (("data policy", "data_policy"), ("parameters", "parameters"),
-                        ("provider", "provider"), ("no endpoints", "no_endpoint"), ("model", "model")):
-                    if phrase in message:
-                        detail["routing_reason"] = reason
-                        break
-            except (ValueError, UnicodeError, OSError):
-                pass
-            raise ProviderError("HTTP_" + str(error.code), dict(error=detail), submitted=True) from None
+            receipt = _http_error_receipt(error, (key, os.environ.get("OPENAI_API_KEY")))
+            self.guard.after(receipt)
+            raise ProviderError("HTTP_" + str(error.code), receipt, submitted=True) from None
         except (URLError, TimeoutError, OSError):
             self.guard.unknown_cost = True
             raise ProviderError("TRANSPORT_UNKNOWN", submitted=None) from None

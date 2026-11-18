@@ -1,10 +1,12 @@
 from copy import deepcopy
+from io import BytesIO
 from pathlib import Path
 from tempfile import TemporaryDirectory
 import unittest
 from unittest.mock import patch
+from urllib.error import HTTPError
 
-from agent_memory_eval.contracts.core import ContractError, read_json
+from agent_memory_eval.contracts.core import ContractError, canonical, read_json
 from agent_memory_eval.contracts.validation import ROOT
 from agent_memory_eval.analysis.requests import audit_requests
 from agent_memory_eval.experiments.forms_batch import BatchGuard, DESIGN, ordered_jobs, request_usage, run_jobs
@@ -72,17 +74,23 @@ class FormsBatchTests(unittest.TestCase):
             route = dict(only=["openai"], allow_fallbacks=False, require_parameters=True)
             model = dict(id="openai/gpt-6-luna", selected_endpoint=dict(provider_name="OpenAI"),
                          pricing=dict(prompt=0, completion=0))
-            for name, usage in (("charged", {"cost": 0.0001}), ("unpriced", {})):
+            cases = (("charged", {"cost": 0.0001}, 200), ("unpriced", {}, 200),
+                     ("charged_429", {"cost": 0.0001}, 429), ("unpriced_429", {}, 429))
+            for name, usage, status in cases:
                 guard = BatchGuard(max_calls=4, max_usd=1, max_seconds=10)
                 error = dict(error={"message": "local fixture"}, usage=usage)
-                client = OpenRouterClient(model, guard, route=route, opener=lambda *args, **kwargs: Reply(error),
+                def opener(*args, **kwargs):
+                    if status == 429:
+                        raise HTTPError("https://openrouter.ai", status, "rate limited", {}, BytesIO(canonical(error)))
+                    return Reply(error)
+                client = OpenRouterClient(model, guard, route=route, opener=opener,
                                           max_input_bytes=128000)
                 with Journal(root / name, name, contract_version="1.2") as journal:
                     result = run_form_writer(journal, design, source, repetition=1, arm="fact", client=client,
                                              guard=guard, root=ROOT)
                     ledger = request_usage(journal)["writer"]
-                self.assertEqual(result["error_code"], "PROVIDER_RESPONSE_ERROR")
+                self.assertEqual(result["error_code"], "HTTP_429" if status == 429 else "PROVIDER_RESPONSE_ERROR")
                 self.assertEqual(ledger["unknown_count"], guard.unknown_cost)
                 self.assertEqual(float(ledger["reported_usd"]), guard.reported_usd)
-                self.assertEqual(result["unknown_cost"], name == "unpriced")
+                self.assertEqual(result["unknown_cost"], "cost" not in usage)
                 self.assertEqual(audit_requests(root / name)["unknown_cost_requests"], ledger["unknown_count"])

@@ -219,6 +219,31 @@ class OpenRouterTests(unittest.TestCase):
             OpenRouterClient(MODEL, SpendGuard(max_calls=2,max_usd=1,max_seconds=10), route=ROUTE,
                 opener=lambda *a, **kw: Reply(dict(choices=[{"content":"test-router-secret"}]))).respond(self.request)
 
+    def test_http_429_preserves_only_safe_retry_identity_and_reported_charge(self):
+        raw = dict(id="gen-opaque-123", error=dict(message="provider test-router-secret"),
+                   usage=dict(cost=0.00013, total_tokens=3, private="test-router-secret", prompt_tokens=True))
+        def error(*args, **kwargs):
+            raise HTTPError("https://openrouter.ai", 429, "restricted", {"Retry-After": "12", "Private": "test-router-secret"},
+                            io.BytesIO(canonical(raw)))
+        with self.assertRaises(ProviderError) as caught:
+            OpenRouterClient(MODEL, self.guard, route=ROUTE, opener=error).respond(self.request)
+        self.assertEqual(caught.exception.response, dict(id="gen-opaque-123", usage=dict(cost=0.00013, total_tokens=3),
+                         error=dict(code=429, routing_reason="provider", retry_after_seconds=12)))
+        self.assertEqual(self.guard.reported_usd, 0.00013)
+        self.assertFalse(self.guard.unknown_cost)
+
+    def test_http_429_keeps_absent_charge_unknown_and_filters_secret_id(self):
+        raw = dict(id="gen-test-router-secret", error=dict(message="provider rejected the request"),
+                   usage=dict(cost="missing", prompt_tokens=2, private="test-router-secret"))
+        def error(*args, **kwargs):
+            raise HTTPError("https://openrouter.ai", 429, "limited", {"Retry-After": "Wed, 18 Nov 2026 04:22:45 GMT"},
+                            io.BytesIO(canonical(raw)))
+        with self.assertRaises(ProviderError) as caught:
+            OpenRouterClient(MODEL, self.guard, route=ROUTE, opener=error).respond(self.request)
+        self.assertEqual(caught.exception.response, dict(usage=dict(prompt_tokens=2), error=dict(code=429,
+                         routing_reason="provider", retry_after_utc="2026-11-18T04:22:45+00:00")))
+        self.assertTrue(self.guard.unknown_cost)
+
     def test_unsupported_model_parameters_are_not_silently_dropped(self):
         catalog = dict(data=[MODEL])
         resolve_model(catalog, MODEL["id"], dict(reasoning=dict(effort="low")))
