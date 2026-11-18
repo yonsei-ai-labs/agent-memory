@@ -19,6 +19,7 @@ import time
 
 
 REGISTRY_FORMAT = "agent-memory-historical-reproduction-registry/v1"
+BATCH_REGISTRY_FORMAT = "agent-memory-historical-reproduction-registry/v2"
 DEFAULT_REGISTRY = "protocols/reproductions/historical-v1.json"
 
 
@@ -124,7 +125,8 @@ def load_entry(repo, registry_path, experiment):
     registry_path = Path(registry_path).absolute()
     registry_data = registry_path.read_bytes()
     registry = read_json(registry_data)
-    if registry["format"] != REGISTRY_FORMAT or registry["intent"] != "read_only_historical_review":
+    if (registry["format"] not in (REGISTRY_FORMAT, BATCH_REGISTRY_FORMAT)
+            or registry["intent"] != "read_only_historical_review"):
         raise ReproductionError("Unsupported reproduction registry")
     if experiment not in registry["experiments"]:
         raise ReproductionError("Unknown registered experiment: " + experiment)
@@ -157,13 +159,19 @@ def load_entry(repo, registry_path, experiment):
     if not roots or any(a == b or a in b.parents or b in a.parents
                         for i, a in enumerate(roots) for b in roots[i + 1:]):
         raise ReproductionError("Inputs must be explicit and nonoverlapping")
-    if not any(row["kind"] == "run" and row["path"] == lock["planned_output"] for row in inputs):
+    raw_kinds = ("run", "run_batch") if registry["format"] == BATCH_REGISTRY_FORMAT else ("run",)
+    if not any(row["kind"] in raw_kinds and row["path"] == lock["planned_output"] for row in inputs):
         raise ReproductionError("The historical experiment's raw root must be included")
     for row, root in zip(inputs, roots):
-        if row["kind"] == "run":
+        if row["kind"] in raw_kinds:
             if root.parts[0] != "runs":
                 raise ReproductionError("Historical runs must stay under runs/")
-            reference(dict(path=row["path"] + "/log.jsonl", sha256=row["log_sha256"]))
+            if row["kind"] == "run_batch":
+                if not isinstance(row.get("completion_sha256"), str):
+                    raise ReproductionError("Batch registry must pin completion_sha256")
+                reference(dict(path=row["path"] + "/completion.json", sha256=row["completion_sha256"]))
+            else:
+                reference(dict(path=row["path"] + "/log.jsonl", sha256=row["log_sha256"]))
         elif row["kind"] == "file":
             reference(row)
         elif row["kind"] == "git_checkout":
@@ -176,20 +184,78 @@ def load_entry(repo, registry_path, experiment):
                 frozen_ref_count=len(refs), registry_ref=dict(path=str(registry_path), sha256=sha(registry_data)))
 
 
+def batch_hashes(base, item):
+    root = checked_path(base, item["path"])
+    expected = {"completion.json": item["completion_sha256"]}
+
+    def verified_json(name):
+        path = checked_path(root, name)
+        if not path.is_file():
+            raise ReproductionError("Missing batch input: " + name)
+        data = path.read_bytes()
+        if sha(data) != expected[name]:
+            raise ReproductionError("Historical input checksum mismatch: " + name)
+        return read_json(data)
+
+    completion = verified_json("completion.json")
+    if not isinstance(completion, dict) or not isinstance(completion.get("allocation_sha256"), str):
+        raise ReproductionError("Batch completion must pin its allocation ledger")
+    expected["allocations.json"] = completion["allocation_sha256"]
+    if "control_sha256" in completion or checked_path(root, "control.json").exists():
+        if not isinstance(completion.get("control_sha256"), str):
+            raise ReproductionError("Batch completion must pin the control file")
+        expected["control.json"] = completion["control_sha256"]
+    allocated, started = set(), set()
+    allocations = verified_json("allocations.json")
+    if not isinstance(allocations, list):
+        raise ReproductionError("Batch allocations must be a list")
+    for row in allocations:
+        if not isinstance(row, dict) or not isinstance(row.get("status"), str):
+            raise ReproductionError("Invalid batch allocation")
+        directory = relative(row.get("directory"))
+        if directory.parent != Path("jobs") or directory in allocated:
+            raise ReproductionError("Invalid or duplicate allocation directory: " + str(directory))
+        allocated.add(directory)
+        if row["status"] == "not_started":
+            if row.get("result") is not None:
+                raise ReproductionError("Unstarted allocation has a result: " + str(directory))
+            continue
+        started.add(directory)
+        result = row.get("result")
+        if not isinstance(result, dict) or not isinstance(result.get("log_sha256"), str):
+            raise ReproductionError("Missing checksum for materialized batch journal: " + str(directory))
+        expected[(directory / "log.jsonl").as_posix()] = result["log_sha256"]
+    jobs = checked_path(root, "jobs")
+    if not jobs.is_dir() or {path.relative_to(root) for path in jobs.iterdir()} != started:
+        raise ReproductionError("Batch job directories differ from the sealed allocations")
+    return expected
+
+
 @contextmanager
 def input_leases(base, entry):
     streams = []
     try:
         for row in entry["inputs"]:
-            if row["kind"] != "run":
+            if row["kind"] == "run":
+                locks = [checked_path(base, row["path"] + "/writer.lock")]
+            elif row["kind"] == "run_batch":
+                root = checked_path(base, row["path"])
+                locks = [checked_path(root, Path(name).with_name("writer.lock").as_posix())
+                         for name in batch_hashes(base, row) if name.endswith("/log.jsonl")]
+                root_lock = checked_path(root, "writer.lock")
+                if root_lock.exists():
+                    locks.insert(0, root_lock)
+            else:
                 continue
-            path = checked_path(base, row["path"] + "/writer.lock")
-            stream = path.open("rb")
-            streams.append(stream)
-            try:
-                fcntl.flock(stream.fileno(), fcntl.LOCK_SH | fcntl.LOCK_NB)
-            except BlockingIOError as error:
-                raise ReproductionError("A source run still has an active writer") from error
+            for path in locks:
+                if row["kind"] == "run_batch" and not path.is_file():
+                    raise ReproductionError("Missing regular source writer lock: " + str(path))
+                stream = path.open("rb")
+                streams.append(stream)
+                try:
+                    fcntl.flock(stream.fileno(), fcntl.LOCK_SH | fcntl.LOCK_NB)
+                except BlockingIOError as error:
+                    raise ReproductionError("A source run still has an active writer") from error
         yield
     finally:
         for stream in streams:
@@ -200,7 +266,7 @@ def inventory_inputs(base, entry):
     rows = []
     for item in entry["inputs"]:
         path = checked_path(base, item["path"])
-        if item["kind"] == "run":
+        if item["kind"] in ("run", "run_batch"):
             if not path.is_dir():
                 raise ReproductionError("Missing raw run: " + item["path"])
             paths = sorted(path.rglob("*"))
@@ -211,6 +277,15 @@ def inventory_inputs(base, entry):
             paths = [path / relative(name) for name in sorted(names) if name]
         else:
             paths = [path]
+        if item["kind"] == "run_batch":
+            pinned = {(path / name).relative_to(base).as_posix(): value
+                      for name, value in batch_hashes(base, item).items()}
+        elif item["kind"] == "run":
+            pinned = {item["path"] + "/log.jsonl": item["log_sha256"]}
+        elif item["kind"] == "file":
+            pinned = {item["path"]: item["sha256"]}
+        else:
+            pinned = {}
         for child in paths:
             name = child.relative_to(base).as_posix()
             if item["kind"] == "git_checkout" and child.is_symlink():
@@ -226,14 +301,15 @@ def inventory_inputs(base, entry):
                 continue
             if not stat.S_ISREG(mode):
                 raise ReproductionError("Input is not a regular file: " + name)
-            rows.append(dict(path=name, bytes=child.stat().st_size, sha256=file_hash(child)))
-        if item["kind"] == "git_checkout":
-            continue
-        expected_name = item["path"] + "/log.jsonl" if item["kind"] == "run" else item["path"]
-        actual = next((row for row in rows if row["path"] == expected_name), None)
-        expected = item.get("log_sha256", item.get("sha256"))
-        if actual is None or actual["sha256"] != expected:
-            raise ReproductionError("Historical input checksum mismatch: " + expected_name)
+            checksum = file_hash(child)
+            if name in pinned and pinned.pop(name) != checksum:
+                raise ReproductionError("Historical input checksum mismatch: " + name)
+            if item["kind"] == "run_batch" and child.relative_to(path).match("jobs/*/blobs/sha256/*"):
+                if child.name != checksum:
+                    raise ReproductionError("Historical batch blob checksum mismatch: " + name)
+            rows.append(dict(path=name, bytes=child.stat().st_size, sha256=checksum))
+        if pinned:
+            raise ReproductionError("Historical input checksum mismatch: " + next(iter(pinned)))
     return sorted(rows, key=lambda row: row["path"])
 
 
@@ -251,6 +327,8 @@ def preflight(config, inputs_root):
 def stage_inputs(base, worktree, inventory, entry):
     checkouts = []
     for item in entry["inputs"]:
+        if item["kind"] == "run_batch":
+            checked_path(worktree, item["path"] + "/jobs").mkdir(parents=True, exist_ok=True)
         if item["kind"] != "git_checkout":
             continue
         source, target = checked_path(base, item["path"]), checked_path(worktree, item["path"])
