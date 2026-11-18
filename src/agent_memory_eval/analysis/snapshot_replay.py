@@ -139,6 +139,8 @@ def audit_snapshot_replays(root, *, evidence=None):
         spans = [e for e in events if e["type"] == "memory.input_included"]
         rows.append(dict(result, record_kind=config["record_kind"], condition_id=start["condition_id"],
             source_request_sha256=source["archive"]["request_ref"]["sha256"],
+            **({"decision_origin": source["decision_origin"], "authored_base_request_sha256": digest(canonical(source["wire"]))}
+               if "decision_origin" in source else {}),
             request_sha256=config["expected_request_sha256"], model_requests=len(requests),
             delivery_status=finish["delivery_status"] if finish else "not_submitted",
             memory_input_spans=len(spans), received_memory_spans=len(spans) if finish and finish["delivery_status"] == "response_received" else 0,

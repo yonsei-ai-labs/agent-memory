@@ -7,6 +7,7 @@ from agent_memory_eval.memory.context import request_with_past_memory
 from agent_memory_eval.memory.service import MemoryService
 from agent_memory_eval.memory.writing import read_public_experience, writer_inputs, writer_template
 from agent_memory_eval.recording.experience import read_recorded_context
+from agent_memory_eval.recording.query_variant import replay_decision
 from agent_memory_eval.recording.preparation import record_prepared_request
 from agent_memory_eval.recording.provenance import SourceRegistry
 
@@ -59,7 +60,7 @@ class SnapshotBudgetExceeded(ContractError):
 def snapshot_replay_input(blobs, state, decision_ref, snapshot_id, *, policy, instruction, max_input_bytes, context_reader=None):
     """Inspect the complete snapshot and rendered request without changing a bank."""
     read = context_reader.read if context_reader is not None else read_recorded_context
-    source = read(blobs, decision_ref)
+    source = replay_decision(blobs, decision_ref, read)
     original = source["wire"]
     items = snapshot_items(blobs, state, snapshot_id)
     if policy.write_timing != "none" or policy.same_episode_read:

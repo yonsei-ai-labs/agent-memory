@@ -1,0 +1,66 @@
+{
+  "format": "agent-memory-return-date-calibration/v1",
+  "study": "tau2-return-date-calibration-01",
+  "purpose": "Calibrate sensitivity to a public first-pass fact at one fixed decision, robustness to an explicit update, and variability on identical empty inputs.",
+  "source": {
+    "path": "runs/tau2-new-customer-source-01/jobs/0006",
+    "log_sha256": "c99ae1e059e447f50f18ad18250e68538da5fad650b4840af9c8bf644d1bf279",
+    "run_id": "r_50133410fe494d3992916e5b8187a4d6",
+    "request_id": "request_b9d33d01cf2b4989b6f0135f657a5603",
+    "wire_sha256": "6ef70af1baee8e40826338e4eb85b62e49c2d9257f5e157476082454d9f43c57",
+    "evidence": "First customer utterance and booking tool return in this first-pass worker request, airline task 24."
+  },
+  "second_pass": {
+    "path": "runs/tau2-new-customer-forms-continuation-01/jobs/0107",
+    "log_sha256": "c28bd925e4e6d9c1f0a2a7e46dadf303e99cda2488685929c725c7bdaaa65fb3",
+    "run_id": "r_fbae5fb62db348fda7e8207620e46ee2",
+    "opening": {"request_id": "request_b56535bad5e64f138afc7124b0c7bd08", "wire_sha256": "8a55511ec877215d5d1cb5cfd2e72c916deeebbef8a6bf8602ecabbf495aa0d0"},
+    "booking": {"request_id": "request_3fafb8b4d7bc4a2cb256f59aab2c54b1", "wire_sha256": "1221ff7a2b2fad9bcedf548753d37f4d8ff36895417015466647fd528b3ffe27"}
+  },
+  "cases": {
+    "previous_date": {
+      "origin": "authored_first_customer_query",
+      "text": "This is Mia Kim, user ID mia_kim_4397. Please search for direct flights from SEA to JFK for the return date we used on my previous Seattle booking. I'd like to see the available options. Please don't book anything.",
+      "expected_search_date": "2024-05-25"
+    },
+    "changed_date": {
+      "origin": "authored_first_customer_query",
+      "text": "This is Mia Kim, user ID mia_kim_4397. Please search for direct flights from SEA to JFK for May 26, 2024 instead of the return date we used on my previous Seattle booking. I'd like to see the available options. Please don't book anything.",
+      "expected_search_date": "2024-05-26"
+    },
+    "approved_booking": {
+      "origin": "recorded_no_memory_worker_request",
+      "expected_booking": {
+        "user_id": "mia_kim_4397", "origin": "JFK", "destination": "SEA", "flight_type": "round_trip", "cabin": "basic_economy",
+        "flights": [{"date": "2024-05-20", "flight_number": "HAT069"}, {"date": "2024-05-25", "flight_number": "HAT276"}],
+        "passengers": [{"dob": "1965-06-09", "first_name": "Mia", "last_name": "Kim"}],
+        "payment_methods": [{"amount": 39, "payment_id": "gift_card_7359776"}, {"amount": 67, "payment_id": "gift_card_7773485"}],
+        "total_baggages": 1, "nonfree_baggages": 0, "insurance": "no"
+      }
+    }
+  },
+  "notes": {
+    "return_fact": {"title": "Previous call", "body": "On the previous booking the return was SEA to JFK on May 25, 2024, flight HAT276."},
+    "other_fact": {"title": "Previous call", "body": "On the previous call, the customer asked to remove Ethan from reservation H9ZU1C."}
+  },
+  "arms": ["empty_a", "empty_b", "return_fact", "other_fact"],
+  "instruction": "You may use the supplied notes when relevant to the current request.",
+  "schedule_seed": "airline24-return-date-20261118",
+  "repetitions": 8,
+  "schedule": "Case order hashed within each repetition. Four-arm balanced Latin square within each case, repeated twice. Every position is a separate stateless HTTP request, including byte-identical empties. The archived worker seed 3 is fixed across all calls.",
+  "model": "openai/gpt-6-luna",
+  "canonical_slug": "openai/gpt-6-luna-20260922",
+  "max_input_bytes": 64000,
+  "max_usd": 5,
+  "max_seconds": 5400,
+  "timeout_seconds": 100,
+  "unpriced_http": [429, 502, 503, 504],
+  "billing": "One submission per allocation. Preserve errors as missing. Reserve the per-wire maximum for an unpriced listed HTTP error bearing its original status; obey Retry-After with at least five seconds. Stop on other unpriced or invalid responses. Freeze endpoint and check that the entire planned allocation fits the cost cap before any submission.",
+  "rubric": {
+    "primary_search": "A single search_direct_flight with exactly origin SEA, destination JFK and the expected date, and no nonempty customer-facing statement. A question or another legitimate lookup is not an exact first-step search. Preserve alternative actions.",
+    "primary_booking": "A single book_reservation with all publicly approved arguments and no nonempty customer-facing statement. Compare parsed objects and ordered lists, including amounts, cards and leg order.",
+    "secondary": "Record date questions, other lookups, any stale-date direct search after the update, any unapproved mutation on a search-only query, and differing fields in a proposed booking. Log full public replies for text review.",
+    "denominators": "Every assignment including errors. Compare empty A/B and return/empty A within the same repetition for gains and losses in each case. Also contrast the source-matched other fact. One historical customer, two authored queries, one native checkpoint. No aggregate across cases or population inference.",
+    "advance": "Engineering criterion for carrying the same decision rubric into a controlled four-format comparison: at least 6/8 exact previous-date searches with the return fact and at least four more than each control; all 8 return-fact changed-date responses scorable, zero stale-date calls or unauthorized mutations; all arms complete. The native checkpoint is a separate ceiling/regression diagnostic."
+  }
+}
