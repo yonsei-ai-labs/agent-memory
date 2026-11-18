@@ -1,0 +1,363 @@
+{
+  "format": "agent-memory-written-replay-48-protocol-lock/v1",
+  "created_utc": "2026-11-17T23:25:45.190842+00:00",
+  "planned_output": "runs/tau2-written-replay-48-luna-01",
+  "implementation": {
+    "format": "agent-memory-implementation-freeze/v1",
+    "implementation_commit": "b1779825aa28e1ae19ac325dc0e1ce77e6ff3feb",
+    "implementation_tree": "65ee49ccff6ccd274b99059c731f46010ccd4f74",
+    "worktree_has_uncommitted_implementation": false,
+    "lock_ref": {
+      "path": "uv.lock",
+      "sha256": "b87ef58cf24c2e6d1ba07ed896676e31ecfb858b3840ef1bc5faf0c334ec62a6"
+    },
+    "reproduction_commit": null,
+    "scope": "implementation_identity_only_not_a_paid_protocol_or_run_authorization"
+  },
+  "implementation_local_branch": "experiment/written-replay-48-20261118",
+  "profile_ref": {
+    "path": "protocols/pilots/tau2-written-replay-48-v1.json",
+    "sha256": "99673bb07dbd038d72237426ac3fff4793cf0812da617cdd97a6dee3e03111f4"
+  },
+  "canonical_profile_sha256": "2ef3d1e79078f01a14fb65ef5776035b54a43789ff8482ed460c1c95962714b8",
+  "research_plan_ref": {
+    "path": "docs/research/written-replay-48-pilot.md",
+    "sha256": "d379750d10a801126d517254df578abdbc3839906ae113b72d0a4049d7caf3b2"
+  },
+  "independent_review_ref": {
+    "path": "artifacts/analyses/20261118-written-replay-48-independent-case-review.json",
+    "sha256": "be70a0c7bb7214fb913f60b55cd3861953ed6ce7572d899de793ebb1f30c9d1b"
+  },
+  "rubrics_ref": {
+    "path": "artifacts/analyses/20261118-written-replay-48-independent-rubrics.json",
+    "sha256": "0a2f3cc231232da757464ab13f933a4f356a411a9370be9f62e6353bb9a38a66"
+  },
+  "comparison_ref": {
+    "path": "protocols/drafts/tau2-written-memory-replay-v2.json",
+    "sha256": "65b6fa41fed409074abd32dccdefd7540972a78dc2b210adce69054e65131276"
+  },
+  "preparation_sha256": "be612f00aa8622c2c265747c464a0848d1972240f77c330194bc177e8593a2b2",
+  "source_log_sha256": {
+    "decision": "ec0994a536729872ce8ee7ff06ae63c2e640e70091146b9a361535174ee8fbb5",
+    "writing": "0a883dc7709586e54438b4d9fdc392fbe204576baaa6c223dcf4c29c71478885"
+  },
+  "public_packet_sha256": "7545c8ecc2ec10dce1b4f9a465a2a88648c94c11ae40c2807e8f8d199aea22dc",
+  "schedule_sha256": "b76575accdf377ae9c113fb9669e22a9e323fd7b72678d6fee2f34e231db6b40",
+  "schedule": [
+    {
+      "case_id": "airline23-r1-first-booking",
+      "repetition": 1,
+      "request_sha256": "5605dc977ea9087d43e57789f6bb7da3dd8d716b9468b5d3a821abe7f89b50af",
+      "run_id": "replay_010377c973ce43bef7ccbb80afb3c2fc633517ba58dd2e87e3a145f2528a588d"
+    },
+    {
+      "case_id": "airline23-r2-booking",
+      "repetition": 1,
+      "request_sha256": "12bc779e72e026de1f2ff93964f751570ac7dc5a08722200829e9099accd1d15",
+      "run_id": "replay_eae6fc9874e0439e8296840aabae427cc9c6a2aaf01e41504c5d754eb3b80615"
+    },
+    {
+      "case_id": "airline23-r1-first-booking",
+      "repetition": 1,
+      "request_sha256": "d9df2dd5e479f4387a96a1147e5f4d6d20e832c597ec6ca8b92e3bfc0080c317",
+      "run_id": "replay_19fe3cf5401a3ce4293fc491cf4f046a193898057db9093bdfeba18c17de13b3"
+    },
+    {
+      "case_id": "airline14-r2-booking",
+      "repetition": 1,
+      "request_sha256": "d1c55f270761ab2e6235c2bdfaddb3c144955deedacb6426e5852d43481348c2",
+      "run_id": "replay_498a9ee636c59d283a871a80245e4dafa2a5bd485f166bd3e2aedcd63ab4ebc1"
+    },
+    {
+      "case_id": "airline14-r2-booking",
+      "repetition": 1,
+      "request_sha256": "22a11c9da6584b0e4d95a075241d54be625316de5e115db6726c3731ca97c901",
+      "run_id": "replay_ac11a656aa95ab0a23bcae4d719c934e31ea7c0c6c6e5ff983ad25effdc67f76"
+    },
+    {
+      "case_id": "airline14-r1-booking",
+      "repetition": 1,
+      "request_sha256": "8ca76991bb5684a98adebee179cebdc98fa9eb541e10edfce6f0283695eac8cf",
+      "run_id": "replay_296654186b3f7f0f2aa1bb1ce4a808df9ff0b7951b17af57586ab10324a301a7"
+    },
+    {
+      "case_id": "airline14-r1-booking",
+      "repetition": 1,
+      "request_sha256": "bc223cb1c4c536c1c1b6af7ecda968010310cb0fc4da4cfa9deeaee752969546",
+      "run_id": "replay_0c692671b412bc7472eb8db22fd1f9b928f95fe70662730345c39f42bbb57724"
+    },
+    {
+      "case_id": "airline14-r1-booking",
+      "repetition": 1,
+      "request_sha256": "7f3efd4ae69c1a87703ebd96c2afc08e733bf6c1df76f69e4f5281ee37e0e9e2",
+      "run_id": "replay_9a4ddb1804f38cbc4f996e3913238b838a9294e3d929a71788ac16d2e8a8ec41"
+    },
+    {
+      "case_id": "airline23-r2-booking",
+      "repetition": 1,
+      "request_sha256": "61a3206abc9f1316eda2e506d13789b33d755ffe21bb0f424fcfaf0416786fa9",
+      "run_id": "replay_c7102de9a5a300c352d6ccde24764275cc2fe14a9a217ac9db3c7aebf34e5616"
+    },
+    {
+      "case_id": "airline14-r1-booking",
+      "repetition": 1,
+      "request_sha256": "2d7258f42a2695f677ac0c4fcc77f42a284303e45968669fc41a514c85c6b613",
+      "run_id": "replay_9ccdc8fe8abf80f0adacd3664434922858f6012d4b2ee5119ea0e579ed538523"
+    },
+    {
+      "case_id": "airline14-r1-booking",
+      "repetition": 1,
+      "request_sha256": "2069e7efb9eab83f1c67a213f241cd844321cdea3fc330cf99defc9b9f245187",
+      "run_id": "replay_b62ccdadfe3a7c27dd59ecc1cdd7abe6a1c6ae222ce0561f7a93262fcb310822"
+    },
+    {
+      "case_id": "airline14-r2-booking",
+      "repetition": 1,
+      "request_sha256": "af7edc117a36283d0cd8c04fc02ac0bfc5d58a69a6bdbf03d59fb8dc0f7c6e79",
+      "run_id": "replay_061479b0755530074e3f786827b096569789f21fcbde9768abd2ef219dcdd3fc"
+    },
+    {
+      "case_id": "airline23-r2-booking",
+      "repetition": 1,
+      "request_sha256": "db9e2efb9c20060309fdcd57e947052f4d01e718e52fcab18bf8b87091426476",
+      "run_id": "replay_722735f8542712580d791416450f045b4d9cfd5a7e3b6ecdab86a732fb30f6f7"
+    },
+    {
+      "case_id": "airline23-r1-first-booking",
+      "repetition": 1,
+      "request_sha256": "a1efc2c8521f101bf0eb70c63d1bc2f97e1ddcf3424670b60b0a1f64188a44eb",
+      "run_id": "replay_7eb09e31ee161c18fb64042c229f0f24685e54b4b997278e1a1647d2424c5763"
+    },
+    {
+      "case_id": "airline23-r1-first-booking",
+      "repetition": 1,
+      "request_sha256": "26415ab1b2995a10c73a56c6694dd8010a81e85622ad648e7978720111d82287",
+      "run_id": "replay_3aad4b7ba103b59852de46e2590c6078df39b67d854569c9b8a6c00448b4993b"
+    },
+    {
+      "case_id": "airline23-r2-booking",
+      "repetition": 1,
+      "request_sha256": "da397dd02b0cea98de24fb81f5aa0576b1039268d7abfeb79e3428e4350ccf02",
+      "run_id": "replay_bcfcd9c485b3b37200f9a63b07a221243f8ca41aae14a7821b6d0d36307118d1"
+    },
+    {
+      "case_id": "airline14-r1-booking",
+      "repetition": 1,
+      "request_sha256": "e5c0a0529c2642060e48f476bc60385a73eda9e2091e75a603c8ac68745fb816",
+      "run_id": "replay_6db595fa1a128527f967fbb812d53fd4935f68a6c7a4f3df195785e0ad940286"
+    },
+    {
+      "case_id": "airline23-r1-first-booking",
+      "repetition": 1,
+      "request_sha256": "3e0af25516676a4701ab7dbbe71b4cc8dbe54e55d866bc85b5e3d792a5842e1d",
+      "run_id": "replay_2c1e9b890c328b856a7d29df9e14769d0655fd656f229e1cb2aa6f026660dc45"
+    },
+    {
+      "case_id": "airline14-r1-booking",
+      "repetition": 1,
+      "request_sha256": "18d86dd50795274deef6c36271add45aaaf9fedfa8794485dbd1e25ba436b8bc",
+      "run_id": "replay_81feb4b3061e7983baf4af15eaa5e40f582d7177152cb0316b4a5fc41aa08628"
+    },
+    {
+      "case_id": "airline14-r2-booking",
+      "repetition": 1,
+      "request_sha256": "1f280d3fd961a73d9eed811332df846f9c2bce6b895f2530b94c8241c283287c",
+      "run_id": "replay_1073f401c2894ea104a14c141e39c025876aa0f1fa6cd3c5fff4a25bc1675ed1"
+    },
+    {
+      "case_id": "airline23-r1-first-booking",
+      "repetition": 1,
+      "request_sha256": "aaaa578a77893ed84c89083dc54e6e4f61e21377ee996eaaf8486691515fe0ee",
+      "run_id": "replay_fd33bf374db3d83f00713aac80c5540081748a2460397c8e12086dcf4d301afc"
+    },
+    {
+      "case_id": "airline14-r2-booking",
+      "repetition": 1,
+      "request_sha256": "4b179887c19d94f5ebee4d6dda4835170a988658027d0e817ec224de8abf77f0",
+      "run_id": "replay_f8662b95667fd2c24e23897582813e85d6966ce98cc556e0dc19e53d873ebf1b"
+    },
+    {
+      "case_id": "airline23-r2-booking",
+      "repetition": 1,
+      "request_sha256": "204e835c9a26b6948575ae32dd8c2b696cbe2e5ea78527acf2ddcd591c44b937",
+      "run_id": "replay_2866c7fc81f0e45563818192071384e5941ea62cb37d7fc00f0e42e023a3e9cb"
+    },
+    {
+      "case_id": "airline14-r2-booking",
+      "repetition": 1,
+      "request_sha256": "253569f8002d8efadeba9b031485f67994a860cb473a71cb06026d5411be47d1",
+      "run_id": "replay_4e769ce2e01757a74274569a66bf6b362780ae4a607e1415cc99f296ecc08bcb"
+    },
+    {
+      "case_id": "airline14-r1-booking",
+      "repetition": 1,
+      "request_sha256": "4e14daff46153a1f5dfd7528801707e0709ffd7ccc5abecb108c3fd31189fc19",
+      "run_id": "replay_03d8a37f98f85def0e8b20719e449b97c9f0a758d113c3cefe38e6384a18526c"
+    },
+    {
+      "case_id": "airline23-r1-first-booking",
+      "repetition": 1,
+      "request_sha256": "69f6e0804c9c6e7bd4a3a0ae4defed57f23b8069aba5a9bddecb098f7a528e9c",
+      "run_id": "replay_a3bf7b94a6c304a6684fba9097daee5cee94646268af95be62f45b331ffbbab4"
+    },
+    {
+      "case_id": "airline23-r1-first-booking",
+      "repetition": 1,
+      "request_sha256": "0409a9105cf470de3b5d4bb68b2d1a5b23445fec141f2af1e0a97aa5877fb984",
+      "run_id": "replay_662e3dd0a96895dfbb87ef88d5542faec068b4b5f8f2d087fed84d59f35f7f5c"
+    },
+    {
+      "case_id": "airline14-r2-booking",
+      "repetition": 1,
+      "request_sha256": "ba07bfaea84ff2d8500deba978fcad7ac7d5165494dff7f8630d24fdb676c132",
+      "run_id": "replay_ddf4b784bf01c96d0b4229a25aec150f010e73ba3d231dce8e2fdead172e04cb"
+    },
+    {
+      "case_id": "airline14-r2-booking",
+      "repetition": 1,
+      "request_sha256": "4976f50a2c440c9a3163399a21413ecc4fe74b1d2d31dfb1adae8579cb8fc507",
+      "run_id": "replay_59d571754ff303f767c78022c8c7ffbebd4bedabfe9b163c55e590f67a4e03cd"
+    },
+    {
+      "case_id": "airline14-r2-booking",
+      "repetition": 1,
+      "request_sha256": "964a9519155fd4bbb5140207a3ead6a3a2eaea370f6c6434dbff6676c4a54402",
+      "run_id": "replay_ce8e97e896e98919544c7a537e14b8776bb4431393ceef87c21984a6d1e96d45"
+    },
+    {
+      "case_id": "airline23-r2-booking",
+      "repetition": 1,
+      "request_sha256": "62dac13914d14eaedf9286353875b95849f2f9cd7511e17be6f856c3f7e5499b",
+      "run_id": "replay_e23b735e05a8fe88f42db1d98e182cc0045bf0cee83cc4d472c3cd41fc581356"
+    },
+    {
+      "case_id": "airline14-r1-booking",
+      "repetition": 1,
+      "request_sha256": "3c81dcfc8dc36c2e2d12ff56009e3e23f9005e0b07edf1eb6079dd8fc6f3b893",
+      "run_id": "replay_49d85b8ff0c42e2f2de14089199c0ed0c51e3b4ae536f633c11d48f7fadb58c9"
+    },
+    {
+      "case_id": "airline14-r2-booking",
+      "repetition": 1,
+      "request_sha256": "5ac3249df8cceb18a688201fa8017897f4d489ce6609c1c67f6361b382e55d4e",
+      "run_id": "replay_986e959b7ad6a6c6804ed44ed2f1d506ba9c3a9101d94b2eba85134d3e005e76"
+    },
+    {
+      "case_id": "airline23-r2-booking",
+      "repetition": 1,
+      "request_sha256": "7311a50e272350e1330664efb7e4f5f35e6ed38c5c31c9e66b51084d9603524f",
+      "run_id": "replay_3360495c1534d6dd191f0fcd5cc2ccb0f51366b484d5e119ca08d9a72a6c1e0c"
+    },
+    {
+      "case_id": "airline23-r2-booking",
+      "repetition": 1,
+      "request_sha256": "09fb6530b8297dbdd1ae6a0edf0718e746c2254d4d62fe36edd6d6c0f5601be7",
+      "run_id": "replay_042c2df00130c3831d98606ed9e12370e9f9994f2f3215383d463c43bf632115"
+    },
+    {
+      "case_id": "airline23-r2-booking",
+      "repetition": 1,
+      "request_sha256": "489ac536606897030553ee2337bb4124e7efa9c1f0e91947748f9940bf893832",
+      "run_id": "replay_12db3088ac03f46e3baf71974011d25d190b99d85d392bbabc7739522ae2ed1a"
+    },
+    {
+      "case_id": "airline23-r2-booking",
+      "repetition": 1,
+      "request_sha256": "2dcaafd17ec1e68f362e9433f1d0867ee2d03d7f77ca80f675ad6681ee3a13e8",
+      "run_id": "replay_1b9c091468ff798a620d540f7f92c85ce05ad9a6a26dd70189a6d1745b9d4fa8"
+    },
+    {
+      "case_id": "airline23-r1-first-booking",
+      "repetition": 1,
+      "request_sha256": "951c72c6ce8676827e213e58c85d96c5d55cbdb0eb8ea9f9a5faba3a12bda906",
+      "run_id": "replay_cccb8fc880c61c2887a9928708cd43bcbca4447e0a1532472010062a8f52aba1"
+    },
+    {
+      "case_id": "airline23-r1-first-booking",
+      "repetition": 1,
+      "request_sha256": "768358ad0302144bdc59ccfb28e4cda44447d2a1481428b82d24921d45545cf1",
+      "run_id": "replay_d323421914e91e9b5c671393f6d1a1820c59583cdcd04debd51efa1f892987b2"
+    },
+    {
+      "case_id": "airline14-r1-booking",
+      "repetition": 1,
+      "request_sha256": "3f06500dad5b03ac493e4ece0af4ba583eadd583d50b4b8eac35155e91adbe95",
+      "run_id": "replay_d4d9da71beee1525265c7162b4d9c160911735c37087644d5e51999a9e80a7ab"
+    },
+    {
+      "case_id": "airline23-r2-booking",
+      "repetition": 1,
+      "request_sha256": "6a1626544f9ee84546124af1e547c7a10190ad47b6f05a7af7624d7926a562f3",
+      "run_id": "replay_3ac213d16dbe0706c5ac47da26068574a7ef4474f8441c71e410a29ef32ab416"
+    },
+    {
+      "case_id": "airline14-r1-booking",
+      "repetition": 1,
+      "request_sha256": "b02f69bd7956bc8ae9364d874efa6f2f55e68f673037b820b9720e4eceb8a03f",
+      "run_id": "replay_9b31a2dbffca293edabb949180cb18c043e00a000c8167236838aae98536b6a9"
+    },
+    {
+      "case_id": "airline14-r1-booking",
+      "repetition": 1,
+      "request_sha256": "689508131cce3fecb36ee5ad997d6999494c1f41bf70126a23195287a71df525",
+      "run_id": "replay_aa082eebbeaf40f81b2bbfe413bc2dd182ac37305f5bb7648b51d6e98144167e"
+    },
+    {
+      "case_id": "airline23-r1-first-booking",
+      "repetition": 1,
+      "request_sha256": "961408415b3a13c9c6f17b48c191c99dddd6b5d052b306d1621884f9551e3be3",
+      "run_id": "replay_c1a59e7a156c0b961a69a55ade1b062922465d291040765f4a63b8024bee8aae"
+    },
+    {
+      "case_id": "airline23-r1-first-booking",
+      "repetition": 1,
+      "request_sha256": "3e12385a11419a5e4a08ef06b54efeef401d0f351bcd9041e94f101ab4ef5651",
+      "run_id": "replay_1cbfaf95c699dbdbef0d36a0d7c43958371c93838db642e0b8cf65cadd83fdc3"
+    },
+    {
+      "case_id": "airline23-r2-booking",
+      "repetition": 1,
+      "request_sha256": "81e465913e1d0349af42c4d41f97f253d7b7515494c59e4d7b64a4f669a84502",
+      "run_id": "replay_c53ef37cfe13847e6c19c08390a775af52975dfc78e87646d2dac23ef8e1498a"
+    },
+    {
+      "case_id": "airline14-r2-booking",
+      "repetition": 1,
+      "request_sha256": "316e426e3f170485c9d6caee0f551a47aeb980d00d53824472b22fe41f83dccd",
+      "run_id": "replay_9641e147052b4a1625346f881f36c0e48e0e813c5c17c4d3405c3fd1dae7d6b2"
+    },
+    {
+      "case_id": "airline14-r2-booking",
+      "repetition": 1,
+      "request_sha256": "d7394dd00bf2af74c71b070f4163c41897d7a80f886f207c7eca9bfdcbf14656",
+      "run_id": "replay_c0ac9095ce1968a66b0ad7946fd8d842d8c136295561067ab6f914e50ad1f0fd"
+    }
+  ],
+  "groups": 48,
+  "logical_pairing_rows": 160,
+  "reviewer_kind": "one independent analysis agent, with public historical replies visible and official historical outcomes hidden",
+  "role_limits": {
+    "worker": 1,
+    "writer": 0,
+    "user_simulator": 0
+  },
+  "max_reported_cost_usd": 5,
+  "endpoint_precheck": {
+    "model": "openai/gpt-6-luna",
+    "provider_name": "OpenAI",
+    "route": {
+      "allow_fallbacks": false,
+      "only": [
+        "openai"
+      ],
+      "require_parameters": true
+    },
+    "reservation_pricing": {
+      "prompt": 2e-07,
+      "completion": 7.5e-07
+    },
+    "sum_guard_reservations_usd": "0.50852160",
+    "largest_guard_reservation_usd": "0.01139680"
+  },
+  "new_completions_before_lock": 0
+}

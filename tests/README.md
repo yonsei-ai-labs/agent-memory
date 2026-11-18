@@ -1,5 +1,11 @@
 # 검증 자료와 테스트 배치
 
+2026-11-18 [네 조건 배치의 행동 검사](test_written_replay_batch.py) 13개를 포함해 **전체 307개가 504.859초에 통과**했다. 실제 파일 기록자와 모의 HTTP로 빈 작성·공유 입력·반복·중단·비용·정상 응답을 확인한다. 원본 경로를 옮긴 뒤의 재감사, 미완료 journal과 빈 은행 출처 교환의 거부도 검사한다. 별도로 보존된 실제 4개 결정에서 160개 대응 행과 48개 입력을 재구성했다. [검증 기록](../artifacts/analyses/20261118-written-replay-batch-validation.json)
+
+2026-11-18 [고정 기억 한 응답 실행](../docs/development/snapshot-replay-runtime.md)의 새 [행동 검사](test_snapshot_replay.py) 21개를 포함해 **전체 294개가 469.205초에 통과**했다. 실제 기록자·기억 서비스와 모의 HTTP로 입력 동일성·노출·오류/비용·은행 격리·원본 없는 감사·공개 판정 연결을 확인한다. 기본 검사 3종도 통과했다. 전체 회귀 결과와 재검증 근거는 [검증 기록](../artifacts/analyses/20261118-snapshot-replay-runtime-validation.json)에 남겼다. 새 실제 모델 효과 측정은 아니다.
+
+2026-11-17 [작성 기억 비교의 타당성 보완](../docs/development/written-comparison-validity.md) 후 native extra와 고정 checkout이 있는 환경에서 **전체 273개가 443.869초에 통과**했다. [새 행동 검사](test_written_comparison_validity.py) 13개는 결정 선정·공개 근거·완전한 작성 receipt·준비물 재구성·판정의 미확정을 확인한다. 실제 원본의 준비 입력 48개와 대응 행 160개도 기존 renderer와 같았다. [검증 기록](../artifacts/analyses/20261117-written-comparison-validity-validation.json)을 따르며, HTTP는 mock이고 새 모델 효과를 측정한 결과가 아니다. 아래 수치는 이전 검증 이력이다.
+
 2026-11-16 착수한 추가 보완에서 native extra와 고정 checkout이 있는 환경의 **전체 215개가 414.294초에 통과**했다. 모든 모델 경로는 mock HTTP다. 직전 197개·417.496초, 182개·488.026초, 172개·373.041초와 아래 수치는 이전 검증 이력이며 서로 성능 비교에 쓰지 않는다.
 
 [추가 실행 보완](../docs/development/runtime-hardening.md)은 18개 검사를 더했다. writer 추론 필드 재입력·추가 문맥·비용 불일치·중복 ID의 회귀 4개를 이전 `1e59371` worktree에서도 다시 재현했다. 역할별/입력 한도, worker 중단 뒤의 DB 진단과 user 한도의 불완전 상태, 잘못된 provider 응답·usage, 비유한 비용 설정, 실제 Git의 clean/dirty 동결 검사도 확인한다. [근거](../artifacts/analyses/20261116-runtime-hardening-validation.json)를 따른다.

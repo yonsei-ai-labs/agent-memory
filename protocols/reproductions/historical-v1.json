@@ -250,6 +250,47 @@
           "log_sha256": "0a883dc7709586e54438b4d9fdc392fbe204576baaa6c223dcf4c29c71478885"
         }
       ]
+    },
+    "written_replay_48": {
+      "reproduction_commit": "c3b5978addc5f2905f5b672b6593bb7918bb5958",
+      "implementation_commit": "b1779825aa28e1ae19ac325dc0e1ce77e6ff3feb",
+      "protocol_lock_ref": {
+        "path": "artifacts/pilots/20261118-written-replay-48-reproduction-lock.json",
+        "sha256": "ca6c264ebed2a98c28be691e06d929b23f9edf5bbf7afe87388de5d7eff74283"
+      },
+      "review_script_ref": {
+        "path": "scripts/review_written_replay_48.py",
+        "sha256": "6a96c7b3cfbfa631511ebf50b815fabd333fcaf5cbd5b76f78502abb88fd3499"
+      },
+      "environment": {
+        "lock_ref": {
+          "path": "uv.lock",
+          "sha256": "b87ef58cf24c2e6d1ba07ed896676e31ecfb858b3840ef1bc5faf0c334ec62a6"
+        },
+        "project_ref": {
+          "path": "pyproject.toml",
+          "sha256": "eacca6269ebd090c7c4c2c52c7a0379ad73670a25d34bc711a67a60c1584bf0d"
+        },
+        "python_version": "3.12",
+        "extras": []
+      },
+      "expected_outputs": [
+        {
+          "path": "artifacts/pilots/20261118-written-replay-48-results.json",
+          "sha256": "80a14d8d9160923f5cfe2c37ae104542e30b830015a7ef9b18a64dcc14e8dcc6"
+        },
+        {
+          "path": "artifacts/analyses/20261118-written-replay-48-reply-annotations.json",
+          "sha256": "457ec923cd13104de51689aabbd68330946b74e28e77725e546e495cffb8ca1e"
+        }
+      ],
+      "inputs": [
+        {
+          "kind": "run",
+          "path": "runs/tau2-written-replay-48-luna-01",
+          "log_sha256": "8d46e144f4ae8992f255d5f78d41459b6de67100059da9ea54703683713eeb53"
+        }
+      ]
     }
   }
 }

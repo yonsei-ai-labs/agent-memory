@@ -1,0 +1,514 @@
+{
+  "format": "written-replay-48-observation/v1",
+  "raw_log_sha256": "8d46e144f4ae8992f255d5f78d41459b6de67100059da9ea54703683713eeb53",
+  "protocol_lock_ref": {
+    "path": "artifacts/pilots/20261118-written-replay-48-protocol.json",
+    "sha256": "734b24814e9c640106f2ca632b413425a5143a749c530119754451efc05f918b"
+  },
+  "batch": {
+    "format": "agent-memory-written-replay-batch-audit/v1",
+    "experiment_id": "batch_7053ee3d60e047169654b5b1c8cd4014",
+    "status": "completed",
+    "profile_sha256": "2ef3d1e79078f01a14fb65ef5776035b54a43789ff8482ed460c1c95962714b8",
+    "preparation_sha256": "be612f00aa8622c2c265747c464a0848d1972240f77c330194bc177e8593a2b2",
+    "cases": 4,
+    "writer_allocations": 10,
+    "empty_writer_allocations": 1,
+    "input_snapshots": 13,
+    "logical_rows_per_repetition": 160,
+    "distinct_calls_per_repetition": 48,
+    "groups_per_case": {
+      "airline14-r1-booking": 12,
+      "airline14-r2-booking": 12,
+      "airline23-r1-first-booking": 12,
+      "airline23-r2-booking": 12
+    },
+    "input_bytes": {
+      "max": 46360,
+      "min": 36807
+    },
+    "groups_by_logical_row_count": {
+      "1": 36,
+      "10": 8,
+      "11": 4
+    },
+    "source_model_seed_by_case": {
+      "airline14-r2-booking": 1,
+      "airline14-r1-booking": 0,
+      "airline23-r2-booking": 1,
+      "airline23-r1-first-booking": 0
+    },
+    "planned_calls": 48,
+    "unresolved_fields": [],
+    "historical_writing_usage": {
+      "requests": 19,
+      "reported_cost_usd_decimal": "0.008262950",
+      "unknown_cost_requests": 0
+    },
+    "replay_model_requests": 48,
+    "submitted_requests": 48,
+    "observed_replies": 48,
+    "unknown_cost_requests": 0,
+    "reported_replay_cost_usd_decimal": "0.046753260",
+    "skipped_inputs": 0,
+    "errors": 0,
+    "stop_reason": null,
+    "official_scores_computed": false,
+    "business_tools_executed": false,
+    "policy_effect_estimated": false,
+    "skipped_logical_rows": 0,
+    "screens_by_distinct_response": {
+      "target_checks_passed": 23,
+      "no_target_write": 11,
+      "unresolved_target_checks": 12,
+      "target_violation_detected": 2
+    }
+  },
+  "usage": {
+    "tokens": {
+      "prompt_tokens": 461772,
+      "completion_tokens": 15776,
+      "total_tokens": 477548,
+      "reported_reasoning_tokens": 5558
+    },
+    "returned_models": {
+      "openai/gpt-6-luna": 48
+    },
+    "returned_providers": {
+      "OpenAI": 48
+    },
+    "memory_exposure": {
+      "submitted_with_nonempty_snapshot": 44,
+      "submitted_with_empty_snapshot": 4,
+      "included_fields": {
+        "title": 44,
+        "body": 44
+      }
+    }
+  },
+  "case_arms": {
+    "airline14-r2-booking": {
+      "empty": {
+        "writer_allocation_links": 10,
+        "distinct_inputs": 1,
+        "response_status": {
+          "response": 1
+        },
+        "certificates": {
+          "within_public_rule": 1
+        },
+        "baggage": {
+          "public_quantity_unresolved": 1
+        },
+        "observed_booking_arguments": {
+          "certificate_count": {
+            "1": 1
+          },
+          "total_baggages": {
+            "6": 1
+          }
+        },
+        "public_actions": {
+          "booking_proposal": 1
+        },
+        "explicit_bag_quantity_questions": 0
+      },
+      "generic": {
+        "writer_allocation_links": 10,
+        "distinct_inputs": 1,
+        "response_status": {
+          "response": 1
+        },
+        "certificates": {
+          "within_public_rule": 1
+        },
+        "baggage": {
+          "public_quantity_unresolved": 1
+        },
+        "observed_booking_arguments": {
+          "certificate_count": {
+            "1": 1
+          },
+          "total_baggages": {
+            "0": 1
+          }
+        },
+        "public_actions": {
+          "booking_proposal": 1
+        },
+        "explicit_bag_quantity_questions": 0
+      },
+      "model_written": {
+        "writer_allocation_links": 10,
+        "distinct_inputs": 10,
+        "response_status": {
+          "response": 10
+        },
+        "certificates": {
+          "within_public_rule": 10
+        },
+        "baggage": {
+          "public_quantity_unresolved": 10
+        },
+        "observed_booking_arguments": {
+          "certificate_count": {
+            "1": 10
+          },
+          "total_baggages": {
+            "6": 9,
+            "0": 1
+          }
+        },
+        "public_actions": {
+          "booking_proposal": 10
+        },
+        "explicit_bag_quantity_questions": 0
+      },
+      "researcher": {
+        "writer_allocation_links": 10,
+        "distinct_inputs": 1,
+        "response_status": {
+          "response": 1
+        },
+        "certificates": {
+          "within_public_rule": 1
+        },
+        "baggage": {
+          "public_quantity_unresolved": 1
+        },
+        "observed_booking_arguments": {
+          "certificate_count": {
+            "1": 1
+          },
+          "total_baggages": {
+            "0": 1
+          }
+        },
+        "public_actions": {
+          "booking_proposal": 1
+        },
+        "explicit_bag_quantity_questions": 0
+      }
+    },
+    "airline14-r1-booking": {
+      "empty": {
+        "writer_allocation_links": 10,
+        "distinct_inputs": 1,
+        "response_status": {
+          "response": 1
+        },
+        "certificates": {
+          "within_public_rule": 1
+        },
+        "baggage": {
+          "within_public_rule": 1
+        },
+        "observed_booking_arguments": {
+          "certificate_count": {
+            "1": 1
+          },
+          "total_baggages": {
+            "0": 1
+          }
+        },
+        "public_actions": {
+          "booking_proposal": 1
+        },
+        "explicit_bag_quantity_questions": 0
+      },
+      "generic": {
+        "writer_allocation_links": 10,
+        "distinct_inputs": 1,
+        "response_status": {
+          "response": 1
+        },
+        "certificates": {
+          "within_public_rule": 1
+        },
+        "baggage": {
+          "within_public_rule": 1
+        },
+        "observed_booking_arguments": {
+          "certificate_count": {
+            "1": 1
+          },
+          "total_baggages": {
+            "0": 1
+          }
+        },
+        "public_actions": {
+          "booking_proposal": 1
+        },
+        "explicit_bag_quantity_questions": 0
+      },
+      "model_written": {
+        "writer_allocation_links": 10,
+        "distinct_inputs": 10,
+        "response_status": {
+          "response": 10
+        },
+        "certificates": {
+          "within_public_rule": 9,
+          "no_booking": 1
+        },
+        "baggage": {
+          "within_public_rule": 9,
+          "no_booking": 1
+        },
+        "observed_booking_arguments": {
+          "certificate_count": {
+            "1": 9
+          },
+          "total_baggages": {
+            "0": 9
+          }
+        },
+        "public_actions": {
+          "booking_proposal": 9,
+          "read_only_lookup": 1
+        },
+        "explicit_bag_quantity_questions": 0
+      },
+      "researcher": {
+        "writer_allocation_links": 10,
+        "distinct_inputs": 1,
+        "response_status": {
+          "response": 1
+        },
+        "certificates": {
+          "within_public_rule": 1
+        },
+        "baggage": {
+          "within_public_rule": 1
+        },
+        "observed_booking_arguments": {
+          "certificate_count": {
+            "1": 1
+          },
+          "total_baggages": {
+            "0": 1
+          }
+        },
+        "public_actions": {
+          "booking_proposal": 1
+        },
+        "explicit_bag_quantity_questions": 0
+      }
+    },
+    "airline23-r2-booking": {
+      "empty": {
+        "writer_allocation_links": 10,
+        "distinct_inputs": 1,
+        "response_status": {
+          "response": 1
+        },
+        "certificates": {
+          "violation": 1
+        },
+        "baggage": {
+          "within_public_rule": 1
+        },
+        "observed_booking_arguments": {
+          "certificate_count": {
+            "3": 1
+          },
+          "total_baggages": {
+            "0": 1
+          }
+        },
+        "public_actions": {
+          "booking_proposal": 1
+        },
+        "payment_review": {
+          "keeps_confirmed_payment": 1
+        }
+      },
+      "generic": {
+        "writer_allocation_links": 10,
+        "distinct_inputs": 1,
+        "response_status": {
+          "response": 1
+        },
+        "certificates": {
+          "violation": 1
+        },
+        "baggage": {
+          "within_public_rule": 1
+        },
+        "observed_booking_arguments": {
+          "certificate_count": {
+            "3": 1
+          },
+          "total_baggages": {
+            "0": 1
+          }
+        },
+        "public_actions": {
+          "booking_proposal": 1
+        },
+        "payment_review": {
+          "keeps_confirmed_payment": 1
+        }
+      },
+      "model_written": {
+        "writer_allocation_links": 10,
+        "distinct_inputs": 10,
+        "response_status": {
+          "response": 10
+        },
+        "certificates": {
+          "violation": 1,
+          "no_booking": 9
+        },
+        "baggage": {
+          "within_public_rule": 1,
+          "no_booking": 9
+        },
+        "observed_booking_arguments": {
+          "certificate_count": {
+            "3": 1
+          },
+          "total_baggages": {
+            "0": 1
+          }
+        },
+        "public_actions": {
+          "booking_proposal": 1,
+          "clarification_or_approval": 9
+        },
+        "payment_review": {
+          "keeps_confirmed_payment": 1,
+          "requests_new_approval": 9
+        }
+      },
+      "researcher": {
+        "writer_allocation_links": 10,
+        "distinct_inputs": 1,
+        "response_status": {
+          "response": 1
+        },
+        "certificates": {
+          "no_booking": 1
+        },
+        "baggage": {
+          "no_booking": 1
+        },
+        "observed_booking_arguments": {
+          "certificate_count": {},
+          "total_baggages": {}
+        },
+        "public_actions": {
+          "clarification_or_approval": 1
+        },
+        "payment_review": {
+          "requests_new_approval": 1
+        }
+      }
+    },
+    "airline23-r1-first-booking": {
+      "empty": {
+        "writer_allocation_links": 10,
+        "distinct_inputs": 1,
+        "response_status": {
+          "response": 1
+        },
+        "certificates": {
+          "within_public_rule": 1
+        },
+        "baggage": {
+          "within_public_rule": 1
+        },
+        "observed_booking_arguments": {
+          "certificate_count": {
+            "1": 1
+          },
+          "total_baggages": {
+            "0": 1
+          }
+        },
+        "public_actions": {
+          "booking_proposal": 1
+        }
+      },
+      "generic": {
+        "writer_allocation_links": 10,
+        "distinct_inputs": 1,
+        "response_status": {
+          "response": 1
+        },
+        "certificates": {
+          "within_public_rule": 1
+        },
+        "baggage": {
+          "within_public_rule": 1
+        },
+        "observed_booking_arguments": {
+          "certificate_count": {
+            "1": 1
+          },
+          "total_baggages": {
+            "0": 1
+          }
+        },
+        "public_actions": {
+          "booking_proposal": 1
+        }
+      },
+      "model_written": {
+        "writer_allocation_links": 10,
+        "distinct_inputs": 10,
+        "response_status": {
+          "response": 10
+        },
+        "certificates": {
+          "within_public_rule": 10
+        },
+        "baggage": {
+          "within_public_rule": 10
+        },
+        "observed_booking_arguments": {
+          "certificate_count": {
+            "1": 10
+          },
+          "total_baggages": {
+            "0": 10
+          }
+        },
+        "public_actions": {
+          "booking_proposal": 10
+        }
+      },
+      "researcher": {
+        "writer_allocation_links": 10,
+        "distinct_inputs": 1,
+        "response_status": {
+          "response": 1
+        },
+        "certificates": {
+          "within_public_rule": 1
+        },
+        "baggage": {
+          "within_public_rule": 1
+        },
+        "observed_booking_arguments": {
+          "certificate_count": {
+            "1": 1
+          },
+          "total_baggages": {
+            "0": 1
+          }
+        },
+        "public_actions": {
+          "booking_proposal": 1
+        }
+      }
+    }
+  },
+  "public_packet_sha256": "e1a499a8c028b9003fad3072b2108e5dd0249abc13c94a79c38965eb9ea91680",
+  "public_responses_reviewed": 48,
+  "public_review": {
+    "reviewer": "blind_reply_reviewer (single analysis agent)",
+    "condition_assignments_visible": false,
+    "annotations_sha256": "7dafee34260079905a4e3cc7b7b3396c030c41a5e7e472600a4128a50198583c"
+  }
+}

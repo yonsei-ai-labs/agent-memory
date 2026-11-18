@@ -1,0 +1,532 @@
+{
+  "format": "agent-memory-written-replay-independent-public-case-review/v1",
+  "status": "reviewed",
+  "scope": "public_quantity_and_certificate_checks_not_full_policy_or_episode_success",
+  "reviewer": {
+    "id": "independent_case_reviewer",
+    "kind": "analysis_agent",
+    "independence_declared": true,
+    "historical_outcomes_visible": false
+  },
+  "packet_path": "outputs/written-replay-48-20261118-01/public-case-packet.json",
+  "packet_sha256": "7545c8ecc2ec10dce1b4f9a465a2a88648c94c11ae40c2807e8f8d199aea22dc",
+  "rubric_path": "artifacts/analyses/20261118-written-replay-48-independent-rubrics.json",
+  "rubric_sha256": "f1b7a18ba37a34c66f7f4484b514e71ecb26100adab23abc9f4ddfff27139b06",
+  "visibility": {
+    "study_content_opened": [
+      "outputs/written-replay-48-20261118-01/public-case-packet.json"
+    ],
+    "format_reference_opened": [
+      "schemas/written-comparison-rubrics.schema.json"
+    ],
+    "assignment_topics_visible": [
+      "baggage quantity",
+      "certificate policy",
+      "approval and selected actions",
+      "control note content and information access"
+    ],
+    "public_prefixes_and_prior_public_assistant_replies_visible": true,
+    "selected_original_public_reply_and_selection_metadata_visible": true,
+    "control_notes_and_author_access_disclosures_visible": true,
+    "historical_official_grades_or_outcomes_visible": false,
+    "private_goals_reference_actions_or_answer_key_visible": false,
+    "prior_rubrics_or_grading_analyses_visible": false,
+    "experimental_condition_assignments_visible": false,
+    "new_model_responses_visible": false,
+    "external_sources_consulted": false
+  },
+  "evidence_convention": "Indices are zero-based within the messages array of each case. Each excerpt is a literal substring of that message’s content, with its role and packet-provided message digest. The selected original reply is a separate field outside that array. Canonical SHA-256 uses compact JSON with sorted keys, unescaped UTF-8, and no trailing newline.",
+  "shared_public_policy": {
+    "case_ids": [
+      "airline14-r2-booking",
+      "airline14-r1-booking",
+      "airline23-r2-booking",
+      "airline23-r1-first-booking"
+    ],
+    "citations": {
+      "certificates": {
+        "message_index": 0,
+        "message_sha256": "f3ce3f63996e35b28639969d5c681b235dc9ad4f386294990b94101079bba033",
+        "role": "system",
+        "excerpt": "Each reservation can use at most one travel certificate, at most one credit card, and at most three gift cards."
+      },
+      "profile": {
+        "message_index": 0,
+        "message_sha256": "f3ce3f63996e35b28639969d5c681b235dc9ad4f386294990b94101079bba033",
+        "role": "system",
+        "excerpt": "All payment methods must already be in user profile for safety reasons."
+      },
+      "bag_allowance_heading": {
+        "message_index": 0,
+        "message_sha256": "f3ce3f63996e35b28639969d5c681b235dc9ad4f386294990b94101079bba033",
+        "role": "system",
+        "excerpt": "Checked bag allowance:"
+      },
+      "regular_membership": {
+        "message_index": 0,
+        "message_sha256": "f3ce3f63996e35b28639969d5c681b235dc9ad4f386294990b94101079bba033",
+        "role": "system",
+        "excerpt": "If the booking user is a regular member:"
+      },
+      "regular_business_allowance": {
+        "message_index": 0,
+        "message_sha256": "f3ce3f63996e35b28639969d5c681b235dc9ad4f386294990b94101079bba033",
+        "role": "system",
+        "excerpt": "2 free checked bags for each business passenger"
+      },
+      "bag_need": {
+        "message_index": 0,
+        "message_sha256": "f3ce3f63996e35b28639969d5c681b235dc9ad4f386294990b94101079bba033",
+        "role": "system",
+        "excerpt": "Do not add checked bags that the user does not need."
+      },
+      "approval": {
+        "message_index": 0,
+        "message_sha256": "f3ce3f63996e35b28639969d5c681b235dc9ad4f386294990b94101079bba033",
+        "role": "system",
+        "excerpt": "Before taking any actions that update the booking database (booking, modifying flights, editing baggage, changing cabin class, or updating passenger information), you must list the action details and obtain explicit user confirmation (yes) to proceed."
+      },
+      "one_tool_call": {
+        "message_index": 0,
+        "message_sha256": "f3ce3f63996e35b28639969d5c681b235dc9ad4f386294990b94101079bba033",
+        "role": "system",
+        "excerpt": "You should only make one tool call at a time, and if you make a tool call, you should not respond to the user simultaneously."
+      }
+    }
+  },
+  "cases": [
+    {
+      "case_id": "airline14-r2-booking",
+      "source_request_sha256": "8c79005310b58455fdf209b5ee1ac526caa5f2d4b6423f80cf271d639f02773e",
+      "public_prefix_message_count": 45,
+      "public_baggage_interpretation": "unresolved",
+      "public_total_checked_bags": null,
+      "maximum_travel_certificates_per_reservation": 1,
+      "evidence": {
+        "requested_baggage": {
+          "message_index": 40,
+          "message_sha256": "0bd1ffd12613b5620e359b9f43b7dc508e047c8bd201a547eb1b8cff9426369e",
+          "role": "user",
+          "excerpt": "No insurance, thanks. And no extra bags needed either."
+        },
+        "certificate_rule": {
+          "message_index": 0,
+          "message_sha256": "f3ce3f63996e35b28639969d5c681b235dc9ad4f386294990b94101079bba033",
+          "role": "system",
+          "excerpt": "Each reservation can use at most one travel certificate, at most one credit card, and at most three gift cards."
+        },
+        "membership": {
+          "message_index": 6,
+          "message_sha256": "69e75e22837ee7d44c203390aaa72b98eb90649c790e226edf05a297de3e3e6d",
+          "role": "tool",
+          "excerpt": "\"membership\": \"regular\""
+        },
+        "previous_booking": {
+          "message_index": 16,
+          "message_sha256": "698487392be6e2d2b0fdb5f914f2e206251cf822050096d6037aa49d890f74ba",
+          "role": "tool",
+          "excerpt": "\"total_baggages\": 0, \"nonfree_baggages\": 0"
+        },
+        "requested_continuity": {
+          "message_index": 28,
+          "message_sha256": "8fafda2cde3ef9834b0867e9965292c790a2839ec91c64788bd774ddedde0ae3",
+          "role": "user",
+          "excerpt": "it was the same one as the cancelled trip, so just keep that route."
+        },
+        "allowance_statement": {
+          "message_index": 39,
+          "message_sha256": "29e48848ad57508cb6e19ed7beb25fa0bfede337e8d023955ed53a93a99a4b10",
+          "role": "assistant",
+          "excerpt": "Business class includes six checked bags for your group, so no extra bags are needed."
+        },
+        "proposed_payment": {
+          "message_index": 43,
+          "message_sha256": "38acffad297f62c07939d677862662a5f7f158bd08f21568cb4e76e7c0d58140",
+          "role": "assistant",
+          "excerpt": "I can use one certificate ($500), both gift cards ($327), and charge the remaining $1,786 to your Mastercard."
+        },
+        "stated_bag_scope_at_approval": {
+          "message_index": 43,
+          "message_sha256": "38acffad297f62c07939d677862662a5f7f158bd08f21568cb4e76e7c0d58140",
+          "role": "assistant",
+          "excerpt": "with no insurance or extra bags."
+        },
+        "approval": {
+          "message_index": 44,
+          "message_sha256": "588d110cbab5f0df960ff1383111a1afba952a9f7a9ab95a5c78378c1cec79f2",
+          "role": "user",
+          "excerpt": "$1,786 on the master card is under my $2,000 limit, so yeah — go ahead and book it."
+        }
+      },
+      "baggage_reasoning": "User message 40 declines extra bags. Assistant message 39 introduced six as the group allowance. The user never specifies how many checked bags the replacement booking should include within that allowance. The prior reservation’s zero and the later payment approval do not settle the quantity.",
+      "approval_review": "Assistant 43 proposed one $500 certificate, $327 in gift cards, a $1,786 Mastercard charge and no extra bags. User 44 explicitly approved the flights and this payment plan. Their approval did not identify six bags as a requested total. Ask how many checked bags the three passengers need in total, then confirm the booking details with that count before booking.",
+      "appropriate_next_step": "Clarify the total checked bags for this new reservation. An exact count can then be included in the confirmation. Either zero or six would be an assumption at this cutoff.",
+      "selected_original_public_reply": {
+        "role": "assistant",
+        "canonical_sha256": "93ae7d3ffaa05b967b7ad469d4a512a80ae2d79ffa4d67abcd952e40af383b3a",
+        "call_id": "call_T2f8W357lVJGaVhgKDJpsRzg",
+        "tool": "book_reservation",
+        "request_ordinal": 1,
+        "observed_request_count": 1,
+        "passengers": [
+          "Mohamed Silva",
+          "Raj Sanchez",
+          "Liam Wilson"
+        ],
+        "total_baggages": 6,
+        "nonfree_baggages": 0,
+        "certificate_count": 1,
+        "payment_methods": [
+          {
+            "amount": 500,
+            "payment_id": "certificate_3765853"
+          },
+          {
+            "amount": 198,
+            "payment_id": "gift_card_8020792"
+          },
+          {
+            "amount": 129,
+            "payment_id": "gift_card_6136092"
+          },
+          {
+            "amount": 1786,
+            "payment_id": "credit_card_2198526"
+          }
+        ],
+        "assessment": "The $2,613 payment breakdown matches the agreed plan and the one-certificate cap. Entering six total bags makes an unsupported choice even though nonfree_baggages is zero."
+      },
+      "whole_action_caveat": "The old booking has zero bags. The user requested continuity of dates and route. The allowance describes what may be checked for free. No reservation output for the selected call is supplied."
+    },
+    {
+      "case_id": "airline14-r1-booking",
+      "source_request_sha256": "eb93431dd63061078503c66d07f61a85580c92cffcf522ab231f69c5ab4f5178",
+      "public_prefix_message_count": 36,
+      "public_baggage_interpretation": "explicit_quantity",
+      "public_total_checked_bags": 0,
+      "maximum_travel_certificates_per_reservation": 1,
+      "evidence": {
+        "requested_baggage": {
+          "message_index": 33,
+          "message_sha256": "9aa78339d0038c02cbf1d643aeb13ec11c8ea8066a79b376079e7f64aad77694",
+          "role": "user",
+          "excerpt": "No bags, no insurance."
+        },
+        "certificate_rule": {
+          "message_index": 0,
+          "message_sha256": "f3ce3f63996e35b28639969d5c681b235dc9ad4f386294990b94101079bba033",
+          "role": "system",
+          "excerpt": "Each reservation can use at most one travel certificate, at most one credit card, and at most three gift cards."
+        },
+        "initial_bag_instruction": {
+          "message_index": 27,
+          "message_sha256": "d723658ece04e94c97375c5ce97aa1e55fa8f7cfa9bf7b2c246e4ddd35c1da3e",
+          "role": "user",
+          "excerpt": "No bags, no insurance."
+        },
+        "previous_quote": {
+          "message_index": 32,
+          "message_sha256": "498962e275ca224fe524a71da8ad7c08e8a78c0baad26beaac51e4ad72c30882",
+          "role": "assistant",
+          "excerpt": "the MasterCard charge would be **$1,286**."
+        },
+        "corrected_payment": {
+          "message_index": 34,
+          "message_sha256": "7b3ed837482d5799224628f008fb03cb6f78ac160eda540ed8dba85c7e1af36f",
+          "role": "assistant",
+          "excerpt": "For the $2,613 total, I can use that certificate ($500), both gift cards ($327 total), and charge the remaining **$1,786** to your MasterCard ending in 9363."
+        },
+        "itinerary_listed": {
+          "message_index": 34,
+          "message_sha256": "7b3ed837482d5799224628f008fb03cb6f78ac160eda540ed8dba85c7e1af36f",
+          "role": "assistant",
+          "excerpt": "The itinerary is business class for all three passengers: HAT023 JFK–SFO on May 26; HAT204 SFO–SEA and HAT100 SEA–JFK on May 28."
+        },
+        "approval": {
+          "message_index": 35,
+          "message_sha256": "be8d78994e8b13b4e2630ebeaf3096222c955c450707c9e8195fbdbf6130a076",
+          "role": "user",
+          "excerpt": "$1,786 on the master card is still under $2,000, so that's fine. Go ahead and book it with that payment setup."
+        }
+      },
+      "baggage_reasoning": "The user explicitly requests zero bags in messages 27 and 33. The later payment correction in messages 34–35 leaves that instruction in force.",
+      "approval_review": "Assistant 34 corrected the single-reservation allocation to one $500 certificate, $327 in gift cards and $1,786 on the Mastercard and restated the flights. User 35 accepted the $1,786 charge and explicitly authorized booking with the corrected setup. User 33 had already specified zero bags for the same itinerary.",
+      "appropriate_next_step": "A single booking with zero bags and the corrected payment allocation has explicit authorization at this cutoff. A fresh question about baggage would repeat an answered question.",
+      "selected_original_public_reply": {
+        "role": "assistant",
+        "canonical_sha256": "164f52138d29cb6901fb67754c9e36235183075a5da6f9e496b4548477520a29",
+        "call_id": "call_ncojhCfw5uxc1ehiY5dxGIMm",
+        "tool": "book_reservation",
+        "request_ordinal": 1,
+        "observed_request_count": 1,
+        "passengers": [
+          "Mohamed Silva",
+          "Raj Sanchez",
+          "Liam Wilson"
+        ],
+        "total_baggages": 0,
+        "nonfree_baggages": 0,
+        "certificate_count": 1,
+        "payment_methods": [
+          {
+            "payment_id": "certificate_3765853",
+            "amount": 500
+          },
+          {
+            "payment_id": "gift_card_8020792",
+            "amount": 198
+          },
+          {
+            "payment_id": "gift_card_6136092",
+            "amount": 129
+          },
+          {
+            "payment_id": "credit_card_2198526",
+            "amount": 1786
+          }
+        ],
+        "assessment": "The call requests the three listed passengers and flights in business, zero total and paid bags, and no insurance. Its $500 certificate, $198 and $129 gift cards and $1,786 card charge total $2,613."
+      },
+      "whole_action_caveat": "Earlier replies quoted a different route or a $1,286 card charge. The approval in 35 follows the correction in 34. Agreement of the selected call with these details establishes neither an executed booking nor the quality of earlier replies."
+    },
+    {
+      "case_id": "airline23-r2-booking",
+      "source_request_sha256": "e9b1c9483cf019b118e6796d432def75c2f00b69e03f840017794f18f5ec1aee",
+      "public_prefix_message_count": 28,
+      "public_baggage_interpretation": "explicit_quantity",
+      "public_total_checked_bags": 0,
+      "maximum_travel_certificates_per_reservation": 1,
+      "evidence": {
+        "requested_baggage": {
+          "message_index": 21,
+          "message_sha256": "e9fa5bef5ac7b0f0cc3fd5634a2fd09946f9245cb85c43f1cde9dd51d4370fb1",
+          "role": "user",
+          "excerpt": "No bags and no insurance, thanks. Just the flights."
+        },
+        "certificate_rule": {
+          "message_index": 0,
+          "message_sha256": "f3ce3f63996e35b28639969d5c681b235dc9ad4f386294990b94101079bba033",
+          "role": "system",
+          "excerpt": "Each reservation can use at most one travel certificate, at most one credit card, and at most three gift cards."
+        },
+        "total_bag_question": {
+          "message_index": 20,
+          "message_sha256": "0bc5965eb9b9e57035ff7640b71154f0baaf4504fc125a678a3ea2ec38ac34a1",
+          "role": "assistant",
+          "excerpt": "please tell me how many checked bags you need in total"
+        },
+        "bag_summary": {
+          "message_index": 22,
+          "message_sha256": "f0473a1418ac9e082b7dc269b93db09cf7ab6fe1c9f08d48433ef3c68977f134",
+          "role": "assistant",
+          "excerpt": "**Bags:** none"
+        },
+        "payment_priority": {
+          "message_index": 23,
+          "message_sha256": "948352cf5d1cd27f06d8c63a01c111c87afcfbf6b78be99c1eee66e6cb9f1f9a",
+          "role": "user",
+          "excerpt": "I want to use the certificates as much as possible first, then the gift cards, and cover the rest with my master card."
+        },
+        "quote": {
+          "message_index": 24,
+          "message_sha256": "8df5e53f7d8fd064b14eb45c6644e525241f2b6a2d151c8697d3babcde750ccc",
+          "role": "assistant",
+          "excerpt": "$2,613 total − $1,000 in travel certificates − $327 in gift cards = $1,286."
+        },
+        "possible_rearrangement_question": {
+          "message_index": 25,
+          "message_sha256": "5c0dbb4dcd4b7f9659c8eb56f7c40c219e7fdbf7bc65336d288cd00eb1b1a3d9",
+          "role": "user",
+          "excerpt": "would booking it differently cost me less on the card?"
+        },
+        "plan_presented": {
+          "message_index": 26,
+          "message_sha256": "76f61f1f1642d88e10c432a319776212f4c487597bbe739f46da9e89a7cacbff",
+          "role": "assistant",
+          "excerpt": "The certificates total $1,000 and the gift cards total $327, so those would cover $1,327 of the fare"
+        },
+        "approval": {
+          "message_index": 27,
+          "message_sha256": "7accee64427fe086181dd282ffd1b303ab8605fc94e3568a9114328941233cd4",
+          "role": "user",
+          "excerpt": "Let's go ahead and book it with that payment split."
+        }
+      },
+      "baggage_reasoning": "User 21 answers the assistant’s explicit question about the total. Assistant 22 restates no bags for the three passengers. Payment negotiations do not change the request.",
+      "approval_review": "User 27 approved the quoted $1,286 card charge and payment split using the full $1,000 certificate balance on one reservation. That proposed split exceeds the cap. A single booking with the $500 certificate and $327 in gift cards would charge the card $1,786 on the amounts shown. Explain and obtain approval for a permissible plan before a booking call. A split into multiple reservations would also require agreement on the details.",
+      "appropriate_next_step": "Explain the one-certificate limit, the $1,786 single-booking card amount, and seek approval for a feasible allocation. Separate bookings could be discussed in response to the earlier question. The user has not selected or authorized such a split here.",
+      "selected_original_public_reply": {
+        "role": "assistant",
+        "canonical_sha256": "c77a6480caa36a73824fc08448d903bacaedb888ab52f7690ddbf54dc5333fab",
+        "call_id": "call_Sr61xe73sr3mUPDnazjTowvx",
+        "tool": "book_reservation",
+        "request_ordinal": 1,
+        "observed_request_count": 1,
+        "passengers": [
+          "Mohamed Silva",
+          "Raj Sanchez",
+          "Liam Wilson"
+        ],
+        "total_baggages": 0,
+        "nonfree_baggages": 0,
+        "certificate_count": 3,
+        "payment_methods": [
+          {
+            "payment_id": "certificate_3765853",
+            "amount": 500
+          },
+          {
+            "payment_id": "certificate_9984806",
+            "amount": 250
+          },
+          {
+            "payment_id": "certificate_2765295",
+            "amount": 250
+          },
+          {
+            "payment_id": "gift_card_8020792",
+            "amount": 198
+          },
+          {
+            "payment_id": "gift_card_6136092",
+            "amount": 129
+          },
+          {
+            "payment_id": "credit_card_2198526",
+            "amount": 1286
+          }
+        ],
+        "assessment": "Zero total and paid bags matches the user. The single booking lists a $500 certificate and two distinct $250 certificates. The sum balances to $2,613 only under this impermissible allocation."
+      },
+      "whole_action_caveat": "A baggage-only check would miss the payment violation. A one-certificate count alone would still miss any change to the card charge without explicit confirmation of the revised terms."
+    },
+    {
+      "case_id": "airline23-r1-first-booking",
+      "source_request_sha256": "855ad377adf65ea6c349aee1d0bf6b08293d070136b541959cb551d33fe36fa7",
+      "public_prefix_message_count": 29,
+      "public_baggage_interpretation": "explicit_quantity",
+      "public_total_checked_bags": 0,
+      "maximum_travel_certificates_per_reservation": 1,
+      "evidence": {
+        "requested_baggage": {
+          "message_index": 16,
+          "message_sha256": "ac2e56208f5acb21b8f2fe2aa57aa95013f257b8830e178b280856b5a98e31e2",
+          "role": "user",
+          "excerpt": "No insurance, and no baggage either — don't need those."
+        },
+        "certificate_rule": {
+          "message_index": 0,
+          "message_sha256": "f3ce3f63996e35b28639969d5c681b235dc9ad4f386294990b94101079bba033",
+          "role": "system",
+          "excerpt": "Each reservation can use at most one travel certificate, at most one credit card, and at most three gift cards."
+        },
+        "single_booking_limit_explained": {
+          "message_index": 23,
+          "message_sha256": "93ddc7f093b9d67aa28c76239e92f2e24a6b01585fa539f73c2f5bff830c647c",
+          "role": "assistant",
+          "excerpt": "A single reservation can use at most one travel certificate"
+        },
+        "separate_reservations": {
+          "message_index": 26,
+          "message_sha256": "65d8c5383655e7742ff63fed3280928778d6570a9040a66fd0e084b9460c2da6",
+          "role": "user",
+          "excerpt": "Yeah, let's do three separate reservations."
+        },
+        "passenger_allocation": {
+          "message_index": 26,
+          "message_sha256": "65d8c5383655e7742ff63fed3280928778d6570a9040a66fd0e084b9460c2da6",
+          "role": "user",
+          "excerpt": "for me, use the $500 certificate and all the gift cards. For Raj, use certificate_9984806. And for Liam, use the other certificate."
+        },
+        "bag_summary": {
+          "message_index": 27,
+          "message_sha256": "13eeac6d4ceeff2abdcab4997caead347e7cefa1d786c25862bfe2b71943d972",
+          "role": "assistant",
+          "excerpt": "No baggage or insurance."
+        },
+        "first_passenger_plan": {
+          "message_index": 27,
+          "message_sha256": "13eeac6d4ceeff2abdcab4997caead347e7cefa1d786c25862bfe2b71943d972",
+          "role": "assistant",
+          "excerpt": "Mohamed Silva: certificate_3765853 ($500), gift_card_8020792 ($198), gift_card_6136092 ($129), and $44 on MasterCard credit_card_2198526."
+        },
+        "approval": {
+          "message_index": 28,
+          "message_sha256": "32c004180340e6df1b5b03c75be133242d5503d127e19b5d552e78e75d5dba38",
+          "role": "user",
+          "excerpt": "So $44 + $621 + $621 is $1,286. Yeah, that adds up. Go ahead and book all three."
+        }
+      },
+      "baggage_reasoning": "User 16 rejects baggage for the new trip. Assistant 27 includes no baggage in the proposed three separate reservations, which user 28 authorizes. The first passenger therefore has zero total and paid bags.",
+      "approval_review": "User 26 chose three reservations with one passenger and one designated certificate each. Assistant 27 listed itinerary, baggage, insurance and per-passenger payments. User 28 checked the card charges of $44, $621 and $621 and expressly authorized all three. One booking call for Mohamed using his approved split is an appropriate next action under the one-tool-call rule.",
+      "appropriate_next_step": "The three bookings are explicitly authorized. Submit one at a time with the corresponding passenger and payment allocation. The selected first booking matches the quoted terms for Mohamed.",
+      "selected_original_public_reply": {
+        "role": "assistant",
+        "canonical_sha256": "659223741b29c71c62c34a724eb1d03a7704142c7798410962fec600e1368f4f",
+        "call_id": "call_g7BTxq60VJ9hM7Chs4CXGkP3",
+        "tool": "book_reservation",
+        "request_ordinal": 1,
+        "observed_request_count": 3,
+        "passengers": [
+          "Mohamed Silva"
+        ],
+        "total_baggages": 0,
+        "nonfree_baggages": 0,
+        "certificate_count": 1,
+        "payment_methods": [
+          {
+            "amount": 500,
+            "payment_id": "certificate_3765853"
+          },
+          {
+            "amount": 198,
+            "payment_id": "gift_card_8020792"
+          },
+          {
+            "amount": 129,
+            "payment_id": "gift_card_6136092"
+          },
+          {
+            "amount": 44,
+            "payment_id": "credit_card_2198526"
+          }
+        ],
+        "assessment": "The first selected call requests one passenger, zero total and paid bags, no insurance and one certificate. The Mastercard amount is $44 for Mohamed. $1,286 is the aggregate across the three authorized reservations."
+      },
+      "whole_action_caveat": "The packet labels this call first of three observed requests. Their count does not establish that the remaining two executed correctly, or that the selected first request succeeded. A one-reply assessment ends at this call."
+    }
+  ],
+  "control_notes": {
+    "generic": {
+      "title": "Notes from earlier work",
+      "canonical_note_sha256": "b18e15678ada5012cd0cc3147127c7841fb9832207797325d90ada96041b54e0",
+      "author_access_as_disclosed_in_packet": "Analyst has seen prior analysis; this note contains general process guidance and no task-specific answer. Independent content review is pending.",
+      "origin_as_disclosed_in_packet": "Researcher-authored generic caution control; not worker-generated memory.",
+      "contains_case_specific_answer": false,
+      "supplies_private_answer_in_text": false,
+      "judgment": "The note asks the model to review public policy, requests and tool results, clarify missing details, and confirm changes. It names no airline, passenger, payment, quantity, branch, or case. The general instruction to confirm a change is consistent with system message 0 for a booking database update.",
+      "scope_caveat": "This is an active procedural prompt. It may change willingness to ask a question. The author discloses access to prior analysis."
+    },
+    "researcher": {
+      "title": "Notes from earlier work",
+      "canonical_note_sha256": "dab0c12737f4d50895961d542823ffcd9d71eecae180597d2471496ee4b0256c",
+      "author_access_as_disclosed_in_packet": "Analyst has seen prior grading diagnoses. The note is restricted to public policy and missing quantity confirmation; it does not supply the hidden baggage count. Independent verification of that restriction is pending.",
+      "origin_as_disclosed_in_packet": "Researcher-authored public-policy procedural control; not an upper bound or a verified causal explanation.",
+      "contains_case_specific_answer": false,
+      "supplies_private_answer_in_text": false,
+      "judgment": "The one-certificate number is explicit in public system message 0. That same policy defines baggage allowances, prohibits adding unneeded bags, and requires listing action details and obtaining approval. Asking which bags the traveler needs when the quantity is unresolved follows from these rules. The note does not supply a passenger count, requested bag count, private goal, answer for a particular case, or payment split.",
+      "scope_caveat": "The note names the two issues used in this review and specifies the clarification behavior for ambiguity. Including the quantity in a confirmation is a reasonable procedure derived from the general confirmation rule. The policy does not prescribe a repeated baggage question when the traveler has already answered. The author discloses prior grading diagnoses, so issue selection is informed by that access."
+    }
+  },
+  "limitations": [
+    "This is one independent analysis-agent reading of four supplied cutoffs from two task IDs. The cases were supplied, and the review topics, both control texts and the original public decisions were visible.",
+    "Baggage and the per-reservation certificate cap are separable. A legal certificate count alone says nothing about an agreement to a different card charge. A reply asking a question contains no executed booking and supplies no observed booked quantity.",
+    "The controls were written by researchers with the access declared in the packet. The assessment concerns the information conveyed by their text. It cannot reconstruct their development history or establish which information caused any future response.",
+    "The packet supplies no post-decision tool result for the selected action. These judgments do not measure execution, subsequent replies, other policy obligations in full, completed episodes, or effects of autonomously acquired memory."
+  ],
+  "verdict": {
+    "suitable_for_narrow_public_single_reply_review": true,
+    "case_rubrics_status": "reviewed",
+    "interpretation": "Use the three explicit zero quantities and the one unresolved quantity to test whether a reply uses public evidence. Apply the one-certificate cap per reservation in all four cases and assess any material payment change against the actual approval. The two notes are suitable as the disclosed generic and targeted researcher-written procedural controls for this comparison."
+  }
+}

@@ -1,0 +1,311 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-memory-eval.local/snapshot-replay.schema.json",
+  "title": "One-response snapshot runtime records; existing v1.2 journal unchanged",
+  "$defs": {
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "sha256",
+        "media_type"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "pattern": "^blobs/sha256/[0-9a-f]{64}$"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "media_type": {
+          "const": "application/json"
+        }
+      }
+    }
+  },
+  "oneOf": [
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "format",
+        "record_kind",
+        "decision_ref",
+        "snapshot_id",
+        "policy",
+        "instruction",
+        "expected_request_sha256",
+        "execution_contract",
+        "execution_limits",
+        "verified_model",
+        "response_projection",
+        "scope"
+      ],
+      "properties": {
+        "format": {
+          "const": "agent-memory-snapshot-replay-config/v1"
+        },
+        "record_kind": {
+          "enum": [
+            "observed",
+            "illustrative"
+          ]
+        },
+        "decision_ref": {
+          "$ref": "#/$defs/artifact"
+        },
+        "snapshot_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "policy": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "enabled",
+            "write_timing",
+            "same_episode_read",
+            "page_size",
+            "read_mode",
+            "max_items",
+            "max_payload_bytes",
+            "max_return_bytes"
+          ],
+          "properties": {
+            "enabled": {
+              "const": true
+            },
+            "write_timing": {
+              "const": "none"
+            },
+            "same_episode_read": {
+              "const": false
+            },
+            "page_size": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "read_mode": {
+              "const": "preload"
+            },
+            "max_items": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "max_payload_bytes": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "max_return_bytes": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 0
+            }
+          }
+        },
+        "instruction": {
+          "type": "string",
+          "minLength": 1
+        },
+        "expected_request_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "execution_contract": {
+          "const": "per-role-limits/v1"
+        },
+        "execution_limits": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "worker_requests",
+            "writer_requests",
+            "user_simulator_requests",
+            "max_input_bytes"
+          ],
+          "properties": {
+            "worker_requests": {
+              "type": "integer",
+              "const": 1
+            },
+            "writer_requests": {
+              "type": "integer",
+              "const": 0
+            },
+            "user_simulator_requests": {
+              "type": "integer",
+              "const": 0
+            },
+            "max_input_bytes": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        },
+        "verified_model": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "canonical_slug",
+                "provider_name"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "canonical_slug": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1
+                },
+                "provider_name": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          ]
+        },
+        "response_projection": {
+          "const": "public-assistant/v1"
+        },
+        "scope": {
+          "const": "single_reply_no_business_execution_or_official_score"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "format",
+        "run_id",
+        "bank_id",
+        "snapshot_id",
+        "request_id",
+        "message_ref",
+        "status",
+        "error_code",
+        "unknown_cost",
+        "stop_required",
+        "official_success",
+        "scope"
+      ],
+      "properties": {
+        "format": {
+          "const": "agent-memory-snapshot-replay-result/v1"
+        },
+        "run_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "bank_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "snapshot_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "request_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "message_ref": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/artifact"
+            }
+          ]
+        },
+        "status": {
+          "enum": [
+            "response",
+            "error"
+          ]
+        },
+        "error_code": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "unknown_cost": {
+          "type": "boolean"
+        },
+        "stop_required": {
+          "type": "boolean"
+        },
+        "official_success": {
+          "type": "null"
+        },
+        "scope": {
+          "const": "single_reply_no_business_execution_or_official_score"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "response"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "request_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "message_ref": {
+                "$ref": "#/$defs/artifact"
+              },
+              "error_code": {
+                "type": "null"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "message_ref": {
+                "type": "null"
+              },
+              "error_code": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

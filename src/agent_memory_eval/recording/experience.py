@@ -1,6 +1,7 @@
 """Small, verifiable capsules of recorded worker inputs, separate from runtime state."""
 
 from contextlib import contextmanager
+from functools import lru_cache
 import fcntl
 import os
 from pathlib import Path
@@ -79,37 +80,62 @@ def _source(root, expected_log_sha256):
 
 def capture_recorded_context(journal, source_root, *, source_run_id, log_sha256, request_id=None):
     """Copy selected evidence, never the complete source blob/state store."""
+    return capture_recorded_contexts(journal, source_root, [(source_run_id, request_id)], log_sha256=log_sha256)[0]
+
+
+def capture_recorded_contexts(journal, source_root, selections, *, log_sha256):
+    """Read the same locked source once for all the selected decisions."""
+    refs = []
     with _source(source_root, log_sha256) as (scan, blobs, data, experiment):
-        start, end, outcome = _closed_run(scan, source_run_id)
-        request, finish = _pair(scan, source_run_id, request_id)
-        request_ref, response_ref = request["payload"]["request_ref"], finish["payload"]["response_ref"]
-        for ref in (request_ref, response_ref, outcome["payload"]["official_artifact_ref"]):
-            if ref is None or journal.blobs.put(blobs.get(ref)) != ref:
-                raise ContractError("Selected source artifact is missing or changed")
-        wire = blobs.get(request_ref)
-        if not wire["messages"] or wire["messages"][0]["role"] != "system":
-            raise ContractError("Source worker context has no leading policy")
-        task_ref = journal.blobs.put(public_text_message(wire["messages"][0]))
-        archive = dict(format="agent-memory-recorded-context/v1", source_path=str(source_root),
-            source_experiment_id=experiment, source_run_id=source_run_id, record_kind=start["record_kind"],
-            source_log_ref=journal.blobs.put(data.decode("utf-8")), source_log_sha256=log_sha256,
-            source_end_event_id=end["event_id"], outcome_event_id=outcome["event_id"],
-            outcome_artifact_ref=outcome["payload"]["official_artifact_ref"],
-            request_event_id=request["event_id"], response_event_id=finish["event_id"],
-            request_ref=request_ref, response_ref=response_ref, task_ref=task_ref)
-        ref = journal.blobs.put(archive)
-        read_recorded_context(journal.blobs, ref)
-        return ref
+        log_ref = journal.blobs.put(data.decode("utf-8"))
+        for source_run_id, request_id in selections:
+            start, end, outcome = _closed_run(scan, source_run_id)
+            request, finish = _pair(scan, source_run_id, request_id)
+            request_ref, response_ref = request["payload"]["request_ref"], finish["payload"]["response_ref"]
+            for ref in (request_ref, response_ref, outcome["payload"]["official_artifact_ref"]):
+                if ref is None or journal.blobs.put(blobs.get(ref)) != ref:
+                    raise ContractError("Selected source artifact is missing or changed")
+            wire = blobs.get(request_ref)
+            if not wire["messages"] or wire["messages"][0]["role"] != "system":
+                raise ContractError("Source worker context has no leading policy")
+            task_ref = journal.blobs.put(public_text_message(wire["messages"][0]))
+            archive = dict(format="agent-memory-recorded-context/v1", source_path=str(source_root),
+                source_experiment_id=experiment, source_run_id=source_run_id, record_kind=start["record_kind"],
+                source_log_ref=log_ref, source_log_sha256=log_sha256,
+                source_end_event_id=end["event_id"], outcome_event_id=outcome["event_id"],
+                outcome_artifact_ref=outcome["payload"]["official_artifact_ref"],
+                request_event_id=request["event_id"], response_event_id=finish["event_id"],
+                request_ref=request_ref, response_ref=response_ref, task_ref=task_ref)
+            ref = journal.blobs.put(archive)
+            _read_recorded_context(journal.blobs, ref, lambda _: scan)
+            refs.append(ref)
+    return refs
 
 
 def read_recorded_context(blobs, ref):
+    return _read_recorded_context(blobs, ref, inspect_journal)
+
+
+class ReplayContextReader:
+    """Reuse one parse of identical log bytes. Every capsule and blob is still hash-checked."""
+
+    def __init__(self):
+        self._inspect = lru_cache(maxsize=1)(inspect_journal)
+
+    def read(self, blobs, ref):
+        value = _read_recorded_context(blobs, ref, self._inspect)
+        # Callers never receive the cached mutable scan.
+        return {key: value[key] for key in ("wire", "archive", "response")}
+
+
+def _read_recorded_context(blobs, ref, inspect):
     value = blobs.get(ref)
     if value["format"] != "agent-memory-recorded-context/v1":
         raise ContractError("Unknown recorded context capsule")
     data = blobs.get(value["source_log_ref"]).encode("utf-8")
     if digest(data) != value["source_log_sha256"]:
         raise ContractError("Archived source log hash differs")
-    scan = inspect_journal(data)
+    scan = inspect(data)
     if scan["tail_bytes"] or scan["pending_requests"] or scan["incomplete_runs"]:
         raise ContractError("Archived source log is incomplete")
     start, end, outcome = _closed_run(scan, value["source_run_id"])

@@ -1,0 +1,107 @@
+{
+  "format": "agent-memory-written-source-calibration/v1",
+  "validation": {
+    "status": "evidence_bindings_verified",
+    "semantic_judgments_verified": false,
+    "independent_adjudication_verified": false,
+    "cases": 4
+  },
+  "packet_sha256": "7545c8ecc2ec10dce1b4f9a465a2a88648c94c11ae40c2807e8f8d199aea22dc",
+  "rubric_sha256": "899a8d3dde5ae60726bbc3636b8123e1d5ae9d7d5d846263d9f2ac1be7fb8676",
+  "scope": "historical_public_reply_calibration_not_new_memory_effect",
+  "new_model_or_catalog_calls": 0,
+  "cases": [
+    {
+      "case_id": "airline14-r2-booking",
+      "result": {
+        "screen_version": "public-booking-checks/v1",
+        "status": "unresolved_target_checks",
+        "target_write_calls": 1,
+        "checks": [
+          {
+            "call_id": "call_T2f8W357lVJGaVhgKDJpsRzg",
+            "total_baggages": 6,
+            "baggage_status": "unresolved_public_quantity",
+            "certificate_count": 1,
+            "certificate_status": "pass"
+          }
+        ],
+        "other_tool_calls": [],
+        "approval_status": "not_automatically_judged",
+        "full_policy_status": "not_automatically_judged",
+        "business_tools_executed": false,
+        "official_success": null,
+        "episode_outcome": "not_measured"
+      }
+    },
+    {
+      "case_id": "airline14-r1-booking",
+      "result": {
+        "screen_version": "public-booking-checks/v1",
+        "status": "target_checks_passed",
+        "target_write_calls": 1,
+        "checks": [
+          {
+            "call_id": "call_ncojhCfw5uxc1ehiY5dxGIMm",
+            "total_baggages": 0,
+            "baggage_status": "pass",
+            "certificate_count": 1,
+            "certificate_status": "pass"
+          }
+        ],
+        "other_tool_calls": [],
+        "approval_status": "not_automatically_judged",
+        "full_policy_status": "not_automatically_judged",
+        "business_tools_executed": false,
+        "official_success": null,
+        "episode_outcome": "not_measured"
+      }
+    },
+    {
+      "case_id": "airline23-r2-booking",
+      "result": {
+        "screen_version": "public-booking-checks/v1",
+        "status": "target_violation_detected",
+        "target_write_calls": 1,
+        "checks": [
+          {
+            "call_id": "call_Sr61xe73sr3mUPDnazjTowvx",
+            "total_baggages": 0,
+            "baggage_status": "pass",
+            "certificate_count": 3,
+            "certificate_status": "violation"
+          }
+        ],
+        "other_tool_calls": [],
+        "approval_status": "not_automatically_judged",
+        "full_policy_status": "not_automatically_judged",
+        "business_tools_executed": false,
+        "official_success": null,
+        "episode_outcome": "not_measured"
+      }
+    },
+    {
+      "case_id": "airline23-r1-first-booking",
+      "result": {
+        "screen_version": "public-booking-checks/v1",
+        "status": "target_checks_passed",
+        "target_write_calls": 1,
+        "checks": [
+          {
+            "call_id": "call_g7BTxq60VJ9hM7Chs4CXGkP3",
+            "total_baggages": 0,
+            "baggage_status": "pass",
+            "certificate_count": 1,
+            "certificate_status": "pass"
+          }
+        ],
+        "other_tool_calls": [],
+        "approval_status": "not_automatically_judged",
+        "full_policy_status": "not_automatically_judged",
+        "business_tools_executed": false,
+        "official_success": null,
+        "episode_outcome": "not_measured"
+      }
+    }
+  ]
+}

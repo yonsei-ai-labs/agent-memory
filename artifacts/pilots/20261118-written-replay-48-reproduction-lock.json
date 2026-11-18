@@ -1,0 +1,76 @@
+{
+  "format": "agent-memory-written-replay-reproduction-supplement/v1",
+  "implementation_commit": "b1779825aa28e1ae19ac325dc0e1ce77e6ff3feb",
+  "supplement_created_after_execution": true,
+  "planned_output": "runs/tau2-written-replay-48-luna-01",
+  "implementation_files": [
+    {
+      "path": "scripts/run_written_replay_batch.py",
+      "sha256": "86c5404e919393ffc7a52b2e19830b75d11efe8e6d979895fcefec864514ca65"
+    },
+    {
+      "path": "src/agent_memory_eval/experiments/written_replay_batch.py",
+      "sha256": "23536b30f4855a3b56bbe762469cb8fa549300f7ede997ccb4ae553015c4f962"
+    },
+    {
+      "path": "src/agent_memory_eval/experiments/replay_inputs.py",
+      "sha256": "0bc478a61b62607ee4ac56ca228a874c0bd11e0bfeecf445c47c770df1185580"
+    },
+    {
+      "path": "src/agent_memory_eval/experiments/replay_schedule.py",
+      "sha256": "ed441ed5af080f4f327ad331c4e90a08f419642a78c10cdba96eac6b3cf6baac"
+    },
+    {
+      "path": "src/agent_memory_eval/runner/snapshot_replay.py",
+      "sha256": "2619fd92a1ec7a447a03363c7441e2c545e9d14fdd6a76f957f96262d33f6c0f"
+    },
+    {
+      "path": "src/agent_memory_eval/analysis/snapshot_replay.py",
+      "sha256": "320064b51a13b567559f326f22fe20a8be746f2a58ce4985da2eef755d050e4b"
+    },
+    {
+      "path": "src/agent_memory_eval/analysis/written_comparison.py",
+      "sha256": "c0ceec03e24200ae44be3acb2d7195905cd7714c4ed7a410671533b435370250"
+    },
+    {
+      "path": "src/agent_memory_eval/analysis/written_replay_batch.py",
+      "sha256": "b29b22d508466184b2f398796baaea2b28c56f44ce83fae3ca3e47fa4a0a9349"
+    },
+    {
+      "path": "schemas/written-replay-batch.schema.json",
+      "sha256": "115eaa8f229b8c407582dbee6418a19d0db04d22df769a926d7d14bc555cb124"
+    },
+    {
+      "path": "schemas/snapshot-replay.schema.json",
+      "sha256": "28454318ce80beef7a93de0e2b5f58de178a7dbae68c4d7fd8945f99a6a7eb35"
+    }
+  ],
+  "pre_run_lock_ref": {
+    "path": "artifacts/pilots/20261118-written-replay-48-protocol.json",
+    "sha256": "734b24814e9c640106f2ca632b413425a5143a749c530119754451efc05f918b"
+  },
+  "profile_ref": {
+    "path": "protocols/pilots/tau2-written-replay-48-v1.json",
+    "sha256": "99673bb07dbd038d72237426ac3fff4793cf0812da617cdd97a6dee3e03111f4"
+  },
+  "research_plan_ref": {
+    "path": "docs/research/written-replay-48-pilot.md",
+    "sha256": "d379750d10a801126d517254df578abdbc3839906ae113b72d0a4049d7caf3b2"
+  },
+  "rubrics_ref": {
+    "path": "artifacts/analyses/20261118-written-replay-48-independent-rubrics.json",
+    "sha256": "0a2f3cc231232da757464ab13f933a4f356a411a9370be9f62e6353bb9a38a66"
+  },
+  "independent_review_ref": {
+    "path": "artifacts/analyses/20261118-written-replay-48-independent-case-review.json",
+    "sha256": "be70a0c7bb7214fb913f60b55cd3861953ed6ce7572d899de793ebb1f30c9d1b"
+  },
+  "blind_annotations_ref": {
+    "path": "artifacts/analyses/20261118-written-replay-48-reply-annotations.json",
+    "sha256": "457ec923cd13104de51689aabbd68330946b74e28e77725e546e495cffb8ca1e"
+  },
+  "results_ref": {
+    "path": "artifacts/pilots/20261118-written-replay-48-results.json",
+    "sha256": "80a14d8d9160923f5cfe2c37ae104542e30b830015a7ef9b18a64dcc14e8dcc6"
+  }
+}

@@ -21,4 +21,10 @@
 
 [작업자 작성 기억](../../docs/development/worker-written-memory.md)은 공통 API·native mock 통합과 보존된 무기억 경험의 요청 준비를 지원한다. `experiments.writing`은 기존 API를 조합한 작성 전용 실행이며, 미정 초안은 유료 호출을 차단한다. 실제 작업자 작성 기억의 효과 측정은 준비 전이다.
 
+[작성 기억 비교의 타당성 보완](../../docs/development/written-comparison-validity.md)은 `experiments.writing_comparison`의 v2 선정·전체 receipt·원본 재구성 감사와 `analysis.written_comparison`의 공개 근거 packet·rubric·수하물/증서 인수 검사를 제공한다. 준비에는 모델 호출이 없고, 좁은 검사 통과는 승인 적합성·공식 성공·독립 의미 판정이 아니다. 기존 v1 준비 초안과 과거 결과는 보존한다.
+
+[고정 기억의 한 응답 실행](../../docs/development/snapshot-replay-runtime.md)은 `runner.snapshot_replay`가 준비 hash와 같은 입력을 v1.2 게이트웨이로 기록하고, `analysis.snapshot_replay`가 실제 기억 구간·원응답·비용·봉인된 은행을 재검증한다. 새 응답을 공개 근거의 좁은 검사에 연결할 수 있다. 네 조건의 전체 배치·새 유료 프로토콜·공식 성공/정책 효과 측정은 이 API의 구현 범위에 포함하지 않는다.
+
 [추가 실행 보완](../../docs/development/runtime-hardening.md)은 공개 writer 응답의 필드별 출처, 전체 대화/비용 감사, 역할별/입력 한도, 공식 성공과 구분한 도달 상태 진단과 clean 구현 동결 검사를 제공한다. 새 작성 전용 진입점은 이를 사용하며 기존 batch의 legacy 한도는 유지한다.
+
+네 조건 전체는 `experiments.written_replay_batch`와 `analysis.written_replay_batch`가 연결한다. 모든 작성·통제 은행의 출처, 공유 전송과 작성 배정의 대응, 미확인 비용·중단 이후의 생략을 보존한다. [배치 실행과 검증](../../docs/development/written-replay-batch.md)

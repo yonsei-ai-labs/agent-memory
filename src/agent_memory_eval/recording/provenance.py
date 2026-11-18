@@ -292,9 +292,6 @@ class RecordingGateway:
                 if reported_usage is not None and not isinstance(reported_usage, dict):
                     raise InvalidUsage("Provider usage is neither an object nor null")
                 usage = deepcopy(reported_usage)
-                raw_cost = usage.get("cost") if isinstance(usage, dict) else None
-                if type(raw_cost) in (int, float) and math.isfinite(raw_cost) and raw_cost >= 0:
-                    cost, cost_status = raw_cost, "observed"
                 if response["choices"][0]["message"]["role"] != "assistant":
                     raise ContractError("Transport must return an assistant message")
                 if project_self_authored:
@@ -306,13 +303,18 @@ class RecordingGateway:
                 if getattr(caught, "response_available", False) or getattr(caught, "response", None) is not None:
                     ref = self.journal.blobs.put(caught.response)
                     delivery = "response_received"
+                    error_usage = caught.response.get("usage") if isinstance(caught.response, dict) else None
+                    usage = deepcopy(error_usage) if isinstance(error_usage, dict) else None
                 elif getattr(caught, "submitted", None) is False:
                     delivery = "not_submitted"
                 elif getattr(caught, "submitted", None) is True:
                     delivery = "response_received"
                 elif ref is None:
                     delivery = "unknown"
-        if delivery == "not_submitted" and cost is None:
+        raw_cost = usage.get("cost") if isinstance(usage, dict) else None
+        if type(raw_cost) in (int, float) and math.isfinite(raw_cost) and raw_cost >= 0:
+            cost, cost_status = raw_cost, "observed"
+        elif delivery == "not_submitted":
             cost_status = "not_applicable"
         finish = ctx.event("model.request_finished", dict(request_id=manifest["request_id"], status=status,
             delivery_status=delivery, response_ref=ref, usage=usage, cost_usd=cost,

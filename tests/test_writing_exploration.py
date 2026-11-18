@@ -21,7 +21,7 @@ from test_openrouter import MODEL, ROUTE, Reply, response
 IDENTITY = dict(implementation_commit="1" * 40, worktree_has_uncommitted_implementation=False)
 
 
-class WritingExplorationTests(unittest.TestCase):
+class WritingExplorationFixture:
     def setUp(self):
         self.folder = TemporaryDirectory(dir=ROOT / "outputs", prefix="writing-test-")
         self.addCleanup(self.folder.cleanup)
@@ -36,7 +36,7 @@ class WritingExplorationTests(unittest.TestCase):
             tool = dict(type="function", function=dict(name="book_reservation", description="d" * 10000,
                 parameters=dict(type="object", properties={})))
             template = registry.template(dict(model=MODEL["id"], system=policy, tools=[tool],
-                provider=ROUTE, stream=False, reasoning=dict(effort="low")))
+                provider=ROUTE, stream=False, reasoning=dict(effort="low"), max_completion_tokens=100))
             user = registry.template(dict(message=dict(role="user", content="No bags please.")))
             history = [(template, "/system"), (user, "/message")]
             class Source:
@@ -74,7 +74,8 @@ class WritingExplorationTests(unittest.TestCase):
         self.endpoints = dict(data=dict(id=MODEL["id"], endpoints=[dict(tag="openai", status=0, provider_name="OpenAI",
             supported_parameters=MODEL["supported_parameters"], pricing=MODEL["pricing"])]))
 
-    def run_study(self, *, empty=False, truncate=False, unknown=False, wrong_provider=False, body="Synthetic memory."):
+    def run_study(self, *, empty=False, empty_level=None, truncate=False, unknown=False, wrong_provider=False,
+                  body="Synthetic memory."):
         def opener(request, timeout):
             wire = json.loads(request.data)
             self.wires.append(wire)
@@ -83,7 +84,8 @@ class WritingExplorationTests(unittest.TestCase):
                 raw["provider"] = "Unexpected provider"
             wrote = any(c["function"]["name"] == "memory_store" for m in wire["messages"] for c in m.get("tool_calls") or [])
             message = dict(role="assistant", content="Done.")
-            if not empty and not wrote:
+            level = json.loads(wire["messages"][2]["content"])["level"]
+            if not empty and level != empty_level and not wrote:
                 message = dict(role="assistant", content=None, tool_calls=[dict(id="store", type="function",
                     function=dict(name="memory_store", arguments=json.dumps(dict(title="Mock lesson", body=body))))])
             raw["choices"][0].update(message=message,
@@ -95,6 +97,8 @@ class WritingExplorationTests(unittest.TestCase):
                 patch("agent_memory_eval.experiments.writing.model_endpoints", return_value=self.endpoints):
             return run_writing(self.profile, self.output, ROOT, opener=opener)
 
+
+class WritingExplorationTests(WritingExplorationFixture, unittest.TestCase):
     def test_writing_only_integration_and_source_independent_audit(self):
         result = self.run_study()
         self.assertEqual(result["status"], "completed")

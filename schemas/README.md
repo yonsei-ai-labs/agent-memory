@@ -1,5 +1,11 @@
 # 설정과 사건 계약
 
+[written-replay-batch.schema.json](written-replay-batch.schema.json)은 네 조건의 한 응답 배치 프로필이다. v2 준비물의 해시, 반복 단위·배정 시드·한도, 판정 및 비용 승인을 명시한다. 미정값은 초안에 보존한다. [실행과 감사](../docs/development/written-replay-batch.md)
+
+[snapshot-replay.schema.json](snapshot-replay.schema.json)은 고정 문맥·snapshot으로 한 응답을 실행하는 설정/결과의 별도 v1 계약이다. 한 worker 요청과 명시적 입력 한도, 공식 성공 미측정, 오류/비용 미확인 시 중단 표시를 검사한다. [합성 예시](../tests/fixtures/snapshot-replay-v1.json)는 형식 자료이며, [실행기와 원본 감사](../docs/development/snapshot-replay-runtime.md)의 행동 검증과 구분한다. 기존 journal/event/manifest v1.1/v1.2 의미는 바꾸지 않는다.
+
+[written-memory-comparison-v2.schema.json](written-memory-comparison-v2.schema.json)은 작성 기억의 오프라인 비교 전용 초안이다. 선정 도구·순번·전체 수와 연구 범위를 명시하며 ready/live 승격을 허용하지 않는다. [written-comparison-rubrics.schema.json](written-comparison-rubrics.schema.json)은 공개 메시지 근거에 연결한 좁은 인수 검사의 별도 v1 계약이다. [합성 fixture](../tests/fixtures/written-comparison-validity-v1.json)는 기본 검사에 포함하며, 의미 판정의 정확성·독립성을 자동 입증하지 않는다. [실제 적용과 한계](../docs/development/written-comparison-validity.md)를 따른다. 기존 일반 v1.1·snapshot v1.2와 과거 준비 v1은 유지한다.
+
 [execution-limits.schema.json](execution-limits.schema.json)은 새 API가 명시적으로 선택하는 `per-role-limits/v1` 계약이다. 작업자·작성자·사용자 시뮬레이터 요청 수와 입력 bytes를 각각 필수로 받는다. [합성 fixture](../tests/fixtures/execution-limits-v1.json)와 음성 사례를 기본 설계 검사에서 확인한다. 기존 프로필의 합산 한도·journal v1.1/v1.2를 바꾸지 않으며 [적용 범위](../docs/development/runtime-hardening.md)를 따른다.
 
 새 구현 기준은 **v1.1**이다. 기존 v1.0의 `$id`·내용·fixture·draft는 호환 확인용으로 그대로 보존한다. v1.1은 반환 참조·공개 경험·지침 필드의 의미도 바꾸므로 버전 없이 교환하지 않는다.

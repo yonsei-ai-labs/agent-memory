@@ -1,0 +1,303 @@
+{
+  "format": "agent-memory-shared-reproduction-evidence/v1",
+  "original_receipt_sha256": "ea95bfa6c9de96885219a24956ac06312ce9b3b3ce768028a2b30088d993e7c4",
+  "normalization": "Absolute repository and home paths replaced by literal placeholders; original evidence retained.",
+  "receipt": {
+    "format": "agent-memory-historical-reproduction-receipt/v1",
+    "status": "passed",
+    "experiment": "written_replay_48",
+    "started_at_utc": "2026-11-17T23:36:57.814783+00:00",
+    "registry_ref": {
+      "path": "{REPO}/protocols/reproductions/historical-v1.json",
+      "sha256": "423f656b9e973d1f52bbf4bd2731c367dcb1ce40b763d5b630bf109d1c3756b4"
+    },
+    "implementation_commit": "b1779825aa28e1ae19ac325dc0e1ce77e6ff3feb",
+    "reproduction_commit": "c3b5978addc5f2905f5b672b6593bb7918bb5958",
+    "protocol_lock_ref": {
+      "path": "artifacts/pilots/20261118-written-replay-48-reproduction-lock.json",
+      "sha256": "ca6c264ebed2a98c28be691e06d929b23f9edf5bbf7afe87388de5d7eff74283"
+    },
+    "review_script_ref": {
+      "path": "scripts/review_written_replay_48.py",
+      "sha256": "6a96c7b3cfbfa631511ebf50b815fabd333fcaf5cbd5b76f78502abb88fd3499"
+    },
+    "expected_outputs": [
+      {
+        "path": "artifacts/pilots/20261118-written-replay-48-results.json",
+        "sha256": "80a14d8d9160923f5cfe2c37ae104542e30b830015a7ef9b18a64dcc14e8dcc6"
+      },
+      {
+        "path": "artifacts/analyses/20261118-written-replay-48-reply-annotations.json",
+        "sha256": "457ec923cd13104de51689aabbd68330946b74e28e77725e546e495cffb8ca1e"
+      }
+    ],
+    "environment_spec": {
+      "lock_ref": {
+        "path": "uv.lock",
+        "sha256": "b87ef58cf24c2e6d1ba07ed896676e31ecfb858b3840ef1bc5faf0c334ec62a6"
+      },
+      "project_ref": {
+        "path": "pyproject.toml",
+        "sha256": "eacca6269ebd090c7c4c2c52c7a0379ad73670a25d34bc711a67a60c1584bf0d"
+      },
+      "python_version": "3.12",
+      "extras": []
+    },
+    "inputs_spec": [
+      {
+        "kind": "run",
+        "path": "runs/tau2-written-replay-48-luna-01",
+        "log_sha256": "8d46e144f4ae8992f255d5f78d41459b6de67100059da9ea54703683713eeb53"
+      }
+    ],
+    "inputs_root": "{REPO}",
+    "worktree": "{REPO}/outputs/reproductions/written-replay-48-20261118-01/checkout",
+    "source_inputs_preserved": true,
+    "staged_inputs_preserved": true,
+    "historical_code_preserved": true,
+    "steps": [
+      {
+        "phase": "create_worktree",
+        "timestamp_utc": "2026-11-17T23:36:57.826449+00:00"
+      },
+      {
+        "phase": "copy_inputs",
+        "timestamp_utc": "2026-11-17T23:36:58.950008+00:00"
+      },
+      {
+        "phase": "prepare_environment",
+        "timestamp_utc": "2026-11-17T23:36:59.600882+00:00"
+      },
+      {
+        "phase": "review",
+        "timestamp_utc": "2026-11-17T23:37:01.039596+00:00"
+      }
+    ],
+    "requested_timeout_seconds": 1800,
+    "cleanup": {
+      "status": "removed",
+      "input_copies_retained": false
+    },
+    "input_manifest_ref": {
+      "path": "inputs-manifest.json",
+      "sha256": "edaf03563d1992a04809b1c699c1be332b7207deeea5814cb5dae059173f6672"
+    },
+    "launcher_sources": [
+      {
+        "path": "runner.py",
+        "sha256": "fe69abd5ea81711d47d6d0a46459c727e5644013984e2382556266f0cf52f48d"
+      },
+      {
+        "path": "_child.py",
+        "sha256": "284d281db791c19034f9c2d7fad16a39fd8a6402dcffd49a474bff473b2b6004"
+      }
+    ],
+    "launcher_head": "943fe949caaee2b1c0dad430ba1585c4ca62b686",
+    "environment": {
+      "command": [
+        "{HOME}/.local/bin/uv",
+        "sync",
+        "--frozen",
+        "--offline",
+        "--no-python-downloads",
+        "--no-progress",
+        "--python",
+        "3.12"
+      ],
+      "offline": true,
+      "extras": [],
+      "uv_version": "uv 0.9.11"
+    },
+    "command": [
+      "{REPO}/outputs/reproductions/written-replay-48-20261118-01/checkout/.venv/bin/python",
+      "-I",
+      "-B",
+      "{REPO}/src/agent_memory_eval/reproduction/_child.py",
+      "{REPO}/outputs/reproductions/written-replay-48-20261118-01/checkout",
+      "{REPO}/outputs/reproductions/written-replay-48-20261118-01/checkout/scripts/review_written_replay_48.py",
+      "{REPO}/outputs/reproductions/written-replay-48-20261118-01/child-report.json",
+      "{REPO}/outputs/reproductions/written-replay-48-20261118-01/child-policy.json"
+    ],
+    "returncode": 0,
+    "child": {
+      "status": "passed",
+      "network_attempts": 0,
+      "process_attempts": 0,
+      "protected_write_attempts": 0,
+      "read_only_git_calls": [],
+      "imported_modules": {
+        "agent_memory_eval": "src/agent_memory_eval/__init__.py",
+        "agent_memory_eval.analysis": "src/agent_memory_eval/analysis/__init__.py",
+        "agent_memory_eval.contracts": "src/agent_memory_eval/contracts/__init__.py",
+        "agent_memory_eval.contracts.validation": "src/agent_memory_eval/contracts/validation.py",
+        "agent_memory_eval.contracts.core": "src/agent_memory_eval/contracts/core.py",
+        "agent_memory_eval.contracts.execution": "src/agent_memory_eval/contracts/execution.py",
+        "agent_memory_eval.recording": "src/agent_memory_eval/recording/__init__.py",
+        "agent_memory_eval.recording.journal": "src/agent_memory_eval/recording/journal.py",
+        "agent_memory_eval.recording.provenance": "src/agent_memory_eval/recording/provenance.py",
+        "agent_memory_eval.analysis.requests": "src/agent_memory_eval/analysis/requests.py",
+        "agent_memory_eval.contracts.snapshot_replay": "src/agent_memory_eval/contracts/snapshot_replay.py",
+        "agent_memory_eval.memory": "src/agent_memory_eval/memory/__init__.py",
+        "agent_memory_eval.memory.context": "src/agent_memory_eval/memory/context.py",
+        "agent_memory_eval.memory.service": "src/agent_memory_eval/memory/service.py",
+        "agent_memory_eval.memory.router": "src/agent_memory_eval/memory/router.py",
+        "agent_memory_eval.memory.tools": "src/agent_memory_eval/memory/tools.py",
+        "agent_memory_eval.memory.writing": "src/agent_memory_eval/memory/writing.py",
+        "agent_memory_eval.recording.experience": "src/agent_memory_eval/recording/experience.py",
+        "agent_memory_eval.recording.preparation": "src/agent_memory_eval/recording/preparation.py",
+        "agent_memory_eval.memory.preparation": "src/agent_memory_eval/memory/preparation.py",
+        "agent_memory_eval.analysis.snapshot_replay": "src/agent_memory_eval/analysis/snapshot_replay.py",
+        "agent_memory_eval.analysis.written_comparison": "src/agent_memory_eval/analysis/written_comparison.py",
+        "agent_memory_eval.experiments": "src/agent_memory_eval/experiments/__init__.py",
+        "agent_memory_eval.analysis.memory_writing": "src/agent_memory_eval/analysis/memory_writing.py",
+        "agent_memory_eval.analysis.preparation": "src/agent_memory_eval/analysis/preparation.py",
+        "agent_memory_eval.contracts.writing": "src/agent_memory_eval/contracts/writing.py",
+        "agent_memory_eval.analysis.writing_exploration": "src/agent_memory_eval/analysis/writing_exploration.py",
+        "agent_memory_eval.analysis.writing_export": "src/agent_memory_eval/analysis/writing_export.py",
+        "agent_memory_eval.recording.assets": "src/agent_memory_eval/recording/assets.py",
+        "agent_memory_eval.experiments.writing_comparison": "src/agent_memory_eval/experiments/writing_comparison.py",
+        "agent_memory_eval.experiments.replay_schedule": "src/agent_memory_eval/experiments/replay_schedule.py",
+        "agent_memory_eval.memory.imports": "src/agent_memory_eval/memory/imports.py",
+        "agent_memory_eval.experiments.replay_inputs": "src/agent_memory_eval/experiments/replay_inputs.py",
+        "agent_memory_eval.analysis.written_replay_batch": "src/agent_memory_eval/analysis/written_replay_batch.py"
+      },
+      "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+      "executable": "{REPO}/outputs/reproductions/written-replay-48-20261118-01/checkout/.venv/bin/python",
+      "prefix": "{REPO}/outputs/reproductions/written-replay-48-20261118-01/checkout/.venv",
+      "isolated": true,
+      "assertions_enabled": true,
+      "api_role_keys_present": false,
+      "packages": [
+        {
+          "name": "agent-memory-eval",
+          "version": "0.1.0a0"
+        },
+        {
+          "name": "agent-memory-eval",
+          "version": "0.1.0a0"
+        },
+        {
+          "name": "arrow",
+          "version": "1.4.0"
+        },
+        {
+          "name": "attrs",
+          "version": "26.1.0"
+        },
+        {
+          "name": "fqdn",
+          "version": "1.6.0"
+        },
+        {
+          "name": "idna",
+          "version": "3.20"
+        },
+        {
+          "name": "isoduration",
+          "version": "20.11.0"
+        },
+        {
+          "name": "jsonpointer",
+          "version": "3.12"
+        },
+        {
+          "name": "jsonschema",
+          "version": "4.26.0"
+        },
+        {
+          "name": "jsonschema-specifications",
+          "version": "2025.9.1"
+        },
+        {
+          "name": "lark",
+          "version": "1.3.1"
+        },
+        {
+          "name": "python-dateutil",
+          "version": "4.0.0"
+        },
+        {
+          "name": "referencing",
+          "version": "0.37.0"
+        },
+        {
+          "name": "rfc3339-validator",
+          "version": "0.1.4"
+        },
+        {
+          "name": "rfc3986-validator",
+          "version": "0.1.1"
+        },
+        {
+          "name": "rfc3987-syntax",
+          "version": "1.1.0"
+        },
+        {
+          "name": "rpds-py",
+          "version": "2026.9.1"
+        },
+        {
+          "name": "six",
+          "version": "1.17.0"
+        },
+        {
+          "name": "typing_extensions",
+          "version": "4.16.0"
+        },
+        {
+          "name": "tzdata",
+          "version": "2026.6"
+        },
+        {
+          "name": "uri-template",
+          "version": "1.3.0"
+        },
+        {
+          "name": "webcolors",
+          "version": "25.10.0"
+        }
+      ],
+      "bootstrap_sha256": "284d281db791c19034f9c2d7fad16a39fd8a6402dcffd49a474bff473b2b6004"
+    },
+    "finished_at_utc": "2026-11-17T23:37:18.665605+00:00",
+    "elapsed_seconds": 21.193192015000022,
+    "evidence_files": [
+      {
+        "path": "inputs-manifest.json",
+        "sha256": "edaf03563d1992a04809b1c699c1be332b7207deeea5814cb5dae059173f6672",
+        "bytes": 298144
+      },
+      {
+        "path": "environment.log",
+        "sha256": "de58f0baa3c214f356a5cd6f675319bb646c9f92d2780b134a4455b734f7f06a",
+        "bytes": 972
+      },
+      {
+        "path": "review.stdout.log",
+        "sha256": "129e2c4d84d0f34eb5578b5546dc65fbd5d8fdd0e8bce67bc69edb16e8cb0a5d",
+        "bytes": 226
+      },
+      {
+        "path": "review.stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "child-report.json",
+        "sha256": "c8c5df3c34de5998892ee7ec17e95fef8c993c7fd9764f2f1249acb2bf6fd192",
+        "bytes": 5272
+      },
+      {
+        "path": "child-policy.json",
+        "sha256": "3017d53a7e54bb2ef64ec6d09e9e08118281fb7a213bf4a11197c3ab77cd4bb8",
+        "bytes": 36
+      }
+    ]
+  },
+  "review_output": {
+    "status": "passed",
+    "result_sha256": "951aa37aa3ea9a125b04ac58ab0955c9123888779c7564f332c06bfdcc6e2dd1",
+    "observed_replies": 48,
+    "raw_log_sha256": "8d46e144f4ae8992f255d5f78d41459b6de67100059da9ea54703683713eeb53"
+  }
+}

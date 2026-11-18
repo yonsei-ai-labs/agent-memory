@@ -1,0 +1,295 @@
+{
+  "format": "agent-memory-snapshot-replay-runtime-validation/v1",
+  "visibility": "analysis_only_never_worker_or_writer_input",
+  "local_date": "2026-11-18",
+  "implementation": {
+    "base_commit": "943fe949caaee2b1c0dad430ba1585c4ca62b686",
+    "state": "uncommitted_working_tree_development_verification_not_paid_freeze",
+    "refs": [
+      {
+        "path": "src/agent_memory_eval/contracts/snapshot_replay.py",
+        "sha256": "6c28c59bab60dba2b1260c7099a44efdd8b44eca640957e63112203dbe00eca7"
+      },
+      {
+        "path": "src/agent_memory_eval/runner/snapshot_replay.py",
+        "sha256": "0dbb9b36d5ba3a89accdf2a5b760da2788a7d053bf497cf919e09fabe2f1b0f1"
+      },
+      {
+        "path": "src/agent_memory_eval/analysis/snapshot_replay.py",
+        "sha256": "fcf46a35f16f9d67ba1f285e31067ccadd8afc640608aa674da0d633feffe687"
+      },
+      {
+        "path": "src/agent_memory_eval/analysis/requests.py",
+        "sha256": "f2144e5369390618dbf14ac8a5eae6e7b6e4db7fc2f58b6b125694bdcf034f45"
+      },
+      {
+        "path": "src/agent_memory_eval/analysis/written_comparison.py",
+        "sha256": "38ddaca987c5e065e6bfc5afd7b1f333f026615a602b05d0cc7f25e2f32a8a58"
+      },
+      {
+        "path": "scripts/review_snapshot_replays.py",
+        "sha256": "ba82517b9c64cbb0cc89d87737340dbc4f42c33a02a7da2b29e017c72032698d"
+      },
+      {
+        "path": "scripts/validate_design.py",
+        "sha256": "8a16981b1824fe0702e1ba0dfcc0dee113269c97f9cf2d884f9559464c330141"
+      },
+      {
+        "path": "schemas/snapshot-replay.schema.json",
+        "sha256": "28454318ce80beef7a93de0e2b5f58de178a7dbae68c4d7fd8945f99a6a7eb35"
+      },
+      {
+        "path": "tests/test_snapshot_replay.py",
+        "sha256": "4664e6694bc62e91952de20762f6bab773a52e9306e4f81e20af5d819b45bbe7"
+      },
+      {
+        "path": "tests/fixtures/snapshot-replay-v1.json",
+        "sha256": "47956ebe07b798056b2be9369ecf74a720111808887f2d321239856336e395b1"
+      },
+      {
+        "path": "uv.lock",
+        "sha256": "b87ef58cf24c2e6d1ba07ed896676e31ecfb858b3840ef1bc5faf0c334ec62a6"
+      }
+    ]
+  },
+  "evidence_refs": [
+    {
+      "path": "outputs/snapshot-replay-runtime-20261118-01/implementation-refs.json",
+      "sha256": "572381e03e015304c1713cd716b07e746bc73acc9c90261a9b2a976cda1fabdb"
+    },
+    {
+      "path": "outputs/snapshot-replay-runtime-20261118-01/demo/audit.json",
+      "sha256": "c4e133fa160e42f724e778e9b3b92a1d2be863613491d576ef07b250fb943fbc"
+    },
+    {
+      "path": "outputs/snapshot-replay-runtime-20261118-01/demo/review.json",
+      "sha256": "e89c25563a0cf1514c6f2afeac20fc214af3c09df9ec413bec2dc84e01c1a21a"
+    },
+    {
+      "path": "outputs/snapshot-replay-runtime-20261118-01/demo/packet.json",
+      "sha256": "eb4d7ebe7fd3e291702a3e3d109c63ae9b69e37e1a24b92fe2a995e7bb0f6a28"
+    },
+    {
+      "path": "outputs/snapshot-replay-runtime-20261118-01/demo/rubrics.json",
+      "sha256": "46558d75596fea56d21eedf844e39c24f668c72391c71cedb59d40fbfbc9d5e5"
+    }
+  ],
+  "refs_policy": "These hashes identify this uncommitted development verification. They are not a paid-protocol freeze or a requirement for future current code.",
+  "focused_tests": {
+    "command": "uv run --frozen --no-sync python -m unittest discover -s tests -p test_snapshot_replay.py",
+    "status": "passed",
+    "tests_run": 21,
+    "elapsed_seconds": 32.261,
+    "real_network": "none; scripted responses and mock HTTP"
+  },
+  "preserved_preparation_audit": {
+    "status": "audit_passed",
+    "command": "uv run --frozen --no-sync python scripts/prepare_written_memory_comparison.py --output outputs/written-memory-validity-20261117-01 --audit-only",
+    "request_files_verified": 48,
+    "preparation_rows": 160,
+    "writer_allocations": 10,
+    "empty_writer_allocations": 1,
+    "profile_sha256": "34847d18d5d091b6edbafc9b12cbad3cd64b85d576c47a767e12a61089af34ae",
+    "new_model_or_catalog_calls": 0
+  },
+  "illustrative_demo": {
+    "record_kind": "illustrative",
+    "raw_root": "outputs/snapshot-replay-runtime-20261118-01/demo/target",
+    "replays": 4,
+    "statuses": {
+      "response": 2,
+      "error": 2
+    },
+    "source_directory_available": false,
+    "cli_matches_audit": true,
+    "input_spans": [
+      2,
+      2,
+      2,
+      2
+    ],
+    "received_spans": [
+      2,
+      2,
+      2,
+      0
+    ],
+    "public_checks": [
+      "no_target_write",
+      "target_violation_detected",
+      null,
+      null
+    ],
+    "official_successes": [
+      null,
+      null,
+      null,
+      null
+    ],
+    "real_model_or_catalog_calls": 0
+  },
+  "read_only_reproduction": {
+    "audit_and_review_reproduced": true,
+    "forbidden_io_attempts": [],
+    "preserved_files": 110,
+    "inventory_fields": [
+      "relative_path",
+      "st_size",
+      "st_mtime_ns"
+    ],
+    "original_source_available": false,
+    "record_kind": "illustrative",
+    "final_response_type_fix_included": true,
+    "real_model_or_catalog_calls": 0
+  },
+  "read_only_method": "Python audit hook denied socket, process execution, write-mode open and filesystem mutation events; relative path, size and mtime inventory compared before and after. Both audit and public review matched the preserved demonstration outputs after the last response-type fix.",
+  "basic_checks": {
+    "repository": {
+      "command": "uv run --frozen --no-sync python scripts/check_repository.py",
+      "exit_code": 0,
+      "result": {
+        "status": "passed",
+        "scope": "repository_links_migration_and_scaffold",
+        "markdown_files_checked": 69,
+        "local_links_checked": 815,
+        "source_entries": 25,
+        "migrated_targets": 30,
+        "verbatim_files_verified": 13,
+        "legacy_source_hashes_verified": 0,
+        "original_literature_papers": 12,
+        "experiment_feedback_original_copies_verified": 1,
+        "files_changed_since_migration": [
+          ".gitattributes",
+          "AGENTS.md",
+          "CONTRIBUTING.md",
+          "docs/design/architecture.md",
+          "docs/design/recording.md",
+          "docs/development/roadmap.md",
+          "docs/handoff/report-outline.md",
+          "docs/research/experiment-protocol.md",
+          "docs/research/metrics.md",
+          "docs/research/plan.md",
+          "docs/research/related-work.md",
+          "protocols/README.md",
+          "schemas/README.md",
+          "scripts/validate_design.py",
+          "tests/README.md"
+        ],
+        "benchmark_or_model_calls": 0
+      }
+    },
+    "design": {
+      "command": "uv run --frozen --no-sync python scripts/validate_design.py",
+      "exit_code": 0,
+      "result": {
+        "status": "passed",
+        "scope": "design_schemas_and_synthetic_references_only",
+        "jsonschema_version": "4.26.0",
+        "schemas_valid": 14,
+        "synthetic_events_valid": 13,
+        "artifact_files_hash_verified": 8,
+        "input_spans_verified": 4,
+        "invalid_contract_cases_rejected": 6,
+        "v1_1": {
+          "schemas_valid": 5,
+          "journal_records_valid": 28,
+          "synthetic_events_valid": 29,
+          "input_spans_verified": 6,
+          "tool_batches_verified": 2,
+          "runtime_readiness_verified": false,
+          "benchmark_or_model_calls": 0
+        },
+        "v1_2": {
+          "schemas_valid": 3,
+          "synthetic_events_valid": 17,
+          "input_spans_verified": 4
+        },
+        "execution_limits": {
+          "contract": "per-role-limits/v1",
+          "fixtures_valid": 1,
+          "invalid_cases_rejected": 3
+        },
+        "snapshot_replay": {
+          "fixtures_valid": 2,
+          "invalid_cases_rejected": 1,
+          "runtime_readiness_verified": false
+        },
+        "runtime_readiness_verified": false,
+        "benchmark_or_model_calls": 0
+      }
+    },
+    "legacy": {
+      "command": "uv run --frozen --no-sync python scripts/verify_legacy_data.py",
+      "exit_code": 0,
+      "result": {
+        "status": "passed",
+        "scope": "legacy_archive_bytes_and_inventory",
+        "snapshot_id": "legacy-ai-memory-20261114-v1",
+        "files": 1268,
+        "bytes": 212081023,
+        "files_by_role": {
+          "dataset": 853,
+          "design_evidence": 180,
+          "historical_documentation": 144,
+          "historical_pipeline_source": 91
+        },
+        "files_by_source_git_status": {
+          "  ": 995,
+          " M": 10,
+          "!!": 4,
+          "??": 259
+        },
+        "dataset_families": 34,
+        "current_source_files_verified": 0,
+        "semantic_labels_or_historical_results_validated": false,
+        "benchmark_or_model_calls": 0
+      }
+    }
+  },
+  "development_regressions_fixed": [
+    {
+      "scope": "new audit in this working tree",
+      "issue": "Canonical JSON map order followed random run IDs instead of actual run start order.",
+      "check": "test_recorded_reply_review_keeps_questions_errors_and_target_violations_distinct",
+      "resolution": "Return rows by recorded run.started event sequence."
+    },
+    {
+      "scope": "new response checker in this working tree",
+      "issue": "List-valued model or finish_reason raised TypeError during replay audit.",
+      "observed_before_fix": [
+        "model: TypeError reproduced",
+        "finish_reason: TypeError reproduced"
+      ],
+      "resolution": "Classify invalid types as recorded model/response errors; preserve the raw response."
+    }
+  ],
+  "real_model_or_catalog_calls": 0,
+  "paid_execution_performed": false,
+  "full_comparison_live_ready": false,
+  "research_claims": {
+    "official_episode_success": false,
+    "autonomous_retrieval_effect": false,
+    "held_out_transfer_effect": false,
+    "memory_policy_effect": false,
+    "independent_semantic_adjudication": false
+  },
+  "remaining": [
+    "Complete comparison schedule and explicit repetitions/dependence analysis",
+    "Import control-note provenance and every retained writer allocation, including empty writing",
+    "Declared batch limits, failure/skipped allocations, clean implementation and frozen paid protocol",
+    "Independent review and later full-episode, retrieval, transfer, continual and full-cost comparisons"
+  ],
+  "validation_status": "passed",
+  "completed_at_utc": "2026-11-17 22:12:37 UTC",
+  "tests": {
+    "status": "passed",
+    "tests_run": 294,
+    "elapsed_seconds": 469.205,
+    "added_tests": 21,
+    "log_sha256": "bd8a454ebd74ed779040b7287fc257377f54546436c6576ebd61e192fc7317d3",
+    "command": "uv run --frozen --no-sync python -m unittest discover -s tests",
+    "invocation": "The uv-resolved Python interpreter invokes unittest in a subprocess and captures its combined output.",
+    "log_path": "outputs/snapshot-replay-runtime-20261118-01/full-suite-final.log",
+    "http": "mock only"
+  }
+}

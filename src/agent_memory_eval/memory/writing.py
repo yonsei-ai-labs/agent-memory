@@ -99,6 +99,9 @@ def read_public_experience(blobs, scan, ref):
     if value.get("format") == "agent-memory-public-experience/v2":
         from agent_memory_eval.recording.experience import read_imported_experience
         return read_imported_experience(blobs, scan, value)
+    if value.get("format") == "agent-memory-forms-public-experience/v1":
+        from agent_memory_eval.experiments.forms_write import read_form_experience
+        return read_form_experience(blobs, scan, value)
     if canonical(value) != canonical(_experience(blobs, scan, value["source_run_id"])):
         raise ContractError("Frozen public experience differs from its source events")
     return value

@@ -51,6 +51,10 @@ def main() -> None:
         "execution-limits": read_json(ROOT / "schemas" / "execution-limits.schema.json"),
         "recorded-preparation": read_json(ROOT / "schemas" / "recorded-preparation.schema.json"),
         "writing-exploration": read_json(ROOT / "schemas" / "writing-exploration.schema.json"),
+        "written-comparison-v2": read_json(ROOT / "schemas" / "written-memory-comparison-v2.schema.json"),
+        "written-comparison-rubrics": read_json(ROOT / "schemas" / "written-comparison-rubrics.schema.json"),
+        "snapshot-replay": read_json(ROOT / "schemas" / "snapshot-replay.schema.json"),
+        "written-replay-batch": read_json(ROOT / "schemas" / "written-replay-batch.schema.json"),
     }
     validators = {}
     for name, schema in schemas.items():
@@ -71,6 +75,26 @@ def main() -> None:
     validators["writing-exploration"].validate(writing_draft)
     if writing_profile(writing_draft)["ready"]:
         raise ValueError("Unresolved writing exploration must remain a draft")
+    from agent_memory_eval.analysis.written_comparison import validate_rubrics
+    from agent_memory_eval.experiments.writing_comparison import _profile
+    comparison = read_json(ROOT / "protocols/drafts/tau2-written-memory-replay-v2.json")
+    _profile(comparison)
+    reject(validators["written-comparison-v2"], dict(comparison, status="ready"), "offline comparison promoted to live")
+    comparison_fixture = read_json(ROOT / "tests/fixtures/written-comparison-validity-v1.json")
+    validate_rubrics(comparison_fixture["packet"], comparison_fixture["rubrics"])
+    from agent_memory_eval.contracts.snapshot_replay import validate_replay_record
+    replay_fixture = read_json(ROOT / "tests/fixtures/snapshot-replay-v1.json")
+    for artifact in replay_fixture["artifacts"]:
+        validate_replay_record(artifact)
+    reject(validators["snapshot-replay"], dict(replay_fixture["artifacts"][-1], official_success=True), "single reply claiming official success")
+    from agent_memory_eval.experiments.replay_schedule import validate_profile as validate_replay_batch
+    from agent_memory_eval.recording.assets import asset_text
+    batch = read_json(ROOT / "protocols/drafts/tau2-written-memory-batch-v1.json")
+    if not validate_replay_batch(batch):
+        raise ValueError("The unapproved written replay batch must retain its unresolved settings")
+    for ref in (batch["comparison_ref"], batch["rubrics_ref"]):
+        asset_text(ROOT, ref)
+    reject(validators["written-replay-batch"], dict(batch, status="ready"), "unresolved four-arm batch promoted to live")
     for field, value in (("worker_requests", -1), ("writer_requests", None), ("max_input_bytes", 0)):
         invalid_limits = dict(execution_fixture["limits"], **{field: value})
         reject(validators["execution-limits"], invalid_limits, "invalid explicit execution limits")
@@ -271,6 +295,9 @@ def main() -> None:
         "v1_1": result_v11,
         "v1_2": dict(schemas_valid=3, synthetic_events_valid=len(scan_v12["events"]), input_spans_verified=len(expected_v12)),
         "execution_limits": dict(contract="per-role-limits/v1", fixtures_valid=1, invalid_cases_rejected=3),
+        "snapshot_replay": dict(fixtures_valid=len(replay_fixture["artifacts"]), invalid_cases_rejected=1,
+            runtime_readiness_verified=False),
+        "written_replay_batch": dict(draft_valid=True, anchored_assets=2, unresolved_ready_rejected=True),
         "runtime_readiness_verified": False,
         "benchmark_or_model_calls": 0,
     }, ensure_ascii=False, indent=2))

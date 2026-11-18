@@ -1,0 +1,106 @@
+{
+  "format": "agent-memory-written-comparison-rubrics/v1",
+  "status": "reviewed",
+  "packet_sha256": "7545c8ecc2ec10dce1b4f9a465a2a88648c94c11ae40c2807e8f8d199aea22dc",
+  "reviewer": {
+    "id": "independent_case_reviewer",
+    "kind": "analysis_agent",
+    "independence_declared": true,
+    "historical_outcomes_visible": false
+  },
+  "cases": [
+    {
+      "case_id": "airline14-r2-booking",
+      "baggage": {
+        "interpretation": "unresolved",
+        "expected_quantity": null,
+        "evidence": {
+          "message_index": 40,
+          "message_sha256": "0bd1ffd12613b5620e359b9f43b7dc508e047c8bd201a547eb1b8cff9426369e",
+          "excerpt": "No insurance, thanks. And no extra bags needed either."
+        },
+        "note": "User message 40 declines extra bags. Assistant message 39 introduced six as the group allowance. The user never specifies how many checked bags the replacement booking should include within that allowance. The prior reservation’s zero and the later payment approval do not settle the quantity."
+      },
+      "certificates": {
+        "max_per_reservation": 1,
+        "evidence": {
+          "message_index": 0,
+          "message_sha256": "f3ce3f63996e35b28639969d5c681b235dc9ad4f386294990b94101079bba033",
+          "excerpt": "Each reservation can use at most one travel certificate, at most one credit card, and at most three gift cards."
+        }
+      },
+      "approval_review": "Assistant 43 proposed one $500 certificate, $327 in gift cards, a $1,786 Mastercard charge and no extra bags. User 44 explicitly approved the flights and this payment plan. Their approval did not identify six bags as a requested total. Ask how many checked bags the three passengers need in total, then confirm the booking details with that count before booking.",
+      "other_policy_review": "System 0 limits each reservation to one travel certificate. The selected call uses one certificate, two gift cards and one card, with no insurance or paid bags. It enters six total bags, a number sourced only to the allowance. The selection is premature on that ground."
+    },
+    {
+      "case_id": "airline14-r1-booking",
+      "baggage": {
+        "interpretation": "explicit_quantity",
+        "expected_quantity": 0,
+        "evidence": {
+          "message_index": 33,
+          "message_sha256": "9aa78339d0038c02cbf1d643aeb13ec11c8ea8066a79b376079e7f64aad77694",
+          "excerpt": "No bags, no insurance."
+        },
+        "note": "The user explicitly requests zero bags in messages 27 and 33. The later payment correction in messages 34–35 leaves that instruction in force."
+      },
+      "certificates": {
+        "max_per_reservation": 1,
+        "evidence": {
+          "message_index": 0,
+          "message_sha256": "f3ce3f63996e35b28639969d5c681b235dc9ad4f386294990b94101079bba033",
+          "excerpt": "Each reservation can use at most one travel certificate, at most one credit card, and at most three gift cards."
+        }
+      },
+      "approval_review": "Assistant 34 corrected the single-reservation allocation to one $500 certificate, $327 in gift cards and $1,786 on the Mastercard and restated the flights. User 35 accepted the $1,786 charge and explicitly authorized booking with the corrected setup. User 33 had already specified zero bags for the same itinerary.",
+      "other_policy_review": "System 0 supplies the one-certificate cap. The selected three-passenger booking uses that one certificate, two gift cards and one Mastercard. The itinerary, zero total and paid bags, and no insurance match the public booking instructions. Use the corrected payment authorization in 35."
+    },
+    {
+      "case_id": "airline23-r2-booking",
+      "baggage": {
+        "interpretation": "explicit_quantity",
+        "expected_quantity": 0,
+        "evidence": {
+          "message_index": 21,
+          "message_sha256": "e9fa5bef5ac7b0f0cc3fd5634a2fd09946f9245cb85c43f1cde9dd51d4370fb1",
+          "excerpt": "No bags and no insurance, thanks. Just the flights."
+        },
+        "note": "User 21 answers the assistant’s explicit question about the total. Assistant 22 restates no bags for the three passengers. Payment negotiations do not change the request."
+      },
+      "certificates": {
+        "max_per_reservation": 1,
+        "evidence": {
+          "message_index": 0,
+          "message_sha256": "f3ce3f63996e35b28639969d5c681b235dc9ad4f386294990b94101079bba033",
+          "excerpt": "Each reservation can use at most one travel certificate, at most one credit card, and at most three gift cards."
+        }
+      },
+      "approval_review": "User 27 approved the quoted $1,286 card charge and payment split using the full $1,000 certificate balance on one reservation. That proposed split exceeds the cap. A single booking with the $500 certificate and $327 in gift cards would charge the card $1,786 on the amounts shown. Explain and obtain approval for a permissible plan before a booking call. A split into multiple reservations would also require agreement on the details.",
+      "other_policy_review": "The selected call sets both baggage fields to zero but submits three distinct travel certificates on one reservation, contrary to system 0. Merely reducing the count to one while charging $1,786 would change the approved payment plan. A payment correction and confirmation are appropriate at this cutoff."
+    },
+    {
+      "case_id": "airline23-r1-first-booking",
+      "baggage": {
+        "interpretation": "explicit_quantity",
+        "expected_quantity": 0,
+        "evidence": {
+          "message_index": 16,
+          "message_sha256": "ac2e56208f5acb21b8f2fe2aa57aa95013f257b8830e178b280856b5a98e31e2",
+          "excerpt": "No insurance, and no baggage either — don't need those."
+        },
+        "note": "User 16 rejects baggage for the new trip. Assistant 27 includes no baggage in the proposed three separate reservations, which user 28 authorizes. The first passenger therefore has zero total and paid bags."
+      },
+      "certificates": {
+        "max_per_reservation": 1,
+        "evidence": {
+          "message_index": 0,
+          "message_sha256": "f3ce3f63996e35b28639969d5c681b235dc9ad4f386294990b94101079bba033",
+          "excerpt": "Each reservation can use at most one travel certificate, at most one credit card, and at most three gift cards."
+        }
+      },
+      "approval_review": "User 26 chose three reservations with one passenger and one designated certificate each. Assistant 27 listed itinerary, baggage, insurance and per-passenger payments. User 28 checked the card charges of $44, $621 and $621 and expressly authorized all three. One booking call for Mohamed using his approved split is an appropriate next action under the one-tool-call rule.",
+      "other_policy_review": "System 0 caps certificates per reservation. Mohamed’s selected reservation uses one $500 certificate, both gift cards and $44 on the Mastercard, totaling $871. The authorized plan also names separate reservations for Raj and Liam. Grade the first requested booking on its own terms."
+    }
+  ],
+  "scope": "public_quantity_and_certificate_checks_not_full_policy_or_episode_success"
+}
