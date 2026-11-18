@@ -1,0 +1,51 @@
+{
+  "format": "agent-memory-two-pass-forms-preflight/v1",
+  "implementation_commit": "7e30fa24b2d4481e0a91fa30209debccba1c175f",
+  "verified_at": "2026-11-18T03:22:10.312706+00:00",
+  "network_model_completions": 0,
+  "native_and_source": {
+    "writers": 232,
+    "episodes": 352,
+    "public_sources": 28,
+    "successful_sources": 24,
+    "public_context_bytes_range": [
+      9230,
+      35318
+    ],
+    "customer_groups": 22,
+    "ordered_jobs_sha256": "4428e71e73c580c4c5a3d955e5a9b47c7db1cb65cd842515d2cc170f619f1e85",
+    "tau2_revision": "c06b07dd7c4d4ec61ba6ff9bcdf0b15dd7ef36d4",
+    "writer_initial_wires": 232,
+    "writer_initial_wire_bytes": [
+      10846,
+      41734
+    ],
+    "public_record_archived_final_wire_checks": 8,
+    "public_record_archived_final_wire_bytes": [
+      39387,
+      87826
+    ]
+  },
+  "behavioral_evidence": {
+    "source_writer_checks": 7,
+    "native_solver_checks": 11,
+    "controller_tests": 5,
+    "paired_analysis_tests": 1,
+    "cross_journal_and_guard_end_to_end": 2,
+    "prior_full_suite_passed": 310,
+    "tests_cover": [
+      "No-memory versus all seven preload arms, worker-only input, stock native tools and fresh DB.",
+      "Same source and five optional writing instructions, closed snapshot eligibility, partial and empty assignments.",
+      "Real archived public source through mock HTTP writer, independent sealed-bank import and full native mock-user grading.",
+      "Global stop after an unpriced response, all 584 original assignments retained, no extra or duplicated calls.",
+      "Paid error envelopes and true unknown costs reconcile between raw receipts and the guard."
+    ],
+    "expanded_regression_passed": 329,
+    "expanded_regression_seconds": 590.978
+  },
+  "basic_checks": {
+    "design": "passed",
+    "repository": "passed",
+    "legacy": "passed"
+  }
+}

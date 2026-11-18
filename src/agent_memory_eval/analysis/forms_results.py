@@ -185,6 +185,11 @@ def checked_rows(output):
 def summarize(output):
     design, completion, rows, usage = checked_rows(output)
     source_outcomes = read_json((Path(output) / "control.json").read_bytes())["source_outcomes"]
+    return summarize_checked(design, completion, rows, usage, source_outcomes)
+
+
+def summarize_checked(design, completion, rows, usage, source_outcomes):
+    """Summarize already verified rows, including a separately audited allocation subset."""
     cohort = {r["task_id"]: r for r in design["source"]["cohort"]}
     groups = {t: r["source_group"] for t, r in cohort.items()}
     solves = [r for r in rows if r["phase"] == "solve"]

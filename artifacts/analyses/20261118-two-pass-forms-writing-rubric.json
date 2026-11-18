@@ -1,0 +1,20 @@
+{
+  "format": "agent-memory-masked-writing-rubric/v1",
+  "unit": "one sealed writer allocation, all item titles and bodies",
+  "visibility": "Review only opaque bank ID, opaque source ID, the archived public policy and transcript, and rendered note text. Mask assigned instruction, iteration, score and deployment outcome.",
+  "content": {
+    "fact": "A specific observed fact or value tied to this past interaction or an explicit scope.",
+    "episode": "An ordered account with two or more actual historical moments and a response, consequence or observed outcome.",
+    "lesson": "An experience-supported generalization or caution, with a reason or applicability condition.",
+    "procedure": "Actionable ordered checks or conditional steps for a later instance, including a branch, verification step or stopping point."
+  },
+  "decision": "Code each dimension independently. Empty content has all four dimensions false. When a bank includes several items, code the presence of each dimension in any item. A title that merely names a form is insufficient.",
+  "grounding": {
+    "supported": "A substantive claim can be traced to a quoted source message or policy.",
+    "mixed": "The memory contains both supported content and an identifiable unsupported or contradicted claim.",
+    "unverified": "Substantive claims cannot be established from the provided public record.",
+    "empty": "No note text."
+  },
+  "evidence": "For each bank give a short exact note excerpt and source excerpt supporting the main judgment where available. For mixed/unverified text give the suspect verbatim claim and a short rationale. A source excerpt may be omitted for a genuinely absent claim. Use empty strings for empty content. A missing task outcome is not a contradiction.",
+  "scope": "One reviewer per masked bank, overlapping content dimensions, and targeted verification of quoted excerpts; no inter-rater agreement estimate."
+}

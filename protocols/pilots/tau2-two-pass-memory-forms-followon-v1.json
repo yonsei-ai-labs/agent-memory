@@ -1,0 +1,36 @@
+{
+  "format": "agent-memory-two-pass-forms-followon/v1",
+  "status": "ready",
+  "implementation_commit": "420256939664f5f732dc76c59802d9775c383b5d",
+  "source_seals": {
+    "runs/tau2-two-pass-forms-luna-deepseek-01": "3528eed073199e62e38b2b30959f6b368c3a00e4e6a54021270de548e8b91381",
+    "runs/tau2-two-pass-forms-luna-deepseek-supplement-01": "40004aaf9f1d127940bf9782864abe1cb6080796a73fa7bd1141a0e4652a5756"
+  },
+  "output_root": "runs/tau2-two-pass-forms-luna-deepseek-supplement-02",
+  "parent_profile_ref": {
+    "path": "protocols/pilots/tau2-two-pass-memory-forms-v1.json",
+    "sha256": "6ffabf3acd5195916dccb2c12fa8c652fc86df44bd66cd7d3aba77e9cecb5b14"
+  },
+  "supplement_profile_ref": {
+    "path": "protocols/pilots/tau2-two-pass-memory-forms-supplement-v1.json",
+    "sha256": "5f3a9631e7b1449c2315ef4d719d50fbc45897a08da6456a301388b68f731a22"
+  },
+  "previous_audit_ref": {
+    "path": "artifacts/analyses/20261118-two-pass-forms-combined-audit.json",
+    "sha256": "c440ea5229948923e7ce2ae459fa57da70c2872bdf4f02bb8cad1c73ed28fd26"
+  },
+  "billing_check_ref": {
+    "path": "artifacts/analyses/20261118-two-pass-forms-504-billing.json",
+    "sha256": "3b78036af22f7dedc4989d3a17ae0fc0213ad39bd2d98acebf10e8d7ae51a8be"
+  },
+  "preflight_ref": {
+    "path": "artifacts/analyses/20261118-two-pass-forms-followon-preflight.json",
+    "sha256": "fdf710d9bb242b89773b240f8df96fc5202e5b65f78159db21bf47bcc7abd9ed"
+  },
+  "pending_sha256": "8b1dec09800c15fee7cca142e3fac0a127088b853cc81ae7dc070483672f65ec",
+  "provider_error_cooldown_seconds": 60,
+  "authorization": "The user selected continued execution of the 282 never-started assignments. Reserve confirmed HTTP 429 and received 504 errors with a valid generation ID when an individual charge is unknown. Preserve every prior attempted job and the shared USD 5 cap.",
+  "billing": "Carry original 1861 sends, USD 0.2916642358 known and USD 0.0100881 reserved (two unknowns). Count each new received eligible unpriced error at its original full reservation, while keeping its amount unverified. Honor Retry-After and a minimum 60 s for qualified errors. All other unknown charges stop new sends. Same original 36 h and 16000 model requests, no resends or fallback.",
+  "study": "Fresh independent native episode for original jobs 303 through 584, same routes, price ceilings, seeds, tasks, solver instructions, own original writer banks and official benchmark.",
+  "prepared_at": "2026-11-18T05:52:16.442993+00:00"
+}

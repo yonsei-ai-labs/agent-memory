@@ -1,0 +1,23 @@
+{
+  "format": "agent-memory-masked-action-review/v1",
+  "unit": "one pair of full, officially graded native episodes on the same task and allocation block",
+  "passes": [
+    "Review the two public business conversations and calls, with the outcomes, writing assignment and prior memory hidden.",
+    "After sealing the action judgment, link the assigned note, actual worker exposure, source text and native outcome in a separate interpretive analysis."
+  ],
+  "sample": "Every discordant pair between each assigned writing policy and pure no-memory, plus the earliest allocated both-success and both-failure example for each policy when available.",
+  "labels": [
+    "identity_or_lookup",
+    "request_clarification",
+    "policy_or_eligibility",
+    "current_facts_or_arithmetic",
+    "approval_or_reconfirmation",
+    "business_tool_or_arguments",
+    "communication",
+    "simulator_led",
+    "no_material_difference",
+    "other"
+  ],
+  "instructions": "Identify the first consequential divergence, even if earlier turns only differ in wording. Describe both sides, include message indices and exact public text or actual tool arguments. Identify whether the current customer request or provided facts had already diverged. Record the visible downstream result on each side or explicitly state the limit of the transcript. Reserve links to memory and official scoring for the second pass.",
+  "scope": "Assignment and grades concealed. Each pair receives one interpretation. Where the evidence supports several explanations, keep attribution open."
+}

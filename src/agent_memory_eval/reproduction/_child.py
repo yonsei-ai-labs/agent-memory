@@ -26,10 +26,20 @@ def main():
     if any(not path.is_relative_to(worktree) for path in git_checkouts):
         raise RuntimeError("Registered Git input must be inside the historical worktree")
 
-    def inside(path):
+    def inside(path, dir_fd=None):
         if not isinstance(path, (str, bytes, os.PathLike)):
             return False
-        return Path(os.fsdecode(path)).absolute().resolve().is_relative_to(worktree)
+        target = Path(os.fsdecode(path))
+        if not target.is_absolute() and dir_fd not in (None, -1):
+            # An *at syscall resolves the name under its directory descriptor.
+            for handles in ("/proc/self/fd", "/dev/fd"):
+                directory = Path(handles) / str(dir_fd)
+                if directory.is_dir():
+                    target = directory / target
+                    break
+            else:
+                return True
+        return target.absolute().resolve().is_relative_to(worktree)
 
     def block(event, args):
         if (event.startswith("socket.") and event != "socket.__new__") or event == "urllib.Request":
@@ -45,15 +55,19 @@ def main():
                     return
             report["process_attempts"] += 1
             raise RuntimeError("Child processes are disabled during historical review")
-        targets = ()
+        protected_write = False
         if event == "open":
             if args[2] & (os.O_WRONLY | os.O_RDWR | os.O_CREAT | os.O_TRUNC | os.O_APPEND):
-                targets = args[:1]
-        elif event in {"os.remove", "os.rmdir", "os.mkdir", "os.chmod", "os.truncate", "os.utime"}:
-            targets = args[:1]
-        elif event in {"os.rename", "os.link", "os.symlink"}:
-            targets = args[:2]
-        if any(inside(path) for path in targets):
+                protected_write = inside(args[0])
+        elif event in {"os.remove", "os.rmdir", "os.mkdir", "os.chmod", "os.utime"}:
+            protected_write = inside(args[0], args[-1])
+        elif event == "os.truncate":
+            protected_write = inside(args[0])
+        elif event in {"os.rename", "os.link"}:
+            protected_write = inside(args[0], args[2]) or inside(args[1], args[3])
+        elif event == "os.symlink":
+            protected_write = inside(args[0]) or inside(args[1], args[2])
+        if protected_write:
             report["protected_write_attempts"] += 1
             raise RuntimeError("Historical worktree inputs are read only")
 

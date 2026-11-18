@@ -1,0 +1,89 @@
+{
+  "format": "two-pass-forms-supplement-audit/v1",
+  "status": "passed",
+  "sources": {
+    "original": {
+      "path": "runs/tau2-two-pass-forms-luna-deepseek-01",
+      "completion_sha256": "3528eed073199e62e38b2b30959f6b368c3a00e4e6a54021270de548e8b91381"
+    },
+    "supplement": {
+      "path": "runs/tau2-two-pass-forms-luna-deepseek-supplement-01",
+      "completion_sha256": "40004aaf9f1d127940bf9782864abe1cb6080796a73fa7bd1141a0e4652a5756"
+    }
+  },
+  "ready_profile_sha256": "5f3a9631e7b1449c2315ef4d719d50fbc45897a08da6456a301388b68f731a22",
+  "approval": "User selected the 308 never-started assignments after the original billing stop. Preserve all previously attempted work and original cumulative USD 5 cap.",
+  "guards": {
+    "max_calls": 16000,
+    "max_usd": 5,
+    "max_seconds": 129600
+  },
+  "role_settings_sha256": {
+    "writer": [
+      "0cd07fde1938293df0e5a72deb6d8cc63b5f99d6b8db65b07359cfac1a9bf07a"
+    ],
+    "user_simulator": [
+      "44d4c44dea1301e6025e516d6a390a24fc027565a4d05c13865ee16e2a355bdd"
+    ],
+    "worker": [
+      "8671a1115fd1f3535af11e4d30afecc07ad2306430c9732ebb92bd84abb9fe91"
+    ]
+  },
+  "original_started_at": "2026-11-18T03:24:23.089730+00:00",
+  "pending_sha256": "ab802945fcd50189a1eb27afa7c3a1d3df638653c4d6410d7de739d9c3f3cf1f",
+  "input_file_count": 17763,
+  "input_manifest_sha256": "3f5b80173deb1ab8259ba84c9714c5fe15f773ba36d4a2b4ba6c61294884c008",
+  "original": {
+    "writer_allocations": 232,
+    "episode_allocations": 352,
+    "attempted_episodes": 44,
+    "graded_episodes": 43,
+    "ungraded_started_episodes": 1,
+    "successful_episodes": 35,
+    "unstarted_episodes": 308,
+    "http_calls": 1075,
+    "known_usd": "0.2310443024",
+    "unknown_calls": 1,
+    "reserved_usd": "0.0018567",
+    "http_429": {
+      "276": {
+        "request_id": "request_4236e2f4c30b42dfaba3a6d01aad725f",
+        "actor": "user_simulator",
+        "request_sha256": "64e6a42d59d88f0201a78679f849805adceeeb583a7cc37df379bcd41e7f80af",
+        "response_sha256": "f1e2ec842fcd2177eaebbb6c0132763e7e2f48ebde6a216579ed87cdaa049213",
+        "cost_status": "unknown",
+        "reserved_usd": "0.0018567",
+        "retry_after_seconds": null,
+        "retry_after_utc": null
+      }
+    }
+  },
+  "supplement": {
+    "writer_allocations": 0,
+    "episode_allocations": 308,
+    "attempted_episodes": 26,
+    "graded_episodes": 23,
+    "ungraded_started_episodes": 3,
+    "successful_episodes": 23,
+    "unstarted_episodes": 282,
+    "http_calls": 786,
+    "known_usd": "0.0606199334",
+    "unknown_calls": 1,
+    "reserved_usd": "0E-7",
+    "http_429": {}
+  },
+  "combined": {
+    "writer_allocations": 232,
+    "episode_allocations": 352,
+    "attempted_episodes": 70,
+    "graded_episodes": 66,
+    "ungraded_started_episodes": 4,
+    "successful_episodes": 58,
+    "unstarted_episodes": 282,
+    "http_calls": 1861,
+    "known_usd": "0.2916642358",
+    "unknown_calls": 2,
+    "reserved_usd": "0.0018567"
+  },
+  "combined_view_completion_sha256": "b866f504ef1a729a17976b8f94cae765ee732cc0a9fa5683397124fe7c0fbb38"
+}

@@ -1,0 +1,79 @@
+{
+  "format": "agent-memory-two-pass-forms-followon-preflight/v1",
+  "implementation_commit": "420256939664f5f732dc76c59802d9775c383b5d",
+  "checked_at": "2026-11-18T05:52:16.442993+00:00",
+  "parent": {
+    "source_seals": {
+      "runs/tau2-two-pass-forms-luna-deepseek-01": "3528eed073199e62e38b2b30959f6b368c3a00e4e6a54021270de548e8b91381",
+      "runs/tau2-two-pass-forms-luna-deepseek-supplement-01": "40004aaf9f1d127940bf9782864abe1cb6080796a73fa7bd1141a0e4652a5756"
+    },
+    "original_started_at": "2026-11-18T03:24:23.089730+00:00",
+    "parent_guards": {
+      "max_calls": 16000,
+      "max_usd": 5,
+      "max_seconds": 129600
+    },
+    "untouched": 282,
+    "scope": [
+      303,
+      584
+    ],
+    "sealed_writer_banks_required": 186,
+    "http_calls": 1861,
+    "known_usd": "0.2916642358",
+    "unknown_calls": 2,
+    "reserved_usd": "0.0100881",
+    "original_429": {
+      "request_id": "request_4236e2f4c30b42dfaba3a6d01aad725f",
+      "actor": "user_simulator",
+      "request_sha256": "64e6a42d59d88f0201a78679f849805adceeeb583a7cc37df379bcd41e7f80af",
+      "response_sha256": "f1e2ec842fcd2177eaebbb6c0132763e7e2f48ebde6a216579ed87cdaa049213",
+      "cost_status": "unknown",
+      "reserved_usd": "0.0018567",
+      "retry_after_seconds": null,
+      "retry_after_utc": null
+    },
+    "prior_504": {
+      "request_id": "request_f8ca7648c54e4a3a83d76d13561ecc30",
+      "actor": "user_simulator",
+      "request_sha256": "d7c8584c40db8af872e0a667cdf7ba677fd2d6fde01c0367f19f6b46a1e9493f",
+      "response_sha256": "578031de5d6c09144faa39b900ebaeff45a3f67b80d2d91ecfd0b78ed3c2241c",
+      "code": 504,
+      "generation_id": "gen-1794979345-RjatDnqrDGwFcU2ztl5v",
+      "cost_status": "unknown",
+      "reserved_usd": "0.0082314",
+      "retry_after_seconds": null,
+      "retry_after_utc": null
+    },
+    "pending_sha256": "8b1dec09800c15fee7cca142e3fac0a127088b853cc81ae7dc070483672f65ec"
+  },
+  "offline_checks": {
+    "frozen_tests": 57,
+    "seconds": 133.578,
+    "skipped": 0,
+    "repository_checks": {
+      "design": "passed",
+      "repository": "passed",
+      "legacy": "passed"
+    },
+    "prior_regression_tests": 360,
+    "prior_regression_seconds": 630.356,
+    "checks": [
+      "A real native journal via mock HTTP: unidentified cost on a received 504 with generation ID gets one reservation, the original job stays ungraded, the next job is graded without retrying the first.",
+      "Wire-level eligibility distinguishes a provider-generated 504 from a different code, a missing generation ID, a known paid error and a genuinely ambiguous delivery.",
+      "An already attempted job, changed identity or existing unstarted folder cannot be scheduled; remaining banks verify against original writer journals and exact public source.",
+      "The original UTC time, count, known charges and both reservations share a single aggregate allowance."
+    ]
+  },
+  "later_single_generation_lookup": {
+    "checked_at": "2026-11-18T05:42:22.122442+00:00",
+    "method": "GET",
+    "endpoint": "https://openrouter.ai/api/v1/generation",
+    "generation_id": "gen-1794979345-RjatDnqrDGwFcU2ztl5v",
+    "failed_response_sha256": "578031de5d6c09144faa39b900ebaeff45a3f67b80d2d91ecfd0b78ed3c2241c",
+    "lookup_kind": "single_generation_billing_read_no_model_completion",
+    "http_status": 404,
+    "error_code": 404
+  },
+  "model_sends_during_preflight": 0
+}

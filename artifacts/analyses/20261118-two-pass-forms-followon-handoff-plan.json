@@ -1,0 +1,14 @@
+{
+  "format": "agent-memory-two-pass-handoff-comparison-plan/v1",
+  "task_id": "36",
+  "scope": "Exploratory question from observed block 1, fixed before block 2. Only preassigned task 36 episodes; no extra calls, alternative scores or changed stopping rule.",
+  "timing_evidence": {
+    "checked_at": "2026-11-18T05:55:44.020633+00:00",
+    "second_block_started": false,
+    "highest_followon_start": 313
+  },
+  "first_block_evidence_sha256": "98d4319367c21dac2235b4ea3b4bc20ef721f6c8b022ed3a01a5c10add03d343",
+  "prescribed_public_phrase": "YOU ARE BEING TRANSFERRED TO A HUMAN AGENT. PLEASE HOLD ON.",
+  "mechanism": "For each of both six-arm blocks, locate every successful handoff tool result, first following public assistant text and then the customer response. Compare identical first response bytes, the presence/timing of a customer termination marker and the official grading status. Other preceding dialogue and writing may differ.",
+  "missing": "Keep all ungraded task outcomes unavailable. Show intermediate DB assessments separately where available; preserve all 352 terminal dispositions in the accompanying score CSV."
+}

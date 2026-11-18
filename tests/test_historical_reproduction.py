@@ -215,6 +215,47 @@ except RuntimeError:
         self.assertTrue(result["source_inputs_preserved"] and result["staged_inputs_preserved"])
         self.assert_cleanup(result)
 
+    def test_external_scratch_cleanup_uses_its_own_directory_descriptor(self):
+        self.save_registry('''
+from tempfile import TemporaryDirectory
+with TemporaryDirectory() as temporary:
+    scratch = Path(temporary) / "samples"
+    scratch.mkdir()
+    (scratch / "blob.json").write_bytes(b"scratch")
+assert not Path(temporary).exists()
+''')
+        result = self.run_review()
+        self.assertEqual(result["status"], "passed", result.get("error"))
+        self.assertEqual(result["child"]["protected_write_attempts"], 0)
+        self.assert_cleanup(result)
+
+    def test_directory_relative_unlink_and_rename_preserve_worktree_inputs(self):
+        self.save_registry('''
+import os
+from contextlib import chdir
+from tempfile import TemporaryDirectory
+with TemporaryDirectory() as temporary, chdir(temporary):
+    Path("scratch").write_bytes(b"scratch")
+    protected = os.open(root / "runs/fixed", os.O_RDONLY)
+    try:
+        for operation in (
+            lambda: os.unlink("blob.json", dir_fd=protected),
+            lambda: os.rename("blob.json", "moved", src_dir_fd=protected),
+            lambda: os.rename("scratch", "moved", dst_dir_fd=protected),
+        ):
+            try:
+                operation()
+            except RuntimeError:
+                pass
+    finally:
+        os.close(protected)
+''')
+        result = self.run_review()
+        self.assertEqual(result["status"], "failed")
+        self.assertEqual(result["child"]["protected_write_attempts"], 3)
+        self.assertTrue(result["source_inputs_preserved"] and result["staged_inputs_preserved"])
+        self.assert_cleanup(result)
+
     def test_network_attempt_cannot_be_hidden_by_catching_the_exception(self):
         self.save_registry('''
 import socket

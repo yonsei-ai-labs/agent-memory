@@ -1,0 +1,31 @@
+{
+  "format": "agent-memory-two-pass-memory-forms-ready/v1",
+  "status": "ready",
+  "implementation_commit": "7e30fa24b2d4481e0a91fa30209debccba1c175f",
+  "design_ref": {
+    "path": "protocols/drafts/tau2-two-pass-memory-forms-v1.json",
+    "sha256": "d4b06f72f4bcf5f656587e80645e042e7cf77e687cd5d1c38a20e2aff2cc373a"
+  },
+  "research_ref": {
+    "path": "docs/research/two-pass-memory-forms-v1.md",
+    "sha256": "de37df9d9825242805b3ca464b267c4245beca8bb783bcd91332d857583a039d"
+  },
+  "endpoint_ref": {
+    "path": "artifacts/pilots/20261118-two-pass-forms-endpoints.json",
+    "sha256": "9b5bd1d9898ede15030b062fa81e451875fee0adff31d3a279d974a74435a872"
+  },
+  "preflight_ref": {
+    "path": "artifacts/analyses/20261118-two-pass-forms-preflight.json",
+    "sha256": "1f792b54db3004ba85534429c4925c8c74d7fdee2b8eb3de10523c93e9eaf915"
+  },
+  "output_root": "runs/tau2-two-pass-forms-luna-deepseek-01",
+  "guards": {
+    "max_calls": 16000,
+    "max_usd": 5,
+    "max_seconds": 129600
+  },
+  "stop_rule": "Stop new sends on an unpriced submitted request, exhausted total time/request budget, or rejected batch spend reservation. No automatic replay of an ambiguous send.",
+  "measurement": "One ordered batch: all 232 separate first-pass writers, then 352 fresh native episodes; no deduplication or provider fallback.",
+  "prepared_at": "2026-11-18T03:22:10.312917+00:00",
+  "http_timeout_seconds": 180
+}

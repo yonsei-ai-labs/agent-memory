@@ -1,0 +1,70 @@
+{
+  "format": "agent-memory-two-pass-single-generation-billing-check/v1",
+  "supplement_completion_sha256": "40004aaf9f1d127940bf9782864abe1cb6080796a73fa7bd1141a0e4652a5756",
+  "job": 302,
+  "run_id": "r_32f7c6a7322e476ea69c1071f34bf7b6",
+  "actor": "user_simulator",
+  "model_request_id": "request_f8ca7648c54e4a3a83d76d13561ecc30",
+  "wire_sha256": "d7c8584c40db8af872e0a667cdf7ba677fd2d6fde01c0367f19f6b46a1e9493f",
+  "provider_response_sha256": "578031de5d6c09144faa39b900ebaeff45a3f67b80d2d91ecfd0b78ed3c2241c",
+  "started_at": "2026-11-18T05:22:25.629166Z",
+  "response_at": "2026-11-18T05:27:26.034444Z",
+  "observed_error": {
+    "error": {
+      "code": 504,
+      "message": "A Timeout Occurred",
+      "metadata": {
+        "error_type": "timeout"
+      }
+    },
+    "id": "gen-1794979345-RjatDnqrDGwFcU2ztl5v"
+  },
+  "observed_cost_status": "unknown",
+  "model_sends_during_lookup": 0,
+  "lookups": [
+    {
+      "checked_at": "2026-11-18T05:29:08.837096+00:00",
+      "method": "GET",
+      "endpoint": "https://openrouter.ai/api/v1/generation",
+      "generation_id": "gen-1794979345-RjatDnqrDGwFcU2ztl5v",
+      "failed_response_sha256": "578031de5d6c09144faa39b900ebaeff45a3f67b80d2d91ecfd0b78ed3c2241c",
+      "lookup_kind": "single_generation_billing_read_no_model_completion",
+      "http_status": 404,
+      "error_code": 404
+    },
+    {
+      "checked_at": "2026-11-18T05:30:55.469024+00:00",
+      "method": "GET",
+      "endpoint": "https://openrouter.ai/api/v1/generation",
+      "generation_id": "gen-1794979345-RjatDnqrDGwFcU2ztl5v",
+      "failed_response_sha256": "578031de5d6c09144faa39b900ebaeff45a3f67b80d2d91ecfd0b78ed3c2241c",
+      "lookup_kind": "single_generation_billing_read_no_model_completion",
+      "http_status": 404,
+      "error_code": 404
+    },
+    {
+      "checked_at": "2026-11-18T05:33:01.887844+00:00",
+      "method": "GET",
+      "endpoint": "https://openrouter.ai/api/v1/generation",
+      "generation_id": "gen-1794979345-RjatDnqrDGwFcU2ztl5v",
+      "failed_response_sha256": "578031de5d6c09144faa39b900ebaeff45a3f67b80d2d91ecfd0b78ed3c2241c",
+      "lookup_kind": "single_generation_billing_read_no_model_completion",
+      "http_status": 404,
+      "error_code": 404
+    }
+  ],
+  "known_nearby_generation": {
+    "method": "GET",
+    "scope": "nearest preceding priced simulator response in the same episode",
+    "generation_id": "gen-1794979340-JhNXDBSXCEzhbdQiTXCF",
+    "recorded_cost": 7.96236e-05,
+    "checked_at": "2026-11-18T05:30:55.465026+00:00",
+    "response_sha256": "944161831e8d9d04aa88bccea337f57a7172167e2795122ef791c17f789f95d0",
+    "http_status": 200,
+    "same_generation": true,
+    "lookup_total_cost": 7.9623e-05
+  },
+  "wire_conservative_reservation_usd": "0.0082314",
+  "applied_to_sealed_study_budget": false,
+  "conclusion": "No individual billing amount was returned for the 504. A lookup 404 is not a zero-cost receipt. The separate earlier HTTP 429 reserve remains 0.0018567 in the sealed batch."
+}
