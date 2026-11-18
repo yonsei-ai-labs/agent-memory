@@ -127,6 +127,16 @@ def verify_shard(args):
             entry.update(grade=g, report_path=str((folder/res['report_ref']['path']).relative_to(workspace)),
                          tool_sequence=[c['name'] for m in messages for c in m.get('tool_calls') or []],
                          mutations=inspect_mutations(messages, criteria, WRITES))
+        else:
+            trajectory = res.get('native_report_ref') or res.get('partial_trajectory_ref')
+            if trajectory:
+                partial = blobs.get(trajectory)
+                messages = partial['messages'] if isinstance(partial, dict) else partial
+                entry.update(partial_path=str((folder/trajectory['path']).relative_to(workspace)),
+                             partial_tool_sequence=[c['name'] for m in messages for c in m.get('tool_calls') or []],
+                             partial_mutations=inspect_mutations(messages, criteria, WRITES))
+            if res.get('reached_state_assessment_ref'):
+                entry['reached_state_diagnostic'] = blobs.get(res['reached_state_assessment_ref'])
     reserved = sum((Decimal((e.get('reservation') or {}).get('usd','0')) for e in episodes), Decimal(0))
     known = sum((Decimal(e.get('known_usd','0')) for e in episodes), Decimal(0))
     if (sum(e.get('http_calls', 0) for e in episodes) != close['http_calls'] or reserved != Decimal(close['reserved_usd'])
