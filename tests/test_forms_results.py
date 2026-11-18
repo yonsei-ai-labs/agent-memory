@@ -23,6 +23,21 @@ class PairingTests(unittest.TestCase):
         self.assertEqual(evidence["profiles"][0]["result_index"], 1)
         self.assertEqual(evidence["profiles"][0]["returned_reservation_ids"], ["A"])
 
+    def test_cancellation_timeline_retains_an_additional_certificate_write(self):
+        messages = [
+            {"role": "user", "content": "Please cancel the reservation."},
+            {"role": "assistant", "tool_calls": [
+                {"id": "a", "name": "cancel_reservation", "arguments": {"reservation_id": "A"}}]},
+            {"role": "tool", "id": "a", "content": '{"reservation_id":"A","status":"cancelled"}'},
+            {"role": "assistant", "tool_calls": [
+                {"id": "b", "name": "send_certificate", "arguments": {"user_id": "sample", "amount": 50}}]},
+            {"role": "tool", "id": "b", "content": "Certificate sent."},
+        ]
+        writes = timeline(messages, "42", ["A"])["business_actions"]
+        self.assertEqual([a["name"] for a in writes], ["cancel_reservation", "send_certificate"])
+        self.assertEqual(writes[-1]["arguments"]["amount"], 50)
+        self.assertEqual(writes[-1]["returned"], "Certificate sent.")
+
     def test_partial_pairs_keep_task_weights_and_tight_missing_bounds(self):
         rows = []
         for t, rep, data in [("A", 1, [True, False]), ("A", 2, [True, False]),

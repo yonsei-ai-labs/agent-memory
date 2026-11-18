@@ -61,7 +61,7 @@ def timeline(messages, task, past_ids):
                 legs = [{k: v for k, v in f.items() if k in ("origin", "destination", "date", "flight_number")}
                         for f in detail.get("flights", [])]
                 lookups.append(dict(**base, returned_id=detail.get("reservation_id"), flights=legs))
-            if name in {"book_reservation", "cancel_reservation", "update_reservation_flights",
+            if name in {"book_reservation", "cancel_reservation", "send_certificate", "update_reservation_flights",
                         "update_reservation_passengers", "update_reservation_baggages", "transfer_to_human_agents"}:
                 before = [x for x in dialogue if x["index"] < i]
                 last = {r: next((m for m in reversed(before) if m["role"] == r), None) for r in ("assistant", "user")}
