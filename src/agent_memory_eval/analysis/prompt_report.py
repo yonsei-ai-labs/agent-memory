@@ -45,7 +45,36 @@ def _first_tool_difference(left, right):
     return None
 
 
-def _job_evidence(row, folder, scan, state, blobs, source, writers, pages, *, imported=False):
+def _grade_evidence(report, messages):
+    reward = report["reward_info"]
+    required = []
+    for check in reward.get("communicate_checks") or []:
+        cited = check.get("justification") or ""
+        turn = next((i for i, m in enumerate(messages) if m["role"] == "assistant" and m["content"]
+                     and cited.endswith("'" + m["content"] + "'")), None)
+        required.append(dict(info=check["info"], met=check["met"], cited_turn=turn))
+    return dict(db_match=(reward.get("db_check") or {}).get("db_match"), communication=required,
+                reference_actions=[dict(name=c["action"]["name"], matched=c["action_match"])
+                                   for c in reward.get("action_checks") or []])
+
+
+def _grade_section(grade):
+    match = {True: "일치", False: "불일치", None: "평가 없음"}
+    lines = ["", '<a id="grade"></a>', "", "## 공식 채점 근거", "",
+             f"- 최종 DB · {match[grade['db_match']]}"]
+    for c in grade["communication"]:
+        turn = c["cited_turn"]
+        link = f" · [채점기가 인용한 발화 {turn}](#m-{turn})" if turn is not None else ""
+        lines.append(f"- 필수 안내 `{c['info']}` · {match[c['met']]}{link}")
+    if not grade["communication"]:
+        lines.append("- 필수 안내 항목 0개")
+    if grade["reference_actions"]:
+        lines += ["", "참조 행동과의 일치 여부도 native 결과에 기록됩니다. 이 항공 실험의 공식 점수는 최종 DB와 필수 안내를 사용합니다.", ""]
+        lines += [f"- `{a['name']}` · {match[a['matched']]}" for a in grade["reference_actions"]]
+    return lines
+
+
+def _job_evidence(row, folder, scan, state, blobs, source, writers, pages, grades, *, imported=False):
     job, run, result = row["index"], row["run_id"], row["result"]
     name = f"writer-{job}.md" if imported else f"job-{job}.md"
     task, rep, arm = row["task_id"], row["repetition"], row["arm"]
@@ -89,6 +118,10 @@ def _job_evidence(row, folder, scan, state, blobs, source, writers, pages, *, im
             report = blobs.get(report_ref)
             messages = _public(report["messages"])
             text += ["", _link("native 원본 대화·도구·채점", pages, safe_path(folder, report_ref["path"]))]
+            if result["grading_status"] == "graded":
+                grade = _grade_evidence(report, messages)
+                grades[job] = grade
+                text += _grade_section(grade)
         elif result.get("partial_trajectory_ref"):
             ref = result["partial_trajectory_ref"]
             messages = _public(blobs.get(ref))
@@ -133,13 +166,23 @@ def _job_evidence(row, folder, scan, state, blobs, source, writers, pages, *, im
     return messages
 
 
-def _case_page(pages, left, right, evidence, review):
+def _case_page(pages, left, right, evidence, review, grades):
     li, ri = left["index"], right["index"]
     def side(row):
         return (f"[{row['arm']} · {_outcome(row)} · {row['index']}](job-{row['index']}.md)"
                 if row["index"] in evidence else f"{row['arm']} · {_outcome(row)} · {row.get('reason', '')}")
     title = f"과제 {left['task_id']} · 반복 {left['repetition']} · {left['arm']} / {right['arm']}"
     text = [f"# {title}", "", side(left) + " · " + side(right), ""]
+    if li in grades and ri in grades and left["result"]["official_success"] != right["result"]["official_success"]:
+        components = []
+        if grades[li]["db_match"] != grades[ri]["db_match"]:
+            components.append("최종 DB 상태")
+        required = [{c["info"]: c["met"] for c in grades[j]["communication"]} for j in (li, ri)]
+        components += [f"필수 안내 `{key}`" for key in sorted(required[0].keys() | required[1].keys())
+                       if required[0].get(key) != required[1].get(key)]
+        if components:
+            text += ["## 공식 점수가 갈린 항목", "", " · ".join(components), "",
+                     f"[{left['arm']} 채점 근거](job-{li}.md#grade) · [{right['arm']} 채점 근거](job-{ri}.md#grade)", ""]
     if review:
         sides = review["sides_in_blind_order"]
         data = {li: left, ri: right}
@@ -174,10 +217,10 @@ def _case_page(pages, left, right, evidence, review):
 def _make_report(run, staged, destination, annotation_path):
     pages = staged / "evidence"
     pages.mkdir()
-    sources, writers, evidence = {}, {}, {}
+    sources, writers, evidence, grades = {}, {}, {}, {}
     retrieval = {}
     def observe(row, folder, scan, state, blobs):
-        evidence[row["index"]] = _job_evidence(row, folder, scan, state, blobs, sources, writers, pages)
+        evidence[row["index"]] = _job_evidence(row, folder, scan, state, blobs, sources, writers, pages, grades=grades)
         if row["phase"] == "solve":
             run_id = row["run_id"]
             cfg = state["assignments"][run_id]
@@ -193,7 +236,7 @@ def _make_report(run, staged, destination, annotation_path):
                 items=(cfg["bank_sizes"] or {}).get("items", 0), writer_snapshot=cfg["source_writer_snapshot_id"],
                 list_calls=returned["list"], get_calls=returned["get"], title_spans=fields["title"], body_spans=fields["body"])
     def observe_parent(row, folder, scan, state, blobs):
-        _job_evidence(row, folder, scan, state, blobs, sources, writers, pages, imported=True)
+        _job_evidence(row, folder, scan, state, blobs, sources, writers, pages, grades, imported=True)
     design, completion, rows, usage = checked_rows(run, observe_job=observe, observe_parent=observe_parent)
     # Both stage and destination are siblings, so relative file links remain valid on publication.
     source_grades = read_json((run / "control.json").read_bytes())["source_outcomes"]
@@ -260,7 +303,7 @@ def _make_report(run, staged, destination, annotation_path):
         for left in (r for r in solves if r["arm"] == a):
             right = by_cell[left["task_id"], left["repetition"], b]
             key = left["index"], right["index"]
-            page = _case_page(pages, left, right, evidence, annotations.get(key))
+            page = _case_page(pages, left, right, evidence, annotations.get(key), grades)
             linked.add(key)
             index.append(f"| {left['task_id']} | {left['repetition']} | {a} / {b} | "
                          f"[{_outcome(left)} / {_outcome(right)}](evidence/{page}) |")
@@ -274,7 +317,7 @@ def _make_report(run, staged, destination, annotation_path):
                    allocation_sha256=completion["allocation_sha256"], conditions=design.get("conditions", []),
                    task_sets=sets, outcomes=dict(outcomes), contrasts=contrasts, first_to_second=transitions,
                    costs_by_condition=dict(cost), usage_by_role=usage, completion=completion,
-                   retrieval_by_job=retrieval, writer_parent=design.get("writer_parent"),
+                   retrieval_by_job=retrieval, native_grade_components=grades, writer_parent=design.get("writer_parent"),
                    verified_paired_annotations=len(annotations), paired_case_pages=len(linked))
     write_json(staged / "summary.json", summary)
     (staged / "index.md").write_text("\n".join(index) + "\n", encoding="utf-8")

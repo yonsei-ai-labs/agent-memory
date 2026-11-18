@@ -115,6 +115,11 @@ class PromptComparisonTests(unittest.TestCase):
             self.assertEqual(summary["paired_case_pages"], 5)
             self.assertEqual(summary["contrasts"]["evaluation"][0]["jointly_graded_pairs"], 1)
             self.assertEqual(summary["costs_by_condition"]["fact_original"]["empty_writers"], 1)
+            self.assertEqual(len(summary["native_grade_components"]), 4)
+            for grade in summary["native_grade_components"].values():
+                self.assertTrue(grade["db_match"])
+                self.assertEqual(grade["communication"][0]["info"], "4")
+                self.assertIsNotNone(grade["communication"][0]["cited_turn"])
             for file in directory.rglob("*.md"):
                 for link in re.findall(r"\[[^\]]*\]\(([^)]+)\)", file.read_text()):
                     self.assertTrue((file.parent / link.split("#")[0]).exists(), link)
