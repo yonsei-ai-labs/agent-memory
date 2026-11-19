@@ -4,6 +4,38 @@
 
 `runs/`에는 실험의 원본이, `outputs/`에는 그 원본에서 생성한 비교 보고서가 있다. 같은 파일인지 확인하려면 `sha256sum 경로`로 대조한다. `blobs/sha256/` 아래 파일은 파일명 자체가 SHA-256이다. 해당 경로가 공유 분석에 등장하면 그 행도 연결했다.
 
+## 소매 테스트 40과제의 두 회차 비교
+
+아래는 상담 대화 전체가 들어 있는 원본이다. 공유 분석에는 같은 실행의 메모·업무 변경·채점 문항이 연결돼 있다. [40과제 보고서](20261119-retail-full-forms.md)
+
+**60번 절차 · 이어버드의 방수 조건을 정정한 고객** · [공유 분석의 해당 상담](../../artifacts/analyses/20261119-retail-full-cells.json#L21457)
+
+`runs/tau2-retail-full-forms-01/task-60/solve1/jobs/0002/blobs/sha256/45060353d3eec7b62433492e1df0db6542b3406ef4063a2c89cda82bfba728d0`
+
+**60번 일기 · 빈 작성 뒤 세 상품을 제시한 상담** · [공유 분석의 해당 상담](../../artifacts/analyses/20261119-retail-full-cells.json#L21841)
+
+`runs/tau2-retail-full-forms-01/task-60/solve1/jobs/0005/blobs/sha256/e48c4af341a6e79e8f7525f99026389c2f3d3f1619ec188c863cd20a77d99f40`
+
+**60번 무기억 · 첫 번째 방수 제품을 승인한 고객** · [공유 분석의 해당 상담](../../artifacts/analyses/20261119-retail-full-cells.json#L21329)
+
+`runs/tau2-retail-full-forms-01/task-60/solve1/jobs/0001/blobs/sha256/3ad357df92084be1e3a43fecf137968cffcf937d72ec447b78ee2cc13c26d0c9`
+
+**51번 절차 · 반품 전 상담원 이관** · [공유 분석의 해당 상담](../../artifacts/analyses/20261119-retail-full-cells.json#L17119)
+
+`runs/tau2-retail-full-forms-01/task-51/solve1/jobs/0003/blobs/sha256/e17dd06c0e72f6bf6eb21bf386a4d4a9fc45e00efaa2ae53b2a3d98b028d89bb`
+
+**51번 무기억 · 고객 확인 뒤 카메라 반품** · [공유 분석의 해당 상담](../../artifacts/analyses/20261119-retail-full-cells.json#L16893)
+
+`runs/tau2-retail-full-forms-01/task-51/solve1/jobs/0001/blobs/sha256/98d61ba723931071a77266b65bf09516cb102b3ed94f492e439972400bc97821`
+
+**68번 일기 · 고객이 마지막에 고른 주문과 안내 금액** · [공유 분석의 해당 상담](../../artifacts/analyses/20261119-retail-full-cells.json#L25751)
+
+`runs/tau2-retail-full-forms-01/task-68/solve1/jobs/0002/blobs/sha256/453e4f5c36dea43d3aa497095d7f45526368fc1070dbbd00acb4f79baf403aeb`
+
+**49번 일기 · 같은 주문 안에서 고른 교환 상품** · [공유 분석의 해당 상담](../../artifacts/analyses/20261119-retail-full-cells.json#L16269)
+
+`runs/tau2-retail-full-forms-01/task-49/solve1/jobs/0004/blobs/sha256/e7bb8c702a40b89943574f7f34c1131cf3349a4ac8e73d7c753bd1644ec0fda2`
+
 ## 소매 재확인 지침의 두 라운드
 
 [개발 고객의 작성·노출·채점](../../artifacts/analyses/20261119-retail-recheck-development-results.json) · [확인 고객의 작성·노출·채점](../../artifacts/analyses/20261119-retail-recheck-confirmation-results.json) · [두 라운드 집계](../../artifacts/analyses/20261119-retail-recheck-two-round-results.json)

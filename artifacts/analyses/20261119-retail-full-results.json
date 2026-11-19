@@ -1,0 +1,5083 @@
+{
+  "stage_usd": {
+    "source": "0.1315917452",
+    "write": "0.162054510",
+    "solve1": "0.7262857858"
+  },
+  "writing_and_replay_usd": {
+    "fact_original": "0.1530869120",
+    "lesson_original": "0.1708095436",
+    "procedure_original": "0.1645445756",
+    "episode_original": "0.1559348036",
+    "no_memory": "0.1203497466",
+    "empty_preload": "0.1236147144"
+  },
+  "source_failure_customers": 12,
+  "study": "tau2-retail-full-forms-01",
+  "detail_sha256": "34d877c4d778cee4a39490a640ab11dcd9455ec991df44788fc29f13663907e2",
+  "implementation": "23298ca038384c5ea762d5f75da12563eb6c9dff",
+  "protocol_sha256": "1be3ddf693e85ccbfb0980b24b7b4acbe8f3354a9accda8d3f72c28e64d5363a",
+  "source": {
+    "success": 27,
+    "failure": 13
+  },
+  "writers": {
+    "fact": {
+      "empty": 10,
+      "completed": 30
+    },
+    "episode": {
+      "empty": 12,
+      "completed": 28
+    },
+    "lesson": {
+      "completed": 37,
+      "empty": 3
+    },
+    "procedure": {
+      "completed": 37,
+      "empty": 3
+    }
+  },
+  "allocation_states": {
+    "source": {
+      "completed": 40
+    },
+    "write": {
+      "empty": 28,
+      "completed": 132
+    },
+    "solve1": {
+      "completed": 240
+    }
+  },
+  "sessions": 440,
+  "generations": 5741,
+  "reported_usd": "1.0199320410",
+  "held_usd": "0E-10",
+  "http": 5741,
+  "by_role": {
+    "user_simulator": {
+      "http": 1806,
+      "tokens": 2093806,
+      "unknown": 0,
+      "usd": "0.1790906160"
+    },
+    "worker": {
+      "http": 3566,
+      "tokens": 20043623,
+      "unknown": 0,
+      "usd": "0.439116915"
+    },
+    "writer": {
+      "http": 292,
+      "tokens": 1863087,
+      "unknown": 0,
+      "usd": "0.162054510"
+    },
+    "grader": {
+      "http": 77,
+      "tokens": 269805,
+      "unknown": 0,
+      "usd": "0.23967000"
+    }
+  },
+  "regraded": 280,
+  "replayed_judge_responses": 77,
+  "new_grader_calls": 0,
+  "groups": {
+    "all": {
+      "tasks": 40,
+      "customers": 31,
+      "forms": {
+        "fact_original": {
+          "official": {
+            "success": 30,
+            "failure": 10
+          },
+          "vs_first": {
+            "both_pass": 24,
+            "both_fail": 7,
+            "gain": 6,
+            "loss": 3
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 27,
+              "loss": 5,
+              "both_fail": 5,
+              "gain": 3
+            },
+            "empty_preload": {
+              "both_pass": 27,
+              "both_fail": 6,
+              "gain": 3,
+              "loss": 4
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_success": {
+                "both_pass": 22,
+                "both_fail": 1,
+                "loss": 2,
+                "gain": 2
+              },
+              "first_failure": {
+                "loss": 3,
+                "both_pass": 5,
+                "both_fail": 4,
+                "gain": 1
+              }
+            },
+            "empty_preload": {
+              "first_success": {
+                "both_pass": 23,
+                "both_fail": 1,
+                "loss": 2,
+                "gain": 1
+              },
+              "first_failure": {
+                "both_fail": 5,
+                "gain": 2,
+                "loss": 2,
+                "both_pass": 4
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_success": {
+              "both_pass": 21,
+              "both_fail": 1,
+              "loss": 2,
+              "split_controls": 3
+            },
+            "first_failure": {
+              "split_controls": 8,
+              "both_fail": 2,
+              "both_pass": 3
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": -0.016129032258064516,
+            "empty_preload": -0.053763440860215055
+          },
+          "task_equal_weight_difference": {
+            "no_memory": -0.05,
+            "empty_preload": -0.025
+          }
+        },
+        "episode_original": {
+          "official": {
+            "success": 31,
+            "failure": 9
+          },
+          "vs_first": {
+            "both_pass": 23,
+            "gain": 8,
+            "both_fail": 5,
+            "loss": 4
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 27,
+              "loss": 5,
+              "both_fail": 4,
+              "gain": 4
+            },
+            "empty_preload": {
+              "both_pass": 27,
+              "gain": 4,
+              "both_fail": 5,
+              "loss": 4
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_success": {
+                "both_pass": 22,
+                "both_fail": 2,
+                "loss": 2,
+                "gain": 1
+              },
+              "first_failure": {
+                "both_pass": 5,
+                "loss": 3,
+                "both_fail": 2,
+                "gain": 3
+              }
+            },
+            "empty_preload": {
+              "first_success": {
+                "both_pass": 22,
+                "both_fail": 1,
+                "loss": 3,
+                "gain": 1
+              },
+              "first_failure": {
+                "gain": 3,
+                "both_fail": 4,
+                "both_pass": 5,
+                "loss": 1
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_success": {
+              "both_pass": 21,
+              "both_fail": 1,
+              "loss": 2,
+              "split_controls": 3
+            },
+            "first_failure": {
+              "split_controls": 8,
+              "both_fail": 1,
+              "both_pass": 3,
+              "gain": 1
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": 0.016129032258064516,
+            "empty_preload": -0.021505376344086023
+          },
+          "task_equal_weight_difference": {
+            "no_memory": -0.025,
+            "empty_preload": 0.0
+          }
+        },
+        "lesson_original": {
+          "official": {
+            "success": 30,
+            "failure": 10
+          },
+          "vs_first": {
+            "both_pass": 23,
+            "gain": 7,
+            "both_fail": 6,
+            "loss": 4
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 29,
+              "loss": 3,
+              "both_fail": 7,
+              "gain": 1
+            },
+            "empty_preload": {
+              "both_pass": 26,
+              "gain": 4,
+              "both_fail": 5,
+              "loss": 5
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_success": {
+                "both_pass": 23,
+                "both_fail": 3,
+                "loss": 1
+              },
+              "first_failure": {
+                "both_pass": 6,
+                "loss": 2,
+                "both_fail": 4,
+                "gain": 1
+              }
+            },
+            "empty_preload": {
+              "first_success": {
+                "both_pass": 22,
+                "both_fail": 1,
+                "loss": 3,
+                "gain": 1
+              },
+              "first_failure": {
+                "gain": 3,
+                "both_fail": 4,
+                "loss": 2,
+                "both_pass": 4
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_success": {
+              "both_pass": 22,
+              "both_fail": 1,
+              "loss": 1,
+              "split_controls": 3
+            },
+            "first_failure": {
+              "split_controls": 8,
+              "both_fail": 2,
+              "both_pass": 3
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": -0.03225806451612903,
+            "empty_preload": -0.06989247311827956
+          },
+          "task_equal_weight_difference": {
+            "no_memory": -0.05,
+            "empty_preload": -0.025
+          }
+        },
+        "procedure_original": {
+          "official": {
+            "success": 31,
+            "failure": 9
+          },
+          "vs_first": {
+            "both_pass": 24,
+            "gain": 7,
+            "both_fail": 6,
+            "loss": 3
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 27,
+              "loss": 5,
+              "both_fail": 4,
+              "gain": 4
+            },
+            "empty_preload": {
+              "both_pass": 26,
+              "gain": 5,
+              "both_fail": 4,
+              "loss": 5
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_success": {
+                "both_pass": 22,
+                "both_fail": 1,
+                "loss": 2,
+                "gain": 2
+              },
+              "first_failure": {
+                "both_pass": 5,
+                "loss": 3,
+                "both_fail": 3,
+                "gain": 2
+              }
+            },
+            "empty_preload": {
+              "first_success": {
+                "both_pass": 23,
+                "both_fail": 1,
+                "loss": 2,
+                "gain": 1
+              },
+              "first_failure": {
+                "gain": 4,
+                "both_fail": 3,
+                "loss": 3,
+                "both_pass": 3
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_success": {
+              "both_pass": 21,
+              "both_fail": 1,
+              "loss": 2,
+              "split_controls": 3
+            },
+            "first_failure": {
+              "split_controls": 8,
+              "both_fail": 1,
+              "both_pass": 2,
+              "gain": 1,
+              "loss": 1
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": 0.016129032258064516,
+            "empty_preload": -0.021505376344086023
+          },
+          "task_equal_weight_difference": {
+            "no_memory": -0.025,
+            "empty_preload": 0.0
+          }
+        },
+        "no_memory": {
+          "official": {
+            "success": 32,
+            "failure": 8
+          },
+          "vs_first": {
+            "both_pass": 24,
+            "gain": 8,
+            "loss": 3,
+            "both_fail": 5
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 32,
+              "both_fail": 8
+            },
+            "empty_preload": {
+              "both_pass": 26,
+              "gain": 6,
+              "both_fail": 3,
+              "loss": 5
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_success": {
+                "both_pass": 24,
+                "both_fail": 3
+              },
+              "first_failure": {
+                "both_pass": 8,
+                "both_fail": 5
+              }
+            },
+            "empty_preload": {
+              "first_success": {
+                "both_pass": 23,
+                "both_fail": 1,
+                "loss": 2,
+                "gain": 1
+              },
+              "first_failure": {
+                "gain": 5,
+                "both_fail": 2,
+                "loss": 3,
+                "both_pass": 3
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_success": {
+              "both_pass": 23,
+              "both_fail": 1,
+              "split_controls": 3
+            },
+            "first_failure": {
+              "split_controls": 8,
+              "both_fail": 2,
+              "both_pass": 3
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": -0.03763440860215054
+          },
+          "task_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": 0.025
+          }
+        },
+        "empty_preload": {
+          "official": {
+            "success": 31,
+            "failure": 9
+          },
+          "vs_first": {
+            "both_pass": 25,
+            "both_fail": 7,
+            "loss": 2,
+            "gain": 6
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 26,
+              "loss": 6,
+              "both_fail": 3,
+              "gain": 5
+            },
+            "empty_preload": {
+              "both_pass": 31,
+              "both_fail": 9
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_success": {
+                "both_pass": 23,
+                "both_fail": 1,
+                "gain": 2,
+                "loss": 1
+              },
+              "first_failure": {
+                "loss": 5,
+                "both_fail": 2,
+                "gain": 3,
+                "both_pass": 3
+              }
+            },
+            "empty_preload": {
+              "first_success": {
+                "both_pass": 25,
+                "both_fail": 2
+              },
+              "first_failure": {
+                "both_fail": 7,
+                "both_pass": 6
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_success": {
+              "both_pass": 23,
+              "both_fail": 1,
+              "split_controls": 3
+            },
+            "first_failure": {
+              "split_controls": 8,
+              "both_fail": 2,
+              "both_pass": 3
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": 0.03763440860215054,
+            "empty_preload": 0.0
+          },
+          "task_equal_weight_difference": {
+            "no_memory": -0.025,
+            "empty_preload": 0.0
+          }
+        }
+      }
+    },
+    "previous_task": {
+      "tasks": 6,
+      "customers": 6,
+      "forms": {
+        "fact_original": {
+          "official": {
+            "success": 5,
+            "failure": 1
+          },
+          "vs_first": {
+            "both_pass": 4,
+            "both_fail": 1,
+            "gain": 1
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 5,
+              "both_fail": 1
+            },
+            "empty_preload": {
+              "both_pass": 5,
+              "loss": 1
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_success": {
+                "both_pass": 4
+              },
+              "first_failure": {
+                "both_fail": 1,
+                "both_pass": 1
+              }
+            },
+            "empty_preload": {
+              "first_success": {
+                "both_pass": 4
+              },
+              "first_failure": {
+                "loss": 1,
+                "both_pass": 1
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_success": {
+              "both_pass": 4
+            },
+            "first_failure": {
+              "split_controls": 1,
+              "both_pass": 1
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": -0.16666666666666666
+          },
+          "task_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": -0.16666666666666666
+          }
+        },
+        "episode_original": {
+          "official": {
+            "success": 6
+          },
+          "vs_first": {
+            "both_pass": 4,
+            "gain": 2
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 5,
+              "gain": 1
+            },
+            "empty_preload": {
+              "both_pass": 6
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_success": {
+                "both_pass": 4
+              },
+              "first_failure": {
+                "gain": 1,
+                "both_pass": 1
+              }
+            },
+            "empty_preload": {
+              "first_success": {
+                "both_pass": 4
+              },
+              "first_failure": {
+                "both_pass": 2
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_success": {
+              "both_pass": 4
+            },
+            "first_failure": {
+              "split_controls": 1,
+              "both_pass": 1
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": 0.16666666666666666,
+            "empty_preload": 0.0
+          },
+          "task_equal_weight_difference": {
+            "no_memory": 0.16666666666666666,
+            "empty_preload": 0.0
+          }
+        },
+        "lesson_original": {
+          "official": {
+            "success": 4,
+            "failure": 2
+          },
+          "vs_first": {
+            "both_pass": 3,
+            "both_fail": 1,
+            "loss": 1,
+            "gain": 1
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 4,
+              "both_fail": 1,
+              "loss": 1
+            },
+            "empty_preload": {
+              "both_pass": 4,
+              "loss": 2
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_success": {
+                "both_pass": 3,
+                "loss": 1
+              },
+              "first_failure": {
+                "both_fail": 1,
+                "both_pass": 1
+              }
+            },
+            "empty_preload": {
+              "first_success": {
+                "both_pass": 3,
+                "loss": 1
+              },
+              "first_failure": {
+                "loss": 1,
+                "both_pass": 1
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_success": {
+              "both_pass": 3,
+              "loss": 1
+            },
+            "first_failure": {
+              "split_controls": 1,
+              "both_pass": 1
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": -0.16666666666666666,
+            "empty_preload": -0.3333333333333333
+          },
+          "task_equal_weight_difference": {
+            "no_memory": -0.16666666666666666,
+            "empty_preload": -0.3333333333333333
+          }
+        },
+        "procedure_original": {
+          "official": {
+            "success": 5,
+            "failure": 1
+          },
+          "vs_first": {
+            "both_pass": 4,
+            "both_fail": 1,
+            "gain": 1
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 5,
+              "both_fail": 1
+            },
+            "empty_preload": {
+              "both_pass": 5,
+              "loss": 1
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_success": {
+                "both_pass": 4
+              },
+              "first_failure": {
+                "both_fail": 1,
+                "both_pass": 1
+              }
+            },
+            "empty_preload": {
+              "first_success": {
+                "both_pass": 4
+              },
+              "first_failure": {
+                "loss": 1,
+                "both_pass": 1
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_success": {
+              "both_pass": 4
+            },
+            "first_failure": {
+              "split_controls": 1,
+              "both_pass": 1
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": -0.16666666666666666
+          },
+          "task_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": -0.16666666666666666
+          }
+        },
+        "no_memory": {
+          "official": {
+            "success": 5,
+            "failure": 1
+          },
+          "vs_first": {
+            "both_pass": 4,
+            "both_fail": 1,
+            "gain": 1
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 5,
+              "both_fail": 1
+            },
+            "empty_preload": {
+              "both_pass": 5,
+              "loss": 1
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_success": {
+                "both_pass": 4
+              },
+              "first_failure": {
+                "both_fail": 1,
+                "both_pass": 1
+              }
+            },
+            "empty_preload": {
+              "first_success": {
+                "both_pass": 4
+              },
+              "first_failure": {
+                "loss": 1,
+                "both_pass": 1
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_success": {
+              "both_pass": 4
+            },
+            "first_failure": {
+              "split_controls": 1,
+              "both_pass": 1
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": -0.16666666666666666
+          },
+          "task_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": -0.16666666666666666
+          }
+        },
+        "empty_preload": {
+          "official": {
+            "success": 6
+          },
+          "vs_first": {
+            "both_pass": 4,
+            "gain": 2
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 5,
+              "gain": 1
+            },
+            "empty_preload": {
+              "both_pass": 6
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_success": {
+                "both_pass": 4
+              },
+              "first_failure": {
+                "gain": 1,
+                "both_pass": 1
+              }
+            },
+            "empty_preload": {
+              "first_success": {
+                "both_pass": 4
+              },
+              "first_failure": {
+                "both_pass": 2
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_success": {
+              "both_pass": 4
+            },
+            "first_failure": {
+              "split_controls": 1,
+              "both_pass": 1
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": 0.16666666666666666,
+            "empty_preload": 0.0
+          },
+          "task_equal_weight_difference": {
+            "no_memory": 0.16666666666666666,
+            "empty_preload": 0.0
+          }
+        }
+      }
+    },
+    "new_task": {
+      "tasks": 34,
+      "customers": 28,
+      "forms": {
+        "fact_original": {
+          "official": {
+            "failure": 9,
+            "success": 25
+          },
+          "vs_first": {
+            "both_fail": 6,
+            "both_pass": 20,
+            "gain": 5,
+            "loss": 3
+          },
+          "vs_controls": {
+            "no_memory": {
+              "loss": 5,
+              "both_pass": 22,
+              "both_fail": 4,
+              "gain": 3
+            },
+            "empty_preload": {
+              "both_fail": 6,
+              "both_pass": 22,
+              "gain": 3,
+              "loss": 3
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_failure": {
+                "loss": 3,
+                "both_pass": 4,
+                "both_fail": 3,
+                "gain": 1
+              },
+              "first_success": {
+                "both_pass": 18,
+                "both_fail": 1,
+                "loss": 2,
+                "gain": 2
+              }
+            },
+            "empty_preload": {
+              "first_failure": {
+                "both_fail": 5,
+                "gain": 2,
+                "both_pass": 3,
+                "loss": 1
+              },
+              "first_success": {
+                "both_pass": 19,
+                "both_fail": 1,
+                "loss": 2,
+                "gain": 1
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_failure": {
+              "split_controls": 7,
+              "both_fail": 2,
+              "both_pass": 2
+            },
+            "first_success": {
+              "both_pass": 17,
+              "both_fail": 1,
+              "loss": 2,
+              "split_controls": 3
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": -0.03571428571428571,
+            "empty_preload": -0.005952380952380953
+          },
+          "task_equal_weight_difference": {
+            "no_memory": -0.058823529411764705,
+            "empty_preload": 0.0
+          }
+        },
+        "episode_original": {
+          "official": {
+            "success": 25,
+            "failure": 9
+          },
+          "vs_first": {
+            "gain": 6,
+            "both_pass": 19,
+            "both_fail": 5,
+            "loss": 4
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 22,
+              "loss": 5,
+              "both_fail": 4,
+              "gain": 3
+            },
+            "empty_preload": {
+              "gain": 4,
+              "both_pass": 21,
+              "both_fail": 5,
+              "loss": 4
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_failure": {
+                "both_pass": 4,
+                "loss": 3,
+                "both_fail": 2,
+                "gain": 2
+              },
+              "first_success": {
+                "both_pass": 18,
+                "both_fail": 2,
+                "loss": 2,
+                "gain": 1
+              }
+            },
+            "empty_preload": {
+              "first_failure": {
+                "gain": 3,
+                "both_fail": 4,
+                "both_pass": 3,
+                "loss": 1
+              },
+              "first_success": {
+                "both_pass": 18,
+                "both_fail": 1,
+                "loss": 3,
+                "gain": 1
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_failure": {
+              "split_controls": 7,
+              "both_fail": 1,
+              "both_pass": 2,
+              "gain": 1
+            },
+            "first_success": {
+              "both_pass": 17,
+              "both_fail": 1,
+              "loss": 2,
+              "split_controls": 3
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": -0.03571428571428571,
+            "empty_preload": -0.005952380952380953
+          },
+          "task_equal_weight_difference": {
+            "no_memory": -0.058823529411764705,
+            "empty_preload": 0.0
+          }
+        },
+        "lesson_original": {
+          "official": {
+            "success": 26,
+            "failure": 8
+          },
+          "vs_first": {
+            "gain": 6,
+            "both_pass": 20,
+            "both_fail": 5,
+            "loss": 3
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 25,
+              "loss": 2,
+              "both_fail": 6,
+              "gain": 1
+            },
+            "empty_preload": {
+              "gain": 4,
+              "both_pass": 22,
+              "both_fail": 5,
+              "loss": 3
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_failure": {
+                "both_pass": 5,
+                "loss": 2,
+                "both_fail": 3,
+                "gain": 1
+              },
+              "first_success": {
+                "both_pass": 20,
+                "both_fail": 3
+              }
+            },
+            "empty_preload": {
+              "first_failure": {
+                "gain": 3,
+                "both_fail": 4,
+                "both_pass": 3,
+                "loss": 1
+              },
+              "first_success": {
+                "both_pass": 19,
+                "both_fail": 1,
+                "loss": 2,
+                "gain": 1
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_failure": {
+              "split_controls": 7,
+              "both_fail": 2,
+              "both_pass": 2
+            },
+            "first_success": {
+              "both_pass": 19,
+              "both_fail": 1,
+              "split_controls": 3
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": -0.017857142857142856,
+            "empty_preload": 0.011904761904761904
+          },
+          "task_equal_weight_difference": {
+            "no_memory": -0.029411764705882353,
+            "empty_preload": 0.029411764705882353
+          }
+        },
+        "procedure_original": {
+          "official": {
+            "success": 26,
+            "failure": 8
+          },
+          "vs_first": {
+            "gain": 6,
+            "both_pass": 20,
+            "both_fail": 5,
+            "loss": 3
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 22,
+              "loss": 5,
+              "both_fail": 3,
+              "gain": 4
+            },
+            "empty_preload": {
+              "gain": 5,
+              "both_pass": 21,
+              "both_fail": 4,
+              "loss": 4
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_failure": {
+                "both_pass": 4,
+                "loss": 3,
+                "both_fail": 2,
+                "gain": 2
+              },
+              "first_success": {
+                "both_pass": 18,
+                "both_fail": 1,
+                "loss": 2,
+                "gain": 2
+              }
+            },
+            "empty_preload": {
+              "first_failure": {
+                "gain": 4,
+                "both_fail": 3,
+                "both_pass": 2,
+                "loss": 2
+              },
+              "first_success": {
+                "both_pass": 19,
+                "both_fail": 1,
+                "loss": 2,
+                "gain": 1
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_failure": {
+              "split_controls": 7,
+              "both_fail": 1,
+              "both_pass": 1,
+              "gain": 1,
+              "loss": 1
+            },
+            "first_success": {
+              "both_pass": 17,
+              "both_fail": 1,
+              "loss": 2,
+              "split_controls": 3
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": -0.017857142857142856,
+            "empty_preload": 0.011904761904761904
+          },
+          "task_equal_weight_difference": {
+            "no_memory": -0.029411764705882353,
+            "empty_preload": 0.029411764705882353
+          }
+        },
+        "no_memory": {
+          "official": {
+            "success": 27,
+            "failure": 7
+          },
+          "vs_first": {
+            "gain": 7,
+            "both_pass": 20,
+            "loss": 3,
+            "both_fail": 4
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 27,
+              "both_fail": 7
+            },
+            "empty_preload": {
+              "gain": 6,
+              "both_pass": 21,
+              "both_fail": 3,
+              "loss": 4
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_failure": {
+                "both_pass": 7,
+                "both_fail": 4
+              },
+              "first_success": {
+                "both_pass": 20,
+                "both_fail": 3
+              }
+            },
+            "empty_preload": {
+              "first_failure": {
+                "gain": 5,
+                "both_fail": 2,
+                "both_pass": 2,
+                "loss": 2
+              },
+              "first_success": {
+                "both_pass": 19,
+                "both_fail": 1,
+                "loss": 2,
+                "gain": 1
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_failure": {
+              "split_controls": 7,
+              "both_fail": 2,
+              "both_pass": 2
+            },
+            "first_success": {
+              "both_pass": 19,
+              "both_fail": 1,
+              "split_controls": 3
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": 0.02976190476190476
+          },
+          "task_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": 0.058823529411764705
+          }
+        },
+        "empty_preload": {
+          "official": {
+            "failure": 9,
+            "success": 25
+          },
+          "vs_first": {
+            "both_fail": 7,
+            "both_pass": 21,
+            "loss": 2,
+            "gain": 4
+          },
+          "vs_controls": {
+            "no_memory": {
+              "loss": 6,
+              "both_pass": 21,
+              "both_fail": 3,
+              "gain": 4
+            },
+            "empty_preload": {
+              "both_fail": 9,
+              "both_pass": 25
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_failure": {
+                "loss": 5,
+                "both_fail": 2,
+                "both_pass": 2,
+                "gain": 2
+              },
+              "first_success": {
+                "both_pass": 19,
+                "both_fail": 1,
+                "gain": 2,
+                "loss": 1
+              }
+            },
+            "empty_preload": {
+              "first_failure": {
+                "both_fail": 7,
+                "both_pass": 4
+              },
+              "first_success": {
+                "both_pass": 21,
+                "both_fail": 2
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_failure": {
+              "split_controls": 7,
+              "both_fail": 2,
+              "both_pass": 2
+            },
+            "first_success": {
+              "both_pass": 19,
+              "both_fail": 1,
+              "split_controls": 3
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": -0.02976190476190476,
+            "empty_preload": 0.0
+          },
+          "task_equal_weight_difference": {
+            "no_memory": -0.058823529411764705,
+            "empty_preload": 0.0
+          }
+        }
+      }
+    },
+    "previous_customer": {
+      "tasks": 13,
+      "customers": 9,
+      "forms": {
+        "fact_original": {
+          "official": {
+            "success": 10,
+            "failure": 3
+          },
+          "vs_first": {
+            "both_pass": 7,
+            "both_fail": 3,
+            "gain": 3
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 10,
+              "loss": 1,
+              "both_fail": 2
+            },
+            "empty_preload": {
+              "both_pass": 9,
+              "both_fail": 2,
+              "gain": 1,
+              "loss": 1
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_success": {
+                "both_pass": 7
+              },
+              "first_failure": {
+                "loss": 1,
+                "both_pass": 3,
+                "both_fail": 2
+              }
+            },
+            "empty_preload": {
+              "first_success": {
+                "both_pass": 7
+              },
+              "first_failure": {
+                "both_fail": 2,
+                "gain": 1,
+                "loss": 1,
+                "both_pass": 2
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_success": {
+              "both_pass": 7
+            },
+            "first_failure": {
+              "split_controls": 3,
+              "both_fail": 1,
+              "both_pass": 2
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": -0.05555555555555555,
+            "empty_preload": -0.05555555555555555
+          },
+          "task_equal_weight_difference": {
+            "no_memory": -0.07692307692307693,
+            "empty_preload": 0.0
+          }
+        },
+        "episode_original": {
+          "official": {
+            "success": 11,
+            "failure": 2
+          },
+          "vs_first": {
+            "both_pass": 7,
+            "gain": 4,
+            "both_fail": 2
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 10,
+              "loss": 1,
+              "both_fail": 1,
+              "gain": 1
+            },
+            "empty_preload": {
+              "both_pass": 10,
+              "gain": 1,
+              "both_fail": 2
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_success": {
+                "both_pass": 7
+              },
+              "first_failure": {
+                "both_pass": 3,
+                "loss": 1,
+                "both_fail": 1,
+                "gain": 1
+              }
+            },
+            "empty_preload": {
+              "first_success": {
+                "both_pass": 7
+              },
+              "first_failure": {
+                "gain": 1,
+                "both_fail": 2,
+                "both_pass": 3
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_success": {
+              "both_pass": 7
+            },
+            "first_failure": {
+              "split_controls": 3,
+              "both_fail": 1,
+              "both_pass": 2
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": 0.05555555555555555,
+            "empty_preload": 0.05555555555555555
+          },
+          "task_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": 0.07692307692307693
+          }
+        },
+        "lesson_original": {
+          "official": {
+            "success": 9,
+            "failure": 4
+          },
+          "vs_first": {
+            "both_pass": 6,
+            "gain": 3,
+            "both_fail": 3,
+            "loss": 1
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 9,
+              "loss": 2,
+              "both_fail": 2
+            },
+            "empty_preload": {
+              "both_pass": 8,
+              "gain": 1,
+              "both_fail": 2,
+              "loss": 2
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_success": {
+                "both_pass": 6,
+                "loss": 1
+              },
+              "first_failure": {
+                "both_pass": 3,
+                "loss": 1,
+                "both_fail": 2
+              }
+            },
+            "empty_preload": {
+              "first_success": {
+                "both_pass": 6,
+                "loss": 1
+              },
+              "first_failure": {
+                "gain": 1,
+                "both_fail": 2,
+                "loss": 1,
+                "both_pass": 2
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_success": {
+              "both_pass": 6,
+              "loss": 1
+            },
+            "first_failure": {
+              "split_controls": 3,
+              "both_fail": 1,
+              "both_pass": 2
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": -0.16666666666666666,
+            "empty_preload": -0.16666666666666666
+          },
+          "task_equal_weight_difference": {
+            "no_memory": -0.15384615384615385,
+            "empty_preload": -0.07692307692307693
+          }
+        },
+        "procedure_original": {
+          "official": {
+            "success": 8,
+            "failure": 5
+          },
+          "vs_first": {
+            "both_pass": 6,
+            "gain": 2,
+            "both_fail": 4,
+            "loss": 1
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 8,
+              "loss": 3,
+              "both_fail": 2
+            },
+            "empty_preload": {
+              "both_pass": 7,
+              "gain": 1,
+              "both_fail": 2,
+              "loss": 3
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_success": {
+                "both_pass": 6,
+                "loss": 1
+              },
+              "first_failure": {
+                "both_pass": 2,
+                "loss": 2,
+                "both_fail": 2
+              }
+            },
+            "empty_preload": {
+              "first_success": {
+                "both_pass": 6,
+                "loss": 1
+              },
+              "first_failure": {
+                "gain": 1,
+                "both_fail": 2,
+                "loss": 2,
+                "both_pass": 1
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_success": {
+              "both_pass": 6,
+              "loss": 1
+            },
+            "first_failure": {
+              "split_controls": 3,
+              "both_fail": 1,
+              "loss": 1,
+              "both_pass": 1
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": -0.16666666666666666,
+            "empty_preload": -0.16666666666666666
+          },
+          "task_equal_weight_difference": {
+            "no_memory": -0.23076923076923078,
+            "empty_preload": -0.15384615384615385
+          }
+        },
+        "no_memory": {
+          "official": {
+            "success": 11,
+            "failure": 2
+          },
+          "vs_first": {
+            "both_pass": 7,
+            "gain": 4,
+            "both_fail": 2
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 11,
+              "both_fail": 2
+            },
+            "empty_preload": {
+              "both_pass": 9,
+              "gain": 2,
+              "both_fail": 1,
+              "loss": 1
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_success": {
+                "both_pass": 7
+              },
+              "first_failure": {
+                "both_pass": 4,
+                "both_fail": 2
+              }
+            },
+            "empty_preload": {
+              "first_success": {
+                "both_pass": 7
+              },
+              "first_failure": {
+                "gain": 2,
+                "both_fail": 1,
+                "loss": 1,
+                "both_pass": 2
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_success": {
+              "both_pass": 7
+            },
+            "first_failure": {
+              "split_controls": 3,
+              "both_fail": 1,
+              "both_pass": 2
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": 0.0
+          },
+          "task_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": 0.07692307692307693
+          }
+        },
+        "empty_preload": {
+          "official": {
+            "success": 10,
+            "failure": 3
+          },
+          "vs_first": {
+            "both_pass": 7,
+            "both_fail": 3,
+            "gain": 3
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 9,
+              "loss": 2,
+              "both_fail": 1,
+              "gain": 1
+            },
+            "empty_preload": {
+              "both_pass": 10,
+              "both_fail": 3
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_success": {
+                "both_pass": 7
+              },
+              "first_failure": {
+                "loss": 2,
+                "both_fail": 1,
+                "gain": 1,
+                "both_pass": 2
+              }
+            },
+            "empty_preload": {
+              "first_success": {
+                "both_pass": 7
+              },
+              "first_failure": {
+                "both_fail": 3,
+                "both_pass": 3
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_success": {
+              "both_pass": 7
+            },
+            "first_failure": {
+              "split_controls": 3,
+              "both_fail": 1,
+              "both_pass": 2
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": 0.0
+          },
+          "task_equal_weight_difference": {
+            "no_memory": -0.07692307692307693,
+            "empty_preload": 0.0
+          }
+        }
+      }
+    },
+    "new_customer": {
+      "tasks": 27,
+      "customers": 22,
+      "forms": {
+        "fact_original": {
+          "official": {
+            "success": 20,
+            "failure": 7
+          },
+          "vs_first": {
+            "both_pass": 17,
+            "loss": 3,
+            "both_fail": 4,
+            "gain": 3
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 17,
+              "both_fail": 3,
+              "loss": 4,
+              "gain": 3
+            },
+            "empty_preload": {
+              "both_pass": 18,
+              "both_fail": 4,
+              "loss": 3,
+              "gain": 2
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_success": {
+                "both_pass": 15,
+                "both_fail": 1,
+                "loss": 2,
+                "gain": 2
+              },
+              "first_failure": {
+                "loss": 2,
+                "both_pass": 2,
+                "both_fail": 2,
+                "gain": 1
+              }
+            },
+            "empty_preload": {
+              "first_success": {
+                "both_pass": 16,
+                "both_fail": 1,
+                "loss": 2,
+                "gain": 1
+              },
+              "first_failure": {
+                "both_fail": 3,
+                "both_pass": 2,
+                "loss": 1,
+                "gain": 1
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_success": {
+              "both_pass": 14,
+              "both_fail": 1,
+              "loss": 2,
+              "split_controls": 3
+            },
+            "first_failure": {
+              "split_controls": 5,
+              "both_pass": 1,
+              "both_fail": 1
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": -0.05303030303030303
+          },
+          "task_equal_weight_difference": {
+            "no_memory": -0.037037037037037035,
+            "empty_preload": -0.037037037037037035
+          }
+        },
+        "episode_original": {
+          "official": {
+            "success": 20,
+            "failure": 7
+          },
+          "vs_first": {
+            "both_pass": 16,
+            "loss": 4,
+            "both_fail": 3,
+            "gain": 4
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 17,
+              "both_fail": 3,
+              "loss": 4,
+              "gain": 3
+            },
+            "empty_preload": {
+              "both_pass": 17,
+              "both_fail": 3,
+              "loss": 4,
+              "gain": 3
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_success": {
+                "both_pass": 15,
+                "both_fail": 2,
+                "loss": 2,
+                "gain": 1
+              },
+              "first_failure": {
+                "loss": 2,
+                "both_pass": 2,
+                "gain": 2,
+                "both_fail": 1
+              }
+            },
+            "empty_preload": {
+              "first_success": {
+                "both_pass": 15,
+                "both_fail": 1,
+                "loss": 3,
+                "gain": 1
+              },
+              "first_failure": {
+                "both_fail": 2,
+                "both_pass": 2,
+                "gain": 2,
+                "loss": 1
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_success": {
+              "both_pass": 14,
+              "both_fail": 1,
+              "loss": 2,
+              "split_controls": 3
+            },
+            "first_failure": {
+              "split_controls": 5,
+              "both_pass": 1,
+              "gain": 1
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": -0.05303030303030303
+          },
+          "task_equal_weight_difference": {
+            "no_memory": -0.037037037037037035,
+            "empty_preload": -0.037037037037037035
+          }
+        },
+        "lesson_original": {
+          "official": {
+            "success": 21,
+            "failure": 6
+          },
+          "vs_first": {
+            "both_pass": 17,
+            "loss": 3,
+            "both_fail": 3,
+            "gain": 4
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 20,
+              "both_fail": 5,
+              "loss": 1,
+              "gain": 1
+            },
+            "empty_preload": {
+              "both_pass": 18,
+              "both_fail": 3,
+              "loss": 3,
+              "gain": 3
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_success": {
+                "both_pass": 17,
+                "both_fail": 3
+              },
+              "first_failure": {
+                "loss": 1,
+                "both_pass": 3,
+                "both_fail": 2,
+                "gain": 1
+              }
+            },
+            "empty_preload": {
+              "first_success": {
+                "both_pass": 16,
+                "both_fail": 1,
+                "loss": 2,
+                "gain": 1
+              },
+              "first_failure": {
+                "both_fail": 2,
+                "both_pass": 2,
+                "loss": 1,
+                "gain": 2
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_success": {
+              "both_pass": 16,
+              "both_fail": 1,
+              "split_controls": 3
+            },
+            "first_failure": {
+              "split_controls": 5,
+              "both_pass": 1,
+              "both_fail": 1
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": 0.022727272727272728,
+            "empty_preload": -0.030303030303030307
+          },
+          "task_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": 0.0
+          }
+        },
+        "procedure_original": {
+          "official": {
+            "success": 23,
+            "failure": 4
+          },
+          "vs_first": {
+            "both_pass": 18,
+            "loss": 2,
+            "gain": 5,
+            "both_fail": 2
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 19,
+              "both_fail": 2,
+              "gain": 4,
+              "loss": 2
+            },
+            "empty_preload": {
+              "both_pass": 19,
+              "both_fail": 2,
+              "gain": 4,
+              "loss": 2
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_success": {
+                "both_pass": 16,
+                "both_fail": 1,
+                "loss": 1,
+                "gain": 2
+              },
+              "first_failure": {
+                "both_pass": 3,
+                "gain": 2,
+                "both_fail": 1,
+                "loss": 1
+              }
+            },
+            "empty_preload": {
+              "first_success": {
+                "both_pass": 17,
+                "both_fail": 1,
+                "loss": 1,
+                "gain": 1
+              },
+              "first_failure": {
+                "gain": 3,
+                "both_pass": 2,
+                "loss": 1,
+                "both_fail": 1
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_success": {
+              "both_pass": 15,
+              "both_fail": 1,
+              "loss": 1,
+              "split_controls": 3
+            },
+            "first_failure": {
+              "split_controls": 5,
+              "both_pass": 1,
+              "gain": 1
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": 0.09090909090909091,
+            "empty_preload": 0.03787878787878787
+          },
+          "task_equal_weight_difference": {
+            "no_memory": 0.07407407407407407,
+            "empty_preload": 0.07407407407407407
+          }
+        },
+        "no_memory": {
+          "official": {
+            "success": 21,
+            "failure": 6
+          },
+          "vs_first": {
+            "both_pass": 17,
+            "loss": 3,
+            "gain": 4,
+            "both_fail": 3
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 21,
+              "both_fail": 6
+            },
+            "empty_preload": {
+              "both_pass": 17,
+              "both_fail": 2,
+              "gain": 4,
+              "loss": 4
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_success": {
+                "both_pass": 17,
+                "both_fail": 3
+              },
+              "first_failure": {
+                "both_pass": 4,
+                "both_fail": 3
+              }
+            },
+            "empty_preload": {
+              "first_success": {
+                "both_pass": 16,
+                "both_fail": 1,
+                "loss": 2,
+                "gain": 1
+              },
+              "first_failure": {
+                "gain": 3,
+                "both_pass": 1,
+                "both_fail": 1,
+                "loss": 2
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_success": {
+              "both_pass": 16,
+              "both_fail": 1,
+              "split_controls": 3
+            },
+            "first_failure": {
+              "split_controls": 5,
+              "both_pass": 1,
+              "both_fail": 1
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": -0.05303030303030303
+          },
+          "task_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": 0.0
+          }
+        },
+        "empty_preload": {
+          "official": {
+            "success": 21,
+            "failure": 6
+          },
+          "vs_first": {
+            "both_pass": 18,
+            "loss": 2,
+            "both_fail": 4,
+            "gain": 3
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 17,
+              "both_fail": 2,
+              "loss": 4,
+              "gain": 4
+            },
+            "empty_preload": {
+              "both_pass": 21,
+              "both_fail": 6
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_success": {
+                "both_pass": 16,
+                "both_fail": 1,
+                "gain": 2,
+                "loss": 1
+              },
+              "first_failure": {
+                "loss": 3,
+                "both_pass": 1,
+                "both_fail": 1,
+                "gain": 2
+              }
+            },
+            "empty_preload": {
+              "first_success": {
+                "both_pass": 18,
+                "both_fail": 2
+              },
+              "first_failure": {
+                "both_fail": 4,
+                "both_pass": 3
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_success": {
+              "both_pass": 16,
+              "both_fail": 1,
+              "split_controls": 3
+            },
+            "first_failure": {
+              "split_controls": 5,
+              "both_pass": 1,
+              "both_fail": 1
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": 0.05303030303030303,
+            "empty_preload": 0.0
+          },
+          "task_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": 0.0
+          }
+        }
+      }
+    },
+    "active_nl": {
+      "tasks": 11,
+      "customers": 9,
+      "forms": {
+        "fact_original": {
+          "official": {
+            "failure": 5,
+            "success": 6
+          },
+          "vs_first": {
+            "loss": 1,
+            "both_fail": 4,
+            "both_pass": 6
+          },
+          "vs_controls": {
+            "no_memory": {
+              "loss": 3,
+              "both_pass": 5,
+              "both_fail": 2,
+              "gain": 1
+            },
+            "empty_preload": {
+              "loss": 1,
+              "both_fail": 4,
+              "both_pass": 6
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_success": {
+                "loss": 1,
+                "both_pass": 5,
+                "gain": 1
+              },
+              "first_failure": {
+                "loss": 2,
+                "both_fail": 2
+              }
+            },
+            "empty_preload": {
+              "first_success": {
+                "loss": 1,
+                "both_pass": 6
+              },
+              "first_failure": {
+                "both_fail": 4
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_success": {
+              "loss": 1,
+              "both_pass": 5,
+              "split_controls": 1
+            },
+            "first_failure": {
+              "split_controls": 2,
+              "both_fail": 2
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": -0.1111111111111111,
+            "empty_preload": -0.05555555555555555
+          },
+          "task_equal_weight_difference": {
+            "no_memory": -0.18181818181818182,
+            "empty_preload": -0.09090909090909091
+          }
+        },
+        "episode_original": {
+          "official": {
+            "failure": 6,
+            "success": 5
+          },
+          "vs_first": {
+            "loss": 3,
+            "both_fail": 3,
+            "both_pass": 4,
+            "gain": 1
+          },
+          "vs_controls": {
+            "no_memory": {
+              "loss": 4,
+              "both_pass": 4,
+              "both_fail": 2,
+              "gain": 1
+            },
+            "empty_preload": {
+              "loss": 3,
+              "both_fail": 3,
+              "both_pass": 4,
+              "gain": 1
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_success": {
+                "loss": 2,
+                "both_pass": 4,
+                "both_fail": 1
+              },
+              "first_failure": {
+                "loss": 2,
+                "both_fail": 1,
+                "gain": 1
+              }
+            },
+            "empty_preload": {
+              "first_success": {
+                "loss": 3,
+                "both_pass": 4
+              },
+              "first_failure": {
+                "both_fail": 3,
+                "gain": 1
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_success": {
+              "loss": 2,
+              "both_pass": 4,
+              "split_controls": 1
+            },
+            "first_failure": {
+              "split_controls": 2,
+              "both_fail": 1,
+              "gain": 1
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": -0.2777777777777778,
+            "empty_preload": -0.2222222222222222
+          },
+          "task_equal_weight_difference": {
+            "no_memory": -0.2727272727272727,
+            "empty_preload": -0.18181818181818182
+          }
+        },
+        "lesson_original": {
+          "official": {
+            "success": 7,
+            "failure": 4
+          },
+          "vs_first": {
+            "both_pass": 6,
+            "both_fail": 3,
+            "loss": 1,
+            "gain": 1
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 7,
+              "loss": 1,
+              "both_fail": 3
+            },
+            "empty_preload": {
+              "both_pass": 6,
+              "both_fail": 3,
+              "loss": 1,
+              "gain": 1
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_success": {
+                "both_pass": 6,
+                "both_fail": 1
+              },
+              "first_failure": {
+                "loss": 1,
+                "both_fail": 2,
+                "both_pass": 1
+              }
+            },
+            "empty_preload": {
+              "first_success": {
+                "both_pass": 6,
+                "loss": 1
+              },
+              "first_failure": {
+                "both_fail": 3,
+                "gain": 1
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_success": {
+              "both_pass": 6,
+              "split_controls": 1
+            },
+            "first_failure": {
+              "split_controls": 2,
+              "both_fail": 2
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": -0.05555555555555555,
+            "empty_preload": 0.0
+          },
+          "task_equal_weight_difference": {
+            "no_memory": -0.09090909090909091,
+            "empty_preload": 0.0
+          }
+        },
+        "procedure_original": {
+          "official": {
+            "success": 8,
+            "failure": 3
+          },
+          "vs_first": {
+            "both_pass": 6,
+            "gain": 2,
+            "both_fail": 2,
+            "loss": 1
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 6,
+              "both_fail": 1,
+              "gain": 2,
+              "loss": 2
+            },
+            "empty_preload": {
+              "both_pass": 6,
+              "gain": 2,
+              "both_fail": 2,
+              "loss": 1
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_success": {
+                "both_pass": 5,
+                "loss": 1,
+                "gain": 1
+              },
+              "first_failure": {
+                "both_pass": 1,
+                "both_fail": 1,
+                "gain": 1,
+                "loss": 1
+              }
+            },
+            "empty_preload": {
+              "first_success": {
+                "both_pass": 6,
+                "loss": 1
+              },
+              "first_failure": {
+                "gain": 2,
+                "both_fail": 2
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_success": {
+              "both_pass": 5,
+              "loss": 1,
+              "split_controls": 1
+            },
+            "first_failure": {
+              "split_controls": 2,
+              "both_fail": 1,
+              "gain": 1
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": -0.05555555555555555,
+            "empty_preload": 0.0
+          },
+          "task_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": 0.09090909090909091
+          }
+        },
+        "no_memory": {
+          "official": {
+            "success": 8,
+            "failure": 3
+          },
+          "vs_first": {
+            "both_pass": 6,
+            "gain": 2,
+            "both_fail": 2,
+            "loss": 1
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 8,
+              "both_fail": 3
+            },
+            "empty_preload": {
+              "both_pass": 6,
+              "gain": 2,
+              "both_fail": 2,
+              "loss": 1
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_success": {
+                "both_pass": 6,
+                "both_fail": 1
+              },
+              "first_failure": {
+                "both_pass": 2,
+                "both_fail": 2
+              }
+            },
+            "empty_preload": {
+              "first_success": {
+                "both_pass": 6,
+                "loss": 1
+              },
+              "first_failure": {
+                "gain": 2,
+                "both_fail": 2
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_success": {
+              "both_pass": 6,
+              "split_controls": 1
+            },
+            "first_failure": {
+              "split_controls": 2,
+              "both_fail": 2
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": 0.05555555555555555
+          },
+          "task_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": 0.09090909090909091
+          }
+        },
+        "empty_preload": {
+          "official": {
+            "success": 7,
+            "failure": 4
+          },
+          "vs_first": {
+            "both_pass": 7,
+            "both_fail": 4
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 6,
+              "loss": 2,
+              "both_fail": 2,
+              "gain": 1
+            },
+            "empty_preload": {
+              "both_pass": 7,
+              "both_fail": 4
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_success": {
+                "both_pass": 6,
+                "gain": 1
+              },
+              "first_failure": {
+                "loss": 2,
+                "both_fail": 2
+              }
+            },
+            "empty_preload": {
+              "first_success": {
+                "both_pass": 7
+              },
+              "first_failure": {
+                "both_fail": 4
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_success": {
+              "both_pass": 6,
+              "split_controls": 1
+            },
+            "first_failure": {
+              "split_controls": 2,
+              "both_fail": 2
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": -0.05555555555555555,
+            "empty_preload": 0.0
+          },
+          "task_equal_weight_difference": {
+            "no_memory": -0.09090909090909091,
+            "empty_preload": 0.0
+          }
+        }
+      }
+    },
+    "no_active_nl": {
+      "tasks": 29,
+      "customers": 24,
+      "forms": {
+        "fact_original": {
+          "official": {
+            "success": 24,
+            "failure": 5
+          },
+          "vs_first": {
+            "both_pass": 18,
+            "both_fail": 3,
+            "gain": 6,
+            "loss": 2
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 22,
+              "loss": 2,
+              "both_fail": 3,
+              "gain": 2
+            },
+            "empty_preload": {
+              "both_pass": 21,
+              "both_fail": 2,
+              "gain": 3,
+              "loss": 3
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_success": {
+                "both_pass": 17,
+                "both_fail": 1,
+                "loss": 1,
+                "gain": 1
+              },
+              "first_failure": {
+                "loss": 1,
+                "both_pass": 5,
+                "both_fail": 2,
+                "gain": 1
+              }
+            },
+            "empty_preload": {
+              "first_success": {
+                "both_pass": 17,
+                "both_fail": 1,
+                "loss": 1,
+                "gain": 1
+              },
+              "first_failure": {
+                "both_fail": 1,
+                "gain": 2,
+                "loss": 2,
+                "both_pass": 4
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_success": {
+              "both_pass": 16,
+              "both_fail": 1,
+              "loss": 1,
+              "split_controls": 2
+            },
+            "first_failure": {
+              "split_controls": 6,
+              "both_pass": 3
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": 0.020833333333333332,
+            "empty_preload": -0.041666666666666664
+          },
+          "task_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": 0.0
+          }
+        },
+        "episode_original": {
+          "official": {
+            "success": 26,
+            "failure": 3
+          },
+          "vs_first": {
+            "both_pass": 19,
+            "gain": 7,
+            "both_fail": 2,
+            "loss": 1
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 23,
+              "loss": 1,
+              "both_fail": 2,
+              "gain": 3
+            },
+            "empty_preload": {
+              "both_pass": 23,
+              "gain": 3,
+              "both_fail": 2,
+              "loss": 1
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_success": {
+                "both_pass": 18,
+                "both_fail": 1,
+                "gain": 1
+              },
+              "first_failure": {
+                "both_pass": 5,
+                "loss": 1,
+                "gain": 2,
+                "both_fail": 1
+              }
+            },
+            "empty_preload": {
+              "first_success": {
+                "both_pass": 18,
+                "both_fail": 1,
+                "gain": 1
+              },
+              "first_failure": {
+                "gain": 2,
+                "both_fail": 1,
+                "both_pass": 5,
+                "loss": 1
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_success": {
+              "both_pass": 17,
+              "both_fail": 1,
+              "split_controls": 2
+            },
+            "first_failure": {
+              "split_controls": 6,
+              "both_pass": 3
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": 0.10416666666666667,
+            "empty_preload": 0.041666666666666664
+          },
+          "task_equal_weight_difference": {
+            "no_memory": 0.06896551724137931,
+            "empty_preload": 0.06896551724137931
+          }
+        },
+        "lesson_original": {
+          "official": {
+            "success": 23,
+            "failure": 6
+          },
+          "vs_first": {
+            "both_pass": 17,
+            "gain": 6,
+            "both_fail": 3,
+            "loss": 3
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 22,
+              "loss": 2,
+              "both_fail": 4,
+              "gain": 1
+            },
+            "empty_preload": {
+              "both_pass": 20,
+              "gain": 3,
+              "both_fail": 2,
+              "loss": 4
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_success": {
+                "both_pass": 17,
+                "both_fail": 2,
+                "loss": 1
+              },
+              "first_failure": {
+                "both_pass": 5,
+                "loss": 1,
+                "both_fail": 2,
+                "gain": 1
+              }
+            },
+            "empty_preload": {
+              "first_success": {
+                "both_pass": 16,
+                "both_fail": 1,
+                "loss": 2,
+                "gain": 1
+              },
+              "first_failure": {
+                "gain": 2,
+                "both_fail": 1,
+                "loss": 2,
+                "both_pass": 4
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_success": {
+              "both_pass": 16,
+              "both_fail": 1,
+              "loss": 1,
+              "split_controls": 2
+            },
+            "first_failure": {
+              "split_controls": 6,
+              "both_pass": 3
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": -0.020833333333333332,
+            "empty_preload": -0.08333333333333333
+          },
+          "task_equal_weight_difference": {
+            "no_memory": -0.034482758620689655,
+            "empty_preload": -0.034482758620689655
+          }
+        },
+        "procedure_original": {
+          "official": {
+            "success": 23,
+            "failure": 6
+          },
+          "vs_first": {
+            "both_pass": 18,
+            "gain": 5,
+            "both_fail": 4,
+            "loss": 2
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 21,
+              "loss": 3,
+              "both_fail": 3,
+              "gain": 2
+            },
+            "empty_preload": {
+              "both_pass": 20,
+              "gain": 3,
+              "both_fail": 2,
+              "loss": 4
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_success": {
+                "both_pass": 17,
+                "both_fail": 1,
+                "loss": 1,
+                "gain": 1
+              },
+              "first_failure": {
+                "both_pass": 4,
+                "loss": 2,
+                "both_fail": 2,
+                "gain": 1
+              }
+            },
+            "empty_preload": {
+              "first_success": {
+                "both_pass": 17,
+                "both_fail": 1,
+                "loss": 1,
+                "gain": 1
+              },
+              "first_failure": {
+                "gain": 2,
+                "both_fail": 1,
+                "loss": 3,
+                "both_pass": 3
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_success": {
+              "both_pass": 16,
+              "both_fail": 1,
+              "loss": 1,
+              "split_controls": 2
+            },
+            "first_failure": {
+              "split_controls": 6,
+              "both_pass": 2,
+              "loss": 1
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": 0.020833333333333332,
+            "empty_preload": -0.041666666666666664
+          },
+          "task_equal_weight_difference": {
+            "no_memory": -0.034482758620689655,
+            "empty_preload": -0.034482758620689655
+          }
+        },
+        "no_memory": {
+          "official": {
+            "success": 24,
+            "failure": 5
+          },
+          "vs_first": {
+            "both_pass": 18,
+            "gain": 6,
+            "loss": 2,
+            "both_fail": 3
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 24,
+              "both_fail": 5
+            },
+            "empty_preload": {
+              "both_pass": 20,
+              "gain": 4,
+              "both_fail": 1,
+              "loss": 4
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_success": {
+                "both_pass": 18,
+                "both_fail": 2
+              },
+              "first_failure": {
+                "both_pass": 6,
+                "both_fail": 3
+              }
+            },
+            "empty_preload": {
+              "first_success": {
+                "both_pass": 17,
+                "both_fail": 1,
+                "loss": 1,
+                "gain": 1
+              },
+              "first_failure": {
+                "gain": 3,
+                "loss": 3,
+                "both_pass": 3
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_success": {
+              "both_pass": 17,
+              "both_fail": 1,
+              "split_controls": 2
+            },
+            "first_failure": {
+              "split_controls": 6,
+              "both_pass": 3
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": -0.0625
+          },
+          "task_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": 0.0
+          }
+        },
+        "empty_preload": {
+          "official": {
+            "success": 24,
+            "failure": 5
+          },
+          "vs_first": {
+            "both_pass": 18,
+            "both_fail": 3,
+            "loss": 2,
+            "gain": 6
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 20,
+              "loss": 4,
+              "both_fail": 1,
+              "gain": 4
+            },
+            "empty_preload": {
+              "both_pass": 24,
+              "both_fail": 5
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_success": {
+                "both_pass": 17,
+                "both_fail": 1,
+                "gain": 1,
+                "loss": 1
+              },
+              "first_failure": {
+                "loss": 3,
+                "gain": 3,
+                "both_pass": 3
+              }
+            },
+            "empty_preload": {
+              "first_success": {
+                "both_pass": 18,
+                "both_fail": 2
+              },
+              "first_failure": {
+                "both_fail": 3,
+                "both_pass": 6
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_success": {
+              "both_pass": 17,
+              "both_fail": 1,
+              "split_controls": 2
+            },
+            "first_failure": {
+              "split_controls": 6,
+              "both_pass": 3
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": 0.0625,
+            "empty_preload": 0.0
+          },
+          "task_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": 0.0
+          }
+        }
+      }
+    },
+    "workflow/return": {
+      "tasks": 5,
+      "customers": 4,
+      "forms": {
+        "fact_original": {
+          "official": {
+            "success": 5
+          },
+          "vs_first": {
+            "both_pass": 5
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 4,
+              "gain": 1
+            },
+            "empty_preload": {
+              "both_pass": 5
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_success": {
+                "both_pass": 4,
+                "gain": 1
+              }
+            },
+            "empty_preload": {
+              "first_success": {
+                "both_pass": 5
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_success": {
+              "both_pass": 4,
+              "split_controls": 1
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": 0.25,
+            "empty_preload": 0.0
+          },
+          "task_equal_weight_difference": {
+            "no_memory": 0.2,
+            "empty_preload": 0.0
+          }
+        },
+        "episode_original": {
+          "official": {
+            "success": 4,
+            "failure": 1
+          },
+          "vs_first": {
+            "both_pass": 4,
+            "loss": 1
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 4,
+              "both_fail": 1
+            },
+            "empty_preload": {
+              "both_pass": 4,
+              "loss": 1
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_success": {
+                "both_pass": 4,
+                "both_fail": 1
+              }
+            },
+            "empty_preload": {
+              "first_success": {
+                "both_pass": 4,
+                "loss": 1
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_success": {
+              "both_pass": 4,
+              "split_controls": 1
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": -0.25
+          },
+          "task_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": -0.2
+          }
+        },
+        "lesson_original": {
+          "official": {
+            "success": 4,
+            "failure": 1
+          },
+          "vs_first": {
+            "both_pass": 4,
+            "loss": 1
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 4,
+              "both_fail": 1
+            },
+            "empty_preload": {
+              "both_pass": 4,
+              "loss": 1
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_success": {
+                "both_pass": 4,
+                "both_fail": 1
+              }
+            },
+            "empty_preload": {
+              "first_success": {
+                "both_pass": 4,
+                "loss": 1
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_success": {
+              "both_pass": 4,
+              "split_controls": 1
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": -0.25
+          },
+          "task_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": -0.2
+          }
+        },
+        "procedure_original": {
+          "official": {
+            "success": 4,
+            "failure": 1
+          },
+          "vs_first": {
+            "both_pass": 4,
+            "loss": 1
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 3,
+              "loss": 1,
+              "gain": 1
+            },
+            "empty_preload": {
+              "both_pass": 4,
+              "loss": 1
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_success": {
+                "both_pass": 3,
+                "loss": 1,
+                "gain": 1
+              }
+            },
+            "empty_preload": {
+              "first_success": {
+                "both_pass": 4,
+                "loss": 1
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_success": {
+              "both_pass": 3,
+              "loss": 1,
+              "split_controls": 1
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": 0.125,
+            "empty_preload": -0.125
+          },
+          "task_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": -0.2
+          }
+        },
+        "no_memory": {
+          "official": {
+            "success": 4,
+            "failure": 1
+          },
+          "vs_first": {
+            "both_pass": 4,
+            "loss": 1
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 4,
+              "both_fail": 1
+            },
+            "empty_preload": {
+              "both_pass": 4,
+              "loss": 1
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_success": {
+                "both_pass": 4,
+                "both_fail": 1
+              }
+            },
+            "empty_preload": {
+              "first_success": {
+                "both_pass": 4,
+                "loss": 1
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_success": {
+              "both_pass": 4,
+              "split_controls": 1
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": -0.25
+          },
+          "task_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": -0.2
+          }
+        },
+        "empty_preload": {
+          "official": {
+            "success": 5
+          },
+          "vs_first": {
+            "both_pass": 5
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 4,
+              "gain": 1
+            },
+            "empty_preload": {
+              "both_pass": 5
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_success": {
+                "both_pass": 4,
+                "gain": 1
+              }
+            },
+            "empty_preload": {
+              "first_success": {
+                "both_pass": 5
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_success": {
+              "both_pass": 4,
+              "split_controls": 1
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": 0.25,
+            "empty_preload": 0.0
+          },
+          "task_equal_weight_difference": {
+            "no_memory": 0.2,
+            "empty_preload": 0.0
+          }
+        }
+      }
+    },
+    "workflow/exchange": {
+      "tasks": 8,
+      "customers": 8,
+      "forms": {
+        "fact_original": {
+          "official": {
+            "failure": 3,
+            "success": 5
+          },
+          "vs_first": {
+            "both_fail": 3,
+            "both_pass": 4,
+            "gain": 1
+          },
+          "vs_controls": {
+            "no_memory": {
+              "loss": 1,
+              "both_pass": 5,
+              "both_fail": 2
+            },
+            "empty_preload": {
+              "both_fail": 2,
+              "both_pass": 4,
+              "gain": 1,
+              "loss": 1
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_failure": {
+                "loss": 1,
+                "both_pass": 1,
+                "both_fail": 2
+              },
+              "first_success": {
+                "both_pass": 4
+              }
+            },
+            "empty_preload": {
+              "first_failure": {
+                "both_fail": 2,
+                "gain": 1,
+                "loss": 1
+              },
+              "first_success": {
+                "both_pass": 4
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_failure": {
+              "split_controls": 3,
+              "both_fail": 1
+            },
+            "first_success": {
+              "both_pass": 4
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": -0.125,
+            "empty_preload": 0.0
+          },
+          "task_equal_weight_difference": {
+            "no_memory": -0.125,
+            "empty_preload": 0.0
+          }
+        },
+        "episode_original": {
+          "official": {
+            "success": 6,
+            "failure": 2
+          },
+          "vs_first": {
+            "gain": 2,
+            "both_pass": 4,
+            "both_fail": 2
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 5,
+              "loss": 1,
+              "both_fail": 1,
+              "gain": 1
+            },
+            "empty_preload": {
+              "gain": 1,
+              "both_pass": 5,
+              "both_fail": 2
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_failure": {
+                "both_pass": 1,
+                "loss": 1,
+                "both_fail": 1,
+                "gain": 1
+              },
+              "first_success": {
+                "both_pass": 4
+              }
+            },
+            "empty_preload": {
+              "first_failure": {
+                "gain": 1,
+                "both_fail": 2,
+                "both_pass": 1
+              },
+              "first_success": {
+                "both_pass": 4
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_failure": {
+              "split_controls": 3,
+              "both_fail": 1
+            },
+            "first_success": {
+              "both_pass": 4
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": 0.125
+          },
+          "task_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": 0.125
+          }
+        },
+        "lesson_original": {
+          "official": {
+            "success": 5,
+            "failure": 3
+          },
+          "vs_first": {
+            "gain": 1,
+            "both_pass": 4,
+            "both_fail": 3
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 5,
+              "loss": 1,
+              "both_fail": 2
+            },
+            "empty_preload": {
+              "gain": 1,
+              "both_pass": 4,
+              "both_fail": 2,
+              "loss": 1
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_failure": {
+                "both_pass": 1,
+                "loss": 1,
+                "both_fail": 2
+              },
+              "first_success": {
+                "both_pass": 4
+              }
+            },
+            "empty_preload": {
+              "first_failure": {
+                "gain": 1,
+                "both_fail": 2,
+                "loss": 1
+              },
+              "first_success": {
+                "both_pass": 4
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_failure": {
+              "split_controls": 3,
+              "both_fail": 1
+            },
+            "first_success": {
+              "both_pass": 4
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": -0.125,
+            "empty_preload": 0.0
+          },
+          "task_equal_weight_difference": {
+            "no_memory": -0.125,
+            "empty_preload": 0.0
+          }
+        },
+        "procedure_original": {
+          "official": {
+            "success": 5,
+            "failure": 3
+          },
+          "vs_first": {
+            "gain": 1,
+            "both_pass": 4,
+            "both_fail": 3
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 5,
+              "loss": 1,
+              "both_fail": 2
+            },
+            "empty_preload": {
+              "gain": 1,
+              "both_pass": 4,
+              "both_fail": 2,
+              "loss": 1
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_failure": {
+                "both_pass": 1,
+                "loss": 1,
+                "both_fail": 2
+              },
+              "first_success": {
+                "both_pass": 4
+              }
+            },
+            "empty_preload": {
+              "first_failure": {
+                "gain": 1,
+                "both_fail": 2,
+                "loss": 1
+              },
+              "first_success": {
+                "both_pass": 4
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_failure": {
+              "split_controls": 3,
+              "both_fail": 1
+            },
+            "first_success": {
+              "both_pass": 4
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": -0.125,
+            "empty_preload": 0.0
+          },
+          "task_equal_weight_difference": {
+            "no_memory": -0.125,
+            "empty_preload": 0.0
+          }
+        },
+        "no_memory": {
+          "official": {
+            "success": 6,
+            "failure": 2
+          },
+          "vs_first": {
+            "gain": 2,
+            "both_pass": 4,
+            "both_fail": 2
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 6,
+              "both_fail": 2
+            },
+            "empty_preload": {
+              "gain": 2,
+              "both_pass": 4,
+              "both_fail": 1,
+              "loss": 1
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_failure": {
+                "both_pass": 2,
+                "both_fail": 2
+              },
+              "first_success": {
+                "both_pass": 4
+              }
+            },
+            "empty_preload": {
+              "first_failure": {
+                "gain": 2,
+                "both_fail": 1,
+                "loss": 1
+              },
+              "first_success": {
+                "both_pass": 4
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_failure": {
+              "split_controls": 3,
+              "both_fail": 1
+            },
+            "first_success": {
+              "both_pass": 4
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": 0.125
+          },
+          "task_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": 0.125
+          }
+        },
+        "empty_preload": {
+          "official": {
+            "failure": 3,
+            "success": 5
+          },
+          "vs_first": {
+            "both_fail": 3,
+            "both_pass": 4,
+            "gain": 1
+          },
+          "vs_controls": {
+            "no_memory": {
+              "loss": 2,
+              "both_pass": 4,
+              "both_fail": 1,
+              "gain": 1
+            },
+            "empty_preload": {
+              "both_fail": 3,
+              "both_pass": 5
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_failure": {
+                "loss": 2,
+                "both_fail": 1,
+                "gain": 1
+              },
+              "first_success": {
+                "both_pass": 4
+              }
+            },
+            "empty_preload": {
+              "first_failure": {
+                "both_fail": 3,
+                "both_pass": 1
+              },
+              "first_success": {
+                "both_pass": 4
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_failure": {
+              "split_controls": 3,
+              "both_fail": 1
+            },
+            "first_success": {
+              "both_pass": 4
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": -0.125,
+            "empty_preload": 0.0
+          },
+          "task_equal_weight_difference": {
+            "no_memory": -0.125,
+            "empty_preload": 0.0
+          }
+        }
+      }
+    },
+    "workflow/no_reference_write": {
+      "tasks": 4,
+      "customers": 4,
+      "forms": {
+        "fact_original": {
+          "official": {
+            "success": 4
+          },
+          "vs_first": {
+            "both_pass": 4
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 4
+            },
+            "empty_preload": {
+              "both_pass": 4
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_success": {
+                "both_pass": 4
+              }
+            },
+            "empty_preload": {
+              "first_success": {
+                "both_pass": 4
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_success": {
+              "both_pass": 4
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": 0.0
+          },
+          "task_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": 0.0
+          }
+        },
+        "episode_original": {
+          "official": {
+            "success": 3,
+            "failure": 1
+          },
+          "vs_first": {
+            "both_pass": 3,
+            "loss": 1
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 3,
+              "loss": 1
+            },
+            "empty_preload": {
+              "both_pass": 3,
+              "loss": 1
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_success": {
+                "both_pass": 3,
+                "loss": 1
+              }
+            },
+            "empty_preload": {
+              "first_success": {
+                "both_pass": 3,
+                "loss": 1
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_success": {
+              "both_pass": 3,
+              "loss": 1
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": -0.25,
+            "empty_preload": -0.25
+          },
+          "task_equal_weight_difference": {
+            "no_memory": -0.25,
+            "empty_preload": -0.25
+          }
+        },
+        "lesson_original": {
+          "official": {
+            "success": 4
+          },
+          "vs_first": {
+            "both_pass": 4
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 4
+            },
+            "empty_preload": {
+              "both_pass": 4
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_success": {
+                "both_pass": 4
+              }
+            },
+            "empty_preload": {
+              "first_success": {
+                "both_pass": 4
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_success": {
+              "both_pass": 4
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": 0.0
+          },
+          "task_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": 0.0
+          }
+        },
+        "procedure_original": {
+          "official": {
+            "success": 3,
+            "failure": 1
+          },
+          "vs_first": {
+            "both_pass": 3,
+            "loss": 1
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 3,
+              "loss": 1
+            },
+            "empty_preload": {
+              "both_pass": 3,
+              "loss": 1
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_success": {
+                "both_pass": 3,
+                "loss": 1
+              }
+            },
+            "empty_preload": {
+              "first_success": {
+                "both_pass": 3,
+                "loss": 1
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_success": {
+              "both_pass": 3,
+              "loss": 1
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": -0.25,
+            "empty_preload": -0.25
+          },
+          "task_equal_weight_difference": {
+            "no_memory": -0.25,
+            "empty_preload": -0.25
+          }
+        },
+        "no_memory": {
+          "official": {
+            "success": 4
+          },
+          "vs_first": {
+            "both_pass": 4
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 4
+            },
+            "empty_preload": {
+              "both_pass": 4
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_success": {
+                "both_pass": 4
+              }
+            },
+            "empty_preload": {
+              "first_success": {
+                "both_pass": 4
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_success": {
+              "both_pass": 4
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": 0.0
+          },
+          "task_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": 0.0
+          }
+        },
+        "empty_preload": {
+          "official": {
+            "success": 4
+          },
+          "vs_first": {
+            "both_pass": 4
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 4
+            },
+            "empty_preload": {
+              "both_pass": 4
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_success": {
+                "both_pass": 4
+              }
+            },
+            "empty_preload": {
+              "first_success": {
+                "both_pass": 4
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_success": {
+              "both_pass": 4
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": 0.0
+          },
+          "task_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": 0.0
+          }
+        }
+      }
+    },
+    "workflow/modify": {
+      "tasks": 15,
+      "customers": 14,
+      "forms": {
+        "fact_original": {
+          "official": {
+            "success": 12,
+            "failure": 3
+          },
+          "vs_first": {
+            "both_pass": 9,
+            "loss": 1,
+            "gain": 3,
+            "both_fail": 2
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 11,
+              "loss": 2,
+              "both_fail": 1,
+              "gain": 1
+            },
+            "empty_preload": {
+              "both_pass": 11,
+              "loss": 1,
+              "both_fail": 2,
+              "gain": 1
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_success": {
+                "both_pass": 8,
+                "loss": 1,
+                "gain": 1
+              },
+              "first_failure": {
+                "both_pass": 3,
+                "both_fail": 1,
+                "loss": 1
+              }
+            },
+            "empty_preload": {
+              "first_success": {
+                "both_pass": 9,
+                "loss": 1
+              },
+              "first_failure": {
+                "both_pass": 2,
+                "both_fail": 2,
+                "gain": 1
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_success": {
+              "both_pass": 8,
+              "loss": 1,
+              "split_controls": 1
+            },
+            "first_failure": {
+              "both_pass": 2,
+              "both_fail": 1,
+              "split_controls": 2
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": -0.07142857142857142,
+            "empty_preload": 0.0
+          },
+          "task_equal_weight_difference": {
+            "no_memory": -0.06666666666666667,
+            "empty_preload": 0.0
+          }
+        },
+        "episode_original": {
+          "official": {
+            "success": 13,
+            "failure": 2
+          },
+          "vs_first": {
+            "both_pass": 9,
+            "loss": 1,
+            "gain": 4,
+            "both_fail": 1
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 11,
+              "loss": 2,
+              "gain": 2
+            },
+            "empty_preload": {
+              "both_pass": 11,
+              "loss": 1,
+              "gain": 2,
+              "both_fail": 1
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_success": {
+                "both_pass": 8,
+                "loss": 1,
+                "gain": 1
+              },
+              "first_failure": {
+                "both_pass": 3,
+                "gain": 1,
+                "loss": 1
+              }
+            },
+            "empty_preload": {
+              "first_success": {
+                "both_pass": 9,
+                "loss": 1
+              },
+              "first_failure": {
+                "both_pass": 2,
+                "gain": 2,
+                "both_fail": 1
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_success": {
+              "both_pass": 8,
+              "loss": 1,
+              "split_controls": 1
+            },
+            "first_failure": {
+              "both_pass": 2,
+              "gain": 1,
+              "split_controls": 2
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": -0.03571428571428571,
+            "empty_preload": 0.03571428571428571
+          },
+          "task_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": 0.06666666666666667
+          }
+        },
+        "lesson_original": {
+          "official": {
+            "success": 13,
+            "failure": 2
+          },
+          "vs_first": {
+            "both_pass": 9,
+            "gain": 4,
+            "both_fail": 1,
+            "loss": 1
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 13,
+              "both_fail": 2
+            },
+            "empty_preload": {
+              "both_pass": 11,
+              "both_fail": 1,
+              "gain": 2,
+              "loss": 1
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_success": {
+                "both_pass": 9,
+                "both_fail": 1
+              },
+              "first_failure": {
+                "both_pass": 4,
+                "both_fail": 1
+              }
+            },
+            "empty_preload": {
+              "first_success": {
+                "both_pass": 9,
+                "loss": 1
+              },
+              "first_failure": {
+                "both_pass": 2,
+                "both_fail": 1,
+                "gain": 2
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_success": {
+              "both_pass": 9,
+              "split_controls": 1
+            },
+            "first_failure": {
+              "both_pass": 2,
+              "both_fail": 1,
+              "split_controls": 2
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": 0.07142857142857142
+          },
+          "task_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": 0.06666666666666667
+          }
+        },
+        "procedure_original": {
+          "official": {
+            "success": 13,
+            "failure": 2
+          },
+          "vs_first": {
+            "both_pass": 10,
+            "gain": 3,
+            "both_fail": 2
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 11,
+              "gain": 2,
+              "loss": 2
+            },
+            "empty_preload": {
+              "both_pass": 11,
+              "gain": 2,
+              "loss": 1,
+              "both_fail": 1
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_success": {
+                "both_pass": 9,
+                "gain": 1
+              },
+              "first_failure": {
+                "both_pass": 2,
+                "gain": 1,
+                "loss": 2
+              }
+            },
+            "empty_preload": {
+              "first_success": {
+                "both_pass": 10
+              },
+              "first_failure": {
+                "both_pass": 1,
+                "gain": 2,
+                "loss": 1,
+                "both_fail": 1
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_success": {
+              "both_pass": 9,
+              "split_controls": 1
+            },
+            "first_failure": {
+              "both_pass": 1,
+              "gain": 1,
+              "split_controls": 2,
+              "loss": 1
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": -0.03571428571428571,
+            "empty_preload": 0.03571428571428571
+          },
+          "task_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": 0.06666666666666667
+          }
+        },
+        "no_memory": {
+          "official": {
+            "success": 13,
+            "failure": 2
+          },
+          "vs_first": {
+            "both_pass": 9,
+            "gain": 4,
+            "both_fail": 1,
+            "loss": 1
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 13,
+              "both_fail": 2
+            },
+            "empty_preload": {
+              "both_pass": 11,
+              "both_fail": 1,
+              "gain": 2,
+              "loss": 1
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_success": {
+                "both_pass": 9,
+                "both_fail": 1
+              },
+              "first_failure": {
+                "both_pass": 4,
+                "both_fail": 1
+              }
+            },
+            "empty_preload": {
+              "first_success": {
+                "both_pass": 9,
+                "loss": 1
+              },
+              "first_failure": {
+                "both_pass": 2,
+                "both_fail": 1,
+                "gain": 2
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_success": {
+              "both_pass": 9,
+              "split_controls": 1
+            },
+            "first_failure": {
+              "both_pass": 2,
+              "both_fail": 1,
+              "split_controls": 2
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": 0.07142857142857142
+          },
+          "task_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": 0.06666666666666667
+          }
+        },
+        "empty_preload": {
+          "official": {
+            "success": 12,
+            "failure": 3
+          },
+          "vs_first": {
+            "both_pass": 10,
+            "gain": 2,
+            "both_fail": 3
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 11,
+              "both_fail": 1,
+              "loss": 2,
+              "gain": 1
+            },
+            "empty_preload": {
+              "both_pass": 12,
+              "both_fail": 3
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_success": {
+                "both_pass": 9,
+                "gain": 1
+              },
+              "first_failure": {
+                "both_pass": 2,
+                "both_fail": 1,
+                "loss": 2
+              }
+            },
+            "empty_preload": {
+              "first_success": {
+                "both_pass": 10
+              },
+              "first_failure": {
+                "both_pass": 2,
+                "both_fail": 3
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_success": {
+              "both_pass": 9,
+              "split_controls": 1
+            },
+            "first_failure": {
+              "both_pass": 2,
+              "both_fail": 1,
+              "split_controls": 2
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": -0.07142857142857142,
+            "empty_preload": 0.0
+          },
+          "task_equal_weight_difference": {
+            "no_memory": -0.06666666666666667,
+            "empty_preload": 0.0
+          }
+        }
+      }
+    },
+    "workflow/mixed": {
+      "tasks": 6,
+      "customers": 6,
+      "forms": {
+        "fact_original": {
+          "official": {
+            "failure": 3,
+            "success": 3
+          },
+          "vs_first": {
+            "loss": 2,
+            "both_fail": 1,
+            "both_pass": 2,
+            "gain": 1
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_fail": 2,
+              "loss": 1,
+              "both_pass": 2,
+              "gain": 1
+            },
+            "empty_preload": {
+              "both_fail": 1,
+              "loss": 2,
+              "both_pass": 2,
+              "gain": 1
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_success": {
+                "both_fail": 1,
+                "loss": 1,
+                "both_pass": 2
+              },
+              "first_failure": {
+                "both_fail": 1,
+                "gain": 1
+              }
+            },
+            "empty_preload": {
+              "first_success": {
+                "both_fail": 1,
+                "loss": 1,
+                "both_pass": 1,
+                "gain": 1
+              },
+              "first_failure": {
+                "loss": 1,
+                "both_pass": 1
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_success": {
+              "both_fail": 1,
+              "loss": 1,
+              "both_pass": 1,
+              "split_controls": 1
+            },
+            "first_failure": {
+              "split_controls": 2
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": -0.16666666666666666
+          },
+          "task_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": -0.16666666666666666
+          }
+        },
+        "episode_original": {
+          "official": {
+            "failure": 2,
+            "success": 4
+          },
+          "vs_first": {
+            "loss": 1,
+            "both_pass": 3,
+            "both_fail": 1,
+            "gain": 1
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_fail": 2,
+              "both_pass": 3,
+              "gain": 1
+            },
+            "empty_preload": {
+              "both_fail": 1,
+              "both_pass": 3,
+              "loss": 1,
+              "gain": 1
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_success": {
+                "both_fail": 1,
+                "both_pass": 3
+              },
+              "first_failure": {
+                "both_fail": 1,
+                "gain": 1
+              }
+            },
+            "empty_preload": {
+              "first_success": {
+                "both_fail": 1,
+                "both_pass": 2,
+                "gain": 1
+              },
+              "first_failure": {
+                "loss": 1,
+                "both_pass": 1
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_success": {
+              "both_fail": 1,
+              "both_pass": 2,
+              "split_controls": 1
+            },
+            "first_failure": {
+              "split_controls": 2
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": 0.16666666666666666,
+            "empty_preload": 0.0
+          },
+          "task_equal_weight_difference": {
+            "no_memory": 0.16666666666666666,
+            "empty_preload": 0.0
+          }
+        },
+        "lesson_original": {
+          "official": {
+            "failure": 3,
+            "success": 3
+          },
+          "vs_first": {
+            "loss": 2,
+            "both_pass": 2,
+            "both_fail": 1,
+            "gain": 1
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_fail": 2,
+              "both_pass": 2,
+              "loss": 1,
+              "gain": 1
+            },
+            "empty_preload": {
+              "both_fail": 1,
+              "both_pass": 2,
+              "loss": 2,
+              "gain": 1
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_success": {
+                "both_fail": 1,
+                "both_pass": 2,
+                "loss": 1
+              },
+              "first_failure": {
+                "both_fail": 1,
+                "gain": 1
+              }
+            },
+            "empty_preload": {
+              "first_success": {
+                "both_fail": 1,
+                "both_pass": 1,
+                "loss": 1,
+                "gain": 1
+              },
+              "first_failure": {
+                "loss": 1,
+                "both_pass": 1
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_success": {
+              "both_fail": 1,
+              "both_pass": 1,
+              "loss": 1,
+              "split_controls": 1
+            },
+            "first_failure": {
+              "split_controls": 2
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": -0.16666666666666666
+          },
+          "task_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": -0.16666666666666666
+          }
+        },
+        "procedure_original": {
+          "official": {
+            "failure": 2,
+            "success": 4
+          },
+          "vs_first": {
+            "loss": 1,
+            "both_pass": 3,
+            "both_fail": 1,
+            "gain": 1
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_fail": 2,
+              "both_pass": 3,
+              "gain": 1
+            },
+            "empty_preload": {
+              "both_fail": 1,
+              "both_pass": 3,
+              "loss": 1,
+              "gain": 1
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_success": {
+                "both_fail": 1,
+                "both_pass": 3
+              },
+              "first_failure": {
+                "both_fail": 1,
+                "gain": 1
+              }
+            },
+            "empty_preload": {
+              "first_success": {
+                "both_fail": 1,
+                "both_pass": 2,
+                "gain": 1
+              },
+              "first_failure": {
+                "loss": 1,
+                "both_pass": 1
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_success": {
+              "both_fail": 1,
+              "both_pass": 2,
+              "split_controls": 1
+            },
+            "first_failure": {
+              "split_controls": 2
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": 0.16666666666666666,
+            "empty_preload": 0.0
+          },
+          "task_equal_weight_difference": {
+            "no_memory": 0.16666666666666666,
+            "empty_preload": 0.0
+          }
+        },
+        "no_memory": {
+          "official": {
+            "failure": 3,
+            "success": 3
+          },
+          "vs_first": {
+            "loss": 1,
+            "both_pass": 3,
+            "both_fail": 2
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_fail": 3,
+              "both_pass": 3
+            },
+            "empty_preload": {
+              "both_fail": 1,
+              "both_pass": 2,
+              "loss": 2,
+              "gain": 1
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_success": {
+                "both_fail": 1,
+                "both_pass": 3
+              },
+              "first_failure": {
+                "both_fail": 2
+              }
+            },
+            "empty_preload": {
+              "first_success": {
+                "both_fail": 1,
+                "both_pass": 2,
+                "gain": 1
+              },
+              "first_failure": {
+                "loss": 2
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_success": {
+              "both_fail": 1,
+              "both_pass": 2,
+              "split_controls": 1
+            },
+            "first_failure": {
+              "split_controls": 2
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": -0.16666666666666666
+          },
+          "task_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": -0.16666666666666666
+          }
+        },
+        "empty_preload": {
+          "official": {
+            "failure": 2,
+            "success": 4
+          },
+          "vs_first": {
+            "loss": 2,
+            "both_pass": 2,
+            "gain": 2
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_fail": 1,
+              "both_pass": 2,
+              "gain": 2,
+              "loss": 1
+            },
+            "empty_preload": {
+              "both_fail": 2,
+              "both_pass": 4
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_success": {
+                "both_fail": 1,
+                "both_pass": 2,
+                "loss": 1
+              },
+              "first_failure": {
+                "gain": 2
+              }
+            },
+            "empty_preload": {
+              "first_success": {
+                "both_fail": 2,
+                "both_pass": 2
+              },
+              "first_failure": {
+                "both_pass": 2
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_success": {
+              "both_fail": 1,
+              "both_pass": 2,
+              "split_controls": 1
+            },
+            "first_failure": {
+              "split_controls": 2
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": 0.16666666666666666,
+            "empty_preload": 0.0
+          },
+          "task_equal_weight_difference": {
+            "no_memory": 0.16666666666666666,
+            "empty_preload": 0.0
+          }
+        }
+      }
+    },
+    "workflow/cancel": {
+      "tasks": 2,
+      "customers": 2,
+      "forms": {
+        "fact_original": {
+          "official": {
+            "failure": 1,
+            "success": 1
+          },
+          "vs_first": {
+            "both_fail": 1,
+            "gain": 1
+          },
+          "vs_controls": {
+            "no_memory": {
+              "loss": 1,
+              "both_pass": 1
+            },
+            "empty_preload": {
+              "both_fail": 1,
+              "both_pass": 1
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_failure": {
+                "loss": 1,
+                "both_pass": 1
+              }
+            },
+            "empty_preload": {
+              "first_failure": {
+                "both_fail": 1,
+                "both_pass": 1
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_failure": {
+              "split_controls": 1,
+              "both_pass": 1
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": -0.5,
+            "empty_preload": 0.0
+          },
+          "task_equal_weight_difference": {
+            "no_memory": -0.5,
+            "empty_preload": 0.0
+          }
+        },
+        "episode_original": {
+          "official": {
+            "failure": 1,
+            "success": 1
+          },
+          "vs_first": {
+            "both_fail": 1,
+            "gain": 1
+          },
+          "vs_controls": {
+            "no_memory": {
+              "loss": 1,
+              "both_pass": 1
+            },
+            "empty_preload": {
+              "both_fail": 1,
+              "both_pass": 1
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_failure": {
+                "loss": 1,
+                "both_pass": 1
+              }
+            },
+            "empty_preload": {
+              "first_failure": {
+                "both_fail": 1,
+                "both_pass": 1
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_failure": {
+              "split_controls": 1,
+              "both_pass": 1
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": -0.5,
+            "empty_preload": 0.0
+          },
+          "task_equal_weight_difference": {
+            "no_memory": -0.5,
+            "empty_preload": 0.0
+          }
+        },
+        "lesson_original": {
+          "official": {
+            "failure": 1,
+            "success": 1
+          },
+          "vs_first": {
+            "both_fail": 1,
+            "gain": 1
+          },
+          "vs_controls": {
+            "no_memory": {
+              "loss": 1,
+              "both_pass": 1
+            },
+            "empty_preload": {
+              "both_fail": 1,
+              "both_pass": 1
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_failure": {
+                "loss": 1,
+                "both_pass": 1
+              }
+            },
+            "empty_preload": {
+              "first_failure": {
+                "both_fail": 1,
+                "both_pass": 1
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_failure": {
+              "split_controls": 1,
+              "both_pass": 1
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": -0.5,
+            "empty_preload": 0.0
+          },
+          "task_equal_weight_difference": {
+            "no_memory": -0.5,
+            "empty_preload": 0.0
+          }
+        },
+        "procedure_original": {
+          "official": {
+            "success": 2
+          },
+          "vs_first": {
+            "gain": 2
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 2
+            },
+            "empty_preload": {
+              "gain": 1,
+              "both_pass": 1
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_failure": {
+                "both_pass": 2
+              }
+            },
+            "empty_preload": {
+              "first_failure": {
+                "gain": 1,
+                "both_pass": 1
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_failure": {
+              "split_controls": 1,
+              "both_pass": 1
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": 0.5
+          },
+          "task_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": 0.5
+          }
+        },
+        "no_memory": {
+          "official": {
+            "success": 2
+          },
+          "vs_first": {
+            "gain": 2
+          },
+          "vs_controls": {
+            "no_memory": {
+              "both_pass": 2
+            },
+            "empty_preload": {
+              "gain": 1,
+              "both_pass": 1
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_failure": {
+                "both_pass": 2
+              }
+            },
+            "empty_preload": {
+              "first_failure": {
+                "gain": 1,
+                "both_pass": 1
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_failure": {
+              "split_controls": 1,
+              "both_pass": 1
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": 0.5
+          },
+          "task_equal_weight_difference": {
+            "no_memory": 0.0,
+            "empty_preload": 0.5
+          }
+        },
+        "empty_preload": {
+          "official": {
+            "failure": 1,
+            "success": 1
+          },
+          "vs_first": {
+            "both_fail": 1,
+            "gain": 1
+          },
+          "vs_controls": {
+            "no_memory": {
+              "loss": 1,
+              "both_pass": 1
+            },
+            "empty_preload": {
+              "both_fail": 1,
+              "both_pass": 1
+            }
+          },
+          "vs_controls_by_first": {
+            "no_memory": {
+              "first_failure": {
+                "loss": 1,
+                "both_pass": 1
+              }
+            },
+            "empty_preload": {
+              "first_failure": {
+                "both_fail": 1,
+                "both_pass": 1
+              }
+            }
+          },
+          "both_controls_by_first": {
+            "first_failure": {
+              "split_controls": 1,
+              "both_pass": 1
+            }
+          },
+          "customer_equal_weight_difference": {
+            "no_memory": -0.5,
+            "empty_preload": 0.0
+          },
+          "task_equal_weight_difference": {
+            "no_memory": -0.5,
+            "empty_preload": 0.0
+          }
+        }
+      }
+    }
+  }
+}
