@@ -1,7 +1,7 @@
 """Swap one recorded business argument at a time across discordant full-retail memory/control pairs."""
 
 import argparse
-from collections import Counter
+from collections import Counter, defaultdict
 from functools import lru_cache
 from pathlib import Path
 from unittest.mock import patch
@@ -62,7 +62,8 @@ def replay(workspace, detail):
     data = read(detail)
     from tau2.data_model.language import LanguageTaskInfo
     from tau2.data_model.simulation import SimulationRun
-    from tau2.multilingual.runtime import language_environment_kwargs
+    from tau2.data_model.tasks import Task
+    from tau2.multilingual.runtime import language_environment_kwargs, task_payload
     from tau2.registry import registry
     from tau2.runner.presets import reload_recorded_call
 
@@ -163,12 +164,67 @@ def replay(workspace, detail):
             tool_errors_after=edited_errors,
         )
 
+    canonical_tasks = {
+        t["id"]: t
+        for t in read(workspace / "data/tau2-bench/data/tau2/domains/retail/tasks.json")
+    }
+    contexts = defaultdict(list)
+    for cell in data["cells"]:
+        if cell["stage"] == "solve1" and cell.get("report"):
+            ctx = simulation(cell["run"]).language_context.model_dump(mode="json")
+            contexts[cell["task"]].append(ctx)
     references = []
     for cell in data["cells"]:
-        if cell["stage"] == "source" and cell.get("report"):
-            sim = simulation(cell["run"])
-            _, gold = reference(sim.task_id, sim.language_context.model_dump_json())
-            references.append(dict(gold, source_run=cell["run"]))
+        if cell["stage"] != "source" or not cell.get("report"):
+            continue
+        sim = simulation(cell["run"])
+        _, gold = reference(sim.task_id, sim.language_context.model_dump_json())
+        old, new = [
+            task_payload(Task.model_validate(t))
+            for t in (canonical_tasks[sim.task_id], tasks[sim.task_id])
+        ]
+        before, after = [
+            x["user_scenario"]["instructions"].pop("known_info") for x in (old, new)
+        ]
+        difference = "other"
+        if old == new and before == after:
+            difference = "identical"
+        elif (
+            old == new
+            and after.startswith(before)
+            and "Name details:" in after[len(before) :]
+        ):
+            difference = "customer_name_order_only"
+        src = sim.language_context.model_dump(mode="json")
+        repeats = contexts[sim.task_id]
+        references.append(
+            dict(
+                gold,
+                source_run=cell["run"],
+                pack_difference=difference,
+                source_context=digest(canonical(src)),
+                solve_context_counts=dict(
+                    Counter(digest(canonical(ctx)) for ctx in repeats)
+                ),
+                changed_context_keys=sorted(
+                    {
+                        k
+                        for ctx in repeats
+                        for k in set(src) | set(ctx)
+                        if src.get(k) != ctx.get(k)
+                    }
+                ),
+                changed_persona_keys=sorted(
+                    {
+                        k
+                        for ctx in repeats
+                        for k in set(src["persona"] or {}) | set(ctx["persona"] or {})
+                        if (src["persona"] or {}).get(k)
+                        != (ctx["persona"] or {}).get(k)
+                    }
+                ),
+            )
+        )
     outcomes = []
     for pair in data["pairs"]:
         if pair["control"] != "no_memory" or pair["state"] not in {"gain", "loss"}:
