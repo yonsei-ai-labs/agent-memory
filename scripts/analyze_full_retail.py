@@ -37,6 +37,7 @@ if __package__:
     from .analyze_recheck_rounds import inspect_episode, status
     from .run_full_retail import (
         accounting,
+        bank_parent,
         full_design,
         modules_for,
         preflight,
@@ -49,6 +50,7 @@ else:
     from analyze_recheck_rounds import inspect_episode, status
     from run_full_retail import (
         accounting,
+        bank_parent,
         full_design,
         modules_for,
         preflight,
@@ -225,6 +227,27 @@ def read_request_data(folder, run, res, workspace, models, judge):
     return entry, ids, state, scan, blobs, records
 
 
+def opening_hashes(records):
+    requests = {}
+    for actor, wire, _, _ in records:
+        if actor not in {"worker", "user_simulator"} or actor in requests:
+            continue
+        requests[actor] = wire
+    customer, worker = requests.get("user_simulator"), requests.get("worker")
+    return {
+        "simulator_request": digest(canonical(customer)) if customer else None,
+        "worker_request": digest(canonical(worker)) if worker else None,
+        "worker_input_without_opening": digest(
+            canonical(dict(worker, messages=worker["messages"][:-1]))
+        )
+        if worker
+        else None,
+        "customer_text": digest(canonical(worker["messages"][-1]["content"]))
+        if worker
+        else None,
+    }
+
+
 def audit_task(args):
     workspace, cfg, base, row, task_data, reg, completion = args
     modules_for(workspace)
@@ -232,14 +255,23 @@ def audit_task(args):
 
     task = Task.model_validate(task_data)
     tid = row["task"]
-    root = workspace / "runs" / cfg["name"]
+    root = workspace / "runs" / cfg.get("run_directory", cfg["name"])
     parent = root / ("task-" + tid)
-    source = recorded_source(parent / "source", tid)
+    bank_path = bank_parent(workspace, cfg, row)
+    source = recorded_source(bank_path / "source", tid)
     banks = {}
+    if "source_study" in row:
+        _, _, imported = sealed_rows(bank_path / "write")
+        for writer in imported:
+            if writer["status"] in {"completed", "empty"}:
+                banks[writer["arm"]] = read_form_bank(
+                    safe_path(bank_path / "write", writer["directory"]),
+                    expected_log_sha256=writer["result"]["log_sha256"],
+                )
     cells = []
     ids = []
     first_writer_wires = set()
-    for stage in cfg["stages"]:
+    for stage in row.get("scheduled_stages", cfg["stages"]):
         p = parent / stage
         end, ctl, rows = sealed_rows(p)
         design, jobs = full_design(
@@ -380,7 +412,11 @@ def audit_task(args):
             policy = MemoryPolicy(**assignment["policy"])
             start = scan["starts"][run]
             native = blobs.get(assignment["native_config_ref"])
-            seed = cfg["source_seed"] if stage == "source" else cfg["solver_seeds"][0]
+            seed = (
+                cfg["source_seed"]
+                if stage == "source"
+                else cfg["solver_seeds"][int(stage[-1]) - 1]
+            )
             items = (
                 snapshot_items(blobs, state, start["payload"]["start_snapshot_id"])
                 if policy.enabled
@@ -399,7 +435,7 @@ def audit_task(args):
                 == (source.public_context_sha256 if bank else None)
                 and native["seed"] == seed
                 and native["domain"] == "retail"
-                and native["task_split_name"] == "test"
+                and native["task_split_name"] == row["split"]
                 and native["task_ids"] == [tid],
                 "Wrong seed, customer, memory or exposure assignment",
             )
@@ -440,6 +476,8 @@ def audit_task(args):
                 else:
                     require(actor == "grader", "Unexpected actor")
                     grader.append((wire, raw))
+            if "cohort" in row:
+                cell["opening"] = opening_hashes(records)
             cell.update(
                 grading=res["grading_status"],
                 writer_run=bank["run_id"] if bank else None,
