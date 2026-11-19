@@ -214,7 +214,7 @@ def run_jobs(rows, execute, guard, persist, *, written_arms=(*FORMS, "summary"),
         if stop:
             row.update(status="not_started", reason=stop)
             continue
-        if row["task_id"] in missing_sources:
+        if row.get("source_task_id", row["task_id"]) in missing_sources:
             row.update(status="not_started", reason="first_pass_ungraded")
             continue
         if row["phase"] == "solve" and row["arm"] in written_arms:

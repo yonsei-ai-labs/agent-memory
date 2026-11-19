@@ -59,6 +59,12 @@ class FormsBatchTests(unittest.TestCase):
         self.assertEqual(sum(r["status"] == "not_started" for r in rows), 583)
         self.assertEqual(rows[-1]["reason"], "unknown_cost")
 
+    def test_unavailable_transfer_source_marks_its_target_slot_before_sending(self):
+        rows = [dict(phase="solve", task_id="26", source_task_id="0", repetition=1, arm="lesson")]
+        guard = BatchGuard(max_calls=10, max_usd=1, max_seconds=30)
+        run_jobs(rows, lambda *_: self.fail("sent without source"), guard, lambda _: None, missing_sources={"0"})
+        self.assertEqual((rows[0]["status"], rows[0]["reason"]), ("not_started", "first_pass_ungraded"))
+
     def test_reservation_denial_below_cap_stops_weaker_later_reservations(self):
         guard = BatchGuard(max_calls=10, max_usd=1, max_seconds=100)
         with self.assertRaises(ProviderError):
