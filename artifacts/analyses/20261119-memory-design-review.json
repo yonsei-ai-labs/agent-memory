@@ -1,0 +1,3194 @@
+{
+  "inputs": {
+    "artifacts/analyses/20261119-multi-workflow-results.json": "623c1d88ac2116ca3cd65f56edb3769d1b91e28e5c7ad8c561850123bf9932eb",
+    "artifacts/analyses/20261119-multi-workflow-profile-results.json": "82ec0625237021cb9661274aedc74333641fadb2dea60c1a65309a673e5fa3c6",
+    "artifacts/analyses/20261119-multi-workflow-baggage-replay.json": "a770380d06ff19ce4a672830578d11083955d24a1e24581236dbc691adff1dc1",
+    "artifacts/analyses/20261119-fixed-bank-repeats-results.json": "6c5c05652a432fb54fc006f069510c79451a78fa4edc859cd290f61f4da28067",
+    "artifacts/analyses/20261119-frozen-bank-preflight.json": "898da02d03f118991c6f5fb2850d38f42fc90a20b5ee81bc17acc1830866fa26",
+    "artifacts/analyses/20261119-bank-transfer-results.json": "bb2fdf817b3aa48d3560340e2c930de70d16c142a41650e606fd46d23ff3c035",
+    "artifacts/analyses/20261119-scope-lessons-results.json": "be813aefb88eb3023a1ecd7e36d2cba963d62bd39d70634f1d399a844594034e",
+    "protocols/pilots/tau2-new-customer-forms-v1.json": "0a73306f4ccb6f6a2e7a648c02b70e4fef274f2a7574e9a136dac06132c2062e",
+    "artifacts/pilots/20261115-tau2-baseline-screening-results.json": "38239cc8896f53bc805eb4287d8e1be9561b3bb0bd857c9d89674620c9693487",
+    "runs/tau2-new-customer-source-01/completion.json": "bf8dde82280789623855a81d5ed860e7924996365037852912cc3bcba80a53ec",
+    "runs/tau2-multi-workflow-native-01/completion.json": "3e25a62daab301ad103ba1fabe4fa3276b91e6ad9601b5fd2789292df453ef1d",
+    "protocols/pilots/tau2-multi-workflow-profile-step-v1.json": "ff82c9050a01178339b12cc4aba29c145c7b9e3698238a35bb082d8cbc4fcd55"
+  },
+  "common_banks": {
+    "earlier": {
+      "study": "tau2-fixed-bank-repeats-01",
+      "seeds": [
+        4,
+        5
+      ],
+      "instruction": {
+        "path": "protocols/instructions/frozen-memory-replay-v1.txt",
+        "sha256": "cd5d4dede32681b19eaa7eb1919d59b9a08ae2732170afba22cba35ab1d245e4"
+      },
+      "first_pass_success": {
+        "3": true,
+        "14": true,
+        "42": false
+      },
+      "cells": [
+        {
+          "task": "3",
+          "writer": 1,
+          "seed": 4,
+          "scores": {
+            "fact": true,
+            "episode": true,
+            "lesson": true,
+            "procedure": false,
+            "no_memory": true,
+            "empty_preload": true
+          }
+        },
+        {
+          "task": "3",
+          "writer": 1,
+          "seed": 5,
+          "scores": {
+            "fact": true,
+            "episode": true,
+            "lesson": true,
+            "procedure": true,
+            "no_memory": true,
+            "empty_preload": true
+          }
+        },
+        {
+          "task": "3",
+          "writer": 2,
+          "seed": 4,
+          "scores": {
+            "fact": true,
+            "episode": true,
+            "lesson": true,
+            "procedure": true,
+            "no_memory": false,
+            "empty_preload": true
+          }
+        },
+        {
+          "task": "3",
+          "writer": 2,
+          "seed": 5,
+          "scores": {
+            "fact": true,
+            "episode": false,
+            "lesson": true,
+            "procedure": true,
+            "no_memory": true,
+            "empty_preload": true
+          }
+        },
+        {
+          "task": "14",
+          "writer": 1,
+          "seed": 4,
+          "scores": {
+            "fact": true,
+            "episode": null,
+            "lesson": true,
+            "procedure": false,
+            "no_memory": true,
+            "empty_preload": false
+          }
+        },
+        {
+          "task": "14",
+          "writer": 1,
+          "seed": 5,
+          "scores": {
+            "fact": true,
+            "episode": false,
+            "lesson": true,
+            "procedure": false,
+            "no_memory": false,
+            "empty_preload": false
+          }
+        },
+        {
+          "task": "14",
+          "writer": 2,
+          "seed": 4,
+          "scores": {
+            "fact": true,
+            "episode": false,
+            "lesson": false,
+            "procedure": true,
+            "no_memory": true,
+            "empty_preload": true
+          }
+        },
+        {
+          "task": "14",
+          "writer": 2,
+          "seed": 5,
+          "scores": {
+            "fact": false,
+            "episode": false,
+            "lesson": true,
+            "procedure": false,
+            "no_memory": true,
+            "empty_preload": false
+          }
+        },
+        {
+          "task": "42",
+          "writer": 1,
+          "seed": 4,
+          "scores": {
+            "fact": false,
+            "episode": false,
+            "lesson": false,
+            "procedure": false,
+            "no_memory": false,
+            "empty_preload": true
+          }
+        },
+        {
+          "task": "42",
+          "writer": 1,
+          "seed": 5,
+          "scores": {
+            "fact": false,
+            "episode": true,
+            "lesson": true,
+            "procedure": true,
+            "no_memory": false,
+            "empty_preload": false
+          }
+        },
+        {
+          "task": "42",
+          "writer": 2,
+          "seed": 4,
+          "scores": {
+            "fact": true,
+            "episode": true,
+            "lesson": false,
+            "procedure": true,
+            "no_memory": false,
+            "empty_preload": false
+          }
+        },
+        {
+          "task": "42",
+          "writer": 2,
+          "seed": 5,
+          "scores": {
+            "fact": true,
+            "episode": true,
+            "lesson": false,
+            "procedure": true,
+            "no_memory": false,
+            "empty_preload": null
+          }
+        }
+      ],
+      "summary": {
+        "all": {
+          "fact": {
+            "success": 9,
+            "graded": 12,
+            "paired": {
+              "no_memory": {
+                "both_pass": 5,
+                "gain": 4,
+                "loss": 1,
+                "both_fail": 2
+              },
+              "empty_preload": {
+                "both_pass": 5,
+                "gain": 3,
+                "both_fail": 2,
+                "loss": 1,
+                "missing": 1
+              }
+            },
+            "versus_concordant_controls": {
+              "both_pass": 4,
+              "gain": 2,
+              "both_fail": 1
+            }
+          },
+          "episode": {
+            "success": 6,
+            "graded": 11,
+            "paired": {
+              "no_memory": {
+                "both_pass": 2,
+                "gain": 4,
+                "loss": 3,
+                "missing": 1,
+                "both_fail": 2
+              },
+              "empty_preload": {
+                "both_pass": 3,
+                "loss": 3,
+                "missing": 2,
+                "both_fail": 2,
+                "gain": 2
+              }
+            },
+            "versus_concordant_controls": {
+              "both_pass": 2,
+              "loss": 2,
+              "both_fail": 1,
+              "gain": 2
+            }
+          },
+          "lesson": {
+            "success": 8,
+            "graded": 12,
+            "paired": {
+              "no_memory": {
+                "both_pass": 5,
+                "gain": 3,
+                "loss": 1,
+                "both_fail": 3
+              },
+              "empty_preload": {
+                "both_pass": 4,
+                "gain": 4,
+                "loss": 2,
+                "both_fail": 1,
+                "missing": 1
+              }
+            },
+            "versus_concordant_controls": {
+              "both_pass": 3,
+              "gain": 2,
+              "loss": 1,
+              "both_fail": 1
+            }
+          },
+          "procedure": {
+            "success": 7,
+            "graded": 12,
+            "paired": {
+              "no_memory": {
+                "loss": 3,
+                "both_pass": 3,
+                "gain": 4,
+                "both_fail": 2
+              },
+              "empty_preload": {
+                "loss": 2,
+                "both_pass": 4,
+                "both_fail": 3,
+                "gain": 2,
+                "missing": 1
+              }
+            },
+            "versus_concordant_controls": {
+              "loss": 1,
+              "both_pass": 3,
+              "both_fail": 1,
+              "gain": 2
+            }
+          },
+          "no_memory": {
+            "success": 6,
+            "graded": 12,
+            "paired": {
+              "no_memory": {
+                "both_pass": 6,
+                "both_fail": 6
+              },
+              "empty_preload": {
+                "both_pass": 4,
+                "loss": 2,
+                "gain": 2,
+                "both_fail": 3,
+                "missing": 1
+              }
+            },
+            "versus_concordant_controls": {
+              "both_pass": 4,
+              "both_fail": 3
+            }
+          },
+          "empty_preload": {
+            "success": 6,
+            "graded": 11,
+            "paired": {
+              "no_memory": {
+                "both_pass": 4,
+                "gain": 2,
+                "loss": 2,
+                "both_fail": 3,
+                "missing": 1
+              },
+              "empty_preload": {
+                "both_pass": 6,
+                "both_fail": 5,
+                "missing": 1
+              }
+            },
+            "versus_concordant_controls": {
+              "both_pass": 4,
+              "both_fail": 3
+            }
+          }
+        },
+        "3": {
+          "fact": {
+            "success": 4,
+            "graded": 4,
+            "paired": {
+              "no_memory": {
+                "both_pass": 3,
+                "gain": 1
+              },
+              "empty_preload": {
+                "both_pass": 4
+              }
+            },
+            "versus_concordant_controls": {
+              "both_pass": 3
+            }
+          },
+          "episode": {
+            "success": 3,
+            "graded": 4,
+            "paired": {
+              "no_memory": {
+                "both_pass": 2,
+                "gain": 1,
+                "loss": 1
+              },
+              "empty_preload": {
+                "both_pass": 3,
+                "loss": 1
+              }
+            },
+            "versus_concordant_controls": {
+              "both_pass": 2,
+              "loss": 1
+            }
+          },
+          "lesson": {
+            "success": 4,
+            "graded": 4,
+            "paired": {
+              "no_memory": {
+                "both_pass": 3,
+                "gain": 1
+              },
+              "empty_preload": {
+                "both_pass": 4
+              }
+            },
+            "versus_concordant_controls": {
+              "both_pass": 3
+            }
+          },
+          "procedure": {
+            "success": 3,
+            "graded": 4,
+            "paired": {
+              "no_memory": {
+                "loss": 1,
+                "both_pass": 2,
+                "gain": 1
+              },
+              "empty_preload": {
+                "loss": 1,
+                "both_pass": 3
+              }
+            },
+            "versus_concordant_controls": {
+              "loss": 1,
+              "both_pass": 2
+            }
+          },
+          "no_memory": {
+            "success": 3,
+            "graded": 4,
+            "paired": {
+              "no_memory": {
+                "both_pass": 3,
+                "both_fail": 1
+              },
+              "empty_preload": {
+                "both_pass": 3,
+                "loss": 1
+              }
+            },
+            "versus_concordant_controls": {
+              "both_pass": 3
+            }
+          },
+          "empty_preload": {
+            "success": 4,
+            "graded": 4,
+            "paired": {
+              "no_memory": {
+                "both_pass": 3,
+                "gain": 1
+              },
+              "empty_preload": {
+                "both_pass": 4
+              }
+            },
+            "versus_concordant_controls": {
+              "both_pass": 3
+            }
+          }
+        },
+        "14": {
+          "fact": {
+            "success": 3,
+            "graded": 4,
+            "paired": {
+              "no_memory": {
+                "both_pass": 2,
+                "gain": 1,
+                "loss": 1
+              },
+              "empty_preload": {
+                "gain": 2,
+                "both_pass": 1,
+                "both_fail": 1
+              }
+            },
+            "versus_concordant_controls": {
+              "gain": 1,
+              "both_pass": 1
+            }
+          },
+          "episode": {
+            "success": 0,
+            "graded": 3,
+            "paired": {
+              "no_memory": {
+                "missing": 1,
+                "both_fail": 1,
+                "loss": 2
+              },
+              "empty_preload": {
+                "missing": 1,
+                "both_fail": 2,
+                "loss": 1
+              }
+            },
+            "versus_concordant_controls": {
+              "both_fail": 1,
+              "loss": 1
+            }
+          },
+          "lesson": {
+            "success": 3,
+            "graded": 4,
+            "paired": {
+              "no_memory": {
+                "both_pass": 2,
+                "gain": 1,
+                "loss": 1
+              },
+              "empty_preload": {
+                "gain": 3,
+                "loss": 1
+              }
+            },
+            "versus_concordant_controls": {
+              "gain": 1,
+              "loss": 1
+            }
+          },
+          "procedure": {
+            "success": 1,
+            "graded": 4,
+            "paired": {
+              "no_memory": {
+                "loss": 2,
+                "both_fail": 1,
+                "both_pass": 1
+              },
+              "empty_preload": {
+                "both_fail": 3,
+                "both_pass": 1
+              }
+            },
+            "versus_concordant_controls": {
+              "both_fail": 1,
+              "both_pass": 1
+            }
+          },
+          "no_memory": {
+            "success": 3,
+            "graded": 4,
+            "paired": {
+              "no_memory": {
+                "both_pass": 3,
+                "both_fail": 1
+              },
+              "empty_preload": {
+                "gain": 2,
+                "both_fail": 1,
+                "both_pass": 1
+              }
+            },
+            "versus_concordant_controls": {
+              "both_fail": 1,
+              "both_pass": 1
+            }
+          },
+          "empty_preload": {
+            "success": 1,
+            "graded": 4,
+            "paired": {
+              "no_memory": {
+                "loss": 2,
+                "both_fail": 1,
+                "both_pass": 1
+              },
+              "empty_preload": {
+                "both_fail": 3,
+                "both_pass": 1
+              }
+            },
+            "versus_concordant_controls": {
+              "both_fail": 1,
+              "both_pass": 1
+            }
+          }
+        },
+        "42": {
+          "fact": {
+            "success": 2,
+            "graded": 4,
+            "paired": {
+              "no_memory": {
+                "both_fail": 2,
+                "gain": 2
+              },
+              "empty_preload": {
+                "loss": 1,
+                "both_fail": 1,
+                "gain": 1,
+                "missing": 1
+              }
+            },
+            "versus_concordant_controls": {
+              "both_fail": 1,
+              "gain": 1
+            }
+          },
+          "episode": {
+            "success": 3,
+            "graded": 4,
+            "paired": {
+              "no_memory": {
+                "both_fail": 1,
+                "gain": 3
+              },
+              "empty_preload": {
+                "loss": 1,
+                "gain": 2,
+                "missing": 1
+              }
+            },
+            "versus_concordant_controls": {
+              "gain": 2
+            }
+          },
+          "lesson": {
+            "success": 1,
+            "graded": 4,
+            "paired": {
+              "no_memory": {
+                "both_fail": 3,
+                "gain": 1
+              },
+              "empty_preload": {
+                "loss": 1,
+                "gain": 1,
+                "both_fail": 1,
+                "missing": 1
+              }
+            },
+            "versus_concordant_controls": {
+              "gain": 1,
+              "both_fail": 1
+            }
+          },
+          "procedure": {
+            "success": 3,
+            "graded": 4,
+            "paired": {
+              "no_memory": {
+                "both_fail": 1,
+                "gain": 3
+              },
+              "empty_preload": {
+                "loss": 1,
+                "gain": 2,
+                "missing": 1
+              }
+            },
+            "versus_concordant_controls": {
+              "gain": 2
+            }
+          },
+          "no_memory": {
+            "success": 0,
+            "graded": 4,
+            "paired": {
+              "no_memory": {
+                "both_fail": 4
+              },
+              "empty_preload": {
+                "loss": 1,
+                "both_fail": 2,
+                "missing": 1
+              }
+            },
+            "versus_concordant_controls": {
+              "both_fail": 2
+            }
+          },
+          "empty_preload": {
+            "success": 1,
+            "graded": 3,
+            "paired": {
+              "no_memory": {
+                "gain": 1,
+                "both_fail": 2,
+                "missing": 1
+              },
+              "empty_preload": {
+                "both_pass": 1,
+                "both_fail": 2,
+                "missing": 1
+              }
+            },
+            "versus_concordant_controls": {
+              "both_fail": 2
+            }
+          }
+        },
+        "source_passed": {
+          "fact": {
+            "success": 7,
+            "graded": 8,
+            "paired": {
+              "no_memory": {
+                "both_pass": 5,
+                "gain": 2,
+                "loss": 1
+              },
+              "empty_preload": {
+                "both_pass": 5,
+                "gain": 2,
+                "both_fail": 1
+              }
+            },
+            "versus_concordant_controls": {
+              "both_pass": 4,
+              "gain": 1
+            }
+          },
+          "episode": {
+            "success": 3,
+            "graded": 7,
+            "paired": {
+              "no_memory": {
+                "both_pass": 2,
+                "gain": 1,
+                "loss": 3,
+                "missing": 1,
+                "both_fail": 1
+              },
+              "empty_preload": {
+                "both_pass": 3,
+                "loss": 2,
+                "missing": 1,
+                "both_fail": 2
+              }
+            },
+            "versus_concordant_controls": {
+              "both_pass": 2,
+              "loss": 2,
+              "both_fail": 1
+            }
+          },
+          "lesson": {
+            "success": 7,
+            "graded": 8,
+            "paired": {
+              "no_memory": {
+                "both_pass": 5,
+                "gain": 2,
+                "loss": 1
+              },
+              "empty_preload": {
+                "both_pass": 4,
+                "gain": 3,
+                "loss": 1
+              }
+            },
+            "versus_concordant_controls": {
+              "both_pass": 3,
+              "gain": 1,
+              "loss": 1
+            }
+          },
+          "procedure": {
+            "success": 4,
+            "graded": 8,
+            "paired": {
+              "no_memory": {
+                "loss": 3,
+                "both_pass": 3,
+                "gain": 1,
+                "both_fail": 1
+              },
+              "empty_preload": {
+                "loss": 1,
+                "both_pass": 4,
+                "both_fail": 3
+              }
+            },
+            "versus_concordant_controls": {
+              "loss": 1,
+              "both_pass": 3,
+              "both_fail": 1
+            }
+          },
+          "no_memory": {
+            "success": 6,
+            "graded": 8,
+            "paired": {
+              "no_memory": {
+                "both_pass": 6,
+                "both_fail": 2
+              },
+              "empty_preload": {
+                "both_pass": 4,
+                "loss": 1,
+                "gain": 2,
+                "both_fail": 1
+              }
+            },
+            "versus_concordant_controls": {
+              "both_pass": 4,
+              "both_fail": 1
+            }
+          },
+          "empty_preload": {
+            "success": 5,
+            "graded": 8,
+            "paired": {
+              "no_memory": {
+                "both_pass": 4,
+                "gain": 1,
+                "loss": 2,
+                "both_fail": 1
+              },
+              "empty_preload": {
+                "both_pass": 5,
+                "both_fail": 3
+              }
+            },
+            "versus_concordant_controls": {
+              "both_pass": 4,
+              "both_fail": 1
+            }
+          }
+        },
+        "source_failed": {
+          "fact": {
+            "success": 2,
+            "graded": 4,
+            "paired": {
+              "no_memory": {
+                "both_fail": 2,
+                "gain": 2
+              },
+              "empty_preload": {
+                "loss": 1,
+                "both_fail": 1,
+                "gain": 1,
+                "missing": 1
+              }
+            },
+            "versus_concordant_controls": {
+              "both_fail": 1,
+              "gain": 1
+            }
+          },
+          "episode": {
+            "success": 3,
+            "graded": 4,
+            "paired": {
+              "no_memory": {
+                "both_fail": 1,
+                "gain": 3
+              },
+              "empty_preload": {
+                "loss": 1,
+                "gain": 2,
+                "missing": 1
+              }
+            },
+            "versus_concordant_controls": {
+              "gain": 2
+            }
+          },
+          "lesson": {
+            "success": 1,
+            "graded": 4,
+            "paired": {
+              "no_memory": {
+                "both_fail": 3,
+                "gain": 1
+              },
+              "empty_preload": {
+                "loss": 1,
+                "gain": 1,
+                "both_fail": 1,
+                "missing": 1
+              }
+            },
+            "versus_concordant_controls": {
+              "gain": 1,
+              "both_fail": 1
+            }
+          },
+          "procedure": {
+            "success": 3,
+            "graded": 4,
+            "paired": {
+              "no_memory": {
+                "both_fail": 1,
+                "gain": 3
+              },
+              "empty_preload": {
+                "loss": 1,
+                "gain": 2,
+                "missing": 1
+              }
+            },
+            "versus_concordant_controls": {
+              "gain": 2
+            }
+          },
+          "no_memory": {
+            "success": 0,
+            "graded": 4,
+            "paired": {
+              "no_memory": {
+                "both_fail": 4
+              },
+              "empty_preload": {
+                "loss": 1,
+                "both_fail": 2,
+                "missing": 1
+              }
+            },
+            "versus_concordant_controls": {
+              "both_fail": 2
+            }
+          },
+          "empty_preload": {
+            "success": 1,
+            "graded": 3,
+            "paired": {
+              "no_memory": {
+                "gain": 1,
+                "both_fail": 2,
+                "missing": 1
+              },
+              "empty_preload": {
+                "both_pass": 1,
+                "both_fail": 2,
+                "missing": 1
+              }
+            },
+            "versus_concordant_controls": {
+              "both_fail": 2
+            }
+          }
+        }
+      }
+    },
+    "latest": {
+      "study": "tau2-multi-workflow-native-01",
+      "seeds": [
+        6,
+        7
+      ],
+      "instruction": {
+        "path": "protocols/instructions/tau2-delivery-memory.txt",
+        "sha256": "050147f01a4ae531d38f0d8a85b2bec2fcc07df51e7cf3076d8f1735526fca1d"
+      },
+      "first_pass_success": {
+        "3": true,
+        "14": true,
+        "42": false
+      },
+      "cells": [
+        {
+          "task": "3",
+          "writer": 1,
+          "seed": 6,
+          "scores": {
+            "fact": true,
+            "episode": true,
+            "lesson": true,
+            "procedure": true,
+            "no_memory": true,
+            "empty_preload": true
+          }
+        },
+        {
+          "task": "3",
+          "writer": 1,
+          "seed": 7,
+          "scores": {
+            "fact": true,
+            "episode": true,
+            "lesson": true,
+            "procedure": true,
+            "no_memory": true,
+            "empty_preload": true
+          }
+        },
+        {
+          "task": "3",
+          "writer": 2,
+          "seed": 6,
+          "scores": {
+            "fact": true,
+            "episode": true,
+            "lesson": true,
+            "procedure": true,
+            "no_memory": true,
+            "empty_preload": true
+          }
+        },
+        {
+          "task": "3",
+          "writer": 2,
+          "seed": 7,
+          "scores": {
+            "fact": true,
+            "episode": true,
+            "lesson": true,
+            "procedure": true,
+            "no_memory": true,
+            "empty_preload": true
+          }
+        },
+        {
+          "task": "14",
+          "writer": 1,
+          "seed": 6,
+          "scores": {
+            "fact": true,
+            "episode": false,
+            "lesson": false,
+            "procedure": true,
+            "no_memory": false,
+            "empty_preload": true
+          }
+        },
+        {
+          "task": "14",
+          "writer": 1,
+          "seed": 7,
+          "scores": {
+            "fact": false,
+            "episode": false,
+            "lesson": true,
+            "procedure": true,
+            "no_memory": false,
+            "empty_preload": true
+          }
+        },
+        {
+          "task": "14",
+          "writer": 2,
+          "seed": 6,
+          "scores": {
+            "fact": false,
+            "episode": false,
+            "lesson": false,
+            "procedure": true,
+            "no_memory": true,
+            "empty_preload": true
+          }
+        },
+        {
+          "task": "14",
+          "writer": 2,
+          "seed": 7,
+          "scores": {
+            "fact": true,
+            "episode": true,
+            "lesson": true,
+            "procedure": true,
+            "no_memory": true,
+            "empty_preload": false
+          }
+        },
+        {
+          "task": "42",
+          "writer": 1,
+          "seed": 6,
+          "scores": {
+            "fact": true,
+            "episode": true,
+            "lesson": true,
+            "procedure": true,
+            "no_memory": false,
+            "empty_preload": false
+          }
+        },
+        {
+          "task": "42",
+          "writer": 1,
+          "seed": 7,
+          "scores": {
+            "fact": false,
+            "episode": true,
+            "lesson": false,
+            "procedure": true,
+            "no_memory": true,
+            "empty_preload": false
+          }
+        },
+        {
+          "task": "42",
+          "writer": 2,
+          "seed": 6,
+          "scores": {
+            "fact": false,
+            "episode": false,
+            "lesson": false,
+            "procedure": true,
+            "no_memory": false,
+            "empty_preload": false
+          }
+        },
+        {
+          "task": "42",
+          "writer": 2,
+          "seed": 7,
+          "scores": {
+            "fact": false,
+            "episode": true,
+            "lesson": true,
+            "procedure": false,
+            "no_memory": false,
+            "empty_preload": false
+          }
+        }
+      ],
+      "summary": {
+        "all": {
+          "fact": {
+            "success": 7,
+            "graded": 12,
+            "paired": {
+              "no_memory": {
+                "both_pass": 5,
+                "gain": 2,
+                "both_fail": 3,
+                "loss": 2
+              },
+              "empty_preload": {
+                "both_pass": 5,
+                "loss": 2,
+                "gain": 2,
+                "both_fail": 3
+              }
+            },
+            "versus_concordant_controls": {
+              "both_pass": 4,
+              "loss": 1,
+              "gain": 1,
+              "both_fail": 2
+            }
+          },
+          "episode": {
+            "success": 8,
+            "graded": 12,
+            "paired": {
+              "no_memory": {
+                "both_pass": 6,
+                "both_fail": 3,
+                "loss": 1,
+                "gain": 2
+              },
+              "empty_preload": {
+                "both_pass": 4,
+                "loss": 3,
+                "gain": 4,
+                "both_fail": 1
+              }
+            },
+            "versus_concordant_controls": {
+              "both_pass": 4,
+              "loss": 1,
+              "gain": 2,
+              "both_fail": 1
+            }
+          },
+          "lesson": {
+            "success": 8,
+            "graded": 12,
+            "paired": {
+              "no_memory": {
+                "both_pass": 5,
+                "both_fail": 2,
+                "gain": 3,
+                "loss": 2
+              },
+              "empty_preload": {
+                "both_pass": 5,
+                "loss": 2,
+                "gain": 3,
+                "both_fail": 2
+              }
+            },
+            "versus_concordant_controls": {
+              "both_pass": 4,
+              "loss": 1,
+              "gain": 2,
+              "both_fail": 1
+            }
+          },
+          "procedure": {
+            "success": 11,
+            "graded": 12,
+            "paired": {
+              "no_memory": {
+                "both_pass": 7,
+                "gain": 4,
+                "both_fail": 1
+              },
+              "empty_preload": {
+                "both_pass": 7,
+                "gain": 4,
+                "both_fail": 1
+              }
+            },
+            "versus_concordant_controls": {
+              "both_pass": 5,
+              "gain": 2,
+              "both_fail": 1
+            }
+          },
+          "no_memory": {
+            "success": 7,
+            "graded": 12,
+            "paired": {
+              "no_memory": {
+                "both_pass": 7,
+                "both_fail": 5
+              },
+              "empty_preload": {
+                "both_pass": 5,
+                "loss": 2,
+                "gain": 2,
+                "both_fail": 3
+              }
+            },
+            "versus_concordant_controls": {
+              "both_pass": 5,
+              "both_fail": 3
+            }
+          },
+          "empty_preload": {
+            "success": 7,
+            "graded": 12,
+            "paired": {
+              "no_memory": {
+                "both_pass": 5,
+                "gain": 2,
+                "loss": 2,
+                "both_fail": 3
+              },
+              "empty_preload": {
+                "both_pass": 7,
+                "both_fail": 5
+              }
+            },
+            "versus_concordant_controls": {
+              "both_pass": 5,
+              "both_fail": 3
+            }
+          }
+        },
+        "3": {
+          "fact": {
+            "success": 4,
+            "graded": 4,
+            "paired": {
+              "no_memory": {
+                "both_pass": 4
+              },
+              "empty_preload": {
+                "both_pass": 4
+              }
+            },
+            "versus_concordant_controls": {
+              "both_pass": 4
+            }
+          },
+          "episode": {
+            "success": 4,
+            "graded": 4,
+            "paired": {
+              "no_memory": {
+                "both_pass": 4
+              },
+              "empty_preload": {
+                "both_pass": 4
+              }
+            },
+            "versus_concordant_controls": {
+              "both_pass": 4
+            }
+          },
+          "lesson": {
+            "success": 4,
+            "graded": 4,
+            "paired": {
+              "no_memory": {
+                "both_pass": 4
+              },
+              "empty_preload": {
+                "both_pass": 4
+              }
+            },
+            "versus_concordant_controls": {
+              "both_pass": 4
+            }
+          },
+          "procedure": {
+            "success": 4,
+            "graded": 4,
+            "paired": {
+              "no_memory": {
+                "both_pass": 4
+              },
+              "empty_preload": {
+                "both_pass": 4
+              }
+            },
+            "versus_concordant_controls": {
+              "both_pass": 4
+            }
+          },
+          "no_memory": {
+            "success": 4,
+            "graded": 4,
+            "paired": {
+              "no_memory": {
+                "both_pass": 4
+              },
+              "empty_preload": {
+                "both_pass": 4
+              }
+            },
+            "versus_concordant_controls": {
+              "both_pass": 4
+            }
+          },
+          "empty_preload": {
+            "success": 4,
+            "graded": 4,
+            "paired": {
+              "no_memory": {
+                "both_pass": 4
+              },
+              "empty_preload": {
+                "both_pass": 4
+              }
+            },
+            "versus_concordant_controls": {
+              "both_pass": 4
+            }
+          }
+        },
+        "14": {
+          "fact": {
+            "success": 2,
+            "graded": 4,
+            "paired": {
+              "no_memory": {
+                "gain": 1,
+                "both_fail": 1,
+                "loss": 1,
+                "both_pass": 1
+              },
+              "empty_preload": {
+                "both_pass": 1,
+                "loss": 2,
+                "gain": 1
+              }
+            },
+            "versus_concordant_controls": {
+              "loss": 1
+            }
+          },
+          "episode": {
+            "success": 1,
+            "graded": 4,
+            "paired": {
+              "no_memory": {
+                "both_fail": 2,
+                "loss": 1,
+                "both_pass": 1
+              },
+              "empty_preload": {
+                "loss": 3,
+                "gain": 1
+              }
+            },
+            "versus_concordant_controls": {
+              "loss": 1
+            }
+          },
+          "lesson": {
+            "success": 2,
+            "graded": 4,
+            "paired": {
+              "no_memory": {
+                "both_fail": 1,
+                "gain": 1,
+                "loss": 1,
+                "both_pass": 1
+              },
+              "empty_preload": {
+                "loss": 2,
+                "both_pass": 1,
+                "gain": 1
+              }
+            },
+            "versus_concordant_controls": {
+              "loss": 1
+            }
+          },
+          "procedure": {
+            "success": 4,
+            "graded": 4,
+            "paired": {
+              "no_memory": {
+                "gain": 2,
+                "both_pass": 2
+              },
+              "empty_preload": {
+                "both_pass": 3,
+                "gain": 1
+              }
+            },
+            "versus_concordant_controls": {
+              "both_pass": 1
+            }
+          },
+          "no_memory": {
+            "success": 2,
+            "graded": 4,
+            "paired": {
+              "no_memory": {
+                "both_fail": 2,
+                "both_pass": 2
+              },
+              "empty_preload": {
+                "loss": 2,
+                "both_pass": 1,
+                "gain": 1
+              }
+            },
+            "versus_concordant_controls": {
+              "both_pass": 1
+            }
+          },
+          "empty_preload": {
+            "success": 3,
+            "graded": 4,
+            "paired": {
+              "no_memory": {
+                "gain": 2,
+                "both_pass": 1,
+                "loss": 1
+              },
+              "empty_preload": {
+                "both_pass": 3,
+                "both_fail": 1
+              }
+            },
+            "versus_concordant_controls": {
+              "both_pass": 1
+            }
+          }
+        },
+        "42": {
+          "fact": {
+            "success": 1,
+            "graded": 4,
+            "paired": {
+              "no_memory": {
+                "gain": 1,
+                "loss": 1,
+                "both_fail": 2
+              },
+              "empty_preload": {
+                "gain": 1,
+                "both_fail": 3
+              }
+            },
+            "versus_concordant_controls": {
+              "gain": 1,
+              "both_fail": 2
+            }
+          },
+          "episode": {
+            "success": 3,
+            "graded": 4,
+            "paired": {
+              "no_memory": {
+                "gain": 2,
+                "both_pass": 1,
+                "both_fail": 1
+              },
+              "empty_preload": {
+                "gain": 3,
+                "both_fail": 1
+              }
+            },
+            "versus_concordant_controls": {
+              "gain": 2,
+              "both_fail": 1
+            }
+          },
+          "lesson": {
+            "success": 2,
+            "graded": 4,
+            "paired": {
+              "no_memory": {
+                "gain": 2,
+                "loss": 1,
+                "both_fail": 1
+              },
+              "empty_preload": {
+                "gain": 2,
+                "both_fail": 2
+              }
+            },
+            "versus_concordant_controls": {
+              "gain": 2,
+              "both_fail": 1
+            }
+          },
+          "procedure": {
+            "success": 3,
+            "graded": 4,
+            "paired": {
+              "no_memory": {
+                "gain": 2,
+                "both_pass": 1,
+                "both_fail": 1
+              },
+              "empty_preload": {
+                "gain": 3,
+                "both_fail": 1
+              }
+            },
+            "versus_concordant_controls": {
+              "gain": 2,
+              "both_fail": 1
+            }
+          },
+          "no_memory": {
+            "success": 1,
+            "graded": 4,
+            "paired": {
+              "no_memory": {
+                "both_fail": 3,
+                "both_pass": 1
+              },
+              "empty_preload": {
+                "both_fail": 3,
+                "gain": 1
+              }
+            },
+            "versus_concordant_controls": {
+              "both_fail": 3
+            }
+          },
+          "empty_preload": {
+            "success": 0,
+            "graded": 4,
+            "paired": {
+              "no_memory": {
+                "both_fail": 3,
+                "loss": 1
+              },
+              "empty_preload": {
+                "both_fail": 4
+              }
+            },
+            "versus_concordant_controls": {
+              "both_fail": 3
+            }
+          }
+        },
+        "source_passed": {
+          "fact": {
+            "success": 6,
+            "graded": 8,
+            "paired": {
+              "no_memory": {
+                "both_pass": 5,
+                "gain": 1,
+                "both_fail": 1,
+                "loss": 1
+              },
+              "empty_preload": {
+                "both_pass": 5,
+                "loss": 2,
+                "gain": 1
+              }
+            },
+            "versus_concordant_controls": {
+              "both_pass": 4,
+              "loss": 1
+            }
+          },
+          "episode": {
+            "success": 5,
+            "graded": 8,
+            "paired": {
+              "no_memory": {
+                "both_pass": 5,
+                "both_fail": 2,
+                "loss": 1
+              },
+              "empty_preload": {
+                "both_pass": 4,
+                "loss": 3,
+                "gain": 1
+              }
+            },
+            "versus_concordant_controls": {
+              "both_pass": 4,
+              "loss": 1
+            }
+          },
+          "lesson": {
+            "success": 6,
+            "graded": 8,
+            "paired": {
+              "no_memory": {
+                "both_pass": 5,
+                "both_fail": 1,
+                "gain": 1,
+                "loss": 1
+              },
+              "empty_preload": {
+                "both_pass": 5,
+                "loss": 2,
+                "gain": 1
+              }
+            },
+            "versus_concordant_controls": {
+              "both_pass": 4,
+              "loss": 1
+            }
+          },
+          "procedure": {
+            "success": 8,
+            "graded": 8,
+            "paired": {
+              "no_memory": {
+                "both_pass": 6,
+                "gain": 2
+              },
+              "empty_preload": {
+                "both_pass": 7,
+                "gain": 1
+              }
+            },
+            "versus_concordant_controls": {
+              "both_pass": 5
+            }
+          },
+          "no_memory": {
+            "success": 6,
+            "graded": 8,
+            "paired": {
+              "no_memory": {
+                "both_pass": 6,
+                "both_fail": 2
+              },
+              "empty_preload": {
+                "both_pass": 5,
+                "loss": 2,
+                "gain": 1
+              }
+            },
+            "versus_concordant_controls": {
+              "both_pass": 5
+            }
+          },
+          "empty_preload": {
+            "success": 7,
+            "graded": 8,
+            "paired": {
+              "no_memory": {
+                "both_pass": 5,
+                "gain": 2,
+                "loss": 1
+              },
+              "empty_preload": {
+                "both_pass": 7,
+                "both_fail": 1
+              }
+            },
+            "versus_concordant_controls": {
+              "both_pass": 5
+            }
+          }
+        },
+        "source_failed": {
+          "fact": {
+            "success": 1,
+            "graded": 4,
+            "paired": {
+              "no_memory": {
+                "gain": 1,
+                "loss": 1,
+                "both_fail": 2
+              },
+              "empty_preload": {
+                "gain": 1,
+                "both_fail": 3
+              }
+            },
+            "versus_concordant_controls": {
+              "gain": 1,
+              "both_fail": 2
+            }
+          },
+          "episode": {
+            "success": 3,
+            "graded": 4,
+            "paired": {
+              "no_memory": {
+                "gain": 2,
+                "both_pass": 1,
+                "both_fail": 1
+              },
+              "empty_preload": {
+                "gain": 3,
+                "both_fail": 1
+              }
+            },
+            "versus_concordant_controls": {
+              "gain": 2,
+              "both_fail": 1
+            }
+          },
+          "lesson": {
+            "success": 2,
+            "graded": 4,
+            "paired": {
+              "no_memory": {
+                "gain": 2,
+                "loss": 1,
+                "both_fail": 1
+              },
+              "empty_preload": {
+                "gain": 2,
+                "both_fail": 2
+              }
+            },
+            "versus_concordant_controls": {
+              "gain": 2,
+              "both_fail": 1
+            }
+          },
+          "procedure": {
+            "success": 3,
+            "graded": 4,
+            "paired": {
+              "no_memory": {
+                "gain": 2,
+                "both_pass": 1,
+                "both_fail": 1
+              },
+              "empty_preload": {
+                "gain": 3,
+                "both_fail": 1
+              }
+            },
+            "versus_concordant_controls": {
+              "gain": 2,
+              "both_fail": 1
+            }
+          },
+          "no_memory": {
+            "success": 1,
+            "graded": 4,
+            "paired": {
+              "no_memory": {
+                "both_fail": 3,
+                "both_pass": 1
+              },
+              "empty_preload": {
+                "both_fail": 3,
+                "gain": 1
+              }
+            },
+            "versus_concordant_controls": {
+              "both_fail": 3
+            }
+          },
+          "empty_preload": {
+            "success": 0,
+            "graded": 4,
+            "paired": {
+              "no_memory": {
+                "both_fail": 3,
+                "loss": 1
+              },
+              "empty_preload": {
+                "both_fail": 4
+              }
+            },
+            "versus_concordant_controls": {
+              "both_fail": 3
+            }
+          }
+        }
+      }
+    }
+  },
+  "unread": {
+    "blocks": [
+      {
+        "task": "14",
+        "writer": 1,
+        "seed": 6,
+        "scores": {
+          "episode": true,
+          "fact": false,
+          "procedure": null,
+          "lesson": true
+        },
+        "mixed": true,
+        "pairs": {
+          "discordant": 2,
+          "missing": 3,
+          "agree": 1
+        }
+      },
+      {
+        "task": "14",
+        "writer": 1,
+        "seed": 7,
+        "scores": {
+          "episode": false,
+          "fact": true,
+          "procedure": true,
+          "lesson": false
+        },
+        "mixed": true,
+        "pairs": {
+          "discordant": 4,
+          "agree": 2
+        }
+      },
+      {
+        "task": "14",
+        "writer": 2,
+        "seed": 6,
+        "scores": {
+          "procedure": true,
+          "episode": false,
+          "fact": false,
+          "lesson": false
+        },
+        "mixed": true,
+        "pairs": {
+          "discordant": 3,
+          "agree": 3
+        }
+      },
+      {
+        "task": "14",
+        "writer": 2,
+        "seed": 7,
+        "scores": {
+          "procedure": true,
+          "episode": false,
+          "lesson": false,
+          "fact": true
+        },
+        "mixed": true,
+        "pairs": {
+          "discordant": 4,
+          "agree": 2
+        }
+      },
+      {
+        "task": "3",
+        "writer": 1,
+        "seed": 6,
+        "scores": {
+          "fact": true,
+          "lesson": true,
+          "procedure": true,
+          "episode": true
+        },
+        "mixed": false,
+        "pairs": {
+          "agree": 6
+        }
+      },
+      {
+        "task": "3",
+        "writer": 1,
+        "seed": 7,
+        "scores": {
+          "lesson": false,
+          "episode": true,
+          "fact": true,
+          "procedure": true
+        },
+        "mixed": true,
+        "pairs": {
+          "discordant": 3,
+          "agree": 3
+        }
+      },
+      {
+        "task": "3",
+        "writer": 2,
+        "seed": 6,
+        "scores": {
+          "lesson": true,
+          "episode": false,
+          "fact": true,
+          "procedure": null
+        },
+        "mixed": true,
+        "pairs": {
+          "discordant": 2,
+          "agree": 1,
+          "missing": 3
+        }
+      },
+      {
+        "task": "3",
+        "writer": 2,
+        "seed": 7,
+        "scores": {
+          "fact": true,
+          "lesson": true,
+          "procedure": true,
+          "episode": true
+        },
+        "mixed": false,
+        "pairs": {
+          "agree": 6
+        }
+      },
+      {
+        "task": "42",
+        "writer": 1,
+        "seed": 6,
+        "scores": {
+          "procedure": null,
+          "fact": true,
+          "lesson": false,
+          "episode": false
+        },
+        "mixed": true,
+        "pairs": {
+          "missing": 3,
+          "discordant": 2,
+          "agree": 1
+        }
+      },
+      {
+        "task": "42",
+        "writer": 1,
+        "seed": 7,
+        "scores": {
+          "episode": false,
+          "fact": false,
+          "lesson": true,
+          "procedure": true
+        },
+        "mixed": true,
+        "pairs": {
+          "agree": 2,
+          "discordant": 4
+        }
+      },
+      {
+        "task": "42",
+        "writer": 2,
+        "seed": 6,
+        "scores": {
+          "fact": true,
+          "procedure": false,
+          "episode": true,
+          "lesson": true
+        },
+        "mixed": true,
+        "pairs": {
+          "discordant": 3,
+          "agree": 3
+        }
+      },
+      {
+        "task": "42",
+        "writer": 2,
+        "seed": 7,
+        "scores": {
+          "fact": false,
+          "lesson": false,
+          "episode": false,
+          "procedure": false
+        },
+        "mixed": false,
+        "pairs": {
+          "agree": 6
+        }
+      }
+    ],
+    "mixed_blocks": 9,
+    "shared_pair_counts": {
+      "discordant": 27,
+      "missing": 9,
+      "agree": 36
+    }
+  },
+  "profile": {
+    "summary": {
+      "empty": {
+        "writer_blocks": 2,
+        "saved_nonempty": 0,
+        "replies": 4,
+        "direct": 0,
+        "target_in_batch": 2,
+        "business_reads_proposed": 20,
+        "non_target_reads_proposed": 18
+      },
+      "episode": {
+        "writer_blocks": 2,
+        "saved_nonempty": 1,
+        "replies": 4,
+        "direct": 2,
+        "target_in_batch": 2,
+        "business_reads_proposed": 4,
+        "non_target_reads_proposed": 2
+      },
+      "fact": {
+        "writer_blocks": 2,
+        "saved_nonempty": 2,
+        "replies": 4,
+        "direct": 3,
+        "target_in_batch": 4,
+        "business_reads_proposed": 12,
+        "non_target_reads_proposed": 8
+      },
+      "lesson": {
+        "writer_blocks": 2,
+        "saved_nonempty": 2,
+        "replies": 4,
+        "direct": 0,
+        "target_in_batch": 2,
+        "business_reads_proposed": 20,
+        "non_target_reads_proposed": 18
+      },
+      "procedure": {
+        "writer_blocks": 2,
+        "saved_nonempty": 2,
+        "replies": 4,
+        "direct": 0,
+        "target_in_batch": 2,
+        "business_reads_proposed": 20,
+        "non_target_reads_proposed": 18
+      }
+    },
+    "banks": [
+      {
+        "arm": "task3_empty_w1",
+        "form": "empty",
+        "writer": 1,
+        "writer_run": null,
+        "items_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "target_in_title": false,
+        "target_in_body": false,
+        "results": [
+          {
+            "slot": 9,
+            "wire_sha256": "7cbded58bd542160eef191cfc2a265d350bb2cfcb27b8abc6600e70c58aedfc2",
+            "direct": false,
+            "target_in_batch": false,
+            "requested_count": 1
+          },
+          {
+            "slot": 12,
+            "wire_sha256": "7cbded58bd542160eef191cfc2a265d350bb2cfcb27b8abc6600e70c58aedfc2",
+            "direct": false,
+            "target_in_batch": true,
+            "requested_count": 9
+          }
+        ]
+      },
+      {
+        "arm": "task3_empty_w2",
+        "form": "empty",
+        "writer": 2,
+        "writer_run": null,
+        "items_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "target_in_title": false,
+        "target_in_body": false,
+        "results": [
+          {
+            "slot": 5,
+            "wire_sha256": "7cbded58bd542160eef191cfc2a265d350bb2cfcb27b8abc6600e70c58aedfc2",
+            "direct": false,
+            "target_in_batch": true,
+            "requested_count": 9
+          },
+          {
+            "slot": 16,
+            "wire_sha256": "7cbded58bd542160eef191cfc2a265d350bb2cfcb27b8abc6600e70c58aedfc2",
+            "direct": false,
+            "target_in_batch": false,
+            "requested_count": 1
+          }
+        ]
+      },
+      {
+        "arm": "task3_episode_w1",
+        "form": "episode",
+        "writer": 1,
+        "writer_run": "r_611a52109fad4f06b5055a85ba96102e",
+        "items_sha256": "b5b4786034209678009c3f2ea6557cf9ed8c054c32e73291ba3a6ae67686a8ce",
+        "target_in_title": false,
+        "target_in_body": true,
+        "results": [
+          {
+            "slot": 7,
+            "wire_sha256": "0523641ddaf1e38678987df6d057a5a06fbf6ebadb2405b2ec6c93f3e9a413d6",
+            "direct": true,
+            "target_in_batch": true,
+            "requested_count": 1
+          },
+          {
+            "slot": 14,
+            "wire_sha256": "0523641ddaf1e38678987df6d057a5a06fbf6ebadb2405b2ec6c93f3e9a413d6",
+            "direct": true,
+            "target_in_batch": true,
+            "requested_count": 1
+          }
+        ]
+      },
+      {
+        "arm": "task3_episode_w2",
+        "form": "episode",
+        "writer": 2,
+        "writer_run": "r_b44f589d7f5f49d7b4f13243ee96aad2",
+        "items_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "target_in_title": false,
+        "target_in_body": false,
+        "results": [
+          {
+            "slot": 3,
+            "wire_sha256": "7cbded58bd542160eef191cfc2a265d350bb2cfcb27b8abc6600e70c58aedfc2",
+            "direct": false,
+            "target_in_batch": false,
+            "requested_count": 1
+          },
+          {
+            "slot": 18,
+            "wire_sha256": "7cbded58bd542160eef191cfc2a265d350bb2cfcb27b8abc6600e70c58aedfc2",
+            "direct": false,
+            "target_in_batch": false,
+            "requested_count": 1
+          }
+        ]
+      },
+      {
+        "arm": "task3_fact_w1",
+        "form": "fact",
+        "writer": 1,
+        "writer_run": "r_70e8896fe2594d2f928c2fc5551dbeec",
+        "items_sha256": "9301be2ad75e80f8bce7f022aa2798dbf60fd7ff55fb26d137f417cb693579a3",
+        "target_in_title": false,
+        "target_in_body": true,
+        "results": [
+          {
+            "slot": 10,
+            "wire_sha256": "de2adf5ac729019959d7d23d77755896849fc3c9449482ff8c9eb907bdb26819",
+            "direct": true,
+            "target_in_batch": true,
+            "requested_count": 1
+          },
+          {
+            "slot": 11,
+            "wire_sha256": "de2adf5ac729019959d7d23d77755896849fc3c9449482ff8c9eb907bdb26819",
+            "direct": false,
+            "target_in_batch": true,
+            "requested_count": 9
+          }
+        ]
+      },
+      {
+        "arm": "task3_fact_w2",
+        "form": "fact",
+        "writer": 2,
+        "writer_run": "r_7efca55075d04d86a7f7efbc3feefb3c",
+        "items_sha256": "7bcfe4873d41452f2acc7d6bf4b4f000a018cfde67f6c257ac5ec7db56799a39",
+        "target_in_title": true,
+        "target_in_body": true,
+        "results": [
+          {
+            "slot": 4,
+            "wire_sha256": "dd42f48778d44340d4000851a1df25cd981df813ebb288234dee82c141c8099f",
+            "direct": true,
+            "target_in_batch": true,
+            "requested_count": 1
+          },
+          {
+            "slot": 17,
+            "wire_sha256": "dd42f48778d44340d4000851a1df25cd981df813ebb288234dee82c141c8099f",
+            "direct": true,
+            "target_in_batch": true,
+            "requested_count": 1
+          }
+        ]
+      },
+      {
+        "arm": "task3_lesson_w1",
+        "form": "lesson",
+        "writer": 1,
+        "writer_run": "r_d3dd50cab51b4013aea69718ff89a1e5",
+        "items_sha256": "a055574d8e1084388f4500dbb48fc0d4b5027e98ddf4319125494f40e731db46",
+        "target_in_title": false,
+        "target_in_body": true,
+        "results": [
+          {
+            "slot": 6,
+            "wire_sha256": "88d334658b716e6e4d90a69819c7a8d1df5a433069830086a88df35d86654742",
+            "direct": false,
+            "target_in_batch": false,
+            "requested_count": 1
+          },
+          {
+            "slot": 15,
+            "wire_sha256": "88d334658b716e6e4d90a69819c7a8d1df5a433069830086a88df35d86654742",
+            "direct": false,
+            "target_in_batch": false,
+            "requested_count": 1
+          }
+        ]
+      },
+      {
+        "arm": "task3_lesson_w2",
+        "form": "lesson",
+        "writer": 2,
+        "writer_run": "r_9b511005df5c450b9f80f4f53de80fc9",
+        "items_sha256": "b9e580e741cd938b7f87c723c7027acf8343bb2899f3db60914619728675c115",
+        "target_in_title": false,
+        "target_in_body": false,
+        "results": [
+          {
+            "slot": 1,
+            "wire_sha256": "d9f03de433ac40d85cddfd957f53e7928a54cde945d29e72fc4d9e13c370e40a",
+            "direct": false,
+            "target_in_batch": true,
+            "requested_count": 9
+          },
+          {
+            "slot": 20,
+            "wire_sha256": "d9f03de433ac40d85cddfd957f53e7928a54cde945d29e72fc4d9e13c370e40a",
+            "direct": false,
+            "target_in_batch": true,
+            "requested_count": 9
+          }
+        ]
+      },
+      {
+        "arm": "task3_procedure_w1",
+        "form": "procedure",
+        "writer": 1,
+        "writer_run": "r_7d337790016944da891c80a4ed7bb359",
+        "items_sha256": "159d356ebe5ce4df02b27d46c208da8d5d18e0771addff49cec2d45bfbd707df",
+        "target_in_title": false,
+        "target_in_body": false,
+        "results": [
+          {
+            "slot": 8,
+            "wire_sha256": "b82948abbd17092626e9a2a538d744b4b02d85d216f879ed1e1ba4c92715ea8b",
+            "direct": false,
+            "target_in_batch": true,
+            "requested_count": 9
+          },
+          {
+            "slot": 13,
+            "wire_sha256": "b82948abbd17092626e9a2a538d744b4b02d85d216f879ed1e1ba4c92715ea8b",
+            "direct": false,
+            "target_in_batch": true,
+            "requested_count": 9
+          }
+        ]
+      },
+      {
+        "arm": "task3_procedure_w2",
+        "form": "procedure",
+        "writer": 2,
+        "writer_run": "r_6b1c05088f1548b9b56f336841ece031",
+        "items_sha256": "ffaef1a0833f15a71f35903ed1d4ae5891133209549bada808744e99c9578b5c",
+        "target_in_title": false,
+        "target_in_body": true,
+        "results": [
+          {
+            "slot": 2,
+            "wire_sha256": "796481c06f2c1de3516249e2b07416da686e16685ee3ddadcca6a495970f65ee",
+            "direct": false,
+            "target_in_batch": false,
+            "requested_count": 1
+          },
+          {
+            "slot": 19,
+            "wire_sha256": "796481c06f2c1de3516249e2b07416da686e16685ee3ddadcca6a495970f65ee",
+            "direct": false,
+            "target_in_batch": false,
+            "requested_count": 1
+          }
+        ]
+      }
+    ],
+    "candidates": 9,
+    "target_position": 9
+  },
+  "baggage": {
+    "wording_by_first_proposal": {
+      "extra_or_allowance_only": {
+        "first_proposed_6": 6,
+        "first_proposed_0": 6
+      },
+      "zero_checked": {
+        "first_proposed_0": 18,
+        "no_proposal_before_end": 1
+      },
+      "no_quantity_statement": {
+        "no_proposal_before_end": 6,
+        "partial_no_proposal": 1,
+        "first_proposed_0": 1,
+        "first_proposed_6": 1
+      }
+    },
+    "cases": [
+      {
+        "index": 21,
+        "arm": "episode__preload",
+        "review_id": "466447030dcfd8f5226458db601e846fb8b59b368d62723ff920a3362108a474",
+        "report_sha256": "fc3347181b7c0acc9c253b73f2a6c35bae0d9c1f2a46f3e412fd3e27458bd2fe",
+        "graded": true,
+        "first_booking_turn": 36,
+        "proposed_quantities": [
+          6
+        ],
+        "wording": "extra_or_allowance_only",
+        "first_proposal_outcome": "first_proposed_6",
+        "executed_quantity": 6,
+        "db_before": false,
+        "db_after_quantity_change": true
+      },
+      {
+        "index": 22,
+        "arm": "empty_preload",
+        "review_id": "009d302ad155a8aebadde02c3d35d5245c7948629168f4dbdb50ce4df0097e4b",
+        "report_sha256": "7b424965ef3bbb11259e369efc724a8b4d88289636dc4a99836886e52395cc84",
+        "graded": true,
+        "first_booking_turn": 32,
+        "proposed_quantities": [
+          0
+        ],
+        "wording": "zero_checked",
+        "first_proposal_outcome": "first_proposed_0",
+        "executed_quantity": 0,
+        "db_before": true,
+        "db_after_quantity_change": false
+      },
+      {
+        "index": 23,
+        "arm": "lesson__preload",
+        "review_id": "4162f53e8faa61c27692973a9b71d55d10230001060f46eeae51a9bbf09720b8",
+        "report_sha256": "247c6196f0c1192b908fbc15181607c0b5e1e742df82d09947e44b04f41e3cf2",
+        "graded": true,
+        "first_booking_turn": null,
+        "proposed_quantities": [],
+        "wording": "no_quantity_statement",
+        "first_proposal_outcome": "no_proposal_before_end"
+      },
+      {
+        "index": 24,
+        "arm": "episode__on_demand",
+        "review_id": "deb8fbb8dc5f6f638d7ddfaef2eea06bbc489bc03d39afc681a4b9aefb41cb70",
+        "report_sha256": "d903e81ad56b75f1487abc823765af5689418444554c12f83ca2b55b2baca86f",
+        "graded": true,
+        "first_booking_turn": 32,
+        "proposed_quantities": [
+          0
+        ],
+        "wording": "zero_checked",
+        "first_proposal_outcome": "first_proposed_0",
+        "executed_quantity": 0,
+        "db_before": true,
+        "db_after_quantity_change": false
+      },
+      {
+        "index": 25,
+        "arm": "fact__on_demand",
+        "review_id": "ef54fc093bf27efc56c3dbc375dbd5fff2d72c24ef63ff1d9f3cb7a409c11c40",
+        "report_sha256": "c30036440d1d10d783bc7b8382319c8e6ca95203dc52415e6d14f8f8df9a9b4b",
+        "graded": true,
+        "first_booking_turn": 32,
+        "proposed_quantities": [
+          6
+        ],
+        "wording": "extra_or_allowance_only",
+        "first_proposal_outcome": "first_proposed_6",
+        "executed_quantity": 6,
+        "db_before": false,
+        "db_after_quantity_change": true
+      },
+      {
+        "index": 26,
+        "arm": "fact__preload",
+        "review_id": "36f52215351290bc92411a8beb3c9ff0bb20054a077ab635e098c99990375ef3",
+        "report_sha256": "e36ef7de10977eb2336e9533ef19f136bfc884e811619f77fa8df131873b8662",
+        "graded": true,
+        "first_booking_turn": 30,
+        "proposed_quantities": [
+          0
+        ],
+        "wording": "zero_checked",
+        "first_proposal_outcome": "first_proposed_0",
+        "executed_quantity": 0,
+        "db_before": true,
+        "db_after_quantity_change": false
+      },
+      {
+        "index": 27,
+        "arm": "no_memory",
+        "review_id": "961f7640cbcb4ed8e0365e85cf37df75f288174168029086278a7f7f4eba97e4",
+        "report_sha256": "2d629935506bb9c2252d109a50413f0946f4817365c5ea25fd19fae102a677f3",
+        "graded": true,
+        "first_booking_turn": 36,
+        "proposed_quantities": [
+          6
+        ],
+        "wording": "extra_or_allowance_only",
+        "first_proposal_outcome": "first_proposed_6",
+        "executed_quantity": 6,
+        "db_before": false,
+        "db_after_quantity_change": true
+      },
+      {
+        "index": 28,
+        "arm": "procedure__on_demand",
+        "review_id": "2c1a4d680927da0c810b01ebacbb295ae20f05b18161249a782951eed6f91e0e",
+        "report_sha256": "e6454cc1f9af7d99b7affd3d53bcedf3580e185708aaa0cac715e0a65ca70d05",
+        "graded": false,
+        "first_booking_turn": null,
+        "proposed_quantities": [],
+        "wording": "no_quantity_statement",
+        "first_proposal_outcome": "partial_no_proposal"
+      },
+      {
+        "index": 29,
+        "arm": "lesson__on_demand",
+        "review_id": "3e6266e9c809286d601e70b5a57c966e2738d035a86f6fb299d61d237ed24349",
+        "report_sha256": "0d5ebe55e6b333eaf42f71005f572062b880314bc931c5f4232dae59b41f086a",
+        "graded": true,
+        "first_booking_turn": 30,
+        "proposed_quantities": [
+          0,
+          0
+        ],
+        "wording": "extra_or_allowance_only",
+        "first_proposal_outcome": "first_proposed_0",
+        "executed_quantity": 0,
+        "db_before": true,
+        "db_after_quantity_change": false
+      },
+      {
+        "index": 30,
+        "arm": "procedure__preload",
+        "review_id": "1345f41ae5dde1b013ed215b66784dc7ae491327a88e97090907e454790a8b70",
+        "report_sha256": "ce4178163a5d52e1569d1090fd32ee3680d7721a933084e9e8812b76db2fd404",
+        "graded": true,
+        "first_booking_turn": 26,
+        "proposed_quantities": [
+          0
+        ],
+        "wording": "zero_checked",
+        "first_proposal_outcome": "first_proposed_0",
+        "executed_quantity": 0,
+        "db_before": true,
+        "db_after_quantity_change": false
+      },
+      {
+        "index": 31,
+        "arm": "procedure__on_demand",
+        "review_id": "1f9107c0ef3dc3b5723d357e97d620333791fb3455e4567883c37d741f8a2f66",
+        "report_sha256": "642a91f052275689b577cd790431d7529e81dfca5a362c7142d498e7bf51a6ea",
+        "graded": true,
+        "first_booking_turn": 36,
+        "proposed_quantities": [
+          0
+        ],
+        "wording": "extra_or_allowance_only",
+        "first_proposal_outcome": "first_proposed_0",
+        "executed_quantity": 0,
+        "db_before": true,
+        "db_after_quantity_change": false
+      },
+      {
+        "index": 32,
+        "arm": "fact__preload",
+        "review_id": "d2370bb3b84d9ad96da47257b8467712104b1ac53d88e4734d552cea95038ffa",
+        "report_sha256": "1843584f0764c8a62f3e53ac0aaaa775d78d588780202deee400b1ba1755b026",
+        "graded": true,
+        "first_booking_turn": 30,
+        "proposed_quantities": [
+          0
+        ],
+        "wording": "extra_or_allowance_only",
+        "first_proposal_outcome": "first_proposed_0",
+        "executed_quantity": 0,
+        "db_before": true,
+        "db_after_quantity_change": false
+      },
+      {
+        "index": 33,
+        "arm": "empty_preload",
+        "review_id": "71a334883d933c8d6673eb721f157163332576ed3f37c90c0fbad01d54982b82",
+        "report_sha256": "bf3d3d6b74cb27f7eac4797621a4abfa6c92dd0d49bef16f1d8c35f36a2a6272",
+        "graded": true,
+        "first_booking_turn": null,
+        "proposed_quantities": [],
+        "wording": "no_quantity_statement",
+        "first_proposal_outcome": "no_proposal_before_end"
+      },
+      {
+        "index": 34,
+        "arm": "episode__on_demand",
+        "review_id": "f6107ef939e65c201da0baee6c6200077c25017a37b4985087180b4b26f532aa",
+        "report_sha256": "6f83756d64609a7cbbe296fb62648213336c02fe62ccdf5c3a55889542a50797",
+        "graded": true,
+        "first_booking_turn": null,
+        "proposed_quantities": [],
+        "wording": "no_quantity_statement",
+        "first_proposal_outcome": "no_proposal_before_end"
+      },
+      {
+        "index": 35,
+        "arm": "no_memory",
+        "review_id": "8ea81eaaeef9d80df50e6273a8a61825b2a831730251b5d64e3a34a30c351ec2",
+        "report_sha256": "2c130016cf604ba9b4ff87571650695189971564b85448e6fbdd124df15c84d2",
+        "graded": true,
+        "first_booking_turn": 30,
+        "proposed_quantities": [
+          0
+        ],
+        "wording": "zero_checked",
+        "first_proposal_outcome": "first_proposed_0",
+        "executed_quantity": 0,
+        "db_before": true,
+        "db_after_quantity_change": false
+      },
+      {
+        "index": 36,
+        "arm": "lesson__on_demand",
+        "review_id": "1638811491a3b3fd0244618fc1b01c8ffe53376f74bc87e28a41fcd3f27040c5",
+        "report_sha256": "6d087c16c189546d6a0ab123ae1e1ae6990367055a95a55ab697d71009530adc",
+        "graded": true,
+        "first_booking_turn": null,
+        "proposed_quantities": [],
+        "wording": "no_quantity_statement",
+        "first_proposal_outcome": "no_proposal_before_end"
+      },
+      {
+        "index": 37,
+        "arm": "procedure__preload",
+        "review_id": "ee44fd57e32139db9a5c8cada798beeb48994f799366b1c989a785b4bd5eae1c",
+        "report_sha256": "3f45be4aed38395864ce5962e2621e71f500570954cf9bd5ea294687ae9202ee",
+        "graded": true,
+        "first_booking_turn": 40,
+        "proposed_quantities": [
+          0
+        ],
+        "wording": "zero_checked",
+        "first_proposal_outcome": "first_proposed_0",
+        "executed_quantity": 0,
+        "db_before": true,
+        "db_after_quantity_change": false
+      },
+      {
+        "index": 38,
+        "arm": "lesson__preload",
+        "review_id": "8c5fa84e06f0fd936530a88b81ef2fd13eb347aeea192d45bfee86454b39560c",
+        "report_sha256": "88e6d22015cb7505dbca9dd8c1bc94bf8e89506bd537d04d050379b261996e30",
+        "graded": true,
+        "first_booking_turn": 28,
+        "proposed_quantities": [
+          0
+        ],
+        "wording": "extra_or_allowance_only",
+        "first_proposal_outcome": "first_proposed_0",
+        "executed_quantity": 0,
+        "db_before": true,
+        "db_after_quantity_change": false
+      },
+      {
+        "index": 39,
+        "arm": "fact__on_demand",
+        "review_id": "637f64ffb4b77ce7ad3e4e4433db62768c277f8087c7bac8a696aa120c47e457",
+        "report_sha256": "435b0e0830f2554d6ca3c103db1aacdad92b93600496ff4ab464b90620c0688d",
+        "graded": true,
+        "first_booking_turn": 30,
+        "proposed_quantities": [
+          0
+        ],
+        "wording": "zero_checked",
+        "first_proposal_outcome": "first_proposed_0",
+        "executed_quantity": 0,
+        "db_before": true,
+        "db_after_quantity_change": false
+      },
+      {
+        "index": 40,
+        "arm": "episode__preload",
+        "review_id": "c1332823ae71448becde298f12dc10e2b6b98efae5c66e8670b15321b2eb60c2",
+        "report_sha256": "baa6cb8f1f109bc62e77f6d0a261f4181f7187e19e8eeea01f160d3080c2f517",
+        "graded": true,
+        "first_booking_turn": 32,
+        "proposed_quantities": [
+          0
+        ],
+        "wording": "zero_checked",
+        "first_proposal_outcome": "first_proposed_0",
+        "executed_quantity": 0,
+        "db_before": true,
+        "db_after_quantity_change": false
+      },
+      {
+        "index": 81,
+        "arm": "empty_preload",
+        "review_id": "cd827bec2cd8cd27b6c418b5b956ea4ae120b8cad03c61136ff884acbca2b036",
+        "report_sha256": "07bd13dcf1fd8799a12db1cf591bbc1ec0ba8fa6b7181a2299ba6060deddd087",
+        "graded": true,
+        "first_booking_turn": 30,
+        "proposed_quantities": [
+          0
+        ],
+        "wording": "no_quantity_statement",
+        "first_proposal_outcome": "first_proposed_0",
+        "executed_quantity": 0,
+        "db_before": true,
+        "db_after_quantity_change": false
+      },
+      {
+        "index": 82,
+        "arm": "episode__on_demand",
+        "review_id": "74ef2c269326757bcdeb7b33e2ed6c8eb970ad4a989735bd04b0ecbb25b0870c",
+        "report_sha256": "4bba6889847105ec55d24f9aac06a459ba23b7da5a28bf146d012eeea66ee6ac",
+        "graded": true,
+        "first_booking_turn": null,
+        "proposed_quantities": [],
+        "wording": "zero_checked",
+        "first_proposal_outcome": "no_proposal_before_end"
+      },
+      {
+        "index": 83,
+        "arm": "no_memory",
+        "review_id": "dbacaa4f478d2e466b5c46e85c2408fa7355caabe78e6fd15ab595e376d6ecf9",
+        "report_sha256": "7f43053a32aa444afce076d38135c857eb65be87290074878663d703e057d14c",
+        "graded": true,
+        "first_booking_turn": null,
+        "proposed_quantities": [],
+        "wording": "no_quantity_statement",
+        "first_proposal_outcome": "no_proposal_before_end"
+      },
+      {
+        "index": 84,
+        "arm": "fact__on_demand",
+        "review_id": "6c03d4220c8a46ae3cada57a9b612552423879a832436cf1b824f3a365cf59a3",
+        "report_sha256": "da43d1e5a2cfa5653d0849a884012799e7f399b22dc204e753d11212abb32569",
+        "graded": true,
+        "first_booking_turn": 32,
+        "proposed_quantities": [
+          0
+        ],
+        "wording": "zero_checked",
+        "first_proposal_outcome": "first_proposed_0",
+        "executed_quantity": 0,
+        "db_before": true,
+        "db_after_quantity_change": false
+      },
+      {
+        "index": 85,
+        "arm": "lesson__preload",
+        "review_id": "780ed41694b48478b59b74498780b64ac4a70aff026dfecb6790fd7050fbb586",
+        "report_sha256": "ee509e19401ccd6f6ec6f19caca5765e603e33b6a095fc477423643ca477bf28",
+        "graded": true,
+        "first_booking_turn": 38,
+        "proposed_quantities": [
+          0
+        ],
+        "wording": "zero_checked",
+        "first_proposal_outcome": "first_proposed_0",
+        "executed_quantity": 0,
+        "db_before": true,
+        "db_after_quantity_change": false
+      },
+      {
+        "index": 86,
+        "arm": "procedure__on_demand",
+        "review_id": "ac4c98166bef17fe7b7b604dc2a265399551275f3c1cd23ca8625301d1f66fd7",
+        "report_sha256": "1f34f6deb9f34276f514d90c904fb94cc78c55df3b8b42e74a1d4e2e85e45f11",
+        "graded": true,
+        "first_booking_turn": 30,
+        "proposed_quantities": [
+          0
+        ],
+        "wording": "zero_checked",
+        "first_proposal_outcome": "first_proposed_0",
+        "executed_quantity": 0,
+        "db_before": true,
+        "db_after_quantity_change": false
+      },
+      {
+        "index": 87,
+        "arm": "episode__preload",
+        "review_id": "d9590f4ac49f01e982d9d9a1457e3fba6edadf2fc63527b33bd8ec1c85131b05",
+        "report_sha256": "8a7f2b12b42931c1cd664102ea109887a9e00a34533f5115bd41e8dbb39fbee3",
+        "graded": true,
+        "first_booking_turn": 26,
+        "proposed_quantities": [
+          6
+        ],
+        "wording": "extra_or_allowance_only",
+        "first_proposal_outcome": "first_proposed_6",
+        "executed_quantity": 6,
+        "db_before": false,
+        "db_after_quantity_change": true
+      },
+      {
+        "index": 88,
+        "arm": "procedure__preload",
+        "review_id": "d9893805bd20e1f81731bf9d4b06bab9bf06b9cb3fa54bbf99d6929c3caa80ce",
+        "report_sha256": "690cea6b51812d95aada7ef2e7df2e2df3811a93328b18958aa06213cb981328",
+        "graded": true,
+        "first_booking_turn": 26,
+        "proposed_quantities": [
+          0
+        ],
+        "wording": "zero_checked",
+        "first_proposal_outcome": "first_proposed_0",
+        "executed_quantity": 0,
+        "db_before": true,
+        "db_after_quantity_change": false
+      },
+      {
+        "index": 89,
+        "arm": "fact__preload",
+        "review_id": "b6dee8f349250bcde57d8aea0d562b340e04ce72577cd5af9ddbddca040152c2",
+        "report_sha256": "c6be5c55120f3cc0c1d16e996b7cac8611b3ea53bfc0a7446d728c1f9dd149fc",
+        "graded": true,
+        "first_booking_turn": 32,
+        "proposed_quantities": [
+          6
+        ],
+        "wording": "no_quantity_statement",
+        "first_proposal_outcome": "first_proposed_6",
+        "executed_quantity": 6,
+        "db_before": false,
+        "db_after_quantity_change": true
+      },
+      {
+        "index": 90,
+        "arm": "lesson__on_demand",
+        "review_id": "dc2755c682e4cba891a80f07450fbff2cdbba6fdd8b8fb918429e82b800bc2ca",
+        "report_sha256": "ae01e7cd75f897c57c8994dd148604c5a3dad178a4cadfbab3e0118b070c2632",
+        "graded": true,
+        "first_booking_turn": 35,
+        "proposed_quantities": [
+          0
+        ],
+        "wording": "zero_checked",
+        "first_proposal_outcome": "first_proposed_0",
+        "executed_quantity": 0,
+        "db_before": false,
+        "db_after_quantity_change": false
+      },
+      {
+        "index": 91,
+        "arm": "lesson__preload",
+        "review_id": "68af778aed13b181aca185d8d6d0d190028a243cfcfe075d1a0848d78230ae57",
+        "report_sha256": "265f72ef46aa16cbdd63b411802093d52ff5c6564847ffbd273cd68c269dcae9",
+        "graded": true,
+        "first_booking_turn": 28,
+        "proposed_quantities": [
+          0
+        ],
+        "wording": "zero_checked",
+        "first_proposal_outcome": "first_proposed_0",
+        "executed_quantity": 0,
+        "db_before": true,
+        "db_after_quantity_change": false
+      },
+      {
+        "index": 92,
+        "arm": "procedure__on_demand",
+        "review_id": "6f5037c5aa42101c4aa87698790ed8c9438aa3cdcdb2d18c4606cebfc41ecb4a",
+        "report_sha256": "27c539d53a70fe080416b8dd1e4acdbdfd033764faf0ad5b0f691e5ac91b6c2e",
+        "graded": true,
+        "first_booking_turn": 30,
+        "proposed_quantities": [
+          0
+        ],
+        "wording": "zero_checked",
+        "first_proposal_outcome": "first_proposed_0",
+        "executed_quantity": 0,
+        "db_before": true,
+        "db_after_quantity_change": false
+      },
+      {
+        "index": 93,
+        "arm": "empty_preload",
+        "review_id": "ce133042976f0cc8cabf28c37a1f3c7a2f6b3e9ef6a164bc11fae9561b03bef0",
+        "report_sha256": "4fb6f1bc4714fceb8651ef17b0740f001ad39044854653ef629e00f19fd31c5a",
+        "graded": true,
+        "first_booking_turn": 30,
+        "proposed_quantities": [
+          0
+        ],
+        "wording": "extra_or_allowance_only",
+        "first_proposal_outcome": "first_proposed_0",
+        "executed_quantity": 0,
+        "db_before": true,
+        "db_after_quantity_change": false
+      },
+      {
+        "index": 94,
+        "arm": "episode__preload",
+        "review_id": "caabcea8855abf93a2ba19fd69aa86401816d0cae13ee7d2903bc2f44161aa50",
+        "report_sha256": "f2df48834ff18899916b5614ff71c1b94fad35bd768d89967a0395c91bbca7e1",
+        "graded": true,
+        "first_booking_turn": 28,
+        "proposed_quantities": [
+          6
+        ],
+        "wording": "extra_or_allowance_only",
+        "first_proposal_outcome": "first_proposed_6",
+        "executed_quantity": 6,
+        "db_before": false,
+        "db_after_quantity_change": true
+      },
+      {
+        "index": 95,
+        "arm": "episode__on_demand",
+        "review_id": "b75a22e15b64ce19a29615efb26341ed1069d212e45813e35957e69a45b11345",
+        "report_sha256": "719d03ef500695e393f103b87fe4c5d24fc4df4c65535e0d71a811a90f94a7db",
+        "graded": true,
+        "first_booking_turn": 36,
+        "proposed_quantities": [
+          0
+        ],
+        "wording": "zero_checked",
+        "first_proposal_outcome": "first_proposed_0",
+        "executed_quantity": 0,
+        "db_before": false,
+        "db_after_quantity_change": false
+      },
+      {
+        "index": 96,
+        "arm": "no_memory",
+        "review_id": "2f539ef25553d6ad7dd774115c6eaf7232c05e05391870ee9ab9bed88a681292",
+        "report_sha256": "cbcadf80abd866c656e66c1b709998bae0a04f076655b43cd23487e31cf0d2c0",
+        "graded": true,
+        "first_booking_turn": 33,
+        "proposed_quantities": [
+          0
+        ],
+        "wording": "zero_checked",
+        "first_proposal_outcome": "first_proposed_0",
+        "executed_quantity": 0,
+        "db_before": true,
+        "db_after_quantity_change": false
+      },
+      {
+        "index": 97,
+        "arm": "procedure__preload",
+        "review_id": "f7aa7185fa68d6979485d6b92e017b52bcf09c4d06b86c84782264e19b3d3377",
+        "report_sha256": "817603cd32c2dfd1d906181fd10c37601146e22e6dc45c1b160ef8f46d7505ab",
+        "graded": true,
+        "first_booking_turn": 26,
+        "proposed_quantities": [
+          0
+        ],
+        "wording": "zero_checked",
+        "first_proposal_outcome": "first_proposed_0",
+        "executed_quantity": 0,
+        "db_before": true,
+        "db_after_quantity_change": false
+      },
+      {
+        "index": 98,
+        "arm": "fact__preload",
+        "review_id": "2a7c70cbe4ad28850a15e64091c8d7291eb0f46673307ae01da17559ff7fb08c",
+        "report_sha256": "db33e3755ebceaa64e0da2ed86bcf64e2b50cb6563e4e492730c5894712d7ba5",
+        "graded": true,
+        "first_booking_turn": 32,
+        "proposed_quantities": [
+          6
+        ],
+        "wording": "extra_or_allowance_only",
+        "first_proposal_outcome": "first_proposed_6",
+        "executed_quantity": 6,
+        "db_before": false,
+        "db_after_quantity_change": true
+      },
+      {
+        "index": 99,
+        "arm": "fact__on_demand",
+        "review_id": "ecf9d0461a492d995f19f9d7c4c9d6608699a52ac3e3de9b605fc1af33af85e0",
+        "report_sha256": "f6aff35127742533f6a42af040a10645463000193272a0948e5da853e1ecca87",
+        "graded": true,
+        "first_booking_turn": null,
+        "proposed_quantities": [],
+        "wording": "no_quantity_statement",
+        "first_proposal_outcome": "no_proposal_before_end"
+      },
+      {
+        "index": 100,
+        "arm": "lesson__on_demand",
+        "review_id": "31f8c6788df3f7a72beae53c39cb383901616ce4d69e76aa8e75e4de4862f421",
+        "report_sha256": "c0569b2468031c1a5a6495e8492b0a29914ffccaf97a45286dcdd5c0f6230e13",
+        "graded": true,
+        "first_booking_turn": 28,
+        "proposed_quantities": [
+          0
+        ],
+        "wording": "extra_or_allowance_only",
+        "first_proposal_outcome": "first_proposed_0",
+        "executed_quantity": 0,
+        "db_before": false,
+        "db_after_quantity_change": false
+      }
+    ],
+    "labels_sha256": "fc23a0c69aa566d23d640c149ad45e231f1addc24fdd1c354acd9143611a404e",
+    "customer_utterances": 310,
+    "proposed_with_execution": 32,
+    "proposals_all_match_execution": 32,
+    "db_repairs_by_wording": {
+      "extra_or_allowance_only": 6,
+      "no_quantity_statement": 1
+    }
+  },
+  "benchmark_coverage": {
+    "official_tasks": 50,
+    "split_sizes": {
+      "train": 30,
+      "test": 20
+    },
+    "official_customers": 34,
+    "cohorts": {
+      "baseline_screening": [
+        "0",
+        "1",
+        "3",
+        "4",
+        "5",
+        "7",
+        "9",
+        "10",
+        "11",
+        "12",
+        "14",
+        "15",
+        "17",
+        "20",
+        "21",
+        "23",
+        "27",
+        "28",
+        "33",
+        "34",
+        "36",
+        "38",
+        "39",
+        "40",
+        "41",
+        "42",
+        "43",
+        "46",
+        "47",
+        "49"
+      ],
+      "new_customer_source": [
+        "19",
+        "24",
+        "25",
+        "29",
+        "30",
+        "32"
+      ],
+      "bank-transfer-results": [
+        "18",
+        "26"
+      ],
+      "scope-lessons-results": [
+        "6",
+        "8",
+        "13",
+        "31",
+        "37"
+      ]
+    },
+    "observed_distinct_tasks": 43,
+    "observed_distinct_customers": 34,
+    "test_tasks_outside_four_cohorts": [
+      {
+        "task": "2",
+        "customer_group": "customer-42c403365b66",
+        "customer_seen": true,
+        "observed_same_customer_tasks": [
+          "38"
+        ],
+        "same_customer_sources_in_fixed_bank_inventory": []
+      },
+      {
+        "task": "16",
+        "customer_group": "customer-2a06a69b9b79",
+        "customer_seen": true,
+        "observed_same_customer_tasks": [
+          "15"
+        ],
+        "same_customer_sources_in_fixed_bank_inventory": []
+      },
+      {
+        "task": "22",
+        "customer_group": "customer-4362b1746e85",
+        "customer_seen": true,
+        "observed_same_customer_tasks": [
+          "17"
+        ],
+        "same_customer_sources_in_fixed_bank_inventory": [
+          "17"
+        ]
+      },
+      {
+        "task": "35",
+        "customer_group": "customer-ce4b0b5b5891",
+        "customer_seen": true,
+        "observed_same_customer_tasks": [
+          "9",
+          "37"
+        ],
+        "same_customer_sources_in_fixed_bank_inventory": []
+      },
+      {
+        "task": "44",
+        "customer_group": "customer-f577f1a01909",
+        "customer_seen": true,
+        "observed_same_customer_tasks": [
+          "4",
+          "8",
+          "46",
+          "47"
+        ],
+        "same_customer_sources_in_fixed_bank_inventory": []
+      },
+      {
+        "task": "45",
+        "customer_group": "customer-be19b4d76c5d",
+        "customer_seen": true,
+        "observed_same_customer_tasks": [
+          "6"
+        ],
+        "same_customer_sources_in_fixed_bank_inventory": []
+      },
+      {
+        "task": "48",
+        "customer_group": "customer-1180fb89529f",
+        "customer_seen": true,
+        "observed_same_customer_tasks": [
+          "3",
+          "40",
+          "49"
+        ],
+        "same_customer_sources_in_fixed_bank_inventory": [
+          "3"
+        ]
+      }
+    ]
+  },
+  "candidate_diagnostics": [
+    {
+      "source_task": "17",
+      "target_task": "22",
+      "source_writers": [
+        {
+          "writer_run": "r_51859c508483485fb9627fd258424d2d",
+          "form": "episode",
+          "writer": 1,
+          "past_id_in_title_or_body": true
+        },
+        {
+          "writer_run": "r_be8c5efbf3624e38b0ab14b869c07beb",
+          "form": "lesson",
+          "writer": 1,
+          "past_id_in_title_or_body": false
+        },
+        {
+          "writer_run": "r_cafbac632c374eea8169b183f120b018",
+          "form": "fact",
+          "writer": 1,
+          "past_id_in_title_or_body": true
+        },
+        {
+          "writer_run": "r_457318ea3f9e469e84251e494943ff36",
+          "form": "procedure",
+          "writer": 1,
+          "past_id_in_title_or_body": false
+        },
+        {
+          "writer_run": "r_b8070fbeab0941d7aed6edec9885a768",
+          "form": "lesson",
+          "writer": 2,
+          "past_id_in_title_or_body": true
+        },
+        {
+          "writer_run": "r_cc0f96c483db467eb2689b7bdcbbc840",
+          "form": "episode",
+          "writer": 2,
+          "past_id_in_title_or_body": true
+        },
+        {
+          "writer_run": "r_b57bc00c109a48898323400438965fd6",
+          "form": "fact",
+          "writer": 2,
+          "past_id_in_title_or_body": true
+        },
+        {
+          "writer_run": "r_ae57c825722347c998d31016adb22868",
+          "form": "procedure",
+          "writer": 2,
+          "past_id_in_title_or_body": true
+        }
+      ],
+      "source_success": false,
+      "same_reference_reservation": true,
+      "same_reference_calls_and_arguments": true,
+      "target_reference_writes": [
+        "update_reservation_flights",
+        "update_reservation_passengers",
+        "update_reservation_baggages"
+      ],
+      "target_required_communicate_count": 0,
+      "synthetic_no_service": {
+        "request": "Please change the passenger to me, upgrade my trip to economy, and add three checked bags.",
+        "reply": "Goodbye.",
+        "termination": "agent_stop",
+        "tool_calls": 0,
+        "official_reward": 0.0,
+        "db_match": false,
+        "reward_breakdown": {
+          "DB": 0.0,
+          "COMMUNICATE": 1.0
+        }
+      }
+    },
+    {
+      "source_task": "3",
+      "target_task": "48",
+      "source_writers": [
+        {
+          "writer_run": "r_70e8896fe2594d2f928c2fc5551dbeec",
+          "form": "fact",
+          "writer": 1,
+          "past_id_in_title_or_body": true
+        },
+        {
+          "writer_run": "r_d3dd50cab51b4013aea69718ff89a1e5",
+          "form": "lesson",
+          "writer": 1,
+          "past_id_in_title_or_body": true
+        },
+        {
+          "writer_run": "r_7d337790016944da891c80a4ed7bb359",
+          "form": "procedure",
+          "writer": 1,
+          "past_id_in_title_or_body": false
+        },
+        {
+          "writer_run": "r_611a52109fad4f06b5055a85ba96102e",
+          "form": "episode",
+          "writer": 1,
+          "past_id_in_title_or_body": true
+        },
+        {
+          "writer_run": "r_b44f589d7f5f49d7b4f13243ee96aad2",
+          "form": "episode",
+          "writer": 2,
+          "past_id_in_title_or_body": false
+        },
+        {
+          "writer_run": "r_7efca55075d04d86a7f7efbc3feefb3c",
+          "form": "fact",
+          "writer": 2,
+          "past_id_in_title_or_body": true
+        },
+        {
+          "writer_run": "r_9b511005df5c450b9f80f4f53de80fc9",
+          "form": "lesson",
+          "writer": 2,
+          "past_id_in_title_or_body": false
+        },
+        {
+          "writer_run": "r_6b1c05088f1548b9b56f336841ece031",
+          "form": "procedure",
+          "writer": 2,
+          "past_id_in_title_or_body": true
+        }
+      ],
+      "source_success": true,
+      "same_reference_reservation": false,
+      "same_reference_calls_and_arguments": false,
+      "target_reference_writes": [],
+      "target_required_communicate_count": 0,
+      "synthetic_no_service": {
+        "request": "Please cancel my reservation and give me a full refund.",
+        "reply": "Goodbye.",
+        "termination": "agent_stop",
+        "tool_calls": 0,
+        "official_reward": 1.0,
+        "db_match": true,
+        "reward_breakdown": {
+          "DB": 1.0,
+          "COMMUNICATE": 1.0
+        }
+      }
+    }
+  ]
+}
