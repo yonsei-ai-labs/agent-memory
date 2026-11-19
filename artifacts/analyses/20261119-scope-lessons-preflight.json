@@ -1,0 +1,1089 @@
+{
+  "study": "tau2-scope-lessons-01",
+  "protocol_sha256": "69183479c8b3671207d77092bf314f5d56a0226921187933c7e7c2ce3e408ec0",
+  "parent": "tau2-scope-lesson-writers-01",
+  "benchmark_revision": "c06b07dd7c4d4ec61ba6ff9bcdf0b15dd7ef36d4",
+  "target_split": "test",
+  "tasks": [
+    {
+      "task_id": "6",
+      "source_task_id": "49",
+      "stratum": "new_customer",
+      "customer_group": "customer-be19b4d76c5d",
+      "native_task_sha256": "c32fc91e6323c406869a2a177f2c7754507ea945fe9d7e5911e5657a2b2cb431"
+    },
+    {
+      "task_id": "13",
+      "source_task_id": "14",
+      "stratum": "new_customer",
+      "customer_group": "customer-553b92be4dd4",
+      "native_task_sha256": "f85fc55a63a7628f6b88a2d21598a3d71d5f09bd88a142f534231dc2587476de"
+    },
+    {
+      "task_id": "31",
+      "source_task_id": "10",
+      "stratum": "new_customer",
+      "customer_group": "customer-5cc610858425",
+      "native_task_sha256": "c007546167d4708bd25de189a7dbcab6a2c51254aa2fe9120d1070c646036f6b"
+    },
+    {
+      "task_id": "8",
+      "source_task_id": "20",
+      "stratum": "train_customer_new_task",
+      "customer_group": "customer-f577f1a01909",
+      "native_task_sha256": "c2c59213e7d6be1bd09c8dff93bdd95e80adf94cb8e993d380092c7252a487c8"
+    },
+    {
+      "task_id": "37",
+      "source_task_id": "42",
+      "stratum": "train_customer_new_task",
+      "customer_group": "customer-ce4b0b5b5891",
+      "native_task_sha256": "e0eefabcd8e7efd4a475b882021882a340c8898e1d25295d225d2ab8cf5c0d30"
+    }
+  ],
+  "sources": [
+    {
+      "task_id": "49",
+      "run_id": "r_36aa3c7f1b33403f9287e7e289082855",
+      "source_group": "g03",
+      "reference_has_db_write": false,
+      "public_context_sha256": "e09c7228e86cce22dad27526cd01ebc1728667382a2ee34a9725d5291d290a6e",
+      "public_context_bytes": 13099,
+      "first_pass_success": true
+    },
+    {
+      "task_id": "14",
+      "run_id": "r_1632a75e5ee74cae889ee991cc589003",
+      "source_group": "g10",
+      "reference_has_db_write": true,
+      "public_context_sha256": "54b5610a6216ba047a71b66524781bc22f1300da305bef2692e2fd7386e58b1e",
+      "public_context_bytes": 35318,
+      "first_pass_success": true
+    },
+    {
+      "task_id": "10",
+      "run_id": "r_ca3bfcf242434c5fb1d17431dad76cb4",
+      "source_group": "g07",
+      "reference_has_db_write": false,
+      "public_context_sha256": "4e11db41698c9f31621337a75c5cf4f902840a41c1d8048c1f94e539b2cff5fb",
+      "public_context_bytes": 30237,
+      "first_pass_success": true
+    },
+    {
+      "task_id": "20",
+      "run_id": "r_d8c7a724b6754d8b94b65d34b64f223a",
+      "source_group": "g13",
+      "reference_has_db_write": true,
+      "public_context_sha256": "b88d2b1e842d01aee01eebf77939e3f52a684a0042cbad48d9e18c920eee0621",
+      "public_context_bytes": 14330,
+      "first_pass_success": false
+    },
+    {
+      "task_id": "42",
+      "run_id": "r_ef8c7fbfb0ee491e9227238f4775a973",
+      "source_group": "g21",
+      "reference_has_db_write": true,
+      "public_context_sha256": "a4682ed8f3f7b16d45394d24a13228de1c6f82694660ec3ff315afc4c59beebb",
+      "public_context_bytes": 22308,
+      "first_pass_success": false
+    }
+  ],
+  "forms": [
+    "lesson_original",
+    "lesson_scoped"
+  ],
+  "conditions": [
+    {
+      "id": "lesson_original",
+      "representation": "lesson",
+      "prompt_version": "lesson_original-v1",
+      "prompt": "If you write, state a lesson or caution supported by the experience and when it may apply.",
+      "writer_instruction_sha256": "21fc2a5337f4db488879df1406b63e52c0b255ea43e470a3894219b94f3b0e43"
+    },
+    {
+      "id": "lesson_scoped",
+      "representation": "lesson",
+      "prompt_version": "lesson_scoped-v1",
+      "prompt": "If you write, state a lesson or caution supported by the experience and when it may apply. For each lesson, identify what it applies to. Distinguish facts from this past interaction from values or permissions that should be checked again for each relevant person, reservation, or action in a new case.",
+      "writer_instruction_sha256": "86ec2001bd7578d1b6f08ff5bd8580d2ac1d29c5399816f2623b28ced16236aa"
+    }
+  ],
+  "writer_jobs": [
+    {
+      "index": 1,
+      "phase": "write",
+      "repetition": 1,
+      "task_id": "42",
+      "arm": "lesson_scoped"
+    },
+    {
+      "index": 2,
+      "phase": "write",
+      "repetition": 1,
+      "task_id": "42",
+      "arm": "lesson_original"
+    },
+    {
+      "index": 3,
+      "phase": "write",
+      "repetition": 1,
+      "task_id": "14",
+      "arm": "lesson_scoped"
+    },
+    {
+      "index": 4,
+      "phase": "write",
+      "repetition": 1,
+      "task_id": "14",
+      "arm": "lesson_original"
+    },
+    {
+      "index": 5,
+      "phase": "write",
+      "repetition": 1,
+      "task_id": "20",
+      "arm": "lesson_original"
+    },
+    {
+      "index": 6,
+      "phase": "write",
+      "repetition": 1,
+      "task_id": "20",
+      "arm": "lesson_scoped"
+    },
+    {
+      "index": 7,
+      "phase": "write",
+      "repetition": 1,
+      "task_id": "49",
+      "arm": "lesson_scoped"
+    },
+    {
+      "index": 8,
+      "phase": "write",
+      "repetition": 1,
+      "task_id": "49",
+      "arm": "lesson_original"
+    },
+    {
+      "index": 9,
+      "phase": "write",
+      "repetition": 1,
+      "task_id": "10",
+      "arm": "lesson_scoped"
+    },
+    {
+      "index": 10,
+      "phase": "write",
+      "repetition": 1,
+      "task_id": "10",
+      "arm": "lesson_original"
+    },
+    {
+      "index": 11,
+      "phase": "write",
+      "repetition": 2,
+      "task_id": "20",
+      "arm": "lesson_scoped"
+    },
+    {
+      "index": 12,
+      "phase": "write",
+      "repetition": 2,
+      "task_id": "20",
+      "arm": "lesson_original"
+    },
+    {
+      "index": 13,
+      "phase": "write",
+      "repetition": 2,
+      "task_id": "14",
+      "arm": "lesson_scoped"
+    },
+    {
+      "index": 14,
+      "phase": "write",
+      "repetition": 2,
+      "task_id": "14",
+      "arm": "lesson_original"
+    },
+    {
+      "index": 15,
+      "phase": "write",
+      "repetition": 2,
+      "task_id": "10",
+      "arm": "lesson_scoped"
+    },
+    {
+      "index": 16,
+      "phase": "write",
+      "repetition": 2,
+      "task_id": "10",
+      "arm": "lesson_original"
+    },
+    {
+      "index": 17,
+      "phase": "write",
+      "repetition": 2,
+      "task_id": "42",
+      "arm": "lesson_original"
+    },
+    {
+      "index": 18,
+      "phase": "write",
+      "repetition": 2,
+      "task_id": "42",
+      "arm": "lesson_scoped"
+    },
+    {
+      "index": 19,
+      "phase": "write",
+      "repetition": 2,
+      "task_id": "49",
+      "arm": "lesson_original"
+    },
+    {
+      "index": 20,
+      "phase": "write",
+      "repetition": 2,
+      "task_id": "49",
+      "arm": "lesson_scoped"
+    }
+  ],
+  "writer_wire_sizes": {
+    "writer_initial_wires": 20,
+    "writer_initial_wire_bytes": [
+      15307,
+      41895
+    ],
+    "public_record_archived_final_wire_checks": 0,
+    "public_record_archived_final_wire_bytes": []
+  },
+  "guards_per_task_wave": {
+    "max_calls": 1200,
+    "max_usd": 0.18,
+    "max_seconds": 4800
+  },
+  "scheduled": {
+    "task-06-wave-1": [
+      {
+        "index": 1,
+        "phase": "solve",
+        "repetition": 1,
+        "task_id": "6",
+        "arm": "lesson_scoped",
+        "wave": 1,
+        "solver_seed": 4,
+        "source_task_id": "49"
+      },
+      {
+        "index": 2,
+        "phase": "solve",
+        "repetition": 1,
+        "task_id": "6",
+        "arm": "no_memory",
+        "wave": 1,
+        "solver_seed": 4,
+        "source_task_id": "49"
+      },
+      {
+        "index": 3,
+        "phase": "solve",
+        "repetition": 1,
+        "task_id": "6",
+        "arm": "empty_preload",
+        "wave": 1,
+        "solver_seed": 4,
+        "source_task_id": "49"
+      },
+      {
+        "index": 4,
+        "phase": "solve",
+        "repetition": 1,
+        "task_id": "6",
+        "arm": "lesson_original",
+        "wave": 1,
+        "solver_seed": 4,
+        "source_task_id": "49"
+      },
+      {
+        "index": 5,
+        "phase": "solve",
+        "repetition": 2,
+        "task_id": "6",
+        "arm": "lesson_scoped",
+        "wave": 1,
+        "solver_seed": 5,
+        "source_task_id": "49"
+      },
+      {
+        "index": 6,
+        "phase": "solve",
+        "repetition": 2,
+        "task_id": "6",
+        "arm": "no_memory",
+        "wave": 1,
+        "solver_seed": 5,
+        "source_task_id": "49"
+      },
+      {
+        "index": 7,
+        "phase": "solve",
+        "repetition": 2,
+        "task_id": "6",
+        "arm": "empty_preload",
+        "wave": 1,
+        "solver_seed": 5,
+        "source_task_id": "49"
+      },
+      {
+        "index": 8,
+        "phase": "solve",
+        "repetition": 2,
+        "task_id": "6",
+        "arm": "lesson_original",
+        "wave": 1,
+        "solver_seed": 5,
+        "source_task_id": "49"
+      }
+    ],
+    "task-13-wave-1": [
+      {
+        "index": 1,
+        "phase": "solve",
+        "repetition": 1,
+        "task_id": "13",
+        "arm": "no_memory",
+        "wave": 1,
+        "solver_seed": 4,
+        "source_task_id": "14"
+      },
+      {
+        "index": 2,
+        "phase": "solve",
+        "repetition": 1,
+        "task_id": "13",
+        "arm": "lesson_scoped",
+        "wave": 1,
+        "solver_seed": 4,
+        "source_task_id": "14"
+      },
+      {
+        "index": 3,
+        "phase": "solve",
+        "repetition": 1,
+        "task_id": "13",
+        "arm": "lesson_original",
+        "wave": 1,
+        "solver_seed": 4,
+        "source_task_id": "14"
+      },
+      {
+        "index": 4,
+        "phase": "solve",
+        "repetition": 1,
+        "task_id": "13",
+        "arm": "empty_preload",
+        "wave": 1,
+        "solver_seed": 4,
+        "source_task_id": "14"
+      },
+      {
+        "index": 5,
+        "phase": "solve",
+        "repetition": 2,
+        "task_id": "13",
+        "arm": "lesson_original",
+        "wave": 1,
+        "solver_seed": 5,
+        "source_task_id": "14"
+      },
+      {
+        "index": 6,
+        "phase": "solve",
+        "repetition": 2,
+        "task_id": "13",
+        "arm": "lesson_scoped",
+        "wave": 1,
+        "solver_seed": 5,
+        "source_task_id": "14"
+      },
+      {
+        "index": 7,
+        "phase": "solve",
+        "repetition": 2,
+        "task_id": "13",
+        "arm": "no_memory",
+        "wave": 1,
+        "solver_seed": 5,
+        "source_task_id": "14"
+      },
+      {
+        "index": 8,
+        "phase": "solve",
+        "repetition": 2,
+        "task_id": "13",
+        "arm": "empty_preload",
+        "wave": 1,
+        "solver_seed": 5,
+        "source_task_id": "14"
+      }
+    ],
+    "task-31-wave-1": [
+      {
+        "index": 1,
+        "phase": "solve",
+        "repetition": 2,
+        "task_id": "31",
+        "arm": "empty_preload",
+        "wave": 1,
+        "solver_seed": 5,
+        "source_task_id": "10"
+      },
+      {
+        "index": 2,
+        "phase": "solve",
+        "repetition": 2,
+        "task_id": "31",
+        "arm": "lesson_original",
+        "wave": 1,
+        "solver_seed": 5,
+        "source_task_id": "10"
+      },
+      {
+        "index": 3,
+        "phase": "solve",
+        "repetition": 2,
+        "task_id": "31",
+        "arm": "lesson_scoped",
+        "wave": 1,
+        "solver_seed": 5,
+        "source_task_id": "10"
+      },
+      {
+        "index": 4,
+        "phase": "solve",
+        "repetition": 2,
+        "task_id": "31",
+        "arm": "no_memory",
+        "wave": 1,
+        "solver_seed": 5,
+        "source_task_id": "10"
+      },
+      {
+        "index": 5,
+        "phase": "solve",
+        "repetition": 1,
+        "task_id": "31",
+        "arm": "empty_preload",
+        "wave": 1,
+        "solver_seed": 4,
+        "source_task_id": "10"
+      },
+      {
+        "index": 6,
+        "phase": "solve",
+        "repetition": 1,
+        "task_id": "31",
+        "arm": "lesson_original",
+        "wave": 1,
+        "solver_seed": 4,
+        "source_task_id": "10"
+      },
+      {
+        "index": 7,
+        "phase": "solve",
+        "repetition": 1,
+        "task_id": "31",
+        "arm": "lesson_scoped",
+        "wave": 1,
+        "solver_seed": 4,
+        "source_task_id": "10"
+      },
+      {
+        "index": 8,
+        "phase": "solve",
+        "repetition": 1,
+        "task_id": "31",
+        "arm": "no_memory",
+        "wave": 1,
+        "solver_seed": 4,
+        "source_task_id": "10"
+      }
+    ],
+    "task-08-wave-1": [
+      {
+        "index": 1,
+        "phase": "solve",
+        "repetition": 2,
+        "task_id": "8",
+        "arm": "empty_preload",
+        "wave": 1,
+        "solver_seed": 5,
+        "source_task_id": "20"
+      },
+      {
+        "index": 2,
+        "phase": "solve",
+        "repetition": 2,
+        "task_id": "8",
+        "arm": "no_memory",
+        "wave": 1,
+        "solver_seed": 5,
+        "source_task_id": "20"
+      },
+      {
+        "index": 3,
+        "phase": "solve",
+        "repetition": 2,
+        "task_id": "8",
+        "arm": "lesson_original",
+        "wave": 1,
+        "solver_seed": 5,
+        "source_task_id": "20"
+      },
+      {
+        "index": 4,
+        "phase": "solve",
+        "repetition": 2,
+        "task_id": "8",
+        "arm": "lesson_scoped",
+        "wave": 1,
+        "solver_seed": 5,
+        "source_task_id": "20"
+      },
+      {
+        "index": 5,
+        "phase": "solve",
+        "repetition": 1,
+        "task_id": "8",
+        "arm": "no_memory",
+        "wave": 1,
+        "solver_seed": 4,
+        "source_task_id": "20"
+      },
+      {
+        "index": 6,
+        "phase": "solve",
+        "repetition": 1,
+        "task_id": "8",
+        "arm": "empty_preload",
+        "wave": 1,
+        "solver_seed": 4,
+        "source_task_id": "20"
+      },
+      {
+        "index": 7,
+        "phase": "solve",
+        "repetition": 1,
+        "task_id": "8",
+        "arm": "lesson_scoped",
+        "wave": 1,
+        "solver_seed": 4,
+        "source_task_id": "20"
+      },
+      {
+        "index": 8,
+        "phase": "solve",
+        "repetition": 1,
+        "task_id": "8",
+        "arm": "lesson_original",
+        "wave": 1,
+        "solver_seed": 4,
+        "source_task_id": "20"
+      }
+    ],
+    "task-37-wave-1": [
+      {
+        "index": 1,
+        "phase": "solve",
+        "repetition": 1,
+        "task_id": "37",
+        "arm": "empty_preload",
+        "wave": 1,
+        "solver_seed": 4,
+        "source_task_id": "42"
+      },
+      {
+        "index": 2,
+        "phase": "solve",
+        "repetition": 1,
+        "task_id": "37",
+        "arm": "lesson_scoped",
+        "wave": 1,
+        "solver_seed": 4,
+        "source_task_id": "42"
+      },
+      {
+        "index": 3,
+        "phase": "solve",
+        "repetition": 1,
+        "task_id": "37",
+        "arm": "no_memory",
+        "wave": 1,
+        "solver_seed": 4,
+        "source_task_id": "42"
+      },
+      {
+        "index": 4,
+        "phase": "solve",
+        "repetition": 1,
+        "task_id": "37",
+        "arm": "lesson_original",
+        "wave": 1,
+        "solver_seed": 4,
+        "source_task_id": "42"
+      },
+      {
+        "index": 5,
+        "phase": "solve",
+        "repetition": 2,
+        "task_id": "37",
+        "arm": "empty_preload",
+        "wave": 1,
+        "solver_seed": 5,
+        "source_task_id": "42"
+      },
+      {
+        "index": 6,
+        "phase": "solve",
+        "repetition": 2,
+        "task_id": "37",
+        "arm": "no_memory",
+        "wave": 1,
+        "solver_seed": 5,
+        "source_task_id": "42"
+      },
+      {
+        "index": 7,
+        "phase": "solve",
+        "repetition": 2,
+        "task_id": "37",
+        "arm": "lesson_original",
+        "wave": 1,
+        "solver_seed": 5,
+        "source_task_id": "42"
+      },
+      {
+        "index": 8,
+        "phase": "solve",
+        "repetition": 2,
+        "task_id": "37",
+        "arm": "lesson_scoped",
+        "wave": 1,
+        "solver_seed": 5,
+        "source_task_id": "42"
+      }
+    ],
+    "task-06-wave-2": [
+      {
+        "index": 1,
+        "phase": "solve",
+        "repetition": 2,
+        "task_id": "6",
+        "arm": "lesson_scoped",
+        "wave": 2,
+        "solver_seed": 4,
+        "source_task_id": "49"
+      },
+      {
+        "index": 2,
+        "phase": "solve",
+        "repetition": 2,
+        "task_id": "6",
+        "arm": "lesson_original",
+        "wave": 2,
+        "solver_seed": 4,
+        "source_task_id": "49"
+      },
+      {
+        "index": 3,
+        "phase": "solve",
+        "repetition": 2,
+        "task_id": "6",
+        "arm": "no_memory",
+        "wave": 2,
+        "solver_seed": 4,
+        "source_task_id": "49"
+      },
+      {
+        "index": 4,
+        "phase": "solve",
+        "repetition": 2,
+        "task_id": "6",
+        "arm": "empty_preload",
+        "wave": 2,
+        "solver_seed": 4,
+        "source_task_id": "49"
+      },
+      {
+        "index": 5,
+        "phase": "solve",
+        "repetition": 1,
+        "task_id": "6",
+        "arm": "lesson_original",
+        "wave": 2,
+        "solver_seed": 5,
+        "source_task_id": "49"
+      },
+      {
+        "index": 6,
+        "phase": "solve",
+        "repetition": 1,
+        "task_id": "6",
+        "arm": "no_memory",
+        "wave": 2,
+        "solver_seed": 5,
+        "source_task_id": "49"
+      },
+      {
+        "index": 7,
+        "phase": "solve",
+        "repetition": 1,
+        "task_id": "6",
+        "arm": "lesson_scoped",
+        "wave": 2,
+        "solver_seed": 5,
+        "source_task_id": "49"
+      },
+      {
+        "index": 8,
+        "phase": "solve",
+        "repetition": 1,
+        "task_id": "6",
+        "arm": "empty_preload",
+        "wave": 2,
+        "solver_seed": 5,
+        "source_task_id": "49"
+      }
+    ],
+    "task-13-wave-2": [
+      {
+        "index": 1,
+        "phase": "solve",
+        "repetition": 2,
+        "task_id": "13",
+        "arm": "lesson_scoped",
+        "wave": 2,
+        "solver_seed": 4,
+        "source_task_id": "14"
+      },
+      {
+        "index": 2,
+        "phase": "solve",
+        "repetition": 2,
+        "task_id": "13",
+        "arm": "no_memory",
+        "wave": 2,
+        "solver_seed": 4,
+        "source_task_id": "14"
+      },
+      {
+        "index": 3,
+        "phase": "solve",
+        "repetition": 2,
+        "task_id": "13",
+        "arm": "empty_preload",
+        "wave": 2,
+        "solver_seed": 4,
+        "source_task_id": "14"
+      },
+      {
+        "index": 4,
+        "phase": "solve",
+        "repetition": 2,
+        "task_id": "13",
+        "arm": "lesson_original",
+        "wave": 2,
+        "solver_seed": 4,
+        "source_task_id": "14"
+      },
+      {
+        "index": 5,
+        "phase": "solve",
+        "repetition": 1,
+        "task_id": "13",
+        "arm": "lesson_original",
+        "wave": 2,
+        "solver_seed": 5,
+        "source_task_id": "14"
+      },
+      {
+        "index": 6,
+        "phase": "solve",
+        "repetition": 1,
+        "task_id": "13",
+        "arm": "lesson_scoped",
+        "wave": 2,
+        "solver_seed": 5,
+        "source_task_id": "14"
+      },
+      {
+        "index": 7,
+        "phase": "solve",
+        "repetition": 1,
+        "task_id": "13",
+        "arm": "empty_preload",
+        "wave": 2,
+        "solver_seed": 5,
+        "source_task_id": "14"
+      },
+      {
+        "index": 8,
+        "phase": "solve",
+        "repetition": 1,
+        "task_id": "13",
+        "arm": "no_memory",
+        "wave": 2,
+        "solver_seed": 5,
+        "source_task_id": "14"
+      }
+    ],
+    "task-31-wave-2": [
+      {
+        "index": 1,
+        "phase": "solve",
+        "repetition": 2,
+        "task_id": "31",
+        "arm": "no_memory",
+        "wave": 2,
+        "solver_seed": 4,
+        "source_task_id": "10"
+      },
+      {
+        "index": 2,
+        "phase": "solve",
+        "repetition": 2,
+        "task_id": "31",
+        "arm": "lesson_scoped",
+        "wave": 2,
+        "solver_seed": 4,
+        "source_task_id": "10"
+      },
+      {
+        "index": 3,
+        "phase": "solve",
+        "repetition": 2,
+        "task_id": "31",
+        "arm": "lesson_original",
+        "wave": 2,
+        "solver_seed": 4,
+        "source_task_id": "10"
+      },
+      {
+        "index": 4,
+        "phase": "solve",
+        "repetition": 2,
+        "task_id": "31",
+        "arm": "empty_preload",
+        "wave": 2,
+        "solver_seed": 4,
+        "source_task_id": "10"
+      },
+      {
+        "index": 5,
+        "phase": "solve",
+        "repetition": 1,
+        "task_id": "31",
+        "arm": "lesson_original",
+        "wave": 2,
+        "solver_seed": 5,
+        "source_task_id": "10"
+      },
+      {
+        "index": 6,
+        "phase": "solve",
+        "repetition": 1,
+        "task_id": "31",
+        "arm": "no_memory",
+        "wave": 2,
+        "solver_seed": 5,
+        "source_task_id": "10"
+      },
+      {
+        "index": 7,
+        "phase": "solve",
+        "repetition": 1,
+        "task_id": "31",
+        "arm": "empty_preload",
+        "wave": 2,
+        "solver_seed": 5,
+        "source_task_id": "10"
+      },
+      {
+        "index": 8,
+        "phase": "solve",
+        "repetition": 1,
+        "task_id": "31",
+        "arm": "lesson_scoped",
+        "wave": 2,
+        "solver_seed": 5,
+        "source_task_id": "10"
+      }
+    ],
+    "task-08-wave-2": [
+      {
+        "index": 1,
+        "phase": "solve",
+        "repetition": 1,
+        "task_id": "8",
+        "arm": "lesson_original",
+        "wave": 2,
+        "solver_seed": 5,
+        "source_task_id": "20"
+      },
+      {
+        "index": 2,
+        "phase": "solve",
+        "repetition": 1,
+        "task_id": "8",
+        "arm": "empty_preload",
+        "wave": 2,
+        "solver_seed": 5,
+        "source_task_id": "20"
+      },
+      {
+        "index": 3,
+        "phase": "solve",
+        "repetition": 1,
+        "task_id": "8",
+        "arm": "lesson_scoped",
+        "wave": 2,
+        "solver_seed": 5,
+        "source_task_id": "20"
+      },
+      {
+        "index": 4,
+        "phase": "solve",
+        "repetition": 1,
+        "task_id": "8",
+        "arm": "no_memory",
+        "wave": 2,
+        "solver_seed": 5,
+        "source_task_id": "20"
+      },
+      {
+        "index": 5,
+        "phase": "solve",
+        "repetition": 2,
+        "task_id": "8",
+        "arm": "lesson_scoped",
+        "wave": 2,
+        "solver_seed": 4,
+        "source_task_id": "20"
+      },
+      {
+        "index": 6,
+        "phase": "solve",
+        "repetition": 2,
+        "task_id": "8",
+        "arm": "lesson_original",
+        "wave": 2,
+        "solver_seed": 4,
+        "source_task_id": "20"
+      },
+      {
+        "index": 7,
+        "phase": "solve",
+        "repetition": 2,
+        "task_id": "8",
+        "arm": "no_memory",
+        "wave": 2,
+        "solver_seed": 4,
+        "source_task_id": "20"
+      },
+      {
+        "index": 8,
+        "phase": "solve",
+        "repetition": 2,
+        "task_id": "8",
+        "arm": "empty_preload",
+        "wave": 2,
+        "solver_seed": 4,
+        "source_task_id": "20"
+      }
+    ],
+    "task-37-wave-2": [
+      {
+        "index": 1,
+        "phase": "solve",
+        "repetition": 2,
+        "task_id": "37",
+        "arm": "lesson_scoped",
+        "wave": 2,
+        "solver_seed": 4,
+        "source_task_id": "42"
+      },
+      {
+        "index": 2,
+        "phase": "solve",
+        "repetition": 2,
+        "task_id": "37",
+        "arm": "no_memory",
+        "wave": 2,
+        "solver_seed": 4,
+        "source_task_id": "42"
+      },
+      {
+        "index": 3,
+        "phase": "solve",
+        "repetition": 2,
+        "task_id": "37",
+        "arm": "empty_preload",
+        "wave": 2,
+        "solver_seed": 4,
+        "source_task_id": "42"
+      },
+      {
+        "index": 4,
+        "phase": "solve",
+        "repetition": 2,
+        "task_id": "37",
+        "arm": "lesson_original",
+        "wave": 2,
+        "solver_seed": 4,
+        "source_task_id": "42"
+      },
+      {
+        "index": 5,
+        "phase": "solve",
+        "repetition": 1,
+        "task_id": "37",
+        "arm": "lesson_scoped",
+        "wave": 2,
+        "solver_seed": 5,
+        "source_task_id": "42"
+      },
+      {
+        "index": 6,
+        "phase": "solve",
+        "repetition": 1,
+        "task_id": "37",
+        "arm": "empty_preload",
+        "wave": 2,
+        "solver_seed": 5,
+        "source_task_id": "42"
+      },
+      {
+        "index": 7,
+        "phase": "solve",
+        "repetition": 1,
+        "task_id": "37",
+        "arm": "no_memory",
+        "wave": 2,
+        "solver_seed": 5,
+        "source_task_id": "42"
+      },
+      {
+        "index": 8,
+        "phase": "solve",
+        "repetition": 1,
+        "task_id": "37",
+        "arm": "lesson_original",
+        "wave": 2,
+        "solver_seed": 5,
+        "source_task_id": "42"
+      }
+    ]
+  }
+}

@@ -196,11 +196,11 @@ def run_shard(root, manifest, state, identity, models, task, wave):
     if source_task != task:
         design['format'] = 'agent-memory-bank-transfer-shard/v1'
         design['target'] = dict(split=cfg['split'], task_id=task, source_task_id=source_task)
-    design['writing']['lines'] = {arm: design['writing']['lines'][arm] for arm in FORMS}
+    design['writing']['lines'] = {arm: design['writing']['lines'][arm] for arm in cfg['forms']}
     for pair in design['model']['seed_pairs']:
         pair['native_and_solver'] = cfg['solver_seeds_by_wave_and_writer'][wave - 1][pair['repetition'] - 1]
     design['allocation'] = dict(task=task, wave=wave, schedule_sha256=digest(canonical(jobs)))
-    design['second_pass'].update(primary_arms=list(FORMS), matched_controls=cfg['controls'], diagnostic_task_ids=[])
+    design['second_pass'].update(primary_arms=list(cfg['forms']), matched_controls=cfg['controls'], diagnostic_task_ids=[])
     design.pop('execution_freeze_pending', None)
     design.update(status='ready', executable=True, scope=cfg['scope'], purpose=cfg['primary'], analysis=cfg['secondary'])
     profile = dict(name=cfg['name'], shard=name, config_sha256=manifest['protocol_sha256'],

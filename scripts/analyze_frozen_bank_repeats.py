@@ -47,7 +47,10 @@ def verify_shard(args):
         folder = safe_path(shard, row['directory'])
         source_task = slot.get('source_task_id', task)
         bank = banks.get((source_task, rep, arm))
-        if (arm in FORMS) != (bank is not None):
+        missing_bank = [source_task, rep, arm] in manifest.get('unavailable_writers', [])
+        if ((arm in manifest.get('forms', FORMS)) != (bank is not None or missing_bank)
+                or (missing_bank and (bank or row['status'] != 'not_started' or row['reason'] != 'writer_incomplete'
+                                      and not close['stop_reason']))):
             raise ContractError('Scheduled form has no matching original writer')
         entry = dict(index=offset+row['index'], shard=name, local_index=row['index'], task_id=task, arm=arm,
                      writer_block=rep, wave=row['wave'], solver_seed=row['solver_seed'], run_id=row['run_id'],
