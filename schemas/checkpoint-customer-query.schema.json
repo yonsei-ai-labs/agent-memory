@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "One authored customer turn following a pinned public history and tool result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format",
+    "recorded_context_ref",
+    "customer_text",
+    "prefix_sha256"
+  ],
+  "properties": {
+    "format": {
+      "const": "agent-memory-checkpoint-customer-query/v1"
+    },
+    "recorded_context_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "sha256",
+        "media_type"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "pattern": "^blobs/sha256/[0-9a-f]{64}$"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "media_type": {
+          "const": "application/json"
+        }
+      }
+    },
+    "customer_text": {
+      "type": "string",
+      "minLength": 1
+    },
+    "prefix_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  }
+}
