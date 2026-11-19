@@ -184,16 +184,15 @@ def join(workspace, paths):
                 raise ContractError("Shared cross-round " + key)
             seen[key].update(values)
         combined[name] = round_table(data, cfg)
-        refs[name] = dict(
-            path=str(path.relative_to(workspace)) if path.is_relative_to(workspace) else path.name,
-            sha256=digest(path.read_bytes()),
-        )
+        refs[name] = dict(round=name, sha256=digest(path.read_bytes()))
         times = []
         for sub in (root / name).glob("task-*/*/completion.json"):
             seal, ctl, _ = sealed_rows(sub.parent)
             times.append((datetime.fromisoformat(ctl["started_at"]), datetime.fromisoformat(seal["ended_at"])))
         timing[name] = dict(start=min(t[0] for t in times).isoformat(), end=max(t[1] for t in times).isoformat())
-    if timing["development"]["end"] >= timing["confirmation"]["start"]:
+    if datetime.fromisoformat(timing["development"]["end"]) >= datetime.fromisoformat(
+        timing["confirmation"]["start"]
+    ):
         raise ContractError("A confirmation session began before development was completed")
     money = sum(Decimal(r["usd"]) for r in combined.values())
     reserve = sum(Decimal(r["reserved_usd"]) for r in combined.values())
