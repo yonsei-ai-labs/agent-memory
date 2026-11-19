@@ -55,6 +55,63 @@ def modules_for(workspace):
     return modules
 
 
+def owner_ids(t, db):
+    args = [a["arguments"] for a in t["evaluation_criteria"]["actions"] or []]
+    users = {a["user_id"] for a in args if a.get("user_id") in db["users"]}
+    users.update(
+        db["orders"][a["order_id"]]["user_id"]
+        for a in args
+        if a.get("order_id") in db["orders"]
+    )
+    return {digest(user.encode()) for user in users}
+
+
+def single_owner(task, db):
+    users = owner_ids(task, db)
+    if len(users) != 1:
+        raise ContractError("Expected one reference customer per retail task")
+    return users.pop()
+
+
+def bind_task(cfg, base, conn, row, raw_task):
+    from tau2.data_model.tasks import Task
+    from tau2.multilingual.runtime import load_run_language, task_digest
+    from tau2.runner.helpers import select_run_tasks
+
+    tid = row["task"]
+    design, jobs = full_design(cfg, base, row, "source", None)
+    settings = native_config(
+        solve_connection(conn, design, jobs[0], cfg["total_usd_limit"])
+    )
+    (task,) = select_run_tasks(settings, load_run_language(settings))
+    original = Task.model_validate(raw_task)
+    criteria = task.evaluation_criteria
+    if (
+        task.id != tid
+        or criteria != original.evaluation_criteria
+        or set(criteria.reward_basis) not in ({"DB"}, {"DB", "NL_ASSERTION"})
+    ):
+        raise ContractError(
+            "Default English task or criteria do not match official split"
+        )
+    mutations = sorted(
+        {
+            a.name
+            for a in criteria.actions or []
+            if a.name.startswith(("modify", "return", "exchange", "cancel"))
+        }
+    )
+    row.update(
+        task_sha256=task_digest(task),
+        canonical_task_sha256=task_digest(original),
+        assertions=len(criteria.nl_assertions or []),
+        communicate_items=len(criteria.communicate_info or []),
+        reward_basis=list(criteria.reward_basis),
+        operations=mutations,
+    )
+    return task.model_dump(mode="json")
+
+
 def prepare(workspace):
     cfg = read(ROOT / PROFILE)
     if (
@@ -72,9 +129,6 @@ def prepare(workspace):
         if digest((checkout / path).read_bytes()) != sha:
             raise ContractError(f"Benchmark file differs: {path}")
     from tau2.config import DEFAULT_LLM_NL_ASSERTIONS, DEFAULT_LLM_NL_ASSERTIONS_ARGS
-    from tau2.data_model.tasks import Task
-    from tau2.multilingual.runtime import load_run_language, task_digest
-    from tau2.runner.helpers import select_run_tasks
 
     if cfg["judge"][
         "native_model"
@@ -90,18 +144,6 @@ def prepare(workspace):
     split = read(data / "split_tasks.json")[cfg["split"]]
     prior = read_json(asset_text(ROOT, cfg["prior_protocol"]).encode())["rounds"]
 
-    def owner(t):
-        args = [a["arguments"] for a in t["evaluation_criteria"]["actions"] or []]
-        users = {a["user_id"] for a in args if a.get("user_id") in db["users"]}
-        users.update(
-            db["orders"][a["order_id"]]["user_id"]
-            for a in args
-            if a.get("order_id") in db["orders"]
-        )
-        if len(users) != 1:
-            raise ContractError("Expected one reference customer per retail task")
-        return digest(users.pop().encode())
-
     seen_ids = {
         i
         for c in prior.values()
@@ -109,55 +151,25 @@ def prepare(workspace):
         if family != "split"
         for i in ids
     }
-    seen_owners = {owner(raw[i]) for i in seen_ids}
+    seen_owners = {single_owner(raw[i], db) for i in seen_ids}
     rows, tasks = [], {}
     for tid in split:
         row = dict(
             task=tid,
-            customer=owner(raw[tid]),
+            customer=single_owner(raw[tid], db),
             split=cfg["split"],
             prior_task=tid in seen_ids,
-            prior_customer=owner(raw[tid]) in seen_owners,
+            prior_customer=single_owner(raw[tid], db) in seen_owners,
         )
-        design, jobs = full_design(cfg, base, row, "source", None)
-        settings = native_config(
-            solve_connection(conn, design, jobs[0], cfg["total_usd_limit"])
-        )
-        (task,) = select_run_tasks(settings, load_run_language(settings))
-        original = Task.model_validate(raw[tid])
-        criteria = task.evaluation_criteria
-        if (
-            task.id != tid
-            or criteria != original.evaluation_criteria
-            or set(criteria.reward_basis) not in ({"DB"}, {"DB", "NL_ASSERTION"})
-        ):
-            raise ContractError(
-                "Default English task or criteria do not match official split"
-            )
-        mutations = sorted(
-            {
-                a.name
-                for a in criteria.actions or []
-                if a.name.startswith(("modify", "return", "exchange", "cancel"))
-            }
-        )
-        row.update(
-            task_sha256=task_digest(task),
-            canonical_task_sha256=task_digest(original),
-            assertions=len(criteria.nl_assertions or []),
-            communicate_items=len(criteria.communicate_info or []),
-            reward_basis=list(criteria.reward_basis),
-            operations=mutations,
-        )
+        tasks[tid] = bind_task(cfg, base, conn, row, raw[tid])
         rows.append(row)
-        tasks[tid] = task.model_dump(mode="json")
     if len(rows) != 40 or len(tasks) != 40 or len({r["customer"] for r in rows}) != 31:
         raise ContractError("Incomplete official retail test split")
     return cfg, base, conn, rows, tasks
 
 
 def full_design(cfg, base, row, stage, source):
-    design, jobs = design_for(cfg, base, COHORT, row, stage, source)
+    design, jobs = design_for(cfg, base, row.get("cohort", COHORT), row, stage, source)
     design["format"] = RETAIL_FULL
     return design, jobs
 
@@ -180,13 +192,13 @@ def resolve_live(cfg, conn):
 def preflight(cfg, base, rows):
     return dict(
         study=cfg["name"],
-        protocol_sha256=digest((ROOT / PROFILE).read_bytes()),
+        protocol_sha256=digest((ROOT / cfg.get("profile_path", PROFILE)).read_bytes()),
         rows=[
             dict(
                 row,
                 stages={
                     stage: full_design(cfg, base, row, stage, None)[1]
-                    for stage in cfg["stages"]
+                    for stage in row.get("scheduled_stages", cfg["stages"])
                 },
             )
             for row in rows
@@ -257,6 +269,24 @@ def recorded_source(folder, task):
         )
 
 
+def bank_parent(workspace, cfg, row):
+    return (
+        workspace
+        / "runs"
+        / row.get("source_study", cfg["name"])
+        / ("task-" + row["task"])
+    )
+
+
+def stage_order(cfg, rows, stage):
+    members = [
+        row for row in rows if stage in row.get("scheduled_stages", cfg["stages"])
+    ]
+    return sorted(
+        members, key=lambda r: digest(canonical([cfg["name"], stage, r["task"]]))
+    )
+
+
 def stage_job(args):
     (
         workspace,
@@ -276,13 +306,14 @@ def stage_job(args):
     parent.mkdir(exist_ok=True)
     dest = parent / stage
     tid = row["task"]
-    source = None if stage == "source" else recorded_source(parent / "source", tid)
+    bank = bank_parent(workspace, cfg, row)
+    source = None if stage == "source" else recorded_source(bank / "source", tid)
     design, jobs = full_design(cfg, base, row, stage, source)
     profile = dict(
         name=cfg["name"],
         stage=stage,
         task=tid,
-        config_sha256=digest((ROOT / PROFILE).read_bytes()),
+        config_sha256=digest((ROOT / cfg.get("profile_path", PROFILE)).read_bytes()),
         implementation_commit=identity["implementation_commit"],
         http_timeout_seconds=cfg["http_timeout_seconds"],
         guards=dict(cfg["guards"][stage], max_usd=float(grant)),
@@ -331,10 +362,10 @@ def stage_job(args):
             dict(cfg["judge"], timeout_seconds=cfg["http_timeout_seconds"]),
             judge,
         )
-        if stage == "solve1":
-            _, _, ws = sealed_rows(parent / "write")
+        if stage.startswith("solve"):
+            _, _, ws = sealed_rows(bank / "write")
             bindings = (
-                parent / "write",
+                bank / "write",
                 {(w["repetition"], tid, w["arm"]): w for w in ws},
             )
     guard = BatchGuard(**profile["guards"])
@@ -383,23 +414,7 @@ def accounting(folder, grant):
     )
 
 
-def main():
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("mode", choices=["preflight", "run"])
-    parser.add_argument("--workspace", type=Path, default=ROOT)
-    parser.add_argument("--output", type=Path)
-    a = parser.parse_args()
-    workspace = a.workspace.resolve()
-    cfg, base, conn, rows, tasks = prepare(workspace)
-    record = preflight(cfg, base, rows)
-    if a.mode == "preflight":
-        if a.output:
-            fixed(a.output, record)
-        print(
-            "40 source episodes, 160 writers, 240 native solves, 31 customer groups",
-            flush=True,
-        )
-        return
+def run_study(workspace, cfg, base, conn, rows, tasks, record):
     root = workspace / "runs" / cfg["name"]
     root.mkdir(parents=True, exist_ok=True)
     descriptor = os.open(root, os.O_RDONLY | os.O_DIRECTORY)
@@ -409,10 +424,13 @@ def main():
             raise ContractError("Missing OpenRouter credentials")
         identity = implementation_identity(ROOT)
         models, judge = resolve_live(cfg, conn)
+        terms = endpoint_terms(dict(models, grader=judge))
+        if "expected_endpoint_terms" in cfg and terms != cfg["expected_endpoint_terms"]:
+            raise ContractError("Expansion endpoint terms differ from the source study")
         reg = dict(
             implementation=identity,
             preflight=record,
-            endpoint_terms=endpoint_terms(dict(models, grader=judge)),
+            endpoint_terms=terms,
             judge_slug=judge["canonical_slug"],
         )
         fixed(root / "registration.json", reg)
@@ -423,11 +441,8 @@ def main():
             max_workers=size, mp_context=get_context("spawn")
         ) as pool:
             for stage in cfg["stages"]:
-                ordered = sorted(
-                    rows,
-                    key=lambda r: digest(canonical([cfg["name"], stage, r["task"]])),
-                )
-                for begin in range(0, len(rows), size):
+                ordered = stage_order(cfg, rows, stage)
+                for begin in range(0, len(ordered), size):
                     wave = ordered[begin : begin + size]
                     grant = (
                         (Decimal(str(cfg["total_usd_limit"])) - total) / len(wave)
@@ -473,7 +488,7 @@ def main():
                         stage,
                         begin + len(wave),
                         "of",
-                        len(rows),
+                        len(ordered),
                         "cumulative covered USD",
                         total,
                         flush=True,
@@ -488,6 +503,26 @@ def main():
         )
     finally:
         os.close(descriptor)
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("mode", choices=["preflight", "run"])
+    parser.add_argument("--workspace", type=Path, default=ROOT)
+    parser.add_argument("--output", type=Path)
+    a = parser.parse_args()
+    workspace = a.workspace.resolve()
+    cfg, base, conn, rows, tasks = prepare(workspace)
+    record = preflight(cfg, base, rows)
+    if a.mode == "preflight":
+        if a.output:
+            fixed(a.output, record)
+        print(
+            "40 source episodes, 160 writers, 240 native solves, 31 customer groups",
+            flush=True,
+        )
+        return
+    run_study(workspace, cfg, base, conn, rows, tasks, record)
 
 
 if __name__ == "__main__":

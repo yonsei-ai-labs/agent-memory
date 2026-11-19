@@ -1,0 +1,27 @@
+{
+  "name": "tau2-retail-sample-expansion-01",
+  "status": "ready",
+  "parent_protocol": {
+    "path": "protocols/pilots/tau2-retail-full-forms-v1.json",
+    "sha256": "1be3ddf693e85ccbfb0980b24b7b4acbe8f3354a9accda8d3f72c28e64d5363a"
+  },
+  "parent_completion_sha256": "4624c1ce1b24f609eff64c38558de4774058a59f2e64047bba66779d2f08c483",
+  "parent_cells": {
+    "path": "artifacts/analyses/20261119-retail-full-cells.json",
+    "sha256": "34d877c4d778cee4a39490a640ab11dcd9455ec991df44788fc29f13663907e2"
+  },
+  "previous_customers": {
+    "path": "artifacts/analyses/20261119-retail-recheck-preflight.json",
+    "sha256": "5a3144ef28e292c3f36d523d650552898bedf9f0878a0e8449bcc8ce9833a625"
+  },
+  "new_tasks": ["20", "21", "22", "35", "43", "59", "73", "75", "76", "78", "80", "81", "82", "83", "84", "88", "89", "91", "92", "103", "104", "106", "107", "109", "110", "113"],
+  "new_customers": 18,
+  "stages": ["source", "write", "solve1", "solve2", "solve3"],
+  "repeat_stages": ["solve2", "solve3"],
+  "solver_seeds": [12, 12, 12],
+  "total_usd_limit": 5,
+  "selection": "Use all 40 original English test tasks and their sealed public first passes and original writers, including voluntary empties. For new first passes use every official train task whose recorded reference actions identify exactly one customer outside BOTH the full test and the earlier 12-customer retail study. Membership uses no outcomes. Three train tasks with no identifiable customer do not enter this cohort. Report train and test separately.",
+  "intervention": "Same four original writing instructions, preload, pure no-memory and enabled-empty controls, original endpoints, role parameters, English task pack, source seed 10 and writer seed 11. On each of the three independent fresh solver sessions per task and arm keep the same seed 12 to preserve the same native customer configuration. The simulator has no explicit seed. Directly verify full first simulator wire and the solver system, memory snapshot, and model settings across repeats. The first test repeat is historical. Count every source and bank only once.",
+  "analysis": "Register two added repeats on each old task and three on each new task, including a new pair of controls in every fresh block. 26 new sources, 104 new writer allocations, 948 new solves. Include missing outcomes and preserve all assignments. Per form report source failure recovery and source success loss, paired gains and losses against both contemporaneous controls, and changes across runs of the same bank and control. Average paired differences within task, then within customer for a customer-balanced estimate. Compare the three rounds of the expanded sample and the two entirely prospective rounds separately. Display a customer-cluster resampling interval per cohort for the paired no-memory differences, conditional on the observed sources and banks. Use shared controls once per task and round; avoid treating repeated runs as new customers. Break out the decision to hand off before completing any required DB change and inspect prior examples as retrospective cases.",
+  "execution": "Adopt the parent protocol's allocation, cost reservation, per-stage call and elapsed limits, ten concurrent isolated task shards and conservative error accounting. Limit all new operations together to $5. At most one attempt per allocated run. Reusing a sealed shard on controller restart requires matching profile, order, freeze and endpoints. An interrupted unsealed shard requires reconciliation before any repeat. Retain all original evidence."
+}

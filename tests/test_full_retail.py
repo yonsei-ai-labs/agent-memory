@@ -41,6 +41,27 @@ class FullRetailTests(unittest.TestCase):
         )
 
     def test_twelve_additional_grading_paths_with_positive_and_negative_judge(self):
+        self.assertEqual(self.check_retail_grading(self.rows, self.tasks), 12)
+
+    def test_new_train_grading_with_positive_and_negative_judge(self):
+        from scripts.run_retail_sample_expansion import PROFILE
+        from scripts.run_full_retail import read
+
+        data = ROOT / "data/tau2-bench/data/tau2/domains/retail/tasks.json"
+        tasks = {t["id"]: t for t in read(data)}
+        rows = []
+        for tid in read(ROOT / PROFILE)["new_tasks"]:
+            criteria = tasks[tid]["evaluation_criteria"]
+            rows.append(
+                dict(
+                    task=tid,
+                    assertions=len(criteria["nl_assertions"] or []),
+                    communicate_items=len(criteria["communicate_info"] or []),
+                )
+            )
+        self.assertEqual(self.check_retail_grading(rows, tasks), 12)
+
+    def check_retail_grading(self, rows, tasks):
         from tau2.data_model.semantic_communication import CommunicateScoring
         from tau2.data_model.tasks import Task
         from tau2.data_model.message import AssistantMessage
@@ -49,11 +70,11 @@ class FullRetailTests(unittest.TestCase):
         from tau2.runner import simulation as runner
 
         processed = 0
-        for row in self.rows:
+        for row in rows:
             if not (row["assertions"] or row["communicate_items"]):
                 continue
             processed += 1
-            task = Task.model_validate(self.tasks[row["task"]])
+            task = Task.model_validate(tasks[row["task"]])
             assertions = task.evaluation_criteria.nl_assertions or []
             sim = SimulationRun(
                 id="fixture",
@@ -179,7 +200,7 @@ class FullRetailTests(unittest.TestCase):
                     if starts:
                         self.assertEqual(starts[0]["payload"]["actor_role"], "grader")
                     self.assertIn("before_grade_ref", calls)
-        self.assertEqual(processed, 12)
+        return processed
 
     def test_incomplete_or_substituted_judgment_cannot_earn_credit(self):
         for values in (
