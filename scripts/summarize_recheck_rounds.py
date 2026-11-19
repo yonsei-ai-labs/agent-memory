@@ -80,9 +80,11 @@ def round_table(result, cfg):
             stability[arm][status(second["official"], first["official"])] += 1
     support = defaultdict(Counter)
     by_case = defaultdict(Counter)
+    versus_controls = defaultdict(Counter)
     discordant = []
     for p in result["pairs"]:
         if not p["control"].endswith("_original"):
+            versus_controls[p["variant"] + "/" + p["control"]][p["outcome"]] += 1
             continue
         by_case[p["task"]][p["outcome"]] += 1
         if p["outcome"] not in {"gain", "loss"}:
@@ -133,6 +135,7 @@ def round_table(result, cfg):
         by_task=dict(by_case),
         paired_discordant=discordant,
         comparison_with_controls=dict(support),
+        all_forms_versus_shared_controls=dict(versus_controls),
         repeats=dict(stability),
         empty_vs_no_memory=dict(Counter(x["outcome"] for x in result["empty_vs_no_memory"])),
         versus_first_pass=result["versus_first_pass"],
