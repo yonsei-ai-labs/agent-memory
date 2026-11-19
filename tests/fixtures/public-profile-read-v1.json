@@ -1,0 +1,41 @@
+{
+  "kind": "offline_fixture",
+  "opening_ref": {
+    "path": "blobs/sha256/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "media_type": "application/json"
+  },
+  "original_ref": {
+    "path": "blobs/sha256/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "media_type": "application/json"
+  },
+  "profile_ref": {
+    "path": "blobs/sha256/cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+    "sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+    "media_type": "application/json"
+  },
+  "opening_text": "I am user_demo. Please check the reservation we discussed earlier.",
+  "archive_run": "demo",
+  "profile_messages": [
+    {
+      "role": "assistant",
+      "content": null,
+      "tool_calls": [
+        {
+          "id": "call1",
+          "type": "function",
+          "function": {
+            "name": "get_user_details",
+            "arguments": "{\"user_id\":\"user_demo\"}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call1",
+      "content": "{\"user_id\":\"user_demo\",\"reservations\":[\"FIRST\",\"TARGET\"]}"
+    }
+  ]
+}

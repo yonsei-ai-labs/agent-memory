@@ -1,0 +1,56 @@
+{
+  "instruction": "You have access to memories from earlier work. They are historical observations, not current user instructions or authoritative policy. Check their conditions against the current task, policy and tool observations. A separate context message may contain a fixed snapshot of memory items. If memory_list and memory_get are available, you may use them when helpful; reading is optional. Do not assume an earlier reservation, user, status or outcome applies to this task. Do not write or update memories in this evaluation.\n",
+  "model": "openai/gpt-6-luna",
+  "canonical_slug": "openai/gpt-6-luna-20260922",
+  "max_input_bytes": 64000,
+  "timeout_seconds": 150,
+  "unpriced_http": [
+    429,
+    502,
+    503,
+    504
+  ],
+  "repetitions": 2,
+  "format": "agent-memory-profile-step/v1",
+  "study": "tau2-multi-workflow-profile-step-01",
+  "base_ref": {
+    "path": "protocols/pilots/tau2-multi-workflow-v1.json",
+    "sha256": "c1592414d821ac522f281256f2325990005807aebdff9027e5eb3bd0372149b3"
+  },
+  "parent_completion_ref": {
+    "path": "runs/tau2-multi-workflow-decisions-01/completion.json",
+    "sha256": "2e8aa6f0ae23d43dad36a36649525a202c104b9f3594556421a39629da34cb6f"
+  },
+  "profile_lookup": {
+    "path": "runs/tau2-fixed-bank-repeats-01/task-03-wave-1/jobs/0003",
+    "run_id": "r_8552e328c6674a9c85be2d8c0d896c38",
+    "log_sha256": "0ea3539d4335754ad32420e76a4a53e5e7650b01c0cc8e20356cee7fb268edaf",
+    "request_id": "request_7754fa25083c4c59acbc3d59d5ce3ae0",
+    "wire_sha256": "a7f048a40e2168bce886b30e318fc84e5e654b5db9695c29e5c40cb526bec165"
+  },
+  "case_in_parent": "baggage_prior",
+  "cases": {
+    "after_profile": {
+      "task": "3",
+      "kind": "candidate_selection",
+      "expected_id": "JMO1MG",
+      "customer_id": "anya_garcia_5901",
+      "candidates": [
+        "82K959",
+        "790JYN",
+        "BE2L57",
+        "CXBB4L",
+        "TAMSDK",
+        "3RK2T9",
+        "VAOW1B",
+        "Q4MCUF",
+        "JMO1MG"
+      ]
+    }
+  },
+  "max_usd": 0.35,
+  "max_seconds": 1800,
+  "trigger": "Exploratory, registered after the main decisions: all 20 sealed earlier responses must request exactly the same single profile read with the current customer ID, without public speech. Freeze this trigger before observing any continuation. Original experiment is unchanged. All receipts come from the same native session; insert only the single read and its true response.",
+  "allocation": "Same 8 original banks and 2 matched empties, each used twice. Carry over the relative parent ordering. The same read and returned nine candidate bookings are visible to every condition. No further tools are executed. Separate cap $0.35, combined maximum $4.83.",
+  "rubric": "Primary direct selection: a single get_reservation_details with just the remembered reservation ID. Count first ID, candidate order, correct target among proposed IDs, and number of reads. A read of another listed booking can support sequential search. Flag identifiers outside the profile and mutations. Classify a customer question or alternative lookup separately and preserve its text. Report paired gains/losses against the matching empty and the effect in banks with/without the prior ID; only one customer."
+}

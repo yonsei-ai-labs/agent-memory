@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Attach a single archived read-only customer profile return to an authored opening in the same native session",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format",
+    "opening_ref",
+    "profile_context_ref",
+    "user_id"
+  ],
+  "properties": {
+    "format": {
+      "const": "agent-memory-public-profile-read/v1"
+    },
+    "opening_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "sha256",
+        "media_type"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "pattern": "^blobs/sha256/[0-9a-f]{64}$"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "media_type": {
+          "const": "application/json"
+        }
+      }
+    },
+    "profile_context_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "sha256",
+        "media_type"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "pattern": "^blobs/sha256/[0-9a-f]{64}$"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "media_type": {
+          "const": "application/json"
+        }
+      }
+    },
+    "user_id": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}
