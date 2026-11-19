@@ -28,9 +28,7 @@ DESIGN = "protocols/drafts/tau2-two-pass-memory-forms-v1.json"
 
 
 def ordered_jobs(design):
-    if "target" in design:
-        cfg["benchmark"]["split"] = design["target"]["split"]
-    elif design.get("format") == "agent-memory-new-customer-design/v1":
+    if design.get("format") == "agent-memory-new-customer-design/v1":
         from agent_memory_eval.experiments.fresh_forms import planned_jobs
         return planned_jobs(design)
     if design.get("format") in {"agent-memory-prompt-comparison-design/v1", "agent-memory-prompt-delivery-design/v1"}:
@@ -124,7 +122,9 @@ def solve_connection(connection, design, row, cap):
     seed = next(s["native_and_solver"] for s in design["model"]["seed_pairs"] if s["repetition"] == row["repetition"])
     cfg["worker"]["parameters"]["seed"] = seed
     cfg["benchmark"].update(task_id=row["task_id"], seed=seed, max_steps=limits["native_steps"], max_errors=limits["native_errors"])
-    if design.get("format") == "agent-memory-new-customer-design/v1":
+    if design.get("format") == "agent-memory-bank-transfer-shard/v1":
+        cfg["benchmark"]["split"] = design["target"]["split"]
+    elif design.get("format") == "agent-memory-new-customer-design/v1":
         cfg["benchmark"]["split"] = design["source"]["split"]
     cfg["guards"] = dict(max_seconds=limits["episode_seconds"], max_model_requests=limits["max_total_requests_per_episode"],
                          max_reported_cost_usd=cap)
