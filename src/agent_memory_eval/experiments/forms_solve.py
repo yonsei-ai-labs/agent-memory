@@ -122,13 +122,23 @@ class _PreloadBridge(Tau2Bridge):
         return entries
 
 
-def _prepared_for_job(connection, prepared, limits, task_id, expected_split="train"):
+def model_free_basis(domain, criteria):
+    if criteria is None:
+        return False
+    basis = set(criteria.reward_basis)
+    if domain == "airline":
+        return basis == {"DB", "COMMUNICATE"}
+    return (domain == "retail" and basis in ({"DB", "NL_ASSERTION"}, {"DB"})
+            and not criteria.nl_assertions and not criteria.communicate_info)
+
+
+def _prepared_for_job(connection, prepared, limits, task_id, expected_split="train", expected_domain="airline"):
     template, native, models, _ = prepared
     bench = connection["benchmark"]
     criteria = template.task.evaluation_criteria
     if (expected_split not in {"train", "test"} or (bench["domain"], bench["split"], bench["source_revision"], bench["communicate_scorer"])
-            != ("airline", expected_split, PIN, "substring")
-            or criteria is None or set(criteria.reward_basis) != {"DB", "COMMUNICATE"}
+            != (expected_domain, expected_split, PIN, "substring")
+            or not model_free_basis(expected_domain, criteria)
             or bench["task_id"] != task_id or template.task.id != task_id or native != native_config(connection)
             or (native.max_steps, native.max_errors, native.timeout) != (
                 limits["native_steps"], limits["native_errors"], limits["episode_seconds"])
@@ -205,7 +215,8 @@ def _usage(journal, run_id):
 
 def run_forms_solve(journal, *, arm, task_id, repetition, run_id, connection, prepared, guard, limits,
                     instruction, writer_bank=None, public_record=None, public_context_sha256=None, opener=None, clients=None,
-                    written_arms=WRITTEN_ARMS, delivery=None, expected_split="train", source_task_id=None):
+                    written_arms=WRITTEN_ARMS, delivery=None, expected_split="train", source_task_id=None,
+                    expected_domain="airline"):
     """Run one assigned episode in a new per-job journal with a batch guard and verified input.
 
     The caller verifies a writer bank against its sealed journal and supplies the cohort's public hash.
@@ -217,7 +228,7 @@ def run_forms_solve(journal, *, arm, task_id, repetition, run_id, connection, pr
         raise ContractError("Missing solve allocation identity")
     if not isinstance(instruction, str) or (instruction != "" if arm == "no_memory" else not instruction.strip()):
         raise ContractError("Memory arms require the common instruction and pure no-memory requires none")
-    _prepared_for_job(connection, prepared, limits, task_id, expected_split)
+    _prepared_for_job(connection, prepared, limits, task_id, expected_split, expected_domain)
     if delivery is not None and (delivery["read_mode"] not in {"preload", "on_demand"} or arm == "no_memory"
             or arm == "empty_preload" and delivery != {"writer": "empty_preload", "read_mode": "preload"}):
         raise ContractError("A frozen-bank delivery must declare its writer and read policy")

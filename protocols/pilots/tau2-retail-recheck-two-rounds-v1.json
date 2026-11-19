@@ -1,0 +1,128 @@
+{
+  "format": "agent-memory-two-round-recheck/v1",
+  "status": "ready",
+  "name": "tau2-retail-recheck-two-rounds-01",
+  "domain": "retail",
+  "benchmark_revision": "c06b07dd7c4d4ec61ba6ff9bcdf0b15dd7ef36d4",
+  "assets": {
+    "data/tau2/domains/retail/db.json": "413a65160adbdb5fde0ffc0015c49b6d70250b10c18128de169b597af7766765",
+    "data/tau2/domains/retail/tasks.json": "8e03ebce7901bd6218e7a7dc3105faa9324091a68058f7fe61c65262868812e8",
+    "data/tau2/domains/retail/split_tasks.json": "ed0580ec52575b63fbf76568af42490da6ee7783ecb4aa81af46961291358f20",
+    "data/tau2/domains/retail/policy.md": "2c9652afbce57d6e087768d37cda64d31c53d50b3e3225cfdb791bac66466467",
+    "src/tau2/domains/retail/tools.py": "d0a9afdd44dbb1e7b1b4d19e0acf8ba9e3c99db78f775383a4b63fe5b0ccf52a",
+    "src/tau2/evaluator/evaluator.py": "adc929736ee3d75186fcd5c7cf5d5a4036814a9b73a845f7a513b39a44e9bc93",
+    "src/tau2/evaluator/evaluator_nl_assertions.py": "6b81675f7567cd132a47bd7ed863350238a65a9abfc2fb9546c619e95a6d1d97"
+  },
+  "base_design": {
+    "path": "protocols/drafts/tau2-two-pass-memory-forms-v1.json",
+    "sha256": "d4b06f72f4bcf5f656587e80645e042e7cf77e687cd5d1c38a20e2aff2cc373a"
+  },
+  "endpoints": {
+    "path": "artifacts/pilots/20261118-two-pass-forms-endpoints.json",
+    "sha256": "9b5bd1d9898ede15030b062fa81e451875fee0adff31d3a279d974a74435a872"
+  },
+  "rounds": {
+    "development": {
+      "split": "train",
+      "cancellation": [
+        "66",
+        "69"
+      ],
+      "refund": [
+        "13",
+        "48"
+      ],
+      "exchange": [
+        "0",
+        "52"
+      ]
+    },
+    "confirmation": {
+      "split": "test",
+      "cancellation": [
+        "90",
+        "74"
+      ],
+      "refund": [
+        "5",
+        "26"
+      ],
+      "exchange": [
+        "18",
+        "49"
+      ]
+    }
+  },
+  "selection": "Reserve the official test cohort first, then train. Within each split visit cancellation, refund to a payment method, then item exchange. Require a reference mutation of the named family, a single unambiguous owner of all referenced DB orders, and no natural-language assertions or required utterances. Rank by the total number of reference mutations then numeric task ID. Take the first two distinct customers per family, excluding all already assigned customers. Selection uses reference metadata only. Count repeated solvers within a customer, not as new customers.",
+  "forms": [
+    "fact",
+    "episode",
+    "lesson",
+    "procedure"
+  ],
+  "suffix": "If you write, explicitly state which conditions should be verified again before acting in a future case.",
+  "conditions": [
+    "original",
+    "recheck"
+  ],
+  "controls": [
+    "no_memory",
+    "empty_preload"
+  ],
+  "delivery": "preload",
+  "source_seed": 10,
+  "writer_seed": 11,
+  "solver_seeds": [
+    12,
+    13
+  ],
+  "stages": [
+    "source",
+    "write",
+    "solve1",
+    "solve2"
+  ],
+  "worker": "openai/gpt-6-luna",
+  "simulator": "deepseek/deepseek-v4.1-flash-1017",
+  "guards": {
+    "source": {
+      "max_calls": 200,
+      "max_usd": 0.05,
+      "max_seconds": 1200
+    },
+    "write": {
+      "max_calls": 32,
+      "max_usd": 0.05,
+      "max_seconds": 1800
+    },
+    "solve1": {
+      "max_calls": 2000,
+      "max_usd": 0.15,
+      "max_seconds": 5400
+    },
+    "solve2": {
+      "max_calls": 2000,
+      "max_usd": 0.15,
+      "max_seconds": 5400
+    }
+  },
+  "total_usd_limit": 4.8,
+  "max_concurrent": 8,
+  "http_timeout_seconds": 150,
+  "unpriced_http": {
+    "codes": [
+      429,
+      502,
+      503,
+      504
+    ],
+    "maximum_per_stage": 3
+  },
+  "missing": "No resubmission of started jobs. Count unreadable or failed first passes, writers, and solves as missing for their comparison and keep voluntary empties in assignment. Unknown charges can only use documented wire-specific reservations. A missing first pass can still run the two independent controls.",
+  "writing_outcome": "On all available paired banks at the same task, form and writer seed, mask arm, task metadata and outcomes. Code whether the note recommends obtaining or verifying at least one named changeable fact, customer choice or authorization for the current or a later decision. Historical narration alone, general cautions and unnamed checks do not qualify. Retain a verbatim quote per positive and explicit empty banks. Count both directions and denominator. Blind coding is completed before viewing second-pass results.",
+  "gate": "Carry confirmation forward only if at least one complete development writer pair differs on the preregistered recheck-content code in either direction. Do not gate on favorable native scores. Run development second-pass consultations regardless. Freeze development evidence before opening confirmation. Use the same protocol, criteria and seeds in both rounds; no further extension for an inconclusive result.",
+  "primary": "Pair recheck vs original within customer, form and solver seed. Report official successes, gains, losses, stable passes, stable failures and unavailable pairs by round, workflow and form. Contrasts against pure no memory and empty preload are secondary and reuse control IDs. Report separate changes relative to the actual first-pass success. All second passes reset the task environment. No transfer to a different order or customer is implied by a within-task replay.",
+  "behavior": "Record exact full native trajectories, actual first-pass writer prompt and exposed items. Report completed current order read before the first mutation, actual mutation targets/arguments including cancellation reason, refund destination and exchange item identifiers. For the first attempted business mutation preserve the preceding assistant proposal and last customer reply. Require explicit customer-approval language only in qualitative case reviews. Canonical exact-mutation comparison tolerates order of paired exchange items but preserves pairing, and accepts no extra attempted or failed writes. The official outcome is distinct.",
+  "cost": "Provider-reported decimal amounts and any bounded unpriced errors by stage and actor. Historical bank cost is zero since all 12 source episodes are new.",
+  "independence": "One independent new writer per task, form and prompt, one shared seed; two new solver sessions per bank and shared seed-matched controls. Customer simulator is unseeded. Both cohorts have six distinct customers (two per workflow), disjoint from one another. Public first-pass context and neutral feedback only enter writing."
+}

@@ -9,7 +9,8 @@ from unittest.mock import patch
 from agent_memory_eval.adapters.tau2 import PIN, native_modules, verify_checkout
 from agent_memory_eval.contracts.core import ContractError, canonical, digest, read_json
 from agent_memory_eval.contracts.validation import ROOT
-from agent_memory_eval.experiments.forms_batch import solve_connection, write_json
+from agent_memory_eval.experiments.forms_batch import RETAIL_RECHECK, solve_connection, write_json
+from agent_memory_eval.experiments.forms_solve import model_free_basis
 from agent_memory_eval.recording.assets import asset_text
 from agent_memory_eval.recording.journal import BlobStore, safe_path
 from agent_memory_eval.runner.tau2_baseline import build_baseline_orchestrator
@@ -31,7 +32,8 @@ def regrade(run, workspace, checkout):
     from tau2.multilingual.runtime import language_environment_kwargs
     from tau2.runner.presets import reload_recorded_call
     logger.disable("tau2")
-    task_file = checkout / "data/tau2/domains/airline/tasks.json"
+    expected_domain = "retail" if design.get("format") == RETAIL_RECHECK else "airline"
+    task_file = checkout / "data/tau2/domains" / expected_domain / "tasks.json"
     tasks = {t["id"]: t for t in read_json(task_file.read_bytes())}
 
     @lru_cache(maxsize=None)
@@ -41,10 +43,10 @@ def regrade(run, workspace, checkout):
         lang = orch.call_context.language
         domain = orch.environment.get_domain_name()
         loaded = reload_recorded_call(lang, domain)
-        if (domain != "airline" or native.communicate_scoring.scorer.value != "substring"
+        if (domain != expected_domain or native.communicate_scoring.scorer.value != "substring"
                 or native.communicate_scoring != orch.call_context.communicate_scoring
-                or [s.value for s in orch.task.evaluation_criteria.reward_basis] != ["DB", "COMMUNICATE"]):
-            raise ContractError("This read-only replay requires the frozen text airline DB/COMMUNICATE scorer")
+                or not model_free_basis(domain, orch.task.evaluation_criteria)):
+            raise ContractError("Read-only replay requires the declared model-free native criteria")
         return orch.task, native.communicate_scoring, lang, language_environment_kwargs(loaded) or None
 
     verified = []
@@ -75,7 +77,7 @@ def regrade(run, workspace, checkout):
                 raise ContractError("Archived simulation does not match its native task and recorded language")
             # Remove the stored reward before rebuilding the reference and predicted business environments.
             replay = evaluate_simulation(simulation=sim.model_copy(update={"reward_info": None}), task=task,
-                evaluation_type=EvaluationType.ALL, solo_mode=False, domain="airline", env_kwargs=kwargs,
+                evaluation_type=EvaluationType.ALL, solo_mode=False, domain=expected_domain, env_kwargs=kwargs,
                 strict_replay=True, communicate_scoring=scoring, customer_language=lang.provider_language)
             reward = replay.model_dump(mode="json")
             if (canonical(reward) != canonical(report["reward_info"]) or replay.reward != result["official_score"]

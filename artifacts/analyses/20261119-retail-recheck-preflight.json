@@ -1,0 +1,2770 @@
+{
+  "study": "tau2-retail-recheck-two-rounds-01",
+  "protocol_sha256": "891cd0067a7190ff344494087e7a595e393e63e6356d4dcf453c454b3a314461",
+  "rounds": {
+    "confirmation": [
+      {
+        "task": "90",
+        "split": "test",
+        "family": "cancellation",
+        "customer": "5b92d4f27e5d3c44fb044f6152a3984a94c32067f0f2c1c748a7a3f23dc6e351",
+        "task_sha256": "b002e0647194d673e8c9ef3efadebfd761b625ff21ed8a169bd6073f2c505d18",
+        "schedules": {
+          "source": [
+            {
+              "index": 1,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "90",
+              "arm": "no_memory"
+            }
+          ],
+          "write": [
+            {
+              "index": 1,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "90",
+              "arm": "episode_original"
+            },
+            {
+              "index": 2,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "90",
+              "arm": "lesson_recheck"
+            },
+            {
+              "index": 3,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "90",
+              "arm": "fact_recheck"
+            },
+            {
+              "index": 4,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "90",
+              "arm": "episode_recheck"
+            },
+            {
+              "index": 5,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "90",
+              "arm": "fact_original"
+            },
+            {
+              "index": 6,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "90",
+              "arm": "procedure_original"
+            },
+            {
+              "index": 7,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "90",
+              "arm": "lesson_original"
+            },
+            {
+              "index": 8,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "90",
+              "arm": "procedure_recheck"
+            }
+          ],
+          "solve1": [
+            {
+              "index": 1,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "90",
+              "arm": "episode_recheck"
+            },
+            {
+              "index": 2,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "90",
+              "arm": "lesson_recheck"
+            },
+            {
+              "index": 3,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "90",
+              "arm": "empty_preload"
+            },
+            {
+              "index": 4,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "90",
+              "arm": "no_memory"
+            },
+            {
+              "index": 5,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "90",
+              "arm": "fact_original"
+            },
+            {
+              "index": 6,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "90",
+              "arm": "episode_original"
+            },
+            {
+              "index": 7,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "90",
+              "arm": "fact_recheck"
+            },
+            {
+              "index": 8,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "90",
+              "arm": "lesson_original"
+            },
+            {
+              "index": 9,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "90",
+              "arm": "procedure_original"
+            },
+            {
+              "index": 10,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "90",
+              "arm": "procedure_recheck"
+            }
+          ],
+          "solve2": [
+            {
+              "index": 1,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "90",
+              "arm": "no_memory"
+            },
+            {
+              "index": 2,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "90",
+              "arm": "fact_recheck"
+            },
+            {
+              "index": 3,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "90",
+              "arm": "procedure_original"
+            },
+            {
+              "index": 4,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "90",
+              "arm": "empty_preload"
+            },
+            {
+              "index": 5,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "90",
+              "arm": "episode_original"
+            },
+            {
+              "index": 6,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "90",
+              "arm": "lesson_recheck"
+            },
+            {
+              "index": 7,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "90",
+              "arm": "fact_original"
+            },
+            {
+              "index": 8,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "90",
+              "arm": "episode_recheck"
+            },
+            {
+              "index": 9,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "90",
+              "arm": "procedure_recheck"
+            },
+            {
+              "index": 10,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "90",
+              "arm": "lesson_original"
+            }
+          ]
+        },
+        "writer_instructions": {
+          "fact_original": "If you write, record directly observed facts and values, their scope, and any uncertainty about them.",
+          "fact_recheck": "If you write, record directly observed facts and values, their scope, and any uncertainty about them.\nIf you write, explicitly state which conditions should be verified again before acting in a future case.",
+          "episode_original": "If you write, recount the situation, what you tried, and the observed responses or outcomes in chronological order.",
+          "episode_recheck": "If you write, recount the situation, what you tried, and the observed responses or outcomes in chronological order.\nIf you write, explicitly state which conditions should be verified again before acting in a future case.",
+          "lesson_original": "If you write, state a lesson or caution supported by the experience and when it may apply.",
+          "lesson_recheck": "If you write, state a lesson or caution supported by the experience and when it may apply.\nIf you write, explicitly state which conditions should be verified again before acting in a future case.",
+          "procedure_original": "If you write, describe an ordered procedure for similar work with checks, conditional steps and stopping points supported by the experience.",
+          "procedure_recheck": "If you write, describe an ordered procedure for similar work with checks, conditional steps and stopping points supported by the experience.\nIf you write, explicitly state which conditions should be verified again before acting in a future case."
+        }
+      },
+      {
+        "task": "74",
+        "split": "test",
+        "family": "cancellation",
+        "customer": "74c1ddfd1f16f659608290759a58eb91bce688d3c6bc37ec0a9ba0da3eeabc7f",
+        "task_sha256": "73af81394b352f9a04a4e352d57820dcda42c5ca9cb78122475eea4656842b78",
+        "schedules": {
+          "source": [
+            {
+              "index": 1,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "74",
+              "arm": "no_memory"
+            }
+          ],
+          "write": [
+            {
+              "index": 1,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "74",
+              "arm": "lesson_recheck"
+            },
+            {
+              "index": 2,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "74",
+              "arm": "episode_recheck"
+            },
+            {
+              "index": 3,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "74",
+              "arm": "procedure_original"
+            },
+            {
+              "index": 4,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "74",
+              "arm": "fact_original"
+            },
+            {
+              "index": 5,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "74",
+              "arm": "procedure_recheck"
+            },
+            {
+              "index": 6,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "74",
+              "arm": "episode_original"
+            },
+            {
+              "index": 7,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "74",
+              "arm": "fact_recheck"
+            },
+            {
+              "index": 8,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "74",
+              "arm": "lesson_original"
+            }
+          ],
+          "solve1": [
+            {
+              "index": 1,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "74",
+              "arm": "episode_original"
+            },
+            {
+              "index": 2,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "74",
+              "arm": "procedure_original"
+            },
+            {
+              "index": 3,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "74",
+              "arm": "fact_original"
+            },
+            {
+              "index": 4,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "74",
+              "arm": "lesson_original"
+            },
+            {
+              "index": 5,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "74",
+              "arm": "fact_recheck"
+            },
+            {
+              "index": 6,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "74",
+              "arm": "no_memory"
+            },
+            {
+              "index": 7,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "74",
+              "arm": "lesson_recheck"
+            },
+            {
+              "index": 8,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "74",
+              "arm": "procedure_recheck"
+            },
+            {
+              "index": 9,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "74",
+              "arm": "empty_preload"
+            },
+            {
+              "index": 10,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "74",
+              "arm": "episode_recheck"
+            }
+          ],
+          "solve2": [
+            {
+              "index": 1,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "74",
+              "arm": "procedure_recheck"
+            },
+            {
+              "index": 2,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "74",
+              "arm": "episode_recheck"
+            },
+            {
+              "index": 3,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "74",
+              "arm": "episode_original"
+            },
+            {
+              "index": 4,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "74",
+              "arm": "fact_recheck"
+            },
+            {
+              "index": 5,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "74",
+              "arm": "procedure_original"
+            },
+            {
+              "index": 6,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "74",
+              "arm": "lesson_recheck"
+            },
+            {
+              "index": 7,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "74",
+              "arm": "fact_original"
+            },
+            {
+              "index": 8,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "74",
+              "arm": "lesson_original"
+            },
+            {
+              "index": 9,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "74",
+              "arm": "empty_preload"
+            },
+            {
+              "index": 10,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "74",
+              "arm": "no_memory"
+            }
+          ]
+        },
+        "writer_instructions": {
+          "fact_original": "If you write, record directly observed facts and values, their scope, and any uncertainty about them.",
+          "fact_recheck": "If you write, record directly observed facts and values, their scope, and any uncertainty about them.\nIf you write, explicitly state which conditions should be verified again before acting in a future case.",
+          "episode_original": "If you write, recount the situation, what you tried, and the observed responses or outcomes in chronological order.",
+          "episode_recheck": "If you write, recount the situation, what you tried, and the observed responses or outcomes in chronological order.\nIf you write, explicitly state which conditions should be verified again before acting in a future case.",
+          "lesson_original": "If you write, state a lesson or caution supported by the experience and when it may apply.",
+          "lesson_recheck": "If you write, state a lesson or caution supported by the experience and when it may apply.\nIf you write, explicitly state which conditions should be verified again before acting in a future case.",
+          "procedure_original": "If you write, describe an ordered procedure for similar work with checks, conditional steps and stopping points supported by the experience.",
+          "procedure_recheck": "If you write, describe an ordered procedure for similar work with checks, conditional steps and stopping points supported by the experience.\nIf you write, explicitly state which conditions should be verified again before acting in a future case."
+        }
+      },
+      {
+        "task": "5",
+        "split": "test",
+        "family": "refund",
+        "customer": "be2b23dd42d83bc1618409e5dec11712ec636ebac2597c6b247a50c5173626ef",
+        "task_sha256": "421982f601ba0cf1bd1a6cde46edcca07c83589313175d881e4ea31db612fa7b",
+        "schedules": {
+          "source": [
+            {
+              "index": 1,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "5",
+              "arm": "no_memory"
+            }
+          ],
+          "write": [
+            {
+              "index": 1,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "5",
+              "arm": "procedure_recheck"
+            },
+            {
+              "index": 2,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "5",
+              "arm": "lesson_original"
+            },
+            {
+              "index": 3,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "5",
+              "arm": "fact_recheck"
+            },
+            {
+              "index": 4,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "5",
+              "arm": "fact_original"
+            },
+            {
+              "index": 5,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "5",
+              "arm": "episode_recheck"
+            },
+            {
+              "index": 6,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "5",
+              "arm": "procedure_original"
+            },
+            {
+              "index": 7,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "5",
+              "arm": "episode_original"
+            },
+            {
+              "index": 8,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "5",
+              "arm": "lesson_recheck"
+            }
+          ],
+          "solve1": [
+            {
+              "index": 1,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "5",
+              "arm": "empty_preload"
+            },
+            {
+              "index": 2,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "5",
+              "arm": "procedure_original"
+            },
+            {
+              "index": 3,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "5",
+              "arm": "lesson_original"
+            },
+            {
+              "index": 4,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "5",
+              "arm": "lesson_recheck"
+            },
+            {
+              "index": 5,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "5",
+              "arm": "episode_recheck"
+            },
+            {
+              "index": 6,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "5",
+              "arm": "no_memory"
+            },
+            {
+              "index": 7,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "5",
+              "arm": "fact_original"
+            },
+            {
+              "index": 8,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "5",
+              "arm": "procedure_recheck"
+            },
+            {
+              "index": 9,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "5",
+              "arm": "fact_recheck"
+            },
+            {
+              "index": 10,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "5",
+              "arm": "episode_original"
+            }
+          ],
+          "solve2": [
+            {
+              "index": 1,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "5",
+              "arm": "episode_recheck"
+            },
+            {
+              "index": 2,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "5",
+              "arm": "fact_recheck"
+            },
+            {
+              "index": 3,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "5",
+              "arm": "procedure_original"
+            },
+            {
+              "index": 4,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "5",
+              "arm": "lesson_recheck"
+            },
+            {
+              "index": 5,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "5",
+              "arm": "empty_preload"
+            },
+            {
+              "index": 6,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "5",
+              "arm": "procedure_recheck"
+            },
+            {
+              "index": 7,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "5",
+              "arm": "episode_original"
+            },
+            {
+              "index": 8,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "5",
+              "arm": "no_memory"
+            },
+            {
+              "index": 9,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "5",
+              "arm": "fact_original"
+            },
+            {
+              "index": 10,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "5",
+              "arm": "lesson_original"
+            }
+          ]
+        },
+        "writer_instructions": {
+          "fact_original": "If you write, record directly observed facts and values, their scope, and any uncertainty about them.",
+          "fact_recheck": "If you write, record directly observed facts and values, their scope, and any uncertainty about them.\nIf you write, explicitly state which conditions should be verified again before acting in a future case.",
+          "episode_original": "If you write, recount the situation, what you tried, and the observed responses or outcomes in chronological order.",
+          "episode_recheck": "If you write, recount the situation, what you tried, and the observed responses or outcomes in chronological order.\nIf you write, explicitly state which conditions should be verified again before acting in a future case.",
+          "lesson_original": "If you write, state a lesson or caution supported by the experience and when it may apply.",
+          "lesson_recheck": "If you write, state a lesson or caution supported by the experience and when it may apply.\nIf you write, explicitly state which conditions should be verified again before acting in a future case.",
+          "procedure_original": "If you write, describe an ordered procedure for similar work with checks, conditional steps and stopping points supported by the experience.",
+          "procedure_recheck": "If you write, describe an ordered procedure for similar work with checks, conditional steps and stopping points supported by the experience.\nIf you write, explicitly state which conditions should be verified again before acting in a future case."
+        }
+      },
+      {
+        "task": "26",
+        "split": "test",
+        "family": "refund",
+        "customer": "724ddc884f0ab2494fb5634bb222f2f69dc28b2e5ef621846ae52311e4e17a2c",
+        "task_sha256": "3f75676505aebb6920951b04e03e07eaee062afa85b013581dd29c72d2a72a29",
+        "schedules": {
+          "source": [
+            {
+              "index": 1,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "26",
+              "arm": "no_memory"
+            }
+          ],
+          "write": [
+            {
+              "index": 1,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "26",
+              "arm": "lesson_original"
+            },
+            {
+              "index": 2,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "26",
+              "arm": "episode_recheck"
+            },
+            {
+              "index": 3,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "26",
+              "arm": "episode_original"
+            },
+            {
+              "index": 4,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "26",
+              "arm": "procedure_recheck"
+            },
+            {
+              "index": 5,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "26",
+              "arm": "lesson_recheck"
+            },
+            {
+              "index": 6,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "26",
+              "arm": "fact_original"
+            },
+            {
+              "index": 7,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "26",
+              "arm": "procedure_original"
+            },
+            {
+              "index": 8,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "26",
+              "arm": "fact_recheck"
+            }
+          ],
+          "solve1": [
+            {
+              "index": 1,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "26",
+              "arm": "procedure_original"
+            },
+            {
+              "index": 2,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "26",
+              "arm": "empty_preload"
+            },
+            {
+              "index": 3,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "26",
+              "arm": "no_memory"
+            },
+            {
+              "index": 4,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "26",
+              "arm": "episode_original"
+            },
+            {
+              "index": 5,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "26",
+              "arm": "fact_recheck"
+            },
+            {
+              "index": 6,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "26",
+              "arm": "fact_original"
+            },
+            {
+              "index": 7,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "26",
+              "arm": "lesson_original"
+            },
+            {
+              "index": 8,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "26",
+              "arm": "lesson_recheck"
+            },
+            {
+              "index": 9,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "26",
+              "arm": "episode_recheck"
+            },
+            {
+              "index": 10,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "26",
+              "arm": "procedure_recheck"
+            }
+          ],
+          "solve2": [
+            {
+              "index": 1,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "26",
+              "arm": "episode_recheck"
+            },
+            {
+              "index": 2,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "26",
+              "arm": "procedure_recheck"
+            },
+            {
+              "index": 3,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "26",
+              "arm": "procedure_original"
+            },
+            {
+              "index": 4,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "26",
+              "arm": "lesson_original"
+            },
+            {
+              "index": 5,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "26",
+              "arm": "lesson_recheck"
+            },
+            {
+              "index": 6,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "26",
+              "arm": "no_memory"
+            },
+            {
+              "index": 7,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "26",
+              "arm": "fact_original"
+            },
+            {
+              "index": 8,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "26",
+              "arm": "empty_preload"
+            },
+            {
+              "index": 9,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "26",
+              "arm": "fact_recheck"
+            },
+            {
+              "index": 10,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "26",
+              "arm": "episode_original"
+            }
+          ]
+        },
+        "writer_instructions": {
+          "fact_original": "If you write, record directly observed facts and values, their scope, and any uncertainty about them.",
+          "fact_recheck": "If you write, record directly observed facts and values, their scope, and any uncertainty about them.\nIf you write, explicitly state which conditions should be verified again before acting in a future case.",
+          "episode_original": "If you write, recount the situation, what you tried, and the observed responses or outcomes in chronological order.",
+          "episode_recheck": "If you write, recount the situation, what you tried, and the observed responses or outcomes in chronological order.\nIf you write, explicitly state which conditions should be verified again before acting in a future case.",
+          "lesson_original": "If you write, state a lesson or caution supported by the experience and when it may apply.",
+          "lesson_recheck": "If you write, state a lesson or caution supported by the experience and when it may apply.\nIf you write, explicitly state which conditions should be verified again before acting in a future case.",
+          "procedure_original": "If you write, describe an ordered procedure for similar work with checks, conditional steps and stopping points supported by the experience.",
+          "procedure_recheck": "If you write, describe an ordered procedure for similar work with checks, conditional steps and stopping points supported by the experience.\nIf you write, explicitly state which conditions should be verified again before acting in a future case."
+        }
+      },
+      {
+        "task": "18",
+        "split": "test",
+        "family": "exchange",
+        "customer": "17c8f5eae5b6d25fa372709fe7b417b2acd737b56e75f5561ed3bd986e3f34eb",
+        "task_sha256": "e0b74e02fa5a3cb1864a94039da05fa9b6967c2577b9937edba9afb3ef0431e1",
+        "schedules": {
+          "source": [
+            {
+              "index": 1,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "18",
+              "arm": "no_memory"
+            }
+          ],
+          "write": [
+            {
+              "index": 1,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "18",
+              "arm": "lesson_original"
+            },
+            {
+              "index": 2,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "18",
+              "arm": "procedure_recheck"
+            },
+            {
+              "index": 3,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "18",
+              "arm": "episode_recheck"
+            },
+            {
+              "index": 4,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "18",
+              "arm": "procedure_original"
+            },
+            {
+              "index": 5,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "18",
+              "arm": "fact_original"
+            },
+            {
+              "index": 6,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "18",
+              "arm": "episode_original"
+            },
+            {
+              "index": 7,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "18",
+              "arm": "fact_recheck"
+            },
+            {
+              "index": 8,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "18",
+              "arm": "lesson_recheck"
+            }
+          ],
+          "solve1": [
+            {
+              "index": 1,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "18",
+              "arm": "lesson_recheck"
+            },
+            {
+              "index": 2,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "18",
+              "arm": "procedure_recheck"
+            },
+            {
+              "index": 3,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "18",
+              "arm": "no_memory"
+            },
+            {
+              "index": 4,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "18",
+              "arm": "empty_preload"
+            },
+            {
+              "index": 5,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "18",
+              "arm": "episode_original"
+            },
+            {
+              "index": 6,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "18",
+              "arm": "fact_recheck"
+            },
+            {
+              "index": 7,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "18",
+              "arm": "lesson_original"
+            },
+            {
+              "index": 8,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "18",
+              "arm": "procedure_original"
+            },
+            {
+              "index": 9,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "18",
+              "arm": "episode_recheck"
+            },
+            {
+              "index": 10,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "18",
+              "arm": "fact_original"
+            }
+          ],
+          "solve2": [
+            {
+              "index": 1,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "18",
+              "arm": "fact_original"
+            },
+            {
+              "index": 2,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "18",
+              "arm": "lesson_recheck"
+            },
+            {
+              "index": 3,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "18",
+              "arm": "empty_preload"
+            },
+            {
+              "index": 4,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "18",
+              "arm": "episode_original"
+            },
+            {
+              "index": 5,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "18",
+              "arm": "procedure_original"
+            },
+            {
+              "index": 6,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "18",
+              "arm": "lesson_original"
+            },
+            {
+              "index": 7,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "18",
+              "arm": "procedure_recheck"
+            },
+            {
+              "index": 8,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "18",
+              "arm": "fact_recheck"
+            },
+            {
+              "index": 9,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "18",
+              "arm": "episode_recheck"
+            },
+            {
+              "index": 10,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "18",
+              "arm": "no_memory"
+            }
+          ]
+        },
+        "writer_instructions": {
+          "fact_original": "If you write, record directly observed facts and values, their scope, and any uncertainty about them.",
+          "fact_recheck": "If you write, record directly observed facts and values, their scope, and any uncertainty about them.\nIf you write, explicitly state which conditions should be verified again before acting in a future case.",
+          "episode_original": "If you write, recount the situation, what you tried, and the observed responses or outcomes in chronological order.",
+          "episode_recheck": "If you write, recount the situation, what you tried, and the observed responses or outcomes in chronological order.\nIf you write, explicitly state which conditions should be verified again before acting in a future case.",
+          "lesson_original": "If you write, state a lesson or caution supported by the experience and when it may apply.",
+          "lesson_recheck": "If you write, state a lesson or caution supported by the experience and when it may apply.\nIf you write, explicitly state which conditions should be verified again before acting in a future case.",
+          "procedure_original": "If you write, describe an ordered procedure for similar work with checks, conditional steps and stopping points supported by the experience.",
+          "procedure_recheck": "If you write, describe an ordered procedure for similar work with checks, conditional steps and stopping points supported by the experience.\nIf you write, explicitly state which conditions should be verified again before acting in a future case."
+        }
+      },
+      {
+        "task": "49",
+        "split": "test",
+        "family": "exchange",
+        "customer": "88e3a46fb23c6854e99d15c54b90c6f8ba67ce206759445626ac019b1fba742e",
+        "task_sha256": "f8459fc6932aab6b8eaa3e22cd26337e99a8f167a572058315ba5feeffa0206d",
+        "schedules": {
+          "source": [
+            {
+              "index": 1,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "49",
+              "arm": "no_memory"
+            }
+          ],
+          "write": [
+            {
+              "index": 1,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "49",
+              "arm": "lesson_original"
+            },
+            {
+              "index": 2,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "49",
+              "arm": "procedure_original"
+            },
+            {
+              "index": 3,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "49",
+              "arm": "procedure_recheck"
+            },
+            {
+              "index": 4,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "49",
+              "arm": "episode_original"
+            },
+            {
+              "index": 5,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "49",
+              "arm": "fact_original"
+            },
+            {
+              "index": 6,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "49",
+              "arm": "episode_recheck"
+            },
+            {
+              "index": 7,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "49",
+              "arm": "fact_recheck"
+            },
+            {
+              "index": 8,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "49",
+              "arm": "lesson_recheck"
+            }
+          ],
+          "solve1": [
+            {
+              "index": 1,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "49",
+              "arm": "procedure_recheck"
+            },
+            {
+              "index": 2,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "49",
+              "arm": "fact_original"
+            },
+            {
+              "index": 3,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "49",
+              "arm": "no_memory"
+            },
+            {
+              "index": 4,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "49",
+              "arm": "lesson_recheck"
+            },
+            {
+              "index": 5,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "49",
+              "arm": "empty_preload"
+            },
+            {
+              "index": 6,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "49",
+              "arm": "fact_recheck"
+            },
+            {
+              "index": 7,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "49",
+              "arm": "episode_original"
+            },
+            {
+              "index": 8,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "49",
+              "arm": "lesson_original"
+            },
+            {
+              "index": 9,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "49",
+              "arm": "episode_recheck"
+            },
+            {
+              "index": 10,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "49",
+              "arm": "procedure_original"
+            }
+          ],
+          "solve2": [
+            {
+              "index": 1,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "49",
+              "arm": "procedure_recheck"
+            },
+            {
+              "index": 2,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "49",
+              "arm": "episode_recheck"
+            },
+            {
+              "index": 3,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "49",
+              "arm": "no_memory"
+            },
+            {
+              "index": 4,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "49",
+              "arm": "procedure_original"
+            },
+            {
+              "index": 5,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "49",
+              "arm": "fact_original"
+            },
+            {
+              "index": 6,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "49",
+              "arm": "episode_original"
+            },
+            {
+              "index": 7,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "49",
+              "arm": "empty_preload"
+            },
+            {
+              "index": 8,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "49",
+              "arm": "fact_recheck"
+            },
+            {
+              "index": 9,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "49",
+              "arm": "lesson_recheck"
+            },
+            {
+              "index": 10,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "49",
+              "arm": "lesson_original"
+            }
+          ]
+        },
+        "writer_instructions": {
+          "fact_original": "If you write, record directly observed facts and values, their scope, and any uncertainty about them.",
+          "fact_recheck": "If you write, record directly observed facts and values, their scope, and any uncertainty about them.\nIf you write, explicitly state which conditions should be verified again before acting in a future case.",
+          "episode_original": "If you write, recount the situation, what you tried, and the observed responses or outcomes in chronological order.",
+          "episode_recheck": "If you write, recount the situation, what you tried, and the observed responses or outcomes in chronological order.\nIf you write, explicitly state which conditions should be verified again before acting in a future case.",
+          "lesson_original": "If you write, state a lesson or caution supported by the experience and when it may apply.",
+          "lesson_recheck": "If you write, state a lesson or caution supported by the experience and when it may apply.\nIf you write, explicitly state which conditions should be verified again before acting in a future case.",
+          "procedure_original": "If you write, describe an ordered procedure for similar work with checks, conditional steps and stopping points supported by the experience.",
+          "procedure_recheck": "If you write, describe an ordered procedure for similar work with checks, conditional steps and stopping points supported by the experience.\nIf you write, explicitly state which conditions should be verified again before acting in a future case."
+        }
+      }
+    ],
+    "development": [
+      {
+        "task": "66",
+        "split": "train",
+        "family": "cancellation",
+        "customer": "5895639ccd10745fc7a811ff7a14f9b77769a368268ab5958a4ae311487c0709",
+        "task_sha256": "1be6ad66ade3bbe46c86bc5a7e8a3b93c67fd9793a5baf3b7c36886000425bb8",
+        "schedules": {
+          "source": [
+            {
+              "index": 1,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "66",
+              "arm": "no_memory"
+            }
+          ],
+          "write": [
+            {
+              "index": 1,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "66",
+              "arm": "episode_recheck"
+            },
+            {
+              "index": 2,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "66",
+              "arm": "fact_original"
+            },
+            {
+              "index": 3,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "66",
+              "arm": "fact_recheck"
+            },
+            {
+              "index": 4,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "66",
+              "arm": "procedure_original"
+            },
+            {
+              "index": 5,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "66",
+              "arm": "lesson_original"
+            },
+            {
+              "index": 6,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "66",
+              "arm": "procedure_recheck"
+            },
+            {
+              "index": 7,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "66",
+              "arm": "lesson_recheck"
+            },
+            {
+              "index": 8,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "66",
+              "arm": "episode_original"
+            }
+          ],
+          "solve1": [
+            {
+              "index": 1,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "66",
+              "arm": "procedure_recheck"
+            },
+            {
+              "index": 2,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "66",
+              "arm": "fact_recheck"
+            },
+            {
+              "index": 3,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "66",
+              "arm": "no_memory"
+            },
+            {
+              "index": 4,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "66",
+              "arm": "procedure_original"
+            },
+            {
+              "index": 5,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "66",
+              "arm": "empty_preload"
+            },
+            {
+              "index": 6,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "66",
+              "arm": "lesson_original"
+            },
+            {
+              "index": 7,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "66",
+              "arm": "lesson_recheck"
+            },
+            {
+              "index": 8,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "66",
+              "arm": "episode_original"
+            },
+            {
+              "index": 9,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "66",
+              "arm": "episode_recheck"
+            },
+            {
+              "index": 10,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "66",
+              "arm": "fact_original"
+            }
+          ],
+          "solve2": [
+            {
+              "index": 1,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "66",
+              "arm": "lesson_original"
+            },
+            {
+              "index": 2,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "66",
+              "arm": "procedure_recheck"
+            },
+            {
+              "index": 3,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "66",
+              "arm": "episode_recheck"
+            },
+            {
+              "index": 4,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "66",
+              "arm": "episode_original"
+            },
+            {
+              "index": 5,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "66",
+              "arm": "empty_preload"
+            },
+            {
+              "index": 6,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "66",
+              "arm": "fact_recheck"
+            },
+            {
+              "index": 7,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "66",
+              "arm": "no_memory"
+            },
+            {
+              "index": 8,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "66",
+              "arm": "procedure_original"
+            },
+            {
+              "index": 9,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "66",
+              "arm": "lesson_recheck"
+            },
+            {
+              "index": 10,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "66",
+              "arm": "fact_original"
+            }
+          ]
+        },
+        "writer_instructions": {
+          "fact_original": "If you write, record directly observed facts and values, their scope, and any uncertainty about them.",
+          "fact_recheck": "If you write, record directly observed facts and values, their scope, and any uncertainty about them.\nIf you write, explicitly state which conditions should be verified again before acting in a future case.",
+          "episode_original": "If you write, recount the situation, what you tried, and the observed responses or outcomes in chronological order.",
+          "episode_recheck": "If you write, recount the situation, what you tried, and the observed responses or outcomes in chronological order.\nIf you write, explicitly state which conditions should be verified again before acting in a future case.",
+          "lesson_original": "If you write, state a lesson or caution supported by the experience and when it may apply.",
+          "lesson_recheck": "If you write, state a lesson or caution supported by the experience and when it may apply.\nIf you write, explicitly state which conditions should be verified again before acting in a future case.",
+          "procedure_original": "If you write, describe an ordered procedure for similar work with checks, conditional steps and stopping points supported by the experience.",
+          "procedure_recheck": "If you write, describe an ordered procedure for similar work with checks, conditional steps and stopping points supported by the experience.\nIf you write, explicitly state which conditions should be verified again before acting in a future case."
+        }
+      },
+      {
+        "task": "69",
+        "split": "train",
+        "family": "cancellation",
+        "customer": "be4baeb56c09806c4c4b5c48a626a83cf94e36022adaac07978f5ef1042d2a0f",
+        "task_sha256": "2febc257034c4c7d1010b67cff837d8da11ff4fb1d659b85b8784d4d4b16ea43",
+        "schedules": {
+          "source": [
+            {
+              "index": 1,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "69",
+              "arm": "no_memory"
+            }
+          ],
+          "write": [
+            {
+              "index": 1,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "69",
+              "arm": "episode_recheck"
+            },
+            {
+              "index": 2,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "69",
+              "arm": "lesson_original"
+            },
+            {
+              "index": 3,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "69",
+              "arm": "episode_original"
+            },
+            {
+              "index": 4,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "69",
+              "arm": "fact_original"
+            },
+            {
+              "index": 5,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "69",
+              "arm": "fact_recheck"
+            },
+            {
+              "index": 6,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "69",
+              "arm": "procedure_original"
+            },
+            {
+              "index": 7,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "69",
+              "arm": "lesson_recheck"
+            },
+            {
+              "index": 8,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "69",
+              "arm": "procedure_recheck"
+            }
+          ],
+          "solve1": [
+            {
+              "index": 1,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "69",
+              "arm": "fact_recheck"
+            },
+            {
+              "index": 2,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "69",
+              "arm": "procedure_original"
+            },
+            {
+              "index": 3,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "69",
+              "arm": "episode_original"
+            },
+            {
+              "index": 4,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "69",
+              "arm": "procedure_recheck"
+            },
+            {
+              "index": 5,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "69",
+              "arm": "lesson_original"
+            },
+            {
+              "index": 6,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "69",
+              "arm": "lesson_recheck"
+            },
+            {
+              "index": 7,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "69",
+              "arm": "empty_preload"
+            },
+            {
+              "index": 8,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "69",
+              "arm": "fact_original"
+            },
+            {
+              "index": 9,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "69",
+              "arm": "episode_recheck"
+            },
+            {
+              "index": 10,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "69",
+              "arm": "no_memory"
+            }
+          ],
+          "solve2": [
+            {
+              "index": 1,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "69",
+              "arm": "episode_original"
+            },
+            {
+              "index": 2,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "69",
+              "arm": "fact_original"
+            },
+            {
+              "index": 3,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "69",
+              "arm": "lesson_recheck"
+            },
+            {
+              "index": 4,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "69",
+              "arm": "episode_recheck"
+            },
+            {
+              "index": 5,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "69",
+              "arm": "lesson_original"
+            },
+            {
+              "index": 6,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "69",
+              "arm": "empty_preload"
+            },
+            {
+              "index": 7,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "69",
+              "arm": "procedure_recheck"
+            },
+            {
+              "index": 8,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "69",
+              "arm": "fact_recheck"
+            },
+            {
+              "index": 9,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "69",
+              "arm": "procedure_original"
+            },
+            {
+              "index": 10,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "69",
+              "arm": "no_memory"
+            }
+          ]
+        },
+        "writer_instructions": {
+          "fact_original": "If you write, record directly observed facts and values, their scope, and any uncertainty about them.",
+          "fact_recheck": "If you write, record directly observed facts and values, their scope, and any uncertainty about them.\nIf you write, explicitly state which conditions should be verified again before acting in a future case.",
+          "episode_original": "If you write, recount the situation, what you tried, and the observed responses or outcomes in chronological order.",
+          "episode_recheck": "If you write, recount the situation, what you tried, and the observed responses or outcomes in chronological order.\nIf you write, explicitly state which conditions should be verified again before acting in a future case.",
+          "lesson_original": "If you write, state a lesson or caution supported by the experience and when it may apply.",
+          "lesson_recheck": "If you write, state a lesson or caution supported by the experience and when it may apply.\nIf you write, explicitly state which conditions should be verified again before acting in a future case.",
+          "procedure_original": "If you write, describe an ordered procedure for similar work with checks, conditional steps and stopping points supported by the experience.",
+          "procedure_recheck": "If you write, describe an ordered procedure for similar work with checks, conditional steps and stopping points supported by the experience.\nIf you write, explicitly state which conditions should be verified again before acting in a future case."
+        }
+      },
+      {
+        "task": "13",
+        "split": "train",
+        "family": "refund",
+        "customer": "194be0fb84c212a53e5a8bbabe0cd404adbc5f04e2580f6c951f1fbf3b38250f",
+        "task_sha256": "7daed0d37a0014362b6cb00e1a256466316fd30edac1cb3cc6d7eb042a91b645",
+        "schedules": {
+          "source": [
+            {
+              "index": 1,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "13",
+              "arm": "no_memory"
+            }
+          ],
+          "write": [
+            {
+              "index": 1,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "13",
+              "arm": "lesson_original"
+            },
+            {
+              "index": 2,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "13",
+              "arm": "episode_original"
+            },
+            {
+              "index": 3,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "13",
+              "arm": "procedure_recheck"
+            },
+            {
+              "index": 4,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "13",
+              "arm": "fact_original"
+            },
+            {
+              "index": 5,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "13",
+              "arm": "fact_recheck"
+            },
+            {
+              "index": 6,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "13",
+              "arm": "lesson_recheck"
+            },
+            {
+              "index": 7,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "13",
+              "arm": "procedure_original"
+            },
+            {
+              "index": 8,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "13",
+              "arm": "episode_recheck"
+            }
+          ],
+          "solve1": [
+            {
+              "index": 1,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "13",
+              "arm": "episode_original"
+            },
+            {
+              "index": 2,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "13",
+              "arm": "fact_original"
+            },
+            {
+              "index": 3,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "13",
+              "arm": "procedure_recheck"
+            },
+            {
+              "index": 4,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "13",
+              "arm": "no_memory"
+            },
+            {
+              "index": 5,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "13",
+              "arm": "fact_recheck"
+            },
+            {
+              "index": 6,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "13",
+              "arm": "lesson_recheck"
+            },
+            {
+              "index": 7,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "13",
+              "arm": "procedure_original"
+            },
+            {
+              "index": 8,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "13",
+              "arm": "lesson_original"
+            },
+            {
+              "index": 9,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "13",
+              "arm": "empty_preload"
+            },
+            {
+              "index": 10,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "13",
+              "arm": "episode_recheck"
+            }
+          ],
+          "solve2": [
+            {
+              "index": 1,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "13",
+              "arm": "procedure_recheck"
+            },
+            {
+              "index": 2,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "13",
+              "arm": "procedure_original"
+            },
+            {
+              "index": 3,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "13",
+              "arm": "fact_original"
+            },
+            {
+              "index": 4,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "13",
+              "arm": "no_memory"
+            },
+            {
+              "index": 5,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "13",
+              "arm": "episode_original"
+            },
+            {
+              "index": 6,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "13",
+              "arm": "fact_recheck"
+            },
+            {
+              "index": 7,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "13",
+              "arm": "episode_recheck"
+            },
+            {
+              "index": 8,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "13",
+              "arm": "empty_preload"
+            },
+            {
+              "index": 9,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "13",
+              "arm": "lesson_recheck"
+            },
+            {
+              "index": 10,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "13",
+              "arm": "lesson_original"
+            }
+          ]
+        },
+        "writer_instructions": {
+          "fact_original": "If you write, record directly observed facts and values, their scope, and any uncertainty about them.",
+          "fact_recheck": "If you write, record directly observed facts and values, their scope, and any uncertainty about them.\nIf you write, explicitly state which conditions should be verified again before acting in a future case.",
+          "episode_original": "If you write, recount the situation, what you tried, and the observed responses or outcomes in chronological order.",
+          "episode_recheck": "If you write, recount the situation, what you tried, and the observed responses or outcomes in chronological order.\nIf you write, explicitly state which conditions should be verified again before acting in a future case.",
+          "lesson_original": "If you write, state a lesson or caution supported by the experience and when it may apply.",
+          "lesson_recheck": "If you write, state a lesson or caution supported by the experience and when it may apply.\nIf you write, explicitly state which conditions should be verified again before acting in a future case.",
+          "procedure_original": "If you write, describe an ordered procedure for similar work with checks, conditional steps and stopping points supported by the experience.",
+          "procedure_recheck": "If you write, describe an ordered procedure for similar work with checks, conditional steps and stopping points supported by the experience.\nIf you write, explicitly state which conditions should be verified again before acting in a future case."
+        }
+      },
+      {
+        "task": "48",
+        "split": "train",
+        "family": "refund",
+        "customer": "6ac8d477c40fa32f36d79a778f8ad75349ff77577195bff00ada21c16806215c",
+        "task_sha256": "963e54ba0c63fc1e8183b59d461836d228ef6b8436be0450192eec0b5bd64fc8",
+        "schedules": {
+          "source": [
+            {
+              "index": 1,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "48",
+              "arm": "no_memory"
+            }
+          ],
+          "write": [
+            {
+              "index": 1,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "48",
+              "arm": "fact_recheck"
+            },
+            {
+              "index": 2,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "48",
+              "arm": "lesson_original"
+            },
+            {
+              "index": 3,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "48",
+              "arm": "episode_original"
+            },
+            {
+              "index": 4,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "48",
+              "arm": "episode_recheck"
+            },
+            {
+              "index": 5,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "48",
+              "arm": "procedure_original"
+            },
+            {
+              "index": 6,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "48",
+              "arm": "lesson_recheck"
+            },
+            {
+              "index": 7,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "48",
+              "arm": "procedure_recheck"
+            },
+            {
+              "index": 8,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "48",
+              "arm": "fact_original"
+            }
+          ],
+          "solve1": [
+            {
+              "index": 1,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "48",
+              "arm": "fact_original"
+            },
+            {
+              "index": 2,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "48",
+              "arm": "episode_recheck"
+            },
+            {
+              "index": 3,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "48",
+              "arm": "lesson_recheck"
+            },
+            {
+              "index": 4,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "48",
+              "arm": "procedure_original"
+            },
+            {
+              "index": 5,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "48",
+              "arm": "fact_recheck"
+            },
+            {
+              "index": 6,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "48",
+              "arm": "empty_preload"
+            },
+            {
+              "index": 7,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "48",
+              "arm": "lesson_original"
+            },
+            {
+              "index": 8,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "48",
+              "arm": "no_memory"
+            },
+            {
+              "index": 9,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "48",
+              "arm": "episode_original"
+            },
+            {
+              "index": 10,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "48",
+              "arm": "procedure_recheck"
+            }
+          ],
+          "solve2": [
+            {
+              "index": 1,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "48",
+              "arm": "fact_original"
+            },
+            {
+              "index": 2,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "48",
+              "arm": "episode_recheck"
+            },
+            {
+              "index": 3,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "48",
+              "arm": "fact_recheck"
+            },
+            {
+              "index": 4,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "48",
+              "arm": "procedure_recheck"
+            },
+            {
+              "index": 5,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "48",
+              "arm": "procedure_original"
+            },
+            {
+              "index": 6,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "48",
+              "arm": "empty_preload"
+            },
+            {
+              "index": 7,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "48",
+              "arm": "lesson_original"
+            },
+            {
+              "index": 8,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "48",
+              "arm": "no_memory"
+            },
+            {
+              "index": 9,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "48",
+              "arm": "lesson_recheck"
+            },
+            {
+              "index": 10,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "48",
+              "arm": "episode_original"
+            }
+          ]
+        },
+        "writer_instructions": {
+          "fact_original": "If you write, record directly observed facts and values, their scope, and any uncertainty about them.",
+          "fact_recheck": "If you write, record directly observed facts and values, their scope, and any uncertainty about them.\nIf you write, explicitly state which conditions should be verified again before acting in a future case.",
+          "episode_original": "If you write, recount the situation, what you tried, and the observed responses or outcomes in chronological order.",
+          "episode_recheck": "If you write, recount the situation, what you tried, and the observed responses or outcomes in chronological order.\nIf you write, explicitly state which conditions should be verified again before acting in a future case.",
+          "lesson_original": "If you write, state a lesson or caution supported by the experience and when it may apply.",
+          "lesson_recheck": "If you write, state a lesson or caution supported by the experience and when it may apply.\nIf you write, explicitly state which conditions should be verified again before acting in a future case.",
+          "procedure_original": "If you write, describe an ordered procedure for similar work with checks, conditional steps and stopping points supported by the experience.",
+          "procedure_recheck": "If you write, describe an ordered procedure for similar work with checks, conditional steps and stopping points supported by the experience.\nIf you write, explicitly state which conditions should be verified again before acting in a future case."
+        }
+      },
+      {
+        "task": "0",
+        "split": "train",
+        "family": "exchange",
+        "customer": "c382eb284225f3576e8654189d84ce6583475d033962c980ffda222d7062c8b2",
+        "task_sha256": "b346afb863372ef9f28fa2062c575ae96b4df4d855cc535dec83a8e517e6d40d",
+        "schedules": {
+          "source": [
+            {
+              "index": 1,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "0",
+              "arm": "no_memory"
+            }
+          ],
+          "write": [
+            {
+              "index": 1,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "0",
+              "arm": "lesson_original"
+            },
+            {
+              "index": 2,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "0",
+              "arm": "procedure_recheck"
+            },
+            {
+              "index": 3,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "0",
+              "arm": "episode_recheck"
+            },
+            {
+              "index": 4,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "0",
+              "arm": "fact_original"
+            },
+            {
+              "index": 5,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "0",
+              "arm": "procedure_original"
+            },
+            {
+              "index": 6,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "0",
+              "arm": "episode_original"
+            },
+            {
+              "index": 7,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "0",
+              "arm": "lesson_recheck"
+            },
+            {
+              "index": 8,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "0",
+              "arm": "fact_recheck"
+            }
+          ],
+          "solve1": [
+            {
+              "index": 1,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "0",
+              "arm": "fact_original"
+            },
+            {
+              "index": 2,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "0",
+              "arm": "lesson_original"
+            },
+            {
+              "index": 3,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "0",
+              "arm": "procedure_recheck"
+            },
+            {
+              "index": 4,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "0",
+              "arm": "lesson_recheck"
+            },
+            {
+              "index": 5,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "0",
+              "arm": "empty_preload"
+            },
+            {
+              "index": 6,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "0",
+              "arm": "episode_original"
+            },
+            {
+              "index": 7,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "0",
+              "arm": "no_memory"
+            },
+            {
+              "index": 8,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "0",
+              "arm": "fact_recheck"
+            },
+            {
+              "index": 9,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "0",
+              "arm": "procedure_original"
+            },
+            {
+              "index": 10,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "0",
+              "arm": "episode_recheck"
+            }
+          ],
+          "solve2": [
+            {
+              "index": 1,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "0",
+              "arm": "fact_original"
+            },
+            {
+              "index": 2,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "0",
+              "arm": "lesson_recheck"
+            },
+            {
+              "index": 3,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "0",
+              "arm": "procedure_original"
+            },
+            {
+              "index": 4,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "0",
+              "arm": "fact_recheck"
+            },
+            {
+              "index": 5,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "0",
+              "arm": "no_memory"
+            },
+            {
+              "index": 6,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "0",
+              "arm": "episode_original"
+            },
+            {
+              "index": 7,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "0",
+              "arm": "lesson_original"
+            },
+            {
+              "index": 8,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "0",
+              "arm": "episode_recheck"
+            },
+            {
+              "index": 9,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "0",
+              "arm": "empty_preload"
+            },
+            {
+              "index": 10,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "0",
+              "arm": "procedure_recheck"
+            }
+          ]
+        },
+        "writer_instructions": {
+          "fact_original": "If you write, record directly observed facts and values, their scope, and any uncertainty about them.",
+          "fact_recheck": "If you write, record directly observed facts and values, their scope, and any uncertainty about them.\nIf you write, explicitly state which conditions should be verified again before acting in a future case.",
+          "episode_original": "If you write, recount the situation, what you tried, and the observed responses or outcomes in chronological order.",
+          "episode_recheck": "If you write, recount the situation, what you tried, and the observed responses or outcomes in chronological order.\nIf you write, explicitly state which conditions should be verified again before acting in a future case.",
+          "lesson_original": "If you write, state a lesson or caution supported by the experience and when it may apply.",
+          "lesson_recheck": "If you write, state a lesson or caution supported by the experience and when it may apply.\nIf you write, explicitly state which conditions should be verified again before acting in a future case.",
+          "procedure_original": "If you write, describe an ordered procedure for similar work with checks, conditional steps and stopping points supported by the experience.",
+          "procedure_recheck": "If you write, describe an ordered procedure for similar work with checks, conditional steps and stopping points supported by the experience.\nIf you write, explicitly state which conditions should be verified again before acting in a future case."
+        }
+      },
+      {
+        "task": "52",
+        "split": "train",
+        "family": "exchange",
+        "customer": "c706aaaad452a909b2bc6931384113362c520624574a369ba3719dee30839aed",
+        "task_sha256": "06bf80b755acbdedde2a6c963fa9e722316c1f2a18a24bfdfb513d00baff8e4f",
+        "schedules": {
+          "source": [
+            {
+              "index": 1,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "52",
+              "arm": "no_memory"
+            }
+          ],
+          "write": [
+            {
+              "index": 1,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "52",
+              "arm": "procedure_original"
+            },
+            {
+              "index": 2,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "52",
+              "arm": "fact_recheck"
+            },
+            {
+              "index": 3,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "52",
+              "arm": "episode_recheck"
+            },
+            {
+              "index": 4,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "52",
+              "arm": "procedure_recheck"
+            },
+            {
+              "index": 5,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "52",
+              "arm": "lesson_recheck"
+            },
+            {
+              "index": 6,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "52",
+              "arm": "fact_original"
+            },
+            {
+              "index": 7,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "52",
+              "arm": "episode_original"
+            },
+            {
+              "index": 8,
+              "phase": "write",
+              "repetition": 1,
+              "task_id": "52",
+              "arm": "lesson_original"
+            }
+          ],
+          "solve1": [
+            {
+              "index": 1,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "52",
+              "arm": "lesson_recheck"
+            },
+            {
+              "index": 2,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "52",
+              "arm": "fact_recheck"
+            },
+            {
+              "index": 3,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "52",
+              "arm": "no_memory"
+            },
+            {
+              "index": 4,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "52",
+              "arm": "fact_original"
+            },
+            {
+              "index": 5,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "52",
+              "arm": "episode_recheck"
+            },
+            {
+              "index": 6,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "52",
+              "arm": "procedure_original"
+            },
+            {
+              "index": 7,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "52",
+              "arm": "empty_preload"
+            },
+            {
+              "index": 8,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "52",
+              "arm": "lesson_original"
+            },
+            {
+              "index": 9,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "52",
+              "arm": "episode_original"
+            },
+            {
+              "index": 10,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "52",
+              "arm": "procedure_recheck"
+            }
+          ],
+          "solve2": [
+            {
+              "index": 1,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "52",
+              "arm": "no_memory"
+            },
+            {
+              "index": 2,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "52",
+              "arm": "empty_preload"
+            },
+            {
+              "index": 3,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "52",
+              "arm": "lesson_recheck"
+            },
+            {
+              "index": 4,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "52",
+              "arm": "procedure_original"
+            },
+            {
+              "index": 5,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "52",
+              "arm": "fact_recheck"
+            },
+            {
+              "index": 6,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "52",
+              "arm": "episode_recheck"
+            },
+            {
+              "index": 7,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "52",
+              "arm": "procedure_recheck"
+            },
+            {
+              "index": 8,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "52",
+              "arm": "fact_original"
+            },
+            {
+              "index": 9,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "52",
+              "arm": "episode_original"
+            },
+            {
+              "index": 10,
+              "phase": "solve",
+              "repetition": 1,
+              "task_id": "52",
+              "arm": "lesson_original"
+            }
+          ]
+        },
+        "writer_instructions": {
+          "fact_original": "If you write, record directly observed facts and values, their scope, and any uncertainty about them.",
+          "fact_recheck": "If you write, record directly observed facts and values, their scope, and any uncertainty about them.\nIf you write, explicitly state which conditions should be verified again before acting in a future case.",
+          "episode_original": "If you write, recount the situation, what you tried, and the observed responses or outcomes in chronological order.",
+          "episode_recheck": "If you write, recount the situation, what you tried, and the observed responses or outcomes in chronological order.\nIf you write, explicitly state which conditions should be verified again before acting in a future case.",
+          "lesson_original": "If you write, state a lesson or caution supported by the experience and when it may apply.",
+          "lesson_recheck": "If you write, state a lesson or caution supported by the experience and when it may apply.\nIf you write, explicitly state which conditions should be verified again before acting in a future case.",
+          "procedure_original": "If you write, describe an ordered procedure for similar work with checks, conditional steps and stopping points supported by the experience.",
+          "procedure_recheck": "If you write, describe an ordered procedure for similar work with checks, conditional steps and stopping points supported by the experience.\nIf you write, explicitly state which conditions should be verified again before acting in a future case."
+        }
+      }
+    ]
+  }
+}
