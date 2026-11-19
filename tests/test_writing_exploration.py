@@ -23,7 +23,9 @@ IDENTITY = dict(implementation_commit="1" * 40, worktree_has_uncommitted_impleme
 
 class WritingExplorationFixture:
     def setUp(self):
-        self.folder = TemporaryDirectory(dir=ROOT / "outputs", prefix="writing-test-")
+        outputs = ROOT / "outputs"
+        outputs.mkdir(exist_ok=True)
+        self.folder = TemporaryDirectory(dir=outputs, prefix="writing-test-")
         self.addCleanup(self.folder.cleanup)
         self.base = Path(self.folder.name)
         self.source, self.output = self.base / "source", self.base / "result"
