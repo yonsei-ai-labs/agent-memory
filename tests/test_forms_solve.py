@@ -114,6 +114,16 @@ class FormsSolveTests(unittest.TestCase):
         kwargs.update(overrides)
         return journal, kwargs, http
 
+    def test_wrong_transfer_source_cannot_send_to_the_target(self):
+        for arm, declared, saved in [('fact', '0', bank('fact','17',ITEMS)),
+                                      ('fact', None, bank('fact','17',ITEMS)),
+                                      ('empty_preload', '0', None)]:
+            journal, kw, http = self.setup_job(arm, writer_bank=saved, source_task_id=declared)
+            with self.subTest(arm=arm, declared=declared), self.assertRaises(ContractError):
+                run_forms_solve(journal, **kw)
+            self.assertEqual(http.wires, [])
+            self.assertEqual(journal.scan['records'], [])
+
     def test_stock_wire_and_all_forms_share_native_inputs_and_readonly_delivery(self):
         links = {}
         for arm in ("no_memory", "empty_preload", "fact", "episode", "lesson", "procedure", "public_record", "summary"):

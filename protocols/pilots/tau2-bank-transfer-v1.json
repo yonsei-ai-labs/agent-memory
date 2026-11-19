@@ -1,0 +1,32 @@
+{
+  "format": "agent-memory-bank-transfer/v1",
+  "name": "tau2-bank-transfer-01",
+  "status": "ready",
+  "candidate_protocol_sha256": "a74abd86e87f18dcc05f7403ec02a34a0f29396a83d80f755da2197f90e2f97a",
+  "prior_repeat_completion_sha256": "542bfb0cf55e8f420bc8c317a40819ebdaca9dd054c55f34550a144d465c57d8",
+  "previous_test_ref": {"path":"protocols/pilots/tau2-new-customer-forms-v1.json","sha256":"0a73306f4ccb6f6a2e7a648c02b70e4fef274f2a7574e9a136dac06132c2062e"},
+  "source_split": "train",
+  "split": "test",
+  "pairs": [{"source":"0","target":"26"},{"source":"17","target":"18"}],
+  "tasks": ["26","18"],
+  "forms": ["fact","episode","lesson","procedure"],
+  "controls": ["no_memory","empty_preload"],
+  "delivery": "preload",
+  "writer_repetitions": [1,2],
+  "solver_seeds_by_wave_and_writer": [[4,5],[5,4]],
+  "scope": "Transfer the original unchanged writer banks to two previously nominated test customers absent from the train and earlier test cohorts. Keep voluntary empty assignments. No target first-pass memory, target answer, transfer cue or analyst rubric is given to the worker.",
+  "primary": "Pair each original writer form with the fresh no-memory run in the same target, writer block and wave. Count gains and losses, ties and unmatched pairs. Report task results separately and the equally weighted two-target descriptive contrast. Neither target previously ran a first pass in this study.",
+  "secondary": "Pair with fresh empty preload and with both controls, report both uses of each same bank separately, distinguish original empty banks and actual title/body exposure. Record full trajectories, official DB and communication, reported costs and per-wire unknown reservations. No pooling with the previous same-task runs.",
+  "order": "Hash-sort blocks and arms inside each target and wave using the frozen repeat scheduler and this study name. Four independent ledgers may run concurrently. Run complete episodes from fresh native state.",
+  "behavior_rubric": {
+    "both": "Record executed source-only customer, reservation or payment identifiers in tool arguments, attempted arguments and assistant utterances separately. Compare with observed current profile/reservation lookups. Bind each flag to a turn. A correct final DB does not establish that a memory caused the action.",
+    "26": "Report official DB and required communication, lookup of the current MCO-CLT reservation, any completed cancellation or compensation, and human escalation. Separately review assistant messages for an explicit denial of this requested refund with a current eligibility reason, and any affirmative promise or offer of this refund. A general policy explanation, conditional option or escalation alone is insufficient. Retain quotes and turn numbers for review.",
+    "18": "For each of the five reference reservations match an executed cabin change, original flight numbers and dates, economy and original payment. Count fully matched distinct reservations, extra writes and first-change confirmation using the current customer's words (explicit affirmative approval of a stated action before the first write, with the scope separately visible). Separately check whether an assistant actually states the correct total savings/refund of 23553, including comma formatting, and retain exact official substring scoring and turn evidence."
+  },
+  "per_task_wave_guards": {"max_calls":1500,"max_usd":0.5,"max_seconds":4800},
+  "total_usd_limit": 2,
+  "max_concurrent_shards": 4,
+  "http_timeout_seconds": 150,
+  "unpriced_http": {"codes":[429,502,503,504],"maximum_per_stage":12},
+  "failure_policy": "Each shard reserves unknown received listed HTTP errors at the wire-specific maximum. Other unpriced sends stop that shard. Do not repeat submitted episodes. Keep official missing outcomes, partial traces and all planned denominators."
+}

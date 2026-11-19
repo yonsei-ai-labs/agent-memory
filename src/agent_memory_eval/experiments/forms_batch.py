@@ -28,7 +28,9 @@ DESIGN = "protocols/drafts/tau2-two-pass-memory-forms-v1.json"
 
 
 def ordered_jobs(design):
-    if design.get("format") == "agent-memory-new-customer-design/v1":
+    if "target" in design:
+        cfg["benchmark"]["split"] = design["target"]["split"]
+    elif design.get("format") == "agent-memory-new-customer-design/v1":
         from agent_memory_eval.experiments.fresh_forms import planned_jobs
         return planned_jobs(design)
     if design.get("format") in {"agent-memory-prompt-comparison-design/v1", "agent-memory-prompt-delivery-design/v1"}:
@@ -207,7 +209,7 @@ def run_jobs(rows, execute, guard, persist, *, written_arms=(*FORMS, "summary"),
     for position, row in enumerate(rows):
         if stop is None:
             stop = guard.stop()
-        key = (row["repetition"], row["task_id"], row["arm"])
+        key = (row["repetition"], row.get("source_task_id", row["task_id"]), row["arm"])
         writer = writers.get(key)
         if stop:
             row.update(status="not_started", reason=stop)
@@ -302,7 +304,7 @@ def execute_prepared(profile, root, destination, identity, design, plan, models,
     episode_clients = {role: make_client(role, limits["max_input_bytes"]) for role in models}
     def execute(row, writer):
         folder = destination / row["directory"]
-        source = plan["sources"].get(row["task_id"])
+        source = plan["sources"].get(row.get("source_task_id", row["task_id"]))
         scope_calls, previous_cost = guard.calls, guard.reported_usd
         with Journal(folder, new_id("forms"), contract_version="1.2") as journal:
             if row["phase"] == "write":
@@ -321,7 +323,8 @@ def execute_prepared(profile, root, destination, identity, design, plan, models,
                     writer_bank=bank, public_record=source.public_context if arm == "public_record" else None,
                     public_context_sha256=source.public_context_sha256 if arm not in {"no_memory", "empty_preload"} else None,
                     written_arms=written_arms, delivery=delivery_arms.get(arm),
-                    expected_split=design["source"].get("split", "train"))
+                    expected_split=design.get("target", design["source"]).get("split", "train"),
+                    source_task_id=row.get("source_task_id") if bank else None)
             if result["run_id"] != row["run_id"]:
                 raise ContractError("Run differs from preallocated identity")
             result["log_sha256"] = digest(journal.path.read_bytes())

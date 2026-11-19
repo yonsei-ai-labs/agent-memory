@@ -10,12 +10,58 @@ from unittest.mock import patch
 from agent_memory_eval.contracts.core import canonical, digest, read_json
 from agent_memory_eval.contracts.validation import ROOT
 from agent_memory_eval.models.openrouter import OpenRouterClient
-from agent_memory_eval.recording.journal import read_experiment
-from scripts.run_frozen_bank_repeats import PROFILE, prepare, run_shard, schedule, shard_name
+from agent_memory_eval.recording.journal import BlobStore, read_experiment
+from scripts.run_frozen_bank_repeats import PROFILE, prepare, prepare_transfer, run_shard, schedule, shard_name
 from test_forms_solve import NativeHTTP
 
 
 class FrozenBankRepeatTests(unittest.TestCase):
+    def test_transfer_uses_original_bank_and_heldout_native_task_on_both_role_wires(self):
+        workspace = Path(os.environ.get('FIXED_BANK_QA_WORKSPACE', ROOT))
+        if not (workspace / 'runs/tau2-fixed-bank-repeats-01/completion.json').exists():
+            self.skipTest('Requires the archived source and the sealed repeat experiment')
+        manifest, state = prepare_transfer(workspace)
+        models = read_json((state['parent'] / 'control.json').read_bytes())['model_catalog_entries']
+        original = OpenRouterClient.__init__
+        http = NativeHTTP()
+        def transport(request, timeout):
+            wire = json.loads(request.data)
+            if wire['model'].startswith('deepseek/') and len(wire['messages']) == 2:
+                http.by_role['user_simulator'].clear()
+            return http(request, timeout)
+        def inject(client, *args, **kwargs):
+            original(client, *args, **kwargs, opener=transport)
+        with TemporaryDirectory() as tmp, patch.object(OpenRouterClient, '__init__', inject), \
+             patch.dict(os.environ, OPENROUTER_API_KEY='local-test'), patch('socket.socket.connect', side_effect=AssertionError):
+            for target, source, customer in [('26','0','amelia_sanchez_4739'), ('18','17','omar_davis_3817')]:
+                key = shard_name(target, 1)
+                self.assertEqual(len(manifest['scheduled'][key]), 12)
+                manifest['scheduled'][key] = [r for r in manifest['scheduled'][key] if r['repetition'] == 1
+                                              and r['arm'] in {'lesson','no_memory','empty_preload'}]
+                run_shard(Path(tmp), manifest, state, {'implementation_commit':'test'}, models, target, 1)
+                shard = Path(tmp) / key
+                rows = read_json((shard / 'allocations.json').read_bytes())
+                self.assertEqual(len(rows), 3)
+                for row, wire in zip(rows, http.by_role['worker'][-3:], strict=True):
+                    episode = shard / row['directory']
+                    scan, journal, _ = read_experiment(episode)
+                    blobs = BlobStore(episode)
+                    assignment = journal['assignments'][row['run_id']]
+                    self.assertEqual(assignment['task_id'], target)
+                    self.assertEqual(blobs.get(assignment['native_config_ref'])['task_split_name'], 'test')
+                    self.assertEqual(row['result']['grading_status'], 'graded')
+                    simulator = [blobs.get(e['payload']['request_ref']) for e in scan['events'].values()
+                                 if e['type'] == 'model.request_started' and e['payload']['actor_role'] == 'user_simulator']
+                    self.assertIn(customer, canonical(simulator[0]['messages']).decode())
+                    if row['arm'] == 'lesson':
+                        bank = next(b for b in manifest['banks'] if (b['task'],b['writer'],b['arm']) == (source,1,'lesson'))
+                        self.assertEqual(assignment['source_task_id'], source)
+                        self.assertEqual(assignment['source_writer_run_id'], bank['run'])
+                        self.assertEqual(digest(canonical(json.loads(wire['messages'][1]['content'])['items'])), bank['items_sha256'])
+                    else:
+                        self.assertNotIn('source_task_id', assignment)
+                        self.assertIsNone(assignment['source_writer_run_id'])
+
     def test_each_writer_and_seed_share_a_fresh_pair_of_controls(self):
         cfg = read_json((ROOT / PROFILE).read_bytes())
         for task in cfg['tasks']:

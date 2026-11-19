@@ -23,20 +23,22 @@ from agent_memory_eval.runner.tau2_baseline import native_config
 FORMAT = "agent-memory-new-customer-design/v1"
 
 
+def scenario_customer(task, db):
+    text = canonical(task["user_scenario"]).decode()
+    ids = {u for u in db["users"] if u in text}
+    ids.update(v["user_id"] for k, v in db["reservations"].items() if k in text)
+    if len(ids) != 1:
+        raise ContractError("Customer must resolve uniquely from the scenario: " + task["id"])
+    return ids.pop()
+
+
 def eligible_customers(config, tasks, splits, db):
-    def customer(task):
-        text = canonical(task["user_scenario"]).decode()
-        ids = {u for u in db["users"] if u in text}
-        ids.update(v["user_id"] for k, v in db["reservations"].items() if k in text)
-        if len(ids) != 1:
-            raise ContractError("Customer must resolve uniquely from the scenario: " + task["id"])
-        return ids.pop()
-    prior = {customer(tasks[t]) for t in splits["train"]}
+    prior = {scenario_customer(tasks[t], db) for t in splits["train"]}
     groups = {}
     for tid in splits[config["split"]]:
         t = tasks[tid]
         criteria = t["evaluation_criteria"]
-        identity = customer(t)
+        identity = scenario_customer(t, db)
         if (identity not in prior and criteria["reward_basis"] == ["DB", "COMMUNICATE"]
                 and not criteria["communicate_info"] and any(a["name"] in config["write_tools"] for a in criteria["actions"])):
             groups[tid] = "customer-" + digest(identity.encode())[:12]

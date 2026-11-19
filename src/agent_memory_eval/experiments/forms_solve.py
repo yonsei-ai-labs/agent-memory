@@ -205,7 +205,7 @@ def _usage(journal, run_id):
 
 def run_forms_solve(journal, *, arm, task_id, repetition, run_id, connection, prepared, guard, limits,
                     instruction, writer_bank=None, public_record=None, public_context_sha256=None, opener=None, clients=None,
-                    written_arms=WRITTEN_ARMS, delivery=None, expected_split="train"):
+                    written_arms=WRITTEN_ARMS, delivery=None, expected_split="train", source_task_id=None):
     """Run one assigned episode in a new per-job journal with a batch guard and verified input.
 
     The caller verifies a writer bank against its sealed journal and supplies the cohort's public hash.
@@ -221,7 +221,10 @@ def run_forms_solve(journal, *, arm, task_id, repetition, run_id, connection, pr
     if delivery is not None and (delivery["read_mode"] not in {"preload", "on_demand"} or arm in {"no_memory", "empty_preload"}):
         raise ContractError("A frozen-bank delivery must declare its writer and read policy")
     writer_condition = delivery["writer"] if delivery else arm
-    items, revision = _bank_input(writer_condition, task_id, repetition, writer_bank, public_record, public_context_sha256,
+    if source_task_id is not None and (not isinstance(source_task_id, str) or not source_task_id
+            or source_task_id == task_id or writer_bank is None):
+        raise ContractError("Cross-task delivery needs a distinct declared source and its sealed writer bank")
+    items, revision = _bank_input(writer_condition, source_task_id or task_id, repetition, writer_bank, public_record, public_context_sha256,
                                   written_arms=written_arms)
     execution = ExecutionLimits(**{k: limits[k] for k in (
         "worker_requests", "user_simulator_requests", "writer_requests", "max_input_bytes")})
@@ -263,6 +266,8 @@ def run_forms_solve(journal, *, arm, task_id, repetition, run_id, connection, pr
         source_writer_run_id=writer_bank["run_id"] if writer_bank else None,
         source_writer_bank_sha256=digest(canonical(writer_bank)) if writer_bank else None,
         input_items_sha256=digest(canonical(items)) if policy.enabled else None)
+    if source_task_id is not None:
+        state["assignments"][run_id]["source_task_id"] = source_task_id
     if delivery:
         state["assignments"][run_id]["fixed_bank_delivery"] = dict(delivery)
     journal.append([ctx.at("prepare").event("run.started", dict(bank_id=bank, start_snapshot_id=parent,
