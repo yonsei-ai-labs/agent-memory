@@ -26,6 +26,7 @@ from agent_memory_eval.runner.tau2_baseline import batch_stop, build_baseline_or
 FORMS = ("fact", "episode", "lesson", "procedure")
 DESIGN = "protocols/drafts/tau2-two-pass-memory-forms-v1.json"
 RETAIL_RECHECK = "agent-memory-retail-recheck-design/v1"
+RETAIL_FULL = "agent-memory-retail-full-design/v1"
 
 
 def ordered_jobs(design):
@@ -127,7 +128,7 @@ def solve_connection(connection, design, row, cap):
         cfg["benchmark"]["split"] = design["target"]["split"]
     elif design.get("format") == "agent-memory-new-customer-design/v1":
         cfg["benchmark"]["split"] = design["source"]["split"]
-    elif design.get("format") == RETAIL_RECHECK:
+    elif design.get("format") in (RETAIL_RECHECK, RETAIL_FULL):
         if design["source"]["domain"] != "retail":
             raise ContractError("The retail recheck design requires the retail domain")
         cfg["benchmark"].update(domain="retail", split=design["source"]["split"])
@@ -330,7 +331,8 @@ def execute_prepared(profile, root, destination, identity, design, plan, models,
                     written_arms=written_arms, delivery=delivery_arms.get(arm) or design.get("delivery_controls", {}).get(arm),
                     expected_split=design.get("target", design["source"]).get("split", "train"),
                     source_task_id=row.get("source_task_id") if bank else None,
-                    expected_domain="retail" if design.get("format") == RETAIL_RECHECK else "airline")
+                    expected_domain="retail" if design.get("format") in (RETAIL_RECHECK, RETAIL_FULL) else "airline",
+                    native_grader=plan.get("grader"))
             if result["run_id"] != row["run_id"]:
                 raise ContractError("Run differs from preallocated identity")
             result["log_sha256"] = digest(journal.path.read_bytes())

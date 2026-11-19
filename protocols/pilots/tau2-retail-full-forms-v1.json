@@ -1,0 +1,111 @@
+{
+  "format": "agent-memory-full-retail-study/v1",
+  "name": "tau2-retail-full-forms-01",
+  "status": "ready",
+  "domain": "retail",
+  "benchmark_revision": "c06b07dd7c4d4ec61ba6ff9bcdf0b15dd7ef36d4",
+  "assets": {
+    "data/tau2/domains/retail/db.json": "413a65160adbdb5fde0ffc0015c49b6d70250b10c18128de169b597af7766765",
+    "data/tau2/domains/retail/tasks.json": "8e03ebce7901bd6218e7a7dc3105faa9324091a68058f7fe61c65262868812e8",
+    "data/tau2/domains/retail/split_tasks.json": "ed0580ec52575b63fbf76568af42490da6ee7783ecb4aa81af46961291358f20",
+    "data/tau2/domains/retail/policy.md": "2c9652afbce57d6e087768d37cda64d31c53d50b3e3225cfdb791bac66466467",
+    "src/tau2/domains/retail/tools.py": "d0a9afdd44dbb1e7b1b4d19e0acf8ba9e3c99db78f775383a4b63fe5b0ccf52a",
+    "src/tau2/evaluator/evaluator.py": "adc929736ee3d75186fcd5c7cf5d5a4036814a9b73a845f7a513b39a44e9bc93",
+    "src/tau2/evaluator/evaluator_nl_assertions.py": "6b81675f7567cd132a47bd7ed863350238a65a9abfc2fb9546c619e95a6d1d97",
+    "src/tau2/config.py": "f744ad4db4ef0126823727e223ac24b212924bad02fd3b415f6acd971173eea5",
+    "src/tau2/runner/simulation.py": "a13e1dbe225d245f82d240b41db989778184cb9d6ca36f3912c20ca69bf409e9",
+    "src/tau2/evaluator/evaluator_communicate.py": "74a530df5568e14619c649d107910e5b527097108f0f339a01800cf8b20d7150",
+    "src/tau2/evaluator/evaluator_env.py": "e883703cb57120ac193af7b6cf2c7e1d1394db80591600824275a54ec0114989"
+  },
+  "base_design": {
+    "path": "protocols/drafts/tau2-two-pass-memory-forms-v1.json",
+    "sha256": "d4b06f72f4bcf5f656587e80645e042e7cf77e687cd5d1c38a20e2aff2cc373a"
+  },
+  "endpoints": {
+    "path": "artifacts/pilots/20261118-two-pass-forms-endpoints.json",
+    "sha256": "9b5bd1d9898ede15030b062fa81e451875fee0adff31d3a279d974a74435a872"
+  },
+  "prior_protocol": {
+    "path": "protocols/pilots/tau2-retail-recheck-two-rounds-v1.json",
+    "sha256": "891cd0067a7190ff344494087e7a595e393e63e6356d4dcf453c454b3a314461"
+  },
+  "split": "test",
+  "task_binding": "official default English task pack, check criteria and reference actions against canonical retail table",
+  "forms": [
+    "fact",
+    "episode",
+    "lesson",
+    "procedure"
+  ],
+  "conditions": [
+    "original"
+  ],
+  "controls": [
+    "no_memory",
+    "empty_preload"
+  ],
+  "delivery": "preload",
+  "source_seed": 10,
+  "writer_seed": 11,
+  "solver_seeds": [
+    12
+  ],
+  "worker": "openai/gpt-6-luna",
+  "simulator": "deepseek/deepseek-v4.1-flash-1017",
+  "stages": [
+    "source",
+    "write",
+    "solve1"
+  ],
+  "judge": {
+    "native_model": "gpt-5.4-mini-2026-03-17",
+    "model": "openai/gpt-5.4-mini",
+    "canonical_slug": "openai/gpt-5.4-mini-20260317",
+    "route": {
+      "only": [
+        "openai"
+      ],
+      "allow_fallbacks": false,
+      "require_parameters": true
+    },
+    "parameters": {
+      "reasoning": {
+        "effort": "low"
+      },
+      "max_completion_tokens": 4096
+    },
+    "max_input_bytes": 256000,
+    "method": "native ALL and native prompts. One grader-only completion for all active assertions of a normally terminated episode. Require a complete bijection of the declared assertions and boolean judgments. Replay recorded answers, with no new grading calls."
+  },
+  "guards": {
+    "source": {
+      "max_calls": 210,
+      "max_seconds": 1500
+    },
+    "write": {
+      "max_calls": 20,
+      "max_seconds": 1800
+    },
+    "solve1": {
+      "max_calls": 1250,
+      "max_seconds": 5400
+    }
+  },
+  "total_usd_limit": 5,
+  "max_concurrent": 10,
+  "http_timeout_seconds": 150,
+  "unpriced_http": {
+    "codes": [
+      429,
+      502,
+      503,
+      504
+    ],
+    "maximum_per_stage": 3
+  },
+  "budget": "Before each wave divide remaining $5 equally among active task shards, rounding down to microdollars. Deduct actual costs and conservatively held charges. An unpriced call not covered by the documented HTTP receipt policy holds its whole shard grant. Do not retry an attempted assignment.",
+  "assignment": "All 40 official retail test tasks, 40 fresh no-memory sources, 160 original optional writers, 240 fresh solves with same task, reset DB, four original forms and two controls. Prior test task and any of the twelve prior customers flagged. Shared controls, no independent replicate per cell. No simulator seed. Source projection excludes reference grade and evaluator input.",
+  "missing": "A normally finished source with a saved before-grade trajectory remains eligible for writing if its official grade is unavailable. Incomplete sources prevent dependent writers. Missing writers prevent only their dependent solves. Both controls remain eligible. Native limits and ungraded calls are distinct. No outcome-based replacement.",
+  "primary": "By form, count first-pass failure recoveries and first-pass success losses; compare each against the paired fresh no-memory run, and against empty preload. Include both directions, all denominators and missing cells. Report task-weighted and customer-weighted differences separately, plus exact prior task vs new task and previously observed vs novel customers. Analyze shared controls once per task and avoid treating them as independent repeats.",
+  "behavior": "Preserve full trajectory, exact exposed bank, read order, mutation arguments, official DB and individual NL checks, and cost/usage by role. Select divergent examples with trace evidence across workflows, with no inference that note text alone caused a choice."
+}

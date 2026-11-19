@@ -1,6 +1,7 @@
 """One fresh, fully native τ² episode using a forms-study allocation's sealed bank."""
 
 from collections import Counter
+from contextlib import nullcontext
 from copy import copy, deepcopy
 from dataclasses import asdict
 from decimal import Decimal
@@ -17,7 +18,7 @@ from agent_memory_eval.memory.context import memory_system_suffix, past_memory_i
 from agent_memory_eval.memory.imports import install_snapshot
 from agent_memory_eval.memory.preparation import SnapshotBudgetExceeded
 from agent_memory_eval.memory.service import MemoryService
-from agent_memory_eval.models.openrouter import ProviderError
+from agent_memory_eval.models.openrouter import OpenRouterClient, ProviderError
 from agent_memory_eval.recording.experience import public_text_message
 from agent_memory_eval.runner.tau2_baseline import native_config
 from agent_memory_eval.runner.tau2_memory import fresh_orchestrator
@@ -132,13 +133,15 @@ def model_free_basis(domain, criteria):
             and not criteria.nl_assertions and not criteria.communicate_info)
 
 
-def _prepared_for_job(connection, prepared, limits, task_id, expected_split="train", expected_domain="airline"):
+def _prepared_for_job(connection, prepared, limits, task_id, expected_split="train", expected_domain="airline", full_retail=False):
     template, native, models, _ = prepared
     bench = connection["benchmark"]
     criteria = template.task.evaluation_criteria
+    basis_ok = (expected_domain == "retail" and expected_split == "test" and criteria is not None
+                and set(criteria.reward_basis) in ({"DB"}, {"DB", "NL_ASSERTION"})) if full_retail else model_free_basis(expected_domain, criteria)
     if (expected_split not in {"train", "test"} or (bench["domain"], bench["split"], bench["source_revision"], bench["communicate_scorer"])
             != (expected_domain, expected_split, PIN, "substring")
-            or not model_free_basis(expected_domain, criteria)
+            or not basis_ok
             or bench["task_id"] != task_id or template.task.id != task_id or native != native_config(connection)
             or (native.max_steps, native.max_errors, native.timeout) != (
                 limits["native_steps"], limits["native_errors"], limits["episode_seconds"])
@@ -160,7 +163,10 @@ def _usage(journal, run_id):
     starts, fields = {}, {}
     by_role, by_delivery = {}, Counter()
     normal_response_spans = 0
-    for role in ROLES:
+    roles = list(ROLES)
+    if any(e["type"] == "model.request_started" and e["payload"]["actor_role"] == "grader" for e in journal.events.values()):
+        roles.append("grader")
+    for role in roles:
         by_role[role] = dict(requests=0, http_attempts=0, responses=0, input_bytes=0, input_bytes_by_delivery=Counter(),
                              reported_prompt_tokens=0, reported_completion_tokens=0, reported_tokens=0,
                              unknown_token_requests=0, reported_cost_usd_decimal=Decimal(0), unknown_cost_requests=0)
@@ -216,7 +222,7 @@ def _usage(journal, run_id):
 def run_forms_solve(journal, *, arm, task_id, repetition, run_id, connection, prepared, guard, limits,
                     instruction, writer_bank=None, public_record=None, public_context_sha256=None, opener=None, clients=None,
                     written_arms=WRITTEN_ARMS, delivery=None, expected_split="train", source_task_id=None,
-                    expected_domain="airline"):
+                    expected_domain="airline", native_grader=None):
     """Run one assigned episode in a new per-job journal with a batch guard and verified input.
 
     The caller verifies a writer bank against its sealed journal and supplies the cohort's public hash.
@@ -228,7 +234,7 @@ def run_forms_solve(journal, *, arm, task_id, repetition, run_id, connection, pr
         raise ContractError("Missing solve allocation identity")
     if not isinstance(instruction, str) or (instruction != "" if arm == "no_memory" else not instruction.strip()):
         raise ContractError("Memory arms require the common instruction and pure no-memory requires none")
-    _prepared_for_job(connection, prepared, limits, task_id, expected_split, expected_domain)
+    _prepared_for_job(connection, prepared, limits, task_id, expected_split, expected_domain, native_grader is not None)
     if delivery is not None and (delivery["read_mode"] not in {"preload", "on_demand"} or arm == "no_memory"
             or arm == "empty_preload" and delivery != {"writer": "empty_preload", "read_mode": "preload"}):
         raise ContractError("A frozen-bank delivery must declare its writer and read policy")
@@ -278,6 +284,10 @@ def run_forms_solve(journal, *, arm, task_id, repetition, run_id, connection, pr
         source_writer_run_id=writer_bank["run_id"] if writer_bank else None,
         source_writer_bank_sha256=digest(canonical(writer_bank)) if writer_bank else None,
         input_items_sha256=digest(canonical(items)) if policy.enabled else None)
+    if native_grader is not None:
+        cfg, mdl = native_grader
+        state["assignments"][run_id]["native_grade_limits"] = dict(contract="native-grader-limits/v1",
+            requests=1, input_bytes=cfg["max_input_bytes"], config_ref=journal.blobs.put(cfg), model_ref=journal.blobs.put(mdl))
     if source_task_id is not None:
         state["assignments"][run_id]["source_task_id"] = source_task_id
     if delivery:
@@ -287,6 +297,7 @@ def run_forms_solve(journal, *, arm, task_id, repetition, run_id, connection, pr
         task_ref=journal.blobs.put(dict(role="system", content=prepared[0].agent.system_prompt))))], state=state)
     score = report_ref = raw_report_ref = raw_reward = error_code = None
     orch = partial_ref = end_snapshot = assessment_ref = None
+    native_calls = {}
     termination, grading = "runtime_error", "incomplete"
     try:
         if bank_sizes and any(size > getattr(policy, "max_" + key) for key, size in bank_sizes.items()):
@@ -312,7 +323,14 @@ def run_forms_solve(journal, *, arm, task_id, repetition, run_id, connection, pr
         elif policy.enabled:
             bridge.prepare_preload(memory, bank, policy, instruction)
         from tau2.runner.simulation import run_simulation
-        with bridge:
+        grade_context = nullcontext()
+        if native_grader is not None:
+            from agent_memory_eval.adapters.retail_grader import native_grade_transport
+            judge_config, judge_model = native_grader
+            judge_client = OpenRouterClient(judge_model, guard, route=judge_config["route"],
+                max_input_bytes=judge_config["max_input_bytes"], timeout_seconds=judge_config["timeout_seconds"])
+            grade_context = native_grade_transport(journal, ctx, orch.task, native_grader, judge_client, native_calls)
+        with bridge, grade_context:
             result = run_simulation(orch, communicate_scoring=prepared[1].communicate_scoring)
         raw_report_ref = journal.blobs.put(result.model_dump(mode="json"))
         termination, raw_reward = result.termination_reason.value, result.reward_info.reward
@@ -342,6 +360,7 @@ def run_forms_solve(journal, *, arm, task_id, repetition, run_id, connection, pr
     native_state = dict(termination_reason=termination, native_steps=native_steps, native_tool_errors=native_errors,
                         final_db_hash=final_db_hash, native_report_ref=raw_report_ref, native_reward=raw_reward,
                         partial_trajectory_ref=partial_ref, reached_state_assessment_ref=assessment_ref, error_code=error_code)
+    native_state.update(native_calls)
     journal.append([ctx.at("grade").event("business.transition", dict(origin="forms.native_result", **native_state)),
                     ctx.at("grade").event("outcome.scored", dict(grading_status=grading, official_success=success,
                     official_score=score, official_artifact_ref=report_ref))])

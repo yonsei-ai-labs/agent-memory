@@ -85,10 +85,19 @@ def audit_requests(root, *, evidence=None):
             payload = event["payload"]
             actor = payload["actor_role"]
             counts[actor] += 1
-            if counts[actor] > limits.cap(actor):
+            native_grade = config.get("native_grade_limits") if actor == "grader" else None
+            if native_grade is not None:
+                if native_grade.get("contract") != "native-grader-limits/v1" or native_grade.get("requests") != 1:
+                    raise ContractError("Invalid native grader limits")
+                cap, byte_limit = 1, blobs.get(native_grade["config_ref"])["max_input_bytes"]
+                if native_grade["input_bytes"] != byte_limit:
+                    raise ContractError("Native grader input cap differs from its configuration")
+            else:
+                cap, byte_limit = limits.cap(actor), limits.max_input_bytes
+            if counts[actor] > cap:
                 raise ContractError("Requests exceeded the declared role limit")
             size = len(canonical(blobs.get(payload["request_ref"])))
-            if size > limits.max_input_bytes:
+            if size > byte_limit:
                 finish = deliveries[payload["request_id"]]
                 if (finish["status"] != "error" or finish["delivery_status"] != "not_submitted"
                         or finish["response_ref"] is not None or finish["cost_status"] != "not_applicable"):

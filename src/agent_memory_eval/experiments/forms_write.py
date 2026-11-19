@@ -26,7 +26,7 @@ class FormSource:
     public_context: str
     public_context_sha256: str
     public_context_bytes: int
-    official_success: bool  # For analysis only, never installed in a writer journal.
+    official_success: bool | None  # For analysis only, never installed in a writer journal.
 
 
 def _project_context(wire, response):
