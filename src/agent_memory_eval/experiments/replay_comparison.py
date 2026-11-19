@@ -32,9 +32,39 @@ class ReplayStudy:
     schedule: Callable
     classify: Callable
     block_field: str = "repeat"
+    stage_by_block: bool = False
+
+
+def block_cells(cells, rows):
+    selected = {}
+    for row in rows:
+        selected.setdefault(row["case"], {})[row["arm"]] = cells[row["case"]][row["arm"]]
+    return selected
+
+
+def isolated_preflight(workspace, profile, study):
+    """Use the same journal boundaries planned for live treatment versions with matched public identities."""
+    slots = study.schedule(profile)
+    cells, evidence, wires = {}, {}, {}
+    for block in dict.fromkeys(r[study.block_field] for r in slots):
+        rows = [r for r in slots if r[study.block_field] == block]
+        with TemporaryDirectory() as directory, Journal(Path(directory), "block_preflight", contract_version="1.2") as journal:
+            inputs = study.stage(journal, workspace, profile, rows)
+        keys = {(r["case"], r["arm"]) for r in rows}
+        if (keys != inputs["wires"].keys() or inputs["cells"] != block_cells(inputs["cells"], rows)
+                or inputs["evidence"].keys() != {r["arm"] for r in rows}):
+            raise ContractError("Isolated preflight does not cover its assigned cells and evidence")
+        for case, arm in sorted(keys):
+            cell, source = inputs["cells"][case][arm], inputs["evidence"][arm]
+            if (cells.setdefault(case, {}).setdefault(arm, cell) != cell or evidence.setdefault(arm, source) != source
+                    or wires.setdefault((case, arm), inputs["wires"][case, arm]) != inputs["wires"][case, arm]):
+                raise ContractError("Repeated treatment changed across isolated journals")
+    return dict(cells=cells, first_pass_evidence=evidence, slots=slots), wires
 
 
 def preflight(workspace, profile, study):
+    if study.stage_by_block:
+        return isolated_preflight(workspace, profile, study)
     with TemporaryDirectory() as directory, Journal(Path(directory), "calibration_preflight", contract_version="1.2") as journal:
         inputs = study.stage(journal, workspace, profile)
         return dict(cells=inputs["cells"], first_pass_evidence=inputs["evidence"],
@@ -91,10 +121,17 @@ def live(workspace, profile, study):
             break
         folder = destination / f"{study.block_field}-{block:02d}"
         with Journal(folder, f"{study.key}_{block}", contract_version="1.2") as journal:
-            inputs = study.stage(journal, workspace, profile)
-            if inputs["cells"] != validated["cells"] or inputs["evidence"] != validated["first_pass_evidence"]:
+            planned = [r for r in ledger if r[study.block_field] == block]
+            cells, evidence = validated["cells"], validated["first_pass_evidence"]
+            if study.stage_by_block:
+                inputs = study.stage(journal, workspace, profile, planned)
+                cells = block_cells(cells, planned)
+                evidence = {r["arm"]: evidence[r["arm"]] for r in planned}
+            else:
+                inputs = study.stage(journal, workspace, profile)
+            if inputs["cells"] != cells or inputs["evidence"] != evidence:
                 raise ContractError("Materialized evidence or requests differ from preflight")
-            for row in (r for r in ledger if r[study.block_field] == block):
+            for row in planned:
                 if time.monotonic() >= guard.deadline:
                     stop = "time_limit"
                     break

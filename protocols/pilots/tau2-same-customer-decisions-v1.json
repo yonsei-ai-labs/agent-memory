@@ -1,0 +1,145 @@
+{
+  "format": "agent-memory-same-customer-decisions/v1",
+  "status": "ready",
+  "study": "tau2-same-customer-decisions-01",
+  "model": "openai/gpt-6-luna",
+  "canonical_slug": "openai/gpt-6-luna-20260922",
+  "inventory_ref": {
+    "path": "artifacts/analyses/20261119-frozen-bank-preflight.json",
+    "sha256": "898da02d03f118991c6f5fb2850d38f42fc90a20b5ee81bc17acc1830866fa26"
+  },
+  "native_ref": {
+    "path": "protocols/pilots/tau2-same-customer-transfer-v1.json",
+    "sha256": "1b0a1b55d7af71650aaaff97049d8ba4a5aa4a48181138ff8c1a441f13aed390"
+  },
+  "native": {
+    "writer_repetitions": [
+      1,
+      2
+    ]
+  },
+  "instruction_ref": {
+    "path": "protocols/instructions/frozen-memory-replay-v1.txt",
+    "sha256": "cd5d4dede32681b19eaa7eb1919d59b9a08ae2732170afba22cba35ab1d245e4"
+  },
+  "instruction": "Use the available past notes only when they apply to the current policy and conversation. The notes can be empty. Continue the current task using the normal business tools.\n",
+  "repetitions": 2,
+  "max_input_bytes": 64000,
+  "max_usd": 1.5,
+  "max_seconds": 2700,
+  "timeout_seconds": 150,
+  "unpriced_http": [
+    429,
+    502,
+    503,
+    504
+  ],
+  "anchors": {
+    "17": {
+      "target": "22",
+      "path": "runs/tau2-fixed-bank-repeats-01/task-17-wave-1/jobs/0003",
+      "run_id": "r_d0b8993a05614d0ab02d192d05a01936",
+      "log_sha256": "b6e56187ee1113723cdf95ae04379a675626330af378f60e8698648719e632e2",
+      "opening": {
+        "request_id": "request_0ffcf20f2112451b9aae3ad161a8d8b2",
+        "wire_sha256": "4ce266444aa3cc1d49dcb52b3b47696961fe66b8295a34385b966312776ba151"
+      },
+      "profile": {
+        "request_id": "request_0a0d511083824544970d52b86c091471",
+        "wire_sha256": "3bfabaf80f7f69630296821af44c58757bf2a7f3386ab8fb5dcdfda7289ef322"
+      },
+      "customer": "omar_rossi_1241",
+      "candidates": [
+        "UM3OG5",
+        "5RJ7UH",
+        "FQ8APE",
+        "QKRY03"
+      ],
+      "past_id": "FQ8APE",
+      "route": [
+        "EWR",
+        "ORD"
+      ],
+      "bound": "item three",
+      "unbound": "not stated",
+      "source_excerpt": "No cabin change was attempted, and no upgraded fare/price difference was checked or established.",
+      "first_public_report": {
+        "path": "runs/tau2-baseline-luna-deepseek1017-train-01/blobs/sha256/f3d0db91f0f8277119abc8b910b2525bd0c3bee43794423fee70794414cad8dd",
+        "sha256": "f3d0db91f0f8277119abc8b910b2525bd0c3bee43794423fee70794414cad8dd"
+      },
+      "first_run_id": "r_d952bf758eb843d6b7fdafdc0747a06a"
+    },
+    "3": {
+      "target": "48",
+      "path": "runs/tau2-fixed-bank-repeats-01/task-03-wave-1/jobs/0003",
+      "run_id": "r_8552e328c6674a9c85be2d8c0d896c38",
+      "log_sha256": "0ea3539d4335754ad32420e76a4a53e5e7650b01c0cc8e20356cee7fb268edaf",
+      "opening": {
+        "request_id": "request_1909a9b1152a48fab7ff71970ad91140",
+        "wire_sha256": "a5200a43059f6865607bfa2ab68bf39bba7f69b71d3ad5889029535fe699a35f"
+      },
+      "profile": {
+        "request_id": "request_7754fa25083c4c59acbc3d59d5ce3ae0",
+        "wire_sha256": "a7f048a40e2168bce886b30e318fc84e5e654b5db9695c29e5c40cb526bec165"
+      },
+      "customer": "anya_garcia_5901",
+      "candidates": [
+        "82K959",
+        "790JYN",
+        "BE2L57",
+        "CXBB4L",
+        "TAMSDK",
+        "3RK2T9",
+        "VAOW1B",
+        "Q4MCUF",
+        "JMO1MG"
+      ],
+      "past_id": "JMO1MG",
+      "route": [
+        "DEN",
+        "MIA"
+      ],
+      "bound": "item nine",
+      "unbound": "not given",
+      "source_excerpt": "Policy supplied in that interaction gives Silver economy allowance of 2 checked bags per passenger, so 4 free bags across two passengers.",
+      "first_public_report": {
+        "path": "runs/tau2-baseline-luna-deepseek1017-train-01/blobs/sha256/97cc8e8b96c87f8a9bb35c0276bac62674c08ef8a039652dacfac328ca7836df",
+        "sha256": "97cc8e8b96c87f8a9bb35c0276bac62674c08ef8a039652dacfac328ca7836df"
+      },
+      "first_run_id": "r_7f459d17202d4588baf079e5f4a091f5"
+    }
+  },
+  "cases": {
+    "same_unspecified": {
+      "source": "17",
+      "target": "22",
+      "current_id": "FQ8APE",
+      "requires": "direct",
+      "text": "My user ID is omar_rossi_1241. On the same New York to Chicago trip I contacted you about before, I'd like to change the passenger, upgrade to economy, and have three checked bags. Please look up that booking first. I haven't approved any changes yet."
+    },
+    "same_explicit": {
+      "source": "17",
+      "target": "22",
+      "current_id": "FQ8APE",
+      "requires": "direct",
+      "text": "My user ID is omar_rossi_1241. On the same New York to Chicago trip I contacted you about before, I'd like to change the passenger, upgrade to economy, and have three checked bags. The booking reference is FQ8APE. Please look up that booking first. I haven't approved any changes yet."
+    },
+    "different_unspecified": {
+      "source": "3",
+      "target": "48",
+      "current_id": "3RK2T9",
+      "requires": "ask",
+      "text": "My user ID is anya_garcia_5901. I want to ask about cancelling a different reservation from the one whose baggage allowance we discussed. Could you check whether a full refund is possible? Please don't cancel anything yet."
+    },
+    "different_explicit": {
+      "source": "3",
+      "target": "48",
+      "current_id": "3RK2T9",
+      "requires": "direct",
+      "text": "My user ID is anya_garcia_5901. I want to ask about cancelling a different reservation from the one whose baggage allowance we discussed. The booking reference is 3RK2T9. Could you check whether a full refund is possible? Please don't cancel anything yet."
+    }
+  },
+  "treatments": "Per case use eight original writers, two matched empty snapshots, and two analyst-edited notes consisting of one identical original fact-writer excerpt and one historical relationship line. The twins have identical visible IDs, version, neutral title, candidate order, route and byte length. Only the final pointer changes. Import twins into disjoint immutable journals; alternate which one is sent first across repeats. Native workers receive only original notes or controls.",
+  "assessment": "Freeze the check immediately after a shared real customer-profile lookup. Direct is exactly one valid get_reservation_details for the requested ID. For the undisclosed different trip, a reply asking for the current booking reference or discriminating itinerary details before other calls is primary. Manually review distinct text without arm/outcome. Log business reads proposed, target coverage, stale old read, outsider, any write and mixed text, plus missing. For the ambiguous different trip, inclusion of the hidden target is descriptive only. No proposed action is dispatched. Controlled decision and full native results have separate estimands.",
+  "ordering": "Two repeats of identical native worker seed 4. Randomized hash order of customer cases, bank arms and matching blocks; each of two six-condition blocks includes one controlled twin. Reverse twin and block order within case on repeat two. Keep empty writer assignment. Budget combined with native at most $3.50."
+}
