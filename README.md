@@ -4,17 +4,21 @@
 
 초기 작업자 모델은 Luna, 초기 실증 환경은 τ²-bench다. 기억 관리·실험 제어·기록·분석을 벤치 실행과 분리하고 AppWorld·BFCL로의 확장을 설계한다. 저장 시점·형태·조회 방식, 재시도·전이·누적 변화와 이득·손해를 연구 범위로 유지한다.
 
+2026년 11월 19일에는 τ² 소매 주문에서 **1회차 경험을 어떻게 쓰느냐가 2회차 성패를 바꾸는지** 개발·확인 두 라운드로 비교했다. 새 고객 6명씩이 각자 자기 과제를 다시 수행했다. 네 기억 형식에 재확인 지침을 더하자 확인 조건을 명시한 기억은 개발 10/24→23/24, 확인 13/24→24/24였다. 2회차 공식 성공은 각각 28/48→23/48, 37/48→35/48이었다. [두 라운드 보고서](docs/reports/20261119-retail-recheck-two-rounds.md) · [형식·업무·고객별 결과](artifacts/analyses/20261119-retail-recheck-two-round-results.json)
+
+같은 기억을 여러 번 썼을 때의 득실, 새로운 고객에게 옮겼을 때의 득실, 각 사례가 실제로 갈린 행동은 다음 자료에서 볼 수 있다. [고정 기억으로 반복한 상담](docs/reports/20261119-fixed-bank-repeats.md) · [다른 고객으로의 전이](docs/reports/20261119-bank-transfer.md) · [공유 분석과 로컬 원본 위치](docs/reports/local-evidence.md)
+
 현재는 **파일 기반 기억 서비스·기록자·입력 구성·도구 라우터·가짜 두 회차 실행과 원본 재계산**이 동작한다. [오프라인 코어 안내](docs/development/offline-core.md)에 실행 방법과 행동 검증을 정리했다. [OpenRouter·Luna·τ² 연결](docs/development/tau2-connection.md), [native 기억 두 회차](docs/development/tau2-memory.md)와 [무기억·빈은행·고정 은행의 자율 조회 파일럿](docs/development/tau2-autonomy-pilot.md)을 구현했다. 일반 연구 계획 실행과 정책 효과 실증은 [후속 작업](docs/development/roadmap.md)이다.
 
 [고정 은행 전달 비교](docs/development/tau2-delivery.md)는 본문 시작 제공과 자율 조회를 여러 과제·조건·반복에 배정한다. [실제 48회 개발 결과](docs/reports/20261114-tau2-delivery-development-results.md)에서 본문 전달·미조회·필요한 수정 실패를 확인했다. 고정 은행 1개·세 train 과제의 관측이며 일반 정책 효과는 미확정이다. [보고서와 다음 2주 계획](docs/reports/20261114-progress-and-two-week-plan.md)을 함께 본다.
 
-최신 [결정 지점 120요청 결과](docs/reports/20261116-decision-replay-results.md)는 원본 요청·medium·연구자 메모를 비교했다. 120/120 정상 응답·보고 비용 $0.043359345이며, 수하물 인수의 교정·추가 확인으로의 보류·새 오류를 구분했다. 업무 도구를 실행하지 않은 한 응답 진단으로, 자율 기억·최종 업무 성공과 별도다.
+11월 16일의 [결정 지점 120요청 결과](docs/reports/20261116-decision-replay-results.md)는 원본 요청·medium·연구자 메모를 비교했다. 120/120 정상 응답·보고 비용 $0.043359345이며, 수하물 인수의 교정·추가 확인으로의 보류·새 오류를 구분했다. 업무 도구를 실행하지 않은 한 응답 진단으로, 자율 기억·최종 업무 성공과 별도다.
 
 [과거 재현 실행기](docs/development/historical-reproduction.md)는 분석 commit의 별도 worktree·잠금 환경·원본 사본으로 과거 결과를 검증한다. 현재 코드 수정과 과거 재현을 분리하며 새 모델 실험을 실행하지 않는다. [실험 계층 개선안](docs/development/experiment-layer-improvement-plan.md)에 후속 성능·공통 기능·실제 기억 흐름의 순서를 정리했다.
 
 ## 먼저 읽기
 
-새 개발 세션은 [인수인계](docs/handoff/next-session.md)에서 현재 구현 상태·합의 사항·미정 값을 확인하고, [첫 구현 작업](docs/development/first-implementation.md)부터 이어간다.
+새 개발 세션에서 이어갈 작업과 완료한 실험의 검증 방법은 [인수인계](docs/handoff/next-session.md)와 [연구 계획](docs/research/plan.md)에서 확인한다. 파일 기반 코어의 최초 구현 범위는 [첫 구현 작업](docs/development/first-implementation.md)에 있다.
 
 첫 구현은 **SQLite 없이 JSON·JSONL 파일로 가볍게 시작한다.** 단일 원본 로그·요청 출처·혼합 호출의 [코어 계약](docs/design/core-contracts.md)과 v1.1 합성 검증을 보완했다. 제한된 연결/조회 파일럿과 일반 실증의 범위를 구분한다. 최근 탐색 질문은 [방향 논의 노트](docs/design/direction-notes.md)에 있다.
 

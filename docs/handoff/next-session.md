@@ -36,7 +36,7 @@
 
 직전 전체 벤치 실험은 [새 고객 여섯 명의 네 가지 기억 비교](../reports/20261118-new-customer-forms-results.md)다. 1회차 3성공·3실패에서 48개를 작성하고, 2회차 72개 중 69개를 공식 채점했다. 1회차 성공 유지가 여섯 조건 모두 5/6이었지만, 24번의 절차는 첫 반복에서 두 대조의 실패를 성공으로 바꾸고 다음 반복에서 두 대조의 성공을 잃었다. 1회차 실패의 대안을 구체적으로 연결한 본문은 0/15였다. 다음 작성 지침은 공개 정책에서 가능한 선택지와 확인할 고객 조건을 보존하는지 검증하는 것이 제안돼 있다. [배정·재생 방법](../research/new-customer-forms.md) · [최종 점수와 비용](../../artifacts/analyses/20261118-new-customer-forms-final/results.json)
 
-503 세 건은 29번 첫 반복의 미채점이다. 원본 78개 작업 뒤 실제로 미시작이었던 42개만 별도 보충에서 이어갔다. 합산본 `runs/tau2-new-customer-forms-continuation-01`이 원본 작성·수행을 포함한다. [새 실행과 인수별 DB 검증](../../artifacts/analyses/20261118-new-customer-booking-field-replay-final.json) · [과제·조건별 비교 원문](../../outputs/new-customer-forms-20261118-01/report-combined/index.md)
+503 세 건은 29번 첫 반복의 미채점이다. 원본 78개 작업 뒤 실제로 미시작이었던 42개만 별도 보충에서 이어갔다. 합산본 `runs/tau2-new-customer-forms-continuation-01`이 원본 작성·수행을 포함한다. [새 실행과 인수별 DB 검증](../../artifacts/analyses/20261118-new-customer-booking-field-replay-final.json) · [과제·조건별 비교 원문 위치](../reports/local-evidence.md#source-67ba9919269b)
 
 사후 설계 점검에서 빈 은행 13건 중 7건은 일반 응답에 사례나 교훈을 적은 것으로 확인했다. 빈 작성과 빈 메모 대조의 함께 채점된 12쌍 중 5쌍에서 성적이 달랐고, 32번의 한 쌍은 첫 작업자 요청까지 같았다. 이 관측에서 위 귀국일 실험의 동일 입력 반복과 현재 조건 변경 비교를 설계했다. 같은 자율 작성물을 여러 전체 2회차에 평가하는 단계가 이어진다. [사후 설계 점검](../reports/20261118-new-customer-forms-results.md#사후-설계-점검) · [원응답·요청 해시와 배정별 대조](../../artifacts/analyses/20261118-new-customer-design-audit.json)
 
