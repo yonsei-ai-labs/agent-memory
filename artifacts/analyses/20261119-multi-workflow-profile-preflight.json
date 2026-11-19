@@ -1,0 +1,404 @@
+{
+  "cells": {
+    "after_profile": {
+      "task3_empty_w1": {
+        "wire_sha256": "7cbded58bd542160eef191cfc2a265d350bb2cfcb27b8abc6600e70c58aedfc2",
+        "common_wire_sha256": "17e58e750c8e5ff3972d7d0f7b7331d97576fc6f758bfa2baba5a0626bafa3a0",
+        "expected_memory_spans": 0,
+        "input_bytes": 21922
+      },
+      "task3_fact_w1": {
+        "wire_sha256": "de2adf5ac729019959d7d23d77755896849fc3c9449482ff8c9eb907bdb26819",
+        "common_wire_sha256": "17e58e750c8e5ff3972d7d0f7b7331d97576fc6f758bfa2baba5a0626bafa3a0",
+        "expected_memory_spans": 2,
+        "input_bytes": 23073
+      },
+      "task3_episode_w1": {
+        "wire_sha256": "0523641ddaf1e38678987df6d057a5a06fbf6ebadb2405b2ec6c93f3e9a413d6",
+        "common_wire_sha256": "17e58e750c8e5ff3972d7d0f7b7331d97576fc6f758bfa2baba5a0626bafa3a0",
+        "expected_memory_spans": 2,
+        "input_bytes": 23210
+      },
+      "task3_lesson_w1": {
+        "wire_sha256": "88d334658b716e6e4d90a69819c7a8d1df5a433069830086a88df35d86654742",
+        "common_wire_sha256": "17e58e750c8e5ff3972d7d0f7b7331d97576fc6f758bfa2baba5a0626bafa3a0",
+        "expected_memory_spans": 2,
+        "input_bytes": 23203
+      },
+      "task3_procedure_w1": {
+        "wire_sha256": "b82948abbd17092626e9a2a538d744b4b02d85d216f879ed1e1ba4c92715ea8b",
+        "common_wire_sha256": "17e58e750c8e5ff3972d7d0f7b7331d97576fc6f758bfa2baba5a0626bafa3a0",
+        "expected_memory_spans": 2,
+        "input_bytes": 22990
+      },
+      "task3_empty_w2": {
+        "wire_sha256": "7cbded58bd542160eef191cfc2a265d350bb2cfcb27b8abc6600e70c58aedfc2",
+        "common_wire_sha256": "17e58e750c8e5ff3972d7d0f7b7331d97576fc6f758bfa2baba5a0626bafa3a0",
+        "expected_memory_spans": 0,
+        "input_bytes": 21922
+      },
+      "task3_fact_w2": {
+        "wire_sha256": "dd42f48778d44340d4000851a1df25cd981df813ebb288234dee82c141c8099f",
+        "common_wire_sha256": "17e58e750c8e5ff3972d7d0f7b7331d97576fc6f758bfa2baba5a0626bafa3a0",
+        "expected_memory_spans": 2,
+        "input_bytes": 23270
+      },
+      "task3_episode_w2": {
+        "wire_sha256": "7cbded58bd542160eef191cfc2a265d350bb2cfcb27b8abc6600e70c58aedfc2",
+        "common_wire_sha256": "17e58e750c8e5ff3972d7d0f7b7331d97576fc6f758bfa2baba5a0626bafa3a0",
+        "expected_memory_spans": 0,
+        "input_bytes": 21922
+      },
+      "task3_lesson_w2": {
+        "wire_sha256": "d9f03de433ac40d85cddfd957f53e7928a54cde945d29e72fc4d9e13c370e40a",
+        "common_wire_sha256": "17e58e750c8e5ff3972d7d0f7b7331d97576fc6f758bfa2baba5a0626bafa3a0",
+        "expected_memory_spans": 2,
+        "input_bytes": 22966
+      },
+      "task3_procedure_w2": {
+        "wire_sha256": "796481c06f2c1de3516249e2b07416da686e16685ee3ddadcca6a495970f65ee",
+        "common_wire_sha256": "17e58e750c8e5ff3972d7d0f7b7331d97576fc6f758bfa2baba5a0626bafa3a0",
+        "expected_memory_spans": 2,
+        "input_bytes": 23556
+      }
+    }
+  },
+  "first_pass_evidence": {
+    "banks": {
+      "task3_empty_w1": {
+        "items": [],
+        "writer_run": null,
+        "original_snapshot": null,
+        "items_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "task3_fact_w1": {
+        "items": [
+          {
+            "id": "m_88ea55c19fdf49a7abb82ebb565fe79a",
+            "version": "v_8bd89e5616e34d72bad1502dbf5d446a",
+            "title": "Airline baggage inquiry and transfer example",
+            "body": "In a prior airline-agent interaction, reservation JMO1MG lookup returned DEN–MIA one-way economy, two passengers, and fields `total_baggages: 1`, `nonfree_baggages: 0`; user profile lookup returned membership `silver`. Policy supplied in that interaction gives Silver economy allowance of 2 checked bags per passenger, so 4 free bags across two passengers. Assistant stated both the reservation records 1 bag and that allowance is 4, then transferred after the user explicitly requested a supervisor over a disputed Gold vs Silver status; transfer tool returned success and assistant sent the prescribed hold message. Preserve the distinction: the recorded bag count and policy allowance are different quantities; the tool schema/context did not further define whether `total_baggages` means bags currently selected/recorded, so exact interpretation is uncertain. No evaluation details were provided (feedback level `none`); this is not evidence of correctness or incorrectness."
+          }
+        ],
+        "writer_run": "r_70e8896fe2594d2f928c2fc5551dbeec",
+        "original_snapshot": "snap_caa081e74f14436fa86f3a1ed33e3f1b",
+        "items_sha256": "9301be2ad75e80f8bce7f022aa2798dbf60fd7ff55fb26d137f417cb693579a3"
+      },
+      "task3_episode_w1": {
+        "items": [
+          {
+            "id": "m_74012406cdf74922981ddc64d9192904",
+            "version": "v_06d839d9c27f44c7a81e853c1c790b11",
+            "title": "Airline baggage inquiry and escalation experience",
+            "body": "In a past airline-agent interaction, user provided reservation JMO1MG and user ID anya_garcia_5901. Reservation data showed two economy passengers, total_baggages=1 and nonfree_baggages=0; profile showed membership silver. Assistant interpreted this as 1 baggage currently recorded versus a 4 checked-bag total allowance (2 per passenger), explicitly distinguishing booked/recorded count from entitlement. User challenged the apparent contradiction and asserted Gold; assistant clarified profile showed Silver and said it could not change membership with available tools. User then explicitly requested a supervisor; transfer tool returned “Transfer successful,” and assistant sent the required transfer notice. No separately supplied evaluation feedback (level none), so correctness is unverified. The interaction's lookup used two tool calls in parallel, despite the provided policy saying only one tool call at a time; avoid that pattern when following such a policy. The baggage interpretation may depend on whether reservation baggage fields represent bags purchased/recorded rather than full allowance."
+          }
+        ],
+        "writer_run": "r_611a52109fad4f06b5055a85ba96102e",
+        "original_snapshot": "snap_1cd1482942b14265a63a734a2117d94b",
+        "items_sha256": "b5b4786034209678009c3f2ea6557cf9ed8c054c32e73291ba3a6ae67686a8ce"
+      },
+      "task3_lesson_w1": {
+        "items": [
+          {
+            "id": "m_bce14ce96f6c404fa6d97bdf798b2b52",
+            "version": "v_968b595d090046ae85ae7fb58ccd1910",
+            "title": "Airline baggage allowance distinction and sequential tool calls",
+            "body": "In an airline-support interaction, reservation JMO1MG showed 2 economy passengers, `total_baggages: 1`, `nonfree_baggages: 0`; the user profile showed Silver membership. Under the provided policy, a Silver economy traveler gets 2 free checked bags per passenger, so the policy-based entitlement is 4 bags total for these passengers, distinct from the 1 bag currently recorded on the reservation. The prior response gave both figures but did not clearly label recorded bags versus allowable free bags, causing user confusion. Lesson/caution: explicitly distinguish bags currently on the booking from the free baggage allowance, and qualify what each count represents. Also, the prior agent called reservation and user lookup tools simultaneously, despite the task policy requiring only one tool call at a time; make sequential calls where that constraint applies. User disputed Silver status and requested a supervisor; transfer succeeded. Profile data supports Silver, but the user's belief cannot be independently verified from this experience. No separate evaluation feedback was provided."
+          }
+        ],
+        "writer_run": "r_d3dd50cab51b4013aea69718ff89a1e5",
+        "original_snapshot": "snap_4a3439526e2547d2b5f0e20207a6f8c9",
+        "items_sha256": "a055574d8e1084388f4500dbb48fc0d4b5027e98ddf4319125494f40e731db46"
+      },
+      "task3_procedure_w1": {
+        "items": [
+          {
+            "id": "m_16b1b8bac6584053a00bbc4012fc257a",
+            "version": "v_618ce433fe694a9ea2a02e73f1b39e06",
+            "title": "Airline baggage allowance conversation",
+            "body": "In a past airline-support interaction, reservation data listed total_baggages=1 and nonfree_baggages=0 for two economy passengers; profile listed Silver membership. Policy provided for that task specified 2 free checked bags per economy passenger for Silver, so assistant later distinguished the reservation's currently recorded baggage count (1, 0 paid extras) from the policy-based allowance (4 total). Initial phrasing said reservation “includes 1 checked suitcase total,” which caused confusion; future similar work should label recorded baggage vs entitlement explicitly and avoid suggesting the recorded count is the allowance. User disputed Silver vs Gold and explicitly requested a supervisor; transfer tool succeeded, followed by the required transfer message. No evaluation feedback was supplied, so this is an observational lesson, not a claim about grading or a universal airline policy."
+          }
+        ],
+        "writer_run": "r_7d337790016944da891c80a4ed7bb359",
+        "original_snapshot": "snap_21c0a0c323804ebda3f60072b864bed4",
+        "items_sha256": "159d356ebe5ce4df02b27d46c208da8d5d18e0771addff49cec2d45bfbd707df"
+      },
+      "task3_empty_w2": {
+        "items": [],
+        "writer_run": null,
+        "original_snapshot": null,
+        "items_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "task3_fact_w2": {
+        "items": [
+          {
+            "id": "m_77a79388c9524838b5df72de7c15d133",
+            "version": "v_ad85bf59c968454a82ba07352b7fcc1f",
+            "title": "Airline baggage interaction: JMO1MG",
+            "body": "Observed in a past public airline-agent interaction (task context dated 2024-05-15): User asked how many suitcases allowed for reservation JMO1MG, user ID anya_garcia_5901. Tool data showed a one-way DEN–MIA economy trip dated 2024-05-16 with two passengers; reservation fields `total_baggages: 1` and `nonfree_baggages: 0`; profile membership was `silver`. The supplied policy says Silver economy allowance is 2 free checked bags per passenger, so the policy-based allowance would be 4 checked bags for these two passengers, while the recorded reservation bag count is separately 1. The assistant initially stated both facts but phrased the 4 as reservation allowance; after user questioned it, clarified the distinction. User disputed Silver versus Gold and explicitly requested a supervisor; transfer tool returned “Transfer successful,” followed by the required transfer message. The exchange made two tool calls simultaneously (reservation and user lookup), despite task policy specifying one tool call at a time. These are observed details from this interaction, not independently verified airline rules or current reservation facts. Evaluation feedback provided was `none`."
+          }
+        ],
+        "writer_run": "r_7efca55075d04d86a7f7efbc3feefb3c",
+        "original_snapshot": "snap_38bc77516ce84483b158c9a3110022b7",
+        "items_sha256": "7bcfe4873d41452f2acc7d6bf4b4f000a018cfde67f6c257ac5ec7db56799a39"
+      },
+      "task3_episode_w2": {
+        "items": [],
+        "writer_run": "r_b44f589d7f5f49d7b4f13243ee96aad2",
+        "original_snapshot": "snap_baa0cdb8096949449769f0f89439af73",
+        "items_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "task3_lesson_w2": {
+        "items": [
+          {
+            "id": "m_ba02d259d6cf4a589fb4b685c68f4e0d",
+            "version": "v_259d13d6db6d4a5d99a3dbf1646c33e0",
+            "title": "Airline baggage allowance distinction and membership disputes",
+            "body": "In one airline-support interaction, reservation data showed economy, two passengers, total_baggages=1 and nonfree_baggages=0; profile membership was Silver. The policy specified Silver economy allowance of 2 free checked bags per passenger, so the agent stated a 4-bag allowance while separately noting 1 bag recorded and 0 paid extras. The user's confusion suggests a useful caution: distinguish clearly between bags currently recorded/included in a reservation and the maximum/free baggage allowance; do not imply the reservation already includes the full entitlement. When a user disputes membership level and expressly requests a supervisor, checking the profile and transferring after explaining that the available tools cannot change membership was an appropriate path in this case. Evaluation feedback was level none, so no grading outcome is known."
+          }
+        ],
+        "writer_run": "r_9b511005df5c450b9f80f4f53de80fc9",
+        "original_snapshot": "snap_e8113dfb0a2d4dceb1528a614d3f0b64",
+        "items_sha256": "b9e580e741cd938b7f87c723c7027acf8343bb2899f3db60914619728675c115"
+      },
+      "task3_procedure_w2": {
+        "items": [
+          {
+            "id": "m_9ed007b642ae4b238283799406b2f022",
+            "version": "v_380f7d0cdf4747adbd84c928945d11dc",
+            "title": "Airline baggage allowance and membership disputes",
+            "body": "In a past airline-support interaction, reservation JMO1MG showed two economy passengers, total_baggages=1, nonfree_baggages=0; profile showed Silver membership. The assistant correctly distinguished Silver’s policy allowance (2 free checked bags per economy passenger, thus 4 combined) from bags recorded on the reservation, but initially phrased this confusingly as reservation 'includes 1 checked suitcase total.' The tool data does not establish whether total_baggages means already-selected bags or a different count; do not present it as the customer’s allowance. No evaluation feedback was provided. For similar work: (1) obtain/check reservation and profile facts, using only one tool call at a time when required by the applicable policy; (2) state separately the baggage quantity recorded on the booking and the policy allowance, with passenger count, cabin, and membership basis; (3) if the user disputes profile membership and available tools cannot correct/verify it, say what the profile currently shows without asserting it is definitively correct; (4) transfer to a human when requested for an issue outside available actions, then send the required transfer message. Stop before changing baggage or booking data unless required details are clear and explicit confirmation has been obtained. The prior interaction did transfer after explicit request, but the accuracy of the underlying baggage field meaning was not independently verified."
+          }
+        ],
+        "writer_run": "r_6b1c05088f1548b9b56f336841ece031",
+        "original_snapshot": "snap_c8c06e46c33544f3bf7d407a99bb28e6",
+        "items_sha256": "ffaef1a0833f15a71f35903ed1d4ae5891133209549bada808744e99c9578b5c"
+      }
+    },
+    "parent_generations": {
+      "6": "gen-1795065490-OZ0tRLSGIzOWUESPSF3I",
+      "7": "gen-1795065491-TS4e8pgvXF3wmijdYFx8",
+      "8": "gen-1795065493-uZiUQIYcEO4jxcbf5EY4",
+      "9": "gen-1795065496-JTf82u95bklhkuNGrkJ8",
+      "10": "gen-1795065498-SZSEqh9JwEX8D80aTfVh",
+      "56": "gen-1795065665-ysXMEtnPNMPdCAtQhXAm",
+      "57": "gen-1795065668-q9W1FzsyQgC1xR6n0tlJ",
+      "58": "gen-1795065671-OjucQHouQJKXvnwnWDGo",
+      "59": "gen-1795065674-3EYJggQI0sB22cdin233",
+      "60": "gen-1795065678-dLZE8GTxkpqPt6QE54YF",
+      "76": "gen-1795065747-alPZFWPPBDOWbUjKv6EP",
+      "77": "gen-1795065750-Ou3VQQVuOogyBh8MDqVr",
+      "78": "gen-1795065752-tV0ua4Q1F3voZwcSkkyu",
+      "79": "gen-1795065755-9PiqKr2ycyg9LsCSFDW6",
+      "80": "gen-1795065758-rIPW3tXm8F6zM3kgwGbK",
+      "91": "gen-1795065806-l0jywaF5dbXaXfybZRtq",
+      "92": "gen-1795065809-qUq02fYDKgXkSse8ceCr",
+      "93": "gen-1795065811-ggTxv6SgMS6VJ6uNTHcd",
+      "94": "gen-1795065814-PzoiwbX0fgmbSzTW4O81",
+      "95": "gen-1795065818-TB4P2LLQapz97Qo78xkD"
+    },
+    "profile_wire_sha256": "a7f048a40e2168bce886b30e318fc84e5e654b5db9695c29e5c40cb526bec165"
+  },
+  "slots": [
+    {
+      "slot": 1,
+      "repeat": 1,
+      "case": "after_profile",
+      "task": "3",
+      "writer": 2,
+      "form": "lesson",
+      "arm": "task3_lesson_w2",
+      "parent_slot": 6
+    },
+    {
+      "slot": 2,
+      "repeat": 1,
+      "case": "after_profile",
+      "task": "3",
+      "writer": 2,
+      "form": "procedure",
+      "arm": "task3_procedure_w2",
+      "parent_slot": 7
+    },
+    {
+      "slot": 3,
+      "repeat": 1,
+      "case": "after_profile",
+      "task": "3",
+      "writer": 2,
+      "form": "episode",
+      "arm": "task3_episode_w2",
+      "parent_slot": 8
+    },
+    {
+      "slot": 4,
+      "repeat": 1,
+      "case": "after_profile",
+      "task": "3",
+      "writer": 2,
+      "form": "fact",
+      "arm": "task3_fact_w2",
+      "parent_slot": 9
+    },
+    {
+      "slot": 5,
+      "repeat": 1,
+      "case": "after_profile",
+      "task": "3",
+      "writer": 2,
+      "form": "empty",
+      "arm": "task3_empty_w2",
+      "parent_slot": 10
+    },
+    {
+      "slot": 6,
+      "repeat": 1,
+      "case": "after_profile",
+      "task": "3",
+      "writer": 1,
+      "form": "lesson",
+      "arm": "task3_lesson_w1",
+      "parent_slot": 56
+    },
+    {
+      "slot": 7,
+      "repeat": 1,
+      "case": "after_profile",
+      "task": "3",
+      "writer": 1,
+      "form": "episode",
+      "arm": "task3_episode_w1",
+      "parent_slot": 57
+    },
+    {
+      "slot": 8,
+      "repeat": 1,
+      "case": "after_profile",
+      "task": "3",
+      "writer": 1,
+      "form": "procedure",
+      "arm": "task3_procedure_w1",
+      "parent_slot": 58
+    },
+    {
+      "slot": 9,
+      "repeat": 1,
+      "case": "after_profile",
+      "task": "3",
+      "writer": 1,
+      "form": "empty",
+      "arm": "task3_empty_w1",
+      "parent_slot": 59
+    },
+    {
+      "slot": 10,
+      "repeat": 1,
+      "case": "after_profile",
+      "task": "3",
+      "writer": 1,
+      "form": "fact",
+      "arm": "task3_fact_w1",
+      "parent_slot": 60
+    },
+    {
+      "slot": 11,
+      "repeat": 2,
+      "case": "after_profile",
+      "task": "3",
+      "writer": 1,
+      "form": "fact",
+      "arm": "task3_fact_w1",
+      "parent_slot": 76
+    },
+    {
+      "slot": 12,
+      "repeat": 2,
+      "case": "after_profile",
+      "task": "3",
+      "writer": 1,
+      "form": "empty",
+      "arm": "task3_empty_w1",
+      "parent_slot": 77
+    },
+    {
+      "slot": 13,
+      "repeat": 2,
+      "case": "after_profile",
+      "task": "3",
+      "writer": 1,
+      "form": "procedure",
+      "arm": "task3_procedure_w1",
+      "parent_slot": 78
+    },
+    {
+      "slot": 14,
+      "repeat": 2,
+      "case": "after_profile",
+      "task": "3",
+      "writer": 1,
+      "form": "episode",
+      "arm": "task3_episode_w1",
+      "parent_slot": 79
+    },
+    {
+      "slot": 15,
+      "repeat": 2,
+      "case": "after_profile",
+      "task": "3",
+      "writer": 1,
+      "form": "lesson",
+      "arm": "task3_lesson_w1",
+      "parent_slot": 80
+    },
+    {
+      "slot": 16,
+      "repeat": 2,
+      "case": "after_profile",
+      "task": "3",
+      "writer": 2,
+      "form": "empty",
+      "arm": "task3_empty_w2",
+      "parent_slot": 91
+    },
+    {
+      "slot": 17,
+      "repeat": 2,
+      "case": "after_profile",
+      "task": "3",
+      "writer": 2,
+      "form": "fact",
+      "arm": "task3_fact_w2",
+      "parent_slot": 92
+    },
+    {
+      "slot": 18,
+      "repeat": 2,
+      "case": "after_profile",
+      "task": "3",
+      "writer": 2,
+      "form": "episode",
+      "arm": "task3_episode_w2",
+      "parent_slot": 93
+    },
+    {
+      "slot": 19,
+      "repeat": 2,
+      "case": "after_profile",
+      "task": "3",
+      "writer": 2,
+      "form": "procedure",
+      "arm": "task3_procedure_w2",
+      "parent_slot": 94
+    },
+    {
+      "slot": 20,
+      "repeat": 2,
+      "case": "after_profile",
+      "task": "3",
+      "writer": 2,
+      "form": "lesson",
+      "arm": "task3_lesson_w2",
+      "parent_slot": 95
+    }
+  ]
+}
