@@ -7,6 +7,8 @@ from pathlib import Path
 from agent_memory_eval.contracts.core import ContractError, digest, read_json
 from agent_memory_eval.contracts.validation import ROOT
 from agent_memory_eval.recording.assets import asset_text
+from agent_memory_eval.experiments.forms_solve import _prepared_for_job
+from agent_memory_eval.runner.tau2_baseline import build_baseline_orchestrator
 
 if __package__:
     from . import run_full_retail as retail
@@ -89,6 +91,7 @@ def prepare(workspace):
         parent_cfg,
         **{k: spec[k] for k in ("name", "stages", "solver_seeds", "total_usd_limit")},
         profile_path=PROFILE,
+        run_directory=spec["name"] + "-r1",
         expected_endpoint_terms=reg["endpoint_terms"],
     )
     cfg["guards"] = {
@@ -122,6 +125,73 @@ def prepare(workspace):
     return cfg, base, conn, rows, tasks
 
 
+def stopped_registration(root):
+    reg = retail.read(root / "registration.json")
+    wave = retail.read(root / "source-wave-1.json")
+    if (
+        set(wave["tasks"]) != {p.name[5:] for p in root.glob("task-*")}
+        or (root / "completion.json").exists()
+    ):
+        raise ContractError(
+            "Interrupted launch contains an unexpected task or completion"
+        )
+    hashes = {
+        str(p.relative_to(root)): digest(p.read_bytes())
+        for p in sorted(root.rglob("*"))
+        if p.is_file() and p.name != "writer.lock"
+    }
+    slots = []
+    for tid in wave["tasks"]:
+        stage = root / ("task-" + tid) / "source"
+        (slot,) = retail.read(stage / "allocations.json")
+        journal = stage / slot["directory"] / "log.jsonl"
+        if (
+            slot["status"] != "interrupted"
+            or "result" in slot
+            or journal.read_bytes()
+            or (stage / "completion.json").exists()
+        ):
+            raise ContractError("The initial launch may have made a model request")
+        slots.append({"task": tid, "run": slot["run_id"]})
+    return {
+        "initial_directory": root.name,
+        "implementation": reg["implementation"]["implementation_commit"],
+        "reason": "full retail grading previously required test split at the native allocation check, before run.started or model requests",
+        "allocations": slots,
+        "http": 0,
+        "reported_usd": "0",
+        "hashes": hashes,
+    }
+
+
+def check_runtime(workspace, cfg, base, conn, rows, tasks):
+    example = next(row for row in rows if "source_study" in row)
+    path = retail.bank_parent(workspace, cfg, example) / "source"
+    _, control, _ = retail.sealed_rows(path)
+    modules = retail.modules_for(workspace)
+    count = 0
+    for row in rows:
+        stages = ["source", "solve1"] if row["split"] == "train" else ["solve2"]
+        for stage in stages:
+            design, jobs = retail.full_design(cfg, base, row, stage, None)
+            sample = next(j for j in jobs if j["arm"] == "no_memory")
+            settings = retail.solve_connection(
+                conn, design, sample, cfg["total_usd_limit"]
+            )
+            orch, native = build_baseline_orchestrator(settings, tasks[row["task"]])
+            _prepared_for_job(
+                settings,
+                (orch, native, control["model_catalog_entries"], modules),
+                design["second_pass"]["proposed_limits"],
+                row["task"],
+                row["split"],
+                "retail",
+                True,
+            )
+            count += 1
+    return count
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("mode", choices=["preflight", "run"])
@@ -131,6 +201,15 @@ def main():
     workspace = args.workspace.resolve()
     cfg, base, conn, rows, tasks = prepare(workspace)
     record = retail.preflight(cfg, base, rows)
+    stopped = workspace / "runs" / cfg["name"]
+    if stopped.exists() and stopped_registration(stopped) != retail.read(
+        ROOT / "artifacts/analyses/20261119-retail-expansion-prewire.json"
+    ):
+        raise ContractError(
+            "Initial no-request launch differs from its reconciled record"
+        )
+    checks = check_runtime(workspace, cfg, base, conn, rows, tasks)
+    print(f"{checks} native task/seed/split bindings verified", flush=True)
     counts = Counter(
         j["phase"]
         for r in record["rows"]

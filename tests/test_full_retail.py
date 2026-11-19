@@ -22,7 +22,7 @@ from scripts.run_full_retail import prepare, preflight
 class FullRetailTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.cfg, cls.base, _, cls.rows, cls.tasks = prepare(ROOT)
+        cls.cfg, cls.base, cls.conn, cls.rows, cls.tasks = prepare(ROOT)
         cls.spec = dict(cls.cfg["judge"], timeout_seconds=150)
         cls.model = dict(selected_endpoint=dict(provider_name="OpenAI"))
 
@@ -60,6 +60,27 @@ class FullRetailTests(unittest.TestCase):
                 )
             )
         self.assertEqual(self.check_retail_grading(rows, tasks), 12)
+
+    def test_native_allocation_accepts_new_train_retail_and_rejects_wrong_split(self):
+        from scripts import run_full_retail as retail
+        from agent_memory_eval.experiments.forms_solve import _prepared_for_job
+        from agent_memory_eval.runner.tau2_baseline import build_baseline_orchestrator
+
+        row = {"task": "21", "customer": "test customer", "split": "train"}
+        data = ROOT / "data/tau2-bench/data/tau2/domains/retail/tasks.json"
+        raw = next(t for t in retail.read(data) if t["id"] == row["task"])
+        bound = retail.bind_task(self.cfg, self.base, self.conn, row, raw)
+        design, (job,) = retail.full_design(self.cfg, self.base, row, "source", None)
+        connection = retail.solve_connection(self.conn, design, job, 5)
+        orch, native = build_baseline_orchestrator(connection, bound)
+        model_data = retail.read(ROOT / self.cfg["endpoints"]["path"])["models"]
+        prepared = (orch, native, model_data, retail.modules_for(ROOT))
+        limits = design["second_pass"]["proposed_limits"]
+        _prepared_for_job(connection, prepared, limits, "21", "train", "retail", True)
+        with self.assertRaises(ContractError):
+            _prepared_for_job(
+                connection, prepared, limits, "21", "test", "retail", True
+            )
 
     def check_retail_grading(self, rows, tasks):
         from tau2.data_model.semantic_communication import CommunicateScoring

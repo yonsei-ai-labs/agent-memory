@@ -137,7 +137,7 @@ def _prepared_for_job(connection, prepared, limits, task_id, expected_split="tra
     template, native, models, _ = prepared
     bench = connection["benchmark"]
     criteria = template.task.evaluation_criteria
-    basis_ok = (expected_domain == "retail" and expected_split == "test" and criteria is not None
+    basis_ok = (expected_domain == "retail" and criteria is not None
                 and set(criteria.reward_basis) in ({"DB"}, {"DB", "NL_ASSERTION"})) if full_retail else model_free_basis(expected_domain, criteria)
     if (expected_split not in {"train", "test"} or (bench["domain"], bench["split"], bench["source_revision"], bench["communicate_scorer"])
             != (expected_domain, expected_split, PIN, "substring")

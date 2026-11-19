@@ -273,7 +273,7 @@ def bank_parent(workspace, cfg, row):
     return (
         workspace
         / "runs"
-        / row.get("source_study", cfg["name"])
+        / row.get("source_study", cfg.get("run_directory", cfg["name"]))
         / ("task-" + row["task"])
     )
 
@@ -415,7 +415,7 @@ def accounting(folder, grant):
 
 
 def run_study(workspace, cfg, base, conn, rows, tasks, record):
-    root = workspace / "runs" / cfg["name"]
+    root = workspace / "runs" / cfg.get("run_directory", cfg["name"])
     root.mkdir(parents=True, exist_ok=True)
     descriptor = os.open(root, os.O_RDONLY | os.O_DIRECTORY)
     try:
