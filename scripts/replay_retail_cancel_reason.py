@@ -27,12 +27,14 @@ OTHER_REASON = {"no longer needed": "ordered by mistake", "ordered by mistake": 
 def replay(workspace, paths):
     cfg, _, _, _, _, tasks = prepare(workspace)
     native_modules(verify_checkout(workspace / "data/tau2-bench"))
+    from loguru import logger
     from tau2.data_model.language import LanguageTaskInfo
     from tau2.data_model.simulation import SimulationRun
     from tau2.multilingual.runtime import language_environment_kwargs
     from tau2.registry import registry
     from tau2.runner.presets import reload_recorded_call
 
+    logger.disable("tau2")
     constructor = registry.get_env_constructor("retail")
 
     @lru_cache(maxsize=None)
