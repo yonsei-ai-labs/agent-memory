@@ -2,6 +2,7 @@
 
 from copy import deepcopy
 from functools import lru_cache
+import re
 
 from jsonschema import Draft202012Validator
 
@@ -42,8 +43,10 @@ def replay_decision(blobs, ref, read_parent):
             raise ContractError("Public continuation must be one standalone read and its matching result")
         args = read_json(calls[0]["function"]["arguments"].encode())
         result = read_json(returned["content"].encode())
-        if (args != {"user_id": descriptor["user_id"]} or result.get("user_id") != descriptor["user_id"]
-                or descriptor["user_id"] not in opening["wire"]["messages"][-1]["content"]
+        user_id = descriptor["user_id"]
+        customer_text = opening["wire"]["messages"][-1]["content"]
+        if (args != {"user_id": user_id} or not isinstance(result, dict) or result.get("user_id") != user_id
+                or not re.search(r"(?<!\w)" + re.escape(user_id) + r"(?!\w)", customer_text)
                 or not isinstance(result.get("reservations"), list)):
             raise ContractError("The current customer, read arguments and returned profile must agree")
         wire = deepcopy(opening["wire"])

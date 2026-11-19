@@ -27,6 +27,9 @@ class ProfileStepTests(unittest.TestCase):
             with self.assertRaises(ContractError):
                 replay_decision(Blobs(), {}, read)
             f['profile_messages'][-1][key]=original
+        opening['customer_text'] = 'My identifier is user_demo_other.'
+        with self.assertRaises(ContractError):
+            replay_decision(Blobs(), {}, read)
 
     def test_other_listed_booking_is_an_exploratory_read(self):
         cfg=read_json((ROOT/PROFILE).read_bytes())
