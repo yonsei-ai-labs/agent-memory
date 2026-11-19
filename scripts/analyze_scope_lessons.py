@@ -236,6 +236,7 @@ def evaluate(workspace,writer_review,episode_review):
     arms = cfg['forms']+cfg['controls']
     metrics = defaultdict(lambda: {arm:Counter() for arm in arms})
     episodes = result['episodes']
+    new_ticket_cases = []
     for e in episodes:
         task,arm,key = e['task_id'],e['arm'],case_id(e['run_id'])
         if key not in ep['cases']:
@@ -255,6 +256,10 @@ def evaluate(workspace,writer_review,episode_review):
         if task=='13':
             diag['customer_said_requested_destination'] = [dict(turn=t['turn'],text=t['text']) for t in user_turns
                 if re.search(r'\b(?:LAS|Las Vegas)\b',t['text'],re.I)]
+        if task=='8':
+            year_question=r'\b(?:what|which) year\b|\bconfirm (?:the year|whether you mean May (?:10|26),? 2024)|\bdo you mean May (?:10|26),? 2024'
+            diag['explicit_year_questions'] = [q for q in diag['dialogue_evidence']['questions']
+                                              if re.search(year_question,q['question']['text'],re.I)]
         e['behavior'] = diag
         m = metrics[task][arm]
         m['trajectories'] += 1
@@ -268,6 +273,8 @@ def evaluate(workspace,writer_review,episode_review):
                                                 or diag['human_transfer_turns'][0]<min(diag['executed_write_turns']))
         if task=='13':
             m['customer_said_requested_destination'] += bool(diag['customer_said_requested_destination'])
+        if task=='8':
+            m['explicit_year_question'] += bool(diag['explicit_year_questions'])
         if task=='6':
             refusal=diag['dialogue_evidence']['first_transfer_refusal']
             m['handoff_after_expressed_refusal'] += bool(refusal and any(t>refusal['turn'] for t in diag['human_transfer_turns']))
@@ -279,6 +286,15 @@ def evaluate(workspace,writer_review,episode_review):
             if k not in {'questions','proposal'}:
                 m[k] += bool(quote)
         mutations = e.get('mutations',e.get('partial_mutations',{}))
+        if task=='31':
+            bookings=[a for a in mutations.get('attempts',[]) if a['status']=='executed' and a['tool']=='book_reservation']
+            if bookings:
+                new_ticket_cases.append(dict(job=e['index'],arm=arm,run_id=e['run_id'],
+                    private_scenario=native[task]['user_scenario']['instructions']['task_instructions'],
+                    customer_before_booking=[dict(turn=t['turn'],text=t['text']) for t in user_turns
+                                             if t['turn']<bookings[0]['turn']],
+                    proposal=diag['dialogue_evidence']['proposal'],approval=diag['dialogue_evidence']['approval'],
+                    executed=bookings,official_success=e['official_success']))
         if mutations.get('aligned'):
             m['all_reference_writes_exact'] += all(a['all_requested_fields'] for a in mutations['aligned'])
         m['any_extra_write'] += bool(mutations.get('extra_write_turns'))
@@ -305,6 +321,7 @@ def evaluate(workspace,writer_review,episode_review):
         solver_calls=result['http_calls'],writer_unknown=sum(w.get('unknown',0) for w in writers),solver_unknown=result['unpriced_requests'])
     result['review_hashes'] = dict(writers=digest(canonical(writer_review)),episodes=digest(canonical(episode_review)))
     result['exploratory_writer_time_check'] = time_check(state['sources']['14'],writers,episodes,ep)
+    result['exploratory_new_ticket_despite_task_31_scenario'] = new_ticket_cases
     if writer_usd+writer_res+Decimal(result['new_known_usd'])+Decimal(result['reserved_usd']) > Decimal(str(cfg['total_usd_limit'])):
         raise ContractError('Combined spend and reserves exceed the study ceiling')
     return result
