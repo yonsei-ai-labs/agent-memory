@@ -165,6 +165,17 @@ def join(workspace, native, raw, labels):
     # Reinsert any unsent planned slots. Reuse a single matched empty only within its case/writer/repeat.
     by_slot = {r['slot']: r for r in rows}
     all_rows = [by_slot.get(r['slot'], dict(r, status='not_started', score=None)) for r in STUDY.schedule(profile)]
+    decision_counts = {}
+    for row in all_rows:
+        totals = decision_counts.setdefault(row['case'], {}).setdefault(row['form'], Counter())
+        totals['planned'] += 1
+        s = row['score']
+        totals['scored'] += s is not None
+        if s is not None:
+            totals['strict_next_action'] += s['strict']
+            totals['out_of_scope_or_incorrect_write_or_lookup'] += s['harm']
+            totals['current_customer_profile_lookup'] += s.get('profile_lookup', False)
+            totals['all_permitted_cancellations_in_first_reply'] += s.get('all_authorized_targets', False)
     by_cell = {(r['case'],r['writer'],r['repeat'],r['form']):r for r in all_rows}
     decisions = []
     for r in all_rows:
@@ -192,7 +203,7 @@ def join(workspace, native, raw, labels):
         contrasts[p['treatment']+' vs '+p['control']][p['outcome']] += 1
     return dict(native={k:v for k,v in native.items() if k not in {'episodes','pairs'}},
         decisions={k:v for k,v in raw.items() if k not in {'rows','decisions','first_pass_evidence'}},
-        native_contrasts=dict(contrasts), bank_links=bank_links, decision_pairs=decisions, decision_rows=all_rows,
+        native_contrasts=dict(contrasts), decision_counts=decision_counts, bank_links=bank_links, decision_pairs=decisions, decision_rows=all_rows,
         native_evidence=native['episodes'], native_pairs=native['pairs'])
 
 
