@@ -344,7 +344,9 @@ def execute_prepared(profile, root, destination, identity, design, plan, models,
                 raise ContractError("Per-job provider ledger differs from journal accounting")
         return result
     ledger = destination / "allocations.json"
-    stop = run_jobs(rows, execute, guard, lambda values: write_json(ledger, values),
+    admission = plan.get("admission")
+    dispatch = (lambda row, writer: admission.run(execute, row, writer)) if admission is not None else execute
+    stop = run_jobs(rows, dispatch, guard, lambda values: write_json(ledger, values),
                     written_arms=delivery_arms or written_arms, initial_writers=bindings,
                     missing_sources=plan.get("missing_sources", ()), close_cost=close_cost)
     summary = dict(stop_reason=stop, http_calls=guard.calls, reported_usd=guard.reported_usd,

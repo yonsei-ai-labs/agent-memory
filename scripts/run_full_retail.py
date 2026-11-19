@@ -171,6 +171,14 @@ def prepare(workspace):
 def full_design(cfg, base, row, stage, source):
     design, jobs = design_for(cfg, base, row.get("cohort", COHORT), row, stage, source)
     design["format"] = RETAIL_FULL
+    slots = row.get("selected_slots", {}).get(stage)
+    if slots is not None:
+        jobs = [j for j in jobs if j["index"] in slots]
+        if [j["index"] for j in jobs] != slots or not jobs:
+            raise ContractError("Supplement indices differ from unstarted assignments")
+        block = design["allocation"]["blocks"][0]
+        block["solve"] = [j["arm"] for j in jobs]
+        design["allocation"]["jobs_sha256"] = digest(canonical(jobs))
     return design, jobs
 
 
@@ -368,6 +376,10 @@ def stage_job(args):
                 bank / "write",
                 {(w["repetition"], tid, w["arm"]): w for w in ws},
             )
+    if cfg.get("episode_admission"):
+        from agent_memory_eval.experiments.episode_admission import EpisodeAdmission
+
+        plan["admission"] = EpisodeAdmission(root, cfg["episode_admission"], dest)
     guard = BatchGuard(**profile["guards"])
     reserve = CostReservations(
         dest, cfg["unpriced_http"], guard, dict(models, grader=judge)
@@ -434,7 +446,7 @@ def run_study(workspace, cfg, base, conn, rows, tasks, record):
             judge_slug=judge["canonical_slug"],
         )
         fixed(root / "registration.json", reg)
-        total = Decimal(0)
+        total = Decimal(cfg.get("prior_covered_usd", "0"))
         seals = {}
         size = cfg["max_concurrent"]
         with ProcessPoolExecutor(
@@ -442,15 +454,16 @@ def run_study(workspace, cfg, base, conn, rows, tasks, record):
         ) as pool:
             for stage in cfg["stages"]:
                 ordered = stage_order(cfg, rows, stage)
-                for begin in range(0, len(ordered), size):
-                    wave = ordered[begin : begin + size]
+                width = cfg.get("concurrency_by_stage", {}).get(stage, size)
+                for begin in range(0, len(ordered), width):
+                    wave = ordered[begin : begin + width]
                     grant = (
                         (Decimal(str(cfg["total_usd_limit"])) - total) / len(wave)
                     ).quantize(Decimal("0.000001"), rounding=ROUND_DOWN)
                     if grant <= 0:
                         raise ContractError("Study budget exhausted")
                     fixed(
-                        root / f"{stage}-wave-{begin // size + 1}.json",
+                        root / f"{stage}-wave-{begin // width + 1}.json",
                         dict(
                             tasks=[r["task"] for r in wave],
                             per_shard_grant=str(grant),

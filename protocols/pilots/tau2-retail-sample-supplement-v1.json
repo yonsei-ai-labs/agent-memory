@@ -1,0 +1,35 @@
+{
+  "profile": "tau2-retail-sample-expansion-01",
+  "directory": "tau2-retail-sample-expansion-01-r2",
+  "original_directory": "tau2-retail-sample-expansion-01-r1",
+  "total_usd_limit": 5,
+  "stages": [
+    "solve1",
+    "solve2",
+    "solve3"
+  ],
+  "concurrency_by_stage": {
+    "solve1": 2
+  },
+  "episode_admission": {
+    "codes": [
+      "HTTP_429",
+      "HTTP_502",
+      "HTTP_503",
+      "HTTP_504"
+    ],
+    "seconds": [
+      30,
+      60,
+      120,
+      240,
+      300
+    ]
+  },
+  "maximum_unpriced_per_shard": 6,
+  "prior": "The original 78 fully sealed shards stay read-only. The provider returned HTTP 503 on 24 DeepSeek simulator requests with no generation ID. Preserve these 24 allocated outcomes as ungraded. The old guard held six whole shard grants after a fourth 503. For this separate registration reconstruct every affected original request and reserve its full maximum at the pinned endpoint terms. All 24 reservations share the original aggregate $5 limit with the supplement.",
+  "schedule": "Only the 12 still-unstarted original solve1 slots and all 792 previously unsent solve2/3 slots are eligible. Match original task, solver seed, order within each shard, original writer or control. Never repeat an attempted episode. Allocate fresh execution IDs and retain old unstarted allocation IDs as lineage. The six original errors beyond the per-shard receipt count are the only adjustment to original cost coverage; keep the old grant calculation separately.",
+  "outage": "On the first untouched episode use a single probe, counting its result in its assigned cell. After a real transient error stop admitting new episodes, respect a 30 to 300 second cooldown for these provider receipts, and let only one new allocated episode test recovery. In-flight episodes may finish. Preserve all failed probes. A shard contains no more than six episodes with one terminating routing failure each; bound every qualified receipt against its exact request before admitting more spend. Other unknown costs keep their complete grant. Models, route, data, prompts, and scoring stay as registered.",
+  "expansion_protocol_sha256": "9aafd6f0da84b09d9e3d94dec42032f63a8a8ea21b8426072a64a457e49caace",
+  "original_registration_sha256": "b8d5e7c49421135f640a0bac2e51d60ae091e41e8bb10fe32edebd5fb94b2f64"
+}
