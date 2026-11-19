@@ -1,0 +1,31 @@
+{
+  "format": "agent-memory-same-customer-transfer/v1",
+  "status": "ready",
+  "name": "tau2-same-customer-transfer-01",
+  "nomination_ref": {"path":"artifacts/analyses/20261119-memory-design-review.json","sha256":"c1699b2cf3fe3a04c7e2b2bbe13ab46588cfca2285662da93c82c00fd645a06c"},
+  "inventory_ref": {"path":"artifacts/analyses/20261119-frozen-bank-preflight.json","sha256":"898da02d03f118991c6f5fb2850d38f42fc90a20b5ee81bc17acc1830866fa26"},
+  "airline_ref": {"path":"protocols/pilots/tau2-new-customer-forms-v1.json","sha256":"0a73306f4ccb6f6a2e7a648c02b70e4fef274f2a7574e9a136dac06132c2062e"},
+  "tasks": ["22", "48"],
+  "pairs": [{"source":"17","target":"22"},{"source":"3","target":"48"}],
+  "split": "test",
+  "forms": ["fact","episode","lesson","procedure"],
+  "controls": ["no_memory","empty_preload"],
+  "delivery": "preload",
+  "writer_repetitions": [1,2],
+  "solver_seeds_by_wave_and_writer": [[8,9],[9,8]],
+  "scope": "Previously observed airline customers, other official tasks, unchanged original notes including voluntary empties. The two native tasks start in fresh business environments. The original writer sees only the first-pass public experience. Rubrics, target records, reference actions, synthetic edits and grading are analyst-only.",
+  "primary": "Compare each authentic memory form with the fresh no-memory assignment in the same customer, writer and solver seed. Preserve paired gains, losses, stable passes, stable failures, missing and shared control IDs. Report the two customers separately. Report both official success and the preregistered task-specific behavioral outcomes.",
+  "secondary": "Compare with matched empty preload and with concordant controls. Separate the first-pass failure on 17 and success on 3 from counterfactual improvement/harm. Record source snapshot hashes, actual exposure, worker/user usage, failures and costs. This developmental comparison will not select an overall winning form.",
+  "native_behavior": {
+    "22": "Compare executed successful changes to the three reference name/argument pairs on the current FQ8APE reservation. Report how many different changes exactly matched, wrong reservation writes, extra or rejected changes and first explicit approval before any mutation. For that approval distinguish a specific previously described action and generic assent. Preserve turn evidence. A change merely offered to the customer does not count.",
+    "48": "Add a separate service outcome requiring a successfully returned get_reservation_details for current 3RK2T9 before a customer-facing clear denial/explanation that connects this reservation to a valid current eligibility reason, and no completed unauthorized write. Examples include the actual May 2 booking being outside the 24-hour window, or verified current class/insurance/status with an eligibility conclusion. A referral summary visible only to the human tool, quoting only the customer's ten-hour claim or generic rules alone do not qualify. Record current/old JMO1MG reads, their order vs current customer disclosure, attempted/completed writes, unsupported affirmative cancellation/refund promises, and referral separately."
+  },
+  "fixed_decision_plan": "Separate paired one-reply experiment. Use real same-customer public profile observations shared byte-for-byte within each checkpoint. For each customer compare a missing identifying cue with the current reservation explicitly supplied. On 22 the customer refers to the same New York-to-Chicago trip; on 48 the customer asks about a different booking. Score direct target, target in batch and unrelated lookups, any mutation, and request for the current reference in the ambiguous other-booking case. Use authentic writer banks and matched empty as a connection to native results; controlled diagnostic twins differ in a single authored cue line, with a common neutral title and identical visible metadata. Freeze texts, source evidence, assignment order and budgets before examining target outcomes.",
+  "order": "Hash-sorted arm order within writer, target and wave. Two crossed solver seeds per writer, four independent shards in parallel. The user simulator is not seeded. No replacement submissions for started assignments.",
+  "per_task_wave_guards": {"max_calls":1500,"max_usd":0.5,"max_seconds":4800},
+  "max_concurrent_shards": 4,
+  "http_timeout_seconds": 150,
+  "unpriced_http": {"codes":[429,502,503,504],"maximum_per_stage":12},
+  "total_usd_limit": 2,
+  "fixed_decision_separate_max_usd": 1.5
+}
