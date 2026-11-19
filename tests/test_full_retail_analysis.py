@@ -1,11 +1,27 @@
 import unittest
 from types import SimpleNamespace
+from unittest.mock import Mock
 
 from scripts.analyze_full_retail import compare
-from scripts.replay_full_retail_fields import aligned_fields
+from scripts.replay_full_retail_fields import aligned_fields, reference_state
 
 
 class FullRetailComparisonTests(unittest.TestCase):
+    def test_failed_reference_read_preserves_following_reference_update(self):
+        env = Mock()
+        env.make_tool_call.side_effect = [ValueError("User not found"), {}]
+        env.get_db_hash.return_value = "updated"
+        env.get_user_db_hash.return_value = None
+        target, errors = reference_state(
+            env,
+            [{"name": "lookup", "arguments": {}}, {"name": "update", "arguments": {}}],
+        )
+        self.assertEqual(target, ("updated", None))
+        self.assertEqual(env.make_tool_call.call_count, 2)
+        self.assertEqual(
+            errors, [dict(call_index=0, operation="lookup", error="User not found")]
+        )
+
     def test_field_replays_require_matching_operations_requestors_and_keys(self):
         def call(name, arguments, requestor="assistant"):
             return SimpleNamespace(name=name, arguments=arguments, requestor=requestor)

@@ -23,6 +23,23 @@ def state_hashes(env):
     return env.get_db_hash(), env.get_user_db_hash()
 
 
+def reference_state(env, actions):
+    errors = []
+    # The native EnvironmentEvaluator continues after an error in a reference action.
+    for i, action in enumerate(actions or []):
+        try:
+            env.make_tool_call(
+                action["name"],
+                requestor=action.get("requestor", "assistant"),
+                **action["arguments"],
+            )
+        except Exception as error:
+            errors.append(
+                dict(call_index=i, operation=action["name"], error=str(error))
+            )
+    return state_hashes(env), errors
+
+
 def aligned_fields(left, right):
     if [(c.name, c.requestor) for c in left] != [(c.name, c.requestor) for c in right]:
         return "different_operations", []
@@ -77,12 +94,9 @@ def replay(workspace, detail):
             message_history=sim.messages,
             strict=True,
         )
-        for action in task["evaluation_criteria"]["actions"] or []:
-            expected.make_tool_call(
-                action["name"],
-                requestor=action.get("requestor", "assistant"),
-                **action["arguments"],
-            )
+        target, reference_errors = reference_state(
+            expected, task["evaluation_criteria"]["actions"]
+        )
         replies = {m.id: m for m in sim.messages if m.role == "tool"}
         calls = [
             c
@@ -94,7 +108,6 @@ def replay(workspace, detail):
         ]
         errors = [observed.get_response(c).error for c in calls]
         before = state_hashes(observed)
-        target = state_hashes(expected)
         if (
             errors != [replies[c.id].error for c in calls]
             or before != state_hashes(strict)
@@ -103,10 +116,10 @@ def replay(workspace, detail):
             raise ContractError(
                 "Original mutation-only replay differs from the strictly graded trajectory"
             )
-        return calls, opts, target, before, errors
+        return calls, opts, target, before, errors, reference_errors
 
     def change(run, i, key, alternative):
-        calls, opts, target, before, errors = trace(run)
+        calls, opts, target, before, errors, _ = trace(run)
         env = make(**opts)
         edited = list(calls)
         edited[i] = calls[i].model_copy(
@@ -132,8 +145,6 @@ def replay(workspace, detail):
         if pair["control"] != "no_memory" or pair["state"] not in {"gain", "loss"}:
             continue
         m, b = pair["memory_run"], pair["control_run"]
-        a, other = trace(m)[0], trace(b)[0]
-        kind, diffs = aligned_fields(a, other)
         evidence = dict(
             task=pair["task"],
             form=pair["arm"],
@@ -142,10 +153,24 @@ def replay(workspace, detail):
             control=b,
             memory_db=cells[m]["grade"]["db_match"],
             control_db=cells[b]["grade"]["db_match"],
+            fields=[],
+        )
+        outcomes.append(evidence)
+        if evidence["memory_db"] is None or evidence["control_db"] is None:
+            evidence["status"] = "official_db_unavailable"
+            continue
+        left, right = trace(m), trace(b)
+        if left[2] != right[2] or left[5] != right[5]:
+            raise ContractError(
+                "Paired episodes must share the same reference database and actions"
+            )
+        a, other = left[0], right[0]
+        kind, diffs = aligned_fields(a, other)
+        evidence.update(
             memory_operations=[c.name for c in a],
             control_operations=[c.name for c in other],
+            reference_errors=left[5],
             status=kind,
-            fields=[],
         )
         for i, key in diffs:
             evidence["fields"].append(
@@ -157,7 +182,6 @@ def replay(workspace, detail):
                     control_swap=change(b, i, key, a[i].arguments[key]),
                 )
             )
-        outcomes.append(evidence)
     return dict(
         study=cfg["name"],
         scope="Exploratory all discordant memory versus shared pure no-memory pairs. Align accepted business mutations by sequence and requestor, then exchange every differing top-level argument independently in both directions. Customers, memory choices and NL scores are not regenerated.",
