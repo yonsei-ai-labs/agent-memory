@@ -85,12 +85,30 @@ def native_analysis(workspace):
             report = read_json((workspace / e['report_path']).read_bytes())
             e['public_decision_timing'] = native_timing(report['messages'], e['task_id'])
     by = {(e['task_id'], e['writer_block'], e['solver_seed'], e['arm']): e for e in episodes}
+    sources = {s['task_id']: s['first_pass_success'] for s in manifest['tasks']}
+    arms = defaultdict(Counter)
+    intersections = []
     pairs = []
     for e in episodes:
+        counts = arms[e['arm']]
+        counts['planned'] += 1
+        counts['graded'] += type(e['official_success']) is bool
+        counts['success'] += e['official_success'] is True
+        counts['first_pass_' + ('success' if sources[e['task_id']] else 'failure') + '_to_' +
+               {True:'success',False:'failure',None:'ungraded'}[e['official_success']]] += 1
+        for k in ('list_requests', 'get_requests', 'list_returns', 'get_returns', 'title_spans', 'body_spans'):
+            counts[k] += e.get(k, 0)
+            counts[k+'_episodes'] += e.get(k, 0) > 0
         delivery = manifest['delivery_arms'].get(e['arm'])
         if not delivery:
             continue
         controls = list(state['cfg']['controls'])
+        c0, c1 = (by[e['task_id'], e['writer_block'], e['solver_seed'], c] for c in controls)
+        if c0['official_success'] is not None and c0['official_success'] == c1['official_success']:
+            direction = transition(e['official_success'], c0['official_success'])
+            if direction in {'gain','loss'}:
+                intersections.append(dict(task=e['task_id'], writer=e['writer_block'], seed=e['solver_seed'],
+                    arm=e['arm'], outcome=direction, treatment=e['index'], pure=c0['index'], empty=c1['index']))
         if delivery['read_mode'] == 'preload':
             controls.append(delivery['writer'] + '__on_demand')
         for ctrl in controls:
@@ -106,7 +124,8 @@ def native_analysis(workspace):
                 known_usd=str(sum((Decimal(e.get('known_usd', '0')) for e in episodes), Decimal(0))),
                 reserved_usd=str(sum((Decimal((e.get('reservation') or {}).get('usd','0')) for e in episodes), Decimal(0))),
                 unpriced_requests=sum(b['unknown_count'] for e in episodes for b in e.get('billing_by_role',{}).values()),
-                http_calls=sum(e.get('http_calls', 0) for e in episodes), episodes=episodes, pairs=pairs)
+                http_calls=sum(e.get('http_calls', 0) for e in episodes), first_pass_success=sources,
+                arm_counts=dict(arms), differs_from_both_controls=intersections, episodes=episodes, pairs=pairs)
 
 
 def join(workspace, native, raw, labels):
