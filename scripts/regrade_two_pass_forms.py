@@ -45,7 +45,8 @@ def regrade(run, workspace, checkout):
         loaded = reload_recorded_call(lang, domain)
         if (domain != expected_domain or native.communicate_scoring.scorer.value != "substring"
                 or native.communicate_scoring != orch.call_context.communicate_scoring
-                or not model_free_basis(domain, orch.task.evaluation_criteria)):
+                or not model_free_basis(domain, orch.task.evaluation_criteria)
+                or (domain == "airline" and list(orch.task.evaluation_criteria.reward_basis) != ["DB", "COMMUNICATE"])):
             raise ContractError("Read-only replay requires the declared model-free native criteria")
         return orch.task, native.communicate_scoring, lang, language_environment_kwargs(loaded) or None
 
