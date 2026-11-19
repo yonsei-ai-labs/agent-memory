@@ -25,6 +25,12 @@ uv run --frozen python scripts/reproduce_experiment.py --experiment baseline_dia
 
 `--inputs-root`는 원본을 복원한 저장소 형태의 폴더로 바꿀 때 사용한다. 기존 출력 폴더는 덮어쓰지 않는다. `--live`, 원본 재시도·재개, 주석 재작성 모드는 제공하지 않는다. 프로세스 timeout 기본 1800초는 이 오프라인 재현 실행기의 한도이며 연구 프로토콜의 실행 숫자가 아니다.
 
+## 여러 journal로 구성한 배치
+
+별도 v2 registry는 `format`에 `agent-memory-historical-reproduction-registry/v2`를 쓴다. 배치 입력의 `kind`는 `run_batch`, `path`는 `runs/` 아래의 배치 폴더, `completion_sha256`은 그 폴더의 `completion.json` 원본 바이트 SHA-256이다. 실험 자체의 배치 경로는 고정 protocol lock의 `planned_output`과 일치해야 한다. 실행할 때 `--registry`로 해당 v2 파일을 지정한다.
+
+준비 검사는 완료 기록의 `allocation_sha256`과 `allocations.json`을 대조하며, `control.json`이 있으면 `control_sha256`도 대조한다. 생성된 각 `jobs/<id>/log.jsonl`은 해당 배정의 `result.log_sha256`으로 확인하고, 존재하는 내용 주소 blob은 파일명과 바이트 해시를 대조한다. 실제 job 디렉터리 집합은 `not_started`를 제외한 배정과 일치해야 한다. 원본을 복사하는 동안 생성된 모든 job의 기존 `writer.lock`과 배치 루트에 있는 경우 그 잠금까지 공유 모드로 잡는다. 잠금을 얻지 못하면 검토 시작 전에 중단한다. [배치 입력 행동 검사](../../tests/test_historical_reproduction_batch.py)
+
 ## 격리와 저장량
 
 1. 지정한 commit의 detached worktree를 만든다. Git branch나 현재 미커밋 변경을 checkout하지 않는다.

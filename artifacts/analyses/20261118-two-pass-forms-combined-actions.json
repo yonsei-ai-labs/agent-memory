@@ -1,0 +1,779 @@
+{
+  "format": "agent-memory-two-pass-forms-linked-action-review/v1",
+  "reviewed_pairs": 9,
+  "pairs": {
+    "pair_027fa886229e276757ed": {
+      "label": "both_failure",
+      "treatment": "fact",
+      "jobs_in_blind_order": [
+        237,
+        235
+      ],
+      "task_id": "15",
+      "repetition": 1,
+      "treatment_job": 237,
+      "control_job": 235,
+      "judgment": {
+        "category": "policy_or_eligibility",
+        "user_context": "different",
+        "first_difference": "첫 답변에서 A는 목적지 유지 규정을 운임 조회에도 적용해 PHL만 확인하겠다고 했다. B는 기존 예약의 목적지를 바꿀 수 없어도 EWR 운임을 비교할 수 있다고 했다. A 고객은 두 공항 모두 괜찮다고 했고, B 고객은 첫 요청부터 두 공항 비교를 명시했다.",
+        "sides": [
+          {
+            "index": 2,
+            "quote": "I can only check Newark if it’s already the destination on your reservation.",
+            "end_index": 19,
+            "end_quote": "Transfer successful",
+            "observed_result": "PHL 207달러를 제시했다. 고객이 최종 비용 확인 전 승인을 보류하고 견적·좌석 보류 또는 상담원 이관을 요청해, 예약 변경 없이 이관됐다."
+          },
+          {
+            "index": 2,
+            "quote": "I can check economy (not basic economy) flights to Newark (EWR) and Philadelphia (PHL)",
+            "end_index": 17,
+            "end_quote": "Transfer successful",
+            "observed_result": "PHL 207달러와 EWR 243달러를 제시했으나 조회된 EWR 최저가는 236달러였다. 고객이 PHL을 선택하고 변경 비용과 연결 시간을 묻자, 연결 시간은 이관 요약에만 담고 예약 변경 없이 이관했다."
+          }
+        ]
+      },
+      "sides_in_blind_order": [
+        {
+          "job": 237,
+          "arm": "fact",
+          "run_id": "r_cf94d4fe667742c7b7d7cc862ef930b5",
+          "official_success": false,
+          "reward": 0.0,
+          "db_match": false,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        },
+        {
+          "job": 235,
+          "arm": "no_memory",
+          "run_id": "r_53faebe0ce3c440faf51a8db97f4dead",
+          "official_success": false,
+          "reward": 0.0,
+          "db_match": false,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        }
+      ],
+      "source_experience": {
+        "first_pass_run_id": "r_1368857ae0db46bc8fafbf10a50ca62a",
+        "first_pass_success": true,
+        "public_context_sha256": "8abb0e1e061b11589cc29b1b769e7ce3cff8a62c8c0ba303a3162d46ffcb5ec2"
+      },
+      "assigned_writer": {
+        "index": 2,
+        "run_id": "r_eae6d35255e24b89a718b35b9bc7d7b4",
+        "snapshot_id": "snap_17694fd31bb64f189b091ea4d0d85fbc",
+        "status": "empty",
+        "item_count": 0,
+        "fact": false,
+        "episode": false,
+        "lesson": false,
+        "procedure": false,
+        "grounding": "empty",
+        "main_note_quote": "",
+        "main_source_quote": "",
+        "suspect_quote": "",
+        "rationale": ""
+      }
+    },
+    "pair_67f832d2462e4034fed2": {
+      "label": "both_failure",
+      "treatment": "episode",
+      "jobs_in_blind_order": [
+        234,
+        235
+      ],
+      "task_id": "15",
+      "repetition": 1,
+      "treatment_job": 234,
+      "control_job": 235,
+      "judgment": {
+        "category": "current_facts_or_arithmetic",
+        "user_context": "comparable",
+        "first_difference": "같은 207달러 PHL 경로를 찾은 뒤 A는 기존 운임과의 차액을 2,580달러 환불로 제시하고 변경 승인을 구했다. B는 검색가를 확정 재예약 가격과 구분하고 고려할지만 물었다.",
+        "sides": [
+          {
+            "index": 17,
+            "quote": "the difference is a $2,580 refund",
+            "end_index": 24,
+            "end_quote": "Transfer successful",
+            "observed_result": "고객이 수수료가 0이거나 사전 고지될 때만 승인하자 변경을 실행하지 않고 이관했다."
+          },
+          {
+            "index": 14,
+            "quote": "These are current search prices, not a confirmed rebooking price.",
+            "end_index": 17,
+            "end_quote": "Transfer successful",
+            "observed_result": "고객이 변경 총비용 확인을 요구하자 이관했다. 예약 변경 기록은 없다."
+          }
+        ]
+      },
+      "sides_in_blind_order": [
+        {
+          "job": 234,
+          "arm": "episode",
+          "run_id": "r_7a0cc9f5d6e943e2b4324a9865782102",
+          "official_success": false,
+          "reward": 0.0,
+          "db_match": false,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 24,
+          "exposed_notes": [
+            {
+              "title": "Airline modification experience: ATL–PHL reservation M05KNL",
+              "body": "Past public airline-agent interaction (evaluation feedback was level none; no grading details available). Chronology: User supplied ID aarav_garcia_1177 and lacked reservation ID; tools located M05KNL as the matching ATL–PHL one-way business itinerary for 2024-05-23 (via ORD), while another reservation was unrelated. User requested next-day travel and cheapest regular Economy, explicitly distinguishing it from Basic Economy. Search returned no direct ATL–PHL flights and one-stop options; assistant identified HAT110 ATL–LGA plus HAT172 LGA–PHL for 2024-05-24 at $207 total. User then requested an EWR comparison; search found HAT059 ATL–DFW plus HAT142 DFW–EWR at $236, arriving 9:30 PM, stated as $29 more. User chose the PHL option with “let's go with that one then”; the change was submitted using profile gift card 7175. Tool response showed Economy fare $207 and a -$2,580 gift-card payment-history entry; assistant reported the refund. User questioned it; retrieved details showed old segment prices $1,936+$851=$2,787, new $105+$102=$207, difference $2,580, matching the recorded entry. User accepted explanation. The action followed affirmative user selection, but policy context required listing details and explicit confirmation before booking updates; exact confirmation requirements/interpretation are not externally graded here. Search, fare calculations, tool outcomes, and successful update are observed in this one case only; do not treat as proof of general correctness."
+            }
+          ]
+        },
+        {
+          "job": 235,
+          "arm": "no_memory",
+          "run_id": "r_53faebe0ce3c440faf51a8db97f4dead",
+          "official_success": false,
+          "reward": 0.0,
+          "db_match": false,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        }
+      ],
+      "source_experience": {
+        "first_pass_run_id": "r_1368857ae0db46bc8fafbf10a50ca62a",
+        "first_pass_success": true,
+        "public_context_sha256": "8abb0e1e061b11589cc29b1b769e7ce3cff8a62c8c0ba303a3162d46ffcb5ec2"
+      },
+      "assigned_writer": {
+        "index": 4,
+        "run_id": "r_b272d64a8fbd4ed9a26f8b9c933603ef",
+        "snapshot_id": "snap_403561bdc6a84d7aa9550b54efff7f82",
+        "status": "completed",
+        "item_count": 1,
+        "fact": true,
+        "episode": true,
+        "lesson": true,
+        "procedure": false,
+        "grounding": "mixed",
+        "main_note_quote": "User questioned it; retrieved details showed old segment prices $1,936+$851=$2,787, new $105+$102=$207, difference $2,580",
+        "main_source_quote": "The system shows the original business-class fare as $2,787 ($1,936 for HAT227 plus $851 for HAT139).",
+        "suspect_quote": "User questioned it; retrieved details showed old segment prices $1,936+$851=$2,787",
+        "rationale": "The chronology, totals and recorded refund are corroborated. The later retrieval showed the new segments, original payment total and refund. The individual old segment prices came from the earlier lookup. The caveat about selection and explicit authorization is grounded in the policy."
+      }
+    },
+    "pair_b52647a87d8cd1fe8dd6": {
+      "label": "both_failure",
+      "treatment": "lesson",
+      "jobs_in_blind_order": [
+        238,
+        235
+      ],
+      "task_id": "15",
+      "repetition": 1,
+      "treatment_job": 238,
+      "control_job": 235,
+      "judgment": {
+        "category": "policy_or_eligibility",
+        "user_context": "comparable",
+        "first_difference": "두 공항 중 어느 곳이든 된다는 요청에 B는 처음부터 기존 예약의 도착지 변경 제한을 설명했다. A는 날짜와 ID를 묻고, 나중에 EWR를 더 비싼 경로로 비교했지만 기존 예약의 도착지 제한은 설명하지 않았다.",
+        "sides": [
+          {
+            "index": 2,
+            "quote": "check eligible replacement flights",
+            "end_index": 23,
+            "end_quote": "Transfer successful",
+            "observed_result": "고객이 수하물 규정과 변경 수수료 확인 전에는 진행하지 않겠다고 해 이관했다."
+          },
+          {
+            "index": 2,
+            "quote": "changing an existing reservation must keep its original origin and destination",
+            "end_index": 17,
+            "end_quote": "Transfer successful",
+            "observed_result": "PHL을 선택한 고객이 총비용·원결제수단을 확인해 달라고 하자 이관했다. 두 경우 모두 변경은 실행되지 않았다."
+          }
+        ]
+      },
+      "sides_in_blind_order": [
+        {
+          "job": 238,
+          "arm": "lesson",
+          "run_id": "r_785dba9b83e94c8ba0c5120c5d2fe261",
+          "official_success": false,
+          "reward": 0.0,
+          "db_match": false,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 24,
+          "exposed_notes": [
+            {
+              "title": "Airline flight-change workflow lessons",
+              "body": "In a past airline reservation change, the assistant gathered the user's profile/reservation, searched direct and one-stop itineraries, distinguished regular Economy from Basic Economy, compared a PHL option ($207) with an EWR option ($236), and explained a recorded $2,580 refund as original $2,787 minus new $207. The user had been told the proposed flights and gift-card adjustment method before later selecting the PHL itinerary; update tool then confirmed the refund. No separate evaluation feedback was provided, so correctness beyond the visible policy/data is unverified. Lesson/caution: before modifying, clearly restate itinerary, cabin, and payment/refund method and obtain unambiguous consent; calculate and describe the adjustment from tool-backed prices, and report it as recorded only after the update succeeds. In comparisons, make clear fare totals apply to the chosen cabin and passenger count."
+            }
+          ]
+        },
+        {
+          "job": 235,
+          "arm": "no_memory",
+          "run_id": "r_53faebe0ce3c440faf51a8db97f4dead",
+          "official_success": false,
+          "reward": 0.0,
+          "db_match": false,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        }
+      ],
+      "source_experience": {
+        "first_pass_run_id": "r_1368857ae0db46bc8fafbf10a50ca62a",
+        "first_pass_success": true,
+        "public_context_sha256": "8abb0e1e061b11589cc29b1b769e7ce3cff8a62c8c0ba303a3162d46ffcb5ec2"
+      },
+      "assigned_writer": {
+        "index": 3,
+        "run_id": "r_638c1d40bfee4cfdb6991062af649ad3",
+        "snapshot_id": "snap_f2ad1b05cc06437c88ec9110e67ee466",
+        "status": "completed",
+        "item_count": 1,
+        "fact": true,
+        "episode": true,
+        "lesson": true,
+        "procedure": true,
+        "grounding": "supported",
+        "main_note_quote": "before modifying, clearly restate itinerary, cabin, and payment/refund method and obtain unambiguous consent",
+        "main_source_quote": "Shall I change reservation M05KNL to these flights in regular Economy and use that gift card for any fare adjustment?",
+        "suspect_quote": "",
+        "rationale": "The quote precedes a request to compare EWR and the later PHL choice. The arithmetic and subsequent confirmation of the recorded refund support the note’s sequencing and its caution about consent."
+      }
+    },
+    "pair_d5443d17c38699071bee": {
+      "label": "gain",
+      "treatment": "procedure",
+      "jobs_in_blind_order": [
+        233,
+        235
+      ],
+      "task_id": "15",
+      "repetition": 1,
+      "treatment_job": 233,
+      "control_job": 235,
+      "judgment": {
+        "category": "policy_or_eligibility",
+        "user_context": "comparable",
+        "first_difference": "A는 PHL·EWR 두 곳을 조회해 변경 옵션으로 제시하겠다고 하고, 나중에는 EWR로의 가상 환불액까지 제시해 선택을 요청했다. B는 첫 답변에서 기존 예약의 도착지를 유지해야 한다고 설명했다.",
+        "sides": [
+          {
+            "index": 2,
+            "quote": "I’ll check your reservation and available Economy flights from ATL to either PHL or EWR",
+            "end_index": 20,
+            "end_quote": "The reservation record shows a $2,580 refund credited to the original gift card",
+            "observed_result": "고객이 PHL 편을 골라 명시적으로 승인했다. 편 변경 도구를 호출했고 2,580달러 환불이 기재됐다."
+          },
+          {
+            "index": 2,
+            "quote": "changing an existing reservation must keep its original origin and destination",
+            "end_index": 17,
+            "end_quote": "Transfer successful",
+            "observed_result": "고객은 PHL 편 변경 전에 수수료 포함 총비용을 확인해 달라고 했다. 상담원이 이관했고 변경 호출은 없었다."
+          }
+        ]
+      },
+      "sides_in_blind_order": [
+        {
+          "job": 233,
+          "arm": "procedure",
+          "run_id": "r_dfb43144fe894e12a76e7411868a5475",
+          "official_success": true,
+          "reward": 1.0,
+          "db_match": true,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 20,
+          "exposed_notes": [
+            {
+              "title": "Airline reservation changes: confirmation and fare checks",
+              "body": "For airline reservation modifications under the provided policy: first obtain the user ID and reservation ID (help locate the reservation if needed), then inspect reservation details and confirm that the requested change preserves origin, destination, and trip type, and that no disallowed flown/basic-economy condition applies. Search current availability and compare the requested cabin specifically (regular Economy is distinct from Basic Economy); verify each itinerary's segment prices add up, seat availability, routing, and date. Give the customer exact itinerary and fare/payment-adjustment details, then obtain explicit confirmation before updating. Policy says only one tool call at a time, so do not issue parallel calls. Use a single eligible payment/refund method already on profile for flight changes. After update, verify returned reservation/payment history and accurately recap. In the example, cheapest PHL regular Economy was $207 via LGA; EWR was $236 via DFW (despite a very long layover), and user ultimately chose PHL. Tool response recorded original fare $2,787, new fare $207, and $2,580 refund. This arithmetic matches returned data, but underlying payment/profile-balance implications were not independently established. Evaluation feedback was level none, so no grading conclusion is available."
+            }
+          ]
+        },
+        {
+          "job": 235,
+          "arm": "no_memory",
+          "run_id": "r_53faebe0ce3c440faf51a8db97f4dead",
+          "official_success": false,
+          "reward": 0.0,
+          "db_match": false,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        }
+      ],
+      "source_experience": {
+        "first_pass_run_id": "r_1368857ae0db46bc8fafbf10a50ca62a",
+        "first_pass_success": true,
+        "public_context_sha256": "8abb0e1e061b11589cc29b1b769e7ce3cff8a62c8c0ba303a3162d46ffcb5ec2"
+      },
+      "assigned_writer": {
+        "index": 1,
+        "run_id": "r_76105a55229740319eb34a228678518f",
+        "snapshot_id": "snap_125a9fa8c45e40189e4d4c2fa5d00df8",
+        "status": "completed",
+        "item_count": 1,
+        "fact": true,
+        "episode": true,
+        "lesson": true,
+        "procedure": true,
+        "grounding": "supported",
+        "main_note_quote": "After update, verify returned reservation/payment history and accurately recap.",
+        "main_source_quote": "The difference is $2,580, matching the recorded refund to your gift card.",
+        "suspect_quote": "",
+        "rationale": "Both itinerary searches and the refund entry support the example. The EWR connection arrives at DFW at 09:00 and leaves at 18:00. The proposed workflow includes evidence checks, a confirmation gate and post-update verification."
+      }
+    },
+    "pair_720b8a4989cf2da6a8f1": {
+      "label": "loss",
+      "treatment": "fact",
+      "jobs_in_blind_order": [
+        245,
+        251
+      ],
+      "task_id": "17",
+      "repetition": 1,
+      "treatment_job": 245,
+      "control_job": 251,
+      "judgment": {
+        "category": "request_clarification",
+        "user_context": "different",
+        "first_difference": "A는 승객 변경에 필요한 이름과 생년월일을 먼저 물었고 고객은 프로필을 사용해 달라고 했다. 첫 요청에 뉴욕–시카고 노선까지 밝힌 B 고객에게는 승객 수를 유지하는 교체인지 확인했다. 이후 같은 예약을 찾았지만 A는 기준일 5월 15일보다 뒤인 5월 25일을 과거로 판단했다.",
+        "sides": [
+          {
+            "index": 2,
+            "quote": "I’ll also need your full name and date of birth for the passenger update.",
+            "end_index": 15,
+            "end_quote": "Since the itinerary date has passed, I can’t update the reservation.",
+            "observed_result": "고객이 FQ8APE를 지목한 뒤에도 A는 날짜가 지났다고 두 번 안내했다. 고객은 이를 받아들였고 변경 도구는 호출되지 않았다."
+          },
+          {
+            "index": 2,
+            "quote": "do you mean replace the current passenger’s details while keeping the same number of passengers?",
+            "end_index": 22,
+            "end_quote": "the cabin is now economy, the passenger is Omar Rossi, and the reservation includes 3 checked bags.",
+            "observed_result": "고객이 세 변경을 승인하고 기프트카드를 선택했다. 객실을 이코노미로 바꾸고 승객 1명을 교체한 뒤 수하물 3개를 기록했다. 도구에 객실 변경 비용 209달러가 남았다."
+          }
+        ]
+      },
+      "sides_in_blind_order": [
+        {
+          "job": 245,
+          "arm": "fact",
+          "run_id": "r_c484a1ecbd384c8cbd0b3b5d1b5a0b18",
+          "official_success": false,
+          "reward": 0.0,
+          "db_match": false,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 12,
+          "exposed_notes": [
+            {
+              "title": "Airline modification interaction: basic-economy cabin policy distinction",
+              "body": "Observed in one airline-agent interaction (task policy stated current time 2024-05-15): For reservation FQ8APE, basic_economy itinerary EWR–IAH–ORD had future segments dated 2024-05-25. The agent told the user the reservation's cabin upgrade was disallowed because it was basic economy. This conflicts with the supplied policy: basic economy flights cannot have their flight itinerary modified, but cabin class may be changed on any reservation, including basic economy, if no segment has already been flown; cabin changes apply to all segments. The segments shown were future relative to the stated current date, so the policy's flown-flight restriction did not appear to bar an upgrade. No cabin change was attempted, and no upgraded fare/price difference was checked or established. Avoid conflating flight itinerary changes with cabin changes; check flown status and fare difference before proceeding, then obtain explicit confirmation of exact cabin update/payment or refund details before database update.\n\nOther directly observed successful handling in this interaction: profile lookup found four reservations after user supplied their user ID but lacked a reservation ID; agent asked which one, then identified FQ8APE as Newark–Chicago via Houston. User allowed use of DOB on profile; agent replaced the sole passenger with profile user without changing passenger count, after confirming changes. User confirmed 3 checked bags; gold member/basic economy allowance was explained as 2 free and 1 nonfree, $50. Agent obtained payment method choice before adding baggage; update reported 3 total, 1 nonfree, with $50 charged to gift card ending 0333. No separate feedback beyond evaluation_feedback level 'none' was supplied. Stored as a single observed case, not evidence about other systems or fare outcomes."
+            }
+          ]
+        },
+        {
+          "job": 251,
+          "arm": "no_memory",
+          "run_id": "r_9be5349fd5af4874861b99599d21479d",
+          "official_success": true,
+          "reward": 1.0,
+          "db_match": true,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        }
+      ],
+      "source_experience": {
+        "first_pass_run_id": "r_d952bf758eb843d6b7fdafdc0747a06a",
+        "first_pass_success": false,
+        "public_context_sha256": "6144de11d0c51851c0f8ee46871227849bfa9c9f5228ca5f8c0f52b76e825306"
+      },
+      "assigned_writer": {
+        "index": 12,
+        "run_id": "r_cafbac632c374eea8169b183f120b018",
+        "snapshot_id": "snap_cadf6c78ae5c4e1581c51e21c8460fce",
+        "status": "completed",
+        "item_count": 1,
+        "fact": true,
+        "episode": true,
+        "lesson": true,
+        "procedure": true,
+        "grounding": "supported",
+        "main_note_quote": "check flown status and fare difference before proceeding, then obtain explicit confirmation",
+        "main_source_quote": "In other cases, all reservations, including basic economy, can change cabin without changing the flights.",
+        "suspect_quote": "",
+        "rationale": "거절된 객실 변경을 정책 및 여행일과 대조하고 미래의 확인 순서를 제시한다. 실제로 완료한 승객 변경, 수하물 수량과 50달러 기프트카드 결제도 공개 도구 반환으로 확인된다."
+      }
+    },
+    "pair_6c521c76f12b1631c95a": {
+      "label": "both_success",
+      "treatment": "fact",
+      "jobs_in_blind_order": [
+        241,
+        242
+      ],
+      "task_id": "43",
+      "repetition": 1,
+      "treatment_job": 241,
+      "control_job": 242,
+      "judgment": {
+        "category": "simulator_led",
+        "user_context": "different",
+        "first_difference": "A의 첫 발화는 중복 예약했다는 사실만 전했다. B의 고객은 5월 17일 둘 중 하나를 취소하고 싶다고 먼저 밝혔고 후속 질문에 ATL–JFK를 특정했다. A에서는 고객이 대상을 고르기 전에 두 예약의 부적격 안내가 나왔다.",
+        "sides": [
+          {
+            "index": 1,
+            "quote": "I think I messed up and booked two flights for the same day.",
+            "end_index": 21,
+            "end_quote": "neither booking qualifies for cancellation for a change of plans",
+            "observed_result": "이후 고객이 두 편을 차례로 지목하자 미탑승·항공사 미취소와 사유를 확인하고 각각 취소할 수 없다고 설명했다."
+          },
+          {
+            "index": 1,
+            "quote": "I want to cancel one of them.",
+            "end_index": 42,
+            "end_quote": "It has not been canceled.",
+            "observed_result": "ATL–JFK 요청을 이관하고, 대기 중 고객이 선택을 바꾸자 두 번째 예약도 이관했다. 취소는 실행되지 않았다."
+          }
+        ]
+      },
+      "sides_in_blind_order": [
+        {
+          "job": 241,
+          "arm": "fact",
+          "run_id": "r_c4d5cff9a1bb456696357d29b57b6672",
+          "official_success": true,
+          "reward": 1.0,
+          "db_match": true,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 18,
+          "exposed_notes": [
+            {
+              "title": "Airline cancellation policy interaction (May 2024)",
+              "body": "Observed in a past public interaction under a supplied airline-agent policy dated 2024-05-15: user reported same-day duplicate flights, and assistant looked up six reservations and identified D1EW9B (ATL–JFK, May 17) and 9HBUV8 (DEN–BOS via MIA, May 17). User stated reason was accidental double-booking/change of plans. Assistant denied cancellation for both: D1EW9B was basic economy, booked May 4, no insurance; 9HBUV8 was basic economy, booked May 12, had insurance but stated reason was not an insured health/weather reason, and both were outside 24-hour window. Membership was silver; assistant stated that did not change listed eligibility. It also said basic economy cannot be modified. No cancellation/modify tool was called. Policy additionally states transfer is required if any portion has already been flown, and offers cancellation eligibility for business cabin; these facts were not explored in this exchange. Feedback provided was level 'none'; no correctness grading or other feedback available. Treat this only as a record of what was observed, not confirmation that every response was correct."
+            }
+          ]
+        },
+        {
+          "job": 242,
+          "arm": "no_memory",
+          "run_id": "r_792cb6b0344941f48f65a4dd7cb46c7f",
+          "official_success": true,
+          "reward": 1.0,
+          "db_match": true,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        }
+      ],
+      "source_experience": {
+        "first_pass_run_id": "r_ab98910d2b5f416286036393a7b50855",
+        "first_pass_success": true,
+        "public_context_sha256": "4c44a17a25dac2ef77cc126403a167b75e7f11f07c225462cc304128a5938acc"
+      },
+      "assigned_writer": {
+        "index": 5,
+        "run_id": "r_3c432c1ca4234afcbb3529b38bd707fe",
+        "snapshot_id": "snap_b78451f7a10a4d4fadc2faaea143f837",
+        "status": "completed",
+        "item_count": 1,
+        "fact": true,
+        "episode": true,
+        "lesson": false,
+        "procedure": false,
+        "grounding": "supported",
+        "main_note_quote": "assistant looked up six reservations and identified D1EW9B (ATL–JFK, May 17) and 9HBUV8 (DEN–BOS via MIA, May 17).",
+        "main_source_quote": "I found six reservations. Two are scheduled for the same day, May 17, 2024:",
+        "suspect_quote": "",
+        "rationale": "조회 결과, 고객 사유, 두 번의 거절과 변경 호출이 없었다는 사실을 기록했다. 추가 정책은 이 대화에서 다루지 않은 사항으로 명시하고 다음 사례의 행동이나 교훈을 제시하지 않았다."
+      }
+    },
+    "pair_a1633a408bf9a06a4899": {
+      "label": "both_success",
+      "treatment": "episode",
+      "jobs_in_blind_order": [
+        242,
+        240
+      ],
+      "task_id": "43",
+      "repetition": 1,
+      "treatment_job": 240,
+      "control_job": 242,
+      "judgment": {
+        "category": "identity_or_lookup",
+        "user_context": "comparable",
+        "first_difference": "조회 전에 양쪽 고객 모두 5월 17일 ATL–JFK 편과 중복 예약 실수를 명시했다. A는 다른 예약 35V5SM부터 연 뒤 나머지 다섯 건을 한 번에 조회했다. B는 첫 예약 조회에서 바로 D1EW9B를 열었다. 어느 쪽도 고객에게서 예약번호를 받지는 않았다.",
+        "sides": [
+          {
+            "index": 7,
+            "quote": "\"reservation_id\": \"35V5SM\"",
+            "end_index": 42,
+            "end_quote": "It has not been canceled.",
+            "observed_result": "A는 ATL–JFK 편을 즉시 이관했고 고객이 다른 예약도 취소해 달라고 하자 두 번째로 이관했다. 대기가 이어졌고 취소는 없었다."
+          },
+          {
+            "index": 7,
+            "quote": "\"reservation_id\": \"D1EW9B\"",
+            "end_index": 14,
+            "end_quote": "I’m unable to cancel this reservation for that reason, and I haven’t made any changes.",
+            "observed_result": "B는 첫 예약의 취소 조건을 설명하고 두 번째 예약 요청이 들어왔을 때 그 예약을 조회했다. 두 편 모두 취소하지 않았고 고객이 대화를 끝냈다."
+          }
+        ]
+      },
+      "sides_in_blind_order": [
+        {
+          "job": 242,
+          "arm": "no_memory",
+          "run_id": "r_792cb6b0344941f48f65a4dd7cb46c7f",
+          "official_success": true,
+          "reward": 1.0,
+          "db_match": true,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        },
+        {
+          "job": 240,
+          "arm": "episode",
+          "run_id": "r_6760dad5e7124c2c96eecbee007da453",
+          "official_success": true,
+          "reward": 1.0,
+          "db_match": true,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 14,
+          "exposed_notes": [
+            {
+              "title": "Airline support example: duplicate-flight cancellation and modification distinction",
+              "body": "In a past airline-support conversation (policy context current time 2024-05-15), a customer supplied user ID mohamed_hernandez_5188 and said two reservations overlapped on May 17, 2024. Account lookup found D1EW9B (ATL–JFK, basic economy, booked May 4, no insurance) and 9HBUV8 (DEN–BOS via MIA, basic economy, booked May 12, insurance yes); both were one-way May 17 reservations. Customer sought cancellation due to accidental double-booking, first D1EW9B, then 9HBUV8 after being told silver status did not alter eligibility. The assistant declined both: neither booking was within 24 hours, neither was airline-cancelled or business class, and the stated change-of-plans reason was not a covered insurance reason. Those refusals appear consistent with the provided cancellation policy; no cancellation action was taken. In response to whether anything else could be done, assistant said basic economy flights could not be modified. Caution: policy prohibits changing flight segments for basic economy, but separately permits cabin changes for basic economy when no segment has been flown, and permits baggage additions and passenger-detail changes (not passenger-count changes). So the broad wording that basic economy reservations cannot be modified at all was imprecise; qualify it as flight itinerary changes being unavailable and consider other eligible edit types if relevant. No separate evaluation feedback was provided."
+            }
+          ]
+        }
+      ],
+      "source_experience": {
+        "first_pass_run_id": "r_ab98910d2b5f416286036393a7b50855",
+        "first_pass_success": true,
+        "public_context_sha256": "4c44a17a25dac2ef77cc126403a167b75e7f11f07c225462cc304128a5938acc"
+      },
+      "assigned_writer": {
+        "index": 7,
+        "run_id": "r_cb7a0c3e237642b381ef6c2d97f4eb01",
+        "snapshot_id": "snap_f94364b090374356a9582aeb120d88ca",
+        "status": "completed",
+        "item_count": 1,
+        "fact": true,
+        "episode": true,
+        "lesson": true,
+        "procedure": true,
+        "grounding": "mixed",
+        "main_note_quote": "Customer sought cancellation due to accidental double-booking, first D1EW9B, then 9HBUV8",
+        "main_source_quote": "then I'm okay with canceling the other flight on May 17 instead",
+        "suspect_quote": "neither was airline-cancelled or business class",
+        "rationale": "대안으로 요청한 두 번째 취소와 예약별 날짜·보험이 맞고, 다른 변경 유형을 검토하라는 조건부 조언이 있다. 항공사 취소 여부는 조회되지 않았다. 마지막 답변이 명시적으로 거절한 대상은 항공편 변경이었다."
+      }
+    },
+    "pair_192beb061951a285fa02": {
+      "label": "both_success",
+      "treatment": "lesson",
+      "jobs_in_blind_order": [
+        242,
+        244
+      ],
+      "task_id": "43",
+      "repetition": 1,
+      "treatment_job": 244,
+      "control_job": 242,
+      "judgment": {
+        "category": "business_tool_or_arguments",
+        "user_context": "comparable",
+        "first_difference": "실수로 중복 예약한 ATL–JFK 한 건과 취소 사유가 두 쪽 모두 특정된 뒤, A는 부적격 판단을 이관 요약에 넣어 즉시 사람에게 넘겼다. B는 같은 사유로 직접 취소 불가를 설명했다.",
+        "sides": [
+          {
+            "index": 14,
+            "quote": "transfer_to_human_agents",
+            "end_index": 42,
+            "end_quote": "It has not been canceled.",
+            "observed_result": "고객이 오래 기다린 뒤 다른 예약을 요청해 다시 이관했다. 어느 쪽 예약도 취소됐다는 기록은 없다."
+          },
+          {
+            "index": 18,
+            "quote": "I can’t cancel it under the applicable rules.",
+            "end_index": 25,
+            "end_quote": "I don't think I need to change cabins or anything right now.",
+            "observed_result": "다른 예약도 사유가 보험 적용 대상이 아니라고 설명했다. 고객은 객실 변경 등 대안을 원하지 않아 업데이트 없이 종료했다."
+          }
+        ]
+      },
+      "sides_in_blind_order": [
+        {
+          "job": 242,
+          "arm": "no_memory",
+          "run_id": "r_792cb6b0344941f48f65a4dd7cb46c7f",
+          "official_success": true,
+          "reward": 1.0,
+          "db_match": true,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        },
+        {
+          "job": 244,
+          "arm": "lesson",
+          "run_id": "r_bfc2b0229371400cbf0873303b147bb4",
+          "official_success": true,
+          "reward": 1.0,
+          "db_match": true,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 26,
+          "exposed_notes": [
+            {
+              "title": "Airline cancellation and modification policy lesson",
+              "body": "In a past airline-support exchange, user sought cancellation of two May 17 flights due to accidental double-booking. Under the supplied policy/time, the May 4 basic-economy, uninsured reservation did not meet a cancellation condition; the May 12 basic-economy reservation had insurance, but double-booking/change-of-plans was not a covered health/weather reason, and it was outside 24 hours. Refusing cancellation was consistent with the provided rules. However, the concluding claim that “Basic economy flights can’t be modified” was overbroad: the policy says basic economy cannot have flight segments changed, but cabin changes are allowed for all reservations (including basic economy) if no segment has already been flown. When asked what else can be done, distinguish flight itinerary changes from other permitted changes and avoid implying all modifications are barred; any database updates require listing details and explicit confirmation."
+            }
+          ]
+        }
+      ],
+      "source_experience": {
+        "first_pass_run_id": "r_ab98910d2b5f416286036393a7b50855",
+        "first_pass_success": true,
+        "public_context_sha256": "4c44a17a25dac2ef77cc126403a167b75e7f11f07c225462cc304128a5938acc"
+      },
+      "assigned_writer": {
+        "index": 8,
+        "run_id": "r_7cffbb3a1a0146f0a79a8c6419776598",
+        "snapshot_id": "snap_9f25693fa7bf448089eb3d3cdde64646",
+        "status": "completed",
+        "item_count": 1,
+        "fact": true,
+        "episode": true,
+        "lesson": true,
+        "procedure": true,
+        "grounding": "supported",
+        "main_note_quote": "distinguish flight itinerary changes from other permitted changes and avoid implying all modifications are barred",
+        "main_source_quote": "In other cases, all reservations, including basic economy, can change cabin without changing the flights.",
+        "suspect_quote": "",
+        "rationale": "두 예약의 결제일·보험과 고객의 사유가 취소 거절의 설명을 뒷받침한다. 고객은 첫 예약을 거절당한 뒤 다른 예약을 대안으로 요청했다. 메모는 다른 변경 유형의 조건과 사전 승인을 안내한다."
+      }
+    },
+    "pair_85357e2a7a01dbd75651": {
+      "label": "both_success",
+      "treatment": "procedure",
+      "jobs_in_blind_order": [
+        243,
+        242
+      ],
+      "task_id": "43",
+      "repetition": 1,
+      "treatment_job": 243,
+      "control_job": 242,
+      "judgment": {
+        "category": "policy_or_eligibility",
+        "user_context": "comparable",
+        "first_difference": "A 고객은 조회 후 대상과 이유를 지정했고 B 고객은 조회 전에 지정했다. 양쪽 모두 ATL–JFK의 중복 예약 실수로 대상이 확정된 시점에 A는 취소 불가 사유를 고객에게 설명했고, B는 같은 자격 미충족 판단을 담아 곧바로 상담원에게 이관했다.",
+        "sides": [
+          {
+            "index": 15,
+            "quote": "I can’t cancel **D1EW9B** under the cancellation rules.",
+            "end_index": 21,
+            "end_quote": "neither reservation is eligible for cancellation",
+            "observed_result": "고객이 두 번째 예약 9HBUV8도 취소해 달라고 했다. A는 중복 예약 실수가 보험의 건강·기상 사유에 해당하지 않는다고 설명했다. 두 예약 모두 변경되지 않았다."
+          },
+          {
+            "index": 14,
+            "quote": "transfer_to_human_agents",
+            "end_index": 42,
+            "end_quote": "It has not been canceled.",
+            "observed_result": "첫 이관이 성공한 뒤 여러 차례 대기가 이어졌다. 고객이 두 번째 예약 취소를 요청하자 B는 다시 이관했다. 취소 도구는 호출되지 않았다."
+          }
+        ]
+      },
+      "sides_in_blind_order": [
+        {
+          "job": 243,
+          "arm": "procedure",
+          "run_id": "r_363c1b7151454fe28b7769384c1dc6a8",
+          "official_success": true,
+          "reward": 1.0,
+          "db_match": true,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 18,
+          "exposed_notes": [
+            {
+              "title": "Airline duplicate-booking cancellation review",
+              "body": "In one airline-support interaction, retrieving the account's listed reservation IDs and comparing dates/segments successfully identified two same-day bookings when the customer lacked confirmation codes. The cancellation denials appear supported by the supplied policy: both were basic economy, booked more than 24 hours earlier, neither airline-cancelled nor business; insurance on one did not cover a change-of-plans reason. Silver status did not add cancellation eligibility. Important caveat in the final response: saying basic economy reservations cannot be modified was overbroad. Policy forbids changing basic-economy flights, but cabin changes are allowed even for basic economy if no segment has been flown; baggage may be added and passenger details may be changed without changing passenger count. For a broad request for other options, distinguish prohibited itinerary changes from those separately permitted actions, and verify applicable conditions and required confirmation before any database update. No evaluation feedback was supplied, so this is a policy-based review, not a verified grading result."
+            }
+          ]
+        },
+        {
+          "job": 242,
+          "arm": "no_memory",
+          "run_id": "r_792cb6b0344941f48f65a4dd7cb46c7f",
+          "official_success": true,
+          "reward": 1.0,
+          "db_match": true,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        }
+      ],
+      "source_experience": {
+        "first_pass_run_id": "r_ab98910d2b5f416286036393a7b50855",
+        "first_pass_success": true,
+        "public_context_sha256": "4c44a17a25dac2ef77cc126403a167b75e7f11f07c225462cc304128a5938acc"
+      },
+      "assigned_writer": {
+        "index": 6,
+        "run_id": "r_72bafbc00c3b4293b84d4754972405b4",
+        "snapshot_id": "snap_e90f31c2196847ffadaf98310e0df22e",
+        "status": "completed",
+        "item_count": 1,
+        "fact": true,
+        "episode": true,
+        "lesson": true,
+        "procedure": true,
+        "grounding": "mixed",
+        "main_note_quote": "verify applicable conditions and required confirmation before any database update.",
+        "main_source_quote": "you must list the action details and obtain explicit user confirmation (yes) to proceed.",
+        "suspect_quote": "neither airline-cancelled nor business",
+        "rationale": "동일일 예약을 찾은 순서와 좌석 등급, 보험, 변경 전 확인 원칙은 확인된다. 조회한 것은 예약 상세였다. 항공사의 실제 운항 취소 여부를 보여 주는 별도 상태 조회나 명시적 확인은 없다."
+      }
+    }
+  },
+  "writing_review_sha256": "b01304cb6b84d3e7f96faabe94f0c3e226c55fe575cee0d6d9f7a7c1b8ef7c60",
+  "action_rubric_sha256": "123513101039d629c50ab56fdaf5025c7d88d09a442270e6203888cf7b4745c3",
+  "numeric_result_sha256": "e520fc6952bcc08fa24a36f90098a9fdcb8d3edf66863d0e5afd68e0970ff719",
+  "masked_packets_sha256": "76d3744477c0a247122d72808ec9f902f83a35c6445600ab47e1de097a5a04de",
+  "discordant_action_categories": {
+    "policy_or_eligibility": 1,
+    "request_clarification": 1
+  },
+  "discordant_current_user_context": {
+    "comparable": 1,
+    "different": 1
+  },
+  "scope": "One reviewer per outcome/condition-masked case, exact quotes checked before linking to actual note, public source excerpts, native grade and worker exposure. Links describe observed trajectories and do not identify note-content causality."
+}

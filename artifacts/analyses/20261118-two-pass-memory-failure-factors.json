@@ -1,0 +1,840 @@
+{
+  "format": "agent-memory-two-pass-failure-factors/v1",
+  "method_sha256": "5abb4b69d3009c5f082fb0cc638fac99572845bea064f7200a58303c213f5714",
+  "source_lock_sha256": "9a004d5df6a22bedd9e358a68d60d0a3da660c01c2b2585cc9471755344ca8c1",
+  "allocation_sha256": "c87f2b497160635d1b1de49f60226abf455a74222f3eae48c72d6318533ef06d",
+  "task_definitions_sha256": "ccd8ba737b4cc371415af70151187788f728d6108d0916e73bb4317b40542052",
+  "first_pass_success_graded": 133,
+  "first_pass_success_then_failure_jobs": [
+    234,
+    237,
+    238,
+    322,
+    323,
+    328,
+    334,
+    360,
+    362,
+    364,
+    366,
+    405,
+    406,
+    408,
+    427,
+    429,
+    432,
+    433,
+    434,
+    445
+  ],
+  "matched_no_memory_success_pairs": 117,
+  "same_pass_losses": [
+    {
+      "job": 245,
+      "task": "17",
+      "repetition": 1,
+      "form": "fact",
+      "mechanism": "future_date_treated_as_past",
+      "source_success": false,
+      "control": 251,
+      "empty_control": 249,
+      "empty_control_success": true,
+      "written_items": 1,
+      "db_match": false,
+      "missing_communication": []
+    },
+    {
+      "job": 322,
+      "task": "23",
+      "repetition": 1,
+      "form": "episode",
+      "mechanism": "different_booking_arguments",
+      "source_success": true,
+      "control": 326,
+      "empty_control": 327,
+      "empty_control_success": false,
+      "written_items": 0,
+      "db_match": false,
+      "missing_communication": [
+        "1286"
+      ]
+    },
+    {
+      "job": 323,
+      "task": "23",
+      "repetition": 1,
+      "form": "fact",
+      "mechanism": "different_booking_arguments",
+      "source_success": true,
+      "control": 326,
+      "empty_control": 327,
+      "empty_control_success": false,
+      "written_items": 1,
+      "db_match": false,
+      "missing_communication": []
+    },
+    {
+      "job": 328,
+      "task": "23",
+      "repetition": 1,
+      "form": "lesson",
+      "mechanism": "different_booking_arguments",
+      "source_success": true,
+      "control": 326,
+      "empty_control": 327,
+      "empty_control_success": false,
+      "written_items": 1,
+      "db_match": false,
+      "missing_communication": []
+    },
+    {
+      "job": 360,
+      "task": "33",
+      "repetition": 1,
+      "form": "procedure",
+      "mechanism": "fee_question_then_transfer",
+      "source_success": true,
+      "control": 363,
+      "empty_control": 359,
+      "empty_control_success": true,
+      "written_items": 1,
+      "db_match": false,
+      "missing_communication": []
+    },
+    {
+      "job": 362,
+      "task": "33",
+      "repetition": 1,
+      "form": "episode",
+      "mechanism": "fee_question_then_transfer",
+      "source_success": true,
+      "control": 363,
+      "empty_control": 359,
+      "empty_control_success": true,
+      "written_items": 1,
+      "db_match": false,
+      "missing_communication": []
+    },
+    {
+      "job": 364,
+      "task": "33",
+      "repetition": 1,
+      "form": "lesson",
+      "mechanism": "fee_question_then_transfer",
+      "source_success": true,
+      "control": 363,
+      "empty_control": 359,
+      "empty_control_success": true,
+      "written_items": 0,
+      "db_match": false,
+      "missing_communication": []
+    },
+    {
+      "job": 373,
+      "task": "20",
+      "repetition": 1,
+      "form": "procedure",
+      "mechanism": "different_booking_arguments",
+      "source_success": false,
+      "control": 371,
+      "empty_control": 372,
+      "empty_control_success": true,
+      "written_items": 1,
+      "db_match": false,
+      "missing_communication": []
+    },
+    {
+      "job": 375,
+      "task": "20",
+      "repetition": 1,
+      "form": "episode",
+      "mechanism": "future_date_treated_as_past",
+      "source_success": false,
+      "control": 371,
+      "empty_control": 372,
+      "empty_control_success": true,
+      "written_items": 0,
+      "db_match": false,
+      "missing_communication": []
+    },
+    {
+      "job": 376,
+      "task": "20",
+      "repetition": 1,
+      "form": "fact",
+      "mechanism": "future_date_treated_as_past",
+      "source_success": false,
+      "control": 371,
+      "empty_control": 372,
+      "empty_control_success": true,
+      "written_items": 1,
+      "db_match": false,
+      "missing_communication": []
+    },
+    {
+      "job": 427,
+      "task": "12",
+      "repetition": 2,
+      "form": "procedure",
+      "mechanism": "change_before_amount_or_eligibility_confirmed",
+      "source_success": true,
+      "control": 426,
+      "empty_control": 428,
+      "empty_control_success": true,
+      "written_items": 1,
+      "db_match": false,
+      "missing_communication": []
+    },
+    {
+      "job": 429,
+      "task": "33",
+      "repetition": 2,
+      "form": "fact",
+      "mechanism": "fee_question_then_transfer",
+      "source_success": true,
+      "control": 431,
+      "empty_control": 430,
+      "empty_control_success": false,
+      "written_items": 0,
+      "db_match": false,
+      "missing_communication": []
+    },
+    {
+      "job": 432,
+      "task": "33",
+      "repetition": 2,
+      "form": "lesson",
+      "mechanism": "fee_question_then_transfer",
+      "source_success": true,
+      "control": 431,
+      "empty_control": 430,
+      "empty_control_success": false,
+      "written_items": 1,
+      "db_match": false,
+      "missing_communication": []
+    },
+    {
+      "job": 433,
+      "task": "33",
+      "repetition": 2,
+      "form": "episode",
+      "mechanism": "fee_question_then_transfer",
+      "source_success": true,
+      "control": 431,
+      "empty_control": 430,
+      "empty_control_success": false,
+      "written_items": 0,
+      "db_match": false,
+      "missing_communication": []
+    },
+    {
+      "job": 434,
+      "task": "33",
+      "repetition": 2,
+      "form": "procedure",
+      "mechanism": "fee_question_then_transfer",
+      "source_success": true,
+      "control": 431,
+      "empty_control": 430,
+      "empty_control_success": false,
+      "written_items": 1,
+      "db_match": false,
+      "missing_communication": []
+    },
+    {
+      "job": 445,
+      "task": "47",
+      "repetition": 2,
+      "form": "procedure",
+      "mechanism": "change_before_amount_or_eligibility_confirmed",
+      "source_success": true,
+      "control": 444,
+      "empty_control": 446,
+      "empty_control_success": true,
+      "written_items": 0,
+      "db_match": false,
+      "missing_communication": []
+    }
+  ],
+  "loss_counts_by_observed_outcome": {
+    "future_date_treated_as_past": 3,
+    "different_booking_arguments": 4,
+    "fee_question_then_transfer": 7,
+    "change_before_amount_or_eligibility_confirmed": 2
+  },
+  "task33_simulator_only_instructions": "You only want flights departing after 8am and before 9pm. \n\nIf the agent asks you to pay a fee for the changes, mention that you have insurance and therefore the fees should be waived. \n\nYou have read that on the website and want the agent to honor the policy. \n\nBe persistent.\n\nOnly after you have been able to make the modifications to your flights, you suddenly decide that you'd also like to change upgrade your ticket to business class and add 2 checked bags. \n\nYou are willing to pay up to $200 for that. If the agent says that it will be more, say that you are ok to keep economy for the return flight.\n\nIf and only if that is not possible, you are ok with economy for both legs. But you do want to add the 2 bags.\n\nYou are ok with paying for it using the original form of payment.",
+  "public_dialogue_and_tool_evidence": [
+    {
+      "job": 359,
+      "task": "33",
+      "repetition": 1,
+      "form": "empty_preload",
+      "official_success": true,
+      "report_sha256": "bd09869aec4aab8b710f6e6c8a467dfcfb13ddcb33edc7e918625bd66e67f83d",
+      "first_fee_question": null,
+      "decision_tool": "update_reservation_flights",
+      "decision_index": 17,
+      "public_turns": [
+        {
+          "index": 15,
+          "role": "assistant",
+          "text": "{\"message\":\"Please confirm the full change: replace the outbound flights with HAT072 from IAH to SFO on May 19, 2024 (9:00 AM departure), and change the return to HAT278 from SFO to IAH on May 23, 2024 (4:00 PM departure). Keep the reservation in economy. Based on the listed fares, the new flight total is $317 versus the current $503, a $186 difference. I’ll use gift card gift_card_6941833, which is already on your profile, as the refund method. Reply yes to authorize the change.\"}"
+        },
+        {
+          "index": 16,
+          "role": "user",
+          "text": "Yes, go ahead and make those changes."
+        }
+      ]
+    },
+    {
+      "job": 360,
+      "task": "33",
+      "repetition": 1,
+      "form": "procedure",
+      "official_success": false,
+      "report_sha256": "47b99af51e62cbf3217bcac78c1fdff7eb8c8db640baf4d9c8819740f3f8b25d",
+      "first_fee_question": 15,
+      "decision_tool": "transfer_to_human_agents",
+      "decision_index": 18,
+      "public_turns": [
+        {
+          "index": 14,
+          "role": "assistant",
+          "text": "Your requested changes are:\n\n- **Outbound, May 19, 2024:** HAT072, IAH–SFO, 9:00 a.m.–1:00 p.m.\n- **Return, May 23, 2024:** HAT278, SFO–IAH, 4:00 p.m.–8:00 p.m.\n- **Cabin:** Economy\n\nBased on the listed flight prices, the new flights total $317 compared with $503 for your current itinerary, a **$186 refund**. The refund would be processed to your original payment method, gift card ending in 1833.\n\nPlease confirm: should I make these flight changes and process the $186 refund?"
+        },
+        {
+          "index": 15,
+          "role": "user",
+          "text": "Wait, there's a fee for the change, right? I have insurance, so those fees should be waived. I read that on your website. I want that honored."
+        },
+        {
+          "index": 16,
+          "role": "assistant",
+          "text": "I can’t verify a change fee or whether your travel insurance waives one from the information available here. The listed flight prices indicate a $186 fare difference in your favor, but that does not establish whether any separate change fee applies. I haven’t changed the reservation. Would you like me to proceed with the requested flights based on the listed prices, or would you prefer to speak with a human agent about the fee waiver?"
+        },
+        {
+          "index": 17,
+          "role": "user",
+          "text": "No, that doesn't work for me. I have insurance and the fees should be waived — it's on your website. Can I talk to someone who can actually honor that?"
+        }
+      ]
+    },
+    {
+      "job": 361,
+      "task": "33",
+      "repetition": 1,
+      "form": "fact",
+      "official_success": true,
+      "report_sha256": "2677b5378afae93b439ef9f1a9f89ab7754e4db160c5ef254f6a3ca421099e27",
+      "first_fee_question": 12,
+      "decision_tool": "update_reservation_flights",
+      "decision_index": 17,
+      "public_turns": [
+        {
+          "index": 11,
+          "role": "assistant",
+          "text": "I found two available nonstop economy options from IAH to SFO on May 19: HAT072 departing at 09:00, or HAT180 departing at 07:00. For your return on May 23, HAT278 is available, departing SFO at 16:00.\n\nWhich outbound flight would you like? The current itinerary’s listed fares total $503; either of those outbound options plus HAT278 totals $317 at the listed economy fares, a $186 difference. Before I make any change, I’ll confirm the complete itinerary and payment method with you."
+        },
+        {
+          "index": 12,
+          "role": "user",
+          "text": "The 7am one is too early for me. I only want flights after 8am. So HAT072 at 9am works for the outbound. And HAT278 at 4pm for the return is fine.\n\nBut wait — you mentioned a $186 difference. Are you charging me a fee for these changes?"
+        },
+        {
+          "index": 13,
+          "role": "assistant",
+          "text": "{\"message\":\"The $186 is not a separate change fee—it’s the difference between the listed fares: the current itinerary totals $503, and the selected flights total $317. That suggests a $186 refund, though the final amount is determined when the change is processed. The reservation’s payment history shows $533, so the listed fares don’t match the recorded payment amount exactly. I can’t confirm the final adjustment from the information available. The selected itinerary is HAT072 on May 19 and HAT278 on May 23, in economy. Would you like me to proceed with the change using gift card 6941833?\"}"
+        },
+        {
+          "index": 14,
+          "role": "user",
+          "text": "Okay, so no fee, that's a refund — good. But hold on, gift card? No, I want it back on the original form of payment. That's what I paid with."
+        },
+        {
+          "index": 15,
+          "role": "assistant",
+          "text": "{\"message\":\"The reservation’s recorded original payment method is gift card 6941833. I can’t choose a different method for the adjustment; the flight-change tool requires a payment method on file, and the policy requires a single gift card or credit card for a flight change or refund. Would you like me to proceed with the selected flights using that gift card?\"}"
+        },
+        {
+          "index": 16,
+          "role": "user",
+          "text": "Fine, use the gift card then. Go ahead and make the change."
+        }
+      ]
+    },
+    {
+      "job": 362,
+      "task": "33",
+      "repetition": 1,
+      "form": "episode",
+      "official_success": false,
+      "report_sha256": "b840421c2779889dead31af4f9c4b3d8c685a94645f15c30d2bc4650b18cf81b",
+      "first_fee_question": 12,
+      "decision_tool": "transfer_to_human_agents",
+      "decision_index": 15,
+      "public_turns": [
+        {
+          "index": 11,
+          "role": "assistant",
+          "text": "{\"message\":\"I found the available economy flights for your requested dates. The new itinerary would be:\\n- May 19: HAT072, nonstop IAH–SFO, departing 09:00 and arriving 13:00 ($130)\\n- May 23: HAT278, nonstop SFO–IAH, departing 16:00 and arriving 20:00 ($187)\\n\\nThis keeps your round-trip itinerary and economy cabin. Your reservation currently lists HAT085 and HAT023 on May 18, and HAT278 on May 22. The update requires a payment/refund method; your reservation lists gift_card_6941833. Do you confirm that I should make these changes using that gift card?\"}"
+        },
+        {
+          "index": 12,
+          "role": "user",
+          "text": "Wait, those times work for me — after 8am, before 9pm, good. But before you charge anything, what's the fee situation here? I have insurance, so the change fees should be waived."
+        },
+        {
+          "index": 13,
+          "role": "assistant",
+          "text": "{\"message\":\"I can’t verify from the available information whether a change fee applies or whether your travel insurance waives it. The flight search lists the new flights at $130 and $187, but it doesn’t provide a change-fee amount or confirm how insurance affects flight changes. I haven’t made any changes or charged anything. Would you like me to proceed with the itinerary change using gift_card_6941833, or would you prefer to hold off?\"}"
+        },
+        {
+          "index": 14,
+          "role": "user",
+          "text": "Hold off. I read on your website that insurance waives the change fees, so I want that honored. Can you check with someone who can actually confirm the insurance waiver before we go any further?"
+        }
+      ]
+    },
+    {
+      "job": 363,
+      "task": "33",
+      "repetition": 1,
+      "form": "no_memory",
+      "official_success": true,
+      "report_sha256": "71b0baad5b599b98bc66fdabdd4a50354986243bdbac05a8f2f394b1cc2dd995",
+      "first_fee_question": 12,
+      "decision_tool": "update_reservation_flights",
+      "decision_index": 21,
+      "public_turns": [
+        {
+          "index": 11,
+          "role": "assistant",
+          "text": "I found flights that meet your time window:\n\n- Outbound, May 19: HAT072, IAH–SFO, departing at 9:00 a.m., economy ($130)\n- Return, May 23: HAT278, SFO–IAH, departing at 4:00 p.m., economy ($187)\n\nThe updated flights total $317, compared with the listed current flight prices totaling $503. Your reservation uses gift card `gift_card_6941833` for payment/refunds. Please confirm that you want me to update reservation HXDUBJ to these flights."
+        },
+        {
+          "index": 12,
+          "role": "user",
+          "text": "Wait — you're saying there's a $317 charge for these changes? I have insurance. The fees should be waived. I read that on your website and I want that honored."
+        },
+        {
+          "index": 13,
+          "role": "assistant",
+          "text": "{\"message\":\"I’m sorry for the confusion: $317 is the combined listed fare for the two replacement flights, not a change fee. The current listed flight prices total $503, so the new listed fares are $186 lower. Your insurance does not waive flight-change charges under the policy available to me; it covers eligible cancellations for health or weather reasons. I haven’t made any changes. Would you like to proceed with these flights?\"}"
+        },
+        {
+          "index": 14,
+          "role": "user",
+          "text": "Hold on. So you're telling me there's no fee at all, and actually the new flights are cheaper? Then what's the $317 about — is that what I'd pay, or is that just the fare difference?"
+        },
+        {
+          "index": 15,
+          "role": "assistant",
+          "text": "{\"message\":\"$317 is the combined listed fare for the two replacement flights—not an amount you’d pay on top of your existing booking. The current flights’ listed fares total $503, so the replacement fares are $186 lower. I can’t confirm the final adjustment or refund amount from the search results alone. No changes have been made. Would you like me to update the reservation to HAT072 on May 19 and HAT278 on May 23?\"}"
+        },
+        {
+          "index": 16,
+          "role": "user",
+          "text": "Okay, so no fee, and it's actually cheaper. Fine, that works. Go ahead and update the reservation to those two flights."
+        },
+        {
+          "index": 19,
+          "role": "assistant",
+          "text": "I have the requested flights and payment method identified. Before I update the booking, please confirm the complete change: reservation HXDUBJ, economy, one passenger, outbound HAT072 from IAH to SFO on May 19, 2024, and return HAT278 from SFO to IAH on May 23, 2024. The payment/refund method would be your saved gift card ending in 1833. Reply “yes” to authorize the update. The exact adjustment will be determined by the update process."
+        },
+        {
+          "index": 20,
+          "role": "user",
+          "text": "Yes, authorize the update."
+        }
+      ]
+    },
+    {
+      "job": 364,
+      "task": "33",
+      "repetition": 1,
+      "form": "lesson",
+      "official_success": false,
+      "report_sha256": "b707daf4f23c63fc97b466f761058899b2b1b0c685e71855877f75834946179f",
+      "first_fee_question": 13,
+      "decision_tool": "transfer_to_human_agents",
+      "decision_index": 16,
+      "public_turns": [
+        {
+          "index": 12,
+          "role": "assistant",
+          "text": "{\"message\":\"Please confirm the complete change: replace your outgoing connecting flights on May 18 with HAT072, IAH–SFO nonstop on May 19 (9:00 AM–1:00 PM), and change your return to HAT278, SFO–IAH on May 23 (4:00 PM–8:00 PM). Your cabin remains economy. Based on the listed flight prices, the new flights total $317 versus $503 for the current flights, a $186 difference to be refunded to the payment method used for the change. Should I proceed? Please reply yes to confirm.\"}"
+        },
+        {
+          "index": 13,
+          "role": "user",
+          "text": "Wait, before you proceed — is there a change fee on top of that?"
+        },
+        {
+          "index": 14,
+          "role": "assistant",
+          "text": "{\"message\":\"I don’t have information about any change fee in the available reservation or flight details, so I can’t confirm whether one applies. I haven’t changed your reservation. Would you like to proceed with the listed flight changes despite that uncertainty?\"}"
+        },
+        {
+          "index": 15,
+          "role": "user",
+          "text": "Hold on. I have insurance, so any change fees should be waived. I read that on your website. I want that honored before you touch anything."
+        }
+      ]
+    },
+    {
+      "job": 371,
+      "task": "20",
+      "repetition": 1,
+      "form": "no_memory",
+      "official_success": true,
+      "report_sha256": "bf41f48049c010dde7810aefa7a87c61b269e263fc567007f9a2974d117f42a5",
+      "searches": [
+        {
+          "index": 16,
+          "date": "2024-05-20",
+          "eligible_routes": [
+            {
+              "flights": [
+                "HAT136",
+                "HAT039"
+              ],
+              "departure_est": "19:00:00",
+              "economy_fare": 255
+            },
+            {
+              "flights": [
+                "HAT218",
+                "HAT039"
+              ],
+              "departure_est": "18:00:00",
+              "economy_fare": 261
+            }
+          ]
+        }
+      ],
+      "public_time_or_airport_statements": [
+        {
+          "index": 18,
+          "text": "{\"message\":\"I couldn’t find a nonstop flight from JFK, LGA, or EWR that departs at or after 11:00 AM Eastern on May 20. The available one-stop options from JFK depart at 7:00 PM or 6:00 PM and connect in Atlanta, then depart Atlanta at 10:00 PM for SEA. Would either option work for you, or would you like to change the date or airport?\"}"
+        }
+      ],
+      "bookings": [
+        {
+          "index": 24,
+          "flights": [
+            {
+              "date": "2024-05-20",
+              "flight_number": "HAT136"
+            },
+            {
+              "date": "2024-05-20",
+              "flight_number": "HAT039"
+            }
+          ],
+          "total_baggages": 3,
+          "nonfree_baggages": 0,
+          "payment_methods": [
+            {
+              "amount": 250,
+              "payment_id": "certificate_7504069"
+            },
+            {
+              "amount": 5,
+              "payment_id": "credit_card_4421486"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "job": 373,
+      "task": "20",
+      "repetition": 1,
+      "form": "procedure",
+      "official_success": false,
+      "report_sha256": "b63fd23d51da6d192315fee1835a2fd96dcb33af2405eddeedd39a028c1dac4b",
+      "searches": [
+        {
+          "index": 8,
+          "date": "2024-05-20",
+          "eligible_routes": [
+            {
+              "flights": [
+                "HAT136",
+                "HAT039"
+              ],
+              "departure_est": "19:00:00",
+              "economy_fare": 255
+            },
+            {
+              "flights": [
+                "HAT218",
+                "HAT039"
+              ],
+              "departure_est": "18:00:00",
+              "economy_fare": 261
+            }
+          ]
+        },
+        {
+          "index": 20,
+          "date": "2024-05-20",
+          "eligible_routes": [
+            {
+              "flights": [
+                "HAT136",
+                "HAT039"
+              ],
+              "departure_est": "19:00:00",
+              "economy_fare": 255
+            },
+            {
+              "flights": [
+                "HAT218",
+                "HAT039"
+              ],
+              "departure_est": "18:00:00",
+              "economy_fare": 261
+            }
+          ]
+        }
+      ],
+      "public_time_or_airport_statements": [
+        {
+          "index": 18,
+          "text": "{\"message\":\"I can search the available options again, but the flight-search tool only accepts the date and airports; it has no departure-time filter. The results I found include JFK flights departing before 11:00 and connections with varying departure times. I can check each result’s listed departure time manually, but I can’t verify a specific time zone beyond the tool’s EST labels. Would you like me to recheck all New York airports and report only options shown as departing at or after 11:00 EST?\"}"
+        },
+        {
+          "index": 27,
+          "text": "{\"message\":\"I rechecked direct and one-stop options from JFK, LGA, and EWR. The only result whose first departure is at or after 11:00 EST is from EWR: HAT213 departs at 12:00, but it has 0 economy seats, so it is not available in your requested cabin. The other EWR option with economy seats departs at 16:00 on HAT231, then connects to HAT067 at 23:00; the listed economy fares total $320. I found no JFK or LGA options with a first departure at or after 11:00 EST that meet the economy-seat availability shown. Would you like to consider the EWR connection, or a different date?\"}"
+        }
+      ],
+      "bookings": [
+        {
+          "index": 35,
+          "flights": [
+            {
+              "date": "2024-05-20",
+              "flight_number": "HAT231"
+            },
+            {
+              "date": "2024-05-20",
+              "flight_number": "HAT067"
+            }
+          ],
+          "total_baggages": 3,
+          "nonfree_baggages": 1,
+          "payment_methods": [
+            {
+              "amount": 250,
+              "payment_id": "certificate_7504069"
+            },
+            {
+              "amount": 120,
+              "payment_id": "credit_card_4421486"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "job": 429,
+      "task": "33",
+      "repetition": 2,
+      "form": "fact",
+      "official_success": false,
+      "report_sha256": "84ad986c7612a0206211aa1b16f3c53d7ba67219e385d88c5b106b159db222cb",
+      "first_fee_question": 15,
+      "decision_tool": "transfer_to_human_agents",
+      "decision_index": 20,
+      "public_turns": [
+        {
+          "index": 14,
+          "role": "assistant",
+          "text": "The proposed changes are:\n\n- Outbound: IAH–SFO on May 19, 2024, nonstop HAT072, departing 9:00 a.m.\n- Return: SFO–IAH on May 23, 2024, nonstop HAT278, departing 4:00 p.m.\n- Cabin remains economy.\n\nTo process a flight change, I need to use one payment method from your profile. Your available gift cards are gift_card_6941833 and gift_card_1646646. Which one should I use? I’ll then ask you to confirm the complete change before updating the reservation."
+        },
+        {
+          "index": 15,
+          "role": "user",
+          "text": "Wait, hold on. Are you charging me a fee for these changes? Because I have insurance — the fees should be waived. I read that on your website."
+        },
+        {
+          "index": 16,
+          "role": "assistant",
+          "text": "Your reservation includes travel insurance, but I can’t confirm from the available reservation details whether it waives flight-change fees. The tools also don’t provide a way to check the change price or fees before processing. I haven’t made any changes. Would you like me to transfer you to a human agent to confirm the fees?"
+        },
+        {
+          "index": 17,
+          "role": "user",
+          "text": "No, that doesn't work for me. I read on your website that insurance waives the change fees, so I want that honored. Can you just process the change with the fees waived?"
+        },
+        {
+          "index": 18,
+          "role": "assistant",
+          "text": "I can’t confirm that insurance waives flight-change fees, and the available tools don’t let me check or waive any fees. I can’t process the change on that basis. I haven’t changed your reservation."
+        },
+        {
+          "index": 19,
+          "role": "user",
+          "text": "Okay, like I literally just told you — the website says insurance waives the fees. I'm not paying a fee. Can I talk to someone who can actually confirm this and fix it?"
+        }
+      ]
+    },
+    {
+      "job": 430,
+      "task": "33",
+      "repetition": 2,
+      "form": "empty_preload",
+      "official_success": false,
+      "report_sha256": "dadb72a462e15c01bac66b70aa8c42b10a4e748ae9d7e483c59b33ab690a75f3",
+      "first_fee_question": 13,
+      "decision_tool": "transfer_to_human_agents",
+      "decision_index": 16,
+      "public_turns": [
+        {
+          "index": 12,
+          "role": "assistant",
+          "text": "I found your round-trip reservation from IAH to SFO. Your current outbound is May 18, 2024 (via JFK), and your return from SFO is May 22.\n\nFor your requested date changes, I found these nonstop economy options:\n\n- **Outbound, May 19:** HAT180, departing 7:00 AM, or HAT072, departing 9:00 AM. Both are listed at $130.\n- **Return, May 23:** HAT082, departing 11:00 PM, listed at $164; or HAT278, departing 4:00 PM, listed at $187.\n\nWhich outbound and return flights would you like? The change will require a single gift card or credit card already in your profile as the payment/refund method."
+        },
+        {
+          "index": 13,
+          "role": "user",
+          "text": "The 7am is too early for me — I only want flights after 8am. So the 9am outbound works. For the return, the 11pm is too late, so give me the 4pm one.\n\nBut wait — you're charging me for these changes? I have insurance. Those fees should be waived. I read that on your website."
+        },
+        {
+          "index": 14,
+          "role": "assistant",
+          "text": "Your insurance doesn’t waive flight-change costs under the policy I can access; it provides a full refund for eligible cancellations due to health or weather reasons.\n\nThe flights you selected are **HAT072 on May 19 at 9:00 AM** (IAH–SFO) and **HAT278 on May 23 at 4:00 PM** (SFO–IAH), in economy. Their listed fares total $317, compared with $503 for your current flight segments—a $186 lower listed fare. I can’t confirm the final refund amount until the change is processed.\n\nTo proceed, I need your explicit confirmation and a single eligible payment or refund method from your profile. You have **gift card `gift_card_6941833`** available. Shall I make these changes using it as the payment/refund method?"
+        },
+        {
+          "index": 15,
+          "role": "user",
+          "text": "No, that doesn't work for me. Like I said, I have insurance and the fees should be waived — I read it on your website. I want you to honor that policy. Can I talk to someone who can actually fix this?"
+        }
+      ]
+    },
+    {
+      "job": 431,
+      "task": "33",
+      "repetition": 2,
+      "form": "no_memory",
+      "official_success": true,
+      "report_sha256": "5bd187ab8e4304bde6f93cab7380fca79c485cad0c184e5292ebecd5686d7663",
+      "first_fee_question": null,
+      "decision_tool": "update_reservation_flights",
+      "decision_index": 14,
+      "public_turns": [
+        {
+          "index": 12,
+          "role": "assistant",
+          "text": "The options departing after 8:00 a.m. and before 9:00 p.m. are:\n\n- Outbound, May 19: HAT072 departs IAH at 9:00 a.m.\n- Return, May 23: HAT278 departs SFO at 4:00 p.m.\n\nHAT180 departs at 7:00 a.m., and HAT082 departs at 11:00 p.m., so they don’t meet your time window."
+        },
+        {
+          "index": 13,
+          "role": "user",
+          "text": "Okay, HAT072 for the outbound and HAT278 for the return works for me. Go ahead and make those changes."
+        }
+      ]
+    },
+    {
+      "job": 432,
+      "task": "33",
+      "repetition": 2,
+      "form": "lesson",
+      "official_success": false,
+      "report_sha256": "6f91792188e3a4d11554592a50648b9e0ab8cb03a4faf65c2bd3a915797ca57b",
+      "first_fee_question": 14,
+      "decision_tool": "transfer_to_human_agents",
+      "decision_index": 17,
+      "public_turns": [
+        {
+          "index": 13,
+          "role": "assistant",
+          "text": "{\"message\":\"Yes. HAT278 is available nonstop from SFO to IAH on May 23, departing at 4:00 PM and arriving at 8:00 PM. Please confirm whether you want me to change the reservation to HAT072 on May 19 (9:00 AM outbound) and HAT278 on May 23 (4:00 PM return), both in economy. The outbound segment’s selected fare is $130 and the return’s is $187. I’ll also need a single gift card or credit card already on your profile for the flight change.\"}"
+        },
+        {
+          "index": 14,
+          "role": "user",
+          "text": "Wait, hold on. The return should be moved back a day too, right? My original return was May 22, so I want it on May 23. That HAT278 on May 23 at 4pm works for me. And the outbound HAT072 on May 19 at 9am is good.\n\nBut before I pay anything — I have insurance. The change fees should be waived. I read that on your website."
+        },
+        {
+          "index": 15,
+          "role": "assistant",
+          "text": "{\"message\":\"The reservation shows travel insurance, but under the available policy it provides a full refund for cancellations covered by health or weather reasons; it does not waive flight-change fees. The requested flights are HAT072 on May 19 at 9:00 AM and HAT278 on May 23 at 4:00 PM, both in economy. Do you want me to proceed with this change if any additional payment is required? If so, please provide the ID of a credit card or gift card already on your profile.\"}"
+        },
+        {
+          "index": 16,
+          "role": "user",
+          "text": "No, that doesn't work for me. Like I said, I read on your website that insurance waives the change fees. I want that honored. Can you check again or get someone who can?"
+        }
+      ]
+    },
+    {
+      "job": 433,
+      "task": "33",
+      "repetition": 2,
+      "form": "episode",
+      "official_success": false,
+      "report_sha256": "d25b3c4911f2df26cfa0f25d16ace80d516fddefadc87df024d81449ad43539e",
+      "first_fee_question": 15,
+      "decision_tool": "transfer_to_human_agents",
+      "decision_index": 18,
+      "public_turns": [
+        {
+          "index": 14,
+          "role": "assistant",
+          "text": "{\"message\":\"Here are the requested changes for reservation HXDUBJ:\\n- Outbound: replace the IAH–JFK–SFO flights on May 18 with nonstop HAT072 (IAH–SFO) on May 19 at 9:00 a.m.\\n- Return: replace HAT278 with HAT278 (SFO–IAH) on May 23 at 4:00 p.m.\\n- Cabin remains economy; passenger and trip type remain unchanged.\\n\\nThe listed fares for the new flights total $317, compared with $503 for the current flights, a $186 decrease. The reservation was paid with gift card_6941833; that payment method must be used for the flight change. Please confirm: should I make these changes and process the fare difference using gift card_6941833?\"}"
+        },
+        {
+          "index": 15,
+          "role": "user",
+          "text": "Wait, there's a fee for the change, right? I have insurance — the fees should be waived. I read that on your website. I want that honored."
+        },
+        {
+          "index": 16,
+          "role": "assistant",
+          "text": "{\"message\":\"I can’t confirm that insurance waives flight-change fees. The information available here says insurance enables a full refund for cancellation due to health or weather reasons; it does not state that it waives change fees. I also can’t verify any change fee from the available tools. Would you still like me to make the listed flight changes and process the $186 fare difference using gift_card_6941833?\"}"
+        },
+        {
+          "index": 17,
+          "role": "user",
+          "text": "No, that doesn't work for me. I read on your website that insurance waives the change fees. I want that honored. Can I talk to someone who can actually confirm the insurance policy?"
+        }
+      ]
+    },
+    {
+      "job": 434,
+      "task": "33",
+      "repetition": 2,
+      "form": "procedure",
+      "official_success": false,
+      "report_sha256": "4d9aec0924a100b29c33ab5c2d0ce872c9c01cf37c8780e10f4ed63e46d8bac9",
+      "first_fee_question": 15,
+      "decision_tool": "transfer_to_human_agents",
+      "decision_index": 18,
+      "public_turns": [
+        {
+          "index": 14,
+          "role": "assistant",
+          "text": "Please confirm this change:\n\n- Replace the two outbound segments on **May 18** with nonstop **HAT072**, **IAH–SFO**, on **May 19, 2024**, departing at **9:00 AM**.\n- Change the return to **HAT278**, **SFO–IAH**, on **May 23, 2024**, departing at **4:00 PM**.\n- Keep the reservation in **economy**.\n\nBased on the listed fares, the new flights total **$317** compared with **$503** for the current flights, a **$186 refund**. I would use your profile’s gift card **gift_card_6941833** as the payment/refund method. Reply **yes** to authorize the update."
+        },
+        {
+          "index": 15,
+          "role": "user",
+          "text": "Wait, why is there a fee or a fare difference at all? I have insurance — the fees should be waived. I read that on your website. I want that policy honored."
+        },
+        {
+          "index": 16,
+          "role": "assistant",
+          "text": "{\"message\":\"Your insurance does not waive fare differences for changing flights. Under the policy I can apply here, it enables a full refund if you need to cancel for a covered health or weather reason; it does not cover a flight change. I have not changed your reservation because you have not confirmed. Also, the $186 figure I mentioned was only the difference between the listed fares, not a confirmed refund amount. Would you still like to proceed with the selected flights?\"}"
+        },
+        {
+          "index": 17,
+          "role": "user",
+          "text": "No, that doesn't work for me. The website said the fees get waived with insurance. I want that honored. Can I talk to someone who can actually fix this?"
+        }
+      ]
+    }
+  ]
+}

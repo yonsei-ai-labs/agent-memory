@@ -1,0 +1,1185 @@
+{
+  "format": "agent-memory-two-pass-selected-timelines/v1",
+  "tasks": {
+    "23": {
+      "source_public_sha256": "4e9930c1dcf5a1ead264d180578860224f8fabf19bab962a1a1513f740faf09f",
+      "first_pass_success": true,
+      "source_public_timeline": {
+        "profiles": [
+          {
+            "call_index": 4,
+            "result_index": 5,
+            "name": "get_user_details",
+            "arguments": {
+              "user_id": "mohamed_silva_9265"
+            },
+            "returned_user_id": "mohamed_silva_9265",
+            "returned_reservation_ids": [
+              "K1NW8N"
+            ],
+            "payment_methods": {
+              "credit_card_5843230": {
+                "source": "credit_card",
+                "brand": "visa"
+              },
+              "gift_card_8020792": {
+                "source": "gift_card",
+                "amount": 198.0
+              },
+              "certificate_3765853": {
+                "source": "certificate",
+                "amount": 500.0
+              },
+              "gift_card_6136092": {
+                "source": "gift_card",
+                "amount": 129.0
+              },
+              "certificate_9984806": {
+                "source": "certificate",
+                "amount": 250.0
+              },
+              "credit_card_2198526": {
+                "source": "credit_card",
+                "brand": "mastercard"
+              },
+              "certificate_2765295": {
+                "source": "certificate",
+                "amount": 250.0
+              }
+            }
+          }
+        ],
+        "reservation_lookups": [],
+        "business_actions": [
+          {
+            "call_index": 12,
+            "result_index": 13,
+            "name": "cancel_reservation",
+            "arguments": {
+              "reservation_id": "K1NW8N"
+            },
+            "last_prior_agent_text": {
+              "index": 10,
+              "role": "assistant",
+              "text": "{\"message\":\"Your reservation was booked within the last 24 hours, so it meets the cancellation eligibility rule. What is the reason for cancelling: change of plan, airline cancelled the flight, or another reason?\"}"
+            },
+            "last_prior_customer_text": {
+              "index": 11,
+              "role": "user",
+              "text": "Let's go with change of plan."
+            },
+            "returned": {
+              "reservation_id": "K1NW8N",
+              "status": "cancelled",
+              "payment_history": [
+                {
+                  "payment_id": "gift_card_6136092",
+                  "amount": 567
+                },
+                {
+                  "payment_id": "gift_card_6136092",
+                  "amount": -567
+                }
+              ]
+            }
+          },
+          {
+            "call_index": 28,
+            "result_index": 29,
+            "name": "book_reservation",
+            "arguments": {
+              "cabin": "business",
+              "destination": "SFO",
+              "flight_type": "round_trip",
+              "flights": [
+                {
+                  "date": "2024-05-26",
+                  "flight_number": "HAT023"
+                },
+                {
+                  "date": "2024-05-28",
+                  "flight_number": "HAT204"
+                },
+                {
+                  "date": "2024-05-28",
+                  "flight_number": "HAT100"
+                }
+              ],
+              "insurance": "no",
+              "nonfree_baggages": 0,
+              "origin": "JFK",
+              "passengers": [
+                {
+                  "first_name": "Mohamed",
+                  "last_name": "Silva",
+                  "dob": "1960-11-26"
+                }
+              ],
+              "payment_methods": [
+                {
+                  "amount": 500,
+                  "payment_id": "certificate_3765853"
+                },
+                {
+                  "amount": 198,
+                  "payment_id": "gift_card_8020792"
+                },
+                {
+                  "amount": 129,
+                  "payment_id": "gift_card_6136092"
+                },
+                {
+                  "amount": 44,
+                  "payment_id": "credit_card_2198526"
+                }
+              ],
+              "total_baggages": 0,
+              "user_id": "mohamed_silva_9265"
+            },
+            "last_prior_agent_text": {
+              "index": 26,
+              "role": "assistant",
+              "text": "{\"message\":\"Please confirm that I should book these three separate business round-trip reservations. Each uses HAT023 (JFK–SFO) on May 26, then HAT204 (SFO–SEA) and HAT100 (SEA–JFK) on May 28. No baggage or insurance. Each passenger’s fare is $871.\\n\\n- Mohamed Silva: certificate_3765853 ($500), gift_card_8020792 ($198), gift_card_6136092 ($129), and $44 on MasterCard credit_card_2198526.\\n- Raj Sanchez: certificate_9984806 ($250) and $621 on that MasterCard.\\n- Liam Wilson: certificate_2765295 ($250) and $621 on that MasterCard.\\n\\nTotal MasterCard charge: $1,286. Reply yes to authorize these bookings and charges.\"}"
+            },
+            "last_prior_customer_text": {
+              "index": 27,
+              "role": "user",
+              "text": "Wait, let me check the math here. Mohamed's fare is $871, minus $500 certificate, minus $198 and $129 gift cards — that's $44 left, yeah that works. Raj and Liam each $871 minus $250 is $621 each. So $44 + $621 + $621 is $1,286. Yeah, that adds up. Go ahead and book all three."
+            },
+            "returned": {
+              "reservation_id": "HATHAT",
+              "status": null,
+              "payment_history": [
+                {
+                  "payment_id": "certificate_3765853",
+                  "amount": 500
+                },
+                {
+                  "payment_id": "gift_card_8020792",
+                  "amount": 198
+                },
+                {
+                  "payment_id": "gift_card_6136092",
+                  "amount": 129
+                },
+                {
+                  "payment_id": "credit_card_2198526",
+                  "amount": 44
+                }
+              ]
+            }
+          },
+          {
+            "call_index": 30,
+            "result_index": 31,
+            "name": "book_reservation",
+            "arguments": {
+              "cabin": "business",
+              "destination": "SFO",
+              "flight_type": "round_trip",
+              "flights": [
+                {
+                  "date": "2024-05-26",
+                  "flight_number": "HAT023"
+                },
+                {
+                  "date": "2024-05-28",
+                  "flight_number": "HAT204"
+                },
+                {
+                  "date": "2024-05-28",
+                  "flight_number": "HAT100"
+                }
+              ],
+              "insurance": "no",
+              "nonfree_baggages": 0,
+              "origin": "JFK",
+              "passengers": [
+                {
+                  "first_name": "Raj",
+                  "last_name": "Sanchez",
+                  "dob": "1986-09-12"
+                }
+              ],
+              "payment_methods": [
+                {
+                  "amount": 250,
+                  "payment_id": "certificate_9984806"
+                },
+                {
+                  "amount": 621,
+                  "payment_id": "credit_card_2198526"
+                }
+              ],
+              "total_baggages": 0,
+              "user_id": "mohamed_silva_9265"
+            },
+            "last_prior_agent_text": {
+              "index": 26,
+              "role": "assistant",
+              "text": "{\"message\":\"Please confirm that I should book these three separate business round-trip reservations. Each uses HAT023 (JFK–SFO) on May 26, then HAT204 (SFO–SEA) and HAT100 (SEA–JFK) on May 28. No baggage or insurance. Each passenger’s fare is $871.\\n\\n- Mohamed Silva: certificate_3765853 ($500), gift_card_8020792 ($198), gift_card_6136092 ($129), and $44 on MasterCard credit_card_2198526.\\n- Raj Sanchez: certificate_9984806 ($250) and $621 on that MasterCard.\\n- Liam Wilson: certificate_2765295 ($250) and $621 on that MasterCard.\\n\\nTotal MasterCard charge: $1,286. Reply yes to authorize these bookings and charges.\"}"
+            },
+            "last_prior_customer_text": {
+              "index": 27,
+              "role": "user",
+              "text": "Wait, let me check the math here. Mohamed's fare is $871, minus $500 certificate, minus $198 and $129 gift cards — that's $44 left, yeah that works. Raj and Liam each $871 minus $250 is $621 each. So $44 + $621 + $621 is $1,286. Yeah, that adds up. Go ahead and book all three."
+            },
+            "returned": {
+              "reservation_id": "HATHAU",
+              "status": null,
+              "payment_history": [
+                {
+                  "payment_id": "certificate_9984806",
+                  "amount": 250
+                },
+                {
+                  "payment_id": "credit_card_2198526",
+                  "amount": 621
+                }
+              ]
+            }
+          },
+          {
+            "call_index": 32,
+            "result_index": 33,
+            "name": "book_reservation",
+            "arguments": {
+              "cabin": "business",
+              "destination": "SFO",
+              "flight_type": "round_trip",
+              "flights": [
+                {
+                  "date": "2024-05-26",
+                  "flight_number": "HAT023"
+                },
+                {
+                  "date": "2024-05-28",
+                  "flight_number": "HAT204"
+                },
+                {
+                  "date": "2024-05-28",
+                  "flight_number": "HAT100"
+                }
+              ],
+              "insurance": "no",
+              "nonfree_baggages": 0,
+              "origin": "JFK",
+              "passengers": [
+                {
+                  "first_name": "Liam",
+                  "last_name": "Wilson",
+                  "dob": "1980-03-27"
+                }
+              ],
+              "payment_methods": [
+                {
+                  "amount": 250,
+                  "payment_id": "certificate_2765295"
+                },
+                {
+                  "amount": 621,
+                  "payment_id": "credit_card_2198526"
+                }
+              ],
+              "total_baggages": 0,
+              "user_id": "mohamed_silva_9265"
+            },
+            "last_prior_agent_text": {
+              "index": 26,
+              "role": "assistant",
+              "text": "{\"message\":\"Please confirm that I should book these three separate business round-trip reservations. Each uses HAT023 (JFK–SFO) on May 26, then HAT204 (SFO–SEA) and HAT100 (SEA–JFK) on May 28. No baggage or insurance. Each passenger’s fare is $871.\\n\\n- Mohamed Silva: certificate_3765853 ($500), gift_card_8020792 ($198), gift_card_6136092 ($129), and $44 on MasterCard credit_card_2198526.\\n- Raj Sanchez: certificate_9984806 ($250) and $621 on that MasterCard.\\n- Liam Wilson: certificate_2765295 ($250) and $621 on that MasterCard.\\n\\nTotal MasterCard charge: $1,286. Reply yes to authorize these bookings and charges.\"}"
+            },
+            "last_prior_customer_text": {
+              "index": 27,
+              "role": "user",
+              "text": "Wait, let me check the math here. Mohamed's fare is $871, minus $500 certificate, minus $198 and $129 gift cards — that's $44 left, yeah that works. Raj and Liam each $871 minus $250 is $621 each. So $44 + $621 + $621 is $1,286. Yeah, that adds up. Go ahead and book all three."
+            },
+            "returned": {
+              "reservation_id": "HATHAV",
+              "status": null,
+              "payment_history": [
+                {
+                  "payment_id": "certificate_2765295",
+                  "amount": 250
+                },
+                {
+                  "payment_id": "credit_card_2198526",
+                  "amount": 621
+                }
+              ]
+            }
+          }
+        ],
+        "dialogue": [
+          {
+            "index": 0,
+            "role": "assistant",
+            "text": "Hi! How can I help you today?"
+          },
+          {
+            "index": 1,
+            "role": "user",
+            "text": "Hey there. Yeah, I've got a couple things I wanted to check on. First, I'd like to know the total of my gift card balances and the total of my certificate balances. And then I want to change my recent reservation to the cheapest business round trip, keeping the same dates."
+          },
+          {
+            "index": 2,
+            "role": "assistant",
+            "text": "{\"message\":\"Please provide your user ID so I can check your gift card and travel certificate balances and locate your recent reservation.\"}"
+          },
+          {
+            "index": 3,
+            "role": "user",
+            "text": "Sure, it's mohamed_silva_9265."
+          },
+          {
+            "index": 8,
+            "role": "assistant",
+            "text": "{\"gift_card_balance_total\":\"$327\",\"travel_certificate_balance_total\":\"$1,000\",\"reservation_id\":\"K1NW8N\",\"reservation_details\":{\"trip_type\":\"round_trip\",\"cabin\":\"basic_economy\",\"dates\":[\"2024-05-26\",\"2024-05-28\"],\"route_segments\":[\"JFK–SFO\",\"SFO–SEA\",\"SEA–JFK\"]},\"message\":\"Your reservation is in basic economy, and basic-economy flights cannot be changed to different flights. I can check whether you can change the cabin to business while keeping the existing flights and dates. Would you like me to check that?\"}"
+          },
+          {
+            "index": 9,
+            "role": "user",
+            "text": "Okay, so gift cards total $327 and certificates total $1,000 — got it. And since basic economy can't be changed, let's just cancel the current one and book a new business round trip instead, same dates."
+          },
+          {
+            "index": 10,
+            "role": "assistant",
+            "text": "{\"message\":\"Your reservation was booked within the last 24 hours, so it meets the cancellation eligibility rule. What is the reason for cancelling: change of plan, airline cancelled the flight, or another reason?\"}"
+          },
+          {
+            "index": 11,
+            "role": "user",
+            "text": "Let's go with change of plan."
+          },
+          {
+            "index": 14,
+            "role": "assistant",
+            "text": "{\"message\":\"Your reservation K1NW8N has been cancelled. The refund will go to the original payment method within 5–7 business days. Before I find flights for the new booking, please confirm: should I keep the same three passengers and the same route segments (JFK–SFO on May 26, then SFO–SEA–JFK on May 28)? Also, would you like travel insurance for the new booking?\"}"
+          },
+          {
+            "index": 15,
+            "role": "user",
+            "text": "Yeah, keep the same three passengers and the same route and dates. No insurance, and no baggage either — don't need those."
+          },
+          {
+            "index": 20,
+            "role": "assistant",
+            "text": "{\"message\":\"The cheapest business itinerary I found for the same dates and route is HAT023 (JFK–SFO) on May 26, followed by HAT204 (SFO–SEA) and HAT100 (SEA–JFK) on May 28. There are at least 3 business seats on each flight. The listed fare is $871 per passenger, or $2,613 for all 3 passengers. The booking would have no insurance and no baggage. Your saved gift cards and certificates total $1,327, so the remaining $1,286 would need another payment method. Which saved payment method(s) would you like to use, and how should the payment be split? I’ll list the final booking details for your confirmation before placing it.\"}"
+          },
+          {
+            "index": 21,
+            "role": "user",
+            "text": "Okay, so I want to use the certificates as much as possible first, then the gift cards as much as possible, and cover the rest with my master card. But before we go ahead — how much would my master card actually get charged?"
+          },
+          {
+            "index": 22,
+            "role": "assistant",
+            "text": "{\"message\":\"Your MasterCard would be charged $1,786. A single reservation can use at most one travel certificate, so the maximum certificate amount available for this booking is $500; the two gift cards total $327. That leaves $1,786 of the $2,613 fare to pay by card. I have not booked the flights.\"}"
+          },
+          {
+            "index": 23,
+            "role": "user",
+            "text": "Hmm, okay, let me think here. So only one certificate per reservation, huh? Well, here's an idea — what if we split it into three separate reservations, one per passenger? That way we could use all three certificates."
+          },
+          {
+            "index": 24,
+            "role": "assistant",
+            "text": "{\"message\":\"That would allow one certificate per reservation, but each separate reservation can use only one travel certificate, one credit card, and up to three gift cards. The three certificates total $1,000, so applying one to each booking would leave $1,613 of the $2,613 total fare to cover. You’d still need to choose how to allocate the gift cards and card payments across the three bookings. I haven’t booked anything. Would you like me to prepare three separate reservations for the same business itinerary, one passenger each?\"}"
+          },
+          {
+            "index": 25,
+            "role": "user",
+            "text": "Yeah, let's do three separate reservations. Here's how I want it split: for me, use the $500 certificate and all the gift cards. For Raj, use certificate_9984806. And for Liam, use the other certificate. Then cover whatever's left on each with my master card."
+          },
+          {
+            "index": 26,
+            "role": "assistant",
+            "text": "{\"message\":\"Please confirm that I should book these three separate business round-trip reservations. Each uses HAT023 (JFK–SFO) on May 26, then HAT204 (SFO–SEA) and HAT100 (SEA–JFK) on May 28. No baggage or insurance. Each passenger’s fare is $871.\\n\\n- Mohamed Silva: certificate_3765853 ($500), gift_card_8020792 ($198), gift_card_6136092 ($129), and $44 on MasterCard credit_card_2198526.\\n- Raj Sanchez: certificate_9984806 ($250) and $621 on that MasterCard.\\n- Liam Wilson: certificate_2765295 ($250) and $621 on that MasterCard.\\n\\nTotal MasterCard charge: $1,286. Reply yes to authorize these bookings and charges.\"}"
+          },
+          {
+            "index": 27,
+            "role": "user",
+            "text": "Wait, let me check the math here. Mohamed's fare is $871, minus $500 certificate, minus $198 and $129 gift cards — that's $44 left, yeah that works. Raj and Liam each $871 minus $250 is $621 each. So $44 + $621 + $621 is $1,286. Yeah, that adds up. Go ahead and book all three."
+          },
+          {
+            "index": 34,
+            "role": "assistant",
+            "text": "{\"message\":\"All three business round-trip reservations are booked for the same itinerary, with no baggage or insurance:\\n\\n- Mohamed Silva — reservation HATHAT; $44 charged to your MasterCard.\\n- Raj Sanchez — reservation HATHAU; $621 charged to your MasterCard.\\n- Liam Wilson — reservation HATHAV; $621 charged to your MasterCard.\\n\\nThe total MasterCard charge is $1,286.\"}"
+          },
+          {
+            "index": 35,
+            "role": "user",
+            "text": "Alright, that's great. So my master card gets charged $1,286 total. Thanks a lot for working through that with me — appreciate it. Take care, bye now."
+          },
+          {
+            "index": 36,
+            "role": "assistant",
+            "text": "{\"message\":\"You’re welcome. Take care!\"}"
+          }
+        ],
+        "first_public_mentions": []
+      },
+      "second_pass": [
+        {
+          "index": 321,
+          "repetition": 1,
+          "arm": "summary",
+          "run_id": "r_117282fc9fdd432db8dac4cb6cbbef38",
+          "status": "not_started",
+          "grading_status": null,
+          "official_success": null,
+          "reason": "unknown_cost",
+          "error": null,
+          "normal_response_memory_spans": null
+        },
+        {
+          "index": 322,
+          "repetition": 1,
+          "arm": "episode",
+          "run_id": "r_8c3c9756b3514cbca48d2bd6039f3866",
+          "status": "not_started",
+          "grading_status": null,
+          "official_success": null,
+          "reason": "unknown_cost",
+          "error": null,
+          "normal_response_memory_spans": null
+        },
+        {
+          "index": 323,
+          "repetition": 1,
+          "arm": "fact",
+          "run_id": "r_5a679ff7f6b44df28d97d8f9491c3bd9",
+          "status": "not_started",
+          "grading_status": null,
+          "official_success": null,
+          "reason": "unknown_cost",
+          "error": null,
+          "normal_response_memory_spans": null
+        },
+        {
+          "index": 324,
+          "repetition": 1,
+          "arm": "procedure",
+          "run_id": "r_657a6680df6e4418934ee0c0b510b71c",
+          "status": "not_started",
+          "grading_status": null,
+          "official_success": null,
+          "reason": "unknown_cost",
+          "error": null,
+          "normal_response_memory_spans": null
+        },
+        {
+          "index": 325,
+          "repetition": 1,
+          "arm": "public_record",
+          "run_id": "r_1c003a2951a7438aa89e652e85cdde5a",
+          "status": "not_started",
+          "grading_status": null,
+          "official_success": null,
+          "reason": "unknown_cost",
+          "error": null,
+          "normal_response_memory_spans": null
+        },
+        {
+          "index": 326,
+          "repetition": 1,
+          "arm": "no_memory",
+          "run_id": "r_820a927dffa746e89d2dbaa8443f5148",
+          "status": "not_started",
+          "grading_status": null,
+          "official_success": null,
+          "reason": "unknown_cost",
+          "error": null,
+          "normal_response_memory_spans": null
+        },
+        {
+          "index": 327,
+          "repetition": 1,
+          "arm": "empty_preload",
+          "run_id": "r_c7150deda4b6475fbb0aec07d9f222fa",
+          "status": "not_started",
+          "grading_status": null,
+          "official_success": null,
+          "reason": "unknown_cost",
+          "error": null,
+          "normal_response_memory_spans": null
+        },
+        {
+          "index": 328,
+          "repetition": 1,
+          "arm": "lesson",
+          "run_id": "r_66b7adfa1ea84a54986f422c76837899",
+          "status": "not_started",
+          "grading_status": null,
+          "official_success": null,
+          "reason": "unknown_cost",
+          "error": null,
+          "normal_response_memory_spans": null
+        },
+        {
+          "index": 505,
+          "repetition": 2,
+          "arm": "no_memory",
+          "run_id": "r_3000089013f548c6911b4d20bcc2ab7b",
+          "status": "not_started",
+          "grading_status": null,
+          "official_success": null,
+          "reason": "unknown_cost",
+          "error": null,
+          "normal_response_memory_spans": null
+        },
+        {
+          "index": 506,
+          "repetition": 2,
+          "arm": "procedure",
+          "run_id": "r_8f1b8b406c2643939643bfc78c2a71ac",
+          "status": "not_started",
+          "grading_status": null,
+          "official_success": null,
+          "reason": "unknown_cost",
+          "error": null,
+          "normal_response_memory_spans": null
+        },
+        {
+          "index": 507,
+          "repetition": 2,
+          "arm": "empty_preload",
+          "run_id": "r_9d1d0d4eba3245d2bb1a2b00f8209c35",
+          "status": "not_started",
+          "grading_status": null,
+          "official_success": null,
+          "reason": "unknown_cost",
+          "error": null,
+          "normal_response_memory_spans": null
+        },
+        {
+          "index": 508,
+          "repetition": 2,
+          "arm": "lesson",
+          "run_id": "r_cddb2d25581c4b8f890df43c7780f1bd",
+          "status": "not_started",
+          "grading_status": null,
+          "official_success": null,
+          "reason": "unknown_cost",
+          "error": null,
+          "normal_response_memory_spans": null
+        },
+        {
+          "index": 509,
+          "repetition": 2,
+          "arm": "fact",
+          "run_id": "r_e40c35905a2e46eabfd6222561832378",
+          "status": "not_started",
+          "grading_status": null,
+          "official_success": null,
+          "reason": "unknown_cost",
+          "error": null,
+          "normal_response_memory_spans": null
+        },
+        {
+          "index": 510,
+          "repetition": 2,
+          "arm": "summary",
+          "run_id": "r_2029981276e34370a8fc4e413fc87c2b",
+          "status": "not_started",
+          "grading_status": null,
+          "official_success": null,
+          "reason": "unknown_cost",
+          "error": null,
+          "normal_response_memory_spans": null
+        },
+        {
+          "index": 511,
+          "repetition": 2,
+          "arm": "episode",
+          "run_id": "r_779b8fd8e79945379892a0e9ab8d3c96",
+          "status": "not_started",
+          "grading_status": null,
+          "official_success": null,
+          "reason": "unknown_cost",
+          "error": null,
+          "normal_response_memory_spans": null
+        },
+        {
+          "index": 512,
+          "repetition": 2,
+          "arm": "public_record",
+          "run_id": "r_3ca53d12fe34487499c1e2e0fdf0b3e1",
+          "status": "not_started",
+          "grading_status": null,
+          "official_success": null,
+          "reason": "unknown_cost",
+          "error": null,
+          "normal_response_memory_spans": null
+        }
+      ]
+    },
+    "42": {
+      "source_public_sha256": "a4682ed8f3f7b16d45394d24a13228de1c6f82694660ec3ff315afc4c59beebb",
+      "first_pass_success": false,
+      "source_public_timeline": {
+        "profiles": [
+          {
+            "call_index": 4,
+            "result_index": 5,
+            "name": "get_user_details",
+            "arguments": {
+              "user_id": "sophia_martin_4574"
+            },
+            "returned_user_id": "sophia_martin_4574",
+            "returned_reservation_ids": [
+              "MFRB94",
+              "PUNERT",
+              "HSR97W",
+              "SE9KEL",
+              "FDZ0T5",
+              "HTR26G",
+              "5BGGWZ"
+            ],
+            "payment_methods": null
+          }
+        ],
+        "reservation_lookups": [
+          {
+            "call_index": 6,
+            "result_index": 7,
+            "name": "get_reservation_details",
+            "arguments": {
+              "reservation_id": "MFRB94"
+            },
+            "returned_id": "MFRB94",
+            "flights": [
+              {
+                "flight_number": "HAT214",
+                "origin": "MCO",
+                "destination": "PHX",
+                "date": "2024-05-27"
+              },
+              {
+                "flight_number": "HAT256",
+                "origin": "PHX",
+                "destination": "LGA",
+                "date": "2024-05-28"
+              },
+              {
+                "flight_number": "HAT219",
+                "origin": "LGA",
+                "destination": "PHX",
+                "date": "2024-05-30"
+              },
+              {
+                "flight_number": "HAT181",
+                "origin": "PHX",
+                "destination": "MCO",
+                "date": "2024-05-30"
+              }
+            ]
+          },
+          {
+            "call_index": 8,
+            "result_index": 9,
+            "name": "get_reservation_details",
+            "arguments": {
+              "reservation_id": "PUNERT"
+            },
+            "returned_id": "PUNERT",
+            "flights": [
+              {
+                "flight_number": "HAT086",
+                "origin": "BOS",
+                "destination": "MIA",
+                "date": "2024-05-22"
+              },
+              {
+                "flight_number": "HAT148",
+                "origin": "MIA",
+                "destination": "DEN",
+                "date": "2024-05-22"
+              }
+            ]
+          },
+          {
+            "call_index": 10,
+            "result_index": 11,
+            "name": "get_reservation_details",
+            "arguments": {
+              "reservation_id": "HSR97W"
+            },
+            "returned_id": "HSR97W",
+            "flights": [
+              {
+                "flight_number": "HAT289",
+                "origin": "ORD",
+                "destination": "PHL",
+                "date": "2024-05-22"
+              },
+              {
+                "flight_number": "HAT199",
+                "origin": "PHL",
+                "destination": "SFO",
+                "date": "2024-05-22"
+              }
+            ]
+          },
+          {
+            "call_index": 12,
+            "result_index": 13,
+            "name": "get_reservation_details",
+            "arguments": {
+              "reservation_id": "SE9KEL"
+            },
+            "returned_id": "SE9KEL",
+            "flights": [
+              {
+                "flight_number": "HAT034",
+                "origin": "LAX",
+                "destination": "SFO",
+                "date": "2024-05-17"
+              },
+              {
+                "flight_number": "HAT026",
+                "origin": "SFO",
+                "destination": "BOS",
+                "date": "2024-05-17"
+              },
+              {
+                "flight_number": "HAT247",
+                "origin": "BOS",
+                "destination": "MIA",
+                "date": "2024-05-29"
+              },
+              {
+                "flight_number": "HAT250",
+                "origin": "MIA",
+                "destination": "LAX",
+                "date": "2024-05-29"
+              }
+            ]
+          },
+          {
+            "call_index": 14,
+            "result_index": 15,
+            "name": "get_reservation_details",
+            "arguments": {
+              "reservation_id": "FDZ0T5"
+            },
+            "returned_id": "FDZ0T5",
+            "flights": [
+              {
+                "flight_number": "HAT079",
+                "origin": "JFK",
+                "destination": "ORD",
+                "date": "2024-05-17"
+              },
+              {
+                "flight_number": "HAT289",
+                "origin": "ORD",
+                "destination": "PHL",
+                "date": "2024-05-17"
+              }
+            ]
+          },
+          {
+            "call_index": 16,
+            "result_index": 17,
+            "name": "get_reservation_details",
+            "arguments": {
+              "reservation_id": "HTR26G"
+            },
+            "returned_id": "HTR26G",
+            "flights": [
+              {
+                "flight_number": "HAT300",
+                "origin": "MSP",
+                "destination": "EWR",
+                "date": "2024-05-16"
+              },
+              {
+                "flight_number": "HAT231",
+                "origin": "EWR",
+                "destination": "DFW",
+                "date": "2024-05-16"
+              }
+            ]
+          },
+          {
+            "call_index": 18,
+            "result_index": 19,
+            "name": "get_reservation_details",
+            "arguments": {
+              "reservation_id": "5BGGWZ"
+            },
+            "returned_id": "5BGGWZ",
+            "flights": [
+              {
+                "flight_number": "HAT231",
+                "origin": "EWR",
+                "destination": "DFW",
+                "date": "2024-05-10"
+              },
+              {
+                "flight_number": "HAT142",
+                "origin": "DFW",
+                "destination": "EWR",
+                "date": "2024-05-17"
+              }
+            ]
+          }
+        ],
+        "business_actions": [
+          {
+            "call_index": 28,
+            "result_index": 29,
+            "name": "cancel_reservation",
+            "arguments": {
+              "reservation_id": "FDZ0T5"
+            },
+            "last_prior_agent_text": {
+              "index": 26,
+              "role": "assistant",
+              "text": "Both reservations are eligible for cancellation because they are **business-class** bookings and none of their flights have departed. The cancellation reason for each is **other — booking mixup with your assistant**.\n\nPlease confirm that you want me to cancel **SE9KEL** (LAX–BOS round trip for Ivan Brown and Emma Li) and **FDZ0T5** (JFK–PHL one way for you). Refunds, if applicable, go to the original payment methods within 5–7 business days."
+            },
+            "last_prior_customer_text": {
+              "index": 27,
+              "role": "user",
+              "text": "Wait — SE9KEL is for Ivan Brown and Emma Li, not me. I don't want to touch other passengers' reservations. Just cancel FDZ0T5, the one that's mine."
+            },
+            "returned": {
+              "reservation_id": "FDZ0T5",
+              "status": "cancelled",
+              "payment_history": [
+                {
+                  "payment_id": "credit_card_1402274",
+                  "amount": 3778
+                },
+                {
+                  "payment_id": "credit_card_1402274",
+                  "amount": -3778
+                }
+              ]
+            }
+          }
+        ],
+        "dialogue": [
+          {
+            "index": 0,
+            "role": "assistant",
+            "text": "Hi! How can I help you today?"
+          },
+          {
+            "index": 1,
+            "role": "user",
+            "text": "Yeah, hi, so here's the problem. I had a mixup with my assistant and I think I've got multiple flights booked for the same day. Can you check my profile and see what's going on?"
+          },
+          {
+            "index": 2,
+            "role": "assistant",
+            "text": "{\"message\":\"I can check your reservations. Please provide your user ID.\"}"
+          },
+          {
+            "index": 3,
+            "role": "user",
+            "text": "Sure, it's sophia_martin_4574."
+          },
+          {
+            "index": 20,
+            "role": "assistant",
+            "text": "I found seven reservations. There are two on the same date, **May 17, 2024**:\n\n- **SE9KEL** — LAX to BOS, round trip; flights HAT034 and HAT026 on May 17, then return flights on May 29. This reservation is for Ivan Brown and Emma Li.\n- **FDZ0T5** — JFK to PHL, one way; flights HAT079 and HAT289 on May 17. This reservation is for you.\n\nI also found **HTR26G** for MSP to DFW on May 16, and **5BGGWZ** with a return flight on May 17. The other reservations are on May 22 and May 27–30."
+          },
+          {
+            "index": 21,
+            "role": "user",
+            "text": "Okay, so let me get this straight. I know I'm arriving in New York from Dallas on May 17, and I'm leaving Boston on May 22. So which of these actually fits that?"
+          },
+          {
+            "index": 22,
+            "role": "assistant",
+            "text": "The reservations that match those details are:\n\n- **5BGGWZ** has a return flight from **Dallas (DFW) to Newark (EWR)** on **May 17** (flight HAT142), which matches arriving in the New York area from Dallas.\n- **PUNERT** departs **Boston (BOS) on May 22**, flying to Denver via Miami (flights HAT086 and HAT148).\n\nThe **Boston arrival on May 17** is in reservation **SE9KEL**, but that reservation is for Ivan Brown and Emma Li, not you."
+          },
+          {
+            "index": 23,
+            "role": "user",
+            "text": "Right, so 5BGGWZ and PUNERT are the ones I actually need. The others on May 17 are the mixup. Can you cancel the ones that don't fit?"
+          },
+          {
+            "index": 24,
+            "role": "assistant",
+            "text": "I can help cancel **SE9KEL** and **FDZ0T5**, the two reservations you identified as the mixup. Before I can cancel them, please confirm the reason for cancellation for each: **change of plan**, **airline cancelled the flight**, or **other**."
+          },
+          {
+            "index": 25,
+            "role": "user",
+            "text": "Other — it's a booking mixup with my assistant. Both of them, same reason."
+          },
+          {
+            "index": 26,
+            "role": "assistant",
+            "text": "Both reservations are eligible for cancellation because they are **business-class** bookings and none of their flights have departed. The cancellation reason for each is **other — booking mixup with your assistant**.\n\nPlease confirm that you want me to cancel **SE9KEL** (LAX–BOS round trip for Ivan Brown and Emma Li) and **FDZ0T5** (JFK–PHL one way for you). Refunds, if applicable, go to the original payment methods within 5–7 business days."
+          },
+          {
+            "index": 27,
+            "role": "user",
+            "text": "Wait — SE9KEL is for Ivan Brown and Emma Li, not me. I don't want to touch other passengers' reservations. Just cancel FDZ0T5, the one that's mine."
+          },
+          {
+            "index": 30,
+            "role": "assistant",
+            "text": "**FDZ0T5** has been cancelled. **SE9KEL** was not changed. The cancellation response shows a full $3,778 refund to the original credit card; refunds are processed within 5–7 business days."
+          },
+          {
+            "index": 31,
+            "role": "user",
+            "text": "Good. So now I've got 5BGGWZ for getting into New York on the 17th and PUNERT for leaving Boston on the 22nd, right? Nothing else conflicting?"
+          },
+          {
+            "index": 32,
+            "role": "assistant",
+            "text": "Yes—**5BGGWZ** has your **DFW–EWR** flight on May 17, and **PUNERT** departs **BOS** on May 22. I found no other active reservation for you with a flight on May 17; **FDZ0T5** is cancelled. **SE9KEL** remains active, but it is for Ivan Brown and Emma Li, not you."
+          }
+        ],
+        "first_public_mentions": [
+          {
+            "speaker": "assistant",
+            "reservation_id": "5BGGWZ",
+            "index": 20
+          },
+          {
+            "speaker": "assistant",
+            "reservation_id": "FDZ0T5",
+            "index": 20
+          },
+          {
+            "speaker": "assistant",
+            "reservation_id": "HTR26G",
+            "index": 20
+          },
+          {
+            "speaker": "assistant",
+            "reservation_id": "SE9KEL",
+            "index": 20
+          },
+          {
+            "speaker": "assistant",
+            "reservation_id": "PUNERT",
+            "index": 22
+          },
+          {
+            "speaker": "user",
+            "reservation_id": "5BGGWZ",
+            "index": 23
+          },
+          {
+            "speaker": "user",
+            "reservation_id": "PUNERT",
+            "index": 23
+          },
+          {
+            "speaker": "user",
+            "reservation_id": "FDZ0T5",
+            "index": 27
+          },
+          {
+            "speaker": "user",
+            "reservation_id": "SE9KEL",
+            "index": 27
+          }
+        ]
+      },
+      "second_pass": [
+        {
+          "index": 377,
+          "repetition": 1,
+          "arm": "procedure",
+          "run_id": "r_827e7c0b8d264a378d941d3f9ec86a72",
+          "status": "not_started",
+          "grading_status": null,
+          "official_success": null,
+          "reason": "unknown_cost",
+          "error": null,
+          "normal_response_memory_spans": null
+        },
+        {
+          "index": 378,
+          "repetition": 1,
+          "arm": "fact",
+          "run_id": "r_f19f8508b04d47b5ae813b854d5fdbce",
+          "status": "not_started",
+          "grading_status": null,
+          "official_success": null,
+          "reason": "unknown_cost",
+          "error": null,
+          "normal_response_memory_spans": null
+        },
+        {
+          "index": 379,
+          "repetition": 1,
+          "arm": "summary",
+          "run_id": "r_16331363279a48dea8db26c92f8d8153",
+          "status": "not_started",
+          "grading_status": null,
+          "official_success": null,
+          "reason": "unknown_cost",
+          "error": null,
+          "normal_response_memory_spans": null
+        },
+        {
+          "index": 380,
+          "repetition": 1,
+          "arm": "public_record",
+          "run_id": "r_249390e0a2c44de4a0a774ee99b66b7d",
+          "status": "not_started",
+          "grading_status": null,
+          "official_success": null,
+          "reason": "unknown_cost",
+          "error": null,
+          "normal_response_memory_spans": null
+        },
+        {
+          "index": 381,
+          "repetition": 1,
+          "arm": "lesson",
+          "run_id": "r_9cfc92ec9af045b3a3ca395b6f08f410",
+          "status": "not_started",
+          "grading_status": null,
+          "official_success": null,
+          "reason": "unknown_cost",
+          "error": null,
+          "normal_response_memory_spans": null
+        },
+        {
+          "index": 382,
+          "repetition": 1,
+          "arm": "episode",
+          "run_id": "r_609fc332c2f948fa9d3f6b986a067ad0",
+          "status": "not_started",
+          "grading_status": null,
+          "official_success": null,
+          "reason": "unknown_cost",
+          "error": null,
+          "normal_response_memory_spans": null
+        },
+        {
+          "index": 383,
+          "repetition": 1,
+          "arm": "empty_preload",
+          "run_id": "r_bc42f1c051754bab964d097f2fac2e8b",
+          "status": "not_started",
+          "grading_status": null,
+          "official_success": null,
+          "reason": "unknown_cost",
+          "error": null,
+          "normal_response_memory_spans": null
+        },
+        {
+          "index": 384,
+          "repetition": 1,
+          "arm": "no_memory",
+          "run_id": "r_1eef93db7ec14cbbbb0e6be109284e20",
+          "status": "not_started",
+          "grading_status": null,
+          "official_success": null,
+          "reason": "unknown_cost",
+          "error": null,
+          "normal_response_memory_spans": null
+        },
+        {
+          "index": 491,
+          "repetition": 2,
+          "arm": "summary",
+          "run_id": "r_2f1f16bce6f04a9a9783f363acbe893e",
+          "status": "not_started",
+          "grading_status": null,
+          "official_success": null,
+          "reason": "unknown_cost",
+          "error": null,
+          "normal_response_memory_spans": null
+        },
+        {
+          "index": 492,
+          "repetition": 2,
+          "arm": "procedure",
+          "run_id": "r_71d5ad6d75154862aaf47b9ba1785330",
+          "status": "not_started",
+          "grading_status": null,
+          "official_success": null,
+          "reason": "unknown_cost",
+          "error": null,
+          "normal_response_memory_spans": null
+        },
+        {
+          "index": 493,
+          "repetition": 2,
+          "arm": "public_record",
+          "run_id": "r_d825361d9484445997f64aefa4d44fed",
+          "status": "not_started",
+          "grading_status": null,
+          "official_success": null,
+          "reason": "unknown_cost",
+          "error": null,
+          "normal_response_memory_spans": null
+        },
+        {
+          "index": 494,
+          "repetition": 2,
+          "arm": "fact",
+          "run_id": "r_d71bd07f02e44b42ac373d902ace82c6",
+          "status": "not_started",
+          "grading_status": null,
+          "official_success": null,
+          "reason": "unknown_cost",
+          "error": null,
+          "normal_response_memory_spans": null
+        },
+        {
+          "index": 495,
+          "repetition": 2,
+          "arm": "empty_preload",
+          "run_id": "r_a511479a31f3495c923c96ea462c17e9",
+          "status": "not_started",
+          "grading_status": null,
+          "official_success": null,
+          "reason": "unknown_cost",
+          "error": null,
+          "normal_response_memory_spans": null
+        },
+        {
+          "index": 496,
+          "repetition": 2,
+          "arm": "lesson",
+          "run_id": "r_a930002e63e04f26a37727fb591a6da6",
+          "status": "not_started",
+          "grading_status": null,
+          "official_success": null,
+          "reason": "unknown_cost",
+          "error": null,
+          "normal_response_memory_spans": null
+        },
+        {
+          "index": 497,
+          "repetition": 2,
+          "arm": "no_memory",
+          "run_id": "r_357b1dc262ac4d98bfa288b0a4f9331f",
+          "status": "not_started",
+          "grading_status": null,
+          "official_success": null,
+          "reason": "unknown_cost",
+          "error": null,
+          "normal_response_memory_spans": null
+        },
+        {
+          "index": 498,
+          "repetition": 2,
+          "arm": "episode",
+          "run_id": "r_b53db044c8364f838bd35e74153f4a83",
+          "status": "not_started",
+          "grading_status": null,
+          "official_success": null,
+          "reason": "unknown_cost",
+          "error": null,
+          "normal_response_memory_spans": null
+        }
+      ]
+    }
+  },
+  "scope": "Exact previous and current public turns, profile balances, proposed/approved payments, action arguments and results. Message indices retain the public business-message order. Adjacent customer statements do not themselves certify consent or memory use."
+}

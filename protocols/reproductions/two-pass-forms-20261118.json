@@ -1,0 +1,43 @@
+{
+  "format": "agent-memory-historical-reproduction-registry/v2",
+  "intent": "read_only_historical_review",
+  "experiments": {
+    "two_pass_forms": {
+      "reproduction_commit": "3ae7211b2ba502fb9357d5b4ac45ee6c038013e2",
+      "implementation_commit": "7e30fa24b2d4481e0a91fa30209debccba1c175f",
+      "protocol_lock_ref": {
+        "path": "artifacts/pilots/20261118-two-pass-forms-reproduction-lock.json",
+        "sha256": "26a87ed30d80f452a88fd2193561e89f78bf809449a394b560d210c3996fec5d"
+      },
+      "review_script_ref": {
+        "path": "scripts/review_two_pass_forms_result.py",
+        "sha256": "f4e72ec427c5f064fdaf1a2d731100fd6efc4525011315dae71bf9e6de7ee983"
+      },
+      "environment": {
+        "lock_ref": {
+          "path": "uv.lock",
+          "sha256": "b87ef58cf24c2e6d1ba07ed896676e31ecfb858b3840ef1bc5faf0c334ec62a6"
+        },
+        "project_ref": {
+          "path": "pyproject.toml",
+          "sha256": "eacca6269ebd090c7c4c2c52c7a0379ad73670a25d34bc711a67a60c1584bf0d"
+        },
+        "python_version": "3.12",
+        "extras": []
+      },
+      "expected_outputs": [
+        {
+          "path": "artifacts/pilots/20261118-two-pass-forms-results.json",
+          "sha256": "b1bc6cc0feb911cc3bd11cfb2b9b9b577df58e1f5db11fba6fda20ed46a7969c"
+        }
+      ],
+      "inputs": [
+        {
+          "kind": "run_batch",
+          "path": "runs/tau2-two-pass-forms-luna-deepseek-01",
+          "completion_sha256": "3528eed073199e62e38b2b30959f6b368c3a00e4e6a54021270de548e8b91381"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "format": "agent-memory-two-pass-forms-reproduction-lock/v1",
+  "supplement_created_after_execution": true,
+  "implementation_commit": "7e30fa24b2d4481e0a91fa30209debccba1c175f",
+  "implementation_tree": "fa0069be05d04322d64aa6eb9928edf266d253f9",
+  "planned_output": "runs/tau2-two-pass-forms-luna-deepseek-01",
+  "completion_sha256": "3528eed073199e62e38b2b30959f6b368c3a00e4e6a54021270de548e8b91381",
+  "native_scores_sha256": "a0e8ac7eb7d9c4c836160b30531b8199bde219398e5ca90e62f20296ea9d4f0a",
+  "implementation_files": [
+    {
+      "path": "scripts/run_two_pass_forms.py",
+      "sha256": "4e45d8fdcde4a8f534c62ff6311f4d98777981b2725b8b95d80506ee427ecff1"
+    },
+    {
+      "path": "src/agent_memory_eval/experiments/forms_batch.py",
+      "sha256": "e949f49711ae18f4e5e53284f08d1c64f9d06f7ea4b45217303dea6bf5fad376"
+    },
+    {
+      "path": "src/agent_memory_eval/experiments/forms_write.py",
+      "sha256": "6800f10ecedeab06725d855b1b85e3594af54bde9965efaf06b765d2de180aed"
+    },
+    {
+      "path": "src/agent_memory_eval/experiments/forms_solve.py",
+      "sha256": "2269c8e42370e74b69b3cd7a7a56e4338563e0d35ff20cabc03fb3bd928b174a"
+    },
+    {
+      "path": "src/agent_memory_eval/analysis/forms_results.py",
+      "sha256": "daa26ca5c5bd62e7b2b613d8995d1082b252b2883c05dcf8f0aa4723078830fe"
+    },
+    {
+      "path": "src/agent_memory_eval/analysis/requests.py",
+      "sha256": "f2144e5369390618dbf14ac8a5eae6e7b6e4db7fc2f58b6b125694bdcf034f45"
+    },
+    {
+      "path": "src/agent_memory_eval/runner/tau2_memory.py",
+      "sha256": "12e4e029a5b69d6758d38f20274c832c868efd27c22731364efd91ad7da4dff3"
+    },
+    {
+      "path": "src/agent_memory_eval/models/openrouter.py",
+      "sha256": "8db81691028d23bf52e19ce794a4b5397ba8845c94ee68644c64df9cd436ab5a"
+    },
+    {
+      "path": "src/agent_memory_eval/recording/provenance.py",
+      "sha256": "b599fd67d5753bb32bb658921372838332e19929d0d3becf4a2a3f240ff6c1f9"
+    },
+    {
+      "path": "src/agent_memory_eval/recording/journal.py",
+      "sha256": "bbb75661f615118c426e9eff39429a6f9d03adedc3c877488c4363b0971e21a7"
+    },
+    {
+      "path": "src/agent_memory_eval/memory/imports.py",
+      "sha256": "da9e1dda931ab15bf56dc238240d123fa5057712736573e4fb86975e1937d234"
+    },
+    {
+      "path": "src/agent_memory_eval/memory/preparation.py",
+      "sha256": "14e99697d44352408ace93d238fedeb75dcc39d14028400d244f2b4e09814d3e"
+    }
+  ],
+  "profile_ref": {
+    "path": "protocols/pilots/tau2-two-pass-memory-forms-v1.json",
+    "sha256": "6ffabf3acd5195916dccb2c12fa8c652fc86df44bd66cd7d3aba77e9cecb5b14"
+  },
+  "design_ref": {
+    "path": "protocols/drafts/tau2-two-pass-memory-forms-v1.json",
+    "sha256": "d4b06f72f4bcf5f656587e80645e042e7cf77e687cd5d1c38a20e2aff2cc373a"
+  },
+  "preflight_ref": {
+    "path": "artifacts/analyses/20261118-two-pass-forms-preflight.json",
+    "sha256": "1f792b54db3004ba85534429c4925c8c74d7fdee2b8eb3de10523c93e9eaf915"
+  },
+  "research_ref": {
+    "path": "docs/research/two-pass-memory-forms-v1.md",
+    "sha256": "de37df9d9825242805b3ca464b267c4245beca8bb783bcd91332d857583a039d"
+  },
+  "endpoint_ref": {
+    "path": "artifacts/pilots/20261118-two-pass-forms-endpoints.json",
+    "sha256": "9b5bd1d9898ede15030b062fa81e451875fee0adff31d3a279d974a74435a872"
+  },
+  "results_ref": {
+    "path": "artifacts/pilots/20261118-two-pass-forms-results.json",
+    "sha256": "b1bc6cc0feb911cc3bd11cfb2b9b9b577df58e1f5db11fba6fda20ed46a7969c"
+  }
+}

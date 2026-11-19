@@ -1,0 +1,620 @@
+{
+  "format": "agent-memory-two-pass-source-transitions/v1",
+  "cell_csv_sha256": "8954c104714463a9fdb57549f892b47e8f33f0fd20210dc19176394344dfe5b3",
+  "source_task_counts": {
+    "success": 24,
+    "failure": 4
+  },
+  "within_task_no_memory_repeats": {
+    "0": [
+      "success",
+      "not_started"
+    ],
+    "1": [
+      "not_started",
+      "not_started"
+    ],
+    "3": [
+      "success",
+      "not_started"
+    ],
+    "4": [
+      "not_started",
+      "not_started"
+    ],
+    "5": [
+      "success",
+      "not_started"
+    ],
+    "9": [
+      "success",
+      "not_started"
+    ],
+    "10": [
+      "not_started",
+      "not_started"
+    ],
+    "11": [
+      "not_started",
+      "not_started"
+    ],
+    "12": [
+      "not_started",
+      "not_started"
+    ],
+    "14": [
+      "not_started",
+      "not_started"
+    ],
+    "15": [
+      "failure",
+      "not_started"
+    ],
+    "17": [
+      "success",
+      "not_started"
+    ],
+    "20": [
+      "not_started",
+      "not_started"
+    ],
+    "21": [
+      "not_started",
+      "not_started"
+    ],
+    "23": [
+      "not_started",
+      "not_started"
+    ],
+    "27": [
+      "not_started",
+      "not_started"
+    ],
+    "28": [
+      "not_started",
+      "not_started"
+    ],
+    "33": [
+      "not_started",
+      "not_started"
+    ],
+    "34": [
+      "not_started",
+      "not_started"
+    ],
+    "36": [
+      "success",
+      "not_started"
+    ],
+    "38": [
+      "not_started",
+      "not_started"
+    ],
+    "40": [
+      "success",
+      "not_started"
+    ],
+    "41": [
+      "success",
+      "not_started"
+    ],
+    "42": [
+      "not_started",
+      "not_started"
+    ],
+    "43": [
+      "success",
+      "not_started"
+    ],
+    "46": [
+      "not_started",
+      "not_started"
+    ],
+    "47": [
+      "success",
+      "not_started"
+    ],
+    "49": [
+      "not_started",
+      "not_started"
+    ]
+  },
+  "flipped_no_memory_tasks": [],
+  "by_condition_and_source": {
+    "no_memory": {
+      "success": {
+        "source_tasks": 24,
+        "assignments": 48,
+        "success": 9,
+        "failure": 1,
+        "ungraded": 0,
+        "not_started": 38
+      },
+      "failure": {
+        "source_tasks": 4,
+        "assignments": 8,
+        "success": 1,
+        "failure": 0,
+        "ungraded": 0,
+        "not_started": 7
+      }
+    },
+    "fact": {
+      "success": {
+        "source_tasks": 24,
+        "assignments": 48,
+        "success": 9,
+        "failure": 1,
+        "ungraded": 0,
+        "not_started": 38
+      },
+      "failure": {
+        "source_tasks": 4,
+        "assignments": 8,
+        "success": 0,
+        "failure": 1,
+        "ungraded": 0,
+        "not_started": 7
+      }
+    },
+    "episode": {
+      "success": {
+        "source_tasks": 24,
+        "assignments": 48,
+        "success": 9,
+        "failure": 1,
+        "ungraded": 0,
+        "not_started": 38
+      },
+      "failure": {
+        "source_tasks": 4,
+        "assignments": 8,
+        "success": 1,
+        "failure": 0,
+        "ungraded": 0,
+        "not_started": 7
+      }
+    },
+    "lesson": {
+      "success": {
+        "source_tasks": 24,
+        "assignments": 48,
+        "success": 8,
+        "failure": 1,
+        "ungraded": 1,
+        "not_started": 38
+      },
+      "failure": {
+        "source_tasks": 4,
+        "assignments": 8,
+        "success": 1,
+        "failure": 0,
+        "ungraded": 0,
+        "not_started": 7
+      }
+    },
+    "procedure": {
+      "success": {
+        "source_tasks": 24,
+        "assignments": 48,
+        "success": 8,
+        "failure": 0,
+        "ungraded": 2,
+        "not_started": 38
+      },
+      "failure": {
+        "source_tasks": 4,
+        "assignments": 8,
+        "success": 1,
+        "failure": 0,
+        "ungraded": 0,
+        "not_started": 7
+      }
+    },
+    "empty_preload": {
+      "success": {
+        "source_tasks": 24,
+        "assignments": 48,
+        "success": 7,
+        "failure": 2,
+        "ungraded": 1,
+        "not_started": 38
+      },
+      "failure": {
+        "source_tasks": 4,
+        "assignments": 8,
+        "success": 1,
+        "failure": 0,
+        "ungraded": 0,
+        "not_started": 7
+      }
+    },
+    "summary": {
+      "success": {
+        "source_tasks": 2,
+        "assignments": 4,
+        "success": 1,
+        "failure": 0,
+        "ungraded": 0,
+        "not_started": 3
+      },
+      "failure": {
+        "source_tasks": 2,
+        "assignments": 4,
+        "success": 0,
+        "failure": 1,
+        "ungraded": 0,
+        "not_started": 3
+      }
+    },
+    "public_record": {
+      "success": {
+        "source_tasks": 2,
+        "assignments": 4,
+        "success": 1,
+        "failure": 0,
+        "ungraded": 0,
+        "not_started": 3
+      },
+      "failure": {
+        "source_tasks": 2,
+        "assignments": 4,
+        "success": 1,
+        "failure": 0,
+        "ungraded": 0,
+        "not_started": 3
+      }
+    }
+  },
+  "first_pass_failure_tasks": {
+    "17": {
+      "no_memory": [
+        {
+          "repetition": 1,
+          "job": 251,
+          "outcome": "success"
+        },
+        {
+          "repetition": 2,
+          "job": 478,
+          "outcome": "not_started"
+        }
+      ],
+      "fact": [
+        {
+          "repetition": 1,
+          "job": 245,
+          "outcome": "failure"
+        },
+        {
+          "repetition": 2,
+          "job": 473,
+          "outcome": "not_started"
+        }
+      ],
+      "episode": [
+        {
+          "repetition": 1,
+          "job": 252,
+          "outcome": "success"
+        },
+        {
+          "repetition": 2,
+          "job": 471,
+          "outcome": "not_started"
+        }
+      ],
+      "lesson": [
+        {
+          "repetition": 1,
+          "job": 250,
+          "outcome": "success"
+        },
+        {
+          "repetition": 2,
+          "job": 477,
+          "outcome": "not_started"
+        }
+      ],
+      "procedure": [
+        {
+          "repetition": 1,
+          "job": 248,
+          "outcome": "success"
+        },
+        {
+          "repetition": 2,
+          "job": 475,
+          "outcome": "not_started"
+        }
+      ],
+      "empty_preload": [
+        {
+          "repetition": 1,
+          "job": 249,
+          "outcome": "success"
+        },
+        {
+          "repetition": 2,
+          "job": 476,
+          "outcome": "not_started"
+        }
+      ],
+      "summary": [
+        {
+          "repetition": 1,
+          "job": 247,
+          "outcome": "failure"
+        },
+        {
+          "repetition": 2,
+          "job": 472,
+          "outcome": "not_started"
+        }
+      ],
+      "public_record": [
+        {
+          "repetition": 1,
+          "job": 246,
+          "outcome": "success"
+        },
+        {
+          "repetition": 2,
+          "job": 474,
+          "outcome": "not_started"
+        }
+      ]
+    },
+    "20": {
+      "no_memory": [
+        {
+          "repetition": 1,
+          "job": 371,
+          "outcome": "not_started"
+        },
+        {
+          "repetition": 2,
+          "job": 513,
+          "outcome": "not_started"
+        }
+      ],
+      "fact": [
+        {
+          "repetition": 1,
+          "job": 376,
+          "outcome": "not_started"
+        },
+        {
+          "repetition": 2,
+          "job": 517,
+          "outcome": "not_started"
+        }
+      ],
+      "episode": [
+        {
+          "repetition": 1,
+          "job": 375,
+          "outcome": "not_started"
+        },
+        {
+          "repetition": 2,
+          "job": 516,
+          "outcome": "not_started"
+        }
+      ],
+      "lesson": [
+        {
+          "repetition": 1,
+          "job": 374,
+          "outcome": "not_started"
+        },
+        {
+          "repetition": 2,
+          "job": 515,
+          "outcome": "not_started"
+        }
+      ],
+      "procedure": [
+        {
+          "repetition": 1,
+          "job": 373,
+          "outcome": "not_started"
+        },
+        {
+          "repetition": 2,
+          "job": 518,
+          "outcome": "not_started"
+        }
+      ],
+      "empty_preload": [
+        {
+          "repetition": 1,
+          "job": 372,
+          "outcome": "not_started"
+        },
+        {
+          "repetition": 2,
+          "job": 514,
+          "outcome": "not_started"
+        }
+      ],
+      "summary": [],
+      "public_record": []
+    },
+    "21": {
+      "no_memory": [
+        {
+          "repetition": 1,
+          "job": 341,
+          "outcome": "not_started"
+        },
+        {
+          "repetition": 2,
+          "job": 500,
+          "outcome": "not_started"
+        }
+      ],
+      "fact": [
+        {
+          "repetition": 1,
+          "job": 344,
+          "outcome": "not_started"
+        },
+        {
+          "repetition": 2,
+          "job": 501,
+          "outcome": "not_started"
+        }
+      ],
+      "episode": [
+        {
+          "repetition": 1,
+          "job": 342,
+          "outcome": "not_started"
+        },
+        {
+          "repetition": 2,
+          "job": 499,
+          "outcome": "not_started"
+        }
+      ],
+      "lesson": [
+        {
+          "repetition": 1,
+          "job": 346,
+          "outcome": "not_started"
+        },
+        {
+          "repetition": 2,
+          "job": 502,
+          "outcome": "not_started"
+        }
+      ],
+      "procedure": [
+        {
+          "repetition": 1,
+          "job": 345,
+          "outcome": "not_started"
+        },
+        {
+          "repetition": 2,
+          "job": 504,
+          "outcome": "not_started"
+        }
+      ],
+      "empty_preload": [
+        {
+          "repetition": 1,
+          "job": 343,
+          "outcome": "not_started"
+        },
+        {
+          "repetition": 2,
+          "job": 503,
+          "outcome": "not_started"
+        }
+      ],
+      "summary": [],
+      "public_record": []
+    },
+    "42": {
+      "no_memory": [
+        {
+          "repetition": 1,
+          "job": 384,
+          "outcome": "not_started"
+        },
+        {
+          "repetition": 2,
+          "job": 497,
+          "outcome": "not_started"
+        }
+      ],
+      "fact": [
+        {
+          "repetition": 1,
+          "job": 378,
+          "outcome": "not_started"
+        },
+        {
+          "repetition": 2,
+          "job": 494,
+          "outcome": "not_started"
+        }
+      ],
+      "episode": [
+        {
+          "repetition": 1,
+          "job": 382,
+          "outcome": "not_started"
+        },
+        {
+          "repetition": 2,
+          "job": 498,
+          "outcome": "not_started"
+        }
+      ],
+      "lesson": [
+        {
+          "repetition": 1,
+          "job": 381,
+          "outcome": "not_started"
+        },
+        {
+          "repetition": 2,
+          "job": 496,
+          "outcome": "not_started"
+        }
+      ],
+      "procedure": [
+        {
+          "repetition": 1,
+          "job": 377,
+          "outcome": "not_started"
+        },
+        {
+          "repetition": 2,
+          "job": 492,
+          "outcome": "not_started"
+        }
+      ],
+      "empty_preload": [
+        {
+          "repetition": 1,
+          "job": 383,
+          "outcome": "not_started"
+        },
+        {
+          "repetition": 2,
+          "job": 495,
+          "outcome": "not_started"
+        }
+      ],
+      "summary": [
+        {
+          "repetition": 1,
+          "job": 379,
+          "outcome": "not_started"
+        },
+        {
+          "repetition": 2,
+          "job": 491,
+          "outcome": "not_started"
+        }
+      ],
+      "public_record": [
+        {
+          "repetition": 1,
+          "job": 380,
+          "outcome": "not_started"
+        },
+        {
+          "repetition": 2,
+          "job": 493,
+          "outcome": "not_started"
+        }
+      ]
+    }
+  },
+  "interpretation": "Each trace in the first pass is reused in both second-pass blocks. This table is descriptive; the planned memory comparison uses the paired contemporaneous no-memory condition."
+}

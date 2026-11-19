@@ -1,0 +1,304 @@
+{
+  "format": "agent-memory-two-pass-handoff-case/v1",
+  "scope": "Post-observation mechanism check, all six originally allocated arms of task 36 block 1. Traces stop at the public prefix of the recorded episode. Reached-state checks are diagnostic only.",
+  "benchmark_task": "36",
+  "repetition": 1,
+  "source_group": "g18",
+  "traces": [
+    {
+      "job": 297,
+      "arm": "episode",
+      "run_id": "r_e5b0380de7e84868b6c12711dbeda83c",
+      "log_sha256": "6f8e56bd99bbf5d1856bc64f181ed9a1912a4c1722d47a5a5f0bfe89314823d7",
+      "record_sha256": "93ebb02c38d1ae13d7ac1b5314a6897041881dfc9123ad31f545dff8d519d415",
+      "native_steps": 31,
+      "http_calls": 28,
+      "termination": "user_stop",
+      "error": null,
+      "official_success": true,
+      "reported_cost_usd": "0.0021100516",
+      "unknowns": 0,
+      "normal_response_memory_spans": 0,
+      "successful_handoff_tool_returns": [
+        {
+          "index": 9,
+          "role": "tool",
+          "text": "Transfer successful"
+        },
+        {
+          "index": 27,
+          "role": "tool",
+          "text": "Transfer successful"
+        }
+      ],
+      "customer_end_markers": [
+        {
+          "index": 31,
+          "text": "###TRANSFER###"
+        }
+      ],
+      "last_public_speech": {
+        "user": {
+          "index": 31,
+          "text": "###TRANSFER###"
+        },
+        "assistant": {
+          "index": 30,
+          "text": "{\"message\":\"YOU ARE BEING TRANSFERRED TO A HUMAN AGENT. PLEASE HOLD ON.\"}"
+        }
+      },
+      "reached_db_match": null,
+      "reached_state_artifact_sha256": null,
+      "first_exchange_after_handoff": {
+        "assistant_index": 10,
+        "assistant_text": "{\"message\":\"YOU ARE BEING TRANSFERRED TO A HUMAN AGENT. PLEASE HOLD ON.\"}",
+        "assistant_utf8_sha256": "34b8b8837d7a9433fe00aa7fefb0c5b49780246c936f3044306602bc736efb8d",
+        "customer_index": 11,
+        "customer_text": "Yeah, no problem, I'll hang on.",
+        "contains_prescribed_phrase": true
+      }
+    },
+    {
+      "job": 298,
+      "arm": "no_memory",
+      "run_id": "r_9f0337424bb046d3b12312e09d53167d",
+      "log_sha256": "b377c8289cd44947707752b8247374a321acc6ed0e5b5344c65daa7f87e955f0",
+      "record_sha256": "7e34a671e4f574120926cd29464eab555ad5c18bdf8c8e1f100adbb39b419b0b",
+      "native_steps": 11,
+      "http_calls": 9,
+      "termination": "user_stop",
+      "error": null,
+      "official_success": true,
+      "reported_cost_usd": "0.0006116428",
+      "unknowns": 0,
+      "normal_response_memory_spans": 0,
+      "successful_handoff_tool_returns": [
+        {
+          "index": 7,
+          "role": "tool",
+          "text": "Transfer successful"
+        }
+      ],
+      "customer_end_markers": [
+        {
+          "index": 11,
+          "text": "###TRANSFER###"
+        }
+      ],
+      "last_public_speech": {
+        "user": {
+          "index": 11,
+          "text": "###TRANSFER###"
+        },
+        "assistant": {
+          "index": 10,
+          "text": "{\"message\":\"YOU ARE BEING TRANSFERRED TO A HUMAN AGENT. PLEASE HOLD ON.\"}"
+        }
+      },
+      "reached_db_match": null,
+      "reached_state_artifact_sha256": null,
+      "first_exchange_after_handoff": {
+        "assistant_index": 8,
+        "assistant_text": "YOU ARE BEING TRANSFERRED TO A HUMAN AGENT. PLEASE HOLD ON.",
+        "assistant_utf8_sha256": "8f8a877f56789f251fccf0d86a11ea76b4b3e49fb1145a5557606114f99a4a70",
+        "customer_index": 9,
+        "customer_text": "Okay, I’ll hold.",
+        "contains_prescribed_phrase": true
+      }
+    },
+    {
+      "job": 299,
+      "arm": "procedure",
+      "run_id": "r_15ce2251d5f34d128751c481f9a3b1af",
+      "log_sha256": "cc0e54d4d42ae9af82e5c7525bc2c9a176d40f36728523ee170f50e6153f2042",
+      "record_sha256": "ebb235aec8f68674514c158429333e0c3898f00c472e4ed678f774eb0242e856",
+      "native_steps": 200,
+      "http_calls": 198,
+      "termination": "max_steps",
+      "error": "NATIVE_MAX_STEPS",
+      "official_success": null,
+      "reported_cost_usd": "0.0146444800",
+      "unknowns": 0,
+      "normal_response_memory_spans": 200,
+      "successful_handoff_tool_returns": [
+        {
+          "index": 7,
+          "role": "tool",
+          "text": "Transfer successful"
+        }
+      ],
+      "customer_end_markers": [],
+      "last_public_speech": {
+        "user": {
+          "index": 199,
+          "text": "Okay. I'll wait."
+        },
+        "assistant": {
+          "index": 200,
+          "text": "{\"message\":\"Your request has already been transferred to a human agent. I can’t monitor the queue or provide an estimated wait time.\"}"
+        }
+      },
+      "reached_db_match": true,
+      "reached_state_artifact_sha256": "6ea8a3650900b2625ed0f52f91f32cc063255b34936ccc49efdfeb09799abd7a",
+      "first_exchange_after_handoff": {
+        "assistant_index": 8,
+        "assistant_text": "{\"message\":\"YOU ARE BEING TRANSFERRED TO A HUMAN AGENT. PLEASE HOLD ON.\"}",
+        "assistant_utf8_sha256": "34b8b8837d7a9433fe00aa7fefb0c5b49780246c936f3044306602bc736efb8d",
+        "customer_index": 9,
+        "customer_text": "Okay, sure, I'll hang on.",
+        "contains_prescribed_phrase": true
+      }
+    },
+    {
+      "job": 300,
+      "arm": "fact",
+      "run_id": "r_66674c1f29b943a3a5b6059420a54f50",
+      "log_sha256": "6c71a69a67be569e02e260b1b8d17d081c2ab6cb2474a9ab3141a8929ceacb1a",
+      "record_sha256": "bec13daee5bbabe7a30e90f8c693ebc29c05769ba7677f4cf6d40e724cd22cb5",
+      "native_steps": 11,
+      "http_calls": 9,
+      "termination": "user_stop",
+      "error": null,
+      "official_success": true,
+      "reported_cost_usd": "0.0007153878",
+      "unknowns": 0,
+      "normal_response_memory_spans": 10,
+      "successful_handoff_tool_returns": [
+        {
+          "index": 9,
+          "role": "tool",
+          "text": "Transfer successful"
+        }
+      ],
+      "customer_end_markers": [
+        {
+          "index": 11,
+          "text": "###TRANSFER###"
+        }
+      ],
+      "last_public_speech": {
+        "user": {
+          "index": 11,
+          "text": "###TRANSFER###"
+        },
+        "assistant": {
+          "index": 10,
+          "text": "{\"message\":\"YOU ARE BEING TRANSFERRED TO A HUMAN AGENT. PLEASE HOLD ON.\"}"
+        }
+      },
+      "reached_db_match": null,
+      "reached_state_artifact_sha256": null,
+      "first_exchange_after_handoff": {
+        "assistant_index": 10,
+        "assistant_text": "{\"message\":\"YOU ARE BEING TRANSFERRED TO A HUMAN AGENT. PLEASE HOLD ON.\"}",
+        "assistant_utf8_sha256": "34b8b8837d7a9433fe00aa7fefb0c5b49780246c936f3044306602bc736efb8d",
+        "customer_index": 11,
+        "customer_text": "###TRANSFER###",
+        "contains_prescribed_phrase": true
+      }
+    },
+    {
+      "job": 301,
+      "arm": "lesson",
+      "run_id": "r_0d16fecb73fe4d5d82cbb72f351fae2f",
+      "log_sha256": "939991e8af04b06c90ea22fa01bcd1ac114a27aa486d994a5c08c127d4999956",
+      "record_sha256": "0f3e737860deba314c6a110d425f1ea6f16c35bc9f3621b98b088ce274691403",
+      "native_steps": 200,
+      "http_calls": 198,
+      "termination": "max_steps",
+      "error": "NATIVE_MAX_STEPS",
+      "official_success": null,
+      "reported_cost_usd": "0.0142613996",
+      "unknowns": 0,
+      "normal_response_memory_spans": 200,
+      "successful_handoff_tool_returns": [
+        {
+          "index": 7,
+          "role": "tool",
+          "text": "Transfer successful"
+        }
+      ],
+      "customer_end_markers": [],
+      "last_public_speech": {
+        "user": {
+          "index": 199,
+          "text": "Okay... I'll keep waiting."
+        },
+        "assistant": {
+          "index": 200,
+          "text": "{\"message\":\"Your request was transferred earlier. I can’t monitor the queue or provide wait-time updates.\"}"
+        }
+      },
+      "reached_db_match": true,
+      "reached_state_artifact_sha256": "6ea8a3650900b2625ed0f52f91f32cc063255b34936ccc49efdfeb09799abd7a",
+      "first_exchange_after_handoff": {
+        "assistant_index": 8,
+        "assistant_text": "{\"message\":\"YOU ARE BEING TRANSFERRED TO A HUMAN AGENT. PLEASE HOLD ON.\"}",
+        "assistant_utf8_sha256": "34b8b8837d7a9433fe00aa7fefb0c5b49780246c936f3044306602bc736efb8d",
+        "customer_index": 9,
+        "customer_text": "Okay, I'll hang on. Thanks.",
+        "contains_prescribed_phrase": true
+      }
+    },
+    {
+      "job": 302,
+      "arm": "empty_preload",
+      "run_id": "r_32f7c6a7322e476ea69c1071f34bf7b6",
+      "log_sha256": "e7f947902f2553bb50a7284066ace8b4c4f854ae517b0204406dfcc2efadaabf",
+      "record_sha256": "12fbc9eb494d2a59420e88a5a98d8d342f84020ab9bb83df151b56d05a575839",
+      "native_steps": 120,
+      "http_calls": 119,
+      "termination": "runtime_error",
+      "error": "PROVIDER_RESPONSE_ERROR",
+      "official_success": null,
+      "reported_cost_usd": "0.0081177270",
+      "unknowns": 1,
+      "normal_response_memory_spans": 0,
+      "successful_handoff_tool_returns": [
+        {
+          "index": 7,
+          "role": "tool",
+          "text": "Transfer successful"
+        }
+      ],
+      "customer_end_markers": [],
+      "last_public_speech": {
+        "user": {
+          "index": 119,
+          "text": "Okay… I understand. Thanks for explaining. I’ll wait for the human agent."
+        },
+        "assistant": {
+          "index": 120,
+          "text": "{\"message\":\"You’re welcome. Your request has already been sent to a human agent; I can’t monitor the queue or provide further updates.\"}"
+        }
+      },
+      "reached_db_match": null,
+      "reached_state_artifact_sha256": null,
+      "first_exchange_after_handoff": {
+        "assistant_index": 8,
+        "assistant_text": "{\"message\":\"YOU ARE BEING TRANSFERRED TO A HUMAN AGENT. PLEASE HOLD ON.\"}",
+        "assistant_utf8_sha256": "34b8b8837d7a9433fe00aa7fefb0c5b49780246c936f3044306602bc736efb8d",
+        "customer_index": 9,
+        "customer_text": "Okay… I’ll hold.",
+        "contains_prescribed_phrase": true
+      }
+    }
+  ],
+  "public_airline_policy": {
+    "pinned_checkout_path": "data/tau2/domains/airline/policy.md",
+    "sha256": "10dc0525421521208be39cee235bba84a16e2bcba9899eb93d92cd81d2f62fc4",
+    "prescribed_post_transfer_text": "YOU ARE BEING TRANSFERRED TO A HUMAN AGENT. PLEASE HOLD ON."
+  },
+  "arms_with_same_first_post_transfer_assistant_text": {
+    "34b8b8837d7a9433fe00aa7fefb0c5b49780246c936f3044306602bc736efb8d": [
+      "episode",
+      "procedure",
+      "fact",
+      "lesson",
+      "empty_preload"
+    ],
+    "8f8a877f56789f251fccf0d86a11ea76b4b3e49fb1145a5557606114f99a4a70": [
+      "no_memory"
+    ]
+  }
+}

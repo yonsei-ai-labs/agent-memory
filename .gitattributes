@@ -10,5 +10,9 @@
 # The original literature CSV includes a BOM and intentional CRLF endings.
 /docs/references/literature/papers.csv -text whitespace=cr-at-eol
 
+# Native comparison exports are verified against their original CSV bytes.
+/artifacts/analyses/20261118-two-pass-forms*-cells/second-pass.csv -text whitespace=cr-at-eol
+/artifacts/analyses/20261118-two-pass-forms*-cells/episode-origins.csv -text whitespace=cr-at-eol
+
 # Frozen working-tree dataset snapshots retain original bytes and formatting.
 /archive/** -text -whitespace

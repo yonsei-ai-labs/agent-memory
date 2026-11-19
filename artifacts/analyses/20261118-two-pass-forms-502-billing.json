@@ -1,0 +1,42 @@
+{
+  "format": "agent-memory-two-pass-unpriced-http-receipt/v1",
+  "raw_root": "runs/tau2-two-pass-forms-luna-deepseek-supplement-02",
+  "completion_sha256": "44f67d55b2dcd4b5c75224a67bc2b30ab552e30bccaf0e81535679dad662a358",
+  "job": 471,
+  "run_id": "r_3420b3632a674043949643b64e792cd7",
+  "task": "17",
+  "repetition": 2,
+  "arm": "episode",
+  "actor": "user_simulator",
+  "model_request_id": "request_fa5b2b312a5442978fc9a6f9c2621daa",
+  "start_event_id": "e_037a06b05cba451cb03c573af0564ad8",
+  "finish_event_id": "e_3176ea190dc343978d5afbd90555873f",
+  "wire_sha256": "a648e19c3860a787ab5bd9ec5ce08f3ebd70b5fc14ea5c09551987c5627ac2f3",
+  "provider_response_sha256": "661ede34da024c3312bb8efe65aa3883e8779adb2e399e8113712ea31315bb3a",
+  "observed_error": {
+    "error": {
+      "code": 502,
+      "routing_reason": "provider"
+    }
+  },
+  "delivery_status": "response_received",
+  "observed_cost_status": "unknown",
+  "stored_generation_id": null,
+  "lookups": [],
+  "lookup_explanation": "The archived HTTP 502 contains no generation ID for a single-generation billing lookup.",
+  "wire_conservative_reservation_usd": "0.0019926",
+  "applied_to_sealed_study_budget": false,
+  "as_sealed": {
+    "http_calls": 4667,
+    "known_usd": "0.7855638294",
+    "unknown_calls": 3,
+    "reserved_usd": "0.0100881",
+    "stop_reason": "unknown_cost"
+  },
+  "remaining_jobs": {
+    "first": 472,
+    "last": 584,
+    "total": 113
+  },
+  "model_sends_during_inspection": 0
+}

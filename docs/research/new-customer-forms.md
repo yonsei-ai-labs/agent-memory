@@ -25,3 +25,23 @@
 참조 변경 행동마다 같은 도구와 예약 ID 또는 예약 생성 고객 ID의 정상 실행을 순서대로 하나씩 대응한다. 비슷한 중간 호출, 실제 업무 상태와 점수 속성은 따로 보존한다. 행동이 누락되면 그 행동에 필요한 날짜·항공편·수량·금액 필드도 충족되지 않은 것으로 센다. 적용 대상이 없는 항목은 분모에서 제외한다. 32번에는 같은 예약의 같은 도구가 두 번 필요하므로 한 번의 관측을 두 단계에 쓰지 않는다. 주 판단은 native 공식 결과이며 확정된 업무를 재생해 최종 상태를 재검산한다.
 
 OpenRouter를 사용하는 새 실행의 예약 포함 상한은 1회차 $0.30, 작성과 2회차 합계 $1.70이다. 원문과 요청 출처를 확인할 수 있는 HTTP 429·502·503·504는 단계별 최대 두 번까지 해당 요청의 보수적 최대액을 예약해 남은 한도에서 차감한다. 한번 제출한 작업은 다시 보내지 않는다. 그 밖의 미확인 청구는 해당 단계를 중단한다. 성적과 실패 사유, 실제 사용료와 예약액은 별도로 보관한다.
+
+## 원본에서 다시 확인하기
+
+다음 명령은 저장소 루트에서 실행한다. 첫 명령은 고객 선정과 원본 벤치 해시를 검사한다. 두 번째는 봉인된 1회차에서 공개 경험과 2회차 배정을 재구성한다. 뒤의 두 명령은 새 출력 폴더에 짝별 원문과 실제 입력, 업무 도구의 인수, 공식 재채점 및 비용 집계를 만든다. 네 명령 모두 오프라인에서 실행할 수 있다.
+
+```bash
+uv run python scripts/run_fresh_forms.py source --preflight
+uv run python scripts/run_fresh_forms.py comparison --preflight
+uv run python scripts/report_prompt_comparison.py runs/tau2-new-customer-forms-01 outputs/new-customer-report-copy
+uv run python scripts/analyze_fresh_forms.py outputs/new-customer-report-copy outputs/new-customer-analysis-copy
+```
+
+원본에서 세 번째 HTTP 503으로 전송이 멈춘 뒤, 79∼120번 미시작 배정만 이어가는 별도 계획을 고정했다. 앞선 78개 작업의 원본 journal과 결과를 대조하고, 청구액 미확인 세 요청의 전송별 최대액을 기존 한도에서 예약한다. 새로 받은 대상 오류에는 제공자가 지정한 대기 시간과 연속 오류 횟수에 따른 대기를 적용한다. 합산본에는 원본 작성·수행이 이미 포함된다. [보충 계획](../../protocols/pilots/tau2-new-customer-forms-continuation-v1.json)
+
+```bash
+uv run python scripts/continue_fresh_forms.py --preflight
+uv run python scripts/report_prompt_comparison.py runs/tau2-new-customer-forms-continuation-01 outputs/new-customer-combined-report-copy
+uv run python scripts/analyze_fresh_forms.py outputs/new-customer-combined-report-copy outputs/new-customer-combined-analysis-copy --continuation
+uv run python scripts/replay_fresh_booking_fields.py outputs/new-customer-booking-replay-copy.json --continuation
+```

@@ -1,0 +1,2374 @@
+{
+  "format": "agent-memory-new-customer-four-forms-results/v1",
+  "config_sha256": "0a73306f4ccb6f6a2e7a648c02b70e4fef274f2a7574e9a136dac06132c2062e",
+  "benchmark_revision": "c06b07dd7c4d4ec61ba6ff9bcdf0b15dd7ef36d4",
+  "analysis_sha256": "bfb82361cad29e44bea70d8d69459c11fd4768be9f7bfcc9a5cab3ed7cfce2aa",
+  "behavior_method_sha256": "6ab7145592d301fdf2b9d63049bcda39d03a9c0dc511d32ab38e6eeedca0a1be",
+  "linked_summary_sha256": "78732ee71571694e132ab2dc8b2f865c5ad3ac4a2bcd292ad2d6aac5620c952b",
+  "task_sets": {
+    "all": [
+      "19",
+      "24",
+      "25",
+      "29",
+      "30",
+      "32"
+    ],
+    "first_success": [
+      "24",
+      "25",
+      "30"
+    ],
+    "first_failure": [
+      "19",
+      "29",
+      "32"
+    ]
+  },
+  "first_outcomes": {
+    "19": false,
+    "29": false,
+    "30": true,
+    "25": true,
+    "32": false,
+    "24": true
+  },
+  "outcomes": {
+    "all": {
+      "fact": {
+        "planned": 12,
+        "graded": 4,
+        "success": 3,
+        "failure": 1,
+        "missing": 8
+      },
+      "episode": {
+        "planned": 12,
+        "graded": 4,
+        "success": 2,
+        "failure": 2,
+        "missing": 8
+      },
+      "lesson": {
+        "planned": 12,
+        "graded": 5,
+        "success": 2,
+        "failure": 3,
+        "missing": 7
+      },
+      "procedure": {
+        "planned": 12,
+        "graded": 5,
+        "success": 3,
+        "failure": 2,
+        "missing": 7
+      },
+      "no_memory": {
+        "planned": 12,
+        "graded": 5,
+        "success": 2,
+        "failure": 3,
+        "missing": 7
+      },
+      "empty_preload": {
+        "planned": 12,
+        "graded": 4,
+        "success": 2,
+        "failure": 2,
+        "missing": 8
+      }
+    },
+    "first_success": {
+      "fact": {
+        "planned": 6,
+        "graded": 3,
+        "success": 3,
+        "failure": 0,
+        "missing": 3
+      },
+      "episode": {
+        "planned": 6,
+        "graded": 3,
+        "success": 2,
+        "failure": 1,
+        "missing": 3
+      },
+      "lesson": {
+        "planned": 6,
+        "graded": 3,
+        "success": 2,
+        "failure": 1,
+        "missing": 3
+      },
+      "procedure": {
+        "planned": 6,
+        "graded": 3,
+        "success": 3,
+        "failure": 0,
+        "missing": 3
+      },
+      "no_memory": {
+        "planned": 6,
+        "graded": 3,
+        "success": 2,
+        "failure": 1,
+        "missing": 3
+      },
+      "empty_preload": {
+        "planned": 6,
+        "graded": 3,
+        "success": 2,
+        "failure": 1,
+        "missing": 3
+      }
+    },
+    "first_failure": {
+      "fact": {
+        "planned": 6,
+        "graded": 1,
+        "success": 0,
+        "failure": 1,
+        "missing": 5
+      },
+      "episode": {
+        "planned": 6,
+        "graded": 1,
+        "success": 0,
+        "failure": 1,
+        "missing": 5
+      },
+      "lesson": {
+        "planned": 6,
+        "graded": 2,
+        "success": 0,
+        "failure": 2,
+        "missing": 4
+      },
+      "procedure": {
+        "planned": 6,
+        "graded": 2,
+        "success": 0,
+        "failure": 2,
+        "missing": 4
+      },
+      "no_memory": {
+        "planned": 6,
+        "graded": 2,
+        "success": 0,
+        "failure": 2,
+        "missing": 4
+      },
+      "empty_preload": {
+        "planned": 6,
+        "graded": 1,
+        "success": 0,
+        "failure": 1,
+        "missing": 5
+      }
+    }
+  },
+  "paired": {
+    "all": [
+      {
+        "treatment": "fact",
+        "control": "no_memory",
+        "planned_pairs": 12,
+        "jointly_graded_pairs": 4,
+        "counts": {
+          "gain": 1,
+          "loss": 0,
+          "both_success": 2,
+          "both_failure": 1,
+          "ungraded": 8
+        },
+        "task_equal_difference_pp": 25.0
+      },
+      {
+        "treatment": "fact",
+        "control": "empty_preload",
+        "planned_pairs": 12,
+        "jointly_graded_pairs": 4,
+        "counts": {
+          "gain": 1,
+          "loss": 0,
+          "both_success": 2,
+          "both_failure": 1,
+          "ungraded": 8
+        },
+        "task_equal_difference_pp": 25.0
+      },
+      {
+        "treatment": "episode",
+        "control": "no_memory",
+        "planned_pairs": 12,
+        "jointly_graded_pairs": 4,
+        "counts": {
+          "gain": 0,
+          "loss": 0,
+          "both_success": 2,
+          "both_failure": 2,
+          "ungraded": 8
+        },
+        "task_equal_difference_pp": 0.0
+      },
+      {
+        "treatment": "episode",
+        "control": "empty_preload",
+        "planned_pairs": 12,
+        "jointly_graded_pairs": 4,
+        "counts": {
+          "gain": 0,
+          "loss": 0,
+          "both_success": 2,
+          "both_failure": 2,
+          "ungraded": 8
+        },
+        "task_equal_difference_pp": 0.0
+      },
+      {
+        "treatment": "lesson",
+        "control": "no_memory",
+        "planned_pairs": 12,
+        "jointly_graded_pairs": 5,
+        "counts": {
+          "gain": 0,
+          "loss": 0,
+          "both_success": 2,
+          "both_failure": 3,
+          "ungraded": 7
+        },
+        "task_equal_difference_pp": 0.0
+      },
+      {
+        "treatment": "lesson",
+        "control": "empty_preload",
+        "planned_pairs": 12,
+        "jointly_graded_pairs": 4,
+        "counts": {
+          "gain": 0,
+          "loss": 0,
+          "both_success": 2,
+          "both_failure": 2,
+          "ungraded": 8
+        },
+        "task_equal_difference_pp": 0.0
+      },
+      {
+        "treatment": "procedure",
+        "control": "no_memory",
+        "planned_pairs": 12,
+        "jointly_graded_pairs": 5,
+        "counts": {
+          "gain": 1,
+          "loss": 0,
+          "both_success": 2,
+          "both_failure": 2,
+          "ungraded": 7
+        },
+        "task_equal_difference_pp": 20.0
+      },
+      {
+        "treatment": "procedure",
+        "control": "empty_preload",
+        "planned_pairs": 12,
+        "jointly_graded_pairs": 4,
+        "counts": {
+          "gain": 1,
+          "loss": 0,
+          "both_success": 2,
+          "both_failure": 1,
+          "ungraded": 8
+        },
+        "task_equal_difference_pp": 25.0
+      },
+      {
+        "treatment": "fact",
+        "control": "episode",
+        "planned_pairs": 12,
+        "jointly_graded_pairs": 4,
+        "counts": {
+          "gain": 1,
+          "loss": 0,
+          "both_success": 2,
+          "both_failure": 1,
+          "ungraded": 8
+        },
+        "task_equal_difference_pp": 25.0
+      },
+      {
+        "treatment": "fact",
+        "control": "lesson",
+        "planned_pairs": 12,
+        "jointly_graded_pairs": 4,
+        "counts": {
+          "gain": 1,
+          "loss": 0,
+          "both_success": 2,
+          "both_failure": 1,
+          "ungraded": 8
+        },
+        "task_equal_difference_pp": 25.0
+      },
+      {
+        "treatment": "fact",
+        "control": "procedure",
+        "planned_pairs": 12,
+        "jointly_graded_pairs": 4,
+        "counts": {
+          "gain": 0,
+          "loss": 0,
+          "both_success": 3,
+          "both_failure": 1,
+          "ungraded": 8
+        },
+        "task_equal_difference_pp": 0.0
+      },
+      {
+        "treatment": "episode",
+        "control": "lesson",
+        "planned_pairs": 12,
+        "jointly_graded_pairs": 4,
+        "counts": {
+          "gain": 0,
+          "loss": 0,
+          "both_success": 2,
+          "both_failure": 2,
+          "ungraded": 8
+        },
+        "task_equal_difference_pp": 0.0
+      },
+      {
+        "treatment": "episode",
+        "control": "procedure",
+        "planned_pairs": 12,
+        "jointly_graded_pairs": 4,
+        "counts": {
+          "gain": 0,
+          "loss": 1,
+          "both_success": 2,
+          "both_failure": 1,
+          "ungraded": 8
+        },
+        "task_equal_difference_pp": -25.0
+      },
+      {
+        "treatment": "lesson",
+        "control": "procedure",
+        "planned_pairs": 12,
+        "jointly_graded_pairs": 5,
+        "counts": {
+          "gain": 0,
+          "loss": 1,
+          "both_success": 2,
+          "both_failure": 2,
+          "ungraded": 7
+        },
+        "task_equal_difference_pp": -20.0
+      },
+      {
+        "treatment": "empty_preload",
+        "control": "no_memory",
+        "planned_pairs": 12,
+        "jointly_graded_pairs": 4,
+        "counts": {
+          "gain": 0,
+          "loss": 0,
+          "both_success": 2,
+          "both_failure": 2,
+          "ungraded": 8
+        },
+        "task_equal_difference_pp": 0.0
+      }
+    ],
+    "first_success": [
+      {
+        "treatment": "fact",
+        "control": "no_memory",
+        "planned_pairs": 6,
+        "jointly_graded_pairs": 3,
+        "counts": {
+          "gain": 1,
+          "loss": 0,
+          "both_success": 2,
+          "both_failure": 0,
+          "ungraded": 3
+        },
+        "task_equal_difference_pp": 33.333333
+      },
+      {
+        "treatment": "fact",
+        "control": "empty_preload",
+        "planned_pairs": 6,
+        "jointly_graded_pairs": 3,
+        "counts": {
+          "gain": 1,
+          "loss": 0,
+          "both_success": 2,
+          "both_failure": 0,
+          "ungraded": 3
+        },
+        "task_equal_difference_pp": 33.333333
+      },
+      {
+        "treatment": "episode",
+        "control": "no_memory",
+        "planned_pairs": 6,
+        "jointly_graded_pairs": 3,
+        "counts": {
+          "gain": 0,
+          "loss": 0,
+          "both_success": 2,
+          "both_failure": 1,
+          "ungraded": 3
+        },
+        "task_equal_difference_pp": 0.0
+      },
+      {
+        "treatment": "episode",
+        "control": "empty_preload",
+        "planned_pairs": 6,
+        "jointly_graded_pairs": 3,
+        "counts": {
+          "gain": 0,
+          "loss": 0,
+          "both_success": 2,
+          "both_failure": 1,
+          "ungraded": 3
+        },
+        "task_equal_difference_pp": 0.0
+      },
+      {
+        "treatment": "lesson",
+        "control": "no_memory",
+        "planned_pairs": 6,
+        "jointly_graded_pairs": 3,
+        "counts": {
+          "gain": 0,
+          "loss": 0,
+          "both_success": 2,
+          "both_failure": 1,
+          "ungraded": 3
+        },
+        "task_equal_difference_pp": 0.0
+      },
+      {
+        "treatment": "lesson",
+        "control": "empty_preload",
+        "planned_pairs": 6,
+        "jointly_graded_pairs": 3,
+        "counts": {
+          "gain": 0,
+          "loss": 0,
+          "both_success": 2,
+          "both_failure": 1,
+          "ungraded": 3
+        },
+        "task_equal_difference_pp": 0.0
+      },
+      {
+        "treatment": "procedure",
+        "control": "no_memory",
+        "planned_pairs": 6,
+        "jointly_graded_pairs": 3,
+        "counts": {
+          "gain": 1,
+          "loss": 0,
+          "both_success": 2,
+          "both_failure": 0,
+          "ungraded": 3
+        },
+        "task_equal_difference_pp": 33.333333
+      },
+      {
+        "treatment": "procedure",
+        "control": "empty_preload",
+        "planned_pairs": 6,
+        "jointly_graded_pairs": 3,
+        "counts": {
+          "gain": 1,
+          "loss": 0,
+          "both_success": 2,
+          "both_failure": 0,
+          "ungraded": 3
+        },
+        "task_equal_difference_pp": 33.333333
+      },
+      {
+        "treatment": "fact",
+        "control": "episode",
+        "planned_pairs": 6,
+        "jointly_graded_pairs": 3,
+        "counts": {
+          "gain": 1,
+          "loss": 0,
+          "both_success": 2,
+          "both_failure": 0,
+          "ungraded": 3
+        },
+        "task_equal_difference_pp": 33.333333
+      },
+      {
+        "treatment": "fact",
+        "control": "lesson",
+        "planned_pairs": 6,
+        "jointly_graded_pairs": 3,
+        "counts": {
+          "gain": 1,
+          "loss": 0,
+          "both_success": 2,
+          "both_failure": 0,
+          "ungraded": 3
+        },
+        "task_equal_difference_pp": 33.333333
+      },
+      {
+        "treatment": "fact",
+        "control": "procedure",
+        "planned_pairs": 6,
+        "jointly_graded_pairs": 3,
+        "counts": {
+          "gain": 0,
+          "loss": 0,
+          "both_success": 3,
+          "both_failure": 0,
+          "ungraded": 3
+        },
+        "task_equal_difference_pp": 0.0
+      },
+      {
+        "treatment": "episode",
+        "control": "lesson",
+        "planned_pairs": 6,
+        "jointly_graded_pairs": 3,
+        "counts": {
+          "gain": 0,
+          "loss": 0,
+          "both_success": 2,
+          "both_failure": 1,
+          "ungraded": 3
+        },
+        "task_equal_difference_pp": 0.0
+      },
+      {
+        "treatment": "episode",
+        "control": "procedure",
+        "planned_pairs": 6,
+        "jointly_graded_pairs": 3,
+        "counts": {
+          "gain": 0,
+          "loss": 1,
+          "both_success": 2,
+          "both_failure": 0,
+          "ungraded": 3
+        },
+        "task_equal_difference_pp": -33.333333
+      },
+      {
+        "treatment": "lesson",
+        "control": "procedure",
+        "planned_pairs": 6,
+        "jointly_graded_pairs": 3,
+        "counts": {
+          "gain": 0,
+          "loss": 1,
+          "both_success": 2,
+          "both_failure": 0,
+          "ungraded": 3
+        },
+        "task_equal_difference_pp": -33.333333
+      },
+      {
+        "treatment": "empty_preload",
+        "control": "no_memory",
+        "planned_pairs": 6,
+        "jointly_graded_pairs": 3,
+        "counts": {
+          "gain": 0,
+          "loss": 0,
+          "both_success": 2,
+          "both_failure": 1,
+          "ungraded": 3
+        },
+        "task_equal_difference_pp": 0.0
+      }
+    ],
+    "first_failure": [
+      {
+        "treatment": "fact",
+        "control": "no_memory",
+        "planned_pairs": 6,
+        "jointly_graded_pairs": 1,
+        "counts": {
+          "gain": 0,
+          "loss": 0,
+          "both_success": 0,
+          "both_failure": 1,
+          "ungraded": 5
+        },
+        "task_equal_difference_pp": 0.0
+      },
+      {
+        "treatment": "fact",
+        "control": "empty_preload",
+        "planned_pairs": 6,
+        "jointly_graded_pairs": 1,
+        "counts": {
+          "gain": 0,
+          "loss": 0,
+          "both_success": 0,
+          "both_failure": 1,
+          "ungraded": 5
+        },
+        "task_equal_difference_pp": 0.0
+      },
+      {
+        "treatment": "episode",
+        "control": "no_memory",
+        "planned_pairs": 6,
+        "jointly_graded_pairs": 1,
+        "counts": {
+          "gain": 0,
+          "loss": 0,
+          "both_success": 0,
+          "both_failure": 1,
+          "ungraded": 5
+        },
+        "task_equal_difference_pp": 0.0
+      },
+      {
+        "treatment": "episode",
+        "control": "empty_preload",
+        "planned_pairs": 6,
+        "jointly_graded_pairs": 1,
+        "counts": {
+          "gain": 0,
+          "loss": 0,
+          "both_success": 0,
+          "both_failure": 1,
+          "ungraded": 5
+        },
+        "task_equal_difference_pp": 0.0
+      },
+      {
+        "treatment": "lesson",
+        "control": "no_memory",
+        "planned_pairs": 6,
+        "jointly_graded_pairs": 2,
+        "counts": {
+          "gain": 0,
+          "loss": 0,
+          "both_success": 0,
+          "both_failure": 2,
+          "ungraded": 4
+        },
+        "task_equal_difference_pp": 0.0
+      },
+      {
+        "treatment": "lesson",
+        "control": "empty_preload",
+        "planned_pairs": 6,
+        "jointly_graded_pairs": 1,
+        "counts": {
+          "gain": 0,
+          "loss": 0,
+          "both_success": 0,
+          "both_failure": 1,
+          "ungraded": 5
+        },
+        "task_equal_difference_pp": 0.0
+      },
+      {
+        "treatment": "procedure",
+        "control": "no_memory",
+        "planned_pairs": 6,
+        "jointly_graded_pairs": 2,
+        "counts": {
+          "gain": 0,
+          "loss": 0,
+          "both_success": 0,
+          "both_failure": 2,
+          "ungraded": 4
+        },
+        "task_equal_difference_pp": 0.0
+      },
+      {
+        "treatment": "procedure",
+        "control": "empty_preload",
+        "planned_pairs": 6,
+        "jointly_graded_pairs": 1,
+        "counts": {
+          "gain": 0,
+          "loss": 0,
+          "both_success": 0,
+          "both_failure": 1,
+          "ungraded": 5
+        },
+        "task_equal_difference_pp": 0.0
+      },
+      {
+        "treatment": "fact",
+        "control": "episode",
+        "planned_pairs": 6,
+        "jointly_graded_pairs": 1,
+        "counts": {
+          "gain": 0,
+          "loss": 0,
+          "both_success": 0,
+          "both_failure": 1,
+          "ungraded": 5
+        },
+        "task_equal_difference_pp": 0.0
+      },
+      {
+        "treatment": "fact",
+        "control": "lesson",
+        "planned_pairs": 6,
+        "jointly_graded_pairs": 1,
+        "counts": {
+          "gain": 0,
+          "loss": 0,
+          "both_success": 0,
+          "both_failure": 1,
+          "ungraded": 5
+        },
+        "task_equal_difference_pp": 0.0
+      },
+      {
+        "treatment": "fact",
+        "control": "procedure",
+        "planned_pairs": 6,
+        "jointly_graded_pairs": 1,
+        "counts": {
+          "gain": 0,
+          "loss": 0,
+          "both_success": 0,
+          "both_failure": 1,
+          "ungraded": 5
+        },
+        "task_equal_difference_pp": 0.0
+      },
+      {
+        "treatment": "episode",
+        "control": "lesson",
+        "planned_pairs": 6,
+        "jointly_graded_pairs": 1,
+        "counts": {
+          "gain": 0,
+          "loss": 0,
+          "both_success": 0,
+          "both_failure": 1,
+          "ungraded": 5
+        },
+        "task_equal_difference_pp": 0.0
+      },
+      {
+        "treatment": "episode",
+        "control": "procedure",
+        "planned_pairs": 6,
+        "jointly_graded_pairs": 1,
+        "counts": {
+          "gain": 0,
+          "loss": 0,
+          "both_success": 0,
+          "both_failure": 1,
+          "ungraded": 5
+        },
+        "task_equal_difference_pp": 0.0
+      },
+      {
+        "treatment": "lesson",
+        "control": "procedure",
+        "planned_pairs": 6,
+        "jointly_graded_pairs": 2,
+        "counts": {
+          "gain": 0,
+          "loss": 0,
+          "both_success": 0,
+          "both_failure": 2,
+          "ungraded": 4
+        },
+        "task_equal_difference_pp": 0.0
+      },
+      {
+        "treatment": "empty_preload",
+        "control": "no_memory",
+        "planned_pairs": 6,
+        "jointly_graded_pairs": 1,
+        "counts": {
+          "gain": 0,
+          "loss": 0,
+          "both_success": 0,
+          "both_failure": 1,
+          "ungraded": 5
+        },
+        "task_equal_difference_pp": 0.0
+      }
+    ]
+  },
+  "paired_with_both_controls": [
+    {
+      "task_id": "30",
+      "repetition": 1,
+      "arm": "fact",
+      "label": "all_success",
+      "job": 54,
+      "no_memory_job": 52,
+      "empty_job": 49,
+      "body_exposed": true
+    },
+    {
+      "task_id": "30",
+      "repetition": 1,
+      "arm": "episode",
+      "label": "all_success",
+      "job": 51,
+      "no_memory_job": 52,
+      "empty_job": 49,
+      "body_exposed": true
+    },
+    {
+      "task_id": "30",
+      "repetition": 1,
+      "arm": "lesson",
+      "label": "all_success",
+      "job": 53,
+      "no_memory_job": 52,
+      "empty_job": 49,
+      "body_exposed": true
+    },
+    {
+      "task_id": "30",
+      "repetition": 1,
+      "arm": "procedure",
+      "label": "all_success",
+      "job": 50,
+      "no_memory_job": 52,
+      "empty_job": 49,
+      "body_exposed": true
+    },
+    {
+      "task_id": "32",
+      "repetition": 1,
+      "arm": "fact",
+      "label": "all_failure",
+      "job": 55,
+      "no_memory_job": 59,
+      "empty_job": 60,
+      "body_exposed": true
+    },
+    {
+      "task_id": "32",
+      "repetition": 1,
+      "arm": "episode",
+      "label": "all_failure",
+      "job": 57,
+      "no_memory_job": 59,
+      "empty_job": 60,
+      "body_exposed": false
+    },
+    {
+      "task_id": "32",
+      "repetition": 1,
+      "arm": "lesson",
+      "label": "all_failure",
+      "job": 56,
+      "no_memory_job": 59,
+      "empty_job": 60,
+      "body_exposed": false
+    },
+    {
+      "task_id": "32",
+      "repetition": 1,
+      "arm": "procedure",
+      "label": "all_failure",
+      "job": 58,
+      "no_memory_job": 59,
+      "empty_job": 60,
+      "body_exposed": true
+    },
+    {
+      "task_id": "25",
+      "repetition": 1,
+      "arm": "fact",
+      "label": "all_success",
+      "job": 66,
+      "no_memory_job": 64,
+      "empty_job": 62,
+      "body_exposed": false
+    },
+    {
+      "task_id": "25",
+      "repetition": 1,
+      "arm": "episode",
+      "label": "all_success",
+      "job": 65,
+      "no_memory_job": 64,
+      "empty_job": 62,
+      "body_exposed": false
+    },
+    {
+      "task_id": "25",
+      "repetition": 1,
+      "arm": "lesson",
+      "label": "all_success",
+      "job": 61,
+      "no_memory_job": 64,
+      "empty_job": 62,
+      "body_exposed": true
+    },
+    {
+      "task_id": "25",
+      "repetition": 1,
+      "arm": "procedure",
+      "label": "all_success",
+      "job": 63,
+      "no_memory_job": 64,
+      "empty_job": 62,
+      "body_exposed": true
+    },
+    {
+      "task_id": "24",
+      "repetition": 1,
+      "arm": "fact",
+      "label": "gain_vs_both",
+      "job": 70,
+      "no_memory_job": 71,
+      "empty_job": 67,
+      "body_exposed": true
+    },
+    {
+      "task_id": "24",
+      "repetition": 1,
+      "arm": "episode",
+      "label": "all_failure",
+      "job": 69,
+      "no_memory_job": 71,
+      "empty_job": 67,
+      "body_exposed": true
+    },
+    {
+      "task_id": "24",
+      "repetition": 1,
+      "arm": "lesson",
+      "label": "all_failure",
+      "job": 72,
+      "no_memory_job": 71,
+      "empty_job": 67,
+      "body_exposed": true
+    },
+    {
+      "task_id": "24",
+      "repetition": 1,
+      "arm": "procedure",
+      "label": "gain_vs_both",
+      "job": 68,
+      "no_memory_job": 71,
+      "empty_job": 67,
+      "body_exposed": true
+    },
+    {
+      "task_id": "29",
+      "repetition": 1,
+      "arm": "fact",
+      "label": "ungraded",
+      "job": 78,
+      "no_memory_job": 74,
+      "empty_job": 76,
+      "body_exposed": false
+    },
+    {
+      "task_id": "29",
+      "repetition": 1,
+      "arm": "episode",
+      "label": "ungraded",
+      "job": 77,
+      "no_memory_job": 74,
+      "empty_job": 76,
+      "body_exposed": false
+    },
+    {
+      "task_id": "29",
+      "repetition": 1,
+      "arm": "lesson",
+      "label": "ungraded",
+      "job": 75,
+      "no_memory_job": 74,
+      "empty_job": 76,
+      "body_exposed": true
+    },
+    {
+      "task_id": "29",
+      "repetition": 1,
+      "arm": "procedure",
+      "label": "ungraded",
+      "job": 73,
+      "no_memory_job": 74,
+      "empty_job": 76,
+      "body_exposed": true
+    },
+    {
+      "task_id": "19",
+      "repetition": 1,
+      "arm": "fact",
+      "label": "ungraded",
+      "job": 82,
+      "no_memory_job": 84,
+      "empty_job": 83,
+      "body_exposed": null
+    },
+    {
+      "task_id": "19",
+      "repetition": 1,
+      "arm": "episode",
+      "label": "ungraded",
+      "job": 79,
+      "no_memory_job": 84,
+      "empty_job": 83,
+      "body_exposed": null
+    },
+    {
+      "task_id": "19",
+      "repetition": 1,
+      "arm": "lesson",
+      "label": "ungraded",
+      "job": 80,
+      "no_memory_job": 84,
+      "empty_job": 83,
+      "body_exposed": null
+    },
+    {
+      "task_id": "19",
+      "repetition": 1,
+      "arm": "procedure",
+      "label": "ungraded",
+      "job": 81,
+      "no_memory_job": 84,
+      "empty_job": 83,
+      "body_exposed": null
+    },
+    {
+      "task_id": "32",
+      "repetition": 2,
+      "arm": "fact",
+      "label": "ungraded",
+      "job": 87,
+      "no_memory_job": 86,
+      "empty_job": 89,
+      "body_exposed": null
+    },
+    {
+      "task_id": "32",
+      "repetition": 2,
+      "arm": "episode",
+      "label": "ungraded",
+      "job": 85,
+      "no_memory_job": 86,
+      "empty_job": 89,
+      "body_exposed": null
+    },
+    {
+      "task_id": "32",
+      "repetition": 2,
+      "arm": "lesson",
+      "label": "ungraded",
+      "job": 88,
+      "no_memory_job": 86,
+      "empty_job": 89,
+      "body_exposed": null
+    },
+    {
+      "task_id": "32",
+      "repetition": 2,
+      "arm": "procedure",
+      "label": "ungraded",
+      "job": 90,
+      "no_memory_job": 86,
+      "empty_job": 89,
+      "body_exposed": null
+    },
+    {
+      "task_id": "25",
+      "repetition": 2,
+      "arm": "fact",
+      "label": "ungraded",
+      "job": 91,
+      "no_memory_job": 94,
+      "empty_job": 92,
+      "body_exposed": null
+    },
+    {
+      "task_id": "25",
+      "repetition": 2,
+      "arm": "episode",
+      "label": "ungraded",
+      "job": 96,
+      "no_memory_job": 94,
+      "empty_job": 92,
+      "body_exposed": null
+    },
+    {
+      "task_id": "25",
+      "repetition": 2,
+      "arm": "lesson",
+      "label": "ungraded",
+      "job": 93,
+      "no_memory_job": 94,
+      "empty_job": 92,
+      "body_exposed": null
+    },
+    {
+      "task_id": "25",
+      "repetition": 2,
+      "arm": "procedure",
+      "label": "ungraded",
+      "job": 95,
+      "no_memory_job": 94,
+      "empty_job": 92,
+      "body_exposed": null
+    },
+    {
+      "task_id": "30",
+      "repetition": 2,
+      "arm": "fact",
+      "label": "ungraded",
+      "job": 97,
+      "no_memory_job": 100,
+      "empty_job": 102,
+      "body_exposed": null
+    },
+    {
+      "task_id": "30",
+      "repetition": 2,
+      "arm": "episode",
+      "label": "ungraded",
+      "job": 101,
+      "no_memory_job": 100,
+      "empty_job": 102,
+      "body_exposed": null
+    },
+    {
+      "task_id": "30",
+      "repetition": 2,
+      "arm": "lesson",
+      "label": "ungraded",
+      "job": 98,
+      "no_memory_job": 100,
+      "empty_job": 102,
+      "body_exposed": null
+    },
+    {
+      "task_id": "30",
+      "repetition": 2,
+      "arm": "procedure",
+      "label": "ungraded",
+      "job": 99,
+      "no_memory_job": 100,
+      "empty_job": 102,
+      "body_exposed": null
+    },
+    {
+      "task_id": "24",
+      "repetition": 2,
+      "arm": "fact",
+      "label": "ungraded",
+      "job": 104,
+      "no_memory_job": 107,
+      "empty_job": 106,
+      "body_exposed": null
+    },
+    {
+      "task_id": "24",
+      "repetition": 2,
+      "arm": "episode",
+      "label": "ungraded",
+      "job": 103,
+      "no_memory_job": 107,
+      "empty_job": 106,
+      "body_exposed": null
+    },
+    {
+      "task_id": "24",
+      "repetition": 2,
+      "arm": "lesson",
+      "label": "ungraded",
+      "job": 108,
+      "no_memory_job": 107,
+      "empty_job": 106,
+      "body_exposed": null
+    },
+    {
+      "task_id": "24",
+      "repetition": 2,
+      "arm": "procedure",
+      "label": "ungraded",
+      "job": 105,
+      "no_memory_job": 107,
+      "empty_job": 106,
+      "body_exposed": null
+    },
+    {
+      "task_id": "19",
+      "repetition": 2,
+      "arm": "fact",
+      "label": "ungraded",
+      "job": 113,
+      "no_memory_job": 111,
+      "empty_job": 114,
+      "body_exposed": null
+    },
+    {
+      "task_id": "19",
+      "repetition": 2,
+      "arm": "episode",
+      "label": "ungraded",
+      "job": 109,
+      "no_memory_job": 111,
+      "empty_job": 114,
+      "body_exposed": null
+    },
+    {
+      "task_id": "19",
+      "repetition": 2,
+      "arm": "lesson",
+      "label": "ungraded",
+      "job": 112,
+      "no_memory_job": 111,
+      "empty_job": 114,
+      "body_exposed": null
+    },
+    {
+      "task_id": "19",
+      "repetition": 2,
+      "arm": "procedure",
+      "label": "ungraded",
+      "job": 110,
+      "no_memory_job": 111,
+      "empty_job": 114,
+      "body_exposed": null
+    },
+    {
+      "task_id": "29",
+      "repetition": 2,
+      "arm": "fact",
+      "label": "ungraded",
+      "job": 117,
+      "no_memory_job": 115,
+      "empty_job": 118,
+      "body_exposed": null
+    },
+    {
+      "task_id": "29",
+      "repetition": 2,
+      "arm": "episode",
+      "label": "ungraded",
+      "job": 116,
+      "no_memory_job": 115,
+      "empty_job": 118,
+      "body_exposed": null
+    },
+    {
+      "task_id": "29",
+      "repetition": 2,
+      "arm": "lesson",
+      "label": "ungraded",
+      "job": 119,
+      "no_memory_job": 115,
+      "empty_job": 118,
+      "body_exposed": null
+    },
+    {
+      "task_id": "29",
+      "repetition": 2,
+      "arm": "procedure",
+      "label": "ungraded",
+      "job": 120,
+      "no_memory_job": 115,
+      "empty_job": 118,
+      "body_exposed": null
+    }
+  ],
+  "writer_status": {
+    "fact": {
+      "completed": 7,
+      "empty": 5
+    },
+    "episode": {
+      "completed": 6,
+      "empty": 6
+    },
+    "lesson": {
+      "completed": 10,
+      "empty": 2
+    },
+    "procedure": {
+      "completed": 12
+    }
+  },
+  "body_exposure": {
+    "fact": 3,
+    "episode": 2,
+    "lesson": 4,
+    "procedure": 5,
+    "no_memory": 0,
+    "empty_preload": 0
+  },
+  "field_rates": {
+    "all": {
+      "empty_preload": {
+        "target": {
+          "applicable": 5,
+          "matched": 2
+        },
+        "full_reference_write": {
+          "applicable": 5,
+          "matched": 2
+        },
+        "cabin": {
+          "applicable": 5,
+          "matched": 2
+        },
+        "flight_numbers": {
+          "applicable": 5,
+          "matched": 2
+        },
+        "flight_dates": {
+          "applicable": 5,
+          "matched": 2
+        },
+        "payment_id": {
+          "applicable": 3,
+          "matched": 1
+        },
+        "origin": {
+          "applicable": 2,
+          "matched": 1
+        },
+        "destination": {
+          "applicable": 2,
+          "matched": 1
+        },
+        "flight_type": {
+          "applicable": 2,
+          "matched": 1
+        },
+        "passengers": {
+          "applicable": 2,
+          "matched": 1
+        },
+        "payment_methods": {
+          "applicable": 2,
+          "matched": 1
+        },
+        "total_baggages": {
+          "applicable": 2,
+          "matched": 1
+        },
+        "nonfree_baggages": {
+          "applicable": 2,
+          "matched": 1
+        },
+        "insurance": {
+          "applicable": 2,
+          "matched": 1
+        }
+      },
+      "procedure": {
+        "target": {
+          "applicable": 7,
+          "matched": 3
+        },
+        "full_reference_write": {
+          "applicable": 7,
+          "matched": 3
+        },
+        "cabin": {
+          "applicable": 6,
+          "matched": 3
+        },
+        "flight_numbers": {
+          "applicable": 6,
+          "matched": 3
+        },
+        "flight_dates": {
+          "applicable": 6,
+          "matched": 3
+        },
+        "payment_id": {
+          "applicable": 3,
+          "matched": 1
+        },
+        "origin": {
+          "applicable": 3,
+          "matched": 2
+        },
+        "destination": {
+          "applicable": 3,
+          "matched": 2
+        },
+        "flight_type": {
+          "applicable": 3,
+          "matched": 2
+        },
+        "passengers": {
+          "applicable": 3,
+          "matched": 2
+        },
+        "payment_methods": {
+          "applicable": 3,
+          "matched": 2
+        },
+        "total_baggages": {
+          "applicable": 3,
+          "matched": 2
+        },
+        "nonfree_baggages": {
+          "applicable": 3,
+          "matched": 2
+        },
+        "insurance": {
+          "applicable": 3,
+          "matched": 2
+        }
+      },
+      "episode": {
+        "target": {
+          "applicable": 5,
+          "matched": 3
+        },
+        "full_reference_write": {
+          "applicable": 5,
+          "matched": 2
+        },
+        "cabin": {
+          "applicable": 5,
+          "matched": 3
+        },
+        "flight_numbers": {
+          "applicable": 5,
+          "matched": 2
+        },
+        "flight_dates": {
+          "applicable": 5,
+          "matched": 3
+        },
+        "payment_id": {
+          "applicable": 3,
+          "matched": 1
+        },
+        "origin": {
+          "applicable": 2,
+          "matched": 2
+        },
+        "destination": {
+          "applicable": 2,
+          "matched": 2
+        },
+        "flight_type": {
+          "applicable": 2,
+          "matched": 2
+        },
+        "passengers": {
+          "applicable": 2,
+          "matched": 2
+        },
+        "payment_methods": {
+          "applicable": 2,
+          "matched": 1
+        },
+        "total_baggages": {
+          "applicable": 2,
+          "matched": 2
+        },
+        "nonfree_baggages": {
+          "applicable": 2,
+          "matched": 2
+        },
+        "insurance": {
+          "applicable": 2,
+          "matched": 2
+        }
+      },
+      "no_memory": {
+        "target": {
+          "applicable": 7,
+          "matched": 3
+        },
+        "full_reference_write": {
+          "applicable": 7,
+          "matched": 2
+        },
+        "cabin": {
+          "applicable": 6,
+          "matched": 3
+        },
+        "flight_numbers": {
+          "applicable": 6,
+          "matched": 3
+        },
+        "flight_dates": {
+          "applicable": 6,
+          "matched": 3
+        },
+        "payment_id": {
+          "applicable": 3,
+          "matched": 1
+        },
+        "origin": {
+          "applicable": 3,
+          "matched": 2
+        },
+        "destination": {
+          "applicable": 3,
+          "matched": 2
+        },
+        "flight_type": {
+          "applicable": 3,
+          "matched": 2
+        },
+        "passengers": {
+          "applicable": 3,
+          "matched": 2
+        },
+        "payment_methods": {
+          "applicable": 3,
+          "matched": 1
+        },
+        "total_baggages": {
+          "applicable": 3,
+          "matched": 2
+        },
+        "nonfree_baggages": {
+          "applicable": 3,
+          "matched": 2
+        },
+        "insurance": {
+          "applicable": 3,
+          "matched": 1
+        }
+      },
+      "lesson": {
+        "target": {
+          "applicable": 7,
+          "matched": 2
+        },
+        "full_reference_write": {
+          "applicable": 7,
+          "matched": 2
+        },
+        "cabin": {
+          "applicable": 6,
+          "matched": 2
+        },
+        "flight_numbers": {
+          "applicable": 6,
+          "matched": 2
+        },
+        "flight_dates": {
+          "applicable": 6,
+          "matched": 2
+        },
+        "payment_id": {
+          "applicable": 3,
+          "matched": 1
+        },
+        "origin": {
+          "applicable": 3,
+          "matched": 1
+        },
+        "destination": {
+          "applicable": 3,
+          "matched": 1
+        },
+        "flight_type": {
+          "applicable": 3,
+          "matched": 1
+        },
+        "passengers": {
+          "applicable": 3,
+          "matched": 1
+        },
+        "payment_methods": {
+          "applicable": 3,
+          "matched": 1
+        },
+        "total_baggages": {
+          "applicable": 3,
+          "matched": 1
+        },
+        "nonfree_baggages": {
+          "applicable": 3,
+          "matched": 1
+        },
+        "insurance": {
+          "applicable": 3,
+          "matched": 1
+        }
+      },
+      "fact": {
+        "target": {
+          "applicable": 5,
+          "matched": 3
+        },
+        "full_reference_write": {
+          "applicable": 5,
+          "matched": 3
+        },
+        "cabin": {
+          "applicable": 5,
+          "matched": 3
+        },
+        "flight_numbers": {
+          "applicable": 5,
+          "matched": 3
+        },
+        "flight_dates": {
+          "applicable": 5,
+          "matched": 3
+        },
+        "payment_id": {
+          "applicable": 3,
+          "matched": 1
+        },
+        "origin": {
+          "applicable": 2,
+          "matched": 2
+        },
+        "destination": {
+          "applicable": 2,
+          "matched": 2
+        },
+        "flight_type": {
+          "applicable": 2,
+          "matched": 2
+        },
+        "passengers": {
+          "applicable": 2,
+          "matched": 2
+        },
+        "payment_methods": {
+          "applicable": 2,
+          "matched": 2
+        },
+        "total_baggages": {
+          "applicable": 2,
+          "matched": 2
+        },
+        "nonfree_baggages": {
+          "applicable": 2,
+          "matched": 2
+        },
+        "insurance": {
+          "applicable": 2,
+          "matched": 2
+        }
+      }
+    },
+    "first_success": {
+      "empty_preload": {
+        "target": {
+          "applicable": 3,
+          "matched": 2
+        },
+        "full_reference_write": {
+          "applicable": 3,
+          "matched": 2
+        },
+        "cabin": {
+          "applicable": 3,
+          "matched": 2
+        },
+        "flight_numbers": {
+          "applicable": 3,
+          "matched": 2
+        },
+        "flight_dates": {
+          "applicable": 3,
+          "matched": 2
+        },
+        "payment_id": {
+          "applicable": 1,
+          "matched": 1
+        },
+        "origin": {
+          "applicable": 2,
+          "matched": 1
+        },
+        "destination": {
+          "applicable": 2,
+          "matched": 1
+        },
+        "flight_type": {
+          "applicable": 2,
+          "matched": 1
+        },
+        "passengers": {
+          "applicable": 2,
+          "matched": 1
+        },
+        "payment_methods": {
+          "applicable": 2,
+          "matched": 1
+        },
+        "total_baggages": {
+          "applicable": 2,
+          "matched": 1
+        },
+        "nonfree_baggages": {
+          "applicable": 2,
+          "matched": 1
+        },
+        "insurance": {
+          "applicable": 2,
+          "matched": 1
+        }
+      },
+      "procedure": {
+        "target": {
+          "applicable": 3,
+          "matched": 3
+        },
+        "full_reference_write": {
+          "applicable": 3,
+          "matched": 3
+        },
+        "cabin": {
+          "applicable": 3,
+          "matched": 3
+        },
+        "flight_numbers": {
+          "applicable": 3,
+          "matched": 3
+        },
+        "flight_dates": {
+          "applicable": 3,
+          "matched": 3
+        },
+        "payment_id": {
+          "applicable": 1,
+          "matched": 1
+        },
+        "origin": {
+          "applicable": 2,
+          "matched": 2
+        },
+        "destination": {
+          "applicable": 2,
+          "matched": 2
+        },
+        "flight_type": {
+          "applicable": 2,
+          "matched": 2
+        },
+        "passengers": {
+          "applicable": 2,
+          "matched": 2
+        },
+        "payment_methods": {
+          "applicable": 2,
+          "matched": 2
+        },
+        "total_baggages": {
+          "applicable": 2,
+          "matched": 2
+        },
+        "nonfree_baggages": {
+          "applicable": 2,
+          "matched": 2
+        },
+        "insurance": {
+          "applicable": 2,
+          "matched": 2
+        }
+      },
+      "episode": {
+        "target": {
+          "applicable": 3,
+          "matched": 3
+        },
+        "full_reference_write": {
+          "applicable": 3,
+          "matched": 2
+        },
+        "cabin": {
+          "applicable": 3,
+          "matched": 3
+        },
+        "flight_numbers": {
+          "applicable": 3,
+          "matched": 2
+        },
+        "flight_dates": {
+          "applicable": 3,
+          "matched": 3
+        },
+        "payment_id": {
+          "applicable": 1,
+          "matched": 1
+        },
+        "origin": {
+          "applicable": 2,
+          "matched": 2
+        },
+        "destination": {
+          "applicable": 2,
+          "matched": 2
+        },
+        "flight_type": {
+          "applicable": 2,
+          "matched": 2
+        },
+        "passengers": {
+          "applicable": 2,
+          "matched": 2
+        },
+        "payment_methods": {
+          "applicable": 2,
+          "matched": 1
+        },
+        "total_baggages": {
+          "applicable": 2,
+          "matched": 2
+        },
+        "nonfree_baggages": {
+          "applicable": 2,
+          "matched": 2
+        },
+        "insurance": {
+          "applicable": 2,
+          "matched": 2
+        }
+      },
+      "no_memory": {
+        "target": {
+          "applicable": 3,
+          "matched": 2
+        },
+        "full_reference_write": {
+          "applicable": 3,
+          "matched": 2
+        },
+        "cabin": {
+          "applicable": 3,
+          "matched": 2
+        },
+        "flight_numbers": {
+          "applicable": 3,
+          "matched": 2
+        },
+        "flight_dates": {
+          "applicable": 3,
+          "matched": 2
+        },
+        "payment_id": {
+          "applicable": 1,
+          "matched": 1
+        },
+        "origin": {
+          "applicable": 2,
+          "matched": 1
+        },
+        "destination": {
+          "applicable": 2,
+          "matched": 1
+        },
+        "flight_type": {
+          "applicable": 2,
+          "matched": 1
+        },
+        "passengers": {
+          "applicable": 2,
+          "matched": 1
+        },
+        "payment_methods": {
+          "applicable": 2,
+          "matched": 1
+        },
+        "total_baggages": {
+          "applicable": 2,
+          "matched": 1
+        },
+        "nonfree_baggages": {
+          "applicable": 2,
+          "matched": 1
+        },
+        "insurance": {
+          "applicable": 2,
+          "matched": 1
+        }
+      },
+      "lesson": {
+        "target": {
+          "applicable": 3,
+          "matched": 2
+        },
+        "full_reference_write": {
+          "applicable": 3,
+          "matched": 2
+        },
+        "cabin": {
+          "applicable": 3,
+          "matched": 2
+        },
+        "flight_numbers": {
+          "applicable": 3,
+          "matched": 2
+        },
+        "flight_dates": {
+          "applicable": 3,
+          "matched": 2
+        },
+        "payment_id": {
+          "applicable": 1,
+          "matched": 1
+        },
+        "origin": {
+          "applicable": 2,
+          "matched": 1
+        },
+        "destination": {
+          "applicable": 2,
+          "matched": 1
+        },
+        "flight_type": {
+          "applicable": 2,
+          "matched": 1
+        },
+        "passengers": {
+          "applicable": 2,
+          "matched": 1
+        },
+        "payment_methods": {
+          "applicable": 2,
+          "matched": 1
+        },
+        "total_baggages": {
+          "applicable": 2,
+          "matched": 1
+        },
+        "nonfree_baggages": {
+          "applicable": 2,
+          "matched": 1
+        },
+        "insurance": {
+          "applicable": 2,
+          "matched": 1
+        }
+      },
+      "fact": {
+        "target": {
+          "applicable": 3,
+          "matched": 3
+        },
+        "full_reference_write": {
+          "applicable": 3,
+          "matched": 3
+        },
+        "cabin": {
+          "applicable": 3,
+          "matched": 3
+        },
+        "flight_numbers": {
+          "applicable": 3,
+          "matched": 3
+        },
+        "flight_dates": {
+          "applicable": 3,
+          "matched": 3
+        },
+        "payment_id": {
+          "applicable": 1,
+          "matched": 1
+        },
+        "origin": {
+          "applicable": 2,
+          "matched": 2
+        },
+        "destination": {
+          "applicable": 2,
+          "matched": 2
+        },
+        "flight_type": {
+          "applicable": 2,
+          "matched": 2
+        },
+        "passengers": {
+          "applicable": 2,
+          "matched": 2
+        },
+        "payment_methods": {
+          "applicable": 2,
+          "matched": 2
+        },
+        "total_baggages": {
+          "applicable": 2,
+          "matched": 2
+        },
+        "nonfree_baggages": {
+          "applicable": 2,
+          "matched": 2
+        },
+        "insurance": {
+          "applicable": 2,
+          "matched": 2
+        }
+      }
+    },
+    "first_failure": {
+      "fact": {
+        "target": {
+          "applicable": 2,
+          "matched": 0
+        },
+        "full_reference_write": {
+          "applicable": 2,
+          "matched": 0
+        },
+        "cabin": {
+          "applicable": 2,
+          "matched": 0
+        },
+        "flight_numbers": {
+          "applicable": 2,
+          "matched": 0
+        },
+        "flight_dates": {
+          "applicable": 2,
+          "matched": 0
+        },
+        "payment_id": {
+          "applicable": 2,
+          "matched": 0
+        }
+      },
+      "lesson": {
+        "target": {
+          "applicable": 4,
+          "matched": 0
+        },
+        "full_reference_write": {
+          "applicable": 4,
+          "matched": 0
+        },
+        "cabin": {
+          "applicable": 3,
+          "matched": 0
+        },
+        "flight_numbers": {
+          "applicable": 3,
+          "matched": 0
+        },
+        "flight_dates": {
+          "applicable": 3,
+          "matched": 0
+        },
+        "payment_id": {
+          "applicable": 2,
+          "matched": 0
+        },
+        "origin": {
+          "applicable": 1,
+          "matched": 0
+        },
+        "destination": {
+          "applicable": 1,
+          "matched": 0
+        },
+        "flight_type": {
+          "applicable": 1,
+          "matched": 0
+        },
+        "passengers": {
+          "applicable": 1,
+          "matched": 0
+        },
+        "payment_methods": {
+          "applicable": 1,
+          "matched": 0
+        },
+        "total_baggages": {
+          "applicable": 1,
+          "matched": 0
+        },
+        "nonfree_baggages": {
+          "applicable": 1,
+          "matched": 0
+        },
+        "insurance": {
+          "applicable": 1,
+          "matched": 0
+        }
+      },
+      "episode": {
+        "target": {
+          "applicable": 2,
+          "matched": 0
+        },
+        "full_reference_write": {
+          "applicable": 2,
+          "matched": 0
+        },
+        "cabin": {
+          "applicable": 2,
+          "matched": 0
+        },
+        "flight_numbers": {
+          "applicable": 2,
+          "matched": 0
+        },
+        "flight_dates": {
+          "applicable": 2,
+          "matched": 0
+        },
+        "payment_id": {
+          "applicable": 2,
+          "matched": 0
+        }
+      },
+      "procedure": {
+        "target": {
+          "applicable": 4,
+          "matched": 0
+        },
+        "full_reference_write": {
+          "applicable": 4,
+          "matched": 0
+        },
+        "cabin": {
+          "applicable": 3,
+          "matched": 0
+        },
+        "flight_numbers": {
+          "applicable": 3,
+          "matched": 0
+        },
+        "flight_dates": {
+          "applicable": 3,
+          "matched": 0
+        },
+        "payment_id": {
+          "applicable": 2,
+          "matched": 0
+        },
+        "origin": {
+          "applicable": 1,
+          "matched": 0
+        },
+        "destination": {
+          "applicable": 1,
+          "matched": 0
+        },
+        "flight_type": {
+          "applicable": 1,
+          "matched": 0
+        },
+        "passengers": {
+          "applicable": 1,
+          "matched": 0
+        },
+        "payment_methods": {
+          "applicable": 1,
+          "matched": 0
+        },
+        "total_baggages": {
+          "applicable": 1,
+          "matched": 0
+        },
+        "nonfree_baggages": {
+          "applicable": 1,
+          "matched": 0
+        },
+        "insurance": {
+          "applicable": 1,
+          "matched": 0
+        }
+      },
+      "no_memory": {
+        "target": {
+          "applicable": 4,
+          "matched": 1
+        },
+        "full_reference_write": {
+          "applicable": 4,
+          "matched": 0
+        },
+        "cabin": {
+          "applicable": 3,
+          "matched": 1
+        },
+        "flight_numbers": {
+          "applicable": 3,
+          "matched": 1
+        },
+        "flight_dates": {
+          "applicable": 3,
+          "matched": 1
+        },
+        "payment_id": {
+          "applicable": 2,
+          "matched": 0
+        },
+        "origin": {
+          "applicable": 1,
+          "matched": 1
+        },
+        "destination": {
+          "applicable": 1,
+          "matched": 1
+        },
+        "flight_type": {
+          "applicable": 1,
+          "matched": 1
+        },
+        "passengers": {
+          "applicable": 1,
+          "matched": 1
+        },
+        "payment_methods": {
+          "applicable": 1,
+          "matched": 0
+        },
+        "total_baggages": {
+          "applicable": 1,
+          "matched": 1
+        },
+        "nonfree_baggages": {
+          "applicable": 1,
+          "matched": 1
+        },
+        "insurance": {
+          "applicable": 1,
+          "matched": 0
+        }
+      },
+      "empty_preload": {
+        "target": {
+          "applicable": 2,
+          "matched": 0
+        },
+        "full_reference_write": {
+          "applicable": 2,
+          "matched": 0
+        },
+        "cabin": {
+          "applicable": 2,
+          "matched": 0
+        },
+        "flight_numbers": {
+          "applicable": 2,
+          "matched": 0
+        },
+        "flight_dates": {
+          "applicable": 2,
+          "matched": 0
+        },
+        "payment_id": {
+          "applicable": 2,
+          "matched": 0
+        }
+      }
+    }
+  },
+  "known_usd": "0.117228678",
+  "reserved_usd": "0.0040476",
+  "http_calls": 670,
+  "unpriced_requests": 3,
+  "stages": {
+    "source": {
+      "name": "tau2-new-customer-source-01",
+      "implementation_commit": "a7e1e89a4db20ba110aa1365819275657af23b20",
+      "config_sha256": "0a73306f4ccb6f6a2e7a648c02b70e4fef274f2a7574e9a136dac06132c2062e",
+      "completion_sha256": "bf8dde82280789623855a81d5ed860e7924996365037852912cc3bcba80a53ec",
+      "allocation_sha256": "1fc539e0eba6bc7cee8fb30c70be1883ba5718af84cf135375070e5e5bc32826",
+      "control_sha256": "b075d4815f651d5356b756243fd1509c5ab391640c08ab7727fd65ffc23483f3",
+      "stop_reason": null,
+      "usage_by_role": {
+        "user_simulator": {
+          "http_calls": 35,
+          "reported_usd": "0.004848204",
+          "total_tokens": 39599,
+          "unknown_count": 0
+        },
+        "worker": {
+          "http_calls": 59,
+          "reported_usd": "0.008238660",
+          "total_tokens": 275253,
+          "unknown_count": 0
+        }
+      },
+      "http_calls": 94,
+      "known_usd": "0.013086864",
+      "reserved_usd": "0",
+      "reservations": [],
+      "unpriced_requests": 0
+    },
+    "comparison": {
+      "name": "tau2-new-customer-forms-01",
+      "implementation_commit": "a7e1e89a4db20ba110aa1365819275657af23b20",
+      "config_sha256": "0a73306f4ccb6f6a2e7a648c02b70e4fef274f2a7574e9a136dac06132c2062e",
+      "completion_sha256": "dc180852dcd21fe0dca7d9dd9ad867abd589bce6fff2583945a39223e534f446",
+      "allocation_sha256": "0d6da5a90e835bfcfa458f9904f255514fbc73fbae12d3bbcd0a2748a08aed07",
+      "control_sha256": "76006de9b0e58ed5dba6f5fd2c122880368769405a086342ee759802a1b8bb7b",
+      "stop_reason": "unknown_cost",
+      "usage_by_role": {
+        "writer": {
+          "http_calls": 83,
+          "reported_usd": "0.028071440",
+          "total_tokens": 430603,
+          "unknown_count": 0
+        },
+        "user_simulator": {
+          "http_calls": 171,
+          "reported_usd": "0.034212324",
+          "total_tokens": 201746,
+          "unknown_count": 3
+        },
+        "worker": {
+          "http_calls": 322,
+          "reported_usd": "0.041858050",
+          "total_tokens": 1704851,
+          "unknown_count": 0
+        }
+      },
+      "http_calls": 576,
+      "known_usd": "0.104141814",
+      "reserved_usd": "0.0040476",
+      "reservations": [
+        {
+          "job": 76,
+          "request_id": "request_7219cf0f619341d9a9e5143c2c68b41a",
+          "code": 503,
+          "role": "user_simulator",
+          "usd": "0.0020238",
+          "request_ref": {
+            "media_type": "application/json",
+            "path": "blobs/sha256/7f3eb1f47e5646f84030bb90adffeb93ca867d91eaacc45d8d1076b23f561d52",
+            "sha256": "7f3eb1f47e5646f84030bb90adffeb93ca867d91eaacc45d8d1076b23f561d52"
+          },
+          "response_ref": {
+            "media_type": "application/json",
+            "path": "blobs/sha256/5f761ea82d30615a93ce04c46028b30a93ab7403fadce94d23dd0a6b94fb5f19",
+            "sha256": "5f761ea82d30615a93ce04c46028b30a93ab7403fadce94d23dd0a6b94fb5f19"
+          }
+        },
+        {
+          "job": 77,
+          "request_id": "request_b21875eb47d647d0b0a6d6a212154e8d",
+          "code": 503,
+          "role": "user_simulator",
+          "usd": "0.0020238",
+          "request_ref": {
+            "media_type": "application/json",
+            "path": "blobs/sha256/7f3eb1f47e5646f84030bb90adffeb93ca867d91eaacc45d8d1076b23f561d52",
+            "sha256": "7f3eb1f47e5646f84030bb90adffeb93ca867d91eaacc45d8d1076b23f561d52"
+          },
+          "response_ref": {
+            "media_type": "application/json",
+            "path": "blobs/sha256/5f761ea82d30615a93ce04c46028b30a93ab7403fadce94d23dd0a6b94fb5f19",
+            "sha256": "5f761ea82d30615a93ce04c46028b30a93ab7403fadce94d23dd0a6b94fb5f19"
+          }
+        }
+      ],
+      "unpriced_requests": 3
+    }
+  }
+}

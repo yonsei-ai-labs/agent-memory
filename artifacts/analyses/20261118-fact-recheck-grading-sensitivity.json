@@ -1,0 +1,406 @@
+{
+  "format": "agent-memory-fact-recheck-grading-sensitivity/v1",
+  "benchmark_revision": "c06b07dd7c4d4ec61ba6ff9bcdf0b15dd7ef36d4",
+  "benchmark_task_file_sha256": "ccd8ba737b4cc371415af70151187788f728d6108d0916e73bb4317b40542052",
+  "method_sha256": "9e287a798d2c6cf8d07d712118066a3a386caae0e69124246ccc84059a4b4d9e",
+  "purpose": "Post hoc check on an in-memory copy of customer-visible assistant text. Official scores are preserved.",
+  "spelling_change": "Case-insensitive whole word four to digit 4 on task 3. No other changes.",
+  "task_5_criteria_sha256": "4c7dfdecd31717c85217c3bbf9de6b9db538795dd029c4ad86beeb1190ad4f0c",
+  "model_calls": 0,
+  "runs": [
+    {
+      "name": "tau2-fact-recheck-01",
+      "allocation_sha256": "0b7ee7561a160e651be6045a40386b0de84f91c99b934895668acc33b9bb83e9",
+      "counts": {
+        "task_5_officially_graded": 8,
+        "task_5_with_profile_lookup": 0,
+        "task_3_officially_graded": 8,
+        "task_3_original_communication_met": 7,
+        "task_3_normalized_communication_met": 8
+      },
+      "cells": [
+        {
+          "job": 17,
+          "task": "5",
+          "repetition": 1,
+          "arm": "fact_original",
+          "official_success": true,
+          "native_report_sha256": "63515cd77a07c73d69d83714bb533cc3c24aad23b40bb5866331425bde8dd833",
+          "db_match": true,
+          "profile_lookup_turns": []
+        },
+        {
+          "job": 18,
+          "task": "5",
+          "repetition": 1,
+          "arm": "fact_recheck",
+          "official_success": true,
+          "native_report_sha256": "b0c5187b872b5de3bc813d4318ab7d4b2c46e61c2a8e51a1c7347fb0a8f043fe",
+          "db_match": true,
+          "profile_lookup_turns": []
+        },
+        {
+          "job": 19,
+          "task": "5",
+          "repetition": 1,
+          "arm": "no_memory",
+          "official_success": true,
+          "native_report_sha256": "3ca0b7e3a7f0f46a1d66f696c714f8e87678eca2a10438bba1d4a63ad1eebd10",
+          "db_match": true,
+          "profile_lookup_turns": []
+        },
+        {
+          "job": 20,
+          "task": "5",
+          "repetition": 1,
+          "arm": "empty_preload",
+          "official_success": true,
+          "native_report_sha256": "2580e8401aa53c6fb6cbc5b0fc127d32c90dc19396321797ee4f6f59ad70063b",
+          "db_match": true,
+          "profile_lookup_turns": []
+        },
+        {
+          "job": 29,
+          "task": "3",
+          "repetition": 1,
+          "arm": "fact_original",
+          "official_success": true,
+          "native_report_sha256": "9952936b40f27c595f0f851889f541ac0ba4fc70e1b49b9fb99ec1fe79c9f4c4",
+          "db_match": true,
+          "original_met": true,
+          "normalized_met": true,
+          "changed_turns": []
+        },
+        {
+          "job": 30,
+          "task": "3",
+          "repetition": 1,
+          "arm": "no_memory",
+          "official_success": true,
+          "native_report_sha256": "cc5e760c63d330e40476f3322522f29e6c678983048152a4793f0c94ce846262",
+          "db_match": true,
+          "original_met": true,
+          "normalized_met": true,
+          "changed_turns": []
+        },
+        {
+          "job": 31,
+          "task": "3",
+          "repetition": 1,
+          "arm": "fact_recheck",
+          "official_success": true,
+          "native_report_sha256": "2efb025dd05ed0d96d6118b853201d22fbf4afe3ccff1b1e9a7d45b3ecdcbd62",
+          "db_match": true,
+          "original_met": true,
+          "normalized_met": true,
+          "changed_turns": [
+            {
+              "turn": 8,
+              "original": "Your reservation is for 2 passengers in economy, and your profile lists Silver membership. That gives you an allowance of **4 free checked bags total** (2 per passenger).\n\nThe reservation currently records **1 checked bag total**, with **0 paid bags**. So the booking shows one bag included, even though the membership allowance is four."
+            }
+          ]
+        },
+        {
+          "job": 32,
+          "task": "3",
+          "repetition": 1,
+          "arm": "empty_preload",
+          "official_success": true,
+          "native_report_sha256": "50a64df877cfa32547085d94f5c9be007063c87155aab8f667f5a65a01241367",
+          "db_match": true,
+          "original_met": true,
+          "normalized_met": true,
+          "changed_turns": []
+        },
+        {
+          "job": 33,
+          "task": "5",
+          "repetition": 2,
+          "arm": "empty_preload",
+          "official_success": true,
+          "native_report_sha256": "762c191ddfa4956851e982ed576ccf0aab94d8ae245094aeee3ba459a49528ec",
+          "db_match": true,
+          "profile_lookup_turns": []
+        },
+        {
+          "job": 34,
+          "task": "5",
+          "repetition": 2,
+          "arm": "fact_recheck",
+          "official_success": true,
+          "native_report_sha256": "658de963d6a9935ab8e527d3838b4bd9865b2244937955abd345b223f8c75b01",
+          "db_match": true,
+          "profile_lookup_turns": []
+        },
+        {
+          "job": 35,
+          "task": "5",
+          "repetition": 2,
+          "arm": "fact_original",
+          "official_success": true,
+          "native_report_sha256": "04c44538d0052c2fee13a5f2555852dd846485ae7b0e94043db568a48ad25bba",
+          "db_match": true,
+          "profile_lookup_turns": []
+        },
+        {
+          "job": 36,
+          "task": "5",
+          "repetition": 2,
+          "arm": "no_memory",
+          "official_success": true,
+          "native_report_sha256": "4b6c968962df7c81b716517468b459c294a9ab50463aac3d75c646bc1f76a83f",
+          "db_match": true,
+          "profile_lookup_turns": []
+        },
+        {
+          "job": 41,
+          "task": "3",
+          "repetition": 2,
+          "arm": "empty_preload",
+          "official_success": true,
+          "native_report_sha256": "a7ceb82407d055237d044e352bae53f3c2e1dba5b5495e33a7dee89e8b725ad7",
+          "db_match": true,
+          "original_met": true,
+          "normalized_met": true,
+          "changed_turns": []
+        },
+        {
+          "job": 42,
+          "task": "3",
+          "repetition": 2,
+          "arm": "fact_recheck",
+          "official_success": true,
+          "native_report_sha256": "954d4bafeef01e230585f8a0af2bc523a9738b46322a2ec17769c35c4b5939e8",
+          "db_match": true,
+          "original_met": true,
+          "normalized_met": true,
+          "changed_turns": []
+        },
+        {
+          "job": 43,
+          "task": "3",
+          "repetition": 2,
+          "arm": "fact_original",
+          "official_success": false,
+          "native_report_sha256": "070ac9b289cfdd12b1b4d523c1f6dedd98c7738e8f39f59074ef3bf7bf2156f5",
+          "db_match": true,
+          "original_met": false,
+          "normalized_met": true,
+          "changed_turns": [
+            {
+              "turn": 8,
+              "original": "Your reservation is for two passengers in economy, and your profile shows Silver membership. That gives each passenger two free checked bags, for **four free checked bags total**. The reservation currently records **one checked bag**, so it does not yet show all four."
+            },
+            {
+              "turn": 12,
+              "original": "I checked your profile again, and it lists your membership as Silver, not Gold. For this economy reservation with two passengers, that means four free checked bags total. I can’t change membership status with the available tools."
+            }
+          ]
+        },
+        {
+          "job": 44,
+          "task": "3",
+          "repetition": 2,
+          "arm": "no_memory",
+          "official_success": true,
+          "native_report_sha256": "b0f422e3eb9986d22bce5d13ac656143adca1dac35725c7094d6db3da6b9dda6",
+          "db_match": true,
+          "original_met": true,
+          "normalized_met": true,
+          "changed_turns": []
+        }
+      ]
+    },
+    {
+      "name": "tau2-fact-recheck-delivery-01",
+      "allocation_sha256": "396785f9153ce63fa4a08953a04780af045135e71dfb175c8ed41af2aeab75a7",
+      "counts": {
+        "task_5_officially_graded": 8,
+        "task_5_with_profile_lookup": 1,
+        "task_3_officially_graded": 8,
+        "task_3_original_communication_met": 8,
+        "task_3_normalized_communication_met": 8
+      },
+      "cells": [
+        {
+          "job": 1,
+          "task": "5",
+          "repetition": 1,
+          "arm": "fact_recheck__on_demand",
+          "official_success": true,
+          "native_report_sha256": "d9bbe830f8ffbd907fa2519a2850f11fdbacc9cdf0f6102abb39bf304b328d29",
+          "db_match": true,
+          "profile_lookup_turns": []
+        },
+        {
+          "job": 2,
+          "task": "5",
+          "repetition": 1,
+          "arm": "fact_recheck__preload",
+          "official_success": true,
+          "native_report_sha256": "4ace4c0320bf59169c5b6f1842cf3784d7e925b3587713858a2f17e450a3b76a",
+          "db_match": true,
+          "profile_lookup_turns": []
+        },
+        {
+          "job": 3,
+          "task": "5",
+          "repetition": 1,
+          "arm": "fact_original__preload",
+          "official_success": true,
+          "native_report_sha256": "df6ee9dea7d144910b913c5853c5d41d2ef2e8c1638ec18951c8e6c0a4a3da30",
+          "db_match": true,
+          "profile_lookup_turns": []
+        },
+        {
+          "job": 4,
+          "task": "5",
+          "repetition": 1,
+          "arm": "fact_original__on_demand",
+          "official_success": true,
+          "native_report_sha256": "10d7f5c8d801c45181f4b7a82b6523f320e041cb26357ce927712af70913b95b",
+          "db_match": true,
+          "profile_lookup_turns": [
+            8
+          ]
+        },
+        {
+          "job": 5,
+          "task": "3",
+          "repetition": 1,
+          "arm": "fact_original__preload",
+          "official_success": true,
+          "native_report_sha256": "5e967adfcff385bdd874c905ac26ec2916beef499e00d1a448685c6b0f588d09",
+          "db_match": true,
+          "original_met": true,
+          "normalized_met": true,
+          "changed_turns": []
+        },
+        {
+          "job": 6,
+          "task": "3",
+          "repetition": 1,
+          "arm": "fact_recheck__on_demand",
+          "official_success": true,
+          "native_report_sha256": "a3622cdf0dca731729fab9e52d5832fb413ef709e4d256837a0cdb462230cd31",
+          "db_match": true,
+          "original_met": true,
+          "normalized_met": true,
+          "changed_turns": []
+        },
+        {
+          "job": 7,
+          "task": "3",
+          "repetition": 1,
+          "arm": "fact_original__on_demand",
+          "official_success": true,
+          "native_report_sha256": "bf9e1a74105b13c2f89f41084ca75c3b23aea33f048eed16ba055cf96c30c473",
+          "db_match": true,
+          "original_met": true,
+          "normalized_met": true,
+          "changed_turns": []
+        },
+        {
+          "job": 8,
+          "task": "3",
+          "repetition": 1,
+          "arm": "fact_recheck__preload",
+          "official_success": true,
+          "native_report_sha256": "0825fafbfccbefb8b267f7dc5624b5cfc3344a536b7f69689c782c586e815a93",
+          "db_match": true,
+          "original_met": true,
+          "normalized_met": true,
+          "changed_turns": []
+        },
+        {
+          "job": 21,
+          "task": "3",
+          "repetition": 2,
+          "arm": "fact_recheck__on_demand",
+          "official_success": true,
+          "native_report_sha256": "19a63377e8889fa6ce50677cc9414e62c8a9d8fb5563d7fa68157f455f4b19d4",
+          "db_match": true,
+          "original_met": true,
+          "normalized_met": true,
+          "changed_turns": []
+        },
+        {
+          "job": 22,
+          "task": "3",
+          "repetition": 2,
+          "arm": "fact_original__preload",
+          "official_success": true,
+          "native_report_sha256": "4b4032f4ac79bca0f060e4682c505fae3b460fc4ad08234d52ce4f0916ea62a8",
+          "db_match": true,
+          "original_met": true,
+          "normalized_met": true,
+          "changed_turns": []
+        },
+        {
+          "job": 23,
+          "task": "3",
+          "repetition": 2,
+          "arm": "fact_original__on_demand",
+          "official_success": true,
+          "native_report_sha256": "9d9c39b4861f27a2dcee6e317d0f0d5b49015f7136a594e0d40ecbff08ab65da",
+          "db_match": true,
+          "original_met": true,
+          "normalized_met": true,
+          "changed_turns": []
+        },
+        {
+          "job": 24,
+          "task": "3",
+          "repetition": 2,
+          "arm": "fact_recheck__preload",
+          "official_success": true,
+          "native_report_sha256": "7aaf033b1a1d556c6b32b5cb0118c1c0b05f321bb0f08adb90dc89a5d214fbf0",
+          "db_match": true,
+          "original_met": true,
+          "normalized_met": true,
+          "changed_turns": []
+        },
+        {
+          "job": 25,
+          "task": "5",
+          "repetition": 2,
+          "arm": "fact_original__on_demand",
+          "official_success": true,
+          "native_report_sha256": "1f0270375e7996fd340ba06dcb54c6513b4759efdce8e9b0404b2341d935be0e",
+          "db_match": true,
+          "profile_lookup_turns": []
+        },
+        {
+          "job": 26,
+          "task": "5",
+          "repetition": 2,
+          "arm": "fact_recheck__preload",
+          "official_success": true,
+          "native_report_sha256": "d23cc85419720bb64e1f4b5b921eab22820dba9bd553d33090762bb93d0762b4",
+          "db_match": true,
+          "profile_lookup_turns": []
+        },
+        {
+          "job": 27,
+          "task": "5",
+          "repetition": 2,
+          "arm": "fact_original__preload",
+          "official_success": true,
+          "native_report_sha256": "95a8b666e609f7c20a9f0114bf8049591d2cbcb3881e53bd5738df8b7033946d",
+          "db_match": true,
+          "profile_lookup_turns": []
+        },
+        {
+          "job": 28,
+          "task": "5",
+          "repetition": 2,
+          "arm": "fact_recheck__on_demand",
+          "official_success": true,
+          "native_report_sha256": "db8645ac2ce38e8f18c13ed02e537b40692c2551021d25ad48488464fe9dc2ee",
+          "db_match": true,
+          "profile_lookup_turns": []
+        }
+      ]
+    }
+  ]
+}

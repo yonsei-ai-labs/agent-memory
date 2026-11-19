@@ -1,0 +1,695 @@
+{
+  "source": {
+    "format": "agent-memory-two-pass-native-strict-replay/v1",
+    "benchmark_revision": "c06b07dd7c4d4ec61ba6ff9bcdf0b15dd7ef36d4",
+    "method_sha256": "2bee4736efac915e412c35a63ee6d33bf165efe1c833c78f87766127345c0446",
+    "benchmark_task_file_sha256": "ccd8ba737b4cc371415af70151187788f728d6108d0916e73bb4317b40542052",
+    "allocation_sha256": "1fc539e0eba6bc7cee8fb30c70be1883ba5718af84cf135375070e5e5bc32826",
+    "official_results_checked": 6,
+    "successes": 3,
+    "new_model_or_network_attempts": 0,
+    "failure_components": {
+      "db_only": 3,
+      "communication_only": 0,
+      "both": 0,
+      "both_passed": 3
+    },
+    "grades": [
+      {
+        "index": 1,
+        "task_id": "19",
+        "repetition": 1,
+        "arm": "no_memory",
+        "official_score": 0.0,
+        "db_match": false,
+        "communication_required": 0,
+        "communication_passed": true,
+        "missing_communication": [],
+        "report_sha256": "910c6ecf1c95c8dce3a01acfa0851d03c9707925678a3e57ef6c76578e865ccb",
+        "replayed_reward_sha256": "1a12a59527e6a0605236c25fc6851ef9ec6a6c7f3b607d0866c9bb1ec7978b27"
+      },
+      {
+        "index": 2,
+        "task_id": "29",
+        "repetition": 1,
+        "arm": "no_memory",
+        "official_score": 0.0,
+        "db_match": false,
+        "communication_required": 0,
+        "communication_passed": true,
+        "missing_communication": [],
+        "report_sha256": "09f0204621255995cf14ca23150d0e49ee52cd3e3da9de51279d1e1885fbb493",
+        "replayed_reward_sha256": "31916ab8624dce77b384fb66c5869928b072833cef1f0c0a8527417713aea1c3"
+      },
+      {
+        "index": 3,
+        "task_id": "30",
+        "repetition": 1,
+        "arm": "no_memory",
+        "official_score": 1.0,
+        "db_match": true,
+        "communication_required": 0,
+        "communication_passed": true,
+        "missing_communication": [],
+        "report_sha256": "49c50fb6aec093f402f6ff5096fdede786e06f3f2f8a0f572678e032d47d9cb3",
+        "replayed_reward_sha256": "07a7b3122cf33afc4c28729e2c0656573ceb68e5025f5db966963801508dd75b"
+      },
+      {
+        "index": 4,
+        "task_id": "25",
+        "repetition": 1,
+        "arm": "no_memory",
+        "official_score": 1.0,
+        "db_match": true,
+        "communication_required": 0,
+        "communication_passed": true,
+        "missing_communication": [],
+        "report_sha256": "1a7c56f4b215d81939567295a2127b2eacb424aa75da74700d6c87920c7eef5e",
+        "replayed_reward_sha256": "2524df7ddbe0e872910d57a740d096c1a2508a1850eee9e91ec626f8e234d32c"
+      },
+      {
+        "index": 5,
+        "task_id": "32",
+        "repetition": 1,
+        "arm": "no_memory",
+        "official_score": 0.0,
+        "db_match": false,
+        "communication_required": 0,
+        "communication_passed": true,
+        "missing_communication": [],
+        "report_sha256": "a9dcaa5decd715f7facd659f290aca159c61769747663acfc6e3ac72508bd4f3",
+        "replayed_reward_sha256": "e1d68352636abeae4c9ce8a625d66afc69198f226eddbdd95615d5355af84376"
+      },
+      {
+        "index": 6,
+        "task_id": "24",
+        "repetition": 1,
+        "arm": "no_memory",
+        "official_score": 1.0,
+        "db_match": true,
+        "communication_required": 0,
+        "communication_passed": true,
+        "missing_communication": [],
+        "report_sha256": "c084540566b568e302cc596b40b9217b431ce1ee851d17825f8d1f5d4383e594",
+        "replayed_reward_sha256": "7c4c0b0fe29b32352151cecb20ea7d2545f994878b785e33458ad065f2d1c7db"
+      }
+    ],
+    "unavailable": []
+  },
+  "comparison": {
+    "format": "agent-memory-two-pass-native-strict-replay/v1",
+    "benchmark_revision": "c06b07dd7c4d4ec61ba6ff9bcdf0b15dd7ef36d4",
+    "method_sha256": "2bee4736efac915e412c35a63ee6d33bf165efe1c833c78f87766127345c0446",
+    "benchmark_task_file_sha256": "ccd8ba737b4cc371415af70151187788f728d6108d0916e73bb4317b40542052",
+    "allocation_sha256": "0d6da5a90e835bfcfa458f9904f255514fbc73fbae12d3bbcd0a2748a08aed07",
+    "official_results_checked": 27,
+    "successes": 14,
+    "new_model_or_network_attempts": 0,
+    "failure_components": {
+      "db_only": 13,
+      "communication_only": 0,
+      "both": 0,
+      "both_passed": 14
+    },
+    "grades": [
+      {
+        "index": 49,
+        "task_id": "30",
+        "repetition": 1,
+        "arm": "empty_preload",
+        "official_score": 1.0,
+        "db_match": true,
+        "communication_required": 0,
+        "communication_passed": true,
+        "missing_communication": [],
+        "report_sha256": "1c492d6c396022412e6215aae29adc69646f262518f90c2c4fea550f0779fe08",
+        "replayed_reward_sha256": "07a7b3122cf33afc4c28729e2c0656573ceb68e5025f5db966963801508dd75b"
+      },
+      {
+        "index": 50,
+        "task_id": "30",
+        "repetition": 1,
+        "arm": "procedure",
+        "official_score": 1.0,
+        "db_match": true,
+        "communication_required": 0,
+        "communication_passed": true,
+        "missing_communication": [],
+        "report_sha256": "ccbff17bada361d1476d684ddfd3a4a71b1f492d29cf347c45ee49f3c2e2b646",
+        "replayed_reward_sha256": "07a7b3122cf33afc4c28729e2c0656573ceb68e5025f5db966963801508dd75b"
+      },
+      {
+        "index": 51,
+        "task_id": "30",
+        "repetition": 1,
+        "arm": "episode",
+        "official_score": 1.0,
+        "db_match": true,
+        "communication_required": 0,
+        "communication_passed": true,
+        "missing_communication": [],
+        "report_sha256": "b0f54800100e929b9aed803d3dbc39d6c857b06ec6b5bd2d8407efd647008175",
+        "replayed_reward_sha256": "07a7b3122cf33afc4c28729e2c0656573ceb68e5025f5db966963801508dd75b"
+      },
+      {
+        "index": 52,
+        "task_id": "30",
+        "repetition": 1,
+        "arm": "no_memory",
+        "official_score": 1.0,
+        "db_match": true,
+        "communication_required": 0,
+        "communication_passed": true,
+        "missing_communication": [],
+        "report_sha256": "21d1a097a757fee0acda6902b4f6d9bf2fa516dcc381cfc4f6d5e272b27ce12c",
+        "replayed_reward_sha256": "07a7b3122cf33afc4c28729e2c0656573ceb68e5025f5db966963801508dd75b"
+      },
+      {
+        "index": 53,
+        "task_id": "30",
+        "repetition": 1,
+        "arm": "lesson",
+        "official_score": 1.0,
+        "db_match": true,
+        "communication_required": 0,
+        "communication_passed": true,
+        "missing_communication": [],
+        "report_sha256": "17a43113a20731dce3ed3a215682ae56e781011f3ab9b3d5c1fca827a6399eb7",
+        "replayed_reward_sha256": "07a7b3122cf33afc4c28729e2c0656573ceb68e5025f5db966963801508dd75b"
+      },
+      {
+        "index": 54,
+        "task_id": "30",
+        "repetition": 1,
+        "arm": "fact",
+        "official_score": 1.0,
+        "db_match": true,
+        "communication_required": 0,
+        "communication_passed": true,
+        "missing_communication": [],
+        "report_sha256": "3630c9490eeda93d194b161385b20a47c7abcce805a2c458fa73a3eff3eea884",
+        "replayed_reward_sha256": "07a7b3122cf33afc4c28729e2c0656573ceb68e5025f5db966963801508dd75b"
+      },
+      {
+        "index": 55,
+        "task_id": "32",
+        "repetition": 1,
+        "arm": "fact",
+        "official_score": 0.0,
+        "db_match": false,
+        "communication_required": 0,
+        "communication_passed": true,
+        "missing_communication": [],
+        "report_sha256": "e31aa611de487afd04e990a73c23ba15e2b72a5e2e3908eeea85a3e196aa8eb1",
+        "replayed_reward_sha256": "e1d68352636abeae4c9ce8a625d66afc69198f226eddbdd95615d5355af84376"
+      },
+      {
+        "index": 56,
+        "task_id": "32",
+        "repetition": 1,
+        "arm": "lesson",
+        "official_score": 0.0,
+        "db_match": false,
+        "communication_required": 0,
+        "communication_passed": true,
+        "missing_communication": [],
+        "report_sha256": "76f19f8120c2de4c8b8d4a33b54540cc6cf4d7c33d1ff662588ca8778bf91202",
+        "replayed_reward_sha256": "e1d68352636abeae4c9ce8a625d66afc69198f226eddbdd95615d5355af84376"
+      },
+      {
+        "index": 57,
+        "task_id": "32",
+        "repetition": 1,
+        "arm": "episode",
+        "official_score": 0.0,
+        "db_match": false,
+        "communication_required": 0,
+        "communication_passed": true,
+        "missing_communication": [],
+        "report_sha256": "f8fef7af545978195601376f5d7e732b6f5794759d6fdb773dc3a154b229c765",
+        "replayed_reward_sha256": "e1d68352636abeae4c9ce8a625d66afc69198f226eddbdd95615d5355af84376"
+      },
+      {
+        "index": 58,
+        "task_id": "32",
+        "repetition": 1,
+        "arm": "procedure",
+        "official_score": 0.0,
+        "db_match": false,
+        "communication_required": 0,
+        "communication_passed": true,
+        "missing_communication": [],
+        "report_sha256": "abcff206153afc59d86d26140c75d7123ecccca561c58592d30d083f8799520f",
+        "replayed_reward_sha256": "e1d68352636abeae4c9ce8a625d66afc69198f226eddbdd95615d5355af84376"
+      },
+      {
+        "index": 59,
+        "task_id": "32",
+        "repetition": 1,
+        "arm": "no_memory",
+        "official_score": 0.0,
+        "db_match": false,
+        "communication_required": 0,
+        "communication_passed": true,
+        "missing_communication": [],
+        "report_sha256": "7046f904d3ef6b7facd937e7ca8210fda537f19df3e7cee99c42d27c8837c78b",
+        "replayed_reward_sha256": "e1d68352636abeae4c9ce8a625d66afc69198f226eddbdd95615d5355af84376"
+      },
+      {
+        "index": 60,
+        "task_id": "32",
+        "repetition": 1,
+        "arm": "empty_preload",
+        "official_score": 0.0,
+        "db_match": false,
+        "communication_required": 0,
+        "communication_passed": true,
+        "missing_communication": [],
+        "report_sha256": "11f296828c1810c221aea0b6a41c45c7ff9f82edd71a4a36e4c9d4c02bfdaf82",
+        "replayed_reward_sha256": "e1d68352636abeae4c9ce8a625d66afc69198f226eddbdd95615d5355af84376"
+      },
+      {
+        "index": 61,
+        "task_id": "25",
+        "repetition": 1,
+        "arm": "lesson",
+        "official_score": 1.0,
+        "db_match": true,
+        "communication_required": 0,
+        "communication_passed": true,
+        "missing_communication": [],
+        "report_sha256": "ccf4efc93dfa418eebad3ff9848dbdc06a3eec4a522a06c7694ff1b69e2f5c5e",
+        "replayed_reward_sha256": "2524df7ddbe0e872910d57a740d096c1a2508a1850eee9e91ec626f8e234d32c"
+      },
+      {
+        "index": 62,
+        "task_id": "25",
+        "repetition": 1,
+        "arm": "empty_preload",
+        "official_score": 1.0,
+        "db_match": true,
+        "communication_required": 0,
+        "communication_passed": true,
+        "missing_communication": [],
+        "report_sha256": "30882bb0a9af8125aab9fe421a2a02c17e5ac7cce2c3497925c17a035e876ad7",
+        "replayed_reward_sha256": "2524df7ddbe0e872910d57a740d096c1a2508a1850eee9e91ec626f8e234d32c"
+      },
+      {
+        "index": 63,
+        "task_id": "25",
+        "repetition": 1,
+        "arm": "procedure",
+        "official_score": 1.0,
+        "db_match": true,
+        "communication_required": 0,
+        "communication_passed": true,
+        "missing_communication": [],
+        "report_sha256": "76f31896ea058403c3315a988ef68ef713a8d790eb9b58af93615a2fa1aade70",
+        "replayed_reward_sha256": "2524df7ddbe0e872910d57a740d096c1a2508a1850eee9e91ec626f8e234d32c"
+      },
+      {
+        "index": 64,
+        "task_id": "25",
+        "repetition": 1,
+        "arm": "no_memory",
+        "official_score": 1.0,
+        "db_match": true,
+        "communication_required": 0,
+        "communication_passed": true,
+        "missing_communication": [],
+        "report_sha256": "fe2c648092139cddff7db26973f84bdc0dfbe03fdfe1f21b705c1288310a561c",
+        "replayed_reward_sha256": "2524df7ddbe0e872910d57a740d096c1a2508a1850eee9e91ec626f8e234d32c"
+      },
+      {
+        "index": 65,
+        "task_id": "25",
+        "repetition": 1,
+        "arm": "episode",
+        "official_score": 1.0,
+        "db_match": true,
+        "communication_required": 0,
+        "communication_passed": true,
+        "missing_communication": [],
+        "report_sha256": "a065f0bdca906b1420510b7307a9cdeafff1de013bfb27e4ec0ca047b8ea8c5d",
+        "replayed_reward_sha256": "2524df7ddbe0e872910d57a740d096c1a2508a1850eee9e91ec626f8e234d32c"
+      },
+      {
+        "index": 66,
+        "task_id": "25",
+        "repetition": 1,
+        "arm": "fact",
+        "official_score": 1.0,
+        "db_match": true,
+        "communication_required": 0,
+        "communication_passed": true,
+        "missing_communication": [],
+        "report_sha256": "9bf5fd58264fd2fa0f7e9b9e89b1919e713a1e438c776de0edb3962c4adeb477",
+        "replayed_reward_sha256": "2524df7ddbe0e872910d57a740d096c1a2508a1850eee9e91ec626f8e234d32c"
+      },
+      {
+        "index": 67,
+        "task_id": "24",
+        "repetition": 1,
+        "arm": "empty_preload",
+        "official_score": 0.0,
+        "db_match": false,
+        "communication_required": 0,
+        "communication_passed": true,
+        "missing_communication": [],
+        "report_sha256": "81c47a4a97f25c35168ff9b7f2a69a49ceca7224c5e515c112112454ad05fb0b",
+        "replayed_reward_sha256": "a168d83e7e7e2120e8037a7fee0b5500a40f15a2267d8213d3cb985d1935b7f9"
+      },
+      {
+        "index": 68,
+        "task_id": "24",
+        "repetition": 1,
+        "arm": "procedure",
+        "official_score": 1.0,
+        "db_match": true,
+        "communication_required": 0,
+        "communication_passed": true,
+        "missing_communication": [],
+        "report_sha256": "4a00db51153d5b2b83c84af91fe2c6aae9d1aba22e90a29e2104e130e1be9232",
+        "replayed_reward_sha256": "7c4c0b0fe29b32352151cecb20ea7d2545f994878b785e33458ad065f2d1c7db"
+      },
+      {
+        "index": 69,
+        "task_id": "24",
+        "repetition": 1,
+        "arm": "episode",
+        "official_score": 0.0,
+        "db_match": false,
+        "communication_required": 0,
+        "communication_passed": true,
+        "missing_communication": [],
+        "report_sha256": "2f2a92cbc8705a55d8968f0e5653fdf196a68c87add9cb1c261c3b19d3448b93",
+        "replayed_reward_sha256": "a168d83e7e7e2120e8037a7fee0b5500a40f15a2267d8213d3cb985d1935b7f9"
+      },
+      {
+        "index": 70,
+        "task_id": "24",
+        "repetition": 1,
+        "arm": "fact",
+        "official_score": 1.0,
+        "db_match": true,
+        "communication_required": 0,
+        "communication_passed": true,
+        "missing_communication": [],
+        "report_sha256": "2fbc03c68875c7a5edef7c90b16200292815ff25322ba657b024b3184957c488",
+        "replayed_reward_sha256": "7c4c0b0fe29b32352151cecb20ea7d2545f994878b785e33458ad065f2d1c7db"
+      },
+      {
+        "index": 71,
+        "task_id": "24",
+        "repetition": 1,
+        "arm": "no_memory",
+        "official_score": 0.0,
+        "db_match": false,
+        "communication_required": 0,
+        "communication_passed": true,
+        "missing_communication": [],
+        "report_sha256": "2dbf133829b4883c8274e5afc9603457a1b011c54effcc0ecd02f0adb7fc5346",
+        "replayed_reward_sha256": "a168d83e7e7e2120e8037a7fee0b5500a40f15a2267d8213d3cb985d1935b7f9"
+      },
+      {
+        "index": 72,
+        "task_id": "24",
+        "repetition": 1,
+        "arm": "lesson",
+        "official_score": 0.0,
+        "db_match": false,
+        "communication_required": 0,
+        "communication_passed": true,
+        "missing_communication": [],
+        "report_sha256": "92f0cc8636d48cc5343110531f4b6a6ad4ee404bf0fe3ba89d763b404e15d19f",
+        "replayed_reward_sha256": "a168d83e7e7e2120e8037a7fee0b5500a40f15a2267d8213d3cb985d1935b7f9"
+      },
+      {
+        "index": 73,
+        "task_id": "29",
+        "repetition": 1,
+        "arm": "procedure",
+        "official_score": 0.0,
+        "db_match": false,
+        "communication_required": 0,
+        "communication_passed": true,
+        "missing_communication": [],
+        "report_sha256": "20ac2768393c74de51b32b5e0fb3d7e00030b6322d652723c3a0858e2749ccb7",
+        "replayed_reward_sha256": "31916ab8624dce77b384fb66c5869928b072833cef1f0c0a8527417713aea1c3"
+      },
+      {
+        "index": 74,
+        "task_id": "29",
+        "repetition": 1,
+        "arm": "no_memory",
+        "official_score": 0.0,
+        "db_match": false,
+        "communication_required": 0,
+        "communication_passed": true,
+        "missing_communication": [],
+        "report_sha256": "1cd9a28a4ec5377fd4df19205704e88b6aadd3ec169cc6bd64e8f84404494c8c",
+        "replayed_reward_sha256": "31916ab8624dce77b384fb66c5869928b072833cef1f0c0a8527417713aea1c3"
+      },
+      {
+        "index": 75,
+        "task_id": "29",
+        "repetition": 1,
+        "arm": "lesson",
+        "official_score": 0.0,
+        "db_match": false,
+        "communication_required": 0,
+        "communication_passed": true,
+        "missing_communication": [],
+        "report_sha256": "8eb558579893419ab4b887551f10d13c74e255de512372189bb21d71fd703db3",
+        "replayed_reward_sha256": "247c6537eb4a1ee45cf2f764247a290eae57cbc587dfd146666ff234dc55073e"
+      }
+    ],
+    "unavailable": [
+      {
+        "index": 76,
+        "status": "error",
+        "reason": "HTTP_503"
+      },
+      {
+        "index": 77,
+        "status": "error",
+        "reason": "HTTP_503"
+      },
+      {
+        "index": 78,
+        "status": "error",
+        "reason": "HTTP_503"
+      },
+      {
+        "index": 79,
+        "status": "not_started",
+        "reason": "unknown_cost"
+      },
+      {
+        "index": 80,
+        "status": "not_started",
+        "reason": "unknown_cost"
+      },
+      {
+        "index": 81,
+        "status": "not_started",
+        "reason": "unknown_cost"
+      },
+      {
+        "index": 82,
+        "status": "not_started",
+        "reason": "unknown_cost"
+      },
+      {
+        "index": 83,
+        "status": "not_started",
+        "reason": "unknown_cost"
+      },
+      {
+        "index": 84,
+        "status": "not_started",
+        "reason": "unknown_cost"
+      },
+      {
+        "index": 85,
+        "status": "not_started",
+        "reason": "unknown_cost"
+      },
+      {
+        "index": 86,
+        "status": "not_started",
+        "reason": "unknown_cost"
+      },
+      {
+        "index": 87,
+        "status": "not_started",
+        "reason": "unknown_cost"
+      },
+      {
+        "index": 88,
+        "status": "not_started",
+        "reason": "unknown_cost"
+      },
+      {
+        "index": 89,
+        "status": "not_started",
+        "reason": "unknown_cost"
+      },
+      {
+        "index": 90,
+        "status": "not_started",
+        "reason": "unknown_cost"
+      },
+      {
+        "index": 91,
+        "status": "not_started",
+        "reason": "unknown_cost"
+      },
+      {
+        "index": 92,
+        "status": "not_started",
+        "reason": "unknown_cost"
+      },
+      {
+        "index": 93,
+        "status": "not_started",
+        "reason": "unknown_cost"
+      },
+      {
+        "index": 94,
+        "status": "not_started",
+        "reason": "unknown_cost"
+      },
+      {
+        "index": 95,
+        "status": "not_started",
+        "reason": "unknown_cost"
+      },
+      {
+        "index": 96,
+        "status": "not_started",
+        "reason": "unknown_cost"
+      },
+      {
+        "index": 97,
+        "status": "not_started",
+        "reason": "unknown_cost"
+      },
+      {
+        "index": 98,
+        "status": "not_started",
+        "reason": "unknown_cost"
+      },
+      {
+        "index": 99,
+        "status": "not_started",
+        "reason": "unknown_cost"
+      },
+      {
+        "index": 100,
+        "status": "not_started",
+        "reason": "unknown_cost"
+      },
+      {
+        "index": 101,
+        "status": "not_started",
+        "reason": "unknown_cost"
+      },
+      {
+        "index": 102,
+        "status": "not_started",
+        "reason": "unknown_cost"
+      },
+      {
+        "index": 103,
+        "status": "not_started",
+        "reason": "unknown_cost"
+      },
+      {
+        "index": 104,
+        "status": "not_started",
+        "reason": "unknown_cost"
+      },
+      {
+        "index": 105,
+        "status": "not_started",
+        "reason": "unknown_cost"
+      },
+      {
+        "index": 106,
+        "status": "not_started",
+        "reason": "unknown_cost"
+      },
+      {
+        "index": 107,
+        "status": "not_started",
+        "reason": "unknown_cost"
+      },
+      {
+        "index": 108,
+        "status": "not_started",
+        "reason": "unknown_cost"
+      },
+      {
+        "index": 109,
+        "status": "not_started",
+        "reason": "unknown_cost"
+      },
+      {
+        "index": 110,
+        "status": "not_started",
+        "reason": "unknown_cost"
+      },
+      {
+        "index": 111,
+        "status": "not_started",
+        "reason": "unknown_cost"
+      },
+      {
+        "index": 112,
+        "status": "not_started",
+        "reason": "unknown_cost"
+      },
+      {
+        "index": 113,
+        "status": "not_started",
+        "reason": "unknown_cost"
+      },
+      {
+        "index": 114,
+        "status": "not_started",
+        "reason": "unknown_cost"
+      },
+      {
+        "index": 115,
+        "status": "not_started",
+        "reason": "unknown_cost"
+      },
+      {
+        "index": 116,
+        "status": "not_started",
+        "reason": "unknown_cost"
+      },
+      {
+        "index": 117,
+        "status": "not_started",
+        "reason": "unknown_cost"
+      },
+      {
+        "index": 118,
+        "status": "not_started",
+        "reason": "unknown_cost"
+      },
+      {
+        "index": 119,
+        "status": "not_started",
+        "reason": "unknown_cost"
+      },
+      {
+        "index": 120,
+        "status": "not_started",
+        "reason": "unknown_cost"
+      }
+    ]
+  }
+}

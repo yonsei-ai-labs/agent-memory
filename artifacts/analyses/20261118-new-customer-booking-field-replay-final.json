@@ -1,0 +1,538 @@
+{
+  "format": "agent-memory-new-customer-booking-field-replay/v1",
+  "config_sha256": "0a73306f4ccb6f6a2e7a648c02b70e4fef274f2a7574e9a136dac06132c2062e",
+  "method_sha256": "49a90a8bf0c57a135083077b8afa6c0e0b111a31a2fe4cb9ebe019ec972c0e06",
+  "stage_completion_sha256": {
+    "source": "bf8dde82280789623855a81d5ed860e7924996365037852912cc3bcba80a53ec",
+    "comparison": "bb3469992ca8da7f098e347b06d039266c3380b17ddbc89e4e6e756ee9f7f6ab"
+  },
+  "task_ids": [
+    "24",
+    "25"
+  ],
+  "coverage": [
+    {
+      "stage": "source",
+      "task_id": "25",
+      "job": 4,
+      "arm": "no_memory",
+      "repetition": 1,
+      "official_success": true,
+      "native_report_sha256": "1a7c56f4b215d81939567295a2127b2eacb424aa75da74700d6c87920c7eef5e",
+      "actual_db_sha256": "d0579b8ae59e360f8b63f84a55ac00a27a8d51a175b42b2e997f1f056a83e363",
+      "reference_db_sha256": "d0579b8ae59e360f8b63f84a55ac00a27a8d51a175b42b2e997f1f056a83e363",
+      "booking_turn": 18,
+      "eligibility": "first_pass_booking"
+    },
+    {
+      "stage": "source",
+      "task_id": "24",
+      "job": 6,
+      "arm": "no_memory",
+      "repetition": 1,
+      "official_success": true,
+      "native_report_sha256": "c084540566b568e302cc596b40b9217b431ce1ee851d17825f8d1f5d4383e594",
+      "actual_db_sha256": "db03cad581503e6400695354ac16eb5033e4a1bfa1847020ede5f825db68c2da",
+      "reference_db_sha256": "db03cad581503e6400695354ac16eb5033e4a1bfa1847020ede5f825db68c2da",
+      "booking_turn": 50,
+      "eligibility": "first_pass_booking"
+    },
+    {
+      "stage": "comparison",
+      "task_id": "25",
+      "job": 61,
+      "arm": "lesson",
+      "repetition": 1,
+      "official_success": true,
+      "native_report_sha256": "ccf4efc93dfa418eebad3ff9848dbdc06a3eec4a522a06c7694ff1b69e2f5c5e",
+      "actual_db_sha256": "d0579b8ae59e360f8b63f84a55ac00a27a8d51a175b42b2e997f1f056a83e363",
+      "reference_db_sha256": "d0579b8ae59e360f8b63f84a55ac00a27a8d51a175b42b2e997f1f056a83e363",
+      "booking_turn": 16,
+      "eligibility": "official_success"
+    },
+    {
+      "stage": "comparison",
+      "task_id": "25",
+      "job": 62,
+      "arm": "empty_preload",
+      "repetition": 1,
+      "official_success": true,
+      "native_report_sha256": "30882bb0a9af8125aab9fe421a2a02c17e5ac7cce2c3497925c17a035e876ad7",
+      "actual_db_sha256": "d0579b8ae59e360f8b63f84a55ac00a27a8d51a175b42b2e997f1f056a83e363",
+      "reference_db_sha256": "d0579b8ae59e360f8b63f84a55ac00a27a8d51a175b42b2e997f1f056a83e363",
+      "booking_turn": 16,
+      "eligibility": "official_success"
+    },
+    {
+      "stage": "comparison",
+      "task_id": "25",
+      "job": 63,
+      "arm": "procedure",
+      "repetition": 1,
+      "official_success": true,
+      "native_report_sha256": "76f31896ea058403c3315a988ef68ef713a8d790eb9b58af93615a2fa1aade70",
+      "actual_db_sha256": "d0579b8ae59e360f8b63f84a55ac00a27a8d51a175b42b2e997f1f056a83e363",
+      "reference_db_sha256": "d0579b8ae59e360f8b63f84a55ac00a27a8d51a175b42b2e997f1f056a83e363",
+      "booking_turn": 18,
+      "eligibility": "official_success"
+    },
+    {
+      "stage": "comparison",
+      "task_id": "25",
+      "job": 64,
+      "arm": "no_memory",
+      "repetition": 1,
+      "official_success": true,
+      "native_report_sha256": "fe2c648092139cddff7db26973f84bdc0dfbe03fdfe1f21b705c1288310a561c",
+      "actual_db_sha256": "d0579b8ae59e360f8b63f84a55ac00a27a8d51a175b42b2e997f1f056a83e363",
+      "reference_db_sha256": "d0579b8ae59e360f8b63f84a55ac00a27a8d51a175b42b2e997f1f056a83e363",
+      "booking_turn": 16,
+      "eligibility": "official_success"
+    },
+    {
+      "stage": "comparison",
+      "task_id": "25",
+      "job": 65,
+      "arm": "episode",
+      "repetition": 1,
+      "official_success": true,
+      "native_report_sha256": "a065f0bdca906b1420510b7307a9cdeafff1de013bfb27e4ec0ca047b8ea8c5d",
+      "actual_db_sha256": "d0579b8ae59e360f8b63f84a55ac00a27a8d51a175b42b2e997f1f056a83e363",
+      "reference_db_sha256": "d0579b8ae59e360f8b63f84a55ac00a27a8d51a175b42b2e997f1f056a83e363",
+      "booking_turn": 14,
+      "eligibility": "official_success"
+    },
+    {
+      "stage": "comparison",
+      "task_id": "25",
+      "job": 66,
+      "arm": "fact",
+      "repetition": 1,
+      "official_success": true,
+      "native_report_sha256": "9bf5fd58264fd2fa0f7e9b9e89b1919e713a1e438c776de0edb3962c4adeb477",
+      "actual_db_sha256": "d0579b8ae59e360f8b63f84a55ac00a27a8d51a175b42b2e997f1f056a83e363",
+      "reference_db_sha256": "d0579b8ae59e360f8b63f84a55ac00a27a8d51a175b42b2e997f1f056a83e363",
+      "booking_turn": 20,
+      "eligibility": "official_success"
+    },
+    {
+      "stage": "comparison",
+      "task_id": "24",
+      "job": 67,
+      "arm": "empty_preload",
+      "repetition": 1,
+      "official_success": false,
+      "native_report_sha256": "81c47a4a97f25c35168ff9b7f2a69a49ceca7224c5e515c112112454ad05fb0b",
+      "actual_db_sha256": "124e39a664b56402bcd09cb8a6a9cece6acb8462337c969799d5658e3250f263",
+      "reference_db_sha256": "db03cad581503e6400695354ac16eb5033e4a1bfa1847020ede5f825db68c2da",
+      "eligibility": "requires_exactly_one_booking_write"
+    },
+    {
+      "stage": "comparison",
+      "task_id": "24",
+      "job": 68,
+      "arm": "procedure",
+      "repetition": 1,
+      "official_success": true,
+      "native_report_sha256": "4a00db51153d5b2b83c84af91fe2c6aae9d1aba22e90a29e2104e130e1be9232",
+      "actual_db_sha256": "db03cad581503e6400695354ac16eb5033e4a1bfa1847020ede5f825db68c2da",
+      "reference_db_sha256": "db03cad581503e6400695354ac16eb5033e4a1bfa1847020ede5f825db68c2da",
+      "booking_turn": 54,
+      "eligibility": "official_success"
+    },
+    {
+      "stage": "comparison",
+      "task_id": "24",
+      "job": 69,
+      "arm": "episode",
+      "repetition": 1,
+      "official_success": false,
+      "native_report_sha256": "2f2a92cbc8705a55d8968f0e5653fdf196a68c87add9cb1c261c3b19d3448b93",
+      "actual_db_sha256": "29e36e4de44e121c319192db99e581daf443076f0d87eaba4099bbe1a9f6a20f",
+      "reference_db_sha256": "db03cad581503e6400695354ac16eb5033e4a1bfa1847020ede5f825db68c2da",
+      "booking_turn": 46,
+      "eligibility": "observed_difference"
+    },
+    {
+      "stage": "comparison",
+      "task_id": "24",
+      "job": 70,
+      "arm": "fact",
+      "repetition": 1,
+      "official_success": true,
+      "native_report_sha256": "2fbc03c68875c7a5edef7c90b16200292815ff25322ba657b024b3184957c488",
+      "actual_db_sha256": "db03cad581503e6400695354ac16eb5033e4a1bfa1847020ede5f825db68c2da",
+      "reference_db_sha256": "db03cad581503e6400695354ac16eb5033e4a1bfa1847020ede5f825db68c2da",
+      "booking_turn": 66,
+      "eligibility": "official_success"
+    },
+    {
+      "stage": "comparison",
+      "task_id": "24",
+      "job": 71,
+      "arm": "no_memory",
+      "repetition": 1,
+      "official_success": false,
+      "native_report_sha256": "2dbf133829b4883c8274e5afc9603457a1b011c54effcc0ecd02f0adb7fc5346",
+      "actual_db_sha256": "124e39a664b56402bcd09cb8a6a9cece6acb8462337c969799d5658e3250f263",
+      "reference_db_sha256": "db03cad581503e6400695354ac16eb5033e4a1bfa1847020ede5f825db68c2da",
+      "eligibility": "requires_exactly_one_booking_write"
+    },
+    {
+      "stage": "comparison",
+      "task_id": "24",
+      "job": 72,
+      "arm": "lesson",
+      "repetition": 1,
+      "official_success": false,
+      "native_report_sha256": "92f0cc8636d48cc5343110531f4b6a6ad4ee404bf0fe3ba89d763b404e15d19f",
+      "actual_db_sha256": "124e39a664b56402bcd09cb8a6a9cece6acb8462337c969799d5658e3250f263",
+      "reference_db_sha256": "db03cad581503e6400695354ac16eb5033e4a1bfa1847020ede5f825db68c2da",
+      "eligibility": "requires_exactly_one_booking_write"
+    },
+    {
+      "stage": "comparison",
+      "task_id": "25",
+      "job": 91,
+      "arm": "fact",
+      "repetition": 2,
+      "official_success": false,
+      "native_report_sha256": "98739edc11ce6212a4a9b2b8c7c184552700a1e058ef4d99ef23e9e17ceb4110",
+      "actual_db_sha256": "8c0cf64e3fe7fce1bd871935cdeb9987b64664f320ae01e703ff9c7332e8634b",
+      "reference_db_sha256": "d0579b8ae59e360f8b63f84a55ac00a27a8d51a175b42b2e997f1f056a83e363",
+      "booking_turn": 16,
+      "eligibility": "observed_difference"
+    },
+    {
+      "stage": "comparison",
+      "task_id": "25",
+      "job": 92,
+      "arm": "empty_preload",
+      "repetition": 2,
+      "official_success": true,
+      "native_report_sha256": "b50a541ea1a628a745bd0c2916ba36a557f9c085cb15113f95c746fbe288b811",
+      "actual_db_sha256": "d0579b8ae59e360f8b63f84a55ac00a27a8d51a175b42b2e997f1f056a83e363",
+      "reference_db_sha256": "d0579b8ae59e360f8b63f84a55ac00a27a8d51a175b42b2e997f1f056a83e363",
+      "booking_turn": 16,
+      "eligibility": "official_success"
+    },
+    {
+      "stage": "comparison",
+      "task_id": "25",
+      "job": 93,
+      "arm": "lesson",
+      "repetition": 2,
+      "official_success": true,
+      "native_report_sha256": "3387e90c3a36c50efd6a237bb854a0be78cd3b0bb806c5284261f47b76758d75",
+      "actual_db_sha256": "d0579b8ae59e360f8b63f84a55ac00a27a8d51a175b42b2e997f1f056a83e363",
+      "reference_db_sha256": "d0579b8ae59e360f8b63f84a55ac00a27a8d51a175b42b2e997f1f056a83e363",
+      "booking_turn": 16,
+      "eligibility": "official_success"
+    },
+    {
+      "stage": "comparison",
+      "task_id": "25",
+      "job": 94,
+      "arm": "no_memory",
+      "repetition": 2,
+      "official_success": true,
+      "native_report_sha256": "5f7d7a06e2bd02ece802ae3fdf50784720d4609b16ec0d156466c0eaeb97733a",
+      "actual_db_sha256": "d0579b8ae59e360f8b63f84a55ac00a27a8d51a175b42b2e997f1f056a83e363",
+      "reference_db_sha256": "d0579b8ae59e360f8b63f84a55ac00a27a8d51a175b42b2e997f1f056a83e363",
+      "booking_turn": 14,
+      "eligibility": "official_success"
+    },
+    {
+      "stage": "comparison",
+      "task_id": "25",
+      "job": 95,
+      "arm": "procedure",
+      "repetition": 2,
+      "official_success": true,
+      "native_report_sha256": "4e175e0e412fed5d17548b92e4a3fd3d9844ae6de1b4d2628c3f04398dd7fab3",
+      "actual_db_sha256": "d0579b8ae59e360f8b63f84a55ac00a27a8d51a175b42b2e997f1f056a83e363",
+      "reference_db_sha256": "d0579b8ae59e360f8b63f84a55ac00a27a8d51a175b42b2e997f1f056a83e363",
+      "booking_turn": 12,
+      "eligibility": "official_success"
+    },
+    {
+      "stage": "comparison",
+      "task_id": "25",
+      "job": 96,
+      "arm": "episode",
+      "repetition": 2,
+      "official_success": true,
+      "native_report_sha256": "a2f1e4461873601251f3a548c2dae33d20a2c808f75432d2128b0fecbdf1e5e7",
+      "actual_db_sha256": "d0579b8ae59e360f8b63f84a55ac00a27a8d51a175b42b2e997f1f056a83e363",
+      "reference_db_sha256": "d0579b8ae59e360f8b63f84a55ac00a27a8d51a175b42b2e997f1f056a83e363",
+      "booking_turn": 17,
+      "eligibility": "official_success"
+    },
+    {
+      "stage": "comparison",
+      "task_id": "24",
+      "job": 103,
+      "arm": "episode",
+      "repetition": 2,
+      "official_success": true,
+      "native_report_sha256": "44117d84acc29b9f5cdd289ab3f0d1c21767fa8ac1d1631c15609b530240b6e5",
+      "actual_db_sha256": "db03cad581503e6400695354ac16eb5033e4a1bfa1847020ede5f825db68c2da",
+      "reference_db_sha256": "db03cad581503e6400695354ac16eb5033e4a1bfa1847020ede5f825db68c2da",
+      "booking_turn": 58,
+      "eligibility": "official_success"
+    },
+    {
+      "stage": "comparison",
+      "task_id": "24",
+      "job": 104,
+      "arm": "fact",
+      "repetition": 2,
+      "official_success": true,
+      "native_report_sha256": "b000d5a4a1b4f789e0a709411f52ae67a96c26df7f403d3d6bec3eb959a48d34",
+      "actual_db_sha256": "db03cad581503e6400695354ac16eb5033e4a1bfa1847020ede5f825db68c2da",
+      "reference_db_sha256": "db03cad581503e6400695354ac16eb5033e4a1bfa1847020ede5f825db68c2da",
+      "booking_turn": 62,
+      "eligibility": "official_success"
+    },
+    {
+      "stage": "comparison",
+      "task_id": "24",
+      "job": 105,
+      "arm": "procedure",
+      "repetition": 2,
+      "official_success": false,
+      "native_report_sha256": "84057c0e06ac220ae5ea9e70e52db97558cf4b8e48004088f7b34c29872607f6",
+      "actual_db_sha256": "e81ead1259b910d4b5d580ee1f795a89a44603b9e64fd647227d98edc81dedb2",
+      "reference_db_sha256": "db03cad581503e6400695354ac16eb5033e4a1bfa1847020ede5f825db68c2da",
+      "booking_turn": 37,
+      "eligibility": "observed_difference"
+    },
+    {
+      "stage": "comparison",
+      "task_id": "24",
+      "job": 106,
+      "arm": "empty_preload",
+      "repetition": 2,
+      "official_success": true,
+      "native_report_sha256": "a5e636920a9bce094141a528f8ccda7fe7997b049dbcbdf1ff6f7279255dba0d",
+      "actual_db_sha256": "db03cad581503e6400695354ac16eb5033e4a1bfa1847020ede5f825db68c2da",
+      "reference_db_sha256": "db03cad581503e6400695354ac16eb5033e4a1bfa1847020ede5f825db68c2da",
+      "booking_turn": 47,
+      "eligibility": "official_success"
+    },
+    {
+      "stage": "comparison",
+      "task_id": "24",
+      "job": 107,
+      "arm": "no_memory",
+      "repetition": 2,
+      "official_success": true,
+      "native_report_sha256": "7a27c7a59f6881a2f187ef7b327b9836e4200cdbb5aa8a2bcff2fdb398ed4ba6",
+      "actual_db_sha256": "db03cad581503e6400695354ac16eb5033e4a1bfa1847020ede5f825db68c2da",
+      "reference_db_sha256": "db03cad581503e6400695354ac16eb5033e4a1bfa1847020ede5f825db68c2da",
+      "booking_turn": 38,
+      "eligibility": "official_success"
+    },
+    {
+      "stage": "comparison",
+      "task_id": "24",
+      "job": 108,
+      "arm": "lesson",
+      "repetition": 2,
+      "official_success": true,
+      "native_report_sha256": "244c6ffa8f601d6ae52191c0d15b6bda48c105f22958d5b2fdceb2aad317b52a",
+      "actual_db_sha256": "db03cad581503e6400695354ac16eb5033e4a1bfa1847020ede5f825db68c2da",
+      "reference_db_sha256": "db03cad581503e6400695354ac16eb5033e4a1bfa1847020ede5f825db68c2da",
+      "booking_turn": 47,
+      "eligibility": "official_success"
+    }
+  ],
+  "comparisons": [
+    {
+      "task_id": "24",
+      "job": 69,
+      "fields": [
+        "flights",
+        "payment_methods"
+      ],
+      "observed": {
+        "flights": [
+          {
+            "date": "2024-05-20",
+            "flight_number": "HAT069"
+          },
+          {
+            "date": "2024-05-25",
+            "flight_number": "HAT069"
+          }
+        ],
+        "payment_methods": [
+          {
+            "amount": 39,
+            "payment_id": "gift_card_7359776"
+          },
+          {
+            "amount": 78,
+            "payment_id": "gift_card_7773485"
+          }
+        ]
+      },
+      "expected": {
+        "flights": [
+          {
+            "flight_number": "HAT069",
+            "date": "2024-05-20"
+          },
+          {
+            "flight_number": "HAT276",
+            "date": "2024-05-25"
+          }
+        ],
+        "payment_methods": [
+          {
+            "payment_id": "gift_card_7359776",
+            "amount": 39
+          },
+          {
+            "payment_id": "gift_card_7773485",
+            "amount": 67
+          }
+        ]
+      },
+      "replace_in_failed_second_pass": [
+        {
+          "fields": [
+            "flights"
+          ],
+          "tool_error": true,
+          "error": "Error: Payment amount does not add up, total price is 106, but paid 117",
+          "final_db_sha256": "124e39a664b56402bcd09cb8a6a9cece6acb8462337c969799d5658e3250f263",
+          "matches_reference": false
+        },
+        {
+          "fields": [
+            "payment_methods"
+          ],
+          "tool_error": true,
+          "error": "Error: Payment amount does not add up, total price is 117, but paid 106",
+          "final_db_sha256": "124e39a664b56402bcd09cb8a6a9cece6acb8462337c969799d5658e3250f263",
+          "matches_reference": false
+        },
+        {
+          "fields": [
+            "flights",
+            "payment_methods"
+          ],
+          "tool_error": false,
+          "error": null,
+          "final_db_sha256": "db03cad581503e6400695354ac16eb5033e4a1bfa1847020ede5f825db68c2da",
+          "matches_reference": true
+        }
+      ],
+      "source_job": 6,
+      "replace_in_successful_first_pass": [
+        {
+          "fields": [
+            "flights"
+          ],
+          "tool_error": true,
+          "error": "Error: Payment amount does not add up, total price is 117, but paid 106",
+          "final_db_sha256": "124e39a664b56402bcd09cb8a6a9cece6acb8462337c969799d5658e3250f263",
+          "matches_reference": false
+        },
+        {
+          "fields": [
+            "payment_methods"
+          ],
+          "tool_error": true,
+          "error": "Error: Payment amount does not add up, total price is 106, but paid 117",
+          "final_db_sha256": "124e39a664b56402bcd09cb8a6a9cece6acb8462337c969799d5658e3250f263",
+          "matches_reference": false
+        },
+        {
+          "fields": [
+            "flights",
+            "payment_methods"
+          ],
+          "tool_error": false,
+          "error": null,
+          "final_db_sha256": "29e36e4de44e121c319192db99e581daf443076f0d87eaba4099bbe1a9f6a20f",
+          "matches_reference": false
+        }
+      ]
+    },
+    {
+      "task_id": "25",
+      "job": 91,
+      "fields": [
+        "total_baggages"
+      ],
+      "observed": {
+        "total_baggages": 3
+      },
+      "expected": {
+        "total_baggages": 0
+      },
+      "replace_in_failed_second_pass": [
+        {
+          "fields": [
+            "total_baggages"
+          ],
+          "tool_error": false,
+          "error": null,
+          "final_db_sha256": "d0579b8ae59e360f8b63f84a55ac00a27a8d51a175b42b2e997f1f056a83e363",
+          "matches_reference": true
+        }
+      ],
+      "source_job": 4,
+      "replace_in_successful_first_pass": [
+        {
+          "fields": [
+            "total_baggages"
+          ],
+          "tool_error": false,
+          "error": null,
+          "final_db_sha256": "8c0cf64e3fe7fce1bd871935cdeb9987b64664f320ae01e703ff9c7332e8634b",
+          "matches_reference": false
+        }
+      ]
+    },
+    {
+      "task_id": "24",
+      "job": 105,
+      "fields": [
+        "destination"
+      ],
+      "observed": {
+        "destination": "JFK"
+      },
+      "expected": {
+        "destination": "SEA"
+      },
+      "replace_in_failed_second_pass": [
+        {
+          "fields": [
+            "destination"
+          ],
+          "tool_error": false,
+          "error": null,
+          "final_db_sha256": "db03cad581503e6400695354ac16eb5033e4a1bfa1847020ede5f825db68c2da",
+          "matches_reference": true
+        }
+      ],
+      "source_job": 6,
+      "replace_in_successful_first_pass": [
+        {
+          "fields": [
+            "destination"
+          ],
+          "tool_error": false,
+          "error": null,
+          "final_db_sha256": "e81ead1259b910d4b5d580ee1f795a89a44603b9e64fd647227d98edc81dedb2",
+          "matches_reference": false
+        }
+      ]
+    }
+  ],
+  "scope": "Exploratory diagnosis developed from comparison jobs 69, 91 and 105. For every failed single-booking, split-payment task with one accepted booking for the intended customer, swap each differing native booking argument individually and all together, in both directions when a successful first pass exists. Original conversations, approvals and grades are preserved."
+}

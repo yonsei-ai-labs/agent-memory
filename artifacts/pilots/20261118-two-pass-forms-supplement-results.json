@@ -1,0 +1,1997 @@
+{
+  "format": "agent-memory-two-pass-memory-forms-results/v1",
+  "completion": {
+    "stop_reason": "unknown_cost",
+    "ended_at": "2026-11-18T05:27:27.185107+00:00",
+    "allocation_sha256": "2b434343861bdeb90a54e37c14cff94492967a864600402a9f59b62e3d62df17",
+    "control_sha256": "c7c63a779b350aff7e7b2104ba13a7a0160efe3f596cc4e85bdd20644d37b35f",
+    "http_calls": 786,
+    "reported_usd": 0.0606199334,
+    "known_usd_decimal": "0.0606199334",
+    "unknown_cost": true,
+    "unknown_cost_requests": 1,
+    "reserved_usd": "0E-7"
+  },
+  "usage_by_role": {
+    "user_simulator": {
+      "http_calls": 372,
+      "reported_usd": "0.0210800184",
+      "total_tokens": 721394,
+      "unknown_count": 1
+    },
+    "worker": {
+      "http_calls": 414,
+      "reported_usd": "0.039539915",
+      "total_tokens": 2239915,
+      "unknown_count": 0
+    }
+  },
+  "by_arm": [
+    {
+      "phase": "solve",
+      "arm": "empty_preload",
+      "planned": 49,
+      "statuses": {
+        "completed": 3,
+        "error": 1,
+        "not_started": 45
+      },
+      "graded": 3,
+      "successful": 3,
+      "http_calls": 151,
+      "reported_tokens": 512562,
+      "known_cost_usd": "0.0108133262",
+      "unknown_cost_requests": 1
+    },
+    {
+      "phase": "solve",
+      "arm": "episode",
+      "planned": 49,
+      "statuses": {
+        "completed": 4,
+        "not_started": 45
+      },
+      "graded": 4,
+      "successful": 4,
+      "http_calls": 62,
+      "reported_tokens": 177168,
+      "known_cost_usd": "0.0050024104",
+      "unknown_cost_requests": 0
+    },
+    {
+      "phase": "solve",
+      "arm": "fact",
+      "planned": 49,
+      "statuses": {
+        "completed": 4,
+        "not_started": 45
+      },
+      "graded": 4,
+      "successful": 4,
+      "http_calls": 38,
+      "reported_tokens": 107196,
+      "known_cost_usd": "0.0030477718",
+      "unknown_cost_requests": 0
+    },
+    {
+      "phase": "solve",
+      "arm": "lesson",
+      "planned": 49,
+      "statuses": {
+        "completed": 3,
+        "error": 1,
+        "not_started": 45
+      },
+      "graded": 3,
+      "successful": 3,
+      "http_calls": 232,
+      "reported_tokens": 947156,
+      "known_cost_usd": "0.0172181030",
+      "unknown_cost_requests": 0
+    },
+    {
+      "phase": "solve",
+      "arm": "no_memory",
+      "planned": 49,
+      "statuses": {
+        "completed": 4,
+        "not_started": 45
+      },
+      "graded": 4,
+      "successful": 4,
+      "http_calls": 47,
+      "reported_tokens": 119733,
+      "known_cost_usd": "0.0037640086",
+      "unknown_cost_requests": 0
+    },
+    {
+      "phase": "solve",
+      "arm": "procedure",
+      "planned": 49,
+      "statuses": {
+        "completed": 3,
+        "error": 1,
+        "not_started": 45
+      },
+      "graded": 3,
+      "successful": 3,
+      "http_calls": 232,
+      "reported_tokens": 994113,
+      "known_cost_usd": "0.0178452562",
+      "unknown_cost_requests": 0
+    },
+    {
+      "phase": "solve",
+      "arm": "public_record",
+      "planned": 7,
+      "statuses": {
+        "completed": 1,
+        "not_started": 6
+      },
+      "graded": 1,
+      "successful": 1,
+      "http_calls": 10,
+      "reported_tokens": 48884,
+      "known_cost_usd": "0.0013288406",
+      "unknown_cost_requests": 0
+    },
+    {
+      "phase": "solve",
+      "arm": "summary",
+      "planned": 7,
+      "statuses": {
+        "completed": 1,
+        "not_started": 6
+      },
+      "graded": 1,
+      "successful": 1,
+      "http_calls": 14,
+      "reported_tokens": 54497,
+      "known_cost_usd": "0.0016002166",
+      "unknown_cost_requests": 0
+    }
+  ],
+  "paired_contrasts": [
+    {
+      "treatment": "fact",
+      "control": "no_memory",
+      "planned_pairs": 49,
+      "jointly_graded_pairs": 4,
+      "tasks_with_pairs": 4,
+      "customer_groups_with_pairs": 4,
+      "counts": {
+        "gain": 0,
+        "loss": 0,
+        "both_success": 4,
+        "both_failure": 0,
+        "ungraded": 45
+      },
+      "task_equal_difference_pp": 0.0,
+      "possible_difference_pp": [
+        -92.857143,
+        92.857143
+      ],
+      "descriptive_cluster_interval_pp": [
+        0.0,
+        0.0
+      ],
+      "leave_one_group_out_pp": {
+        "g01": 0.0,
+        "g03": 0.0,
+        "g05": 0.0,
+        "g18": 0.0
+      },
+      "task_difference_pp": {
+        "0": 0.0,
+        "3": 0.0,
+        "36": 0.0,
+        "5": 0.0
+      },
+      "review_cases": {
+        "gain": [],
+        "loss": [],
+        "both_success": [
+          {
+            "task_id": "3",
+            "repetition": 1,
+            "treatment_job": 281,
+            "control_job": 283
+          }
+        ],
+        "both_failure": []
+      }
+    },
+    {
+      "treatment": "episode",
+      "control": "no_memory",
+      "planned_pairs": 49,
+      "jointly_graded_pairs": 4,
+      "tasks_with_pairs": 4,
+      "customer_groups_with_pairs": 4,
+      "counts": {
+        "gain": 0,
+        "loss": 0,
+        "both_success": 4,
+        "both_failure": 0,
+        "ungraded": 45
+      },
+      "task_equal_difference_pp": 0.0,
+      "possible_difference_pp": [
+        -92.857143,
+        92.857143
+      ],
+      "descriptive_cluster_interval_pp": [
+        0.0,
+        0.0
+      ],
+      "leave_one_group_out_pp": {
+        "g01": 0.0,
+        "g03": 0.0,
+        "g05": 0.0,
+        "g18": 0.0
+      },
+      "task_difference_pp": {
+        "0": 0.0,
+        "3": 0.0,
+        "36": 0.0,
+        "5": 0.0
+      },
+      "review_cases": {
+        "gain": [],
+        "loss": [],
+        "both_success": [
+          {
+            "task_id": "3",
+            "repetition": 1,
+            "treatment_job": 279,
+            "control_job": 283
+          }
+        ],
+        "both_failure": []
+      }
+    },
+    {
+      "treatment": "lesson",
+      "control": "no_memory",
+      "planned_pairs": 49,
+      "jointly_graded_pairs": 3,
+      "tasks_with_pairs": 3,
+      "customer_groups_with_pairs": 3,
+      "counts": {
+        "gain": 0,
+        "loss": 0,
+        "both_success": 3,
+        "both_failure": 0,
+        "ungraded": 46
+      },
+      "task_equal_difference_pp": 0.0,
+      "possible_difference_pp": [
+        -94.642857,
+        92.857143
+      ],
+      "descriptive_cluster_interval_pp": [
+        0.0,
+        0.0
+      ],
+      "leave_one_group_out_pp": {
+        "g01": 0.0,
+        "g03": 0.0,
+        "g05": 0.0
+      },
+      "task_difference_pp": {
+        "0": 0.0,
+        "3": 0.0,
+        "5": 0.0
+      },
+      "review_cases": {
+        "gain": [],
+        "loss": [],
+        "both_success": [
+          {
+            "task_id": "3",
+            "repetition": 1,
+            "treatment_job": 284,
+            "control_job": 283
+          }
+        ],
+        "both_failure": []
+      }
+    },
+    {
+      "treatment": "procedure",
+      "control": "no_memory",
+      "planned_pairs": 49,
+      "jointly_graded_pairs": 3,
+      "tasks_with_pairs": 3,
+      "customer_groups_with_pairs": 3,
+      "counts": {
+        "gain": 0,
+        "loss": 0,
+        "both_success": 3,
+        "both_failure": 0,
+        "ungraded": 46
+      },
+      "task_equal_difference_pp": 0.0,
+      "possible_difference_pp": [
+        -94.642857,
+        92.857143
+      ],
+      "descriptive_cluster_interval_pp": [
+        0.0,
+        0.0
+      ],
+      "leave_one_group_out_pp": {
+        "g01": 0.0,
+        "g03": 0.0,
+        "g05": 0.0
+      },
+      "task_difference_pp": {
+        "0": 0.0,
+        "3": 0.0,
+        "5": 0.0
+      },
+      "review_cases": {
+        "gain": [],
+        "loss": [],
+        "both_success": [
+          {
+            "task_id": "3",
+            "repetition": 1,
+            "treatment_job": 277,
+            "control_job": 283
+          }
+        ],
+        "both_failure": []
+      }
+    },
+    {
+      "treatment": "fact",
+      "control": "empty_preload",
+      "planned_pairs": 49,
+      "jointly_graded_pairs": 3,
+      "tasks_with_pairs": 3,
+      "customer_groups_with_pairs": 3,
+      "counts": {
+        "gain": 0,
+        "loss": 0,
+        "both_success": 3,
+        "both_failure": 0,
+        "ungraded": 46
+      },
+      "task_equal_difference_pp": 0.0,
+      "possible_difference_pp": [
+        -92.857143,
+        94.642857
+      ],
+      "descriptive_cluster_interval_pp": [
+        0.0,
+        0.0
+      ],
+      "leave_one_group_out_pp": {
+        "g01": 0.0,
+        "g03": 0.0,
+        "g05": 0.0
+      },
+      "task_difference_pp": {
+        "0": 0.0,
+        "3": 0.0,
+        "5": 0.0
+      },
+      "review_cases": {
+        "gain": [],
+        "loss": [],
+        "both_success": [
+          {
+            "task_id": "3",
+            "repetition": 1,
+            "treatment_job": 281,
+            "control_job": 282
+          }
+        ],
+        "both_failure": []
+      }
+    },
+    {
+      "treatment": "episode",
+      "control": "empty_preload",
+      "planned_pairs": 49,
+      "jointly_graded_pairs": 3,
+      "tasks_with_pairs": 3,
+      "customer_groups_with_pairs": 3,
+      "counts": {
+        "gain": 0,
+        "loss": 0,
+        "both_success": 3,
+        "both_failure": 0,
+        "ungraded": 46
+      },
+      "task_equal_difference_pp": 0.0,
+      "possible_difference_pp": [
+        -92.857143,
+        94.642857
+      ],
+      "descriptive_cluster_interval_pp": [
+        0.0,
+        0.0
+      ],
+      "leave_one_group_out_pp": {
+        "g01": 0.0,
+        "g03": 0.0,
+        "g05": 0.0
+      },
+      "task_difference_pp": {
+        "0": 0.0,
+        "3": 0.0,
+        "5": 0.0
+      },
+      "review_cases": {
+        "gain": [],
+        "loss": [],
+        "both_success": [
+          {
+            "task_id": "3",
+            "repetition": 1,
+            "treatment_job": 279,
+            "control_job": 282
+          }
+        ],
+        "both_failure": []
+      }
+    },
+    {
+      "treatment": "lesson",
+      "control": "empty_preload",
+      "planned_pairs": 49,
+      "jointly_graded_pairs": 3,
+      "tasks_with_pairs": 3,
+      "customer_groups_with_pairs": 3,
+      "counts": {
+        "gain": 0,
+        "loss": 0,
+        "both_success": 3,
+        "both_failure": 0,
+        "ungraded": 46
+      },
+      "task_equal_difference_pp": 0.0,
+      "possible_difference_pp": [
+        -94.642857,
+        94.642857
+      ],
+      "descriptive_cluster_interval_pp": [
+        0.0,
+        0.0
+      ],
+      "leave_one_group_out_pp": {
+        "g01": 0.0,
+        "g03": 0.0,
+        "g05": 0.0
+      },
+      "task_difference_pp": {
+        "0": 0.0,
+        "3": 0.0,
+        "5": 0.0
+      },
+      "review_cases": {
+        "gain": [],
+        "loss": [],
+        "both_success": [
+          {
+            "task_id": "3",
+            "repetition": 1,
+            "treatment_job": 284,
+            "control_job": 282
+          }
+        ],
+        "both_failure": []
+      }
+    },
+    {
+      "treatment": "procedure",
+      "control": "empty_preload",
+      "planned_pairs": 49,
+      "jointly_graded_pairs": 3,
+      "tasks_with_pairs": 3,
+      "customer_groups_with_pairs": 3,
+      "counts": {
+        "gain": 0,
+        "loss": 0,
+        "both_success": 3,
+        "both_failure": 0,
+        "ungraded": 46
+      },
+      "task_equal_difference_pp": 0.0,
+      "possible_difference_pp": [
+        -94.642857,
+        94.642857
+      ],
+      "descriptive_cluster_interval_pp": [
+        0.0,
+        0.0
+      ],
+      "leave_one_group_out_pp": {
+        "g01": 0.0,
+        "g03": 0.0,
+        "g05": 0.0
+      },
+      "task_difference_pp": {
+        "0": 0.0,
+        "3": 0.0,
+        "5": 0.0
+      },
+      "review_cases": {
+        "gain": [],
+        "loss": [],
+        "both_success": [
+          {
+            "task_id": "3",
+            "repetition": 1,
+            "treatment_job": 277,
+            "control_job": 282
+          }
+        ],
+        "both_failure": []
+      }
+    },
+    {
+      "treatment": "fact",
+      "control": "episode",
+      "planned_pairs": 49,
+      "jointly_graded_pairs": 4,
+      "tasks_with_pairs": 4,
+      "customer_groups_with_pairs": 4,
+      "counts": {
+        "gain": 0,
+        "loss": 0,
+        "both_success": 4,
+        "both_failure": 0,
+        "ungraded": 45
+      },
+      "task_equal_difference_pp": 0.0,
+      "possible_difference_pp": [
+        -92.857143,
+        92.857143
+      ],
+      "descriptive_cluster_interval_pp": [
+        0.0,
+        0.0
+      ],
+      "leave_one_group_out_pp": {
+        "g01": 0.0,
+        "g03": 0.0,
+        "g05": 0.0,
+        "g18": 0.0
+      },
+      "task_difference_pp": {
+        "0": 0.0,
+        "3": 0.0,
+        "36": 0.0,
+        "5": 0.0
+      },
+      "review_cases": {
+        "gain": [],
+        "loss": [],
+        "both_success": [
+          {
+            "task_id": "3",
+            "repetition": 1,
+            "treatment_job": 281,
+            "control_job": 279
+          }
+        ],
+        "both_failure": []
+      }
+    },
+    {
+      "treatment": "fact",
+      "control": "lesson",
+      "planned_pairs": 49,
+      "jointly_graded_pairs": 3,
+      "tasks_with_pairs": 3,
+      "customer_groups_with_pairs": 3,
+      "counts": {
+        "gain": 0,
+        "loss": 0,
+        "both_success": 3,
+        "both_failure": 0,
+        "ungraded": 46
+      },
+      "task_equal_difference_pp": 0.0,
+      "possible_difference_pp": [
+        -92.857143,
+        94.642857
+      ],
+      "descriptive_cluster_interval_pp": [
+        0.0,
+        0.0
+      ],
+      "leave_one_group_out_pp": {
+        "g01": 0.0,
+        "g03": 0.0,
+        "g05": 0.0
+      },
+      "task_difference_pp": {
+        "0": 0.0,
+        "3": 0.0,
+        "5": 0.0
+      },
+      "review_cases": {
+        "gain": [],
+        "loss": [],
+        "both_success": [
+          {
+            "task_id": "3",
+            "repetition": 1,
+            "treatment_job": 281,
+            "control_job": 284
+          }
+        ],
+        "both_failure": []
+      }
+    },
+    {
+      "treatment": "fact",
+      "control": "procedure",
+      "planned_pairs": 49,
+      "jointly_graded_pairs": 3,
+      "tasks_with_pairs": 3,
+      "customer_groups_with_pairs": 3,
+      "counts": {
+        "gain": 0,
+        "loss": 0,
+        "both_success": 3,
+        "both_failure": 0,
+        "ungraded": 46
+      },
+      "task_equal_difference_pp": 0.0,
+      "possible_difference_pp": [
+        -92.857143,
+        94.642857
+      ],
+      "descriptive_cluster_interval_pp": [
+        0.0,
+        0.0
+      ],
+      "leave_one_group_out_pp": {
+        "g01": 0.0,
+        "g03": 0.0,
+        "g05": 0.0
+      },
+      "task_difference_pp": {
+        "0": 0.0,
+        "3": 0.0,
+        "5": 0.0
+      },
+      "review_cases": {
+        "gain": [],
+        "loss": [],
+        "both_success": [
+          {
+            "task_id": "3",
+            "repetition": 1,
+            "treatment_job": 281,
+            "control_job": 277
+          }
+        ],
+        "both_failure": []
+      }
+    },
+    {
+      "treatment": "episode",
+      "control": "lesson",
+      "planned_pairs": 49,
+      "jointly_graded_pairs": 3,
+      "tasks_with_pairs": 3,
+      "customer_groups_with_pairs": 3,
+      "counts": {
+        "gain": 0,
+        "loss": 0,
+        "both_success": 3,
+        "both_failure": 0,
+        "ungraded": 46
+      },
+      "task_equal_difference_pp": 0.0,
+      "possible_difference_pp": [
+        -92.857143,
+        94.642857
+      ],
+      "descriptive_cluster_interval_pp": [
+        0.0,
+        0.0
+      ],
+      "leave_one_group_out_pp": {
+        "g01": 0.0,
+        "g03": 0.0,
+        "g05": 0.0
+      },
+      "task_difference_pp": {
+        "0": 0.0,
+        "3": 0.0,
+        "5": 0.0
+      },
+      "review_cases": {
+        "gain": [],
+        "loss": [],
+        "both_success": [
+          {
+            "task_id": "3",
+            "repetition": 1,
+            "treatment_job": 279,
+            "control_job": 284
+          }
+        ],
+        "both_failure": []
+      }
+    },
+    {
+      "treatment": "episode",
+      "control": "procedure",
+      "planned_pairs": 49,
+      "jointly_graded_pairs": 3,
+      "tasks_with_pairs": 3,
+      "customer_groups_with_pairs": 3,
+      "counts": {
+        "gain": 0,
+        "loss": 0,
+        "both_success": 3,
+        "both_failure": 0,
+        "ungraded": 46
+      },
+      "task_equal_difference_pp": 0.0,
+      "possible_difference_pp": [
+        -92.857143,
+        94.642857
+      ],
+      "descriptive_cluster_interval_pp": [
+        0.0,
+        0.0
+      ],
+      "leave_one_group_out_pp": {
+        "g01": 0.0,
+        "g03": 0.0,
+        "g05": 0.0
+      },
+      "task_difference_pp": {
+        "0": 0.0,
+        "3": 0.0,
+        "5": 0.0
+      },
+      "review_cases": {
+        "gain": [],
+        "loss": [],
+        "both_success": [
+          {
+            "task_id": "3",
+            "repetition": 1,
+            "treatment_job": 279,
+            "control_job": 277
+          }
+        ],
+        "both_failure": []
+      }
+    },
+    {
+      "treatment": "lesson",
+      "control": "procedure",
+      "planned_pairs": 49,
+      "jointly_graded_pairs": 3,
+      "tasks_with_pairs": 3,
+      "customer_groups_with_pairs": 3,
+      "counts": {
+        "gain": 0,
+        "loss": 0,
+        "both_success": 3,
+        "both_failure": 0,
+        "ungraded": 46
+      },
+      "task_equal_difference_pp": 0.0,
+      "possible_difference_pp": [
+        -94.642857,
+        94.642857
+      ],
+      "descriptive_cluster_interval_pp": [
+        0.0,
+        0.0
+      ],
+      "leave_one_group_out_pp": {
+        "g01": 0.0,
+        "g03": 0.0,
+        "g05": 0.0
+      },
+      "task_difference_pp": {
+        "0": 0.0,
+        "3": 0.0,
+        "5": 0.0
+      },
+      "review_cases": {
+        "gain": [],
+        "loss": [],
+        "both_success": [
+          {
+            "task_id": "3",
+            "repetition": 1,
+            "treatment_job": 284,
+            "control_job": 277
+          }
+        ],
+        "both_failure": []
+      }
+    },
+    {
+      "treatment": "no_memory",
+      "control": "empty_preload",
+      "planned_pairs": 49,
+      "jointly_graded_pairs": 3,
+      "tasks_with_pairs": 3,
+      "customer_groups_with_pairs": 3,
+      "counts": {
+        "gain": 0,
+        "loss": 0,
+        "both_success": 3,
+        "both_failure": 0,
+        "ungraded": 46
+      },
+      "task_equal_difference_pp": 0.0,
+      "possible_difference_pp": [
+        -92.857143,
+        94.642857
+      ],
+      "descriptive_cluster_interval_pp": [
+        0.0,
+        0.0
+      ],
+      "leave_one_group_out_pp": {
+        "g01": 0.0,
+        "g03": 0.0,
+        "g05": 0.0
+      },
+      "task_difference_pp": {
+        "0": 0.0,
+        "3": 0.0,
+        "5": 0.0
+      },
+      "review_cases": {
+        "gain": [],
+        "loss": [],
+        "both_success": [
+          {
+            "task_id": "3",
+            "repetition": 1,
+            "treatment_job": 283,
+            "control_job": 282
+          }
+        ],
+        "both_failure": []
+      }
+    },
+    {
+      "treatment": "fact",
+      "control": "summary",
+      "planned_pairs": 7,
+      "jointly_graded_pairs": 1,
+      "tasks_with_pairs": 1,
+      "customer_groups_with_pairs": 1,
+      "counts": {
+        "gain": 0,
+        "loss": 0,
+        "both_success": 1,
+        "both_failure": 0,
+        "ungraded": 6
+      },
+      "task_equal_difference_pp": 0.0,
+      "possible_difference_pp": [
+        -87.5,
+        87.5
+      ],
+      "descriptive_cluster_interval_pp": null,
+      "leave_one_group_out_pp": {},
+      "task_difference_pp": {
+        "3": 0.0
+      },
+      "review_cases": {
+        "gain": [],
+        "loss": [],
+        "both_success": [
+          {
+            "task_id": "3",
+            "repetition": 1,
+            "treatment_job": 281,
+            "control_job": 278
+          }
+        ],
+        "both_failure": []
+      }
+    },
+    {
+      "treatment": "episode",
+      "control": "summary",
+      "planned_pairs": 7,
+      "jointly_graded_pairs": 1,
+      "tasks_with_pairs": 1,
+      "customer_groups_with_pairs": 1,
+      "counts": {
+        "gain": 0,
+        "loss": 0,
+        "both_success": 1,
+        "both_failure": 0,
+        "ungraded": 6
+      },
+      "task_equal_difference_pp": 0.0,
+      "possible_difference_pp": [
+        -87.5,
+        87.5
+      ],
+      "descriptive_cluster_interval_pp": null,
+      "leave_one_group_out_pp": {},
+      "task_difference_pp": {
+        "3": 0.0
+      },
+      "review_cases": {
+        "gain": [],
+        "loss": [],
+        "both_success": [
+          {
+            "task_id": "3",
+            "repetition": 1,
+            "treatment_job": 279,
+            "control_job": 278
+          }
+        ],
+        "both_failure": []
+      }
+    },
+    {
+      "treatment": "lesson",
+      "control": "summary",
+      "planned_pairs": 7,
+      "jointly_graded_pairs": 1,
+      "tasks_with_pairs": 1,
+      "customer_groups_with_pairs": 1,
+      "counts": {
+        "gain": 0,
+        "loss": 0,
+        "both_success": 1,
+        "both_failure": 0,
+        "ungraded": 6
+      },
+      "task_equal_difference_pp": 0.0,
+      "possible_difference_pp": [
+        -87.5,
+        87.5
+      ],
+      "descriptive_cluster_interval_pp": null,
+      "leave_one_group_out_pp": {},
+      "task_difference_pp": {
+        "3": 0.0
+      },
+      "review_cases": {
+        "gain": [],
+        "loss": [],
+        "both_success": [
+          {
+            "task_id": "3",
+            "repetition": 1,
+            "treatment_job": 284,
+            "control_job": 278
+          }
+        ],
+        "both_failure": []
+      }
+    },
+    {
+      "treatment": "procedure",
+      "control": "summary",
+      "planned_pairs": 7,
+      "jointly_graded_pairs": 1,
+      "tasks_with_pairs": 1,
+      "customer_groups_with_pairs": 1,
+      "counts": {
+        "gain": 0,
+        "loss": 0,
+        "both_success": 1,
+        "both_failure": 0,
+        "ungraded": 6
+      },
+      "task_equal_difference_pp": 0.0,
+      "possible_difference_pp": [
+        -87.5,
+        87.5
+      ],
+      "descriptive_cluster_interval_pp": null,
+      "leave_one_group_out_pp": {},
+      "task_difference_pp": {
+        "3": 0.0
+      },
+      "review_cases": {
+        "gain": [],
+        "loss": [],
+        "both_success": [
+          {
+            "task_id": "3",
+            "repetition": 1,
+            "treatment_job": 277,
+            "control_job": 278
+          }
+        ],
+        "both_failure": []
+      }
+    },
+    {
+      "treatment": "no_memory",
+      "control": "summary",
+      "planned_pairs": 7,
+      "jointly_graded_pairs": 1,
+      "tasks_with_pairs": 1,
+      "customer_groups_with_pairs": 1,
+      "counts": {
+        "gain": 0,
+        "loss": 0,
+        "both_success": 1,
+        "both_failure": 0,
+        "ungraded": 6
+      },
+      "task_equal_difference_pp": 0.0,
+      "possible_difference_pp": [
+        -87.5,
+        87.5
+      ],
+      "descriptive_cluster_interval_pp": null,
+      "leave_one_group_out_pp": {},
+      "task_difference_pp": {
+        "3": 0.0
+      },
+      "review_cases": {
+        "gain": [],
+        "loss": [],
+        "both_success": [
+          {
+            "task_id": "3",
+            "repetition": 1,
+            "treatment_job": 283,
+            "control_job": 278
+          }
+        ],
+        "both_failure": []
+      }
+    },
+    {
+      "treatment": "empty_preload",
+      "control": "summary",
+      "planned_pairs": 7,
+      "jointly_graded_pairs": 1,
+      "tasks_with_pairs": 1,
+      "customer_groups_with_pairs": 1,
+      "counts": {
+        "gain": 0,
+        "loss": 0,
+        "both_success": 1,
+        "both_failure": 0,
+        "ungraded": 6
+      },
+      "task_equal_difference_pp": 0.0,
+      "possible_difference_pp": [
+        -87.5,
+        87.5
+      ],
+      "descriptive_cluster_interval_pp": null,
+      "leave_one_group_out_pp": {},
+      "task_difference_pp": {
+        "3": 0.0
+      },
+      "review_cases": {
+        "gain": [],
+        "loss": [],
+        "both_success": [
+          {
+            "task_id": "3",
+            "repetition": 1,
+            "treatment_job": 282,
+            "control_job": 278
+          }
+        ],
+        "both_failure": []
+      }
+    },
+    {
+      "treatment": "fact",
+      "control": "public_record",
+      "planned_pairs": 7,
+      "jointly_graded_pairs": 1,
+      "tasks_with_pairs": 1,
+      "customer_groups_with_pairs": 1,
+      "counts": {
+        "gain": 0,
+        "loss": 0,
+        "both_success": 1,
+        "both_failure": 0,
+        "ungraded": 6
+      },
+      "task_equal_difference_pp": 0.0,
+      "possible_difference_pp": [
+        -87.5,
+        87.5
+      ],
+      "descriptive_cluster_interval_pp": null,
+      "leave_one_group_out_pp": {},
+      "task_difference_pp": {
+        "3": 0.0
+      },
+      "review_cases": {
+        "gain": [],
+        "loss": [],
+        "both_success": [
+          {
+            "task_id": "3",
+            "repetition": 1,
+            "treatment_job": 281,
+            "control_job": 280
+          }
+        ],
+        "both_failure": []
+      }
+    },
+    {
+      "treatment": "episode",
+      "control": "public_record",
+      "planned_pairs": 7,
+      "jointly_graded_pairs": 1,
+      "tasks_with_pairs": 1,
+      "customer_groups_with_pairs": 1,
+      "counts": {
+        "gain": 0,
+        "loss": 0,
+        "both_success": 1,
+        "both_failure": 0,
+        "ungraded": 6
+      },
+      "task_equal_difference_pp": 0.0,
+      "possible_difference_pp": [
+        -87.5,
+        87.5
+      ],
+      "descriptive_cluster_interval_pp": null,
+      "leave_one_group_out_pp": {},
+      "task_difference_pp": {
+        "3": 0.0
+      },
+      "review_cases": {
+        "gain": [],
+        "loss": [],
+        "both_success": [
+          {
+            "task_id": "3",
+            "repetition": 1,
+            "treatment_job": 279,
+            "control_job": 280
+          }
+        ],
+        "both_failure": []
+      }
+    },
+    {
+      "treatment": "lesson",
+      "control": "public_record",
+      "planned_pairs": 7,
+      "jointly_graded_pairs": 1,
+      "tasks_with_pairs": 1,
+      "customer_groups_with_pairs": 1,
+      "counts": {
+        "gain": 0,
+        "loss": 0,
+        "both_success": 1,
+        "both_failure": 0,
+        "ungraded": 6
+      },
+      "task_equal_difference_pp": 0.0,
+      "possible_difference_pp": [
+        -87.5,
+        87.5
+      ],
+      "descriptive_cluster_interval_pp": null,
+      "leave_one_group_out_pp": {},
+      "task_difference_pp": {
+        "3": 0.0
+      },
+      "review_cases": {
+        "gain": [],
+        "loss": [],
+        "both_success": [
+          {
+            "task_id": "3",
+            "repetition": 1,
+            "treatment_job": 284,
+            "control_job": 280
+          }
+        ],
+        "both_failure": []
+      }
+    },
+    {
+      "treatment": "procedure",
+      "control": "public_record",
+      "planned_pairs": 7,
+      "jointly_graded_pairs": 1,
+      "tasks_with_pairs": 1,
+      "customer_groups_with_pairs": 1,
+      "counts": {
+        "gain": 0,
+        "loss": 0,
+        "both_success": 1,
+        "both_failure": 0,
+        "ungraded": 6
+      },
+      "task_equal_difference_pp": 0.0,
+      "possible_difference_pp": [
+        -87.5,
+        87.5
+      ],
+      "descriptive_cluster_interval_pp": null,
+      "leave_one_group_out_pp": {},
+      "task_difference_pp": {
+        "3": 0.0
+      },
+      "review_cases": {
+        "gain": [],
+        "loss": [],
+        "both_success": [
+          {
+            "task_id": "3",
+            "repetition": 1,
+            "treatment_job": 277,
+            "control_job": 280
+          }
+        ],
+        "both_failure": []
+      }
+    },
+    {
+      "treatment": "no_memory",
+      "control": "public_record",
+      "planned_pairs": 7,
+      "jointly_graded_pairs": 1,
+      "tasks_with_pairs": 1,
+      "customer_groups_with_pairs": 1,
+      "counts": {
+        "gain": 0,
+        "loss": 0,
+        "both_success": 1,
+        "both_failure": 0,
+        "ungraded": 6
+      },
+      "task_equal_difference_pp": 0.0,
+      "possible_difference_pp": [
+        -87.5,
+        87.5
+      ],
+      "descriptive_cluster_interval_pp": null,
+      "leave_one_group_out_pp": {},
+      "task_difference_pp": {
+        "3": 0.0
+      },
+      "review_cases": {
+        "gain": [],
+        "loss": [],
+        "both_success": [
+          {
+            "task_id": "3",
+            "repetition": 1,
+            "treatment_job": 283,
+            "control_job": 280
+          }
+        ],
+        "both_failure": []
+      }
+    },
+    {
+      "treatment": "empty_preload",
+      "control": "public_record",
+      "planned_pairs": 7,
+      "jointly_graded_pairs": 1,
+      "tasks_with_pairs": 1,
+      "customer_groups_with_pairs": 1,
+      "counts": {
+        "gain": 0,
+        "loss": 0,
+        "both_success": 1,
+        "both_failure": 0,
+        "ungraded": 6
+      },
+      "task_equal_difference_pp": 0.0,
+      "possible_difference_pp": [
+        -87.5,
+        87.5
+      ],
+      "descriptive_cluster_interval_pp": null,
+      "leave_one_group_out_pp": {},
+      "task_difference_pp": {
+        "3": 0.0
+      },
+      "review_cases": {
+        "gain": [],
+        "loss": [],
+        "both_success": [
+          {
+            "task_id": "3",
+            "repetition": 1,
+            "treatment_job": 282,
+            "control_job": 280
+          }
+        ],
+        "both_failure": []
+      }
+    },
+    {
+      "treatment": "summary",
+      "control": "public_record",
+      "planned_pairs": 7,
+      "jointly_graded_pairs": 1,
+      "tasks_with_pairs": 1,
+      "customer_groups_with_pairs": 1,
+      "counts": {
+        "gain": 0,
+        "loss": 0,
+        "both_success": 1,
+        "both_failure": 0,
+        "ungraded": 6
+      },
+      "task_equal_difference_pp": 0.0,
+      "possible_difference_pp": [
+        -87.5,
+        87.5
+      ],
+      "descriptive_cluster_interval_pp": null,
+      "leave_one_group_out_pp": {},
+      "task_difference_pp": {
+        "3": 0.0
+      },
+      "review_cases": {
+        "gain": [],
+        "loss": [],
+        "both_success": [
+          {
+            "task_id": "3",
+            "repetition": 1,
+            "treatment_job": 278,
+            "control_job": 280
+          }
+        ],
+        "both_failure": []
+      }
+    }
+  ],
+  "strata": {
+    "reference_db_write=True": [
+      {
+        "treatment": "fact",
+        "control": "no_memory",
+        "planned_pairs": 19,
+        "jointly_graded_pairs": 0,
+        "tasks_with_pairs": 0,
+        "customer_groups_with_pairs": 0,
+        "counts": {
+          "gain": 0,
+          "loss": 0,
+          "both_success": 0,
+          "both_failure": 0,
+          "ungraded": 19
+        },
+        "task_equal_difference_pp": null,
+        "possible_difference_pp": [
+          -100.0,
+          100.0
+        ],
+        "descriptive_cluster_interval_pp": null,
+        "leave_one_group_out_pp": {},
+        "task_difference_pp": {},
+        "review_cases": {
+          "gain": [],
+          "loss": [],
+          "both_success": [],
+          "both_failure": []
+        }
+      },
+      {
+        "treatment": "episode",
+        "control": "no_memory",
+        "planned_pairs": 19,
+        "jointly_graded_pairs": 0,
+        "tasks_with_pairs": 0,
+        "customer_groups_with_pairs": 0,
+        "counts": {
+          "gain": 0,
+          "loss": 0,
+          "both_success": 0,
+          "both_failure": 0,
+          "ungraded": 19
+        },
+        "task_equal_difference_pp": null,
+        "possible_difference_pp": [
+          -100.0,
+          100.0
+        ],
+        "descriptive_cluster_interval_pp": null,
+        "leave_one_group_out_pp": {},
+        "task_difference_pp": {},
+        "review_cases": {
+          "gain": [],
+          "loss": [],
+          "both_success": [],
+          "both_failure": []
+        }
+      },
+      {
+        "treatment": "lesson",
+        "control": "no_memory",
+        "planned_pairs": 19,
+        "jointly_graded_pairs": 0,
+        "tasks_with_pairs": 0,
+        "customer_groups_with_pairs": 0,
+        "counts": {
+          "gain": 0,
+          "loss": 0,
+          "both_success": 0,
+          "both_failure": 0,
+          "ungraded": 19
+        },
+        "task_equal_difference_pp": null,
+        "possible_difference_pp": [
+          -100.0,
+          100.0
+        ],
+        "descriptive_cluster_interval_pp": null,
+        "leave_one_group_out_pp": {},
+        "task_difference_pp": {},
+        "review_cases": {
+          "gain": [],
+          "loss": [],
+          "both_success": [],
+          "both_failure": []
+        }
+      },
+      {
+        "treatment": "procedure",
+        "control": "no_memory",
+        "planned_pairs": 19,
+        "jointly_graded_pairs": 0,
+        "tasks_with_pairs": 0,
+        "customer_groups_with_pairs": 0,
+        "counts": {
+          "gain": 0,
+          "loss": 0,
+          "both_success": 0,
+          "both_failure": 0,
+          "ungraded": 19
+        },
+        "task_equal_difference_pp": null,
+        "possible_difference_pp": [
+          -100.0,
+          100.0
+        ],
+        "descriptive_cluster_interval_pp": null,
+        "leave_one_group_out_pp": {},
+        "task_difference_pp": {},
+        "review_cases": {
+          "gain": [],
+          "loss": [],
+          "both_success": [],
+          "both_failure": []
+        }
+      }
+    ],
+    "reference_db_write=False": [
+      {
+        "treatment": "fact",
+        "control": "no_memory",
+        "planned_pairs": 30,
+        "jointly_graded_pairs": 4,
+        "tasks_with_pairs": 4,
+        "customer_groups_with_pairs": 4,
+        "counts": {
+          "gain": 0,
+          "loss": 0,
+          "both_success": 4,
+          "both_failure": 0,
+          "ungraded": 26
+        },
+        "task_equal_difference_pp": 0.0,
+        "possible_difference_pp": [
+          -88.235294,
+          88.235294
+        ],
+        "descriptive_cluster_interval_pp": [
+          0.0,
+          0.0
+        ],
+        "leave_one_group_out_pp": {
+          "g01": 0.0,
+          "g03": 0.0,
+          "g05": 0.0,
+          "g18": 0.0
+        },
+        "task_difference_pp": {
+          "0": 0.0,
+          "3": 0.0,
+          "36": 0.0,
+          "5": 0.0
+        },
+        "review_cases": {
+          "gain": [],
+          "loss": [],
+          "both_success": [
+            {
+              "task_id": "3",
+              "repetition": 1,
+              "treatment_job": 281,
+              "control_job": 283
+            }
+          ],
+          "both_failure": []
+        }
+      },
+      {
+        "treatment": "episode",
+        "control": "no_memory",
+        "planned_pairs": 30,
+        "jointly_graded_pairs": 4,
+        "tasks_with_pairs": 4,
+        "customer_groups_with_pairs": 4,
+        "counts": {
+          "gain": 0,
+          "loss": 0,
+          "both_success": 4,
+          "both_failure": 0,
+          "ungraded": 26
+        },
+        "task_equal_difference_pp": 0.0,
+        "possible_difference_pp": [
+          -88.235294,
+          88.235294
+        ],
+        "descriptive_cluster_interval_pp": [
+          0.0,
+          0.0
+        ],
+        "leave_one_group_out_pp": {
+          "g01": 0.0,
+          "g03": 0.0,
+          "g05": 0.0,
+          "g18": 0.0
+        },
+        "task_difference_pp": {
+          "0": 0.0,
+          "3": 0.0,
+          "36": 0.0,
+          "5": 0.0
+        },
+        "review_cases": {
+          "gain": [],
+          "loss": [],
+          "both_success": [
+            {
+              "task_id": "3",
+              "repetition": 1,
+              "treatment_job": 279,
+              "control_job": 283
+            }
+          ],
+          "both_failure": []
+        }
+      },
+      {
+        "treatment": "lesson",
+        "control": "no_memory",
+        "planned_pairs": 30,
+        "jointly_graded_pairs": 3,
+        "tasks_with_pairs": 3,
+        "customer_groups_with_pairs": 3,
+        "counts": {
+          "gain": 0,
+          "loss": 0,
+          "both_success": 3,
+          "both_failure": 0,
+          "ungraded": 27
+        },
+        "task_equal_difference_pp": 0.0,
+        "possible_difference_pp": [
+          -91.176471,
+          88.235294
+        ],
+        "descriptive_cluster_interval_pp": [
+          0.0,
+          0.0
+        ],
+        "leave_one_group_out_pp": {
+          "g01": 0.0,
+          "g03": 0.0,
+          "g05": 0.0
+        },
+        "task_difference_pp": {
+          "0": 0.0,
+          "3": 0.0,
+          "5": 0.0
+        },
+        "review_cases": {
+          "gain": [],
+          "loss": [],
+          "both_success": [
+            {
+              "task_id": "3",
+              "repetition": 1,
+              "treatment_job": 284,
+              "control_job": 283
+            }
+          ],
+          "both_failure": []
+        }
+      },
+      {
+        "treatment": "procedure",
+        "control": "no_memory",
+        "planned_pairs": 30,
+        "jointly_graded_pairs": 3,
+        "tasks_with_pairs": 3,
+        "customer_groups_with_pairs": 3,
+        "counts": {
+          "gain": 0,
+          "loss": 0,
+          "both_success": 3,
+          "both_failure": 0,
+          "ungraded": 27
+        },
+        "task_equal_difference_pp": 0.0,
+        "possible_difference_pp": [
+          -91.176471,
+          88.235294
+        ],
+        "descriptive_cluster_interval_pp": [
+          0.0,
+          0.0
+        ],
+        "leave_one_group_out_pp": {
+          "g01": 0.0,
+          "g03": 0.0,
+          "g05": 0.0
+        },
+        "task_difference_pp": {
+          "0": 0.0,
+          "3": 0.0,
+          "5": 0.0
+        },
+        "review_cases": {
+          "gain": [],
+          "loss": [],
+          "both_success": [
+            {
+              "task_id": "3",
+              "repetition": 1,
+              "treatment_job": 277,
+              "control_job": 283
+            }
+          ],
+          "both_failure": []
+        }
+      }
+    ],
+    "source_official_success=True": [
+      {
+        "treatment": "fact",
+        "control": "no_memory",
+        "planned_pairs": 42,
+        "jointly_graded_pairs": 4,
+        "tasks_with_pairs": 4,
+        "customer_groups_with_pairs": 4,
+        "counts": {
+          "gain": 0,
+          "loss": 0,
+          "both_success": 4,
+          "both_failure": 0,
+          "ungraded": 38
+        },
+        "task_equal_difference_pp": 0.0,
+        "possible_difference_pp": [
+          -91.666667,
+          91.666667
+        ],
+        "descriptive_cluster_interval_pp": [
+          0.0,
+          0.0
+        ],
+        "leave_one_group_out_pp": {
+          "g01": 0.0,
+          "g03": 0.0,
+          "g05": 0.0,
+          "g18": 0.0
+        },
+        "task_difference_pp": {
+          "0": 0.0,
+          "3": 0.0,
+          "36": 0.0,
+          "5": 0.0
+        },
+        "review_cases": {
+          "gain": [],
+          "loss": [],
+          "both_success": [
+            {
+              "task_id": "3",
+              "repetition": 1,
+              "treatment_job": 281,
+              "control_job": 283
+            }
+          ],
+          "both_failure": []
+        }
+      },
+      {
+        "treatment": "episode",
+        "control": "no_memory",
+        "planned_pairs": 42,
+        "jointly_graded_pairs": 4,
+        "tasks_with_pairs": 4,
+        "customer_groups_with_pairs": 4,
+        "counts": {
+          "gain": 0,
+          "loss": 0,
+          "both_success": 4,
+          "both_failure": 0,
+          "ungraded": 38
+        },
+        "task_equal_difference_pp": 0.0,
+        "possible_difference_pp": [
+          -91.666667,
+          91.666667
+        ],
+        "descriptive_cluster_interval_pp": [
+          0.0,
+          0.0
+        ],
+        "leave_one_group_out_pp": {
+          "g01": 0.0,
+          "g03": 0.0,
+          "g05": 0.0,
+          "g18": 0.0
+        },
+        "task_difference_pp": {
+          "0": 0.0,
+          "3": 0.0,
+          "36": 0.0,
+          "5": 0.0
+        },
+        "review_cases": {
+          "gain": [],
+          "loss": [],
+          "both_success": [
+            {
+              "task_id": "3",
+              "repetition": 1,
+              "treatment_job": 279,
+              "control_job": 283
+            }
+          ],
+          "both_failure": []
+        }
+      },
+      {
+        "treatment": "lesson",
+        "control": "no_memory",
+        "planned_pairs": 42,
+        "jointly_graded_pairs": 3,
+        "tasks_with_pairs": 3,
+        "customer_groups_with_pairs": 3,
+        "counts": {
+          "gain": 0,
+          "loss": 0,
+          "both_success": 3,
+          "both_failure": 0,
+          "ungraded": 39
+        },
+        "task_equal_difference_pp": 0.0,
+        "possible_difference_pp": [
+          -93.75,
+          91.666667
+        ],
+        "descriptive_cluster_interval_pp": [
+          0.0,
+          0.0
+        ],
+        "leave_one_group_out_pp": {
+          "g01": 0.0,
+          "g03": 0.0,
+          "g05": 0.0
+        },
+        "task_difference_pp": {
+          "0": 0.0,
+          "3": 0.0,
+          "5": 0.0
+        },
+        "review_cases": {
+          "gain": [],
+          "loss": [],
+          "both_success": [
+            {
+              "task_id": "3",
+              "repetition": 1,
+              "treatment_job": 284,
+              "control_job": 283
+            }
+          ],
+          "both_failure": []
+        }
+      },
+      {
+        "treatment": "procedure",
+        "control": "no_memory",
+        "planned_pairs": 42,
+        "jointly_graded_pairs": 3,
+        "tasks_with_pairs": 3,
+        "customer_groups_with_pairs": 3,
+        "counts": {
+          "gain": 0,
+          "loss": 0,
+          "both_success": 3,
+          "both_failure": 0,
+          "ungraded": 39
+        },
+        "task_equal_difference_pp": 0.0,
+        "possible_difference_pp": [
+          -93.75,
+          91.666667
+        ],
+        "descriptive_cluster_interval_pp": [
+          0.0,
+          0.0
+        ],
+        "leave_one_group_out_pp": {
+          "g01": 0.0,
+          "g03": 0.0,
+          "g05": 0.0
+        },
+        "task_difference_pp": {
+          "0": 0.0,
+          "3": 0.0,
+          "5": 0.0
+        },
+        "review_cases": {
+          "gain": [],
+          "loss": [],
+          "both_success": [
+            {
+              "task_id": "3",
+              "repetition": 1,
+              "treatment_job": 277,
+              "control_job": 283
+            }
+          ],
+          "both_failure": []
+        }
+      }
+    ],
+    "source_official_success=False": [
+      {
+        "treatment": "fact",
+        "control": "no_memory",
+        "planned_pairs": 7,
+        "jointly_graded_pairs": 0,
+        "tasks_with_pairs": 0,
+        "customer_groups_with_pairs": 0,
+        "counts": {
+          "gain": 0,
+          "loss": 0,
+          "both_success": 0,
+          "both_failure": 0,
+          "ungraded": 7
+        },
+        "task_equal_difference_pp": null,
+        "possible_difference_pp": [
+          -100.0,
+          100.0
+        ],
+        "descriptive_cluster_interval_pp": null,
+        "leave_one_group_out_pp": {},
+        "task_difference_pp": {},
+        "review_cases": {
+          "gain": [],
+          "loss": [],
+          "both_success": [],
+          "both_failure": []
+        }
+      },
+      {
+        "treatment": "episode",
+        "control": "no_memory",
+        "planned_pairs": 7,
+        "jointly_graded_pairs": 0,
+        "tasks_with_pairs": 0,
+        "customer_groups_with_pairs": 0,
+        "counts": {
+          "gain": 0,
+          "loss": 0,
+          "both_success": 0,
+          "both_failure": 0,
+          "ungraded": 7
+        },
+        "task_equal_difference_pp": null,
+        "possible_difference_pp": [
+          -100.0,
+          100.0
+        ],
+        "descriptive_cluster_interval_pp": null,
+        "leave_one_group_out_pp": {},
+        "task_difference_pp": {},
+        "review_cases": {
+          "gain": [],
+          "loss": [],
+          "both_success": [],
+          "both_failure": []
+        }
+      },
+      {
+        "treatment": "lesson",
+        "control": "no_memory",
+        "planned_pairs": 7,
+        "jointly_graded_pairs": 0,
+        "tasks_with_pairs": 0,
+        "customer_groups_with_pairs": 0,
+        "counts": {
+          "gain": 0,
+          "loss": 0,
+          "both_success": 0,
+          "both_failure": 0,
+          "ungraded": 7
+        },
+        "task_equal_difference_pp": null,
+        "possible_difference_pp": [
+          -100.0,
+          100.0
+        ],
+        "descriptive_cluster_interval_pp": null,
+        "leave_one_group_out_pp": {},
+        "task_difference_pp": {},
+        "review_cases": {
+          "gain": [],
+          "loss": [],
+          "both_success": [],
+          "both_failure": []
+        }
+      },
+      {
+        "treatment": "procedure",
+        "control": "no_memory",
+        "planned_pairs": 7,
+        "jointly_graded_pairs": 0,
+        "tasks_with_pairs": 0,
+        "customer_groups_with_pairs": 0,
+        "counts": {
+          "gain": 0,
+          "loss": 0,
+          "both_success": 0,
+          "both_failure": 0,
+          "ungraded": 7
+        },
+        "task_equal_difference_pp": null,
+        "possible_difference_pp": [
+          -100.0,
+          100.0
+        ],
+        "descriptive_cluster_interval_pp": null,
+        "leave_one_group_out_pp": {},
+        "task_difference_pp": {},
+        "review_cases": {
+          "gain": [],
+          "loss": [],
+          "both_success": [],
+          "both_failure": []
+        }
+      }
+    ]
+  },
+  "baseline_repetition": {
+    "planned_tasks": 28,
+    "tasks_with_both_scores": 0,
+    "flipped": 0
+  },
+  "assignment_statuses": {
+    "completed": 23,
+    "error": 3,
+    "not_started": 282
+  }
+}

@@ -1,0 +1,2886 @@
+{
+  "format": "agent-memory-two-pass-success-factors/v1",
+  "benchmark_revision": "c06b07dd7c4d4ec61ba6ff9bcdf0b15dd7ef36d4",
+  "method_sha256": "60579dcd6689078d121aaadaab558fce316984432bc4e55047cbbd76645a28ca",
+  "lock_sha256": "9a004d5df6a22bedd9e358a68d60d0a3da660c01c2b2585cc9471755344ca8c1",
+  "linked_review_sha256": "a9d42588c918d8dfe36592c8db8c4962896d7292eddbb4a6c18d59d59bd38ab2",
+  "audited_view_completion_sha256": "22fdade5e0aa229335f608fc7e33ef68e1fda448fc46e6cbb7942b4780d22972",
+  "paired_outcomes": {
+    "gain": 18,
+    "both_failure": 14,
+    "both_success": 101,
+    "loss": 16,
+    "unpaired": 75
+  },
+  "improved_blocks": [
+    {
+      "task": "15",
+      "repetition": 1,
+      "control": 235,
+      "original_first_pass_success": true,
+      "empty_control": 236,
+      "empty_control_success": false,
+      "gained_jobs": [
+        233
+      ],
+      "gained_forms": [
+        "procedure"
+      ],
+      "observed_write_difference": "complete_missing_write"
+    },
+    {
+      "task": "14",
+      "repetition": 1,
+      "control": 333,
+      "original_first_pass_success": true,
+      "empty_control": 332,
+      "empty_control_success": false,
+      "gained_jobs": [
+        329,
+        330,
+        331
+      ],
+      "gained_forms": [
+        "procedure",
+        "episode",
+        "lesson"
+      ],
+      "observed_write_difference": "correct_arguments"
+    },
+    {
+      "task": "21",
+      "repetition": 1,
+      "control": 341,
+      "original_first_pass_success": false,
+      "empty_control": 343,
+      "empty_control_success": false,
+      "gained_jobs": [
+        342
+      ],
+      "gained_forms": [
+        "episode"
+      ],
+      "observed_write_difference": "correct_arguments"
+    },
+    {
+      "task": "12",
+      "repetition": 1,
+      "control": 369,
+      "original_first_pass_success": true,
+      "empty_control": 367,
+      "empty_control_success": true,
+      "gained_jobs": [
+        365,
+        368,
+        370
+      ],
+      "gained_forms": [
+        "procedure",
+        "fact",
+        "lesson"
+      ],
+      "observed_write_difference": "omit_unwarranted_write"
+    },
+    {
+      "task": "42",
+      "repetition": 1,
+      "control": 384,
+      "original_first_pass_success": false,
+      "empty_control": 383,
+      "empty_control_success": false,
+      "gained_jobs": [
+        377
+      ],
+      "gained_forms": [
+        "procedure"
+      ],
+      "observed_write_difference": "complete_missing_write"
+    },
+    {
+      "task": "10",
+      "repetition": 1,
+      "control": 386,
+      "original_first_pass_success": true,
+      "empty_control": 389,
+      "empty_control_success": true,
+      "gained_jobs": [
+        385,
+        387,
+        388,
+        390
+      ],
+      "gained_forms": [
+        "episode",
+        "procedure",
+        "fact",
+        "lesson"
+      ],
+      "observed_write_difference": "omit_unwarranted_write"
+    },
+    {
+      "task": "11",
+      "repetition": 1,
+      "control": 403,
+      "original_first_pass_success": true,
+      "empty_control": 407,
+      "empty_control_success": true,
+      "gained_jobs": [
+        404
+      ],
+      "gained_forms": [
+        "episode"
+      ],
+      "observed_write_difference": "different_customer_authorized_action"
+    },
+    {
+      "task": "1",
+      "repetition": 2,
+      "control": 414,
+      "original_first_pass_success": true,
+      "empty_control": 410,
+      "empty_control_success": true,
+      "gained_jobs": [
+        409,
+        411,
+        412,
+        413
+      ],
+      "gained_forms": [
+        "episode",
+        "fact",
+        "procedure",
+        "lesson"
+      ],
+      "observed_write_difference": "omit_unwarranted_write"
+    }
+  ],
+  "discordant_comparisons": [
+    {
+      "task": "15",
+      "repetition": 1,
+      "form": "procedure",
+      "direction": "gain",
+      "pair_id": "pair_d5443d17c38699071bee",
+      "job": 233,
+      "control": 235,
+      "empty_control": 236,
+      "empty_control_success": false,
+      "source_success": true,
+      "authored_items": 1,
+      "grounding": "supported",
+      "authored_text_sha256": "6964cc55efc21388f0ac2bb47ea2b7da1bd3499a0b3c5ee09772f00a7295e5ed",
+      "source_public_sha256": "8abb0e1e061b11589cc29b1b769e7ce3cff8a62c8c0ba303a3162d46ffcb5ec2",
+      "first_user_context": "comparable",
+      "first_difference_category": "policy_or_eligibility"
+    },
+    {
+      "task": "17",
+      "repetition": 1,
+      "form": "fact",
+      "direction": "loss",
+      "pair_id": "pair_720b8a4989cf2da6a8f1",
+      "job": 245,
+      "control": 251,
+      "empty_control": 249,
+      "empty_control_success": true,
+      "source_success": false,
+      "authored_items": 1,
+      "grounding": "supported",
+      "authored_text_sha256": "c183acbf81084f704df85f9f53a02098dd2e89236b84791443cc7b19ce68dcec",
+      "source_public_sha256": "6144de11d0c51851c0f8ee46871227849bfa9c9f5228ca5f8c0f52b76e825306",
+      "first_user_context": "different",
+      "first_difference_category": "request_clarification"
+    },
+    {
+      "task": "23",
+      "repetition": 1,
+      "form": "episode",
+      "direction": "loss",
+      "pair_id": "pair_60c940d29c0f64671172",
+      "job": 322,
+      "control": 326,
+      "empty_control": 327,
+      "empty_control_success": false,
+      "source_success": true,
+      "authored_items": 0,
+      "grounding": "empty",
+      "authored_text_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "source_public_sha256": "4e9930c1dcf5a1ead264d180578860224f8fabf19bab962a1a1513f740faf09f",
+      "first_user_context": "different",
+      "first_difference_category": "approval_or_reconfirmation"
+    },
+    {
+      "task": "23",
+      "repetition": 1,
+      "form": "fact",
+      "direction": "loss",
+      "pair_id": "pair_f78f4186848b47aaa1ed",
+      "job": 323,
+      "control": 326,
+      "empty_control": 327,
+      "empty_control_success": false,
+      "source_success": true,
+      "authored_items": 1,
+      "grounding": "mixed",
+      "authored_text_sha256": "b5d2d183e6fd715eff685a2427bb309e7a54588ee4f0710f0f5f6e52ad0aebdb",
+      "source_public_sha256": "4e9930c1dcf5a1ead264d180578860224f8fabf19bab962a1a1513f740faf09f",
+      "first_user_context": "comparable",
+      "first_difference_category": "business_tool_or_arguments"
+    },
+    {
+      "task": "23",
+      "repetition": 1,
+      "form": "lesson",
+      "direction": "loss",
+      "pair_id": "pair_80fc84249b4e3b997c71",
+      "job": 328,
+      "control": 326,
+      "empty_control": 327,
+      "empty_control_success": false,
+      "source_success": true,
+      "authored_items": 1,
+      "grounding": "supported",
+      "authored_text_sha256": "b1f3d89d0ca5d414b0901e0217d90d660fc39bf23f0bffb04e25a8b04660c879",
+      "source_public_sha256": "4e9930c1dcf5a1ead264d180578860224f8fabf19bab962a1a1513f740faf09f",
+      "first_user_context": "different",
+      "first_difference_category": "business_tool_or_arguments"
+    },
+    {
+      "task": "14",
+      "repetition": 1,
+      "form": "procedure",
+      "direction": "gain",
+      "pair_id": "pair_cabab5adcff7ca105e4c",
+      "job": 329,
+      "control": 333,
+      "empty_control": 332,
+      "empty_control_success": false,
+      "source_success": true,
+      "authored_items": 1,
+      "grounding": "supported",
+      "authored_text_sha256": "9cb2d982ea2b6238d23ac7e81b7c85491d25e8ab0aeab6cc287f7f867e5dd9b1",
+      "source_public_sha256": "54b5610a6216ba047a71b66524781bc22f1300da305bef2692e2fd7386e58b1e",
+      "first_user_context": "comparable",
+      "first_difference_category": "identity_or_lookup"
+    },
+    {
+      "task": "14",
+      "repetition": 1,
+      "form": "episode",
+      "direction": "gain",
+      "pair_id": "pair_6e308f1851beec8210c3",
+      "job": 330,
+      "control": 333,
+      "empty_control": 332,
+      "empty_control_success": false,
+      "source_success": true,
+      "authored_items": 1,
+      "grounding": "supported",
+      "authored_text_sha256": "7131b9ae304fe331551e69c92baf18557201eadbcd75ebaaf719e6308c3eacb0",
+      "source_public_sha256": "54b5610a6216ba047a71b66524781bc22f1300da305bef2692e2fd7386e58b1e",
+      "first_user_context": "different",
+      "first_difference_category": "simulator_led"
+    },
+    {
+      "task": "14",
+      "repetition": 1,
+      "form": "lesson",
+      "direction": "gain",
+      "pair_id": "pair_ee0444b17e2290829883",
+      "job": 331,
+      "control": 333,
+      "empty_control": 332,
+      "empty_control_success": false,
+      "source_success": true,
+      "authored_items": 1,
+      "grounding": "mixed",
+      "authored_text_sha256": "a95e125e537e4f2605ccab4756419c952e2fef2adb3149a75e15a78d08c43457",
+      "source_public_sha256": "54b5610a6216ba047a71b66524781bc22f1300da305bef2692e2fd7386e58b1e",
+      "first_user_context": "comparable",
+      "first_difference_category": "business_tool_or_arguments"
+    },
+    {
+      "task": "21",
+      "repetition": 1,
+      "form": "episode",
+      "direction": "gain",
+      "pair_id": "pair_d856eb2339478ad54e1b",
+      "job": 342,
+      "control": 341,
+      "empty_control": 343,
+      "empty_control_success": false,
+      "source_success": false,
+      "authored_items": 1,
+      "grounding": "mixed",
+      "authored_text_sha256": "6f95d35e333f111289767c203baed954eab40c7c297f0a12d552df9989f65e06",
+      "source_public_sha256": "1576da92aba396d591748485c7fa8dbca843dbd29f045b6196f7425dd75b2a70",
+      "first_user_context": "comparable",
+      "first_difference_category": "request_clarification"
+    },
+    {
+      "task": "33",
+      "repetition": 1,
+      "form": "procedure",
+      "direction": "loss",
+      "pair_id": "pair_a051b05defd4b1e1e0d9",
+      "job": 360,
+      "control": 363,
+      "empty_control": 359,
+      "empty_control_success": true,
+      "source_success": true,
+      "authored_items": 1,
+      "grounding": "mixed",
+      "authored_text_sha256": "682f95a5175789ded64af6ffb68af22664aadccf23f35e655b22ff18c99a2280",
+      "source_public_sha256": "763e292521e39dde5a30fa0493292cf76d69a4fe976ab18b30e9de3b6a52d963",
+      "first_user_context": "different",
+      "first_difference_category": "request_clarification"
+    },
+    {
+      "task": "33",
+      "repetition": 1,
+      "form": "episode",
+      "direction": "loss",
+      "pair_id": "pair_36b8b8e0a45f66b91690",
+      "job": 362,
+      "control": 363,
+      "empty_control": 359,
+      "empty_control_success": true,
+      "source_success": true,
+      "authored_items": 1,
+      "grounding": "supported",
+      "authored_text_sha256": "90a9bb0becaa46e6a01bcbadf1fee965159b6f33e4705b9d177291c0fc5d5bd6",
+      "source_public_sha256": "763e292521e39dde5a30fa0493292cf76d69a4fe976ab18b30e9de3b6a52d963",
+      "first_user_context": "comparable",
+      "first_difference_category": "request_clarification"
+    },
+    {
+      "task": "33",
+      "repetition": 1,
+      "form": "lesson",
+      "direction": "loss",
+      "pair_id": "pair_f0d2554f7c8163cbd9aa",
+      "job": 364,
+      "control": 363,
+      "empty_control": 359,
+      "empty_control_success": true,
+      "source_success": true,
+      "authored_items": 0,
+      "grounding": "empty",
+      "authored_text_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "source_public_sha256": "763e292521e39dde5a30fa0493292cf76d69a4fe976ab18b30e9de3b6a52d963",
+      "first_user_context": "comparable",
+      "first_difference_category": "request_clarification"
+    },
+    {
+      "task": "12",
+      "repetition": 1,
+      "form": "procedure",
+      "direction": "gain",
+      "pair_id": "pair_130fc7376d42878e6c76",
+      "job": 365,
+      "control": 369,
+      "empty_control": 367,
+      "empty_control_success": true,
+      "source_success": true,
+      "authored_items": 1,
+      "grounding": "supported",
+      "authored_text_sha256": "766b204662f2c375d8052c9e4315c423f0b8f7a8e16578950805f82dda8399dd",
+      "source_public_sha256": "849009aaef0eb2f48bf52736e7c5102f7a06e27eba33df56102b5e4facfc7ac3",
+      "first_user_context": "different",
+      "first_difference_category": "policy_or_eligibility"
+    },
+    {
+      "task": "12",
+      "repetition": 1,
+      "form": "fact",
+      "direction": "gain",
+      "pair_id": "pair_0e7bfdde76495055e09f",
+      "job": 368,
+      "control": 369,
+      "empty_control": 367,
+      "empty_control_success": true,
+      "source_success": true,
+      "authored_items": 1,
+      "grounding": "supported",
+      "authored_text_sha256": "b989ebf2904ba401316279fd8144193a5ecdb022427b931508a779dd8224404f",
+      "source_public_sha256": "849009aaef0eb2f48bf52736e7c5102f7a06e27eba33df56102b5e4facfc7ac3",
+      "first_user_context": "comparable",
+      "first_difference_category": "current_facts_or_arithmetic"
+    },
+    {
+      "task": "12",
+      "repetition": 1,
+      "form": "lesson",
+      "direction": "gain",
+      "pair_id": "pair_dd9b67f937e0c3c8d8ce",
+      "job": 370,
+      "control": 369,
+      "empty_control": 367,
+      "empty_control_success": true,
+      "source_success": true,
+      "authored_items": 1,
+      "grounding": "supported",
+      "authored_text_sha256": "1eed1d7a770d2a26f903d2f7f39e093d8f06778204d96cb12810e5880625c4f5",
+      "source_public_sha256": "849009aaef0eb2f48bf52736e7c5102f7a06e27eba33df56102b5e4facfc7ac3",
+      "first_user_context": "different",
+      "first_difference_category": "current_facts_or_arithmetic"
+    },
+    {
+      "task": "20",
+      "repetition": 1,
+      "form": "procedure",
+      "direction": "loss",
+      "pair_id": "pair_397a24841c34462e4f07",
+      "job": 373,
+      "control": 371,
+      "empty_control": 372,
+      "empty_control_success": true,
+      "source_success": false,
+      "authored_items": 1,
+      "grounding": "mixed",
+      "authored_text_sha256": "963c19d7b9ccee6f8dd9adf5c8f90df9393f35926cb3f9038fb0e7eedc5c5bf7",
+      "source_public_sha256": "b88d2b1e842d01aee01eebf77939e3f52a684a0042cbad48d9e18c920eee0621",
+      "first_user_context": "comparable",
+      "first_difference_category": "business_tool_or_arguments"
+    },
+    {
+      "task": "20",
+      "repetition": 1,
+      "form": "episode",
+      "direction": "loss",
+      "pair_id": "pair_81cb9f8e2dc2a0622c9d",
+      "job": 375,
+      "control": 371,
+      "empty_control": 372,
+      "empty_control_success": true,
+      "source_success": false,
+      "authored_items": 0,
+      "grounding": "empty",
+      "authored_text_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "source_public_sha256": "b88d2b1e842d01aee01eebf77939e3f52a684a0042cbad48d9e18c920eee0621",
+      "first_user_context": "comparable",
+      "first_difference_category": "current_facts_or_arithmetic"
+    },
+    {
+      "task": "20",
+      "repetition": 1,
+      "form": "fact",
+      "direction": "loss",
+      "pair_id": "pair_50c57c877c3b31b1b1f1",
+      "job": 376,
+      "control": 371,
+      "empty_control": 372,
+      "empty_control_success": true,
+      "source_success": false,
+      "authored_items": 1,
+      "grounding": "mixed",
+      "authored_text_sha256": "00fe21d6b11b00e75807c9c2cd75b79aa5b342c02c7861c19e82fc1313bd77e7",
+      "source_public_sha256": "b88d2b1e842d01aee01eebf77939e3f52a684a0042cbad48d9e18c920eee0621",
+      "first_user_context": "comparable",
+      "first_difference_category": "current_facts_or_arithmetic"
+    },
+    {
+      "task": "42",
+      "repetition": 1,
+      "form": "procedure",
+      "direction": "gain",
+      "pair_id": "pair_46c54f58e56ac84e4254",
+      "job": 377,
+      "control": 384,
+      "empty_control": 383,
+      "empty_control_success": false,
+      "source_success": false,
+      "authored_items": 1,
+      "grounding": "mixed",
+      "authored_text_sha256": "4fd409a7d32769a512e1f9ce848c483e6f05a7ea4f59bd4340bd687c66d99cf4",
+      "source_public_sha256": "a4682ed8f3f7b16d45394d24a13228de1c6f82694660ec3ff315afc4c59beebb",
+      "first_user_context": "comparable",
+      "first_difference_category": "current_facts_or_arithmetic"
+    },
+    {
+      "task": "10",
+      "repetition": 1,
+      "form": "episode",
+      "direction": "gain",
+      "pair_id": "pair_d37872ce015eecbc3164",
+      "job": 385,
+      "control": 386,
+      "empty_control": 389,
+      "empty_control_success": true,
+      "source_success": true,
+      "authored_items": 1,
+      "grounding": "supported",
+      "authored_text_sha256": "5ec084cf3e1c8eb0444b66277ad0e03c3e9c36d0859fb125de1d5e7407b98f00",
+      "source_public_sha256": "4e11db41698c9f31621337a75c5cf4f902840a41c1d8048c1f94e539b2cff5fb",
+      "first_user_context": "comparable",
+      "first_difference_category": "request_clarification"
+    },
+    {
+      "task": "10",
+      "repetition": 1,
+      "form": "procedure",
+      "direction": "gain",
+      "pair_id": "pair_8c62911d700aa9858c1f",
+      "job": 387,
+      "control": 386,
+      "empty_control": 389,
+      "empty_control_success": true,
+      "source_success": true,
+      "authored_items": 1,
+      "grounding": "supported",
+      "authored_text_sha256": "da518ef4f56bd5c7f3bb6f592c297ce0fe1468fa708c6943834578295a8c2d31",
+      "source_public_sha256": "4e11db41698c9f31621337a75c5cf4f902840a41c1d8048c1f94e539b2cff5fb",
+      "first_user_context": "comparable",
+      "first_difference_category": "request_clarification"
+    },
+    {
+      "task": "10",
+      "repetition": 1,
+      "form": "fact",
+      "direction": "gain",
+      "pair_id": "pair_5f30e7ee9f368e0bc888",
+      "job": 388,
+      "control": 386,
+      "empty_control": 389,
+      "empty_control_success": true,
+      "source_success": true,
+      "authored_items": 0,
+      "grounding": "empty",
+      "authored_text_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "source_public_sha256": "4e11db41698c9f31621337a75c5cf4f902840a41c1d8048c1f94e539b2cff5fb",
+      "first_user_context": "comparable",
+      "first_difference_category": "current_facts_or_arithmetic"
+    },
+    {
+      "task": "10",
+      "repetition": 1,
+      "form": "lesson",
+      "direction": "gain",
+      "pair_id": "pair_38af8e55d5c94e633ff3",
+      "job": 390,
+      "control": 386,
+      "empty_control": 389,
+      "empty_control_success": true,
+      "source_success": true,
+      "authored_items": 1,
+      "grounding": "supported",
+      "authored_text_sha256": "6d1e0d96110c985a577b80d51c87f0f7ecaa0fbae349e2f266f49a4cb591fa32",
+      "source_public_sha256": "4e11db41698c9f31621337a75c5cf4f902840a41c1d8048c1f94e539b2cff5fb",
+      "first_user_context": "comparable",
+      "first_difference_category": "business_tool_or_arguments"
+    },
+    {
+      "task": "11",
+      "repetition": 1,
+      "form": "episode",
+      "direction": "gain",
+      "pair_id": "pair_488fafd7435523f88498",
+      "job": 404,
+      "control": 403,
+      "empty_control": 407,
+      "empty_control_success": true,
+      "source_success": true,
+      "authored_items": 0,
+      "grounding": "empty",
+      "authored_text_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "source_public_sha256": "86348cf5dd6ad2b3133f47980a85fe52400a6743ce7aa29c444b3ffa4a596731",
+      "first_user_context": "different",
+      "first_difference_category": "simulator_led"
+    },
+    {
+      "task": "1",
+      "repetition": 2,
+      "form": "episode",
+      "direction": "gain",
+      "pair_id": "pair_7c52ad42778bbfdf4fed",
+      "job": 409,
+      "control": 414,
+      "empty_control": 410,
+      "empty_control_success": true,
+      "source_success": true,
+      "authored_items": 0,
+      "grounding": "empty",
+      "authored_text_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "source_public_sha256": "dcb8b29e3ba7ecdf5368f4ed4a70cb54b2ed29470f04670855127288ec19bcb6",
+      "first_user_context": "comparable",
+      "first_difference_category": "policy_or_eligibility"
+    },
+    {
+      "task": "1",
+      "repetition": 2,
+      "form": "fact",
+      "direction": "gain",
+      "pair_id": "pair_b7388d270bd03b51f972",
+      "job": 411,
+      "control": 414,
+      "empty_control": 410,
+      "empty_control_success": true,
+      "source_success": true,
+      "authored_items": 1,
+      "grounding": "supported",
+      "authored_text_sha256": "81d024a612c4be916f3e66e1a090dea04786d06bf705fd87e5432e215549633f",
+      "source_public_sha256": "dcb8b29e3ba7ecdf5368f4ed4a70cb54b2ed29470f04670855127288ec19bcb6",
+      "first_user_context": "comparable",
+      "first_difference_category": "policy_or_eligibility"
+    },
+    {
+      "task": "1",
+      "repetition": 2,
+      "form": "procedure",
+      "direction": "gain",
+      "pair_id": "pair_528a2a2de0fe7abd5899",
+      "job": 412,
+      "control": 414,
+      "empty_control": 410,
+      "empty_control_success": true,
+      "source_success": true,
+      "authored_items": 0,
+      "grounding": "empty",
+      "authored_text_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "source_public_sha256": "dcb8b29e3ba7ecdf5368f4ed4a70cb54b2ed29470f04670855127288ec19bcb6",
+      "first_user_context": "comparable",
+      "first_difference_category": "policy_or_eligibility"
+    },
+    {
+      "task": "1",
+      "repetition": 2,
+      "form": "lesson",
+      "direction": "gain",
+      "pair_id": "pair_086f420a7477b5c1d214",
+      "job": 413,
+      "control": 414,
+      "empty_control": 410,
+      "empty_control_success": true,
+      "source_success": true,
+      "authored_items": 1,
+      "grounding": "supported",
+      "authored_text_sha256": "c2eec388ed3dbfaa94edb27e52d95a91754d8c8db03f7a1e57fa4a325cd4269a",
+      "source_public_sha256": "dcb8b29e3ba7ecdf5368f4ed4a70cb54b2ed29470f04670855127288ec19bcb6",
+      "first_user_context": "different",
+      "first_difference_category": "policy_or_eligibility"
+    },
+    {
+      "task": "12",
+      "repetition": 2,
+      "form": "procedure",
+      "direction": "loss",
+      "pair_id": "pair_a2e0ad8d0d960d1c2a67",
+      "job": 427,
+      "control": 426,
+      "empty_control": 428,
+      "empty_control_success": true,
+      "source_success": true,
+      "authored_items": 1,
+      "grounding": "supported",
+      "authored_text_sha256": "be85c42492f4cc875ccd8f7285055b73e1fe933319dda02f62239d900a251818",
+      "source_public_sha256": "849009aaef0eb2f48bf52736e7c5102f7a06e27eba33df56102b5e4facfc7ac3",
+      "first_user_context": "comparable",
+      "first_difference_category": "approval_or_reconfirmation"
+    },
+    {
+      "task": "33",
+      "repetition": 2,
+      "form": "fact",
+      "direction": "loss",
+      "pair_id": "pair_75f2100f539f84b63885",
+      "job": 429,
+      "control": 431,
+      "empty_control": 430,
+      "empty_control_success": false,
+      "source_success": true,
+      "authored_items": 0,
+      "grounding": "empty",
+      "authored_text_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "source_public_sha256": "763e292521e39dde5a30fa0493292cf76d69a4fe976ab18b30e9de3b6a52d963",
+      "first_user_context": "comparable",
+      "first_difference_category": "communication"
+    },
+    {
+      "task": "33",
+      "repetition": 2,
+      "form": "lesson",
+      "direction": "loss",
+      "pair_id": "pair_ceee9cba7eb7bf406c64",
+      "job": 432,
+      "control": 431,
+      "empty_control": 430,
+      "empty_control_success": false,
+      "source_success": true,
+      "authored_items": 1,
+      "grounding": "supported",
+      "authored_text_sha256": "b113eef4dba7a3b10bf54174d411c9562123ee4d866bb5b9143d76a95220bc4e",
+      "source_public_sha256": "763e292521e39dde5a30fa0493292cf76d69a4fe976ab18b30e9de3b6a52d963",
+      "first_user_context": "comparable",
+      "first_difference_category": "communication"
+    },
+    {
+      "task": "33",
+      "repetition": 2,
+      "form": "episode",
+      "direction": "loss",
+      "pair_id": "pair_cdfc256a27d5ba08a94d",
+      "job": 433,
+      "control": 431,
+      "empty_control": 430,
+      "empty_control_success": false,
+      "source_success": true,
+      "authored_items": 0,
+      "grounding": "empty",
+      "authored_text_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "source_public_sha256": "763e292521e39dde5a30fa0493292cf76d69a4fe976ab18b30e9de3b6a52d963",
+      "first_user_context": "comparable",
+      "first_difference_category": "communication"
+    },
+    {
+      "task": "33",
+      "repetition": 2,
+      "form": "procedure",
+      "direction": "loss",
+      "pair_id": "pair_951ae3916fe23c9a508a",
+      "job": 434,
+      "control": 431,
+      "empty_control": 430,
+      "empty_control_success": false,
+      "source_success": true,
+      "authored_items": 1,
+      "grounding": "mixed",
+      "authored_text_sha256": "c7d18545479c9aeed52827acaffcb3740d06acaaf7cb406468015d8b8613a2bc",
+      "source_public_sha256": "763e292521e39dde5a30fa0493292cf76d69a4fe976ab18b30e9de3b6a52d963",
+      "first_user_context": "comparable",
+      "first_difference_category": "communication"
+    },
+    {
+      "task": "47",
+      "repetition": 2,
+      "form": "procedure",
+      "direction": "loss",
+      "pair_id": "pair_04a39f140639aca12fb8",
+      "job": 445,
+      "control": 444,
+      "empty_control": 446,
+      "empty_control_success": true,
+      "source_success": true,
+      "authored_items": 0,
+      "grounding": "empty",
+      "authored_text_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "source_public_sha256": "48b8422545702f21dd1ad6c886a6451f53e8da45cefef3c461138a422a0332dd",
+      "first_user_context": "different",
+      "first_difference_category": "policy_or_eligibility"
+    }
+  ],
+  "verified_business_trajectories": [
+    {
+      "task": "15",
+      "job": 233,
+      "report_sha256": "636d6c73a6bb7bf819fb8339d29d931f660a07c26b74b03ba9f495b81c1de2fa",
+      "writes": [
+        {
+          "message_index": 18,
+          "call_id": "call_GTB17OSlFeVy0HRPR8Vh31U3",
+          "tool": "update_reservation_flights",
+          "arguments_sha256": "4ae72895a9dc5e4bc7ee184823adb501b51ed5e92969b407dde7d3aa22617ae7",
+          "error": false
+        }
+      ],
+      "final_db_sha256": "c9500f3100906613e72517e64be2104316c21ff855888401fbb7dcf2a4dbeed2",
+      "db_match": true,
+      "missing_communication": [],
+      "selected_public_turns": [
+        {
+          "index": 16,
+          "role": "assistant",
+          "text": "{\"message\":\"Yes. The PHL itinerary I listed is the lowest-priced regular Economy option returned for May 24: $105 + $102 = $207 total, not Basic Economy. Compared with your original fare of $2,787, the difference is a $2,580 refund to the original payment method, gift_card_8887175.\\n\\nThe cheapest regular Economy option to EWR is:\\n- HAT059: ATL 7:00 a.m. → DFW 9:00 a.m. — Economy $115\\n- HAT142: DFW 6:00 p.m. → EWR 9:30 p.m. — Economy $121\\n- Total fare: $236\\n- Difference from the original $2,787 fare: $2,551 refund to gift_card_8887175.\\n\\nNo change has been made. Which itinerary would you like to choose?\"}"
+        },
+        {
+          "index": 17,
+          "role": "user",
+          "text": "Okay, thanks for laying that out. Let’s go with the PHL option on May 24 — the $207 regular Economy itinerary (HAT110 ATL 2:00 p.m. → LGA 4:30 p.m., then HAT172 LGA 11:00 p.m. → PHL 12:00 a.m. on May 25).\n\nPlease process the change and refund the $2,580 difference back to the original gift card on file. Let me know once it’s done and what the updated confirmation looks like."
+        }
+      ],
+      "worker_memory": {
+        "snapshot_id": "snap_3c2313877d074c209d4aa8b1b315add3",
+        "title_body_sha256": "6964cc55efc21388f0ac2bb47ea2b7da1bd3499a0b3c5ee09772f00a7295e5ed",
+        "items": 1,
+        "worker_requests_with_exact_snapshot": 10,
+        "note_literal_presence": {
+          "$207": true,
+          "$2,580": true
+        }
+      }
+    },
+    {
+      "task": "15",
+      "job": 234,
+      "report_sha256": "abe0e6cdfe5cd7bc5137c815240c05f5132c14d434f998e158392d090c518e2b",
+      "writes": [],
+      "final_db_sha256": "124e39a664b56402bcd09cb8a6a9cece6acb8462337c969799d5658e3250f263",
+      "db_match": false,
+      "missing_communication": [],
+      "worker_memory": {
+        "snapshot_id": "snap_238088799ac54aeca582197b0d511e0c",
+        "title_body_sha256": "952847fe0a0b4449c2a1db2be8c7c6eacfa021f656c6047c2518a5e9d037ea99",
+        "items": 1,
+        "worker_requests_with_exact_snapshot": 12,
+        "note_literal_presence": {
+          "$207": true,
+          "$2,580": true
+        }
+      }
+    },
+    {
+      "task": "15",
+      "job": 235,
+      "report_sha256": "cde788f6f0d7f42665cbf0e735efd95ffdad7daba505a6e69cd8a5af3e93abcc",
+      "writes": [],
+      "final_db_sha256": "124e39a664b56402bcd09cb8a6a9cece6acb8462337c969799d5658e3250f263",
+      "db_match": false,
+      "missing_communication": [],
+      "selected_public_turns": [
+        {
+          "index": 14,
+          "role": "assistant",
+          "text": "{\"message\":\"Your ATL–PHL reservation is M05KNL, departing May 23, 2024. It’s a one-way business-class itinerary via ORD. For May 24, I found no direct flights. The lowest available economy option to PHL is HAT110 (ATL–LGA) + HAT172 (LGA–PHL), listed at $207 total; to EWR, the lowest is HAT004 (ATL–DFW) + HAT142 (DFW–EWR), listed at $243 total. These are current search prices, not a confirmed rebooking price. A reservation change must keep the original destination, PHL, so EWR isn’t an option for modifying this booking. Would you like to consider changing the existing itinerary to the May 24 PHL option?\"}"
+        },
+        {
+          "index": 15,
+          "role": "user",
+          "text": "Okay, thanks for checking. Since the change has to keep PHL, let’s go with the May 24 PHL option—HAT110 + HAT172 at $207 in economy (not basic). Before you make the change, could you confirm the total change cost (any fare difference and fees) and whether it’ll be charged to the original payment method? I’m fine with that. Also, what are the layover times in LGA and the arrival time into PHL?"
+        }
+      ]
+    },
+    {
+      "task": "17",
+      "job": 245,
+      "report_sha256": "8d499ade1294326f189e81624d331dbba49950ff94854620000baba7d9051362",
+      "writes": [],
+      "final_db_sha256": "124e39a664b56402bcd09cb8a6a9cece6acb8462337c969799d5658e3250f263",
+      "db_match": false,
+      "missing_communication": [],
+      "worker_memory": {
+        "snapshot_id": "snap_b0b2b4f8338749daa8da833eb63c5a59",
+        "title_body_sha256": "c183acbf81084f704df85f9f53a02098dd2e89236b84791443cc7b19ce68dcec",
+        "items": 1,
+        "worker_requests_with_exact_snapshot": 6,
+        "note_literal_presence": {}
+      }
+    },
+    {
+      "task": "17",
+      "job": 251,
+      "report_sha256": "564825625c5504eb75ad5b79384126d9486e1ad5b6b33e9777089e20483608a5",
+      "writes": [
+        {
+          "message_index": 16,
+          "call_id": "call_2c733fca0def4a6aa7fb033634ddfeb2",
+          "tool": "update_reservation_flights",
+          "arguments_sha256": "a97ebc59d3fad23cb3b9bc1e583a10feee9a75fb95350bb005482379082ec1da",
+          "error": false
+        },
+        {
+          "message_index": 18,
+          "call_id": "call_Hitf7z0PbapzYINR1jYXBmfJ",
+          "tool": "update_reservation_passengers",
+          "arguments_sha256": "09b18052cdd489709fb4208609d31f2384efea7175d9d010e1df791c5cf3ef4f",
+          "error": false
+        },
+        {
+          "message_index": 20,
+          "call_id": "call_otQoSQyPiju96cQMyeJTKWq7",
+          "tool": "update_reservation_baggages",
+          "arguments_sha256": "ad7b3c19fae9180f39120094c9c14d28102287ca777dab97bac34a875e3a8f3f",
+          "error": false
+        }
+      ],
+      "final_db_sha256": "37ea6df3bdb75dc6be08b9fc19909ddef8e0a58c7d56afeaf20781acfba3b871",
+      "db_match": true,
+      "missing_communication": []
+    },
+    {
+      "task": "23",
+      "job": 322,
+      "report_sha256": "5332d5e4bd60b171b7be21dd782db3699f1e846e022d8377306b1541402c926a",
+      "writes": [
+        {
+          "message_index": 12,
+          "call_id": "call_BNt8o8zMW6znprAB5NEsJwdk",
+          "tool": "cancel_reservation",
+          "arguments_sha256": "ae0a4df72ec02bf133f6db47a20a88b712683758b9a93442d00a48764c653a17",
+          "error": false
+        },
+        {
+          "message_index": 26,
+          "call_id": "call_O297HGhq7DulpEB9X2C5gX0h",
+          "tool": "book_reservation",
+          "arguments_sha256": "5fe2b16fcc99edb5db2b3b9d3f2370d8ba178aac4758276fb8387983f02c1e0a",
+          "error": false
+        },
+        {
+          "message_index": 28,
+          "call_id": "call_Z0RcyiOvDqOqDvXS0fqca0dP",
+          "tool": "book_reservation",
+          "arguments_sha256": "e98729b8c19fb6924e5e2b0f95751048307315107afead50766436820af07df7",
+          "error": false
+        },
+        {
+          "message_index": 30,
+          "call_id": "call_iXvXOwvcoQyrok8LLa4X2BFR",
+          "tool": "book_reservation",
+          "arguments_sha256": "137a86dcce02241c23435128a07cfad8ae8869fd8a9003bbe5b912a7823b62e7",
+          "error": false
+        }
+      ],
+      "final_db_sha256": "07b421df86d23f1c6ceb1916b92ac0079afad8ad3f5763fdb990cb923c7fe365",
+      "db_match": false,
+      "missing_communication": [
+        "1286"
+      ],
+      "worker_memory": {
+        "snapshot_id": "snap_45c5f6ac8d954267bfd653c134e9ed96",
+        "title_body_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "items": 0,
+        "worker_requests_with_exact_snapshot": 14,
+        "note_literal_presence": {}
+      }
+    },
+    {
+      "task": "23",
+      "job": 323,
+      "report_sha256": "14434799f9b22abb8b88394470198f3f11f8e46cd36f16a3b72cda4410a3c044",
+      "writes": [
+        {
+          "message_index": 12,
+          "call_id": "call_tNvtWMuhcs9zxhJ3U7vBJVYb",
+          "tool": "cancel_reservation",
+          "arguments_sha256": "ae0a4df72ec02bf133f6db47a20a88b712683758b9a93442d00a48764c653a17",
+          "error": false
+        },
+        {
+          "message_index": 27,
+          "call_id": "call_nQURBlFI6qx4RJulAd2ef2e2",
+          "tool": "book_reservation",
+          "arguments_sha256": "575781cd08e96c643d989451835ad82d4fe1ea7522bddef653d39504faf43ba8",
+          "error": false
+        },
+        {
+          "message_index": 29,
+          "call_id": "call_loSUCyqK4TKEF84ybWXt3zLJ",
+          "tool": "book_reservation",
+          "arguments_sha256": "29a0817b5cdfc1826f667a30f17b9904be3daf2d3fe46d0792ec19625dc7d281",
+          "error": false
+        },
+        {
+          "message_index": 31,
+          "call_id": "call_Oj9SSNLT9p7TcjWEOpsZqzq1",
+          "tool": "book_reservation",
+          "arguments_sha256": "bbe12f14bf84171f763ba271ccb6f38475ea9a9eb1618628ee3aa457a2841c10",
+          "error": false
+        }
+      ],
+      "final_db_sha256": "aa76061c5ba3186cd976e04b74f88de0aeb8667094c90bf43ee7b38d58007f2c",
+      "db_match": false,
+      "missing_communication": [],
+      "worker_memory": {
+        "snapshot_id": "snap_4de6288631cf4a9992acc446eb55c78e",
+        "title_body_sha256": "b5d2d183e6fd715eff685a2427bb309e7a54588ee4f0710f0f5f6e52ad0aebdb",
+        "items": 1,
+        "worker_requests_with_exact_snapshot": 15,
+        "note_literal_presence": {}
+      }
+    },
+    {
+      "task": "23",
+      "job": 326,
+      "report_sha256": "879b3ae5f541adcd00e61d98cfbbe1bc0e45035c2f6422d7d10ee15d3455a860",
+      "writes": [
+        {
+          "message_index": 18,
+          "call_id": "call_9a483c59567845d3bbc1a2ee523adf3b",
+          "tool": "cancel_reservation",
+          "arguments_sha256": "ae0a4df72ec02bf133f6db47a20a88b712683758b9a93442d00a48764c653a17",
+          "error": false
+        },
+        {
+          "message_index": 26,
+          "call_id": "call_EpCyBqhfGYwaPf6MnmnRNPSJ",
+          "tool": "book_reservation",
+          "arguments_sha256": "c73ebfd19c8f36cef01659632a2e90dc0968e63b0b81ed4c92b76a0399220cb3",
+          "error": false
+        },
+        {
+          "message_index": 28,
+          "call_id": "call_mIhdNXJapI12ez469wQoZwlp",
+          "tool": "book_reservation",
+          "arguments_sha256": "4b35828c4c443950c29f42f0a3279a9aae3cf7b203bb879623e7f9855b5e854f",
+          "error": false
+        },
+        {
+          "message_index": 30,
+          "call_id": "call_BiL8qgpfffqHWOSnguYSrhMh",
+          "tool": "book_reservation",
+          "arguments_sha256": "4a0c6775a7abbccbf2c463b523477c0218f2969d3e374a2e72a2cf9e9d5592d0",
+          "error": false
+        }
+      ],
+      "final_db_sha256": "b46d1bed5ba2b9865240d1073bc143e93d59be2c363ed26e1a45523e929e6e11",
+      "db_match": true,
+      "missing_communication": []
+    },
+    {
+      "task": "23",
+      "job": 328,
+      "report_sha256": "143579b8a99cc98590e1c9a119258775e72651a8a26c23770cde54275f4db129",
+      "writes": [
+        {
+          "message_index": 12,
+          "call_id": "call_XDwBHBDRMGkyXWdo8Yflh9PJ",
+          "tool": "cancel_reservation",
+          "arguments_sha256": "ae0a4df72ec02bf133f6db47a20a88b712683758b9a93442d00a48764c653a17",
+          "error": false
+        },
+        {
+          "message_index": 47,
+          "call_id": "call_8AHejnur09RlQcT4JuYa5Kxj",
+          "tool": "book_reservation",
+          "arguments_sha256": "c73ebfd19c8f36cef01659632a2e90dc0968e63b0b81ed4c92b76a0399220cb3",
+          "error": false
+        },
+        {
+          "message_index": 49,
+          "call_id": "call_tjB40SY2zfPotpV66zU3ij82",
+          "tool": "book_reservation",
+          "arguments_sha256": "6637b90039a17e0ef790e988d7757cb0663015fb67cc2b30dd7f73c92fb5820f",
+          "error": false
+        }
+      ],
+      "final_db_sha256": "68fa42b199dfefcb1c7479ec98154353517599a4f36102c82005d82cc5d5b47b",
+      "db_match": false,
+      "missing_communication": [],
+      "worker_memory": {
+        "snapshot_id": "snap_b742591b9c1f48e495421b026ec1ddfb",
+        "title_body_sha256": "b1f3d89d0ca5d414b0901e0217d90d660fc39bf23f0bffb04e25a8b04660c879",
+        "items": 1,
+        "worker_requests_with_exact_snapshot": 25,
+        "note_literal_presence": {}
+      }
+    },
+    {
+      "task": "14",
+      "job": 329,
+      "report_sha256": "55d88cb7192f9c31db4001ee52f05e9d355e4632f54e4ed11065953abeff9c45",
+      "writes": [
+        {
+          "message_index": 20,
+          "call_id": "call_DPQRjrIFKeVAoWJJEtfyXNDf",
+          "tool": "cancel_reservation",
+          "arguments_sha256": "ae0a4df72ec02bf133f6db47a20a88b712683758b9a93442d00a48764c653a17",
+          "error": false
+        },
+        {
+          "message_index": 35,
+          "call_id": "call_2cOmfPzzPxbAbClhppVitUwR",
+          "tool": "book_reservation",
+          "arguments_sha256": "8393c72d784fb988f266415040d39bfb184eb9ac1edcb060a90fe78c4256dc4b",
+          "error": false
+        }
+      ],
+      "final_db_sha256": "b4ea8effd45eee77a90b96a2b298a5dbe4e7d7fff9452c952f481f9a447facdf",
+      "db_match": true,
+      "missing_communication": [],
+      "worker_memory": {
+        "snapshot_id": "snap_a11e73e7381f4ebc89879270482c2a4a",
+        "title_body_sha256": "9cb2d982ea2b6238d23ac7e81b7c85491d25e8ab0aeab6cc287f7f867e5dd9b1",
+        "items": 1,
+        "worker_requests_with_exact_snapshot": 18,
+        "note_literal_presence": {
+          "one": true,
+          "$1,786": false
+        }
+      }
+    },
+    {
+      "task": "14",
+      "job": 330,
+      "report_sha256": "3c7ce8e1f659f08dc5f0ca82fe2c951c9d9323e043e8f56e9c09fffd0e14264e",
+      "writes": [
+        {
+          "message_index": 12,
+          "call_id": "call_XK1MdmsXkavdPCr4baPs8YBM",
+          "tool": "cancel_reservation",
+          "arguments_sha256": "ae0a4df72ec02bf133f6db47a20a88b712683758b9a93442d00a48764c653a17",
+          "error": false
+        },
+        {
+          "message_index": 25,
+          "call_id": "call_SZknlU1kTckOW2e86lC4WARU",
+          "tool": "book_reservation",
+          "arguments_sha256": "8393c72d784fb988f266415040d39bfb184eb9ac1edcb060a90fe78c4256dc4b",
+          "error": false
+        }
+      ],
+      "final_db_sha256": "b4ea8effd45eee77a90b96a2b298a5dbe4e7d7fff9452c952f481f9a447facdf",
+      "db_match": true,
+      "missing_communication": [],
+      "selected_public_turns": [
+        {
+          "index": 19,
+          "role": "assistant",
+          "text": "{\"message\":\"Your old reservation K1NW8N has been cancelled. The $567 refund was reversed to the original gift card and should be credited within 5–7 business days.\\n\\nFor the new business-class round trip, the lowest-priced option I found for all three passengers is:\\n- May 26: HAT023, JFK–SFO, direct — $364 per passenger\\n- May 28: HAT204, SFO–SEA, then HAT100, SEA–JFK — $507 per passenger. Arrival is at 19:00 on May 28.\\n- Total: $871 per passenger, $2,613 for three passengers.\\n\\nBefore I can prepare the booking, please tell me how many checked bags you need in total, whether you want travel insurance ($30 per passenger), and which saved payment method(s) and amounts you want to use. I have your three passengers’ details from the cancelled reservation. I’ll list the complete booking details and get your explicit confirmation before booking.\"}"
+        },
+        {
+          "index": 23,
+          "role": "assistant",
+          "text": "{\"message\":\"You’re right that your certificates total $1,000, but a reservation can use at most one travel certificate. The largest single certificate in your profile is $500, so the proposed payment uses that certificate, both gift cards totaling $327, and $1,786 on your Mastercard. The other certificates can’t be combined into this booking.\"}"
+        },
+        {
+          "index": 24,
+          "role": "user",
+          "text": "Okay, got it — one certificate max per booking. So $1,786 on the master card, that's under my $2,000 limit, so we're good. Go ahead and book it."
+        }
+      ],
+      "worker_memory": {
+        "snapshot_id": "snap_d59ceb42c344430894f7ebb96fefd6e2",
+        "title_body_sha256": "7131b9ae304fe331551e69c92baf18557201eadbcd75ebaaf719e6308c3eacb0",
+        "items": 1,
+        "worker_requests_with_exact_snapshot": 12,
+        "note_literal_presence": {
+          "one travel certificate": true,
+          "$1,786": true
+        }
+      }
+    },
+    {
+      "task": "14",
+      "job": 331,
+      "report_sha256": "37abe54b1fda2d9468b8e90abd284039bbfab8c6aad2165665bcc3d3ce8ba719",
+      "writes": [
+        {
+          "message_index": 23,
+          "call_id": "call_eifyrfg3cxc3edBbyoQUoJPm",
+          "tool": "cancel_reservation",
+          "arguments_sha256": "ae0a4df72ec02bf133f6db47a20a88b712683758b9a93442d00a48764c653a17",
+          "error": false
+        },
+        {
+          "message_index": 25,
+          "call_id": "call_ql96JguR8Xx4poUslS9WXYcj",
+          "tool": "book_reservation",
+          "arguments_sha256": "8393c72d784fb988f266415040d39bfb184eb9ac1edcb060a90fe78c4256dc4b",
+          "error": false
+        }
+      ],
+      "final_db_sha256": "b4ea8effd45eee77a90b96a2b298a5dbe4e7d7fff9452c952f481f9a447facdf",
+      "db_match": true,
+      "missing_communication": [],
+      "worker_memory": {
+        "snapshot_id": "snap_fd7c1949bcea4a15b5e196187c3b1309",
+        "title_body_sha256": "a95e125e537e4f2605ccab4756419c952e2fef2adb3149a75e15a78d08c43457",
+        "items": 1,
+        "worker_requests_with_exact_snapshot": 12,
+        "note_literal_presence": {
+          "one travel certificate": true,
+          "$1,786": true
+        }
+      }
+    },
+    {
+      "task": "14",
+      "job": 333,
+      "report_sha256": "a6de321ea233efb68251c6a4ea31fa0bd459f510f3ecde3de30c50ed603ea2f3",
+      "writes": [
+        {
+          "message_index": 24,
+          "call_id": "call_lD2OtdxKF6y1WCzWLAQiZdDD",
+          "tool": "cancel_reservation",
+          "arguments_sha256": "ae0a4df72ec02bf133f6db47a20a88b712683758b9a93442d00a48764c653a17",
+          "error": false
+        },
+        {
+          "message_index": 34,
+          "call_id": "call_QmguZfPQPjWvzJBiWL7qnE1u",
+          "tool": "book_reservation",
+          "arguments_sha256": "8666f90c93db17ed6d2075d0d8e2582fb6c704989f6ff72cf65f2c0578dae087",
+          "error": false
+        }
+      ],
+      "final_db_sha256": "8195a15a1072aae34fd4a21c28ee641af463bbe26b34a750eeda9a6380f0b2bb",
+      "db_match": false,
+      "missing_communication": [
+        "1786"
+      ]
+    },
+    {
+      "task": "14",
+      "job": 334,
+      "report_sha256": "ae8d014e4773e2cffd384e9a24bbca710196b89ddccd90f337c291fe74d2d148",
+      "writes": [
+        {
+          "message_index": 12,
+          "call_id": "call_2z2UvBZKoGnjUuu9dzflWsg6",
+          "tool": "cancel_reservation",
+          "arguments_sha256": "ae0a4df72ec02bf133f6db47a20a88b712683758b9a93442d00a48764c653a17",
+          "error": false
+        }
+      ],
+      "final_db_sha256": "ef1b513808e5a0584bea6f43ef9ea7ed4df6c746d9ce92492a465266116e8da5",
+      "db_match": false,
+      "missing_communication": [
+        "1786"
+      ],
+      "selected_public_turns": [
+        {
+          "index": 21,
+          "role": "assistant",
+          "text": "{\"message\":\"Using the largest single certificate ($500), then both gift cards ($327), would leave $3,007 on your Mastercard for the $3,834 booking. That is over your $2,000 limit, so I have not booked it. The booking can use at most one travel certificate.\"}"
+        },
+        {
+          "index": 23,
+          "role": "assistant",
+          "text": "{\"message\":\"Among the results with dates matching your trip, the lowest-priced business itinerary I found is still $3,834 total for three passengers: $771 per person outbound (HAT083 + HAT274) and $507 per person returning (HAT204 + HAT100). Using the $500 certificate and $327 in gift cards would leave $3,007 on your Mastercard.\\n\\nThere was also a direct outbound result priced at $364 per person, but its date was missing from the search result, so I can’t confirm it applies to May 26 or use it to verify a cheaper valid itinerary.\"}"
+        },
+        {
+          "index": 24,
+          "role": "user",
+          "text": "Okay, I hear you. Since the cheapest confirmed option still puts over $3,000 on my master card, that's more than I'm willing to do. So let's not book the new flight for now. Thanks for checking all that."
+        }
+      ],
+      "worker_memory": {
+        "snapshot_id": "snap_5ffb779fb136409abb5e1b239e6e6f29",
+        "title_body_sha256": "a0dee4b9f662adf1afa8b8cce9a86dddfda77a4efb0cc696e5c4189428c6a689",
+        "items": 1,
+        "worker_requests_with_exact_snapshot": 12,
+        "note_literal_presence": {
+          "one certificate maximum": true,
+          "$1,786": true
+        }
+      }
+    },
+    {
+      "task": "21",
+      "job": 341,
+      "report_sha256": "0a8cd100d00e429818c97db240dbd17d705eae04f753c08e07c7ec6f94e7b0e1",
+      "writes": [
+        {
+          "message_index": 26,
+          "call_id": "call_CKbcThn6B4t0uipR5jYKX8xU",
+          "tool": "update_reservation_flights",
+          "arguments_sha256": "89203e9339fe91afba0897f8c50ca12cff2b9f5cd7b865181efac006eb4bda2a",
+          "error": true
+        },
+        {
+          "message_index": 34,
+          "call_id": "call_owT60WE3UmqkeMdNwNpYSpAw",
+          "tool": "update_reservation_flights",
+          "arguments_sha256": "5ef891774e6b27c03f53e212a8fa2e95c7ef7196ccec948b92367a8c1d70f975",
+          "error": false
+        },
+        {
+          "message_index": 40,
+          "call_id": "call_xBB3CnQxriOzMCjcvAfRp4RY",
+          "tool": "update_reservation_baggages",
+          "arguments_sha256": "aa558fa502529d7c9c416d0182d9f7e936404881960b5c7512c83fc9ab349a87",
+          "error": false
+        }
+      ],
+      "final_db_sha256": "caf73960eb9dc2d9711af9336cb64b6eb97d6a6488615cf6b227f48f92476b4c",
+      "db_match": false,
+      "missing_communication": [],
+      "selected_public_turns": [
+        {
+          "index": 31,
+          "role": "user",
+          "text": "Okay, so what's the total I need to pay? Just tell me which card to use and do it."
+        },
+        {
+          "index": 32,
+          "role": "assistant",
+          "text": "Based on the listed fares, the change increases the itinerary total from **$566 to $625**, so the additional amount is **$59**. The smallest gift card with enough balance is **gift card 7091239**, which has **$157**.\n\nI can retry the change using that gift card. Please confirm you want me to proceed with the $59 payment and the itinerary change to HAT290 and HAT175 on May 27."
+        },
+        {
+          "index": 33,
+          "role": "user",
+          "text": "Yes, go ahead. Use gift card 7091239 and make the change."
+        }
+      ]
+    },
+    {
+      "task": "21",
+      "job": 342,
+      "report_sha256": "95b988dd55763e04f46ccd5fe0a5c2b611b8c2e6de52a06212a35ed21ab99f78",
+      "writes": [
+        {
+          "message_index": 18,
+          "call_id": "call_KHPzTRLaPPfLRis8X24covYK",
+          "tool": "update_reservation_flights",
+          "arguments_sha256": "89203e9339fe91afba0897f8c50ca12cff2b9f5cd7b865181efac006eb4bda2a",
+          "error": true
+        },
+        {
+          "message_index": 20,
+          "call_id": "call_e7b777407fda4e81bd0afdce16dc2175",
+          "tool": "update_reservation_baggages",
+          "arguments_sha256": "aa558fa502529d7c9c416d0182d9f7e936404881960b5c7512c83fc9ab349a87",
+          "error": false
+        },
+        {
+          "message_index": 26,
+          "call_id": "call_zZbSLyb8TjIOHRi29kCjcB5Z",
+          "tool": "update_reservation_flights",
+          "arguments_sha256": "314a98d7a7713aef87119c96de00ed52a956d9ec388fcb724a9faaeac630721a",
+          "error": false
+        }
+      ],
+      "final_db_sha256": "9ede9d0dc4363e33948ef484380eb7b640f02cfbfed1b6d2ba70bceacf29da73",
+      "db_match": true,
+      "missing_communication": [],
+      "selected_public_turns": [
+        {
+          "index": 23,
+          "role": "user",
+          "text": "Wait, you said the smallest balance was the $6 one. Now it's not enough? Fine — use the next smallest gift card then."
+        },
+        {
+          "index": 24,
+          "role": "assistant",
+          "text": "{\"message\":\"Understood. The next-smallest gift card is the one with a $113 balance. The flight-change attempt failed, so your return is still unchanged; the baggage update to 2 checked bags succeeded. Please confirm: should I retry the return change using gift card ending 6644 (balance $113)?\"}"
+        },
+        {
+          "index": 25,
+          "role": "user",
+          "text": "Yes, retry it with that one."
+        }
+      ],
+      "worker_memory": {
+        "snapshot_id": "snap_1ff7840e110a47209e343c47386765d8",
+        "title_body_sha256": "6f95d35e333f111289767c203baed954eab40c7c297f0a12d552df9989f65e06",
+        "items": 1,
+        "worker_requests_with_exact_snapshot": 14,
+        "note_literal_presence": {
+          "HAT290": true,
+          "HAT175": true,
+          "$6": true,
+          "$113": false,
+          "6276644": false
+        }
+      }
+    },
+    {
+      "task": "33",
+      "job": 360,
+      "report_sha256": "47b99af51e62cbf3217bcac78c1fdff7eb8c8db640baf4d9c8819740f3f8b25d",
+      "writes": [],
+      "final_db_sha256": "124e39a664b56402bcd09cb8a6a9cece6acb8462337c969799d5658e3250f263",
+      "db_match": false,
+      "missing_communication": [],
+      "worker_memory": {
+        "snapshot_id": "snap_ba7df4ddb92c4dd4a80aaa2023d61f12",
+        "title_body_sha256": "682f95a5175789ded64af6ffb68af22664aadccf23f35e655b22ff18c99a2280",
+        "items": 1,
+        "worker_requests_with_exact_snapshot": 10,
+        "note_literal_presence": {}
+      }
+    },
+    {
+      "task": "33",
+      "job": 362,
+      "report_sha256": "b840421c2779889dead31af4f9c4b3d8c685a94645f15c30d2bc4650b18cf81b",
+      "writes": [],
+      "final_db_sha256": "124e39a664b56402bcd09cb8a6a9cece6acb8462337c969799d5658e3250f263",
+      "db_match": false,
+      "missing_communication": [],
+      "worker_memory": {
+        "snapshot_id": "snap_4092bdf6ae724dce8cbcd06ff988737e",
+        "title_body_sha256": "90a9bb0becaa46e6a01bcbadf1fee965159b6f33e4705b9d177291c0fc5d5bd6",
+        "items": 1,
+        "worker_requests_with_exact_snapshot": 7,
+        "note_literal_presence": {}
+      }
+    },
+    {
+      "task": "33",
+      "job": 363,
+      "report_sha256": "71b0baad5b599b98bc66fdabdd4a50354986243bdbac05a8f2f394b1cc2dd995",
+      "writes": [
+        {
+          "message_index": 21,
+          "call_id": "call_xZwDrP6RFzKpRqzflzsnoAuU",
+          "tool": "update_reservation_flights",
+          "arguments_sha256": "d8c3335ac1e26a1601fa71755546726ff5a01d54a26afdcb8022f7cd93a5ecdd",
+          "error": false
+        },
+        {
+          "message_index": 29,
+          "call_id": "call_mbq12iF083mmvAoDgXBBnshP",
+          "tool": "update_reservation_baggages",
+          "arguments_sha256": "22baabd6b253267f824b9457083476deaa45bb2522d8559add9910f9c03bd04c",
+          "error": false
+        }
+      ],
+      "final_db_sha256": "735ba8f15206b7fbf570fe68bd92ea75d7dd5ea04c87d5a53296d70d103f7b74",
+      "db_match": true,
+      "missing_communication": []
+    },
+    {
+      "task": "33",
+      "job": 364,
+      "report_sha256": "b707daf4f23c63fc97b466f761058899b2b1b0c685e71855877f75834946179f",
+      "writes": [],
+      "final_db_sha256": "124e39a664b56402bcd09cb8a6a9cece6acb8462337c969799d5658e3250f263",
+      "db_match": false,
+      "missing_communication": [],
+      "worker_memory": {
+        "snapshot_id": "snap_e6079fab38a44962bcb60013cf7cbbe5",
+        "title_body_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "items": 0,
+        "worker_requests_with_exact_snapshot": 9,
+        "note_literal_presence": {}
+      }
+    },
+    {
+      "task": "12",
+      "job": 365,
+      "report_sha256": "3d9ff354e8a5f4eef956ee2c5019f54595cb93df48b32276e1c58dd752598b10",
+      "writes": [
+        {
+          "message_index": 11,
+          "call_id": "call_dCgRXu0LIU8ItFMEOy3beoxq",
+          "tool": "update_reservation_baggages",
+          "arguments_sha256": "f1e964a589c577da835b285314f59881037e1fd4c89520d1df20c119033a6c04",
+          "error": false
+        }
+      ],
+      "final_db_sha256": "df1e46c5aaf8af007c7b705ed14431b1d56c4b7d0dd53702f8623572cb047019",
+      "db_match": true,
+      "missing_communication": [],
+      "selected_public_turns": [
+        {
+          "index": 7,
+          "role": "assistant",
+          "text": "I found reservation YAX4DR: it is an economy, one-way booking for two passengers from Boston to Minneapolis, with a connection in Orlando—HAT235 BOS–MCO on May 18, 2024, then HAT298 MCO–MSP on May 19, 2024. This is not a direct flight. The first segment is in the past, so the reservation has already begun; cabin changes aren’t allowed after any segment has been flown. I can’t change this reservation to business."
+        }
+      ],
+      "worker_memory": {
+        "snapshot_id": "snap_4b2c2e5137e5402285cb9bc6c913d5ed",
+        "title_body_sha256": "766b204662f2c375d8052c9e4315c423f0b8f7a8e16578950805f82dda8399dd",
+        "items": 1,
+        "worker_requests_with_exact_snapshot": 6,
+        "note_literal_presence": {}
+      }
+    },
+    {
+      "task": "12",
+      "job": 368,
+      "report_sha256": "b355de1ff7add10fbfd5971a04452298d2095831f06bff4f9fb8992f1563ba8a",
+      "writes": [
+        {
+          "message_index": 21,
+          "call_id": "call_YPHcSGW5eQGgPEucL5umgtGI",
+          "tool": "update_reservation_baggages",
+          "arguments_sha256": "f1e964a589c577da835b285314f59881037e1fd4c89520d1df20c119033a6c04",
+          "error": false
+        }
+      ],
+      "final_db_sha256": "df1e46c5aaf8af007c7b705ed14431b1d56c4b7d0dd53702f8623572cb047019",
+      "db_match": true,
+      "missing_communication": [],
+      "worker_memory": {
+        "snapshot_id": "snap_ec46dd8c46c6401a8c1bd1eb07fbaef5",
+        "title_body_sha256": "b989ebf2904ba401316279fd8144193a5ecdb022427b931508a779dd8224404f",
+        "items": 1,
+        "worker_requests_with_exact_snapshot": 11,
+        "note_literal_presence": {}
+      }
+    },
+    {
+      "task": "12",
+      "job": 369,
+      "report_sha256": "75b9017ca10045062c0a909dfbf85ded07cccd5f4a52b5ab3e2f0ca622a3808e",
+      "writes": [
+        {
+          "message_index": 13,
+          "call_id": "call_KDXQJg9yMIcJ0MkyLZf1q2oI",
+          "tool": "update_reservation_flights",
+          "arguments_sha256": "080d83f42f48789e7edbaad9787a2611912d43fc80fc85920007e04823e78dfd",
+          "error": false
+        },
+        {
+          "message_index": 15,
+          "call_id": "call_lsyOfgWlwGFI02Ac6tOSNU8W",
+          "tool": "update_reservation_baggages",
+          "arguments_sha256": "f1e964a589c577da835b285314f59881037e1fd4c89520d1df20c119033a6c04",
+          "error": false
+        }
+      ],
+      "final_db_sha256": "4d309b6e37c4b567e480712b05d667d7f5468917eb1b67e17a247e477d756daf",
+      "db_match": false,
+      "missing_communication": []
+    },
+    {
+      "task": "12",
+      "job": 370,
+      "report_sha256": "3455ea1a6cab60f321187fedf737bdcfb1a4b581de4d3f82db4aab9e28647b6a",
+      "writes": [
+        {
+          "message_index": 16,
+          "call_id": "call_Xvry8W2ryq5Q43zkjH30EhB8",
+          "tool": "update_reservation_baggages",
+          "arguments_sha256": "f1e964a589c577da835b285314f59881037e1fd4c89520d1df20c119033a6c04",
+          "error": false
+        }
+      ],
+      "final_db_sha256": "df1e46c5aaf8af007c7b705ed14431b1d56c4b7d0dd53702f8623572cb047019",
+      "db_match": true,
+      "missing_communication": [],
+      "worker_memory": {
+        "snapshot_id": "snap_fdc8531997664a2b957c09ee2f6ad006",
+        "title_body_sha256": "1eed1d7a770d2a26f903d2f7f39e093d8f06778204d96cb12810e5880625c4f5",
+        "items": 1,
+        "worker_requests_with_exact_snapshot": 8,
+        "note_literal_presence": {}
+      }
+    },
+    {
+      "task": "20",
+      "job": 371,
+      "report_sha256": "bf41f48049c010dde7810aefa7a87c61b269e263fc567007f9a2974d117f42a5",
+      "writes": [
+        {
+          "message_index": 24,
+          "call_id": "call_O4ehE3Y30Qm2EAzRERtoiKkC",
+          "tool": "book_reservation",
+          "arguments_sha256": "76fc129910073c000f9a107bd40122562cd5bce0eae4e19c7b53b5f5e0b6da90",
+          "error": false
+        }
+      ],
+      "final_db_sha256": "a561da60bcd2e87ff0a34ebd4c74bfcfe5ca1d7e1e383f41fa6d5b8716d9128f",
+      "db_match": true,
+      "missing_communication": []
+    },
+    {
+      "task": "20",
+      "job": 373,
+      "report_sha256": "b63fd23d51da6d192315fee1835a2fd96dcb33af2405eddeedd39a028c1dac4b",
+      "writes": [
+        {
+          "message_index": 35,
+          "call_id": "call_6N9P9QBTZOtXKZLyrSZxrq1A",
+          "tool": "book_reservation",
+          "arguments_sha256": "c525d33aa279f3ce77e771e41876249fbe74af963e098f7e281b00a767dd1c54",
+          "error": false
+        }
+      ],
+      "final_db_sha256": "f4ec4e98385c496f42c96c161aa01465c3d7a1080d712eebb99e4e8e88abe506",
+      "db_match": false,
+      "missing_communication": [],
+      "worker_memory": {
+        "snapshot_id": "snap_5ca0e517215f43519730509a8c5f4bc9",
+        "title_body_sha256": "963c19d7b9ccee6f8dd9adf5c8f90df9393f35926cb3f9038fb0e7eedc5c5bf7",
+        "items": 1,
+        "worker_requests_with_exact_snapshot": 13,
+        "note_literal_presence": {}
+      }
+    },
+    {
+      "task": "20",
+      "job": 375,
+      "report_sha256": "9ee86966f1537577ea35513b6f858b4f126632aa0e55ba2fe03768dc739c862f",
+      "writes": [],
+      "final_db_sha256": "124e39a664b56402bcd09cb8a6a9cece6acb8462337c969799d5658e3250f263",
+      "db_match": false,
+      "missing_communication": [],
+      "worker_memory": {
+        "snapshot_id": "snap_77b2bd9d64f4494793ef16bd79da83bc",
+        "title_body_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "items": 0,
+        "worker_requests_with_exact_snapshot": 10,
+        "note_literal_presence": {}
+      }
+    },
+    {
+      "task": "20",
+      "job": 376,
+      "report_sha256": "80028b93b2fa0f4553faee666d423f8f336ec4bc957fc5ee2f7ccb4a673e27dd",
+      "writes": [],
+      "final_db_sha256": "124e39a664b56402bcd09cb8a6a9cece6acb8462337c969799d5658e3250f263",
+      "db_match": false,
+      "missing_communication": [],
+      "worker_memory": {
+        "snapshot_id": "snap_0f6eb709ad3c457db07d739993c1c9e0",
+        "title_body_sha256": "00fe21d6b11b00e75807c9c2cd75b79aa5b342c02c7861c19e82fc1313bd77e7",
+        "items": 1,
+        "worker_requests_with_exact_snapshot": 20,
+        "note_literal_presence": {}
+      }
+    },
+    {
+      "task": "42",
+      "job": 377,
+      "report_sha256": "96841672eb380e596690950b5c040b33d236c6965c1733b41e2031b0334094e1",
+      "writes": [
+        {
+          "message_index": 26,
+          "call_id": "call_wnDvCjL7jQiT759DVpOZgXdA",
+          "tool": "cancel_reservation",
+          "arguments_sha256": "7d36a1dd03926cf9d90e5ce227dd88ee1d29761cc840c88a4b194b248e991028",
+          "error": false
+        },
+        {
+          "message_index": 28,
+          "call_id": "call_0768c4d6e71e43e8a81494422d44a25e",
+          "tool": "cancel_reservation",
+          "arguments_sha256": "2a92f77b4ab193ba412c385cc29137eee74bf98ef6d862cce7009db0b25eddc9",
+          "error": false
+        }
+      ],
+      "final_db_sha256": "768a1bf6bcedc298cdf5f7ce0d7956a12bfd383adcdc6531e8ed1ebfc605374a",
+      "db_match": true,
+      "missing_communication": [],
+      "selected_public_turns": [
+        {
+          "index": 23,
+          "role": "user",
+          "text": "Right, so 5BGGWZ and PUNERT are the ones I keep. Cancel the rest — FDZ0T5 and HSR97W. And leave SE9KEL alone, that's not mine to touch."
+        }
+      ],
+      "worker_memory": {
+        "snapshot_id": "snap_c27c05f63fed4af4b78af9b2f83e04de",
+        "title_body_sha256": "4fd409a7d32769a512e1f9ce848c483e6f05a7ea4f59bd4340bd687c66d99cf4",
+        "items": 1,
+        "worker_requests_with_exact_snapshot": 16,
+        "note_literal_presence": {
+          "passenger identity, dates and status": true,
+          "5BGGWZ": true,
+          "FDZ0T5": false,
+          "HSR97W": false
+        }
+      }
+    },
+    {
+      "task": "42",
+      "job": 378,
+      "report_sha256": "a1cd4650fb2718310940468fa9b004e9cad68d8779b43b85ee4cde1ac4f8f6cf",
+      "writes": [
+        {
+          "message_index": 24,
+          "call_id": "call_9V4Qm6NP5gAZN8zcCJyZuUSu",
+          "tool": "cancel_reservation",
+          "arguments_sha256": "7d36a1dd03926cf9d90e5ce227dd88ee1d29761cc840c88a4b194b248e991028",
+          "error": false
+        },
+        {
+          "message_index": 28,
+          "call_id": "call_KUeunWoaSoS8dLGWlBbsOJ91",
+          "tool": "cancel_reservation",
+          "arguments_sha256": "2a92f77b4ab193ba412c385cc29137eee74bf98ef6d862cce7009db0b25eddc9",
+          "error": false
+        },
+        {
+          "message_index": 30,
+          "call_id": "call_Lr0SBvQWqgMlrg2ZIlqIgOTv",
+          "tool": "send_certificate",
+          "arguments_sha256": "caf0c181b705a789c0b935922f537a203f40748797bff95c234c68db35e26719",
+          "error": false
+        }
+      ],
+      "final_db_sha256": "1ab5079649e5fad7d61b34d46917f6d51184022be9ad32a36adccbdb5e9582bd",
+      "db_match": false,
+      "missing_communication": [],
+      "worker_memory": {
+        "snapshot_id": "snap_506e3edaed8c45bc87f874fabd150d9e",
+        "title_body_sha256": "ee685bffda9b80e49018d533c4ab7cde69308c99b54c17e614bcba5bd45e2a19",
+        "items": 1,
+        "worker_requests_with_exact_snapshot": 13,
+        "note_literal_presence": {}
+      }
+    },
+    {
+      "task": "42",
+      "job": 384,
+      "report_sha256": "a805ed05386431e839e2141b8dd2e6d3172aead19548cd56ef84dd418c1ef60b",
+      "writes": [],
+      "final_db_sha256": "124e39a664b56402bcd09cb8a6a9cece6acb8462337c969799d5658e3250f263",
+      "db_match": false,
+      "missing_communication": []
+    },
+    {
+      "task": "10",
+      "job": 385,
+      "report_sha256": "eba7cb14cb0b8a0833f872f049b719afc39c6e0d53f955d622abcf30639f7fbb",
+      "writes": [],
+      "final_db_sha256": "124e39a664b56402bcd09cb8a6a9cece6acb8462337c969799d5658e3250f263",
+      "db_match": true,
+      "missing_communication": [],
+      "worker_memory": {
+        "snapshot_id": "snap_49e55a2a7eca446e8c42414a6da189a3",
+        "title_body_sha256": "5ec084cf3e1c8eb0444b66277ad0e03c3e9c36d0859fb125de1d5e7407b98f00",
+        "items": 1,
+        "worker_requests_with_exact_snapshot": 15,
+        "note_literal_presence": {}
+      }
+    },
+    {
+      "task": "10",
+      "job": 386,
+      "report_sha256": "c9d049b21c7b864e77b6013bf365c34c08e1fc383d0f7d7e9b0fdc313a35cf1d",
+      "writes": [
+        {
+          "message_index": 20,
+          "call_id": "call_rwZ7VzZnZi4TkBkITH9AzEab",
+          "tool": "update_reservation_flights",
+          "arguments_sha256": "8e1725cf9619ca85eb1520c5f7ed9a5814032d6affbc0c3e74f9a59e9116f675",
+          "error": false
+        }
+      ],
+      "final_db_sha256": "7b77e49544633cc9fb4328c01ddb75b928f6042c09874590906465a7763d1b08",
+      "db_match": false,
+      "missing_communication": []
+    },
+    {
+      "task": "10",
+      "job": 387,
+      "report_sha256": "c870c1bce8736158dfa20adaa887b8f7c49623275d54d88115282adde15e7142",
+      "writes": [],
+      "final_db_sha256": "124e39a664b56402bcd09cb8a6a9cece6acb8462337c969799d5658e3250f263",
+      "db_match": true,
+      "missing_communication": [],
+      "worker_memory": {
+        "snapshot_id": "snap_68bd225e2fad4ffab09125885313f545",
+        "title_body_sha256": "da518ef4f56bd5c7f3bb6f592c297ce0fe1468fa708c6943834578295a8c2d31",
+        "items": 1,
+        "worker_requests_with_exact_snapshot": 22,
+        "note_literal_presence": {}
+      }
+    },
+    {
+      "task": "10",
+      "job": 388,
+      "report_sha256": "7b970c7c67bd746f6b40aafdd4abaf301938349e0a22e6976c54ada21cc786fc",
+      "writes": [],
+      "final_db_sha256": "124e39a664b56402bcd09cb8a6a9cece6acb8462337c969799d5658e3250f263",
+      "db_match": true,
+      "missing_communication": [],
+      "worker_memory": {
+        "snapshot_id": "snap_106921c8e7d14698b479fc1e588ede7c",
+        "title_body_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "items": 0,
+        "worker_requests_with_exact_snapshot": 24,
+        "note_literal_presence": {}
+      }
+    },
+    {
+      "task": "10",
+      "job": 390,
+      "report_sha256": "3612a95374821ad713a3df7f18da18c52c300c49f09755395f8316f49672470e",
+      "writes": [],
+      "final_db_sha256": "124e39a664b56402bcd09cb8a6a9cece6acb8462337c969799d5658e3250f263",
+      "db_match": true,
+      "missing_communication": [],
+      "worker_memory": {
+        "snapshot_id": "snap_31c068d2db834aba86b288c34065c5d9",
+        "title_body_sha256": "6d1e0d96110c985a577b80d51c87f0f7ecaa0fbae349e2f266f49a4cb591fa32",
+        "items": 1,
+        "worker_requests_with_exact_snapshot": 15,
+        "note_literal_presence": {}
+      }
+    },
+    {
+      "task": "11",
+      "job": 403,
+      "report_sha256": "b7046ab282908259e2ff16a856d0ede7a5441ef74920acf2c7fbce37c726be28",
+      "writes": [
+        {
+          "message_index": 24,
+          "call_id": "call_iQXRHnXpx6jvFwSeNktgemsl",
+          "tool": "cancel_reservation",
+          "arguments_sha256": "2fb2e70e3f3bd571456e25843d0a760c4c128ea1ad29b3dd8112e0e39576a5bc",
+          "error": false
+        }
+      ],
+      "final_db_sha256": "18bdc6dc3a30f4b2a504481663505be0fc2838ed7b1fd31efda5e025c616dae2",
+      "db_match": false,
+      "missing_communication": [],
+      "selected_public_turns": [
+        {
+          "index": 23,
+          "role": "user",
+          "text": "Yes, please cancel the entire reservation and request the full $5,700 refund to the original payment method. Can you confirm there aren’t any fees taken out, and send me a confirmation once it’s submitted? I’d like this done as quickly as possible."
+        }
+      ]
+    },
+    {
+      "task": "11",
+      "job": 404,
+      "report_sha256": "94b23335e36b51e4c90fcf6126b1acae49b2fa0f1c85779c83fadc7e56fed26e",
+      "writes": [
+        {
+          "message_index": 24,
+          "call_id": "call_5KzPoUhFvm3Xwu5VkiS5pE8A",
+          "tool": "update_reservation_flights",
+          "arguments_sha256": "4babf7b275fe01c9f52f962e7b1aebb11b96210e244a95ec02307be61aee0d96",
+          "error": false
+        }
+      ],
+      "final_db_sha256": "1e46d540ec2e530b9388347f5be682742e76f9c7cdd32c1c58438f765412f64f",
+      "db_match": true,
+      "missing_communication": [],
+      "selected_public_turns": [
+        {
+          "index": 23,
+          "role": "user",
+          "text": "Yes — please change all passengers to basic economy on the same flights, HAT003 on May 19 and HAT290 on May 20, and process the $5,244 fare difference back to the original payment method. How long will the refund take to show up?"
+        }
+      ],
+      "worker_memory": {
+        "snapshot_id": "snap_4af1027343fa437fb4560b219290d68e",
+        "title_body_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "items": 0,
+        "worker_requests_with_exact_snapshot": 13,
+        "note_literal_presence": {}
+      }
+    },
+    {
+      "task": "1",
+      "job": 409,
+      "report_sha256": "1c6930f5e0aa988e02c30d543ac9a728ccd98f14b0c214bd6f2d1793c8baccfd",
+      "writes": [],
+      "final_db_sha256": "124e39a664b56402bcd09cb8a6a9cece6acb8462337c969799d5658e3250f263",
+      "db_match": true,
+      "missing_communication": [],
+      "worker_memory": {
+        "snapshot_id": "snap_e3360be243ea4c558e23a46f41759a44",
+        "title_body_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "items": 0,
+        "worker_requests_with_exact_snapshot": 10,
+        "note_literal_presence": {}
+      }
+    },
+    {
+      "task": "1",
+      "job": 411,
+      "report_sha256": "46e1ffe23ac76b47f7ab9624d5b97b36784463250e5e6d4ae94452a7878ddeaf",
+      "writes": [],
+      "final_db_sha256": "124e39a664b56402bcd09cb8a6a9cece6acb8462337c969799d5658e3250f263",
+      "db_match": true,
+      "missing_communication": [],
+      "worker_memory": {
+        "snapshot_id": "snap_aee1e78ce5a147599728e064202a4c66",
+        "title_body_sha256": "81d024a612c4be916f3e66e1a090dea04786d06bf705fd87e5432e215549633f",
+        "items": 1,
+        "worker_requests_with_exact_snapshot": 5,
+        "note_literal_presence": {}
+      }
+    },
+    {
+      "task": "1",
+      "job": 412,
+      "report_sha256": "1e65b187ca4805c623814ab5af9647afaa62b2de6e4f3a21815b60e08b9565de",
+      "writes": [],
+      "final_db_sha256": "124e39a664b56402bcd09cb8a6a9cece6acb8462337c969799d5658e3250f263",
+      "db_match": true,
+      "missing_communication": [],
+      "worker_memory": {
+        "snapshot_id": "snap_1d6d60bb44324810a2e3d394d299ae82",
+        "title_body_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "items": 0,
+        "worker_requests_with_exact_snapshot": 5,
+        "note_literal_presence": {}
+      }
+    },
+    {
+      "task": "1",
+      "job": 413,
+      "report_sha256": "298767822c3af868ff277129d5c8dc02824b5405cbc0652cddd58b392e25955a",
+      "writes": [],
+      "final_db_sha256": "124e39a664b56402bcd09cb8a6a9cece6acb8462337c969799d5658e3250f263",
+      "db_match": true,
+      "missing_communication": [],
+      "worker_memory": {
+        "snapshot_id": "snap_15775e143d614d279d3cb54cb8d5f853",
+        "title_body_sha256": "c2eec388ed3dbfaa94edb27e52d95a91754d8c8db03f7a1e57fa4a325cd4269a",
+        "items": 1,
+        "worker_requests_with_exact_snapshot": 11,
+        "note_literal_presence": {}
+      }
+    },
+    {
+      "task": "1",
+      "job": 414,
+      "report_sha256": "36f9f5de7ec789a72523aed18f597706e65a4b6d4e62896f0abc5c5e61def733",
+      "writes": [
+        {
+          "message_index": 14,
+          "call_id": "call_PwOrN0e0Y2AN8uktWhaRfdLX",
+          "tool": "cancel_reservation",
+          "arguments_sha256": "8aea1b20398229511203007787cce5a0aecd2f530c2733bed61893146a176865",
+          "error": false
+        }
+      ],
+      "final_db_sha256": "4bdb36fc3ee20dbbdf9d6bdd15f7ced87b5bdce084649b0eaf9b599f007b1772",
+      "db_match": false,
+      "missing_communication": []
+    },
+    {
+      "task": "12",
+      "job": 426,
+      "report_sha256": "ecd2bb949d3aa31faa35aae324ed4b4988b33bf0d0e07f35248c54c792f1b922",
+      "writes": [
+        {
+          "message_index": 22,
+          "call_id": "call_cVOyhhdNkAqOJoA6dYgAXBzE",
+          "tool": "update_reservation_baggages",
+          "arguments_sha256": "f1e964a589c577da835b285314f59881037e1fd4c89520d1df20c119033a6c04",
+          "error": false
+        }
+      ],
+      "final_db_sha256": "df1e46c5aaf8af007c7b705ed14431b1d56c4b7d0dd53702f8623572cb047019",
+      "db_match": true,
+      "missing_communication": []
+    },
+    {
+      "task": "12",
+      "job": 427,
+      "report_sha256": "d2b541a3a861c0773ed6fb8fa2e80d7211fcf55f26820a4bdce5bad8e783f71a",
+      "writes": [
+        {
+          "message_index": 9,
+          "call_id": "call_HqXWcVXmc6RbAl0EpkWD853s",
+          "tool": "update_reservation_baggages",
+          "arguments_sha256": "f1e964a589c577da835b285314f59881037e1fd4c89520d1df20c119033a6c04",
+          "error": false
+        },
+        {
+          "message_index": 11,
+          "call_id": "call_R6UycqAoPGMj3Xj2hRNbiVAj",
+          "tool": "update_reservation_flights",
+          "arguments_sha256": "080d83f42f48789e7edbaad9787a2611912d43fc80fc85920007e04823e78dfd",
+          "error": false
+        }
+      ],
+      "final_db_sha256": "4d309b6e37c4b567e480712b05d667d7f5468917eb1b67e17a247e477d756daf",
+      "db_match": false,
+      "missing_communication": [],
+      "selected_public_turns": [
+        {
+          "index": 8,
+          "role": "user",
+          "text": "Yeah, that's the one — the Boston to Orlando, then Orlando to Minneapolis. Change both passengers to business on those flights. And yes, two checked bags total under my name."
+        },
+        {
+          "index": 14,
+          "role": "user",
+          "text": "Wait, hold on. $1,200? That's way over what I'm willing to pay. I said I'd go up to $650 for the upgrade. That's not gonna work for me."
+        }
+      ],
+      "worker_memory": {
+        "snapshot_id": "snap_67da7bafd3b54164832570106d0030b9",
+        "title_body_sha256": "be85c42492f4cc875ccd8f7285055b73e1fe933319dda02f62239d900a251818",
+        "items": 1,
+        "worker_requests_with_exact_snapshot": 9,
+        "note_literal_presence": {
+          "$600": true,
+          "$1,200": true,
+          "confirmation": true
+        }
+      }
+    },
+    {
+      "task": "33",
+      "job": 429,
+      "report_sha256": "84ad986c7612a0206211aa1b16f3c53d7ba67219e385d88c5b106b159db222cb",
+      "writes": [],
+      "final_db_sha256": "124e39a664b56402bcd09cb8a6a9cece6acb8462337c969799d5658e3250f263",
+      "db_match": false,
+      "missing_communication": [],
+      "worker_memory": {
+        "snapshot_id": "snap_e51ace0cd1a8421394e7532690a4b9b7",
+        "title_body_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "items": 0,
+        "worker_requests_with_exact_snapshot": 11,
+        "note_literal_presence": {}
+      }
+    },
+    {
+      "task": "33",
+      "job": 431,
+      "report_sha256": "5bd187ab8e4304bde6f93cab7380fca79c485cad0c184e5292ebecd5686d7663",
+      "writes": [
+        {
+          "message_index": 14,
+          "call_id": "call_R5a3ZH7Nb7Ql7riFNhsKe2Vt",
+          "tool": "update_reservation_flights",
+          "arguments_sha256": "d8c3335ac1e26a1601fa71755546726ff5a01d54a26afdcb8022f7cd93a5ecdd",
+          "error": false
+        },
+        {
+          "message_index": 26,
+          "call_id": "call_SvqZfvY6LbrwfZjUt9oG8rBx",
+          "tool": "update_reservation_baggages",
+          "arguments_sha256": "22baabd6b253267f824b9457083476deaa45bb2522d8559add9910f9c03bd04c",
+          "error": false
+        }
+      ],
+      "final_db_sha256": "735ba8f15206b7fbf570fe68bd92ea75d7dd5ea04c87d5a53296d70d103f7b74",
+      "db_match": true,
+      "missing_communication": []
+    },
+    {
+      "task": "33",
+      "job": 432,
+      "report_sha256": "6f91792188e3a4d11554592a50648b9e0ab8cb03a4faf65c2bd3a915797ca57b",
+      "writes": [],
+      "final_db_sha256": "124e39a664b56402bcd09cb8a6a9cece6acb8462337c969799d5658e3250f263",
+      "db_match": false,
+      "missing_communication": [],
+      "worker_memory": {
+        "snapshot_id": "snap_2ec666c9373f48f39fb494e9ec1c5b9b",
+        "title_body_sha256": "b113eef4dba7a3b10bf54174d411c9562123ee4d866bb5b9143d76a95220bc4e",
+        "items": 1,
+        "worker_requests_with_exact_snapshot": 9,
+        "note_literal_presence": {}
+      }
+    },
+    {
+      "task": "33",
+      "job": 433,
+      "report_sha256": "d25b3c4911f2df26cfa0f25d16ace80d516fddefadc87df024d81449ad43539e",
+      "writes": [],
+      "final_db_sha256": "124e39a664b56402bcd09cb8a6a9cece6acb8462337c969799d5658e3250f263",
+      "db_match": false,
+      "missing_communication": [],
+      "worker_memory": {
+        "snapshot_id": "snap_fbc105ffe2dc4f188699c211aa0c7034",
+        "title_body_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "items": 0,
+        "worker_requests_with_exact_snapshot": 10,
+        "note_literal_presence": {}
+      }
+    },
+    {
+      "task": "33",
+      "job": 434,
+      "report_sha256": "4d9aec0924a100b29c33ab5c2d0ce872c9c01cf37c8780e10f4ed63e46d8bac9",
+      "writes": [],
+      "final_db_sha256": "124e39a664b56402bcd09cb8a6a9cece6acb8462337c969799d5658e3250f263",
+      "db_match": false,
+      "missing_communication": [],
+      "worker_memory": {
+        "snapshot_id": "snap_b3efda5d0ef34b3989e2c34fa96499af",
+        "title_body_sha256": "c7d18545479c9aeed52827acaffcb3740d06acaaf7cb406468015d8b8613a2bc",
+        "items": 1,
+        "worker_requests_with_exact_snapshot": 10,
+        "note_literal_presence": {}
+      }
+    },
+    {
+      "task": "47",
+      "job": 444,
+      "report_sha256": "0649381dad7f72a60af893ddd541796fc45f83fa7ccbe169dc2b2a70e5c3c7cc",
+      "writes": [],
+      "final_db_sha256": "124e39a664b56402bcd09cb8a6a9cece6acb8462337c969799d5658e3250f263",
+      "db_match": true,
+      "missing_communication": []
+    },
+    {
+      "task": "47",
+      "job": 445,
+      "report_sha256": "b67388a41e16b36cc81c9f80591ebda8cfbdd56f520f839194b041eaad29aca2",
+      "writes": [
+        {
+          "message_index": 6,
+          "call_id": "call_sKQpLRoMZq1miYYExbM77W4S",
+          "tool": "cancel_reservation",
+          "arguments_sha256": "270a28e1829a94025c090f14e78292e8d344e4aec51ce57a62237e0d94252d61",
+          "error": false
+        }
+      ],
+      "final_db_sha256": "a1fc0be3afbaddf0a9ad643216bd3957f0c99c3ed7340e360f1290c5743a3e47",
+      "db_match": false,
+      "missing_communication": [],
+      "worker_memory": {
+        "snapshot_id": "snap_c675b32ea04e415880607f6c5caee4c0",
+        "title_body_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "items": 0,
+        "worker_requests_with_exact_snapshot": 6,
+        "note_literal_presence": {}
+      }
+    }
+  ],
+  "diagnostic_db_probes": [
+    {
+      "job": 414,
+      "task": "1",
+      "edit": "Omit the sole state-changing call",
+      "donor_jobs": [],
+      "actions": [],
+      "reference_db_sha256": "124e39a664b56402bcd09cb8a6a9cece6acb8462337c969799d5658e3250f263",
+      "original_db_match": false,
+      "edited_db_sha256": "124e39a664b56402bcd09cb8a6a9cece6acb8462337c969799d5658e3250f263",
+      "edited_db_match": true
+    },
+    {
+      "job": 386,
+      "task": "10",
+      "edit": "Omit the sole state-changing call",
+      "donor_jobs": [],
+      "actions": [],
+      "reference_db_sha256": "124e39a664b56402bcd09cb8a6a9cece6acb8462337c969799d5658e3250f263",
+      "original_db_match": false,
+      "edited_db_sha256": "124e39a664b56402bcd09cb8a6a9cece6acb8462337c969799d5658e3250f263",
+      "edited_db_match": true
+    },
+    {
+      "job": 369,
+      "task": "12",
+      "edit": "Omit the cabin upgrade and retain the recorded baggage change",
+      "donor_jobs": [],
+      "actions": [
+        {
+          "tool": "update_reservation_baggages",
+          "source_call_id": "call_lsyOfgWlwGFI02Ac6tOSNU8W",
+          "arguments": {
+            "nonfree_baggages": 0,
+            "payment_id": "credit_card_4938634",
+            "reservation_id": "YAX4DR",
+            "total_baggages": 2
+          },
+          "error": false
+        }
+      ],
+      "reference_db_sha256": "df1e46c5aaf8af007c7b705ed14431b1d56c4b7d0dd53702f8623572cb047019",
+      "original_db_match": false,
+      "edited_db_sha256": "df1e46c5aaf8af007c7b705ed14431b1d56c4b7d0dd53702f8623572cb047019",
+      "edited_db_match": true
+    },
+    {
+      "job": 427,
+      "task": "12",
+      "edit": "Omit the cabin upgrade and retain the recorded baggage change",
+      "donor_jobs": [],
+      "actions": [
+        {
+          "tool": "update_reservation_baggages",
+          "source_call_id": "call_HqXWcVXmc6RbAl0EpkWD853s",
+          "arguments": {
+            "nonfree_baggages": 0,
+            "payment_id": "credit_card_4938634",
+            "reservation_id": "YAX4DR",
+            "total_baggages": 2
+          },
+          "error": false
+        }
+      ],
+      "reference_db_sha256": "df1e46c5aaf8af007c7b705ed14431b1d56c4b7d0dd53702f8623572cb047019",
+      "original_db_match": false,
+      "edited_db_sha256": "df1e46c5aaf8af007c7b705ed14431b1d56c4b7d0dd53702f8623572cb047019",
+      "edited_db_match": true
+    },
+    {
+      "job": 369,
+      "task": "12",
+      "edit": "Omit both the cabin and baggage updates",
+      "donor_jobs": [],
+      "actions": [],
+      "reference_db_sha256": "df1e46c5aaf8af007c7b705ed14431b1d56c4b7d0dd53702f8623572cb047019",
+      "original_db_match": false,
+      "edited_db_sha256": "124e39a664b56402bcd09cb8a6a9cece6acb8462337c969799d5658e3250f263",
+      "edited_db_match": false
+    },
+    {
+      "job": 333,
+      "task": "14",
+      "edit": "Use the successful booking's payment_methods",
+      "donor_jobs": [
+        330
+      ],
+      "actions": [
+        {
+          "tool": "cancel_reservation",
+          "source_call_id": "call_lD2OtdxKF6y1WCzWLAQiZdDD",
+          "arguments": {
+            "reservation_id": "K1NW8N"
+          },
+          "error": false
+        },
+        {
+          "tool": "book_reservation",
+          "source_call_id": "call_QmguZfPQPjWvzJBiWL7qnE1u",
+          "arguments": {
+            "cabin": "business",
+            "destination": "SFO",
+            "flight_type": "round_trip",
+            "flights": [
+              {
+                "date": "2024-05-26",
+                "flight_number": "HAT023"
+              },
+              {
+                "date": "2024-05-28",
+                "flight_number": "HAT204"
+              },
+              {
+                "date": "2024-05-28",
+                "flight_number": "HAT100"
+              }
+            ],
+            "insurance": "no",
+            "nonfree_baggages": 0,
+            "origin": "JFK",
+            "passengers": [
+              {
+                "dob": "1960-11-26",
+                "first_name": "Mohamed",
+                "last_name": "Silva"
+              },
+              {
+                "dob": "1986-09-12",
+                "first_name": "Raj",
+                "last_name": "Sanchez"
+              },
+              {
+                "dob": "1980-03-27",
+                "first_name": "Liam",
+                "last_name": "Wilson"
+              }
+            ],
+            "payment_methods": [
+              {
+                "amount": 500,
+                "payment_id": "certificate_3765853"
+              },
+              {
+                "amount": 198,
+                "payment_id": "gift_card_8020792"
+              },
+              {
+                "amount": 129,
+                "payment_id": "gift_card_6136092"
+              },
+              {
+                "amount": 1786,
+                "payment_id": "credit_card_2198526"
+              }
+            ],
+            "total_baggages": 6,
+            "user_id": "mohamed_silva_9265"
+          },
+          "error": false
+        }
+      ],
+      "reference_db_sha256": "b4ea8effd45eee77a90b96a2b298a5dbe4e7d7fff9452c952f481f9a447facdf",
+      "original_db_match": false,
+      "edited_db_sha256": "c8486910cc7d4b805c0887fec74573c03e4069c9c3eb58af11a7488320e04c28",
+      "edited_db_match": false
+    },
+    {
+      "job": 333,
+      "task": "14",
+      "edit": "Use the successful booking's total_baggages",
+      "donor_jobs": [
+        330
+      ],
+      "actions": [
+        {
+          "tool": "cancel_reservation",
+          "source_call_id": "call_lD2OtdxKF6y1WCzWLAQiZdDD",
+          "arguments": {
+            "reservation_id": "K1NW8N"
+          },
+          "error": false
+        },
+        {
+          "tool": "book_reservation",
+          "source_call_id": "call_QmguZfPQPjWvzJBiWL7qnE1u",
+          "arguments": {
+            "cabin": "business",
+            "destination": "SFO",
+            "flight_type": "round_trip",
+            "flights": [
+              {
+                "date": "2024-05-26",
+                "flight_number": "HAT023"
+              },
+              {
+                "date": "2024-05-28",
+                "flight_number": "HAT204"
+              },
+              {
+                "date": "2024-05-28",
+                "flight_number": "HAT100"
+              }
+            ],
+            "insurance": "no",
+            "nonfree_baggages": 0,
+            "origin": "JFK",
+            "passengers": [
+              {
+                "dob": "1960-11-26",
+                "first_name": "Mohamed",
+                "last_name": "Silva"
+              },
+              {
+                "dob": "1986-09-12",
+                "first_name": "Raj",
+                "last_name": "Sanchez"
+              },
+              {
+                "dob": "1980-03-27",
+                "first_name": "Liam",
+                "last_name": "Wilson"
+              }
+            ],
+            "payment_methods": [
+              {
+                "amount": 500,
+                "payment_id": "certificate_3765853"
+              },
+              {
+                "amount": 250,
+                "payment_id": "certificate_9984806"
+              },
+              {
+                "amount": 250,
+                "payment_id": "certificate_2765295"
+              },
+              {
+                "amount": 198,
+                "payment_id": "gift_card_8020792"
+              },
+              {
+                "amount": 129,
+                "payment_id": "gift_card_6136092"
+              },
+              {
+                "amount": 1286,
+                "payment_id": "credit_card_2198526"
+              }
+            ],
+            "total_baggages": 0,
+            "user_id": "mohamed_silva_9265"
+          },
+          "error": false
+        }
+      ],
+      "reference_db_sha256": "b4ea8effd45eee77a90b96a2b298a5dbe4e7d7fff9452c952f481f9a447facdf",
+      "original_db_match": false,
+      "edited_db_sha256": "0a297ae9f54eb0bea0ab7c625fe1f2babf88931bebdeb20452c594670bbd59c7",
+      "edited_db_match": false
+    },
+    {
+      "job": 333,
+      "task": "14",
+      "edit": "Use the successful booking's payment_methods, total_baggages",
+      "donor_jobs": [
+        330
+      ],
+      "actions": [
+        {
+          "tool": "cancel_reservation",
+          "source_call_id": "call_lD2OtdxKF6y1WCzWLAQiZdDD",
+          "arguments": {
+            "reservation_id": "K1NW8N"
+          },
+          "error": false
+        },
+        {
+          "tool": "book_reservation",
+          "source_call_id": "call_QmguZfPQPjWvzJBiWL7qnE1u",
+          "arguments": {
+            "cabin": "business",
+            "destination": "SFO",
+            "flight_type": "round_trip",
+            "flights": [
+              {
+                "date": "2024-05-26",
+                "flight_number": "HAT023"
+              },
+              {
+                "date": "2024-05-28",
+                "flight_number": "HAT204"
+              },
+              {
+                "date": "2024-05-28",
+                "flight_number": "HAT100"
+              }
+            ],
+            "insurance": "no",
+            "nonfree_baggages": 0,
+            "origin": "JFK",
+            "passengers": [
+              {
+                "dob": "1960-11-26",
+                "first_name": "Mohamed",
+                "last_name": "Silva"
+              },
+              {
+                "dob": "1986-09-12",
+                "first_name": "Raj",
+                "last_name": "Sanchez"
+              },
+              {
+                "dob": "1980-03-27",
+                "first_name": "Liam",
+                "last_name": "Wilson"
+              }
+            ],
+            "payment_methods": [
+              {
+                "amount": 500,
+                "payment_id": "certificate_3765853"
+              },
+              {
+                "amount": 198,
+                "payment_id": "gift_card_8020792"
+              },
+              {
+                "amount": 129,
+                "payment_id": "gift_card_6136092"
+              },
+              {
+                "amount": 1786,
+                "payment_id": "credit_card_2198526"
+              }
+            ],
+            "total_baggages": 0,
+            "user_id": "mohamed_silva_9265"
+          },
+          "error": false
+        }
+      ],
+      "reference_db_sha256": "b4ea8effd45eee77a90b96a2b298a5dbe4e7d7fff9452c952f481f9a447facdf",
+      "original_db_match": false,
+      "edited_db_sha256": "b4ea8effd45eee77a90b96a2b298a5dbe4e7d7fff9452c952f481f9a447facdf",
+      "edited_db_match": true
+    },
+    {
+      "job": 341,
+      "task": "21",
+      "edit": "Change only the successful flight update's payment_id",
+      "donor_jobs": [
+        342
+      ],
+      "actions": [
+        {
+          "tool": "update_reservation_flights",
+          "source_call_id": "call_CKbcThn6B4t0uipR5jYKX8xU",
+          "arguments": {
+            "cabin": "economy",
+            "flights": [
+              {
+                "date": "2024-05-27",
+                "flight_number": "HAT078"
+              },
+              {
+                "date": "2024-05-27",
+                "flight_number": "HAT118"
+              },
+              {
+                "date": "2024-05-27",
+                "flight_number": "HAT290"
+              },
+              {
+                "date": "2024-05-27",
+                "flight_number": "HAT175"
+              }
+            ],
+            "payment_id": "gift_card_7480005",
+            "reservation_id": "OBUT9V"
+          },
+          "error": true
+        },
+        {
+          "tool": "update_reservation_flights",
+          "source_call_id": "call_owT60WE3UmqkeMdNwNpYSpAw",
+          "arguments": {
+            "cabin": "economy",
+            "flights": [
+              {
+                "date": "2024-05-27",
+                "flight_number": "HAT078"
+              },
+              {
+                "date": "2024-05-27",
+                "flight_number": "HAT118"
+              },
+              {
+                "date": "2024-05-27",
+                "flight_number": "HAT290"
+              },
+              {
+                "date": "2024-05-27",
+                "flight_number": "HAT175"
+              }
+            ],
+            "payment_id": "gift_card_6276644",
+            "reservation_id": "OBUT9V"
+          },
+          "error": false
+        },
+        {
+          "tool": "update_reservation_baggages",
+          "source_call_id": "call_xBB3CnQxriOzMCjcvAfRp4RY",
+          "arguments": {
+            "nonfree_baggages": 0,
+            "payment_id": "gift_card_7480005",
+            "reservation_id": "OBUT9V",
+            "total_baggages": 2
+          },
+          "error": false
+        }
+      ],
+      "reference_db_sha256": "9ede9d0dc4363e33948ef484380eb7b640f02cfbfed1b6d2ba70bceacf29da73",
+      "original_db_match": false,
+      "edited_db_sha256": "9ede9d0dc4363e33948ef484380eb7b640f02cfbfed1b6d2ba70bceacf29da73",
+      "edited_db_match": true
+    },
+    {
+      "job": 235,
+      "task": "15",
+      "edit": "Add the approved PHL flight change",
+      "donor_jobs": [
+        233
+      ],
+      "actions": [
+        {
+          "tool": "update_reservation_flights",
+          "source_call_id": "call_GTB17OSlFeVy0HRPR8Vh31U3",
+          "arguments": {
+            "cabin": "economy",
+            "flights": [
+              {
+                "date": "2024-05-24",
+                "flight_number": "HAT110"
+              },
+              {
+                "date": "2024-05-24",
+                "flight_number": "HAT172"
+              }
+            ],
+            "payment_id": "gift_card_8887175",
+            "reservation_id": "M05KNL"
+          },
+          "error": false
+        }
+      ],
+      "reference_db_sha256": "c9500f3100906613e72517e64be2104316c21ff855888401fbb7dcf2a4dbeed2",
+      "original_db_match": false,
+      "edited_db_sha256": "c9500f3100906613e72517e64be2104316c21ff855888401fbb7dcf2a4dbeed2",
+      "edited_db_match": true
+    },
+    {
+      "job": 384,
+      "task": "42",
+      "edit": "Cancel FDZ0T5",
+      "donor_jobs": [
+        377
+      ],
+      "actions": [
+        {
+          "tool": "cancel_reservation",
+          "source_call_id": "call_wnDvCjL7jQiT759DVpOZgXdA",
+          "arguments": {
+            "reservation_id": "FDZ0T5"
+          },
+          "error": false
+        }
+      ],
+      "reference_db_sha256": "768a1bf6bcedc298cdf5f7ce0d7956a12bfd383adcdc6531e8ed1ebfc605374a",
+      "original_db_match": false,
+      "edited_db_sha256": "b639c432f8e71934af09e96cdec12c1d768daef8258450a25d7aed63ad8e1621",
+      "edited_db_match": false
+    },
+    {
+      "job": 384,
+      "task": "42",
+      "edit": "Cancel HSR97W",
+      "donor_jobs": [
+        377
+      ],
+      "actions": [
+        {
+          "tool": "cancel_reservation",
+          "source_call_id": "call_0768c4d6e71e43e8a81494422d44a25e",
+          "arguments": {
+            "reservation_id": "HSR97W"
+          },
+          "error": false
+        }
+      ],
+      "reference_db_sha256": "768a1bf6bcedc298cdf5f7ce0d7956a12bfd383adcdc6531e8ed1ebfc605374a",
+      "original_db_match": false,
+      "edited_db_sha256": "4187e49431cdcc1720cc916467c3da541c8358f97ee35c948c8da6c6156e2eea",
+      "edited_db_match": false
+    },
+    {
+      "job": 384,
+      "task": "42",
+      "edit": "Cancel FDZ0T5, HSR97W",
+      "donor_jobs": [
+        377
+      ],
+      "actions": [
+        {
+          "tool": "cancel_reservation",
+          "source_call_id": "call_wnDvCjL7jQiT759DVpOZgXdA",
+          "arguments": {
+            "reservation_id": "FDZ0T5"
+          },
+          "error": false
+        },
+        {
+          "tool": "cancel_reservation",
+          "source_call_id": "call_0768c4d6e71e43e8a81494422d44a25e",
+          "arguments": {
+            "reservation_id": "HSR97W"
+          },
+          "error": false
+        }
+      ],
+      "reference_db_sha256": "768a1bf6bcedc298cdf5f7ce0d7956a12bfd383adcdc6531e8ed1ebfc605374a",
+      "original_db_match": false,
+      "edited_db_sha256": "768a1bf6bcedc298cdf5f7ce0d7956a12bfd383adcdc6531e8ed1ebfc605374a",
+      "edited_db_match": true
+    },
+    {
+      "job": 403,
+      "task": "11",
+      "edit": "Omit the cancellation",
+      "donor_jobs": [],
+      "actions": [],
+      "reference_db_sha256": "1e46d540ec2e530b9388347f5be682742e76f9c7cdd32c1c58438f765412f64f",
+      "original_db_match": false,
+      "edited_db_sha256": "124e39a664b56402bcd09cb8a6a9cece6acb8462337c969799d5658e3250f263",
+      "edited_db_match": false
+    },
+    {
+      "job": 403,
+      "task": "11",
+      "edit": "Replace the cancellation with the recorded approved downgrade",
+      "donor_jobs": [
+        404
+      ],
+      "actions": [
+        {
+          "tool": "update_reservation_flights",
+          "source_call_id": "call_5KzPoUhFvm3Xwu5VkiS5pE8A",
+          "arguments": {
+            "cabin": "basic_economy",
+            "flights": [
+              {
+                "date": "2024-05-19",
+                "flight_number": "HAT003"
+              },
+              {
+                "date": "2024-05-20",
+                "flight_number": "HAT290"
+              }
+            ],
+            "payment_id": "gift_card_1642017",
+            "reservation_id": "GV1N64"
+          },
+          "error": false
+        }
+      ],
+      "reference_db_sha256": "1e46d540ec2e530b9388347f5be682742e76f9c7cdd32c1c58438f765412f64f",
+      "original_db_match": false,
+      "edited_db_sha256": "1e46d540ec2e530b9388347f5be682742e76f9c7cdd32c1c58438f765412f64f",
+      "edited_db_match": true
+    },
+    {
+      "job": 378,
+      "task": "42",
+      "edit": "Retain both cancellations and omit the additional certificate",
+      "donor_jobs": [],
+      "actions": [
+        {
+          "tool": "cancel_reservation",
+          "source_call_id": "call_9V4Qm6NP5gAZN8zcCJyZuUSu",
+          "arguments": {
+            "reservation_id": "FDZ0T5"
+          },
+          "error": false
+        },
+        {
+          "tool": "cancel_reservation",
+          "source_call_id": "call_KUeunWoaSoS8dLGWlBbsOJ91",
+          "arguments": {
+            "reservation_id": "HSR97W"
+          },
+          "error": false
+        }
+      ],
+      "reference_db_sha256": "768a1bf6bcedc298cdf5f7ce0d7956a12bfd383adcdc6531e8ed1ebfc605374a",
+      "original_db_match": false,
+      "edited_db_sha256": "768a1bf6bcedc298cdf5f7ce0d7956a12bfd383adcdc6531e8ed1ebfc605374a",
+      "edited_db_match": true
+    },
+    {
+      "job": 323,
+      "task": "23",
+      "edit": "Only copy the checked-bag count on each of the three bookings",
+      "donor_jobs": [
+        326
+      ],
+      "actions": [
+        {
+          "tool": "cancel_reservation",
+          "source_call_id": "call_tNvtWMuhcs9zxhJ3U7vBJVYb",
+          "arguments": {
+            "reservation_id": "K1NW8N"
+          },
+          "error": false
+        },
+        {
+          "tool": "book_reservation",
+          "source_call_id": "call_nQURBlFI6qx4RJulAd2ef2e2",
+          "arguments": {
+            "cabin": "business",
+            "destination": "SFO",
+            "flight_type": "round_trip",
+            "flights": [
+              {
+                "date": "2024-05-26",
+                "flight_number": "HAT023"
+              },
+              {
+                "date": "2024-05-28",
+                "flight_number": "HAT204"
+              },
+              {
+                "date": "2024-05-28",
+                "flight_number": "HAT100"
+              }
+            ],
+            "insurance": "no",
+            "nonfree_baggages": 0,
+            "origin": "JFK",
+            "passengers": [
+              {
+                "dob": "1960-11-26",
+                "first_name": "Mohamed",
+                "last_name": "Silva"
+              }
+            ],
+            "payment_methods": [
+              {
+                "amount": 500,
+                "payment_id": "certificate_3765853"
+              },
+              {
+                "amount": 198,
+                "payment_id": "gift_card_8020792"
+              },
+              {
+                "amount": 129,
+                "payment_id": "gift_card_6136092"
+              },
+              {
+                "amount": 44,
+                "payment_id": "credit_card_2198526"
+              }
+            ],
+            "total_baggages": 0,
+            "user_id": "mohamed_silva_9265"
+          },
+          "error": false
+        },
+        {
+          "tool": "book_reservation",
+          "source_call_id": "call_loSUCyqK4TKEF84ybWXt3zLJ",
+          "arguments": {
+            "cabin": "business",
+            "destination": "SFO",
+            "flight_type": "round_trip",
+            "flights": [
+              {
+                "date": "2024-05-26",
+                "flight_number": "HAT023"
+              },
+              {
+                "date": "2024-05-28",
+                "flight_number": "HAT204"
+              },
+              {
+                "date": "2024-05-28",
+                "flight_number": "HAT100"
+              }
+            ],
+            "insurance": "no",
+            "nonfree_baggages": 0,
+            "origin": "JFK",
+            "passengers": [
+              {
+                "dob": "1986-09-12",
+                "first_name": "Raj",
+                "last_name": "Sanchez"
+              }
+            ],
+            "payment_methods": [
+              {
+                "amount": 250,
+                "payment_id": "certificate_9984806"
+              },
+              {
+                "amount": 621,
+                "payment_id": "credit_card_2198526"
+              }
+            ],
+            "total_baggages": 0,
+            "user_id": "mohamed_silva_9265"
+          },
+          "error": false
+        },
+        {
+          "tool": "book_reservation",
+          "source_call_id": "call_Oj9SSNLT9p7TcjWEOpsZqzq1",
+          "arguments": {
+            "cabin": "business",
+            "destination": "SFO",
+            "flight_type": "round_trip",
+            "flights": [
+              {
+                "date": "2024-05-26",
+                "flight_number": "HAT023"
+              },
+              {
+                "date": "2024-05-28",
+                "flight_number": "HAT204"
+              },
+              {
+                "date": "2024-05-28",
+                "flight_number": "HAT100"
+              }
+            ],
+            "insurance": "no",
+            "nonfree_baggages": 0,
+            "origin": "JFK",
+            "passengers": [
+              {
+                "dob": "1980-03-27",
+                "first_name": "Liam",
+                "last_name": "Wilson"
+              }
+            ],
+            "payment_methods": [
+              {
+                "amount": 250,
+                "payment_id": "certificate_2765295"
+              },
+              {
+                "amount": 621,
+                "payment_id": "credit_card_2198526"
+              }
+            ],
+            "total_baggages": 0,
+            "user_id": "mohamed_silva_9265"
+          },
+          "error": false
+        }
+      ],
+      "reference_db_sha256": "b46d1bed5ba2b9865240d1073bc143e93d59be2c363ed26e1a45523e929e6e11",
+      "original_db_match": false,
+      "edited_db_sha256": "b46d1bed5ba2b9865240d1073bc143e93d59be2c363ed26e1a45523e929e6e11",
+      "edited_db_match": true
+    }
+  ],
+  "model_or_network_attempts": 0,
+  "scope": "Post hoc. Each probe replays only local business actions in a fresh native database. The original dialogue, approvals, and official grades are kept as observations. An edited DB match identifies a state transition and does not estimate a memory intervention."
+}

@@ -1,0 +1,118 @@
+{
+  "format": "agent-memory-fact-recheck-baggage-replay/v1",
+  "benchmark_revision": "c06b07dd7c4d4ec61ba6ff9bcdf0b15dd7ef36d4",
+  "benchmark_tasks_sha256": "ccd8ba737b4cc371415af70151187788f728d6108d0916e73bb4317b40542052",
+  "allocation_sha256": "0b7ee7561a160e651be6045a40386b0de84f91c99b934895668acc33b9bb83e9",
+  "method_sha256": "b1491d5be6261abd4a67c7ca02304e55b9b0a9c691b5e3748705ac6855b36940",
+  "cells": [
+    {
+      "job": 21,
+      "arm": "fact_original",
+      "repetition": 1,
+      "changed": {
+        "index": 20,
+        "tool": "update_reservation_baggages",
+        "original": {
+          "nonfree_baggages": 0,
+          "payment_id": "gift_card_8190333",
+          "reservation_id": "FQ8APE",
+          "total_baggages": 3
+        },
+        "edited": {
+          "nonfree_baggages": 1,
+          "payment_id": "gift_card_8190333",
+          "reservation_id": "FQ8APE",
+          "total_baggages": 3
+        }
+      },
+      "native_report_sha256": "295d3c47eb0e11e7d3f9067aa8e60e298ae1915e8b37920c5ae1e3ebb16faf48",
+      "official_success": true,
+      "edited_db_match": false,
+      "original_db_sha256": "37ea6df3bdb75dc6be08b9fc19909ddef8e0a58c7d56afeaf20781acfba3b871",
+      "edited_db_sha256": "8a6199647c3e0fddf0bf36ba89a584f3a1169e19f4efde56fbf91152d07f9715",
+      "reference_db_sha256": "37ea6df3bdb75dc6be08b9fc19909ddef8e0a58c7d56afeaf20781acfba3b871"
+    },
+    {
+      "job": 22,
+      "arm": "fact_recheck",
+      "repetition": 1,
+      "changed": {
+        "index": 15,
+        "tool": "update_reservation_baggages",
+        "original": {
+          "nonfree_baggages": 1,
+          "payment_id": "gift_card_8190333",
+          "reservation_id": "FQ8APE",
+          "total_baggages": 3
+        },
+        "edited": {
+          "nonfree_baggages": 0,
+          "payment_id": "gift_card_8190333",
+          "reservation_id": "FQ8APE",
+          "total_baggages": 3
+        }
+      },
+      "native_report_sha256": "22533a434c92f1b0629d7551fef8537f578ac96437580ec42669a1d1c6a90e4a",
+      "official_success": false,
+      "edited_db_match": true,
+      "original_db_sha256": "edc62003307c51a58e3eabfa237d66e12eb2daddd8d6b0663158791b3344e7b0",
+      "edited_db_sha256": "37ea6df3bdb75dc6be08b9fc19909ddef8e0a58c7d56afeaf20781acfba3b871",
+      "reference_db_sha256": "37ea6df3bdb75dc6be08b9fc19909ddef8e0a58c7d56afeaf20781acfba3b871"
+    },
+    {
+      "job": 46,
+      "arm": "fact_recheck",
+      "repetition": 2,
+      "changed": {
+        "index": 18,
+        "tool": "update_reservation_baggages",
+        "original": {
+          "nonfree_baggages": 0,
+          "payment_id": "gift_card_8190333",
+          "reservation_id": "FQ8APE",
+          "total_baggages": 3
+        },
+        "edited": {
+          "nonfree_baggages": 1,
+          "payment_id": "gift_card_8190333",
+          "reservation_id": "FQ8APE",
+          "total_baggages": 3
+        }
+      },
+      "native_report_sha256": "d2ff8b3541102b46d76255f611b3797ca969b6c9bc841f33e6b950289f45d36c",
+      "official_success": true,
+      "edited_db_match": false,
+      "original_db_sha256": "37ea6df3bdb75dc6be08b9fc19909ddef8e0a58c7d56afeaf20781acfba3b871",
+      "edited_db_sha256": "edc62003307c51a58e3eabfa237d66e12eb2daddd8d6b0663158791b3344e7b0",
+      "reference_db_sha256": "37ea6df3bdb75dc6be08b9fc19909ddef8e0a58c7d56afeaf20781acfba3b871"
+    },
+    {
+      "job": 47,
+      "arm": "fact_original",
+      "repetition": 2,
+      "changed": {
+        "index": 17,
+        "tool": "update_reservation_baggages",
+        "original": {
+          "nonfree_baggages": 1,
+          "payment_id": "gift_card_8190333",
+          "reservation_id": "FQ8APE",
+          "total_baggages": 3
+        },
+        "edited": {
+          "nonfree_baggages": 0,
+          "payment_id": "gift_card_8190333",
+          "reservation_id": "FQ8APE",
+          "total_baggages": 3
+        }
+      },
+      "native_report_sha256": "7647f30be13befa0d6a9e3fea48d30b098b839d016b1ffd2b4b1548eae6d2d56",
+      "official_success": false,
+      "edited_db_match": true,
+      "original_db_sha256": "edc62003307c51a58e3eabfa237d66e12eb2daddd8d6b0663158791b3344e7b0",
+      "edited_db_sha256": "37ea6df3bdb75dc6be08b9fc19909ddef8e0a58c7d56afeaf20781acfba3b871",
+      "reference_db_sha256": "37ea6df3bdb75dc6be08b9fc19909ddef8e0a58c7d56afeaf20781acfba3b871"
+    }
+  ],
+  "scope": "Post hoc simulator intervention on one argument. Conversations, stored memories and official grades preserved."
+}

@@ -73,13 +73,21 @@ def check_markdown(path: Path) -> int:
             if not destination.is_relative_to(ROOT) or not destination.exists():
                 raise ValueError(f"Broken local link: {path.relative_to(ROOT)}:{number}: {target}")
             if parsed.fragment and destination.suffix == ".md":
-                headings = set()
+                anchors = set()
+                fenced = False
                 for heading in destination.read_text(encoding="utf-8").splitlines():
+                    if heading.startswith("```"):
+                        fenced = not fenced
+                        continue
+                    if fenced:
+                        continue
                     if heading.startswith("#"):
                         text = heading.lstrip("#").strip().lower().replace("`", "")
-                        headings.add(re.sub(r"[^\w\- ]", "", text).replace(" ", "-"))
-                if unquote(parsed.fragment) not in headings:
-                    raise ValueError(f"Unknown heading anchor: {destination.name}#{parsed.fragment}")
+                        anchors.add(re.sub(r"[^\w\- ]", "", text).replace(" ", "-"))
+                    elif anchor := re.fullmatch(r""" {0,3}<a id=(["'])([^"'<>]+)\1></a>""", heading):
+                        anchors.add(anchor.group(2))
+                if unquote(parsed.fragment) not in anchors:
+                    raise ValueError(f"Unknown Markdown anchor: {destination.name}#{parsed.fragment}")
             links += 1
     if in_code:
         raise ValueError(f"Unclosed code fence: {path.relative_to(ROOT)}")

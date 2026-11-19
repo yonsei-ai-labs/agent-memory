@@ -1,0 +1,75 @@
+{
+  "format": "agent-memory-historical-reproduction-registry/v2",
+  "intent": "read_only_historical_review",
+  "experiments": {
+    "two_pass_forms_combined": {
+      "reproduction_commit": "23f6b8995568fc13e4f812bf0abed95bbd017cb2",
+      "implementation_commit": "5d3895d8bbfeb93fca3131603651e9b825f8137a",
+      "protocol_lock_ref": {
+        "path": "artifacts/pilots/20261118-two-pass-forms-combined-reproduction-lock.json",
+        "sha256": "d2db9365d89faad85e8ca6684794f09513952f13e89063b6e7457c8f4ab3bb6e"
+      },
+      "review_script_ref": {
+        "path": "scripts/review_two_pass_forms_combined.py",
+        "sha256": "4f82d1e34ebfb83ee9f8d665450409c015e1c282c140b0950dc0d3d787876b62"
+      },
+      "environment": {
+        "lock_ref": {
+          "path": "uv.lock",
+          "sha256": "b87ef58cf24c2e6d1ba07ed896676e31ecfb858b3840ef1bc5faf0c334ec62a6"
+        },
+        "project_ref": {
+          "path": "pyproject.toml",
+          "sha256": "eacca6269ebd090c7c4c2c52c7a0379ad73670a25d34bc711a67a60c1584bf0d"
+        },
+        "python_version": "3.12",
+        "extras": [
+          "tau2"
+        ]
+      },
+      "expected_outputs": [
+        {
+          "path": "artifacts/pilots/20261118-two-pass-forms-results.json",
+          "sha256": "b1bc6cc0feb911cc3bd11cfb2b9b9b577df58e1f5db11fba6fda20ed46a7969c"
+        },
+        {
+          "path": "artifacts/pilots/20261118-two-pass-forms-supplement-results.json",
+          "sha256": "f551d56a7dbd33cba1664fbe9e67f2375e36aaa7d911bf4c38dd55a5ba524397"
+        },
+        {
+          "path": "artifacts/pilots/20261118-two-pass-forms-combined-results.json",
+          "sha256": "e520fc6952bcc08fa24a36f90098a9fdcb8d3edf66863d0e5afd68e0970ff719"
+        },
+        {
+          "path": "artifacts/analyses/20261118-two-pass-forms-combined-audit.json",
+          "sha256": "c440ea5229948923e7ce2ae459fa57da70c2872bdf4f02bb8cad1c73ed28fd26"
+        },
+        {
+          "path": "artifacts/analyses/20261118-two-pass-forms-combined-cells/episode-origins.csv",
+          "sha256": "a9c7b3730ee43b3bdaccdb0e79a684b78f70f935238db1b7e8617f87df60c240"
+        },
+        {
+          "path": "artifacts/analyses/20261118-two-pass-forms-combined-native-regrade.json",
+          "sha256": "38b7c2f18b1738349e5fe4751c7812d7928fbd0737da7cc40906c89b2d438172"
+        }
+      ],
+      "inputs": [
+        {
+          "kind": "run_batch",
+          "path": "runs/tau2-two-pass-forms-luna-deepseek-01",
+          "completion_sha256": "3528eed073199e62e38b2b30959f6b368c3a00e4e6a54021270de548e8b91381"
+        },
+        {
+          "kind": "run_batch",
+          "path": "runs/tau2-two-pass-forms-luna-deepseek-supplement-01",
+          "completion_sha256": "40004aaf9f1d127940bf9782864abe1cb6080796a73fa7bd1141a0e4652a5756"
+        },
+        {
+          "kind": "git_checkout",
+          "path": "data/tau2-bench",
+          "commit": "c06b07dd7c4d4ec61ba6ff9bcdf0b15dd7ef36d4"
+        }
+      ]
+    }
+  }
+}

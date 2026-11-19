@@ -1,0 +1,210 @@
+{
+  "format": "agent-memory-fact-recheck-writer-review/v1",
+  "source": "runs/tau2-fact-recheck-01",
+  "criterion": "Read each note with condition, replication, identity and downstream score concealed. Mark yes only if the note explicitly connects a concrete observed value or identifiable case-specific field (date, amount, quantity, named identifier, cabin, fare, etc.) with a request to check, reconfirm or refresh it for a future task. A generic verification warning or a past value alone is insufficient. Mark an empty bank empty. Quote a contiguous exact supporting excerpt and count empties in the allocation denominator. Single-reader, post-generation exploratory check.",
+  "judgment_scope": "One masked reader. Labels recorded before mapping writer arm and prior to inspection of the new second-pass outcomes. Ambiguous cases count conservatively: a generic request to check actual facts or an unresolved past field interpretation does not meet the criterion.",
+  "counts": {
+    "fact_original": {
+      "no": 8
+    },
+    "fact_recheck": {
+      "yes": 6,
+      "empty": 1,
+      "no": 1
+    }
+  },
+  "records": [
+    {
+      "masked_key": "08d83e806c",
+      "task_id": "5",
+      "repetition": 1,
+      "writer_condition": "fact_recheck",
+      "writer_job": 1,
+      "run_id": "r_8ebb3539225e4dac83d3bf0aab25b1a1",
+      "writer_log_sha256": "f5f3c6bdea30d3aff2e6161cb6bd394e9a5fdfda42851a561e746400eeb41337",
+      "snapshot_id": "snap_e54ad5f5dfd34ac49c1d3299e1feb8d4",
+      "label": "yes",
+      "quote": "Recheck the policy and applicable scenario facts on any later task; in particular, the Gold status, flight number/route, delay, and unchanged-reservation condition"
+    },
+    {
+      "masked_key": "1cae8d3ce6",
+      "task_id": "5",
+      "repetition": 1,
+      "writer_condition": "fact_original",
+      "writer_job": 2,
+      "run_id": "r_cdd2a57cc14447e1989a4e2661916408",
+      "writer_log_sha256": "a68be5a8b6d274f12c4d05f92794e4c7cc7333c23a681a4890ce44c3c964eb0e",
+      "snapshot_id": "snap_7e73499cf1bc4e8184240dd9ffdc4d83",
+      "label": "no",
+      "quote": "No flight date, passenger count, travel insurance, reservation details, or completed booking action were established."
+    },
+    {
+      "masked_key": "78f738e018",
+      "task_id": "17",
+      "repetition": 1,
+      "writer_condition": "fact_recheck",
+      "writer_job": 3,
+      "run_id": "r_61aad3e2f3f6428baf9bd4068bd9b2ee",
+      "writer_log_sha256": "0a029db12baeec885ae241968c1be556607a64c8ed7142ccf1f25d30b518873f",
+      "snapshot_id": "snap_4a4a3f4d755d4bf4ac7afaac4f3bc969",
+      "label": "yes",
+      "quote": "Recheck current passenger, membership, cabin, flight status, baggage totals/allowance, fare difference, and payment method on later tasks"
+    },
+    {
+      "masked_key": "9362efb33a",
+      "task_id": "17",
+      "repetition": 1,
+      "writer_condition": "fact_original",
+      "writer_job": 4,
+      "run_id": "r_e8781ac234d94fb180df9be08416f523",
+      "writer_log_sha256": "50d925f683001ba2b1e71d06ee33fcdb5d1253671fa5d9830cb60fd8381a03e6",
+      "snapshot_id": "snap_6645a5ec67384f84b5784bd59c091a62",
+      "label": "no",
+      "quote": "no cabin update was attempted and any repricing/payment requirements were not checked."
+    },
+    {
+      "masked_key": "c854ad6e37",
+      "task_id": "20",
+      "repetition": 1,
+      "writer_condition": "fact_recheck",
+      "writer_job": 5,
+      "run_id": "r_66c3ac1b1941468f9a50f66c6c8ff1bb",
+      "writer_log_sha256": "3a3ff3d42f2b777f6e7dd2627785980250a3592878d06be3e0982d323152b5ae",
+      "snapshot_id": "snap_99e8f8c87f604fbfbb11a7c4de0003dc",
+      "label": "empty",
+      "quote": ""
+    },
+    {
+      "masked_key": "10f6bb0ccb",
+      "task_id": "20",
+      "repetition": 1,
+      "writer_condition": "fact_original",
+      "writer_job": 6,
+      "run_id": "r_a8fcb7bd9f284fa2b4b8eac0fa336e3e",
+      "writer_log_sha256": "8e45415600c354be43cc479cb13b1a2a4b8a45dbf65f8861164f9f9867e5661f",
+      "snapshot_id": "snap_ba8098b3e5244ef6bb9f3aa40f60cdb4",
+      "label": "no",
+      "quote": "Applicability limited to this interaction and the tool results shown."
+    },
+    {
+      "masked_key": "b96f82a9c9",
+      "task_id": "3",
+      "repetition": 1,
+      "writer_condition": "fact_original",
+      "writer_job": 7,
+      "run_id": "r_4ddef478725d49288c10bb0dc0736637",
+      "writer_log_sha256": "f0c4f300d265ed1d320c15a3efd7b9c4e55fc3c40725ed40e4cf3d42c7447fc5",
+      "snapshot_id": "snap_55172793b0aa488691fdd23758bfce76",
+      "label": "no",
+      "quote": "The record's 'total_baggages' field meaning was not further verified"
+    },
+    {
+      "masked_key": "b50270832e",
+      "task_id": "3",
+      "repetition": 1,
+      "writer_condition": "fact_recheck",
+      "writer_job": 8,
+      "run_id": "r_c8764b1476464008b057e50d250e9de2",
+      "writer_log_sha256": "dc326a99cd125f41d9b4efd3865bb9adc809c92b3144b0631135297a0cd5185b",
+      "snapshot_id": "snap_6fa196b051ad4b4f9086fec0963400f2",
+      "label": "yes",
+      "quote": "Values and membership status are case-specific and should be checked again on later tasks"
+    },
+    {
+      "masked_key": "5d4b83f73e",
+      "task_id": "5",
+      "repetition": 2,
+      "writer_condition": "fact_recheck",
+      "writer_job": 9,
+      "run_id": "r_293f7af25d584e11a1240f0db9fd2cd3",
+      "writer_log_sha256": "687a98fe361783fbeae88361507885946989b1f0c86089ed6b495c5915db66cc",
+      "snapshot_id": "snap_c40b743965c34076934281b6a778aa1c",
+      "label": "no",
+      "quote": "re-check policy and actual facts in any later task."
+    },
+    {
+      "masked_key": "935cd19ef3",
+      "task_id": "5",
+      "repetition": 2,
+      "writer_condition": "fact_original",
+      "writer_job": 10,
+      "run_id": "r_2b61b3e601424419b037eac7400feb61",
+      "writer_log_sha256": "59940153336f49e1dd474fb05bfa8b0964acf51d3e21a982b9ccaf39bb00b57f",
+      "snapshot_id": "snap_13952d2c8a61409b81ff365e39d40ab8",
+      "label": "no",
+      "quote": "this records the policy and observed handling, not an external correctness verdict."
+    },
+    {
+      "masked_key": "1910f2d06e",
+      "task_id": "20",
+      "repetition": 2,
+      "writer_condition": "fact_recheck",
+      "writer_job": 11,
+      "run_id": "r_4669af3d059643618bc5c173a92081bf",
+      "writer_log_sha256": "9125bc3dade6152fcc4bb4ac1a5230ceeb7f2d9dbdcd77403e4fadb822a323fd",
+      "snapshot_id": "snap_fe62b447ad084a6bbfef0ac1f1e934b4",
+      "label": "yes",
+      "quote": "Recheck dates, schedules/inventory, search capabilities, and outcomes in any later task"
+    },
+    {
+      "masked_key": "63c151ec59",
+      "task_id": "20",
+      "repetition": 2,
+      "writer_condition": "fact_original",
+      "writer_job": 12,
+      "run_id": "r_97c3cb014049435fbf2e7224aedd4856",
+      "writer_log_sha256": "09fb79cb88862ac1274423ef82b8cb40fa7e33c3f71c7f220c93436d4d0fed67",
+      "snapshot_id": "snap_b1f2ebc57c604156a3fb125b0b6fd5bb",
+      "label": "no",
+      "quote": "no results do not establish actual availability."
+    },
+    {
+      "masked_key": "c349c816a3",
+      "task_id": "3",
+      "repetition": 2,
+      "writer_condition": "fact_original",
+      "writer_job": 13,
+      "run_id": "r_6a24c74f499a42e5b3bed8e3f1624b68",
+      "writer_log_sha256": "cf3c18fedbdc7a0f1da4901913a7d1549d6ad9eb65978430ec6de48f817e9eaf",
+      "snapshot_id": "snap_b5b5996f34ee45cabdbb0c3321ba3810",
+      "label": "no",
+      "quote": "These are observations from that interaction, not verification of current reservation or user status"
+    },
+    {
+      "masked_key": "a109cda7fc",
+      "task_id": "3",
+      "repetition": 2,
+      "writer_condition": "fact_recheck",
+      "writer_job": 14,
+      "run_id": "r_eaae1fc371de46e39126dff59839d651",
+      "writer_log_sha256": "529e629d4aa7d7d34aa6a12ca06136936e58e911e5a029554e4ea1122304051a",
+      "snapshot_id": "snap_bb0025c4ccdd4b5cb4ad2e6f7c445267",
+      "label": "yes",
+      "quote": "These are case-specific, historical values and must be checked against current reservation, profile, and applicable policy on a later task."
+    },
+    {
+      "masked_key": "4439cbc61d",
+      "task_id": "17",
+      "repetition": 2,
+      "writer_condition": "fact_original",
+      "writer_job": 15,
+      "run_id": "r_73fe05b322894ff1a33273ed71981828",
+      "writer_log_sha256": "c771d274d2800b30ca366dc5ebb67ec61605e53ee730db579df1e5f2b0f85f59",
+      "snapshot_id": "snap_3d514c10b0024d11a3d5d5f0c02f5edb",
+      "label": "no",
+      "quote": "whether departure status was separately verified was unclear."
+    },
+    {
+      "masked_key": "5dfb3b8f18",
+      "task_id": "17",
+      "repetition": 2,
+      "writer_condition": "fact_recheck",
+      "writer_job": 16,
+      "run_id": "r_93ec56553d4b4782abb632fda36274b8",
+      "writer_log_sha256": "b32c2b1b2e1a8419c3ce030ebb91cc7eae1cee683ec44877629ff1f3585330ef",
+      "snapshot_id": "snap_da85ab5a31454b84b7bc62ca28c01b8b",
+      "label": "yes",
+      "quote": "Recheck current reservation data, flight status/date, cabin-change eligibility/pricing, and payment/card details in tools on any later task"
+    }
+  ]
+}

@@ -1,0 +1,651 @@
+{
+  "format": "agent-memory-shared-reproduction-evidence/v1",
+  "original_receipt_sha256": "3a33fddb724631dfca5647caf17389f00f8780575bcfe99291be8f7f0295ca9c",
+  "normalization": "Absolute repository and home paths replaced by literal placeholders; original evidence retained.",
+  "receipt": {
+    "format": "agent-memory-historical-reproduction-receipt/v1",
+    "status": "passed",
+    "experiment": "two_pass_forms_final",
+    "started_at_utc": "2026-11-18T08:21:06.503115+00:00",
+    "registry_ref": {
+      "path": "{REPO}/protocols/reproductions/two-pass-forms-final-20261118.json",
+      "sha256": "01be0d883afa9a0271790fe1c2f13e37cec6a5615aabaab78b4b15e4a526051e"
+    },
+    "implementation_commit": "420256939664f5f732dc76c59802d9775c383b5d",
+    "reproduction_commit": "e303e99a5101baf614c41d73cc3bcff8e58ac9c4",
+    "protocol_lock_ref": {
+      "path": "artifacts/pilots/20261118-two-pass-forms-final-reproduction-lock.json",
+      "sha256": "9a004d5df6a22bedd9e358a68d60d0a3da660c01c2b2585cc9471755344ca8c1"
+    },
+    "review_script_ref": {
+      "path": "scripts/review_two_pass_forms_final.py",
+      "sha256": "2a067f4e418eee2c8cfb8c36454fbefe95971ccf7c570359be2335905f1c53eb"
+    },
+    "expected_outputs": [
+      {
+        "path": "artifacts/pilots/20261118-two-pass-forms-followon-results.json",
+        "sha256": "604e7800a29bf5f853405417dfb7cdf9706fd6cf8cf5f2c410585016b7b1fd41"
+      },
+      {
+        "path": "artifacts/pilots/20261118-two-pass-forms-final-results.json",
+        "sha256": "0ec22b60f186a325d519a025e909470403b34e2db1c2380ebe6aa76847596adb"
+      },
+      {
+        "path": "artifacts/analyses/20261118-two-pass-forms-final-audit.json",
+        "sha256": "fe282d290ccef88c93df5d34a0bdcb177336fb64bf87dde190cf8e48d0b4d9db"
+      },
+      {
+        "path": "artifacts/analyses/20261118-two-pass-forms-final-cells/episode-origins.csv",
+        "sha256": "b47361584171ea8e1bd38ef4b0f8e3769e8cd5374593492110cb93769b640724"
+      },
+      {
+        "path": "artifacts/analyses/20261118-two-pass-forms-final-native-regrade.json",
+        "sha256": "b2862cbe041953edacfdf9a9c87e1dbcca6b21804fe12c16363ea7568222f394"
+      },
+      {
+        "path": "artifacts/analyses/20261118-two-pass-forms-final-cells/second-pass.csv",
+        "sha256": "51b68ccd57d3ad604d089324150ffda5bd8b41d94fdfe859c3bd66365f6a85d3"
+      },
+      {
+        "path": "artifacts/analyses/20261118-two-pass-forms-final-cells/empty-forms.json",
+        "sha256": "0fb46d779bb348af6ac3fdc29e6e23a0683d60b4fc7afeff6668e22021d58f86"
+      },
+      {
+        "path": "artifacts/analyses/20261118-two-pass-forms-final-cells/first-second-transitions.json",
+        "sha256": "abf3af4d348be9e6346cca41715f3fd79f3181b66a479b4ae3efcb0139b12b42"
+      },
+      {
+        "path": "artifacts/analyses/20261118-two-pass-forms-final-diagnostics.json",
+        "sha256": "a4bc310aebb2138a0dbf9447ac5e4fdee222a1d4f3ae8552173a284115cb0e2a"
+      },
+      {
+        "path": "artifacts/analyses/20261118-two-pass-forms-final-handoffs.json",
+        "sha256": "aa2fe70ffb1f0bf1347cfb78b4b18a6b598de1fc3694998c2507728ceedc605d"
+      }
+    ],
+    "environment_spec": {
+      "lock_ref": {
+        "path": "uv.lock",
+        "sha256": "b87ef58cf24c2e6d1ba07ed896676e31ecfb858b3840ef1bc5faf0c334ec62a6"
+      },
+      "project_ref": {
+        "path": "pyproject.toml",
+        "sha256": "eacca6269ebd090c7c4c2c52c7a0379ad73670a25d34bc711a67a60c1584bf0d"
+      },
+      "python_version": "3.12",
+      "extras": [
+        "tau2"
+      ]
+    },
+    "inputs_spec": [
+      {
+        "kind": "run_batch",
+        "path": "runs/tau2-two-pass-forms-luna-deepseek-01",
+        "completion_sha256": "3528eed073199e62e38b2b30959f6b368c3a00e4e6a54021270de548e8b91381"
+      },
+      {
+        "kind": "run_batch",
+        "path": "runs/tau2-two-pass-forms-luna-deepseek-supplement-01",
+        "completion_sha256": "40004aaf9f1d127940bf9782864abe1cb6080796a73fa7bd1141a0e4652a5756"
+      },
+      {
+        "kind": "run_batch",
+        "path": "runs/tau2-two-pass-forms-luna-deepseek-supplement-02",
+        "completion_sha256": "44f67d55b2dcd4b5c75224a67bc2b30ab552e30bccaf0e81535679dad662a358"
+      },
+      {
+        "kind": "git_checkout",
+        "path": "data/tau2-bench",
+        "commit": "c06b07dd7c4d4ec61ba6ff9bcdf0b15dd7ef36d4"
+      }
+    ],
+    "inputs_root": "{REPO}",
+    "worktree": "{REPO}/outputs/reproductions/two-pass-forms-final-01/checkout",
+    "source_inputs_preserved": true,
+    "staged_inputs_preserved": true,
+    "historical_code_preserved": true,
+    "steps": [
+      {
+        "phase": "create_worktree",
+        "timestamp_utc": "2026-11-18T08:21:06.708266+00:00"
+      },
+      {
+        "phase": "copy_inputs",
+        "timestamp_utc": "2026-11-18T08:21:07.600769+00:00"
+      },
+      {
+        "phase": "prepare_environment",
+        "timestamp_utc": "2026-11-18T08:21:34.398656+00:00"
+      },
+      {
+        "phase": "review",
+        "timestamp_utc": "2026-11-18T08:21:35.708280+00:00"
+      }
+    ],
+    "requested_timeout_seconds": 7200.0,
+    "cleanup": {
+      "status": "removed",
+      "input_copies_retained": false
+    },
+    "input_manifest_ref": {
+      "path": "inputs-manifest.json",
+      "sha256": "7698a5d2596c06f9fe9b40987444336c8f87e2fa07d818bccccd53b4271286bb"
+    },
+    "launcher_sources": [
+      {
+        "path": "runner.py",
+        "sha256": "d38c98743c4277e47e3881ce77006a2af091595c603b6165300ef9c551246c08"
+      },
+      {
+        "path": "_child.py",
+        "sha256": "ed86108b7658026934efb493edad290d4ddbd47f8b4c79109fc02fdd1e32c323"
+      }
+    ],
+    "launcher_head": "943fe949caaee2b1c0dad430ba1585c4ca62b686",
+    "environment": {
+      "command": [
+        "{HOME}/.local/bin/uv",
+        "sync",
+        "--frozen",
+        "--offline",
+        "--no-python-downloads",
+        "--no-progress",
+        "--python",
+        "3.12",
+        "--extra",
+        "tau2"
+      ],
+      "offline": true,
+      "extras": [
+        "tau2"
+      ],
+      "uv_version": "uv 0.9.11"
+    },
+    "command": [
+      "{REPO}/outputs/reproductions/two-pass-forms-final-01/checkout/.venv/bin/python",
+      "-I",
+      "-B",
+      "{REPO}/src/agent_memory_eval/reproduction/_child.py",
+      "{REPO}/outputs/reproductions/two-pass-forms-final-01/checkout",
+      "{REPO}/outputs/reproductions/two-pass-forms-final-01/checkout/scripts/review_two_pass_forms_final.py",
+      "{REPO}/outputs/reproductions/two-pass-forms-final-01/child-report.json",
+      "{REPO}/outputs/reproductions/two-pass-forms-final-01/child-policy.json"
+    ],
+    "returncode": 0,
+    "child": {
+      "status": "passed",
+      "network_attempts": 0,
+      "process_attempts": 0,
+      "protected_write_attempts": 0,
+      "read_only_git_calls": [
+        [
+          "git",
+          "-C",
+          "{REPO}/outputs/reproductions/two-pass-forms-final-01/checkout/data/tau2-bench",
+          "rev-parse",
+          "HEAD"
+        ],
+        [
+          "git",
+          "-C",
+          "{REPO}/outputs/reproductions/two-pass-forms-final-01/checkout/data/tau2-bench",
+          "status",
+          "--porcelain"
+        ]
+      ],
+      "imported_modules": {
+        "agent_memory_eval": "src/agent_memory_eval/__init__.py",
+        "agent_memory_eval.contracts": "src/agent_memory_eval/contracts/__init__.py",
+        "agent_memory_eval.contracts.validation": "src/agent_memory_eval/contracts/validation.py",
+        "agent_memory_eval.contracts.core": "src/agent_memory_eval/contracts/core.py",
+        "agent_memory_eval.experiments": "src/agent_memory_eval/experiments/__init__.py",
+        "agent_memory_eval.adapters": "src/agent_memory_eval/adapters/__init__.py",
+        "agent_memory_eval.contracts.connection": "src/agent_memory_eval/contracts/connection.py",
+        "agent_memory_eval.models": "src/agent_memory_eval/models/__init__.py",
+        "agent_memory_eval.models.openrouter": "src/agent_memory_eval/models/openrouter.py",
+        "agent_memory_eval.recording": "src/agent_memory_eval/recording/__init__.py",
+        "agent_memory_eval.recording.provenance": "src/agent_memory_eval/recording/provenance.py",
+        "agent_memory_eval.adapters.tau2": "src/agent_memory_eval/adapters/tau2.py",
+        "agent_memory_eval.memory": "src/agent_memory_eval/memory/__init__.py",
+        "agent_memory_eval.memory.context": "src/agent_memory_eval/memory/context.py",
+        "agent_memory_eval.memory.router": "src/agent_memory_eval/memory/router.py",
+        "agent_memory_eval.memory.service": "src/agent_memory_eval/memory/service.py",
+        "agent_memory_eval.memory.tools": "src/agent_memory_eval/memory/tools.py",
+        "agent_memory_eval.memory.writing": "src/agent_memory_eval/memory/writing.py",
+        "agent_memory_eval.recording.journal": "src/agent_memory_eval/recording/journal.py",
+        "agent_memory_eval.recording.assets": "src/agent_memory_eval/recording/assets.py",
+        "agent_memory_eval.reproduction": "src/agent_memory_eval/reproduction/__init__.py",
+        "agent_memory_eval.reproduction.freeze": "src/agent_memory_eval/reproduction/freeze.py",
+        "agent_memory_eval.runner": "src/agent_memory_eval/runner/__init__.py",
+        "agent_memory_eval.runner.tau2_baseline": "src/agent_memory_eval/runner/tau2_baseline.py",
+        "agent_memory_eval.experiments.forms_batch": "src/agent_memory_eval/experiments/forms_batch.py",
+        "agent_memory_eval.recording.experience": "src/agent_memory_eval/recording/experience.py",
+        "agent_memory_eval.recording.preparation": "src/agent_memory_eval/recording/preparation.py",
+        "agent_memory_eval.memory.preparation": "src/agent_memory_eval/memory/preparation.py",
+        "agent_memory_eval.analysis": "src/agent_memory_eval/analysis/__init__.py",
+        "agent_memory_eval.contracts.execution": "src/agent_memory_eval/contracts/execution.py",
+        "agent_memory_eval.analysis.requests": "src/agent_memory_eval/analysis/requests.py",
+        "agent_memory_eval.analysis.forms_results": "src/agent_memory_eval/analysis/forms_results.py",
+        "agent_memory_eval.adapters.tau2_assessment": "src/agent_memory_eval/adapters/tau2_assessment.py",
+        "agent_memory_eval.analysis.memory_writing": "src/agent_memory_eval/analysis/memory_writing.py",
+        "agent_memory_eval.analysis.preparation": "src/agent_memory_eval/analysis/preparation.py",
+        "agent_memory_eval.contracts.writing": "src/agent_memory_eval/contracts/writing.py",
+        "agent_memory_eval.analysis.writing_exploration": "src/agent_memory_eval/analysis/writing_exploration.py",
+        "agent_memory_eval.analysis.writing_export": "src/agent_memory_eval/analysis/writing_export.py",
+        "agent_memory_eval.experiments.writing_comparison": "src/agent_memory_eval/experiments/writing_comparison.py",
+        "agent_memory_eval.memory.imports": "src/agent_memory_eval/memory/imports.py",
+        "agent_memory_eval.adapters.tau2_memory": "src/agent_memory_eval/adapters/tau2_memory.py",
+        "agent_memory_eval.runner.tau2_memory": "src/agent_memory_eval/runner/tau2_memory.py",
+        "agent_memory_eval.experiments.forms_solve": "src/agent_memory_eval/experiments/forms_solve.py",
+        "agent_memory_eval.experiments.forms_write": "src/agent_memory_eval/experiments/forms_write.py",
+        "agent_memory_eval.experiments.forms_supplement": "src/agent_memory_eval/experiments/forms_supplement.py",
+        "agent_memory_eval.reproduction.runner": "src/agent_memory_eval/reproduction/runner.py",
+        "agent_memory_eval.analysis.forms_supplement": "src/agent_memory_eval/analysis/forms_supplement.py",
+        "agent_memory_eval.analysis.forms_followon": "src/agent_memory_eval/analysis/forms_followon.py"
+      },
+      "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+      "executable": "{REPO}/outputs/reproductions/two-pass-forms-final-01/checkout/.venv/bin/python",
+      "prefix": "{REPO}/outputs/reproductions/two-pass-forms-final-01/checkout/.venv",
+      "isolated": true,
+      "assertions_enabled": true,
+      "api_role_keys_present": false,
+      "packages": [
+        {
+          "name": "addict",
+          "version": "2.4.0"
+        },
+        {
+          "name": "agent-memory-eval",
+          "version": "0.1.0a0"
+        },
+        {
+          "name": "agent-memory-eval",
+          "version": "0.1.0a0"
+        },
+        {
+          "name": "aiohappyeyeballs",
+          "version": "2.7.1"
+        },
+        {
+          "name": "aiohttp",
+          "version": "3.14.5"
+        },
+        {
+          "name": "aiosignal",
+          "version": "1.4.0"
+        },
+        {
+          "name": "annotated-doc",
+          "version": "0.0.6"
+        },
+        {
+          "name": "annotated-types",
+          "version": "0.8.0"
+        },
+        {
+          "name": "anyio",
+          "version": "4.16.0"
+        },
+        {
+          "name": "arrow",
+          "version": "1.4.0"
+        },
+        {
+          "name": "attrs",
+          "version": "26.1.0"
+        },
+        {
+          "name": "cachebox",
+          "version": "5.2.3"
+        },
+        {
+          "name": "certifi",
+          "version": "2026.10.23"
+        },
+        {
+          "name": "charset-normalizer",
+          "version": "3.5.2"
+        },
+        {
+          "name": "click",
+          "version": "8.5.1"
+        },
+        {
+          "name": "deepdiff",
+          "version": "9.1.0"
+        },
+        {
+          "name": "docstring_parser",
+          "version": "0.18.0"
+        },
+        {
+          "name": "fastapi",
+          "version": "0.162.7"
+        },
+        {
+          "name": "fastuuid",
+          "version": "0.14.0"
+        },
+        {
+          "name": "filelock",
+          "version": "4.2.10"
+        },
+        {
+          "name": "fqdn",
+          "version": "1.6.0"
+        },
+        {
+          "name": "frozenlist",
+          "version": "1.8.0"
+        },
+        {
+          "name": "fsspec",
+          "version": "2026.9.0"
+        },
+        {
+          "name": "h11",
+          "version": "0.16.0"
+        },
+        {
+          "name": "hf-xet",
+          "version": "1.8.0"
+        },
+        {
+          "name": "httpcore",
+          "version": "1.0.9"
+        },
+        {
+          "name": "httpcore2",
+          "version": "2.16.0"
+        },
+        {
+          "name": "httpx",
+          "version": "0.28.1"
+        },
+        {
+          "name": "httpx2",
+          "version": "2.16.0"
+        },
+        {
+          "name": "huggingface_hub",
+          "version": "2.4.0"
+        },
+        {
+          "name": "idna",
+          "version": "3.20"
+        },
+        {
+          "name": "importlib_metadata",
+          "version": "10.2.0"
+        },
+        {
+          "name": "isoduration",
+          "version": "20.11.0"
+        },
+        {
+          "name": "Jinja2",
+          "version": "3.1.6"
+        },
+        {
+          "name": "jiter",
+          "version": "0.19.0"
+        },
+        {
+          "name": "jsonpointer",
+          "version": "3.12"
+        },
+        {
+          "name": "jsonschema",
+          "version": "4.26.0"
+        },
+        {
+          "name": "jsonschema-specifications",
+          "version": "2025.9.1"
+        },
+        {
+          "name": "lark",
+          "version": "1.3.1"
+        },
+        {
+          "name": "lazy-importer",
+          "version": "0.1.0"
+        },
+        {
+          "name": "litellm",
+          "version": "1.82.6"
+        },
+        {
+          "name": "loguru",
+          "version": "0.8.0"
+        },
+        {
+          "name": "markdown-it-py",
+          "version": "4.3.0"
+        },
+        {
+          "name": "MarkupSafe",
+          "version": "3.0.4"
+        },
+        {
+          "name": "mdurl",
+          "version": "0.1.2"
+        },
+        {
+          "name": "multidict",
+          "version": "7.2.1"
+        },
+        {
+          "name": "numpy",
+          "version": "2.5.4"
+        },
+        {
+          "name": "openai",
+          "version": "3.51.0"
+        },
+        {
+          "name": "opentelemetry-api",
+          "version": "1.45.2"
+        },
+        {
+          "name": "orderly-set",
+          "version": "5.5.0"
+        },
+        {
+          "name": "packaging",
+          "version": "26.3"
+        },
+        {
+          "name": "pandas",
+          "version": "3.1.1"
+        },
+        {
+          "name": "propcache",
+          "version": "0.5.4"
+        },
+        {
+          "name": "psutil",
+          "version": "7.2.2"
+        },
+        {
+          "name": "pydantic",
+          "version": "2.14.3"
+        },
+        {
+          "name": "pydantic_core",
+          "version": "2.50.4"
+        },
+        {
+          "name": "Pygments",
+          "version": "2.21.0"
+        },
+        {
+          "name": "python-dateutil",
+          "version": "4.0.0"
+        },
+        {
+          "name": "python-dotenv",
+          "version": "1.2.4"
+        },
+        {
+          "name": "PyYAML",
+          "version": "6.0.3"
+        },
+        {
+          "name": "referencing",
+          "version": "0.37.0"
+        },
+        {
+          "name": "regex",
+          "version": "2026.11.9"
+        },
+        {
+          "name": "requests",
+          "version": "2.34.2"
+        },
+        {
+          "name": "rfc3339-validator",
+          "version": "0.1.4"
+        },
+        {
+          "name": "rfc3986-validator",
+          "version": "0.1.1"
+        },
+        {
+          "name": "rfc3987-syntax",
+          "version": "1.1.0"
+        },
+        {
+          "name": "rich",
+          "version": "15.0.0"
+        },
+        {
+          "name": "rpds-py",
+          "version": "2026.9.1"
+        },
+        {
+          "name": "shellingham",
+          "version": "1.5.4"
+        },
+        {
+          "name": "six",
+          "version": "1.17.0"
+        },
+        {
+          "name": "sniffio",
+          "version": "1.3.1"
+        },
+        {
+          "name": "starlette",
+          "version": "1.10.0"
+        },
+        {
+          "name": "tabulate",
+          "version": "0.10.0"
+        },
+        {
+          "name": "tau2",
+          "version": "2.0.0"
+        },
+        {
+          "name": "tenacity",
+          "version": "9.2.1"
+        },
+        {
+          "name": "tiktoken",
+          "version": "0.14.0"
+        },
+        {
+          "name": "tokenizers",
+          "version": "0.23.3"
+        },
+        {
+          "name": "toml",
+          "version": "0.10.2"
+        },
+        {
+          "name": "tqdm",
+          "version": "4.70.1"
+        },
+        {
+          "name": "truststore",
+          "version": "0.10.5"
+        },
+        {
+          "name": "typer",
+          "version": "0.29.1"
+        },
+        {
+          "name": "typing-inspection",
+          "version": "0.4.5"
+        },
+        {
+          "name": "typing_extensions",
+          "version": "4.16.0"
+        },
+        {
+          "name": "tzdata",
+          "version": "2026.6"
+        },
+        {
+          "name": "uri-template",
+          "version": "1.3.0"
+        },
+        {
+          "name": "urllib3",
+          "version": "2.8.0"
+        },
+        {
+          "name": "uvicorn",
+          "version": "0.54.0"
+        },
+        {
+          "name": "webcolors",
+          "version": "25.10.0"
+        },
+        {
+          "name": "yarl",
+          "version": "1.25.1"
+        },
+        {
+          "name": "zipp",
+          "version": "4.1.2"
+        }
+      ],
+      "bootstrap_sha256": "ed86108b7658026934efb493edad290d4ddbd47f8b4c79109fc02fdd1e32c323"
+    },
+    "finished_at_utc": "2026-11-18T08:35:05.255298+00:00",
+    "elapsed_seconds": 852.3678372880022,
+    "evidence_files": [
+      {
+        "path": "inputs-manifest.json",
+        "sha256": "7698a5d2596c06f9fe9b40987444336c8f87e2fa07d818bccccd53b4271286bb",
+        "bytes": 11641659
+      },
+      {
+        "path": "environment.log",
+        "sha256": "d690d96c6d6d82f53c967a160581a2266ed550a471b48fa5301494a6cfd713df",
+        "bytes": 2425
+      },
+      {
+        "path": "review.stdout.log",
+        "sha256": "22f12008b5a8ab2951a6a43b463aa121c785eefd23875d39509705b9c2e12b55",
+        "bytes": 2261
+      },
+      {
+        "path": "review.stderr.log",
+        "sha256": "a5718282bdd749eaea3d47b2754495b9b7be0079b615c53519483e98bdc30bb4",
+        "bytes": 140
+      },
+      {
+        "path": "child-report.json",
+        "sha256": "ffe3cbb66d6a776e6fc2b990f8fc8034b2d31834e0d19bca2153a64f4ee0efd9",
+        "bytes": 11272
+      },
+      {
+        "path": "child-policy.json",
+        "sha256": "8df45323edad870373910a7ed5a3674d6ddcf6988bf1426cc0d5f6db01703bfa",
+        "bytes": 140
+      }
+    ]
+  }
+}

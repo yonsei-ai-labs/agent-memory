@@ -1,0 +1,3744 @@
+{
+  "format": "agent-memory-two-pass-forms-linked-action-review/v1",
+  "reviewed_pairs": 42,
+  "pairs": {
+    "pair_027fa886229e276757ed": {
+      "label": "both_failure",
+      "treatment": "fact",
+      "jobs_in_blind_order": [
+        237,
+        235
+      ],
+      "task_id": "15",
+      "repetition": 1,
+      "treatment_job": 237,
+      "control_job": 235,
+      "judgment": {
+        "category": "policy_or_eligibility",
+        "user_context": "different",
+        "first_difference": "첫 답변에서 A는 목적지 유지 규정을 운임 조회에도 적용해 PHL만 확인하겠다고 했다. B는 기존 예약의 목적지를 바꿀 수 없어도 EWR 운임을 비교할 수 있다고 했다. A 고객은 두 공항 모두 괜찮다고 했고, B 고객은 첫 요청부터 두 공항 비교를 명시했다.",
+        "sides": [
+          {
+            "index": 2,
+            "quote": "I can only check Newark if it’s already the destination on your reservation.",
+            "end_index": 19,
+            "end_quote": "Transfer successful",
+            "observed_result": "PHL 207달러를 제시했다. 고객이 최종 비용 확인 전 승인을 보류하고 견적·좌석 보류 또는 상담원 이관을 요청해, 예약 변경 없이 이관됐다."
+          },
+          {
+            "index": 2,
+            "quote": "I can check economy (not basic economy) flights to Newark (EWR) and Philadelphia (PHL)",
+            "end_index": 17,
+            "end_quote": "Transfer successful",
+            "observed_result": "PHL 207달러와 EWR 243달러를 제시했으나 조회된 EWR 최저가는 236달러였다. 고객이 PHL을 선택하고 변경 비용과 연결 시간을 묻자, 연결 시간은 이관 요약에만 담고 예약 변경 없이 이관했다."
+          }
+        ]
+      },
+      "sides_in_blind_order": [
+        {
+          "job": 237,
+          "arm": "fact",
+          "run_id": "r_cf94d4fe667742c7b7d7cc862ef930b5",
+          "official_success": false,
+          "reward": 0.0,
+          "db_match": false,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        },
+        {
+          "job": 235,
+          "arm": "no_memory",
+          "run_id": "r_53faebe0ce3c440faf51a8db97f4dead",
+          "official_success": false,
+          "reward": 0.0,
+          "db_match": false,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        }
+      ],
+      "source_experience": {
+        "first_pass_run_id": "r_1368857ae0db46bc8fafbf10a50ca62a",
+        "first_pass_success": true,
+        "public_context_sha256": "8abb0e1e061b11589cc29b1b769e7ce3cff8a62c8c0ba303a3162d46ffcb5ec2"
+      },
+      "assigned_writer": {
+        "index": 2,
+        "run_id": "r_eae6d35255e24b89a718b35b9bc7d7b4",
+        "snapshot_id": "snap_17694fd31bb64f189b091ea4d0d85fbc",
+        "status": "empty",
+        "item_count": 0,
+        "fact": false,
+        "episode": false,
+        "lesson": false,
+        "procedure": false,
+        "grounding": "empty",
+        "main_note_quote": "",
+        "main_source_quote": "",
+        "suspect_quote": "",
+        "rationale": ""
+      }
+    },
+    "pair_67f832d2462e4034fed2": {
+      "label": "both_failure",
+      "treatment": "episode",
+      "jobs_in_blind_order": [
+        234,
+        235
+      ],
+      "task_id": "15",
+      "repetition": 1,
+      "treatment_job": 234,
+      "control_job": 235,
+      "judgment": {
+        "category": "current_facts_or_arithmetic",
+        "user_context": "comparable",
+        "first_difference": "같은 207달러 PHL 경로를 찾은 뒤 A는 기존 운임과의 차액을 2,580달러 환불로 제시하고 변경 승인을 구했다. B는 검색가를 확정 재예약 가격과 구분하고 고려할지만 물었다.",
+        "sides": [
+          {
+            "index": 17,
+            "quote": "the difference is a $2,580 refund",
+            "end_index": 24,
+            "end_quote": "Transfer successful",
+            "observed_result": "고객이 수수료가 0이거나 사전 고지될 때만 승인하자 변경을 실행하지 않고 이관했다."
+          },
+          {
+            "index": 14,
+            "quote": "These are current search prices, not a confirmed rebooking price.",
+            "end_index": 17,
+            "end_quote": "Transfer successful",
+            "observed_result": "고객이 변경 총비용 확인을 요구하자 이관했다. 예약 변경 기록은 없다."
+          }
+        ]
+      },
+      "sides_in_blind_order": [
+        {
+          "job": 234,
+          "arm": "episode",
+          "run_id": "r_7a0cc9f5d6e943e2b4324a9865782102",
+          "official_success": false,
+          "reward": 0.0,
+          "db_match": false,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 24,
+          "exposed_notes": [
+            {
+              "title": "Airline modification experience: ATL–PHL reservation M05KNL",
+              "body": "Past public airline-agent interaction (evaluation feedback was level none; no grading details available). Chronology: User supplied ID aarav_garcia_1177 and lacked reservation ID; tools located M05KNL as the matching ATL–PHL one-way business itinerary for 2024-05-23 (via ORD), while another reservation was unrelated. User requested next-day travel and cheapest regular Economy, explicitly distinguishing it from Basic Economy. Search returned no direct ATL–PHL flights and one-stop options; assistant identified HAT110 ATL–LGA plus HAT172 LGA–PHL for 2024-05-24 at $207 total. User then requested an EWR comparison; search found HAT059 ATL–DFW plus HAT142 DFW–EWR at $236, arriving 9:30 PM, stated as $29 more. User chose the PHL option with “let's go with that one then”; the change was submitted using profile gift card 7175. Tool response showed Economy fare $207 and a -$2,580 gift-card payment-history entry; assistant reported the refund. User questioned it; retrieved details showed old segment prices $1,936+$851=$2,787, new $105+$102=$207, difference $2,580, matching the recorded entry. User accepted explanation. The action followed affirmative user selection, but policy context required listing details and explicit confirmation before booking updates; exact confirmation requirements/interpretation are not externally graded here. Search, fare calculations, tool outcomes, and successful update are observed in this one case only; do not treat as proof of general correctness."
+            }
+          ]
+        },
+        {
+          "job": 235,
+          "arm": "no_memory",
+          "run_id": "r_53faebe0ce3c440faf51a8db97f4dead",
+          "official_success": false,
+          "reward": 0.0,
+          "db_match": false,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        }
+      ],
+      "source_experience": {
+        "first_pass_run_id": "r_1368857ae0db46bc8fafbf10a50ca62a",
+        "first_pass_success": true,
+        "public_context_sha256": "8abb0e1e061b11589cc29b1b769e7ce3cff8a62c8c0ba303a3162d46ffcb5ec2"
+      },
+      "assigned_writer": {
+        "index": 4,
+        "run_id": "r_b272d64a8fbd4ed9a26f8b9c933603ef",
+        "snapshot_id": "snap_403561bdc6a84d7aa9550b54efff7f82",
+        "status": "completed",
+        "item_count": 1,
+        "fact": true,
+        "episode": true,
+        "lesson": true,
+        "procedure": false,
+        "grounding": "mixed",
+        "main_note_quote": "User questioned it; retrieved details showed old segment prices $1,936+$851=$2,787, new $105+$102=$207, difference $2,580",
+        "main_source_quote": "The system shows the original business-class fare as $2,787 ($1,936 for HAT227 plus $851 for HAT139).",
+        "suspect_quote": "User questioned it; retrieved details showed old segment prices $1,936+$851=$2,787",
+        "rationale": "The chronology, totals and recorded refund are corroborated. The later retrieval showed the new segments, original payment total and refund. The individual old segment prices came from the earlier lookup. The caveat about selection and explicit authorization is grounded in the policy."
+      }
+    },
+    "pair_b52647a87d8cd1fe8dd6": {
+      "label": "both_failure",
+      "treatment": "lesson",
+      "jobs_in_blind_order": [
+        238,
+        235
+      ],
+      "task_id": "15",
+      "repetition": 1,
+      "treatment_job": 238,
+      "control_job": 235,
+      "judgment": {
+        "category": "policy_or_eligibility",
+        "user_context": "comparable",
+        "first_difference": "두 공항 중 어느 곳이든 된다는 요청에 B는 처음부터 기존 예약의 도착지 변경 제한을 설명했다. A는 날짜와 ID를 묻고, 나중에 EWR를 더 비싼 경로로 비교했지만 기존 예약의 도착지 제한은 설명하지 않았다.",
+        "sides": [
+          {
+            "index": 2,
+            "quote": "check eligible replacement flights",
+            "end_index": 23,
+            "end_quote": "Transfer successful",
+            "observed_result": "고객이 수하물 규정과 변경 수수료 확인 전에는 진행하지 않겠다고 해 이관했다."
+          },
+          {
+            "index": 2,
+            "quote": "changing an existing reservation must keep its original origin and destination",
+            "end_index": 17,
+            "end_quote": "Transfer successful",
+            "observed_result": "PHL을 선택한 고객이 총비용·원결제수단을 확인해 달라고 하자 이관했다. 두 경우 모두 변경은 실행되지 않았다."
+          }
+        ]
+      },
+      "sides_in_blind_order": [
+        {
+          "job": 238,
+          "arm": "lesson",
+          "run_id": "r_785dba9b83e94c8ba0c5120c5d2fe261",
+          "official_success": false,
+          "reward": 0.0,
+          "db_match": false,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 24,
+          "exposed_notes": [
+            {
+              "title": "Airline flight-change workflow lessons",
+              "body": "In a past airline reservation change, the assistant gathered the user's profile/reservation, searched direct and one-stop itineraries, distinguished regular Economy from Basic Economy, compared a PHL option ($207) with an EWR option ($236), and explained a recorded $2,580 refund as original $2,787 minus new $207. The user had been told the proposed flights and gift-card adjustment method before later selecting the PHL itinerary; update tool then confirmed the refund. No separate evaluation feedback was provided, so correctness beyond the visible policy/data is unverified. Lesson/caution: before modifying, clearly restate itinerary, cabin, and payment/refund method and obtain unambiguous consent; calculate and describe the adjustment from tool-backed prices, and report it as recorded only after the update succeeds. In comparisons, make clear fare totals apply to the chosen cabin and passenger count."
+            }
+          ]
+        },
+        {
+          "job": 235,
+          "arm": "no_memory",
+          "run_id": "r_53faebe0ce3c440faf51a8db97f4dead",
+          "official_success": false,
+          "reward": 0.0,
+          "db_match": false,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        }
+      ],
+      "source_experience": {
+        "first_pass_run_id": "r_1368857ae0db46bc8fafbf10a50ca62a",
+        "first_pass_success": true,
+        "public_context_sha256": "8abb0e1e061b11589cc29b1b769e7ce3cff8a62c8c0ba303a3162d46ffcb5ec2"
+      },
+      "assigned_writer": {
+        "index": 3,
+        "run_id": "r_638c1d40bfee4cfdb6991062af649ad3",
+        "snapshot_id": "snap_f2ad1b05cc06437c88ec9110e67ee466",
+        "status": "completed",
+        "item_count": 1,
+        "fact": true,
+        "episode": true,
+        "lesson": true,
+        "procedure": true,
+        "grounding": "supported",
+        "main_note_quote": "before modifying, clearly restate itinerary, cabin, and payment/refund method and obtain unambiguous consent",
+        "main_source_quote": "Shall I change reservation M05KNL to these flights in regular Economy and use that gift card for any fare adjustment?",
+        "suspect_quote": "",
+        "rationale": "The quote precedes a request to compare EWR and the later PHL choice. The arithmetic and subsequent confirmation of the recorded refund support the note’s sequencing and its caution about consent."
+      }
+    },
+    "pair_d5443d17c38699071bee": {
+      "label": "gain",
+      "treatment": "procedure",
+      "jobs_in_blind_order": [
+        233,
+        235
+      ],
+      "task_id": "15",
+      "repetition": 1,
+      "treatment_job": 233,
+      "control_job": 235,
+      "judgment": {
+        "category": "policy_or_eligibility",
+        "user_context": "comparable",
+        "first_difference": "A는 PHL·EWR 두 곳을 조회해 변경 옵션으로 제시하겠다고 하고, 나중에는 EWR로의 가상 환불액까지 제시해 선택을 요청했다. B는 첫 답변에서 기존 예약의 도착지를 유지해야 한다고 설명했다.",
+        "sides": [
+          {
+            "index": 2,
+            "quote": "I’ll check your reservation and available Economy flights from ATL to either PHL or EWR",
+            "end_index": 20,
+            "end_quote": "The reservation record shows a $2,580 refund credited to the original gift card",
+            "observed_result": "고객이 PHL 편을 골라 명시적으로 승인했다. 편 변경 도구를 호출했고 2,580달러 환불이 기재됐다."
+          },
+          {
+            "index": 2,
+            "quote": "changing an existing reservation must keep its original origin and destination",
+            "end_index": 17,
+            "end_quote": "Transfer successful",
+            "observed_result": "고객은 PHL 편 변경 전에 수수료 포함 총비용을 확인해 달라고 했다. 상담원이 이관했고 변경 호출은 없었다."
+          }
+        ]
+      },
+      "sides_in_blind_order": [
+        {
+          "job": 233,
+          "arm": "procedure",
+          "run_id": "r_dfb43144fe894e12a76e7411868a5475",
+          "official_success": true,
+          "reward": 1.0,
+          "db_match": true,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 20,
+          "exposed_notes": [
+            {
+              "title": "Airline reservation changes: confirmation and fare checks",
+              "body": "For airline reservation modifications under the provided policy: first obtain the user ID and reservation ID (help locate the reservation if needed), then inspect reservation details and confirm that the requested change preserves origin, destination, and trip type, and that no disallowed flown/basic-economy condition applies. Search current availability and compare the requested cabin specifically (regular Economy is distinct from Basic Economy); verify each itinerary's segment prices add up, seat availability, routing, and date. Give the customer exact itinerary and fare/payment-adjustment details, then obtain explicit confirmation before updating. Policy says only one tool call at a time, so do not issue parallel calls. Use a single eligible payment/refund method already on profile for flight changes. After update, verify returned reservation/payment history and accurately recap. In the example, cheapest PHL regular Economy was $207 via LGA; EWR was $236 via DFW (despite a very long layover), and user ultimately chose PHL. Tool response recorded original fare $2,787, new fare $207, and $2,580 refund. This arithmetic matches returned data, but underlying payment/profile-balance implications were not independently established. Evaluation feedback was level none, so no grading conclusion is available."
+            }
+          ]
+        },
+        {
+          "job": 235,
+          "arm": "no_memory",
+          "run_id": "r_53faebe0ce3c440faf51a8db97f4dead",
+          "official_success": false,
+          "reward": 0.0,
+          "db_match": false,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        }
+      ],
+      "source_experience": {
+        "first_pass_run_id": "r_1368857ae0db46bc8fafbf10a50ca62a",
+        "first_pass_success": true,
+        "public_context_sha256": "8abb0e1e061b11589cc29b1b769e7ce3cff8a62c8c0ba303a3162d46ffcb5ec2"
+      },
+      "assigned_writer": {
+        "index": 1,
+        "run_id": "r_76105a55229740319eb34a228678518f",
+        "snapshot_id": "snap_125a9fa8c45e40189e4d4c2fa5d00df8",
+        "status": "completed",
+        "item_count": 1,
+        "fact": true,
+        "episode": true,
+        "lesson": true,
+        "procedure": true,
+        "grounding": "supported",
+        "main_note_quote": "After update, verify returned reservation/payment history and accurately recap.",
+        "main_source_quote": "The difference is $2,580, matching the recorded refund to your gift card.",
+        "suspect_quote": "",
+        "rationale": "Both itinerary searches and the refund entry support the example. The EWR connection arrives at DFW at 09:00 and leaves at 18:00. The proposed workflow includes evidence checks, a confirmation gate and post-update verification."
+      }
+    },
+    "pair_720b8a4989cf2da6a8f1": {
+      "label": "loss",
+      "treatment": "fact",
+      "jobs_in_blind_order": [
+        245,
+        251
+      ],
+      "task_id": "17",
+      "repetition": 1,
+      "treatment_job": 245,
+      "control_job": 251,
+      "judgment": {
+        "category": "request_clarification",
+        "user_context": "different",
+        "first_difference": "A는 승객 변경에 필요한 이름과 생년월일을 먼저 물었고 고객은 프로필을 사용해 달라고 했다. 첫 요청에 뉴욕–시카고 노선까지 밝힌 B 고객에게는 승객 수를 유지하는 교체인지 확인했다. 이후 같은 예약을 찾았지만 A는 기준일 5월 15일보다 뒤인 5월 25일을 과거로 판단했다.",
+        "sides": [
+          {
+            "index": 2,
+            "quote": "I’ll also need your full name and date of birth for the passenger update.",
+            "end_index": 15,
+            "end_quote": "Since the itinerary date has passed, I can’t update the reservation.",
+            "observed_result": "고객이 FQ8APE를 지목한 뒤에도 A는 날짜가 지났다고 두 번 안내했다. 고객은 이를 받아들였고 변경 도구는 호출되지 않았다."
+          },
+          {
+            "index": 2,
+            "quote": "do you mean replace the current passenger’s details while keeping the same number of passengers?",
+            "end_index": 22,
+            "end_quote": "the cabin is now economy, the passenger is Omar Rossi, and the reservation includes 3 checked bags.",
+            "observed_result": "고객이 세 변경을 승인하고 기프트카드를 선택했다. 객실을 이코노미로 바꾸고 승객 1명을 교체한 뒤 수하물 3개를 기록했다. 도구에 객실 변경 비용 209달러가 남았다."
+          }
+        ]
+      },
+      "sides_in_blind_order": [
+        {
+          "job": 245,
+          "arm": "fact",
+          "run_id": "r_c484a1ecbd384c8cbd0b3b5d1b5a0b18",
+          "official_success": false,
+          "reward": 0.0,
+          "db_match": false,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 12,
+          "exposed_notes": [
+            {
+              "title": "Airline modification interaction: basic-economy cabin policy distinction",
+              "body": "Observed in one airline-agent interaction (task policy stated current time 2024-05-15): For reservation FQ8APE, basic_economy itinerary EWR–IAH–ORD had future segments dated 2024-05-25. The agent told the user the reservation's cabin upgrade was disallowed because it was basic economy. This conflicts with the supplied policy: basic economy flights cannot have their flight itinerary modified, but cabin class may be changed on any reservation, including basic economy, if no segment has already been flown; cabin changes apply to all segments. The segments shown were future relative to the stated current date, so the policy's flown-flight restriction did not appear to bar an upgrade. No cabin change was attempted, and no upgraded fare/price difference was checked or established. Avoid conflating flight itinerary changes with cabin changes; check flown status and fare difference before proceeding, then obtain explicit confirmation of exact cabin update/payment or refund details before database update.\n\nOther directly observed successful handling in this interaction: profile lookup found four reservations after user supplied their user ID but lacked a reservation ID; agent asked which one, then identified FQ8APE as Newark–Chicago via Houston. User allowed use of DOB on profile; agent replaced the sole passenger with profile user without changing passenger count, after confirming changes. User confirmed 3 checked bags; gold member/basic economy allowance was explained as 2 free and 1 nonfree, $50. Agent obtained payment method choice before adding baggage; update reported 3 total, 1 nonfree, with $50 charged to gift card ending 0333. No separate feedback beyond evaluation_feedback level 'none' was supplied. Stored as a single observed case, not evidence about other systems or fare outcomes."
+            }
+          ]
+        },
+        {
+          "job": 251,
+          "arm": "no_memory",
+          "run_id": "r_9be5349fd5af4874861b99599d21479d",
+          "official_success": true,
+          "reward": 1.0,
+          "db_match": true,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        }
+      ],
+      "source_experience": {
+        "first_pass_run_id": "r_d952bf758eb843d6b7fdafdc0747a06a",
+        "first_pass_success": false,
+        "public_context_sha256": "6144de11d0c51851c0f8ee46871227849bfa9c9f5228ca5f8c0f52b76e825306"
+      },
+      "assigned_writer": {
+        "index": 12,
+        "run_id": "r_cafbac632c374eea8169b183f120b018",
+        "snapshot_id": "snap_cadf6c78ae5c4e1581c51e21c8460fce",
+        "status": "completed",
+        "item_count": 1,
+        "fact": true,
+        "episode": true,
+        "lesson": true,
+        "procedure": true,
+        "grounding": "supported",
+        "main_note_quote": "check flown status and fare difference before proceeding, then obtain explicit confirmation",
+        "main_source_quote": "In other cases, all reservations, including basic economy, can change cabin without changing the flights.",
+        "suspect_quote": "",
+        "rationale": "거절된 객실 변경을 정책 및 여행일과 대조하고 미래의 확인 순서를 제시한다. 실제로 완료한 승객 변경, 수하물 수량과 50달러 기프트카드 결제도 공개 도구 반환으로 확인된다."
+      }
+    },
+    "pair_6c521c76f12b1631c95a": {
+      "label": "both_success",
+      "treatment": "fact",
+      "jobs_in_blind_order": [
+        241,
+        242
+      ],
+      "task_id": "43",
+      "repetition": 1,
+      "treatment_job": 241,
+      "control_job": 242,
+      "judgment": {
+        "category": "simulator_led",
+        "user_context": "different",
+        "first_difference": "A의 첫 발화는 중복 예약했다는 사실만 전했다. B의 고객은 5월 17일 둘 중 하나를 취소하고 싶다고 먼저 밝혔고 후속 질문에 ATL–JFK를 특정했다. A에서는 고객이 대상을 고르기 전에 두 예약의 부적격 안내가 나왔다.",
+        "sides": [
+          {
+            "index": 1,
+            "quote": "I think I messed up and booked two flights for the same day.",
+            "end_index": 21,
+            "end_quote": "neither booking qualifies for cancellation for a change of plans",
+            "observed_result": "이후 고객이 두 편을 차례로 지목하자 미탑승·항공사 미취소와 사유를 확인하고 각각 취소할 수 없다고 설명했다."
+          },
+          {
+            "index": 1,
+            "quote": "I want to cancel one of them.",
+            "end_index": 42,
+            "end_quote": "It has not been canceled.",
+            "observed_result": "ATL–JFK 요청을 이관하고, 대기 중 고객이 선택을 바꾸자 두 번째 예약도 이관했다. 취소는 실행되지 않았다."
+          }
+        ]
+      },
+      "sides_in_blind_order": [
+        {
+          "job": 241,
+          "arm": "fact",
+          "run_id": "r_c4d5cff9a1bb456696357d29b57b6672",
+          "official_success": true,
+          "reward": 1.0,
+          "db_match": true,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 18,
+          "exposed_notes": [
+            {
+              "title": "Airline cancellation policy interaction (May 2024)",
+              "body": "Observed in a past public interaction under a supplied airline-agent policy dated 2024-05-15: user reported same-day duplicate flights, and assistant looked up six reservations and identified D1EW9B (ATL–JFK, May 17) and 9HBUV8 (DEN–BOS via MIA, May 17). User stated reason was accidental double-booking/change of plans. Assistant denied cancellation for both: D1EW9B was basic economy, booked May 4, no insurance; 9HBUV8 was basic economy, booked May 12, had insurance but stated reason was not an insured health/weather reason, and both were outside 24-hour window. Membership was silver; assistant stated that did not change listed eligibility. It also said basic economy cannot be modified. No cancellation/modify tool was called. Policy additionally states transfer is required if any portion has already been flown, and offers cancellation eligibility for business cabin; these facts were not explored in this exchange. Feedback provided was level 'none'; no correctness grading or other feedback available. Treat this only as a record of what was observed, not confirmation that every response was correct."
+            }
+          ]
+        },
+        {
+          "job": 242,
+          "arm": "no_memory",
+          "run_id": "r_792cb6b0344941f48f65a4dd7cb46c7f",
+          "official_success": true,
+          "reward": 1.0,
+          "db_match": true,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        }
+      ],
+      "source_experience": {
+        "first_pass_run_id": "r_ab98910d2b5f416286036393a7b50855",
+        "first_pass_success": true,
+        "public_context_sha256": "4c44a17a25dac2ef77cc126403a167b75e7f11f07c225462cc304128a5938acc"
+      },
+      "assigned_writer": {
+        "index": 5,
+        "run_id": "r_3c432c1ca4234afcbb3529b38bd707fe",
+        "snapshot_id": "snap_b78451f7a10a4d4fadc2faaea143f837",
+        "status": "completed",
+        "item_count": 1,
+        "fact": true,
+        "episode": true,
+        "lesson": false,
+        "procedure": false,
+        "grounding": "supported",
+        "main_note_quote": "assistant looked up six reservations and identified D1EW9B (ATL–JFK, May 17) and 9HBUV8 (DEN–BOS via MIA, May 17).",
+        "main_source_quote": "I found six reservations. Two are scheduled for the same day, May 17, 2024:",
+        "suspect_quote": "",
+        "rationale": "조회 결과, 고객 사유, 두 번의 거절과 변경 호출이 없었다는 사실을 기록했다. 추가 정책은 이 대화에서 다루지 않은 사항으로 명시하고 다음 사례의 행동이나 교훈을 제시하지 않았다."
+      }
+    },
+    "pair_a1633a408bf9a06a4899": {
+      "label": "both_success",
+      "treatment": "episode",
+      "jobs_in_blind_order": [
+        242,
+        240
+      ],
+      "task_id": "43",
+      "repetition": 1,
+      "treatment_job": 240,
+      "control_job": 242,
+      "judgment": {
+        "category": "identity_or_lookup",
+        "user_context": "comparable",
+        "first_difference": "조회 전에 양쪽 고객 모두 5월 17일 ATL–JFK 편과 중복 예약 실수를 명시했다. A는 다른 예약 35V5SM부터 연 뒤 나머지 다섯 건을 한 번에 조회했다. B는 첫 예약 조회에서 바로 D1EW9B를 열었다. 어느 쪽도 고객에게서 예약번호를 받지는 않았다.",
+        "sides": [
+          {
+            "index": 7,
+            "quote": "\"reservation_id\": \"35V5SM\"",
+            "end_index": 42,
+            "end_quote": "It has not been canceled.",
+            "observed_result": "A는 ATL–JFK 편을 즉시 이관했고 고객이 다른 예약도 취소해 달라고 하자 두 번째로 이관했다. 대기가 이어졌고 취소는 없었다."
+          },
+          {
+            "index": 7,
+            "quote": "\"reservation_id\": \"D1EW9B\"",
+            "end_index": 14,
+            "end_quote": "I’m unable to cancel this reservation for that reason, and I haven’t made any changes.",
+            "observed_result": "B는 첫 예약의 취소 조건을 설명하고 두 번째 예약 요청이 들어왔을 때 그 예약을 조회했다. 두 편 모두 취소하지 않았고 고객이 대화를 끝냈다."
+          }
+        ]
+      },
+      "sides_in_blind_order": [
+        {
+          "job": 242,
+          "arm": "no_memory",
+          "run_id": "r_792cb6b0344941f48f65a4dd7cb46c7f",
+          "official_success": true,
+          "reward": 1.0,
+          "db_match": true,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        },
+        {
+          "job": 240,
+          "arm": "episode",
+          "run_id": "r_6760dad5e7124c2c96eecbee007da453",
+          "official_success": true,
+          "reward": 1.0,
+          "db_match": true,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 14,
+          "exposed_notes": [
+            {
+              "title": "Airline support example: duplicate-flight cancellation and modification distinction",
+              "body": "In a past airline-support conversation (policy context current time 2024-05-15), a customer supplied user ID mohamed_hernandez_5188 and said two reservations overlapped on May 17, 2024. Account lookup found D1EW9B (ATL–JFK, basic economy, booked May 4, no insurance) and 9HBUV8 (DEN–BOS via MIA, basic economy, booked May 12, insurance yes); both were one-way May 17 reservations. Customer sought cancellation due to accidental double-booking, first D1EW9B, then 9HBUV8 after being told silver status did not alter eligibility. The assistant declined both: neither booking was within 24 hours, neither was airline-cancelled or business class, and the stated change-of-plans reason was not a covered insurance reason. Those refusals appear consistent with the provided cancellation policy; no cancellation action was taken. In response to whether anything else could be done, assistant said basic economy flights could not be modified. Caution: policy prohibits changing flight segments for basic economy, but separately permits cabin changes for basic economy when no segment has been flown, and permits baggage additions and passenger-detail changes (not passenger-count changes). So the broad wording that basic economy reservations cannot be modified at all was imprecise; qualify it as flight itinerary changes being unavailable and consider other eligible edit types if relevant. No separate evaluation feedback was provided."
+            }
+          ]
+        }
+      ],
+      "source_experience": {
+        "first_pass_run_id": "r_ab98910d2b5f416286036393a7b50855",
+        "first_pass_success": true,
+        "public_context_sha256": "4c44a17a25dac2ef77cc126403a167b75e7f11f07c225462cc304128a5938acc"
+      },
+      "assigned_writer": {
+        "index": 7,
+        "run_id": "r_cb7a0c3e237642b381ef6c2d97f4eb01",
+        "snapshot_id": "snap_f94364b090374356a9582aeb120d88ca",
+        "status": "completed",
+        "item_count": 1,
+        "fact": true,
+        "episode": true,
+        "lesson": true,
+        "procedure": true,
+        "grounding": "mixed",
+        "main_note_quote": "Customer sought cancellation due to accidental double-booking, first D1EW9B, then 9HBUV8",
+        "main_source_quote": "then I'm okay with canceling the other flight on May 17 instead",
+        "suspect_quote": "neither was airline-cancelled or business class",
+        "rationale": "대안으로 요청한 두 번째 취소와 예약별 날짜·보험이 맞고, 다른 변경 유형을 검토하라는 조건부 조언이 있다. 항공사 취소 여부는 조회되지 않았다. 마지막 답변이 명시적으로 거절한 대상은 항공편 변경이었다."
+      }
+    },
+    "pair_192beb061951a285fa02": {
+      "label": "both_success",
+      "treatment": "lesson",
+      "jobs_in_blind_order": [
+        242,
+        244
+      ],
+      "task_id": "43",
+      "repetition": 1,
+      "treatment_job": 244,
+      "control_job": 242,
+      "judgment": {
+        "category": "business_tool_or_arguments",
+        "user_context": "comparable",
+        "first_difference": "실수로 중복 예약한 ATL–JFK 한 건과 취소 사유가 두 쪽 모두 특정된 뒤, A는 부적격 판단을 이관 요약에 넣어 즉시 사람에게 넘겼다. B는 같은 사유로 직접 취소 불가를 설명했다.",
+        "sides": [
+          {
+            "index": 14,
+            "quote": "transfer_to_human_agents",
+            "end_index": 42,
+            "end_quote": "It has not been canceled.",
+            "observed_result": "고객이 오래 기다린 뒤 다른 예약을 요청해 다시 이관했다. 어느 쪽 예약도 취소됐다는 기록은 없다."
+          },
+          {
+            "index": 18,
+            "quote": "I can’t cancel it under the applicable rules.",
+            "end_index": 25,
+            "end_quote": "I don't think I need to change cabins or anything right now.",
+            "observed_result": "다른 예약도 사유가 보험 적용 대상이 아니라고 설명했다. 고객은 객실 변경 등 대안을 원하지 않아 업데이트 없이 종료했다."
+          }
+        ]
+      },
+      "sides_in_blind_order": [
+        {
+          "job": 242,
+          "arm": "no_memory",
+          "run_id": "r_792cb6b0344941f48f65a4dd7cb46c7f",
+          "official_success": true,
+          "reward": 1.0,
+          "db_match": true,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        },
+        {
+          "job": 244,
+          "arm": "lesson",
+          "run_id": "r_bfc2b0229371400cbf0873303b147bb4",
+          "official_success": true,
+          "reward": 1.0,
+          "db_match": true,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 26,
+          "exposed_notes": [
+            {
+              "title": "Airline cancellation and modification policy lesson",
+              "body": "In a past airline-support exchange, user sought cancellation of two May 17 flights due to accidental double-booking. Under the supplied policy/time, the May 4 basic-economy, uninsured reservation did not meet a cancellation condition; the May 12 basic-economy reservation had insurance, but double-booking/change-of-plans was not a covered health/weather reason, and it was outside 24 hours. Refusing cancellation was consistent with the provided rules. However, the concluding claim that “Basic economy flights can’t be modified” was overbroad: the policy says basic economy cannot have flight segments changed, but cabin changes are allowed for all reservations (including basic economy) if no segment has already been flown. When asked what else can be done, distinguish flight itinerary changes from other permitted changes and avoid implying all modifications are barred; any database updates require listing details and explicit confirmation."
+            }
+          ]
+        }
+      ],
+      "source_experience": {
+        "first_pass_run_id": "r_ab98910d2b5f416286036393a7b50855",
+        "first_pass_success": true,
+        "public_context_sha256": "4c44a17a25dac2ef77cc126403a167b75e7f11f07c225462cc304128a5938acc"
+      },
+      "assigned_writer": {
+        "index": 8,
+        "run_id": "r_7cffbb3a1a0146f0a79a8c6419776598",
+        "snapshot_id": "snap_9f25693fa7bf448089eb3d3cdde64646",
+        "status": "completed",
+        "item_count": 1,
+        "fact": true,
+        "episode": true,
+        "lesson": true,
+        "procedure": true,
+        "grounding": "supported",
+        "main_note_quote": "distinguish flight itinerary changes from other permitted changes and avoid implying all modifications are barred",
+        "main_source_quote": "In other cases, all reservations, including basic economy, can change cabin without changing the flights.",
+        "suspect_quote": "",
+        "rationale": "두 예약의 결제일·보험과 고객의 사유가 취소 거절의 설명을 뒷받침한다. 고객은 첫 예약을 거절당한 뒤 다른 예약을 대안으로 요청했다. 메모는 다른 변경 유형의 조건과 사전 승인을 안내한다."
+      }
+    },
+    "pair_85357e2a7a01dbd75651": {
+      "label": "both_success",
+      "treatment": "procedure",
+      "jobs_in_blind_order": [
+        243,
+        242
+      ],
+      "task_id": "43",
+      "repetition": 1,
+      "treatment_job": 243,
+      "control_job": 242,
+      "judgment": {
+        "category": "policy_or_eligibility",
+        "user_context": "comparable",
+        "first_difference": "A 고객은 조회 후 대상과 이유를 지정했고 B 고객은 조회 전에 지정했다. 양쪽 모두 ATL–JFK의 중복 예약 실수로 대상이 확정된 시점에 A는 취소 불가 사유를 고객에게 설명했고, B는 같은 자격 미충족 판단을 담아 곧바로 상담원에게 이관했다.",
+        "sides": [
+          {
+            "index": 15,
+            "quote": "I can’t cancel **D1EW9B** under the cancellation rules.",
+            "end_index": 21,
+            "end_quote": "neither reservation is eligible for cancellation",
+            "observed_result": "고객이 두 번째 예약 9HBUV8도 취소해 달라고 했다. A는 중복 예약 실수가 보험의 건강·기상 사유에 해당하지 않는다고 설명했다. 두 예약 모두 변경되지 않았다."
+          },
+          {
+            "index": 14,
+            "quote": "transfer_to_human_agents",
+            "end_index": 42,
+            "end_quote": "It has not been canceled.",
+            "observed_result": "첫 이관이 성공한 뒤 여러 차례 대기가 이어졌다. 고객이 두 번째 예약 취소를 요청하자 B는 다시 이관했다. 취소 도구는 호출되지 않았다."
+          }
+        ]
+      },
+      "sides_in_blind_order": [
+        {
+          "job": 243,
+          "arm": "procedure",
+          "run_id": "r_363c1b7151454fe28b7769384c1dc6a8",
+          "official_success": true,
+          "reward": 1.0,
+          "db_match": true,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 18,
+          "exposed_notes": [
+            {
+              "title": "Airline duplicate-booking cancellation review",
+              "body": "In one airline-support interaction, retrieving the account's listed reservation IDs and comparing dates/segments successfully identified two same-day bookings when the customer lacked confirmation codes. The cancellation denials appear supported by the supplied policy: both were basic economy, booked more than 24 hours earlier, neither airline-cancelled nor business; insurance on one did not cover a change-of-plans reason. Silver status did not add cancellation eligibility. Important caveat in the final response: saying basic economy reservations cannot be modified was overbroad. Policy forbids changing basic-economy flights, but cabin changes are allowed even for basic economy if no segment has been flown; baggage may be added and passenger details may be changed without changing passenger count. For a broad request for other options, distinguish prohibited itinerary changes from those separately permitted actions, and verify applicable conditions and required confirmation before any database update. No evaluation feedback was supplied, so this is a policy-based review, not a verified grading result."
+            }
+          ]
+        },
+        {
+          "job": 242,
+          "arm": "no_memory",
+          "run_id": "r_792cb6b0344941f48f65a4dd7cb46c7f",
+          "official_success": true,
+          "reward": 1.0,
+          "db_match": true,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        }
+      ],
+      "source_experience": {
+        "first_pass_run_id": "r_ab98910d2b5f416286036393a7b50855",
+        "first_pass_success": true,
+        "public_context_sha256": "4c44a17a25dac2ef77cc126403a167b75e7f11f07c225462cc304128a5938acc"
+      },
+      "assigned_writer": {
+        "index": 6,
+        "run_id": "r_72bafbc00c3b4293b84d4754972405b4",
+        "snapshot_id": "snap_e90f31c2196847ffadaf98310e0df22e",
+        "status": "completed",
+        "item_count": 1,
+        "fact": true,
+        "episode": true,
+        "lesson": true,
+        "procedure": true,
+        "grounding": "mixed",
+        "main_note_quote": "verify applicable conditions and required confirmation before any database update.",
+        "main_source_quote": "you must list the action details and obtain explicit user confirmation (yes) to proceed.",
+        "suspect_quote": "neither airline-cancelled nor business",
+        "rationale": "동일일 예약을 찾은 순서와 좌석 등급, 보험, 변경 전 확인 원칙은 확인된다. 조회한 것은 예약 상세였다. 항공사의 실제 운항 취소 여부를 보여 주는 별도 상태 조회나 명시적 확인은 없다."
+      }
+    },
+    "pair_f78f4186848b47aaa1ed": {
+      "label": "loss",
+      "treatment": "fact",
+      "jobs_in_blind_order": [
+        323,
+        326
+      ],
+      "task_id": "23",
+      "repetition": 1,
+      "treatment_job": 323,
+      "control_job": 326,
+      "judgment": {
+        "category": "business_tool_or_arguments",
+        "user_context": "comparable",
+        "first_difference": "두 고객 모두 같은 날짜의 가장 싼 비즈니스 왕복으로 취소·재예약을 원했다. A는 취소 사유·구간·보험을 확인하고 운임 조회 전에 취소했다. B는 최저가를 확인해 달라는 질문에 운임부터 조회하고 고객이 가격과 취소 사유를 확인한 뒤 취소했다.",
+        "sides": [
+          {
+            "index": 10,
+            "quote": "Before I cancel, what is the reason",
+            "end_index": 33,
+            "end_quote": "The total Mastercard charge is $1,286.",
+            "observed_result": "세 승객을 각각 발권하고 증서 세 장과 기프트카드 두 장을 적용해 카드에 총 $1,286을 청구했다."
+          },
+          {
+            "index": 10,
+            "quote": "search_direct_flight",
+            "end_index": 32,
+            "end_quote": "The total charged to your Mastercard is **$1,286**.",
+            "observed_result": "먼저 제시한 운임으로 세 승객을 각각 발권했고, 같은 증서와 기프트카드를 적용해 카드에 총 $1,286을 청구했다."
+          }
+        ]
+      },
+      "sides_in_blind_order": [
+        {
+          "job": 323,
+          "arm": "fact",
+          "run_id": "r_5a679ff7f6b44df28d97d8f9491c3bd9",
+          "official_success": false,
+          "reward": 0.0,
+          "db_match": false,
+          "communicate_checks": [
+            {
+              "info": "327",
+              "justification": "Information '327' communicated in the message:\n '{\"gift_card_balance_total\":327,\"travel_certificate_balance_total\":1000,\"reservation_id\":\"K1NW8N\",\"message\":\"Your gift card balances total $327, and your travel certificate balances total $1,000. Your recent reservation is a basic-economy round trip for three passengers, departing May 26 and returning May 28, 2024. Basic-economy flights cannot be changed to different flights, so I can’t search or switch you to a different, cheaper business-class itinerary. The cabin can be changed for the entire reservation, keeping the existing flights, if you’d like me to check that option.\"}'",
+              "met": true
+            },
+            {
+              "info": "1000",
+              "justification": "Information '1000' communicated in the message:\n '{\"gift_card_balance_total\":327,\"travel_certificate_balance_total\":1000,\"reservation_id\":\"K1NW8N\",\"message\":\"Your gift card balances total $327, and your travel certificate balances total $1,000. Your recent reservation is a basic-economy round trip for three passengers, departing May 26 and returning May 28, 2024. Basic-economy flights cannot be changed to different flights, so I can’t search or switch you to a different, cheaper business-class itinerary. The cabin can be changed for the entire reservation, keeping the existing flights, if you’d like me to check that option.\"}'",
+              "met": true
+            },
+            {
+              "info": "1286",
+              "justification": "Information '1286' communicated in the message:\n '{\"message\":\"Yes. The three separate one-passenger reservations could use one certificate each: $500, $250, and $250, for $1,000 total. Applying both gift cards ($327) as well would leave $1,286 to charge to your Mastercard ending 9363. The total for all three reservations remains $2,613. I have not booked or charged anything.\\n\\nThe proposed bookings would each use the same business-class itinerary: May 26 HAT023 JFK–SFO, and May 28 HAT204 SFO–SEA then HAT100 SEA–JFK, with no insurance. Please confirm yes if you want me to create three separate reservations for the same three passengers, one passenger per reservation, using that payment allocation.\"}'",
+              "met": true
+            }
+          ],
+          "termination": "user_stop",
+          "normal_response_memory_spans": 30,
+          "exposed_notes": [
+            {
+              "title": "Airline task review: basic-economy changes and confirmations",
+              "body": "Observed in one airline-agent conversation (policy context dated 2024-05-15): assistant initially said a basic-economy reservation could not be changed to different flights, and separately offered to check cabin change. This is consistent with the supplied policy distinction: basic economy cannot have its flights changed, but cabin changes are allowed if no flight has been flown (and all segments change cabin together). The agent later canceled the reservation after the user explicitly chose a cancellation reason; reservation creation time 2024-05-14 16:03 and stated current time 2024-05-15 15:00 put it within 24 hours. It searched and proposed three separate one-passenger bookings to use three certificates, itemized payment and obtained explicit confirmation before booking each. Tool outputs showed all three bookings created; final report matched the listed $1,286 card total. No separate evaluation feedback or correctness grading was provided. Preserve distinction between observed tool results and policy compliance; no additional outcome verification was available."
+            }
+          ]
+        },
+        {
+          "job": 326,
+          "arm": "no_memory",
+          "run_id": "r_820a927dffa746e89d2dbaa8443f5148",
+          "official_success": true,
+          "reward": 1.0,
+          "db_match": true,
+          "communicate_checks": [
+            {
+              "info": "327",
+              "justification": "Information '327' communicated in the message:\n 'Your gift cards total **$327** ($198 + $129), and your travel certificates total **$1,000** ($500 + $250 + $250).\n\nI found reservation **K1NW8N**. It’s a basic-economy round trip for three passengers, departing **May 26, 2024** and returning **May 28, 2024**. Basic-economy flights can’t be changed, so I can’t replace them with different flights. I can help check whether the existing flights can be changed to business class while keeping the same flights and dates. Would you like me to look into that?'",
+              "met": true
+            },
+            {
+              "info": "1000",
+              "justification": "Information '1000' communicated in the message:\n 'Your gift cards total **$327** ($198 + $129), and your travel certificates total **$1,000** ($500 + $250 + $250).\n\nI found reservation **K1NW8N**. It’s a basic-economy round trip for three passengers, departing **May 26, 2024** and returning **May 28, 2024**. Basic-economy flights can’t be changed, so I can’t replace them with different flights. I can help check whether the existing flights can be changed to business class while keeping the same flights and dates. Would you like me to look into that?'",
+              "met": true
+            },
+            {
+              "info": "1286",
+              "justification": "Information '1286' communicated in the message:\n 'Yes. Three separate one-passenger reservations would allow one certificate per reservation, and all listed payment methods are in your profile. Based on the listed fare of **$871 per passenger**:\n\n- **Mohamed:** $500 certificate + $327 in gift cards + **$44 Mastercard**\n- **Raj:** $250 certificate + **$621 Mastercard**\n- **Liam:** $250 certificate + **$621 Mastercard**\n\nThe total Mastercard charge would be **$1,286**. This assumes each separate booking is priced at the same listed fare. No insurance would be added, and no extra bags would be added.\n\nI haven’t booked anything. Would you like me to proceed with these three separate reservations and this payment split?'",
+              "met": true
+            }
+          ],
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        }
+      ],
+      "source_experience": {
+        "first_pass_run_id": "r_ebe376c9de3d4433909026bedc1ed3de",
+        "first_pass_success": true,
+        "public_context_sha256": "4e9930c1dcf5a1ead264d180578860224f8fabf19bab962a1a1513f740faf09f"
+      },
+      "assigned_writer": {
+        "index": 62,
+        "run_id": "r_6073192439624f20930ebae69419bf2a",
+        "snapshot_id": "snap_d2d9c8d5568c4096a3ebb1a1d76fffbc",
+        "status": "completed",
+        "item_count": 1,
+        "fact": true,
+        "episode": true,
+        "lesson": true,
+        "procedure": false,
+        "grounding": "mixed",
+        "main_note_quote": "Tool outputs showed all three bookings created",
+        "main_source_quote": "what if we split it into three separate reservations, one per passenger?",
+        "suspect_quote": "It searched and proposed three separate one-passenger bookings",
+        "rationale": "예약 시각·취소와 세 예약의 결제 합계는 맞는다. 승객별 분할 아이디어를 먼저 제안한 쪽은 상담원이 아니라 고객이었다. 승인은 세 건에 대해 한 번에 주어졌다."
+      }
+    },
+    "pair_60c940d29c0f64671172": {
+      "label": "loss",
+      "treatment": "episode",
+      "jobs_in_blind_order": [
+        322,
+        326
+      ],
+      "task_id": "23",
+      "repetition": 1,
+      "treatment_job": 322,
+      "control_job": 326,
+      "judgment": {
+        "category": "approval_or_reconfirmation",
+        "user_context": "different",
+        "first_difference": "처음에는 둘 다 같은 날짜의 최저가 비즈니스 왕복을 원했다. A 고객은 취소·재예약이 가능한지 물었고 상담원은 사유와 날짜만 확인한 뒤 새 운임을 제시하기 전에 취소했다. B 고객은 새 최저가를 먼저 물었고, 상담원은 견적을 제시한 뒤 고객이 명시적으로 취소를 승인할 때까지 기다렸다.",
+        "sides": [
+          {
+            "index": 12,
+            "quote": "cancel_reservation",
+            "end_index": 32,
+            "end_quote": "Your total Mastercard charge is $1,868.",
+            "observed_result": "기존 예약을 취소하고 귀국 마지막 구간 HAT021로 세 건을 따로 예약했다. 총 운임은 3,195달러, 카드 청구액은 1,868달러였다."
+          },
+          {
+            "index": 16,
+            "quote": "I haven’t cancelled or booked anything.",
+            "end_index": 32,
+            "end_quote": "The total charged to your Mastercard is **$1,286**.",
+            "observed_result": "2,613달러 견적 뒤 취소 승인을 받았다. 같은 검색 결과에서 귀국 마지막 구간 HAT100을 골라 세 건을 따로 예약했고 카드 청구액은 1,286달러였다."
+          }
+        ]
+      },
+      "sides_in_blind_order": [
+        {
+          "job": 322,
+          "arm": "episode",
+          "run_id": "r_8c3c9756b3514cbca48d2bd6039f3866",
+          "official_success": false,
+          "reward": 0.0,
+          "db_match": false,
+          "communicate_checks": [
+            {
+              "info": "327",
+              "justification": "Information '327' communicated in the message:\n '{\n  \"gift_card_balance_total\": \"$327\",\n  \"certificate_balance_total\": \"$1,000\",\n  \"reservation_id\": \"K1NW8N\",\n  \"message\": \"Your recent reservation is basic economy. Basic economy flights cannot be changed to different flights, so I can’t switch it to a different, cheapest business itinerary. The cabin can be changed to business while keeping the existing flights and dates. Would you like me to check that option?\"\n}'",
+              "met": true
+            },
+            {
+              "info": "1000",
+              "justification": "Information '1000' communicated in the message:\n '{\n  \"gift_card_balance_total\": \"$327\",\n  \"certificate_balance_total\": \"$1,000\",\n  \"reservation_id\": \"K1NW8N\",\n  \"message\": \"Your recent reservation is basic economy. Basic economy flights cannot be changed to different flights, so I can’t switch it to a different, cheapest business itinerary. The cabin can be changed to business while keeping the existing flights and dates. Would you like me to check that option?\"\n}'",
+              "met": true
+            },
+            {
+              "info": "1286",
+              "justification": "Information '1286' not communicated.",
+              "met": false
+            }
+          ],
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        },
+        {
+          "job": 326,
+          "arm": "no_memory",
+          "run_id": "r_820a927dffa746e89d2dbaa8443f5148",
+          "official_success": true,
+          "reward": 1.0,
+          "db_match": true,
+          "communicate_checks": [
+            {
+              "info": "327",
+              "justification": "Information '327' communicated in the message:\n 'Your gift cards total **$327** ($198 + $129), and your travel certificates total **$1,000** ($500 + $250 + $250).\n\nI found reservation **K1NW8N**. It’s a basic-economy round trip for three passengers, departing **May 26, 2024** and returning **May 28, 2024**. Basic-economy flights can’t be changed, so I can’t replace them with different flights. I can help check whether the existing flights can be changed to business class while keeping the same flights and dates. Would you like me to look into that?'",
+              "met": true
+            },
+            {
+              "info": "1000",
+              "justification": "Information '1000' communicated in the message:\n 'Your gift cards total **$327** ($198 + $129), and your travel certificates total **$1,000** ($500 + $250 + $250).\n\nI found reservation **K1NW8N**. It’s a basic-economy round trip for three passengers, departing **May 26, 2024** and returning **May 28, 2024**. Basic-economy flights can’t be changed, so I can’t replace them with different flights. I can help check whether the existing flights can be changed to business class while keeping the same flights and dates. Would you like me to look into that?'",
+              "met": true
+            },
+            {
+              "info": "1286",
+              "justification": "Information '1286' communicated in the message:\n 'Yes. Three separate one-passenger reservations would allow one certificate per reservation, and all listed payment methods are in your profile. Based on the listed fare of **$871 per passenger**:\n\n- **Mohamed:** $500 certificate + $327 in gift cards + **$44 Mastercard**\n- **Raj:** $250 certificate + **$621 Mastercard**\n- **Liam:** $250 certificate + **$621 Mastercard**\n\nThe total Mastercard charge would be **$1,286**. This assumes each separate booking is priced at the same listed fare. No insurance would be added, and no extra bags would be added.\n\nI haven’t booked anything. Would you like me to proceed with these three separate reservations and this payment split?'",
+              "met": true
+            }
+          ],
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        }
+      ],
+      "source_experience": {
+        "first_pass_run_id": "r_ebe376c9de3d4433909026bedc1ed3de",
+        "first_pass_success": true,
+        "public_context_sha256": "4e9930c1dcf5a1ead264d180578860224f8fabf19bab962a1a1513f740faf09f"
+      },
+      "assigned_writer": {
+        "index": 60,
+        "run_id": "r_2dbbecf125b542ecb8dd84874576de0b",
+        "snapshot_id": "snap_d5b628696ac7422a9054adb4f21751f9",
+        "status": "empty",
+        "item_count": 0,
+        "fact": false,
+        "episode": false,
+        "lesson": false,
+        "procedure": false,
+        "grounding": "empty",
+        "main_note_quote": "",
+        "main_source_quote": "",
+        "suspect_quote": "",
+        "rationale": ""
+      }
+    },
+    "pair_80fc84249b4e3b997c71": {
+      "label": "loss",
+      "treatment": "lesson",
+      "jobs_in_blind_order": [
+        328,
+        326
+      ],
+      "task_id": "23",
+      "repetition": 1,
+      "treatment_job": 328,
+      "control_job": 326,
+      "judgment": {
+        "category": "business_tool_or_arguments",
+        "user_context": "different",
+        "first_difference": "두 고객 모두 기존 예약을 취소하고 같은 날짜로 다시 예약하려 했다. A는 취소 사유·구간을 물어 기존 예약부터 취소했고, B는 고객이 최저가 확인을 명시해 먼저 조회하고 세 사람의 $2,613 견적을 수락한 뒤 취소했다.",
+        "sides": [
+          {
+            "index": 10,
+            "quote": "What is your reason for cancelling",
+            "end_index": 51,
+            "end_quote": "The total Mastercard charge is **$1,536**.",
+            "observed_result": "세 건 분할 승인을 받은 뒤 이를 거절했다. 고객이 재선택한 두 건을 발권해 증서 두 장을 쓰고 카드에 $1,536을 청구했다."
+          },
+          {
+            "index": 10,
+            "quote": "search_direct_flight",
+            "end_index": 32,
+            "end_quote": "The total charged to your Mastercard is **$1,286**.",
+            "observed_result": "고객이 승인한 세 건을 각각 발권해 증서 세 장과 기프트카드 두 장을 쓰고 카드에 $1,286을 청구했다."
+          }
+        ]
+      },
+      "sides_in_blind_order": [
+        {
+          "job": 328,
+          "arm": "lesson",
+          "run_id": "r_66b7adfa1ea84a54986f422c76837899",
+          "official_success": false,
+          "reward": 0.0,
+          "db_match": false,
+          "communicate_checks": [
+            {
+              "info": "327",
+              "justification": "Information '327' communicated in the message:\n 'Your balances are **$327 in gift cards** ($198 + $129) and **$1,000 in travel certificates** ($500 + $250 + $250).\n\nYour reservation **K1NW8N** is basic economy. The policy does not allow changing flights on a basic-economy reservation, so I can’t switch it to different flights to find the cheapest business round trip. The cabin can be changed to business while keeping the existing flights and dates. Would you like to explore that option?'",
+              "met": true
+            },
+            {
+              "info": "1000",
+              "justification": "Information '1000' communicated in the message:\n 'Your balances are **$327 in gift cards** ($198 + $129) and **$1,000 in travel certificates** ($500 + $250 + $250).\n\nYour reservation **K1NW8N** is basic economy. The policy does not allow changing flights on a basic-economy reservation, so I can’t switch it to different flights to find the cheapest business round trip. The cabin can be changed to business while keeping the existing flights and dates. Would you like to explore that option?'",
+              "met": true
+            },
+            {
+              "info": "1286",
+              "justification": "Information '1286' communicated in the message:\n 'Understood: no insurance and no extra bags. I have not booked the flights.\n\nFor the three passengers, the itinerary is:\n- **May 26:** HAT023, JFK–SFO, direct\n- **May 28:** HAT204, SFO–SEA, then HAT100, SEA–JFK (arriving May 29)\n\nThe total business fare is **$2,613**. Your available balances are $1,000 in certificates and $327 in gift cards, leaving **$1,286** to pay by credit card if you use all those balances. Which of your two cards should I use: Visa ending **2395** or Mastercard ending **9363**? I’ll then lay out the complete payment details for your explicit confirmation before booking.'",
+              "met": true
+            }
+          ],
+          "termination": "user_stop",
+          "normal_response_memory_spans": 50,
+          "exposed_notes": [
+            {
+              "title": "Airline booking and payment constraints learned from past interaction",
+              "body": "In a past airline-support interaction governed by a specific policy, each reservation was limited to one travel certificate, one credit card, and up to three gift cards; splitting one multi-passenger itinerary into separate reservations made it possible to apply one certificate per reservation. Before booking, the assistant itemized each passenger’s itinerary, payment allocation, and total card charge, then waited for explicit authorization. The arithmetic in that example ($871 fare each; $500+$198+$129+$44 for passenger 1; $250+$621 for each of two others; $1,286 total card charge) reconciled with the tool results. Caution: treat these constraints as policy-specific, not universal; confirm actual balances, fare/seat availability, eligible payment methods, and authorization before taking booking actions. No separate evaluation feedback was provided, so the interaction does not establish that every step was graded correct."
+            }
+          ]
+        },
+        {
+          "job": 326,
+          "arm": "no_memory",
+          "run_id": "r_820a927dffa746e89d2dbaa8443f5148",
+          "official_success": true,
+          "reward": 1.0,
+          "db_match": true,
+          "communicate_checks": [
+            {
+              "info": "327",
+              "justification": "Information '327' communicated in the message:\n 'Your gift cards total **$327** ($198 + $129), and your travel certificates total **$1,000** ($500 + $250 + $250).\n\nI found reservation **K1NW8N**. It’s a basic-economy round trip for three passengers, departing **May 26, 2024** and returning **May 28, 2024**. Basic-economy flights can’t be changed, so I can’t replace them with different flights. I can help check whether the existing flights can be changed to business class while keeping the same flights and dates. Would you like me to look into that?'",
+              "met": true
+            },
+            {
+              "info": "1000",
+              "justification": "Information '1000' communicated in the message:\n 'Your gift cards total **$327** ($198 + $129), and your travel certificates total **$1,000** ($500 + $250 + $250).\n\nI found reservation **K1NW8N**. It’s a basic-economy round trip for three passengers, departing **May 26, 2024** and returning **May 28, 2024**. Basic-economy flights can’t be changed, so I can’t replace them with different flights. I can help check whether the existing flights can be changed to business class while keeping the same flights and dates. Would you like me to look into that?'",
+              "met": true
+            },
+            {
+              "info": "1286",
+              "justification": "Information '1286' communicated in the message:\n 'Yes. Three separate one-passenger reservations would allow one certificate per reservation, and all listed payment methods are in your profile. Based on the listed fare of **$871 per passenger**:\n\n- **Mohamed:** $500 certificate + $327 in gift cards + **$44 Mastercard**\n- **Raj:** $250 certificate + **$621 Mastercard**\n- **Liam:** $250 certificate + **$621 Mastercard**\n\nThe total Mastercard charge would be **$1,286**. This assumes each separate booking is priced at the same listed fare. No insurance would be added, and no extra bags would be added.\n\nI haven’t booked anything. Would you like me to proceed with these three separate reservations and this payment split?'",
+              "met": true
+            }
+          ],
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        }
+      ],
+      "source_experience": {
+        "first_pass_run_id": "r_ebe376c9de3d4433909026bedc1ed3de",
+        "first_pass_success": true,
+        "public_context_sha256": "4e9930c1dcf5a1ead264d180578860224f8fabf19bab962a1a1513f740faf09f"
+      },
+      "assigned_writer": {
+        "index": 63,
+        "run_id": "r_3a175df341704a9ba209d28167fb45a5",
+        "snapshot_id": "snap_991c83c1bd564654a7814f91bc26c6d1",
+        "status": "completed",
+        "item_count": 1,
+        "fact": true,
+        "episode": true,
+        "lesson": true,
+        "procedure": true,
+        "grounding": "supported",
+        "main_note_quote": "confirm actual balances, fare/seat availability, eligible payment methods, and authorization before taking booking actions.",
+        "main_source_quote": "So $44 + $621 + $621 is $1,286.",
+        "suspect_quote": "",
+        "rationale": "한 예약의 증서 한도, 분리 예약과 카드 합계가 사용자 승인·실제 세 예약에 대응한다. 다른 예약에서는 잔액과 좌석 등을 다시 확인하라고 명시했다."
+      }
+    },
+    "pair_6e308f1851beec8210c3": {
+      "label": "gain",
+      "treatment": "episode",
+      "jobs_in_blind_order": [
+        330,
+        333
+      ],
+      "task_id": "14",
+      "repetition": 1,
+      "treatment_job": 330,
+      "control_job": 333,
+      "judgment": {
+        "category": "simulator_led",
+        "user_context": "different",
+        "first_difference": "A 고객은 잔액과 예약 변경을 처음부터 함께 요청해 A가 잔액을 말하기 전에 예약도 조회했다. B 고객은 잔액만 물은 뒤 합계를 재확인하고서야 변경을 요청해 B가 잔액을 먼저 답했다.",
+        "sides": [
+          {
+            "index": 6,
+            "quote": "get_reservation_details",
+            "end_index": 27,
+            "end_quote": "$1,786 on your Mastercard",
+            "observed_result": "세 사람을 한 건으로 발권하며 증서 한 장·기프트카드 두 장을 쓰고 $1,786을 청구했다. 고객이 짐을 원치 않아 0개로 기록했다."
+          },
+          {
+            "index": 6,
+            "quote": "for a total of $327",
+            "end_index": 36,
+            "end_quote": "$1,286 on Mastercard ending 9363",
+            "observed_result": "세 사람 한 예약에 증서 세 장과 기프트카드 두 장을 쓰고 $1,286을 청구했다. 고객은 포함 수하물로 충분하다고 했고 도구에는 무료 6개가 기록됐다."
+          }
+        ]
+      },
+      "sides_in_blind_order": [
+        {
+          "job": 330,
+          "arm": "episode",
+          "run_id": "r_378a69b93c8d4085adbeb78ebe44351e",
+          "official_success": true,
+          "reward": 1.0,
+          "db_match": true,
+          "communicate_checks": [
+            {
+              "info": "327",
+              "justification": "Information '327' communicated in the message:\n '{\"message\":\"Your gift card balances total $327 ($198 + $129), and your travel certificates total $1,000 ($500 + $250 + $250).\\n\\nYour reservation K1NW8N is basic economy. Basic-economy flights can’t be changed, so I can’t replace its itinerary with a different, cheapest business-class round trip. You can change the cabin while keeping the existing flights, if you’d like. Would you like me to look into changing this reservation to business class with the same flights?\"}'",
+              "met": true
+            },
+            {
+              "info": "1000",
+              "justification": "Information '1000' communicated in the message:\n '{\"message\":\"Your gift card balances total $327 ($198 + $129), and your travel certificates total $1,000 ($500 + $250 + $250).\\n\\nYour reservation K1NW8N is basic economy. Basic-economy flights can’t be changed, so I can’t replace its itinerary with a different, cheapest business-class round trip. You can change the cabin while keeping the existing flights, if you’d like. Would you like me to look into changing this reservation to business class with the same flights?\"}'",
+              "met": true
+            },
+            {
+              "info": "1786",
+              "justification": "Information '1786' communicated in the message:\n '{\"message\":\"Using the maximum available balance from one certificate ($500) and both gift cards ($198 + $129 = $327), the remaining amount charged to your Mastercard would be **$1,786**. This uses certificate_3765853, gift_card_8020792, gift_card_6136092, and Mastercard credit_card_2198526. I haven’t booked anything. Would you like to proceed with the three-passenger business-class itinerary and this payment split?\"}'",
+              "met": true
+            }
+          ],
+          "termination": "user_stop",
+          "normal_response_memory_spans": 24,
+          "exposed_notes": [
+            {
+              "title": "Airline booking interaction review",
+              "body": "In a past airline-support interaction, the user requested gift/certificate balance totals, cancellation of a basic-economy itinerary, and a replacement business-class booking. Profile data showed gift cards totaling $327 and certificates totaling $1,000; assistant correctly summed these. Original reservation K1NW8N (JFK–SFO itinerary with SEA connection, three passengers, basic economy) was said to qualify for cancellation because it was made May 14 16:03 and current time was May 15 15:00 (under 24 hours); user gave reason 'other reason' and explicitly confirmed. Cancellation tool returned status cancelled and reversal of $567 on the original gift-card payment. Replacement searches found no direct return for May 28; results offered one-stop returns arriving May 29. The assistant disclosed this date discrepancy. A first quote had confusing arithmetic wording ($1,848 per passenger set) but then clarified $1,120 per person and $3,360 total for three. A later cheaper found itinerary was outbound HAT023 and return via SEA on HAT204/HAT100, total $871 per passenger / $2,613 for three. The user wanted certificates first, then gift cards, then MasterCard, under a $2,000 card cap; assistant explained one travel certificate per booking and proposed $500 certificate + both gift cards ($327) + $1,786 on Mastercard. User explicitly confirmed; booking tool returned reservation HATHAT, with these payments and no bags/insurance, and assistant reported success. No separate evaluation feedback was provided. Preserve these as observed interaction outcomes, not as validation of all policy compliance."
+            }
+          ]
+        },
+        {
+          "job": 333,
+          "arm": "no_memory",
+          "run_id": "r_1fc5b081141543d2be5f30aec464ef97",
+          "official_success": false,
+          "reward": 0.0,
+          "db_match": false,
+          "communicate_checks": [
+            {
+              "info": "327",
+              "justification": "Information '327' communicated in the message:\n 'Your profile shows two gift cards: $198 and $129, for a total of $327. It also shows three travel certificates: $500, $250, and $250, totaling $1,000.'",
+              "met": true
+            },
+            {
+              "info": "1000",
+              "justification": "Information '1000' communicated in the message:\n 'Your profile shows two gift cards: $198 and $129, for a total of $327. It also shows three travel certificates: $500, $250, and $250, totaling $1,000.'",
+              "met": true
+            },
+            {
+              "info": "1786",
+              "justification": "Information '1786' not communicated.",
+              "met": false
+            }
+          ],
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        }
+      ],
+      "source_experience": {
+        "first_pass_run_id": "r_1632a75e5ee74cae889ee991cc589003",
+        "first_pass_success": true,
+        "public_context_sha256": "54b5610a6216ba047a71b66524781bc22f1300da305bef2692e2fd7386e58b1e"
+      },
+      "assigned_writer": {
+        "index": 64,
+        "run_id": "r_489c9d0a1f7a434ba57f715676beb6df",
+        "snapshot_id": "snap_7e4055cc6ce540248a97864ef616ee61",
+        "status": "completed",
+        "item_count": 1,
+        "fact": true,
+        "episode": true,
+        "lesson": false,
+        "procedure": false,
+        "grounding": "supported",
+        "main_note_quote": "Cancellation tool returned status cancelled and reversal of $567 on the original gift-card payment.",
+        "main_source_quote": "The refund of $567 will go to the original payment method(s) within 5–7 business days.",
+        "suspect_quote": "",
+        "rationale": "5월 29일 도착 선택지가 포함된 첫 견적과 나중의 시애틀 경유 견적, 1,786달러 재승인, 새 예약의 결제를 순서대로 기술한다. 일반 지침을 만들기보다 해당 사례의 결과를 보존한다."
+      }
+    },
+    "pair_d856eb2339478ad54e1b": {
+      "label": "gain",
+      "treatment": "episode",
+      "jobs_in_blind_order": [
+        341,
+        342
+      ],
+      "task_id": "21",
+      "repetition": 1,
+      "treatment_job": 342,
+      "control_job": 341,
+      "judgment": {
+        "category": "request_clarification",
+        "user_context": "comparable",
+        "first_difference": "같은 첫 요청에 A는 ID와 함께 희망 날짜를 물어 날짜를 받은 다음 여러 예약을 조회했다. B는 ID만 받은 뒤 대상 예약 OBUT9V부터 조회하고 그제야 날짜를 물었다. 나중에 B 고객은 다음으로 잔액이 작은 카드를 지정했지만 A 고객은 카드 추천을 맡겼다.",
+        "sides": [
+          {
+            "index": 2,
+            "quote": "what date would you like to change the return flight to?",
+            "end_index": 42,
+            "end_quote": "2 checked bags",
+            "observed_result": "$113 카드도 충분했지만 $157 카드를 가장 작은 사용 가능 카드로 안내했다. 고객이 승인해 그 카드에서 $59를 결제하고 변경 후 무료 수하물을 2개로 늘렸다."
+          },
+          {
+            "index": 2,
+            "quote": "share your user ID and I can help locate it.",
+            "end_index": 28,
+            "end_quote": "The change charged $59 to gift card ending 6644.",
+            "observed_result": "$6 카드 거절 뒤 고객이 승인한 다음 최소 잔액 $113 카드(끝 6644)에서 $59를 결제했다. 귀국편 변경과 무료 수하물 2개가 확인됐다."
+          }
+        ]
+      },
+      "sides_in_blind_order": [
+        {
+          "job": 341,
+          "arm": "no_memory",
+          "run_id": "r_c5dc1862bc7a4a5cbc6c820a9fc2fe9c",
+          "official_success": false,
+          "reward": 0.0,
+          "db_match": false,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        },
+        {
+          "job": 342,
+          "arm": "episode",
+          "run_id": "r_e9956ff255da433a982082f9aae077f8",
+          "official_success": true,
+          "reward": 1.0,
+          "db_match": true,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 28,
+          "exposed_notes": [
+            {
+              "title": "Airline modification review: chronology and pitfalls",
+              "body": "In a reviewed airline-support transcript (evaluation feedback level was none), user identified reservation OBUT9V (IAH–DEN round trip) after providing user ID and asking to change return. Agent located it among the user's reservations; return was DEN–LAS–IAH, May 28, 2024. User requested May 27, fastest option including layover. Search showed no direct flights and these relevant economy options: HAT084 DEN–LAS 04:00–06:00 + HAT266 LAS–IAH 13:00–16:00 (7-hour layover, 12-hour total); HAT290 14:00–16:00 + HAT175 17:00–20:00 (1-hour layover, 6-hour total); HAT229 11:00–13:00 + HAT266 13:00–16:00 (zero-minute connection, but HAT229 had zero economy seats). Agent incorrectly called HAT084+HAT266 the fastest economy option and updated to it; the available HAT290+HAT175 itinerary was faster by total elapsed time and had economy seats on both legs. User then requested one more bag and payment via smallest-balance gift card. Profile showed card ending 0005 had $6, and agent updated baggage to 2 (0 nonfree) consistent with reported silver/economy allowance. Flight update response recorded -$11 against that gift card, so final claim that $11 was 'charged' was not supported; the negative amount likely indicates credit/refund, but its meaning was not explicitly given. For future airline cases, enumerate and compare complete itinerary elapsed times (including layover) and seat availability, avoid infeasible zero-minute connections, inspect transaction sign before describing payment direction, and obey policy's one-tool-call-at-a-time requirement. Transcript also issued batches of reservation lookups and direct/onestop searches despite that requirement. No external grading details were supplied."
+            }
+          ]
+        }
+      ],
+      "source_experience": {
+        "first_pass_run_id": "r_932eb0f7180942009398402127a40d04",
+        "first_pass_success": false,
+        "public_context_sha256": "1576da92aba396d591748485c7fa8dbca843dbd29f045b6196f7425dd75b2a70"
+      },
+      "assigned_writer": {
+        "index": 75,
+        "run_id": "r_2bf03543289f4962a7631653ce306c5d",
+        "snapshot_id": "snap_368d81f7a7194fc1a88bc38ccfaa6159",
+        "status": "completed",
+        "item_count": 1,
+        "fact": true,
+        "episode": true,
+        "lesson": true,
+        "procedure": true,
+        "grounding": "mixed",
+        "main_note_quote": "Flight update response recorded -$11 against that gift card",
+        "main_source_quote": "Yes, do it. And I want to add one more checked bag too.",
+        "suspect_quote": "User then requested one more bag and payment via smallest-balance gift card.",
+        "rationale": "더 빠른 여섯 시간 조합과 음수 11달러 거래는 확인된다. 서술은 수하물·최소 잔액 카드 요청을 항공편 갱신 뒤로 옮겼지만 둘은 갱신 전 고객의 승인 발화에 이미 있었다."
+      }
+    },
+    "pair_ee0444b17e2290829883": {
+      "label": "gain",
+      "treatment": "lesson",
+      "jobs_in_blind_order": [
+        331,
+        333
+      ],
+      "task_id": "14",
+      "repetition": 1,
+      "treatment_job": 331,
+      "control_job": 333,
+      "judgment": {
+        "category": "business_tool_or_arguments",
+        "user_context": "comparable",
+        "first_difference": "잔액 확인 후 두 고객 모두 같은 날짜의 최저가 비즈니스 왕복을 요청했다. A는 예약을 읽고 곧바로 직항·경유 운임을 조회한 뒤 기존 항공편 승급 견적도 제시했다. B 고객이 잔액을 한 번 더 확인하기는 했으나, 같은 변경 요청을 받았을 때 B는 조회를 미루고 동일편 승급만 제안했다.",
+        "sides": [
+          {
+            "index": 10,
+            "quote": "search_direct_flight",
+            "end_index": 27,
+            "end_quote": "$1,786 charged to your MasterCard",
+            "observed_result": "고객이 취소와 신규 발권을 승인한 뒤 세 사람 한 예약에 증서 한 장·기프트카드 두 장을 썼다. 카드 $1,786, 수하물 0개였다."
+          },
+          {
+            "index": 12,
+            "quote": "I can’t search for or switch you to a different, cheaper itinerary.",
+            "end_index": 36,
+            "end_quote": "$1,286 on Mastercard ending 9363",
+            "observed_result": "취소 후 같은 비즈니스 여정 한 예약에 증서 세 장·기프트카드 두 장을 썼다. 카드 $1,286, 수하물은 추가 요금 없이 6개로 기록됐다."
+          }
+        ]
+      },
+      "sides_in_blind_order": [
+        {
+          "job": 331,
+          "arm": "lesson",
+          "run_id": "r_58b987ecae294978a1547b4777ab6aa7",
+          "official_success": true,
+          "reward": 1.0,
+          "db_match": true,
+          "communicate_checks": [
+            {
+              "info": "327",
+              "justification": "Information '327' communicated in the message:\n 'Your profile shows two gift cards with balances of $198 and $129, for a total of **$327**. It also shows three travel certificates with balances of $500, $250, and $250, totaling **$1,000**.'",
+              "met": true
+            },
+            {
+              "info": "1000",
+              "justification": "Information '1000' communicated in the message:\n 'Your profile shows two gift cards with balances of $198 and $129, for a total of **$327**. It also shows three travel certificates with balances of $500, $250, and $250, totaling **$1,000**.'",
+              "met": true
+            },
+            {
+              "info": "1786",
+              "justification": "Information '1786' communicated in the message:\n 'Yes. For the **$2,613 total**, you can apply one travel certificate (the $500 certificate) and both gift cards ($327 total). That leaves **$1,786** to charge to your MasterCard ending in **9363**. This uses the maximum available gift-card balance and the largest single certificate balance shown in your profile.'",
+              "met": true
+            }
+          ],
+          "termination": "user_stop",
+          "normal_response_memory_spans": 24,
+          "exposed_notes": [
+            {
+              "title": "Airline booking workflow lessons from past interaction",
+              "body": "Past airline-agent example (no substantive evaluation feedback provided; tool behavior not independently validated): Good practice shown: check profile balances and reservation details before advising; for purchases, enumerate itinerary, per-passenger vs total fare, passenger count, payment breakdown, bags/insurance, then get explicit confirmation before booking. Policy permits at most one travel certificate, one credit card, and three gift cards, all already in the user's profile; never assume all certificates can be stacked. A quoted multi-certificate estimate may need recalculation once the one-certificate rule is applied. Important caution: searching direct and one-stop options is not necessarily an exhaustive proof of the cheapest overall itinerary unless the results cover the relevant dates and choices; explicitly describe it as the cheapest listed/found option. Reconcile flight dates and itinerary: in the example the return had no direct seats and one-stop choices arrived May 29 despite May 28 departure. Also be careful with arithmetic: $364+$248+$259=$871 per passenger; x3=$2,613; subtract $500 certificate and $327 gift cards leaves $1,786. The prior cancellation rationale included a questionable statement that a reservation created May 14 was within 24 hours at May 15 15:00 (created timestamp 16:03, making it more than 24 hours); eligibility appeared supported by business cabin only after booking, not at cancellation, so do not repeat that claim without checking exact timestamps and applicable basis. Initial reservation was basic economy but policy explicitly allows cabin-only change (if no flown segment); saying basic-economy flights cannot be changed at all overstates the restriction, which applies to flight changes. Apply these cautions when handling airline cancellations, modification, fare comparisons, and payment allocation."
+            }
+          ]
+        },
+        {
+          "job": 333,
+          "arm": "no_memory",
+          "run_id": "r_1fc5b081141543d2be5f30aec464ef97",
+          "official_success": false,
+          "reward": 0.0,
+          "db_match": false,
+          "communicate_checks": [
+            {
+              "info": "327",
+              "justification": "Information '327' communicated in the message:\n 'Your profile shows two gift cards: $198 and $129, for a total of $327. It also shows three travel certificates: $500, $250, and $250, totaling $1,000.'",
+              "met": true
+            },
+            {
+              "info": "1000",
+              "justification": "Information '1000' communicated in the message:\n 'Your profile shows two gift cards: $198 and $129, for a total of $327. It also shows three travel certificates: $500, $250, and $250, totaling $1,000.'",
+              "met": true
+            },
+            {
+              "info": "1786",
+              "justification": "Information '1786' not communicated.",
+              "met": false
+            }
+          ],
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        }
+      ],
+      "source_experience": {
+        "first_pass_run_id": "r_1632a75e5ee74cae889ee991cc589003",
+        "first_pass_success": true,
+        "public_context_sha256": "54b5610a6216ba047a71b66524781bc22f1300da305bef2692e2fd7386e58b1e"
+      },
+      "assigned_writer": {
+        "index": 66,
+        "run_id": "r_3be4181a944a4cdca69252032636893a",
+        "snapshot_id": "snap_c0dc6a4a36cc4110a16b55e38b3dacca",
+        "status": "completed",
+        "item_count": 1,
+        "fact": true,
+        "episode": true,
+        "lesson": true,
+        "procedure": true,
+        "grounding": "mixed",
+        "main_note_quote": "never assume all certificates can be stacked.",
+        "main_source_quote": "The reservation was made on May 14 at 4:03 p.m., within 24 hours of the current time",
+        "suspect_quote": "created timestamp 16:03, making it more than 24 hours",
+        "rationale": "증서·기프트카드와 운임 차액 점검은 맞지만 5월 14일 16:03부터 15일 15:00까지는 약 22시간 57분이다. 24시간을 넘는다는 판단과 이를 전제로 한 취소 근거 지적은 틀렸다."
+      }
+    },
+    "pair_cabab5adcff7ca105e4c": {
+      "label": "gain",
+      "treatment": "procedure",
+      "jobs_in_blind_order": [
+        329,
+        333
+      ],
+      "task_id": "14",
+      "repetition": 1,
+      "treatment_job": 329,
+      "control_job": 333,
+      "judgment": {
+        "category": "identity_or_lookup",
+        "user_context": "comparable",
+        "first_difference": "같은 잔액 조회 요청에 A는 조회할 수 없다고 답했다. 고객이 프로필을 확인하자고 제안했고, A가 항목별 금액을 읽어준 뒤 고객이 직접 합계를 냈다. B는 처음부터 ID를 요청해 프로필에서 항목별 금액과 합계를 알려줬다.",
+        "sides": [
+          {
+            "index": 2,
+            "quote": "I can’t look up gift card or travel certificate balances with the available tools.",
+            "end_index": 37,
+            "end_quote": "$1,786 on your Mastercard",
+            "observed_result": "기존 예약을 취소하고 세 명을 한 건으로 재예약했다. 증서 한 장 500달러와 기프트카드 327달러를 써서 카드에 1,786달러를 청구했다."
+          },
+          {
+            "index": 2,
+            "quote": "Please provide your user ID so I can check your profile",
+            "end_index": 36,
+            "end_quote": "$1,286 on Mastercard ending 9363.",
+            "observed_result": "기존 예약을 취소하고 동일한 항공편에 세 명을 한 건으로 재예약했다. 증서 세 장 1,000달러와 기프트카드 327달러를 써서 카드에 1,286달러를 청구했다."
+          }
+        ]
+      },
+      "sides_in_blind_order": [
+        {
+          "job": 329,
+          "arm": "procedure",
+          "run_id": "r_15cf2cebc8de40cd88f37c4439109fa3",
+          "official_success": true,
+          "reward": 1.0,
+          "db_match": true,
+          "communicate_checks": [
+            {
+              "info": "327",
+              "justification": "Information '327' communicated in the message:\n 'Yes. Based on the amounts listed in your profile, that adds up to **$327 in gift cards** and **$1,000 in travel certificates**. I can’t verify whether those are the current balances.'",
+              "met": true
+            },
+            {
+              "info": "1000",
+              "justification": "Information '1000' communicated in the message:\n 'Yes. Based on the amounts listed in your profile, that adds up to **$327 in gift cards** and **$1,000 in travel certificates**. I can’t verify whether those are the current balances.'",
+              "met": true
+            },
+            {
+              "info": "1786",
+              "justification": "Information '1786' communicated in the message:\n '{\"message\":\"For the $2,613 total, using the highest-value single certificate listed in your profile ($500), both gift cards ($198 + $129 = $327), and then your Mastercard for the remainder, **$1,786 would be charged to your Mastercard**. This uses one certificate, since only one travel certificate can be used per reservation.\"}'",
+              "met": true
+            }
+          ],
+          "termination": "user_stop",
+          "normal_response_memory_spans": 36,
+          "exposed_notes": [
+            {
+              "title": "Airline booking workflow observations",
+              "body": "From one airline-service transcript (specific tool/policy behavior not independently verified): A useful sequence is obtain user ID, retrieve profile/reservation, confirm requested changes and relevant constraints, then search options for each leg/date and compare full itinerary costs and passenger seat availability before quoting. For cancellation, obtain the required reason and verify eligibility before asking explicit confirmation; only then cancel, and report refund to original payment methods in 5–7 business days. For a replacement booking, calculate total and payment remainder carefully, verify payment-method restrictions (the policy capped travel certificates at one, credit cards at one, gift cards at three; methods must be in profile), bags/insurance preferences, and passengers. State full itinerary, dates, cabin, total, and exact payment allocation for explicit confirmation before booking. Check arithmetic and avoid inconsistent totals: this transcript briefly mislabeled $1,848 as a per-passenger-set amount despite also saying $3,360 total, then corrected it. The transcript’s cancellation verification checked an outbound flight status while itinerary dates were all future; whether checking every leg is needed was not established. Tool search results/availability and policy constraints should be treated as the source, not inferred."
+            }
+          ]
+        },
+        {
+          "job": 333,
+          "arm": "no_memory",
+          "run_id": "r_1fc5b081141543d2be5f30aec464ef97",
+          "official_success": false,
+          "reward": 0.0,
+          "db_match": false,
+          "communicate_checks": [
+            {
+              "info": "327",
+              "justification": "Information '327' communicated in the message:\n 'Your profile shows two gift cards: $198 and $129, for a total of $327. It also shows three travel certificates: $500, $250, and $250, totaling $1,000.'",
+              "met": true
+            },
+            {
+              "info": "1000",
+              "justification": "Information '1000' communicated in the message:\n 'Your profile shows two gift cards: $198 and $129, for a total of $327. It also shows three travel certificates: $500, $250, and $250, totaling $1,000.'",
+              "met": true
+            },
+            {
+              "info": "1786",
+              "justification": "Information '1786' not communicated.",
+              "met": false
+            }
+          ],
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        }
+      ],
+      "source_experience": {
+        "first_pass_run_id": "r_1632a75e5ee74cae889ee991cc589003",
+        "first_pass_success": true,
+        "public_context_sha256": "54b5610a6216ba047a71b66524781bc22f1300da305bef2692e2fd7386e58b1e"
+      },
+      "assigned_writer": {
+        "index": 67,
+        "run_id": "r_241314f8cc5f49feb2be7e2ac1f9f14f",
+        "snapshot_id": "snap_9d02a40283984d94901c95f9e860f1a7",
+        "status": "completed",
+        "item_count": 1,
+        "fact": true,
+        "episode": true,
+        "lesson": true,
+        "procedure": true,
+        "grounding": "supported",
+        "main_note_quote": "For cancellation, obtain the required reason and verify eligibility before asking explicit confirmation; only then cancel",
+        "main_source_quote": "Please confirm: should I cancel reservation K1NW8N?",
+        "suspect_quote": "",
+        "rationale": "원래 요청에서 실제로 사유와 승인을 받은 뒤 취소했고 견적의 숫자 표현을 정정했다. 결제 한도·좌석과 수하물·보험을 확인하는 재사용 절차가 있다."
+      }
+    },
+    "pair_d256db0ab41f3b3f3bfd": {
+      "label": "both_failure",
+      "treatment": "procedure",
+      "jobs_in_blind_order": [
+        341,
+        345
+      ],
+      "task_id": "21",
+      "repetition": 1,
+      "treatment_job": 345,
+      "control_job": 341,
+      "judgment": {
+        "category": "request_clarification",
+        "user_context": "comparable",
+        "first_difference": "같은 휴스턴–덴버 귀국편 변경 요청에 A는 첫 답에서 신원과 희망 날짜를 함께 물어 5월 27일을 바로 들었다. B는 신원부터 물어 예약을 찾은 후 날짜를 확인했다. 이후 B 고객은 결제수단을 지정할 때 수하물 추가도 요청했고 A 고객은 항공편 변경 뒤 요청했다.",
+        "sides": [
+          {
+            "index": 2,
+            "quote": "what date would you like to change the return flight to?",
+            "end_index": 42,
+            "end_quote": "2 checked bags",
+            "observed_result": "$6 카드가 거절된 뒤 잔액 $157 카드를 가장 작은 사용 가능 카드로 잘못 안내했다. 고객이 그 카드를 명시해 $59를 결제했고 두 번째 무료 수하물도 추가했다."
+          },
+          {
+            "index": 2,
+            "quote": "share your user ID and I can help locate it.",
+            "end_index": 42,
+            "end_quote": "The $59 fare difference was charged to gift card ending 1239.",
+            "observed_result": "$6 카드 거절 후 수하물을 2개로 변경했다. $113 카드 사용을 확인받았지만 실제 $59는 잔액 $157 카드(끝 1239)에 청구하고 귀국편을 변경했다."
+          }
+        ]
+      },
+      "sides_in_blind_order": [
+        {
+          "job": 341,
+          "arm": "no_memory",
+          "run_id": "r_c5dc1862bc7a4a5cbc6c820a9fc2fe9c",
+          "official_success": false,
+          "reward": 0.0,
+          "db_match": false,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        },
+        {
+          "job": 345,
+          "arm": "procedure",
+          "run_id": "r_b4791608a13943819438e4131c1a28d3",
+          "official_success": false,
+          "reward": 0.0,
+          "db_match": false,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 42,
+          "exposed_notes": [
+            {
+              "title": "Airline reservation modifications: checks from past interaction",
+              "body": "In airline-support tasks governed by the provided policy, use one tool call at a time (the past interaction batched multiple reservation lookups and parallel flight searches, contrary to policy). For locating a reservation, get the user ID, retrieve the user's reservations, then inspect them sequentially and match route/itinerary; confirm the candidate with the user. For flight changes, verify modification eligibility and preserve route/trip type; search direct and connecting options, then enumerate all available connections in the requested cabin. Compare full elapsed trip duration including layover (and ensure connection timing is feasible); do not stop at an option merely because it is faster than other options examined. Past search results included HAT290 DEN-LAS 14:00–16:00 and HAT175 LAS-IAH 17:00–20:00, both economy seats available, a 6-hour total trip with a 1-hour layover; the assistant selected HAT084+HAT266 (12 hours, 7-hour layover) and overlooked that faster option. This demonstrates a missed candidate, not that the search data were necessarily complete. Before any database-changing action, list exact changes and payment method and obtain explicit yes; for flight changes use one profile payment method. After completion, verify tool result. For baggage, calculate allowance from membership, cabin, passenger count, and current bags; explain any charge, confirm before updating, and verify resulting count. In the example, silver + one economy passenger yielded 2 free checked bags, so adding the second bag required no charge. Evaluation feedback was level none; no grading conclusions available."
+            }
+          ]
+        }
+      ],
+      "source_experience": {
+        "first_pass_run_id": "r_932eb0f7180942009398402127a40d04",
+        "first_pass_success": false,
+        "public_context_sha256": "1576da92aba396d591748485c7fa8dbca843dbd29f045b6196f7425dd75b2a70"
+      },
+      "assigned_writer": {
+        "index": 74,
+        "run_id": "r_7ec099287e24400ba63707615250488c",
+        "snapshot_id": "snap_90aa7c356a9c47a88ed55f6ff64bf185",
+        "status": "completed",
+        "item_count": 1,
+        "fact": true,
+        "episode": true,
+        "lesson": true,
+        "procedure": true,
+        "grounding": "supported",
+        "main_note_quote": "the assistant selected HAT084+HAT266 (12 hours, 7-hour layover) and overlooked that faster option.",
+        "main_source_quote": "the return is now May 27, arriving Houston at 16:00",
+        "suspect_quote": "",
+        "rationale": "검색 원문은 여섯 시간·한 시간 경유가 가능한 두 편을 함께 반환했다. 예약 대조부터 좌석·시간 비교, 결제 승인, 수하물 결과 확인까지 후속 점검 순서를 구체화한다."
+      }
+    },
+    "pair_0e7bfdde76495055e09f": {
+      "label": "gain",
+      "treatment": "fact",
+      "jobs_in_blind_order": [
+        368,
+        369
+      ],
+      "task_id": "12",
+      "repetition": 1,
+      "treatment_job": 368,
+      "control_job": 369,
+      "judgment": {
+        "category": "current_facts_or_arithmetic",
+        "user_context": "comparable",
+        "first_difference": "두 고객 모두 두 승객의 승급과 짐 두 개를 요청했고 아직 가격 한도는 말하지 않았다. A는 운항 상태와 운임을 조회해 두 사람 합계 $1,200을 제시했고, B는 같은 운임에서 한 사람 차액 $600을 두 사람 합계로 제시했다.",
+        "sides": [
+          {
+            "index": 15,
+            "quote": "an estimated increase of $1,200 for both passengers",
+            "end_index": 23,
+            "end_quote": "The cabin remains economy; no upgrade was made.",
+            "observed_result": "고객이 $650 한도를 밝히고 동반자만 승급하려 했으나 같은 예약이라 불가하다는 안내를 받았다. 두 사람 모두 이코노미로 남았고 무료 수하물 2개만 추가했다."
+          },
+          {
+            "index": 11,
+            "quote": "the additional fare is $600",
+            "end_index": 16,
+            "end_quote": "\"amount\": 1200",
+            "observed_result": "고객은 $600으로 설명받고 승급과 수하물에 동의했다. 도구는 두 사람을 승급하고 실제 $1,200을 청구했으며 무료 수하물 2개를 기록했다."
+          }
+        ]
+      },
+      "sides_in_blind_order": [
+        {
+          "job": 368,
+          "arm": "fact",
+          "run_id": "r_6216047afab7411d81634ff64477bebc",
+          "official_success": true,
+          "reward": 1.0,
+          "db_match": true,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 22,
+          "exposed_notes": [
+            {
+              "title": "Airline fare-change estimates from past example",
+              "body": "In a past airline-service example for reservation YAX4DR, reservation data listed economy segment prices $122 (HAT235 BOS–MCO) and $127 (HAT298 MCO–MSP). Search results for the requested dates listed HAT235 economy/business at $125/$350 and HAT298 at $139/$499. The assistant instead compared business fares $350+$499 against the reservation's $122+$127 and estimated $1,200 for two passengers. Calculation is arithmetically consistent with those inputs, but fare basis/repricing accuracy was not verified; avoid presenting current search fares minus historical reservation amounts as a guaranteed upgrade quote. In that example the user later declined upgrade, and baggage update returned 2 total, 0 paid; no upgrade occurred. Feedback supplied was level 'none', so no grading or correctness conclusion is available."
+            }
+          ]
+        },
+        {
+          "job": 369,
+          "arm": "no_memory",
+          "run_id": "r_1e2f5f4db28b41c8b58ee82e0d313c9d",
+          "official_success": false,
+          "reward": 0.0,
+          "db_match": false,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        }
+      ],
+      "source_experience": {
+        "first_pass_run_id": "r_7cbc2c6a3e2941c6bfa3913c5a906a96",
+        "first_pass_success": true,
+        "public_context_sha256": "849009aaef0eb2f48bf52736e7c5102f7a06e27eba33df56102b5e4facfc7ac3"
+      },
+      "assigned_writer": {
+        "index": 89,
+        "run_id": "r_64fa4ae510204098908e3b40616d3120",
+        "snapshot_id": "snap_359a4f93c252427a9d10e6fa1a187dc0",
+        "status": "completed",
+        "item_count": 1,
+        "fact": true,
+        "episode": true,
+        "lesson": true,
+        "procedure": false,
+        "grounding": "supported",
+        "main_note_quote": "avoid presenting current search fares minus historical reservation amounts as a guaranteed upgrade quote.",
+        "main_source_quote": "This is an estimate based on current listed fares; the tools don’t provide a guaranteed repricing of your existing reservation.",
+        "suspect_quote": "",
+        "rationale": "조회 요금과 기존 예약 요금의 기준이 다르고 계산 자체는 1,200달러로 맞다. 업그레이드를 거부한 뒤 실제로 수하물만 갱신한 결과를 일치시켰다."
+      }
+    },
+    "pair_50c57c877c3b31b1b1f1": {
+      "label": "loss",
+      "treatment": "fact",
+      "jobs_in_blind_order": [
+        371,
+        376
+      ],
+      "task_id": "20",
+      "repetition": 1,
+      "treatment_job": 376,
+      "control_job": 371,
+      "judgment": {
+        "category": "current_facts_or_arithmetic",
+        "user_context": "comparable",
+        "first_difference": "처음에는 모두 연도 없이 5월 20일을 요청했다. A는 2024년편을 조회했다. B는 연도를 물어 고객이 올해라고 답하자 2024년 5월 20일은 이미 지났다고 말했고, 그 뒤 고객이 내년을 선택해 2025년편을 조회했다.",
+        "sides": [
+          {
+            "index": 8,
+            "quote": "search_direct_flight",
+            "end_index": 26,
+            "end_quote": "The $255 fare was paid with $250 from your certificate and $5 on the Visa ending in 7447.",
+            "observed_result": "고객이 오후 7시 JFK 출발편을 선택해 무료 수하물 3개와 함께 2024년 편도 예약을 발권했다."
+          },
+          {
+            "index": 4,
+            "quote": "May 20, 2024 has already passed.",
+            "end_index": 40,
+            "end_quote": "YOU ARE BEING TRANSFERRED TO A HUMAN AGENT.",
+            "observed_result": "뉴욕 세 공항에서 2025년 5월 20일 직항·경유편을 다시 조회해도 빈 결과였다. 발권 없이 고객 요청으로 사람 상담원에게 이관했다."
+          }
+        ]
+      },
+      "sides_in_blind_order": [
+        {
+          "job": 371,
+          "arm": "no_memory",
+          "run_id": "r_00c11ae41d184a7ba7f2a271b6106006",
+          "official_success": true,
+          "reward": 1.0,
+          "db_match": true,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        },
+        {
+          "job": 376,
+          "arm": "fact",
+          "run_id": "r_c1985b2f5fb946c0a09d4ba7a1d5bd3b",
+          "official_success": false,
+          "reward": 0.0,
+          "db_match": false,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 40,
+          "exposed_notes": [
+            {
+              "title": "Flight-search experience: NYC to Seattle request",
+              "body": "Observed in one past airline-agent interaction (no evaluation feedback provided): user ID mia_li_3668 requested a one-way economy flight New York→Seattle for May 20, clarified year 2025, no airport preference, and later specified not before 11 a.m. Airport listing returned JFK, EWR, LGA as New York options. Searches for direct and one-stop flights on 2025-05-20 from each of JFK/EWR/LGA to SEA returned empty arrays. The search calls included only date/origin/destination, so they did not verify departure-time constraints. On the follow-up, the agent reran JFK only, then referenced earlier empty searches for EWR/LGA; it reported no results and inability to assess times. User requested human assistance; transfer tool returned “Transfer successful,” followed by the mandated transfer message. This records observed tool outputs and actions only; whether the search data was complete or the agent’s claims were correct is unverified."
+            }
+          ]
+        }
+      ],
+      "source_experience": {
+        "first_pass_run_id": "r_d8c7a724b6754d8b94b65d34b64f223a",
+        "first_pass_success": false,
+        "public_context_sha256": "b88d2b1e842d01aee01eebf77939e3f52a684a0042cbad48d9e18c920eee0621"
+      },
+      "assigned_writer": {
+        "index": 92,
+        "run_id": "r_a17fd877dfe94acfa1e9dc9b0bf5306f",
+        "snapshot_id": "snap_1182e6683f6c41b78e1cac7630b3983d",
+        "status": "completed",
+        "item_count": 1,
+        "fact": true,
+        "episode": true,
+        "lesson": false,
+        "procedure": false,
+        "grounding": "mixed",
+        "main_note_quote": "On the follow-up, the agent reran JFK only, then referenced earlier empty searches for EWR/LGA",
+        "main_source_quote": "I double-checked direct and one-stop options from JFK, EWR, and LGA for May 20, 2025.",
+        "suspect_quote": "then referenced earlier empty searches for EWR/LGA",
+        "rationale": "The six initial searches and successful transfer are supported. The follow-up calls covered only JFK. The reply claimed all three airports had been double-checked, rather than distinguishing the earlier EWR/LGA searches. The airport list itself labels EWR as Newark and LGA as LaGuardia."
+      }
+    },
+    "pair_36b8b8e0a45f66b91690": {
+      "label": "loss",
+      "treatment": "episode",
+      "jobs_in_blind_order": [
+        363,
+        362
+      ],
+      "task_id": "33",
+      "repetition": 1,
+      "treatment_job": 362,
+      "control_job": 363,
+      "judgment": {
+        "category": "request_clarification",
+        "user_context": "comparable",
+        "first_difference": "예약번호는 B 고객이 먼저 말했지만 조회 후 두 쪽이 알고 있던 일정과 하루씩 미루려는 요청은 같았다. A는 새 날짜를 확인해 고객의 출발시간 제한을 먼저 들은 뒤 직항을 검색했다. B는 즉시 직항과 경유편을 검색해 일정을 제시했고, 고객이 그때 시간 조건이 맞는다고 확인했다.",
+        "sides": [
+          {
+            "index": 6,
+            "quote": "Please confirm those dates, and I can search for flights.",
+            "end_index": 31,
+            "end_quote": "Your reservation remains in economy, and 2 checked bags have been added.",
+            "observed_result": "운임과 보험 적용 범위를 설명하고 승인을 받아 두 편을 변경했다. 기프트카드에 186달러를 환급했고, 이코노미를 유지하면서 수하물 두 개를 무료로 추가했다."
+          },
+          {
+            "index": 6,
+            "quote": "search_onestop_flight",
+            "end_index": 16,
+            "end_quote": "Transfer successful",
+            "observed_result": "같은 두 직항을 제안한 뒤 보험의 수수료 면제를 확인할 수 없다고 답했다. 고객이 진행을 보류하고 확인을 요청해 예약 변경 없이 상담원에게 이관했다."
+          }
+        ]
+      },
+      "sides_in_blind_order": [
+        {
+          "job": 363,
+          "arm": "no_memory",
+          "run_id": "r_85bb36f6a95a442d8c1ecef9accb4840",
+          "official_success": true,
+          "reward": 1.0,
+          "db_match": true,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        },
+        {
+          "job": 362,
+          "arm": "episode",
+          "run_id": "r_2e00497ee4bd4bd99e6909d79af10d5a",
+          "official_success": false,
+          "reward": 0.0,
+          "db_match": false,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 14,
+          "exposed_notes": [
+            {
+              "title": "Airline service interaction review: Yara Garcia flight change",
+              "body": "In a past airline-agent interaction governed by a policy requiring all outputs to be valid JSON, the user provided user ID and reservation HXDUBJ, and sought a nonstop IAH–SFO outbound one day later plus an SFO return one day later, both departing after 8 a.m. and before 9 p.m. Reservation details showed economy round trip originally May 18 (connecting outbound) and May 22 return; user profile showed gold membership. Search results had nonstop HAT072 at 09:00 May 19 (economy $130) and return HAT278 at 16:00 May 23 (economy $187); these met the requested time window. Agent listed the changes and payment method, got explicit yes, then update tool returned updated flights and a $186 gift-card refund. The fare arithmetic matches the displayed old flight prices ($177+$146+$180=$503) versus new ($130+$187=$317), though tool response records the initial payment history as $533, so the refund basis is not fully reconciled by the available data. User then asked for business class and two checked bags with a $200 maximum. Agent said business across both flights would be $408 more (consistent with searched business fares $282+$443 less new economy fares $130+$187), exceeding cap; gold economy allowance is 3 checked bags/passenger, and reservation originally recorded 0 bags. User asked for business outbound only; agent correctly described uniform-cabin rule and obtained confirmation to retain economy and add two bags. Baggage update recorded total_baggages=2 and nonfree_baggages=0; agent reported no charge. Final confirmation accurately recounted the flights and economy cabin. No separate substantive evaluation feedback was supplied. Important observed policy-format issue: the task policy explicitly required valid JSON only, while several assistant responses (especially the final confirmation) were plain prose; earlier responses sometimes wrapped a message in JSON-like text, but not consistently established as valid JSON. No evidence in the transcript establishes external grading or whether tool behavior beyond shown responses was correct."
+            }
+          ]
+        }
+      ],
+      "source_experience": {
+        "first_pass_run_id": "r_d973a551c0944cbbb7a3f5c94ae9c5f7",
+        "first_pass_success": true,
+        "public_context_sha256": "763e292521e39dde5a30fa0493292cf76d69a4fe976ab18b30e9de3b6a52d963"
+      },
+      "assigned_writer": {
+        "index": 86,
+        "run_id": "r_ef6a6be425c24af79da297dcf878b07d",
+        "snapshot_id": "snap_40facbea452049099728d7cd5949b8fe",
+        "status": "completed",
+        "item_count": 1,
+        "fact": true,
+        "episode": true,
+        "lesson": true,
+        "procedure": false,
+        "grounding": "supported",
+        "main_note_quote": "the task policy explicitly required valid JSON only, while several assistant responses (especially the final confirmation) were plain prose",
+        "main_source_quote": "Always make sure you generate valid JSON only.",
+        "suspect_quote": "",
+        "rationale": "The flight and baggage returns support the sequence and amounts. The $186 refund equals the difference in listed flight fares. The unexplained part of the original $533 debit equals the stated $30 insurance price, although the debit is not itemized. The final assistant confirmation is plain text."
+      }
+    },
+    "pair_81cb9f8e2dc2a0622c9d": {
+      "label": "loss",
+      "treatment": "episode",
+      "jobs_in_blind_order": [
+        375,
+        371
+      ],
+      "task_id": "20",
+      "repetition": 1,
+      "treatment_job": 375,
+      "control_job": 371,
+      "judgment": {
+        "category": "current_facts_or_arithmetic",
+        "user_context": "comparable",
+        "first_difference": "양쪽 첫 요청은 연도 없는 5월 20일 뉴욕발이었다. A는 공항을 확인한 다음 2024년 5월 20일이 지났다고 전제해 연도를 물었고, 고객이 2025년이라고 답했다. B는 어느 공항이든 괜찮다는 답을 받고 2024년편을 조회했다.",
+        "sides": [
+          {
+            "index": 6,
+            "quote": "May 20, 2024 has passed",
+            "end_index": 29,
+            "end_quote": "YOU ARE BEING TRANSFERRED TO A HUMAN AGENT.",
+            "observed_result": "고객이 재확인한 2025년 5월 20일의 세 공항 직항·경유 검색이 두 번 모두 비어 있었다. 고객 요청으로 이관했고 발권은 없었다."
+          },
+          {
+            "index": 8,
+            "quote": "search_direct_flight",
+            "end_index": 26,
+            "end_quote": "The $255 fare was paid with $250 from your certificate and $5 on the Visa ending in 7447.",
+            "observed_result": "2024년 후보 중 고객이 선택한 JFK 오후 7시편을 발권하고 수하물 3개를 무료로 기록했다."
+          }
+        ]
+      },
+      "sides_in_blind_order": [
+        {
+          "job": 375,
+          "arm": "episode",
+          "run_id": "r_560d6a24b2f44b28b1635a35689f8f1d",
+          "official_success": false,
+          "reward": 0.0,
+          "db_match": false,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        },
+        {
+          "job": 371,
+          "arm": "no_memory",
+          "run_id": "r_00c11ae41d184a7ba7f2a271b6106006",
+          "official_success": true,
+          "reward": 1.0,
+          "db_match": true,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        }
+      ],
+      "source_experience": {
+        "first_pass_run_id": "r_d8c7a724b6754d8b94b65d34b64f223a",
+        "first_pass_success": false,
+        "public_context_sha256": "b88d2b1e842d01aee01eebf77939e3f52a684a0042cbad48d9e18c920eee0621"
+      },
+      "assigned_writer": {
+        "index": 94,
+        "run_id": "r_206257c748a447cca45d4e5b6fd9bd1e",
+        "snapshot_id": "snap_0e916f7f284a43c28714cc8818a9e02b",
+        "status": "empty",
+        "item_count": 0,
+        "fact": false,
+        "episode": false,
+        "lesson": false,
+        "procedure": false,
+        "grounding": "empty",
+        "main_note_quote": "",
+        "main_source_quote": "",
+        "suspect_quote": "",
+        "rationale": ""
+      }
+    },
+    "pair_dd9b67f937e0c3c8d8ce": {
+      "label": "gain",
+      "treatment": "lesson",
+      "jobs_in_blind_order": [
+        369,
+        370
+      ],
+      "task_id": "12",
+      "repetition": 1,
+      "treatment_job": 370,
+      "control_job": 369,
+      "judgment": {
+        "category": "current_facts_or_arithmetic",
+        "user_context": "different",
+        "first_difference": "두 고객 모두 같은 두 사람의 승급을 요청했고 A 고객은 수하물도 처음부터 요구했다. 같은 예약과 좌석 가격을 본 A는 두 사람에게 청구될 추가 운임을 600달러로 제시했다. B는 1인 588달러, 총 1,176달러로 추산했고 고객이 그때 650달러 한도를 밝혔다.",
+        "sides": [
+          {
+            "index": 11,
+            "quote": "the additional fare is $600",
+            "end_index": 16,
+            "end_quote": "\"amount\": 1200",
+            "observed_result": "고객이 600달러 안내 후 승인해 두 사람을 승급했고 무료 수하물 두 개를 추가했다. 실제 추가 결제 기록은 1,200달러였다."
+          },
+          {
+            "index": 10,
+            "quote": "the estimated increase is $588 per passenger, or $1,176 total.",
+            "end_index": 18,
+            "end_quote": "The reservation has been updated to include 2 checked bags, with 0 nonfree bags.",
+            "observed_result": "고객은 견적을 거절하고 한 사람만 승급해 달라고 요청했다. 상담원이 이를 거절한 뒤 두 사람 모두 이코노미에 남았고 수하물 두 개만 무료로 추가했다."
+          }
+        ]
+      },
+      "sides_in_blind_order": [
+        {
+          "job": 369,
+          "arm": "no_memory",
+          "run_id": "r_1e2f5f4db28b41c8b58ee82e0d313c9d",
+          "official_success": false,
+          "reward": 0.0,
+          "db_match": false,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        },
+        {
+          "job": 370,
+          "arm": "lesson",
+          "run_id": "r_e83b586942554539a792b24165040a66",
+          "official_success": true,
+          "reward": 1.0,
+          "db_match": true,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 16,
+          "exposed_notes": [
+            {
+              "title": "Airline reservation modification lessons",
+              "body": "In the reviewed airline-support interaction, the assistant correctly withheld booking changes until explicit confirmation and did not upgrade after the customer rejected an estimated fare; bag addition was made only after clear confirmation. Caution: current published cabin fares minus reservation-recorded fares can support only a clearly labeled, non-guaranteed estimate—not an actual repricing/quote—because the tools did not return an upgrade quote. Also, a reservation-level baggage update confirmed total/free bag counts but did not establish which passenger the bags were assigned to; avoid promising passenger-specific attribution unless the tool supports it. Policy language explicitly requires the same cabin across flight segments, while passenger-level cabin uniformity was less explicit in the supplied modify rules, so verify before asserting that one passenger cannot be upgraded alone."
+            }
+          ]
+        }
+      ],
+      "source_experience": {
+        "first_pass_run_id": "r_7cbc2c6a3e2941c6bfa3913c5a906a96",
+        "first_pass_success": true,
+        "public_context_sha256": "849009aaef0eb2f48bf52736e7c5102f7a06e27eba33df56102b5e4facfc7ac3"
+      },
+      "assigned_writer": {
+        "index": 91,
+        "run_id": "r_e4a98421256e42299fd3f656a753f16c",
+        "snapshot_id": "snap_4b91a9386fe04ada8124b39258b59a6a",
+        "status": "completed",
+        "item_count": 1,
+        "fact": true,
+        "episode": true,
+        "lesson": true,
+        "procedure": true,
+        "grounding": "supported",
+        "main_note_quote": "a reservation-level baggage update confirmed total/free bag counts but did not establish which passenger the bags were assigned to",
+        "main_source_quote": "Reservation YAX4DR now includes 2 checked bags with 0 paid bags.",
+        "suspect_quote": "",
+        "rationale": "도구는 승객별 귀속 없이 예약 총량을 반환한다. 승인과 금액을 확인하는 지침 및 승객별 객실 규칙이 수정 조항에는 덜 명시적이라는 한정이 있다."
+      }
+    },
+    "pair_f0d2554f7c8163cbd9aa": {
+      "label": "loss",
+      "treatment": "lesson",
+      "jobs_in_blind_order": [
+        364,
+        363
+      ],
+      "task_id": "33",
+      "repetition": 1,
+      "treatment_job": 364,
+      "control_job": 363,
+      "judgment": {
+        "category": "request_clarification",
+        "user_context": "comparable",
+        "first_difference": "같은 날짜 변경 요청을 받은 A는 예약 내역에서 다음 날을 계산해 직항을 바로 검색하고 시간대가 다른 네 편을 제시했다. B는 정확한 날짜를 먼저 확인했고 고객이 출발시간 제한도 알려줘, 그 범위에 든 두 편만 제시했다.",
+        "sides": [
+          {
+            "index": 6,
+            "quote": "search_direct_flight",
+            "end_index": 17,
+            "end_quote": "Transfer successful",
+            "observed_result": "고객이 오전 9시 출발편과 오후 4시 귀국편을 골랐다. 이후 수수료와 보험 면제 여부를 확인하지 못해 예약 변경 전에 상담원에게 이관했다."
+          },
+          {
+            "index": 6,
+            "quote": "Please confirm those dates, and I can search for flights.",
+            "end_index": 31,
+            "end_quote": "Your reservation remains in economy, and 2 checked bags have been added.",
+            "observed_result": "운임과 보험 적용 범위를 설명한 뒤 같은 두 편으로 변경해 186달러를 환급했다. 이후 이코노미를 유지하고 무료 수하물 두 개를 추가했다."
+          }
+        ]
+      },
+      "sides_in_blind_order": [
+        {
+          "job": 364,
+          "arm": "lesson",
+          "run_id": "r_4529b02dde194b918f82dbf44e565a50",
+          "official_success": false,
+          "reward": 0.0,
+          "db_match": false,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        },
+        {
+          "job": 363,
+          "arm": "no_memory",
+          "run_id": "r_85bb36f6a95a442d8c1ecef9accb4840",
+          "official_success": true,
+          "reward": 1.0,
+          "db_match": true,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        }
+      ],
+      "source_experience": {
+        "first_pass_run_id": "r_d973a551c0944cbbb7a3f5c94ae9c5f7",
+        "first_pass_success": true,
+        "public_context_sha256": "763e292521e39dde5a30fa0493292cf76d69a4fe976ab18b30e9de3b6a52d963"
+      },
+      "assigned_writer": {
+        "index": 84,
+        "run_id": "r_da7336ff07354d4ead4d598b1043364e",
+        "snapshot_id": "snap_acc845070967487b88b31a3deb15d8ba",
+        "status": "empty",
+        "item_count": 0,
+        "fact": false,
+        "episode": false,
+        "lesson": false,
+        "procedure": false,
+        "grounding": "empty",
+        "main_note_quote": "",
+        "main_source_quote": "",
+        "suspect_quote": "",
+        "rationale": ""
+      }
+    },
+    "pair_130fc7376d42878e6c76": {
+      "label": "gain",
+      "treatment": "procedure",
+      "jobs_in_blind_order": [
+        369,
+        365
+      ],
+      "task_id": "12",
+      "repetition": 1,
+      "treatment_job": 365,
+      "control_job": 369,
+      "judgment": {
+        "category": "policy_or_eligibility",
+        "user_context": "different",
+        "first_difference": "두 고객 모두 전원 승급을 요청했고 A 고객은 예약번호와 수하물 두 개도 처음부터 제시했다. A는 두 구간의 비즈니스 운임과 좌석을 조회해 승급을 제안했다. B는 첫 구간이 이미 지났다는 판단으로 승급을 거절했고, 그 뒤에 고객이 수하물을 요청했다.",
+        "sides": [
+          {
+            "index": 11,
+            "quote": "Change both flight segments for both passengers from economy to business",
+            "end_index": 16,
+            "end_quote": "\"amount\": 1200",
+            "observed_result": "두 사람을 승급하고 무료 수하물 두 개를 추가했다. 추가 운임을 600달러로 안내했지만 변경 후 결제 기록에는 1,200달러가 추가됐다."
+          },
+          {
+            "index": 7,
+            "quote": "The first segment is in the past, so the reservation has already begun",
+            "end_index": 13,
+            "end_quote": "Updated reservation YAX4DR to 2 total checked bags, with 0 paid bags.",
+            "observed_result": "이코노미 좌석을 유지하고 고객의 후속 요청에 따라 수하물 두 개만 무료로 추가했다."
+          }
+        ]
+      },
+      "sides_in_blind_order": [
+        {
+          "job": 369,
+          "arm": "no_memory",
+          "run_id": "r_1e2f5f4db28b41c8b58ee82e0d313c9d",
+          "official_success": false,
+          "reward": 0.0,
+          "db_match": false,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        },
+        {
+          "job": 365,
+          "arm": "procedure",
+          "run_id": "r_19bfb2780b0f432a957d145cbd6eb887",
+          "official_success": true,
+          "reward": 1.0,
+          "db_match": true,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 12,
+          "exposed_notes": [
+            {
+              "title": "Airline reservation changes: verify scope, fare basis, and confirmation",
+              "body": "For similar airline reservation work, follow an ordered, conditional workflow:\n1. Obtain the user ID and reservation ID; retrieve reservation and user details, and verify ownership, itinerary, passengers, cabin, membership, bags, and payment method.\n2. If the itinerary seems inconsistent with the user's description, explain the retrieved segments and connection and ask/check before proceeding. Do not treat a connecting itinerary as a direct flight.\n3. For cabin changes, check that no segment has already flown and that cabin remains uniform across the reservation. Do not assume one passenger or one segment can be changed independently. If flight status/date checks are needed, verify every segment, not just one.\n4. If asked for upgrade price, retrieve relevant fare data and distinguish a supported quote from an estimate. Compare like-for-like current cabin fares and account for the reservation's pricing/kept-flight rules; do not present an unverified calculation as a guaranteed repricing. The past example calculated using recorded economy prices ($122/$127) against searched business fares ($350/$499), although search results also showed economy fares ($125/$139); thus its $1,200 estimate was not fully validated as the applicable fare difference. If the user requires a firm price and tools cannot provide one, state that limitation and stop before changing anything.\n5. Before any booking update, list the exact intended changes and obtain explicit affirmative confirmation. If the user declines or sets a cap below an uncertain estimate, do not make the cabin change; offer only separately authorized feasible changes.\n6. For bags, check the membership/cabin allowance and current bag count; add only requested bags, with paid-bag count and payment details consistent with the allowance. The policy's allowance is reservation-user based; don't claim a particular bag is assigned to a named passenger unless supported. Obtain confirmation before updating, then report the tool result and explicitly note changes not made.\n\nPast example outcome: reservation YAX4DR stayed economy; after the user confirmed, baggage update returned 2 total bags and 0 paid bags. No upgrade was made. This record alone does not establish any external grading result."
+            }
+          ]
+        }
+      ],
+      "source_experience": {
+        "first_pass_run_id": "r_7cbc2c6a3e2941c6bfa3913c5a906a96",
+        "first_pass_success": true,
+        "public_context_sha256": "849009aaef0eb2f48bf52736e7c5102f7a06e27eba33df56102b5e4facfc7ac3"
+      },
+      "assigned_writer": {
+        "index": 88,
+        "run_id": "r_5689b9bc9f69478b855289d8f64e32bd",
+        "snapshot_id": "snap_dc9684beb1b04e039646a97520672dff",
+        "status": "completed",
+        "item_count": 1,
+        "fact": true,
+        "episode": true,
+        "lesson": true,
+        "procedure": true,
+        "grounding": "supported",
+        "main_note_quote": "If the user requires a firm price and tools cannot provide one, state that limitation and stop before changing anything.",
+        "main_source_quote": "No, I'm not agreeing to anything until I know the price.",
+        "suspect_quote": "",
+        "rationale": "조회된 두 종류 운임과 고객의 상한, 실제 수하물만 갱신된 결과를 연결한다. 확정가격이 없을 때 중단하고 따로 승인받은 행동만 하라는 구체적인 절차다."
+      }
+    },
+    "pair_a051b05defd4b1e1e0d9": {
+      "label": "loss",
+      "treatment": "procedure",
+      "jobs_in_blind_order": [
+        360,
+        363
+      ],
+      "task_id": "33",
+      "repetition": 1,
+      "treatment_job": 360,
+      "control_job": 363,
+      "judgment": {
+        "category": "request_clarification",
+        "user_context": "different",
+        "first_difference": "A 고객은 처음부터 예약번호를 제시해 A가 ID를 받은 뒤 예약에서 다음날 날짜를 계산해 바로 검색했다. B 고객은 예약번호와 날짜를 묻자 번호를 주고 날짜를 찾아 달라고 했다. B가 날짜를 제시해 확인받을 때 고객이 양 구간의 출발시간 제한도 밝혔다.",
+        "sides": [
+          {
+            "index": 6,
+            "quote": "search_direct_flight",
+            "end_index": 20,
+            "end_quote": "YOU ARE BEING TRANSFERRED TO A HUMAN AGENT.",
+            "observed_result": "고객이 두 항공편을 고른 뒤 보험으로 변경 수수료를 면제하라고 요구했다. 면제를 확인할 수 없다는 안내 후 고객이 이관을 요청해 예약 변경 없이 종료했다."
+          },
+          {
+            "index": 6,
+            "quote": "Please confirm those dates, and I can search for flights.",
+            "end_index": 31,
+            "end_quote": "2 checked bags have been added.",
+            "observed_result": "두 편의 총운임과 차액을 설명한 뒤 고객이 승인했다. 이코노미 항공편을 바꾸고 $186을 환급했다. 이후 $408 승급을 거절한 고객의 요청으로 무료 수하물 2개만 추가했다."
+          }
+        ]
+      },
+      "sides_in_blind_order": [
+        {
+          "job": 360,
+          "arm": "procedure",
+          "run_id": "r_b26dab4472164e3a851f1986f75dff45",
+          "official_success": false,
+          "reward": 0.0,
+          "db_match": false,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 20,
+          "exposed_notes": [
+            {
+              "title": "Airline modification workflow observations",
+              "body": "In a past airline-support interaction, the agent retrieved reservation details after obtaining the user ID and reservation ID, searched eligible routes/dates, and used the user's time constraints to select flights. It presented the itinerary, cabin, and payment method and obtained explicit confirmation before changing flights; the update tool then showed a $186 refund. Later it checked cabin prices against the stated $200 cap, explained that cabin must be uniform across a reservation, and asked for confirmation before adding 2 bags; the user confirmed and the baggage tool reported total_baggages 2 and nonfree_baggages 0. The reservation showed gold membership and one economy passenger, consistent with the policy allowance of 3 free economy bags, so the assistant stated no charge. No separate substantive evaluation feedback was provided (feedback level: none); do not treat that as proof of correctness.\n\nFor similar airline work: (1) obtain/verify user ID and reservation ID, then retrieve reservation details; (2) check trip type, route, cabin, segments, status/eligibility, and requested dates/constraints; (3) search candidate flights and validate each against the user's time and route requirements and cabin availability; (4) calculate any fare difference from available reservation/search data, identify a valid profile payment method for flight changes, and disclose relevant amount/refund and constraints; (5) stop before any database change until explicit user confirmation of the specific action; (6) make one update call, then verify its result and report the resulting itinerary/payment outcome; (7) for baggage, calculate allowance from membership, cabin, and passenger count, clarify the requested total if needed, add no unnecessary bags, obtain confirmation, update, and verify. This episode does not establish broader tool/API behavior beyond the returned results; preserve uncertainty where prices, dates, or policy applicability are not verified."
+            }
+          ]
+        },
+        {
+          "job": 363,
+          "arm": "no_memory",
+          "run_id": "r_85bb36f6a95a442d8c1ecef9accb4840",
+          "official_success": true,
+          "reward": 1.0,
+          "db_match": true,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        }
+      ],
+      "source_experience": {
+        "first_pass_run_id": "r_d973a551c0944cbbb7a3f5c94ae9c5f7",
+        "first_pass_success": true,
+        "public_context_sha256": "763e292521e39dde5a30fa0493292cf76d69a4fe976ab18b30e9de3b6a52d963"
+      },
+      "assigned_writer": {
+        "index": 87,
+        "run_id": "r_ac47009758cd49bf95425c396e99b35f",
+        "snapshot_id": "snap_e95846670b4f40ca8a296b2b6fdc8e7c",
+        "status": "completed",
+        "item_count": 1,
+        "fact": true,
+        "episode": true,
+        "lesson": true,
+        "procedure": true,
+        "grounding": "mixed",
+        "main_note_quote": "for baggage, calculate allowance from membership, cabin, and passenger count, clarify the requested total if needed, add no unnecessary bags, obtain confirmation, update, and verify.",
+        "main_source_quote": "Fine, keep both in economy. But yes, add the 2 checked bags.",
+        "suspect_quote": "The reservation showed gold membership and one economy passenger",
+        "rationale": "The public exchange supports the workflow, confirmed itinerary, refund and separate baggage update. The reservation identifies one economy passenger, but the separate get_user_details response is where gold status was returned."
+      }
+    },
+    "pair_397a24841c34462e4f07": {
+      "label": "loss",
+      "treatment": "procedure",
+      "jobs_in_blind_order": [
+        373,
+        371
+      ],
+      "task_id": "20",
+      "repetition": 1,
+      "treatment_job": 373,
+      "control_job": 371,
+      "judgment": {
+        "category": "business_tool_or_arguments",
+        "user_context": "comparable",
+        "first_difference": "두 고객 모두 뉴욕 공항을 가리지 않았고 최초 검색 때는 출발시각 제한을 말하지 않았다. A는 연도와 공항을 먼저 확인해 세 공항의 직항·경유편을 한꺼번에 조회했다. B는 프로필과 결제 선호를 먼저 확인하고 JFK 직항부터 제시했다. 오전 11시 조건을 들은 뒤에도 서로 다른 오후 경유편을 제시했다.",
+        "sides": [
+          {
+            "index": 8,
+            "quote": "search_onestop_flight",
+            "end_index": 37,
+            "end_quote": "$370, paid with the $250 certificate and $120 on the card ending 7447",
+            "observed_result": "고객이 EWR 오후 4시 댈러스 경유편을 선택했다. 운임 $320에 세 번째 짐 $50을 더해 증서 $250·카드 $120으로 발권했다."
+          },
+          {
+            "index": 8,
+            "quote": "search_direct_flight",
+            "end_index": 26,
+            "end_quote": "$5 on the Visa ending in 7447",
+            "observed_result": "고객은 JFK 애틀랜타 경유편 두 개 중 저렴한 오후 7시편을 선택했다. 세 개 모두 무료 수하물로 발권해 총 $255 중 카드에 $5를 청구했다."
+          }
+        ]
+      },
+      "sides_in_blind_order": [
+        {
+          "job": 373,
+          "arm": "procedure",
+          "run_id": "r_41b3b66e6420408d8338555fc1871911",
+          "official_success": false,
+          "reward": 0.0,
+          "db_match": false,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 26,
+          "exposed_notes": [
+            {
+              "title": "Airline flight search experience: empty results and recheck",
+              "body": "Past airline-support experience (feedback level: none; correctness not independently verified): For a one-way NYC–Seattle flight, user specified May 20, initially ambiguously then clarified as 2025, economy, no preferred NYC airport, and later no departure before 11 a.m. The agent enumerated airports and tried direct and one-stop searches for JFK, EWR, and LGA; all returned empty. On user's request to double-check, it searched direct and one-stop only for JFK, then summarized as having rechecked JFK/EWR/LGA—an inconsistency. Search calls accepted date, origin, destination, not cabin or departure-time constraints, so these results did not verify availability by class or departure time. The agent appropriately did not claim to have assessed the 11 a.m. constraint and transferred when user explicitly asked for a human; transfer succeeded.\nProcedure for similar work: 1) Collect user ID and clarify trip type, endpoints, date/year, cabin, and airport flexibility; resolve past/ambiguous dates before search. 2) Enumerate applicable airports when flexible, and search relevant route options (direct and one-stop) for each. 3) Track returned results per exact query; if double-checking, repeat/expand searches consistently across every applicable airport and do not summarize an unqueried result as checked. 4) Respect tool limitations: if search inputs do not support cabin or time filters, state that results cannot verify those constraints; avoid asserting comprehensive availability from empty or limited responses. 5) If no results, explain the scope of searches and ask about another date/route; if user explicitly requests a human or the issue cannot be handled, transfer and send the required transfer notice only after successful tool transfer. Stop without booking unless suitable flight details are available and user has confirmed the booking details."
+            }
+          ]
+        },
+        {
+          "job": 371,
+          "arm": "no_memory",
+          "run_id": "r_00c11ae41d184a7ba7f2a271b6106006",
+          "official_success": true,
+          "reward": 1.0,
+          "db_match": true,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        }
+      ],
+      "source_experience": {
+        "first_pass_run_id": "r_d8c7a724b6754d8b94b65d34b64f223a",
+        "first_pass_success": false,
+        "public_context_sha256": "b88d2b1e842d01aee01eebf77939e3f52a684a0042cbad48d9e18c920eee0621"
+      },
+      "assigned_writer": {
+        "index": 93,
+        "run_id": "r_9662d9408cb6499aad5c796d52bc90ca",
+        "snapshot_id": "snap_40c0290067aa48069e940cc56bfcac13",
+        "status": "completed",
+        "item_count": 1,
+        "fact": true,
+        "episode": true,
+        "lesson": true,
+        "procedure": true,
+        "grounding": "mixed",
+        "main_note_quote": "On user's request to double-check, it searched direct and one-stop only for JFK, then summarized as having rechecked JFK/EWR/LGA—an inconsistency.",
+        "main_source_quote": "I double-checked direct and one-stop options from JFK, EWR, and LGA for May 20, 2025.",
+        "suspect_quote": "Search calls accepted date, origin, destination, not cabin or departure-time constraints",
+        "rationale": "Only the JFK queries were repeated. The tracking and stopping guidance is supported. Observed argument lists do not establish which optional parameters the search API accepts. The note also treats a request for a person as sufficient for transfer, where the public policy specifies the scope criterion."
+      }
+    },
+    "pair_5f30e7ee9f368e0bc888": {
+      "label": "gain",
+      "treatment": "fact",
+      "jobs_in_blind_order": [
+        386,
+        388
+      ],
+      "task_id": "10",
+      "repetition": 1,
+      "treatment_job": 388,
+      "control_job": 386,
+      "judgment": {
+        "category": "current_facts_or_arithmetic",
+        "user_context": "comparable",
+        "first_difference": "A는 출국 경유편 세 가지를, B는 당일 도착편을 제시했다. B 고객도 한때 출국편만 승급하고 싶다고 했지만 견적 시점에는 양쪽 모두 같은 네 구간과 세 사람의 왕복 승급을 요청했다. A는 HAT190의 이코노미 가격 113달러를 넣어 차액을 957달러로 안내했고, B는 비즈니스 가격 464달러를 적용해 2,010달러를 산출했다.",
+        "sides": [
+          {
+            "index": 16,
+            "quote": "HAT190 ($113) and HAT047 ($202) outbound",
+            "end_index": 22,
+            "end_quote": "The reservation record shows a charge of $2,010 on that card.",
+            "observed_result": "고객이 957달러 추정액을 듣고 승인해 비즈니스로 변경했다. 실제 비자 청구액은 2,010달러였고 고객이 이의를 제기해 상담원에게 이관했다."
+          },
+          {
+            "index": 19,
+            "quote": "3 * ((464 + 202 + 290 + 241) - (126 + 139 + 148 + 114))",
+            "end_index": 47,
+            "end_quote": "No changes have been made to reservation 4NQLHD.",
+            "observed_result": "고객이 제시한 1,000달러 한도에 맞춰 다른 출국·귀국편도 확인했다. 고객은 더 저렴한 선택지도 한도를 넘는다는 설명을 듣고 변경을 포기했다."
+          }
+        ]
+      },
+      "sides_in_blind_order": [
+        {
+          "job": 386,
+          "arm": "no_memory",
+          "run_id": "r_a60e8ec1882849fb8054ef45b2e3c914",
+          "official_success": false,
+          "reward": 0.0,
+          "db_match": false,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        },
+        {
+          "job": 388,
+          "arm": "fact",
+          "run_id": "r_cf783c78d9ac4620853df650e0213f3b",
+          "official_success": true,
+          "reward": 1.0,
+          "db_match": true,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        }
+      ],
+      "source_experience": {
+        "first_pass_run_id": "r_ca3bfcf242434c5fb1d17431dad76cb4",
+        "first_pass_success": true,
+        "public_context_sha256": "4e11db41698c9f31621337a75c5cf4f902840a41c1d8048c1f94e539b2cff5fb"
+      },
+      "assigned_writer": {
+        "index": 101,
+        "run_id": "r_c2fdabe4009b48fc93e3e845e63983e8",
+        "snapshot_id": "snap_7707806cf1634ad0b69fca19da6492cb",
+        "status": "empty",
+        "item_count": 0,
+        "fact": false,
+        "episode": false,
+        "lesson": false,
+        "procedure": false,
+        "grounding": "empty",
+        "main_note_quote": "",
+        "main_source_quote": "",
+        "suspect_quote": "",
+        "rationale": ""
+      }
+    },
+    "pair_d37872ce015eecbc3164": {
+      "label": "gain",
+      "treatment": "episode",
+      "jobs_in_blind_order": [
+        385,
+        386
+      ],
+      "task_id": "10",
+      "repetition": 1,
+      "treatment_job": 385,
+      "control_job": 386,
+      "judgment": {
+        "category": "request_clarification",
+        "user_context": "comparable",
+        "first_difference": "두 고객 모두 5월 24일 출국과 승급을 요청했고 처음에는 귀국편의 객실을 명시하지 않았다. A는 예약을 읽은 직후 전원·왕복 승급이 맞는지 먼저 확인했다. B는 먼저 출국 경유편 세 개를 제시해 고객이 항공편과 왕복 승급 범위를 함께 선택하게 했다.",
+        "sides": [
+          {
+            "index": 8,
+            "quote": "Would you like to move the outbound to May 24, keep the return dates and flights unchanged, and upgrade all flights for all three passengers to business?",
+            "end_index": 29,
+            "end_quote": "Transfer successful",
+            "observed_result": "추가금을 처음 약 1,902달러, 다시 약 2,010달러로 안내했다. 고객이 1,000달러 이하의 다른 방법을 요청해 예약 변경 전에 상담원에게 이관했다."
+          },
+          {
+            "index": 10,
+            "quote": "Which option would you like? Upgrading the reservation means all flight segments, including the unchanged return, will be in business class.",
+            "end_index": 22,
+            "end_quote": "The reservation record shows a charge of $2,010 on that card.",
+            "observed_result": "고객이 당일 도착편을 택했다. HAT190에 이코노미 운임을 넣은 957달러 추정액으로 승인을 받아 2,010달러가 청구됐고, 이의 제기 후 상담원에게 이관했다."
+          }
+        ]
+      },
+      "sides_in_blind_order": [
+        {
+          "job": 385,
+          "arm": "episode",
+          "run_id": "r_193414fe5aa645969a58ec3dcb724a8e",
+          "official_success": true,
+          "reward": 1.0,
+          "db_match": true,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 30,
+          "exposed_notes": [
+            {
+              "title": "Airline booking review: identify booking and qualify fare estimates",
+              "body": "In a prior airline-support exchange (policy context: user ID and reservation ID required before modifying; explicit confirmation required before database changes), agent retrieved all five reservations for user Liam Khan, then incorrectly implied only one could potentially match because dates appeared not movable. Several records were dated May 18–20 and thus future relative to the stated system date 2024-05-15; do not assume a booking is irrelevant merely because dates differ, and clarify intended reservation/date rather than assert impossibility. The user confirmed 4NQLHD. Agent correctly sought confirmation before any modification and did not modify after user declined. It explained same cabin across all segments, consistent with policy. Fare estimate used listed business/economy prices and calculated $2,010 additional for three, but return search results had date=null; agent did caveat that return prices were not confirmed for the specific dates. Preserve this limitation: listings/seat counts with missing dates cannot establish date-specific return fare or availability; label totals as tentative and avoid presenting them as assured. One-stop outbound options showed HAT190+HAT047 business at $666/passenger; no direct option returned. Feedback in supplied example was none, so no grading conclusion is known."
+            }
+          ]
+        },
+        {
+          "job": 386,
+          "arm": "no_memory",
+          "run_id": "r_a60e8ec1882849fb8054ef45b2e3c914",
+          "official_success": false,
+          "reward": 0.0,
+          "db_match": false,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        }
+      ],
+      "source_experience": {
+        "first_pass_run_id": "r_ca3bfcf242434c5fb1d17431dad76cb4",
+        "first_pass_success": true,
+        "public_context_sha256": "4e11db41698c9f31621337a75c5cf4f902840a41c1d8048c1f94e539b2cff5fb"
+      },
+      "assigned_writer": {
+        "index": 103,
+        "run_id": "r_c8a2d5bfb7fd489bbffc9faaf22c942f",
+        "snapshot_id": "snap_b9a7c2ae24064ad3b3e6d6c3eb2e8007",
+        "status": "completed",
+        "item_count": 1,
+        "fact": true,
+        "episode": true,
+        "lesson": true,
+        "procedure": true,
+        "grounding": "supported",
+        "main_note_quote": "clarify intended reservation/date rather than assert impossibility.",
+        "main_source_quote": "The only reservation that could potentially be relevant to your request is 4NQLHD",
+        "suspect_quote": "",
+        "rationale": "후보를 일찍 한 건으로 좁힌 답변, 사용자의 재확인, 2,010달러 추정과 변경 거절이 기록에 있다. 누락된 운임 날짜를 확인된 것으로 쓰지 말라는 안내가 있다."
+      }
+    },
+    "pair_38af8e55d5c94e633ff3": {
+      "label": "gain",
+      "treatment": "lesson",
+      "jobs_in_blind_order": [
+        386,
+        390
+      ],
+      "task_id": "10",
+      "repetition": 1,
+      "treatment_job": 390,
+      "control_job": 386,
+      "judgment": {
+        "category": "business_tool_or_arguments",
+        "user_context": "comparable",
+        "first_difference": "같은 날짜 변경·승급 요청에서 두 쪽 모두 첫 조회로 대상 예약을 찾았다. A는 즉시 출국 경유편을 검색해 세 여정 중 선택을 받았다. B는 다른 예약 네 건과 출국 직항·경유·귀국편까지 조회한 뒤 당일 연결 한 가지를 제시하며 총액을 확인할 수 없다고 했다. A 고객은 추정액으로 변경을 승인했고 B 고객은 확정 가격을 요구했다.",
+        "sides": [
+          {
+            "index": 8,
+            "quote": "search_onestop_flight",
+            "end_index": 22,
+            "end_quote": "The reservation record shows a charge of $2,010 on that card.",
+            "observed_result": "A는 HAT190 비즈니스 $464 대신 이코노미 $113을 써 추가액을 $957로 추산했다. 승인 뒤 비즈니스로 변경돼 실제 $2,010이 청구됐고, 고객이 $1,000 한도를 넘었다며 정정을 요구해 상담원에게 이관됐다."
+          },
+          {
+            "index": 8,
+            "quote": "get_reservation_details",
+            "end_index": 30,
+            "end_quote": "YOU ARE BEING TRANSFERRED TO A HUMAN AGENT.",
+            "observed_result": "고객이 총액 확인 전에는 변경을 승인하지 않았다. 귀국편 가격 검증을 위해 고객의 요청으로 이관했고 변경·청구는 없었다."
+          }
+        ]
+      },
+      "sides_in_blind_order": [
+        {
+          "job": 386,
+          "arm": "no_memory",
+          "run_id": "r_a60e8ec1882849fb8054ef45b2e3c914",
+          "official_success": false,
+          "reward": 0.0,
+          "db_match": false,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        },
+        {
+          "job": 390,
+          "arm": "lesson",
+          "run_id": "r_a0ff036dd0d442be89a5b5355fdee9fc",
+          "official_success": true,
+          "reward": 1.0,
+          "db_match": true,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 30,
+          "exposed_notes": [
+            {
+              "title": "Airline-support experience: tool sequencing and fare uncertainty",
+              "body": "In one airline-support transcript, the task policy explicitly required only one tool call at a time, but the agent issued multiple calls in parallel when retrieving several reservations and when searching direct/one-stop flights. For future tasks under that policy, sequence tool calls rather than batching them. The agent also calculated an estimated full-trip upgrade cost using return-flight fare results whose date fields were null; it disclosed that limitation, but the result should remain an estimate and not be represented as date-confirmed pricing. Preserve such caveats, and avoid treating a search result without a returned date as verified for the requested travel date. No separate evaluation feedback was provided."
+            }
+          ]
+        }
+      ],
+      "source_experience": {
+        "first_pass_run_id": "r_ca3bfcf242434c5fb1d17431dad76cb4",
+        "first_pass_success": true,
+        "public_context_sha256": "4e11db41698c9f31621337a75c5cf4f902840a41c1d8048c1f94e539b2cff5fb"
+      },
+      "assigned_writer": {
+        "index": 104,
+        "run_id": "r_d2d03ed0aadf47a382b760361c919d08",
+        "snapshot_id": "snap_58204aedbfc141fd82019893297416e8",
+        "status": "completed",
+        "item_count": 1,
+        "fact": true,
+        "episode": true,
+        "lesson": true,
+        "procedure": true,
+        "grounding": "supported",
+        "main_note_quote": "sequence tool calls rather than batching them.",
+        "main_source_quote": "You should only make one tool call at a time",
+        "suspect_quote": "",
+        "rationale": "여러 조회를 한 턴에 묶은 실제 호출과 한 번에 하나라는 지침이 대조된다. 이어서 날짜가 비어 있는 복편 요금으로 견적을 냈고 상담원도 이를 한정했다."
+      }
+    },
+    "pair_46c54f58e56ac84e4254": {
+      "label": "gain",
+      "treatment": "procedure",
+      "jobs_in_blind_order": [
+        384,
+        377
+      ],
+      "task_id": "42",
+      "repetition": 1,
+      "treatment_job": 377,
+      "control_job": 384,
+      "judgment": {
+        "category": "current_facts_or_arithmetic",
+        "user_context": "comparable",
+        "first_difference": "양쪽 모두 같은 고객의 일곱 예약을 조회했다. A는 노선·편명이 똑같은 예약을 찾으려다가 다른 날의 편까지 비교하고 어느 예약을 취소할지 다시 물었다. B는 같은 날의 예약을 날짜와 실제 탑승객별로 정리해 5월 17일 댈러스발 뉴어크 귀국편과 22일 보스턴 출발편을 식별했다.",
+        "sides": [
+          {
+            "index": 14,
+            "quote": "I don’t see exact duplicate itineraries.",
+            "end_index": 23,
+            "end_quote": "Transfer successful",
+            "observed_result": "A는 고객의 17일 도착편과 22일 출발편을 찾을 수 없다고 두 번 답했다. 예약을 취소하지 않고 상담원에게 이관했다."
+          },
+          {
+            "index": 20,
+            "quote": "I found several reservations with flights on the same dates",
+            "end_index": 30,
+            "end_quote": "Reservations **FDZ0T5** and **HSR97W** have been canceled.",
+            "observed_result": "고객이 유지할 두 건과 취소할 두 건을 확인했다. FDZ0T5와 HSR97W를 취소했고 원래 카드에 3,778달러와 1,227달러 환급이 기록됐다."
+          }
+        ]
+      },
+      "sides_in_blind_order": [
+        {
+          "job": 384,
+          "arm": "no_memory",
+          "run_id": "r_1eef93db7ec14cbbbb0e6be109284e20",
+          "official_success": false,
+          "reward": 0.0,
+          "db_match": false,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        },
+        {
+          "job": 377,
+          "arm": "procedure",
+          "run_id": "r_827e7c0b8d264a378d941d3f9ec86a72",
+          "official_success": true,
+          "reward": 1.0,
+          "db_match": true,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 32,
+          "exposed_notes": [
+            {
+              "title": "Airline reservation review: verify passengers and dates before cancellation",
+              "body": "In a past airline-support interaction, user asked to identify duplicate/conflicting trips, then cancel bookings. Helpful procedure: obtain user ID; inspect every reservation and its flight segments/dates and passenger list; distinguish itinerary overlap from who is traveling; verify cancellation reason, whether any segment has flown, and an eligible cancellation basis before invoking cancellation. If the user revises scope to exclude a booking with other passengers, honor the narrowed request and do not cancel it; a direct instruction to cancel only the retained reservation may authorize that action. Confirm cancellation from the tool result and describe the returned refund amount/payment/timing accurately. Important observed error to avoid: a final assurance said there was no other active reservation for the user with a May 17 flight, despite active reservation 5BGGWZ having a May 17 DFW–EWR flight. Before asserting “nothing else conflicting” or “no other active reservation,” recheck all segments, passenger identity, dates and status, and state precisely whether you mean additional bookings beyond those already identified. The earlier lookup showed status null on uncancelled records, so do not equate null with a verified status unless the system establishes that. These observations concern this specific transcript; no separate evaluation feedback was provided."
+            }
+          ]
+        }
+      ],
+      "source_experience": {
+        "first_pass_run_id": "r_ef8c7fbfb0ee491e9227238f4775a973",
+        "first_pass_success": false,
+        "public_context_sha256": "a4682ed8f3f7b16d45394d24a13228de1c6f82694660ec3ff315afc4c59beebb"
+      },
+      "assigned_writer": {
+        "index": 97,
+        "run_id": "r_5bfe8b71dd604d4ba7196b1d12fd3c85",
+        "snapshot_id": "snap_9fb6b15db88145cc8ecefe6da7454b4f",
+        "status": "completed",
+        "item_count": 1,
+        "fact": true,
+        "episode": true,
+        "lesson": true,
+        "procedure": true,
+        "grounding": "mixed",
+        "main_note_quote": "recheck all segments, passenger identity, dates and status, and state precisely whether you mean additional bookings beyond those already identified.",
+        "main_source_quote": "Yes—**5BGGWZ** has your **DFW–EWR** flight on May 17, and **PUNERT** departs **BOS** on May 22.",
+        "suspect_quote": "Important observed error to avoid: a final assurance said there was no other active reservation for the user with a May 17 flight, despite active reservation 5BGGWZ having a May 17 DFW–EWR flight.",
+        "rationale": "The case supports checking passenger lists and narrowing the action to FDZ0T5. The final answer expressly named 5BGGWZ before saying “no other” May 17 booking for the user. Thus labeling that statement an observed failure to account for 5BGGWZ is not justified. An unresolved issue is the unmentioned HSR97W departure on May 22."
+      }
+    },
+    "pair_8c62911d700aa9858c1f": {
+      "label": "gain",
+      "treatment": "procedure",
+      "jobs_in_blind_order": [
+        386,
+        387
+      ],
+      "task_id": "10",
+      "repetition": 1,
+      "treatment_job": 387,
+      "control_job": 386,
+      "judgment": {
+        "category": "request_clarification",
+        "user_context": "comparable",
+        "first_difference": "같은 첫 요청에서 A는 ID로 예약을 찾아 바로 출국편을 제시했다. B는 첫 답에서 왕복 여부와 인원도 물었다. 고객 답인 두 명이 예약의 세 명과 달라 B가 정정하고 승급 범위를 확인했다. A 고객은 왕복 승급을 원한다고 했고, B 고객은 처음에 출국편만 원하다가 왕복 승급 견적 조회에 동의했다.",
+        "sides": [
+          {
+            "index": 2,
+            "quote": "Please provide your user ID and reservation ID",
+            "end_index": 22,
+            "end_quote": "The reservation record shows a charge of $2,010 on that card.",
+            "observed_result": "HAT190의 이코노미 운임을 써 차액을 $957로 안내했다. 고객 승인 후 왕복 승급으로 $2,010이 청구됐고 한도 초과 정정 요구로 이관됐다."
+          },
+          {
+            "index": 2,
+            "quote": "how many passengers are on it",
+            "end_index": 45,
+            "end_quote": "I'll leave it as is for now.",
+            "observed_result": "재검색 끝에 HAT190·HAT047의 세 사람 비즈니스 출국 운임을 $1,998로 제시했지만 변경 차액은 확정하지 못했다. 고객은 $1,000 한도를 유지해 변경을 포기했다."
+          }
+        ]
+      },
+      "sides_in_blind_order": [
+        {
+          "job": 386,
+          "arm": "no_memory",
+          "run_id": "r_a60e8ec1882849fb8054ef45b2e3c914",
+          "official_success": false,
+          "reward": 0.0,
+          "db_match": false,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        },
+        {
+          "job": 387,
+          "arm": "procedure",
+          "run_id": "r_9a729436120d4c868735a74ef99bba8c",
+          "official_success": true,
+          "reward": 1.0,
+          "db_match": true,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 44,
+          "exposed_notes": [
+            {
+              "title": "Airline reservation modification workflow lessons",
+              "body": "For future airline modification work under the provided policy: (1) Obtain the user's user ID and reservation ID; if the reservation ID is unknown, use the provided user ID to retrieve profile reservations, then inspect them one at a time (policy says only one tool call at a time). (2) Confirm which booking/segment and requested dates the user means; do not infer relevance or say a booking cannot be changed merely because some listed dates are old or do not match a vague request. Check current date and whether any segment has flown before cabin changes. (3) Verify modification eligibility (basic economy cannot have flight changes; retain origin, destination, trip type); search available itineraries and check dates, segment continuity, seat counts for every passenger, and cabin availability. (4) Cabin must be consistent across all segments; explicitly clarify consequences if the user's request changes only some segments. (5) Before estimating a fare difference, obtain comparable price data for all affected itinerary segments, including the unchanged return where relevant. Search results can omit a date (observed for return-flight queries), so qualify date applicability; distinguish listed fares/estimates from confirmed final charges and don't claim a firm total from unverified data. Check arithmetic and passenger count. (6) Explain limits/unknowns, and state no changes have been made. Do not invent discounts or deals. (7) Before any database update, list exact action details and obtain explicit affirmative confirmation; if flights change, require a single saved gift card or credit card for payment/refund. Stop without updating if the user has not confirmed, the fare cannot be established sufficiently, or their stated budget/conditions are not met. In the observed experience the user declined and the booking remained unchanged; no update call occurred. No evaluation feedback was provided, so these are procedural observations, not a claim of graded correctness."
+            }
+          ]
+        }
+      ],
+      "source_experience": {
+        "first_pass_run_id": "r_ca3bfcf242434c5fb1d17431dad76cb4",
+        "first_pass_success": true,
+        "public_context_sha256": "4e11db41698c9f31621337a75c5cf4f902840a41c1d8048c1f94e539b2cff5fb"
+      },
+      "assigned_writer": {
+        "index": 102,
+        "run_id": "r_5efd3752e4d2404fa9c25478d9231cea",
+        "snapshot_id": "snap_8e62c5ef8a274cc8893c47674918b28c",
+        "status": "completed",
+        "item_count": 1,
+        "fact": true,
+        "episode": true,
+        "lesson": true,
+        "procedure": true,
+        "grounding": "supported",
+        "main_note_quote": "Stop without updating if the user has not confirmed, the fare cannot be established sufficiently, or their stated budget/conditions are not met.",
+        "main_source_quote": "If it can't come in under a thousand, then I'll just leave the booking as it is for now.",
+        "suspect_quote": "",
+        "rationale": "날짜가 비어 있던 운임 결과와 사용자의 예산 초과 거절·원예약 유지가 확인된다. 다음 판단에서 전 구간, 승객 수, 차액, 승인과 중단 조건을 차례로 확인하도록 한다."
+      }
+    },
+    "pair_b7388d270bd03b51f972": {
+      "label": "gain",
+      "treatment": "fact",
+      "jobs_in_blind_order": [
+        414,
+        411
+      ],
+      "task_id": "1",
+      "repetition": 2,
+      "treatment_job": 411,
+      "control_job": 414,
+      "judgment": {
+        "category": "policy_or_eligibility",
+        "user_context": "comparable",
+        "first_difference": "양쪽 모두 같은 고객과 예약을 조회했고 계획 변경이라는 사유도 알고 있었다. A는 예약이 취소 가능 기간인 24시간 이내라고 판단해 승인을 요청했다. B는 예약 시각과 현재 시각을 비교해 24시간이 지났다고 판단한 뒤 바로 상담원에게 이관했다.",
+        "sides": [
+          {
+            "index": 12,
+            "quote": "it qualifies for cancellation under the 24-hour booking window.",
+            "end_index": 16,
+            "end_quote": "A **$430 refund** was issued to the original gift card.",
+            "observed_result": "고객이 환급을 조건으로 승인하자 예약을 취소했고 원래 기프트카드에 430달러 환급이 기록됐다."
+          },
+          {
+            "index": 12,
+            "quote": "transfer_to_human_agents",
+            "end_index": 13,
+            "end_quote": "Transfer successful",
+            "observed_result": "평가한 취소 조건을 이관 사유에 기록했다. 예약을 취소하거나 환급하지 않고 상담원에게 이관했다."
+          }
+        ]
+      },
+      "sides_in_blind_order": [
+        {
+          "job": 414,
+          "arm": "no_memory",
+          "run_id": "r_202d924930e449378175e55868a2e6a3",
+          "official_success": false,
+          "reward": 0.0,
+          "db_match": false,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        },
+        {
+          "job": 411,
+          "arm": "fact",
+          "run_id": "r_fb11803f97da4b37a07f7308d4f8ad39",
+          "official_success": true,
+          "reward": 1.0,
+          "db_match": true,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 10,
+          "exposed_notes": [
+            {
+              "title": "Airline cancellation past interaction review",
+              "body": "In a past airline-support interaction, assistant collected user ID and cancellation reason, retrieved the user's reservations, and identified Q69X3R as the Philadelphia–LaGuardia trip. Reservation data showed economy, no insurance, and booking >24 hours before the then-current date; change-of-plan cancellation therefore failed the listed eligibility criteria. After the user reported that phone support had approved it, assistant transferred to a human. Policy text said to transfer if and only if request cannot be handled within scope; it did not explicitly say a claimed external approval changes cancellation eligibility. No later outcome or evaluation rationale was provided (feedback level: none), so correctness of the transfer is unverified. Avoid retaining any customer-specific details from this example."
+            }
+          ]
+        }
+      ],
+      "source_experience": {
+        "first_pass_run_id": "r_c2e155a34713448cb9951b0fe770be29",
+        "first_pass_success": true,
+        "public_context_sha256": "dcb8b29e3ba7ecdf5368f4ed4a70cb54b2ed29470f04670855127288ec19bcb6"
+      },
+      "assigned_writer": {
+        "index": 120,
+        "run_id": "r_a631e4f3847347fe80616b7909ed47ed",
+        "snapshot_id": "snap_8f9b460df72c40188d34496b92c01015",
+        "status": "completed",
+        "item_count": 1,
+        "fact": true,
+        "episode": true,
+        "lesson": true,
+        "procedure": false,
+        "grounding": "supported",
+        "main_note_quote": "it did not explicitly say a claimed external approval changes cancellation eligibility.",
+        "main_source_quote": "the customer support rep I spoke with on the phone said a service agent would be able to help me cancel it.",
+        "suspect_quote": "",
+        "rationale": "예약 조회·거절에 이어 고객이 전화 승인을 주장해서 이관했다. 고객의 주장과 정책상 확인된 예외를 구분하고 이관 후 취소 여부는 유보한다."
+      }
+    },
+    "pair_488fafd7435523f88498": {
+      "label": "gain",
+      "treatment": "episode",
+      "jobs_in_blind_order": [
+        404,
+        403
+      ],
+      "task_id": "11",
+      "repetition": 1,
+      "treatment_job": 404,
+      "control_job": 403,
+      "judgment": {
+        "category": "simulator_led",
+        "user_context": "different",
+        "first_difference": "양쪽 모두 승객 한 명을 뺄 수 없다고 안내했다. A 고객은 대안을 물은 뒤 등급을 낮추고 운임 차액을 돌려달라고 했다. B 고객은 등급을 낮춰도 결제액 전부를 돌려받고 싶다고 했고, 같은 5,244달러 차액 안내를 듣고 전액 환급을 위한 다른 방법을 요청했다.",
+        "sides": [
+          {
+            "index": 15,
+            "quote": "if there’s any refund from the fare difference, I want it processed to the original payment method.",
+            "end_index": 26,
+            "end_quote": "A $5,244 refund was processed to the original gift card payment method.",
+            "observed_result": "승인 후 같은 항공편에서 세 명 모두 베이직 이코노미로 변경하고 기존 기프트카드에 차액 5,244달러를 환급했다."
+          },
+          {
+            "index": 13,
+            "quote": "I want the entire amount refunded to the original payment method.",
+            "end_index": 26,
+            "end_quote": "The record shows a $5,700 refund to the original gift card payment method",
+            "observed_result": "고객은 차액 환급을 거절하고 전체 취소를 승인했다. 세 사람의 왕복 예약을 취소했고 원래 기프트카드에 전액 5,700달러가 환급됐다."
+          }
+        ]
+      },
+      "sides_in_blind_order": [
+        {
+          "job": 404,
+          "arm": "episode",
+          "run_id": "r_ff7e86b9ac534585bb73420054f7ff35",
+          "official_success": true,
+          "reward": 1.0,
+          "db_match": true,
+          "communicate_checks": [
+            {
+              "info": "5244",
+              "justification": "Information '5244' communicated in the message:\n '{\"message\":\"I confirmed reservation GV1N64 is a future business-class trip, so changing the cabin is permitted. Using the listed basic-economy prices for your existing flights, the fare difference is $5,244 total for three passengers: 3 × (($561 + $1,339) − ($53 + $99)). Any refund would be issued to the original payment method. Please confirm explicitly with “yes” if you want me to change all passengers to basic economy on the same flights, HAT003 on May 19 and HAT290 on May 20, and process the $5,244 fare difference.\"}'",
+              "met": true
+            }
+          ],
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        },
+        {
+          "job": 403,
+          "arm": "no_memory",
+          "run_id": "r_2865ea3759ec4ba191573698bfae2332",
+          "official_success": false,
+          "reward": 0.0,
+          "db_match": false,
+          "communicate_checks": [
+            {
+              "info": "5244",
+              "justification": "Information '5244' communicated in the message:\n '{\"message\":\"I can change all passengers on reservation GV1N64 to basic economy while keeping both flights. Based on the available basic-economy prices for those flights ($53 outbound and $99 return per passenger), the estimated fare difference refund is $5,244 total for three passengers—not the full original payment of $5,700. The reservation would remain active, and the refund would be processed to the payment method you provide for the change. Do you confirm that I should proceed with the basic-economy change?\"}'",
+              "met": true
+            }
+          ],
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        }
+      ],
+      "source_experience": {
+        "first_pass_run_id": "r_38c38660e69a45d09097a0cf1321dd41",
+        "first_pass_success": true,
+        "public_context_sha256": "86348cf5dd6ad2b3133f47980a85fe52400a6743ce7aa29c444b3ffa4a596731"
+      },
+      "assigned_writer": {
+        "index": 114,
+        "run_id": "r_e1105447ab7b4bfb8dd16dc23f22097b",
+        "snapshot_id": "snap_103cab43f2714fd39f843b52b656295d",
+        "status": "empty",
+        "item_count": 0,
+        "fact": false,
+        "episode": false,
+        "lesson": false,
+        "procedure": false,
+        "grounding": "empty",
+        "main_note_quote": "",
+        "main_source_quote": "",
+        "suspect_quote": "",
+        "rationale": ""
+      }
+    },
+    "pair_7c52ad42778bbfdf4fed": {
+      "label": "gain",
+      "treatment": "episode",
+      "jobs_in_blind_order": [
+        409,
+        414
+      ],
+      "task_id": "1",
+      "repetition": 2,
+      "treatment_job": 409,
+      "control_job": 414,
+      "judgment": {
+        "category": "policy_or_eligibility",
+        "user_context": "comparable",
+        "first_difference": "같은 노선과 계획 변경 사유로 양쪽 모두 Q69X3R을 찾았다. A는 24시간을 넘긴 무보험 이코노미 예약이라 취소 조건에 해당하지 않는다고 설명했다. B는 24시간 이내라며 환급과 취소를 제안했다.",
+        "sides": [
+          {
+            "index": 16,
+            "quote": "it was booked more than 24 hours ago",
+            "end_index": 20,
+            "end_quote": "YOU ARE BEING TRANSFERRED TO A HUMAN AGENT.",
+            "observed_result": "고객이 앞선 전화 상담 내용을 들어 이의를 제기하자 취소나 환급을 실행하지 않고 이관했다."
+          },
+          {
+            "index": 12,
+            "quote": "it qualifies for cancellation under the 24-hour booking window",
+            "end_index": 16,
+            "end_quote": "A **$430 refund** was issued to the original gift card.",
+            "observed_result": "고객이 환급을 전제로 취소에 동의했고, 취소 도구에서 원래 기프트카드로 $430 환급을 기록했다."
+          }
+        ]
+      },
+      "sides_in_blind_order": [
+        {
+          "job": 409,
+          "arm": "episode",
+          "run_id": "r_c6b6ce847abb47f1ac97c9b0240c67e1",
+          "official_success": true,
+          "reward": 1.0,
+          "db_match": true,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        },
+        {
+          "job": 414,
+          "arm": "no_memory",
+          "run_id": "r_202d924930e449378175e55868a2e6a3",
+          "official_success": false,
+          "reward": 0.0,
+          "db_match": false,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        }
+      ],
+      "source_experience": {
+        "first_pass_run_id": "r_c2e155a34713448cb9951b0fe770be29",
+        "first_pass_success": true,
+        "public_context_sha256": "dcb8b29e3ba7ecdf5368f4ed4a70cb54b2ed29470f04670855127288ec19bcb6"
+      },
+      "assigned_writer": {
+        "index": 119,
+        "run_id": "r_951bc71070ec4a318e39a05249c044f3",
+        "snapshot_id": "snap_977468bf53f1494399326d00f3cd7aab",
+        "status": "empty",
+        "item_count": 0,
+        "fact": false,
+        "episode": false,
+        "lesson": false,
+        "procedure": false,
+        "grounding": "empty",
+        "main_note_quote": "",
+        "main_source_quote": "",
+        "suspect_quote": "",
+        "rationale": ""
+      }
+    },
+    "pair_086f420a7477b5c1d214": {
+      "label": "gain",
+      "treatment": "lesson",
+      "jobs_in_blind_order": [
+        413,
+        414
+      ],
+      "task_id": "1",
+      "repetition": 2,
+      "treatment_job": 413,
+      "control_job": 414,
+      "judgment": {
+        "category": "policy_or_eligibility",
+        "user_context": "different",
+        "first_difference": "B 고객은 예약 조회 전에 계획 변경이 사유라고 밝혔고 A 고객은 조회 뒤에 같은 사유와 환급 조건을 밝혔다. 같은 예약 생성 시각을 보고 A는 24시간을 넘었다고 판단했고, B는 24시간 이내라며 환급을 약속하고 취소 승인을 요청했다.",
+        "sides": [
+          {
+            "index": 16,
+            "quote": "The reservation was made more than 24 hours ago",
+            "end_index": 21,
+            "end_quote": "Transfer successful",
+            "observed_result": "고객이 전화 상담에서 취소 가능하다고 들었다고 하자, 예약을 취소하거나 환급하지 않고 상담원에게 이관했다."
+          },
+          {
+            "index": 12,
+            "quote": "it qualifies for cancellation under the 24-hour booking window.",
+            "end_index": 16,
+            "end_quote": "A **$430 refund** was issued to the original gift card.",
+            "observed_result": "환급을 조건으로 고객이 승인하자 예약을 취소했고 원래 기프트카드에 430달러 환급이 기록됐다."
+          }
+        ]
+      },
+      "sides_in_blind_order": [
+        {
+          "job": 413,
+          "arm": "lesson",
+          "run_id": "r_d89637ef8cab4391ab4eb318e9b6aa22",
+          "official_success": true,
+          "reward": 1.0,
+          "db_match": true,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 22,
+          "exposed_notes": [
+            {
+              "title": "Airline cancellation eligibility and escalation example",
+              "body": "In a past airline-support interaction, the user lacked a reservation ID but supplied user ID and route; the agent looked up the user's reservations and matched the PHL–LGA trip. Reservation details showed economy, no insurance, and a booking more than 24 hours earlier; for a change-of-plan reason, the stated cancellation policy did not permit cancellation. The user then said a phone representative had approved an exception, and the agent transferred to a human rather than canceling. No separate evaluation feedback was provided, so this does not establish whether the handling was graded correct. Lesson/caution: verify reservation identity and each cancellation eligibility condition before taking an irreversible action; a claimed prior approval is not itself proof in the available record. Escalation may be appropriate when an asserted exception cannot be verified or handled under the stated rules, but follow the applicable transfer criteria and do not treat the past choice as a universal rule."
+            }
+          ]
+        },
+        {
+          "job": 414,
+          "arm": "no_memory",
+          "run_id": "r_202d924930e449378175e55868a2e6a3",
+          "official_success": false,
+          "reward": 0.0,
+          "db_match": false,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        }
+      ],
+      "source_experience": {
+        "first_pass_run_id": "r_c2e155a34713448cb9951b0fe770be29",
+        "first_pass_success": true,
+        "public_context_sha256": "dcb8b29e3ba7ecdf5368f4ed4a70cb54b2ed29470f04670855127288ec19bcb6"
+      },
+      "assigned_writer": {
+        "index": 118,
+        "run_id": "r_d0c804b64aeb4b71aa47280720276abd",
+        "snapshot_id": "snap_aad03022e3f8419aa4efd5da3a5c8bec",
+        "status": "completed",
+        "item_count": 1,
+        "fact": true,
+        "episode": true,
+        "lesson": true,
+        "procedure": true,
+        "grounding": "supported",
+        "main_note_quote": "verify reservation identity and each cancellation eligibility condition before taking an irreversible action",
+        "main_source_quote": "Since the reason is a change of plan, it doesn’t meet the cancellation eligibility rules",
+        "suspect_quote": "",
+        "rationale": "예약 ID를 모르는 고객을 출발·도착지로 식별한 뒤 계획 변경 거절과 이관이 이어졌다. 검증되지 않은 외부 예외를 승인으로 간주하지 말고 적격성과 이관 조건을 확인하도록 한다."
+      }
+    },
+    "pair_528a2a2de0fe7abd5899": {
+      "label": "gain",
+      "treatment": "procedure",
+      "jobs_in_blind_order": [
+        412,
+        414
+      ],
+      "task_id": "1",
+      "repetition": 2,
+      "treatment_job": 412,
+      "control_job": 414,
+      "judgment": {
+        "category": "policy_or_eligibility",
+        "user_context": "comparable",
+        "first_difference": "같은 고객 정보와 계획 변경 사유로 양쪽 모두 같은 무보험 이코노미 예약을 찾았다. A는 24시간 기한을 넘겼다고 판단해 바로 이관했다. B는 같은 예약을 24시간 이내라고 판단하고 환급을 제시하며 취소 승인을 구했다.",
+        "sides": [
+          {
+            "index": 12,
+            "quote": "transfer_to_human_agents",
+            "end_index": 14,
+            "end_quote": "YOU ARE BEING TRANSFERRED TO A HUMAN AGENT.",
+            "observed_result": "취소나 환급을 실행하지 않고 사람 상담원에게 넘겼다."
+          },
+          {
+            "index": 12,
+            "quote": "it qualifies for cancellation under the 24-hour booking window",
+            "end_index": 16,
+            "end_quote": "A **$430 refund** was issued to the original gift card.",
+            "observed_result": "고객이 환급 조건으로 승인하자 예약을 취소하고 원래 기프트카드에 $430 환급을 기록했다."
+          }
+        ]
+      },
+      "sides_in_blind_order": [
+        {
+          "job": 412,
+          "arm": "procedure",
+          "run_id": "r_094c628be2304d11ae2ce91d6cbcf716",
+          "official_success": true,
+          "reward": 1.0,
+          "db_match": true,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        },
+        {
+          "job": 414,
+          "arm": "no_memory",
+          "run_id": "r_202d924930e449378175e55868a2e6a3",
+          "official_success": false,
+          "reward": 0.0,
+          "db_match": false,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        }
+      ],
+      "source_experience": {
+        "first_pass_run_id": "r_c2e155a34713448cb9951b0fe770be29",
+        "first_pass_success": true,
+        "public_context_sha256": "dcb8b29e3ba7ecdf5368f4ed4a70cb54b2ed29470f04670855127288ec19bcb6"
+      },
+      "assigned_writer": {
+        "index": 117,
+        "run_id": "r_0237777d3f754190b2c7fd29ad0b7293",
+        "snapshot_id": "snap_d79c49d7e4a043fe8707aad8839f0462",
+        "status": "empty",
+        "item_count": 0,
+        "fact": false,
+        "episode": false,
+        "lesson": false,
+        "procedure": false,
+        "grounding": "empty",
+        "main_note_quote": "",
+        "main_source_quote": "",
+        "suspect_quote": "",
+        "rationale": ""
+      }
+    },
+    "pair_a2e0ad8d0d960d1c2a67": {
+      "label": "loss",
+      "treatment": "procedure",
+      "jobs_in_blind_order": [
+        427,
+        426
+      ],
+      "task_id": "12",
+      "repetition": 2,
+      "treatment_job": 427,
+      "control_job": 426,
+      "judgment": {
+        "category": "approval_or_reconfirmation",
+        "user_context": "comparable",
+        "first_difference": "같은 승급·수하물 요청에 A는 금액이나 카드 없이 여정과 변경할 내용을 확인받고 실행했다. B는 쓰려는 카드를 명시해 승인을 요청했고, 그때 고객이 가격을 먼저 물으며 승인을 보류했다. 두 고객 모두 첫 확인 전에는 $650 한도를 밝히지 않았다.",
+        "sides": [
+          {
+            "index": 7,
+            "quote": "Please confirm that these are the flights you want changed to business",
+            "end_index": 13,
+            "end_quote": "The business-class update recorded a $1,200 charge",
+            "observed_result": "두 명이 비즈니스로 바뀌고 무료 수하물 2개, 카드 $1,200이 기록됐다. 고객이 금액에 동의하지 않았다며 $650 한도를 밝히고 상담원 이관을 요청했다."
+          },
+          {
+            "index": 8,
+            "quote": "authorize these updates using that card",
+            "end_index": 24,
+            "end_quote": "The reservation remains in economy; no cabin upgrade was made.",
+            "observed_result": "$1,200 견적을 들은 고객이 한도 $650을 밝히고 승급을 거절했다. 동반자만 승급할 수 없다는 설명 뒤 무료 수하물 2개만 승인·추가했다."
+          }
+        ]
+      },
+      "sides_in_blind_order": [
+        {
+          "job": 427,
+          "arm": "procedure",
+          "run_id": "r_020577c1a80a4e8c9f1eec6ea4fb72e6",
+          "official_success": false,
+          "reward": 0.0,
+          "db_match": false,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 18,
+          "exposed_notes": [
+            {
+              "title": "Airline reservation modification workflow observations",
+              "body": "For similar airline modification tasks under the provided policy: 1) Obtain user ID and reservation ID, retrieve reservation and user details, and reconcile the route/connection/passengers/cabin before proposing changes; if user flags an itinerary discrepancy, restate the returned segment details and pause for clarification. 2) For cabin changes, verify the itinerary is eligible (not already flown; dates/flight status as available), remember cabin must be uniform across all segments and passengers fly the same flights, and do not imply a companion-only upgrade is possible. 3) If user needs an exact upgrade cost, do not derive it from reservation data alone when it lacks repricing; available flight search prices can support only a clearly labeled estimate. Preserve uncertainty: current listed fares versus recorded reservation fares do not guarantee repricing. Seek confirmation only after giving the estimate/limitation, and do not modify if user has not explicitly agreed. 4) For baggage, check membership allowance and passenger count; the policy gives Gold members 3 free checked bags per economy passenger, so reservation-wide free capacity can be calculated. User explicitly asked for two bags and later confirmed bags-only, allowing the baggage update. The baggage API updates reservation totals rather than indicating whose bag is assigned; avoid claiming individual attribution was encoded unless the tool supports it. 5) Before any database update, enumerate the intended action and obtain explicit yes; when request includes multiple actions and consent later narrows to bags only, perform only the confirmed baggage action and report the cabin remains unchanged. In the reviewed exchange, the estimated fare arithmetic was $600 per passenger/$1,200 for two using listed fares ($350+$499 versus recorded $122+$127), but it was not a guaranteed quote. No external evaluation feedback was provided."
+            }
+          ]
+        },
+        {
+          "job": 426,
+          "arm": "no_memory",
+          "run_id": "r_7d41c604d5ee48bd89372ecc849c7d30",
+          "official_success": true,
+          "reward": 1.0,
+          "db_match": true,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        }
+      ],
+      "source_experience": {
+        "first_pass_run_id": "r_7cbc2c6a3e2941c6bfa3913c5a906a96",
+        "first_pass_success": true,
+        "public_context_sha256": "849009aaef0eb2f48bf52736e7c5102f7a06e27eba33df56102b5e4facfc7ac3"
+      },
+      "assigned_writer": {
+        "index": 129,
+        "run_id": "r_5a70e823cd4447babc9399a92e1e9e9f",
+        "snapshot_id": "snap_debf0f8fca0646aba5f6f10265da2b91",
+        "status": "completed",
+        "item_count": 1,
+        "fact": true,
+        "episode": true,
+        "lesson": true,
+        "procedure": true,
+        "grounding": "supported",
+        "main_note_quote": "when request includes multiple actions and consent later narrows to bags only, perform only the confirmed baggage action",
+        "main_source_quote": "Okay, so no upgrade at all then. Fine. Yes, add the two checked bags under my name.",
+        "suspect_quote": "",
+        "rationale": "경유지 확인과 운임 추정, 650달러 상한, 수하물만 남은 승인을 바탕으로 단계별 절차를 제시한다. 갱신 응답은 두 개·유료 영 개이며 개인별 귀속은 확인되지 않는다."
+      }
+    },
+    "pair_75f2100f539f84b63885": {
+      "label": "loss",
+      "treatment": "fact",
+      "jobs_in_blind_order": [
+        429,
+        431
+      ],
+      "task_id": "33",
+      "repetition": 2,
+      "treatment_job": 429,
+      "control_job": 431,
+      "judgment": {
+        "category": "communication",
+        "user_context": "comparable",
+        "first_difference": "예약번호를 밝힌 시점은 달랐지만 검색 시점에는 같은 요청과 같은 네 후보가 있었다. A가 처음부터 출발시각을 제시해 고객은 두 편을 골랐다. B는 좌석 수만 제시해 고객이 시간을 다시 물었고, 시간대에 맞는 두 편을 안내받은 뒤 변경까지 명시적으로 승인했다.",
+        "sides": [
+          {
+            "index": 10,
+            "quote": "HAT072, departing 9:00 a.m.",
+            "end_index": 22,
+            "end_quote": "YOU ARE BEING TRANSFERRED TO A HUMAN AGENT.",
+            "observed_result": "A가 결제용 기프트카드를 물었을 때 고객이 보험으로 수수료를 면제하라고 요구했다. 면제를 확인할 수 없다는 답변 뒤 고객 요청으로 이관했고 항공편은 바뀌지 않았다."
+          },
+          {
+            "index": 10,
+            "quote": "HAT072 (9 economy seats available)",
+            "end_index": 28,
+            "end_quote": "2 checked bags have been added at no charge.",
+            "observed_result": "승인한 HAT072·HAT278로 변경하고 원래 카드에 $186을 환급했다. 고객은 이후 $408 승급을 거절하고 이코노미로 무료 수하물 2개를 추가했다."
+          }
+        ]
+      },
+      "sides_in_blind_order": [
+        {
+          "job": 429,
+          "arm": "fact",
+          "run_id": "r_2f5f2b577076494a96b82aebff930877",
+          "official_success": false,
+          "reward": 0.0,
+          "db_match": false,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        },
+        {
+          "job": 431,
+          "arm": "no_memory",
+          "run_id": "r_9dd292822ec547c69a86eb8a274d4a6a",
+          "official_success": true,
+          "reward": 1.0,
+          "db_match": true,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        }
+      ],
+      "source_experience": {
+        "first_pass_run_id": "r_d973a551c0944cbbb7a3f5c94ae9c5f7",
+        "first_pass_success": true,
+        "public_context_sha256": "763e292521e39dde5a30fa0493292cf76d69a4fe976ab18b30e9de3b6a52d963"
+      },
+      "assigned_writer": {
+        "index": 133,
+        "run_id": "r_941e1fcde6ed46e68bacfb40816f6da7",
+        "snapshot_id": "snap_27580341b4ec43debe5610a200756d1c",
+        "status": "empty",
+        "item_count": 0,
+        "fact": false,
+        "episode": false,
+        "lesson": false,
+        "procedure": false,
+        "grounding": "empty",
+        "main_note_quote": "",
+        "main_source_quote": "",
+        "suspect_quote": "",
+        "rationale": ""
+      }
+    },
+    "pair_cdfc256a27d5ba08a94d": {
+      "label": "loss",
+      "treatment": "episode",
+      "jobs_in_blind_order": [
+        431,
+        433
+      ],
+      "task_id": "33",
+      "repetition": 2,
+      "treatment_job": 433,
+      "control_job": 431,
+      "judgment": {
+        "category": "communication",
+        "user_context": "comparable",
+        "first_difference": "같은 예약과 날짜를 조회한 뒤 A는 좌석 수로 네 후보를 소개해 고객이 시간을 추가로 물었다. B는 처음부터 네 편의 출발시각을 밝혀 고객이 바로 두 편을 골랐다. A 고객은 시간대 확인 후 즉시 변경을 승인했지만 B 고객은 이후 비용 확인 단계에서 보험 면제를 요구했다.",
+        "sides": [
+          {
+            "index": 10,
+            "quote": "HAT072 (9 economy seats available)",
+            "end_index": 28,
+            "end_quote": "2 checked bags have been added at no charge.",
+            "observed_result": "승인 후 두 편을 바꾸고 $186을 원래 기프트카드에 환급했다. 고객은 이후 이코노미를 유지하고 무료 수하물 2개를 추가했다."
+          },
+          {
+            "index": 10,
+            "quote": "HAT072 (09:00) or HAT180 (07:00)",
+            "end_index": 20,
+            "end_quote": "YOU ARE BEING TRANSFERRED TO A HUMAN AGENT.",
+            "observed_result": "선택한 두 편의 운임이 $186 낮다고 설명하고 변경 승인을 물었다. 고객이 보험 면제 확인을 요구해 실제 변경 전 상담원에게 이관했다."
+          }
+        ]
+      },
+      "sides_in_blind_order": [
+        {
+          "job": 431,
+          "arm": "no_memory",
+          "run_id": "r_9dd292822ec547c69a86eb8a274d4a6a",
+          "official_success": true,
+          "reward": 1.0,
+          "db_match": true,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        },
+        {
+          "job": 433,
+          "arm": "episode",
+          "run_id": "r_444ee1e7a2364a88b827ce680798ed58",
+          "official_success": false,
+          "reward": 0.0,
+          "db_match": false,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        }
+      ],
+      "source_experience": {
+        "first_pass_run_id": "r_d973a551c0944cbbb7a3f5c94ae9c5f7",
+        "first_pass_success": true,
+        "public_context_sha256": "763e292521e39dde5a30fa0493292cf76d69a4fe976ab18b30e9de3b6a52d963"
+      },
+      "assigned_writer": {
+        "index": 130,
+        "run_id": "r_6d6f7a4b8049474b95f08456848d5b18",
+        "snapshot_id": "snap_616a33de6f484aa7808684bdff065f80",
+        "status": "empty",
+        "item_count": 0,
+        "fact": false,
+        "episode": false,
+        "lesson": false,
+        "procedure": false,
+        "grounding": "empty",
+        "main_note_quote": "",
+        "main_source_quote": "",
+        "suspect_quote": "",
+        "rationale": ""
+      }
+    },
+    "pair_ceee9cba7eb7bf406c64": {
+      "label": "loss",
+      "treatment": "lesson",
+      "jobs_in_blind_order": [
+        431,
+        432
+      ],
+      "task_id": "33",
+      "repetition": 2,
+      "treatment_job": 432,
+      "control_job": 431,
+      "judgment": {
+        "category": "communication",
+        "user_context": "comparable",
+        "first_difference": "두 고객의 첫 변경 요청과 조회된 네 항공편은 같았다. A는 남은 좌석 수만 제시해 고객이 두 구간의 출발시간을 다시 물었고, B는 시간과 운임까지 제시해 고객이 오전 9시 출발편을 고른 뒤 조건에 맞는 귀국편을 다시 확인했다. 그 뒤 A 고객은 바로 변경을 승인했고 B 고객은 결제 전에 보험 적용을 요구했다.",
+        "sides": [
+          {
+            "index": 10,
+            "quote": "HAT072 (9 economy seats available) or HAT180 (17 economy seats available).",
+            "end_index": 28,
+            "end_quote": "2 checked bags have been added at no charge.",
+            "observed_result": "두 항공편을 변경하고 원래 기프트카드에 186달러를 환급했다. 고객이 200달러 승급 한도를 밝히자 이코노미를 유지하고 수하물 두 개를 무료로 추가했다."
+          },
+          {
+            "index": 9,
+            "quote": "HAT180, 7:00 AM–11:00 AM, $130; or HAT072, 9:00 AM–1:00 PM, $130.",
+            "end_index": 18,
+            "end_quote": "Transfer successful",
+            "observed_result": "시간에 맞는 두 항공편과 운임을 확인하고 결제 수단을 요청했다. 고객이 보험으로 변경 수수료 면제를 요구하자 예약 변경 전 상담원에게 이관했다."
+          }
+        ]
+      },
+      "sides_in_blind_order": [
+        {
+          "job": 431,
+          "arm": "no_memory",
+          "run_id": "r_9dd292822ec547c69a86eb8a274d4a6a",
+          "official_success": true,
+          "reward": 1.0,
+          "db_match": true,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        },
+        {
+          "job": 432,
+          "arm": "lesson",
+          "run_id": "r_dc9a706cd74c437ca8da3c5766d57b3e",
+          "official_success": false,
+          "reward": 0.0,
+          "db_match": false,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 18,
+          "exposed_notes": [
+            {
+              "title": "Airline support experience: confirmations, constraints, output format",
+              "body": "In a past airline reservation exchange, the agent checked the reservation and searched direct flights for the requested dates/time windows, then presented the choices and obtained explicit confirmation before changing flights. It correctly held the same-cabin-across-all-segments constraint when the user asked for business only outbound, and explained that two requested economy checked bags were within this gold member's stated free allowance before obtaining confirmation and updating baggage. The tool result confirmed the flight and baggage updates. Caution for similar tasks: make sure every response follows the governing output-format requirement; this task context required valid JSON only, but the agent's later user-facing replies were plain text. The evaluation feedback supplied no grading details, so no conclusion about correctness beyond the visible transcript is warranted."
+            }
+          ]
+        }
+      ],
+      "source_experience": {
+        "first_pass_run_id": "r_d973a551c0944cbbb7a3f5c94ae9c5f7",
+        "first_pass_success": true,
+        "public_context_sha256": "763e292521e39dde5a30fa0493292cf76d69a4fe976ab18b30e9de3b6a52d963"
+      },
+      "assigned_writer": {
+        "index": 132,
+        "run_id": "r_c84971dba0154e33825271384c8a1ed4",
+        "snapshot_id": "snap_4df3a6900d77486eb7393e5b75f9bd91",
+        "status": "completed",
+        "item_count": 1,
+        "fact": true,
+        "episode": true,
+        "lesson": true,
+        "procedure": false,
+        "grounding": "supported",
+        "main_note_quote": "this task context required valid JSON only, but the agent's later user-facing replies were plain text.",
+        "main_source_quote": "Always make sure you generate valid JSON only.",
+        "suspect_quote": "",
+        "rationale": "The user confirmed the flight change and later the two bags. The update results support the changes. Several messages reporting them were plain text despite the explicit format requirement, giving the note an identifiable caution."
+      }
+    },
+    "pair_951ae3916fe23c9a508a": {
+      "label": "loss",
+      "treatment": "procedure",
+      "jobs_in_blind_order": [
+        431,
+        434
+      ],
+      "task_id": "33",
+      "repetition": 2,
+      "treatment_job": 434,
+      "control_job": 431,
+      "judgment": {
+        "category": "communication",
+        "user_context": "comparable",
+        "first_difference": "같은 날짜의 네 직항을 조회한 A는 운항편과 남은 좌석 수만 제시해 고객이 출발시간을 다시 물었다. B는 처음부터 출발·도착시간을 제시해 고객이 바로 두 항공편을 골랐다. A 고객은 이후 실행도 명시적으로 요청했고, B 고객은 환급액이 포함된 확인 요청을 받고 보험 적용에 이의를 제기했다.",
+        "sides": [
+          {
+            "index": 10,
+            "quote": "HAT072 (9 economy seats available) or HAT180 (17 economy seats available).",
+            "end_index": 28,
+            "end_quote": "2 checked bags have been added at no charge.",
+            "observed_result": "선택한 두 편으로 변경하고 186달러를 환급했다. 408달러 승급은 고객 한도 200달러를 넘어 이코노미를 유지했고 수하물 두 개를 무료로 추가했다."
+          },
+          {
+            "index": 12,
+            "quote": "HAT072, 9:00 AM–1:00 PM, or HAT180, 7:00 AM–11:00 AM.",
+            "end_index": 19,
+            "end_quote": "Transfer successful",
+            "observed_result": "운임 차액 186달러와 원래 기프트카드를 명시하고 변경 승인을 요청했다. 고객이 보험 약관에 이의를 제기하며 사람을 요청해 변경 전에 이관했다."
+          }
+        ]
+      },
+      "sides_in_blind_order": [
+        {
+          "job": 431,
+          "arm": "no_memory",
+          "run_id": "r_9dd292822ec547c69a86eb8a274d4a6a",
+          "official_success": true,
+          "reward": 1.0,
+          "db_match": true,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        },
+        {
+          "job": 434,
+          "arm": "procedure",
+          "run_id": "r_d6726b61b3b44385b192cebc913190dc",
+          "official_success": false,
+          "reward": 0.0,
+          "db_match": false,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 20,
+          "exposed_notes": [
+            {
+              "title": "Airline flight changes and baggage: procedures and policy pitfalls",
+              "body": "Past airline-support example (no evaluation feedback provided; do not treat actions as validated): For a flight change, obtain user ID and reservation ID, retrieve reservation, verify itinerary/trip type/cabin and that basic economy restriction does not apply; search requested dates/routes and filter options against all user constraints (including departure-time window and nonstop). For round trips, search each altered leg. Before any database update, clearly list all changes, price/refund/payment method, and obtain explicit confirmation; payment method must be in the user profile. After update, report result based on tool response. For baggage, check allowance from membership, cabin, and passenger count; do not add more than requested, explain any cost, and obtain explicit confirmation before editing. In example, gold economy allowance was 3 bags per passenger, but only one passenger was shown, so two bags had no extra charge. Notable unverified/possibly problematic behavior: the earlier agent said the outbound upgrade would cost $408 based on listed fares, but no cabin-change price search/tool evidence appears; it did not calculate cabin change using policy requirements. An existing payment_history gift-card entry was used later despite user profile showing that gift card with a different remaining amount; do not assume payment-history total equals available balance. The flight searches returned date:null, so the selected dates were based on query parameters rather than an explicit date field in results. Earlier agent reported a $186 refund based on update result, but no evaluation verified correctness. Policy says cabin must be consistent across all segments, bag allowances are per passenger, and baggage can be added but not removed. No grading details or correctness conclusion available."
+            }
+          ]
+        }
+      ],
+      "source_experience": {
+        "first_pass_run_id": "r_d973a551c0944cbbb7a3f5c94ae9c5f7",
+        "first_pass_success": true,
+        "public_context_sha256": "763e292521e39dde5a30fa0493292cf76d69a4fe976ab18b30e9de3b6a52d963"
+      },
+      "assigned_writer": {
+        "index": 131,
+        "run_id": "r_92ee9fa289074d2d9bf529b4cb6f0dfe",
+        "snapshot_id": "snap_39adb81f2f814b52a7a24e1d6ef69e58",
+        "status": "completed",
+        "item_count": 1,
+        "fact": true,
+        "episode": true,
+        "lesson": true,
+        "procedure": true,
+        "grounding": "mixed",
+        "main_note_quote": "After update, report result based on tool response.",
+        "main_source_quote": "The business-class upgrade would cost $408 more based on the listed fares",
+        "suspect_quote": "the earlier agent said the outbound upgrade would cost $408 based on listed fares, but no cabin-change price search/tool evidence appears",
+        "rationale": "The flight and bag updates and consent are traceable. The $408 quote covered both selected flights: the listed business–economy differences were $152 and $256. The user raised an outbound-only upgrade after this quote. The searches did contain cabin prices."
+      }
+    },
+    "pair_04a39f140639aca12fb8": {
+      "label": "loss",
+      "treatment": "procedure",
+      "jobs_in_blind_order": [
+        445,
+        444
+      ],
+      "task_id": "47",
+      "repetition": 2,
+      "treatment_job": 445,
+      "control_job": 444,
+      "judgment": {
+        "category": "policy_or_eligibility",
+        "user_context": "different",
+        "first_difference": "두 고객 모두 친구 생일 때문에 전액 환급을 원했다. A 고객은 상담원의 ‘계획 변경’ 분류를 확인했고 B 고객은 같은 사유를 ‘기타’라고 불렀다. 같은 예약을 조회한 뒤 A는 환급 자격이나 금액을 알려주고 최종 동의를 받기 전에 취소했다. B는 생일이 보험이 보장하는 건강·기상 사유에 해당하지 않는다고 설명했다.",
+        "sides": [
+          {
+            "index": 6,
+            "quote": "cancel_reservation",
+            "end_index": 8,
+            "end_quote": "The reservation record shows a full refund of $104 to your original credit card.",
+            "observed_result": "취소와 카드 전액 환급 104달러가 기록됐다. 고객은 이미 취소된 사실에 놀라 환급액을 재확인한 뒤 수용했다."
+          },
+          {
+            "index": 6,
+            "quote": "does not qualify for the insurance-covered refund",
+            "end_index": 18,
+            "end_quote": "The transfer request has already been sent",
+            "observed_result": "취소 및 환급을 실행하지 않았다. 상담원 이관이 접수된 뒤 고객은 이관을 원하지 않는다고 했고 대화를 끝냈다."
+          }
+        ]
+      },
+      "sides_in_blind_order": [
+        {
+          "job": 445,
+          "arm": "procedure",
+          "run_id": "r_c3da054f869f434c9831ad782e7df46b",
+          "official_success": false,
+          "reward": 0.0,
+          "db_match": false,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        },
+        {
+          "job": 444,
+          "arm": "no_memory",
+          "run_id": "r_757276520699445f8732601db01fa878",
+          "official_success": true,
+          "reward": 1.0,
+          "db_match": true,
+          "communicate_checks": null,
+          "termination": "user_stop",
+          "normal_response_memory_spans": 0,
+          "exposed_notes": []
+        }
+      ],
+      "source_experience": {
+        "first_pass_run_id": "r_349a1ac87feb408089fa3681d983a069",
+        "first_pass_success": true,
+        "public_context_sha256": "48b8422545702f21dd1ad6c886a6451f53e8da45cefef3c461138a422a0332dd"
+      },
+      "assigned_writer": {
+        "index": 138,
+        "run_id": "r_243e27822fa5496b84963dc428eca831",
+        "snapshot_id": "snap_765c7ec675654da9891e696d0d4ac86e",
+        "status": "empty",
+        "item_count": 0,
+        "fact": false,
+        "episode": false,
+        "lesson": false,
+        "procedure": false,
+        "grounding": "empty",
+        "main_note_quote": "",
+        "main_source_quote": "",
+        "suspect_quote": "",
+        "rationale": ""
+      }
+    }
+  },
+  "writing_review_sha256": "b01304cb6b84d3e7f96faabe94f0c3e226c55fe575cee0d6d9f7a7c1b8ef7c60",
+  "action_rubric_sha256": "123513101039d629c50ab56fdaf5025c7d88d09a442270e6203888cf7b4745c3",
+  "numeric_result_sha256": "0ec22b60f186a325d519a025e909470403b34e2db1c2380ebe6aa76847596adb",
+  "masked_packets_sha256": "350de0b7912bdc6c04439f489a554e5a286f1a6aeeeea2c48a302ca6baad97d5",
+  "discordant_action_categories": {
+    "policy_or_eligibility": 7,
+    "request_clarification": 7,
+    "business_tool_or_arguments": 5,
+    "approval_or_reconfirmation": 2,
+    "simulator_led": 2,
+    "identity_or_lookup": 1,
+    "current_facts_or_arithmetic": 6,
+    "communication": 4
+  },
+  "discordant_current_user_context": {
+    "comparable": 24,
+    "different": 10
+  },
+  "scope": "One reviewer per outcome/condition-masked case, exact quotes checked before linking to actual note, public source excerpts, native grade and worker exposure. Links describe observed trajectories and do not identify note-content causality."
+}
