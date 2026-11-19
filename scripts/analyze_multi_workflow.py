@@ -27,25 +27,28 @@ def transition(treatment, control):
 def native_timing(messages, task):
     """Locate public disclosures relative to native business tool requests, including rejected requests."""
     last_customer = last_assistant = None
-    customer_lines, reads, changes = [], [], []
+    customer_lines, tool_returns, reads, changes = [], [], [], []
     for i, m in enumerate(messages):
         role, text = m['role'], m.get('content')
         if role == 'user' and text:
             last_customer = dict(turn=i, text=text)
             customer_lines.append(last_customer)
+        if role == 'tool' and isinstance(text, str):
+            tool_returns.append(text.casefold())
         if role != 'assistant':
             continue
-        if text:
-            last_assistant = dict(turn=i, text=text)
         for c in m.get('tool_calls') or []:
             name, args = c['name'], c['arguments']
             if name in {'get_reservation_details', 'get_user_details'}:
                 identifier = args.get('user_id') or args.get('reservation_id')
                 reads.append(dict(turn=i, tool=name, identifier=identifier,
-                    customer_named_before=bool(identifier) and any(identifier.casefold() in u['text'].casefold() for u in customer_lines)))
+                    customer_named_before=bool(identifier) and any(identifier.casefold() in u['text'].casefold() for u in customer_lines),
+                    current_tool_named_before=bool(identifier) and any(identifier.casefold() in reply for reply in tool_returns)))
             elif name in {'book_reservation', 'cancel_reservation'}:
                 changes.append(dict(turn=i, tool=name, arguments=args, preceding_customer=last_customer,
                                     preceding_assistant=last_assistant))
+        if text:
+            last_assistant = dict(turn=i, text=text)
     trace = dict(reads=reads, requested_changes=changes)
     if task == '3':
         target = next((r for r in reads if r['tool'] == 'get_reservation_details' and r['identifier'] == 'JMO1MG'), None)
