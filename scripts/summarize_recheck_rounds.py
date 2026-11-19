@@ -6,16 +6,53 @@ from datetime import datetime
 from decimal import Decimal
 from pathlib import Path
 
+from agent_memory_eval.adapters.tau2 import native_modules, verify_checkout
 from agent_memory_eval.contracts.core import ContractError, digest
 from agent_memory_eval.contracts.validation import ROOT
-from agent_memory_eval.experiments.forms_batch import write_json
+from agent_memory_eval.experiments.forms_batch import solve_connection, write_json
+from agent_memory_eval.runner.tau2_baseline import build_baseline_orchestrator
 
 if __package__:
     from .analyze_recheck_rounds import status
-    from .run_recheck_rounds import PROFILE, read, sealed_rows
+    from .run_recheck_rounds import PROFILE, design_for, prepare, read, sealed_rows
 else:
     from analyze_recheck_rounds import status
-    from run_recheck_rounds import PROFILE, read, sealed_rows
+    from run_recheck_rounds import PROFILE, design_for, prepare, read, sealed_rows
+
+
+def benchmark_binding(workspace):
+    """Identify exactly which simulator instructions differ from the default English task table."""
+    cfg, base, conn, _, groups, tasks = prepare(workspace)
+    native_modules(verify_checkout(workspace / "data/tau2-bench"))
+    from tau2.data_model.tasks import Task
+    from tau2.multilingual.runtime import load_run_language, task_digest, task_payload
+    from tau2.runner.helpers import select_run_tasks
+
+    checks = []
+    for cohort, rows in groups.items():
+        for t in rows:
+            design, slots = design_for(cfg, base, cohort, t, "source", None)
+            connection = solve_connection(conn, design, slots[0], cfg["guards"]["source"]["max_usd"])
+            orch, native = build_baseline_orchestrator(connection, tasks[t["task"]])
+            (default,) = select_run_tasks(native, load_run_language(native))
+            original = Task.model_validate(tasks[t["task"]])
+            if task_digest(orch.task) != task_digest(original):
+                raise ContractError("The native task used differs from the registered canonical table")
+            a, b = task_payload(original), task_payload(default)
+            old = a["user_scenario"]["instructions"].pop("known_info")
+            new = b["user_scenario"]["instructions"].pop("known_info")
+            if a != b or not new.startswith(old) or (new != old and "Name details:" not in new[len(old) :]):
+                raise ContractError("An English-pack difference extends beyond the additional customer name hint")
+            checks.append(
+                dict(
+                    round=cohort,
+                    task=t["task"],
+                    executed_task_sha256=task_digest(original),
+                    english_default_sha256=task_digest(default),
+                    extra_english_name_hint=new[len(old) :] or None,
+                )
+            )
+    return checks
 
 
 def round_table(result, cfg):
@@ -163,6 +200,7 @@ def join(workspace, paths):
         study=cfg["name"],
         protocol_sha256=reg["protocol_sha256"],
         inputs=refs,
+        benchmark_binding=benchmark_binding(workspace),
         chronology=timing,
         distinct_customers=len(seen["customer"]),
         distinct_sessions=len(seen["session"]),
