@@ -1,9 +1,39 @@
 import unittest
+from types import SimpleNamespace
 
 from scripts.analyze_full_retail import compare
+from scripts.replay_full_retail_fields import aligned_fields
 
 
 class FullRetailComparisonTests(unittest.TestCase):
+    def test_field_replays_require_matching_operations_requestors_and_keys(self):
+        def call(name, arguments, requestor="assistant"):
+            return SimpleNamespace(name=name, arguments=arguments, requestor=requestor)
+
+        original = [call("update", {"item": "x", "address": {"a": 1, "b": 2}})]
+        reordered = [call("update", {"address": {"b": 2, "a": 1}, "item": "x"})]
+        changed = [call("update", {"address": {"a": 1, "b": 3}, "item": "y"})]
+        self.assertEqual(
+            aligned_fields(original, reordered), ("same_operations_and_arguments", [])
+        )
+        self.assertEqual(
+            aligned_fields(original, changed),
+            ("aligned", [(0, "address"), (0, "item")]),
+        )
+        for other in (
+            [],
+            original * 2,
+            [call("cancel", {})],
+            [call("update", {}, "user")],
+        ):
+            self.assertEqual(
+                aligned_fields(original, other), ("different_operations", [])
+            )
+        self.assertEqual(
+            aligned_fields(original, [call("update", {"item": "x"})]),
+            ("different_argument_keys", []),
+        )
+
     def test_first_pass_and_shared_control_comparisons_have_distinct_denominators(self):
         cfg = {"forms": ["fact"], "controls": ["no_memory", "empty_preload"]}
         values = [
