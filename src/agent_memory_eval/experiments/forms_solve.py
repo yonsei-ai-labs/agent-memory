@@ -218,7 +218,8 @@ def run_forms_solve(journal, *, arm, task_id, repetition, run_id, connection, pr
     if not isinstance(instruction, str) or (instruction != "" if arm == "no_memory" else not instruction.strip()):
         raise ContractError("Memory arms require the common instruction and pure no-memory requires none")
     _prepared_for_job(connection, prepared, limits, task_id, expected_split)
-    if delivery is not None and (delivery["read_mode"] not in {"preload", "on_demand"} or arm in {"no_memory", "empty_preload"}):
+    if delivery is not None and (delivery["read_mode"] not in {"preload", "on_demand"} or arm == "no_memory"
+            or arm == "empty_preload" and delivery != {"writer": "empty_preload", "read_mode": "preload"}):
         raise ContractError("A frozen-bank delivery must declare its writer and read policy")
     writer_condition = delivery["writer"] if delivery else arm
     if source_task_id is not None and (not isinstance(source_task_id, str) or not source_task_id

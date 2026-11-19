@@ -114,6 +114,21 @@ class FormsSolveTests(unittest.TestCase):
         kwargs.update(overrides)
         return journal, kwargs, http
 
+    def test_empty_control_and_real_preload_have_the_same_public_wire_outside_items(self):
+        wires = {}
+        for arm, writer, mode in [('empty_preload', 'empty_preload', 'preload'),
+                                  ('fact__preload', 'fact', 'preload'), ('fact__on_demand', 'fact', 'on_demand')]:
+            journal, kw, http = self.setup_job(arm, delivery=dict(writer=writer, read_mode=mode),
+                writer_bank=bank('fact', '3', ITEMS) if writer == 'fact' else None)
+            result = run_forms_solve(journal, **kw)
+            self.assertEqual(result['grading_status'], 'graded')
+            wires[arm] = deepcopy(http.by_role['worker'][0])
+        self.assertNotEqual(wires['fact__preload']['messages'].pop(1), wires['empty_preload']['messages'].pop(1))
+        self.assertEqual(wires['fact__preload'], wires['empty_preload'])
+        names = {t['function']['name'] for t in wires['fact__on_demand']['tools']}
+        self.assertTrue({'memory_get', 'memory_list'} <= names)
+        self.assertNotIn(ITEMS[0]['body'], canonical(wires['fact__on_demand']).decode())
+
     def test_wrong_transfer_source_cannot_send_to_the_target(self):
         for arm, declared, saved in [('fact', '0', bank('fact','17',ITEMS)),
                                       ('fact', None, bank('fact','17',ITEMS)),

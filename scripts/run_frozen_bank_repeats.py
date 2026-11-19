@@ -57,7 +57,7 @@ def schedule(cfg, task, wave):
     jobs = []
     for writer in sorted(cfg['writer_repetitions'], key=lambda rep: rank(rep, 'block')):
         seed = cfg['solver_seeds_by_wave_and_writer'][wave - 1][writer - 1]
-        arms = sorted([*cfg['forms'], *cfg['controls']], key=lambda arm: rank(writer, arm))
+        arms = sorted([*cfg.get('delivery_arms', cfg['forms']), *cfg['controls']], key=lambda arm: rank(writer, arm))
         for arm in arms:
             jobs.append(dict(index=len(jobs) + 1, phase='solve', repetition=writer, task_id=task, arm=arm,
                              wave=wave, solver_seed=seed))
@@ -201,6 +201,10 @@ def run_shard(root, manifest, state, identity, models, task, wave):
         pair['native_and_solver'] = cfg['solver_seeds_by_wave_and_writer'][wave - 1][pair['repetition'] - 1]
     design['allocation'] = dict(task=task, wave=wave, schedule_sha256=digest(canonical(jobs)))
     design['second_pass'].update(primary_arms=list(cfg['forms']), matched_controls=cfg['controls'], diagnostic_task_ids=[])
+    if 'delivery_arms' in cfg:
+        design['delivery_arms'] = cfg['delivery_arms']
+        design['delivery_controls'] = {'empty_preload': dict(writer='empty_preload', read_mode='preload')}
+        design['second_pass'].update(primary_arms=list(cfg['delivery_arms']), solve_instruction_ref=cfg['instruction_ref'])
     design.pop('execution_freeze_pending', None)
     design.update(status='ready', executable=True, scope=cfg['scope'], purpose=cfg['primary'], analysis=cfg['secondary'])
     profile = dict(name=cfg['name'], shard=name, config_sha256=manifest['protocol_sha256'],

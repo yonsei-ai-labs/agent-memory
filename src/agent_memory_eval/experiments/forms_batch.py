@@ -322,7 +322,7 @@ def execute_prepared(profile, root, destination, identity, design, plan, models,
                     guard=guard, clients=episode_clients, limits=limits, instruction=plan["instruction"] if arm != "no_memory" else "",
                     writer_bank=bank, public_record=source.public_context if arm == "public_record" else None,
                     public_context_sha256=source.public_context_sha256 if arm not in {"no_memory", "empty_preload"} else None,
-                    written_arms=written_arms, delivery=delivery_arms.get(arm),
+                    written_arms=written_arms, delivery=delivery_arms.get(arm) or design.get("delivery_controls", {}).get(arm),
                     expected_split=design.get("target", design["source"]).get("split", "train"),
                     source_task_id=row.get("source_task_id") if bank else None)
             if result["run_id"] != row["run_id"]:
