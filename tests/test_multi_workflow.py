@@ -1,10 +1,10 @@
 import unittest
 from copy import deepcopy
 
-from agent_memory_eval.contracts.core import ContractError, canonical, digest, read_json
+from agent_memory_eval.contracts.core import ContractError, canonical, read_json
 from agent_memory_eval.contracts.validation import ROOT
 from agent_memory_eval.experiments.multi_workflow import PROFILE, booking_differences, classify, schedule
-from agent_memory_eval.recording.query_variant import CHECKPOINT, replay_decision
+from agent_memory_eval.recording.query_variant import replay_decision
 
 
 class WorkflowTests(unittest.TestCase):
@@ -24,20 +24,16 @@ class WorkflowTests(unittest.TestCase):
                 self.assertEqual(set(first), {'empty', 'fact', 'episode', 'lesson', 'procedure'})
 
     def test_last_customer_replacement_is_bound_to_prior_tool_results(self):
-        messages = [dict(role='system', content='policy'), dict(role='user', content='read my record'),
-                    dict(role='assistant', tool_calls=[dict(id='1')]), dict(role='tool', tool_call_id='1', content='price 10'),
-                    dict(role='assistant', content='approve?'), dict(role='user', content='yes')]
+        fixture = read_json((ROOT / 'tests/fixtures/checkpoint-customer-query-v1.json').read_bytes())
+        messages, descriptor = fixture['messages'], fixture['descriptor']
         original = dict(wire=dict(messages=messages), archive={})
-        descriptor = dict(format=CHECKPOINT, prefix_sha256=digest(canonical(messages[:-1])),
-            recorded_context_ref=dict(path='blobs/sha256/'+'a'*64, sha256='a'*64, media_type='application/json'),
-            customer_text='hold')
         class Blobs:
             def get(self, ref):
                 return descriptor
         got = replay_decision(Blobs(), {}, lambda *args: original)
-        self.assertEqual(got['wire']['messages'][-1]['content'], 'hold')
+        self.assertEqual(got['wire']['messages'][-1]['content'], descriptor['customer_text'])
         self.assertEqual(got['wire']['messages'][:-1], messages[:-1])
-        self.assertEqual(messages[-1]['content'], 'yes')
+        self.assertEqual(messages[-1]['content'], 'Yes.')
         messages[3]['content'] = 'price 11'
         with self.assertRaises(ContractError):
             replay_decision(Blobs(), {}, lambda *args: original)

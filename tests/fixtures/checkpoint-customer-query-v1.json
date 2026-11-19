@@ -1,0 +1,50 @@
+{
+  "kind": "offline_fixture",
+  "messages": [
+    {
+      "role": "system",
+      "content": "Public policy."
+    },
+    {
+      "role": "user",
+      "content": "Please check reservation DEMO."
+    },
+    {
+      "role": "assistant",
+      "content": null,
+      "tool_calls": [
+        {
+          "id": "read1",
+          "type": "function",
+          "function": {
+            "name": "get_reservation_details",
+            "arguments": "{\"reservation_id\":\"DEMO\"}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "read1",
+      "content": "{\"price\":10}"
+    },
+    {
+      "role": "assistant",
+      "content": "The price is 10. Do you approve?"
+    },
+    {
+      "role": "user",
+      "content": "Yes."
+    }
+  ],
+  "descriptor": {
+    "format": "agent-memory-checkpoint-customer-query/v1",
+    "recorded_context_ref": {
+      "path": "blobs/sha256/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "media_type": "application/json"
+    },
+    "prefix_sha256": "77d4edd27d2a3b93622902c9444e2a971e6687d573c9287aa06f4ac308d4c679",
+    "customer_text": "Hold the change."
+  }
+}

@@ -13,6 +13,7 @@ from agent_memory_eval.contracts.validation import ROOT
 from agent_memory_eval.experiments.forms_batch import FORMS, write_json
 from agent_memory_eval.memory.context import memory_system_suffix, past_memory_instruction, snapshot_message
 from agent_memory_eval.memory.preparation import snapshot_items
+from agent_memory_eval.memory.tools import memory_tools
 from agent_memory_eval.recording.journal import BlobStore, read_experiment, safe_path
 from analyze_fresh_forms import accounting
 from run_frozen_bank_repeats import prepare, prepare_transfer, sealed
@@ -46,7 +47,10 @@ def verify_shard(args):
         task, arm, rep = row['task_id'], row['arm'], row['repetition']
         folder = safe_path(shard, row['directory'])
         source_task = slot.get('source_task_id', task)
-        bank = banks.get((source_task, rep, arm))
+        delivery = manifest.get('delivery_arms', {}).get(arm)
+        if arm == 'empty_preload' and 'delivery_arms' in manifest:
+            delivery = dict(writer='empty_preload', read_mode='preload')
+        bank = banks.get((source_task, rep, delivery['writer'] if delivery else arm))
         missing_bank = [source_task, rep, arm] in manifest.get('unavailable_writers', [])
         if ((arm in manifest.get('forms', FORMS)) != (bank is not None or missing_bank)
                 or (missing_bank and (bank or row['status'] != 'not_started' or row['reason'] != 'writer_incomplete'
@@ -94,12 +98,16 @@ def verify_shard(args):
         if not bank and (items or assignment['source_writer_run_id'] is not None or assignment['source_writer_snapshot_id'] is not None):
             raise ContractError('Control contains a writer or a saved item')
         policy = MemoryPolicy(**assignment['policy'])
+        mode = delivery['read_mode'] if delivery else ('none' if arm == 'no_memory' else 'preload')
+        if (assignment.get('fixed_bank_delivery') != delivery or policy.read_mode != mode
+                or policy.write_timing != 'none' or policy.same_episode_read):
+            raise ContractError('Worker was not assigned the registered read-only delivery')
         system = blobs.get(start['task_ref'])['content']
         if arm != 'no_memory':
             instruction = blobs.get(assignment['instruction_ref'])
             if digest(instruction.encode()) != control['design']['second_pass']['solve_instruction_ref']['sha256']:
                 raise ContractError('Memory instruction changed')
-            system += memory_system_suffix(policy, past_memory_instruction(instruction))
+            system += memory_system_suffix(policy, instruction if delivery else past_memory_instruction(instruction))
         for e in scan['events'].values():
             p = e['payload']
             if e['type'] == 'model.request_finished' and p['status'] == 'response':
@@ -109,9 +117,10 @@ def verify_shard(args):
                 wire = blobs.get(p['request_ref'])
                 if p['actor_role'] == 'worker':
                     if (wire['seed'] != row['solver_seed'] or wire['messages'][0] != dict(role='system', content=system)
-                            or (arm != 'no_memory' and wire['messages'][1] != snapshot_message(items))
-                            or (arm == 'no_memory' and any(m == snapshot_message([]) for m in wire['messages'][1:]))
-                            or any(t['function']['name'].startswith('memory_') for t in wire.get('tools', []))):
+                            or (policy.preloads and wire['messages'][1] != snapshot_message(items))
+                            or (not policy.preloads and any(m == snapshot_message(items) for m in wire['messages'][1:]))
+                            or [t for t in wire.get('tools', []) if t['function']['name'].startswith('memory_')]
+                            != memory_tools(policy.tools('solve'))):
                         raise ContractError('Worker request differs from fixed read-only delivery')
                 elif p['actor_role'] != 'user_simulator' or 'seed' in wire or any(m == snapshot_message(items) for m in wire['messages']):
                     raise ContractError('Unexpected simulator seed, role or memory')
@@ -125,7 +134,7 @@ def verify_shard(args):
                 or sum(v['unknown_count'] for v in billed.values()) != audit['unknown_cost_requests']
                 or audit['memory_input_spans'] != res['memory_input_spans']
                 or audit['normal_response_memory_spans'] != res['normal_response_memory_spans']
-                or res['normal_response_memory_spans'] != 2 * len(items) * res['usage_by_role']['worker']['responses']):
+                or mode != 'on_demand' and res['normal_response_memory_spans'] != 2 * len(items) * res['usage_by_role']['worker']['responses']):
             raise ContractError('Recorded price or exposure differs from the provider journal')
         outcome, = [e['payload'] for e in scan['events'].values() if e['type'] == 'outcome.scored']
         if any(outcome[k] != res[k] for k in ('official_score', 'official_success', 'grading_status')):
@@ -137,6 +146,24 @@ def verify_shard(args):
                      known_usd=audit['observed_cost_usd_decimal'], billing_by_role=billed, http_calls=res['http_calls'],
                      reservation=reservation, first_worker_request_sha256=res['first_worker_request_sha256'],
                      journal_path=str((folder/'log.jsonl').relative_to(workspace)), journal_sha256=res['log_sha256'])
+        if 'delivery_arms' in manifest:
+            events = [e for e in scan['events'].values() if e['run_id'] == row['run_id']]
+            received = {e['payload']['request_id'] for e in events if e['type'] == 'model.request_finished'
+                        and e['payload']['status'] == 'response'}
+            fields = Counter(e['payload']['field'] for e in events if e['type'] == 'memory.input_included'
+                             and e['payload']['request_id'] in received)
+            returned = Counter(e['payload']['operation'] for e in events if e['type'] == 'memory.returned')
+            worker_ids = {e['payload']['request_id'] for e in events if e['type'] == 'model.request_started'
+                          and e['payload']['actor_role'] == 'worker'}
+            proposed = Counter(call['function']['name'] for e in events if e['type'] == 'model.request_finished'
+                and e['payload']['request_id'] in worker_ids and e['payload']['status'] == 'response'
+                for call in (blobs.get(e['payload']['response_ref'])['choices'][0]['message'].get('tool_calls') or []))
+            if sum(fields.values()) != res['normal_response_memory_spans']:
+                raise ContractError('Title/body exposures differ from the recorded worker inputs')
+            entry.update(form=delivery['writer'] if bank else None, mode=mode, items_sha256=digest(canonical(items)),
+                list_requests=proposed['memory_list'], get_requests=proposed['memory_get'],
+                list_returns=returned['list'], get_returns=returned['get'], title_spans=fields['title'],
+                body_spans=fields['body'], body_exposed=fields['body'] > 0, usage_by_role=res['usage_by_role'])
         if row['index'] in grades:
             g = grades[row['index']]
             report = blobs.get(res['report_ref'])

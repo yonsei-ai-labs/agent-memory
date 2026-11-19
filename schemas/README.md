@@ -15,6 +15,7 @@
 | 파일 | 역할 |
 | --- | --- |
 | [first-customer-query.schema.json](first-customer-query.schema.json) | 실제 무기억 작업자의 첫 요청에서 고객의 첫 발화만 교체하는 진단 입력 v1. 원본 요청과 실험자가 작성한 발화의 출처를 함께 보존한다. [실험 설정](../protocols/pilots/tau2-return-date-calibration-v1.json) |
+| [checkpoint-customer-query.schema.json](checkpoint-customer-query.schema.json) | 도구 결과를 이미 본 무기억 상담의 마지막 고객 발화를 교체하는 v1 진단 입력. 앞선 발화와 도구 결과 전체의 해시 및 원본 요청을 함께 검증한다. [입력 예시](../tests/fixtures/checkpoint-customer-query-v1.json) · [결제·취소 업무 적용](../protocols/pilots/tau2-multi-workflow-v1.json) |
 | [baseline-screening.schema.json](baseline-screening.schema.json) | 무기억 train 선택·반복별 seed·native 한도·run/전체 guard의 별도 배치 계약. 기존 기록 v1.1과 연결 파일은 유지 |
 | [v1.1/run-plan.schema.json](v1.1/run-plan.schema.json) | 단계별 지침, 사용자 시뮬레이터·native 한도·응답 캐시 확인·adapter 설정 해시 |
 | [v1.1/event.schema.json](v1.1/event.schema.json) | 요청 manifest·과제 입력 참조, 공개 경험 접두부, 반환/자기 작성 출처 |
