@@ -83,6 +83,20 @@ class RetailExpansionAnalysisTests(unittest.TestCase):
         with self.assertRaises(ContractError):
             join_trials(rows, cells, cfg)
 
+    def test_only_a_never_started_slot_can_be_superseded(self):
+        from scripts.analyze_retail_sample_expansion import merge_unstarted
+
+        key = {"task": "t", "arm": "fact_original", "stage": "solve1"}
+        previous = dict(key, run="old", status="not_started")
+        new = dict(key, run="new", status="completed", session="s")
+        kept, lineage = merge_unstarted([previous, new], {"old": key})
+        self.assertEqual(kept, [new])
+        self.assertEqual(lineage[0]["unstarted_run"], "old")
+        with self.assertRaises(ContractError):
+            merge_unstarted(
+                [dict(previous, status="error", session="attempted"), new], {"old": key}
+            )
+
     def test_worker_wire_sensitivity_to_customer_wording_and_policy_changes(self):
         def make(policy, opening):
             msgs = [

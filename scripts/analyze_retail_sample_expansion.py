@@ -18,12 +18,14 @@ from agent_memory_eval.recording.journal import safe_path
 
 if __package__:
     from . import run_retail_sample_expansion as expansion
+    from . import run_retail_sample_supplement as supplement
     from .analyze_full_retail import audit_task, require
     from .analyze_recheck_rounds import status
     from .analyze_retail_full_factors import business_events, transfer_position
     from .replay_full_retail_fields import reference_state, state_hashes
 else:
     import run_retail_sample_expansion as expansion
+    import run_retail_sample_supplement as supplement
     from analyze_full_retail import audit_task, require
     from analyze_recheck_rounds import status
     from analyze_retail_full_factors import business_events, transfer_position
@@ -104,9 +106,9 @@ def reconcile(root, cfg, rows, record):
         "Registration or endpoints differ from frozen plan",
     )
     grants = {}
-    total = Decimal(0)
-    size = cfg["max_concurrent"]
+    total = Decimal(cfg.get("prior_covered_usd", "0"))
     for stage in cfg["stages"]:
+        size = cfg.get("concurrency_by_stage", {}).get(stage, cfg["max_concurrent"])
         ordered = retail.stage_order(cfg, rows, stage)
         for start in range(0, len(ordered), size):
             wave = retail.read(root / f"{stage}-wave-{start // size + 1}.json")
@@ -427,9 +429,84 @@ def build_report(cfg, rows, historical, newly_audited):
     }, pairs
 
 
+def continuation_inputs(workspace, cfg, base, rows, tasks):
+    follow, _, _, tail_rows, _, record, receipt = supplement.prepare(workspace)
+    root = workspace / "runs" / follow["run_directory"]
+    require(
+        receipt == retail.read(ROOT / supplement.RECEIPT)
+        and record == retail.read(ROOT / supplement.ALLOCATION),
+        "Supplement differs from frozen receipt or allocation",
+    )
+    reg1 = retail.read(workspace / "runs" / cfg["run_directory"] / "registration.json")
+    reg2, end2 = reconcile(root, follow, tail_rows, record)
+    passes = []
+    for row in rows:
+        if row["cohort"] == "new_train":
+            before = dict(row, scheduled_stages=["source", "write", "solve1"])
+            passes.append(
+                (workspace, cfg, base, before, tasks[row["task"]], reg1, receipt)
+            )
+    for row in tail_rows:
+        passes.append((workspace, follow, base, row, tasks[row["task"]], reg2, end2))
+    replaced = {
+        x["unstarted_run"]: {"task": tid, "arm": x["arm"], "stage": "solve1"}
+        for tid, slots in receipt["unstarted"].items()
+        for x in slots
+    }
+    stages = {
+        prefix + "/" + name: value
+        for prefix, z in [("initial", receipt), ("supplement", end2)]
+        for name, value in z["stages"].items()
+    }
+    provenance = {
+        "initial_directory": cfg["run_directory"],
+        "initial_implementation": reg1["implementation"],
+        "initial_registration_sha256": receipt["registration_sha256"],
+        "reconciled_initial_sha256": digest((ROOT / supplement.RECEIPT).read_bytes()),
+        "prior_covered_usd": receipt["covered_usd"],
+        "supplement_schedule_sha256": digest(
+            (ROOT / supplement.ALLOCATION).read_bytes()
+        ),
+        "admission": retail.read(root / "admission.json"),
+    }
+    return root, reg2, dict(end2, stages=stages), passes, replaced, provenance
+
+
+def merge_unstarted(cells, replaced):
+    old = {c["run"]: c for c in cells if c["run"] in replaced}
+    require(set(old) == set(replaced), "Missing original unstarted slot")
+    active = [c for c in cells if c["run"] not in replaced]
+    index = {(c["task"], c["stage"], c["arm"]): c for c in active}
+    require(len(index) == len(active), "An already attempted cell was duplicated")
+    lineage = []
+    for run, key in replaced.items():
+        c = old[run]
+        require(
+            c["status"] == "not_started"
+            and "session" not in c
+            and all(c[k] == v for k, v in key.items()),
+            "Original slot was attempted",
+        )
+        current = index[key["task"], key["stage"], key["arm"]]
+        lineage.append(
+            dict(
+                key,
+                unstarted_run=run,
+                supplement_run=current["run"],
+                final_status=current["status"],
+            )
+        )
+    return active, lineage
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--workspace", type=Path, default=ROOT)
+    parser.add_argument(
+        "--supplement",
+        action="store_true",
+        help="Combine the sealed original shards and the registered untouched continuation",
+    )
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--summary", type=Path, required=True)
     args = parser.parse_args()
@@ -448,14 +525,31 @@ def main():
         ),
         "Registration is not the published allocation",
     )
-    reg, end = reconcile(root, cfg, rows, record)
+    replaced, provenance = {}, {}
+    if args.supplement:
+        root, reg, end, args_by_task, replaced, provenance = continuation_inputs(
+            workspace, cfg, base, rows, tasks
+        )
+    else:
+        reg, end = reconcile(root, cfg, rows, record)
+        args_by_task = [
+            (workspace, cfg, base, row, tasks[row["task"]], reg, end) for row in rows
+        ]
     prior, spec = historical_inputs(workspace)
-    args_by_task = [
-        (workspace, cfg, base, row, tasks[row["task"]], reg, end) for row in rows
-    ]
     with ProcessPoolExecutor(max_workers=5, mp_context=get_context("spawn")) as pool:
         results = list(pool.map(collect_task, args_by_task))
-    cells = [c for result in results for c in result["cells"]]
+    cells, lineage = merge_unstarted(
+        [c for result in results for c in result["cells"]], replaced
+    )
+    references = defaultdict(dict)
+    for result in results:
+        existing = references[result["task"]]
+        for ctx, value in result["references"].items():
+            require(
+                ctx not in existing or existing[ctx] == value,
+                "Reference replay differs across shards",
+            )
+            existing[ctx] = value
     ids = [i for result in results for i in result["generation_ids"]]
     sessions = [c["session"] for c in cells if c.get("session")]
     run_ids = [c["run"] for c in cells]
@@ -477,13 +571,15 @@ def main():
     costs = billing(cells, end)
     raw = {
         "study": cfg["name"],
-        "directory": cfg["run_directory"],
+        "directory": root.name,
+        "continuation": provenance,
+        "unstarted_lineage": lineage,
         "implementation": reg["implementation"],
         "registration_sha256": end["registration_sha256"],
         "completion_sha256": digest((root / "completion.json").read_bytes()),
         "historical_sha256": spec["parent_cells"]["sha256"],
         "rows": rows,
-        "reference_databases": {r["task"]: r["references"] for r in results},
+        "reference_databases": dict(references),
         "new_cells": cells,
         "pairs": pairs,
         "new_generation_ids": ids,
