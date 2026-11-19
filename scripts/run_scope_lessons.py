@@ -19,7 +19,10 @@ from agent_memory_eval.experiments.prompt_comparison import CONTROLS, FORMAT, co
 from agent_memory_eval.recording.assets import asset_text
 from agent_memory_eval.recording.journal import safe_path
 from agent_memory_eval.reproduction.freeze import implementation_identity
-from scripts.run_frozen_bank_repeats import run, schedule, sealed, shard_name
+if __package__:
+    from .run_frozen_bank_repeats import run, schedule, sealed, shard_name
+else:
+    from run_frozen_bank_repeats import run, schedule, sealed, shard_name
 
 PROFILE = 'protocols/pilots/tau2-scope-lessons-v1.json'
 

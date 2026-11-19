@@ -201,6 +201,10 @@ def empty_writer_comparisons(episodes, manifest):
 
 def analyze(workspace, *, transfer=False):
     manifest, state = (prepare_transfer if transfer else prepare)(workspace)
+    return analyze_registered(workspace, manifest, state, transfer=transfer)
+
+
+def analyze_registered(workspace, manifest, state, *, transfer):
     run = workspace / 'runs' / manifest['study']
     final = read_json((run/'completion.json').read_bytes())
     registered = sealed(run, 'manifest.json', final['manifest_sha256'])
@@ -229,7 +233,8 @@ def analyze(workspace, *, transfer=False):
     first = {r['task_id']:r['first_pass_success'] for r in manifest.get('sources', manifest['tasks'])}
     pairs = [dict(task_id=e['task_id'], index=e['index'], arm=e['arm'], repetition=e['repetition'],
                   result=dict(official_success=e['official_success'])) for e in episodes]
-    contrasts = [contrast(pairs, arm, control, groups) for arm in FORMS for control in state['cfg']['controls']]
+    forms = state['cfg']['forms']
+    contrasts = [contrast(pairs, arm, control, groups) for arm in forms for control in state['cfg']['controls']]
     transitions = defaultdict(Counter)
     for e in episodes:
         src = 'first_success' if first[e.get('source_task_id', e['task_id'])] else 'first_failure'
@@ -237,7 +242,7 @@ def analyze(workspace, *, transfer=False):
         transitions[e['arm']][src+'__'+dst] += 1
     unknown = sum(v['unknown_count'] for e in started for v in e['billing_by_role'].values())
     reserved_count = sum(bool(e.get('reservation')) for e in started)
-    arms = [*FORMS, *state['cfg']['controls']]
+    arms = [*forms, *state['cfg']['controls']]
     costs = {arm: {role: str(sum((Decimal(e['billing_by_role'].get(role, {}).get('reported_usd', '0'))
                                  for e in started if e['arm'] == arm), Decimal(0)))
                    for role in ('worker', 'user_simulator')} for arm in arms}
@@ -252,7 +257,7 @@ def analyze(workspace, *, transfer=False):
                 strict_regrade_methods=sorted({s['native_method'] for s in results}),
                 task_outcomes=tabulate_groups(episodes, {'all': list(groups), **{t:[t] for t in groups}}, arms),
                 new_known_usd_by_arm_and_role=costs, empty_writers_vs_matched_blank=empty_writer_comparisons(episodes, manifest),
-                source_transitions=dict(transitions), contrasts=contrasts, both_controls=both_controls(episodes, FORMS),
+                source_transitions=dict(transitions), contrasts=contrasts, both_controls=both_controls(episodes, forms),
                 reference_field_rates=field_rates(episodes), same_bank_across_solver_seeds=variability(episodes, ('task_id','arm','writer_block')),
                 two_writer_blocks_at_same_solver_seed=variability(episodes, ('task_id','arm','solver_seed')), episodes=episodes)
     if transfer:
