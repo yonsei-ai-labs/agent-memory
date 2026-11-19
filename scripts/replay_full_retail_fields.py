@@ -60,6 +60,7 @@ def aligned_fields(left, right):
 def replay(workspace, detail):
     cfg, _, _, _, tasks = prepare(workspace)
     data = read(detail)
+    from tau2.data_model.language import LanguageTaskInfo
     from tau2.data_model.simulation import SimulationRun
     from tau2.multilingual.runtime import language_environment_kwargs
     from tau2.registry import registry
@@ -71,31 +72,53 @@ def replay(workspace, detail):
         raise ContractError("Wrong study for field replay")
 
     @lru_cache(maxsize=None)
-    def trace(run):
+    def simulation(run):
         cell = cells[run]
         file = safe_path(workspace, cell["report"])
         raw = file.read_bytes()
         if digest(raw) != cell["report_sha256"]:
             raise ContractError("Trajectory hash differs from audited study")
         sim = SimulationRun.model_validate_json(raw)
-        task = tasks[cell["task"]]
+        if sim.task_id != cell["task"]:
+            raise ContractError("Trajectory belongs to another task")
+        return sim
+
+    @lru_cache(maxsize=None)
+    def reference(task_id, context):
+        task = tasks[task_id]
         if task["initial_state"] is not None:
             raise ContractError("Unexpected retail initial state")
         opts = (
             language_environment_kwargs(
-                reload_recorded_call(sim.language_context, "retail")
+                reload_recorded_call(
+                    LanguageTaskInfo.model_validate_json(context), "retail"
+                )
             )
             or {}
         )
-        expected, strict, observed = (make(**opts) for _ in range(3))
+        env = make(**opts)
+        initial = state_hashes(env)
+        target, errors = reference_state(env, task["evaluation_criteria"]["actions"])
+        return opts, dict(
+            task=task_id,
+            initial_db=initial,
+            expected_db=target,
+            changed=initial != target,
+            errors=errors,
+        )
+
+    @lru_cache(maxsize=None)
+    def trace(run):
+        cell = cells[run]
+        sim = simulation(run)
+        opts, gold = reference(sim.task_id, sim.language_context.model_dump_json())
+        target = gold["expected_db"]
+        strict, observed = make(**opts), make(**opts)
         strict.set_state(
             initialization_data=None,
             initialization_actions=None,
             message_history=sim.messages,
             strict=True,
-        )
-        target, reference_errors = reference_state(
-            expected, task["evaluation_criteria"]["actions"]
         )
         replies = {m.id: m for m in sim.messages if m.role == "tool"}
         calls = [
@@ -116,7 +139,7 @@ def replay(workspace, detail):
             raise ContractError(
                 "Original mutation-only replay differs from the strictly graded trajectory"
             )
-        return calls, opts, target, before, errors, reference_errors
+        return calls, opts, target, before, errors, gold["errors"]
 
     def change(run, i, key, alternative):
         calls, opts, target, before, errors, _ = trace(run)
@@ -140,6 +163,12 @@ def replay(workspace, detail):
             tool_errors_after=edited_errors,
         )
 
+    references = []
+    for cell in data["cells"]:
+        if cell["stage"] == "source" and cell.get("report"):
+            sim = simulation(cell["run"])
+            _, gold = reference(sim.task_id, sim.language_context.model_dump_json())
+            references.append(dict(gold, source_run=cell["run"]))
     outcomes = []
     for pair in data["pairs"]:
         if pair["control"] != "no_memory" or pair["state"] not in {"gain", "loss"}:
@@ -186,6 +215,7 @@ def replay(workspace, detail):
         study=cfg["name"],
         scope="Exploratory all discordant memory versus shared pure no-memory pairs. Align accepted business mutations by sequence and requestor, then exchange every differing top-level argument independently in both directions. Customers, memory choices and NL scores are not regenerated.",
         input_sha256=digest(detail.read_bytes()),
+        reference_databases=references,
         status_counts=dict(Counter(r["status"] for r in outcomes)),
         pairs=outcomes,
     )
