@@ -1,0 +1,19 @@
+{
+  "format": "agent-memory-retail-related-transfer/v1",
+  "name": "tau2-retail-related-transfer-01",
+  "status": "ready",
+  "source_protocol": {"path": "protocols/pilots/tau2-retail-candidate-pools-v1.json", "sha256": "d9a93e4e7707a099c23c1bb7781bbbc3b0f6fe07cd0279d7dc1e7dd2ed44cfd0"},
+  "source_catalog": {"path": "artifacts/analyses/20261120-retail-candidate-pools-preflight.json", "sha256": "af13065cd046385f1fc19b5447a7f4fa379a69182c43412230a329990e850841"},
+  "forms": ["fact_original", "episode_original", "lesson_original", "procedure_original"],
+  "controls": ["empty_preload", "no_memory"],
+  "stages": ["solve1", "solve2"],
+  "solver_seeds": [12, 12],
+  "max_concurrent": 8,
+  "per_target_round": {"max_calls": 2010, "max_seconds": 10800},
+  "selection": "Before target outcomes, exclude the 66 retail source tasks and all tasks from the earlier two-round retail study. From the remaining official English train tasks take every source-target pair with exactly one identical reference customer and at least one order ID mutated in both references. Include all qualifying donors, regardless of source grade, note contents or voluntary empty writing. These are distinct tasks of known customers.",
+  "strata": "Compare multisets of complete reference business mutations including arguments. Normalize old/new SKU pairs together and order-independent return item lists. Label identical multisets same, a nonempty proper overlap partial, and disjoint multisets changed. These are analyst-only strata of required actions. Separately compare source reference and actual source end DB with target reference, and do not assume the writer retained any particular fact.",
+  "delivery": "In fresh retail sessions automatically deliver the original writer snapshot, including voluntary empty snapshots, before the first worker decision. All enabled arms including the enabled-empty control get the same instruction. A pure no-memory control has no notes or memory instruction. Neither simulator nor worker receives analyst labels, reference actions or donor selection cues.",
+  "allocation": "Two fresh rounds per target. In each, allocate all four forms for every eligible donor, plus one shared enabled-empty and one shared no-memory control. Hash-order arms including donor identity within target and round. Same solver seed and public settings in both rounds, independent user responses, fresh native business DB and sessions. There are no target writers or outcome-dependent repeats.",
+  "analysis": "Primary is paired official success with transferred notes minus the same target/round's enabled-empty control within each action-overlap stratum; also compare with pure no-memory. Report gains and losses, missing pairs and extreme-case bounds. Average available differences within target, then within customer; group uncertainty by customer, conditional on these sources. Report each form and overall, both rounds and shared controls. Audit actual exposure, official DB and individual assertions, successful execution of old-only reference actions and old-only actions actually executed by the source, current-required actions and cost. Use remaining stratum differences descriptively; task difficulty is not randomized across strata.",
+  "budget": "An independently authorized positive USD ceiling is frozen before the first paid request. Use the source study's pinned endpoints, request-level reservations for unpriced sends and sealed-shard accounting. Never replace attempted episodes."
+}

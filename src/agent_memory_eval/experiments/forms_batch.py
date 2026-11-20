@@ -131,7 +131,7 @@ def solve_connection(connection, design, row, cap):
     elif design.get("format") in (RETAIL_RECHECK, RETAIL_FULL):
         if design["source"]["domain"] != "retail":
             raise ContractError("The retail recheck design requires the retail domain")
-        cfg["benchmark"].update(domain="retail", split=design["source"]["split"])
+        cfg["benchmark"].update(domain="retail", split=design.get("target", design["source"])["split"])
     cfg["guards"] = dict(max_seconds=limits["episode_seconds"], max_model_requests=limits["max_total_requests_per_episode"],
                          max_reported_cost_usd=cap)
     return cfg
