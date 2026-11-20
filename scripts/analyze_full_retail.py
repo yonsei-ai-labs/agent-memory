@@ -273,7 +273,19 @@ def audit_task(args):
     first_writer_wires = set()
     for stage in row.get("scheduled_stages", cfg["stages"]):
         p = parent / stage
-        end, ctl, rows = sealed_rows(p)
+        stage_entry = completion["stages"][str(p.relative_to(root))]
+        checkpoint = stage_entry.get("interrupted_episode")
+        if checkpoint is not None:
+            require(
+                stage_entry["unsealed"]
+                and not (p / "completion.json").exists()
+                and digest((p / "control.json").read_bytes()) == stage_entry["control_sha256"]
+                and digest((p / "allocations.json").read_bytes()) == stage_entry["allocation_sha256"],
+                "Interrupted shard differs from its frozen checkpoint",
+            )
+            ctl, rows = read(p / "control.json"), read(p / "allocations.json")
+        else:
+            _, ctl, rows = sealed_rows(p)
         design, jobs = full_design(
             cfg, base, row, stage, None if stage == "source" else source
         )
@@ -285,10 +297,8 @@ def audit_task(args):
             "Frozen task settings differ",
         )
         grant = Decimal(str(ctl["profile"]["guards"]["max_usd"]))
-        require(
-            accounting(p, grant) == completion["stages"][str(p.relative_to(root))],
-            "Stage seal or cost mismatch",
-        )
+        if checkpoint is None:
+            require(accounting(p, grant) == stage_entry, "Stage seal or cost mismatch")
         models = ctl["model_catalog_entries"]
         require(
             endpoint_terms(models)
@@ -314,12 +324,26 @@ def audit_task(args):
                 official=None,
             )
             cells.append(cell)
-            if slot["status"] == "not_started":
+            if slot["status"] == "not_started" or (
+                checkpoint is not None and slot["status"] == "planned"
+            ):
                 require(
                     "result" not in slot and not folder.exists(),
                     "Unstarted cell has an execution",
                 )
-                cell["reason"] = slot.get("reason")
+                cell["status"] = "not_started"
+                cell["reason"] = (
+                    "host_restart_before_start" if slot["status"] == "planned" else slot.get("reason")
+                )
+                continue
+            if checkpoint is not None and slot["status"] == "started":
+                require(
+                    checkpoint["cell"]["run"] == run
+                    and digest((folder / "log.jsonl").read_bytes()) == checkpoint["cell"]["journal_sha256"],
+                    "Interrupted episode identity changed",
+                )
+                cell.update(checkpoint["cell"])
+                ids.extend(checkpoint["generation_ids"])
                 continue
             res = slot["result"]
             require(

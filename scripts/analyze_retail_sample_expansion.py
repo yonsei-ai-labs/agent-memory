@@ -502,11 +502,14 @@ def merge_unstarted(cells, replaced):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--workspace", type=Path, default=ROOT)
-    parser.add_argument(
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument(
         "--supplement",
         action="store_true",
         help="Combine the sealed original shards and the registered untouched continuation",
     )
+    mode.add_argument("--recovery", action="store_true",
+                      help="Include the frozen host-restart checkpoint and the 471-slot continuation")
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--summary", type=Path, required=True)
     args = parser.parse_args()
@@ -526,7 +529,15 @@ def main():
         "Registration is not the published allocation",
     )
     replaced, provenance = {}, {}
-    if args.supplement:
+    if args.recovery:
+        if __package__:
+            from . import analyze_retail_recovery
+        else:
+            import analyze_retail_recovery
+        root, reg, end, args_by_task, replaced, provenance = analyze_retail_recovery.inputs(
+            workspace, cfg, base, rows, tasks, reconcile
+        )
+    elif args.supplement:
         root, reg, end, args_by_task, replaced, provenance = continuation_inputs(
             workspace, cfg, base, rows, tasks
         )
@@ -569,6 +580,8 @@ def main():
     )
     summary, pairs = build_report(cfg, rows, prior, cells)
     costs = billing(cells, end)
+    if args.recovery:
+        costs["unfinished_requests_with_unconfirmed_delivery"] = provenance["unclosed_request_count"]
     raw = {
         "study": cfg["name"],
         "directory": root.name,
