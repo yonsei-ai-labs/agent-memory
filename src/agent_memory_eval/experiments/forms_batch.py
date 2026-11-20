@@ -292,6 +292,10 @@ def execute_prepared(profile, root, destination, identity, design, plan, models,
     from agent_memory_eval.experiments.forms_write import read_form_bank, run_form_writer
     written_arms = tuple(design["writing"]["lines"])
     delivery_arms = design.get("delivery_arms", {})
+    pools = plan.get("retrieval_pools")
+    if pools is not None and (imported_writers is not None or not pools or set(pools) != set(delivery_arms)
+            or any(delivery_arms[a].get("pool") not in {"own", "mixed"} for a in pools)):
+        raise ContractError("Every registered retrieval arm needs its own verified source binding")
     writer_root, bindings = imported_writers or (destination, {})
     rows = [dict(row, status="planned", directory=f'jobs/{row["index"]:04d}', run_id=new_id("r")) for row in plan["jobs"]]
     destination.mkdir(exist_ok=False)
@@ -332,7 +336,7 @@ def execute_prepared(profile, root, destination, identity, design, plan, models,
                     expected_split=design.get("target", design["source"]).get("split", "train"),
                     source_task_id=row.get("source_task_id") if bank else None,
                     expected_domain="retail" if design.get("format") in (RETAIL_RECHECK, RETAIL_FULL) else "airline",
-                    native_grader=plan.get("grader"))
+                    native_grader=plan.get("grader"), writer_pool=pools.get(arm) if pools is not None else None)
             if result["run_id"] != row["run_id"]:
                 raise ContractError("Run differs from preallocated identity")
             result["log_sha256"] = digest(journal.path.read_bytes())
@@ -347,7 +351,7 @@ def execute_prepared(profile, root, destination, identity, design, plan, models,
     admission = plan.get("admission")
     dispatch = (lambda row, writer: admission.run(execute, row, writer)) if admission is not None else execute
     stop = run_jobs(rows, dispatch, guard, lambda values: write_json(ledger, values),
-                    written_arms=delivery_arms or written_arms, initial_writers=bindings,
+                    written_arms=() if pools is not None else (delivery_arms or written_arms), initial_writers=bindings,
                     missing_sources=plan.get("missing_sources", ()), close_cost=close_cost)
     summary = dict(stop_reason=stop, http_calls=guard.calls, reported_usd=guard.reported_usd,
         unknown_cost=guard.unknown_cost, ended_at=datetime.now(timezone.utc).isoformat(),

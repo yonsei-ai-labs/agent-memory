@@ -109,7 +109,7 @@ def experiences(parent, config_hash, expected_design):
 
 
 class CostReservations:
-    """Account for a bounded received HTTP error once; leave the original request and job intact."""
+    """Hold the registered maximum for a single identifiable, unpriced request."""
     def __init__(self, destination, policy, guard, models):
         self.destination, self.policy, self.guard, self.models = destination, policy, guard, models
         self.limit = Decimal(str(guard.max_usd))
@@ -126,11 +126,19 @@ class CostReservations:
         if len(unknown) != 1:
             return False
         f = unknown[0]
-        if f["delivery_status"] != "response_received" or f["status"] != "error" or not f["response_ref"]:
+        if f["status"] != "error":
             return False
         blobs = BlobStore(folder)
-        error = blobs.get(f["response_ref"]).get("error")
-        if not isinstance(error, dict) or error.get("code") not in self.policy["codes"]:
+        if f["delivery_status"] == "response_received" and f["response_ref"]:
+            error = blobs.get(f["response_ref"]).get("error")
+            if not isinstance(error, dict) or error.get("code") not in self.policy["codes"]:
+                return False
+            code = error["code"]
+        elif (self.policy.get("reserve_uncertain_transport") and result.get("error_code") == "TRANSPORT_UNKNOWN"
+              and f["delivery_status"] in {"unknown", "response_received"} and f["response_ref"] is None
+              and not scan.get("pending_requests")):
+            code = "TRANSPORT_UNKNOWN"
+        else:
             return False
         req = next(e["payload"] for e in events if e["type"] == "model.request_started" and e["payload"]["request_id"] == f["request_id"])
         role = req["actor_role"]
@@ -138,7 +146,7 @@ class CostReservations:
         self.reserved += reserve
         self.count += 1
         self.guard.max_usd = float(self.limit - self.reserved)
-        result["unpriced_reservation"] = dict(request_id=f["request_id"], code=error["code"], role=role, usd=str(reserve),
+        result["unpriced_reservation"] = dict(request_id=f["request_id"], code=code, role=role, usd=str(reserve),
                                               request_ref=req["request_ref"], response_ref=f["response_ref"])
         return True
 

@@ -426,7 +426,7 @@ def accounting(folder, grant):
     )
 
 
-def run_study(workspace, cfg, base, conn, rows, tasks, record):
+def run_study(workspace, cfg, base, conn, rows, tasks, record, *, stage_runner=stage_job):
     root = workspace / "runs" / cfg.get("run_directory", cfg["name"])
     root.mkdir(parents=True, exist_ok=True)
     descriptor = os.open(root, os.O_RDONLY | os.O_DIRECTORY)
@@ -460,7 +460,7 @@ def run_study(workspace, cfg, base, conn, rows, tasks, record):
                     grant = (
                         (Decimal(str(cfg["total_usd_limit"])) - total) / len(wave)
                     ).quantize(Decimal("0.000001"), rounding=ROUND_DOWN)
-                    if grant <= 0:
+                    if grant < 0 or (grant == 0 and not cfg.get("record_unfunded_shards")):
                         raise ContractError("Study budget exhausted")
                     fixed(
                         root / f"{stage}-wave-{begin // width + 1}.json",
@@ -470,9 +470,17 @@ def run_study(workspace, cfg, base, conn, rows, tasks, record):
                             prior_covered=str(total),
                         ),
                     )
+                    if grant == 0:
+                        for row in wave:
+                            name = "task-" + row["task"] + "/" + stage
+                            if (root / name).exists():
+                                raise ContractError("An unfunded shard already has an execution directory")
+                            seals[name] = dict(status="not_started", reason="spend_limit", reported="0",
+                                               held="0", spent="0", http=0)
+                        continue
                     list(
                         pool.map(
-                            stage_job,
+                            stage_runner,
                             [
                                 (
                                     workspace,

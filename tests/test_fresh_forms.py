@@ -42,6 +42,21 @@ class FreshFormsTests(unittest.TestCase):
             self.assertEqual(guard.max_usd,1-float(reserve.reserved))
             self.assertEqual(row["result"]["unpriced_reservation"]["request_ref"],req["request_ref"])
 
+            end.update(delivery_status="unknown", response_ref=None)
+            row["result"].update(error_code="TRANSPORT_UNKNOWN")
+            row["result"].pop("unpriced_reservation")
+            config = dict(codes=[429], maximum_per_stage=1)
+            guard = BatchGuard(max_calls=10, max_usd=1, max_seconds=100)
+            with patch("agent_memory_eval.experiments.fresh_forms.read_experiment", return_value=(scan, {}, None)):
+                self.assertFalse(CostReservations(root, config, guard, {"worker": model})(row))
+                reserve_transport = CostReservations(root, dict(config, reserve_uncertain_transport=True), guard, {"worker": model})
+                scan["pending_requests"] = ["unclosed"]
+                self.assertFalse(reserve_transport(row))
+                scan["pending_requests"] = []
+                self.assertTrue(reserve_transport(row))
+            self.assertEqual(reserve_transport.reserved, reserve.reserved)
+            self.assertIsNone(row["result"]["unpriced_reservation"]["response_ref"])
+
     @unittest.skipUnless(AVAILABLE, "Requires pinned local airline benchmark")
     def test_selection_and_first_pass_to_all_six_second_pass_arms(self):
         config = json.loads(CONFIG.read_bytes())

@@ -68,6 +68,33 @@ def _bank_input(arm, task_id, repetition, writer_bank, public_record, expected_h
     return [], 0
 
 
+def resolve_retrieval_pool(delivery, sources, task_id, repetition, target_hash, written_arms):
+    """Import independent public writer versions in their preregistered order."""
+    if (not isinstance(sources, list) or not sources or not delivery
+            or delivery.get("read_mode") != "on_demand" or delivery.get("pool") not in {"own", "mixed"}
+            or delivery.get("sources_sha256") != digest(canonical(sources))):
+        raise ContractError("Retrieval pool differs from its registered sources")
+    items, lineage = [], []
+    for bank in sources:
+        if (not isinstance(bank, dict) or not isinstance(bank.get("task_id"), str)
+                or not isinstance(bank.get("journal_sha256"), str)
+                or not re.fullmatch(r"[0-9a-f]{64}", bank["journal_sha256"])):
+            raise ContractError("Missing source task or writer journal digest")
+        public_hash = bank.get("public_context_sha256")
+        block, _ = _bank_input(delivery["writer"], bank["task_id"], repetition, bank, None,
+                               public_hash, written_arms=written_arms)
+        items.extend(block)
+        lineage.append({k: bank[k] for k in ("task_id", "run_id", "snapshot_id", "journal_sha256",
+                                              "public_context_sha256", "status")})
+        lineage[-1]["heads"] = [[i["id"], i["version"]] for i in block]
+    if (any(len({b[k] for b in lineage}) != len(sources) for k in ("task_id", "run_id", "snapshot_id"))
+            or [b["public_context_sha256"] for b in lineage if b["task_id"] == task_id] != [target_hash]
+            or (delivery["pool"] == "own") != (len(sources) == 1)
+            or any(len({i[k] for i in items}) != len(items) for k in ("id", "version"))):
+        raise ContractError("Pool must contain the target and distinct independent source versions")
+    return items, lineage
+
+
 class _EpisodeGuard:
     """Share the batch reservation while bounding this episode's sends and HTTP deadline."""
 
@@ -222,7 +249,7 @@ def _usage(journal, run_id):
 def run_forms_solve(journal, *, arm, task_id, repetition, run_id, connection, prepared, guard, limits,
                     instruction, writer_bank=None, public_record=None, public_context_sha256=None, opener=None, clients=None,
                     written_arms=WRITTEN_ARMS, delivery=None, expected_split="train", source_task_id=None,
-                    expected_domain="airline", native_grader=None):
+                    expected_domain="airline", native_grader=None, writer_pool=None):
     """Run one assigned episode in a new per-job journal with a batch guard and verified input.
 
     The caller verifies a writer bank against its sealed journal and supplies the cohort's public hash.
@@ -242,8 +269,15 @@ def run_forms_solve(journal, *, arm, task_id, repetition, run_id, connection, pr
     if source_task_id is not None and (not isinstance(source_task_id, str) or not source_task_id
             or source_task_id == task_id or writer_bank is None):
         raise ContractError("Cross-task delivery needs a distinct declared source and its sealed writer bank")
-    items, revision = _bank_input(writer_condition, source_task_id or task_id, repetition, writer_bank, public_record, public_context_sha256,
-                                  written_arms=written_arms)
+    lineage = None
+    if writer_pool is not None or delivery and "pool" in delivery:
+        if writer_bank is not None or source_task_id is not None or public_record is not None:
+            raise ContractError("Pool and single-source inputs cannot be combined")
+        items, lineage = resolve_retrieval_pool(delivery, writer_pool, task_id, repetition, public_context_sha256, written_arms)
+        revision = 0  # A composed read-only starting view has its own revision.
+    else:
+        items, revision = _bank_input(writer_condition, source_task_id or task_id, repetition, writer_bank, public_record,
+                                      public_context_sha256, written_arms=written_arms)
     execution = ExecutionLimits(**{k: limits[k] for k in (
         "worker_requests", "user_simulator_requests", "writer_requests", "max_input_bytes")})
     if execution.writer_requests or any(type(limits[k]) is not int or limits[k] < 1 for k in (
@@ -292,8 +326,12 @@ def run_forms_solve(journal, *, arm, task_id, repetition, run_id, connection, pr
         state["assignments"][run_id]["source_task_id"] = source_task_id
     if delivery:
         state["assignments"][run_id]["fixed_bank_delivery"] = dict(delivery)
+    source_runs = [writer_bank["run_id"]] if writer_bank else []
+    if lineage is not None:
+        state["assignments"][run_id]["ordered_writer_sources_ref"] = journal.blobs.put(lineage)
+        source_runs = [b["run_id"] for b in lineage]
     journal.append([ctx.at("prepare").event("run.started", dict(bank_id=bank, start_snapshot_id=parent,
-        fresh_session=True, source_run_ids=[writer_bank["run_id"]] if writer_bank else [],
+        fresh_session=True, source_run_ids=source_runs,
         task_ref=journal.blobs.put(dict(role="system", content=prepared[0].agent.system_prompt))))], state=state)
     score = report_ref = raw_report_ref = raw_reward = error_code = None
     orch = partial_ref = end_snapshot = assessment_ref = None

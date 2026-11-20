@@ -190,9 +190,14 @@ def read_request_data(folder, run, res, workspace, models, judge):
             )
             ids.append(raw["id"])
         if reserved and reserved["request_id"] == rid:
+            if reserved["code"] == "TRANSPORT_UNKNOWN":
+                receipt_matches = (raw is None and res.get("error_code") == "TRANSPORT_UNKNOWN"
+                                   and end["status"] == "error" and end["delivery_status"] in {"unknown", "response_received"})
+            else:
+                receipt_matches = raw is not None and raw.get("error", {}).get("code") == reserved["code"]
             require(
                 request_reservation_usd(wire, m) == Decimal(reserved["usd"])
-                and raw["error"]["code"] == reserved["code"]
+                and receipt_matches
                 and end["cost_status"] == "unknown",
                 "Unpriced reservation differs from request",
             )

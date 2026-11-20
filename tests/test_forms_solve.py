@@ -139,6 +139,44 @@ class FormsSolveTests(unittest.TestCase):
             self.assertEqual(http.wires, [])
             self.assertEqual(journal.scan['records'], [])
 
+    def test_own_and_mixed_optional_pools_expose_only_the_selected_body(self):
+        own = dict(bank("fact", "3", ITEMS[:1]), journal_sha256="a" * 64)
+        other = dict(bank("fact", "17", ITEMS[1:]), run_id="other-writer", snapshot_id="other-snapshot",
+                     journal_sha256="b" * 64)
+        first_wires = []
+        for mode, pool in (("own", [own]), ("mixed", [other, own])):
+            selected = pool[0]["items"][0]
+            def worker(n, wire):
+                if n > 2:
+                    return "You may bring 4."
+                name, args = ("memory_list", {}) if n == 1 else ("memory_get", {"id": selected["id"]})
+                return dict(role="assistant", content=None, tool_calls=[dict(id=f"read-{n}", type="function",
+                            function=dict(name=name, arguments=json.dumps(args)))])
+            delivery = dict(writer="fact", read_mode="on_demand", pool=mode, sources_sha256=digest(canonical(pool)))
+            journal, kw, http = self.setup_job("fact__" + mode, delivery=delivery, writer_pool=pool,
+                                               http=NativeHTTP(worker=worker))
+            result = run_forms_solve(journal, **kw)
+            self.assertEqual(result["grading_status"], "graded", result["error_code"])
+            wires = http.by_role["worker"]
+            first_wires.append(wires[0])
+            self.assertEqual([b["run_id"] for b in pool], journal.scan["starts"][kw["run_id"]]["payload"]["source_run_ids"])
+            listing = json.loads(wires[1]["messages"][-1]["content"])["items"]
+            self.assertEqual([i["id"] for b in pool for i in b["items"]], [i["id"] for i in listing])
+            self.assertTrue(all("body" not in i for i in listing))
+            self.assertEqual(json.loads(wires[2]["messages"][-1]["content"])["item"], selected)
+            self.assertNotIn(selected["title"], canonical(wires[0]).decode())
+            self.assertNotIn("other-writer", canonical(http.wires).decode())
+            self.assertGreater(audit_requests(journal.root)["normal_response_memory_spans"], 0)
+        self.assertEqual(*first_wires)
+
+        for pool, signature in (([own, other], [other, own]), ([other], [other]), ([own, own], [own, own])):
+            delivery = dict(writer="fact", read_mode="on_demand", pool="mixed", sources_sha256=digest(canonical(signature)))
+            journal, kw, http = self.setup_job("fact__mixed", delivery=delivery, writer_pool=pool)
+            with self.assertRaises(ContractError):
+                run_forms_solve(journal, **kw)
+            self.assertFalse(http.wires)
+            self.assertFalse(journal.scan["records"])
+
     def test_stock_wire_and_all_forms_share_native_inputs_and_readonly_delivery(self):
         links = {}
         for arm in ("no_memory", "empty_preload", "fact", "episode", "lesson", "procedure", "public_record", "summary"):

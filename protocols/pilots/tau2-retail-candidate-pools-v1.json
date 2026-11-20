@@ -1,0 +1,25 @@
+{
+  "format": "agent-memory-retail-candidate-pools/v1",
+  "name": "tau2-retail-candidate-pools-01",
+  "status": "ready",
+  "budget": "The run requires an explicit approved USD ceiling. Freeze it with this assignment in registration.json before the first paid request and reconcile reported and reserved amounts against it.",
+  "parent_profile": {"path": "protocols/pilots/tau2-retail-sample-expansion-v1.json", "sha256": "9aafd6f0da84b09d9e3d94dec42032f63a8a8ea21b8426072a64a457e49caace"},
+  "sources": [
+    {"path": "artifacts/analyses/20261119-retail-full-cells.json", "sha256": "34d877c4d778cee4a39490a640ab11dcd9455ec991df44788fc29f13663907e2", "field": "cells"},
+    {"path": "artifacts/analyses/20261120-retail-sample-expansion-cells.json", "sha256": "ff32b8b009456f4bd1efee362dc1b3ef8fbd2df08079a1eccf81f55bd093f31b", "field": "new_cells"}
+  ],
+  "instruction": {"path": "protocols/instructions/tau2-retail-optional-retrieval.txt", "sha256": "9294abf6d69985d226e8137ee4b70aea821f2c81f62ad5b2e92e964d62879762"},
+  "forms": ["fact_original", "episode_original", "lesson_original", "procedure_original"],
+  "pool_modes": ["own", "mixed"],
+  "control": "no_memory",
+  "seed": 12,
+  "read_limits": {"read_bank_items": 66, "read_bank_payload_bytes": 131072, "read_bank_return_bytes": 131072},
+  "max_concurrent": 8,
+  "shard_limits": {"max_calls": 1809, "max_seconds": 10800},
+  "unpriced_http": {"codes": [429, 502, 503, 504], "maximum_per_stage": 9, "reserve_uncertain_transport": true},
+  "episode_admission": {"codes": ["HTTP_429", "HTTP_502", "HTTP_503", "HTTP_504", "TRANSPORT_UNKNOWN"], "seconds": [30, 60, 120, 240, 300]},
+  "population": "All 66 previously registered retail tasks, 49 customer groups. Reuse all four independently written post-task snapshots, including voluntary empties. One new full native episode per task and arm, 594 total. There is one new shared no-memory control per task. Reuse the original model routes, limits, native customer configuration and grading. No new writers.",
+  "pool_assignment": "Own contains only the target's source in the assigned form. Mixed contains all 66 independent sources of that same form including the target, ordered by SHA256 of canonical JSON [study, 'pool', source task]. Item order within each source is immutable. All memory arms start with the same optional list/get instructions and identical limits. No titles, source labels, relevance hints or bodies are preloaded. One default page fits every title, and get returns one item. An empty own source or an unread pool remains in its assigned arm.",
+  "allocation": "Order target tasks by SHA256 of [study, 'retrieval', task] and the nine arms within each task by SHA256 of [study, 'arm', task, arm]. Split remaining authorized funds across simultaneous shards. Reserve each identifiable unresolved wire at its pinned full maximum, otherwise hold the whole unresolved shard. Keep every error and untouched allocation. No outcome-driven repeats or replacements.",
+  "analysis": "Primary by form is the paired mixed minus own official success difference on jointly graded tasks. Also compare each with the shared fresh no-memory control, reporting improvement, loss, missing, and first-pass recovery or regression. Report task and equal-customer weights, grouped uncertainty and worst/best bounds for missing grades. Record list/get including errors, titles and bodies returned vs actually included on normal worker responses, ordered source identity (own/other), native DB and assertion progress, and worker/simulator/grader cost plus reservations. Writing costs are historical and shared. Results describe these four fixed banks."
+}
