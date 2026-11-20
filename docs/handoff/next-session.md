@@ -12,7 +12,7 @@
 
 소매 66과제의 작성 기록 264건을 원본 해시와 대조하고 형식별 기억을 합친 뒤 새 평가용 은행으로 복제했다. 단순 정보 52개, 일기 43개, 교훈 62개, 절차 62개의 항목 ID·버전·제목·본문·순서가 원본과 일치했고, 자발적 빈 작성 45건도 구성에 포함됐다. [기존 40과제 작성 기록](../../artifacts/analyses/20261119-retail-full-cells.json) · [26과제 추가 작성 기록](../../artifacts/analyses/20261120-retail-sample-expansion-cells.json)
 
-**소매 자율 조회 594회의 배정을 고정했다.** 66과제 각각에 네 형식 × 두 가지 조회 범위와 새 무기억 상담 1회를 배정했다. 혼합 조건은 같은 형식의 66개 원천을 모두 포함한다. 원천 순서는 목표 과제와 독립적으로 고정하며, 작성자가 비워 둔 건도 유지한다. 실제 소매 과제 하나의 아홉 조건에서 모의 응답으로 목록·본문 조회, 새 업무 DB에서의 채점, 저장된 응답을 사용한 독립 재채점까지 확인했다. 외부 모델 호출은 0건이다. [사전 프로토콜](../../protocols/pilots/tau2-retail-candidate-pools-v1.json) · [과제별 배정·원본 해시](../../artifacts/analyses/20261120-retail-candidate-pools-preflight.json) · [실행기](../../scripts/run_retail_candidate_pools.py) · [득실·노출·비용 분석](../../scripts/analyze_retail_candidate_pools.py)
+**소매 66과제의 자기 메모·혼합 메모 자율 조회 비교를 마쳤다.** 594회 중 586개의 공식 점수와 세부 판정을 독립 재현했다. 조회가 가능했던 528회 중 483회에 메모가 있었고, 목록·본문 요청과 실제 노출은 모두 0건이었다. 성공은 자기 204/261, 혼합 201/259, 새 무기억 45/66이었다. 양쪽 모두 채점된 256쌍에서 혼합만 성공 22쌍, 자기만 성공 24쌍이었다. 상담원에게 메모 문구가 전달된 사례가 없어 이 점수 차이를 메모 내용의 효과로 해석할 수 없다. 실행 구현은 `3967917`이다. [실험 보고서](../reports/20261120-retail-candidate-pools.md) · [개별 상담·노출·비용](../../artifacts/analyses/20261120-retail-candidate-pools-results.json) · [사전 프로토콜](../../protocols/pilots/tau2-retail-candidate-pools-v1.json) · [과제별 배정·원본 해시](../../artifacts/analyses/20261120-retail-candidate-pools-preflight.json)
 
 소매 [무기억 세션 고립 점검](../reports/20261120-retail-session-isolation.md)에서 1,254상담의 상담원·고객 요청 24,185건을 새 DB와 각 상담의 응답만으로 재구성해 원본과 일치시켰다. 여섯 조건이 모두 채점된 165묶음에서 고객별 무기억과 네 기억 형식 평균의 차이는 +0.8%p(95% 구간 −5.2∼+6.3%p)였다. 무기억·빈 메모에서 같은 첫 고객 요청에 양쪽 응답이 있었던 192쌍 중 145쌍은 첫 고객 발화부터 달랐다. 둘째 반복 49·71·77·84번의 6개 상담은 저장 시각 정렬로 발화 순서가 틀려 사건 순서로 읽어야 한다. 실제 변경 순서와 DB에 따른 공식 점수는 모두 재현됐다. [조건별 요청과 순서가 바뀐 상담](../../artifacts/analyses/20261120-retail-session-isolation.json)
 
@@ -143,7 +143,7 @@
 
 ## 다음 세션에서 바로 할 일
 
-**소매 자율 조회 594회에 사용자가 새 총한도 $3를 승인했다.** 실행 명령은 `uv run python -m scripts.run_retail_candidate_pools run --max-usd 3`이다. 등록한 배정에서 조회를 건너뛴 경우까지 포함해 제목·본문 노출, 무기억 대비 회복·악화, DB·개별 요구 충족, 작성·수행 비용을 대조한다. 지난 확장 보충의 $5 승인은 당시 남은 471배정에 적용됐다. 시작 제공과 자율 조회의 차이를 볼 때는 같은 기억 묶음을 쓴다. [원래 비교 절차](../research/experiment-protocol.md#자기-경험과-혼합-은행) · [소매 수행 경로](../../src/agent_memory_eval/experiments/forms_solve.py)
+소매 자율 조회 594회의 승인 범위는 종료됐다. 새 $3 한도에서 확인 비용 $1.924550636과 미확정 요청 1건의 최대액 $0.002624700을 기록했다. 실행 원본은 `runs/tau2-retail-candidate-pools-01`에 있고, 보고서의 오프라인 명령으로 득실·노출·비용을 재현할 수 있다. 원래 계획에서 아직 열린 질문은 수행 중·종료 후의 저장 시점, 관련된 새 과제에서의 전이, 경험을 누적한 뒤의 유지·악화다. [실험 보고서와 재현 명령](../reports/20261120-retail-candidate-pools.md) · [원래 비교 절차](../research/experiment-protocol.md#추가로-지원할-실험-절차)
 
 ### 이전 단계의 제안과 실행 이력
 
