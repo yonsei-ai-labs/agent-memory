@@ -4,7 +4,7 @@
 
 초기 작업자 모델은 Luna, 초기 실증 환경은 τ²-bench다. 기억 관리·실험 제어·기록·분석을 벤치 실행과 분리하고 AppWorld·BFCL로의 확장을 설계한다. 저장 시점·형태·조회 방식, 재시도·전이·누적 변화와 이득·손해를 연구 범위로 유지한다.
 
-τ² 소매 표본을 **66과제·49고객**으로 넓히고 같은 메모와 두 대조로 과제마다 세 번씩 다시 풀었다. 2회차 1,188건을 모두 시도해 1,135건을 공식 채점했다. 무기억 대비 네 형식은 각각 개선 19∼20쌍·악화 22∼25쌍이었다. 무기억 자체도 세 번 모두 채점된 57과제 중 20개에서 성패가 바뀌었다. [표본 확장 최종 보고서](docs/reports/20261120-retail-sample-expansion.md) · [대조별·고객군별 득실](artifacts/analyses/20261120-retail-sample-expansion-results.json) · [상승을 만든 상품 선택·고객 승인과 형식별 사례](docs/reports/20261120-retail-retry-gains.md)
+τ² 소매 표본을 **66과제·49고객**으로 넓히고 같은 메모와 두 대조로 과제마다 세 번씩 다시 풀었다. 2회차 1,188건을 모두 시도해 1,135건을 공식 채점했다. 무기억 대비 네 형식은 각각 개선 19∼20쌍·악화 22∼25쌍이었다. 무기억 자체도 세 번 모두 채점된 57과제 중 20개에서 성패가 바뀌었다. [표본 확장 최종 보고서](docs/reports/20261120-retail-sample-expansion.md) · [대조별·고객군별 득실](artifacts/analyses/20261120-retail-sample-expansion-results.json) · [상승을 만든 상품 선택·고객 승인과 형식별 사례](docs/reports/20261120-retail-retry-gains.md) · [무기억 세션의 실제 입력·DB·기록 순서 점검](docs/reports/20261120-retail-session-isolation.md)
 
 τ² 소매 공식 테스트 40과제에서 고객 31명의 1회차 상담과 네 기억 형식의 2회차를 수행했다. 첫 실패 13개 중 무기억 재시도도 8개를 회복했다. 2회차 성공은 단순 정보·교훈 각 30/40, 일기·절차 각 31/40, 무기억 32/40, 빈 메모 31/40이었다. 과제별 표에서 빈 작성, 두 대조의 성적, 실제로 선택한 행동을 확인할 수 있다. [40과제 보고서](docs/reports/20261119-retail-full-forms.md) · [형식·고객·업무별 집계](artifacts/analyses/20261119-retail-full-results.json) · [변경 전 이관·이전 주문 상태·고객 응답을 추적한 후속 분석](docs/reports/20261119-retail-full-decision-factors.md)
 
