@@ -1,0 +1,3942 @@
+{
+  "source": {
+    "success": 47,
+    "failure": 19
+  },
+  "distinct_source_failure_customers": 16,
+  "writers": {
+    "empty": 45,
+    "completed": 219
+  },
+  "second_pass": {
+    "success": 843,
+    "failure": 292,
+    "missing": 53
+  },
+  "openings": {
+    "simulator_requests": 1188,
+    "worker_requests": 1162,
+    "verified_task_arms": 396,
+    "verified_tasks": 66
+  },
+  "groups": {
+    "repeat_test": {
+      "tasks": 40,
+      "customers": 31,
+      "source": {
+        "failure": 13,
+        "success": 27
+      },
+      "rounds": [
+        "solve1",
+        "solve2",
+        "solve3"
+      ],
+      "arms": {
+        "fact_original": {
+          "official": {
+            "success": 90,
+            "failure": 28,
+            "missing": 2
+          },
+          "first_to_second": {
+            "gain": 17,
+            "both_fail": 22,
+            "both_pass": 73,
+            "loss": 6,
+            "missing": 2
+          },
+          "vs_control": {
+            "no_memory": {
+              "counts": {
+                "both_pass": 78,
+                "gain": 12,
+                "loss": 13,
+                "both_fail": 14,
+                "missing": 3
+              },
+              "scored_tasks": 40,
+              "scored_customers": 31,
+              "task_difference": -0.016666666666666666,
+              "customer_difference": 0.014336917562724014,
+              "customer_interval": [
+                -0.09319,
+                0.125448
+              ]
+            },
+            "empty_preload": {
+              "counts": {
+                "both_pass": 77,
+                "gain": 10,
+                "both_fail": 18,
+                "missing": 5,
+                "loss": 10
+              },
+              "scored_tasks": 40,
+              "scored_customers": 31,
+              "task_difference": -0.008333333333333335,
+              "customer_difference": -0.010752688172043012,
+              "customer_interval": null
+            }
+          },
+          "same_bank_or_control": {
+            "mixed": 10,
+            "all_success": 24,
+            "all_failure": 4,
+            "incomplete": 2
+          },
+          "handoffs_on_changed_targets": {
+            "transfer_after_change": 21,
+            "no_transfer": 76,
+            "transfer_without_successful_change": 10
+          },
+          "handoff_successes_on_changed_targets": {
+            "transfer_after_change": 16,
+            "no_transfer": 64,
+            "transfer_without_successful_change": 0
+          }
+        },
+        "episode_original": {
+          "official": {
+            "success": 90,
+            "failure": 26,
+            "missing": 4
+          },
+          "first_to_second": {
+            "gain": 21,
+            "both_fail": 17,
+            "both_pass": 69,
+            "loss": 9,
+            "missing": 4
+          },
+          "vs_control": {
+            "no_memory": {
+              "counts": {
+                "both_pass": 75,
+                "gain": 15,
+                "missing": 5,
+                "loss": 13,
+                "both_fail": 12
+              },
+              "scored_tasks": 40,
+              "scored_customers": 31,
+              "task_difference": 0.016666666666666666,
+              "customer_difference": 0.035842293906810034,
+              "customer_interval": [
+                -0.066308,
+                0.148746
+              ]
+            },
+            "empty_preload": {
+              "counts": {
+                "both_pass": 75,
+                "gain": 12,
+                "missing": 7,
+                "both_fail": 15,
+                "loss": 11
+              },
+              "scored_tasks": 40,
+              "scored_customers": 31,
+              "task_difference": 0.008333333333333333,
+              "customer_difference": -0.0017921146953405007,
+              "customer_interval": null
+            }
+          },
+          "same_bank_or_control": {
+            "mixed": 8,
+            "all_success": 24,
+            "incomplete": 4,
+            "all_failure": 4
+          },
+          "handoffs_on_changed_targets": {
+            "transfer_after_change": 19,
+            "no_transfer": 74,
+            "transfer_without_successful_change": 12
+          },
+          "handoff_successes_on_changed_targets": {
+            "transfer_after_change": 13,
+            "no_transfer": 68,
+            "transfer_without_successful_change": 0
+          }
+        },
+        "lesson_original": {
+          "official": {
+            "success": 83,
+            "failure": 31,
+            "missing": 6
+          },
+          "first_to_second": {
+            "gain": 18,
+            "both_fail": 20,
+            "both_pass": 65,
+            "loss": 11,
+            "missing": 6
+          },
+          "vs_control": {
+            "no_memory": {
+              "counts": {
+                "both_pass": 74,
+                "gain": 9,
+                "loss": 12,
+                "missing": 7,
+                "both_fail": 18
+              },
+              "scored_tasks": 40,
+              "scored_customers": 31,
+              "task_difference": -0.024999999999999998,
+              "customer_difference": -0.033154121863799284,
+              "customer_interval": [
+                -0.096774,
+                0.028674
+              ]
+            },
+            "empty_preload": {
+              "counts": {
+                "both_pass": 67,
+                "gain": 13,
+                "missing": 9,
+                "loss": 17,
+                "both_fail": 14
+              },
+              "scored_tasks": 40,
+              "scored_customers": 31,
+              "task_difference": -0.0375,
+              "customer_difference": -0.08064516129032258,
+              "customer_interval": null
+            }
+          },
+          "same_bank_or_control": {
+            "mixed": 12,
+            "all_success": 18,
+            "incomplete": 6,
+            "all_failure": 4
+          },
+          "handoffs_on_changed_targets": {
+            "transfer_after_change": 20,
+            "no_transfer": 74,
+            "transfer_without_successful_change": 9
+          },
+          "handoff_successes_on_changed_targets": {
+            "transfer_after_change": 13,
+            "no_transfer": 59,
+            "transfer_without_successful_change": 0
+          }
+        },
+        "procedure_original": {
+          "official": {
+            "success": 86,
+            "failure": 33,
+            "missing": 1
+          },
+          "first_to_second": {
+            "gain": 16,
+            "both_fail": 22,
+            "both_pass": 70,
+            "loss": 11,
+            "missing": 1
+          },
+          "vs_control": {
+            "no_memory": {
+              "counts": {
+                "both_pass": 72,
+                "loss": 19,
+                "gain": 14,
+                "both_fail": 13,
+                "missing": 2
+              },
+              "scored_tasks": 40,
+              "scored_customers": 31,
+              "task_difference": -0.041666666666666664,
+              "customer_difference": -0.025089605734767026,
+              "customer_interval": [
+                -0.130824,
+                0.086022
+              ]
+            },
+            "empty_preload": {
+              "counts": {
+                "both_pass": 73,
+                "both_fail": 17,
+                "gain": 11,
+                "missing": 3,
+                "loss": 16
+              },
+              "scored_tasks": 40,
+              "scored_customers": 31,
+              "task_difference": -0.04583333333333333,
+              "customer_difference": -0.05734767025089606,
+              "customer_interval": null
+            }
+          },
+          "same_bank_or_control": {
+            "mixed": 12,
+            "all_success": 22,
+            "all_failure": 5,
+            "incomplete": 1
+          },
+          "handoffs_on_changed_targets": {
+            "transfer_after_change": 17,
+            "no_transfer": 77,
+            "transfer_without_successful_change": 13
+          },
+          "handoff_successes_on_changed_targets": {
+            "transfer_after_change": 13,
+            "no_transfer": 64,
+            "transfer_without_successful_change": 0
+          }
+        },
+        "no_memory": {
+          "official": {
+            "failure": 27,
+            "success": 92,
+            "missing": 1
+          },
+          "first_to_second": {
+            "both_fail": 16,
+            "gain": 22,
+            "both_pass": 70,
+            "loss": 11,
+            "missing": 1
+          },
+          "vs_control": {},
+          "same_bank_or_control": {
+            "mixed": 14,
+            "all_success": 23,
+            "all_failure": 2,
+            "incomplete": 1
+          },
+          "handoffs_on_changed_targets": {
+            "transfer_after_change": 16,
+            "no_transfer": 84,
+            "transfer_without_successful_change": 7
+          },
+          "handoff_successes_on_changed_targets": {
+            "transfer_after_change": 10,
+            "no_transfer": 71,
+            "transfer_without_successful_change": 0
+          }
+        },
+        "empty_preload": {
+          "official": {
+            "success": 89,
+            "failure": 28,
+            "missing": 3
+          },
+          "first_to_second": {
+            "gain": 18,
+            "both_fail": 20,
+            "both_pass": 71,
+            "missing": 3,
+            "loss": 8
+          },
+          "vs_control": {},
+          "same_bank_or_control": {
+            "mixed": 11,
+            "incomplete": 3,
+            "all_success": 21,
+            "all_failure": 5
+          },
+          "handoffs_on_changed_targets": {
+            "no_transfer": 79,
+            "transfer_after_change": 23,
+            "transfer_without_successful_change": 4
+          },
+          "handoff_successes_on_changed_targets": {
+            "no_transfer": 66,
+            "transfer_after_change": 13,
+            "transfer_without_successful_change": 0
+          }
+        }
+      }
+    },
+    "repeat_test/rounds2and3": {
+      "tasks": 40,
+      "customers": 31,
+      "source": {
+        "failure": 13,
+        "success": 27
+      },
+      "rounds": [
+        "solve2",
+        "solve3"
+      ],
+      "arms": {
+        "fact_original": {
+          "official": {
+            "failure": 18,
+            "success": 60,
+            "missing": 2
+          },
+          "first_to_second": {
+            "both_fail": 15,
+            "gain": 11,
+            "both_pass": 49,
+            "loss": 3,
+            "missing": 2
+          },
+          "vs_control": {
+            "no_memory": {
+              "counts": {
+                "both_pass": 51,
+                "gain": 9,
+                "loss": 8,
+                "both_fail": 9,
+                "missing": 3
+              },
+              "scored_tasks": 40,
+              "scored_customers": 31,
+              "task_difference": 0.0,
+              "customer_difference": 0.02956989247311828,
+              "customer_interval": null
+            },
+            "empty_preload": {
+              "counts": {
+                "gain": 7,
+                "both_pass": 50,
+                "missing": 5,
+                "both_fail": 12,
+                "loss": 6
+              },
+              "scored_tasks": 40,
+              "scored_customers": 31,
+              "task_difference": 0.0,
+              "customer_difference": 0.010752688172043012,
+              "customer_interval": null
+            }
+          },
+          "same_bank_or_control": {
+            "mixed": 5,
+            "all_success": 27,
+            "all_failure": 6,
+            "incomplete": 2
+          },
+          "handoffs_on_changed_targets": {
+            "transfer_after_change": 15,
+            "no_transfer": 50,
+            "transfer_without_successful_change": 6
+          },
+          "handoff_successes_on_changed_targets": {
+            "transfer_after_change": 11,
+            "no_transfer": 43,
+            "transfer_without_successful_change": 0
+          }
+        },
+        "episode_original": {
+          "official": {
+            "failure": 17,
+            "success": 59,
+            "missing": 4
+          },
+          "first_to_second": {
+            "both_fail": 12,
+            "gain": 13,
+            "both_pass": 46,
+            "loss": 5,
+            "missing": 4
+          },
+          "vs_control": {
+            "no_memory": {
+              "counts": {
+                "both_pass": 48,
+                "gain": 11,
+                "missing": 5,
+                "loss": 8,
+                "both_fail": 8
+              },
+              "scored_tasks": 40,
+              "scored_customers": 31,
+              "task_difference": 0.0375,
+              "customer_difference": 0.0510752688172043,
+              "customer_interval": null
+            },
+            "empty_preload": {
+              "counts": {
+                "gain": 8,
+                "both_pass": 48,
+                "missing": 7,
+                "both_fail": 10,
+                "loss": 7
+              },
+              "scored_tasks": 40,
+              "scored_customers": 31,
+              "task_difference": 0.0,
+              "customer_difference": 0.002688172043010753,
+              "customer_interval": null
+            }
+          },
+          "same_bank_or_control": {
+            "mixed": 7,
+            "all_success": 25,
+            "incomplete": 4,
+            "all_failure": 4
+          },
+          "handoffs_on_changed_targets": {
+            "transfer_after_change": 11,
+            "no_transfer": 50,
+            "transfer_without_successful_change": 8
+          },
+          "handoff_successes_on_changed_targets": {
+            "transfer_after_change": 7,
+            "no_transfer": 46,
+            "transfer_without_successful_change": 0
+          }
+        },
+        "lesson_original": {
+          "official": {
+            "success": 53,
+            "failure": 21,
+            "missing": 6
+          },
+          "first_to_second": {
+            "gain": 11,
+            "both_fail": 14,
+            "both_pass": 42,
+            "loss": 7,
+            "missing": 6
+          },
+          "vs_control": {
+            "no_memory": {
+              "counts": {
+                "both_pass": 45,
+                "gain": 8,
+                "loss": 9,
+                "missing": 7,
+                "both_fail": 11
+              },
+              "scored_tasks": 40,
+              "scored_customers": 31,
+              "task_difference": -0.0125,
+              "customer_difference": -0.03763440860215054,
+              "customer_interval": null
+            },
+            "empty_preload": {
+              "counts": {
+                "gain": 9,
+                "both_pass": 41,
+                "missing": 9,
+                "loss": 12,
+                "both_fail": 9
+              },
+              "scored_tasks": 40,
+              "scored_customers": 31,
+              "task_difference": -0.0375,
+              "customer_difference": -0.08333333333333333,
+              "customer_interval": null
+            }
+          },
+          "same_bank_or_control": {
+            "mixed": 10,
+            "all_success": 19,
+            "incomplete": 6,
+            "all_failure": 5
+          },
+          "handoffs_on_changed_targets": {
+            "transfer_after_change": 13,
+            "no_transfer": 48,
+            "transfer_without_successful_change": 6
+          },
+          "handoff_successes_on_changed_targets": {
+            "transfer_after_change": 7,
+            "no_transfer": 39,
+            "transfer_without_successful_change": 0
+          }
+        },
+        "procedure_original": {
+          "official": {
+            "success": 55,
+            "failure": 24,
+            "missing": 1
+          },
+          "first_to_second": {
+            "gain": 9,
+            "both_fail": 16,
+            "both_pass": 46,
+            "loss": 8,
+            "missing": 1
+          },
+          "vs_control": {
+            "no_memory": {
+              "counts": {
+                "loss": 14,
+                "gain": 10,
+                "both_pass": 45,
+                "both_fail": 9,
+                "missing": 2
+              },
+              "scored_tasks": 40,
+              "scored_customers": 31,
+              "task_difference": -0.0625,
+              "customer_difference": -0.056451612903225805,
+              "customer_interval": null
+            },
+            "empty_preload": {
+              "counts": {
+                "both_fail": 13,
+                "both_pass": 47,
+                "gain": 6,
+                "missing": 3,
+                "loss": 11
+              },
+              "scored_tasks": 40,
+              "scored_customers": 31,
+              "task_difference": -0.075,
+              "customer_difference": -0.08333333333333333,
+              "customer_interval": null
+            }
+          },
+          "same_bank_or_control": {
+            "mixed": 9,
+            "all_success": 23,
+            "all_failure": 7,
+            "incomplete": 1
+          },
+          "handoffs_on_changed_targets": {
+            "transfer_after_change": 14,
+            "no_transfer": 49,
+            "transfer_without_successful_change": 8
+          },
+          "handoff_successes_on_changed_targets": {
+            "transfer_after_change": 10,
+            "no_transfer": 39,
+            "transfer_without_successful_change": 0
+          }
+        },
+        "no_memory": {
+          "official": {
+            "success": 60,
+            "failure": 19,
+            "missing": 1
+          },
+          "first_to_second": {
+            "gain": 14,
+            "both_pass": 46,
+            "loss": 8,
+            "both_fail": 11,
+            "missing": 1
+          },
+          "vs_control": {},
+          "same_bank_or_control": {
+            "all_success": 25,
+            "mixed": 10,
+            "all_failure": 4,
+            "incomplete": 1
+          },
+          "handoffs_on_changed_targets": {
+            "transfer_after_change": 11,
+            "no_transfer": 55,
+            "transfer_without_successful_change": 5
+          },
+          "handoff_successes_on_changed_targets": {
+            "transfer_after_change": 7,
+            "no_transfer": 46,
+            "transfer_without_successful_change": 0
+          }
+        },
+        "empty_preload": {
+          "official": {
+            "failure": 19,
+            "success": 58,
+            "missing": 3
+          },
+          "first_to_second": {
+            "both_fail": 13,
+            "gain": 12,
+            "missing": 3,
+            "both_pass": 46,
+            "loss": 6
+          },
+          "vs_control": {},
+          "same_bank_or_control": {
+            "mixed": 9,
+            "incomplete": 3,
+            "all_success": 23,
+            "all_failure": 5
+          },
+          "handoffs_on_changed_targets": {
+            "no_transfer": 52,
+            "transfer_after_change": 15,
+            "transfer_without_successful_change": 3
+          },
+          "handoff_successes_on_changed_targets": {
+            "no_transfer": 43,
+            "transfer_after_change": 9,
+            "transfer_without_successful_change": 0
+          }
+        }
+      }
+    },
+    "repeat_test/solve1": {
+      "tasks": 40,
+      "customers": 31,
+      "source": {
+        "failure": 13,
+        "success": 27
+      },
+      "rounds": [
+        "solve1"
+      ],
+      "arms": {
+        "fact_original": {
+          "official": {
+            "success": 30,
+            "failure": 10
+          },
+          "first_to_second": {
+            "gain": 6,
+            "both_pass": 24,
+            "both_fail": 7,
+            "loss": 3
+          },
+          "vs_control": {
+            "no_memory": {
+              "counts": {
+                "both_pass": 27,
+                "loss": 5,
+                "both_fail": 5,
+                "gain": 3
+              },
+              "scored_tasks": 40,
+              "scored_customers": 31,
+              "task_difference": -0.05,
+              "customer_difference": -0.016129032258064516,
+              "customer_interval": null
+            },
+            "empty_preload": {
+              "counts": {
+                "both_pass": 27,
+                "both_fail": 6,
+                "gain": 3,
+                "loss": 4
+              },
+              "scored_tasks": 40,
+              "scored_customers": 31,
+              "task_difference": -0.025,
+              "customer_difference": -0.053763440860215055,
+              "customer_interval": null
+            }
+          },
+          "same_bank_or_control": {
+            "all_success": 30,
+            "all_failure": 10
+          },
+          "handoffs_on_changed_targets": {
+            "transfer_after_change": 6,
+            "no_transfer": 26,
+            "transfer_without_successful_change": 4
+          },
+          "handoff_successes_on_changed_targets": {
+            "transfer_after_change": 5,
+            "no_transfer": 21,
+            "transfer_without_successful_change": 0
+          }
+        },
+        "episode_original": {
+          "official": {
+            "success": 31,
+            "failure": 9
+          },
+          "first_to_second": {
+            "gain": 8,
+            "both_pass": 23,
+            "loss": 4,
+            "both_fail": 5
+          },
+          "vs_control": {
+            "no_memory": {
+              "counts": {
+                "both_pass": 27,
+                "loss": 5,
+                "both_fail": 4,
+                "gain": 4
+              },
+              "scored_tasks": 40,
+              "scored_customers": 31,
+              "task_difference": -0.025,
+              "customer_difference": 0.016129032258064516,
+              "customer_interval": null
+            },
+            "empty_preload": {
+              "counts": {
+                "both_pass": 27,
+                "gain": 4,
+                "both_fail": 5,
+                "loss": 4
+              },
+              "scored_tasks": 40,
+              "scored_customers": 31,
+              "task_difference": 0,
+              "customer_difference": -0.021505376344086023,
+              "customer_interval": null
+            }
+          },
+          "same_bank_or_control": {
+            "all_success": 31,
+            "all_failure": 9
+          },
+          "handoffs_on_changed_targets": {
+            "transfer_after_change": 8,
+            "no_transfer": 24,
+            "transfer_without_successful_change": 4
+          },
+          "handoff_successes_on_changed_targets": {
+            "transfer_after_change": 6,
+            "no_transfer": 22,
+            "transfer_without_successful_change": 0
+          }
+        },
+        "lesson_original": {
+          "official": {
+            "success": 30,
+            "failure": 10
+          },
+          "first_to_second": {
+            "gain": 7,
+            "both_pass": 23,
+            "loss": 4,
+            "both_fail": 6
+          },
+          "vs_control": {
+            "no_memory": {
+              "counts": {
+                "both_pass": 29,
+                "loss": 3,
+                "both_fail": 7,
+                "gain": 1
+              },
+              "scored_tasks": 40,
+              "scored_customers": 31,
+              "task_difference": -0.05,
+              "customer_difference": -0.03225806451612903,
+              "customer_interval": null
+            },
+            "empty_preload": {
+              "counts": {
+                "both_pass": 26,
+                "gain": 4,
+                "both_fail": 5,
+                "loss": 5
+              },
+              "scored_tasks": 40,
+              "scored_customers": 31,
+              "task_difference": -0.025,
+              "customer_difference": -0.06989247311827958,
+              "customer_interval": null
+            }
+          },
+          "same_bank_or_control": {
+            "all_success": 30,
+            "all_failure": 10
+          },
+          "handoffs_on_changed_targets": {
+            "transfer_after_change": 7,
+            "no_transfer": 26,
+            "transfer_without_successful_change": 3
+          },
+          "handoff_successes_on_changed_targets": {
+            "transfer_after_change": 6,
+            "no_transfer": 20,
+            "transfer_without_successful_change": 0
+          }
+        },
+        "procedure_original": {
+          "official": {
+            "success": 31,
+            "failure": 9
+          },
+          "first_to_second": {
+            "gain": 7,
+            "both_pass": 24,
+            "both_fail": 6,
+            "loss": 3
+          },
+          "vs_control": {
+            "no_memory": {
+              "counts": {
+                "both_pass": 27,
+                "loss": 5,
+                "both_fail": 4,
+                "gain": 4
+              },
+              "scored_tasks": 40,
+              "scored_customers": 31,
+              "task_difference": -0.025,
+              "customer_difference": 0.016129032258064516,
+              "customer_interval": null
+            },
+            "empty_preload": {
+              "counts": {
+                "both_pass": 26,
+                "gain": 5,
+                "both_fail": 4,
+                "loss": 5
+              },
+              "scored_tasks": 40,
+              "scored_customers": 31,
+              "task_difference": 0,
+              "customer_difference": -0.021505376344086023,
+              "customer_interval": null
+            }
+          },
+          "same_bank_or_control": {
+            "all_success": 31,
+            "all_failure": 9
+          },
+          "handoffs_on_changed_targets": {
+            "transfer_after_change": 3,
+            "no_transfer": 28,
+            "transfer_without_successful_change": 5
+          },
+          "handoff_successes_on_changed_targets": {
+            "transfer_after_change": 3,
+            "no_transfer": 25,
+            "transfer_without_successful_change": 0
+          }
+        },
+        "no_memory": {
+          "official": {
+            "failure": 8,
+            "success": 32
+          },
+          "first_to_second": {
+            "both_fail": 5,
+            "both_pass": 24,
+            "loss": 3,
+            "gain": 8
+          },
+          "vs_control": {},
+          "same_bank_or_control": {
+            "all_failure": 8,
+            "all_success": 32
+          },
+          "handoffs_on_changed_targets": {
+            "transfer_after_change": 5,
+            "no_transfer": 29,
+            "transfer_without_successful_change": 2
+          },
+          "handoff_successes_on_changed_targets": {
+            "transfer_after_change": 3,
+            "no_transfer": 25,
+            "transfer_without_successful_change": 0
+          }
+        },
+        "empty_preload": {
+          "official": {
+            "success": 31,
+            "failure": 9
+          },
+          "first_to_second": {
+            "gain": 6,
+            "both_pass": 25,
+            "loss": 2,
+            "both_fail": 7
+          },
+          "vs_control": {},
+          "same_bank_or_control": {
+            "all_success": 31,
+            "all_failure": 9
+          },
+          "handoffs_on_changed_targets": {
+            "no_transfer": 27,
+            "transfer_after_change": 8,
+            "transfer_without_successful_change": 1
+          },
+          "handoff_successes_on_changed_targets": {
+            "no_transfer": 23,
+            "transfer_after_change": 4,
+            "transfer_without_successful_change": 0
+          }
+        }
+      }
+    },
+    "repeat_test/solve2": {
+      "tasks": 40,
+      "customers": 31,
+      "source": {
+        "failure": 13,
+        "success": 27
+      },
+      "rounds": [
+        "solve2"
+      ],
+      "arms": {
+        "fact_original": {
+          "official": {
+            "failure": 10,
+            "success": 29,
+            "missing": 1
+          },
+          "first_to_second": {
+            "both_fail": 8,
+            "both_pass": 24,
+            "loss": 2,
+            "missing": 1,
+            "gain": 5
+          },
+          "vs_control": {
+            "no_memory": {
+              "counts": {
+                "both_pass": 26,
+                "loss": 5,
+                "gain": 3,
+                "missing": 2,
+                "both_fail": 4
+              },
+              "scored_tasks": 38,
+              "scored_customers": 31,
+              "task_difference": -0.05263157894736842,
+              "customer_difference": -0.005376344086021504,
+              "customer_interval": null
+            },
+            "empty_preload": {
+              "counts": {
+                "gain": 4,
+                "missing": 4,
+                "both_pass": 22,
+                "both_fail": 6,
+                "loss": 4
+              },
+              "scored_tasks": 36,
+              "scored_customers": 29,
+              "task_difference": 0,
+              "customer_difference": 0,
+              "customer_interval": null
+            }
+          },
+          "same_bank_or_control": {
+            "all_failure": 10,
+            "all_success": 29,
+            "incomplete": 1
+          },
+          "handoffs_on_changed_targets": {
+            "transfer_after_change": 9,
+            "no_transfer": 24,
+            "transfer_without_successful_change": 2
+          },
+          "handoff_successes_on_changed_targets": {
+            "transfer_after_change": 6,
+            "no_transfer": 20,
+            "transfer_without_successful_change": 0
+          }
+        },
+        "episode_original": {
+          "official": {
+            "failure": 10,
+            "success": 29,
+            "missing": 1
+          },
+          "first_to_second": {
+            "both_fail": 7,
+            "both_pass": 23,
+            "loss": 3,
+            "gain": 6,
+            "missing": 1
+          },
+          "vs_control": {
+            "no_memory": {
+              "counts": {
+                "both_pass": 25,
+                "loss": 5,
+                "both_fail": 4,
+                "gain": 4,
+                "missing": 2
+              },
+              "scored_tasks": 38,
+              "scored_customers": 31,
+              "task_difference": -0.02631578947368421,
+              "customer_difference": 0.026881720430107527,
+              "customer_interval": null
+            },
+            "empty_preload": {
+              "counts": {
+                "gain": 4,
+                "missing": 4,
+                "both_pass": 22,
+                "both_fail": 6,
+                "loss": 4
+              },
+              "scored_tasks": 36,
+              "scored_customers": 29,
+              "task_difference": 0,
+              "customer_difference": 0.017241379310344827,
+              "customer_interval": null
+            }
+          },
+          "same_bank_or_control": {
+            "all_failure": 10,
+            "all_success": 29,
+            "incomplete": 1
+          },
+          "handoffs_on_changed_targets": {
+            "transfer_after_change": 5,
+            "no_transfer": 26,
+            "transfer_without_successful_change": 5
+          },
+          "handoff_successes_on_changed_targets": {
+            "transfer_after_change": 3,
+            "no_transfer": 24,
+            "transfer_without_successful_change": 0
+          }
+        },
+        "lesson_original": {
+          "official": {
+            "success": 26,
+            "failure": 10,
+            "missing": 4
+          },
+          "first_to_second": {
+            "gain": 7,
+            "both_pass": 19,
+            "loss": 5,
+            "missing": 4,
+            "both_fail": 5
+          },
+          "vs_control": {
+            "no_memory": {
+              "counts": {
+                "both_pass": 24,
+                "missing": 5,
+                "both_fail": 6,
+                "gain": 2,
+                "loss": 3
+              },
+              "scored_tasks": 35,
+              "scored_customers": 29,
+              "task_difference": -0.02857142857142857,
+              "customer_difference": -0.05172413793103448,
+              "customer_interval": null
+            },
+            "empty_preload": {
+              "counts": {
+                "gain": 6,
+                "missing": 7,
+                "both_pass": 17,
+                "both_fail": 3,
+                "loss": 7
+              },
+              "scored_tasks": 33,
+              "scored_customers": 27,
+              "task_difference": -0.030303030303030304,
+              "customer_difference": -0.07407407407407407,
+              "customer_interval": null
+            }
+          },
+          "same_bank_or_control": {
+            "all_success": 26,
+            "all_failure": 10,
+            "incomplete": 4
+          },
+          "handoffs_on_changed_targets": {
+            "transfer_after_change": 7,
+            "no_transfer": 23,
+            "transfer_without_successful_change": 3
+          },
+          "handoff_successes_on_changed_targets": {
+            "transfer_after_change": 5,
+            "no_transfer": 18,
+            "transfer_without_successful_change": 0
+          }
+        },
+        "procedure_original": {
+          "official": {
+            "success": 27,
+            "failure": 12,
+            "missing": 1
+          },
+          "first_to_second": {
+            "gain": 5,
+            "both_pass": 22,
+            "loss": 5,
+            "both_fail": 7,
+            "missing": 1
+          },
+          "vs_control": {
+            "no_memory": {
+              "counts": {
+                "loss": 6,
+                "both_pass": 24,
+                "both_fail": 5,
+                "gain": 3,
+                "missing": 2
+              },
+              "scored_tasks": 38,
+              "scored_customers": 30,
+              "task_difference": -0.07894736842105263,
+              "customer_difference": -0.03888888888888889,
+              "customer_interval": null
+            },
+            "empty_preload": {
+              "counts": {
+                "both_fail": 7,
+                "gain": 3,
+                "missing": 3,
+                "both_pass": 22,
+                "loss": 5
+              },
+              "scored_tasks": 37,
+              "scored_customers": 29,
+              "task_difference": -0.05405405405405406,
+              "customer_difference": -0.05172413793103448,
+              "customer_interval": null
+            }
+          },
+          "same_bank_or_control": {
+            "all_success": 27,
+            "all_failure": 12,
+            "incomplete": 1
+          },
+          "handoffs_on_changed_targets": {
+            "transfer_after_change": 7,
+            "no_transfer": 24,
+            "transfer_without_successful_change": 4
+          },
+          "handoff_successes_on_changed_targets": {
+            "transfer_after_change": 6,
+            "no_transfer": 18,
+            "transfer_without_successful_change": 0
+          }
+        },
+        "no_memory": {
+          "official": {
+            "success": 31,
+            "failure": 8,
+            "missing": 1
+          },
+          "first_to_second": {
+            "gain": 7,
+            "both_pass": 24,
+            "both_fail": 5,
+            "loss": 3,
+            "missing": 1
+          },
+          "vs_control": {},
+          "same_bank_or_control": {
+            "all_success": 31,
+            "all_failure": 8,
+            "incomplete": 1
+          },
+          "handoffs_on_changed_targets": {
+            "transfer_after_change": 5,
+            "no_transfer": 27,
+            "transfer_without_successful_change": 3
+          },
+          "handoff_successes_on_changed_targets": {
+            "transfer_after_change": 4,
+            "no_transfer": 23,
+            "transfer_without_successful_change": 0
+          }
+        },
+        "empty_preload": {
+          "official": {
+            "failure": 10,
+            "missing": 3,
+            "success": 27
+          },
+          "first_to_second": {
+            "both_fail": 7,
+            "missing": 3,
+            "both_pass": 22,
+            "loss": 3,
+            "gain": 5
+          },
+          "vs_control": {},
+          "same_bank_or_control": {
+            "all_failure": 10,
+            "incomplete": 3,
+            "all_success": 27
+          },
+          "handoffs_on_changed_targets": {
+            "no_transfer": 26,
+            "transfer_after_change": 6,
+            "transfer_without_successful_change": 2
+          },
+          "handoff_successes_on_changed_targets": {
+            "no_transfer": 21,
+            "transfer_after_change": 3,
+            "transfer_without_successful_change": 0
+          }
+        }
+      }
+    },
+    "repeat_test/solve3": {
+      "tasks": 40,
+      "customers": 31,
+      "source": {
+        "failure": 13,
+        "success": 27
+      },
+      "rounds": [
+        "solve3"
+      ],
+      "arms": {
+        "fact_original": {
+          "official": {
+            "success": 31,
+            "failure": 8,
+            "missing": 1
+          },
+          "first_to_second": {
+            "gain": 6,
+            "both_pass": 25,
+            "both_fail": 7,
+            "loss": 1,
+            "missing": 1
+          },
+          "vs_control": {
+            "no_memory": {
+              "counts": {
+                "gain": 6,
+                "both_pass": 25,
+                "both_fail": 5,
+                "loss": 3,
+                "missing": 1
+              },
+              "scored_tasks": 39,
+              "scored_customers": 31,
+              "task_difference": 0.07692307692307693,
+              "customer_difference": 0.08064516129032258,
+              "customer_interval": null
+            },
+            "empty_preload": {
+              "counts": {
+                "both_pass": 28,
+                "both_fail": 6,
+                "gain": 3,
+                "loss": 2,
+                "missing": 1
+              },
+              "scored_tasks": 39,
+              "scored_customers": 31,
+              "task_difference": 0.02564102564102564,
+              "customer_difference": 0.026881720430107527,
+              "customer_interval": null
+            }
+          },
+          "same_bank_or_control": {
+            "all_success": 31,
+            "all_failure": 8,
+            "incomplete": 1
+          },
+          "handoffs_on_changed_targets": {
+            "transfer_after_change": 6,
+            "no_transfer": 26,
+            "transfer_without_successful_change": 4
+          },
+          "handoff_successes_on_changed_targets": {
+            "transfer_after_change": 5,
+            "no_transfer": 23,
+            "transfer_without_successful_change": 0
+          }
+        },
+        "episode_original": {
+          "official": {
+            "success": 30,
+            "missing": 3,
+            "failure": 7
+          },
+          "first_to_second": {
+            "gain": 7,
+            "both_pass": 23,
+            "missing": 3,
+            "loss": 2,
+            "both_fail": 5
+          },
+          "vs_control": {
+            "no_memory": {
+              "counts": {
+                "gain": 7,
+                "both_pass": 23,
+                "missing": 3,
+                "both_fail": 4,
+                "loss": 3
+              },
+              "scored_tasks": 37,
+              "scored_customers": 29,
+              "task_difference": 0.10810810810810811,
+              "customer_difference": 0.08045977011494253,
+              "customer_interval": null
+            },
+            "empty_preload": {
+              "counts": {
+                "both_pass": 26,
+                "missing": 3,
+                "both_fail": 4,
+                "gain": 4,
+                "loss": 3
+              },
+              "scored_tasks": 37,
+              "scored_customers": 29,
+              "task_difference": 0.02702702702702703,
+              "customer_difference": -0.00574712643678161,
+              "customer_interval": null
+            }
+          },
+          "same_bank_or_control": {
+            "all_success": 30,
+            "incomplete": 3,
+            "all_failure": 7
+          },
+          "handoffs_on_changed_targets": {
+            "transfer_after_change": 6,
+            "no_transfer": 24,
+            "transfer_without_successful_change": 3
+          },
+          "handoff_successes_on_changed_targets": {
+            "transfer_after_change": 4,
+            "no_transfer": 22,
+            "transfer_without_successful_change": 0
+          }
+        },
+        "lesson_original": {
+          "official": {
+            "failure": 11,
+            "success": 27,
+            "missing": 2
+          },
+          "first_to_second": {
+            "both_fail": 9,
+            "both_pass": 23,
+            "loss": 2,
+            "missing": 2,
+            "gain": 4
+          },
+          "vs_control": {
+            "no_memory": {
+              "counts": {
+                "gain": 6,
+                "both_pass": 21,
+                "loss": 6,
+                "both_fail": 5,
+                "missing": 2
+              },
+              "scored_tasks": 38,
+              "scored_customers": 30,
+              "task_difference": 0,
+              "customer_difference": -0.01111111111111111,
+              "customer_interval": null
+            },
+            "empty_preload": {
+              "counts": {
+                "both_pass": 24,
+                "loss": 5,
+                "both_fail": 6,
+                "gain": 3,
+                "missing": 2
+              },
+              "scored_tasks": 38,
+              "scored_customers": 30,
+              "task_difference": -0.05263157894736842,
+              "customer_difference": -0.06666666666666667,
+              "customer_interval": null
+            }
+          },
+          "same_bank_or_control": {
+            "all_failure": 11,
+            "all_success": 27,
+            "incomplete": 2
+          },
+          "handoffs_on_changed_targets": {
+            "transfer_after_change": 6,
+            "no_transfer": 25,
+            "transfer_without_successful_change": 3
+          },
+          "handoff_successes_on_changed_targets": {
+            "transfer_after_change": 2,
+            "no_transfer": 21,
+            "transfer_without_successful_change": 0
+          }
+        },
+        "procedure_original": {
+          "official": {
+            "failure": 12,
+            "success": 28
+          },
+          "first_to_second": {
+            "both_fail": 9,
+            "both_pass": 24,
+            "gain": 4,
+            "loss": 3
+          },
+          "vs_control": {
+            "no_memory": {
+              "counts": {
+                "gain": 7,
+                "both_pass": 21,
+                "loss": 8,
+                "both_fail": 4
+              },
+              "scored_tasks": 40,
+              "scored_customers": 31,
+              "task_difference": -0.025,
+              "customer_difference": -0.04301075268817204,
+              "customer_interval": null
+            },
+            "empty_preload": {
+              "counts": {
+                "both_pass": 25,
+                "gain": 3,
+                "both_fail": 6,
+                "loss": 6
+              },
+              "scored_tasks": 40,
+              "scored_customers": 31,
+              "task_difference": -0.075,
+              "customer_difference": -0.0967741935483871,
+              "customer_interval": null
+            }
+          },
+          "same_bank_or_control": {
+            "all_failure": 12,
+            "all_success": 28
+          },
+          "handoffs_on_changed_targets": {
+            "transfer_after_change": 7,
+            "no_transfer": 25,
+            "transfer_without_successful_change": 4
+          },
+          "handoff_successes_on_changed_targets": {
+            "transfer_after_change": 4,
+            "no_transfer": 21,
+            "transfer_without_successful_change": 0
+          }
+        },
+        "no_memory": {
+          "official": {
+            "success": 29,
+            "failure": 11
+          },
+          "first_to_second": {
+            "gain": 7,
+            "both_pass": 22,
+            "loss": 5,
+            "both_fail": 6
+          },
+          "vs_control": {},
+          "same_bank_or_control": {
+            "all_success": 29,
+            "all_failure": 11
+          },
+          "handoffs_on_changed_targets": {
+            "no_transfer": 28,
+            "transfer_after_change": 6,
+            "transfer_without_successful_change": 2
+          },
+          "handoff_successes_on_changed_targets": {
+            "no_transfer": 23,
+            "transfer_after_change": 3,
+            "transfer_without_successful_change": 0
+          }
+        },
+        "empty_preload": {
+          "official": {
+            "success": 31,
+            "failure": 9
+          },
+          "first_to_second": {
+            "gain": 7,
+            "both_pass": 24,
+            "both_fail": 6,
+            "loss": 3
+          },
+          "vs_control": {},
+          "same_bank_or_control": {
+            "all_success": 31,
+            "all_failure": 9
+          },
+          "handoffs_on_changed_targets": {
+            "transfer_after_change": 9,
+            "no_transfer": 26,
+            "transfer_without_successful_change": 1
+          },
+          "handoff_successes_on_changed_targets": {
+            "transfer_after_change": 6,
+            "no_transfer": 22,
+            "transfer_without_successful_change": 0
+          }
+        }
+      }
+    },
+    "new_train": {
+      "tasks": 26,
+      "customers": 18,
+      "source": {
+        "success": 20,
+        "failure": 6
+      },
+      "rounds": [
+        "solve1",
+        "solve2",
+        "solve3"
+      ],
+      "arms": {
+        "fact_original": {
+          "official": {
+            "failure": 22,
+            "missing": 6,
+            "success": 50
+          },
+          "first_to_second": {
+            "loss": 12,
+            "missing": 6,
+            "both_pass": 44,
+            "gain": 6,
+            "both_fail": 10
+          },
+          "vs_control": {
+            "no_memory": {
+              "counts": {
+                "gain": 7,
+                "loss": 11,
+                "both_fail": 9,
+                "missing": 10,
+                "both_pass": 41
+              },
+              "scored_tasks": 26,
+              "scored_customers": 18,
+              "task_difference": -0.05769230769230769,
+              "customer_difference": -0.04938271604938271,
+              "customer_interval": [
+                -0.140432,
+                0.03858
+              ]
+            },
+            "empty_preload": {
+              "counts": {
+                "both_pass": 41,
+                "both_fail": 12,
+                "loss": 8,
+                "gain": 8,
+                "missing": 9
+              },
+              "scored_tasks": 26,
+              "scored_customers": 18,
+              "task_difference": -0.012820512820512822,
+              "customer_difference": 0.010802469135802465,
+              "customer_interval": null
+            }
+          },
+          "same_bank_or_control": {
+            "all_failure": 2,
+            "incomplete": 5,
+            "all_success": 11,
+            "mixed": 8
+          },
+          "handoffs_on_changed_targets": {
+            "transfer_after_change": 15,
+            "transfer_without_successful_change": 8,
+            "no_transfer": 49
+          },
+          "handoff_successes_on_changed_targets": {
+            "transfer_after_change": 8,
+            "transfer_without_successful_change": 0,
+            "no_transfer": 42
+          }
+        },
+        "episode_original": {
+          "official": {
+            "success": 48,
+            "failure": 23,
+            "missing": 7
+          },
+          "first_to_second": {
+            "both_pass": 38,
+            "loss": 16,
+            "gain": 10,
+            "both_fail": 7,
+            "missing": 7
+          },
+          "vs_control": {
+            "no_memory": {
+              "counts": {
+                "both_fail": 11,
+                "both_pass": 41,
+                "missing": 13,
+                "loss": 9,
+                "gain": 4
+              },
+              "scored_tasks": 26,
+              "scored_customers": 18,
+              "task_difference": -0.08333333333333333,
+              "customer_difference": -0.09567901234567901,
+              "customer_interval": [
+                -0.243827,
+                0.024691
+              ]
+            },
+            "empty_preload": {
+              "counts": {
+                "loss": 9,
+                "gain": 10,
+                "both_pass": 37,
+                "both_fail": 11,
+                "missing": 11
+              },
+              "scored_tasks": 26,
+              "scored_customers": 18,
+              "task_difference": -0.0064102564102564135,
+              "customer_difference": -0.01080246913580247,
+              "customer_interval": null
+            }
+          },
+          "same_bank_or_control": {
+            "all_success": 10,
+            "all_failure": 2,
+            "mixed": 8,
+            "incomplete": 6
+          },
+          "handoffs_on_changed_targets": {
+            "no_transfer": 49,
+            "transfer_after_change": 15,
+            "transfer_without_successful_change": 7
+          },
+          "handoff_successes_on_changed_targets": {
+            "no_transfer": 42,
+            "transfer_after_change": 6,
+            "transfer_without_successful_change": 0
+          }
+        },
+        "lesson_original": {
+          "official": {
+            "success": 57,
+            "failure": 19,
+            "missing": 2
+          },
+          "first_to_second": {
+            "both_pass": 50,
+            "loss": 9,
+            "both_fail": 10,
+            "gain": 7,
+            "missing": 2
+          },
+          "vs_control": {
+            "no_memory": {
+              "counts": {
+                "both_fail": 7,
+                "loss": 10,
+                "gain": 10,
+                "missing": 8,
+                "both_pass": 43
+              },
+              "scored_tasks": 26,
+              "scored_customers": 18,
+              "task_difference": 0.012820512820512824,
+              "customer_difference": -0.0015432098765432083,
+              "customer_interval": [
+                -0.115741,
+                0.111111
+              ]
+            },
+            "empty_preload": {
+              "counts": {
+                "loss": 7,
+                "both_fail": 10,
+                "both_pass": 42,
+                "gain": 11,
+                "missing": 8
+              },
+              "scored_tasks": 26,
+              "scored_customers": 18,
+              "task_difference": 0.08333333333333333,
+              "customer_difference": 0.10185185185185185,
+              "customer_interval": null
+            }
+          },
+          "same_bank_or_control": {
+            "all_success": 13,
+            "mixed": 8,
+            "incomplete": 2,
+            "all_failure": 3
+          },
+          "handoffs_on_changed_targets": {
+            "no_transfer": 63,
+            "transfer_after_change": 8,
+            "transfer_without_successful_change": 5
+          },
+          "handoff_successes_on_changed_targets": {
+            "no_transfer": 54,
+            "transfer_after_change": 3,
+            "transfer_without_successful_change": 0
+          }
+        },
+        "procedure_original": {
+          "official": {
+            "success": 55,
+            "missing": 7,
+            "failure": 16
+          },
+          "first_to_second": {
+            "both_pass": 50,
+            "missing": 7,
+            "loss": 6,
+            "both_fail": 10,
+            "gain": 5
+          },
+          "vs_control": {
+            "no_memory": {
+              "counts": {
+                "both_fail": 9,
+                "both_pass": 46,
+                "loss": 6,
+                "missing": 11,
+                "gain": 6
+              },
+              "scored_tasks": 26,
+              "scored_customers": 18,
+              "task_difference": 2.135044278125301e-18,
+              "customer_difference": 0.006172839506172841,
+              "customer_interval": [
+                -0.067901,
+                0.080247
+              ]
+            },
+            "empty_preload": {
+              "counts": {
+                "loss": 6,
+                "gain": 10,
+                "both_pass": 43,
+                "missing": 9,
+                "both_fail": 10
+              },
+              "scored_tasks": 26,
+              "scored_customers": 18,
+              "task_difference": 0.08333333333333333,
+              "customer_difference": 0.11419753086419752,
+              "customer_interval": null
+            }
+          },
+          "same_bank_or_control": {
+            "incomplete": 6,
+            "all_success": 13,
+            "mixed": 6,
+            "all_failure": 1
+          },
+          "handoffs_on_changed_targets": {
+            "no_transfer": 58,
+            "transfer_after_change": 12,
+            "transfer_without_successful_change": 1
+          },
+          "handoff_successes_on_changed_targets": {
+            "no_transfer": 49,
+            "transfer_after_change": 6,
+            "transfer_without_successful_change": 0
+          }
+        },
+        "no_memory": {
+          "official": {
+            "success": 53,
+            "missing": 8,
+            "failure": 17
+          },
+          "first_to_second": {
+            "both_pass": 45,
+            "missing": 8,
+            "loss": 9,
+            "gain": 8,
+            "both_fail": 8
+          },
+          "vs_control": {},
+          "same_bank_or_control": {
+            "all_success": 10,
+            "incomplete": 8,
+            "mixed": 6,
+            "all_failure": 2
+          },
+          "handoffs_on_changed_targets": {
+            "no_transfer": 59,
+            "transfer_after_change": 9,
+            "transfer_without_successful_change": 2
+          },
+          "handoff_successes_on_changed_targets": {
+            "no_transfer": 49,
+            "transfer_after_change": 4,
+            "transfer_without_successful_change": 0
+          }
+        },
+        "empty_preload": {
+          "official": {
+            "failure": 22,
+            "success": 50,
+            "missing": 6
+          },
+          "first_to_second": {
+            "loss": 13,
+            "both_pass": 42,
+            "missing": 6,
+            "both_fail": 9,
+            "gain": 8
+          },
+          "vs_control": {},
+          "same_bank_or_control": {
+            "incomplete": 6,
+            "mixed": 8,
+            "all_failure": 2,
+            "all_success": 10
+          },
+          "handoffs_on_changed_targets": {
+            "no_transfer": 58,
+            "transfer_after_change": 8,
+            "transfer_without_successful_change": 6
+          },
+          "handoff_successes_on_changed_targets": {
+            "no_transfer": 45,
+            "transfer_after_change": 5,
+            "transfer_without_successful_change": 0
+          }
+        }
+      }
+    },
+    "new_train/rounds2and3": {
+      "tasks": 26,
+      "customers": 18,
+      "source": {
+        "success": 20,
+        "failure": 6
+      },
+      "rounds": [
+        "solve2",
+        "solve3"
+      ],
+      "arms": {
+        "fact_original": {
+          "official": {
+            "failure": 16,
+            "success": 35,
+            "missing": 1
+          },
+          "first_to_second": {
+            "loss": 7,
+            "both_pass": 32,
+            "both_fail": 9,
+            "gain": 3,
+            "missing": 1
+          },
+          "vs_control": {
+            "no_memory": {
+              "counts": {
+                "loss": 8,
+                "missing": 4,
+                "gain": 5,
+                "both_pass": 28,
+                "both_fail": 7
+              },
+              "scored_tasks": 26,
+              "scored_customers": 18,
+              "task_difference": -0.07692307692307693,
+              "customer_difference": -0.046296296296296294,
+              "customer_interval": null
+            },
+            "empty_preload": {
+              "counts": {
+                "both_fail": 9,
+                "loss": 6,
+                "both_pass": 29,
+                "gain": 5,
+                "missing": 3
+              },
+              "scored_tasks": 26,
+              "scored_customers": 18,
+              "task_difference": -0.038461538461538464,
+              "customer_difference": 0.00925925925925926,
+              "customer_interval": null
+            }
+          },
+          "same_bank_or_control": {
+            "all_failure": 5,
+            "all_success": 14,
+            "mixed": 6,
+            "incomplete": 1
+          },
+          "handoffs_on_changed_targets": {
+            "transfer_after_change": 9,
+            "no_transfer": 36,
+            "transfer_without_successful_change": 6
+          },
+          "handoff_successes_on_changed_targets": {
+            "transfer_after_change": 4,
+            "no_transfer": 31,
+            "transfer_without_successful_change": 0
+          }
+        },
+        "episode_original": {
+          "official": {
+            "success": 33,
+            "failure": 15,
+            "missing": 4
+          },
+          "first_to_second": {
+            "both_pass": 26,
+            "loss": 10,
+            "gain": 7,
+            "both_fail": 5,
+            "missing": 4
+          },
+          "vs_control": {
+            "no_memory": {
+              "counts": {
+                "both_pass": 28,
+                "missing": 7,
+                "loss": 6,
+                "gain": 3,
+                "both_fail": 8
+              },
+              "scored_tasks": 26,
+              "scored_customers": 18,
+              "task_difference": -0.07692307692307693,
+              "customer_difference": -0.0787037037037037,
+              "customer_interval": null
+            },
+            "empty_preload": {
+              "counts": {
+                "gain": 5,
+                "both_pass": 27,
+                "both_fail": 9,
+                "missing": 6,
+                "loss": 5
+              },
+              "scored_tasks": 26,
+              "scored_customers": 18,
+              "task_difference": -0.019230769230769232,
+              "customer_difference": -0.013888888888888888,
+              "customer_interval": null
+            }
+          },
+          "same_bank_or_control": {
+            "all_success": 12,
+            "all_failure": 4,
+            "mixed": 6,
+            "incomplete": 4
+          },
+          "handoffs_on_changed_targets": {
+            "no_transfer": 34,
+            "transfer_after_change": 10,
+            "transfer_without_successful_change": 4
+          },
+          "handoff_successes_on_changed_targets": {
+            "no_transfer": 28,
+            "transfer_after_change": 5,
+            "transfer_without_successful_change": 0
+          }
+        },
+        "lesson_original": {
+          "official": {
+            "success": 40,
+            "failure": 12
+          },
+          "first_to_second": {
+            "both_pass": 35,
+            "loss": 5,
+            "gain": 5,
+            "both_fail": 7
+          },
+          "vs_control": {
+            "no_memory": {
+              "counts": {
+                "loss": 6,
+                "missing": 3,
+                "gain": 7,
+                "both_pass": 31,
+                "both_fail": 5
+              },
+              "scored_tasks": 26,
+              "scored_customers": 18,
+              "task_difference": -0.019230769230769232,
+              "customer_difference": -0.027777777777777776,
+              "customer_interval": null
+            },
+            "empty_preload": {
+              "counts": {
+                "both_fail": 7,
+                "loss": 5,
+                "both_pass": 30,
+                "gain": 8,
+                "missing": 2
+              },
+              "scored_tasks": 26,
+              "scored_customers": 18,
+              "task_difference": 0.057692307692307696,
+              "customer_difference": 0.08333333333333333,
+              "customer_interval": null
+            }
+          },
+          "same_bank_or_control": {
+            "all_success": 18,
+            "mixed": 4,
+            "all_failure": 4
+          },
+          "handoffs_on_changed_targets": {
+            "no_transfer": 44,
+            "transfer_after_change": 5,
+            "transfer_without_successful_change": 3
+          },
+          "handoff_successes_on_changed_targets": {
+            "no_transfer": 39,
+            "transfer_after_change": 1,
+            "transfer_without_successful_change": 0
+          }
+        },
+        "procedure_original": {
+          "official": {
+            "missing": 2,
+            "success": 38,
+            "failure": 12
+          },
+          "first_to_second": {
+            "missing": 2,
+            "both_pass": 34,
+            "loss": 5,
+            "both_fail": 7,
+            "gain": 4
+          },
+          "vs_control": {
+            "no_memory": {
+              "counts": {
+                "both_pass": 32,
+                "loss": 4,
+                "missing": 5,
+                "gain": 4,
+                "both_fail": 7
+              },
+              "scored_tasks": 26,
+              "scored_customers": 18,
+              "task_difference": 0.0,
+              "customer_difference": 0.013888888888888888,
+              "customer_interval": null
+            },
+            "empty_preload": {
+              "counts": {
+                "gain": 6,
+                "loss": 4,
+                "both_pass": 30,
+                "both_fail": 8,
+                "missing": 4
+              },
+              "scored_tasks": 25,
+              "scored_customers": 18,
+              "task_difference": 0.04,
+              "customer_difference": 0.08796296296296297,
+              "customer_interval": null
+            }
+          },
+          "same_bank_or_control": {
+            "incomplete": 2,
+            "all_failure": 3,
+            "all_success": 16,
+            "mixed": 5
+          },
+          "handoffs_on_changed_targets": {
+            "no_transfer": 39,
+            "transfer_after_change": 10,
+            "transfer_without_successful_change": 1
+          },
+          "handoff_successes_on_changed_targets": {
+            "no_transfer": 33,
+            "transfer_after_change": 5,
+            "transfer_without_successful_change": 0
+          }
+        },
+        "no_memory": {
+          "official": {
+            "success": 37,
+            "failure": 12,
+            "missing": 3
+          },
+          "first_to_second": {
+            "both_pass": 31,
+            "loss": 7,
+            "missing": 3,
+            "both_fail": 5,
+            "gain": 6
+          },
+          "vs_control": {},
+          "same_bank_or_control": {
+            "all_success": 15,
+            "all_failure": 4,
+            "incomplete": 3,
+            "mixed": 4
+          },
+          "handoffs_on_changed_targets": {
+            "no_transfer": 40,
+            "transfer_after_change": 7,
+            "transfer_without_successful_change": 2
+          },
+          "handoff_successes_on_changed_targets": {
+            "no_transfer": 34,
+            "transfer_after_change": 3,
+            "transfer_without_successful_change": 0
+          }
+        },
+        "empty_preload": {
+          "official": {
+            "success": 35,
+            "missing": 2,
+            "failure": 15
+          },
+          "first_to_second": {
+            "both_pass": 30,
+            "missing": 2,
+            "loss": 8,
+            "both_fail": 7,
+            "gain": 5
+          },
+          "vs_control": {},
+          "same_bank_or_control": {
+            "incomplete": 2,
+            "all_failure": 4,
+            "mixed": 7,
+            "all_success": 13
+          },
+          "handoffs_on_changed_targets": {
+            "no_transfer": 39,
+            "transfer_after_change": 7,
+            "transfer_without_successful_change": 4
+          },
+          "handoff_successes_on_changed_targets": {
+            "no_transfer": 31,
+            "transfer_after_change": 4,
+            "transfer_without_successful_change": 0
+          }
+        }
+      }
+    },
+    "new_train/solve1": {
+      "tasks": 26,
+      "customers": 18,
+      "source": {
+        "success": 20,
+        "failure": 6
+      },
+      "rounds": [
+        "solve1"
+      ],
+      "arms": {
+        "fact_original": {
+          "official": {
+            "failure": 6,
+            "missing": 5,
+            "success": 15
+          },
+          "first_to_second": {
+            "loss": 5,
+            "missing": 5,
+            "both_pass": 12,
+            "gain": 3,
+            "both_fail": 1
+          },
+          "vs_control": {
+            "no_memory": {
+              "counts": {
+                "gain": 2,
+                "both_fail": 2,
+                "both_pass": 13,
+                "missing": 6,
+                "loss": 3
+              },
+              "scored_tasks": 20,
+              "scored_customers": 16,
+              "task_difference": -0.05,
+              "customer_difference": -0.10416666666666667,
+              "customer_interval": null
+            },
+            "empty_preload": {
+              "counts": {
+                "both_pass": 12,
+                "loss": 2,
+                "missing": 6,
+                "gain": 3,
+                "both_fail": 3
+              },
+              "scored_tasks": 20,
+              "scored_customers": 16,
+              "task_difference": 0.05,
+              "customer_difference": 0.0625,
+              "customer_interval": null
+            }
+          },
+          "same_bank_or_control": {
+            "all_failure": 6,
+            "incomplete": 5,
+            "all_success": 15
+          },
+          "handoffs_on_changed_targets": {
+            "transfer_after_change": 6,
+            "transfer_without_successful_change": 2,
+            "no_transfer": 13
+          },
+          "handoff_successes_on_changed_targets": {
+            "transfer_after_change": 4,
+            "transfer_without_successful_change": 0,
+            "no_transfer": 11
+          }
+        },
+        "episode_original": {
+          "official": {
+            "success": 15,
+            "failure": 8,
+            "missing": 3
+          },
+          "first_to_second": {
+            "both_pass": 12,
+            "loss": 6,
+            "gain": 3,
+            "missing": 3,
+            "both_fail": 2
+          },
+          "vs_control": {
+            "no_memory": {
+              "counts": {
+                "both_fail": 3,
+                "gain": 1,
+                "both_pass": 13,
+                "missing": 6,
+                "loss": 3
+              },
+              "scored_tasks": 20,
+              "scored_customers": 16,
+              "task_difference": -0.1,
+              "customer_difference": -0.125,
+              "customer_interval": null
+            },
+            "empty_preload": {
+              "counts": {
+                "loss": 4,
+                "both_pass": 10,
+                "missing": 5,
+                "gain": 5,
+                "both_fail": 2
+              },
+              "scored_tasks": 21,
+              "scored_customers": 16,
+              "task_difference": 0.047619047619047616,
+              "customer_difference": 0.04166666666666667,
+              "customer_interval": null
+            }
+          },
+          "same_bank_or_control": {
+            "all_success": 15,
+            "all_failure": 8,
+            "incomplete": 3
+          },
+          "handoffs_on_changed_targets": {
+            "no_transfer": 15,
+            "transfer_after_change": 5,
+            "transfer_without_successful_change": 3
+          },
+          "handoff_successes_on_changed_targets": {
+            "no_transfer": 14,
+            "transfer_after_change": 1,
+            "transfer_without_successful_change": 0
+          }
+        },
+        "lesson_original": {
+          "official": {
+            "success": 17,
+            "failure": 7,
+            "missing": 2
+          },
+          "first_to_second": {
+            "both_pass": 15,
+            "both_fail": 3,
+            "missing": 2,
+            "gain": 2,
+            "loss": 4
+          },
+          "vs_control": {
+            "no_memory": {
+              "counts": {
+                "both_fail": 2,
+                "gain": 3,
+                "both_pass": 12,
+                "missing": 5,
+                "loss": 4
+              },
+              "scored_tasks": 21,
+              "scored_customers": 17,
+              "task_difference": -0.047619047619047616,
+              "customer_difference": -0.09803921568627451,
+              "customer_interval": null
+            },
+            "empty_preload": {
+              "counts": {
+                "loss": 2,
+                "both_pass": 12,
+                "missing": 6,
+                "both_fail": 3,
+                "gain": 3
+              },
+              "scored_tasks": 20,
+              "scored_customers": 16,
+              "task_difference": 0.05,
+              "customer_difference": 0.0625,
+              "customer_interval": null
+            }
+          },
+          "same_bank_or_control": {
+            "all_success": 17,
+            "all_failure": 7,
+            "incomplete": 2
+          },
+          "handoffs_on_changed_targets": {
+            "no_transfer": 19,
+            "transfer_after_change": 3,
+            "transfer_without_successful_change": 2
+          },
+          "handoff_successes_on_changed_targets": {
+            "no_transfer": 15,
+            "transfer_after_change": 2,
+            "transfer_without_successful_change": 0
+          }
+        },
+        "procedure_original": {
+          "official": {
+            "success": 17,
+            "missing": 5,
+            "failure": 4
+          },
+          "first_to_second": {
+            "both_pass": 16,
+            "missing": 5,
+            "both_fail": 3,
+            "gain": 1,
+            "loss": 1
+          },
+          "vs_control": {
+            "no_memory": {
+              "counts": {
+                "both_fail": 2,
+                "gain": 2,
+                "both_pass": 14,
+                "missing": 6,
+                "loss": 2
+              },
+              "scored_tasks": 20,
+              "scored_customers": 16,
+              "task_difference": 0,
+              "customer_difference": -0.04166666666666667,
+              "customer_interval": null
+            },
+            "empty_preload": {
+              "counts": {
+                "loss": 2,
+                "both_pass": 13,
+                "missing": 5,
+                "both_fail": 2,
+                "gain": 4
+              },
+              "scored_tasks": 21,
+              "scored_customers": 16,
+              "task_difference": 0.09523809523809523,
+              "customer_difference": 0.125,
+              "customer_interval": null
+            }
+          },
+          "same_bank_or_control": {
+            "all_success": 17,
+            "incomplete": 5,
+            "all_failure": 4
+          },
+          "handoffs_on_changed_targets": {
+            "no_transfer": 19,
+            "transfer_after_change": 2
+          },
+          "handoff_successes_on_changed_targets": {
+            "no_transfer": 16,
+            "transfer_after_change": 1
+          }
+        },
+        "no_memory": {
+          "official": {
+            "success": 16,
+            "missing": 5,
+            "failure": 5
+          },
+          "first_to_second": {
+            "both_pass": 14,
+            "missing": 5,
+            "gain": 2,
+            "both_fail": 3,
+            "loss": 2
+          },
+          "vs_control": {},
+          "same_bank_or_control": {
+            "all_success": 16,
+            "incomplete": 5,
+            "all_failure": 5
+          },
+          "handoffs_on_changed_targets": {
+            "no_transfer": 19,
+            "transfer_after_change": 2
+          },
+          "handoff_successes_on_changed_targets": {
+            "no_transfer": 15,
+            "transfer_after_change": 1
+          }
+        },
+        "empty_preload": {
+          "official": {
+            "failure": 7,
+            "missing": 4,
+            "success": 15
+          },
+          "first_to_second": {
+            "loss": 5,
+            "missing": 4,
+            "both_pass": 12,
+            "both_fail": 2,
+            "gain": 3
+          },
+          "vs_control": {},
+          "same_bank_or_control": {
+            "all_failure": 7,
+            "incomplete": 4,
+            "all_success": 15
+          },
+          "handoffs_on_changed_targets": {
+            "no_transfer": 19,
+            "transfer_without_successful_change": 2,
+            "transfer_after_change": 1
+          },
+          "handoff_successes_on_changed_targets": {
+            "no_transfer": 14,
+            "transfer_without_successful_change": 0,
+            "transfer_after_change": 1
+          }
+        }
+      }
+    },
+    "new_train/solve2": {
+      "tasks": 26,
+      "customers": 18,
+      "source": {
+        "success": 20,
+        "failure": 6
+      },
+      "rounds": [
+        "solve2"
+      ],
+      "arms": {
+        "fact_original": {
+          "official": {
+            "failure": 7,
+            "success": 18,
+            "missing": 1
+          },
+          "first_to_second": {
+            "loss": 2,
+            "both_pass": 17,
+            "both_fail": 5,
+            "gain": 1,
+            "missing": 1
+          },
+          "vs_control": {
+            "no_memory": {
+              "counts": {
+                "loss": 3,
+                "missing": 4,
+                "gain": 2,
+                "both_pass": 14,
+                "both_fail": 3
+              },
+              "scored_tasks": 22,
+              "scored_customers": 15,
+              "task_difference": -0.045454545454545456,
+              "customer_difference": -0.06666666666666667,
+              "customer_interval": null
+            },
+            "empty_preload": {
+              "counts": {
+                "both_fail": 4,
+                "loss": 3,
+                "both_pass": 13,
+                "missing": 2,
+                "gain": 4
+              },
+              "scored_tasks": 24,
+              "scored_customers": 16,
+              "task_difference": 0.041666666666666664,
+              "customer_difference": 0.0625,
+              "customer_interval": null
+            }
+          },
+          "same_bank_or_control": {
+            "all_failure": 7,
+            "all_success": 18,
+            "incomplete": 1
+          },
+          "handoffs_on_changed_targets": {
+            "transfer_after_change": 3,
+            "no_transfer": 19,
+            "transfer_without_successful_change": 3
+          },
+          "handoff_successes_on_changed_targets": {
+            "transfer_after_change": 1,
+            "no_transfer": 17,
+            "transfer_without_successful_change": 0
+          }
+        },
+        "episode_original": {
+          "official": {
+            "success": 17,
+            "failure": 6,
+            "missing": 3
+          },
+          "first_to_second": {
+            "both_pass": 13,
+            "loss": 4,
+            "gain": 4,
+            "both_fail": 2,
+            "missing": 3
+          },
+          "vs_control": {
+            "no_memory": {
+              "counts": {
+                "both_pass": 13,
+                "missing": 6,
+                "gain": 2,
+                "both_fail": 3,
+                "loss": 2
+              },
+              "scored_tasks": 20,
+              "scored_customers": 14,
+              "task_difference": 0,
+              "customer_difference": -0.03571428571428571,
+              "customer_interval": null
+            },
+            "empty_preload": {
+              "counts": {
+                "gain": 4,
+                "both_pass": 13,
+                "missing": 4,
+                "both_fail": 4,
+                "loss": 1
+              },
+              "scored_tasks": 22,
+              "scored_customers": 15,
+              "task_difference": 0.13636363636363635,
+              "customer_difference": 0.1111111111111111,
+              "customer_interval": null
+            }
+          },
+          "same_bank_or_control": {
+            "all_success": 17,
+            "all_failure": 6,
+            "incomplete": 3
+          },
+          "handoffs_on_changed_targets": {
+            "no_transfer": 18,
+            "transfer_after_change": 4,
+            "transfer_without_successful_change": 1
+          },
+          "handoff_successes_on_changed_targets": {
+            "no_transfer": 15,
+            "transfer_after_change": 2,
+            "transfer_without_successful_change": 0
+          }
+        },
+        "lesson_original": {
+          "official": {
+            "success": 20,
+            "failure": 6
+          },
+          "first_to_second": {
+            "both_pass": 18,
+            "gain": 2,
+            "both_fail": 4,
+            "loss": 2
+          },
+          "vs_control": {
+            "no_memory": {
+              "counts": {
+                "loss": 3,
+                "missing": 3,
+                "gain": 3,
+                "both_pass": 15,
+                "both_fail": 2
+              },
+              "scored_tasks": 23,
+              "scored_customers": 16,
+              "task_difference": 0,
+              "customer_difference": -0.020833333333333332,
+              "customer_interval": null
+            },
+            "empty_preload": {
+              "counts": {
+                "both_fail": 4,
+                "loss": 2,
+                "both_pass": 14,
+                "gain": 5,
+                "missing": 1
+              },
+              "scored_tasks": 25,
+              "scored_customers": 17,
+              "task_difference": 0.12,
+              "customer_difference": 0.1568627450980392,
+              "customer_interval": null
+            }
+          },
+          "same_bank_or_control": {
+            "all_success": 20,
+            "all_failure": 6
+          },
+          "handoffs_on_changed_targets": {
+            "no_transfer": 22,
+            "transfer_after_change": 3,
+            "transfer_without_successful_change": 1
+          },
+          "handoff_successes_on_changed_targets": {
+            "no_transfer": 19,
+            "transfer_after_change": 1,
+            "transfer_without_successful_change": 0
+          }
+        },
+        "procedure_original": {
+          "official": {
+            "missing": 2,
+            "failure": 6,
+            "success": 18
+          },
+          "first_to_second": {
+            "missing": 2,
+            "loss": 3,
+            "both_pass": 16,
+            "both_fail": 3,
+            "gain": 2
+          },
+          "vs_control": {
+            "no_memory": {
+              "counts": {
+                "both_pass": 15,
+                "missing": 5,
+                "gain": 1,
+                "both_fail": 3,
+                "loss": 2
+              },
+              "scored_tasks": 21,
+              "scored_customers": 16,
+              "task_difference": -0.047619047619047616,
+              "customer_difference": -0.010416666666666664,
+              "customer_interval": null
+            },
+            "empty_preload": {
+              "counts": {
+                "gain": 4,
+                "loss": 2,
+                "both_pass": 13,
+                "both_fail": 4,
+                "missing": 3
+              },
+              "scored_tasks": 23,
+              "scored_customers": 17,
+              "task_difference": 0.08695652173913043,
+              "customer_difference": 0.1568627450980392,
+              "customer_interval": null
+            }
+          },
+          "same_bank_or_control": {
+            "incomplete": 2,
+            "all_failure": 6,
+            "all_success": 18
+          },
+          "handoffs_on_changed_targets": {
+            "transfer_after_change": 4,
+            "no_transfer": 19,
+            "transfer_without_successful_change": 1
+          },
+          "handoff_successes_on_changed_targets": {
+            "transfer_after_change": 2,
+            "no_transfer": 16,
+            "transfer_without_successful_change": 0
+          }
+        },
+        "no_memory": {
+          "official": {
+            "success": 18,
+            "failure": 5,
+            "missing": 3
+          },
+          "first_to_second": {
+            "both_pass": 16,
+            "loss": 2,
+            "missing": 3,
+            "both_fail": 3,
+            "gain": 2
+          },
+          "vs_control": {},
+          "same_bank_or_control": {
+            "all_success": 18,
+            "all_failure": 5,
+            "incomplete": 3
+          },
+          "handoffs_on_changed_targets": {
+            "no_transfer": 20,
+            "transfer_after_change": 3
+          },
+          "handoff_successes_on_changed_targets": {
+            "no_transfer": 17,
+            "transfer_after_change": 1
+          }
+        },
+        "empty_preload": {
+          "official": {
+            "success": 16,
+            "failure": 9,
+            "missing": 1
+          },
+          "first_to_second": {
+            "both_pass": 14,
+            "loss": 5,
+            "both_fail": 4,
+            "gain": 2,
+            "missing": 1
+          },
+          "vs_control": {},
+          "same_bank_or_control": {
+            "all_success": 16,
+            "all_failure": 9,
+            "incomplete": 1
+          },
+          "handoffs_on_changed_targets": {
+            "no_transfer": 19,
+            "transfer_after_change": 3,
+            "transfer_without_successful_change": 3
+          },
+          "handoff_successes_on_changed_targets": {
+            "no_transfer": 15,
+            "transfer_after_change": 1,
+            "transfer_without_successful_change": 0
+          }
+        }
+      }
+    },
+    "new_train/solve3": {
+      "tasks": 26,
+      "customers": 18,
+      "source": {
+        "success": 20,
+        "failure": 6
+      },
+      "rounds": [
+        "solve3"
+      ],
+      "arms": {
+        "fact_original": {
+          "official": {
+            "failure": 9,
+            "success": 17
+          },
+          "first_to_second": {
+            "loss": 5,
+            "both_pass": 15,
+            "gain": 2,
+            "both_fail": 4
+          },
+          "vs_control": {
+            "no_memory": {
+              "counts": {
+                "loss": 5,
+                "gain": 3,
+                "both_pass": 14,
+                "both_fail": 4
+              },
+              "scored_tasks": 26,
+              "scored_customers": 18,
+              "task_difference": -0.07692307692307693,
+              "customer_difference": -0.018518518518518517,
+              "customer_interval": null
+            },
+            "empty_preload": {
+              "counts": {
+                "loss": 3,
+                "both_fail": 5,
+                "both_pass": 16,
+                "gain": 1,
+                "missing": 1
+              },
+              "scored_tasks": 25,
+              "scored_customers": 18,
+              "task_difference": -0.08,
+              "customer_difference": -0.009259259259259257,
+              "customer_interval": null
+            }
+          },
+          "same_bank_or_control": {
+            "all_failure": 9,
+            "all_success": 17
+          },
+          "handoffs_on_changed_targets": {
+            "transfer_after_change": 6,
+            "transfer_without_successful_change": 3,
+            "no_transfer": 17
+          },
+          "handoff_successes_on_changed_targets": {
+            "transfer_after_change": 3,
+            "transfer_without_successful_change": 0,
+            "no_transfer": 14
+          }
+        },
+        "episode_original": {
+          "official": {
+            "success": 16,
+            "failure": 9,
+            "missing": 1
+          },
+          "first_to_second": {
+            "both_pass": 13,
+            "loss": 6,
+            "gain": 3,
+            "both_fail": 3,
+            "missing": 1
+          },
+          "vs_control": {
+            "no_memory": {
+              "counts": {
+                "both_pass": 15,
+                "loss": 4,
+                "missing": 1,
+                "both_fail": 5,
+                "gain": 1
+              },
+              "scored_tasks": 25,
+              "scored_customers": 18,
+              "task_difference": -0.12,
+              "customer_difference": -0.07407407407407407,
+              "customer_interval": null
+            },
+            "empty_preload": {
+              "counts": {
+                "both_pass": 14,
+                "both_fail": 5,
+                "missing": 2,
+                "gain": 1,
+                "loss": 4
+              },
+              "scored_tasks": 24,
+              "scored_customers": 18,
+              "task_difference": -0.125,
+              "customer_difference": -0.06481481481481481,
+              "customer_interval": null
+            }
+          },
+          "same_bank_or_control": {
+            "all_success": 16,
+            "all_failure": 9,
+            "incomplete": 1
+          },
+          "handoffs_on_changed_targets": {
+            "no_transfer": 16,
+            "transfer_after_change": 6,
+            "transfer_without_successful_change": 3
+          },
+          "handoff_successes_on_changed_targets": {
+            "no_transfer": 13,
+            "transfer_after_change": 3,
+            "transfer_without_successful_change": 0
+          }
+        },
+        "lesson_original": {
+          "official": {
+            "success": 20,
+            "failure": 6
+          },
+          "first_to_second": {
+            "both_pass": 17,
+            "loss": 3,
+            "gain": 3,
+            "both_fail": 3
+          },
+          "vs_control": {
+            "no_memory": {
+              "counts": {
+                "loss": 3,
+                "gain": 4,
+                "both_pass": 16,
+                "both_fail": 3
+              },
+              "scored_tasks": 26,
+              "scored_customers": 18,
+              "task_difference": 0.038461538461538464,
+              "customer_difference": 0.037037037037037035,
+              "customer_interval": null
+            },
+            "empty_preload": {
+              "counts": {
+                "loss": 3,
+                "both_fail": 3,
+                "both_pass": 16,
+                "gain": 3,
+                "missing": 1
+              },
+              "scored_tasks": 25,
+              "scored_customers": 18,
+              "task_difference": 0,
+              "customer_difference": 0.0462962962962963,
+              "customer_interval": null
+            }
+          },
+          "same_bank_or_control": {
+            "all_success": 20,
+            "all_failure": 6
+          },
+          "handoffs_on_changed_targets": {
+            "no_transfer": 22,
+            "transfer_after_change": 2,
+            "transfer_without_successful_change": 2
+          },
+          "handoff_successes_on_changed_targets": {
+            "no_transfer": 20,
+            "transfer_after_change": 0,
+            "transfer_without_successful_change": 0
+          }
+        },
+        "procedure_original": {
+          "official": {
+            "success": 20,
+            "failure": 6
+          },
+          "first_to_second": {
+            "both_pass": 18,
+            "loss": 2,
+            "both_fail": 4,
+            "gain": 2
+          },
+          "vs_control": {
+            "no_memory": {
+              "counts": {
+                "loss": 2,
+                "both_pass": 17,
+                "gain": 3,
+                "both_fail": 4
+              },
+              "scored_tasks": 26,
+              "scored_customers": 18,
+              "task_difference": 0.038461538461538464,
+              "customer_difference": 0.046296296296296294,
+              "customer_interval": null
+            },
+            "empty_preload": {
+              "counts": {
+                "loss": 2,
+                "gain": 2,
+                "both_pass": 17,
+                "both_fail": 4,
+                "missing": 1
+              },
+              "scored_tasks": 25,
+              "scored_customers": 18,
+              "task_difference": 0,
+              "customer_difference": 0.027777777777777776,
+              "customer_interval": null
+            }
+          },
+          "same_bank_or_control": {
+            "all_success": 20,
+            "all_failure": 6
+          },
+          "handoffs_on_changed_targets": {
+            "no_transfer": 20,
+            "transfer_after_change": 6
+          },
+          "handoff_successes_on_changed_targets": {
+            "no_transfer": 17,
+            "transfer_after_change": 3
+          }
+        },
+        "no_memory": {
+          "official": {
+            "success": 19,
+            "failure": 7
+          },
+          "first_to_second": {
+            "both_pass": 15,
+            "loss": 5,
+            "gain": 4,
+            "both_fail": 2
+          },
+          "vs_control": {},
+          "same_bank_or_control": {
+            "all_success": 19,
+            "all_failure": 7
+          },
+          "handoffs_on_changed_targets": {
+            "no_transfer": 20,
+            "transfer_after_change": 4,
+            "transfer_without_successful_change": 2
+          },
+          "handoff_successes_on_changed_targets": {
+            "no_transfer": 17,
+            "transfer_after_change": 2,
+            "transfer_without_successful_change": 0
+          }
+        },
+        "empty_preload": {
+          "official": {
+            "missing": 1,
+            "failure": 6,
+            "success": 19
+          },
+          "first_to_second": {
+            "missing": 1,
+            "loss": 3,
+            "both_pass": 16,
+            "gain": 3,
+            "both_fail": 3
+          },
+          "vs_control": {},
+          "same_bank_or_control": {
+            "incomplete": 1,
+            "all_failure": 6,
+            "all_success": 19
+          },
+          "handoffs_on_changed_targets": {
+            "transfer_after_change": 4,
+            "no_transfer": 20,
+            "transfer_without_successful_change": 1
+          },
+          "handoff_successes_on_changed_targets": {
+            "transfer_after_change": 3,
+            "no_transfer": 16,
+            "transfer_without_successful_change": 0
+          }
+        }
+      }
+    },
+    "combined": {
+      "tasks": 66,
+      "customers": 49,
+      "source": {
+        "failure": 19,
+        "success": 47
+      },
+      "rounds": [
+        "solve1",
+        "solve2",
+        "solve3"
+      ],
+      "arms": {
+        "fact_original": {
+          "official": {
+            "success": 140,
+            "failure": 50,
+            "missing": 8
+          },
+          "first_to_second": {
+            "gain": 23,
+            "both_fail": 32,
+            "both_pass": 117,
+            "loss": 18,
+            "missing": 8
+          },
+          "vs_control": {
+            "no_memory": {
+              "counts": {
+                "both_pass": 119,
+                "gain": 19,
+                "loss": 24,
+                "both_fail": 23,
+                "missing": 13
+              },
+              "scored_tasks": 66,
+              "scored_customers": 49,
+              "task_difference": -0.032828282828282825,
+              "customer_difference": -0.009070294784580499,
+              "customer_interval": null
+            },
+            "empty_preload": {
+              "counts": {
+                "both_pass": 118,
+                "gain": 18,
+                "both_fail": 30,
+                "missing": 14,
+                "loss": 18
+              },
+              "scored_tasks": 66,
+              "scored_customers": 49,
+              "task_difference": -0.010101010101010102,
+              "customer_difference": -0.0028344671201814076,
+              "customer_interval": null
+            }
+          },
+          "same_bank_or_control": {
+            "mixed": 18,
+            "all_success": 35,
+            "all_failure": 6,
+            "incomplete": 7
+          },
+          "handoffs_on_changed_targets": {
+            "transfer_after_change": 36,
+            "no_transfer": 125,
+            "transfer_without_successful_change": 18
+          },
+          "handoff_successes_on_changed_targets": {
+            "transfer_after_change": 24,
+            "no_transfer": 106,
+            "transfer_without_successful_change": 0
+          }
+        },
+        "episode_original": {
+          "official": {
+            "success": 138,
+            "failure": 49,
+            "missing": 11
+          },
+          "first_to_second": {
+            "gain": 31,
+            "both_fail": 24,
+            "both_pass": 107,
+            "loss": 25,
+            "missing": 11
+          },
+          "vs_control": {
+            "no_memory": {
+              "counts": {
+                "both_pass": 116,
+                "gain": 19,
+                "missing": 18,
+                "loss": 22,
+                "both_fail": 23
+              },
+              "scored_tasks": 66,
+              "scored_customers": 49,
+              "task_difference": -0.022727272727272728,
+              "customer_difference": -0.012471655328798186,
+              "customer_interval": null
+            },
+            "empty_preload": {
+              "counts": {
+                "both_pass": 112,
+                "gain": 22,
+                "missing": 18,
+                "both_fail": 26,
+                "loss": 20
+              },
+              "scored_tasks": 66,
+              "scored_customers": 49,
+              "task_difference": 0.0025252525252525237,
+              "customer_difference": -0.00510204081632653,
+              "customer_interval": null
+            }
+          },
+          "same_bank_or_control": {
+            "mixed": 16,
+            "all_success": 34,
+            "incomplete": 10,
+            "all_failure": 6
+          },
+          "handoffs_on_changed_targets": {
+            "transfer_after_change": 34,
+            "no_transfer": 123,
+            "transfer_without_successful_change": 19
+          },
+          "handoff_successes_on_changed_targets": {
+            "transfer_after_change": 19,
+            "no_transfer": 110,
+            "transfer_without_successful_change": 0
+          }
+        },
+        "lesson_original": {
+          "official": {
+            "success": 140,
+            "failure": 50,
+            "missing": 8
+          },
+          "first_to_second": {
+            "gain": 25,
+            "both_fail": 30,
+            "both_pass": 115,
+            "loss": 20,
+            "missing": 8
+          },
+          "vs_control": {
+            "no_memory": {
+              "counts": {
+                "both_pass": 117,
+                "gain": 19,
+                "loss": 22,
+                "missing": 15,
+                "both_fail": 25
+              },
+              "scored_tasks": 66,
+              "scored_customers": 49,
+              "task_difference": -0.010101010101010098,
+              "customer_difference": -0.021541950113378682,
+              "customer_interval": null
+            },
+            "empty_preload": {
+              "counts": {
+                "both_pass": 109,
+                "gain": 24,
+                "missing": 17,
+                "loss": 24,
+                "both_fail": 24
+              },
+              "scored_tasks": 66,
+              "scored_customers": 49,
+              "task_difference": 0.010101010101010102,
+              "customer_difference": -0.013605442176870748,
+              "customer_interval": null
+            }
+          },
+          "same_bank_or_control": {
+            "mixed": 20,
+            "all_success": 31,
+            "incomplete": 8,
+            "all_failure": 7
+          },
+          "handoffs_on_changed_targets": {
+            "transfer_after_change": 28,
+            "no_transfer": 137,
+            "transfer_without_successful_change": 14
+          },
+          "handoff_successes_on_changed_targets": {
+            "transfer_after_change": 16,
+            "no_transfer": 113,
+            "transfer_without_successful_change": 0
+          }
+        },
+        "procedure_original": {
+          "official": {
+            "success": 141,
+            "failure": 49,
+            "missing": 8
+          },
+          "first_to_second": {
+            "gain": 21,
+            "both_fail": 32,
+            "both_pass": 120,
+            "loss": 17,
+            "missing": 8
+          },
+          "vs_control": {
+            "no_memory": {
+              "counts": {
+                "both_pass": 118,
+                "loss": 25,
+                "gain": 20,
+                "both_fail": 22,
+                "missing": 13
+              },
+              "scored_tasks": 66,
+              "scored_customers": 49,
+              "task_difference": -0.025252525252525252,
+              "customer_difference": -0.013605442176870748,
+              "customer_interval": null
+            },
+            "empty_preload": {
+              "counts": {
+                "both_pass": 116,
+                "both_fail": 27,
+                "gain": 21,
+                "missing": 12,
+                "loss": 22
+              },
+              "scored_tasks": 66,
+              "scored_customers": 49,
+              "task_difference": 0.005050505050505051,
+              "customer_difference": 0.005668934240362812,
+              "customer_interval": null
+            }
+          },
+          "same_bank_or_control": {
+            "mixed": 18,
+            "all_success": 35,
+            "incomplete": 7,
+            "all_failure": 6
+          },
+          "handoffs_on_changed_targets": {
+            "transfer_after_change": 29,
+            "no_transfer": 135,
+            "transfer_without_successful_change": 14
+          },
+          "handoff_successes_on_changed_targets": {
+            "transfer_after_change": 19,
+            "no_transfer": 113,
+            "transfer_without_successful_change": 0
+          }
+        },
+        "no_memory": {
+          "official": {
+            "failure": 44,
+            "success": 145,
+            "missing": 9
+          },
+          "first_to_second": {
+            "both_fail": 24,
+            "gain": 30,
+            "both_pass": 115,
+            "missing": 9,
+            "loss": 20
+          },
+          "vs_control": {},
+          "same_bank_or_control": {
+            "mixed": 20,
+            "all_success": 33,
+            "incomplete": 9,
+            "all_failure": 4
+          },
+          "handoffs_on_changed_targets": {
+            "transfer_after_change": 25,
+            "no_transfer": 143,
+            "transfer_without_successful_change": 9
+          },
+          "handoff_successes_on_changed_targets": {
+            "transfer_after_change": 14,
+            "no_transfer": 120,
+            "transfer_without_successful_change": 0
+          }
+        },
+        "empty_preload": {
+          "official": {
+            "success": 139,
+            "failure": 50,
+            "missing": 9
+          },
+          "first_to_second": {
+            "gain": 26,
+            "both_fail": 29,
+            "both_pass": 113,
+            "missing": 9,
+            "loss": 21
+          },
+          "vs_control": {},
+          "same_bank_or_control": {
+            "mixed": 19,
+            "incomplete": 9,
+            "all_failure": 7,
+            "all_success": 31
+          },
+          "handoffs_on_changed_targets": {
+            "no_transfer": 137,
+            "transfer_after_change": 31,
+            "transfer_without_successful_change": 10
+          },
+          "handoff_successes_on_changed_targets": {
+            "no_transfer": 111,
+            "transfer_after_change": 18,
+            "transfer_without_successful_change": 0
+          }
+        }
+      }
+    },
+    "combined/rounds2and3": {
+      "tasks": 66,
+      "customers": 49,
+      "source": {
+        "failure": 19,
+        "success": 47
+      },
+      "rounds": [
+        "solve2",
+        "solve3"
+      ],
+      "arms": {
+        "fact_original": {
+          "official": {
+            "failure": 34,
+            "success": 95,
+            "missing": 3
+          },
+          "first_to_second": {
+            "both_fail": 24,
+            "gain": 14,
+            "both_pass": 81,
+            "loss": 10,
+            "missing": 3
+          },
+          "vs_control": {
+            "no_memory": {
+              "counts": {
+                "both_pass": 79,
+                "gain": 14,
+                "loss": 16,
+                "both_fail": 16,
+                "missing": 7
+              },
+              "scored_tasks": 66,
+              "scored_customers": 49,
+              "task_difference": -0.030303030303030304,
+              "customer_difference": 0.0017006802721088443,
+              "customer_interval": null
+            },
+            "empty_preload": {
+              "counts": {
+                "gain": 12,
+                "both_pass": 79,
+                "missing": 8,
+                "both_fail": 21,
+                "loss": 12
+              },
+              "scored_tasks": 66,
+              "scored_customers": 49,
+              "task_difference": -0.015151515151515152,
+              "customer_difference": 0.010204081632653062,
+              "customer_interval": null
+            }
+          },
+          "same_bank_or_control": {
+            "mixed": 11,
+            "all_success": 41,
+            "all_failure": 11,
+            "incomplete": 3
+          },
+          "handoffs_on_changed_targets": {
+            "transfer_after_change": 24,
+            "no_transfer": 86,
+            "transfer_without_successful_change": 12
+          },
+          "handoff_successes_on_changed_targets": {
+            "transfer_after_change": 15,
+            "no_transfer": 74,
+            "transfer_without_successful_change": 0
+          }
+        },
+        "episode_original": {
+          "official": {
+            "failure": 32,
+            "success": 92,
+            "missing": 8
+          },
+          "first_to_second": {
+            "both_fail": 17,
+            "gain": 20,
+            "both_pass": 72,
+            "loss": 15,
+            "missing": 8
+          },
+          "vs_control": {
+            "no_memory": {
+              "counts": {
+                "both_pass": 76,
+                "gain": 14,
+                "missing": 12,
+                "loss": 14,
+                "both_fail": 16
+              },
+              "scored_tasks": 66,
+              "scored_customers": 49,
+              "task_difference": -0.007575757575757576,
+              "customer_difference": 0.003401360544217687,
+              "customer_interval": null
+            },
+            "empty_preload": {
+              "counts": {
+                "gain": 13,
+                "both_pass": 75,
+                "missing": 13,
+                "both_fail": 19,
+                "loss": 12
+              },
+              "scored_tasks": 66,
+              "scored_customers": 49,
+              "task_difference": -0.007575757575757576,
+              "customer_difference": -0.003401360544217687,
+              "customer_interval": null
+            }
+          },
+          "same_bank_or_control": {
+            "mixed": 13,
+            "all_success": 37,
+            "incomplete": 8,
+            "all_failure": 8
+          },
+          "handoffs_on_changed_targets": {
+            "transfer_after_change": 21,
+            "no_transfer": 84,
+            "transfer_without_successful_change": 12
+          },
+          "handoff_successes_on_changed_targets": {
+            "transfer_after_change": 12,
+            "no_transfer": 74,
+            "transfer_without_successful_change": 0
+          }
+        },
+        "lesson_original": {
+          "official": {
+            "success": 93,
+            "failure": 33,
+            "missing": 6
+          },
+          "first_to_second": {
+            "gain": 16,
+            "both_fail": 21,
+            "both_pass": 77,
+            "loss": 12,
+            "missing": 6
+          },
+          "vs_control": {
+            "no_memory": {
+              "counts": {
+                "both_pass": 76,
+                "gain": 15,
+                "loss": 15,
+                "missing": 10,
+                "both_fail": 16
+              },
+              "scored_tasks": 66,
+              "scored_customers": 49,
+              "task_difference": -0.015151515151515152,
+              "customer_difference": -0.03401360544217687,
+              "customer_interval": null
+            },
+            "empty_preload": {
+              "counts": {
+                "gain": 17,
+                "both_pass": 71,
+                "missing": 11,
+                "loss": 17,
+                "both_fail": 16
+              },
+              "scored_tasks": 66,
+              "scored_customers": 49,
+              "task_difference": 0.0,
+              "customer_difference": -0.022108843537414966,
+              "customer_interval": null
+            }
+          },
+          "same_bank_or_control": {
+            "mixed": 14,
+            "all_success": 37,
+            "all_failure": 9,
+            "incomplete": 6
+          },
+          "handoffs_on_changed_targets": {
+            "transfer_after_change": 18,
+            "no_transfer": 92,
+            "transfer_without_successful_change": 9
+          },
+          "handoff_successes_on_changed_targets": {
+            "transfer_after_change": 8,
+            "no_transfer": 78,
+            "transfer_without_successful_change": 0
+          }
+        },
+        "procedure_original": {
+          "official": {
+            "success": 93,
+            "failure": 36,
+            "missing": 3
+          },
+          "first_to_second": {
+            "gain": 13,
+            "both_fail": 23,
+            "both_pass": 80,
+            "loss": 13,
+            "missing": 3
+          },
+          "vs_control": {
+            "no_memory": {
+              "counts": {
+                "loss": 18,
+                "gain": 14,
+                "both_pass": 77,
+                "both_fail": 16,
+                "missing": 7
+              },
+              "scored_tasks": 66,
+              "scored_customers": 49,
+              "task_difference": -0.03787878787878788,
+              "customer_difference": -0.030612244897959183,
+              "customer_interval": null
+            },
+            "empty_preload": {
+              "counts": {
+                "both_fail": 21,
+                "both_pass": 77,
+                "gain": 12,
+                "missing": 7,
+                "loss": 15
+              },
+              "scored_tasks": 65,
+              "scored_customers": 49,
+              "task_difference": -0.03076923076923077,
+              "customer_difference": -0.02040816326530612,
+              "customer_interval": null
+            }
+          },
+          "same_bank_or_control": {
+            "mixed": 14,
+            "all_success": 39,
+            "incomplete": 3,
+            "all_failure": 10
+          },
+          "handoffs_on_changed_targets": {
+            "transfer_after_change": 24,
+            "no_transfer": 88,
+            "transfer_without_successful_change": 9
+          },
+          "handoff_successes_on_changed_targets": {
+            "transfer_after_change": 15,
+            "no_transfer": 72,
+            "transfer_without_successful_change": 0
+          }
+        },
+        "no_memory": {
+          "official": {
+            "success": 97,
+            "failure": 31,
+            "missing": 4
+          },
+          "first_to_second": {
+            "gain": 20,
+            "both_pass": 77,
+            "loss": 15,
+            "missing": 4,
+            "both_fail": 16
+          },
+          "vs_control": {},
+          "same_bank_or_control": {
+            "all_success": 40,
+            "all_failure": 8,
+            "incomplete": 4,
+            "mixed": 14
+          },
+          "handoffs_on_changed_targets": {
+            "transfer_after_change": 18,
+            "no_transfer": 95,
+            "transfer_without_successful_change": 7
+          },
+          "handoff_successes_on_changed_targets": {
+            "transfer_after_change": 10,
+            "no_transfer": 80,
+            "transfer_without_successful_change": 0
+          }
+        },
+        "empty_preload": {
+          "official": {
+            "failure": 34,
+            "success": 93,
+            "missing": 5
+          },
+          "first_to_second": {
+            "both_fail": 20,
+            "gain": 17,
+            "missing": 5,
+            "both_pass": 76,
+            "loss": 14
+          },
+          "vs_control": {},
+          "same_bank_or_control": {
+            "mixed": 16,
+            "incomplete": 5,
+            "all_success": 36,
+            "all_failure": 9
+          },
+          "handoffs_on_changed_targets": {
+            "no_transfer": 91,
+            "transfer_after_change": 22,
+            "transfer_without_successful_change": 7
+          },
+          "handoff_successes_on_changed_targets": {
+            "no_transfer": 74,
+            "transfer_after_change": 13,
+            "transfer_without_successful_change": 0
+          }
+        }
+      }
+    }
+  },
+  "direction_repeats": {
+    "repeat_test/fact_original/no_memory/loss": {
+      "0_of_2": 3,
+      "incomplete": 1,
+      "1_of_2": 1
+    },
+    "repeat_test/episode_original/empty_preload/gain": {
+      "1_of_2": 2,
+      "0_of_2": 1,
+      "incomplete": 1
+    },
+    "repeat_test/lesson_original/empty_preload/gain": {
+      "1_of_2": 2,
+      "0_of_2": 2
+    },
+    "repeat_test/procedure_original/empty_preload/gain": {
+      "1_of_2": 1,
+      "0_of_2": 4
+    },
+    "repeat_test/fact_original/empty_preload/gain": {
+      "0_of_2": 3
+    },
+    "repeat_test/episode_original/no_memory/loss": {
+      "1_of_2": 2,
+      "0_of_2": 2,
+      "incomplete": 1
+    },
+    "repeat_test/lesson_original/no_memory/loss": {
+      "0_of_2": 3
+    },
+    "repeat_test/procedure_original/no_memory/loss": {
+      "1_of_2": 2,
+      "0_of_2": 2,
+      "2_of_2": 1
+    },
+    "repeat_test/fact_original/empty_preload/loss": {
+      "incomplete": 1,
+      "1_of_2": 1,
+      "0_of_2": 2
+    },
+    "repeat_test/episode_original/empty_preload/loss": {
+      "0_of_2": 1,
+      "1_of_2": 3
+    },
+    "repeat_test/episode_original/no_memory/gain": {
+      "2_of_2": 1,
+      "incomplete": 1,
+      "1_of_2": 1,
+      "0_of_2": 1
+    },
+    "repeat_test/lesson_original/empty_preload/loss": {
+      "1_of_2": 3,
+      "incomplete": 1,
+      "0_of_2": 1
+    },
+    "repeat_test/procedure_original/empty_preload/loss": {
+      "1_of_2": 4,
+      "0_of_2": 1
+    },
+    "repeat_test/procedure_original/no_memory/gain": {
+      "incomplete": 1,
+      "1_of_2": 2,
+      "0_of_2": 1
+    },
+    "repeat_test/fact_original/no_memory/gain": {
+      "1_of_2": 2,
+      "0_of_2": 1
+    },
+    "repeat_test/lesson_original/no_memory/gain": {
+      "0_of_2": 1
+    },
+    "new_train/fact_original/no_memory/gain": {
+      "0_of_2": 1,
+      "2_of_2": 1
+    },
+    "new_train/episode_original/empty_preload/loss": {
+      "0_of_2": 2,
+      "incomplete": 1,
+      "2_of_2": 1
+    },
+    "new_train/lesson_original/empty_preload/loss": {
+      "1_of_2": 1,
+      "0_of_2": 1
+    },
+    "new_train/procedure_original/empty_preload/loss": {
+      "1_of_2": 2
+    },
+    "new_train/fact_original/empty_preload/loss": {
+      "1_of_2": 1,
+      "incomplete": 1
+    },
+    "new_train/lesson_original/no_memory/gain": {
+      "incomplete": 1,
+      "2_of_2": 1,
+      "0_of_2": 1
+    },
+    "new_train/episode_original/no_memory/gain": {
+      "incomplete": 1
+    },
+    "new_train/procedure_original/no_memory/gain": {
+      "2_of_2": 1,
+      "0_of_2": 1
+    },
+    "new_train/episode_original/no_memory/loss": {
+      "2_of_2": 1,
+      "0_of_2": 2
+    },
+    "new_train/fact_original/empty_preload/gain": {
+      "0_of_2": 3
+    },
+    "new_train/episode_original/empty_preload/gain": {
+      "incomplete": 2,
+      "0_of_2": 2,
+      "1_of_2": 1
+    },
+    "new_train/lesson_original/no_memory/loss": {
+      "0_of_2": 3,
+      "1_of_2": 1
+    },
+    "new_train/procedure_original/no_memory/loss": {
+      "0_of_2": 1,
+      "1_of_2": 1
+    },
+    "new_train/lesson_original/empty_preload/gain": {
+      "0_of_2": 1,
+      "incomplete": 1,
+      "1_of_2": 1
+    },
+    "new_train/procedure_original/empty_preload/gain": {
+      "0_of_2": 2,
+      "incomplete": 1,
+      "1_of_2": 1
+    },
+    "new_train/fact_original/no_memory/loss": {
+      "0_of_2": 2,
+      "2_of_2": 1
+    }
+  },
+  "study": "tau2-retail-sample-expansion-01",
+  "detail_sha256": "ff32b8b009456f4bd1efee362dc1b3ef8fbd2df08079a1eccf81f55bd093f31b",
+  "fresh_allocations": 1078,
+  "fresh_allocations_by_status": {
+    "source": {
+      "completed": 26
+    },
+    "write": {
+      "completed": 87,
+      "empty": 17
+    },
+    "solve1": {
+      "completed": 132,
+      "error": 24
+    },
+    "solve2": {
+      "completed": 375,
+      "error": 20,
+      "interrupted": 1
+    },
+    "solve3": {
+      "completed": 388,
+      "error": 8
+    }
+  },
+  "new_billing": {
+    "reported": "3.3263987672",
+    "held": "0.1557759000",
+    "http": 19327,
+    "by_stage": {
+      "source": "0.1112467458",
+      "write": "0.112437315",
+      "solve1": "0.5086986542",
+      "solve2": "1.3262977882",
+      "solve3": "1.267718264"
+    },
+    "by_role": {
+      "user_simulator": {
+        "http": 6338,
+        "tokens": 7678873,
+        "unknown": 37,
+        "reported": "0.5330207472"
+      },
+      "worker": {
+        "http": 12474,
+        "tokens": 72566625,
+        "unknown": 10,
+        "reported": "1.562538455"
+      },
+      "writer": {
+        "http": 191,
+        "tokens": 1296317,
+        "unknown": 0,
+        "reported": "0.112437315"
+      },
+      "grader": {
+        "http": 324,
+        "tokens": 1254998,
+        "unknown": 0,
+        "reported": "1.11840225"
+      }
+    },
+    "unfinished_requests_with_unconfirmed_delivery": 1
+  },
+  "new_sessions": 1078,
+  "new_normal_responses": 19281,
+  "fresh_regraded": 921,
+  "replayed_judge_answers": 324,
+  "analysis_model_calls": 0
+}
