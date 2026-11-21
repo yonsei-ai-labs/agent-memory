@@ -20,6 +20,7 @@ from scripts.analyze_retail_transfer_revision import (
     audited_writers,
     solve_summary,
     terminal_disposition,
+    writer_outcomes_by_storage,
 )
 
 
@@ -51,6 +52,15 @@ class RetailRevisionTests(unittest.TestCase):
         out = solve_summary(cells, plans)
         self.assertEqual(out["contrasts"]["revised/no_memory"]["counts"], {"gain": 1, "missing": 1})
         self.assertEqual(out["contrasts"]["revised/no_memory"]["all_pair_bounds"], [0.5, 1.0])
+        storage = {
+            "pairs": [
+                {"task": sid, "arm": "fact_explicit", "state": kind}
+                for sid, kind in (("36", "gain"), ("38", "both_pass"))
+            ]
+        }
+        downstream = writer_outcomes_by_storage(storage, out)
+        self.assertEqual(downstream["only_explicit_stored"]["counts"], {"gain": 1, "loss": 1})
+        self.assertEqual(downstream["both_stored"]["counts"], {"missing": 1, "both_pass": 1})
         self.assertEqual(out["contrasts"]["notice/explicit"]["counts"], {"gain": 1, "missing": 1})
         self.assertEqual(out["contrasts"]["no_memory/notice_order"]["counts"], {"loss": 1})
         self.assertEqual(terminal_disposition([], "STORED"), "other_empty_reply")

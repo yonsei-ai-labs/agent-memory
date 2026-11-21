@@ -44,7 +44,7 @@ def audited_writers(workspace, root, cfg, base, row, reg, end):
         require(
             ctl["design"] == design
             and ctl["implementation"] == reg["implementation"]
-            and study.retail.accounting(folder, ctl["profile"]["guards"]["max_usd"]) == seal
+            and study.retail.matches_accounting_seal(folder, ctl["profile"]["guards"]["max_usd"], seal)
             and study.retail.endpoint_terms(models)
             == {k: v for k, v in reg["endpoint_terms"].items() if k != "grader"},
             "Writer seal or provider changed",
@@ -213,6 +213,23 @@ def solve_summary(rows, plans):
     }
 
 
+def writer_outcomes_by_storage(writing, solves):
+    """Descriptive downstream comparisons, grouped by the two actual storage decisions."""
+    labels = {
+        "gain": "only_explicit_stored",
+        "loss": "only_original_stored",
+        "both_pass": "both_stored",
+        "both_fail": "both_empty",
+        "missing": "incomplete",
+    }
+    decisions = {(p["task"], p["arm"]): labels[p["state"]] for p in writing["pairs"]}
+    groups = defaultdict(list)
+    for notice in (LEGACY, DOMAIN):
+        for p in solves["pairs"]["writer/" + notice]:
+            groups[decisions[p["source"], p["arm"]]].append(p)
+    return {group: paired_effect(pairs, interval=True) for group, pairs in groups.items()}
+
+
 def audit_pacing(root, reg, end, solves, pairs):
     activation = study.retail.read(root / "pacing-activation.json")
     state = study.retail.read(root / "pacing-state.json")
@@ -326,7 +343,14 @@ def include_untouched_attempts(workspace, result, original_ids, workers):
         k: sum((Decimal(s[k]) for s in end["stages"].values()), Decimal(0))
         for k in ("reported", "held", "spent")
     }
-    aggregate = {k: str(Decimal(result["cost"][k]) + v) for k, v in money.items()}
+    receipt = pre["parent_cost_reconciliation"]
+    require(
+        Decimal(receipt["reported"]) == Decimal(result["cost"]["reported"])
+        and Decimal(receipt["original_covered"]) == Decimal(result["cost"]["spent"]),
+        "Reconciliation does not begin from the audited parent cost",
+    )
+    parent_cost = {"reported": receipt["reported"], "held": receipt["held"], "spent": receipt["covered"]}
+    aggregate = {k: str(Decimal(parent_cost[k]) + v) for k, v in money.items()}
     require(
         Decimal(aggregate["spent"]) == Decimal(end["total_covered_usd"]) <= Decimal(pre["authorized_usd"])
         and Decimal(aggregate["reported"]) + Decimal(aggregate["held"]) == Decimal(aggregate["spent"]),
@@ -348,6 +372,8 @@ def include_untouched_attempts(workspace, result, original_ids, workers):
         "registration_sha256": end["registration_sha256"],
         "completion_sha256": digest((root / "completion.json").read_bytes()),
         "original_cost": result["cost"],
+        "reconciled_parent_cost": parent_cost,
+        "parent_reconciliation": receipt,
         "additional_cost": {k: str(v) for k, v in money.items()},
         "assigned": len(additions),
         "attempted": sum("session" in c for c in additions),
@@ -493,6 +519,9 @@ def analyze(workspace, workers, *, writing_only=False, include_pending=False):
         result["pacing"] = audit_pacing(root, reg, end, solves, outcomes["pairs"])
     if include_pending:
         include_untouched_attempts(workspace, result, ids, workers)
+    result["writer_contrast_by_storage"] = writer_outcomes_by_storage(
+        result["writer_summary"], result["solve_summary"]
+    )
     return result
 
 

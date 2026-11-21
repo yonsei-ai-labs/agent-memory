@@ -9,6 +9,16 @@ from scripts.run_retail_related_transfer import design_for
 
 
 class PendingRetailRevisionTests(unittest.TestCase):
+    def test_sealed_currency_allows_trailing_zeros_and_preserves_every_other_check(self):
+        from scripts import run_full_retail as retail
+
+        actual = {"spent": "0.55277", "held": "0.5000", "reported": "0.05277", "http": 7, "seal": "abc"}
+        expected = dict(actual, spent="0.552770", held="0.5")
+        with patch.object(retail, "accounting", return_value=actual):
+            self.assertTrue(retail.matches_accounting_seal(Path("."), 0.55277, expected))
+            self.assertFalse(retail.matches_accounting_seal(Path("."), 0.55277, dict(expected, held="0.51")))
+            self.assertFalse(retail.matches_accounting_seal(Path("."), 0.55277, dict(expected, seal="other")))
+
     def test_filter_preserves_recorded_indices_and_rejects_any_existing_attempt(self):
         jobs = [
             {"index": i, "phase": "solve", "repetition": 1, "task_id": "37", "arm": arm}

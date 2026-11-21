@@ -213,7 +213,7 @@ def audit_target(args):
                     ctl["design"] == design
                     and ctl["implementation"] == reg["implementation"]
                     and ctl["profile"]["config_sha256"] == reg["preflight"]["protocol_sha256"]
-                    and study.retail.accounting(folder, str(ctl["profile"]["guards"]["max_usd"])) == seal
+                    and study.retail.matches_accounting_seal(folder, ctl["profile"]["guards"]["max_usd"], seal)
                     and study.retail.endpoint_terms(models)
                     == {k: v for k, v in reg["endpoint_terms"].items() if k != "grader"},
                     "Shard seal or policy differs",

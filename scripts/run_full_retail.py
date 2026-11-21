@@ -426,6 +426,15 @@ def accounting(folder, grant):
     )
 
 
+def matches_accounting_seal(folder, recorded_grant, seal):
+    """Compare currency exactly even when a JSON numeric grant omits trailing decimal zeros."""
+    actual = accounting(folder, str(recorded_grant))
+    return actual.keys() == seal.keys() and all(
+        Decimal(actual[k]) == Decimal(v) if k in {"spent", "reported", "held"} else actual[k] == v
+        for k, v in seal.items()
+    )
+
+
 def run_study(workspace, cfg, base, conn, rows, tasks, record, *, stage_runner=stage_job):
     root = workspace / "runs" / cfg.get("run_directory", cfg["name"])
     root.mkdir(parents=True, exist_ok=True)

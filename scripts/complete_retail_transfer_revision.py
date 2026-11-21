@@ -11,8 +11,10 @@ from agent_memory_eval.recording.journal import safe_path
 from scripts import pace_retail_transfer_revision as pacing
 from scripts import run_retail_transfer_revision as study
 from scripts.analyze_full_retail import require
+from scripts.audit_retail_revision_reservations import cost_basis
 
 PROFILE = "protocols/pilots/tau2-retail-transfer-revision-pending-v1.json"
+AMENDMENT = "protocols/pilots/tau2-retail-transfer-revision-pending-maxima-v1.json"
 PREFLIGHT = "artifacts/analyses/20261121-retail-transfer-revision-pending-preflight.json"
 
 
@@ -53,6 +55,18 @@ def prepare(workspace):
         and covered == Decimal(end["total_covered_usd"]) <= Decimal(cap) <= Decimal(cfg["total_usd_limit"]),
         "Parent cohort or aggregate spending differs",
     )
+    source_root = Path(__file__).resolve().parents[1]
+    amendment = study.retail.read(source_root / AMENDMENT)
+    require(
+        amendment["previous_protocol"]
+        == {"path": PROFILE, "sha256": digest((source_root / PROFILE).read_bytes())},
+        "Request-maxima amendment does not refer to the original pending rules",
+    )
+    receipt = cost_basis(root, end, reg, cfg["unpriced_http"])
+    covered = Decimal(receipt["covered"])
+    require(
+        0 <= covered <= Decimal(end["total_covered_usd"]), "Reconciled parent cost exceeds the sealed total"
+    )
     pending, rows = {}, []
     for row in (r for r in all_rows if "pairs" in r):
         tid = row["task"]
@@ -70,7 +84,7 @@ def prepare(workspace):
             else:
                 _, ctl, slots = study.retail.sealed_rows(folder)
                 require(
-                    study.retail.accounting(folder, ctl["profile"]["guards"]["max_usd"]) == seal,
+                    study.retail.matches_accounting_seal(folder, ctl["profile"]["guards"]["max_usd"], seal),
                     "Original funding or shard seal differs",
                 )
                 entries = untouched_jobs(jobs, slots, folder)
@@ -85,6 +99,11 @@ def prepare(workspace):
             all(b["status"] in {"completed", "empty"} for b in donor["banks"].values()),
             "An original writer is unavailable",
         )
+    # Every pending episode can terminate in at most one qualifying unpriced request.
+    maximum = max(
+        [cfg["unpriced_http"]["maximum_per_stage"], *(len(entries) for entries in pending.values())]
+    )
+    cfg["unpriced_http"] = dict(cfg["unpriced_http"], maximum_per_stage=maximum)
     cfg.update(
         run_directory=cfg["name"] + "-pending",
         stages=list(study.SOLVES),
@@ -97,7 +116,9 @@ def prepare(workspace):
     record = dict(
         original,
         authorized_usd=cap,
-        pending_protocol_sha256=digest((Path(__file__).resolve().parents[1] / PROFILE).read_bytes()),
+        pending_protocol_sha256=digest((source_root / AMENDMENT).read_bytes()),
+        parent_cost_reconciliation=receipt,
+        unpriced_receipts_by_shard=maximum,
         parent_registration_sha256=end["registration_sha256"],
         parent_completion_sha256=digest((root / "completion.json").read_bytes()),
         prior_covered_usd=str(covered),
@@ -129,7 +150,7 @@ def main():
     cfg, base, conn, rows, tasks, record = prepare(workspace)
     count = sum(len(v) for v in record["unstarted"].values())
     print(
-        f"{count} untouched consultations; USD {record['remaining_usd']} available after all original holds",
+        f"{count} untouched consultations; USD {record['remaining_usd']} available after checking original request maxima",
         flush=True,
     )
     if args.mode == "preflight":
