@@ -7,10 +7,11 @@ from unittest.mock import patch
 
 from test_openrouter import Reply, response
 
-from agent_memory_eval.contracts.core import digest, read_json
+from agent_memory_eval.contracts.core import ContractError, digest, read_json
 from agent_memory_eval.contracts.validation import ROOT
 from agent_memory_eval.models.openrouter import OpenRouterClient
 from agent_memory_eval.recording.journal import BlobStore
+from scripts import audit_retail_transfer_writing as writing_audit
 from scripts import run_retail_related_transfer as study
 from scripts.analyze_recheck_rounds import mutation_key
 from scripts.analyze_retail_related_transfer import (
@@ -21,6 +22,53 @@ from scripts.analyze_retail_related_transfer import (
 
 
 class RetailRelatedTransferTests(unittest.TestCase):
+    def test_writing_audit_rejects_an_old_note_or_foreign_customer_turn_in_pure_control(
+        self,
+    ):
+        system = {"role": "system", "content": writing_audit.RETAIL_RULE}
+        customer = {"role": "user", "content": "I need to return this order."}
+        cell = {
+            "arm": "no_memory",
+            "run": "control",
+            "worker_responses": 1,
+            "body_exposed": False,
+        }
+        simulator = (
+            "user_simulator",
+            {},
+            {"message": {"content": customer["content"]}},
+            None,
+        )
+        for extra in (
+            [],
+            [writing_audit.snapshot_message([{"body": "a past note"}])],
+            [{"role": "user", "content": "another customer's message"}],
+        ):
+            worker = (
+                "worker",
+                {"messages": [system, *extra, customer]},
+                {"message": {"content": "Hello"}},
+                None,
+            )
+            with (
+                self.subTest(extra=extra),
+                patch.object(
+                    writing_audit, "role_calls", return_value=[simulator, worker]
+                ),
+            ):
+                if extra:
+                    with self.assertRaisesRegex(ContractError, "Customer history"):
+                        writing_audit.inspect_delivery(
+                            None, cell, [], system["content"]
+                        )
+                else:
+                    self.assertEqual(
+                        writing_audit.inspect_delivery(
+                            None, cell, [], system["content"]
+                        )["worker_replies"],
+                        1,
+                    )
+
     def test_all_same_order_donors_and_only_new_target_tasks(self):
         def task(*actions):
             return {
