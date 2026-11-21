@@ -4,6 +4,7 @@ import argparse
 import fcntl
 import json
 import math
+import os
 import subprocess
 import time
 from collections import Counter
@@ -207,12 +208,23 @@ def main():
         "limits": LIMITS,
     }
     control = root / "pacing-activation.json"
-    if control.exists():
-        existing = study.retail.read(control)
-        require(all(existing[k] == v for k, v in record.items()), "Different pacing rule already active")
-    else:
-        record.update(sealed_prefix(root, cfg, pre), activated_utc=datetime.now(UTC).isoformat())
-        study.retail.fixed(control, record)
+    fd = os.open(root, os.O_RDONLY | os.O_DIRECTORY)
+    try:
+        fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        require(not (root / "completion.json").exists(), "The entire study is already sealed")
+        prefix = sealed_prefix(root, cfg, pre)
+        if control.exists():
+            existing = study.retail.read(control)
+            require(
+                all(existing[k] == v for k, v in record.items())
+                and all(prefix["stage_seals"].get(k) == v for k, v in existing["stage_seals"].items()),
+                "Different pacing rule or original sealed wave",
+            )
+        else:
+            record.update(prefix, activated_utc=datetime.now(UTC).isoformat())
+            study.retail.fixed(control, record)
+    finally:
+        os.close(fd)
     cfg["total_usd_limit"] = cap
     cfg["max_concurrent"] = LIMITS["max_workers"]
     study.retail.run_study(
