@@ -1,6 +1,7 @@
 """Regrade the retail retest and compare writing, notice and combined effects on matched tasks."""
 
 import argparse
+import subprocess
 from collections import Counter, defaultdict
 from concurrent.futures import ProcessPoolExecutor
 from decimal import ROUND_DOWN, Decimal
@@ -212,7 +213,159 @@ def solve_summary(rows, plans):
     }
 
 
-def analyze(workspace, workers, *, writing_only=False):
+def audit_pacing(root, reg, end, solves, pairs):
+    activation = study.retail.read(root / "pacing-activation.json")
+    state = study.retail.read(root / "pacing-state.json")
+    original = activation["stage_seals"]
+    require(
+        activation["registration_sha256"] == end["registration_sha256"]
+        and activation["native_commit"] == reg["implementation"]["implementation_commit"]
+        and activation["approved_total_usd"] == reg["preflight"]["authorized_usd"]
+        and all(end["stages"][k]["seal"] == v for k, v in original.items())
+        and Decimal(activation["covered_usd"]) == sum(Decimal(end["stages"][k]["spent"]) for k in original)
+        and digest(
+            subprocess.check_output(
+                [
+                    "git",
+                    "-C",
+                    str(ROOT),
+                    "show",
+                    activation["pacing_commit"] + ":scripts/pace_retail_transfer_revision.py",
+                ]
+            )
+        )
+        == activation["pacing_sha256"],
+        "Pacing checkpoint differs from registration, spending or earlier shard seals",
+    )
+    by_period = defaultdict(Counter)
+    period_for = {}
+    for c in solves:
+        before = f"task-{c['task']}/{c['stage']}" in original
+        period = "before" if before else "after"
+        period_for[c["task"], c["stage"]] = period
+        group = by_period[period]
+        group["assigned"] += 1
+        group["attempted"] += "costs" in c
+        group["graded"] += c["official"] is not None
+        bill = c.get("costs", {}).get("user_simulator", {})
+        group["simulator_http"] += bill.get("http_calls", 0)
+        group["simulator_429"] += c.get("error") == "HTTP_429" and bool(bill.get("unknown_count"))
+    require(
+        state["sent"] == by_period["after"]["simulator_http"]
+        and state["limited"] == by_period["after"]["simulator_429"]
+        and activation["prior_http_429"].get("user_simulator", 0) == by_period["before"]["simulator_429"],
+        "Pacing counts differ from native simulator receipts",
+    )
+    primary = pairs["revised/no_memory"]
+    return {
+        "activation": activation,
+        "final_transport_state": state,
+        "by_period": by_period,
+        "primary_by_period": {
+            key: paired_effect(
+                [p for p in primary if period_for[p["task"], p["stage"]] == key], interval=True
+            )
+            for key in by_period
+        },
+        "notice_both_rounds_paced": {
+            key: paired_effect(
+                [p for p in ps if all(period_for[p["task"], s] == "after" for s in study.SOLVES)],
+                interval=True,
+            )
+            for key, ps in pairs.items()
+            if key.startswith("notice/")
+        },
+    }
+
+
+def include_untouched_attempts(workspace, result, original_ids, workers):
+    from scripts import complete_retail_transfer_revision as pending
+
+    cfg, base, _, rows, tasks, pre = pending.prepare(workspace)
+    root = workspace / "runs" / cfg["run_directory"]
+    end = study.retail.read(root / "completion.json")
+    reg = study.transfer.expansion.verified(root / "registration.json", end["registration_sha256"])
+    require(
+        reg["preflight"] == pre == study.retail.read(ROOT / pending.PREFLIGHT)
+        and pre["parent_completion_sha256"] == result["completion_sha256"]
+        and reg["endpoint_terms"] == cfg["expected_endpoint_terms"]
+        and set(end["stages"]) == set(pre["unstarted"]),
+        "Supplement does not match the frozen pending jobs",
+    )
+    with ProcessPoolExecutor(max_workers=workers, mp_context=get_context("spawn")) as pool:
+        batches = list(
+            pool.map(
+                audit_target,
+                [
+                    (workspace, dict(cfg, stages=r["scheduled_stages"]), base, r, tasks[r["task"]], reg, end)
+                    for r in rows
+                ],
+            )
+        )
+    additions = [c for group, _ in batches for c in group]
+    new_ids = [i for _, group in batches for i in group]
+
+    def slot_key(c):
+        return (c["task"], c["stage"], c["source"], c["arm"])
+
+    index = {slot_key(c): c for c in result["solves"] if c["status"] == "not_started"}
+    require(
+        len(index) == len(additions) == len({slot_key(c) for c in additions})
+        and set(index) == {slot_key(c) for c in additions}
+        and len(set(original_ids + new_ids)) == len(original_ids) + len(new_ids),
+        "Attempted or duplicated assignment",
+    )
+    attempts = result["writers"] + result["solves"] + additions
+    active_sessions = [c["session"] for c in attempts if c.get("session")]
+    allocated_runs = [c["run"] for c in attempts if c.get("run")]
+    require(
+        len(set(active_sessions)) == len(active_sessions) and len(set(allocated_runs)) == len(allocated_runs),
+        "Supplement reuses a session or preallocated identity",
+    )
+    money = {
+        k: sum((Decimal(s[k]) for s in end["stages"].values()), Decimal(0))
+        for k in ("reported", "held", "spent")
+    }
+    aggregate = {k: str(Decimal(result["cost"][k]) + v) for k, v in money.items()}
+    require(
+        Decimal(aggregate["spent"]) == Decimal(end["total_covered_usd"]) <= Decimal(pre["authorized_usd"])
+        and Decimal(aggregate["reported"]) + Decimal(aggregate["held"]) == Decimal(aggregate["spent"]),
+        "Supplement changes the original aggregate cost ceiling",
+    )
+    paced_http = sum(c.get("costs", {}).get("user_simulator", {}).get("http_calls", 0) for c in additions)
+    num_limits = sum(
+        c.get("error") == "HTTP_429"
+        and bool(c.get("costs", {}).get("user_simulator", {}).get("unknown_count"))
+        for c in additions
+    )
+    transport = study.retail.read(root / "pacing-state.json") if (root / "pacing-state.json").exists() else {}
+    require(
+        transport.get("sent", 0) == paced_http and transport.get("limited", 0) == num_limits,
+        "Pending simulator receipts differ from the pacing record",
+    )
+    result["pending_execution"] = {
+        "implementation": reg["implementation"],
+        "registration_sha256": end["registration_sha256"],
+        "completion_sha256": digest((root / "completion.json").read_bytes()),
+        "original_cost": result["cost"],
+        "additional_cost": {k: str(v) for k, v in money.items()},
+        "assigned": len(additions),
+        "attempted": sum("session" in c for c in additions),
+        "graded": sum(c["official"] is not None for c in additions),
+        "transport": transport,
+        "original_contrasts": result["solve_summary"]["contrasts"],
+    }
+    for new in additions:
+        prior = index[slot_key(new)]
+        prior_info = {"run": prior["run"], "status": prior["status"], "reason": prior["reason"]}
+        prior.clear()
+        prior.update(new, original_unstarted=prior_info)
+    result["cost"] = dict(aggregate, authorized_usd=pre["authorized_usd"])
+    result["generations"] += len(new_ids)
+    result["solve_summary"] = solve_summary(result["solves"], pre["targets"])
+
+
+def analyze(workspace, workers, *, writing_only=False, include_pending=False):
     cfg, base, _, rows, tasks, pre = study.prepare(workspace)
     root = workspace / "runs" / cfg["name"]
     registration = root / "registration.json"
@@ -322,7 +475,8 @@ def analyze(workspace, workers, *, writing_only=False):
         <= Decimal(cfg["total_usd_limit"]),
         "Cost differs from the authorized total",
     )
-    return {
+    outcomes = solve_summary(solves, pre["targets"])
+    result = {
         "study": cfg["name"],
         "implementation": reg["implementation"],
         "registration_sha256": end["registration_sha256"],
@@ -331,10 +485,15 @@ def analyze(workspace, workers, *, writing_only=False):
         "generations": len(ids),
         "analysis_model_calls": 0,
         "writer_summary": writer_summary(writers),
-        "solve_summary": solve_summary(solves, pre["targets"]),
+        "solve_summary": outcomes,
         "writers": writers,
         "solves": solves,
     }
+    if (root / "pacing-activation.json").exists():
+        result["pacing"] = audit_pacing(root, reg, end, solves, outcomes["pairs"])
+    if include_pending:
+        include_untouched_attempts(workspace, result, ids, workers)
+    return result
 
 
 def main():
@@ -342,9 +501,18 @@ def main():
     parser.add_argument("--workspace", type=Path, default=ROOT)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--workers", type=int, default=6)
-    parser.add_argument("--writing-only", action="store_true", help="Audit the sealed writing phase alone.")
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument(
+        "--include-pending", action="store_true", help="Verify and merge the untouched follow-up."
+    )
+    mode.add_argument("--writing-only", action="store_true", help="Audit the sealed writing phase alone.")
     args = parser.parse_args()
-    result = analyze(args.workspace.resolve(), args.workers, writing_only=args.writing_only)
+    result = analyze(
+        args.workspace.resolve(),
+        args.workers,
+        writing_only=args.writing_only,
+        include_pending=args.include_pending,
+    )
     study.retail.fixed(args.output, result)
     print(result["writer_summary"]["paired_storage"])
     if not args.writing_only:

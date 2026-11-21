@@ -82,6 +82,12 @@ def design_for(cfg, base, row, stage):
     if "notice_by_stage" in row:
         design["preload_notice_version"] = row["notice_by_stage"][stage]
     jobs = schedule(cfg, row, stage)
+    if "unstarted_jobs" in row:
+        permitted = row["unstarted_jobs"][stage]
+        indices = {job["index"] for job in permitted}
+        jobs = [job for job in jobs if job["index"] in indices]
+        if not jobs or jobs != permitted:
+            raise ContractError("Pending jobs differ from the original ordered allocation")
     design["allocation"] = {"jobs": jobs, "jobs_sha256": digest(canonical(jobs))}
     return design, jobs
 

@@ -227,3 +227,49 @@ class RetailRevisionTests(unittest.TestCase):
                     {c["preload_notice_version"] for c in exposed}, {"legacy-id-v1", "domain-auth-v2"}
                 )
                 self.assertEqual(counts["grader"], 12)
+
+                # An untouched follow-up retains the original cell indices, banks and notice.
+                from scripts.complete_retail_transfer_revision import pending_stage
+
+                chosen = [
+                    j
+                    for j in revision.transfer.schedule(cfg, row, "solve1")
+                    if j["arm"] == "no_memory"
+                    or (j.get("source_task_id") == "36" and j["arm"] == "episode_explicit")
+                ]
+                follow_row = dict(row, scheduled_stages=["solve1"], unstarted_jobs={"solve1": chosen})
+                with TemporaryDirectory(dir=ROOT / "runs") as follow_dir:
+                    follow_root = Path(follow_dir)
+                    follow_cfg = dict(cfg, run_directory=follow_root.name, stages=["solve1"])
+                    params = (
+                        ROOT,
+                        follow_root,
+                        follow_cfg,
+                        base,
+                        conn,
+                        follow_row,
+                        tasks["37"],
+                        "solve1",
+                        identity,
+                        models,
+                        judge,
+                        "2",
+                    )
+                    pending_stage(params)
+                    seal = revision.retail.accounting(follow_root / "task-37/solve1", "2")
+                    audited, _ = audit_target(
+                        (
+                            ROOT,
+                            follow_cfg,
+                            base,
+                            follow_row,
+                            tasks["37"],
+                            reg,
+                            {"stages": {"task-37/solve1": seal}},
+                        )
+                    )
+                    self.assertEqual([c["arm"] for c in audited], [j["arm"] for j in chosen])
+                    self.assertEqual(
+                        [c["body_exposed"] for c in audited], [j["arm"] != "no_memory" for j in chosen]
+                    )
+                    self.assertEqual(counts["grader"], 14)
