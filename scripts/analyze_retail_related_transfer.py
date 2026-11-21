@@ -29,6 +29,27 @@ from scripts.analyze_recheck_rounds import inspect_episode, mutation_key, status
 from scripts.analyze_retail_sample_expansion import paired_effect
 
 
+def audit_revision_dialogue(records, enabled):
+    """Match each worker's customer history to its own simulator and find its first business tool."""
+    customer_replies = []
+    first_tool = None
+    for actor, wire, raw, result in records:
+        if actor == "user_simulator" and result == "response":
+            customer_replies.append(raw["choices"][0]["message"]["content"])
+        if actor != "worker":
+            continue
+        dialogue = wire["messages"][2 if enabled else 1:]
+        require(
+            [m["content"] for m in dialogue if m["role"] == "user"] == customer_replies,
+            "Worker history differs from its own preceding customer replies",
+        )
+        if first_tool is None and result == "response":
+            calls = raw["choices"][0]["message"].get("tool_calls") or []
+            if calls:
+                first_tool = calls[0]["function"]["name"]
+    return first_tool
+
+
 def audited_episode(workspace, folder, res, cell, cfg, task, reg, models):
     sid, arm, run = cell["source"], cell["arm"], cell["run"]
     blob = BlobStore(folder)
@@ -125,6 +146,8 @@ def audited_episode(workspace, folder, res, cell, cfg, task, reg, models):
     require(
         bool(evidence["input_spans"]) == bool(items and worker_responses), "Actual memory exposure differs"
     )
+    if "preload_notice_version" in cell:
+        cell["first_business_tool"] = audit_revision_dialogue(records, policy.enabled)
     cell.update(
         evidence,
         official=res["official_success"],

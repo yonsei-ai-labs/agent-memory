@@ -50,6 +50,7 @@ class RetailRevisionTests(unittest.TestCase):
                 )
         out = solve_summary(cells, plans)
         self.assertEqual(out["contrasts"]["revised/no_memory"]["counts"], {"gain": 1, "missing": 1})
+        self.assertEqual(out["contrasts"]["revised/no_memory"]["all_pair_bounds"], [0.5, 1.0])
         self.assertEqual(out["contrasts"]["notice/explicit"]["counts"], {"gain": 1, "missing": 1})
         self.assertEqual(out["contrasts"]["no_memory/notice_order"]["counts"], {"loss": 1})
         self.assertEqual(terminal_disposition([], "STORED"), "other_empty_reply")

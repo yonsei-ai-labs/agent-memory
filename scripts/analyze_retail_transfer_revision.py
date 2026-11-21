@@ -3,7 +3,7 @@
 import argparse
 from collections import Counter, defaultdict
 from concurrent.futures import ProcessPoolExecutor
-from decimal import Decimal
+from decimal import ROUND_DOWN, Decimal
 from multiprocessing import get_context
 from pathlib import Path
 
@@ -171,6 +171,8 @@ def solve_summary(rows, plans):
             "run": treatment["run"],
             "control_run": control["run"],
             "state": status(treatment["official"], control["official"]),
+            "low": int(treatment["official"] is True) - int(control["official"] is not False),
+            "high": int(treatment["official"] is not False) - int(control["official"] is True),
         }
         paired[label].append(row)
 
@@ -197,6 +199,7 @@ def solve_summary(rows, plans):
                     compare("revised/" + control, c, index[tid, None, control, stage])
     for label, pairs in paired.items():
         groups[label] = paired_effect(pairs, interval=True)
+        groups[label]["all_pair_bounds"] = [sum(p[k] for p in pairs) / len(pairs) for k in ("low", "high")]
     primary = paired["revised/no_memory"]
     return {
         "by_notice_and_arm": by_arm,
@@ -209,24 +212,88 @@ def solve_summary(rows, plans):
     }
 
 
-def analyze(workspace, workers):
+def analyze(workspace, workers, *, writing_only=False):
     cfg, base, _, rows, tasks, pre = study.prepare(workspace)
     root = workspace / "runs" / cfg["name"]
-    end = study.retail.read(root / "completion.json")
-    reg = study.transfer.expansion.verified(root / "registration.json", end["registration_sha256"])
+    registration = root / "registration.json"
+    reg = study.retail.read(registration)
     cap = reg["preflight"]["authorized_usd"]
     require(
         pre == study.retail.read(ROOT / study.PREFLIGHT)
         and reg["preflight"] == dict(pre, authorized_usd=cap)
-        and set(end["stages"]) == {f"task-{r['task']}/{s}" for r in rows for s in r["scheduled_stages"]},
-        "Recorded protocol, cohort or phase changed",
+        and 0 < Decimal(cap) <= Decimal(cfg["total_usd_limit"]),
+        "Recorded protocol, cohort or budget changed",
     )
+    sources = [r for r in rows if r["scheduled_stages"] == ["write"]]
+    if writing_only:
+        # Reconstruct the same sealed costs from recorded grants before the consultations finish.
+        stages = {}
+        total = Decimal(0)
+        width = cfg["concurrency_by_stage"]["write"]
+        order = pre["stage_order"]["write"]
+        for start in range(0, len(order), width):
+            wave = study.retail.read(root / f"write-wave-{start // width + 1}.json")
+            grant = Decimal(wave["per_shard_grant"])
+            require(
+                wave["tasks"] == order[start : start + width]
+                and Decimal(wave["prior_covered"]) == total
+                and grant
+                == ((Decimal(cap) - total) / len(wave["tasks"])).quantize(
+                    Decimal("0.000001"), rounding=ROUND_DOWN
+                ),
+                "Writer grant differs from its wave or exceeds budget",
+            )
+            for sid in wave["tasks"]:
+                name = f"task-{sid}/write"
+                if grant:
+                    seal = study.retail.accounting(root / name, str(grant))
+                else:
+                    seal = {
+                        "status": "not_started",
+                        "reason": "spend_limit",
+                        "reported": "0",
+                        "held": "0",
+                        "spent": "0",
+                        "http": 0,
+                    }
+                stages[name] = seal
+                total += Decimal(seal["spent"])
+        end = {"stages": stages}
+    else:
+        end = study.retail.read(root / "completion.json")
+        require(
+            digest(registration.read_bytes()) == end["registration_sha256"]
+            and set(end["stages"]) == {f"task-{r['task']}/{s}" for r in rows for s in r["scheduled_stages"]},
+            "Recorded registration or phase changed",
+        )
     writers, ids = [], []
-    for row in (r for r in rows if r["scheduled_stages"] == ["write"]):
+    for row in sources:
         batch, generation_ids, banks = audited_writers(workspace, root, cfg, base, row, reg, end)
         writers.extend(batch)
         ids.extend(generation_ids)
         cfg["donors"][row["task"]]["banks"] = banks
+    if writing_only:
+        started = [w for w in writers if w.get("session")]
+        require(
+            len(writers) == pre["writer_allocations"]
+            and len(ids) == len(set(ids))
+            and len({w["session"] for w in started}) == len(started)
+            and len({w["run"] for w in started}) == len(started),
+            "Incomplete or reused writer allocations",
+        )
+        return {
+            "study": cfg["name"],
+            "phase": "write",
+            "implementation": reg["implementation"],
+            "registration_sha256": digest(registration.read_bytes()),
+            "stage_seals": stages,
+            "total_covered_usd": str(total),
+            "authorized_study_usd": cap,
+            "generations": len(ids),
+            "analysis_model_calls": 0,
+            "writer_summary": writer_summary(writers),
+            "writers": writers,
+        }
     cfg["stages"] = list(study.SOLVES)
     targets = [r for r in rows if "pairs" in r]
     with ProcessPoolExecutor(max_workers=workers, mp_context=get_context("spawn")) as pool:
@@ -275,12 +342,13 @@ def main():
     parser.add_argument("--workspace", type=Path, default=ROOT)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--workers", type=int, default=6)
+    parser.add_argument("--writing-only", action="store_true", help="Audit the sealed writing phase alone.")
     args = parser.parse_args()
-    result = analyze(args.workspace.resolve(), args.workers)
+    result = analyze(args.workspace.resolve(), args.workers, writing_only=args.writing_only)
     study.retail.fixed(args.output, result)
-    print(
-        result["writer_summary"]["paired_storage"], result["solve_summary"]["contrasts"]["revised/no_memory"]
-    )
+    print(result["writer_summary"]["paired_storage"])
+    if not args.writing_only:
+        print(result["solve_summary"]["contrasts"]["revised/no_memory"])
 
 
 if __name__ == "__main__":
