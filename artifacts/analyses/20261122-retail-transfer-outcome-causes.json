@@ -1,0 +1,4127 @@
+{
+  "inputs": {
+    "artifacts/analyses/20261121-retail-transfer-revision-results.json": "e3a25bf8d0f9ce2392bdc50ba3cc776015e48e76bc71498b71a37b20fe1afa58",
+    "artifacts/analyses/20261121-retail-related-transfer-results.json": "faf315af21ff984d5760fd709bce9519a42c9fd9d23dd377e9dd83d9cd260c84",
+    "artifacts/analyses/20261121-retail-related-transfer-preflight.json": "d3e02d03621ae092d521791a7311b262c8b5c5cc4f7994ade5bc06efc4944aa6",
+    "data/tau2-bench/data/tau2/domains/retail/tasks.json": "8e03ebce7901bd6218e7a7dc3105faa9324091a68058f7fe61c65262868812e8"
+  },
+  "analysis_model_calls": 0,
+  "missing": 25,
+  "by_task": {
+    "6": {
+      "gain": 6,
+      "both_fail": 2
+    },
+    "7": {
+      "both_pass": 8
+    },
+    "8": {
+      "both_pass": 7,
+      "loss": 1
+    },
+    "16": {
+      "both_pass": 4
+    },
+    "19": {
+      "both_fail": 2,
+      "gain": 2
+    },
+    "23": {
+      "both_pass": 3,
+      "loss": 1
+    },
+    "28": {
+      "both_pass": 3,
+      "loss": 4
+    },
+    "29": {
+      "loss": 1,
+      "both_pass": 3
+    },
+    "30": {
+      "both_pass": 4
+    },
+    "31": {
+      "both_pass": 3,
+      "loss": 1
+    },
+    "41": {
+      "gain": 2,
+      "both_fail": 2
+    },
+    "46": {
+      "both_pass": 3,
+      "loss": 1
+    },
+    "47": {
+      "gain": 3,
+      "both_fail": 1
+    },
+    "54": {
+      "both_pass": 3,
+      "loss": 1
+    },
+    "63": {
+      "both_pass": 8
+    },
+    "72": {
+      "loss": 3
+    },
+    "95": {
+      "both_pass": 2,
+      "loss": 1
+    },
+    "96": {
+      "both_pass": 2
+    },
+    "98": {
+      "both_fail": 7,
+      "gain": 1
+    },
+    "99": {
+      "loss": 3,
+      "both_pass": 5
+    }
+  },
+  "handoffs_by_outcome": {
+    "gain": {
+      "neither": 9,
+      "pure_only": 5
+    },
+    "both_fail": {
+      "memory_only": 5,
+      "both": 2,
+      "pure_only": 1,
+      "neither": 6
+    },
+    "both_pass": {
+      "neither": 52,
+      "memory_only": 2,
+      "pure_only": 4
+    },
+    "loss": {
+      "memory_only": 12,
+      "neither": 5
+    }
+  },
+  "previous_handoffs_by_outcome": {
+    "both_pass": {
+      "memory_only": 5,
+      "neither": 126,
+      "pure_only": 2,
+      "both": 11
+    },
+    "loss": {
+      "memory_only": 21,
+      "both": 5,
+      "pure_only": 1,
+      "neither": 10
+    },
+    "both_fail": {
+      "both": 10,
+      "pure_only": 2,
+      "neither": 23,
+      "memory_only": 4
+    },
+    "gain": {
+      "both": 4,
+      "pure_only": 4,
+      "neither": 15
+    }
+  },
+  "losing_grade_components": {
+    "gain": {
+      "db_only": 9,
+      "language_only": 5
+    },
+    "loss": {
+      "db_only": 9,
+      "language_only": 4,
+      "db_and_language": 4
+    }
+  },
+  "matched": [
+    {
+      "task": "6",
+      "source": "9",
+      "arm": "lesson_explicit",
+      "stage": "solve2",
+      "customer": "be2b23dd42d83bc1618409e5dec11712ec636ebac2597c6b247a50c5173626ef",
+      "state": "gain",
+      "memory": "r_1ae60739081f4310a174b6c183360a06",
+      "pure": "r_922a64a79af9427081bdb1196998cfc7",
+      "writer": "r_70915028e09c4ca884da5c4304f7a0a1",
+      "exposed": true,
+      "note_mentions_handoff": false,
+      "memory_success": true,
+      "pure_success": false,
+      "empty_run": "r_5858594a4e33490cbaaf488661427171",
+      "empty_success": true,
+      "other_pure_run": "r_67492277a67d4f1caa7b71a073134ce6",
+      "other_pure_success": null,
+      "same_opening": false,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "6",
+      "source": "5",
+      "arm": "lesson_explicit",
+      "stage": "solve2",
+      "customer": "be2b23dd42d83bc1618409e5dec11712ec636ebac2597c6b247a50c5173626ef",
+      "state": "gain",
+      "memory": "r_951e6fef79c34c9a8d0b2996cfc05326",
+      "pure": "r_922a64a79af9427081bdb1196998cfc7",
+      "writer": "r_168615e6f205416bbef5e90921a44ee6",
+      "exposed": true,
+      "note_mentions_handoff": false,
+      "memory_success": true,
+      "pure_success": false,
+      "empty_run": "r_5858594a4e33490cbaaf488661427171",
+      "empty_success": true,
+      "other_pure_run": "r_67492277a67d4f1caa7b71a073134ce6",
+      "other_pure_success": null,
+      "same_opening": false,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "6",
+      "source": "9",
+      "arm": "episode_explicit",
+      "stage": "solve2",
+      "customer": "be2b23dd42d83bc1618409e5dec11712ec636ebac2597c6b247a50c5173626ef",
+      "state": "both_fail",
+      "memory": "r_eb17cf952cd041b1955dd231a18805a1",
+      "pure": "r_922a64a79af9427081bdb1196998cfc7",
+      "writer": "r_34974ddc194e405687557542f7044e94",
+      "exposed": true,
+      "note_mentions_handoff": false,
+      "memory_success": false,
+      "pure_success": false,
+      "empty_run": "r_5858594a4e33490cbaaf488661427171",
+      "empty_success": true,
+      "other_pure_run": "r_67492277a67d4f1caa7b71a073134ce6",
+      "other_pure_success": null,
+      "same_opening": false,
+      "handoffs": "memory_only",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "6",
+      "source": "9",
+      "arm": "fact_explicit",
+      "stage": "solve2",
+      "customer": "be2b23dd42d83bc1618409e5dec11712ec636ebac2597c6b247a50c5173626ef",
+      "state": "gain",
+      "memory": "r_5325a1bc67e54594858baf0843d27cba",
+      "pure": "r_922a64a79af9427081bdb1196998cfc7",
+      "writer": "r_36ea2ff078be48a194135ab7ebfab44b",
+      "exposed": true,
+      "note_mentions_handoff": false,
+      "memory_success": true,
+      "pure_success": false,
+      "empty_run": "r_5858594a4e33490cbaaf488661427171",
+      "empty_success": true,
+      "other_pure_run": "r_67492277a67d4f1caa7b71a073134ce6",
+      "other_pure_success": null,
+      "same_opening": false,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "6",
+      "source": "5",
+      "arm": "procedure_explicit",
+      "stage": "solve2",
+      "customer": "be2b23dd42d83bc1618409e5dec11712ec636ebac2597c6b247a50c5173626ef",
+      "state": "gain",
+      "memory": "r_5370c299f4924625b09ab51a31c145cf",
+      "pure": "r_922a64a79af9427081bdb1196998cfc7",
+      "writer": "r_935e71991d60415885fa0380818a20b8",
+      "exposed": true,
+      "note_mentions_handoff": false,
+      "memory_success": true,
+      "pure_success": false,
+      "empty_run": "r_5858594a4e33490cbaaf488661427171",
+      "empty_success": true,
+      "other_pure_run": "r_67492277a67d4f1caa7b71a073134ce6",
+      "other_pure_success": null,
+      "same_opening": false,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "6",
+      "source": "5",
+      "arm": "episode_explicit",
+      "stage": "solve2",
+      "customer": "be2b23dd42d83bc1618409e5dec11712ec636ebac2597c6b247a50c5173626ef",
+      "state": "gain",
+      "memory": "r_1f4ba691a1644bf89deb3b0b43fb601c",
+      "pure": "r_922a64a79af9427081bdb1196998cfc7",
+      "writer": "r_499323fa8ba04bcfa794112c9be4829c",
+      "exposed": false,
+      "note_mentions_handoff": false,
+      "memory_success": true,
+      "pure_success": false,
+      "empty_run": "r_5858594a4e33490cbaaf488661427171",
+      "empty_success": true,
+      "other_pure_run": "r_67492277a67d4f1caa7b71a073134ce6",
+      "other_pure_success": null,
+      "same_opening": false,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "6",
+      "source": "5",
+      "arm": "fact_explicit",
+      "stage": "solve2",
+      "customer": "be2b23dd42d83bc1618409e5dec11712ec636ebac2597c6b247a50c5173626ef",
+      "state": "gain",
+      "memory": "r_28618a6cfd244ef7b1ffb41c8a023299",
+      "pure": "r_922a64a79af9427081bdb1196998cfc7",
+      "writer": "r_9634feafb7264ad5b9e4194e738207d2",
+      "exposed": false,
+      "note_mentions_handoff": false,
+      "memory_success": true,
+      "pure_success": false,
+      "empty_run": "r_5858594a4e33490cbaaf488661427171",
+      "empty_success": true,
+      "other_pure_run": "r_67492277a67d4f1caa7b71a073134ce6",
+      "other_pure_success": null,
+      "same_opening": true,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "6",
+      "source": "9",
+      "arm": "procedure_explicit",
+      "stage": "solve2",
+      "customer": "be2b23dd42d83bc1618409e5dec11712ec636ebac2597c6b247a50c5173626ef",
+      "state": "both_fail",
+      "memory": "r_9a5846a812014006a666d346c14c0971",
+      "pure": "r_922a64a79af9427081bdb1196998cfc7",
+      "writer": "r_694eb3210b1f486899d895284bfd7e2b",
+      "exposed": true,
+      "note_mentions_handoff": false,
+      "memory_success": false,
+      "pure_success": false,
+      "empty_run": "r_5858594a4e33490cbaaf488661427171",
+      "empty_success": true,
+      "other_pure_run": "r_67492277a67d4f1caa7b71a073134ce6",
+      "other_pure_success": null,
+      "same_opening": false,
+      "handoffs": "memory_only",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "7",
+      "source": "9",
+      "arm": "fact_explicit",
+      "stage": "solve1",
+      "customer": "be2b23dd42d83bc1618409e5dec11712ec636ebac2597c6b247a50c5173626ef",
+      "state": "both_pass",
+      "memory": "r_a6145ab8fb2d4ad6bc95a70a17256ed4",
+      "pure": "r_cbee99ad5c384d77918c2a05ab3440b3",
+      "writer": "r_36ea2ff078be48a194135ab7ebfab44b",
+      "exposed": true,
+      "note_mentions_handoff": false,
+      "memory_success": true,
+      "pure_success": true,
+      "empty_run": "r_a253dd102e174ffb88e6f03dd2681c3f",
+      "empty_success": true,
+      "other_pure_run": "r_c79b602d16084577bd360571b2cd157e",
+      "other_pure_success": true,
+      "same_opening": true,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "7",
+      "source": "5",
+      "arm": "episode_explicit",
+      "stage": "solve1",
+      "customer": "be2b23dd42d83bc1618409e5dec11712ec636ebac2597c6b247a50c5173626ef",
+      "state": "both_pass",
+      "memory": "r_64b325f589494b209b3606ef31796df3",
+      "pure": "r_cbee99ad5c384d77918c2a05ab3440b3",
+      "writer": "r_499323fa8ba04bcfa794112c9be4829c",
+      "exposed": false,
+      "note_mentions_handoff": false,
+      "memory_success": true,
+      "pure_success": true,
+      "empty_run": "r_a253dd102e174ffb88e6f03dd2681c3f",
+      "empty_success": true,
+      "other_pure_run": "r_c79b602d16084577bd360571b2cd157e",
+      "other_pure_success": true,
+      "same_opening": true,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "7",
+      "source": "9",
+      "arm": "procedure_explicit",
+      "stage": "solve1",
+      "customer": "be2b23dd42d83bc1618409e5dec11712ec636ebac2597c6b247a50c5173626ef",
+      "state": "both_pass",
+      "memory": "r_e82dc3cc2c6c4dd8b3d0c9c77df5f6b7",
+      "pure": "r_cbee99ad5c384d77918c2a05ab3440b3",
+      "writer": "r_694eb3210b1f486899d895284bfd7e2b",
+      "exposed": true,
+      "note_mentions_handoff": false,
+      "memory_success": true,
+      "pure_success": true,
+      "empty_run": "r_a253dd102e174ffb88e6f03dd2681c3f",
+      "empty_success": true,
+      "other_pure_run": "r_c79b602d16084577bd360571b2cd157e",
+      "other_pure_success": true,
+      "same_opening": true,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "7",
+      "source": "5",
+      "arm": "fact_explicit",
+      "stage": "solve1",
+      "customer": "be2b23dd42d83bc1618409e5dec11712ec636ebac2597c6b247a50c5173626ef",
+      "state": "both_pass",
+      "memory": "r_b182da5ffbdf49c0b334a0dce4685c7e",
+      "pure": "r_cbee99ad5c384d77918c2a05ab3440b3",
+      "writer": "r_9634feafb7264ad5b9e4194e738207d2",
+      "exposed": false,
+      "note_mentions_handoff": false,
+      "memory_success": true,
+      "pure_success": true,
+      "empty_run": "r_a253dd102e174ffb88e6f03dd2681c3f",
+      "empty_success": true,
+      "other_pure_run": "r_c79b602d16084577bd360571b2cd157e",
+      "other_pure_success": true,
+      "same_opening": true,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "7",
+      "source": "9",
+      "arm": "episode_explicit",
+      "stage": "solve1",
+      "customer": "be2b23dd42d83bc1618409e5dec11712ec636ebac2597c6b247a50c5173626ef",
+      "state": "both_pass",
+      "memory": "r_32cd19f93ab3433b8a6158356ae9a861",
+      "pure": "r_cbee99ad5c384d77918c2a05ab3440b3",
+      "writer": "r_34974ddc194e405687557542f7044e94",
+      "exposed": true,
+      "note_mentions_handoff": false,
+      "memory_success": true,
+      "pure_success": true,
+      "empty_run": "r_a253dd102e174ffb88e6f03dd2681c3f",
+      "empty_success": true,
+      "other_pure_run": "r_c79b602d16084577bd360571b2cd157e",
+      "other_pure_success": true,
+      "same_opening": true,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "7",
+      "source": "9",
+      "arm": "lesson_explicit",
+      "stage": "solve1",
+      "customer": "be2b23dd42d83bc1618409e5dec11712ec636ebac2597c6b247a50c5173626ef",
+      "state": "both_pass",
+      "memory": "r_8c469045049c41e5aa4fbe4e5507c62f",
+      "pure": "r_cbee99ad5c384d77918c2a05ab3440b3",
+      "writer": "r_70915028e09c4ca884da5c4304f7a0a1",
+      "exposed": true,
+      "note_mentions_handoff": false,
+      "memory_success": true,
+      "pure_success": true,
+      "empty_run": "r_a253dd102e174ffb88e6f03dd2681c3f",
+      "empty_success": true,
+      "other_pure_run": "r_c79b602d16084577bd360571b2cd157e",
+      "other_pure_success": true,
+      "same_opening": true,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "7",
+      "source": "5",
+      "arm": "procedure_explicit",
+      "stage": "solve1",
+      "customer": "be2b23dd42d83bc1618409e5dec11712ec636ebac2597c6b247a50c5173626ef",
+      "state": "both_pass",
+      "memory": "r_67ccc38de61c40c189e3a914a2c63124",
+      "pure": "r_cbee99ad5c384d77918c2a05ab3440b3",
+      "writer": "r_935e71991d60415885fa0380818a20b8",
+      "exposed": true,
+      "note_mentions_handoff": false,
+      "memory_success": true,
+      "pure_success": true,
+      "empty_run": "r_a253dd102e174ffb88e6f03dd2681c3f",
+      "empty_success": true,
+      "other_pure_run": "r_c79b602d16084577bd360571b2cd157e",
+      "other_pure_success": true,
+      "same_opening": true,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "7",
+      "source": "5",
+      "arm": "lesson_explicit",
+      "stage": "solve1",
+      "customer": "be2b23dd42d83bc1618409e5dec11712ec636ebac2597c6b247a50c5173626ef",
+      "state": "both_pass",
+      "memory": "r_a2205b5cc22b4eada159384fe9dbcf50",
+      "pure": "r_cbee99ad5c384d77918c2a05ab3440b3",
+      "writer": "r_168615e6f205416bbef5e90921a44ee6",
+      "exposed": true,
+      "note_mentions_handoff": false,
+      "memory_success": true,
+      "pure_success": true,
+      "empty_run": "r_a253dd102e174ffb88e6f03dd2681c3f",
+      "empty_success": true,
+      "other_pure_run": "r_c79b602d16084577bd360571b2cd157e",
+      "other_pure_success": true,
+      "same_opening": true,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "8",
+      "source": "9",
+      "arm": "fact_explicit",
+      "stage": "solve2",
+      "customer": "be2b23dd42d83bc1618409e5dec11712ec636ebac2597c6b247a50c5173626ef",
+      "state": "both_pass",
+      "memory": "r_5f826d07ee3c4629b89919e3a32a7f30",
+      "pure": "r_05230878d78a407fa6f565a0e1eef76b",
+      "writer": "r_36ea2ff078be48a194135ab7ebfab44b",
+      "exposed": true,
+      "note_mentions_handoff": false,
+      "memory_success": true,
+      "pure_success": true,
+      "empty_run": "r_f03c1cdabca04ff4a3d5bf6407ab4492",
+      "empty_success": true,
+      "other_pure_run": "r_ed11a2a7037b48bb9bb0e5f8be511d28",
+      "other_pure_success": true,
+      "same_opening": false,
+      "handoffs": "memory_only",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "8",
+      "source": "5",
+      "arm": "episode_explicit",
+      "stage": "solve2",
+      "customer": "be2b23dd42d83bc1618409e5dec11712ec636ebac2597c6b247a50c5173626ef",
+      "state": "both_pass",
+      "memory": "r_292fe5ef5e7c4d4e8719c33f0fbfd81d",
+      "pure": "r_05230878d78a407fa6f565a0e1eef76b",
+      "writer": "r_499323fa8ba04bcfa794112c9be4829c",
+      "exposed": false,
+      "note_mentions_handoff": false,
+      "memory_success": true,
+      "pure_success": true,
+      "empty_run": "r_f03c1cdabca04ff4a3d5bf6407ab4492",
+      "empty_success": true,
+      "other_pure_run": "r_ed11a2a7037b48bb9bb0e5f8be511d28",
+      "other_pure_success": true,
+      "same_opening": false,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "8",
+      "source": "5",
+      "arm": "fact_explicit",
+      "stage": "solve2",
+      "customer": "be2b23dd42d83bc1618409e5dec11712ec636ebac2597c6b247a50c5173626ef",
+      "state": "both_pass",
+      "memory": "r_2a244e15a41d4ae2b7d3cdffb949a582",
+      "pure": "r_05230878d78a407fa6f565a0e1eef76b",
+      "writer": "r_9634feafb7264ad5b9e4194e738207d2",
+      "exposed": false,
+      "note_mentions_handoff": false,
+      "memory_success": true,
+      "pure_success": true,
+      "empty_run": "r_f03c1cdabca04ff4a3d5bf6407ab4492",
+      "empty_success": true,
+      "other_pure_run": "r_ed11a2a7037b48bb9bb0e5f8be511d28",
+      "other_pure_success": true,
+      "same_opening": false,
+      "handoffs": "memory_only",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "8",
+      "source": "9",
+      "arm": "lesson_explicit",
+      "stage": "solve2",
+      "customer": "be2b23dd42d83bc1618409e5dec11712ec636ebac2597c6b247a50c5173626ef",
+      "state": "both_pass",
+      "memory": "r_2f109cc86aed4cf0a48cc6471b5772a9",
+      "pure": "r_05230878d78a407fa6f565a0e1eef76b",
+      "writer": "r_70915028e09c4ca884da5c4304f7a0a1",
+      "exposed": true,
+      "note_mentions_handoff": false,
+      "memory_success": true,
+      "pure_success": true,
+      "empty_run": "r_f03c1cdabca04ff4a3d5bf6407ab4492",
+      "empty_success": true,
+      "other_pure_run": "r_ed11a2a7037b48bb9bb0e5f8be511d28",
+      "other_pure_success": true,
+      "same_opening": true,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "8",
+      "source": "9",
+      "arm": "procedure_explicit",
+      "stage": "solve2",
+      "customer": "be2b23dd42d83bc1618409e5dec11712ec636ebac2597c6b247a50c5173626ef",
+      "state": "both_pass",
+      "memory": "r_273e14fb7cbf4fecaee99c7dcf924fdd",
+      "pure": "r_05230878d78a407fa6f565a0e1eef76b",
+      "writer": "r_694eb3210b1f486899d895284bfd7e2b",
+      "exposed": true,
+      "note_mentions_handoff": false,
+      "memory_success": true,
+      "pure_success": true,
+      "empty_run": "r_f03c1cdabca04ff4a3d5bf6407ab4492",
+      "empty_success": true,
+      "other_pure_run": "r_ed11a2a7037b48bb9bb0e5f8be511d28",
+      "other_pure_success": true,
+      "same_opening": false,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "8",
+      "source": "5",
+      "arm": "procedure_explicit",
+      "stage": "solve2",
+      "customer": "be2b23dd42d83bc1618409e5dec11712ec636ebac2597c6b247a50c5173626ef",
+      "state": "loss",
+      "memory": "r_9420427f8ee6440089a67d2b1454364a",
+      "pure": "r_05230878d78a407fa6f565a0e1eef76b",
+      "writer": "r_935e71991d60415885fa0380818a20b8",
+      "exposed": true,
+      "note_mentions_handoff": false,
+      "memory_success": false,
+      "pure_success": true,
+      "empty_run": "r_f03c1cdabca04ff4a3d5bf6407ab4492",
+      "empty_success": true,
+      "other_pure_run": "r_ed11a2a7037b48bb9bb0e5f8be511d28",
+      "other_pure_success": true,
+      "same_opening": false,
+      "handoffs": "memory_only",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "8",
+      "source": "5",
+      "arm": "lesson_explicit",
+      "stage": "solve2",
+      "customer": "be2b23dd42d83bc1618409e5dec11712ec636ebac2597c6b247a50c5173626ef",
+      "state": "both_pass",
+      "memory": "r_7a015326fb6e4115abd66a518c8b6edc",
+      "pure": "r_05230878d78a407fa6f565a0e1eef76b",
+      "writer": "r_168615e6f205416bbef5e90921a44ee6",
+      "exposed": true,
+      "note_mentions_handoff": false,
+      "memory_success": true,
+      "pure_success": true,
+      "empty_run": "r_f03c1cdabca04ff4a3d5bf6407ab4492",
+      "empty_success": true,
+      "other_pure_run": "r_ed11a2a7037b48bb9bb0e5f8be511d28",
+      "other_pure_success": true,
+      "same_opening": false,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "8",
+      "source": "9",
+      "arm": "episode_explicit",
+      "stage": "solve2",
+      "customer": "be2b23dd42d83bc1618409e5dec11712ec636ebac2597c6b247a50c5173626ef",
+      "state": "both_pass",
+      "memory": "r_1fdd573eb54c4646b1608f4aeb4ee572",
+      "pure": "r_05230878d78a407fa6f565a0e1eef76b",
+      "writer": "r_34974ddc194e405687557542f7044e94",
+      "exposed": true,
+      "note_mentions_handoff": false,
+      "memory_success": true,
+      "pure_success": true,
+      "empty_run": "r_f03c1cdabca04ff4a3d5bf6407ab4492",
+      "empty_success": true,
+      "other_pure_run": "r_ed11a2a7037b48bb9bb0e5f8be511d28",
+      "other_pure_success": true,
+      "same_opening": false,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "16",
+      "source": "17",
+      "arm": "episode_explicit",
+      "stage": "solve2",
+      "customer": "03e33f27a6ee5cc4590e0520b921420399c9f5d421567bdeec5628939e42ae36",
+      "state": "both_pass",
+      "memory": "r_ac625623730648f6a8ecab6e5873c24e",
+      "pure": "r_8fe1abdd51dc4f72af26d527d716cc2c",
+      "writer": "r_0f23ae9319ee47ebaa86bf5c80f6fbc3",
+      "exposed": false,
+      "note_mentions_handoff": false,
+      "memory_success": true,
+      "pure_success": true,
+      "empty_run": "r_02b8e8db73c84706b2670ac313f7a1f6",
+      "empty_success": true,
+      "other_pure_run": "r_8c053a38ffaf483983c7010da6a03065",
+      "other_pure_success": true,
+      "same_opening": false,
+      "handoffs": "pure_only",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "16",
+      "source": "17",
+      "arm": "procedure_explicit",
+      "stage": "solve2",
+      "customer": "03e33f27a6ee5cc4590e0520b921420399c9f5d421567bdeec5628939e42ae36",
+      "state": "both_pass",
+      "memory": "r_c445ad6128c84189aa78863183d84149",
+      "pure": "r_8fe1abdd51dc4f72af26d527d716cc2c",
+      "writer": "r_7e26b283ce88471bb6e144720fe4c11a",
+      "exposed": true,
+      "note_mentions_handoff": false,
+      "memory_success": true,
+      "pure_success": true,
+      "empty_run": "r_02b8e8db73c84706b2670ac313f7a1f6",
+      "empty_success": true,
+      "other_pure_run": "r_8c053a38ffaf483983c7010da6a03065",
+      "other_pure_success": true,
+      "same_opening": false,
+      "handoffs": "pure_only",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "16",
+      "source": "17",
+      "arm": "fact_explicit",
+      "stage": "solve2",
+      "customer": "03e33f27a6ee5cc4590e0520b921420399c9f5d421567bdeec5628939e42ae36",
+      "state": "both_pass",
+      "memory": "r_b4a97d0147544cdb94ee935befea4498",
+      "pure": "r_8fe1abdd51dc4f72af26d527d716cc2c",
+      "writer": "r_e26c53a30038459da07e75b2e11325b1",
+      "exposed": true,
+      "note_mentions_handoff": false,
+      "memory_success": true,
+      "pure_success": true,
+      "empty_run": "r_02b8e8db73c84706b2670ac313f7a1f6",
+      "empty_success": true,
+      "other_pure_run": "r_8c053a38ffaf483983c7010da6a03065",
+      "other_pure_success": true,
+      "same_opening": true,
+      "handoffs": "pure_only",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "16",
+      "source": "17",
+      "arm": "lesson_explicit",
+      "stage": "solve2",
+      "customer": "03e33f27a6ee5cc4590e0520b921420399c9f5d421567bdeec5628939e42ae36",
+      "state": "both_pass",
+      "memory": "r_bd327857f46c48acae130548e70623d8",
+      "pure": "r_8fe1abdd51dc4f72af26d527d716cc2c",
+      "writer": "r_428c03fdc06246de8bdb8b80ac9f765c",
+      "exposed": true,
+      "note_mentions_handoff": false,
+      "memory_success": true,
+      "pure_success": true,
+      "empty_run": "r_02b8e8db73c84706b2670ac313f7a1f6",
+      "empty_success": true,
+      "other_pure_run": "r_8c053a38ffaf483983c7010da6a03065",
+      "other_pure_success": true,
+      "same_opening": false,
+      "handoffs": "pure_only",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "19",
+      "source": "18",
+      "arm": "lesson_explicit",
+      "stage": "solve2",
+      "customer": "17c8f5eae5b6d25fa372709fe7b417b2acd737b56e75f5561ed3bd986e3f34eb",
+      "state": "both_fail",
+      "memory": "r_8fa4d90c22db40e3a754ccb42db8a4d0",
+      "pure": "r_95e4648d8fbc4cab9359e3a7396fee43",
+      "writer": "r_602de9287c7649fe872fe3e5a0f77d94",
+      "exposed": true,
+      "note_mentions_handoff": false,
+      "memory_success": false,
+      "pure_success": false,
+      "empty_run": "r_57eaddc31afd4ad3a04df62743d17f40",
+      "empty_success": false,
+      "other_pure_run": "r_9bc7dbed3a204a48b4344e7844ff7f48",
+      "other_pure_success": false,
+      "same_opening": false,
+      "handoffs": "both",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "19",
+      "source": "18",
+      "arm": "episode_explicit",
+      "stage": "solve2",
+      "customer": "17c8f5eae5b6d25fa372709fe7b417b2acd737b56e75f5561ed3bd986e3f34eb",
+      "state": "gain",
+      "memory": "r_877848c0e462485caf382d1e8763c961",
+      "pure": "r_95e4648d8fbc4cab9359e3a7396fee43",
+      "writer": "r_3150193fba674ca58eeb6eb968d4aa29",
+      "exposed": true,
+      "note_mentions_handoff": false,
+      "memory_success": true,
+      "pure_success": false,
+      "empty_run": "r_57eaddc31afd4ad3a04df62743d17f40",
+      "empty_success": false,
+      "other_pure_run": "r_9bc7dbed3a204a48b4344e7844ff7f48",
+      "other_pure_success": false,
+      "same_opening": false,
+      "handoffs": "pure_only",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "19",
+      "source": "18",
+      "arm": "fact_explicit",
+      "stage": "solve2",
+      "customer": "17c8f5eae5b6d25fa372709fe7b417b2acd737b56e75f5561ed3bd986e3f34eb",
+      "state": "both_fail",
+      "memory": "r_edd044eae519409cb67d768599fe386c",
+      "pure": "r_95e4648d8fbc4cab9359e3a7396fee43",
+      "writer": "r_301f5633b22340d69bc5bc2bcd35035f",
+      "exposed": true,
+      "note_mentions_handoff": false,
+      "memory_success": false,
+      "pure_success": false,
+      "empty_run": "r_57eaddc31afd4ad3a04df62743d17f40",
+      "empty_success": false,
+      "other_pure_run": "r_9bc7dbed3a204a48b4344e7844ff7f48",
+      "other_pure_success": false,
+      "same_opening": true,
+      "handoffs": "pure_only",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "19",
+      "source": "18",
+      "arm": "procedure_explicit",
+      "stage": "solve2",
+      "customer": "17c8f5eae5b6d25fa372709fe7b417b2acd737b56e75f5561ed3bd986e3f34eb",
+      "state": "gain",
+      "memory": "r_a57adb1dbe484a35997a605c74047673",
+      "pure": "r_95e4648d8fbc4cab9359e3a7396fee43",
+      "writer": "r_1d511106abfb40a3afa028b8dae35326",
+      "exposed": true,
+      "note_mentions_handoff": false,
+      "memory_success": true,
+      "pure_success": false,
+      "empty_run": "r_57eaddc31afd4ad3a04df62743d17f40",
+      "empty_success": false,
+      "other_pure_run": "r_9bc7dbed3a204a48b4344e7844ff7f48",
+      "other_pure_success": false,
+      "same_opening": true,
+      "handoffs": "pure_only",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "23",
+      "source": "70",
+      "arm": "episode_explicit",
+      "stage": "solve1",
+      "customer": "c237a656cc7163b796c412a5330d880fdc588ecff6e078b925f5c20e9c97916d",
+      "state": "both_pass",
+      "memory": "r_395d2e9fa6fc4dbbae0b2e0feee3fc33",
+      "pure": "r_49a6e9d2c4384a75bceeb987e4a044f7",
+      "writer": "r_206da3321bd14f1ab831af9b11e162be",
+      "exposed": true,
+      "note_mentions_handoff": false,
+      "memory_success": true,
+      "pure_success": true,
+      "empty_run": "r_8c45c2f3df054ca3bff147de41b8238a",
+      "empty_success": true,
+      "other_pure_run": "r_26c865c5a8b543ab99fbd710caf9e9d9",
+      "other_pure_success": true,
+      "same_opening": false,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "23",
+      "source": "70",
+      "arm": "lesson_explicit",
+      "stage": "solve1",
+      "customer": "c237a656cc7163b796c412a5330d880fdc588ecff6e078b925f5c20e9c97916d",
+      "state": "both_pass",
+      "memory": "r_b50a23267b5241e7a21dd4bbb458effc",
+      "pure": "r_49a6e9d2c4384a75bceeb987e4a044f7",
+      "writer": "r_05693cc051d6422f91866e377fc60b1f",
+      "exposed": true,
+      "note_mentions_handoff": false,
+      "memory_success": true,
+      "pure_success": true,
+      "empty_run": "r_8c45c2f3df054ca3bff147de41b8238a",
+      "empty_success": true,
+      "other_pure_run": "r_26c865c5a8b543ab99fbd710caf9e9d9",
+      "other_pure_success": true,
+      "same_opening": false,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "23",
+      "source": "70",
+      "arm": "procedure_explicit",
+      "stage": "solve1",
+      "customer": "c237a656cc7163b796c412a5330d880fdc588ecff6e078b925f5c20e9c97916d",
+      "state": "loss",
+      "memory": "r_1f19ae0ff7d043b9bbe0e055419c4f57",
+      "pure": "r_49a6e9d2c4384a75bceeb987e4a044f7",
+      "writer": "r_5bec4d0b8d124e83811582eca7576d85",
+      "exposed": true,
+      "note_mentions_handoff": false,
+      "memory_success": false,
+      "pure_success": true,
+      "empty_run": "r_8c45c2f3df054ca3bff147de41b8238a",
+      "empty_success": true,
+      "other_pure_run": "r_26c865c5a8b543ab99fbd710caf9e9d9",
+      "other_pure_success": true,
+      "same_opening": false,
+      "handoffs": "memory_only",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "23",
+      "source": "70",
+      "arm": "fact_explicit",
+      "stage": "solve1",
+      "customer": "c237a656cc7163b796c412a5330d880fdc588ecff6e078b925f5c20e9c97916d",
+      "state": "both_pass",
+      "memory": "r_89c35bd78ac047a289f0beba4962dfe5",
+      "pure": "r_49a6e9d2c4384a75bceeb987e4a044f7",
+      "writer": "r_b7828705322c4a0f9a7cfe98e23bc65f",
+      "exposed": true,
+      "note_mentions_handoff": false,
+      "memory_success": true,
+      "pure_success": true,
+      "empty_run": "r_8c45c2f3df054ca3bff147de41b8238a",
+      "empty_success": true,
+      "other_pure_run": "r_26c865c5a8b543ab99fbd710caf9e9d9",
+      "other_pure_success": true,
+      "same_opening": false,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "28",
+      "source": "26",
+      "arm": "lesson_explicit",
+      "stage": "solve2",
+      "customer": "724ddc884f0ab2494fb5634bb222f2f69dc28b2e5ef621846ae52311e4e17a2c",
+      "state": "both_pass",
+      "memory": "r_71e52592d1304853b898f1cac684a7d5",
+      "pure": "r_7a429e98f6d543ab99873ce0fb077fe3",
+      "writer": "r_23d8907e364f4ae997dc751efc38bd7e",
+      "exposed": true,
+      "note_mentions_handoff": false,
+      "memory_success": true,
+      "pure_success": true,
+      "empty_run": "r_a7f55516f1c1402ca84194bf3d1fb773",
+      "empty_success": true,
+      "other_pure_run": "r_aa5b78fe76ab4bbca26a67b30f8f2ade",
+      "other_pure_success": true,
+      "same_opening": true,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "28",
+      "source": "27",
+      "arm": "fact_explicit",
+      "stage": "solve2",
+      "customer": "724ddc884f0ab2494fb5634bb222f2f69dc28b2e5ef621846ae52311e4e17a2c",
+      "state": "loss",
+      "memory": "r_0ad67965c70d462ab5bc9e2de261e53c",
+      "pure": "r_7a429e98f6d543ab99873ce0fb077fe3",
+      "writer": "r_dde3a0d7ef9e4cb79368cc2c98b8f466",
+      "exposed": true,
+      "note_mentions_handoff": true,
+      "memory_success": false,
+      "pure_success": true,
+      "empty_run": "r_a7f55516f1c1402ca84194bf3d1fb773",
+      "empty_success": true,
+      "other_pure_run": "r_aa5b78fe76ab4bbca26a67b30f8f2ade",
+      "other_pure_success": true,
+      "same_opening": false,
+      "handoffs": "memory_only",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "28",
+      "source": "27",
+      "arm": "procedure_explicit",
+      "stage": "solve2",
+      "customer": "724ddc884f0ab2494fb5634bb222f2f69dc28b2e5ef621846ae52311e4e17a2c",
+      "state": "loss",
+      "memory": "r_5774b195a10245c4b9ab883fade23a53",
+      "pure": "r_7a429e98f6d543ab99873ce0fb077fe3",
+      "writer": "r_80617702e1934451b585efb7bcc942a2",
+      "exposed": true,
+      "note_mentions_handoff": true,
+      "memory_success": false,
+      "pure_success": true,
+      "empty_run": "r_a7f55516f1c1402ca84194bf3d1fb773",
+      "empty_success": true,
+      "other_pure_run": "r_aa5b78fe76ab4bbca26a67b30f8f2ade",
+      "other_pure_success": true,
+      "same_opening": true,
+      "handoffs": "memory_only",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "28",
+      "source": "27",
+      "arm": "episode_explicit",
+      "stage": "solve2",
+      "customer": "724ddc884f0ab2494fb5634bb222f2f69dc28b2e5ef621846ae52311e4e17a2c",
+      "state": "loss",
+      "memory": "r_4de0dd4cd8da40ac8a001e1c60415a13",
+      "pure": "r_7a429e98f6d543ab99873ce0fb077fe3",
+      "writer": "r_c28ff502ab88407286dbd71edced8b07",
+      "exposed": true,
+      "note_mentions_handoff": true,
+      "memory_success": false,
+      "pure_success": true,
+      "empty_run": "r_a7f55516f1c1402ca84194bf3d1fb773",
+      "empty_success": true,
+      "other_pure_run": "r_aa5b78fe76ab4bbca26a67b30f8f2ade",
+      "other_pure_success": true,
+      "same_opening": true,
+      "handoffs": "memory_only",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "28",
+      "source": "26",
+      "arm": "episode_explicit",
+      "stage": "solve2",
+      "customer": "724ddc884f0ab2494fb5634bb222f2f69dc28b2e5ef621846ae52311e4e17a2c",
+      "state": "loss",
+      "memory": "r_30ac96f288e24f4497968ba903a69d5d",
+      "pure": "r_7a429e98f6d543ab99873ce0fb077fe3",
+      "writer": "r_d324f2b884f34238bdff707258f62829",
+      "exposed": true,
+      "note_mentions_handoff": false,
+      "memory_success": false,
+      "pure_success": true,
+      "empty_run": "r_a7f55516f1c1402ca84194bf3d1fb773",
+      "empty_success": true,
+      "other_pure_run": "r_aa5b78fe76ab4bbca26a67b30f8f2ade",
+      "other_pure_success": true,
+      "same_opening": true,
+      "handoffs": "memory_only",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "28",
+      "source": "26",
+      "arm": "fact_explicit",
+      "stage": "solve2",
+      "customer": "724ddc884f0ab2494fb5634bb222f2f69dc28b2e5ef621846ae52311e4e17a2c",
+      "state": "both_pass",
+      "memory": "r_6180a1dba41148ce89588b25e8a54363",
+      "pure": "r_7a429e98f6d543ab99873ce0fb077fe3",
+      "writer": "r_23cb8c3c623945449b0dcd5b62bdadef",
+      "exposed": true,
+      "note_mentions_handoff": false,
+      "memory_success": true,
+      "pure_success": true,
+      "empty_run": "r_a7f55516f1c1402ca84194bf3d1fb773",
+      "empty_success": true,
+      "other_pure_run": "r_aa5b78fe76ab4bbca26a67b30f8f2ade",
+      "other_pure_success": true,
+      "same_opening": true,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "28",
+      "source": "27",
+      "arm": "lesson_explicit",
+      "stage": "solve2",
+      "customer": "724ddc884f0ab2494fb5634bb222f2f69dc28b2e5ef621846ae52311e4e17a2c",
+      "state": "both_pass",
+      "memory": "r_66e7ad60efa34d48bf858cbcfff99162",
+      "pure": "r_7a429e98f6d543ab99873ce0fb077fe3",
+      "writer": "r_0ddb6d54faa146898c9ff5abedbdf6b1",
+      "exposed": true,
+      "note_mentions_handoff": true,
+      "memory_success": true,
+      "pure_success": true,
+      "empty_run": "r_a7f55516f1c1402ca84194bf3d1fb773",
+      "empty_success": true,
+      "other_pure_run": "r_aa5b78fe76ab4bbca26a67b30f8f2ade",
+      "other_pure_success": true,
+      "same_opening": true,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "29",
+      "source": "27",
+      "arm": "episode_explicit",
+      "stage": "solve2",
+      "customer": "724ddc884f0ab2494fb5634bb222f2f69dc28b2e5ef621846ae52311e4e17a2c",
+      "state": "loss",
+      "memory": "r_7c3eb78c7db74979ba2d1eed6475b2e5",
+      "pure": "r_598668b74e4840b8b9ab7dad5874bcc2",
+      "writer": "r_c28ff502ab88407286dbd71edced8b07",
+      "exposed": true,
+      "note_mentions_handoff": true,
+      "memory_success": false,
+      "pure_success": true,
+      "empty_run": "r_5d7df5b073cc49cc87c9cc9e964cd3ce",
+      "empty_success": true,
+      "other_pure_run": "r_8b4aa84f49e541ae8aae42fc32b5967d",
+      "other_pure_success": true,
+      "same_opening": true,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "29",
+      "source": "27",
+      "arm": "fact_explicit",
+      "stage": "solve2",
+      "customer": "724ddc884f0ab2494fb5634bb222f2f69dc28b2e5ef621846ae52311e4e17a2c",
+      "state": "both_pass",
+      "memory": "r_210a9f82e46e495e9bbf316e69a45f11",
+      "pure": "r_598668b74e4840b8b9ab7dad5874bcc2",
+      "writer": "r_dde3a0d7ef9e4cb79368cc2c98b8f466",
+      "exposed": true,
+      "note_mentions_handoff": true,
+      "memory_success": true,
+      "pure_success": true,
+      "empty_run": "r_5d7df5b073cc49cc87c9cc9e964cd3ce",
+      "empty_success": true,
+      "other_pure_run": "r_8b4aa84f49e541ae8aae42fc32b5967d",
+      "other_pure_success": true,
+      "same_opening": true,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "29",
+      "source": "27",
+      "arm": "lesson_explicit",
+      "stage": "solve2",
+      "customer": "724ddc884f0ab2494fb5634bb222f2f69dc28b2e5ef621846ae52311e4e17a2c",
+      "state": "both_pass",
+      "memory": "r_55ec5e9366264690b8de1c127e0d86e2",
+      "pure": "r_598668b74e4840b8b9ab7dad5874bcc2",
+      "writer": "r_0ddb6d54faa146898c9ff5abedbdf6b1",
+      "exposed": true,
+      "note_mentions_handoff": true,
+      "memory_success": true,
+      "pure_success": true,
+      "empty_run": "r_5d7df5b073cc49cc87c9cc9e964cd3ce",
+      "empty_success": true,
+      "other_pure_run": "r_8b4aa84f49e541ae8aae42fc32b5967d",
+      "other_pure_success": true,
+      "same_opening": true,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "29",
+      "source": "27",
+      "arm": "procedure_explicit",
+      "stage": "solve2",
+      "customer": "724ddc884f0ab2494fb5634bb222f2f69dc28b2e5ef621846ae52311e4e17a2c",
+      "state": "both_pass",
+      "memory": "r_c77311a3943942b7af28043b92487693",
+      "pure": "r_598668b74e4840b8b9ab7dad5874bcc2",
+      "writer": "r_80617702e1934451b585efb7bcc942a2",
+      "exposed": true,
+      "note_mentions_handoff": true,
+      "memory_success": true,
+      "pure_success": true,
+      "empty_run": "r_5d7df5b073cc49cc87c9cc9e964cd3ce",
+      "empty_success": true,
+      "other_pure_run": "r_8b4aa84f49e541ae8aae42fc32b5967d",
+      "other_pure_success": true,
+      "same_opening": true,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "30",
+      "source": "32",
+      "arm": "lesson_explicit",
+      "stage": "solve1",
+      "customer": "0355c67385aafb8067e4d35242901ccde6c50d0c472e1ca223f085263854ac29",
+      "state": "both_pass",
+      "memory": "r_55d1102f67e142c09baf18f215a94b6c",
+      "pure": "r_bfb681447132491c8758d51aea27c4d0",
+      "writer": "r_f605c5bb3c2948d4b6c0c46642e5d0f5",
+      "exposed": true,
+      "note_mentions_handoff": false,
+      "memory_success": true,
+      "pure_success": true,
+      "empty_run": "r_87ce4cb8cf9f4af7b581ae1334125fe1",
+      "empty_success": true,
+      "other_pure_run": "r_aabb2ca5c929406280029ac20fa219ec",
+      "other_pure_success": true,
+      "same_opening": false,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "30",
+      "source": "32",
+      "arm": "fact_explicit",
+      "stage": "solve1",
+      "customer": "0355c67385aafb8067e4d35242901ccde6c50d0c472e1ca223f085263854ac29",
+      "state": "both_pass",
+      "memory": "r_29529410d0dd40b183d54daec98a7c99",
+      "pure": "r_bfb681447132491c8758d51aea27c4d0",
+      "writer": "r_b592085224614e0392b4606c5d6c80e1",
+      "exposed": true,
+      "note_mentions_handoff": false,
+      "memory_success": true,
+      "pure_success": true,
+      "empty_run": "r_87ce4cb8cf9f4af7b581ae1334125fe1",
+      "empty_success": true,
+      "other_pure_run": "r_aabb2ca5c929406280029ac20fa219ec",
+      "other_pure_success": true,
+      "same_opening": true,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "30",
+      "source": "32",
+      "arm": "episode_explicit",
+      "stage": "solve1",
+      "customer": "0355c67385aafb8067e4d35242901ccde6c50d0c472e1ca223f085263854ac29",
+      "state": "both_pass",
+      "memory": "r_688f8134cb9a44ca944658d69827e244",
+      "pure": "r_bfb681447132491c8758d51aea27c4d0",
+      "writer": "r_aa521538e6204d249aae2ce59cac4b00",
+      "exposed": true,
+      "note_mentions_handoff": false,
+      "memory_success": true,
+      "pure_success": true,
+      "empty_run": "r_87ce4cb8cf9f4af7b581ae1334125fe1",
+      "empty_success": true,
+      "other_pure_run": "r_aabb2ca5c929406280029ac20fa219ec",
+      "other_pure_success": true,
+      "same_opening": true,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "30",
+      "source": "32",
+      "arm": "procedure_explicit",
+      "stage": "solve1",
+      "customer": "0355c67385aafb8067e4d35242901ccde6c50d0c472e1ca223f085263854ac29",
+      "state": "both_pass",
+      "memory": "r_660d292b6a2d4f119f8570616ff342e2",
+      "pure": "r_bfb681447132491c8758d51aea27c4d0",
+      "writer": "r_145db30ee68a40ae8a8784172ff437ea",
+      "exposed": true,
+      "note_mentions_handoff": true,
+      "memory_success": true,
+      "pure_success": true,
+      "empty_run": "r_87ce4cb8cf9f4af7b581ae1334125fe1",
+      "empty_success": true,
+      "other_pure_run": "r_aabb2ca5c929406280029ac20fa219ec",
+      "other_pure_success": true,
+      "same_opening": true,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "31",
+      "source": "32",
+      "arm": "episode_explicit",
+      "stage": "solve2",
+      "customer": "0355c67385aafb8067e4d35242901ccde6c50d0c472e1ca223f085263854ac29",
+      "state": "both_pass",
+      "memory": "r_fb10e0444e97470da2c0108c2480fc50",
+      "pure": "r_0db99921fc9c4ad6855ee7ccc3d39844",
+      "writer": "r_aa521538e6204d249aae2ce59cac4b00",
+      "exposed": true,
+      "note_mentions_handoff": false,
+      "memory_success": true,
+      "pure_success": true,
+      "empty_run": "r_237ba4a2d2654120854f82264762de4b",
+      "empty_success": true,
+      "other_pure_run": "r_1524040b5e6c4c6380888253c954f159",
+      "other_pure_success": null,
+      "same_opening": false,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "31",
+      "source": "32",
+      "arm": "lesson_explicit",
+      "stage": "solve2",
+      "customer": "0355c67385aafb8067e4d35242901ccde6c50d0c472e1ca223f085263854ac29",
+      "state": "both_pass",
+      "memory": "r_ef3b395b2b9d485780c31792199cdc44",
+      "pure": "r_0db99921fc9c4ad6855ee7ccc3d39844",
+      "writer": "r_f605c5bb3c2948d4b6c0c46642e5d0f5",
+      "exposed": true,
+      "note_mentions_handoff": false,
+      "memory_success": true,
+      "pure_success": true,
+      "empty_run": "r_237ba4a2d2654120854f82264762de4b",
+      "empty_success": true,
+      "other_pure_run": "r_1524040b5e6c4c6380888253c954f159",
+      "other_pure_success": null,
+      "same_opening": false,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "31",
+      "source": "32",
+      "arm": "procedure_explicit",
+      "stage": "solve2",
+      "customer": "0355c67385aafb8067e4d35242901ccde6c50d0c472e1ca223f085263854ac29",
+      "state": "loss",
+      "memory": "r_0748764343a9426bb73fe45d0fef7fd4",
+      "pure": "r_0db99921fc9c4ad6855ee7ccc3d39844",
+      "writer": "r_145db30ee68a40ae8a8784172ff437ea",
+      "exposed": true,
+      "note_mentions_handoff": true,
+      "memory_success": false,
+      "pure_success": true,
+      "empty_run": "r_237ba4a2d2654120854f82264762de4b",
+      "empty_success": true,
+      "other_pure_run": "r_1524040b5e6c4c6380888253c954f159",
+      "other_pure_success": null,
+      "same_opening": false,
+      "handoffs": "memory_only",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "31",
+      "source": "32",
+      "arm": "fact_explicit",
+      "stage": "solve2",
+      "customer": "0355c67385aafb8067e4d35242901ccde6c50d0c472e1ca223f085263854ac29",
+      "state": "both_pass",
+      "memory": "r_b17ed82f41954c2b90af7d3af72de400",
+      "pure": "r_0db99921fc9c4ad6855ee7ccc3d39844",
+      "writer": "r_b592085224614e0392b4606c5d6c80e1",
+      "exposed": true,
+      "note_mentions_handoff": false,
+      "memory_success": true,
+      "pure_success": true,
+      "empty_run": "r_237ba4a2d2654120854f82264762de4b",
+      "empty_success": true,
+      "other_pure_run": "r_1524040b5e6c4c6380888253c954f159",
+      "other_pure_success": null,
+      "same_opening": false,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "41",
+      "source": "42",
+      "arm": "episode_explicit",
+      "stage": "solve1",
+      "customer": "945ae32bbd0703d31fc7dbbc61114e1104bcc8aab738e97c8fe79f7a8e17154b",
+      "state": "gain",
+      "memory": "r_b8a6ab72f63c43ca8bece97310142606",
+      "pure": "r_0e5f5669637c4b028b0ab5970cbe64e4",
+      "writer": "r_5d5f34b83fd04abe808973025fead47a",
+      "exposed": true,
+      "note_mentions_handoff": false,
+      "memory_success": true,
+      "pure_success": false,
+      "empty_run": "r_5be4c4bc9dbb4392bbedc5a520bcef81",
+      "empty_success": null,
+      "other_pure_run": "r_2aec7f4bff7146a5bcb0177eb3909f37",
+      "other_pure_success": true,
+      "same_opening": false,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "41",
+      "source": "42",
+      "arm": "procedure_explicit",
+      "stage": "solve1",
+      "customer": "945ae32bbd0703d31fc7dbbc61114e1104bcc8aab738e97c8fe79f7a8e17154b",
+      "state": "gain",
+      "memory": "r_2bbd0cfb692c441da22266d2ebddaf37",
+      "pure": "r_0e5f5669637c4b028b0ab5970cbe64e4",
+      "writer": "r_fcde8464e5bc4544a2743471715b3980",
+      "exposed": true,
+      "note_mentions_handoff": false,
+      "memory_success": true,
+      "pure_success": false,
+      "empty_run": "r_5be4c4bc9dbb4392bbedc5a520bcef81",
+      "empty_success": null,
+      "other_pure_run": "r_2aec7f4bff7146a5bcb0177eb3909f37",
+      "other_pure_success": true,
+      "same_opening": false,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "41",
+      "source": "42",
+      "arm": "fact_explicit",
+      "stage": "solve1",
+      "customer": "945ae32bbd0703d31fc7dbbc61114e1104bcc8aab738e97c8fe79f7a8e17154b",
+      "state": "both_fail",
+      "memory": "r_3e78938e110041028d5e559272031baf",
+      "pure": "r_0e5f5669637c4b028b0ab5970cbe64e4",
+      "writer": "r_257f9736595b4006acd2ba8f3a34c607",
+      "exposed": true,
+      "note_mentions_handoff": false,
+      "memory_success": false,
+      "pure_success": false,
+      "empty_run": "r_5be4c4bc9dbb4392bbedc5a520bcef81",
+      "empty_success": null,
+      "other_pure_run": "r_2aec7f4bff7146a5bcb0177eb3909f37",
+      "other_pure_success": true,
+      "same_opening": false,
+      "handoffs": "memory_only",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "41",
+      "source": "42",
+      "arm": "lesson_explicit",
+      "stage": "solve1",
+      "customer": "945ae32bbd0703d31fc7dbbc61114e1104bcc8aab738e97c8fe79f7a8e17154b",
+      "state": "both_fail",
+      "memory": "r_9e0048d412ce4f8b830b580d254003b5",
+      "pure": "r_0e5f5669637c4b028b0ab5970cbe64e4",
+      "writer": "r_b0256efd918046c49ebb12b0553602f9",
+      "exposed": true,
+      "note_mentions_handoff": false,
+      "memory_success": false,
+      "pure_success": false,
+      "empty_run": "r_5be4c4bc9dbb4392bbedc5a520bcef81",
+      "empty_success": null,
+      "other_pure_run": "r_2aec7f4bff7146a5bcb0177eb3909f37",
+      "other_pure_success": true,
+      "same_opening": false,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "46",
+      "source": "45",
+      "arm": "procedure_explicit",
+      "stage": "solve2",
+      "customer": "6ac8d477c40fa32f36d79a778f8ad75349ff77577195bff00ada21c16806215c",
+      "state": "both_pass",
+      "memory": "r_5214940f72b74712a0b0860f5fb5d842",
+      "pure": "r_1edaf17cf32c4224a89f9d531e7c409e",
+      "writer": "r_01ec5e379f154a4fa9c74f4e2dc089b2",
+      "exposed": true,
+      "note_mentions_handoff": true,
+      "memory_success": true,
+      "pure_success": true,
+      "empty_run": "r_8e8850d9b04b4d6991e7e6289a19dcde",
+      "empty_success": true,
+      "other_pure_run": "r_1780c047d8c2462cb4801e795cbbd748",
+      "other_pure_success": true,
+      "same_opening": false,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "46",
+      "source": "45",
+      "arm": "episode_explicit",
+      "stage": "solve2",
+      "customer": "6ac8d477c40fa32f36d79a778f8ad75349ff77577195bff00ada21c16806215c",
+      "state": "both_pass",
+      "memory": "r_6d74b256f3d64161bdad1ba924e24d19",
+      "pure": "r_1edaf17cf32c4224a89f9d531e7c409e",
+      "writer": "r_1c4d28854fdb4f7babe52618b0385276",
+      "exposed": true,
+      "note_mentions_handoff": true,
+      "memory_success": true,
+      "pure_success": true,
+      "empty_run": "r_8e8850d9b04b4d6991e7e6289a19dcde",
+      "empty_success": true,
+      "other_pure_run": "r_1780c047d8c2462cb4801e795cbbd748",
+      "other_pure_success": true,
+      "same_opening": false,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "46",
+      "source": "45",
+      "arm": "lesson_explicit",
+      "stage": "solve2",
+      "customer": "6ac8d477c40fa32f36d79a778f8ad75349ff77577195bff00ada21c16806215c",
+      "state": "both_pass",
+      "memory": "r_ab0f893c7fe24bac9c7aa41d73163026",
+      "pure": "r_1edaf17cf32c4224a89f9d531e7c409e",
+      "writer": "r_900bfb5569a942c3a5992a1f3c00d46d",
+      "exposed": true,
+      "note_mentions_handoff": true,
+      "memory_success": true,
+      "pure_success": true,
+      "empty_run": "r_8e8850d9b04b4d6991e7e6289a19dcde",
+      "empty_success": true,
+      "other_pure_run": "r_1780c047d8c2462cb4801e795cbbd748",
+      "other_pure_success": true,
+      "same_opening": true,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "46",
+      "source": "45",
+      "arm": "fact_explicit",
+      "stage": "solve2",
+      "customer": "6ac8d477c40fa32f36d79a778f8ad75349ff77577195bff00ada21c16806215c",
+      "state": "loss",
+      "memory": "r_84d51e7581d6491ab715cdeab6075efb",
+      "pure": "r_1edaf17cf32c4224a89f9d531e7c409e",
+      "writer": "r_ca58de5052f84671be493b26020d355a",
+      "exposed": true,
+      "note_mentions_handoff": true,
+      "memory_success": false,
+      "pure_success": true,
+      "empty_run": "r_8e8850d9b04b4d6991e7e6289a19dcde",
+      "empty_success": true,
+      "other_pure_run": "r_1780c047d8c2462cb4801e795cbbd748",
+      "other_pure_success": true,
+      "same_opening": true,
+      "handoffs": "memory_only",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "47",
+      "source": "45",
+      "arm": "lesson_explicit",
+      "stage": "solve1",
+      "customer": "6ac8d477c40fa32f36d79a778f8ad75349ff77577195bff00ada21c16806215c",
+      "state": "gain",
+      "memory": "r_ba99d68686384cd9a71df16a05cc16cf",
+      "pure": "r_ba06e98ad7064942b80e23177c6dee30",
+      "writer": "r_900bfb5569a942c3a5992a1f3c00d46d",
+      "exposed": true,
+      "note_mentions_handoff": true,
+      "memory_success": true,
+      "pure_success": false,
+      "empty_run": "r_9ce976e48c56478cb3759c712f4d2ac3",
+      "empty_success": false,
+      "other_pure_run": "r_85e134a698094373af838075f4cfcf22",
+      "other_pure_success": false,
+      "same_opening": false,
+      "handoffs": "pure_only",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "47",
+      "source": "45",
+      "arm": "procedure_explicit",
+      "stage": "solve1",
+      "customer": "6ac8d477c40fa32f36d79a778f8ad75349ff77577195bff00ada21c16806215c",
+      "state": "gain",
+      "memory": "r_f2aa4347b96e476985a7fd21c7e66bff",
+      "pure": "r_ba06e98ad7064942b80e23177c6dee30",
+      "writer": "r_01ec5e379f154a4fa9c74f4e2dc089b2",
+      "exposed": true,
+      "note_mentions_handoff": true,
+      "memory_success": true,
+      "pure_success": false,
+      "empty_run": "r_9ce976e48c56478cb3759c712f4d2ac3",
+      "empty_success": false,
+      "other_pure_run": "r_85e134a698094373af838075f4cfcf22",
+      "other_pure_success": false,
+      "same_opening": false,
+      "handoffs": "pure_only",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "47",
+      "source": "45",
+      "arm": "fact_explicit",
+      "stage": "solve1",
+      "customer": "6ac8d477c40fa32f36d79a778f8ad75349ff77577195bff00ada21c16806215c",
+      "state": "gain",
+      "memory": "r_5de41ebf56574023b760b5e92c86d387",
+      "pure": "r_ba06e98ad7064942b80e23177c6dee30",
+      "writer": "r_ca58de5052f84671be493b26020d355a",
+      "exposed": true,
+      "note_mentions_handoff": true,
+      "memory_success": true,
+      "pure_success": false,
+      "empty_run": "r_9ce976e48c56478cb3759c712f4d2ac3",
+      "empty_success": false,
+      "other_pure_run": "r_85e134a698094373af838075f4cfcf22",
+      "other_pure_success": false,
+      "same_opening": true,
+      "handoffs": "pure_only",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "47",
+      "source": "45",
+      "arm": "episode_explicit",
+      "stage": "solve1",
+      "customer": "6ac8d477c40fa32f36d79a778f8ad75349ff77577195bff00ada21c16806215c",
+      "state": "both_fail",
+      "memory": "r_a2767ab0b6d641658896ce1c92862ad9",
+      "pure": "r_ba06e98ad7064942b80e23177c6dee30",
+      "writer": "r_1c4d28854fdb4f7babe52618b0385276",
+      "exposed": true,
+      "note_mentions_handoff": true,
+      "memory_success": false,
+      "pure_success": false,
+      "empty_run": "r_9ce976e48c56478cb3759c712f4d2ac3",
+      "empty_success": false,
+      "other_pure_run": "r_85e134a698094373af838075f4cfcf22",
+      "other_pure_success": false,
+      "same_opening": false,
+      "handoffs": "both",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "54",
+      "source": "55",
+      "arm": "episode_explicit",
+      "stage": "solve2",
+      "customer": "2984f3528032c37d0d9eafaa8f88ec61498cd272d4e436a9bb2bf0106d318343",
+      "state": "both_pass",
+      "memory": "r_79e631242b1447989dda7aca0faab351",
+      "pure": "r_3ca482d514584ad6bbb480eca6d180e5",
+      "writer": "r_baa4ab8bd5d24f30a7f08c45f3b56bd2",
+      "exposed": true,
+      "note_mentions_handoff": true,
+      "memory_success": true,
+      "pure_success": true,
+      "empty_run": "r_7712fdfcee404db0aeb6ab6b2467a07c",
+      "empty_success": true,
+      "other_pure_run": "r_f25ae215ad2942c5a7fd6ca302da7fe9",
+      "other_pure_success": true,
+      "same_opening": true,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "54",
+      "source": "55",
+      "arm": "procedure_explicit",
+      "stage": "solve2",
+      "customer": "2984f3528032c37d0d9eafaa8f88ec61498cd272d4e436a9bb2bf0106d318343",
+      "state": "both_pass",
+      "memory": "r_af094a939368442193258bb4ebe05cb0",
+      "pure": "r_3ca482d514584ad6bbb480eca6d180e5",
+      "writer": "r_f9d080f9fbc747c69b5deff98b5a5622",
+      "exposed": true,
+      "note_mentions_handoff": true,
+      "memory_success": true,
+      "pure_success": true,
+      "empty_run": "r_7712fdfcee404db0aeb6ab6b2467a07c",
+      "empty_success": true,
+      "other_pure_run": "r_f25ae215ad2942c5a7fd6ca302da7fe9",
+      "other_pure_success": true,
+      "same_opening": true,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "54",
+      "source": "55",
+      "arm": "fact_explicit",
+      "stage": "solve2",
+      "customer": "2984f3528032c37d0d9eafaa8f88ec61498cd272d4e436a9bb2bf0106d318343",
+      "state": "both_pass",
+      "memory": "r_607d42c18b9344abaca3f38845a3a687",
+      "pure": "r_3ca482d514584ad6bbb480eca6d180e5",
+      "writer": "r_f4e836ab66954841b02b9981e2ee260e",
+      "exposed": true,
+      "note_mentions_handoff": true,
+      "memory_success": true,
+      "pure_success": true,
+      "empty_run": "r_7712fdfcee404db0aeb6ab6b2467a07c",
+      "empty_success": true,
+      "other_pure_run": "r_f25ae215ad2942c5a7fd6ca302da7fe9",
+      "other_pure_success": true,
+      "same_opening": false,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "54",
+      "source": "55",
+      "arm": "lesson_explicit",
+      "stage": "solve2",
+      "customer": "2984f3528032c37d0d9eafaa8f88ec61498cd272d4e436a9bb2bf0106d318343",
+      "state": "loss",
+      "memory": "r_7d8251ba3710454cb27f72e69882f869",
+      "pure": "r_3ca482d514584ad6bbb480eca6d180e5",
+      "writer": "r_b395f141937c40d29fe0dd364308252b",
+      "exposed": true,
+      "note_mentions_handoff": true,
+      "memory_success": false,
+      "pure_success": true,
+      "empty_run": "r_7712fdfcee404db0aeb6ab6b2467a07c",
+      "empty_success": true,
+      "other_pure_run": "r_f25ae215ad2942c5a7fd6ca302da7fe9",
+      "other_pure_success": true,
+      "same_opening": true,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "63",
+      "source": "60",
+      "arm": "lesson_explicit",
+      "stage": "solve2",
+      "customer": "7853165155a13d08b22ce6c966a0c9e0b2dc8e156c5b8dd60734f5caa8bf97a1",
+      "state": "both_pass",
+      "memory": "r_efc806251a0a4feca4d3a6819d9d30da",
+      "pure": "r_b3f1037b9a6d4f4aa0953d137649f526",
+      "writer": "r_b7f2d8cea6ce4d839fc0f29300529929",
+      "exposed": true,
+      "note_mentions_handoff": false,
+      "memory_success": true,
+      "pure_success": true,
+      "empty_run": "r_a435a60d7cc54eec90314d542d677525",
+      "empty_success": true,
+      "other_pure_run": "r_863e0d3ff78a4b7d95d069a09c6a4aa1",
+      "other_pure_success": true,
+      "same_opening": true,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "63",
+      "source": "61",
+      "arm": "procedure_explicit",
+      "stage": "solve2",
+      "customer": "7853165155a13d08b22ce6c966a0c9e0b2dc8e156c5b8dd60734f5caa8bf97a1",
+      "state": "both_pass",
+      "memory": "r_b50afe19c1ee4a55aec25a95a4779437",
+      "pure": "r_b3f1037b9a6d4f4aa0953d137649f526",
+      "writer": "r_f2ca4cc7af174b9a93970244bbcdb0ea",
+      "exposed": true,
+      "note_mentions_handoff": false,
+      "memory_success": true,
+      "pure_success": true,
+      "empty_run": "r_a435a60d7cc54eec90314d542d677525",
+      "empty_success": true,
+      "other_pure_run": "r_863e0d3ff78a4b7d95d069a09c6a4aa1",
+      "other_pure_success": true,
+      "same_opening": false,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "63",
+      "source": "60",
+      "arm": "fact_explicit",
+      "stage": "solve2",
+      "customer": "7853165155a13d08b22ce6c966a0c9e0b2dc8e156c5b8dd60734f5caa8bf97a1",
+      "state": "both_pass",
+      "memory": "r_fe4bbef7c81c432fbd20078891907a14",
+      "pure": "r_b3f1037b9a6d4f4aa0953d137649f526",
+      "writer": "r_06084a3dca494445a886df0dc6ae06d5",
+      "exposed": true,
+      "note_mentions_handoff": false,
+      "memory_success": true,
+      "pure_success": true,
+      "empty_run": "r_a435a60d7cc54eec90314d542d677525",
+      "empty_success": true,
+      "other_pure_run": "r_863e0d3ff78a4b7d95d069a09c6a4aa1",
+      "other_pure_success": true,
+      "same_opening": false,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "63",
+      "source": "61",
+      "arm": "fact_explicit",
+      "stage": "solve2",
+      "customer": "7853165155a13d08b22ce6c966a0c9e0b2dc8e156c5b8dd60734f5caa8bf97a1",
+      "state": "both_pass",
+      "memory": "r_456e29bc57564b5d87dc242a841839e1",
+      "pure": "r_b3f1037b9a6d4f4aa0953d137649f526",
+      "writer": "r_1cd8db7ff2f44d07994fcb007144935f",
+      "exposed": false,
+      "note_mentions_handoff": false,
+      "memory_success": true,
+      "pure_success": true,
+      "empty_run": "r_a435a60d7cc54eec90314d542d677525",
+      "empty_success": true,
+      "other_pure_run": "r_863e0d3ff78a4b7d95d069a09c6a4aa1",
+      "other_pure_success": true,
+      "same_opening": false,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "63",
+      "source": "60",
+      "arm": "procedure_explicit",
+      "stage": "solve2",
+      "customer": "7853165155a13d08b22ce6c966a0c9e0b2dc8e156c5b8dd60734f5caa8bf97a1",
+      "state": "both_pass",
+      "memory": "r_e748ee366fcf4d3f9a8843c6f7ba6a39",
+      "pure": "r_b3f1037b9a6d4f4aa0953d137649f526",
+      "writer": "r_70bfb65dfbe841e19162e3c1d090ed40",
+      "exposed": true,
+      "note_mentions_handoff": false,
+      "memory_success": true,
+      "pure_success": true,
+      "empty_run": "r_a435a60d7cc54eec90314d542d677525",
+      "empty_success": true,
+      "other_pure_run": "r_863e0d3ff78a4b7d95d069a09c6a4aa1",
+      "other_pure_success": true,
+      "same_opening": true,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "63",
+      "source": "61",
+      "arm": "lesson_explicit",
+      "stage": "solve2",
+      "customer": "7853165155a13d08b22ce6c966a0c9e0b2dc8e156c5b8dd60734f5caa8bf97a1",
+      "state": "both_pass",
+      "memory": "r_d4cc5aba63a043178c71517f2d78d818",
+      "pure": "r_b3f1037b9a6d4f4aa0953d137649f526",
+      "writer": "r_9f1cbd5b3c314ddc84c72f1f8e0ceff7",
+      "exposed": true,
+      "note_mentions_handoff": false,
+      "memory_success": true,
+      "pure_success": true,
+      "empty_run": "r_a435a60d7cc54eec90314d542d677525",
+      "empty_success": true,
+      "other_pure_run": "r_863e0d3ff78a4b7d95d069a09c6a4aa1",
+      "other_pure_success": true,
+      "same_opening": true,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "63",
+      "source": "61",
+      "arm": "episode_explicit",
+      "stage": "solve2",
+      "customer": "7853165155a13d08b22ce6c966a0c9e0b2dc8e156c5b8dd60734f5caa8bf97a1",
+      "state": "both_pass",
+      "memory": "r_95e69864493948deba9e8fb54e2706fb",
+      "pure": "r_b3f1037b9a6d4f4aa0953d137649f526",
+      "writer": "r_a6d21a555fff4bc2bb654ab5a3d1857a",
+      "exposed": true,
+      "note_mentions_handoff": false,
+      "memory_success": true,
+      "pure_success": true,
+      "empty_run": "r_a435a60d7cc54eec90314d542d677525",
+      "empty_success": true,
+      "other_pure_run": "r_863e0d3ff78a4b7d95d069a09c6a4aa1",
+      "other_pure_success": true,
+      "same_opening": true,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "63",
+      "source": "60",
+      "arm": "episode_explicit",
+      "stage": "solve2",
+      "customer": "7853165155a13d08b22ce6c966a0c9e0b2dc8e156c5b8dd60734f5caa8bf97a1",
+      "state": "both_pass",
+      "memory": "r_b180917192724cc8ac39d1cc9d22bd2a",
+      "pure": "r_b3f1037b9a6d4f4aa0953d137649f526",
+      "writer": "r_597baf18c2eb435c9109a54d8a774a14",
+      "exposed": false,
+      "note_mentions_handoff": false,
+      "memory_success": true,
+      "pure_success": true,
+      "empty_run": "r_a435a60d7cc54eec90314d542d677525",
+      "empty_success": true,
+      "other_pure_run": "r_863e0d3ff78a4b7d95d069a09c6a4aa1",
+      "other_pure_success": true,
+      "same_opening": false,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "72",
+      "source": "71",
+      "arm": "episode_explicit",
+      "stage": "solve1",
+      "customer": "0c18cd0ef77bb94393aa06afe1b2fb12c820d8a80ba4035629811bbba84e9e7b",
+      "state": "loss",
+      "memory": "r_7104b2b7cc564e8085fa929f1a424d0d",
+      "pure": "r_248db5767c9d43a588809fe845dc6127",
+      "writer": "r_6d3861d64a5248c7b58cba9e2c19f970",
+      "exposed": true,
+      "note_mentions_handoff": true,
+      "memory_success": false,
+      "pure_success": true,
+      "empty_run": "r_01f723d8a56745ae9e96afd4c897cc58",
+      "empty_success": null,
+      "other_pure_run": "r_2a845dd446d04d79bc93666652f08649",
+      "other_pure_success": false,
+      "same_opening": false,
+      "handoffs": "memory_only",
+      "memory_source_extras": [
+        [
+          "modify_pending_order_items",
+          {
+            "item_pairs": [
+              [
+                "2492465580",
+                "5917587651"
+              ],
+              [
+                "7453605304",
+                "9190635437"
+              ]
+            ],
+            "order_id": "#W5270061",
+            "payment_method_id": "gift_card_1711656"
+          }
+        ]
+      ],
+      "pure_source_extras": []
+    },
+    {
+      "task": "72",
+      "source": "71",
+      "arm": "fact_explicit",
+      "stage": "solve1",
+      "customer": "0c18cd0ef77bb94393aa06afe1b2fb12c820d8a80ba4035629811bbba84e9e7b",
+      "state": "loss",
+      "memory": "r_9826f207ff4a4ff69c1a9a6a2e5ab67a",
+      "pure": "r_248db5767c9d43a588809fe845dc6127",
+      "writer": "r_8eee245e38204b6683884570ac999be0",
+      "exposed": true,
+      "note_mentions_handoff": true,
+      "memory_success": false,
+      "pure_success": true,
+      "empty_run": "r_01f723d8a56745ae9e96afd4c897cc58",
+      "empty_success": null,
+      "other_pure_run": "r_2a845dd446d04d79bc93666652f08649",
+      "other_pure_success": false,
+      "same_opening": false,
+      "handoffs": "memory_only",
+      "memory_source_extras": [
+        [
+          "modify_pending_order_items",
+          {
+            "item_pairs": [
+              [
+                "2492465580",
+                "5917587651"
+              ],
+              [
+                "7453605304",
+                "9190635437"
+              ]
+            ],
+            "order_id": "#W5270061",
+            "payment_method_id": "gift_card_1711656"
+          }
+        ]
+      ],
+      "pure_source_extras": []
+    },
+    {
+      "task": "72",
+      "source": "71",
+      "arm": "procedure_explicit",
+      "stage": "solve1",
+      "customer": "0c18cd0ef77bb94393aa06afe1b2fb12c820d8a80ba4035629811bbba84e9e7b",
+      "state": "loss",
+      "memory": "r_c5e70f30056848b385b7957d19dc01ee",
+      "pure": "r_248db5767c9d43a588809fe845dc6127",
+      "writer": "r_d9824d3abaa947879f6cde9d628e6223",
+      "exposed": true,
+      "note_mentions_handoff": true,
+      "memory_success": false,
+      "pure_success": true,
+      "empty_run": "r_01f723d8a56745ae9e96afd4c897cc58",
+      "empty_success": null,
+      "other_pure_run": "r_2a845dd446d04d79bc93666652f08649",
+      "other_pure_success": false,
+      "same_opening": false,
+      "handoffs": "memory_only",
+      "memory_source_extras": [
+        [
+          "modify_pending_order_items",
+          {
+            "item_pairs": [
+              [
+                "2492465580",
+                "5917587651"
+              ],
+              [
+                "7453605304",
+                "9190635437"
+              ]
+            ],
+            "order_id": "#W5270061",
+            "payment_method_id": "gift_card_1711656"
+          }
+        ]
+      ],
+      "pure_source_extras": []
+    },
+    {
+      "task": "95",
+      "source": "94",
+      "arm": "episode_explicit",
+      "stage": "solve1",
+      "customer": "3a528cfde11a1d7944890bffe3865cf91ea3d06f9fe7fb0476311638e485565c",
+      "state": "both_pass",
+      "memory": "r_2ae46f06e7154f21a9211066a5c08b2a",
+      "pure": "r_b5e29b28434140639c35c24540879fd8",
+      "writer": "r_6c357086133b490983ce57a7fb7e54b1",
+      "exposed": true,
+      "note_mentions_handoff": true,
+      "memory_success": true,
+      "pure_success": true,
+      "empty_run": "r_94d609971f9340d5bee8eebfbf1872ed",
+      "empty_success": true,
+      "other_pure_run": "r_9599926efb5740489f97519aa1a5a335",
+      "other_pure_success": false,
+      "same_opening": false,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "95",
+      "source": "94",
+      "arm": "lesson_explicit",
+      "stage": "solve1",
+      "customer": "3a528cfde11a1d7944890bffe3865cf91ea3d06f9fe7fb0476311638e485565c",
+      "state": "loss",
+      "memory": "r_00ab29dfc74b4f8bbad3c89920decd46",
+      "pure": "r_b5e29b28434140639c35c24540879fd8",
+      "writer": "r_16f099f73ce5410eacd8284bb6496428",
+      "exposed": true,
+      "note_mentions_handoff": true,
+      "memory_success": false,
+      "pure_success": true,
+      "empty_run": "r_94d609971f9340d5bee8eebfbf1872ed",
+      "empty_success": true,
+      "other_pure_run": "r_9599926efb5740489f97519aa1a5a335",
+      "other_pure_success": false,
+      "same_opening": false,
+      "handoffs": "memory_only",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "95",
+      "source": "94",
+      "arm": "procedure_explicit",
+      "stage": "solve1",
+      "customer": "3a528cfde11a1d7944890bffe3865cf91ea3d06f9fe7fb0476311638e485565c",
+      "state": "both_pass",
+      "memory": "r_516ca9101ed84253887fe05fff21e06c",
+      "pure": "r_b5e29b28434140639c35c24540879fd8",
+      "writer": "r_89f0cf1d805c4448bc2073f2af60149f",
+      "exposed": true,
+      "note_mentions_handoff": true,
+      "memory_success": true,
+      "pure_success": true,
+      "empty_run": "r_94d609971f9340d5bee8eebfbf1872ed",
+      "empty_success": true,
+      "other_pure_run": "r_9599926efb5740489f97519aa1a5a335",
+      "other_pure_success": false,
+      "same_opening": false,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "96",
+      "source": "97",
+      "arm": "procedure_explicit",
+      "stage": "solve1",
+      "customer": "5978ca50fa476be150906fb825791a0053724d4c7a1c72a5cf9c50e2b34dcdf6",
+      "state": "both_pass",
+      "memory": "r_58923f14367847edb1ea2e5ccd539b77",
+      "pure": "r_f6736779bf73435494d29c5ef13f4d18",
+      "writer": "r_9dd35c8339f24e0c96bc8582063b2e27",
+      "exposed": true,
+      "note_mentions_handoff": false,
+      "memory_success": true,
+      "pure_success": true,
+      "empty_run": "r_6d6a418c34f94cbdb5f868135360dee0",
+      "empty_success": null,
+      "other_pure_run": "r_69d6d6cf7e4c4d2b82a2387143782bbf",
+      "other_pure_success": true,
+      "same_opening": false,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "96",
+      "source": "97",
+      "arm": "episode_explicit",
+      "stage": "solve1",
+      "customer": "5978ca50fa476be150906fb825791a0053724d4c7a1c72a5cf9c50e2b34dcdf6",
+      "state": "both_pass",
+      "memory": "r_0f0d116e01ed49abafbd570b84d886b4",
+      "pure": "r_f6736779bf73435494d29c5ef13f4d18",
+      "writer": "r_3426f6d5c8ee4dcbb397a0df775f89dd",
+      "exposed": true,
+      "note_mentions_handoff": false,
+      "memory_success": true,
+      "pure_success": true,
+      "empty_run": "r_6d6a418c34f94cbdb5f868135360dee0",
+      "empty_success": null,
+      "other_pure_run": "r_69d6d6cf7e4c4d2b82a2387143782bbf",
+      "other_pure_success": true,
+      "same_opening": false,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "98",
+      "source": "51",
+      "arm": "procedure_explicit",
+      "stage": "solve2",
+      "customer": "c706aaaad452a909b2bc6931384113362c520624574a369ba3719dee30839aed",
+      "state": "both_fail",
+      "memory": "r_7c985d2845864e6aae0d75f6fbda8490",
+      "pure": "r_f826c798f93a40d38face08d11cd653f",
+      "writer": "r_42194eba6faf441c8a4e167d37a402a0",
+      "exposed": true,
+      "note_mentions_handoff": true,
+      "memory_success": false,
+      "pure_success": false,
+      "empty_run": "r_90864b1e5b0c432d86db4d46eb890189",
+      "empty_success": false,
+      "other_pure_run": "r_818e4761a5514c6f940c11cae115560d",
+      "other_pure_success": false,
+      "same_opening": false,
+      "handoffs": "memory_only",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "98",
+      "source": "51",
+      "arm": "lesson_explicit",
+      "stage": "solve2",
+      "customer": "c706aaaad452a909b2bc6931384113362c520624574a369ba3719dee30839aed",
+      "state": "both_fail",
+      "memory": "r_376420f1a25d48c7abd8b6a00617ad55",
+      "pure": "r_f826c798f93a40d38face08d11cd653f",
+      "writer": "r_3617e9475bd94012a5d98fa64cd01eb2",
+      "exposed": true,
+      "note_mentions_handoff": true,
+      "memory_success": false,
+      "pure_success": false,
+      "empty_run": "r_90864b1e5b0c432d86db4d46eb890189",
+      "empty_success": false,
+      "other_pure_run": "r_818e4761a5514c6f940c11cae115560d",
+      "other_pure_success": false,
+      "same_opening": false,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "98",
+      "source": "51",
+      "arm": "fact_explicit",
+      "stage": "solve2",
+      "customer": "c706aaaad452a909b2bc6931384113362c520624574a369ba3719dee30839aed",
+      "state": "gain",
+      "memory": "r_d122f95fbea04293afc4407090d799f6",
+      "pure": "r_f826c798f93a40d38face08d11cd653f",
+      "writer": "r_4ada042202154b89ad5023b3ced9d0a1",
+      "exposed": true,
+      "note_mentions_handoff": true,
+      "memory_success": true,
+      "pure_success": false,
+      "empty_run": "r_90864b1e5b0c432d86db4d46eb890189",
+      "empty_success": false,
+      "other_pure_run": "r_818e4761a5514c6f940c11cae115560d",
+      "other_pure_success": false,
+      "same_opening": false,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "98",
+      "source": "51",
+      "arm": "episode_explicit",
+      "stage": "solve2",
+      "customer": "c706aaaad452a909b2bc6931384113362c520624574a369ba3719dee30839aed",
+      "state": "both_fail",
+      "memory": "r_3fe0c4341e4f47f5acf37828b7abe1d8",
+      "pure": "r_f826c798f93a40d38face08d11cd653f",
+      "writer": "r_9848f128edcb4854ba372f197e1d0363",
+      "exposed": true,
+      "note_mentions_handoff": true,
+      "memory_success": false,
+      "pure_success": false,
+      "empty_run": "r_90864b1e5b0c432d86db4d46eb890189",
+      "empty_success": false,
+      "other_pure_run": "r_818e4761a5514c6f940c11cae115560d",
+      "other_pure_success": false,
+      "same_opening": false,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "98",
+      "source": "53",
+      "arm": "procedure_explicit",
+      "stage": "solve2",
+      "customer": "c706aaaad452a909b2bc6931384113362c520624574a369ba3719dee30839aed",
+      "state": "both_fail",
+      "memory": "r_bdd746553faa4c179915ed8f07a0a438",
+      "pure": "r_f826c798f93a40d38face08d11cd653f",
+      "writer": "r_d94b8bf5e0844ccaba2abd002686e765",
+      "exposed": true,
+      "note_mentions_handoff": true,
+      "memory_success": false,
+      "pure_success": false,
+      "empty_run": "r_90864b1e5b0c432d86db4d46eb890189",
+      "empty_success": false,
+      "other_pure_run": "r_818e4761a5514c6f940c11cae115560d",
+      "other_pure_success": false,
+      "same_opening": false,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "98",
+      "source": "53",
+      "arm": "episode_explicit",
+      "stage": "solve2",
+      "customer": "c706aaaad452a909b2bc6931384113362c520624574a369ba3719dee30839aed",
+      "state": "both_fail",
+      "memory": "r_721217645d314877afb16715a91038bd",
+      "pure": "r_f826c798f93a40d38face08d11cd653f",
+      "writer": "r_bd4038aafc6b484ca531af5799fbac25",
+      "exposed": true,
+      "note_mentions_handoff": true,
+      "memory_success": false,
+      "pure_success": false,
+      "empty_run": "r_90864b1e5b0c432d86db4d46eb890189",
+      "empty_success": false,
+      "other_pure_run": "r_818e4761a5514c6f940c11cae115560d",
+      "other_pure_success": false,
+      "same_opening": false,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "98",
+      "source": "53",
+      "arm": "fact_explicit",
+      "stage": "solve2",
+      "customer": "c706aaaad452a909b2bc6931384113362c520624574a369ba3719dee30839aed",
+      "state": "both_fail",
+      "memory": "r_0db3250ee2a9415c8db1042bbc8135fe",
+      "pure": "r_f826c798f93a40d38face08d11cd653f",
+      "writer": "r_0d35006e478b46889b16d6a94f530035",
+      "exposed": true,
+      "note_mentions_handoff": true,
+      "memory_success": false,
+      "pure_success": false,
+      "empty_run": "r_90864b1e5b0c432d86db4d46eb890189",
+      "empty_success": false,
+      "other_pure_run": "r_818e4761a5514c6f940c11cae115560d",
+      "other_pure_success": false,
+      "same_opening": false,
+      "handoffs": "memory_only",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "98",
+      "source": "53",
+      "arm": "lesson_explicit",
+      "stage": "solve2",
+      "customer": "c706aaaad452a909b2bc6931384113362c520624574a369ba3719dee30839aed",
+      "state": "both_fail",
+      "memory": "r_e3b59e17a491455eaaaf043b19c348ad",
+      "pure": "r_f826c798f93a40d38face08d11cd653f",
+      "writer": "r_910d0dfb1e4a4e76a723d70971b7df33",
+      "exposed": true,
+      "note_mentions_handoff": true,
+      "memory_success": false,
+      "pure_success": false,
+      "empty_run": "r_90864b1e5b0c432d86db4d46eb890189",
+      "empty_success": false,
+      "other_pure_run": "r_818e4761a5514c6f940c11cae115560d",
+      "other_pure_success": false,
+      "same_opening": false,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "99",
+      "source": "53",
+      "arm": "fact_explicit",
+      "stage": "solve2",
+      "customer": "c706aaaad452a909b2bc6931384113362c520624574a369ba3719dee30839aed",
+      "state": "loss",
+      "memory": "r_d492037291a34fe797015bb660f6cd9c",
+      "pure": "r_0d44f215ff05416db5a7c95e5a446a79",
+      "writer": "r_0d35006e478b46889b16d6a94f530035",
+      "exposed": true,
+      "note_mentions_handoff": true,
+      "memory_success": false,
+      "pure_success": true,
+      "empty_run": "r_ef0304c8f3c74bea8abb0eb51fc68f8d",
+      "empty_success": true,
+      "other_pure_run": "r_2c687ad05c8446f9bee2d683dd1fbafa",
+      "other_pure_success": true,
+      "same_opening": false,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "99",
+      "source": "53",
+      "arm": "episode_explicit",
+      "stage": "solve2",
+      "customer": "c706aaaad452a909b2bc6931384113362c520624574a369ba3719dee30839aed",
+      "state": "both_pass",
+      "memory": "r_765ce04991264ac1b4ec21ac15978a97",
+      "pure": "r_0d44f215ff05416db5a7c95e5a446a79",
+      "writer": "r_bd4038aafc6b484ca531af5799fbac25",
+      "exposed": true,
+      "note_mentions_handoff": true,
+      "memory_success": true,
+      "pure_success": true,
+      "empty_run": "r_ef0304c8f3c74bea8abb0eb51fc68f8d",
+      "empty_success": true,
+      "other_pure_run": "r_2c687ad05c8446f9bee2d683dd1fbafa",
+      "other_pure_success": true,
+      "same_opening": false,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "99",
+      "source": "51",
+      "arm": "lesson_explicit",
+      "stage": "solve2",
+      "customer": "c706aaaad452a909b2bc6931384113362c520624574a369ba3719dee30839aed",
+      "state": "loss",
+      "memory": "r_2acd48fb5f28490a907a25bd2dc4fee1",
+      "pure": "r_0d44f215ff05416db5a7c95e5a446a79",
+      "writer": "r_3617e9475bd94012a5d98fa64cd01eb2",
+      "exposed": true,
+      "note_mentions_handoff": true,
+      "memory_success": false,
+      "pure_success": true,
+      "empty_run": "r_ef0304c8f3c74bea8abb0eb51fc68f8d",
+      "empty_success": true,
+      "other_pure_run": "r_2c687ad05c8446f9bee2d683dd1fbafa",
+      "other_pure_success": true,
+      "same_opening": false,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "99",
+      "source": "51",
+      "arm": "fact_explicit",
+      "stage": "solve2",
+      "customer": "c706aaaad452a909b2bc6931384113362c520624574a369ba3719dee30839aed",
+      "state": "both_pass",
+      "memory": "r_1245eeb77f99420baf2d0468ab6b6acb",
+      "pure": "r_0d44f215ff05416db5a7c95e5a446a79",
+      "writer": "r_4ada042202154b89ad5023b3ced9d0a1",
+      "exposed": true,
+      "note_mentions_handoff": true,
+      "memory_success": true,
+      "pure_success": true,
+      "empty_run": "r_ef0304c8f3c74bea8abb0eb51fc68f8d",
+      "empty_success": true,
+      "other_pure_run": "r_2c687ad05c8446f9bee2d683dd1fbafa",
+      "other_pure_success": true,
+      "same_opening": false,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "99",
+      "source": "53",
+      "arm": "lesson_explicit",
+      "stage": "solve2",
+      "customer": "c706aaaad452a909b2bc6931384113362c520624574a369ba3719dee30839aed",
+      "state": "both_pass",
+      "memory": "r_271fbcd8f93b49e5a39e847cb2822d58",
+      "pure": "r_0d44f215ff05416db5a7c95e5a446a79",
+      "writer": "r_910d0dfb1e4a4e76a723d70971b7df33",
+      "exposed": true,
+      "note_mentions_handoff": true,
+      "memory_success": true,
+      "pure_success": true,
+      "empty_run": "r_ef0304c8f3c74bea8abb0eb51fc68f8d",
+      "empty_success": true,
+      "other_pure_run": "r_2c687ad05c8446f9bee2d683dd1fbafa",
+      "other_pure_success": true,
+      "same_opening": false,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "99",
+      "source": "51",
+      "arm": "procedure_explicit",
+      "stage": "solve2",
+      "customer": "c706aaaad452a909b2bc6931384113362c520624574a369ba3719dee30839aed",
+      "state": "loss",
+      "memory": "r_508890c65cf348bc955e1fa607ac0380",
+      "pure": "r_0d44f215ff05416db5a7c95e5a446a79",
+      "writer": "r_42194eba6faf441c8a4e167d37a402a0",
+      "exposed": true,
+      "note_mentions_handoff": true,
+      "memory_success": false,
+      "pure_success": true,
+      "empty_run": "r_ef0304c8f3c74bea8abb0eb51fc68f8d",
+      "empty_success": true,
+      "other_pure_run": "r_2c687ad05c8446f9bee2d683dd1fbafa",
+      "other_pure_success": true,
+      "same_opening": false,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "99",
+      "source": "53",
+      "arm": "procedure_explicit",
+      "stage": "solve2",
+      "customer": "c706aaaad452a909b2bc6931384113362c520624574a369ba3719dee30839aed",
+      "state": "both_pass",
+      "memory": "r_0f5978e7461d44859342872111b20ab2",
+      "pure": "r_0d44f215ff05416db5a7c95e5a446a79",
+      "writer": "r_d94b8bf5e0844ccaba2abd002686e765",
+      "exposed": true,
+      "note_mentions_handoff": true,
+      "memory_success": true,
+      "pure_success": true,
+      "empty_run": "r_ef0304c8f3c74bea8abb0eb51fc68f8d",
+      "empty_success": true,
+      "other_pure_run": "r_2c687ad05c8446f9bee2d683dd1fbafa",
+      "other_pure_success": true,
+      "same_opening": false,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    },
+    {
+      "task": "99",
+      "source": "51",
+      "arm": "episode_explicit",
+      "stage": "solve2",
+      "customer": "c706aaaad452a909b2bc6931384113362c520624574a369ba3719dee30839aed",
+      "state": "both_pass",
+      "memory": "r_ed81379b226e4821b20bbf44bf3e8a2c",
+      "pure": "r_0d44f215ff05416db5a7c95e5a446a79",
+      "writer": "r_9848f128edcb4854ba372f197e1d0363",
+      "exposed": true,
+      "note_mentions_handoff": true,
+      "memory_success": true,
+      "pure_success": true,
+      "empty_run": "r_ef0304c8f3c74bea8abb0eb51fc68f8d",
+      "empty_success": true,
+      "other_pure_run": "r_2c687ad05c8446f9bee2d683dd1fbafa",
+      "other_pure_success": true,
+      "same_opening": false,
+      "handoffs": "neither",
+      "memory_source_extras": [],
+      "pure_source_extras": []
+    }
+  ],
+  "control_sensitivity": {
+    "empty_success": {
+      "matched": 94,
+      "distinct_tasks": 17,
+      "tasks_with_different_control_scores": [
+        "6"
+      ],
+      "memory_successes": 68,
+      "same_round_pure_successes": 70,
+      "alternative_successes": 78,
+      "alternative_scores_on_discordant": {
+        "gain": {
+          "pass": 6,
+          "fail": 6,
+          "missing": 2
+        },
+        "loss": {
+          "pass": 14,
+          "fail": 0,
+          "missing": 3
+        }
+      }
+    },
+    "other_pure_success": {
+      "matched": 91,
+      "distinct_tasks": 18,
+      "tasks_with_different_control_scores": [
+        "41",
+        "72",
+        "95"
+      ],
+      "memory_successes": 63,
+      "same_round_pure_successes": 71,
+      "alternative_successes": 69,
+      "alternative_scores_on_discordant": {
+        "gain": {
+          "pass": 2,
+          "fail": 6,
+          "missing": 6
+        },
+        "loss": {
+          "pass": 12,
+          "fail": 4,
+          "missing": 1
+        }
+      }
+    }
+  },
+  "discordant": [
+    {
+      "memory": "r_1ae60739081f4310a174b6c183360a06",
+      "pure": "r_922a64a79af9427081bdb1196998cfc7",
+      "task": "6",
+      "source": "9",
+      "arm": "lesson_explicit",
+      "state": "gain",
+      "memory_trace": {
+        "report_sha256": "5c88287da5fc8a705298bcf709d281198a05ba89bce57f1ec38c91f1c6059ab1",
+        "handoff": "no_transfer",
+        "handoff_turns": []
+      },
+      "pure_trace": {
+        "report_sha256": "7333de9801ad030e7dd71455535ef205320968e6eb8d082583ed3684b4d0024c",
+        "handoff": "no_transfer",
+        "handoff_turns": []
+      },
+      "losing_checks": "db_only",
+      "first_public_difference": {
+        "turn": 1,
+        "left": "user",
+        "right": "user"
+      },
+      "failed_assertions": []
+    },
+    {
+      "memory": "r_951e6fef79c34c9a8d0b2996cfc05326",
+      "pure": "r_922a64a79af9427081bdb1196998cfc7",
+      "task": "6",
+      "source": "5",
+      "arm": "lesson_explicit",
+      "state": "gain",
+      "memory_trace": {
+        "report_sha256": "859c33bda5fb3c37f3bab94df03904410bf08cee1cd58433d6e56756ed4a7b0d",
+        "handoff": "no_transfer",
+        "handoff_turns": []
+      },
+      "pure_trace": {
+        "report_sha256": "7333de9801ad030e7dd71455535ef205320968e6eb8d082583ed3684b4d0024c",
+        "handoff": "no_transfer",
+        "handoff_turns": []
+      },
+      "losing_checks": "db_only",
+      "first_public_difference": {
+        "turn": 1,
+        "left": "user",
+        "right": "user"
+      },
+      "failed_assertions": []
+    },
+    {
+      "memory": "r_5325a1bc67e54594858baf0843d27cba",
+      "pure": "r_922a64a79af9427081bdb1196998cfc7",
+      "task": "6",
+      "source": "9",
+      "arm": "fact_explicit",
+      "state": "gain",
+      "memory_trace": {
+        "report_sha256": "b2de0096124af47d3c8b8e3de1bf1a1c5842f5d3b1f0218266e9cd573a5e978d",
+        "handoff": "no_transfer",
+        "handoff_turns": []
+      },
+      "pure_trace": {
+        "report_sha256": "7333de9801ad030e7dd71455535ef205320968e6eb8d082583ed3684b4d0024c",
+        "handoff": "no_transfer",
+        "handoff_turns": []
+      },
+      "losing_checks": "db_only",
+      "first_public_difference": {
+        "turn": 1,
+        "left": "user",
+        "right": "user"
+      },
+      "failed_assertions": []
+    },
+    {
+      "memory": "r_5370c299f4924625b09ab51a31c145cf",
+      "pure": "r_922a64a79af9427081bdb1196998cfc7",
+      "task": "6",
+      "source": "5",
+      "arm": "procedure_explicit",
+      "state": "gain",
+      "memory_trace": {
+        "report_sha256": "e19ec7b602c56c906acd25a2cfd9eb3c9e2e06c51aba9cac6480ca5d359103ff",
+        "handoff": "no_transfer",
+        "handoff_turns": []
+      },
+      "pure_trace": {
+        "report_sha256": "7333de9801ad030e7dd71455535ef205320968e6eb8d082583ed3684b4d0024c",
+        "handoff": "no_transfer",
+        "handoff_turns": []
+      },
+      "losing_checks": "db_only",
+      "first_public_difference": {
+        "turn": 1,
+        "left": "user",
+        "right": "user"
+      },
+      "failed_assertions": []
+    },
+    {
+      "memory": "r_1f4ba691a1644bf89deb3b0b43fb601c",
+      "pure": "r_922a64a79af9427081bdb1196998cfc7",
+      "task": "6",
+      "source": "5",
+      "arm": "episode_explicit",
+      "state": "gain",
+      "memory_trace": {
+        "report_sha256": "a65648508d150e79237e047b2ff43cfb9d2eaaf663a185d57b93a3a23ca60fa6",
+        "handoff": "no_transfer",
+        "handoff_turns": []
+      },
+      "pure_trace": {
+        "report_sha256": "7333de9801ad030e7dd71455535ef205320968e6eb8d082583ed3684b4d0024c",
+        "handoff": "no_transfer",
+        "handoff_turns": []
+      },
+      "losing_checks": "db_only",
+      "first_public_difference": {
+        "turn": 1,
+        "left": "user",
+        "right": "user"
+      },
+      "failed_assertions": []
+    },
+    {
+      "memory": "r_28618a6cfd244ef7b1ffb41c8a023299",
+      "pure": "r_922a64a79af9427081bdb1196998cfc7",
+      "task": "6",
+      "source": "5",
+      "arm": "fact_explicit",
+      "state": "gain",
+      "memory_trace": {
+        "report_sha256": "820f0b6969c588672455d8e3b4625d5b9a0cbdb6f4502d734dabbef9ddeb198b",
+        "handoff": "no_transfer",
+        "handoff_turns": []
+      },
+      "pure_trace": {
+        "report_sha256": "7333de9801ad030e7dd71455535ef205320968e6eb8d082583ed3684b4d0024c",
+        "handoff": "no_transfer",
+        "handoff_turns": []
+      },
+      "losing_checks": "db_only",
+      "first_public_difference": {
+        "turn": 2,
+        "left": "assistant",
+        "right": "assistant"
+      },
+      "failed_assertions": []
+    },
+    {
+      "memory": "r_9420427f8ee6440089a67d2b1454364a",
+      "pure": "r_05230878d78a407fa6f565a0e1eef76b",
+      "task": "8",
+      "source": "5",
+      "arm": "procedure_explicit",
+      "state": "loss",
+      "memory_trace": {
+        "report_sha256": "9a25abc4a71c03dda1072d210d5bfc71dc29878371821170ea7d5bc6c564867c",
+        "handoff": "transfer_without_successful_change",
+        "handoff_turns": [
+          22
+        ]
+      },
+      "pure_trace": {
+        "report_sha256": "bb7e55b3738f5e18a7f49b628ab5305eec43e79dfc0bcff735e726424fc1273e",
+        "handoff": "no_transfer",
+        "handoff_turns": []
+      },
+      "losing_checks": "db_only",
+      "first_public_difference": {
+        "turn": 1,
+        "left": "user",
+        "right": "user"
+      },
+      "failed_assertions": []
+    },
+    {
+      "memory": "r_877848c0e462485caf382d1e8763c961",
+      "pure": "r_95e4648d8fbc4cab9359e3a7396fee43",
+      "task": "19",
+      "source": "18",
+      "arm": "episode_explicit",
+      "state": "gain",
+      "memory_trace": {
+        "report_sha256": "d8eded23e1c60676a7bb82d06926f1c1d3e30239d4901387b9f1efb1f9bf56f8",
+        "handoff": "no_transfer",
+        "handoff_turns": []
+      },
+      "pure_trace": {
+        "report_sha256": "1720afb162108f1c59bdbe342f069038dcf09ae90280d778ac1b196e56a6c074",
+        "handoff": "transfer_after_change",
+        "handoff_turns": [
+          28
+        ]
+      },
+      "losing_checks": "language_only",
+      "first_public_difference": {
+        "turn": 1,
+        "left": "user",
+        "right": "user"
+      },
+      "failed_assertions": [
+        "Agent should tell the user that exchanging the pet bed and office chair saves $41.64 total."
+      ],
+      "amounts": {
+        "memory": [
+          {
+            "assertion": "Agent should tell the user that returning the water bottle gives a refund of $54.04.",
+            "met": true,
+            "amount_turns": {
+              "54.04": [
+                16,
+                22
+              ]
+            }
+          },
+          {
+            "assertion": "Agent should tell the user that exchanging the pet bed and office chair saves $41.64 total.",
+            "met": true,
+            "amount_turns": {
+              "41.64": [
+                16
+              ]
+            }
+          }
+        ],
+        "pure": [
+          {
+            "assertion": "Agent should tell the user that returning the water bottle gives a refund of $54.04.",
+            "met": true,
+            "amount_turns": {
+              "54.04": [
+                16,
+                18,
+                20
+              ]
+            }
+          },
+          {
+            "assertion": "Agent should tell the user that exchanging the pet bed and office chair saves $41.64 total.",
+            "met": false,
+            "amount_turns": {
+              "41.64": []
+            }
+          }
+        ],
+        "note_amounts": [
+          "15.33"
+        ]
+      }
+    },
+    {
+      "memory": "r_a57adb1dbe484a35997a605c74047673",
+      "pure": "r_95e4648d8fbc4cab9359e3a7396fee43",
+      "task": "19",
+      "source": "18",
+      "arm": "procedure_explicit",
+      "state": "gain",
+      "memory_trace": {
+        "report_sha256": "ad2166c9cf555d70eb8b06b5ea4059a9b244a9a2cc34af36f6e244b73e38414a",
+        "handoff": "no_transfer",
+        "handoff_turns": []
+      },
+      "pure_trace": {
+        "report_sha256": "1720afb162108f1c59bdbe342f069038dcf09ae90280d778ac1b196e56a6c074",
+        "handoff": "transfer_after_change",
+        "handoff_turns": [
+          28
+        ]
+      },
+      "losing_checks": "language_only",
+      "first_public_difference": {
+        "turn": 2,
+        "left": "assistant",
+        "right": "assistant"
+      },
+      "failed_assertions": [
+        "Agent should tell the user that exchanging the pet bed and office chair saves $41.64 total."
+      ],
+      "amounts": {
+        "memory": [
+          {
+            "assertion": "Agent should tell the user that returning the water bottle gives a refund of $54.04.",
+            "met": true,
+            "amount_turns": {
+              "54.04": [
+                18
+              ]
+            }
+          },
+          {
+            "assertion": "Agent should tell the user that exchanging the pet bed and office chair saves $41.64 total.",
+            "met": true,
+            "amount_turns": {
+              "41.64": [
+                18
+              ]
+            }
+          }
+        ],
+        "pure": [
+          {
+            "assertion": "Agent should tell the user that returning the water bottle gives a refund of $54.04.",
+            "met": true,
+            "amount_turns": {
+              "54.04": [
+                16,
+                18,
+                20
+              ]
+            }
+          },
+          {
+            "assertion": "Agent should tell the user that exchanging the pet bed and office chair saves $41.64 total.",
+            "met": false,
+            "amount_turns": {
+              "41.64": []
+            }
+          }
+        ],
+        "note_amounts": [
+          "15.33"
+        ]
+      }
+    },
+    {
+      "memory": "r_1f19ae0ff7d043b9bbe0e055419c4f57",
+      "pure": "r_49a6e9d2c4384a75bceeb987e4a044f7",
+      "task": "23",
+      "source": "70",
+      "arm": "procedure_explicit",
+      "state": "loss",
+      "memory_trace": {
+        "report_sha256": "277a89b83e8edd30af5a707f06b949e798b9c5ec4af60c8c39ef2c3d014eb213",
+        "handoff": "transfer_after_change",
+        "handoff_turns": [
+          32
+        ]
+      },
+      "pure_trace": {
+        "report_sha256": "6c3fb33913ac160acc46a764c2fcce2f4e781f7a4776f77158024097c271d2ed",
+        "handoff": "no_transfer",
+        "handoff_turns": []
+      },
+      "losing_checks": "db_only",
+      "first_public_difference": {
+        "turn": 1,
+        "left": "user",
+        "right": "user"
+      },
+      "failed_assertions": []
+    },
+    {
+      "memory": "r_0ad67965c70d462ab5bc9e2de261e53c",
+      "pure": "r_7a429e98f6d543ab99873ce0fb077fe3",
+      "task": "28",
+      "source": "27",
+      "arm": "fact_explicit",
+      "state": "loss",
+      "memory_trace": {
+        "report_sha256": "0fe35b69dfd3d74a57a5d12af74cd1aa4a3582e426fdd3aefe2d8b37c3fa2603",
+        "handoff": "transfer_after_change",
+        "handoff_turns": [
+          36
+        ]
+      },
+      "pure_trace": {
+        "report_sha256": "03b1a670f0666c8169e20b82f33e09f8736130bf2b4cf04622b4d455eaedcce2",
+        "handoff": "no_transfer",
+        "handoff_turns": []
+      },
+      "losing_checks": "language_only",
+      "first_public_difference": {
+        "turn": 1,
+        "left": "user",
+        "right": "user"
+      },
+      "failed_assertions": [
+        "Agent should tell the user the total refund amount is $918.43."
+      ],
+      "amounts": {
+        "memory": [
+          {
+            "assertion": "Agent should tell the user the total refund amount is $918.43.",
+            "met": false,
+            "amount_turns": {
+              "918.43": []
+            }
+          }
+        ],
+        "pure": [
+          {
+            "assertion": "Agent should tell the user the total refund amount is $918.43.",
+            "met": true,
+            "amount_turns": {
+              "918.43": [
+                32
+              ]
+            }
+          }
+        ],
+        "note_amounts": [
+          "23.99",
+          "236.57",
+          "260.56"
+        ]
+      }
+    },
+    {
+      "memory": "r_5774b195a10245c4b9ab883fade23a53",
+      "pure": "r_7a429e98f6d543ab99873ce0fb077fe3",
+      "task": "28",
+      "source": "27",
+      "arm": "procedure_explicit",
+      "state": "loss",
+      "memory_trace": {
+        "report_sha256": "ccd1d7fad5ac43647b973cfad33a65a442cf270de98f44852a1c7f6f831c9a00",
+        "handoff": "transfer_without_successful_change",
+        "handoff_turns": [
+          16
+        ]
+      },
+      "pure_trace": {
+        "report_sha256": "03b1a670f0666c8169e20b82f33e09f8736130bf2b4cf04622b4d455eaedcce2",
+        "handoff": "no_transfer",
+        "handoff_turns": []
+      },
+      "losing_checks": "db_and_language",
+      "first_public_difference": {
+        "turn": 2,
+        "left": "assistant",
+        "right": "assistant"
+      },
+      "failed_assertions": [
+        "Agent should tell the user the total refund amount is $918.43."
+      ],
+      "amounts": {
+        "memory": [
+          {
+            "assertion": "Agent should tell the user the total refund amount is $918.43.",
+            "met": false,
+            "amount_turns": {
+              "918.43": []
+            }
+          }
+        ],
+        "pure": [
+          {
+            "assertion": "Agent should tell the user the total refund amount is $918.43.",
+            "met": true,
+            "amount_turns": {
+              "918.43": [
+                32
+              ]
+            }
+          }
+        ],
+        "note_amounts": []
+      }
+    },
+    {
+      "memory": "r_4de0dd4cd8da40ac8a001e1c60415a13",
+      "pure": "r_7a429e98f6d543ab99873ce0fb077fe3",
+      "task": "28",
+      "source": "27",
+      "arm": "episode_explicit",
+      "state": "loss",
+      "memory_trace": {
+        "report_sha256": "491f9a0e73a2e43ac46246cbac5f94cee72c9382e6318fbfe5f22057b9bbd704",
+        "handoff": "transfer_after_change",
+        "handoff_turns": [
+          23
+        ]
+      },
+      "pure_trace": {
+        "report_sha256": "03b1a670f0666c8169e20b82f33e09f8736130bf2b4cf04622b4d455eaedcce2",
+        "handoff": "no_transfer",
+        "handoff_turns": []
+      },
+      "losing_checks": "language_only",
+      "first_public_difference": {
+        "turn": 2,
+        "left": "assistant",
+        "right": "assistant"
+      },
+      "failed_assertions": [
+        "Agent should tell the user the total refund amount is $918.43."
+      ],
+      "amounts": {
+        "memory": [
+          {
+            "assertion": "Agent should tell the user the total refund amount is $918.43.",
+            "met": false,
+            "amount_turns": {
+              "918.43": []
+            }
+          }
+        ],
+        "pure": [
+          {
+            "assertion": "Agent should tell the user the total refund amount is $918.43.",
+            "met": true,
+            "amount_turns": {
+              "918.43": [
+                32
+              ]
+            }
+          }
+        ],
+        "note_amounts": [
+          "23.99",
+          "236.57",
+          "260.56"
+        ]
+      }
+    },
+    {
+      "memory": "r_30ac96f288e24f4497968ba903a69d5d",
+      "pure": "r_7a429e98f6d543ab99873ce0fb077fe3",
+      "task": "28",
+      "source": "26",
+      "arm": "episode_explicit",
+      "state": "loss",
+      "memory_trace": {
+        "report_sha256": "c871b3c40bf82ddb9a163905dea4634c81e70a76fda7448a454aa8fd4bf8cef6",
+        "handoff": "transfer_after_change",
+        "handoff_turns": [
+          24
+        ]
+      },
+      "pure_trace": {
+        "report_sha256": "03b1a670f0666c8169e20b82f33e09f8736130bf2b4cf04622b4d455eaedcce2",
+        "handoff": "no_transfer",
+        "handoff_turns": []
+      },
+      "losing_checks": "db_and_language",
+      "first_public_difference": {
+        "turn": 2,
+        "left": "assistant",
+        "right": "assistant"
+      },
+      "failed_assertions": [
+        "Agent should tell the user the total refund amount is $918.43."
+      ],
+      "amounts": {
+        "memory": [
+          {
+            "assertion": "Agent should tell the user the total refund amount is $918.43.",
+            "met": false,
+            "amount_turns": {
+              "918.43": []
+            }
+          }
+        ],
+        "pure": [
+          {
+            "assertion": "Agent should tell the user the total refund amount is $918.43.",
+            "met": true,
+            "amount_turns": {
+              "918.43": [
+                32
+              ]
+            }
+          }
+        ],
+        "note_amounts": []
+      }
+    },
+    {
+      "memory": "r_7c3eb78c7db74979ba2d1eed6475b2e5",
+      "pure": "r_598668b74e4840b8b9ab7dad5874bcc2",
+      "task": "29",
+      "source": "27",
+      "arm": "episode_explicit",
+      "state": "loss",
+      "memory_trace": {
+        "report_sha256": "63bdb354afcdcf550af665c4b6f47f02a119952ef6b36d1e2302093fd6f755a2",
+        "handoff": "no_transfer",
+        "handoff_turns": []
+      },
+      "pure_trace": {
+        "report_sha256": "870ccddef95897e0e21e2d911939e0fcc7c1f9264815435a6b0785443a973d99",
+        "handoff": "no_transfer",
+        "handoff_turns": []
+      },
+      "losing_checks": "db_and_language",
+      "first_public_difference": {
+        "turn": 2,
+        "left": "assistant",
+        "right": "assistant"
+      },
+      "failed_assertions": [
+        "Agent should tell the user the prices of the available bamboo skateboard options: $180.10, $189.57, and $208.60."
+      ],
+      "amounts": {
+        "memory": [
+          {
+            "assertion": "Agent should tell the user the prices of the available bamboo skateboard options: $180.10, $189.57, and $208.60.",
+            "met": false,
+            "amount_turns": {
+              "180.10": [
+                22
+              ],
+              "189.57": [
+                22
+              ],
+              "208.60": []
+            }
+          }
+        ],
+        "pure": [
+          {
+            "assertion": "Agent should tell the user the prices of the available bamboo skateboard options: $180.10, $189.57, and $208.60.",
+            "met": true,
+            "amount_turns": {
+              "180.10": [
+                22
+              ],
+              "189.57": [
+                22
+              ],
+              "208.60": [
+                22,
+                24
+              ]
+            }
+          }
+        ],
+        "note_amounts": [
+          "23.99",
+          "236.57",
+          "260.56"
+        ]
+      },
+      "catalog": {
+        "worker_reply": "I found both orders. Your skateboard is in delivered order #W3792453 (item 4293355847), currently bamboo, 31-inch, plain. The shortest available bamboo option is 28-inch, but it comes in a graphic design (item 6843647669, $180.10) or a custom design (item 6673921677, $189.57). Which design would you like? The replacement would be $20.70 less for graphic or $11.23 less for custom, with the difference handled through your PayPal method.",
+        "variant_in_prior_tool_result": {
+          "item_id": "8176740019",
+          "options": {
+            "deck material": "bamboo",
+            "length": "28 inch",
+            "design": "plain"
+          },
+          "available": true,
+          "price": 208.6
+        },
+        "variant_id_in_note": false,
+        "wire_sha256": "b25ec1a48b4f76671087b0553a1269de479d30d876369ae2d9ecc8744ccbf0f5",
+        "response_sha256": "dac9403841e68d20cec40ca2796819aadc1a72659815396de1e27639945d031f",
+        "db_replay": {
+          "edit": "replace_one_variant",
+          "memory_db_with_correction": true,
+          "pure_db_with_reverse_edit": false
+        }
+      }
+    },
+    {
+      "memory": "r_0748764343a9426bb73fe45d0fef7fd4",
+      "pure": "r_0db99921fc9c4ad6855ee7ccc3d39844",
+      "task": "31",
+      "source": "32",
+      "arm": "procedure_explicit",
+      "state": "loss",
+      "memory_trace": {
+        "report_sha256": "93c8072ba41be9193eb87203b1a598a2242ab3be96296f0557c9cb36272b5485",
+        "handoff": "transfer_without_successful_change",
+        "handoff_turns": [
+          18
+        ]
+      },
+      "pure_trace": {
+        "report_sha256": "09693d2e3a71c0ae9c99d59cb7fef57b07f1c507a53078d6745fb13525ab0ba1",
+        "handoff": "no_transfer",
+        "handoff_turns": []
+      },
+      "losing_checks": "db_only",
+      "first_public_difference": {
+        "turn": 1,
+        "left": "user",
+        "right": "user"
+      },
+      "failed_assertions": []
+    },
+    {
+      "memory": "r_b8a6ab72f63c43ca8bece97310142606",
+      "pure": "r_0e5f5669637c4b028b0ab5970cbe64e4",
+      "task": "41",
+      "source": "42",
+      "arm": "episode_explicit",
+      "state": "gain",
+      "memory_trace": {
+        "report_sha256": "c7ef0703988a7a7387ed019709d1923a23a34b05f5351c708fe499dafeace51d",
+        "handoff": "no_transfer",
+        "handoff_turns": []
+      },
+      "pure_trace": {
+        "report_sha256": "96f0d639d5f1c183af6a572962e4399d956c4f44c71980d232b98dce8b424e44",
+        "handoff": "no_transfer",
+        "handoff_turns": []
+      },
+      "losing_checks": "db_only",
+      "first_public_difference": {
+        "turn": 1,
+        "left": "user",
+        "right": "user"
+      },
+      "failed_assertions": []
+    },
+    {
+      "memory": "r_2bbd0cfb692c441da22266d2ebddaf37",
+      "pure": "r_0e5f5669637c4b028b0ab5970cbe64e4",
+      "task": "41",
+      "source": "42",
+      "arm": "procedure_explicit",
+      "state": "gain",
+      "memory_trace": {
+        "report_sha256": "01beeeaa7457f37b3b7de799b52b57b4d3505efb03e0d5116e42dba5c0d1d061",
+        "handoff": "no_transfer",
+        "handoff_turns": []
+      },
+      "pure_trace": {
+        "report_sha256": "96f0d639d5f1c183af6a572962e4399d956c4f44c71980d232b98dce8b424e44",
+        "handoff": "no_transfer",
+        "handoff_turns": []
+      },
+      "losing_checks": "db_only",
+      "first_public_difference": {
+        "turn": 1,
+        "left": "user",
+        "right": "user"
+      },
+      "failed_assertions": []
+    },
+    {
+      "memory": "r_84d51e7581d6491ab715cdeab6075efb",
+      "pure": "r_1edaf17cf32c4224a89f9d531e7c409e",
+      "task": "46",
+      "source": "45",
+      "arm": "fact_explicit",
+      "state": "loss",
+      "memory_trace": {
+        "report_sha256": "8dca693ff9994b777df97695f00ec57ae1ca728cd053d65baafdd127f2004e01",
+        "handoff": "transfer_after_change",
+        "handoff_turns": [
+          20
+        ]
+      },
+      "pure_trace": {
+        "report_sha256": "eb0742b949c028c4f9a8a1e160491519c95cc3d4a4996b560c2bbb73e43a80e1",
+        "handoff": "no_transfer",
+        "handoff_turns": []
+      },
+      "losing_checks": "language_only",
+      "first_public_difference": {
+        "turn": 2,
+        "left": "assistant",
+        "right": "assistant"
+      },
+      "failed_assertions": [
+        "Agent should tell the user the total paid for remaining items is $1,497.65."
+      ],
+      "amounts": {
+        "memory": [
+          {
+            "assertion": "Agent should tell the user the total refund amount is $1,126.04.",
+            "met": true,
+            "amount_turns": {
+              "1126.04": [
+                18
+              ]
+            }
+          },
+          {
+            "assertion": "Agent should tell the user the total paid for remaining items is $1,497.65.",
+            "met": false,
+            "amount_turns": {
+              "1497.65": []
+            }
+          }
+        ],
+        "pure": [
+          {
+            "assertion": "Agent should tell the user the total refund amount is $1,126.04.",
+            "met": true,
+            "amount_turns": {
+              "1126.04": [
+                20
+              ]
+            }
+          },
+          {
+            "assertion": "Agent should tell the user the total paid for remaining items is $1,497.65.",
+            "met": true,
+            "amount_turns": {
+              "1497.65": [
+                24
+              ]
+            }
+          }
+        ],
+        "note_amounts": [
+          "30.49",
+          "622.12",
+          "652.61"
+        ]
+      }
+    },
+    {
+      "memory": "r_ba99d68686384cd9a71df16a05cc16cf",
+      "pure": "r_ba06e98ad7064942b80e23177c6dee30",
+      "task": "47",
+      "source": "45",
+      "arm": "lesson_explicit",
+      "state": "gain",
+      "memory_trace": {
+        "report_sha256": "482b354a63b8e07f83674328770650f9b2f97047933766fd4aceaeaec19850f8",
+        "handoff": "no_transfer",
+        "handoff_turns": []
+      },
+      "pure_trace": {
+        "report_sha256": "4e2075351210215bd4c8575ae3c5a91e4d2d94aadcdff6eb5d2c7050a81ee9fa",
+        "handoff": "transfer_after_change",
+        "handoff_turns": [
+          24
+        ]
+      },
+      "losing_checks": "language_only",
+      "first_public_difference": {
+        "turn": 1,
+        "left": "user",
+        "right": "user"
+      },
+      "failed_assertions": [
+        "Agent should tell the user the total paid for remaining items is $1,528.14."
+      ],
+      "amounts": {
+        "memory": [
+          {
+            "assertion": "Agent should tell the user the total refund amount is $1,095.55.",
+            "met": true,
+            "amount_turns": {
+              "1095.55": [
+                22,
+                24
+              ]
+            }
+          },
+          {
+            "assertion": "Agent should tell the user the total paid for remaining items is $1,528.14.",
+            "met": true,
+            "amount_turns": {
+              "1528.14": [
+                26
+              ]
+            }
+          }
+        ],
+        "pure": [
+          {
+            "assertion": "Agent should tell the user the total refund amount is $1,095.55.",
+            "met": true,
+            "amount_turns": {
+              "1095.55": [
+                20
+              ]
+            }
+          },
+          {
+            "assertion": "Agent should tell the user the total paid for remaining items is $1,528.14.",
+            "met": false,
+            "amount_turns": {
+              "1528.14": []
+            }
+          }
+        ],
+        "note_amounts": []
+      }
+    },
+    {
+      "memory": "r_f2aa4347b96e476985a7fd21c7e66bff",
+      "pure": "r_ba06e98ad7064942b80e23177c6dee30",
+      "task": "47",
+      "source": "45",
+      "arm": "procedure_explicit",
+      "state": "gain",
+      "memory_trace": {
+        "report_sha256": "ac69e14081ddaf33018631e2fbb9c09aab24b80a23b44dfcdd4722bc132295fc",
+        "handoff": "no_transfer",
+        "handoff_turns": []
+      },
+      "pure_trace": {
+        "report_sha256": "4e2075351210215bd4c8575ae3c5a91e4d2d94aadcdff6eb5d2c7050a81ee9fa",
+        "handoff": "transfer_after_change",
+        "handoff_turns": [
+          24
+        ]
+      },
+      "losing_checks": "language_only",
+      "first_public_difference": {
+        "turn": 1,
+        "left": "user",
+        "right": "user"
+      },
+      "failed_assertions": [
+        "Agent should tell the user the total paid for remaining items is $1,528.14."
+      ],
+      "amounts": {
+        "memory": [
+          {
+            "assertion": "Agent should tell the user the total refund amount is $1,095.55.",
+            "met": true,
+            "amount_turns": {
+              "1095.55": [
+                18
+              ]
+            }
+          },
+          {
+            "assertion": "Agent should tell the user the total paid for remaining items is $1,528.14.",
+            "met": true,
+            "amount_turns": {
+              "1528.14": [
+                20
+              ]
+            }
+          }
+        ],
+        "pure": [
+          {
+            "assertion": "Agent should tell the user the total refund amount is $1,095.55.",
+            "met": true,
+            "amount_turns": {
+              "1095.55": [
+                20
+              ]
+            }
+          },
+          {
+            "assertion": "Agent should tell the user the total paid for remaining items is $1,528.14.",
+            "met": false,
+            "amount_turns": {
+              "1528.14": []
+            }
+          }
+        ],
+        "note_amounts": []
+      }
+    },
+    {
+      "memory": "r_5de41ebf56574023b760b5e92c86d387",
+      "pure": "r_ba06e98ad7064942b80e23177c6dee30",
+      "task": "47",
+      "source": "45",
+      "arm": "fact_explicit",
+      "state": "gain",
+      "memory_trace": {
+        "report_sha256": "6411ef3995dd3d560046e13c97a8a93d4d1ba9cc1badad37b5af0d03b1ecb044",
+        "handoff": "no_transfer",
+        "handoff_turns": []
+      },
+      "pure_trace": {
+        "report_sha256": "4e2075351210215bd4c8575ae3c5a91e4d2d94aadcdff6eb5d2c7050a81ee9fa",
+        "handoff": "transfer_after_change",
+        "handoff_turns": [
+          24
+        ]
+      },
+      "losing_checks": "language_only",
+      "first_public_difference": {
+        "turn": 14,
+        "left": "assistant",
+        "right": "assistant"
+      },
+      "failed_assertions": [
+        "Agent should tell the user the total paid for remaining items is $1,528.14."
+      ],
+      "amounts": {
+        "memory": [
+          {
+            "assertion": "Agent should tell the user the total refund amount is $1,095.55.",
+            "met": true,
+            "amount_turns": {
+              "1095.55": [
+                16
+              ]
+            }
+          },
+          {
+            "assertion": "Agent should tell the user the total paid for remaining items is $1,528.14.",
+            "met": true,
+            "amount_turns": {
+              "1528.14": [
+                26
+              ]
+            }
+          }
+        ],
+        "pure": [
+          {
+            "assertion": "Agent should tell the user the total refund amount is $1,095.55.",
+            "met": true,
+            "amount_turns": {
+              "1095.55": [
+                20
+              ]
+            }
+          },
+          {
+            "assertion": "Agent should tell the user the total paid for remaining items is $1,528.14.",
+            "met": false,
+            "amount_turns": {
+              "1528.14": []
+            }
+          }
+        ],
+        "note_amounts": [
+          "30.49",
+          "622.12",
+          "652.61"
+        ]
+      }
+    },
+    {
+      "memory": "r_7d8251ba3710454cb27f72e69882f869",
+      "pure": "r_3ca482d514584ad6bbb480eca6d180e5",
+      "task": "54",
+      "source": "55",
+      "arm": "lesson_explicit",
+      "state": "loss",
+      "memory_trace": {
+        "report_sha256": "dec43a6fa7121bd39df8b630cb4595e99079131308cd2269bdb64438c864ad55",
+        "handoff": "no_transfer",
+        "handoff_turns": []
+      },
+      "pure_trace": {
+        "report_sha256": "1a04aca9f9fb3396f2a8ab2e119f3122ae40ec2dc9ff582c4716c10c187214fa",
+        "handoff": "no_transfer",
+        "handoff_turns": []
+      },
+      "losing_checks": "language_only",
+      "first_public_difference": {
+        "turn": 2,
+        "left": "assistant",
+        "right": "assistant"
+      },
+      "failed_assertions": [
+        "Agent should tell the user the total refund amount is $3,646.68."
+      ],
+      "amounts": {
+        "memory": [
+          {
+            "assertion": "Agent should tell the user the total refund amount is $3,646.68.",
+            "met": false,
+            "amount_turns": {
+              "3646.68": []
+            }
+          }
+        ],
+        "pure": [
+          {
+            "assertion": "Agent should tell the user the total refund amount is $3,646.68.",
+            "met": true,
+            "amount_turns": {
+              "3646.68": [
+                40
+              ]
+            }
+          }
+        ],
+        "note_amounts": []
+      }
+    },
+    {
+      "memory": "r_7104b2b7cc564e8085fa929f1a424d0d",
+      "pure": "r_248db5767c9d43a588809fe845dc6127",
+      "task": "72",
+      "source": "71",
+      "arm": "episode_explicit",
+      "state": "loss",
+      "memory_trace": {
+        "report_sha256": "d53e1ae0b5c0d08884384d9486dce25f54d1c319e0dbfdc06bf58462d7eb9a9f",
+        "handoff": "transfer_after_change",
+        "handoff_turns": [
+          22
+        ]
+      },
+      "pure_trace": {
+        "report_sha256": "551d3edcbdf58e88b241e253e330d99ee1c9627ecee74693dcb60e5ee3b1c0d1",
+        "handoff": "no_transfer",
+        "handoff_turns": []
+      },
+      "losing_checks": "db_only",
+      "first_public_difference": {
+        "turn": 1,
+        "left": "user",
+        "right": "user"
+      },
+      "failed_assertions": []
+    },
+    {
+      "memory": "r_9826f207ff4a4ff69c1a9a6a2e5ab67a",
+      "pure": "r_248db5767c9d43a588809fe845dc6127",
+      "task": "72",
+      "source": "71",
+      "arm": "fact_explicit",
+      "state": "loss",
+      "memory_trace": {
+        "report_sha256": "0da62834f79eacd9b0703a9b17b493395fe95edb51eeccf06d6c508d1203f56c",
+        "handoff": "transfer_after_change",
+        "handoff_turns": [
+          16
+        ]
+      },
+      "pure_trace": {
+        "report_sha256": "551d3edcbdf58e88b241e253e330d99ee1c9627ecee74693dcb60e5ee3b1c0d1",
+        "handoff": "no_transfer",
+        "handoff_turns": []
+      },
+      "losing_checks": "db_only",
+      "first_public_difference": {
+        "turn": 1,
+        "left": "user",
+        "right": "user"
+      },
+      "failed_assertions": []
+    },
+    {
+      "memory": "r_c5e70f30056848b385b7957d19dc01ee",
+      "pure": "r_248db5767c9d43a588809fe845dc6127",
+      "task": "72",
+      "source": "71",
+      "arm": "procedure_explicit",
+      "state": "loss",
+      "memory_trace": {
+        "report_sha256": "23501288ef7a611bbfb0032be39ba2909285f880dda12f7feda54128d6547853",
+        "handoff": "transfer_after_change",
+        "handoff_turns": [
+          23
+        ]
+      },
+      "pure_trace": {
+        "report_sha256": "551d3edcbdf58e88b241e253e330d99ee1c9627ecee74693dcb60e5ee3b1c0d1",
+        "handoff": "no_transfer",
+        "handoff_turns": []
+      },
+      "losing_checks": "db_only",
+      "first_public_difference": {
+        "turn": 1,
+        "left": "user",
+        "right": "user"
+      },
+      "failed_assertions": []
+    },
+    {
+      "memory": "r_00ab29dfc74b4f8bbad3c89920decd46",
+      "pure": "r_b5e29b28434140639c35c24540879fd8",
+      "task": "95",
+      "source": "94",
+      "arm": "lesson_explicit",
+      "state": "loss",
+      "memory_trace": {
+        "report_sha256": "5a92b64c34e47145edcf03093160c583f0eb506839448b3c71195c51e5126c69",
+        "handoff": "transfer_after_change",
+        "handoff_turns": [
+          32
+        ]
+      },
+      "pure_trace": {
+        "report_sha256": "fdc718ab44b8303c06d978b96660d32496894a8cb00fa7baafe512da052a733c",
+        "handoff": "no_transfer",
+        "handoff_turns": []
+      },
+      "losing_checks": "db_and_language",
+      "first_public_difference": {
+        "turn": 1,
+        "left": "user",
+        "right": "user"
+      },
+      "failed_assertions": [
+        "Agent should tell the user the price difference for the other laptop exchange is $60.78 (a refund).",
+        "Agent should tell the user the total amount to pay today is $107.09."
+      ],
+      "amounts": {
+        "memory": [
+          {
+            "assertion": "Agent should tell the user the price difference for one laptop exchange is $167.87.",
+            "met": true,
+            "amount_turns": {
+              "167.87": [
+                28,
+                30
+              ]
+            }
+          },
+          {
+            "assertion": "Agent should tell the user the price difference for the other laptop exchange is $60.78 (a refund).",
+            "met": false,
+            "amount_turns": {
+              "60.78": []
+            }
+          },
+          {
+            "assertion": "Agent should tell the user the total amount to pay today is $107.09.",
+            "met": false,
+            "amount_turns": {
+              "107.09": []
+            }
+          }
+        ],
+        "pure": [
+          {
+            "assertion": "Agent should tell the user the price difference for one laptop exchange is $167.87.",
+            "met": true,
+            "amount_turns": {
+              "167.87": [
+                18,
+                28
+              ]
+            }
+          },
+          {
+            "assertion": "Agent should tell the user the price difference for the other laptop exchange is $60.78 (a refund).",
+            "met": true,
+            "amount_turns": {
+              "60.78": [
+                18,
+                28
+              ]
+            }
+          },
+          {
+            "assertion": "Agent should tell the user the total amount to pay today is $107.09.",
+            "met": true,
+            "amount_turns": {
+              "107.09": [
+                18,
+                20,
+                28
+              ]
+            }
+          }
+        ],
+        "note_amounts": []
+      }
+    },
+    {
+      "memory": "r_d122f95fbea04293afc4407090d799f6",
+      "pure": "r_f826c798f93a40d38face08d11cd653f",
+      "task": "98",
+      "source": "51",
+      "arm": "fact_explicit",
+      "state": "gain",
+      "memory_trace": {
+        "report_sha256": "107790cecf4acae87b2fb28495c5500f2d8b3a460e035549c02f92e19994aef5",
+        "handoff": "no_transfer",
+        "handoff_turns": []
+      },
+      "pure_trace": {
+        "report_sha256": "8d2d837849a65080b3b61da46e4bfaba2bb8429dabc8fecb0ea232f4d3d6ec2b",
+        "handoff": "no_transfer",
+        "handoff_turns": []
+      },
+      "losing_checks": "db_only",
+      "first_public_difference": {
+        "turn": 1,
+        "left": "user",
+        "right": "user"
+      },
+      "failed_assertions": []
+    },
+    {
+      "memory": "r_d492037291a34fe797015bb660f6cd9c",
+      "pure": "r_0d44f215ff05416db5a7c95e5a446a79",
+      "task": "99",
+      "source": "53",
+      "arm": "fact_explicit",
+      "state": "loss",
+      "memory_trace": {
+        "report_sha256": "a9c5813da35766e0f5015413491d866df97fb7e3568a9f333921a92b29868327",
+        "handoff": "no_transfer",
+        "handoff_turns": []
+      },
+      "pure_trace": {
+        "report_sha256": "bcf343d08fd914cdeadb343dbe141801a686684e449a5d007207858754cc0073",
+        "handoff": "no_transfer",
+        "handoff_turns": []
+      },
+      "losing_checks": "db_only",
+      "first_public_difference": {
+        "turn": 1,
+        "left": "user",
+        "right": "user"
+      },
+      "failed_assertions": [],
+      "catalog": {
+        "worker_reply": "- **Order #W4689314 (delivered):** There isn’t an available camera variant that lowers the resolution while keeping both **3x zoom** and **SD card** storage unchanged. I can’t proceed with that exchange unless you’re willing to change another option.",
+        "variant_in_prior_tool_result": {
+          "item_id": "8363011723",
+          "options": {
+            "resolution": "20MP",
+            "zoom": "3x",
+            "storage": "SD card"
+          },
+          "available": true,
+          "price": 2823.96
+        },
+        "variant_id_in_note": false,
+        "wire_sha256": "047b4fd1cc9582ea28f97f9376c9993178e73c5bf938997d1beb4a46bd635222",
+        "response_sha256": "d4d9be5653b1404131a06c8f36a779b87f9fc1d7f26ae62c2a2def55c9ae95be",
+        "db_replay": {
+          "edit": "add_omitted_single_item_exchange",
+          "memory_db_with_correction": true,
+          "pure_db_with_reverse_edit": false
+        }
+      }
+    },
+    {
+      "memory": "r_2acd48fb5f28490a907a25bd2dc4fee1",
+      "pure": "r_0d44f215ff05416db5a7c95e5a446a79",
+      "task": "99",
+      "source": "51",
+      "arm": "lesson_explicit",
+      "state": "loss",
+      "memory_trace": {
+        "report_sha256": "c1b64933331902bad402bdb74cee988c44028344cc1fc39d926db9039b766252",
+        "handoff": "no_transfer",
+        "handoff_turns": []
+      },
+      "pure_trace": {
+        "report_sha256": "bcf343d08fd914cdeadb343dbe141801a686684e449a5d007207858754cc0073",
+        "handoff": "no_transfer",
+        "handoff_turns": []
+      },
+      "losing_checks": "db_only",
+      "first_public_difference": {
+        "turn": 1,
+        "left": "user",
+        "right": "user"
+      },
+      "failed_assertions": [],
+      "catalog": {
+        "worker_reply": "I checked the puzzle variants: the **1,500-piece, intermediate, art** option exists but is **unavailable**. There isn’t an available art option matching the requested piece count and difficulty. The **1,500-piece, intermediate, animal** option is available.",
+        "variant_in_prior_tool_result": {
+          "item_id": "5546244844",
+          "options": {
+            "pieces": "1500",
+            "theme": "art",
+            "difficulty level": "intermediate"
+          },
+          "available": true,
+          "price": 51.59
+        },
+        "variant_id_in_note": false,
+        "wire_sha256": "dea1a228e8e9a255070733de4b525008537de036b9e54c702f0b10415efd3c07",
+        "response_sha256": "b7051ac3d74aba1fef608d4c0f44c3d823449aa383b1f040bd6a2f156beb3286",
+        "db_replay": {
+          "edit": "replace_one_variant",
+          "memory_db_with_correction": true,
+          "pure_db_with_reverse_edit": false
+        }
+      }
+    },
+    {
+      "memory": "r_508890c65cf348bc955e1fa607ac0380",
+      "pure": "r_0d44f215ff05416db5a7c95e5a446a79",
+      "task": "99",
+      "source": "51",
+      "arm": "procedure_explicit",
+      "state": "loss",
+      "memory_trace": {
+        "report_sha256": "c2587b301c4096897ff3e7052c43c17918617fed6fb939ad1d313b347dabb015",
+        "handoff": "no_transfer",
+        "handoff_turns": []
+      },
+      "pure_trace": {
+        "report_sha256": "bcf343d08fd914cdeadb343dbe141801a686684e449a5d007207858754cc0073",
+        "handoff": "no_transfer",
+        "handoff_turns": []
+      },
+      "losing_checks": "db_only",
+      "first_public_difference": {
+        "turn": 1,
+        "left": "user",
+        "right": "user"
+      },
+      "failed_assertions": [],
+      "catalog": {
+        "worker_reply": "- **Camera — order #W4689314:** There is no available lower-resolution camera keeping both other options (3x zoom and SD card) unchanged. The available lower-resolution camera with 3x zoom has CF card storage (item **9973034634**), but that one is unavailable. Would you like to choose an available 20MP camera with different options instead?",
+        "variant_in_prior_tool_result": {
+          "item_id": "8363011723",
+          "options": {
+            "resolution": "20MP",
+            "zoom": "3x",
+            "storage": "SD card"
+          },
+          "available": true,
+          "price": 2823.96
+        },
+        "variant_id_in_note": false,
+        "wire_sha256": "ba789b7def040100b8dd7eeee097d7330d5c17975346f7701329767c3ad66de9",
+        "response_sha256": "d4c71269578ba8ab553e13cb7cc2362f75c9416e45a742e528598c307f217e0f",
+        "db_replay": {
+          "edit": "add_omitted_single_item_exchange",
+          "memory_db_with_correction": true,
+          "pure_db_with_reverse_edit": false
+        }
+      }
+    }
+  ],
+  "task_72_db_replay": {
+    "pure_run": "r_248db5767c9d43a588809fe845dc6127",
+    "pure_original": true,
+    "turns": {
+      "r_248db5767c9d43a588809fe845dc6127": {
+        "item_change_turn": 26,
+        "customer_turns_before_change": [
+          1,
+          3,
+          15,
+          19,
+          21,
+          23,
+          25
+        ]
+      },
+      "r_7104b2b7cc564e8085fa929f1a424d0d": {
+        "item_change_turn": 20,
+        "customer_turns_before_change": [
+          1,
+          3,
+          17
+        ]
+      },
+      "r_9826f207ff4a4ff69c1a9a6a2e5ab67a": {
+        "item_change_turn": 14,
+        "customer_turns_before_change": [
+          1,
+          3
+        ]
+      },
+      "r_c5e70f30056848b385b7957d19dc01ee": {
+        "item_change_turn": 21,
+        "customer_turns_before_change": [
+          1,
+          3,
+          18
+        ]
+      }
+    },
+    "cases": [
+      {
+        "memory_run": "r_7104b2b7cc564e8085fa929f1a424d0d",
+        "memory_original": false,
+        "memory_with_pure_fields": {
+          "scope_only": false,
+          "payment_only": false,
+          "scope_and_payment": true
+        },
+        "address_missing": false,
+        "corrected_with_required_address": true,
+        "pure_with_memory_scope_and_payment": false
+      },
+      {
+        "memory_run": "r_9826f207ff4a4ff69c1a9a6a2e5ab67a",
+        "memory_original": false,
+        "memory_with_pure_fields": {
+          "scope_only": false,
+          "payment_only": false,
+          "scope_and_payment": false
+        },
+        "address_missing": true,
+        "corrected_with_required_address": true,
+        "pure_with_memory_scope_and_payment": false
+      },
+      {
+        "memory_run": "r_c5e70f30056848b385b7957d19dc01ee",
+        "memory_original": false,
+        "memory_with_pure_fields": {
+          "scope_only": false,
+          "payment_only": false,
+          "scope_and_payment": true
+        },
+        "address_missing": false,
+        "corrected_with_required_address": true,
+        "pure_with_memory_scope_and_payment": false
+      }
+    ],
+    "same_reference_changes_for_source_and_target": true,
+    "other_round_same_banks": [
+      {
+        "run": "r_ee8882dbf3324df98925323431a05300",
+        "arm": "episode_explicit",
+        "official": true,
+        "source_extras": []
+      },
+      {
+        "run": "r_22b2bed7f2974107b5718fbc3a065131",
+        "arm": "fact_explicit",
+        "official": false,
+        "source_extras": []
+      },
+      {
+        "run": "r_1d20b0e08666470ca44ee58dc436bc51",
+        "arm": "procedure_explicit",
+        "official": false,
+        "source_extras": []
+      }
+    ]
+  }
+}
