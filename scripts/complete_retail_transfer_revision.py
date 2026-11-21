@@ -9,6 +9,7 @@ from agent_memory_eval.contracts.core import digest
 from agent_memory_eval.contracts.validation import ROOT
 from agent_memory_eval.recording.journal import safe_path
 from scripts import pace_retail_transfer_revision as pacing
+from scripts import retail_transfer_cutover
 from scripts import run_retail_transfer_revision as study
 from scripts.analyze_full_retail import require
 from scripts.audit_retail_revision_reservations import cost_basis
@@ -47,6 +48,7 @@ def prepare(workspace):
     root = workspace / "runs" / cfg["name"]
     end = study.retail.read(root / "completion.json")
     reg = study.transfer.expansion.verified(root / "registration.json", end["registration_sha256"])
+    retail_transfer_cutover.verify(root, cfg, original, reg, end)
     cap = reg["preflight"]["authorized_usd"]
     covered = sum((Decimal(s["spent"]) for s in end["stages"].values()), Decimal(0))
     require(

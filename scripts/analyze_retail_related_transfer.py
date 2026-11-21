@@ -198,7 +198,7 @@ def audit_target(args):
                     and seal
                     == {
                         "status": "not_started",
-                        "reason": "spend_limit",
+                        "reason": "deferred_to_supplement" if name in end.get("deferred_to_supplement", ()) else "spend_limit",
                         "reported": "0",
                         "held": "0",
                         "spent": "0",

@@ -265,7 +265,9 @@ class RetailRevisionTests(unittest.TestCase):
                         judge,
                         "2",
                     )
-                    pending_stage(params)
+                    with patch("scripts.complete_retail_transfer_revision.install_opener") as install:
+                        pending_stage(params)
+                    install.assert_called_once()
                     seal = revision.retail.accounting(follow_root / "task-37/solve1", "2")
                     audited, _ = audit_target(
                         (

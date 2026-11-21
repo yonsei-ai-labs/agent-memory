@@ -74,6 +74,39 @@ class PendingRetailRevisionTests(unittest.TestCase):
             with self.assertRaises(ContractError):
                 accounting.bounded_receipt(folder, slot, {"worker": model}, {})
 
+    def test_cutover_accepts_only_undispatched_shards(self):
+        import json
+
+        from scripts import retail_transfer_cutover as cutover
+
+        cfg = {"name": "sample", "stages": ["solve1"], "concurrency_by_stage": {"solve1": 1}}
+        pre = {"stage_order": {"solve1": ["a", "b"]}, "targets": {"b": {"jobs": {"solve1": [{"index": 1}]}}}}
+        reg = {"preflight": {"authorized_usd": "2.00"}, "implementation": {"implementation_commit": "commit"}}
+        ctl = {
+            "profile": {"name": "sample", "task": "a", "stage": "solve1", "guards": {"max_usd": 2}},
+            "implementation": reg["implementation"],
+        }
+        bill = {"reported": "0.1", "held": "0", "spent": "0.1", "http": 1, "seal": "one"}
+        with (
+            tempfile.TemporaryDirectory() as tmp,
+            patch.object(
+                cutover.study.retail, "sealed_rows", return_value=({}, ctl, [{"status": "completed"}])
+            ),
+            patch.object(cutover.study.retail, "accounting", return_value=bill),
+        ):
+            root = Path(tmp)
+            (root / "registration.json").write_text(json.dumps(reg))
+            (root / "solve1-wave-1.json").write_text(
+                json.dumps({"tasks": ["a"], "prior_covered": "0", "per_shard_grant": "2.000000"})
+            )
+            stages, proof = cutover.inventory(root, cfg, pre, reg)
+            self.assertEqual(stages["task-b/solve1"]["reason"], "deferred_to_supplement")
+            self.assertEqual(proof["deferred"]["task-b/solve1"]["positions"], 1)
+            self.assertEqual(proof["total_covered_usd"], "0.1")
+            (root / "task-b/solve1").mkdir(parents=True)
+            with self.assertRaises(ContractError):
+                cutover.inventory(root, cfg, pre, reg)
+
     def test_filter_preserves_recorded_indices_and_rejects_any_existing_attempt(self):
         jobs = [
             {"index": i, "phase": "solve", "repetition": 1, "task_id": "37", "arm": arm}

@@ -12,6 +12,7 @@ from agent_memory_eval.contracts.core import canonical, digest
 from agent_memory_eval.contracts.validation import ROOT
 from agent_memory_eval.experiments.forms_write import read_form_bank
 from agent_memory_eval.recording.journal import safe_path
+from scripts import retail_transfer_cutover
 from scripts import run_retail_transfer_revision as study
 from scripts.analyze_full_retail import read_request_data, require
 from scripts.analyze_recheck_rounds import status
@@ -332,6 +333,14 @@ def include_untouched_attempts(workspace, result, original_ids, workers):
         and len(set(original_ids + new_ids)) == len(original_ids) + len(new_ids),
         "Attempted or duplicated assignment",
     )
+    openings = defaultdict(set)
+    for cell in result["solves"] + additions:
+        first = cell.get("opening", {}).get("simulator_request")
+        if first:
+            openings[cell["task"]].add(first)
+    require(
+        all(len(wires) == 1 for wires in openings.values()), "Supplement changes the target simulator opening"
+    )
     attempts = result["writers"] + result["solves"] + additions
     active_sessions = [c["session"] for c in attempts if c.get("session")]
     allocated_runs = [c["run"] for c in attempts if c.get("run")]
@@ -440,6 +449,7 @@ def analyze(workspace, workers, *, writing_only=False, include_pending=False):
         end = {"stages": stages}
     else:
         end = study.retail.read(root / "completion.json")
+        retail_transfer_cutover.verify(root, cfg, pre, reg, end)
         require(
             digest(registration.read_bytes()) == end["registration_sha256"]
             and set(end["stages"]) == {f"task-{r['task']}/{s}" for r in rows for s in r["scheduled_stages"]},
