@@ -156,7 +156,7 @@ def design_for(cfg, base, cohort, row, stage, source):
     tid = row["task"]
     common = asset_text(ROOT, base["writing"]["common_instruction_ref"]).rstrip("\r\n")
     writing = deepcopy(base["writing"])
-    lines = {
+    lines = cfg.get("writing_lines") or {
         f"{form}_{variant}": base["writing"]["lines"][form] + ("\n" + cfg["suffix"] if variant == "recheck" else "")
         for form in cfg["forms"]
         for variant in cfg["conditions"]

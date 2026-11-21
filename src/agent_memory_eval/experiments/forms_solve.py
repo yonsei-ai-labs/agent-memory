@@ -130,9 +130,9 @@ class _EpisodeGuard:
 class _PreloadBridge(Tau2Bridge):
     """Change only the worker wire. Native agents and business dispatch keep their own history."""
 
-    def prepare_preload(self, memory, bank, policy, instruction):
+    def prepare_preload(self, memory, bank, policy, rendered_instruction):
         self.native_system = self.systems["worker"]
-        self.systems["worker"] += memory_system_suffix(policy, past_memory_instruction(instruction))
+        self.systems["worker"] += memory_system_suffix(policy, rendered_instruction)
         preload = memory.preload(self.ctx, bank)
         self.preload_source = self.registry.add("memory_snapshot", preload["event_id"])
 
@@ -249,7 +249,7 @@ def _usage(journal, run_id):
 def run_forms_solve(journal, *, arm, task_id, repetition, run_id, connection, prepared, guard, limits,
                     instruction, writer_bank=None, public_record=None, public_context_sha256=None, opener=None, clients=None,
                     written_arms=WRITTEN_ARMS, delivery=None, expected_split="train", source_task_id=None,
-                    expected_domain="airline", native_grader=None, writer_pool=None):
+                    expected_domain="airline", native_grader=None, writer_pool=None, preload_notice_version=None):
     """Run one assigned episode in a new per-job journal with a batch guard and verified input.
 
     The caller verifies a writer bank against its sealed journal and supplies the cohort's public hash.
@@ -261,6 +261,9 @@ def run_forms_solve(journal, *, arm, task_id, repetition, run_id, connection, pr
         raise ContractError("Missing solve allocation identity")
     if not isinstance(instruction, str) or (instruction != "" if arm == "no_memory" else not instruction.strip()):
         raise ContractError("Memory arms require the common instruction and pure no-memory requires none")
+    if preload_notice_version is not None and (arm == "no_memory" or delivery is not None):
+        raise ContractError("Versioned preload notices require a start-of-session snapshot")
+    rendered_instruction = past_memory_instruction(instruction, notice_version=preload_notice_version)
     _prepared_for_job(connection, prepared, limits, task_id, expected_split, expected_domain, native_grader is not None)
     if delivery is not None and (delivery["read_mode"] not in {"preload", "on_demand"} or arm == "no_memory"
             or arm == "empty_preload" and delivery != {"writer": "empty_preload", "read_mode": "preload"}):
@@ -318,6 +321,8 @@ def run_forms_solve(journal, *, arm, task_id, repetition, run_id, connection, pr
         source_writer_run_id=writer_bank["run_id"] if writer_bank else None,
         source_writer_bank_sha256=digest(canonical(writer_bank)) if writer_bank else None,
         input_items_sha256=digest(canonical(items)) if policy.enabled else None)
+    if preload_notice_version is not None:
+        state["assignments"][run_id]["preload_notice_version"] = preload_notice_version
     if native_grader is not None:
         cfg, mdl = native_grader
         state["assignments"][run_id]["native_grade_limits"] = dict(contract="native-grader-limits/v1",
@@ -359,7 +364,7 @@ def run_forms_solve(journal, *, arm, task_id, repetition, run_id, connection, pr
         if delivery:
             bridge.ensure_preload()
         elif policy.enabled:
-            bridge.prepare_preload(memory, bank, policy, instruction)
+            bridge.prepare_preload(memory, bank, policy, rendered_instruction)
         from tau2.runner.simulation import run_simulation
         grade_context = nullcontext()
         if native_grader is not None:

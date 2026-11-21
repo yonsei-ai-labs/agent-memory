@@ -76,6 +76,8 @@ def audited_episode(workspace, folder, res, cell, cfg, task, reg, models):
     )
     system = blobs.get(start["task_ref"])["content"]
     instruction = blobs.get(assignment["instruction_ref"])
+    version = cell.get("preload_notice_version") if policy.enabled else None
+    require(assignment.get("preload_notice_version") == version, "Wrong registered notice")
     if policy.enabled:
         require(
             snapshot_items(blobs, state, start["start_snapshot_id"]) == items
@@ -84,7 +86,11 @@ def audited_episode(workspace, folder, res, cell, cfg, task, reg, models):
             and digest(instruction.encode()) == reg["preflight"]["instruction_sha256"],
             "Snapshot or prompt changed",
         )
-        system += memory_system_suffix(policy, past_memory_instruction(instruction))
+        rendered = past_memory_instruction(instruction, notice_version=version)
+        if version is not None:
+            require(digest(rendered.encode()) == reg["preflight"]["notice_instruction_sha256"][version],
+                    "Notice wording differs from registration")
+        system += memory_system_suffix(policy, rendered)
     else:
         require(not state["banks"] and not start["bank_id"] and instruction == "", "Control inherited memory")
     grader_wires = []
@@ -202,6 +208,8 @@ def audit_target(args):
                     "official": None,
                 }
                 cells.append(cell)
+                if "notice_by_stage" in row:
+                    cell["preload_notice_version"] = row["notice_by_stage"][stage] if job["arm"] != "no_memory" else None
                 if slot is None:
                     cell.update(status="not_started", reason=seal["reason"])
                     continue

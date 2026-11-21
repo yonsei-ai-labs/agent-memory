@@ -1,0 +1,21 @@
+{
+  "format": "agent-memory-retail-transfer-revision/v1",
+  "name": "tau2-retail-transfer-revision-01",
+  "status": "ready",
+  "previous_protocol": {"path": "protocols/pilots/tau2-retail-related-transfer-v1.json", "sha256": "2465757096c53cbb6c0cc7d2671e020d9b8687851c3ab82db8d5c53a17b80d0b"},
+  "previous_preflight": {"path": "artifacts/analyses/20261121-retail-related-transfer-preflight.json", "sha256": "d3e02d03621ae092d521791a7311b262c8b5c5cc4f7994ade5bc06efc4944aa6"},
+  "previous_audit": {"path": "artifacts/analyses/20261121-retail-transfer-writing-audit.json", "sha256": "7130531a69314eaed7ed8d75eb2fe945d3b615aec5ad4681ee1df3fb1c3a4af3"},
+  "forms": ["fact", "episode", "lesson", "procedure"],
+  "variants": ["original", "explicit"],
+  "explicit_suffix": "Choose whether to retain anything for later work. To retain a note, send its title and body in a memory_store tool call; only a successful tool result retains it. After successfully storing, finish with just STORED. To retain nothing, finish with just SKIP. Keep the final reply free of the note itself. You may choose either outcome.",
+  "notices": ["legacy-id-v1", "domain-auth-v2"],
+  "controls": ["empty_preload", "no_memory"],
+  "stages": ["write", "solve1", "solve2"],
+  "max_concurrent": 8,
+  "concurrency_by_stage": {"write": 8, "solve1": 6, "solve2": 6},
+  "guards": {"write": {"max_calls": 32, "max_seconds": 1800}, "solve1": {"max_calls": 3618, "max_seconds": 10800}, "solve2": {"max_calls": 3618, "max_seconds": 10800}},
+  "total_usd_limit": "3.50",
+  "allocation": "Developmental retest of all 22 original source experiences, 24 previously evaluated targets, and all 32 donor-target pairs. Rewrite four formats under both instructions from the identical public source in new isolated sessions, seed 11, no grade or target feedback. Hash-order new and legacy writer jobs together. For each target and round, compare all four formats from both fresh writer arms per donor, one shared enabled-empty and one fresh pure baseline. A seeded hash ranking of targets alternates which notice is delivered first, 12 in either order. Each fresh writer snapshot sees each notice once per target. Both rounds have worker seed 12, fresh native sessions and independent customer responses; the no-memory wire contains no notice. Outcomes do not drive inclusion or replacements.",
+  "analysis": "Count successful stores, explicit skips, other empty completions, terminal marker mismatches and incomplete writers separately. The primary practical comparison pairs the explicit writer with the revised notice against the fresh pure baseline in the same target round. Compare writer versions within source, format, target, round and notice; compare notices across the two counterbalanced rounds with the same frozen writer bank, including the enabled-empty contrast and the pure baseline round difference. Report paired gains/losses, missingness, 17-customer clustered uncertainty, actual input exposure, official grades and provider cost. Historical results are a reference outside the fresh contrasts. Free-text omission is not evidence of a voluntary skip or a scoring error.",
+  "budget": "User-approved aggregate ceiling includes writing, worker, simulator, grading and conservatively reserved unpriced requests. Freeze the exact cap and preflight before traffic. Use the verified prior endpoint pricing, request reservations and routing cooldowns. No reattempt of a started assignment."
+}

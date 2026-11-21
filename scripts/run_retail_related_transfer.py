@@ -79,6 +79,8 @@ def design_for(cfg, base, row, stage):
         ],
     )
     design["target"] = {"task_id": row["task"], "split": row["split"], "domain": "retail"}
+    if "notice_by_stage" in row:
+        design["preload_notice_version"] = row["notice_by_stage"][stage]
     jobs = schedule(cfg, row, stage)
     design["allocation"] = {"jobs": jobs, "jobs_sha256": digest(canonical(jobs))}
     return design, jobs
@@ -266,7 +268,7 @@ def transfer_stage(args):
         "name": cfg["name"],
         "stage": stage,
         "task": tid,
-        "config_sha256": digest((ROOT / PROFILE).read_bytes()),
+        "config_sha256": digest((ROOT / cfg.get("profile_path", PROFILE)).read_bytes()),
         "implementation_commit": identity["implementation_commit"],
         "http_timeout_seconds": cfg["http_timeout_seconds"],
         "guards": dict(cfg["guards"][stage], max_usd=float(grant)),
@@ -295,6 +297,9 @@ def transfer_stage(args):
             raise ContractError("Donor original experience differs from preflight")
         sources[sid] = source
         for arm, b in donor["banks"].items():
+            if b["status"] not in ("completed", "empty"):
+                writers[1, sid, arm] = {"status": b["status"]}
+                continue
             writers[1, sid, arm] = {
                 "directory": str(Path(b["journal"]).parent),
                 "status": b["status"],

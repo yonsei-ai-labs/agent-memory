@@ -335,6 +335,7 @@ def execute_prepared(profile, root, destination, identity, design, plan, models,
                     written_arms=written_arms, delivery=delivery_arms.get(arm) or design.get("delivery_controls", {}).get(arm),
                     expected_split=design.get("target", design["source"]).get("split", "train"),
                     source_task_id=row.get("source_task_id") if bank else None,
+                    preload_notice_version=design.get("preload_notice_version") if arm != "no_memory" else None,
                     expected_domain="retail" if design.get("format") in (RETAIL_RECHECK, RETAIL_FULL) else "airline",
                     native_grader=plan.get("grader"), writer_pool=pools.get(arm) if pools is not None else None)
             if result["run_id"] != row["run_id"]:
