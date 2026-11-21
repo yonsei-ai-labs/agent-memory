@@ -1,5 +1,6 @@
 """Reconcile a sealed retail shard's observed fees and identifiable unpriced requests without changing its ledger."""
 
+import re
 from decimal import Decimal
 from pathlib import Path
 
@@ -14,11 +15,15 @@ def bounded_receipt(folder, slot, models, policy):
     """Bind one unpriced request to its actual wire, endpoint and terminal provider event."""
     res = slot["result"]
     unknowns = {role: b["unknown_count"] for role, b in res["billing_by_role"].items() if b["unknown_count"]}
-    codes = {f"HTTP_{number}": number for number in policy["codes"]}
-    if policy.get("reserve_uncertain_transport"):
-        codes["TRANSPORT_UNKNOWN"] = "TRANSPORT_UNKNOWN"
-    code = codes.get(res.get("error_code"))
-    if code is None or sum(unknowns.values()) != 1:
+    error = res.get("error_code") or ""
+    http = re.fullmatch(r"HTTP_([45][0-9]{2})", error)
+    if http:
+        code = int(http[1])
+    elif error == "TRANSPORT_UNKNOWN" and policy.get("reserve_uncertain_transport"):
+        code = error
+    else:
+        return None
+    if sum(unknowns.values()) != 1:
         return None
     job = safe_path(folder, slot["directory"])
     require(digest((job / "log.jsonl").read_bytes()) == res["log_sha256"], "Changed uncertain episode")

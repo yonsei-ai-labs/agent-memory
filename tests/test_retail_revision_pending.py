@@ -19,6 +19,61 @@ class PendingRetailRevisionTests(unittest.TestCase):
             self.assertFalse(retail.matches_accounting_seal(Path("."), 0.55277, dict(expected, held="0.51")))
             self.assertFalse(retail.matches_accounting_seal(Path("."), 0.55277, dict(expected, seal="other")))
 
+    def test_received_gateway_error_requires_the_matching_wire_and_fixed_ceiling(self):
+        from agent_memory_eval.contracts.core import digest
+        from scripts import audit_retail_revision_reservations as accounting
+
+        model = {
+            "id": "worker",
+            "selected_endpoint": {"tag": "route"},
+            "pricing": {"prompt": 0.0001, "completion": 0.0002},
+        }
+        wire = {
+            "model": "worker",
+            "provider": {"only": ["route"], "allow_fallbacks": False, "require_parameters": True},
+            "stream": False,
+            "messages": [{"role": "user", "content": "example"}],
+            "max_completion_tokens": 100,
+        }
+        result = {
+            "error_code": "HTTP_520",
+            "log_sha256": digest(b"closed"),
+            "billing_by_role": {"worker": {"reported_usd": "0", "unknown_count": 1}},
+        }
+        slot = {"directory": "job", "run_id": "r", "result": result}
+        start = {"request_id": "q", "actor_role": "worker", "request_ref": "wire"}
+        end = {
+            "request_id": "q",
+            "delivery_status": "response_received",
+            "status": "error",
+            "cost_status": "unknown",
+            "response_ref": "reply",
+        }
+        scan = {
+            "starts": {"r": {}},
+            "events": {
+                k: {"type": "model.request_" + k, "run_id": "r", "payload": v}
+                for k, v in (("started", start), ("finished", end))
+            },
+        }
+        blobs = {"wire": wire, "reply": {"error": {"code": 520}}}
+        with (
+            tempfile.TemporaryDirectory() as tmp,
+            patch.object(accounting, "read_experiment", return_value=(scan, None, None)),
+            patch.object(accounting, "BlobStore", return_value=blobs),
+        ):
+            folder = Path(tmp)
+            (folder / "job").mkdir()
+            (folder / "job/log.jsonl").write_bytes(b"closed")
+            proof = accounting.bounded_receipt(folder, slot, {"worker": model}, {})
+            self.assertEqual(
+                (proof["code"], proof["role"], proof["usd"]),
+                (520, "worker", str(accounting.request_reservation_usd(wire, model))),
+            )
+            blobs["reply"]["error"]["code"] = 502
+            with self.assertRaises(ContractError):
+                accounting.bounded_receipt(folder, slot, {"worker": model}, {})
+
     def test_filter_preserves_recorded_indices_and_rejects_any_existing_attempt(self):
         jobs = [
             {"index": i, "phase": "solve", "repetition": 1, "task_id": "37", "arm": arm}

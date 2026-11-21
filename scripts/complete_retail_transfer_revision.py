@@ -103,7 +103,8 @@ def prepare(workspace):
     maximum = max(
         [cfg["unpriced_http"]["maximum_per_stage"], *(len(entries) for entries in pending.values())]
     )
-    cfg["unpriced_http"] = dict(cfg["unpriced_http"], maximum_per_stage=maximum)
+    # Pricing depends on the submitted wire and its fixed output ceiling, including a received 4xx/5xx.
+    cfg["unpriced_http"] = dict(cfg["unpriced_http"], maximum_per_stage=maximum, codes=list(range(400, 600)))
     cfg.update(
         run_directory=cfg["name"] + "-pending",
         stages=list(study.SOLVES),
