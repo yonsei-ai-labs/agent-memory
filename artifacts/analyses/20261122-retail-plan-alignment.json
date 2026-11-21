@@ -1,0 +1,4146 @@
+{
+  "benchmark": "c06b07dd7c4d4ec61ba6ff9bcdf0b15dd7ef36d4",
+  "inputs": {
+    "artifacts/analyses/20261121-retail-transfer-revision-results.json": "e3a25bf8d0f9ce2392bdc50ba3cc776015e48e76bc71498b71a37b20fe1afa58",
+    "artifacts/analyses/20261121-retail-related-transfer-results.json": "faf315af21ff984d5760fd709bce9519a42c9fd9d23dd377e9dd83d9cd260c84",
+    "artifacts/analyses/20261121-retail-related-transfer-preflight.json": "d3e02d03621ae092d521791a7311b262c8b5c5cc4f7994ade5bc06efc4944aa6",
+    "data/tau2-bench/data/tau2/domains/retail/tasks.json": "8e03ebce7901bd6218e7a7dc3105faa9324091a68058f7fe61c65262868812e8",
+    "artifacts/analyses/20261120-retail-candidate-pools-results.json": "1c49fcc3657fe513385f933070981aaf0c6b13db9ccd0179269462af28561d9f",
+    "artifacts/analyses/20261119-retail-full-cells.json": "34d877c4d778cee4a39490a640ab11dcd9455ec991df44788fc29f13663907e2"
+  },
+  "analysis_model_calls": 0,
+  "wire": {
+    "by_condition": {
+      "writer": {
+        "sessions": 176,
+        "requests": 332
+      },
+      "pools_on_demand": {
+        "assigned": 528,
+        "requests": 6965,
+        "memory_tool_calls": 0,
+        "sessions_with_worker_request": 528
+      },
+      "pools_pure": {
+        "assigned": 66,
+        "requests": 888,
+        "memory_tool_calls": 0,
+        "sessions_with_worker_request": 66
+      },
+      "retest_preload": {
+        "assigned": 560,
+        "requests": 7628,
+        "memory_tool_calls": 0,
+        "sessions_with_worker_request": 551
+      },
+      "retest_pure": {
+        "assigned": 48,
+        "requests": 697,
+        "memory_tool_calls": 0,
+        "sessions_with_worker_request": 48
+      }
+    },
+    "matching_opening_templates_by_study": {
+      "pools": 66,
+      "retest": 24
+    }
+  },
+  "opportunities": {
+    "6": {
+      "required_orders_on_current_profile": [
+        "#W6390527"
+      ],
+      "available_reference_replacements": [
+        "7453605304"
+      ],
+      "retest": {
+        "no_memory": [
+          null,
+          false
+        ],
+        "empty_preload": [
+          null,
+          true
+        ]
+      },
+      "previous": {
+        "no_memory": [
+          true,
+          true
+        ],
+        "empty_preload": [
+          true,
+          false
+        ]
+      }
+    },
+    "7": {
+      "required_orders_on_current_profile": [
+        "#W6390527"
+      ],
+      "available_reference_replacements": [
+        "1569765161"
+      ],
+      "retest": {
+        "no_memory": [
+          true,
+          true
+        ],
+        "empty_preload": [
+          true,
+          true
+        ]
+      },
+      "previous": {
+        "no_memory": [
+          true,
+          true
+        ],
+        "empty_preload": [
+          true,
+          true
+        ]
+      }
+    },
+    "8": {
+      "required_orders_on_current_profile": [
+        "#W6390527"
+      ],
+      "available_reference_replacements": [
+        "9083642334"
+      ],
+      "retest": {
+        "no_memory": [
+          true,
+          true
+        ],
+        "empty_preload": [
+          true,
+          true
+        ]
+      },
+      "previous": {
+        "no_memory": [
+          true,
+          true
+        ],
+        "empty_preload": [
+          true,
+          true
+        ]
+      }
+    },
+    "16": {
+      "required_orders_on_current_profile": [
+        "#W5199551",
+        "#W8665881",
+        "#W9389413"
+      ],
+      "available_reference_replacements": [],
+      "retest": {
+        "no_memory": [
+          true,
+          true
+        ],
+        "empty_preload": [
+          true,
+          true
+        ]
+      },
+      "previous": {
+        "no_memory": [
+          true,
+          true
+        ],
+        "empty_preload": [
+          true,
+          true
+        ]
+      }
+    },
+    "19": {
+      "required_orders_on_current_profile": [
+        "#W2890441"
+      ],
+      "available_reference_replacements": [],
+      "retest": {
+        "no_memory": [
+          false,
+          false
+        ],
+        "empty_preload": [
+          false,
+          false
+        ]
+      },
+      "previous": {
+        "no_memory": [
+          false,
+          false
+        ],
+        "empty_preload": [
+          true,
+          false
+        ]
+      }
+    },
+    "23": {
+      "required_orders_on_current_profile": [
+        "#W3561391",
+        "#W3947049",
+        "#W6876713"
+      ],
+      "available_reference_replacements": [
+        "8573379326",
+        "8926329222",
+        "7082455361"
+      ],
+      "retest": {
+        "no_memory": [
+          true,
+          true
+        ],
+        "empty_preload": [
+          true,
+          true
+        ]
+      },
+      "previous": {
+        "no_memory": [
+          true,
+          false
+        ],
+        "empty_preload": [
+          true,
+          false
+        ]
+      }
+    },
+    "28": {
+      "required_orders_on_current_profile": [
+        "#W3792453",
+        "#W5565470",
+        "#W7181492"
+      ],
+      "available_reference_replacements": [],
+      "retest": {
+        "no_memory": [
+          true,
+          true
+        ],
+        "empty_preload": [
+          null,
+          true
+        ]
+      },
+      "previous": {
+        "no_memory": [
+          true,
+          true
+        ],
+        "empty_preload": [
+          true,
+          true
+        ]
+      }
+    },
+    "29": {
+      "required_orders_on_current_profile": [
+        "#W3792453",
+        "#W7181492"
+      ],
+      "available_reference_replacements": [
+        "8176740019",
+        "5206946487"
+      ],
+      "retest": {
+        "no_memory": [
+          true,
+          true
+        ],
+        "empty_preload": [
+          false,
+          true
+        ]
+      },
+      "previous": {
+        "no_memory": [
+          false,
+          null
+        ],
+        "empty_preload": [
+          true,
+          true
+        ]
+      }
+    },
+    "30": {
+      "required_orders_on_current_profile": [
+        "#W2692684",
+        "#W7449508",
+        "#W9373487"
+      ],
+      "available_reference_replacements": [],
+      "retest": {
+        "no_memory": [
+          true,
+          true
+        ],
+        "empty_preload": [
+          true,
+          true
+        ]
+      },
+      "previous": {
+        "no_memory": [
+          true,
+          true
+        ],
+        "empty_preload": [
+          true,
+          false
+        ]
+      }
+    },
+    "31": {
+      "required_orders_on_current_profile": [
+        "#W7449508",
+        "#W9373487"
+      ],
+      "available_reference_replacements": [],
+      "retest": {
+        "no_memory": [
+          null,
+          true
+        ],
+        "empty_preload": [
+          true,
+          true
+        ]
+      },
+      "previous": {
+        "no_memory": [
+          false,
+          true
+        ],
+        "empty_preload": [
+          false,
+          false
+        ]
+      }
+    },
+    "37": {
+      "required_orders_on_current_profile": [
+        "#W9348897"
+      ],
+      "available_reference_replacements": [
+        "6700049080",
+        "5320792178",
+        "3234800602"
+      ],
+      "retest": {
+        "no_memory": [
+          null,
+          false
+        ],
+        "empty_preload": [
+          true,
+          true
+        ]
+      },
+      "previous": {
+        "no_memory": [
+          true,
+          true
+        ],
+        "empty_preload": [
+          true,
+          true
+        ]
+      }
+    },
+    "41": {
+      "required_orders_on_current_profile": [
+        "#W4082615",
+        "#W9583042"
+      ],
+      "available_reference_replacements": [
+        "1096508426"
+      ],
+      "retest": {
+        "no_memory": [
+          false,
+          true
+        ],
+        "empty_preload": [
+          null,
+          false
+        ]
+      },
+      "previous": {
+        "no_memory": [
+          false,
+          false
+        ],
+        "empty_preload": [
+          false,
+          false
+        ]
+      }
+    },
+    "46": {
+      "required_orders_on_current_profile": [
+        "#W9502127"
+      ],
+      "available_reference_replacements": [],
+      "retest": {
+        "no_memory": [
+          true,
+          true
+        ],
+        "empty_preload": [
+          false,
+          true
+        ]
+      },
+      "previous": {
+        "no_memory": [
+          true,
+          true
+        ],
+        "empty_preload": [
+          false,
+          true
+        ]
+      }
+    },
+    "47": {
+      "required_orders_on_current_profile": [
+        "#W9502127"
+      ],
+      "available_reference_replacements": [],
+      "retest": {
+        "no_memory": [
+          false,
+          false
+        ],
+        "empty_preload": [
+          false,
+          true
+        ]
+      },
+      "previous": {
+        "no_memory": [
+          true,
+          true
+        ],
+        "empty_preload": [
+          true,
+          false
+        ]
+      }
+    },
+    "54": {
+      "required_orders_on_current_profile": [
+        "#W4597054",
+        "#W4836353",
+        "#W7342738"
+      ],
+      "available_reference_replacements": [],
+      "retest": {
+        "no_memory": [
+          true,
+          true
+        ],
+        "empty_preload": [
+          false,
+          true
+        ]
+      },
+      "previous": {
+        "no_memory": [
+          true,
+          true
+        ],
+        "empty_preload": [
+          false,
+          false
+        ]
+      }
+    },
+    "63": {
+      "required_orders_on_current_profile": [
+        "#W5061109"
+      ],
+      "available_reference_replacements": [
+        "2635605237"
+      ],
+      "retest": {
+        "no_memory": [
+          true,
+          true
+        ],
+        "empty_preload": [
+          true,
+          true
+        ]
+      },
+      "previous": {
+        "no_memory": [
+          true,
+          true
+        ],
+        "empty_preload": [
+          true,
+          true
+        ]
+      }
+    },
+    "72": {
+      "required_orders_on_current_profile": [
+        "#W5270061"
+      ],
+      "available_reference_replacements": [
+        "5917587651"
+      ],
+      "retest": {
+        "no_memory": [
+          true,
+          false
+        ],
+        "empty_preload": [
+          null,
+          true
+        ]
+      },
+      "previous": {
+        "no_memory": [
+          true,
+          false
+        ],
+        "empty_preload": [
+          false,
+          false
+        ]
+      }
+    },
+    "85": {
+      "required_orders_on_current_profile": [
+        "#W2466703"
+      ],
+      "available_reference_replacements": [
+        "8733974883"
+      ],
+      "retest": {
+        "no_memory": [
+          null,
+          true
+        ],
+        "empty_preload": [
+          null,
+          true
+        ]
+      },
+      "previous": {
+        "no_memory": [
+          true,
+          true
+        ],
+        "empty_preload": [
+          true,
+          false
+        ]
+      }
+    },
+    "87": {
+      "required_orders_on_current_profile": [
+        "#W2166301",
+        "#W2466703",
+        "#W6832752"
+      ],
+      "available_reference_replacements": [],
+      "retest": {
+        "no_memory": [
+          null,
+          true
+        ],
+        "empty_preload": [
+          true,
+          true
+        ]
+      },
+      "previous": {
+        "no_memory": [
+          true,
+          true
+        ],
+        "empty_preload": [
+          true,
+          true
+        ]
+      }
+    },
+    "95": {
+      "required_orders_on_current_profile": [
+        "#W2905754",
+        "#W4073673"
+      ],
+      "available_reference_replacements": [
+        "9844888101",
+        "9844888101"
+      ],
+      "retest": {
+        "no_memory": [
+          true,
+          false
+        ],
+        "empty_preload": [
+          true,
+          true
+        ]
+      },
+      "previous": {
+        "no_memory": [
+          true,
+          false
+        ],
+        "empty_preload": [
+          true,
+          true
+        ]
+      }
+    },
+    "96": {
+      "required_orders_on_current_profile": [
+        "#W6750959"
+      ],
+      "available_reference_replacements": [
+        "9440686670"
+      ],
+      "retest": {
+        "no_memory": [
+          true,
+          true
+        ],
+        "empty_preload": [
+          null,
+          true
+        ]
+      },
+      "previous": {
+        "no_memory": [
+          true,
+          true
+        ],
+        "empty_preload": [
+          true,
+          true
+        ]
+      }
+    },
+    "98": {
+      "required_orders_on_current_profile": [
+        "#W3916020",
+        "#W4689314",
+        "#W8855135"
+      ],
+      "available_reference_replacements": [
+        "8363011723",
+        "5606522780",
+        "6245746168"
+      ],
+      "retest": {
+        "no_memory": [
+          false,
+          false
+        ],
+        "empty_preload": [
+          null,
+          false
+        ]
+      },
+      "previous": {
+        "no_memory": [
+          false,
+          false
+        ],
+        "empty_preload": [
+          false,
+          false
+        ]
+      }
+    },
+    "99": {
+      "required_orders_on_current_profile": [
+        "#W3916020",
+        "#W4689314"
+      ],
+      "available_reference_replacements": [
+        "8363011723",
+        "5606522780",
+        "5546244844"
+      ],
+      "retest": {
+        "no_memory": [
+          true,
+          true
+        ],
+        "empty_preload": [
+          false,
+          true
+        ]
+      },
+      "previous": {
+        "no_memory": [
+          false,
+          true
+        ],
+        "empty_preload": [
+          false,
+          true
+        ]
+      }
+    },
+    "112": {
+      "required_orders_on_current_profile": [
+        "#W3730488",
+        "#W9810810"
+      ],
+      "available_reference_replacements": [
+        "9949163720",
+        "9844888101"
+      ],
+      "retest": {
+        "no_memory": [
+          null,
+          true
+        ],
+        "empty_preload": [
+          null,
+          false
+        ]
+      },
+      "previous": {
+        "no_memory": [
+          true,
+          false
+        ],
+        "empty_preload": [
+          true,
+          false
+        ]
+      }
+    }
+  },
+  "benchmark_audit": {
+    "reference": {
+      "36": {
+        "native": [
+          "c263b7ca5913ee44ccb614b4b5fd2b672049d710741063b90239ef46a3112c3c",
+          null
+        ],
+        "per_item_catalog": [
+          "697d8f86dfd06161f11330651135eebcb71ad51b1c03b7fa62f01ab321dc5546",
+          null
+        ],
+        "multi_item_returns": [
+          {
+            "arguments": {
+              "order_id": "#W9348897",
+              "item_ids": [
+                "6117189161",
+                "7453605304",
+                "3799046073"
+              ],
+              "new_item_ids": [
+                "6700049080",
+                "5320792178",
+                "3234800602"
+              ],
+              "payment_method_id": "credit_card_8853416"
+            },
+            "discrepancies": [
+              {
+                "item_id": "6700049080",
+                "returned": {
+                  "price": 46.66,
+                  "options": {
+                    "color": "red",
+                    "size": "L",
+                    "material": "cotton",
+                    "style": "v-neck"
+                  }
+                },
+                "catalog": {
+                  "price": 466.75,
+                  "options": {
+                    "resolution": "4K",
+                    "waterproof": "yes",
+                    "color": "black"
+                  }
+                }
+              },
+              {
+                "item_id": "5320792178",
+                "returned": {
+                  "price": 46.66,
+                  "options": {
+                    "color": "red",
+                    "size": "L",
+                    "material": "cotton",
+                    "style": "v-neck"
+                  }
+                },
+                "catalog": {
+                  "price": 135.24,
+                  "options": {
+                    "color": "black",
+                    "brightness": "medium",
+                    "power source": "AC adapter"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "37": {
+        "native": [
+          "c263b7ca5913ee44ccb614b4b5fd2b672049d710741063b90239ef46a3112c3c",
+          null
+        ],
+        "per_item_catalog": [
+          "697d8f86dfd06161f11330651135eebcb71ad51b1c03b7fa62f01ab321dc5546",
+          null
+        ],
+        "multi_item_returns": [
+          {
+            "arguments": {
+              "order_id": "#W9348897",
+              "item_ids": [
+                "6117189161",
+                "7453605304",
+                "3799046073"
+              ],
+              "new_item_ids": [
+                "6700049080",
+                "5320792178",
+                "3234800602"
+              ],
+              "payment_method_id": "credit_card_8853416"
+            },
+            "discrepancies": [
+              {
+                "item_id": "6700049080",
+                "returned": {
+                  "price": 46.66,
+                  "options": {
+                    "color": "red",
+                    "size": "L",
+                    "material": "cotton",
+                    "style": "v-neck"
+                  }
+                },
+                "catalog": {
+                  "price": 466.75,
+                  "options": {
+                    "resolution": "4K",
+                    "waterproof": "yes",
+                    "color": "black"
+                  }
+                }
+              },
+              {
+                "item_id": "5320792178",
+                "returned": {
+                  "price": 46.66,
+                  "options": {
+                    "color": "red",
+                    "size": "L",
+                    "material": "cotton",
+                    "style": "v-neck"
+                  }
+                },
+                "catalog": {
+                  "price": 135.24,
+                  "options": {
+                    "color": "black",
+                    "brightness": "medium",
+                    "power source": "AC adapter"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "71": {
+        "native": [
+          "c14be7c97f71be56b7f5bbb1bf5e1791c8f1b1f5ea9fb724eb52df49e5c02e8a",
+          null
+        ],
+        "per_item_catalog": [
+          "c14be7c97f71be56b7f5bbb1bf5e1791c8f1b1f5ea9fb724eb52df49e5c02e8a",
+          null
+        ],
+        "multi_item_returns": []
+      },
+      "72": {
+        "native": [
+          "c14be7c97f71be56b7f5bbb1bf5e1791c8f1b1f5ea9fb724eb52df49e5c02e8a",
+          null
+        ],
+        "per_item_catalog": [
+          "c14be7c97f71be56b7f5bbb1bf5e1791c8f1b1f5ea9fb724eb52df49e5c02e8a",
+          null
+        ],
+        "multi_item_returns": []
+      }
+    },
+    "episodes": {
+      "source": [
+        {
+          "task": "36",
+          "run": "r_a3af481ee5f147999f8a63aff4c45726",
+          "arm": "no_memory",
+          "official_success": true,
+          "db_match": true,
+          "db_match_with_per_item_catalog_values": true,
+          "multi_item_returns": [
+            {
+              "arguments": {
+                "item_ids": [
+                  "6117189161",
+                  "7453605304",
+                  "3799046073"
+                ],
+                "new_item_ids": [
+                  "6700049080",
+                  "5320792178",
+                  "3234800602"
+                ],
+                "order_id": "#W9348897",
+                "payment_method_id": "credit_card_8853416"
+              },
+              "discrepancies": [
+                {
+                  "item_id": "6700049080",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 466.75,
+                    "options": {
+                      "resolution": "4K",
+                      "waterproof": "yes",
+                      "color": "black"
+                    }
+                  }
+                },
+                {
+                  "item_id": "5320792178",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 135.24,
+                    "options": {
+                      "color": "black",
+                      "brightness": "medium",
+                      "power source": "AC adapter"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "task": "71",
+          "run": "r_bd5b7c524c0548e79cfc9b23a15fd980",
+          "arm": "no_memory",
+          "official_success": false,
+          "db_match": false,
+          "db_match_with_per_item_catalog_values": false,
+          "multi_item_returns": [
+            {
+              "arguments": {
+                "item_ids": [
+                  "2492465580",
+                  "7453605304"
+                ],
+                "new_item_ids": [
+                  "5917587651",
+                  "9190635437"
+                ],
+                "order_id": "#W5270061",
+                "payment_method_id": "gift_card_1711656"
+              },
+              "discrepancies": [
+                {
+                  "item_id": "5917587651",
+                  "returned": {
+                    "price": 153.23,
+                    "options": {
+                      "color": "black",
+                      "brightness": "low",
+                      "power source": "USB"
+                    }
+                  },
+                  "catalog": {
+                    "price": 212.79,
+                    "options": {
+                      "color": "grey",
+                      "size": "medium",
+                      "material": "polyester",
+                      "compartment": "laptop"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "previous": [
+        {
+          "task": "37",
+          "run": "r_bec5ec6cb9d64bf8a14009d1f4312882",
+          "arm": "episode_original",
+          "official_success": false,
+          "db_match": false,
+          "db_match_with_per_item_catalog_values": false,
+          "multi_item_returns": []
+        },
+        {
+          "task": "37",
+          "run": "r_6af918cd7ce44bd594752f02a78a7fa3",
+          "arm": "lesson_original",
+          "official_success": true,
+          "db_match": true,
+          "db_match_with_per_item_catalog_values": true,
+          "multi_item_returns": [
+            {
+              "arguments": {
+                "item_ids": [
+                  "6117189161",
+                  "7453605304",
+                  "3799046073"
+                ],
+                "new_item_ids": [
+                  "6700049080",
+                  "5320792178",
+                  "3234800602"
+                ],
+                "order_id": "#W9348897",
+                "payment_method_id": "credit_card_8853416"
+              },
+              "discrepancies": [
+                {
+                  "item_id": "6700049080",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 466.75,
+                    "options": {
+                      "resolution": "4K",
+                      "waterproof": "yes",
+                      "color": "black"
+                    }
+                  }
+                },
+                {
+                  "item_id": "5320792178",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 135.24,
+                    "options": {
+                      "color": "black",
+                      "brightness": "medium",
+                      "power source": "AC adapter"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "task": "37",
+          "run": "r_f21170e6278b40db8e0a005fe7d634ba",
+          "arm": "fact_original",
+          "official_success": false,
+          "db_match": false,
+          "db_match_with_per_item_catalog_values": false,
+          "multi_item_returns": []
+        },
+        {
+          "task": "37",
+          "run": "r_9a8dcc36bee34fe38d9e735a547fc3b8",
+          "arm": "no_memory",
+          "official_success": true,
+          "db_match": true,
+          "db_match_with_per_item_catalog_values": true,
+          "multi_item_returns": [
+            {
+              "arguments": {
+                "item_ids": [
+                  "6117189161",
+                  "7453605304",
+                  "3799046073"
+                ],
+                "new_item_ids": [
+                  "6700049080",
+                  "5320792178",
+                  "3234800602"
+                ],
+                "order_id": "#W9348897",
+                "payment_method_id": "credit_card_8853416"
+              },
+              "discrepancies": [
+                {
+                  "item_id": "6700049080",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 466.75,
+                    "options": {
+                      "resolution": "4K",
+                      "waterproof": "yes",
+                      "color": "black"
+                    }
+                  }
+                },
+                {
+                  "item_id": "5320792178",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 135.24,
+                    "options": {
+                      "color": "black",
+                      "brightness": "medium",
+                      "power source": "AC adapter"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "task": "37",
+          "run": "r_32e5da7d59704da48b3a5ddf9e1453cf",
+          "arm": "procedure_original",
+          "official_success": true,
+          "db_match": true,
+          "db_match_with_per_item_catalog_values": true,
+          "multi_item_returns": [
+            {
+              "arguments": {
+                "item_ids": [
+                  "6117189161",
+                  "7453605304",
+                  "3799046073"
+                ],
+                "new_item_ids": [
+                  "6700049080",
+                  "5320792178",
+                  "3234800602"
+                ],
+                "order_id": "#W9348897",
+                "payment_method_id": "credit_card_8853416"
+              },
+              "discrepancies": [
+                {
+                  "item_id": "6700049080",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 466.75,
+                    "options": {
+                      "resolution": "4K",
+                      "waterproof": "yes",
+                      "color": "black"
+                    }
+                  }
+                },
+                {
+                  "item_id": "5320792178",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 135.24,
+                    "options": {
+                      "color": "black",
+                      "brightness": "medium",
+                      "power source": "AC adapter"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "task": "37",
+          "run": "r_c5b479cba9274f6e878f9d7b7472c804",
+          "arm": "empty_preload",
+          "official_success": true,
+          "db_match": true,
+          "db_match_with_per_item_catalog_values": true,
+          "multi_item_returns": [
+            {
+              "arguments": {
+                "item_ids": [
+                  "6117189161",
+                  "7453605304",
+                  "3799046073"
+                ],
+                "new_item_ids": [
+                  "6700049080",
+                  "5320792178",
+                  "3234800602"
+                ],
+                "order_id": "#W9348897",
+                "payment_method_id": "credit_card_8853416"
+              },
+              "discrepancies": [
+                {
+                  "item_id": "6700049080",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 466.75,
+                    "options": {
+                      "resolution": "4K",
+                      "waterproof": "yes",
+                      "color": "black"
+                    }
+                  }
+                },
+                {
+                  "item_id": "5320792178",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 135.24,
+                    "options": {
+                      "color": "black",
+                      "brightness": "medium",
+                      "power source": "AC adapter"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "task": "37",
+          "run": "r_32e26b219889415881bb03eca25ad9d7",
+          "arm": "episode_original",
+          "official_success": false,
+          "db_match": false,
+          "db_match_with_per_item_catalog_values": false,
+          "multi_item_returns": [
+            {
+              "arguments": {
+                "item_ids": [
+                  "6117189161",
+                  "7453605304",
+                  "3799046073"
+                ],
+                "new_item_ids": [
+                  "5925362855",
+                  "5320792178",
+                  "3234800602"
+                ],
+                "order_id": "#W9348897",
+                "payment_method_id": "credit_card_8853416"
+              },
+              "discrepancies": [
+                {
+                  "item_id": "5925362855",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 503.51,
+                    "options": {
+                      "resolution": "1080p",
+                      "waterproof": "yes",
+                      "color": "black"
+                    }
+                  }
+                },
+                {
+                  "item_id": "5320792178",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 135.24,
+                    "options": {
+                      "color": "black",
+                      "brightness": "medium",
+                      "power source": "AC adapter"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "task": "37",
+          "run": "r_434a9ad60f2349e79016ee3edf3742bb",
+          "arm": "procedure_original",
+          "official_success": true,
+          "db_match": true,
+          "db_match_with_per_item_catalog_values": true,
+          "multi_item_returns": [
+            {
+              "arguments": {
+                "item_ids": [
+                  "6117189161",
+                  "7453605304",
+                  "3799046073"
+                ],
+                "new_item_ids": [
+                  "6700049080",
+                  "5320792178",
+                  "3234800602"
+                ],
+                "order_id": "#W9348897",
+                "payment_method_id": "credit_card_8853416"
+              },
+              "discrepancies": [
+                {
+                  "item_id": "6700049080",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 466.75,
+                    "options": {
+                      "resolution": "4K",
+                      "waterproof": "yes",
+                      "color": "black"
+                    }
+                  }
+                },
+                {
+                  "item_id": "5320792178",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 135.24,
+                    "options": {
+                      "color": "black",
+                      "brightness": "medium",
+                      "power source": "AC adapter"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "task": "37",
+          "run": "r_bb629554d1414786bf2c5230148afa76",
+          "arm": "fact_original",
+          "official_success": true,
+          "db_match": true,
+          "db_match_with_per_item_catalog_values": true,
+          "multi_item_returns": [
+            {
+              "arguments": {
+                "item_ids": [
+                  "6117189161",
+                  "7453605304",
+                  "3799046073"
+                ],
+                "new_item_ids": [
+                  "6700049080",
+                  "5320792178",
+                  "3234800602"
+                ],
+                "order_id": "#W9348897",
+                "payment_method_id": "credit_card_8853416"
+              },
+              "discrepancies": [
+                {
+                  "item_id": "6700049080",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 466.75,
+                    "options": {
+                      "resolution": "4K",
+                      "waterproof": "yes",
+                      "color": "black"
+                    }
+                  }
+                },
+                {
+                  "item_id": "5320792178",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 135.24,
+                    "options": {
+                      "color": "black",
+                      "brightness": "medium",
+                      "power source": "AC adapter"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "task": "37",
+          "run": "r_51544214369f465991809125b7fbebc2",
+          "arm": "lesson_original",
+          "official_success": true,
+          "db_match": true,
+          "db_match_with_per_item_catalog_values": true,
+          "multi_item_returns": [
+            {
+              "arguments": {
+                "item_ids": [
+                  "6117189161",
+                  "7453605304",
+                  "3799046073"
+                ],
+                "new_item_ids": [
+                  "6700049080",
+                  "5320792178",
+                  "3234800602"
+                ],
+                "order_id": "#W9348897",
+                "payment_method_id": "credit_card_8853416"
+              },
+              "discrepancies": [
+                {
+                  "item_id": "6700049080",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 466.75,
+                    "options": {
+                      "resolution": "4K",
+                      "waterproof": "yes",
+                      "color": "black"
+                    }
+                  }
+                },
+                {
+                  "item_id": "5320792178",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 135.24,
+                    "options": {
+                      "color": "black",
+                      "brightness": "medium",
+                      "power source": "AC adapter"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "task": "37",
+          "run": "r_a5305e5292a1423f9f6355df8155289b",
+          "arm": "lesson_original",
+          "official_success": false,
+          "db_match": false,
+          "db_match_with_per_item_catalog_values": false,
+          "multi_item_returns": []
+        },
+        {
+          "task": "37",
+          "run": "r_7b1abc1cb3474b5e961b3c7c0ee9a816",
+          "arm": "procedure_original",
+          "official_success": true,
+          "db_match": true,
+          "db_match_with_per_item_catalog_values": true,
+          "multi_item_returns": [
+            {
+              "arguments": {
+                "item_ids": [
+                  "6117189161",
+                  "7453605304",
+                  "3799046073"
+                ],
+                "new_item_ids": [
+                  "6700049080",
+                  "5320792178",
+                  "3234800602"
+                ],
+                "order_id": "#W9348897",
+                "payment_method_id": "credit_card_8853416"
+              },
+              "discrepancies": [
+                {
+                  "item_id": "6700049080",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 466.75,
+                    "options": {
+                      "resolution": "4K",
+                      "waterproof": "yes",
+                      "color": "black"
+                    }
+                  }
+                },
+                {
+                  "item_id": "5320792178",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 135.24,
+                    "options": {
+                      "color": "black",
+                      "brightness": "medium",
+                      "power source": "AC adapter"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "task": "37",
+          "run": "r_ef518ad5614e43139c050f352227e2ff",
+          "arm": "empty_preload",
+          "official_success": true,
+          "db_match": true,
+          "db_match_with_per_item_catalog_values": true,
+          "multi_item_returns": [
+            {
+              "arguments": {
+                "item_ids": [
+                  "6117189161",
+                  "7453605304",
+                  "3799046073"
+                ],
+                "new_item_ids": [
+                  "6700049080",
+                  "5320792178",
+                  "3234800602"
+                ],
+                "order_id": "#W9348897",
+                "payment_method_id": "credit_card_8853416"
+              },
+              "discrepancies": [
+                {
+                  "item_id": "6700049080",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 466.75,
+                    "options": {
+                      "resolution": "4K",
+                      "waterproof": "yes",
+                      "color": "black"
+                    }
+                  }
+                },
+                {
+                  "item_id": "5320792178",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 135.24,
+                    "options": {
+                      "color": "black",
+                      "brightness": "medium",
+                      "power source": "AC adapter"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "task": "37",
+          "run": "r_53aeb48f36f74795a5d3455f6a905cc4",
+          "arm": "episode_original",
+          "official_success": true,
+          "db_match": true,
+          "db_match_with_per_item_catalog_values": true,
+          "multi_item_returns": [
+            {
+              "arguments": {
+                "item_ids": [
+                  "6117189161",
+                  "7453605304",
+                  "3799046073"
+                ],
+                "new_item_ids": [
+                  "6700049080",
+                  "5320792178",
+                  "3234800602"
+                ],
+                "order_id": "#W9348897",
+                "payment_method_id": "credit_card_8853416"
+              },
+              "discrepancies": [
+                {
+                  "item_id": "6700049080",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 466.75,
+                    "options": {
+                      "resolution": "4K",
+                      "waterproof": "yes",
+                      "color": "black"
+                    }
+                  }
+                },
+                {
+                  "item_id": "5320792178",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 135.24,
+                    "options": {
+                      "color": "black",
+                      "brightness": "medium",
+                      "power source": "AC adapter"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "task": "37",
+          "run": "r_6627a0e86b744613b1167f9ceb3703a1",
+          "arm": "procedure_original",
+          "official_success": true,
+          "db_match": true,
+          "db_match_with_per_item_catalog_values": true,
+          "multi_item_returns": [
+            {
+              "arguments": {
+                "item_ids": [
+                  "6117189161",
+                  "7453605304",
+                  "3799046073"
+                ],
+                "new_item_ids": [
+                  "6700049080",
+                  "5320792178",
+                  "3234800602"
+                ],
+                "order_id": "#W9348897",
+                "payment_method_id": "credit_card_8853416"
+              },
+              "discrepancies": [
+                {
+                  "item_id": "6700049080",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 466.75,
+                    "options": {
+                      "resolution": "4K",
+                      "waterproof": "yes",
+                      "color": "black"
+                    }
+                  }
+                },
+                {
+                  "item_id": "5320792178",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 135.24,
+                    "options": {
+                      "color": "black",
+                      "brightness": "medium",
+                      "power source": "AC adapter"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "task": "37",
+          "run": "r_4f6ebef6dbcb4bfa82dd5041b44733a0",
+          "arm": "lesson_original",
+          "official_success": true,
+          "db_match": true,
+          "db_match_with_per_item_catalog_values": true,
+          "multi_item_returns": [
+            {
+              "arguments": {
+                "item_ids": [
+                  "6117189161",
+                  "7453605304",
+                  "3799046073"
+                ],
+                "new_item_ids": [
+                  "6700049080",
+                  "5320792178",
+                  "3234800602"
+                ],
+                "order_id": "#W9348897",
+                "payment_method_id": "credit_card_8853416"
+              },
+              "discrepancies": [
+                {
+                  "item_id": "6700049080",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 466.75,
+                    "options": {
+                      "resolution": "4K",
+                      "waterproof": "yes",
+                      "color": "black"
+                    }
+                  }
+                },
+                {
+                  "item_id": "5320792178",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 135.24,
+                    "options": {
+                      "color": "black",
+                      "brightness": "medium",
+                      "power source": "AC adapter"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "task": "37",
+          "run": "r_4a439bffd60e4762a1c5b91157e243bd",
+          "arm": "fact_original",
+          "official_success": true,
+          "db_match": true,
+          "db_match_with_per_item_catalog_values": true,
+          "multi_item_returns": [
+            {
+              "arguments": {
+                "item_ids": [
+                  "6117189161",
+                  "7453605304",
+                  "3799046073"
+                ],
+                "new_item_ids": [
+                  "6700049080",
+                  "5320792178",
+                  "3234800602"
+                ],
+                "order_id": "#W9348897",
+                "payment_method_id": "credit_card_8853416"
+              },
+              "discrepancies": [
+                {
+                  "item_id": "6700049080",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 466.75,
+                    "options": {
+                      "resolution": "4K",
+                      "waterproof": "yes",
+                      "color": "black"
+                    }
+                  }
+                },
+                {
+                  "item_id": "5320792178",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 135.24,
+                    "options": {
+                      "color": "black",
+                      "brightness": "medium",
+                      "power source": "AC adapter"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "task": "37",
+          "run": "r_4b179e05e8484dff911195c6eebcff6c",
+          "arm": "no_memory",
+          "official_success": true,
+          "db_match": true,
+          "db_match_with_per_item_catalog_values": true,
+          "multi_item_returns": [
+            {
+              "arguments": {
+                "item_ids": [
+                  "6117189161",
+                  "7453605304",
+                  "3799046073"
+                ],
+                "new_item_ids": [
+                  "6700049080",
+                  "5320792178",
+                  "3234800602"
+                ],
+                "order_id": "#W9348897",
+                "payment_method_id": "credit_card_8853416"
+              },
+              "discrepancies": [
+                {
+                  "item_id": "6700049080",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 466.75,
+                    "options": {
+                      "resolution": "4K",
+                      "waterproof": "yes",
+                      "color": "black"
+                    }
+                  }
+                },
+                {
+                  "item_id": "5320792178",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 135.24,
+                    "options": {
+                      "color": "black",
+                      "brightness": "medium",
+                      "power source": "AC adapter"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "task": "37",
+          "run": "r_1b668630c37f4e8997e48233a2a332f1",
+          "arm": "fact_original",
+          "official_success": true,
+          "db_match": true,
+          "db_match_with_per_item_catalog_values": true,
+          "multi_item_returns": [
+            {
+              "arguments": {
+                "item_ids": [
+                  "6117189161",
+                  "7453605304",
+                  "3799046073"
+                ],
+                "new_item_ids": [
+                  "6700049080",
+                  "5320792178",
+                  "3234800602"
+                ],
+                "order_id": "#W9348897",
+                "payment_method_id": "credit_card_8853416"
+              },
+              "discrepancies": [
+                {
+                  "item_id": "6700049080",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 466.75,
+                    "options": {
+                      "resolution": "4K",
+                      "waterproof": "yes",
+                      "color": "black"
+                    }
+                  }
+                },
+                {
+                  "item_id": "5320792178",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 135.24,
+                    "options": {
+                      "color": "black",
+                      "brightness": "medium",
+                      "power source": "AC adapter"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "task": "72",
+          "run": "r_a8d702e229f441568ddd3f13f878f56c",
+          "arm": "fact_original",
+          "official_success": false,
+          "db_match": false,
+          "db_match_with_per_item_catalog_values": false,
+          "multi_item_returns": []
+        },
+        {
+          "task": "72",
+          "run": "r_461a65c38fff4d51bd9d26a9544ff34e",
+          "arm": "no_memory",
+          "official_success": true,
+          "db_match": true,
+          "db_match_with_per_item_catalog_values": true,
+          "multi_item_returns": []
+        },
+        {
+          "task": "72",
+          "run": "r_3bfd8faaf2114889817396665f689e10",
+          "arm": "lesson_original",
+          "official_success": true,
+          "db_match": true,
+          "db_match_with_per_item_catalog_values": true,
+          "multi_item_returns": []
+        },
+        {
+          "task": "72",
+          "run": "r_7bb4551317d74c29a1776e4d99b8574e",
+          "arm": "empty_preload",
+          "official_success": false,
+          "db_match": false,
+          "db_match_with_per_item_catalog_values": false,
+          "multi_item_returns": [
+            {
+              "arguments": {
+                "item_ids": [
+                  "2492465580",
+                  "7453605304"
+                ],
+                "new_item_ids": [
+                  "5917587651",
+                  "6805564527"
+                ],
+                "order_id": "#W5270061",
+                "payment_method_id": "gift_card_1711656"
+              },
+              "discrepancies": [
+                {
+                  "item_id": "5917587651",
+                  "returned": {
+                    "price": 158.41,
+                    "options": {
+                      "color": "black",
+                      "brightness": "medium",
+                      "power source": "USB"
+                    }
+                  },
+                  "catalog": {
+                    "price": 212.79,
+                    "options": {
+                      "color": "grey",
+                      "size": "medium",
+                      "material": "polyester",
+                      "compartment": "laptop"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "task": "72",
+          "run": "r_e7481e7ee7724969bb73c1f34c26195b",
+          "arm": "procedure_original",
+          "official_success": true,
+          "db_match": true,
+          "db_match_with_per_item_catalog_values": true,
+          "multi_item_returns": []
+        },
+        {
+          "task": "72",
+          "run": "r_3f724615f41f47739a70fb62fb734cf4",
+          "arm": "episode_original",
+          "official_success": false,
+          "db_match": false,
+          "db_match_with_per_item_catalog_values": false,
+          "multi_item_returns": []
+        },
+        {
+          "task": "72",
+          "run": "r_81697f36c0e1486aaeccca299c5e534d",
+          "arm": "fact_original",
+          "official_success": true,
+          "db_match": true,
+          "db_match_with_per_item_catalog_values": true,
+          "multi_item_returns": []
+        },
+        {
+          "task": "72",
+          "run": "r_fbb4e0ed9f04424e8404c8cf7b14b56c",
+          "arm": "empty_preload",
+          "official_success": false,
+          "db_match": false,
+          "db_match_with_per_item_catalog_values": false,
+          "multi_item_returns": []
+        },
+        {
+          "task": "72",
+          "run": "r_745f8ab46a28431c81d1897c53a1a2cd",
+          "arm": "no_memory",
+          "official_success": false,
+          "db_match": false,
+          "db_match_with_per_item_catalog_values": false,
+          "multi_item_returns": []
+        },
+        {
+          "task": "72",
+          "run": "r_d3cbfe850b514ebeb4759836c189911e",
+          "arm": "procedure_original",
+          "official_success": true,
+          "db_match": true,
+          "db_match_with_per_item_catalog_values": true,
+          "multi_item_returns": []
+        },
+        {
+          "task": "72",
+          "run": "r_b6d307cc0cf444888f9e80d254ccbe1e",
+          "arm": "lesson_original",
+          "official_success": false,
+          "db_match": false,
+          "db_match_with_per_item_catalog_values": false,
+          "multi_item_returns": [
+            {
+              "arguments": {
+                "item_ids": [
+                  "2492465580",
+                  "7453605304"
+                ],
+                "new_item_ids": [
+                  "6309044598",
+                  "6805564527"
+                ],
+                "order_id": "#W5270061",
+                "payment_method_id": "gift_card_1711656"
+              },
+              "discrepancies": [
+                {
+                  "item_id": "6309044598",
+                  "returned": {
+                    "price": 158.41,
+                    "options": {
+                      "color": "black",
+                      "brightness": "medium",
+                      "power source": "USB"
+                    }
+                  },
+                  "catalog": {
+                    "price": 218.59,
+                    "options": {
+                      "color": "grey",
+                      "size": "large",
+                      "material": "polyester",
+                      "compartment": "hydration"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "retest": [
+        {
+          "task": "37",
+          "run": "r_2720a0e8293b482995dba28ed83db715",
+          "arm": "fact_explicit",
+          "official_success": false,
+          "db_match": false,
+          "db_match_with_per_item_catalog_values": false,
+          "multi_item_returns": []
+        },
+        {
+          "task": "37",
+          "run": "r_d4e4d8005a4d4e27adbb4996da837ce5",
+          "arm": "procedure_explicit",
+          "official_success": true,
+          "db_match": true,
+          "db_match_with_per_item_catalog_values": true,
+          "multi_item_returns": [
+            {
+              "arguments": {
+                "item_ids": [
+                  "6117189161",
+                  "7453605304",
+                  "3799046073"
+                ],
+                "new_item_ids": [
+                  "6700049080",
+                  "5320792178",
+                  "3234800602"
+                ],
+                "order_id": "#W9348897",
+                "payment_method_id": "credit_card_8853416"
+              },
+              "discrepancies": [
+                {
+                  "item_id": "6700049080",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 466.75,
+                    "options": {
+                      "resolution": "4K",
+                      "waterproof": "yes",
+                      "color": "black"
+                    }
+                  }
+                },
+                {
+                  "item_id": "5320792178",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 135.24,
+                    "options": {
+                      "color": "black",
+                      "brightness": "medium",
+                      "power source": "AC adapter"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "task": "37",
+          "run": "r_5c08bc3896214838a24590f54e0bf1c5",
+          "arm": "lesson_original",
+          "official_success": true,
+          "db_match": true,
+          "db_match_with_per_item_catalog_values": true,
+          "multi_item_returns": [
+            {
+              "arguments": {
+                "item_ids": [
+                  "6117189161",
+                  "7453605304",
+                  "3799046073"
+                ],
+                "new_item_ids": [
+                  "6700049080",
+                  "5320792178",
+                  "3234800602"
+                ],
+                "order_id": "#W9348897",
+                "payment_method_id": "credit_card_8853416"
+              },
+              "discrepancies": [
+                {
+                  "item_id": "6700049080",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 466.75,
+                    "options": {
+                      "resolution": "4K",
+                      "waterproof": "yes",
+                      "color": "black"
+                    }
+                  }
+                },
+                {
+                  "item_id": "5320792178",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 135.24,
+                    "options": {
+                      "color": "black",
+                      "brightness": "medium",
+                      "power source": "AC adapter"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "task": "37",
+          "run": "r_e525ed03ccbe4c68947cb52ad7e40d15",
+          "arm": "fact_original",
+          "official_success": false,
+          "db_match": false,
+          "db_match_with_per_item_catalog_values": false,
+          "multi_item_returns": [
+            {
+              "arguments": {
+                "item_ids": [
+                  "6117189161",
+                  "7453605304",
+                  "3799046073",
+                  "9851293632"
+                ],
+                "new_item_ids": [
+                  "6700049080",
+                  "5320792178",
+                  "3234800602",
+                  "3928046918"
+                ],
+                "order_id": "#W9348897",
+                "payment_method_id": "credit_card_8853416"
+              },
+              "discrepancies": [
+                {
+                  "item_id": "6700049080",
+                  "returned": {
+                    "price": 198.0,
+                    "options": {
+                      "color": "black",
+                      "size": "large",
+                      "material": "nylon",
+                      "compartment": "camera"
+                    }
+                  },
+                  "catalog": {
+                    "price": 466.75,
+                    "options": {
+                      "resolution": "4K",
+                      "waterproof": "yes",
+                      "color": "black"
+                    }
+                  }
+                },
+                {
+                  "item_id": "5320792178",
+                  "returned": {
+                    "price": 198.0,
+                    "options": {
+                      "color": "black",
+                      "size": "large",
+                      "material": "nylon",
+                      "compartment": "camera"
+                    }
+                  },
+                  "catalog": {
+                    "price": 135.24,
+                    "options": {
+                      "color": "black",
+                      "brightness": "medium",
+                      "power source": "AC adapter"
+                    }
+                  }
+                },
+                {
+                  "item_id": "3234800602",
+                  "returned": {
+                    "price": 198.0,
+                    "options": {
+                      "color": "black",
+                      "size": "large",
+                      "material": "nylon",
+                      "compartment": "camera"
+                    }
+                  },
+                  "catalog": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "task": "37",
+          "run": "r_bbfaaca565414086ba8439b4613f9aee",
+          "arm": "fact_explicit",
+          "official_success": true,
+          "db_match": true,
+          "db_match_with_per_item_catalog_values": true,
+          "multi_item_returns": [
+            {
+              "arguments": {
+                "item_ids": [
+                  "6117189161",
+                  "7453605304",
+                  "3799046073"
+                ],
+                "new_item_ids": [
+                  "6700049080",
+                  "5320792178",
+                  "3234800602"
+                ],
+                "order_id": "#W9348897",
+                "payment_method_id": "credit_card_8853416"
+              },
+              "discrepancies": [
+                {
+                  "item_id": "6700049080",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 466.75,
+                    "options": {
+                      "resolution": "4K",
+                      "waterproof": "yes",
+                      "color": "black"
+                    }
+                  }
+                },
+                {
+                  "item_id": "5320792178",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 135.24,
+                    "options": {
+                      "color": "black",
+                      "brightness": "medium",
+                      "power source": "AC adapter"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "task": "37",
+          "run": "r_90393e76f24b4de292e818c3f5b4aefb",
+          "arm": "fact_original",
+          "official_success": true,
+          "db_match": true,
+          "db_match_with_per_item_catalog_values": true,
+          "multi_item_returns": [
+            {
+              "arguments": {
+                "item_ids": [
+                  "6117189161",
+                  "7453605304",
+                  "3799046073"
+                ],
+                "new_item_ids": [
+                  "6700049080",
+                  "5320792178",
+                  "3234800602"
+                ],
+                "order_id": "#W9348897",
+                "payment_method_id": "credit_card_8853416"
+              },
+              "discrepancies": [
+                {
+                  "item_id": "6700049080",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 466.75,
+                    "options": {
+                      "resolution": "4K",
+                      "waterproof": "yes",
+                      "color": "black"
+                    }
+                  }
+                },
+                {
+                  "item_id": "5320792178",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 135.24,
+                    "options": {
+                      "color": "black",
+                      "brightness": "medium",
+                      "power source": "AC adapter"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "task": "37",
+          "run": "r_866d9fb3e03b4389991c8ba604668176",
+          "arm": "empty_preload",
+          "official_success": true,
+          "db_match": true,
+          "db_match_with_per_item_catalog_values": true,
+          "multi_item_returns": [
+            {
+              "arguments": {
+                "item_ids": [
+                  "6117189161",
+                  "7453605304",
+                  "3799046073"
+                ],
+                "new_item_ids": [
+                  "6700049080",
+                  "5320792178",
+                  "3234800602"
+                ],
+                "order_id": "#W9348897",
+                "payment_method_id": "credit_card_8853416"
+              },
+              "discrepancies": [
+                {
+                  "item_id": "6700049080",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 466.75,
+                    "options": {
+                      "resolution": "4K",
+                      "waterproof": "yes",
+                      "color": "black"
+                    }
+                  }
+                },
+                {
+                  "item_id": "5320792178",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 135.24,
+                    "options": {
+                      "color": "black",
+                      "brightness": "medium",
+                      "power source": "AC adapter"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "task": "37",
+          "run": "r_ba406ba0ebbc4bdcba104574a811d8a7",
+          "arm": "procedure_original",
+          "official_success": true,
+          "db_match": true,
+          "db_match_with_per_item_catalog_values": true,
+          "multi_item_returns": [
+            {
+              "arguments": {
+                "item_ids": [
+                  "6117189161",
+                  "7453605304",
+                  "3799046073"
+                ],
+                "new_item_ids": [
+                  "6700049080",
+                  "5320792178",
+                  "3234800602"
+                ],
+                "order_id": "#W9348897",
+                "payment_method_id": "credit_card_8853416"
+              },
+              "discrepancies": [
+                {
+                  "item_id": "6700049080",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 466.75,
+                    "options": {
+                      "resolution": "4K",
+                      "waterproof": "yes",
+                      "color": "black"
+                    }
+                  }
+                },
+                {
+                  "item_id": "5320792178",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 135.24,
+                    "options": {
+                      "color": "black",
+                      "brightness": "medium",
+                      "power source": "AC adapter"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "task": "37",
+          "run": "r_217320b8ee914b48b5a5f2bc64eeacf4",
+          "arm": "lesson_explicit",
+          "official_success": true,
+          "db_match": true,
+          "db_match_with_per_item_catalog_values": true,
+          "multi_item_returns": [
+            {
+              "arguments": {
+                "item_ids": [
+                  "6117189161",
+                  "7453605304",
+                  "3799046073"
+                ],
+                "new_item_ids": [
+                  "6700049080",
+                  "5320792178",
+                  "3234800602"
+                ],
+                "order_id": "#W9348897",
+                "payment_method_id": "credit_card_8853416"
+              },
+              "discrepancies": [
+                {
+                  "item_id": "6700049080",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 466.75,
+                    "options": {
+                      "resolution": "4K",
+                      "waterproof": "yes",
+                      "color": "black"
+                    }
+                  }
+                },
+                {
+                  "item_id": "5320792178",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 135.24,
+                    "options": {
+                      "color": "black",
+                      "brightness": "medium",
+                      "power source": "AC adapter"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "task": "37",
+          "run": "r_f682f6c697b04f5f8a7058cf7fc217e2",
+          "arm": "procedure_original",
+          "official_success": true,
+          "db_match": true,
+          "db_match_with_per_item_catalog_values": true,
+          "multi_item_returns": [
+            {
+              "arguments": {
+                "item_ids": [
+                  "6117189161",
+                  "7453605304",
+                  "3799046073"
+                ],
+                "new_item_ids": [
+                  "6700049080",
+                  "5320792178",
+                  "3234800602"
+                ],
+                "order_id": "#W9348897",
+                "payment_method_id": "credit_card_8853416"
+              },
+              "discrepancies": [
+                {
+                  "item_id": "6700049080",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 466.75,
+                    "options": {
+                      "resolution": "4K",
+                      "waterproof": "yes",
+                      "color": "black"
+                    }
+                  }
+                },
+                {
+                  "item_id": "5320792178",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 135.24,
+                    "options": {
+                      "color": "black",
+                      "brightness": "medium",
+                      "power source": "AC adapter"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "task": "37",
+          "run": "r_79627056beb945c99ca441779f030ddd",
+          "arm": "lesson_explicit",
+          "official_success": false,
+          "db_match": false,
+          "db_match_with_per_item_catalog_values": false,
+          "multi_item_returns": []
+        },
+        {
+          "task": "37",
+          "run": "r_ef8258be4f4846b09f5eac38f491416f",
+          "arm": "episode_explicit",
+          "official_success": true,
+          "db_match": true,
+          "db_match_with_per_item_catalog_values": true,
+          "multi_item_returns": [
+            {
+              "arguments": {
+                "item_ids": [
+                  "6117189161",
+                  "7453605304",
+                  "3799046073"
+                ],
+                "new_item_ids": [
+                  "6700049080",
+                  "5320792178",
+                  "3234800602"
+                ],
+                "order_id": "#W9348897",
+                "payment_method_id": "credit_card_8853416"
+              },
+              "discrepancies": [
+                {
+                  "item_id": "6700049080",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 466.75,
+                    "options": {
+                      "resolution": "4K",
+                      "waterproof": "yes",
+                      "color": "black"
+                    }
+                  }
+                },
+                {
+                  "item_id": "5320792178",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 135.24,
+                    "options": {
+                      "color": "black",
+                      "brightness": "medium",
+                      "power source": "AC adapter"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "task": "37",
+          "run": "r_e2cd1305178a4a7a949f81bf77c68e6d",
+          "arm": "no_memory",
+          "official_success": false,
+          "db_match": false,
+          "db_match_with_per_item_catalog_values": false,
+          "multi_item_returns": [
+            {
+              "arguments": {
+                "item_ids": [
+                  "6117189161",
+                  "7453605304",
+                  "3799046073",
+                  "9851293632"
+                ],
+                "new_item_ids": [
+                  "6700049080",
+                  "5320792178",
+                  "3234800602",
+                  "3928046918"
+                ],
+                "order_id": "#W9348897",
+                "payment_method_id": "credit_card_8853416"
+              },
+              "discrepancies": [
+                {
+                  "item_id": "6700049080",
+                  "returned": {
+                    "price": 198.0,
+                    "options": {
+                      "color": "black",
+                      "size": "large",
+                      "material": "nylon",
+                      "compartment": "camera"
+                    }
+                  },
+                  "catalog": {
+                    "price": 466.75,
+                    "options": {
+                      "resolution": "4K",
+                      "waterproof": "yes",
+                      "color": "black"
+                    }
+                  }
+                },
+                {
+                  "item_id": "5320792178",
+                  "returned": {
+                    "price": 198.0,
+                    "options": {
+                      "color": "black",
+                      "size": "large",
+                      "material": "nylon",
+                      "compartment": "camera"
+                    }
+                  },
+                  "catalog": {
+                    "price": 135.24,
+                    "options": {
+                      "color": "black",
+                      "brightness": "medium",
+                      "power source": "AC adapter"
+                    }
+                  }
+                },
+                {
+                  "item_id": "3234800602",
+                  "returned": {
+                    "price": 198.0,
+                    "options": {
+                      "color": "black",
+                      "size": "large",
+                      "material": "nylon",
+                      "compartment": "camera"
+                    }
+                  },
+                  "catalog": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "task": "37",
+          "run": "r_8dd578a5e05d4ac2996beee208546da2",
+          "arm": "lesson_original",
+          "official_success": true,
+          "db_match": true,
+          "db_match_with_per_item_catalog_values": true,
+          "multi_item_returns": [
+            {
+              "arguments": {
+                "item_ids": [
+                  "6117189161",
+                  "7453605304",
+                  "3799046073"
+                ],
+                "new_item_ids": [
+                  "6700049080",
+                  "5320792178",
+                  "3234800602"
+                ],
+                "order_id": "#W9348897",
+                "payment_method_id": "credit_card_8853416"
+              },
+              "discrepancies": [
+                {
+                  "item_id": "6700049080",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 466.75,
+                    "options": {
+                      "resolution": "4K",
+                      "waterproof": "yes",
+                      "color": "black"
+                    }
+                  }
+                },
+                {
+                  "item_id": "5320792178",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 135.24,
+                    "options": {
+                      "color": "black",
+                      "brightness": "medium",
+                      "power source": "AC adapter"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "task": "37",
+          "run": "r_7680a8835dc844f1a9199b0b95e696c3",
+          "arm": "procedure_explicit",
+          "official_success": true,
+          "db_match": true,
+          "db_match_with_per_item_catalog_values": true,
+          "multi_item_returns": [
+            {
+              "arguments": {
+                "item_ids": [
+                  "6117189161",
+                  "7453605304",
+                  "3799046073"
+                ],
+                "new_item_ids": [
+                  "6700049080",
+                  "5320792178",
+                  "3234800602"
+                ],
+                "order_id": "#W9348897",
+                "payment_method_id": "credit_card_8853416"
+              },
+              "discrepancies": [
+                {
+                  "item_id": "6700049080",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 466.75,
+                    "options": {
+                      "resolution": "4K",
+                      "waterproof": "yes",
+                      "color": "black"
+                    }
+                  }
+                },
+                {
+                  "item_id": "5320792178",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 135.24,
+                    "options": {
+                      "color": "black",
+                      "brightness": "medium",
+                      "power source": "AC adapter"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "task": "37",
+          "run": "r_e8ea6b074da647d4bb85c41dd602c106",
+          "arm": "procedure_original",
+          "official_success": false,
+          "db_match": false,
+          "db_match_with_per_item_catalog_values": false,
+          "multi_item_returns": []
+        },
+        {
+          "task": "37",
+          "run": "r_908ccee6e7ad4981835448f4b80d92df",
+          "arm": "fact_explicit",
+          "official_success": false,
+          "db_match": false,
+          "db_match_with_per_item_catalog_values": false,
+          "multi_item_returns": [
+            {
+              "arguments": {
+                "item_ids": [
+                  "6117189161",
+                  "7453605304",
+                  "3799046073"
+                ],
+                "new_item_ids": [
+                  "6700049080",
+                  "5320792178",
+                  "9354168549"
+                ],
+                "order_id": "#W9348897",
+                "payment_method_id": "credit_card_8853416"
+              },
+              "discrepancies": [
+                {
+                  "item_id": "6700049080",
+                  "returned": {
+                    "price": 46.85,
+                    "options": {
+                      "color": "red",
+                      "size": "XXL",
+                      "material": "cotton",
+                      "style": "crew neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 466.75,
+                    "options": {
+                      "resolution": "4K",
+                      "waterproof": "yes",
+                      "color": "black"
+                    }
+                  }
+                },
+                {
+                  "item_id": "5320792178",
+                  "returned": {
+                    "price": 46.85,
+                    "options": {
+                      "color": "red",
+                      "size": "XXL",
+                      "material": "cotton",
+                      "style": "crew neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 135.24,
+                    "options": {
+                      "color": "black",
+                      "brightness": "medium",
+                      "power source": "AC adapter"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "task": "37",
+          "run": "r_e7ce2e02402149eea00afdd4a2b4dcaa",
+          "arm": "episode_original",
+          "official_success": true,
+          "db_match": true,
+          "db_match_with_per_item_catalog_values": true,
+          "multi_item_returns": [
+            {
+              "arguments": {
+                "item_ids": [
+                  "6117189161",
+                  "7453605304",
+                  "3799046073"
+                ],
+                "new_item_ids": [
+                  "6700049080",
+                  "5320792178",
+                  "3234800602"
+                ],
+                "order_id": "#W9348897",
+                "payment_method_id": "credit_card_8853416"
+              },
+              "discrepancies": [
+                {
+                  "item_id": "6700049080",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 466.75,
+                    "options": {
+                      "resolution": "4K",
+                      "waterproof": "yes",
+                      "color": "black"
+                    }
+                  }
+                },
+                {
+                  "item_id": "5320792178",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 135.24,
+                    "options": {
+                      "color": "black",
+                      "brightness": "medium",
+                      "power source": "AC adapter"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "task": "37",
+          "run": "r_d7784403663e4d4eb37567204e794c6e",
+          "arm": "episode_explicit",
+          "official_success": false,
+          "db_match": false,
+          "db_match_with_per_item_catalog_values": false,
+          "multi_item_returns": [
+            {
+              "arguments": {
+                "item_ids": [
+                  "6117189161",
+                  "9879255677",
+                  "7453605304",
+                  "3799046073",
+                  "9851293632"
+                ],
+                "new_item_ids": [
+                  "6700049080",
+                  "2001307871",
+                  "5320792178",
+                  "3234800602",
+                  "3928046918"
+                ],
+                "order_id": "#W9348897",
+                "payment_method_id": "credit_card_8853416"
+              },
+              "discrepancies": [
+                {
+                  "item_id": "6700049080",
+                  "returned": {
+                    "price": 198.0,
+                    "options": {
+                      "color": "black",
+                      "size": "large",
+                      "material": "nylon",
+                      "compartment": "camera"
+                    }
+                  },
+                  "catalog": {
+                    "price": 466.75,
+                    "options": {
+                      "resolution": "4K",
+                      "waterproof": "yes",
+                      "color": "black"
+                    }
+                  }
+                },
+                {
+                  "item_id": "2001307871",
+                  "returned": {
+                    "price": 198.0,
+                    "options": {
+                      "color": "black",
+                      "size": "large",
+                      "material": "nylon",
+                      "compartment": "camera"
+                    }
+                  },
+                  "catalog": {
+                    "price": 302.63,
+                    "options": {
+                      "size": "6 ft",
+                      "color": "blue",
+                      "material": "sunbrella",
+                      "tilt mechanism": "auto tilt"
+                    }
+                  }
+                },
+                {
+                  "item_id": "5320792178",
+                  "returned": {
+                    "price": 198.0,
+                    "options": {
+                      "color": "black",
+                      "size": "large",
+                      "material": "nylon",
+                      "compartment": "camera"
+                    }
+                  },
+                  "catalog": {
+                    "price": 135.24,
+                    "options": {
+                      "color": "black",
+                      "brightness": "medium",
+                      "power source": "AC adapter"
+                    }
+                  }
+                },
+                {
+                  "item_id": "3234800602",
+                  "returned": {
+                    "price": 198.0,
+                    "options": {
+                      "color": "black",
+                      "size": "large",
+                      "material": "nylon",
+                      "compartment": "camera"
+                    }
+                  },
+                  "catalog": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "task": "37",
+          "run": "r_5a01227b79eb4a098275d7664682c596",
+          "arm": "episode_original",
+          "official_success": false,
+          "db_match": false,
+          "db_match_with_per_item_catalog_values": false,
+          "multi_item_returns": []
+        },
+        {
+          "task": "37",
+          "run": "r_4dc7c43a71e44100a6015233c0a06ca1",
+          "arm": "fact_original",
+          "official_success": true,
+          "db_match": true,
+          "db_match_with_per_item_catalog_values": true,
+          "multi_item_returns": [
+            {
+              "arguments": {
+                "item_ids": [
+                  "6117189161",
+                  "7453605304",
+                  "3799046073"
+                ],
+                "new_item_ids": [
+                  "6700049080",
+                  "5320792178",
+                  "3234800602"
+                ],
+                "order_id": "#W9348897",
+                "payment_method_id": "credit_card_8853416"
+              },
+              "discrepancies": [
+                {
+                  "item_id": "6700049080",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 466.75,
+                    "options": {
+                      "resolution": "4K",
+                      "waterproof": "yes",
+                      "color": "black"
+                    }
+                  }
+                },
+                {
+                  "item_id": "5320792178",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 135.24,
+                    "options": {
+                      "color": "black",
+                      "brightness": "medium",
+                      "power source": "AC adapter"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "task": "37",
+          "run": "r_68f265e6d9614eaeaddf322c464506d8",
+          "arm": "empty_preload",
+          "official_success": true,
+          "db_match": true,
+          "db_match_with_per_item_catalog_values": true,
+          "multi_item_returns": [
+            {
+              "arguments": {
+                "item_ids": [
+                  "6117189161",
+                  "7453605304",
+                  "3799046073"
+                ],
+                "new_item_ids": [
+                  "6700049080",
+                  "5320792178",
+                  "3234800602"
+                ],
+                "order_id": "#W9348897",
+                "payment_method_id": "credit_card_8853416"
+              },
+              "discrepancies": [
+                {
+                  "item_id": "6700049080",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 466.75,
+                    "options": {
+                      "resolution": "4K",
+                      "waterproof": "yes",
+                      "color": "black"
+                    }
+                  }
+                },
+                {
+                  "item_id": "5320792178",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 135.24,
+                    "options": {
+                      "color": "black",
+                      "brightness": "medium",
+                      "power source": "AC adapter"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "task": "37",
+          "run": "r_3cf0239ce5014de6bd52c70b741fa314",
+          "arm": "fact_explicit",
+          "official_success": false,
+          "db_match": false,
+          "db_match_with_per_item_catalog_values": false,
+          "multi_item_returns": []
+        },
+        {
+          "task": "37",
+          "run": "r_bb42e84408444143bfb1cc49a7a5ce94",
+          "arm": "procedure_explicit",
+          "official_success": false,
+          "db_match": false,
+          "db_match_with_per_item_catalog_values": false,
+          "multi_item_returns": [
+            {
+              "arguments": {
+                "item_ids": [
+                  "6117189161",
+                  "3799046073"
+                ],
+                "new_item_ids": [
+                  "6700049080",
+                  "3234800602"
+                ],
+                "order_id": "#W9348897",
+                "payment_method_id": "credit_card_8853416"
+              },
+              "discrepancies": [
+                {
+                  "item_id": "6700049080",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 466.75,
+                    "options": {
+                      "resolution": "4K",
+                      "waterproof": "yes",
+                      "color": "black"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "task": "37",
+          "run": "r_ed191e1204944e2b8fe6717b22a704f3",
+          "arm": "lesson_original",
+          "official_success": true,
+          "db_match": true,
+          "db_match_with_per_item_catalog_values": true,
+          "multi_item_returns": [
+            {
+              "arguments": {
+                "item_ids": [
+                  "6117189161",
+                  "7453605304",
+                  "3799046073"
+                ],
+                "new_item_ids": [
+                  "6700049080",
+                  "5320792178",
+                  "3234800602"
+                ],
+                "order_id": "#W9348897",
+                "payment_method_id": "credit_card_8853416"
+              },
+              "discrepancies": [
+                {
+                  "item_id": "6700049080",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 466.75,
+                    "options": {
+                      "resolution": "4K",
+                      "waterproof": "yes",
+                      "color": "black"
+                    }
+                  }
+                },
+                {
+                  "item_id": "5320792178",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 135.24,
+                    "options": {
+                      "color": "black",
+                      "brightness": "medium",
+                      "power source": "AC adapter"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "task": "37",
+          "run": "r_8f99c0a82203482bbe343b4ce448cbd1",
+          "arm": "fact_original",
+          "official_success": true,
+          "db_match": true,
+          "db_match_with_per_item_catalog_values": true,
+          "multi_item_returns": [
+            {
+              "arguments": {
+                "item_ids": [
+                  "6117189161",
+                  "7453605304",
+                  "3799046073"
+                ],
+                "new_item_ids": [
+                  "6700049080",
+                  "5320792178",
+                  "3234800602"
+                ],
+                "order_id": "#W9348897",
+                "payment_method_id": "credit_card_8853416"
+              },
+              "discrepancies": [
+                {
+                  "item_id": "6700049080",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 466.75,
+                    "options": {
+                      "resolution": "4K",
+                      "waterproof": "yes",
+                      "color": "black"
+                    }
+                  }
+                },
+                {
+                  "item_id": "5320792178",
+                  "returned": {
+                    "price": 46.66,
+                    "options": {
+                      "color": "red",
+                      "size": "L",
+                      "material": "cotton",
+                      "style": "v-neck"
+                    }
+                  },
+                  "catalog": {
+                    "price": 135.24,
+                    "options": {
+                      "color": "black",
+                      "brightness": "medium",
+                      "power source": "AC adapter"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "task": "72",
+          "run": "r_7104b2b7cc564e8085fa929f1a424d0d",
+          "arm": "episode_explicit",
+          "official_success": false,
+          "db_match": false,
+          "db_match_with_per_item_catalog_values": false,
+          "multi_item_returns": [
+            {
+              "arguments": {
+                "item_ids": [
+                  "2492465580",
+                  "7453605304"
+                ],
+                "new_item_ids": [
+                  "5917587651",
+                  "9190635437"
+                ],
+                "order_id": "#W5270061",
+                "payment_method_id": "gift_card_1711656"
+              },
+              "discrepancies": [
+                {
+                  "item_id": "5917587651",
+                  "returned": {
+                    "price": 153.23,
+                    "options": {
+                      "color": "black",
+                      "brightness": "low",
+                      "power source": "USB"
+                    }
+                  },
+                  "catalog": {
+                    "price": 212.79,
+                    "options": {
+                      "color": "grey",
+                      "size": "medium",
+                      "material": "polyester",
+                      "compartment": "laptop"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "task": "72",
+          "run": "r_ea859427be0a472aa20d792d68b0712f",
+          "arm": "fact_original",
+          "official_success": false,
+          "db_match": false,
+          "db_match_with_per_item_catalog_values": false,
+          "multi_item_returns": [
+            {
+              "arguments": {
+                "item_ids": [
+                  "2492465580",
+                  "7453605304"
+                ],
+                "new_item_ids": [
+                  "5917587651",
+                  "9190635437"
+                ],
+                "order_id": "#W5270061",
+                "payment_method_id": "gift_card_1711656"
+              },
+              "discrepancies": [
+                {
+                  "item_id": "5917587651",
+                  "returned": {
+                    "price": 153.23,
+                    "options": {
+                      "color": "black",
+                      "brightness": "low",
+                      "power source": "USB"
+                    }
+                  },
+                  "catalog": {
+                    "price": 212.79,
+                    "options": {
+                      "color": "grey",
+                      "size": "medium",
+                      "material": "polyester",
+                      "compartment": "laptop"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "task": "72",
+          "run": "r_9826f207ff4a4ff69c1a9a6a2e5ab67a",
+          "arm": "fact_explicit",
+          "official_success": false,
+          "db_match": false,
+          "db_match_with_per_item_catalog_values": false,
+          "multi_item_returns": [
+            {
+              "arguments": {
+                "item_ids": [
+                  "2492465580",
+                  "7453605304"
+                ],
+                "new_item_ids": [
+                  "5917587651",
+                  "9190635437"
+                ],
+                "order_id": "#W5270061",
+                "payment_method_id": "gift_card_1711656"
+              },
+              "discrepancies": [
+                {
+                  "item_id": "5917587651",
+                  "returned": {
+                    "price": 153.23,
+                    "options": {
+                      "color": "black",
+                      "brightness": "low",
+                      "power source": "USB"
+                    }
+                  },
+                  "catalog": {
+                    "price": 212.79,
+                    "options": {
+                      "color": "grey",
+                      "size": "medium",
+                      "material": "polyester",
+                      "compartment": "laptop"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "task": "72",
+          "run": "r_c5e70f30056848b385b7957d19dc01ee",
+          "arm": "procedure_explicit",
+          "official_success": false,
+          "db_match": false,
+          "db_match_with_per_item_catalog_values": false,
+          "multi_item_returns": [
+            {
+              "arguments": {
+                "item_ids": [
+                  "2492465580",
+                  "7453605304"
+                ],
+                "new_item_ids": [
+                  "5917587651",
+                  "9190635437"
+                ],
+                "order_id": "#W5270061",
+                "payment_method_id": "gift_card_1711656"
+              },
+              "discrepancies": [
+                {
+                  "item_id": "5917587651",
+                  "returned": {
+                    "price": 153.23,
+                    "options": {
+                      "color": "black",
+                      "brightness": "low",
+                      "power source": "USB"
+                    }
+                  },
+                  "catalog": {
+                    "price": 212.79,
+                    "options": {
+                      "color": "grey",
+                      "size": "medium",
+                      "material": "polyester",
+                      "compartment": "laptop"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "task": "72",
+          "run": "r_248db5767c9d43a588809fe845dc6127",
+          "arm": "no_memory",
+          "official_success": true,
+          "db_match": true,
+          "db_match_with_per_item_catalog_values": true,
+          "multi_item_returns": []
+        },
+        {
+          "task": "72",
+          "run": "r_db4ce14f27fe417baaf35e1302f1a308",
+          "arm": "episode_original",
+          "official_success": false,
+          "db_match": false,
+          "db_match_with_per_item_catalog_values": false,
+          "multi_item_returns": []
+        },
+        {
+          "task": "72",
+          "run": "r_67aaf2d89d74437b85f74e5fff19421f",
+          "arm": "procedure_original",
+          "official_success": true,
+          "db_match": true,
+          "db_match_with_per_item_catalog_values": true,
+          "multi_item_returns": []
+        },
+        {
+          "task": "72",
+          "run": "r_76bb308c2c5d4368ae87100c378f7816",
+          "arm": "lesson_original",
+          "official_success": true,
+          "db_match": true,
+          "db_match_with_per_item_catalog_values": true,
+          "multi_item_returns": []
+        },
+        {
+          "task": "72",
+          "run": "r_1d20b0e08666470ca44ee58dc436bc51",
+          "arm": "procedure_explicit",
+          "official_success": false,
+          "db_match": false,
+          "db_match_with_per_item_catalog_values": false,
+          "multi_item_returns": []
+        },
+        {
+          "task": "72",
+          "run": "r_de1a8a3a3866453f8efe24586b1f78f6",
+          "arm": "lesson_explicit",
+          "official_success": true,
+          "db_match": true,
+          "db_match_with_per_item_catalog_values": true,
+          "multi_item_returns": []
+        },
+        {
+          "task": "72",
+          "run": "r_2a845dd446d04d79bc93666652f08649",
+          "arm": "no_memory",
+          "official_success": false,
+          "db_match": false,
+          "db_match_with_per_item_catalog_values": false,
+          "multi_item_returns": []
+        },
+        {
+          "task": "72",
+          "run": "r_22b2bed7f2974107b5718fbc3a065131",
+          "arm": "fact_explicit",
+          "official_success": false,
+          "db_match": false,
+          "db_match_with_per_item_catalog_values": false,
+          "multi_item_returns": []
+        },
+        {
+          "task": "72",
+          "run": "r_ea71309f204d4f2fb19d9309738a20fe",
+          "arm": "fact_original",
+          "official_success": true,
+          "db_match": true,
+          "db_match_with_per_item_catalog_values": true,
+          "multi_item_returns": []
+        },
+        {
+          "task": "72",
+          "run": "r_f26b0303d1f84cbdb7a8940a77be2ed8",
+          "arm": "episode_original",
+          "official_success": false,
+          "db_match": false,
+          "db_match_with_per_item_catalog_values": false,
+          "multi_item_returns": []
+        },
+        {
+          "task": "72",
+          "run": "r_ee8882dbf3324df98925323431a05300",
+          "arm": "episode_explicit",
+          "official_success": true,
+          "db_match": true,
+          "db_match_with_per_item_catalog_values": true,
+          "multi_item_returns": []
+        },
+        {
+          "task": "72",
+          "run": "r_14ba0ddf8dc54294854a7438ede5b74f",
+          "arm": "empty_preload",
+          "official_success": true,
+          "db_match": true,
+          "db_match_with_per_item_catalog_values": true,
+          "multi_item_returns": []
+        }
+      ]
+    }
+  }
+}
