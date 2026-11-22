@@ -2,6 +2,7 @@
 
 import argparse
 import hmac
+import re
 from collections import Counter, defaultdict
 from decimal import Decimal
 from hashlib import sha256
@@ -20,10 +21,17 @@ from scripts.run_retail_two_visit import PREFLIGHT, key, read, read_receipt
 
 
 def uptake(events, blobs):
+    worker = {
+        e["payload"]["request_id"]
+        for e in events
+        if e["type"] == "model.request_started" and e["payload"]["actor_role"] == "worker"
+    }
     finishes = [
         e["payload"]
         for e in events
-        if e["type"] == "model.request_finished" and e["payload"]["status"] == "response"
+        if e["type"] == "model.request_finished"
+        and e["payload"]["status"] == "response"
+        and e["payload"]["request_id"] in worker
     ]
     choices = [blobs.get(f["response_ref"])["choices"][0] for f in finishes]
     names = [c["function"]["name"] for choice in choices for c in choice["message"].get("tool_calls") or []]
@@ -36,7 +44,7 @@ def uptake(events, blobs):
         for field in item["fields"]
     }
     return {
-        "worker_calls": sum(e["type"] == "model.request_started" for e in events),
+        "worker_calls": len(worker),
         "list_requested": "memory_list" in names,
         "get_requested": "memory_get" in names,
         "title_returned": "title" in returned,
@@ -96,8 +104,13 @@ def differences(rows, left, right, mode, position=None):
         case = cases[row["customer"], row["task"]]
         require(row["arm"] not in case, "Duplicate condition within case")
         case[row["arm"]] = None if row["behavior"] == "unobserved" else int(row["behavior"] == "focused_target")
+    return paired_binary(cases, left, right)
+
+
+def paired_binary(cases, left, right, *, counts=False):
     by_customer = defaultdict(list)
     bounds = defaultdict(list)
+    positives = Counter()
     for (customer, _), arms in cases.items():
         a, b = arms[left], arms[right]
         bounds[customer].append(
@@ -105,13 +118,14 @@ def differences(rows, left, right, mode, position=None):
         )
         if a is not None and b is not None:
             by_customer[customer].append(a - b)
+            positives.update({left: a, right: b})
     averages = {u: fmean(v) for u, v in by_customer.items()}
     n_positive = sum(v > 0 for v in averages.values())
     n_negative = sum(v < 0 for v in averages.values())
     n = n_positive + n_negative
     lower = [fmean(p[0] for p in pairs) for pairs in bounds.values()]
     upper = [fmean(p[1] for p in pairs) for pairs in bounds.values()]
-    return averages, {
+    stats = {
         "registered_pairs": len(cases),
         "complete_pairs": sum(map(len, by_customer.values())),
         "customers_with_pairs": len(averages),
@@ -124,6 +138,9 @@ def differences(rows, left, right, mode, position=None):
         else None,
         "bounds_over_all_registered": [fmean(lower), fmean(upper)] if bounds else None,
     }
+    if counts:
+        stats.update(left_positive=positives[left], right_positive=positives[right])
+    return averages, stats
 
 
 def cluster_interval(left, right=None):
@@ -239,7 +256,11 @@ def grade_turns(turns, target, db_reward, labels):
             "wrong_proposals": None,
             "corrected_proposals": None,
         }
-    require(labels["status"] == "reviewed", "Unknown review status")
+    require(
+        labels["status"] == "reviewed"
+        or (labels["status"] == "rule_coded" and labels.get("method") == "explicit_public_turns_v1"),
+        "Unknown review status",
+    )
 
     def speech(index, role):
         require(
@@ -325,14 +346,44 @@ def full_summaries(rows):
                 db_success=sum(r["db_reward"] == 1 for r in completed),
                 other_order_cancelled=sum(r["other_order_cancelled"] for r in completed),
                 reviewed=len(reviewed),
+                coding_status=dict(Counter(r["review_status"] for r in completed)),
                 consent_qualified=sum(r["consent_qualified"] for r in reviewed),
                 consultations_with_order_questions=sum(r["clarifications"] > 0 for r in reviewed),
+                consultations_with_wrong_proposals=sum(r["wrong_proposals"] > 0 for r in reviewed),
+                private_list_requested=sum(r["full_uptake"]["list_requested"] for r in completed),
+                private_get_requested=sum(r["full_uptake"]["get_requested"] for r in completed),
                 **{
                     k: sum(r[k] for r in reviewed)
                     for k in ("clarifications", "wrong_proposals", "corrected_proposals")
                 },
             )
         )
+    return result
+
+
+def full_contrasts(rows, design):
+    """Secondary binary outcomes use matched cases and the registered customer weights."""
+    measures = {
+        "db_success": "db_reward",
+        "consent_qualified": "consent_qualified",
+        "any_order_question": "clarifications",
+        "any_wrong_proposal": "wrong_proposals",
+        "other_order_cancelled": "other_order_cancelled",
+    }
+    result = {}
+    for outcome, field in measures.items():
+        grouped = defaultdict(lambda: defaultdict(dict))
+        for r in rows:
+            v = r.get(field) if r["completion"] == "completed" else None
+            pair = grouped[r["mode"]][r["customer"], r["task"]]
+            require(r["arm"] not in pair, "Duplicate continuation")
+            pair[r["arm"]] = None if v is None else int(bool(v))
+        for mode in design["modes"]:
+            for left, right in (("preload", "empty_preload"), ("query", "empty_query")):
+                by_customer, stats = paired_binary(grouped[mode], left, right, counts=True)
+                if mode == "previous_only" and len(set(by_customer.values())) > 1:
+                    stats["customer_percentile_interval"] = cluster_interval(by_customer)
+                result[f"{mode}/{left}/{right}/{outcome}"] = stats
     return result
 
 
@@ -395,7 +446,20 @@ def bank_content_comparison(rows):
     return {k: dict(v) for k, v in totals.items()}
 
 
-def analyze(root, folder, secret, reviews, *, first_only=False):
+def review_ids(jobs, secret, index):
+    if index is None:
+        require(secret is not None and len(secret) >= 32, "A review key of at least 32 bytes is required")
+        index = {j["run"]: hmac.new(secret, j["run"].encode(), sha256).hexdigest()[:32] for j in jobs}
+    require(
+        set(index) == {j["run"] for j in jobs}
+        and len(set(index.values())) == len(index)
+        and all(isinstance(value, str) and re.fullmatch(r"[0-9a-f]{32}", value) for value in index.values()),
+        "Review index must uniquely cover the registered decisions",
+    )
+    return index
+
+
+def analyze(root, folder, secret, reviews, *, first_only=False, index=None):
     registration = read(folder / "registration.json")
     design = registration["design"]
     require(
@@ -406,6 +470,7 @@ def analyze(root, folder, secret, reviews, *, first_only=False):
     )
     rows, packets, full = [], {}, []
     banks, initial = {}, {}
+    blind_ids = {} if first_only else review_ids(registration["jobs"]["decision"], secret, index)
     for j in registration["jobs"]["decision"]:
         path = folder / j["run"]
         record = read_receipt(path, "decision")
@@ -449,7 +514,7 @@ def analyze(root, folder, secret, reviews, *, first_only=False):
         if first_only or (registration["continuation"] == "sample" and not j["in_sample"]):
             continue
         receipt = read_receipt(path, "continuation")
-        blind = hmac.new(secret, j["run"].encode(), sha256).hexdigest()[:32]
+        blind = blind_ids[j["run"]]
         require(blind not in packets, "Duplicate blinded ID")
         finished = receipt and receipt["status"] == "completed"
         consult = dict(
@@ -459,6 +524,7 @@ def analyze(root, folder, secret, reviews, *, first_only=False):
             if receipt
             else ("interrupted" if (path / "continuation.started").exists() else "not_started"),
             db_reward=receipt.get("db_reward") if finished else None,
+            error_code=(receipt.get("provider_error") or receipt.get("reason")) if receipt else None,
         )
         if finished:
             scan, _, experiment = read_experiment(path)
@@ -479,7 +545,10 @@ def analyze(root, folder, secret, reviews, *, first_only=False):
             ]
             consult["other_order_cancelled"] = any(oid != j["target"] for oid in consult["cancelled_orders"])
             packets[blind] = {"turns": turns, "turns_sha256": digest(canonical(turns))}
-            consult.update(grade_turns(turns, j["target"], receipt["db_reward"], reviews.get(blind)))
+            label = reviews.get(blind)
+            consult["review_status"] = label["status"] if label else "unreviewed"
+            consult["full_uptake"] = uptake(list(scan["events"].values()), blobs)
+            consult.update(grade_turns(turns, j["target"], receipt["db_reward"], label))
         full.append(consult)
     if first_only:
         require(
@@ -498,10 +567,16 @@ def analyze(root, folder, secret, reviews, *, first_only=False):
         }, {}
     require(reviews.keys() <= packets.keys(), "Review outside the completed cohort")
     return {
+        "study": design["name"],
+        "implementation_commit": registration["freeze"]["implementation_commit"],
+        "registration_sha256": digest((folder / "registration.json").read_bytes()),
+        "schedule_sha256": registration["preflight"]["schedule_sha256"],
         "first": summaries(rows, design),
+        "exploratory_bank_content": bank_content_comparison(rows),
         "decisions": rows,
         "continuations": full,
         "full_by_mode_arm": full_summaries(full),
+        "full_paired": full_contrasts(full, design),
         "expense_by_stage": expense_by_stage(folder / "expense.jsonl"),
         "expense_summary": read(folder / "summary.json") if (folder / "summary.json").exists() else None,
     }, packets
@@ -510,11 +585,13 @@ def analyze(root, folder, secret, reviews, *, first_only=False):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--run", type=Path, required=True)
-    parser.add_argument(
+    blinding = parser.add_mutually_exclusive_group()
+    blinding.add_argument(
         "--blind-key",
         type=Path,
         help="Analyst-only file of at least 32 random bytes, reused for grading",
     )
+    blinding.add_argument("--review-index", type=Path, help="Sealed review archive with the released run-to-ID index")
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument(
         "--first-only",
@@ -525,13 +602,11 @@ if __name__ == "__main__":
     parser.add_argument("--reviews", type=Path)
     args = parser.parse_args()
     secret = args.blind_key.read_bytes() if args.blind_key else None
-    require(
-        (args.first_only and not args.packets and not args.reviews)
-        or (not args.first_only and secret is not None and len(secret) >= 32),
-        "Full review needs a blinding key of at least 32 bytes",
-    )
+    index = read(args.review_index)["index"] if args.review_index else None
+    labels = read(args.reviews) if args.reviews else {}
+    require(not args.first_only or not (args.packets or args.reviews or index), "First decisions do not use reviews")
     result, packets = analyze(
-        ROOT, args.run, secret, read(args.reviews) if args.reviews else {}, first_only=args.first_only
+        ROOT, args.run, secret, labels.get("labels", labels), first_only=args.first_only, index=index
     )
     publish(args.output, result)
     if args.packets:

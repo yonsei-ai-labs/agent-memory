@@ -63,3 +63,9 @@ uv run --frozen --no-sync python -m unittest discover -s tests -p test_retail_tw
 유료 실행은 금액과 범위가 승인되면 같은 초안의 `status`를 `ready`로 둔 사본과 누적 `authorization`을 사용한다. `through`는 `decision` 또는 `continuation`, `continuation`은 첫 응답 전에 선택한 `sample` 또는 `all`이다. `max_usd`·`max_requests`·`max_seconds`는 최초 시작부터의 총한도다. 준비된 프로필 경로를 `python -m scripts.run_retail_two_visit live --profile`에 전달한다. 공급자 가격과 모델을 고정 당시 영수증과 대조하고 매 전송 직전 원문·출력 상한·캐시 단가로 최대액을 보류한다. 프로그램을 다시 시작하면 시작 표시와 영수증을 대조해 중복 전송을 막는다. 추가 한도가 승인된 경우 같은 구현 커밋에서 처음 정한 고객들의 체크포인트를 이어갈 수 있다. [실험 프로토콜](../../protocols/drafts/tau2-retail-two-visit-v1.json) · [상담과 메모 전달 구현](../../scripts/retail_two_visit_episode.py)
 
 실행 후 `python -m scripts.analyze_retail_two_visit`에 `--run`, `--blind-key`, `--output`, `--packets`를 주면 첫 판단 집계와 조건을 가린 판독 자료를 만든다. 분석자만 보관하는 임의 키 32바이트 이상을 재사용해 판독 결과를 연결한다. 판독 파일은 가명 ID별로 `status`, `turns_sha256`과 위의 세 목록을 담는다. 승인 사례와 거절 사례의 형식은 검증 코드에 있다. `--reviews`에 판독 파일을 주고 새 출력 경로를 쓰면 동의와 DB의 결합 성과가 계산된다. [판독과 근거 발화 검증](../../tests/test_retail_two_visit.py)
+
+### 전체 상담의 판독과 검산
+
+실행 중 초기의 조건을 가린 공개 대화로 판독 보조 규칙을 작성했다. 이 규칙은 주문번호 한 개, 취소 사유, 상담원의 승인 요청, 고객의 응답을 해당 발화에 연결한다. 판독자는 후보가 명확한 대화에서는 주문 식별과 승인에 해당하는 문구를 대조하고, 거절·대상 변경·여러 후보 등 해석이 필요한 대화에서는 공개 대화의 흐름을 직접 읽는다. 조건을 열기 전에 가명 ID를 해시로 정렬해 전체 배정에서 100건을 뽑았다. 이 표본의 완료 대화는 보조 규칙의 판정과 별도로 판독하고 두 결과가 갈린 항목을 남긴다. 판독자는 이 작업을 수행하는 에이전트다. 사람이 별도로 판독한 건수도 결과에 명시한다. [공개 발화 후보와 판독 봉인](../../scripts/code_retail_two_visit_turns.py)
+
+판독을 마치면 등록한 실행과 가명 ID의 대응표를 근거 발화 번호·대화 해시와 함께 공개한다. 같은 판독 파일을 `--review-index`와 `--reviews`에 전달하면 키 없이 최종 수치를 재현할 수 있다. 별도 검산에서는 완료된 상담의 업무 도구 호출을 새 소매 DB에서 다시 수행하고, 모델에 보낸 각 요청의 원문·고정 단가·응답 영수증을 비용 원장과 대조한다. [DB 및 세션 검산](../../scripts/audit_retail_two_visit_sessions.py) · [요청과 비용 검산](../../scripts/audit_retail_two_visit_billing.py)
