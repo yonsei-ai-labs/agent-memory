@@ -1,0 +1,53 @@
+{
+  "name": "tau2-retail-order-choice-01",
+  "status": "offline",
+  "benchmark_revision": "c06b07dd7c4d4ec61ba6ff9bcdf0b15dd7ef36d4",
+  "inputs": {
+    "transfer": {"path": "artifacts/analyses/20261121-retail-related-transfer-preflight.json", "sha256": "d3e02d03621ae092d521791a7311b262c8b5c5cc4f7994ade5bc06efc4944aa6"},
+    "runs": {"path": "artifacts/analyses/20261121-retail-related-transfer-results.json", "sha256": "faf315af21ff984d5760fd709bce9519a42c9fd9d23dd377e9dd83d9cd260c84"},
+    "db": {"path": "data/tau2-bench/data/tau2/domains/retail/db.json", "sha256": "413a65160adbdb5fde0ffc0015c49b6d70250b10c18128de169b597af7766765"},
+    "tasks": {"path": "data/tau2-bench/data/tau2/domains/retail/tasks.json", "sha256": "8e03ebce7901bd6218e7a7dc3105faa9324091a68058f7fe61c65262868812e8"}
+  },
+  "archived_selection": "Use all 24 targets of the related-transfer study and its original four writer forms. Within task take the first pure no-memory worker request immediately after a successful profile read for the authenticated customer, before order inspection or mutation, in solve1 then solve2 order. Preserve exclusions. Never use the following worker response, grade or note contents to select the state.",
+  "decision": "The current public request identifies merchandise from a single order. At least two order IDs appear in the public profile. Match all listed product names to one unique owned order in the pristine native DB, which is analyst-only. The current customer's messages must not have supplied its ID. Count a single get_order_details call for that order as a focused lookup. Multiple lookups including the target, further clarification, mutations and other responses remain distinct. This measures search effort, not official success or the policy correctness of asking.",
+  "task_review": {
+    "6": {"quote": "a water bottle and a desk lamp", "products": ["Water Bottle", "Desk Lamp"]},
+    "7": {"quote": "a water bottle and a desk lamp", "products": ["Water Bottle", "Desk Lamp"]},
+    "8": {"quote": "a water bottle and a desk lamp", "products": ["Water Bottle", "Desk Lamp"]},
+    "16": {"quote": "all my pending orders", "exclude": "several_orders"},
+    "19": {"quote": "my pet bed and office chair", "products": ["Water Bottle", "Pet Bed", "Office Chair"]},
+    "23": {"quote": "in a different order", "exclude": "several_orders"},
+    "28": {"quote": "Skateboard, garden hose, backpack, keyboard, and a bed", "exclude": "several_orders"},
+    "29": {"quote": "in my pending order instead", "exclude": "several_orders"},
+    "30": {"quote": "a tablet delivered", "products": ["Tablet"]},
+    "31": {"quote": "I lost the tablet", "products": ["Tablet"]},
+    "37": {"quote": "split the payment across two cards", "exclude": "single_order_profile"},
+    "41": {"quote": "1000-piece intermediate jigsaw", "products": ["Jigsaw Puzzle"]},
+    "46": {"quote": "an air purifier and a vacuum cleaner", "products": ["Air Purifier", "Vacuum Cleaner"]},
+    "47": {"quote": "an air purifier and a vacuum cleaner", "products": ["Air Purifier", "Vacuum Cleaner"]},
+    "54": {"quote": "cancel or return everything I can", "exclude": "all_orders"},
+    "63": {"quote": "on to my actual issue", "exclude": "merchandise_unspecified"},
+    "72": {"quote": "the desk lamp to black and the backpack to medium", "products": ["Desk Lamp", "Backpack"]},
+    "85": {"quote": "exchange a Fleece Jacket", "products": ["Fleece Jacket"]},
+    "87": {"quote": "on my pending orders. All of them", "exclude": "all_pending_orders"},
+    "95": {"quote": "two laptops I need to swap", "exclude": "several_orders"},
+    "96": {"quote": "make a couple changes to it", "exclude": "merchandise_unspecified"},
+    "98": {"quote": "a skateboard in a different order", "exclude": "several_orders"},
+    "99": {"quote": "For both orders", "exclude": "several_orders"},
+    "112": {"quote": "a laptop and a watch", "exclude": "several_orders"}
+  },
+  "note_measure": "Across every sealed writer assignment for each eligible source-target pair, count literal owned order identifiers in the public title and body. A target identifier with alternatives, other identifiers only, no identifier, and a voluntary empty bank are separate outcomes. A literal identifier does not establish that the writer correctly linked it to the product.",
+  "archive_comparison": "Compare the complete canonical requests to each selected pure baseline after removing the verified historical preload instruction and its exact delivered snapshot. Also compare after renaming only tool call IDs and their responses by order of appearance. Keep all customer and assistant text, business schemas and routing parameters. Report whether any such already-observed contrasts exist and report the neutral next responses separately. Never substitute a similar conversation or estimate a live causal effect from a feasibility count.",
+  "reserve": {
+    "scope": "Separate, researcher-authored two-visit cancellation tasks for a possible independent confirmation. All official English retail task owners are excluded, including owners resolved solely from the scenario. Each remaining user must own at least two pending orders. Use all eligible customers and freeze both opposite histories and all three current requests for each. No participant contributes a new model observation here.",
+    "salt": "retail-order-choice-confirmation-v1",
+    "unlinked_scenarios": {"24": "sofia_hernandez_5364", "50": "chen_smith_8425", "57": "ivan_hernandez_6923"},
+    "current_requests": {
+      "previous_only": "I would like to cancel the order we discussed last time because I no longer need it. Please check the details with me first.",
+      "current_id": "I would like to cancel order {order_id} because I no longer need it. Please check the details with me first."
+    },
+    "prior_request": "Could you look up order {order_id} and tell me which items are in it? I am only asking for information today.",
+    "validation": "Use the pinned English retail environment to authenticate each user, read the full profile and both orders, and cancel each alternative in a separate clean state. All source-only reads leave the initial DB intact. Both alternative cancellations must change only the intended order and its native effects, have distinct DB hashes and differ from no action. A new cancellation still requires user confirmation. Current-only cases with the same stated ID, and previous-only cases with opposite histories, must each have identical current public input before memory delivery.",
+    "release": "Only public source experience may reach a writer. The current solver gets ordinary conversation and actual tool results, and only its assigned memory interface. Target key, reference actions, case labels and this analyst file stay outside both model inputs. This reservation does not authorize paid use and its tasks are reported separately from official tasks."
+  }
+}
