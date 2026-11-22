@@ -2,6 +2,7 @@ import unittest
 
 from agent_memory_eval.contracts.core import canonical, digest
 from scripts.analyze_retail_two_visit import full_contrasts, grade_turns, review_ids
+from scripts.check_retail_two_visit_outcomes import consultation
 from scripts.code_retail_two_visit_turns import propose
 
 
@@ -39,6 +40,21 @@ class PublicReviewTests(unittest.TestCase):
         graded = grade_turns(packet["turns"], "#W1234567", 1, label)
         self.assertTrue(graded["consent_qualified"])
         self.assertEqual((graded["wrong_proposals"], graded["corrected_proposals"]), (1, 1))
+        recounted = consultation(packet["turns"], dict(label, status="reviewed"), "#W1234567", 1)
+        self.assertEqual((recounted["consent_qualified"], recounted["corrected_proposals"]), (1, 1))
+
+    def test_independent_recount_requires_consent_before_the_tool_changed_the_order(self):
+        packet = self.packet(["Should I cancel #W1234567 for the reason 'no longer needed'?"])
+        packet["turns"].append({"role": "user", "text": "Yes, that was the right order."})
+        labels = {
+            "status": "reviewed",
+            "turns_sha256": digest(canonical(packet["turns"])),
+            "clarifications": [],
+            "proposals": [{"turn": 7, "order": "#W1234567", "reason": "no longer needed"}],
+            "responses": [{"turn": 10, "proposal": 7, "disposition": "confirmed"}],
+        }
+        counted = consultation(packet["turns"], labels, "#W1234567", 1)
+        self.assertEqual((counted["db_success"], counted["consent_qualified"]), (1, 0))
 
     def test_separate_identification_and_authorization(self):
         packet = self.packet(

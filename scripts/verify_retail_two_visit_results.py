@@ -178,7 +178,7 @@ def verify(main, recovery, public, original_path, augmented_path):
     for name, folder, result in (("original", main, original), ("supplement", recovery, augmented)):
         local_jobs = read(folder / "registration.json")["jobs"]["decision"]
         billing = audit_billing(folder)
-        inputs = audit_inputs(folder, public, pure_folder=main)
+        inputs = audit_inputs(folder, public, pure_folder=main if folder == recovery else None)
         generations, sessions = submitted_ids(folder, local_jobs)
         require(len(generations) == billing["verified_distinct_provider_ids"], "Different provider identities")
         require(len(sessions) == inputs["different_sessions"], "Different number of audited fresh sessions")
