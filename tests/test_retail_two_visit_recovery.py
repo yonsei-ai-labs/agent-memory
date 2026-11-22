@@ -10,9 +10,36 @@ from agent_memory_eval.contracts.core import ContractError, digest
 from scripts.run_recheck_rounds import fixed
 from scripts.run_retail_two_visit import ExpenseLedger
 from scripts.run_retail_two_visit_recovery import attempt, available, unopened, upstream
+from scripts.verify_retail_two_visit_results import compare_rows
 
 
 class RecoveryTests(unittest.TestCase):
+    def test_augmented_analysis_keeps_an_already_observed_control_even_if_its_grade_failed(self):
+        identity = dict(mode="previous_only", customer="u", task="t", source="s", position=2)
+        control = dict(identity, arm="empty_preload", decision_status="checkpoint", behavior="asked")
+        missing = dict(identity, arm="preload", decision_status="bank_missing", behavior="unobserved")
+        observed = dict(missing, decision_status="checkpoint", behavior="focused_target")
+        jobs = [dict(control, run="control"), dict(missing, run="absent")]
+        original = {
+            "decisions": [control, missing],
+            "continuations": [
+                dict(control, completion="error", review_id="a"),
+                dict(missing, completion="decision_missing", review_id="b"),
+            ],
+        }
+        augmented = {
+            "decisions": [dict(control, recovery_slot=False), dict(observed, recovery_slot=True)],
+            "continuations": [
+                dict(original["continuations"][0], recovery_slot=False),
+                dict(observed, completion="completed", review_id="b", recovery_slot=True),
+            ],
+        }
+        rows = compare_rows(jobs, {"absent"}, original, augmented)
+        self.assertEqual(rows["continuations"]["new_completed_consultations"], 1)
+        augmented["continuations"][0]["completion"] = "completed"
+        with self.assertRaisesRegex(ContractError, "modified an ineligible"):
+            compare_rows(jobs, {"absent"}, original, augmented)
+
     def test_existing_model_submission_is_ineligible_even_with_a_missing_receipt(self):
         with TemporaryDirectory() as d:
             root = Path(d)
