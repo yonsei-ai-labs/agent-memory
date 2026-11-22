@@ -1,0 +1,346 @@
+{
+  "analysis_sha256": {
+    "original": "f0695556a4b897cfa54d431cb4ce7d95718ef28e450f58bdd1662ea92ce28a98",
+    "augmented": "5808756f078cc26b39f0453460582d079d9e4eb2eefd47b5dae8b8b586892ad3"
+  },
+  "eligible_recovery_slots": 66,
+  "overlay": {
+    "decisions": {
+      "unchanged_original_rows": 2244,
+      "new_observed_first_decisions": 66
+    },
+    "continuations": {
+      "unchanged_original_rows": 2244,
+      "new_observed_first_decisions": 66,
+      "new_completed_consultations": 66
+    }
+  },
+  "distinct_target_sessions": 2310,
+  "distinct_provider_generations": 17633,
+  "combined_confirmed_usd": "2.824622592",
+  "combined_held_usd": "0.03011250",
+  "model_requests_for_verification": 0,
+  "evidence": {
+    "original": {
+      "billing": {
+        "registered_commit": "007d4c40e83a01c03afc55169c08a26bc26f3e76",
+        "ledger_sha256": "32b2c65e0e787fa06f39f55718942f13a298fc36fadbf9af61df0af87803be3a",
+        "verified_submissions": 17073,
+        "verified_distinct_provider_ids": 17057,
+        "confirmed_usd": "2.758971972",
+        "held_usd": "0.0301125",
+        "peak_confirmed_plus_held_usd": "2.796798051",
+        "authorized_usd": 13,
+        "per_stage": {
+          "source": {
+            "submissions": 1130,
+            "confirmed_usd": "0.163340905",
+            "priced_calls": 1119,
+            "held_usd": "0.0196752",
+            "unpriced_calls": 11
+          },
+          "writer": {
+            "submissions": 919,
+            "confirmed_usd": "0.282692930",
+            "priced_calls": 919
+          },
+          "decision": {
+            "submissions": 2244,
+            "confirmed_usd": "0.203649885",
+            "priced_calls": 2244
+          },
+          "continuation": {
+            "submissions": 12780,
+            "confirmed_usd": "2.109288252",
+            "priced_calls": 12775,
+            "held_usd": "0.0104373",
+            "unpriced_calls": 5
+          }
+        }
+      },
+      "inputs": {
+        "study": "tau2-retail-two-visit-01",
+        "registered": 2310,
+        "verified_by_arm": {
+          "empty_preload": 462,
+          "preload": 429,
+          "no_memory": 462,
+          "empty_query": 462,
+          "query": 429
+        },
+        "different_sessions": 2244,
+        "merged_source_banks_checked": 143,
+        "model_requests_for_audit": 0
+      },
+      "episodes": {
+        "source": {
+          "stage": "source",
+          "registered": 154,
+          "receipts": {
+            "completed": 143,
+            "error": 11
+          },
+          "missing": {},
+          "audited_sessions": 143,
+          "provider_responses": 1117,
+          "provider_ids_sha256": "c723cee5b627f8e14e0c9c33655e3cf688b941536ed646691da81439eb2db331",
+          "requests_by_role": {
+            "user_simulator": 456,
+            "worker": 661
+          },
+          "included_spans": 0,
+          "confirmed_usd_for_audited_sessions": "0.163003375",
+          "checks": {}
+        },
+        "writer": {
+          "stage": "writer",
+          "registered": 616,
+          "receipts": {
+            "completed": 347,
+            "empty": 225,
+            "source_missing": 44
+          },
+          "missing": {},
+          "audited_sessions": 572,
+          "provider_responses": 919,
+          "provider_ids_sha256": "35c94c5cfb0331b23c542bcd593451ea737fa30d831ae30403b895e2cc2b5a38",
+          "requests_by_role": {
+            "writer": 919
+          },
+          "included_spans": 694,
+          "confirmed_usd_for_audited_sessions": "0.282692930",
+          "checks": {}
+        },
+        "continuation": {
+          "stage": "continuation",
+          "registered": 2310,
+          "receipts": {
+            "error": 5,
+            "completed": 2239,
+            "decision_missing": 66
+          },
+          "missing": {},
+          "audited_sessions": 2239,
+          "provider_responses": 15004,
+          "provider_ids_sha256": "a50a31c676170998adab662c04e51274fb9742ca61c5b16b64985d4e7da4b205",
+          "requests_by_role": {
+            "worker": 9927,
+            "user_simulator": 5077
+          },
+          "included_spans": 8424,
+          "confirmed_usd_for_audited_sessions": "2.310686493",
+          "checks": {
+            "native_db_regraded": 2239
+          }
+        }
+      },
+      "interrupted_consultations": [
+        {
+          "run": "r_0ae12d4b1f75c3da89b50139c9b33648",
+          "journal_sha256": "f26a17e394d9664d5317c20d776b5b1b0d277afab0093090f749daa583beef6a",
+          "error": "HTTP_503",
+          "failed_role": "user_simulator",
+          "error_generation_id_available": false,
+          "error_usage_available": false,
+          "observed_actions_after_authentication": [],
+          "observed_cancellations": [],
+          "db_already_matches_target": false,
+          "official_terminal_score": null
+        },
+        {
+          "run": "r_ca2a2e2182a33cceb84aa22577413aa1",
+          "journal_sha256": "7c741eb46b3f22055d5e4bc6d158787431c00bed8e2ca4019283798a484e9ba8",
+          "error": "HTTP_503",
+          "failed_role": "user_simulator",
+          "error_generation_id_available": false,
+          "error_usage_available": false,
+          "observed_actions_after_authentication": [
+            "get_order_details"
+          ],
+          "observed_cancellations": [],
+          "db_already_matches_target": false,
+          "official_terminal_score": null
+        },
+        {
+          "run": "r_091b6ca061ddf3706f090249b1fb0170",
+          "journal_sha256": "ebe042ccfb04c82b430a2bf4319c1aa5a83375a22bc14ffd45fffb27b0a695a4",
+          "error": "HTTP_503",
+          "failed_role": "user_simulator",
+          "error_generation_id_available": false,
+          "error_usage_available": false,
+          "observed_actions_after_authentication": [
+            "get_order_details"
+          ],
+          "observed_cancellations": [],
+          "db_already_matches_target": false,
+          "official_terminal_score": null
+        },
+        {
+          "run": "r_97ed391784d7b924f3e702bdcc392d4e",
+          "journal_sha256": "0c5146733847408ef59b24b16f7d6dbbc22757c1cfccc8e56a77606b46159992",
+          "error": "HTTP_503",
+          "failed_role": "user_simulator",
+          "error_generation_id_available": false,
+          "error_usage_available": false,
+          "observed_actions_after_authentication": [
+            "get_order_details",
+            "get_order_details",
+            "cancel_pending_order"
+          ],
+          "observed_cancellations": [
+            {
+              "target": true,
+              "reason": "no longer needed",
+              "tool_result_sha256": "1dfd3bee4f2ba6b39104298e3468f5131e39d81ca924f85254e4ac080f383469",
+              "preceding_roles": [
+                "assistant",
+                "user"
+              ],
+              "preceding_messages_sha256": "47d52c339d44084f6bd7457edd1c0b90a92813dc285aef107fcc64fba3d26b9a"
+            }
+          ],
+          "db_already_matches_target": true,
+          "official_terminal_score": null
+        },
+        {
+          "run": "r_4307abb80aec512139a4f0fbe2f5900a",
+          "journal_sha256": "3010b373f49f6ef4ebfdc732f0d4d1d6caac959f1d79ca8a0833b214e60563d5",
+          "error": "TRANSPORT_UNKNOWN",
+          "failed_role": "user_simulator",
+          "error_generation_id_available": false,
+          "error_usage_available": false,
+          "observed_actions_after_authentication": [
+            "get_order_details"
+          ],
+          "observed_cancellations": [],
+          "db_already_matches_target": false,
+          "official_terminal_score": null
+        }
+      ],
+      "primary_in_published_analysis": {
+        "complete_pairs": 143,
+        "customers_with_pairs": 77,
+        "gain": 66,
+        "tie": 11,
+        "loss": 0,
+        "preload": 119,
+        "empty_preload": 26,
+        "customer_weighted_difference_fraction": "9/14"
+      }
+    },
+    "supplement": {
+      "billing": {
+        "registered_commit": "c8865086c0c7094fbdfe24878fb95d54be68ebb8",
+        "ledger_sha256": "1a011f7cb9b53178b3ab19d93ce2d4529e8a3a8be88a387727fe98279a1860e6",
+        "verified_submissions": 576,
+        "verified_distinct_provider_ids": 576,
+        "confirmed_usd": "0.065650620",
+        "held_usd": "0",
+        "peak_confirmed_plus_held_usd": "0.074192531",
+        "authorized_usd": "10.210915528",
+        "per_stage": {
+          "source": {
+            "submissions": 81,
+            "confirmed_usd": "0.005391080",
+            "priced_calls": 81
+          },
+          "writer": {
+            "submissions": 68,
+            "confirmed_usd": "0.021050480",
+            "priced_calls": 68
+          },
+          "decision": {
+            "submissions": 66,
+            "confirmed_usd": "0.007607950",
+            "priced_calls": 66
+          },
+          "continuation": {
+            "submissions": 361,
+            "confirmed_usd": "0.031601110",
+            "priced_calls": 361
+          }
+        }
+      },
+      "inputs": {
+        "study": "tau2-retail-two-visit-01",
+        "registered": 66,
+        "verified_by_arm": {
+          "query": 33,
+          "preload": 33
+        },
+        "different_sessions": 66,
+        "merged_source_banks_checked": 11,
+        "model_requests_for_audit": 0
+      },
+      "episodes": {
+        "source": {
+          "stage": "source",
+          "registered": 11,
+          "receipts": {
+            "completed": 11
+          },
+          "missing": {},
+          "audited_sessions": 11,
+          "provider_responses": 81,
+          "provider_ids_sha256": "6ece5e85473e09a043604e7eb0d47ba80a438d3f66d3b9962e34ec96d3bc0111",
+          "requests_by_role": {
+            "user_simulator": 33,
+            "worker": 48
+          },
+          "included_spans": 0,
+          "confirmed_usd_for_audited_sessions": "0.005391080",
+          "checks": {}
+        },
+        "writer": {
+          "stage": "writer",
+          "registered": 44,
+          "receipts": {
+            "completed": 24,
+            "empty": 20
+          },
+          "missing": {},
+          "audited_sessions": 44,
+          "provider_responses": 68,
+          "provider_ids_sha256": "aa57d214a3caab809a6e56699f63c023f508f5487372625a6b0b5152806fe47c",
+          "requests_by_role": {
+            "writer": 68
+          },
+          "included_spans": 48,
+          "confirmed_usd_for_audited_sessions": "0.021050480",
+          "checks": {}
+        },
+        "continuation": {
+          "stage": "continuation",
+          "registered": 66,
+          "receipts": {
+            "completed": 66
+          },
+          "missing": {},
+          "audited_sessions": 66,
+          "provider_responses": 427,
+          "provider_ids_sha256": "b41bfa725a39600ec5d4957cb013457939ca00f9c109a2fe6964f46a2b97038f",
+          "requests_by_role": {
+            "worker": 283,
+            "user_simulator": 144
+          },
+          "included_spans": 588,
+          "confirmed_usd_for_audited_sessions": "0.039209060",
+          "checks": {
+            "native_db_regraded": 66
+          }
+        }
+      },
+      "interrupted_consultations": [],
+      "primary_in_published_analysis": {
+        "complete_pairs": 154,
+        "customers_with_pairs": 77,
+        "gain": 70,
+        "tie": 7,
+        "loss": 0,
+        "preload": 129,
+        "empty_preload": 27,
+        "customer_weighted_difference_fraction": "51/77"
+      }
+    }
+  }
+}
