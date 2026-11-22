@@ -459,7 +459,7 @@ def review_ids(jobs, secret, index):
     return index
 
 
-def analyze(root, folder, secret, reviews, *, first_only=False, index=None):
+def analyze(root, folder, secret, reviews, *, first_only=False, index=None, recovery=None):
     registration = read(folder / "registration.json")
     design = registration["design"]
     require(
@@ -471,8 +471,14 @@ def analyze(root, folder, secret, reviews, *, first_only=False, index=None):
     rows, packets, full = [], {}, []
     banks, initial = {}, {}
     blind_ids = {} if first_only else review_ids(registration["jobs"]["decision"], secret, index)
-    for j in registration["jobs"]["decision"]:
-        path = folder / j["run"]
+    replacements = {}
+    if recovery is not None:
+        from scripts.run_retail_two_visit_recovery import verified_replacements
+
+        replacements = verified_replacements(folder, recovery)
+    for original in registration["jobs"]["decision"]:
+        j = replacements.get(original["run"], original)
+        path = (recovery if original["run"] in replacements else folder) / j["run"]
         record = read_receipt(path, "decision")
         state = (
             record["status"]
@@ -489,6 +495,8 @@ def analyze(root, folder, secret, reviews, *, first_only=False, index=None):
             "decision_status": state,
             "behavior": "unobserved",
         }
+        if recovery is not None:
+            row["recovery_slot"] = original["run"] in replacements
         if state in {"checkpoint", "decision"}:
             row.update(decision(path, j, record))
             if j["arm"] in {"query", "preload"}:
@@ -514,7 +522,7 @@ def analyze(root, folder, secret, reviews, *, first_only=False, index=None):
         if first_only or (registration["continuation"] == "sample" and not j["in_sample"]):
             continue
         receipt = read_receipt(path, "continuation")
-        blind = blind_ids[j["run"]]
+        blind = blind_ids[original["run"]]
         require(blind not in packets, "Duplicate blinded ID")
         finished = receipt and receipt["status"] == "completed"
         consult = dict(
@@ -555,7 +563,7 @@ def analyze(root, folder, secret, reviews, *, first_only=False, index=None):
             all(r["decision_status"] not in {"not_started", "interrupted"} for r in rows),
             "First-decision stage has not closed",
         )
-        return {
+        first_result = {
             "study": design["name"],
             "registration_sha256": digest((folder / "registration.json").read_bytes()),
             "implementation_commit": registration["freeze"]["implementation_commit"],
@@ -564,9 +572,12 @@ def analyze(root, folder, secret, reviews, *, first_only=False, index=None):
             "exploratory_bank_content": bank_content_comparison(rows),
             "expense_by_stage": expense_by_stage(folder / "expense.jsonl", before_stage="continuation"),
             "decisions": rows,
-        }, {}
+        }
+        if recovery is not None:
+            first_result["recovery_expense_by_stage"] = expense_by_stage(recovery / "expense.jsonl", before_stage="continuation")
+        return first_result, {}
     require(reviews.keys() <= packets.keys(), "Review outside the completed cohort")
-    return {
+    result = {
         "study": design["name"],
         "implementation_commit": registration["freeze"]["implementation_commit"],
         "registration_sha256": digest((folder / "registration.json").read_bytes()),
@@ -579,7 +590,12 @@ def analyze(root, folder, secret, reviews, *, first_only=False, index=None):
         "full_paired": full_contrasts(full, design),
         "expense_by_stage": expense_by_stage(folder / "expense.jsonl"),
         "expense_summary": read(folder / "summary.json") if (folder / "summary.json").exists() else None,
-    }, packets
+    }
+    if recovery is not None:
+        result["recovery_registration_sha256"] = digest((recovery / "registration.json").read_bytes())
+        result["recovery_expense_by_stage"] = expense_by_stage(recovery / "expense.jsonl")
+        result["recovery_summary"] = read(recovery / "summary.json")
+    return result, packets
 
 
 if __name__ == "__main__":
@@ -600,14 +616,24 @@ if __name__ == "__main__":
     )
     parser.add_argument("--packets", type=Path)
     parser.add_argument("--reviews", type=Path)
+    parser.add_argument("--recovery", type=Path, help="Augment only the separately authorized original missing slots")
+    parser.add_argument("--recovery-reviews", type=Path, help="Blinded labels for the formerly missing slots")
     args = parser.parse_args()
     secret = args.blind_key.read_bytes() if args.blind_key else None
     index = read(args.review_index)["index"] if args.review_index else None
-    labels = read(args.reviews) if args.reviews else {}
+    archive = read(args.reviews) if args.reviews else {}
+    labels = archive.get("labels", archive)
+    if args.recovery_reviews:
+        supplement = read(args.recovery_reviews)
+        extra = supplement.get("labels", supplement)
+        require(args.recovery and labels.keys().isdisjoint(extra), "Supplement review overlaps the original")
+        labels = {**labels, **extra}
     require(not args.first_only or not (args.packets or args.reviews or index), "First decisions do not use reviews")
     result, packets = analyze(
-        ROOT, args.run, secret, labels.get("labels", labels), first_only=args.first_only, index=index
+        ROOT, args.run, secret, labels, first_only=args.first_only, index=index, recovery=args.recovery
     )
+    if args.reviews:
+        require(labels.keys() == packets.keys(), "Every normally completed consultation needs a blinded review")
     publish(args.output, result)
     if args.packets:
         publish(args.packets, dict(sorted(packets.items())))

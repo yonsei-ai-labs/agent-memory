@@ -16,6 +16,8 @@ from scripts.run_retail_two_visit import read
 def audit(folder):
     registration = read(folder / "registration.json")
     jobs = registration["jobs"]
+    if registration.get("format") == "retail-derived-two-visit/recovery-v1":
+        jobs = {**jobs, **read(folder / "upstreams.json")["attempts"]}
     grants = read(folder / "authorization.json")
     ledger = (folder / "expense.jsonl").read_bytes()
     require(ledger.endswith(b"\n"), "Truncated expense ledger")
@@ -120,6 +122,14 @@ def audit(folder):
         and len(matched) == summary["reserved_calls"] <= grants["max_requests"],
         "Billing total differs from closure or exceeds authorization",
     )
+    if registration.get("format") == "retail-derived-two-visit/recovery-v1":
+        original_cost, original_hold = (Decimal(grants[k]) for k in ("original_confirmed_usd", "original_held_usd"))
+        require(
+            original_cost + total == Decimal(summary["combined_confirmed_usd"])
+            and original_hold + held == Decimal(summary["combined_held_usd"])
+            and original_cost + original_hold + maximum_exposure <= Decimal(str(grants["combined_max_usd"])),
+            "Combined cost or retained reservations exceed the authorized total",
+        )
     return {
         "registered_commit": registration["freeze"]["implementation_commit"],
         "ledger_sha256": digest(ledger),

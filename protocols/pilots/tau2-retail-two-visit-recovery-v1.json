@@ -1,0 +1,12 @@
+{
+  "name": "tau2-retail-two-visit-01-recovery",
+  "format": "retail-derived-two-visit/recovery-v1",
+  "status": "ready",
+  "original": {"path": "protocols/pilots/tau2-retail-two-visit-v1.json", "sha256": "0929f81a8d5b38ea274d6595c7ff982bb58ff9bee4a159e11ffb53ba0e642fd8"},
+  "eligibility": {"path": "artifacts/analyses/20261122-retail-two-visit-recovery-eligibility.json", "sha256": "dea40449979a0cbbbfb993d312419292158c4c784b682de3e848296bdeb38853"},
+  "transient_errors": ["HTTP_429", "HTTP_502", "HTTP_503", "HTTP_504", "TRANSPORT_UNKNOWN"],
+  "counts": {"source": 11, "writer": 44, "decision": 66, "continuation": 66},
+  "authorization": {"combined_max_usd": 13, "same_original_request_and_time_limits": true, "scope": "Only provider-failed upstream sessions and their never-submitted target decisions. Continue each new first decision in that same session."},
+  "recovery": "Use the first normal upstream completion, including score zero and voluntary empty. New upstream attempts require a recorded transient provider failure. Wait 120 seconds before the second wave, 600 before the third and 1800 thereafter. Reassess against the shared remaining budget and original deadline before each wave. All previously submitted first decisions are ineligible, even if their consultation failed. For eligible target slots submit one first decision only. Keep all earlier logs, charges and original controls.",
+  "analysis": "Report original registered results first. A separately identified augmented analysis fills only the sealed outages, matches them to the same original controls and recomputes customer-weighted contrasts. Use the original blinded slot identifiers and the original blinded audit sample."
+}

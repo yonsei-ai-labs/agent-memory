@@ -23,6 +23,8 @@ from scripts.run_retail_two_visit import read, read_receipt, sealed_bank
 def audit(root, folder, stage, public_path):
     reg = read(folder / "registration.json")
     plan = reg["jobs"]
+    if reg.get("format") == "retail-derived-two-visit/recovery-v1":
+        plan = {**plan, **read(folder / "upstreams.json")["selected"]}
     design = reg["design"]
     tasks = {r["task"]: r for r in plan["source"]}
     writers = {(r["task"], r["arm"]): r for r in plan["writer"]}

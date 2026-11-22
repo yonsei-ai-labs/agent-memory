@@ -18,7 +18,7 @@ from scripts.retail_two_visit_episode import bridge_instruction, policy_for
 from scripts.run_retail_two_visit import read, read_receipt, sealed_bank
 
 
-def audit(folder, prefixfile):
+def audit(folder, prefixfile, *, pure_folder=None):
     reg = read(folder / "registration.json")
     design = reg["design"]
     public = read(prefixfile)
@@ -28,6 +28,15 @@ def audit(folder, prefixfile):
     replay = read_json(asset_text(ROOT, design["replay"]).encode())
     instructions = {a: asset_text(ROOT, replay[a + "_instruction"]) for a in ("query", "preload")}
     jobs = reg["jobs"]
+    if reg.get("format") == "retail-derived-two-visit/recovery-v1":
+        from scripts.run_retail_two_visit_recovery import verified_replacements
+
+        require(pure_folder is not None, "Recovery needs the original pure control")
+        verified_replacements(pure_folder, folder)
+        jobs = {**jobs, **read(folder / "upstreams.json")["selected"]}
+    else:
+        require(pure_folder is None, "The original run has its own pure control")
+        pure_folder = folder
     writers = {(r["task"], r["arm"]): r for r in jobs["writer"]}
 
     @cache
@@ -48,13 +57,13 @@ def audit(folder, prefixfile):
         return scan, ev, BlobStore(path).get(start["payload"]["request_ref"])
 
     base = None
-    for j in jobs["decision"]:
+    for j in read(pure_folder / "registration.json")["jobs"]["decision"]:
         if (
             j["arm"] == "no_memory"
-            and (folder / j["run"] / "decision.json").exists()
-            and read(folder / j["run"] / "decision.json")["status"] in {"checkpoint", "decision"}
+            and (pure_folder / j["run"] / "decision.json").exists()
+            and read(pure_folder / j["run"] / "decision.json")["status"] in {"checkpoint", "decision"}
         ):
-            _, _, base = first(folder / j["run"])
+            _, _, base = first(pure_folder / j["run"])
             break
     require(base is not None, "No pure request yet")
     sessions = set()
@@ -116,8 +125,9 @@ if __name__ == "__main__":
     p.add_argument("--run", type=Path, required=True)
     p.add_argument("--public", type=Path, required=True)
     p.add_argument("--output", type=Path)
+    p.add_argument("--pure-run", type=Path, help="Original complete run for a separately authorized supplement")
     a = p.parse_args()
-    v = audit(a.run, a.public)
+    v = audit(a.run, a.public, pure_folder=a.pure_run)
     if a.output:
         publish(a.output, v)
     print(v)
