@@ -1,0 +1,1894 @@
+{
+  "format": "agent-memory-retail-handoff-annotations/v1",
+  "method": {
+    "reader": "One analysis agent per question, started without the repository or any other file. It saw only shuffled note texts or conversation excerpts under neutral ids: no task, arm, study, outcome or the other label set.",
+    "notes": "All 125 delivered notes with candidate wording were read in full: 123 matched the earlier keyword pattern and 2 more matched the broader candidate pattern. The other 250 delivered notes contain no candidate wording and were not read.",
+    "initiators": "All 132 graded second-pass runs that ended as an early handoff on a task whose reference changes the database. The reader saw every customer message and every agent text message before the transfer call, without tool calls or tool results.",
+    "checks": "The analyst labelled a random sample of 30 notes before opening the note labels (30 of 30 agreed) and all 132 conversations before opening the initiator labels (131 of 132 agreed; the one difference was a customer request the analyst had missed, so the blinded label stands). The analyst knew the conditions; the blinded labels are the ones recorded here, unchanged.",
+    "limits": "A single blinded reader per question, an analysis agent rather than a person. 12 note verdicts and 2 initiator verdicts are marked unsure."
+  },
+  "rubrics": {
+    "note": "mentions_handoff: does the note refer to passing the customer or the case to a human agent or other staff (transfer to a human, escalation, handoff, supervisor / specialist / representative, a transfer tool or a transfer notice)? Moving money, refunds or items between accounts or orders does not count, and neither do unrelated words such as 'transferable'. stance, only when it does: 'recommends' = it advises or instructs handing off or escalating, even conditionally, or says a past handoff was correct, appropriate or necessary, or criticises not handing off; 'discourages' = it advises against handing off or against handing off too early, or criticises a past handoff as unnecessary, premature or wrong; 'mixed' = both for different situations; 'records' = it only reports that a handoff happened or did not happen, how the transfer tool or notice behaved, or restates a policy as policy, without advising and without judging the past handoff. Instructions about how to hand off with nothing about when count as 'records'. evidence: one to three verbatim quotes from the note.",
+    "initiator": "Who first raised handing the customer over to another person before the transfer tool call? 'customer' = before any agent message proposed, offered or announced a handoff, a customer message asked to talk to, be connected to or be transferred to another person, or asked for the case to be handled by another person; conditional requests and questions whether another person could do it count. 'agent' = before any such customer request, an agent message proposed, offered or announced a handoff to a human, or said a human would need to handle or review it. 'unannounced' = neither appears in the conversation before the call. Complaining, refusing to proceed, asking for another option or to check again are not requests for a person, and an agent saying an item cannot be transferred between orders is not a handoff mention. Evidence: the index of the deciding message in the original trajectory and a verbatim quote from it."
+  },
+  "notes": {
+    "0212e62e0e6b3e7bf5c783f54853d307f58a989927412550186f86c3c671f383": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "if the requested timeline cannot be handled with available information/tools and the customer asks for a human, transfer and then send the required exact transfer message"
+      ],
+      "unsure": false
+    },
+    "022d5644e17a126cbbcb9bd8b38555238a12a0ddc3042355d0f3223b374a1970": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "If irreconcilable and a human transfer is required by policy, invoke the transfer tool first, then send the prescribed transfer message.",
+        "In this transcript the agent instead merely advised contacting a human, and no transfer call appears; do not treat transfer as completed."
+      ],
+      "unsure": true
+    },
+    "04262cf669f631c9502ac2d1424d01462a20f5ffc72c5c3362844730fc25b30b": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "No human-transfer tool call was made even though policy required one before announcing transfer when the request could not be handled.",
+        "follow actual escalation procedure"
+      ],
+      "unsure": false
+    },
+    "045058d21f9b1fb7e1f49cb83b73e9715c7ed492c6af738890883388e66f288d": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "The agent declined a request to place a new order.",
+        "an out-of-scope new-purchase request may require the prescribed human-transfer tool and exact transfer message rather than only declining"
+      ],
+      "unsure": false
+    },
+    "0841951433984133e25fddc77fd4d4d61ac58a92848fea993f12adc5ab6943bc": {
+      "mentions_handoff": true,
+      "stance": "records",
+      "evidence": [
+        "Customer asked for a human with a timeline; agent transferred via tool, got 'Transfer successful,' then sent the required exact transfer message.",
+        "This records observed actions/outcomes only"
+      ],
+      "unsure": false
+    },
+    "094fb5ba4c776f1c995d3f2c8e9b3ac31fc5752dde7f0e5c2a895de16d05d9b7": {
+      "mentions_handoff": true,
+      "stance": "records",
+      "evidence": [
+        "transferred to a human agent upon request",
+        "no downstream human resolution or payment-method outcome is recorded"
+      ],
+      "unsure": false
+    },
+    "09a1f3b04f7fc1dd0309f5e1b604e127a24ce60b87e2edbcadc9d4c01791b2c0": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "transfer to a human agent if the request is outside available scope; make the transfer call first, then send the exact required transfer message"
+      ],
+      "unsure": false
+    },
+    "0fc392a8a229b6cfcbc4131293c8d21c384f2704ba02e0e7a52bea85f00d83c3": {
+      "mentions_handoff": true,
+      "stance": "records",
+      "evidence": [
+        "then transferred after the customer explicitly asked for a human who could provide a timeline; transfer tool reported success"
+      ],
+      "unsure": false
+    },
+    "175ac62ec65560143bea3539e2f6aa1c40a9cbc227ec9be3dabf3e027e48fc62": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "Potential policy/process concern",
+        "the agent declined but did not transfer to a human, although the supplied policy says to transfer iff a request cannot be handled within scope"
+      ],
+      "unsure": false
+    },
+    "17aa35979a78f455b9f9a8a87e4ec5d846f61aefec2be774aef62f34392d2801": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "appropriately avoided inventing an ETA, stated only that an email with return instructions was indicated, and transferred to a human when the customer insisted on specifics unavailable in tools",
+        "Applicable when policy/tools lack fulfillment timelines",
+        "this is an observation, not a verified grading lesson"
+      ],
+      "unsure": true
+    },
+    "1cb6961adf9606f65c1c896fe369192d99970188f9f4a8fe2634d99dd3fc829d": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "It then transferred to a human.",
+        "check tool constraints/sequence or seek human assistance before mutating order"
+      ],
+      "unsure": false
+    },
+    "1f158eaa8258ac3c39e2518fe55a4fc21bf897acc856996523f344c7a46b02f0": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "escalate unknown refund timing",
+        "User then requested a human for timeline; assistant transferred, tool returned",
+        "this records observed behavior, not a grading conclusion"
+      ],
+      "unsure": true
+    },
+    "205450b78ffcd87f57141490725df499ea749eb3cc23669ebf7f3d010477f8f9": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "ask a targeted question or follow policy escalation if outside scope"
+      ],
+      "unsure": false
+    },
+    "20bd8b038e0d54687af286278de532c42fdbea3de9abc1620f485d2a0917cb3f": {
+      "mentions_handoff": true,
+      "stance": "records",
+      "evidence": [
+        "assistant transferred to human, with transfer tool successful",
+        "No evidence of subsequent human resolution."
+      ],
+      "unsure": false
+    },
+    "21054901d3a7d8ba20665363dddbab2a8bf8024972a09ee5d2ff788a6441bd86": {
+      "mentions_handoff": true,
+      "stance": "discourages",
+      "evidence": [
+        "user asked for current gift-card balance, but agent transferred immediately instead of answering",
+        "immediate balance question was unanswered"
+      ],
+      "unsure": true
+    },
+    "22c6232aec0ce29aa9a021b510fe625abdb22c9d772bc45d6e69673c623c96a2": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "When the customer explicitly asked for a human who could provide one, transfer was completed.",
+        "transfer if the customer requests an agent or needs help beyond the available scope"
+      ],
+      "unsure": false
+    },
+    "252620246dece84eda099b153abb4258326e9a066524ffb808f0d9c1b91b3410": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "transfer to a human is required if and only if a request cannot be handled within the available actions",
+        "in this kind of unresolved lost-item request, transfer is a relevant next step rather than ending with a denial"
+      ],
+      "unsure": false
+    },
+    "27430a96b8327a851f69f62609aa392f343af04bf9d5af1270976df58f87e2ab": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "agent transferred successfully",
+        "escalation may be needed when unavailable"
+      ],
+      "unsure": false
+    },
+    "27c912de858c6199e34176c555805220e7ccb91c944c1a1ce41bf027955798ba": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "The transfer succeeded; no exchange completion is evidenced.",
+        "clarify/escalate before committing the first action"
+      ],
+      "unsure": false
+    },
+    "294af71bad043006d23de7d0c8876894ab7a1af9a1e68425369c592e123e79ae": {
+      "mentions_handoff": true,
+      "stance": "records",
+      "evidence": [
+        "Assistant then transferred to a human with the customer's request to review/possibly undo the unconfirmed returns and redirect refunds.",
+        "Transfer succeeded; no evidence of human outcome or whether return requests/refund method could be changed.",
+        "do not claim a human can accomplish it"
+      ],
+      "unsure": false
+    },
+    "2c3c75e8855274667fb808d551285f7375ba5f7f61605a4b73b328ef52d0f190": {
+      "mentions_handoff": true,
+      "stance": "mixed",
+      "evidence": [
+        "The agent also failed to handle the delivered hiking-boots return before transferring",
+        "if results are inconsistent, disclose uncertainty and escalate rather than retry",
+        "escalate only what's beyond available actions"
+      ],
+      "unsure": false
+    },
+    "2cdebaaeead1ed3a384615a2700c43f8bda17e5332ada0f6fd5e8d06cece879a": {
+      "mentions_handoff": true,
+      "stance": "records",
+      "evidence": [
+        "When customer requested a human for a timeline unavailable within scope, assistant transferred and sent the prescribed hold message."
+      ],
+      "unsure": false
+    },
+    "30e7bf1d57a33710b1e6edf0cbf434edf3641a42d19b76617dffc83e19abc63f": {
+      "mentions_handoff": true,
+      "stance": "records",
+      "evidence": [
+        "instead it transferred to human agent, noting exchange tool required delivered status and could not be submitted after return",
+        "no independent confirmation whether sequencing or transfer was policy-optimal"
+      ],
+      "unsure": false
+    },
+    "312407a8df7a8e0695a57abaab4ad03ba998faaf8637f2292d4533b6045c0f12": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "check applicable tool/policy conditions or escalate if the requested resolution is out of scope"
+      ],
+      "unsure": false
+    },
+    "33a1d1eb4faa6951e7f57a68059898632e5d239cd25e2bb09f13488d9ae5ac2d": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "The agent appropriately did not initiate the exchange and transferred the request when it could not issue a gift card."
+      ],
+      "unsure": true
+    },
+    "363e49578c096a3fb5987f76b8248038d863375bbf0b35b183e4511bdb54d597": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "agent transferred because it was outside available information/actions",
+        "If timeline is unavailable and customer asks for a definite answer or escalation, be transparent and transfer to human per policy, then send required transfer message."
+      ],
+      "unsure": false
+    },
+    "36cd1dad1f65597292232c6b90ab357eae5be259e950a7362a63ff2ec7c533bb": {
+      "mentions_handoff": true,
+      "stance": "records",
+      "evidence": [
+        "User requested human review, and transfer tool reported success; final response was the prescribed transfer notice."
+      ],
+      "unsure": false
+    },
+    "3881bce9a69d1cb656ad9c5db58469003db47518fa2e619a44c47fd8c84cddd8": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "do not treat the possession claim or refusal/escalation handling as definitively correct",
+        "consider whether policy requires human transfer rather than inventing process"
+      ],
+      "unsure": true
+    },
+    "3fd7f17afe2de528b8f51c642f45f9b5e13cbf742ef51b8a0deb871cc974d9c2": {
+      "mentions_handoff": true,
+      "stance": "records",
+      "evidence": [
+        "transferred to a human after user asked for correction and whether charge could be shifted/refunded to PayPal",
+        "Transfer succeeded; no human resolution or payment-method remedy is recorded."
+      ],
+      "unsure": false
+    },
+    "4260a92bb93764d6887945c5ea7decfa8d798dea26b5c92b285618ef13605d4b": {
+      "mentions_handoff": true,
+      "stance": "records",
+      "evidence": [
+        "The user objected and requested human help to undo/redirect; tool transfer succeeded",
+        "transfer to human was underway"
+      ],
+      "unsure": false
+    },
+    "444044cff71fef544a6419a72447240ac7fec6a9b449b94145c9cfeb5d115d05": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "if the requested exception is outside available actions, transfer to a human",
+        "so escalation occurred; no exchange action was performed"
+      ],
+      "unsure": false
+    },
+    "45ae738b4f891d43680fec7b16eee5ef0fa43fb6b2237bb9be22188aaef016d5": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "the final response instead merely advised contacting a human",
+        "if resolution is outside scope, follow the required transfer procedure rather than only suggesting human contact"
+      ],
+      "unsure": false
+    },
+    "45ca23b554a478177cbf963f65dc383806b883b075c7ed891dca353111c500db": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "transferring to a human was appropriate rather than inventing an estimate"
+      ],
+      "unsure": false
+    },
+    "487fa595fe43db1c0a126a1fbe464e7c59d856f6c90494d82c450ecc27bf3521": {
+      "mentions_handoff": true,
+      "stance": "records",
+      "evidence": [
+        "then transferred to human agent on requests to correct the record and investigate payment method",
+        "Transfer succeeded, but no human resolution is recorded."
+      ],
+      "unsure": false
+    },
+    "4b178c6059e948a589375269bfc0a74189dc561ac0e56d662b928d204c1a5fa2": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "transferred to a human because available tools could not undo/change the return requests; transfer succeeded",
+        "If an erroneous action is already submitted and tools cannot rectify it, be transparent and escalate; do not promise that a human can achieve an outcome."
+      ],
+      "unsure": false
+    },
+    "4be09a86d945bc1c665a8d77722f43258f961fb1956985a0a1a23a53ba3cb9fb": {
+      "mentions_handoff": false,
+      "stance": null,
+      "evidence": [],
+      "unsure": false
+    },
+    "4ceaf16d4622cc5563a09cddf9d650f2676ce5be5107c9bdc19f724e651d4357": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "Assistant correctly stopped further edits and transferred for human review rather than asserting the change succeeded or trying another one-time modification.",
+        "escalate if it cannot be resolved within available tools"
+      ],
+      "unsure": false
+    },
+    "598066b63004b91fa4798b7c591f189a1aa991956d9928b732171fcd3d621caa": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "escalated a request outside available capabilities to a human",
+        "escalation was appropriate, without promising a resolution"
+      ],
+      "unsure": false
+    },
+    "5d21fc44fa195de732ea9836ec95798946e342def9e61f4cebf10b29384bc255": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "User asked for human support; transfer succeeded and agent sent the prescribed transfer message.",
+        "transfer if the requested resolution cannot be handled"
+      ],
+      "unsure": false
+    },
+    "5d62b0d90b0551af1aceb53ea3bc9026a00882522eb2cbcc461d3845d292ae08": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "escalated to a human after user asked for correction and a possible payment switch/refund to PayPal",
+        "escalate if the permitted one-time action has already been consumed"
+      ],
+      "unsure": false
+    },
+    "5f5023c6e16d924b2e935d3ab09ad8807dffac5d117959af477b5baf69f29122": {
+      "mentions_handoff": true,
+      "stance": "records",
+      "evidence": [
+        "Assistant transferred to human agent because account showed only PayPal and tools could not issue a gift card."
+      ],
+      "unsure": false
+    },
+    "608355fb90ce9c7505ff5593a545f5f714fe75e703aa1a0cd76f7decf52e00d9": {
+      "mentions_handoff": true,
+      "stance": "records",
+      "evidence": [
+        "User rejected Visa and explicitly requested a human, so agent called transfer_to_human_agents with a summary and then provided required transfer message.",
+        "do not treat prior actions as independently validated"
+      ],
+      "unsure": false
+    },
+    "62286e911d823fa74f5758a7391e38af95e01ad2f2550a5e3282b98c5460d532": {
+      "mentions_handoff": true,
+      "stance": "records",
+      "evidence": [
+        "requested human review for possible reversal/refund redirection",
+        "Human transfer tool returned 'Transfer successful'; final message said transfer was underway."
+      ],
+      "unsure": false
+    },
+    "6aa086dd9a8fd422a4e467ac9f8733b2cf8cea148766242248ec13ec24c9b989": {
+      "mentions_handoff": true,
+      "stance": "records",
+      "evidence": [
+        "It transferred to a human after user requested confirmation."
+      ],
+      "unsure": false
+    },
+    "6c8cc4916a017da67864ec88b07191c18cc3fea117815b0ce6724d6452131613": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "transferred to a human because the one-shot limit prevented another modification",
+        "transfer to a human when correction/investigation is outside the agent's available scope"
+      ],
+      "unsure": false
+    },
+    "6d9c190e720b1857cc521453ff4b70adf5025d1ff11c825ad5fc6a88b6080cd7": {
+      "mentions_handoff": true,
+      "stance": "mixed",
+      "evidence": [
+        "Assistant correctly flagged this discrepancy and offered human review.",
+        "assistant transferred immediately instead of answering the available arithmetic",
+        "address it if the information can be safely derived/verified, then transfer for unresolved issue"
+      ],
+      "unsure": false
+    },
+    "6f02f4dde5fbab2b90300394ec6f9a251c3eb3f07af6c27f1a4b1bddce7b9b5a": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "transfer to a human when correction or payment-method remedy is outside available actions",
+        "Before escalating, provide a factual summary and confirm address from the tool result."
+      ],
+      "unsure": false
+    },
+    "70d27b0f900b3fbe12ee896f098655033f4a929686e0e0d87efc5b1b4e8aa57a": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "this unresolved missing-item refund/replacement request may have warranted a transfer",
+        "If a request cannot be resolved within authorized scope, use the prescribed human-transfer procedure if available, then stop."
+      ],
+      "unsure": false
+    },
+    "712d916562ac7826f96b18ba3032cd6ba42945f9dabe3f70174c87d94356f83d": {
+      "mentions_handoff": true,
+      "stance": "mixed",
+      "evidence": [
+        "Stop/escalate only if the request cannot be handled within the permitted tools."
+      ],
+      "unsure": true
+    },
+    "71bc76089fcdd83c13345d56d5cca0f6af914e064cd96dd2538529df8c096c63": {
+      "mentions_handoff": true,
+      "stance": "records",
+      "evidence": [
+        "escalated for human review per user's request",
+        "Transfer succeeded; final response told user to hold for a human."
+      ],
+      "unsure": false
+    },
+    "72b2ab654f388c37f6fd94543b72621f9f8ab1b296cd54e87fe1c4d9b25e3cd0": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "the assistant transferred with a concise summary and then issued the required transfer message",
+        "escalate when the customer explicitly requests a human because the desired arrangement cannot be completed within the policy"
+      ],
+      "unsure": false
+    },
+    "72d398a567b17ade66050cd5e2efc06ad57278476a7622d1606b516936908c16": {
+      "mentions_handoff": true,
+      "stance": "records",
+      "evidence": [
+        "when asked for a timeline, escalation was used",
+        "This is a lesson for similar retail cases",
+        "this is an observation, not a correctness grade"
+      ],
+      "unsure": true
+    },
+    "72db75452e4511b932b03a5d28f39b916b7db140917ac9887e2fb35d055dac94": {
+      "mentions_handoff": true,
+      "stance": "records",
+      "evidence": [
+        "stated it could not verify the order, recommending human help",
+        "no evidence establishes whether that final escalation complied with all transfer procedure (policy specified a transfer tool call first)"
+      ],
+      "unsure": false
+    },
+    "7448d31a38c091f7895e320208533bf54f0a03c3c1fbcbf2c985cec39a83c5da": {
+      "mentions_handoff": true,
+      "stance": "records",
+      "evidence": [
+        "Assistant transferred to a human agent; transfer succeeded and the required holding message was sent.",
+        "only that none was listed and escalation was used"
+      ],
+      "unsure": false
+    },
+    "7852a3cf2e105f09e779c3fe9ace57b1862757b1f977c9ca6c6ae69a048a1e1a": {
+      "mentions_handoff": true,
+      "stance": "records",
+      "evidence": [
+        "Subsequent transfer note said exchange could not be submitted because exchange requires delivered status, and transferred to human."
+      ],
+      "unsure": false
+    },
+    "7a5e286a282482b90c08abffe8ccbbdf4929133404df217e51c928e17311e79c": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "check policy/tool eligibility or escalate if unavailable"
+      ],
+      "unsure": false
+    },
+    "7b07c4866a0aabc8156454767b6d783bafbf9b738ce90c05db6dd31bd582ff9d": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "explain uncertainty and transfer to a human if correction/payment remediation cannot be handled within tools",
+        "The prior agent did escalate after the mismatch"
+      ],
+      "unsure": false
+    },
+    "7ec472e1ecd6bd21efc9da24b8fac7cc38f24e73ec9ee8c047b402acc5bab05b": {
+      "mentions_handoff": true,
+      "stance": "records",
+      "evidence": [
+        "it did not file a claim or transfer to a human"
+      ],
+      "unsure": false
+    },
+    "802a15c4140b3463bf73fe29ba541d0d1fdafb2e6a1cc0b1a5d47ced171f7551": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "summarize the verified state and transfer to a human, then give the required holding message"
+      ],
+      "unsure": false
+    },
+    "8680f62c1a0b5278ca22c0cc61666913df22fd75a9a93d85d66faac0b0d776af": {
+      "mentions_handoff": true,
+      "stance": "records",
+      "evidence": [
+        "after the customer insisted on a timeline, it transferred to a human agent"
+      ],
+      "unsure": false
+    },
+    "86bc491dea6d30c141e5fedcef7ed084764c09bf1ddf62905726225f64b56cef": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "The policy says to transfer to a human iff a request cannot be handled in scope, but no transfer occurred (and available tools are not shown)."
+      ],
+      "unsure": true
+    },
+    "88e20b73e9a7886b962b5ee5eed748abf46d95f3e5c58d19bf3eb712d3e0125d": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "so agent transferred to human support",
+        "if tools do not support both, establish a safe sequence or explain/transfer as applicable"
+      ],
+      "unsure": false
+    },
+    "8d6a326be1fc83b876f66f9c1ab97c7848efe74b6e7d76c1f31ee8ff59e9f41e": {
+      "mentions_handoff": true,
+      "stance": "records",
+      "evidence": [
+        "assistant transferred to human because it could not provide timing, and transfer succeeded"
+      ],
+      "unsure": false
+    },
+    "8d87114db7f87a36cf2003e2c6ec96ce4eda159f20637f6a7c1e82bca4d20e30": {
+      "mentions_handoff": true,
+      "stance": "records",
+      "evidence": [
+        "after insistence transferred to a human agent",
+        "This is a record of observed behavior/data, not a determination of correctness."
+      ],
+      "unsure": false
+    },
+    "8fc88d7c83e3eae3838520d98a61788a43ccfad47fa3372472c4bef41782a590": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "If the desired option cannot be handled through available actions, explain the limitation and transfer to a human agent",
+        "After any transfer tool succeeds, send the prescribed transfer notice."
+      ],
+      "unsure": false
+    },
+    "9087227d9844883b0a68ed84259fee445b181e009e7f282b250b75a2fad79350": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "a human escalation summary said the exchange tool requires delivered status, so exchange could not be submitted after return, and transfer succeeded",
+        "check constraints or escalate before changing status"
+      ],
+      "unsure": false
+    },
+    "90e9579e1e144e6abec9fe2e49a7a328740b30c4477504a32edeff90dd287848": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "transferred to a human when further correction/payment handling was outside available actions",
+        "preserve uncertainty and escalate rather than retrying or asserting the intended state"
+      ],
+      "unsure": false
+    },
+    "925a7e0318efcc4f56938b79a2f9e6dc7b72704425c77d4825f4dc34f5f4aa70": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "If the customer requires shipment/label timing and the available data cannot answer it, transfer to a human agent per policy, then send the prescribed transfer message."
+      ],
+      "unsure": false
+    },
+    "9348669667faf4c9690310b912b032ab3f13aaabeb0dfb34e62bca373f3ceca8": {
+      "mentions_handoff": true,
+      "stance": "records",
+      "evidence": [
+        "agent transparently stated this and transferred to a human when customer insisted",
+        "not confirmation of general timelines or whether transfer resolved the issue"
+      ],
+      "unsure": false
+    },
+    "947811d77b1bce7421511320ca2773034ecb0a1250410b1e88dbdc28e1eac91c": {
+      "mentions_handoff": true,
+      "stance": "records",
+      "evidence": [
+        "assistant called transfer_to_human_agents; transfer succeeded, followed by the required transfer message",
+        "not evidence of actual refund timing or a guarantee that every timeline request requires transfer"
+      ],
+      "unsure": false
+    },
+    "9572269cea30ab41cb19464447e1bb0deea1724dd657827e46603796daf503ac": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "If the customer insists on an unavailable/non-handled payout option, do not execute; transfer to human support and use the prescribed transfer message."
+      ],
+      "unsure": false
+    },
+    "987e0406cda37c179081adb3ee705cd70d908d0f55e6b3636df805bea0cbdbd6": {
+      "mentions_handoff": true,
+      "stance": "records",
+      "evidence": [
+        "transferred to a human after user asked for correction/payment investigation",
+        "The transfer summary itself repeated the anomalous response and requested human review; no resolution is recorded."
+      ],
+      "unsure": false
+    },
+    "992ffdb43a3c864fad9449e643b4c525f2c44ddbd52470f6196cfae3e6535aa5": {
+      "mentions_handoff": true,
+      "stance": "records",
+      "evidence": [
+        "a human transfer was initiated and succeeded"
+      ],
+      "unsure": false
+    },
+    "9b6daf938d3b27c65b7539911006e172e7e51d498a78a8704156620681bdecfb": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "it told user to contact a human",
+        "if tool output is inconsistent, do not infer success or retry (action may only be performed once), and escalate"
+      ],
+      "unsure": false
+    },
+    "9cfbb73564b9a288305031a61d871bc9fdb07f5d4f0ff9dec6f8f1056cab4d41": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "If response is inconsistent, do not claim success or attempt another update; escalate per supported procedure.",
+        "the recorded interaction did not call the required transfer tool before saying contact a human"
+      ],
+      "unsure": false
+    },
+    "9fca14d73407bd58b277d9324f17d220450545696fb747da67cce62953e83bfd": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "then transferred to human agent after user complained",
+        "investigate/correct via human support"
+      ],
+      "unsure": false
+    },
+    "a0d04be4bb81b338ed138c4b9e6c43193057bb81844e1965b0bee0fef5013850": {
+      "mentions_handoff": true,
+      "stance": "records",
+      "evidence": [
+        "after the user insisted on a timeline, the assistant transferred to a human agent"
+      ],
+      "unsure": false
+    },
+    "a5d5ef622abc193ebe73187b6e5bbc57c25084312a859c2bc8f71d9c1c59841c": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "stop before the first database update and seek clarification or transfer to a human, rather than assume order",
+        "transfer and accurately state the completed action and unresolved request"
+      ],
+      "unsure": false
+    },
+    "a7d8a69373d5ce742a6e2a11caf6c24d6686e616ebf7f5f07bec9a63bbe597a3": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "policy required calling the human-transfer tool before sending the transfer message; no such call appears in this transcript",
+        "Preserve uncertainty and escalate via the supported procedure when correctness cannot be established."
+      ],
+      "unsure": false
+    },
+    "a84d3a565adfe1344371067274081c724114df87b073343640c9aee901202088": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "escalated to a human",
+        "escalation is appropriate when the requested remedy is outside available tools"
+      ],
+      "unsure": false
+    },
+    "aba8586a16cf9f0c8ef7d8a2685d9b2bfebc78e139649786146342e4450e46b8": {
+      "mentions_handoff": true,
+      "stance": "records",
+      "evidence": [
+        "Customer requested a human timeline; transfer tool returned 'Transfer successful', followed by the required transfer message."
+      ],
+      "unsure": false
+    },
+    "ac1b231eb80e28dd2f989d0c09fbfd8c64649ce55ed0da7b34001690211e20ab": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "If the customer explicitly asks for a human because the issue cannot be handled within policy, transfer via the handoff tool, then send the required transfer notice.",
+        "requested a human, and transfer succeeded"
+      ],
+      "unsure": false
+    },
+    "ae90871265c62d63828b7948090ae7d2f8755dcca4d0f21e1304c8c8f7f8bb40": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "after the user asked for a human timeline, transfer was appropriate because the request could not be answered in scope"
+      ],
+      "unsure": false
+    },
+    "afe0b7b250c03e564c003d39ecaa51c4733c36d0a5ed1a4d5ca87509f10f2d22": {
+      "mentions_handoff": true,
+      "stance": "records",
+      "evidence": [
+        "User explicitly requested an agent who could provide the timeline; transfer succeeded and the required transfer message was sent."
+      ],
+      "unsure": false
+    },
+    "b201887df98e9aa183238d125d5562fb07f56d142a69bae7e3fc4040effb1644": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "a human escalation was then requested",
+        "so escalate rather than promise a remedy"
+      ],
+      "unsure": false
+    },
+    "b2e09bfeb794b229dfd8807596d4d763748ef51b16ce3080f6b4ba5d72258e50": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "when the customer explicitly asked for a human who could provide it, transfer succeeded",
+        "Escalate if the customer asks for information outside available capability."
+      ],
+      "unsure": false
+    },
+    "b2ec2c966a9b48d363759000b33a6518af66c83ba3c857ac8da52167a92962a7": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "assistant correctly avoided promising a timeline and transferred after user explicitly asked for a human who could provide one",
+        "no grading conclusion should be inferred"
+      ],
+      "unsure": true
+    },
+    "b8ea6d80ea00eea5542afcea388399201a3d212c086485c4737c1f57f0301858": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "escalate unknown refund timing",
+        "If the user asks for a timeline that cannot be provided within scope, transfer to a human agent, then send the required transfer notice."
+      ],
+      "unsure": false
+    },
+    "b90daf40cb33803d8982f906e583f1d614d679f94f06aea3dec66560a997ab9b": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "If the requested remedy is outside available actions (e.g., undo a submitted return or change its refund route), transfer to a human only after making the transfer tool call"
+      ],
+      "unsure": false
+    },
+    "ba0a290461b4132b37d9615ecb8ab2a79e9d5276633d8958ce0d0e579f8e1251": {
+      "mentions_handoff": true,
+      "stance": "records",
+      "evidence": [
+        "Mia rejected Visa and explicitly requested a human agent.",
+        "Agent transferred using the transfer tool, which returned “Transfer successful,” then sent the required transfer message.",
+        "this does not establish whether the behavior was rated correct"
+      ],
+      "unsure": false
+    },
+    "baab8be95aaaf12665137a4a283678901e42f44a219cb02b83e8d5c0285ed081": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "The agent transferred the case to a human and disclosed the sequencing issue.",
+        "or seek human assistance before an irreversible first action"
+      ],
+      "unsure": false
+    },
+    "bd77589892516d6adbf980caf63830c85a5ca4556859e8e95086dedc0ea78789": {
+      "mentions_handoff": false,
+      "stance": null,
+      "evidence": [],
+      "unsure": false
+    },
+    "c0793ad49779b2d657b25077dd70f16b05f630079c209630a74fb8301125ee04": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "For follow-up timing/shipping questions, if tools provide no schedule, transfer to a human agent, then send the required transfer message."
+      ],
+      "unsure": false
+    },
+    "c0a7b3fcb34f299c92e72089f28964e51f5bdbf072901d95059f5880485de450": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "so escalation was appropriate under the policy’s out-of-scope transfer rule"
+      ],
+      "unsure": false
+    },
+    "c3bf416132e6b0ea2ca16b27c9df8751ef692e63348044667e28b7c616dcf9b6": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "merely advised contacting a human; policy required an explicit transfer tool call if transferring, which was not done in the shown experience",
+        "use the required human-transfer tool if resolution is outside scope, then provide the mandated transfer message"
+      ],
+      "unsure": false
+    },
+    "c43ec953ba15743a28d6c6b2ccf9a1376c536f84793c0dfaa24126021f4cc747": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "transferred the customer when they requested a human timeline",
+        "do not invent an estimate—offer human escalation"
+      ],
+      "unsure": false
+    },
+    "c56ceea4013f99cd73f075dae34e25e30b155a696430f0ee2cf8847dc2aa1aff": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "if the user still requires specifics beyond available capability, transfer to a human agent"
+      ],
+      "unsure": false
+    },
+    "c87cb3199aeda93e670e1bf84f92c2e411649c1d671320ed3eca95fe8f807fb3": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "so the agent transferred to a human with the authorized exchange details",
+        "recheck results, then transfer if a remaining authorized request cannot be handled"
+      ],
+      "unsure": false
+    },
+    "c8aa292458c7edb962f8799174f199d789099a4aab30c0239d0dea3298db60f5": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "transferred to a human agent",
+        "escalate if further changes are unavailable"
+      ],
+      "unsure": false
+    },
+    "caf38ad0714a862bab3c6441960667aefa719538075251cdf35e54976d294cef": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "transferred to a human agent after customer objected",
+        "escalate if the one-time action limit or system inconsistency prevents a safe correction"
+      ],
+      "unsure": false
+    },
+    "cc4a680d8526b4b9f7eb08dc57ded7b38a9733dfaf137ece45a42f52131fd546": {
+      "mentions_handoff": true,
+      "stance": "records",
+      "evidence": [
+        "transferred to a human when requested"
+      ],
+      "unsure": false
+    },
+    "cd6c7f4858d02255e4ff5872b7e30cba380996d178d26bbff51d34971fea65a2": {
+      "mentions_handoff": false,
+      "stance": null,
+      "evidence": [],
+      "unsure": false
+    },
+    "cdbf9557bf674a0230aa756e95d6a68fdb3eb93b584b76d0cc532f0c771d2463": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "the assistant appropriately escalated the request for a timeline to a human agent, and the transfer tool reported success"
+      ],
+      "unsure": false
+    },
+    "cdea485b1361985dfee689ba82350640c870dfb7126068fd094c1a1cc6f98482": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "When the customer insisted on timelines, the assistant transferred to a human successfully.",
+        "transfer if the requested detail cannot be handled with available information"
+      ],
+      "unsure": false
+    },
+    "d241fda19c99f32fc4685312fc0e65295cbc8a59e3229077ae1edf271e97ce10": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "transferring after the customer declined PayPal was appropriate"
+      ],
+      "unsure": false
+    },
+    "d3b40b8c0531c1e91b4efd4c776c340f0feedcaf4b631082965f0aac87ac326c": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "If the customer requires a timeline unavailable within tools, transfer to a human agent; after successful transfer, send the exact required transfer message."
+      ],
+      "unsure": false
+    },
+    "d4799aecf70c77ac752a17e8a86ced046e1080546ef7ec49e8f8f6abfe1fab2f": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "No human-transfer tool call is present in the transcript, although the supplied policy says transfer when the issue cannot be handled"
+      ],
+      "unsure": true
+    },
+    "d55dd64b4e71717caee729e950fdb683bc3b8fdb84ceb9aa4a85286c69a85df0": {
+      "mentions_handoff": true,
+      "stance": "mixed",
+      "evidence": [
+        "the agent transferred without answering that question",
+        "escalate when data is contradictory; still address any separable user question before or alongside escalation"
+      ],
+      "unsure": false
+    },
+    "d92933e72d84fc930bbd2dbcd6d4e65531a4e47616b889f29e48aad78adb94cf": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "transferred after user requested human review; transfer succeeded",
+        "explain uncertainty and escalate if user asks/cannot resolve"
+      ],
+      "unsure": false
+    },
+    "dd60d40934131242be7bb4ebdbc1e74689d45f20905c2d73ba492aca9ac54dfd": {
+      "mentions_handoff": true,
+      "stance": "records",
+      "evidence": [
+        "that constraint is asserted in the transfer summary, not demonstrated by tool output",
+        "The transfer succeeded."
+      ],
+      "unsure": false
+    },
+    "e1b0217ff2455837ee7389a2c21f3f29b2737fcff413a7205a51eb71150a54d1": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "transferred to a human because further modification was unavailable under the one-time limit",
+        "When tool output conflicts and the action cannot be safely retried, escalate rather than asserting success."
+      ],
+      "unsure": false
+    },
+    "e2035e73a931f61522a1d06dea8e4daba375115b051ce6e98f725c20cd0f05f0": {
+      "mentions_handoff": true,
+      "stance": "records",
+      "evidence": [
+        "then transferred to a human when the user asked for a timeline unavailable in scope",
+        "Transfer tool succeeded and mandated transfer message was sent.",
+        "do not infer grader judgment"
+      ],
+      "unsure": true
+    },
+    "e4c33d1b15550a4937af9c2a68d3a9c2dd17149246b159e3f128042125d8db4f": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "stop before updating and transfer/escalate if it cannot otherwise be handled",
+        "accurately report the completed update and escalate; do not claim both succeeded"
+      ],
+      "unsure": false
+    },
+    "e74943fb6cd4e84b52ad4495fdd36fa5abc13b64094150bda984cbe78dc87266": {
+      "mentions_handoff": true,
+      "stance": "records",
+      "evidence": [
+        "then transferred to human when user asked for remedy if replacement is incorrect, which was outside available tools/policy",
+        "Transfer tool returned successful and standard transfer message followed."
+      ],
+      "unsure": false
+    },
+    "e75e9b163361086de660caf59856a71b408c0cabbf8570f79643509d70c15c54": {
+      "mentions_handoff": true,
+      "stance": "records",
+      "evidence": [
+        "after the customer insisted on a timeline, the agent transferred to a human"
+      ],
+      "unsure": false
+    },
+    "edc1ad0884475e2ee48eab9c21761a2c5d9904ea87bf4416735276f2cf1c6023": {
+      "mentions_handoff": true,
+      "stance": "mixed",
+      "evidence": [
+        "escalate if it cannot be corrected within permitted tools",
+        "the assistant transferred without answering that query",
+        "Transfer should not substitute for answering available information"
+      ],
+      "unsure": false
+    },
+    "eea43b9b6c698db66aa6bdd3b58725a9218a50e54430f8e4ad9134b045b79146": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "When the user asks for a definite timeline unavailable within policy/tools, transfer to a human agent."
+      ],
+      "unsure": false
+    },
+    "eea5d11c0ab4b80068606d1c16ee496af294b71a837c61e435f32c63e6ef315f": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "When the customer insisted on a timeline unavailable from tools/policy, transfer to a human agent, then send the exact required transfer notice."
+      ],
+      "unsure": false
+    },
+    "f1242f956ef4c4ea35e45ec53300382357e32f5bc9ba2197023316c2a87d52b3": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "the agent transferred to a human; that escalation fits the stated rule to transfer requests outside scope"
+      ],
+      "unsure": false
+    },
+    "f9ccf9da2d229100be645dea3093ceaf05d7fae92838461a59ccc9efdf2d9094": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "the transcript does not show that tool call, so transfer completion was unverified",
+        "on irreconcilable tool output, stop further modifications and follow the formal transfer procedure"
+      ],
+      "unsure": false
+    },
+    "faa79c2442e2e89c73547fb2f311fc4a9519c0afbea236bf771696e7d9256531": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "so assistant transferred to a human after reporting the mismatch and gift card charge",
+        "preserve the discrepancy and escalate when no supported corrective action exists"
+      ],
+      "unsure": false
+    },
+    "fce5af45ec1af782ea91791ad2e5d90d57f25f3ff4809bd8809618b84694e887": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "If the customer requests a timeline unavailable within scope and asks for a human, transfer using the tool, then send the required transfer notice."
+      ],
+      "unsure": false
+    },
+    "feb7de77d1b06c87acd39a202661fdfb49d8104d1457615dc54fa345ea96e123": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "after user pressed for a definite timeline transferred to a human",
+        "when the request requires unavailable operational details, escalate rather than make a promise"
+      ],
+      "unsure": false
+    },
+    "ff75df08cb7ad251c24dfe71dffdacd1ebe9ad448d507421d73e4d42383ebe6c": {
+      "mentions_handoff": true,
+      "stance": "records",
+      "evidence": [
+        "User objected and requested human review to undo/redirect; human transfer tool reported success, but resolution is unknown."
+      ],
+      "unsure": false
+    },
+    "ffcf654133803b2aaab514a190ec4a0c85c9513d5d07c53ba24f993e8c9d5147": {
+      "mentions_handoff": true,
+      "stance": "recommends",
+      "evidence": [
+        "available policy/tools did not answer that, so escalation to a human was appropriate",
+        "Transfer tool call first, then exact transfer notice."
+      ],
+      "unsure": false
+    }
+  },
+  "initiators": {
+    "r_04c56dd078b04b828f643e4de34520d8": {
+      "label": "customer",
+      "message_index": 11,
+      "quote": "Can I talk to someone who can actually fix this?",
+      "unsure": false
+    },
+    "r_0748764343a9426bb73fe45d0fef7fd4": {
+      "label": "agent",
+      "message_index": 16,
+      "quote": "I can connect you with a human agent. Would you like me to do that?",
+      "unsure": false
+    },
+    "r_089eff2919b345788208ae677706c1e5": {
+      "label": "agent",
+      "message_index": 12,
+      "quote": "so I’ll need a human agent to review the order.",
+      "unsure": false
+    },
+    "r_0b88b271caab496a915bba3c6e06bedf": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_0bf3f0a96fc04732a66c270959edf101": {
+      "label": "agent",
+      "message_index": 24,
+      "quote": "If you specifically require a gift-card refund, let me know and I can transfer you to a human agent.",
+      "unsure": false
+    },
+    "r_0d298cff79744f97bc2afcc60ea0fb53": {
+      "label": "customer",
+      "message_index": 19,
+      "quote": "Can I just talk to someone who can actually fix this?",
+      "unsure": false
+    },
+    "r_0fd13ad370254edc9262beab765a00fd": {
+      "label": "customer",
+      "message_index": 17,
+      "quote": "Is there a supervisor or someone who can actually do something about a lost tablet?",
+      "unsure": false
+    },
+    "r_122f7f21f20e40059f79ef2dbeabff16": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_13157ad9ab4f48ee8f1b1bf288826a99": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_14f31335bdc74258a05bbbabb9f6131b": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_1606bbbdafaa4d5191f32305f3ce03de": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_1615c549cfe64dbda5f1ac5430437014": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_1618d908584544a99edf2eea204170f7": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_1a429944e29046a9820b21563fd715a5": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_1bb9024cd6634265ae33e7744f8b0557": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_1ed6ef272d784824a2f8640ed6358494": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_1f3b369cdfda411d960ae10ba93f4e10": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_1fafba1394f6466580322f84d42c70d0": {
+      "label": "customer",
+      "message_index": 17,
+      "quote": "Is there a way you can check on the fees, or someone who could confirm what I'd really get back?",
+      "unsure": false
+    },
+    "r_21a245d82d7f4628b8de59e33308acf2": {
+      "label": "customer",
+      "message_index": 21,
+      "quote": "can you escalate this to someone who can see my full profile?",
+      "unsure": false
+    },
+    "r_22783fa5eb724d8cb8094bc2709abaf1": {
+      "label": "agent",
+      "message_index": 20,
+      "quote": "I can transfer you to a human agent to check whether any fees apply.",
+      "unsure": false
+    },
+    "r_26acfa53de5e43ae86db0da9658b438b": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_2edf0bf749f14534b4c5cf2a16dbeeb1": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_2fd054fae1794091a33d0702707cc49d": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_2feac04279ad42959ef3d2bfb37a3ed0": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_3065d68fecee44a5984a035497200576": {
+      "label": "agent",
+      "message_index": 20,
+      "quote": "I can ask a human agent to clarify, if you’d like.",
+      "unsure": true
+    },
+    "r_31e1d0e0d3cb450485496390febd2269": {
+      "label": "agent",
+      "message_index": 16,
+      "quote": "or I can connect you with a human agent to ask whether they can clarify the refund estimate.",
+      "unsure": false
+    },
+    "r_3395291fa93f4023ba883a1c03aecff8": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_37ecdc12856349e4bdf81fa0ee3febae": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_3a455eb7b06348c4bdd1e1b2b7059523": {
+      "label": "customer",
+      "message_index": 21,
+      "quote": "Can I talk to someone who can actually fix this without that restriction?",
+      "unsure": false
+    },
+    "r_3b55d4e899884a758fdbc89c5fc9ce74": {
+      "label": "agent",
+      "message_index": 20,
+      "quote": "You could contact a human agent to check the applicable refund amount before deciding—would you like me to transfer you?",
+      "unsure": false
+    },
+    "r_3cca00a0cab34c5e982ff6e0523b4b24": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_41ff991abd6e4e9fa5b7ac758199ae77": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_44f13c1a36b04966b819d0d66acd6184": {
+      "label": "customer",
+      "message_index": 19,
+      "quote": "Can I just talk to someone who can actually fix this?",
+      "unsure": false
+    },
+    "r_478f61d0586344239af900a84e9270ab": {
+      "label": "customer",
+      "message_index": 27,
+      "quote": "Can I just talk to someone who can actually fix this?",
+      "unsure": false
+    },
+    "r_4a2df0b6bceb43fdba3e8bd63638b1f4": {
+      "label": "customer",
+      "message_index": 11,
+      "quote": "Is there a manager or someone who could help another way?",
+      "unsure": false
+    },
+    "r_4bf35831f40e44b69627121cfb6292a3": {
+      "label": "customer",
+      "message_index": 19,
+      "quote": "If that’s not something you can do, can I talk to someone who can actually set that up?",
+      "unsure": false
+    },
+    "r_4c0791abf2244dd8942811f730372e3f": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_4c0d7cef93224c47887191677e6aae07": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_4e21ad797c204a43a81d92d7211383a8": {
+      "label": "customer",
+      "message_index": 27,
+      "quote": "Can I talk to someone who can actually access my saved addresses?",
+      "unsure": false
+    },
+    "r_524a53d6ff2243568182e42559b0cc4c": {
+      "label": "customer",
+      "message_index": 16,
+      "quote": "Can I just talk to someone who can actually fix this?",
+      "unsure": false
+    },
+    "r_53d79d6eb6df43d9b9aaf5ca447eb8f2": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_54aa5f3d2853473488087e1afec0fbb5": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_5698d7607d304e68b036a6a3b15660f3": {
+      "label": "agent",
+      "message_index": 18,
+      "quote": "or would you prefer help from a human agent to check the exact total?",
+      "unsure": false
+    },
+    "r_569bb981604e40e499232b97cd9d7f30": {
+      "label": "customer",
+      "message_index": 19,
+      "quote": "If you can’t see it, can you loop in someone who can?",
+      "unsure": false
+    },
+    "r_56aebae2a74e4a8ca52d3223d63ca329": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_56d8aec01daf47e188e6a9c91f2a4d22": {
+      "label": "agent",
+      "message_index": 22,
+      "quote": "Would you like me to transfer you to a human agent to clarify these details before proceeding?",
+      "unsure": false
+    },
+    "r_5774b195a10245c4b9ab883fade23a53": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_59590c44a707497eb976505580c1e04f": {
+      "label": "customer",
+      "message_index": 13,
+      "quote": "is there a supervisor or someone who could try another way?",
+      "unsure": false
+    },
+    "r_59c5d4cacab040628dc6632e47c1a604": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_5a01227b79eb4a098275d7664682c596": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_5b40de20bebb464ca478ef2dd6c30e66": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_63c357ceccb24a389706f8462b29f749": {
+      "label": "customer",
+      "message_index": 13,
+      "quote": "Can I just talk to someone who can actually fix this?",
+      "unsure": false
+    },
+    "r_65f480333729466a8c572a78d85e7005": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_661f9d2e799f404abe4cd763c677c053": {
+      "label": "customer",
+      "message_index": 25,
+      "quote": "Can you send a secure link or transfer me to someone who can do that?",
+      "unsure": false
+    },
+    "r_6afe9bc973b1429ea6210f74d2fcb194": {
+      "label": "customer",
+      "message_index": 17,
+      "quote": "If it’s not showing, I’d rather talk to someone who can access it.",
+      "unsure": false
+    },
+    "r_6e26be63cc934c31ac6269fd08bb1bb8": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_6eab173ac366469e89b714f38539389f": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_6f700b53dded4d12a5acd93337b8c3a4": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_70521954450f457f924264affa664821": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_70aeef7ed67349f0b6e57e2bfa8f4dd4": {
+      "label": "customer",
+      "message_index": 25,
+      "quote": "If not, I’ll need a supervisor or someone who can help without me saying it out loud.",
+      "unsure": false
+    },
+    "r_7118239a9bb14e42b618efce6ec06039": {
+      "label": "customer",
+      "message_index": 15,
+      "quote": "Can I talk to someone who can actually fix this?",
+      "unsure": false
+    },
+    "r_7377fed4efeb4e498394d349f9a4e350": {
+      "label": "customer",
+      "message_index": 23,
+      "quote": "If you can't find it, can I talk to someone who can?",
+      "unsure": false
+    },
+    "r_76c3e796f1af40fe9c131979955fc640": {
+      "label": "customer",
+      "message_index": 19,
+      "quote": "Can I just talk to someone who can actually fix this?",
+      "unsure": false
+    },
+    "r_7782632ee4494892a559ffb61864c048": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_79627056beb945c99ca441779f030ddd": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_812cda4124ea46e89828e88b7f0274fc": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_82f1ae6251cc4daab32e74fd2e61812f": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_859026a44f654dcfb0b4ccf67d0beb91": {
+      "label": "customer",
+      "message_index": 19,
+      "quote": "Can I just talk to someone who can actually fix this?",
+      "unsure": false
+    },
+    "r_86ea70ce038c4f2483899b72bf09746e": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_886cb57816344549961cc9e329904fb7": {
+      "label": "customer",
+      "message_index": 21,
+      "quote": "Can I just talk to someone who can actually make that happen?",
+      "unsure": false
+    },
+    "r_8bcd3aef67d54305b53559ef27e17613": {
+      "label": "customer",
+      "message_index": 21,
+      "quote": "Can I talk to someone who can actually fix this?",
+      "unsure": false
+    },
+    "r_8d9c667b098a4a349950d2edb84ab641": {
+      "label": "agent",
+      "message_index": 20,
+      "quote": "You could contact a human agent to ask whether any fees apply before deciding.",
+      "unsure": true
+    },
+    "r_8eb9c5a4287b4c4cbf830b4ee27f856f": {
+      "label": "customer",
+      "message_index": 20,
+      "quote": "Is there a secure way to add it to my profile, or can I talk to someone who can help with that?",
+      "unsure": false
+    },
+    "r_8fa4d90c22db40e3a754ccb42db8a4d0": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_926264a11f99497ba99e57290746612f": {
+      "label": "customer",
+      "message_index": 19,
+      "quote": "Can I talk to someone who can actually see my saved addresses?",
+      "unsure": false
+    },
+    "r_92ed5ef266794094a826431280999a9d": {
+      "label": "customer",
+      "message_index": 17,
+      "quote": "Can I talk to someone who can actually do that?",
+      "unsure": false
+    },
+    "r_9420427f8ee6440089a67d2b1454364a": {
+      "label": "customer",
+      "message_index": 21,
+      "quote": "If you can't tell me when it's back, can I talk to someone who can actually fix this?",
+      "unsure": false
+    },
+    "r_965ca029b1dc45a99b58acb3844ea5c1": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_9901cd01fb114d869c5ee89ba7964c27": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_9b82df9b037b4ec9bb5035b5f216a100": {
+      "label": "customer",
+      "message_index": 20,
+      "quote": "Can I talk to a supervisor or someone who can actually handle the address securely and give me the recalculated totals?",
+      "unsure": false
+    },
+    "r_9d8f3235f0f7421f9f23832c7fa059d6": {
+      "label": "customer",
+      "message_index": 23,
+      "quote": "Can you look again or escalate so someone can apply the NYC address that’s already on file?",
+      "unsure": false
+    },
+    "r_a000d13a589a46129d9bbb77986d894b": {
+      "label": "agent",
+      "message_index": 12,
+      "quote": "I can transfer you to a human agent. Would you like me to do that?",
+      "unsure": false
+    },
+    "r_a22a0200563f4d65bfb1be73d63b8a80": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_a3d0ec041dac4337ba8cf340486ab692": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_a5305e5292a1423f9f6355df8155289b": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_a76a4581c1de40a5a2b056d0f8d3857d": {
+      "label": "customer",
+      "message_index": 21,
+      "quote": "Can I talk to someone who can actually make that happen?",
+      "unsure": false
+    },
+    "r_a939029c72b04f1ba9cb0968399429eb": {
+      "label": "agent",
+      "message_index": 20,
+      "quote": "or would you prefer help from a human agent?",
+      "unsure": false
+    },
+    "r_b2464a7eea6a4064b942c2376f8bc8c0": {
+      "label": "agent",
+      "message_index": 20,
+      "quote": "Would you like me to connect you with a human agent to discuss options beyond what I can handle here?",
+      "unsure": false
+    },
+    "r_b7dba7b10ed545dc937af5a5a22705d4": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_bba1396e3dd847b6bdc5fde6381afbfd": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_bbe162658fc34b30b3fb76c98b02d475": {
+      "label": "customer",
+      "message_index": 19,
+      "quote": "Can I just talk to someone who can actually fix this?",
+      "unsure": false
+    },
+    "r_bcef430467844bf69fad6bf90f172244": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_bdf4f02118d74bb99d182872f15ca8ca": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_be64bd818c41461b8f9b27934c84a938": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_bec5ec6cb9d64bf8a14009d1f4312882": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_c4ee72307cf5474fb78eab6a46d4090f": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_c668d591c34d459c82cc3cfd8693ad22": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_cd57a39d8b874f5abbb3df548b4c7f3e": {
+      "label": "customer",
+      "message_index": 17,
+      "quote": "Can you check again or get someone who can see it?",
+      "unsure": false
+    },
+    "r_ce10be0b1acc421e9a9750dc7878a762": {
+      "label": "customer",
+      "message_index": 16,
+      "quote": "Can I just talk to someone who can actually fix this?",
+      "unsure": false
+    },
+    "r_ce608d88a13d499db29b01d919d1087f": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_cf08950b2e444757978acfa58949766a": {
+      "label": "customer",
+      "message_index": 16,
+      "quote": "Can I just talk to someone who can actually fix this?",
+      "unsure": false
+    },
+    "r_cf59a2f7b8a44e38a74e88b5b7eeacda": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_cf8d8ae6f4074b588e389d23399a15eb": {
+      "label": "customer",
+      "message_index": 9,
+      "quote": "If that’s not allowed, can you escalate or tell me who can approve it?",
+      "unsure": false
+    },
+    "r_cffb0350688140dc923690724cba4541": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_d11bd96f5ce34a63bce0459e895ce17b": {
+      "label": "customer",
+      "message_index": 15,
+      "quote": "If you can't sort that out, can I just talk to someone who can actually fix this?",
+      "unsure": false
+    },
+    "r_d3e1270ee745418da2d51c5947def42c": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_d4f3c98fd1ac4cd9af7e61cded88c6eb": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_d6e141661883458295b5edd94699cda2": {
+      "label": "customer",
+      "message_index": 17,
+      "quote": "Is there someone who could look into the adjustments for me",
+      "unsure": false
+    },
+    "r_d719422a662346689678c0dd4ef62e08": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_d7d8138e80ce43ccabda025b19f6aadd": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_d8a5f840eb39434c81bb49c2256de690": {
+      "label": "customer",
+      "message_index": 13,
+      "quote": "Can I talk to someone who can actually fix this?",
+      "unsure": false
+    },
+    "r_d8fa7afc5ecc453ba7f4806feaf9c597": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_da30050ee69d486887136ef65749eb2b": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_dad2f71b88184f5e8af295ed55f827b5": {
+      "label": "customer",
+      "message_index": 31,
+      "quote": "then I need someone who can actually fix this. Can I talk to a supervisor?",
+      "unsure": false
+    },
+    "r_dced3a5b79214b47b866f2c67ba15956": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_dd30e09375f0426ba926f8b5deb9af40": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_e4cab783a5074715af617bfaff5c278d": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_e5c3dc98c2eb4357b51d581af07bf017": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_e65d771da242496ca05ae62f4e651af5": {
+      "label": "agent",
+      "message_index": 18,
+      "quote": "I can connect you with a human agent to help with the missing delivery issue.",
+      "unsure": false
+    },
+    "r_ea3fd66900114de8a6dbef99a865d6c5": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_ea745154bbed4e99af711c52bcd12210": {
+      "label": "customer",
+      "message_index": 28,
+      "quote": "Can you escalate this to someone who can see all saved addresses tied to my account?",
+      "unsure": false
+    },
+    "r_ea7a1034947c405da5f04e57deadb8be": {
+      "label": "customer",
+      "message_index": 33,
+      "quote": "Can I just talk to someone who can actually fix this?",
+      "unsure": false
+    },
+    "r_f0e0cc47a2bb42c0afcda872a402a021": {
+      "label": "customer",
+      "message_index": 21,
+      "quote": "Can you check again or have someone who can see it?",
+      "unsure": false
+    },
+    "r_f21170e6278b40db8e0a005fe7d634ba": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_f26b0303d1f84cbdb7a8940a77be2ed8": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_f3b70f1d85a84edcaf5ed780c4755af9": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_f474291b95f14839a10d4303f81f789c": {
+      "label": "customer",
+      "message_index": 15,
+      "quote": "If you can’t see it, can I talk to a supervisor?",
+      "unsure": false
+    },
+    "r_f88a565e223f44dc8ea900ed122648cb": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_f987d26361c342c08cac0ba430ac208b": {
+      "label": "customer",
+      "message_index": 21,
+      "quote": "Like, can someone else do it?",
+      "unsure": false
+    },
+    "r_fa206673b9af4363b2635feaa4409976": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_fb511b101a424ce1bab88e00f54f51be": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    },
+    "r_fd12b428cc2444e8bae6ac8d7dcee85b": {
+      "label": "unannounced",
+      "message_index": null,
+      "quote": "",
+      "unsure": false
+    }
+  }
+}

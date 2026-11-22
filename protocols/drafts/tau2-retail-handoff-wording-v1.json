@@ -1,0 +1,93 @@
+{
+  "format": "agent-memory-retail-handoff-wording/v1",
+  "name": "tau2-retail-handoff-wording-01",
+  "status": "draft",
+  "design": "docs/research/handoff-wording-pilot-v1.md",
+  "evidence": {
+    "analysis": {
+      "path": "artifacts/analyses/20261122-retail-handoff-factors.json",
+      "sha256": "deba29ce5a0247aa877ec1fd21a494b09171a5972e5042b6b893d0554b28e88f"
+    },
+    "verdicts": {
+      "path": "artifacts/analyses/20261122-retail-handoff-annotations.json",
+      "sha256": "7a212765fe5d40e41e2187a43f0970534e9eb4f2dcb7f4a8c463715ce0a04402"
+    }
+  },
+  "patterns": "Notes are classified by the blinded verdict file, never by keywords. Tool calls are counted by tool name; a spoken handoff offer in a replayed reply is decided by a blinded reading.",
+  "replay": {
+    "tasks": "The 33 retail tasks to which at least one note judged to mention a handoff was assigned in the three sealed second-pass studies.",
+    "states": {
+      "source": "Second-pass no-memory runs with official success only; these conversations were never exposed to a note. One state of each kind per task, taken from the first qualifying run in a fixed study and round order. No state is added or dropped after replay results are seen.",
+      "continued": "A run without any transfer: the worker request that produced the first customer-facing reply after the first successful get_order_details call. 25 tasks, 17 customers.",
+      "handed_off": "A run with a successful transfer_to_human_agents call: the worker request that issued it. 10 tasks, 10 customers."
+    },
+    "conditions": {
+      "none": "The recorded request, unchanged.",
+      "empty": "Memory suffix with the domain-auth-v2 notice and an empty item list.",
+      "original": "Each distinct note with content that was assigned to the task, delivered with the same suffix.",
+      "edited": "To be redesigned. Sentence deletion and one-sided title replacement removed order numbers and observed tool results together with the handoff wording. Required: the same title treatment in both edited versions, observed facts preserved, separate versions that change the report of a past handoff and the advice to hand off, and a matched edit of other clauses. Edited notes are frozen in a file with the original and edited text side by side before any send."
+    },
+    "notes_per_state_cap": "Proposal: at most four notes that mention a handoff and four that do not per state, lowest note hash first.",
+    "repetitions": null,
+    "schedule_seed": null,
+    "kept_from_original": "Conversation prefix, tool schema, model route, reasoning effort, seed and output cap of the recorded request.",
+    "not_executed": "Business tools, user simulator, grader, any later turn.",
+    "response_classes": [
+      "transfer_call",
+      "change_call",
+      "other_call",
+      "reply"
+    ],
+    "contrasts": {
+      "primary_induced_handoff": "Continued states: original notes that mention a handoff minus empty.",
+      "mention_specificity": "Continued states: the handoff edit minus the matched edit of other clauses.",
+      "suppressed_handoff": "Handed-off states: the handoff edit minus original.",
+      "plain_notes": "Both state kinds: original notes that do not mention a handoff minus empty.",
+      "notice_only": "Both state kinds: empty minus none."
+    },
+    "aggregation": "Average state differences per task, then per customer; resample customers 10,000 times. Report notes from the five sources with a successful multi-item order change (20, 21, 36, 71, 100) separately as well.",
+    "missing": "Errors and truncated responses stay unobserved; no imputation, no replacement send.",
+    "schedule": "Shuffle distinct inputs with the frozen seed; send the repetitions of one input back to back.",
+    "carry_forward": "A writing change aimed at handoff mentions becomes a candidate for the confirmation only if the primary and the specificity intervals both exclude zero in the expected direction. Other contrasts are descriptive.",
+    "spoken_offer": "Whether a reply offers a human handoff is decided by a blinded reading and reported separately from transfer calls."
+  },
+  "writing": {
+    "sources": "All 66 sealed first-pass public experiences of the same-task retail study, regardless of grade or handoff.",
+    "forms": [
+      "fact",
+      "episode",
+      "lesson",
+      "procedure"
+    ],
+    "feedback_levels": [
+      "none",
+      "result_only"
+    ],
+    "instruction": "Common optional-experience-writer-v1 text, the assigned form line, and the explicit store suffix of tau2-retail-transfer-revision-v1; identical for both feedback levels.",
+    "isolation": "Fresh writer session and empty bank per job; both levels hash-ordered in one batch; no target task, grade detail or analyst label reaches the writer.",
+    "writer_seed": null,
+    "primary": "Blinded stance of each stored note (no mention, recommends, discourages, mixed, records) after masking wording that reveals the feedback level; result_only minus none, paired within source and form. Average per task, then per customer; resample customers. Masking rule and rubric are frozen before any note is read; the rubric is the one in the verdict file.",
+    "secondary": "Share of notes that recommend a handoff, or criticise its absence, among sources that succeeded without one; retention of the first-pass replacement item number where the first pass failed on that choice; store rate and body length; descriptive split by first-pass grade and first-pass handoff.",
+    "not_measured": "Any later episode outcome."
+  },
+  "confirmation": {
+    "status": "structure only",
+    "customers": "Unresolved. Of the 114 pinned retail tasks only four customers with eight tasks lie outside the three studies; three of them appeared in the 19 November study and the remaining task 50 has a single transfer as its reference action. The source of a held-out sample must be chosen before this part is planned.",
+    "arms": "No-note repeated as often as each note arm, plus only the note changes that altered behavior or note content in the first two parts.",
+    "endpoints": [
+      "agent_initiated_early_handoff",
+      "required_change_completion",
+      "customer_explanation",
+      "official_success"
+    ],
+    "tasks": null,
+    "repetitions": null
+  },
+  "guards": {
+    "max_model_requests": null,
+    "max_reported_cost_usd": null,
+    "max_seconds": null
+  },
+  "budget": "No paid request before the user approves a ceiling and a separate ready profile freezes it. Reserve the verified per-request maximum for unpriced sends, stop the remaining assignments after an unknown charge, never reattempt a started assignment.",
+  "hold": "Not proposed for a paid run. The edit conditions, the confirmation sample and the writing measure must be settled first; see the design document."
+}
