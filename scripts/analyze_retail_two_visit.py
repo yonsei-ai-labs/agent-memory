@@ -336,13 +336,15 @@ def full_summaries(rows):
     return result
 
 
-def expense_by_stage(path):
+def expense_by_stage(path, *, before_stage=None):
     entries = {}
     if path.exists():
         with path.open("rb") as stream:
             for raw in stream:
                 require(raw.endswith(b"\n"), "Torn expense ledger")
                 row = read_json(raw)
+                if before_stage is not None and "reserved" in row and row["stage"] == before_stage:
+                    break
                 n = row["seq"]
                 if "reserved" in row:
                     require(n == len(entries) + 1, "Expense sequence changed")
@@ -369,7 +371,31 @@ def expense_by_stage(path):
     }
 
 
-def analyze(root, folder, secret, reviews):
+def bank_content_comparison(rows):
+    conditions = defaultdict(dict)
+    for r in rows:
+        if r["mode"] == "previous_only" and r["arm"] in {"preload", "empty_preload"}:
+            conditions[r["task"]][r["arm"]] = r
+    totals = defaultdict(Counter)
+    for pair in conditions.values():
+        left, right = pair["preload"], pair["empty_preload"]
+        if "unobserved" in {left["behavior"], right["behavior"]}:
+            continue
+        if left["bank_mentions_target_order"]:
+            content = "contains_target_id"
+        elif left["bank_size"]:
+            content = "nonempty_without_target_id"
+        else:
+            content = "empty_bank"
+        totals[content].update(
+            pairs=1,
+            preload_focused=int(left["behavior"] == "focused_target"),
+            empty_preload_focused=int(right["behavior"] == "focused_target"),
+        )
+    return {k: dict(v) for k, v in totals.items()}
+
+
+def analyze(root, folder, secret, reviews, *, first_only=False):
     registration = read(folder / "registration.json")
     design = registration["design"]
     require(
@@ -391,6 +417,7 @@ def analyze(root, folder, secret, reviews):
         row = {
             "customer": j["customer"],
             "task": j["task"],
+            "source": j["source"],
             "arm": j["arm"],
             "mode": j["mode"],
             "position": j["position"],
@@ -419,7 +446,7 @@ def analyze(root, folder, secret, reviews):
             )
             row.update(uptake(list(partial["events"].values()), BlobStore(path)))
         rows.append(row)
-        if registration["continuation"] == "sample" and not j["in_sample"]:
+        if first_only or (registration["continuation"] == "sample" and not j["in_sample"]):
             continue
         receipt = read_receipt(path, "continuation")
         blind = hmac.new(secret, j["run"].encode(), sha256).hexdigest()[:32]
@@ -454,6 +481,21 @@ def analyze(root, folder, secret, reviews):
             packets[blind] = {"turns": turns, "turns_sha256": digest(canonical(turns))}
             consult.update(grade_turns(turns, j["target"], receipt["db_reward"], reviews.get(blind)))
         full.append(consult)
+    if first_only:
+        require(
+            all(r["decision_status"] not in {"not_started", "interrupted"} for r in rows),
+            "First-decision stage has not closed",
+        )
+        return {
+            "study": design["name"],
+            "registration_sha256": digest((folder / "registration.json").read_bytes()),
+            "implementation_commit": registration["freeze"]["implementation_commit"],
+            "schedule_sha256": registration["preflight"]["schedule_sha256"],
+            "first": summaries(rows, design),
+            "exploratory_bank_content": bank_content_comparison(rows),
+            "expense_by_stage": expense_by_stage(folder / "expense.jsonl", before_stage="continuation"),
+            "decisions": rows,
+        }, {}
     require(reviews.keys() <= packets.keys(), "Review outside the completed cohort")
     return {
         "first": summaries(rows, design),
@@ -471,16 +513,26 @@ if __name__ == "__main__":
     parser.add_argument(
         "--blind-key",
         type=Path,
-        required=True,
         help="Analyst-only file of at least 32 random bytes, reused for grading",
     )
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument(
+        "--first-only",
+        action="store_true",
+        help="Publish the closed first decisions independently of ongoing continuations",
+    )
     parser.add_argument("--packets", type=Path)
     parser.add_argument("--reviews", type=Path)
     args = parser.parse_args()
-    secret = args.blind_key.read_bytes()
-    require(len(secret) >= 32, "Blinding key is too short")
-    result, packets = analyze(ROOT, args.run, secret, read(args.reviews) if args.reviews else {})
+    secret = args.blind_key.read_bytes() if args.blind_key else None
+    require(
+        (args.first_only and not args.packets and not args.reviews)
+        or (not args.first_only and secret is not None and len(secret) >= 32),
+        "Full review needs a blinding key of at least 32 bytes",
+    )
+    result, packets = analyze(
+        ROOT, args.run, secret, read(args.reviews) if args.reviews else {}, first_only=args.first_only
+    )
     publish(args.output, result)
     if args.packets:
         publish(args.packets, dict(sorted(packets.items())))
