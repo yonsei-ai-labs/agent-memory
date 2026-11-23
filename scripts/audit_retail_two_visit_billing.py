@@ -13,14 +13,15 @@ from scripts.audit_retail_order_choice import publish
 from scripts.run_retail_two_visit import read
 
 
-def audit(folder):
+def audit(folder, *, allow_interrupted_decisions=False):
     registration = read(folder / "registration.json")
     jobs = registration["jobs"]
     if registration.get("format") == "retail-derived-two-visit/recovery-v1":
         jobs = {**jobs, **read(folder / "upstreams.json")["attempts"]}
     grants = read(folder / "authorization.json")
-    ledger = (folder / "expense.jsonl").read_bytes()
-    require(ledger.endswith(b"\n"), "Truncated expense ledger")
+    path = folder / "expense.jsonl"
+    ledger = path.read_bytes() if path.exists() or not allow_interrupted_decisions else b""
+    require(ledger.endswith(b"\n") or (allow_interrupted_decisions and not ledger), "Truncated expense ledger")
     reservations = {}
     calls = defaultdict(list)
     exposure = Decimal(0)
@@ -48,6 +49,24 @@ def audit(folder):
     generation_ids = set()
     counts = Counter()
     by_stage = defaultdict(lambda: Counter())
+    interrupted = Counter()
+
+    def match_reservation(step, run, request, blobs):
+        slot = (step, run)
+        reservation = calls[slot][counts[slot]]
+        require(reservation["wire_sha256"] == request["request_ref"]["sha256"]
+                and reservation["seq"] not in matched, "Journal and expense wire differ")
+        wire = blobs.get(request["request_ref"])
+        actor = "user_simulator" if request["actor_role"] == "user_simulator" else "worker"
+        endpoint = registration["endpoints"][actor]
+        require(reservation["model"] == wire["model"] == endpoint["model"]
+                and Decimal(reservation["reserved"]) == request_reservation_usd(wire, endpoint),
+                "Reserved maximum differs from the wire or registered prices")
+        counts[slot] += 1
+        matched.add(reservation["seq"])
+        by_stage[step]["submissions"] += 1
+        return reservation
+
     for initial in ("source", "writer", "decision"):
         for j in jobs[initial]:
             stage = initial
@@ -57,7 +76,12 @@ def audit(folder):
                 continue
             blobs = BlobStore(path)
             prior = {}
-            for line in log.read_bytes().splitlines():
+            incomplete = (allow_interrupted_decisions and initial == "decision"
+                          and (path / "decision.started").exists() and not (path / "decision.json").exists())
+            raw_log = log.read_bytes()
+            if incomplete and not raw_log.endswith(b"\n"):
+                raw_log = raw_log[:raw_log.rfind(b"\n") + 1]
+            for line in raw_log.splitlines():
                 for e in read_json(line)["events"]:
                     p = e["payload"]
                     if p.get("origin") == "revisit.continued":
@@ -71,26 +95,8 @@ def audit(folder):
                     if p["delivery_status"] == "not_submitted":
                         counts["local_rejection_without_submission"] += 1
                         continue
-                    slot = (step, j["run"])
-                    position = counts[slot]
-                    r = calls[slot][position]
-                    require(
-                        r["wire_sha256"] == req["request_ref"]["sha256"] and r["seq"] not in matched,
-                        "Journal and expense wire differ",
-                    )
-                    wire = blobs.get(req["request_ref"])
-                    endpoint = registration["endpoints"][
-                        "user_simulator" if req["actor_role"] == "user_simulator" else "worker"
-                    ]
-                    require(
-                        r["model"] == wire["model"] == endpoint["model"]
-                        and Decimal(r["reserved"]) == request_reservation_usd(wire, endpoint),
-                        "Reserved maximum differs from the wire or registered prices",
-                    )
-                    counts[slot] += 1
-                    matched.add(r["seq"])
+                    r = match_reservation(step, j["run"], req, blobs)
                     group = by_stage[step]
-                    group["submissions"] += 1
                     if p["cost_status"] == "observed":
                         raw = blobs.get(p["response_ref"])
                         require(
@@ -110,7 +116,25 @@ def audit(folder):
                         require("cost" not in r, "Settled charge marked unknown")
                         group["held_usd"] += Decimal(r["reserved"])
                         group["unpriced_calls"] += 1
-            require(not prior, "Unsettled model request without terminal evidence")
+            if prior:
+                require(incomplete and len(prior) == 1, "Unsettled model request without terminal evidence")
+                (step, req), = prior.values()
+                slot = (step, j["run"])
+                if counts[slot] == len(calls[slot]):
+                    interrupted["before_reservation"] += 1
+                    continue
+                r = match_reservation(step, j["run"], req, blobs)
+                if "cost" in r:
+                    by_stage[step]["confirmed_usd"] += Decimal(r["cost"])
+                    by_stage[step]["priced_calls"] += 1
+                    if r.get("generation"):
+                        require(r["generation"] not in generation_ids, "Reused provider generation")
+                        generation_ids.add(r["generation"])
+                    interrupted["ledger_settled_without_journal_finish"] += 1
+                else:
+                    by_stage[step]["held_usd"] += Decimal(r["reserved"])
+                    by_stage[step]["unpriced_calls"] += 1
+                    interrupted["reserved_without_journal_finish"] += 1
     require(matched == set(reservations), "Unmatched expense entries")
     total = sum((g["confirmed_usd"] for g in by_stage.values()), Decimal(0))
     held = sum((g["held_usd"] for g in by_stage.values()), Decimal(0))
@@ -139,6 +163,7 @@ def audit(folder):
         "held_usd": str(held),
         "peak_confirmed_plus_held_usd": str(maximum_exposure),
         "authorized_usd": grants["max_usd"],
+        **({"interrupted_requests": dict(interrupted)} if allow_interrupted_decisions else {}),
         "per_stage": {
             s: {k: str(v) if isinstance(v, Decimal) else v for k, v in g.items()} for s, g in by_stage.items()
         },

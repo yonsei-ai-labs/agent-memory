@@ -1,0 +1,75 @@
+{
+  "name": "tau2-retail-conditional-retrieval-01",
+  "format": "retail-fixed-decision-optional-retrieval/v1",
+  "status": "draft",
+  "authorization": null,
+  "inputs": {
+    "base_design": {"path": "protocols/drafts/tau2-retail-two-visit-v1.json", "sha256": "f15e39856e9e0069e6b7102bb1687dda2719ed7a25c967c382f8f0ce4c5fda77"},
+    "cohort": {"path": "artifacts/analyses/20261122-retail-order-pairs.json", "sha256": "9f879334ca64b7f3fec976b2610fd334d70470c8622b0e51873c79d666aaaf73"},
+    "previous_preflight": {"path": "artifacts/analyses/20261122-retail-two-visit-preflight.json", "sha256": "86c4a538ba7b147757a8905b6697a854217817eaef0961d6a2346725d1728314"},
+    "previous_results": {"path": "artifacts/analyses/20261122-retail-two-visit-results-with-recovery.json", "sha256": "5808756f078cc26b39f0453460582d079d9e4eb2eefd47b5dae8b8b586892ad3"},
+    "previous_audit": {"path": "artifacts/analyses/20261122-retail-two-visit-final-audit.json", "sha256": "7079c985f82d3667c136c048cfa263b05e4bbddb7c406ae0c9debcce62a15c8f"}
+  },
+  "instructions": {
+    "current": {"path": "protocols/instructions/tau2-retail-optional-retrieval.txt", "sha256": "9294abf6d69985d226e8137ee4b70aea821f2c81f62ad5b2e92e964d62879762"},
+    "conditional": {"path": "protocols/instructions/tau2-retail-conditional-retrieval-v1.txt", "sha256": "31e1a9f8e61a2f657a5dda40940f91b8f8c5bac35252753cf9bd3e6fbf1fa70f"}
+  },
+  "banks": {
+    "writer_roots": [
+      {"path": "runs/tau2-retail-two-visit-01", "registration_sha256": "76edfdcb14ef4a61bfd0e0693b087caaab8ddd5000c336aad6fbe654dbb795cb"},
+      {"path": "runs/tau2-retail-two-visit-01-recovery", "registration_sha256": "6bee579772afe8854c00a1a5f4a6f7321180434f44e7d5a06c785ab6edb94af2"}
+    ],
+    "form_order": ["fact", "episode", "lesson", "procedure"],
+    "source_bank_pairs_sha256": "daf136dc4181ad4cde87a571aad8bb7af053ce66e4ab41e2a78ba353c9f59619",
+    "verify": "For each source and form require one completed or voluntary-empty sealed writer receipt across both roots. Concatenate snapshot items in form order. Compare each digest with the archived query decision for every case. Hash the sorted [source, items_sha256] pairs with repository canonical JSON. Preserve the two naturally empty source banks."
+  },
+  "arms": {
+    "current_query": {"instruction": "current", "native_arm": "query"},
+    "current_empty_query": {"instruction": "current", "native_arm": "empty_query"},
+    "conditional_query": {"instruction": "conditional", "native_arm": "query"},
+    "conditional_empty_query": {"instruction": "conditional", "native_arm": "empty_query"}
+  },
+  "allocation": {
+    "salt": "retail-two-visit-optional-query-v1",
+    "modes": ["previous_only", "explicit_same", "explicit_other"],
+    "customers": 77,
+    "sources": 154,
+    "cases": 462,
+    "distinct_public_prefixes": 231,
+    "repeats_per_cell": 1,
+    "decision_sessions": 1848,
+    "schedule_sha256": "5baaf0375f7c1d418d0b71cade4ed2276d7e812f9b465764b36343faefa40939",
+    "schedule": "Sort cases by key(salt, 'case', task). Within each case sort arms by key(salt, 'arm', task, arm). Each row is [customer, task, source, mode, public_prefix_sha256, arm, run, keep]. Run is 'r_' plus the first 32 hex characters of key(salt, 'decision', task, arm). Keep marks customers in previous_preflight.continuation_sample. Hash the ordered rows with repository canonical JSON."
+  },
+  "decision": {
+    "worker": "openai/gpt-6-luna",
+    "provider": "openai",
+    "seed": 12,
+    "reasoning_effort": "low",
+    "max_completion_tokens": 2048,
+    "worker_requests_per_session": 4,
+    "max_worker_requests_for_decisions": 7392,
+    "user_simulator_requests_for_decisions": 0,
+    "new_source_sessions": 0,
+    "new_writer_sessions": 0,
+    "target": "First public reply or first response with a business tool, after authentication and profile read. Fresh DB and read-only bank per cell. Preserve the raw batch. Only memory_list and memory_get are private tools."
+  },
+  "analysis": {
+    "primary_mode": "previous_only",
+    "primary_outcome": "By the fourth valid worker response, the first business decision contains a single business call, get_order_details for the current target. Ignore the two private tools when counting business calls. A customer reply or four valid private-only responses scores zero. A technical failure before the decision is missing.",
+    "primary_contrast": {"conditional_query": 1, "conditional_empty_query": -1, "current_query": -1, "current_empty_query": 1},
+    "unit": "Average complete four-arm cases within customer first, then give customers equal weight. Report raw arm outcomes, both simple bank contrasts, the two within-bank prompt contrasts and complete-case coverage. Bound every missing binary outcome over all allocated cases using its coefficient sign.",
+    "uncertainty": {"cluster": "customer", "replicates": 10000, "seed": 20261123, "interval": "2.5th and 97.5th empirical percentiles of jointly resampled customer contrasts, conditional on the frozen source banks"},
+    "mechanism": "Log whether each private tool was requested, the fields returned, and title or body evidence included in the actual worker request generating the first business decision. Mark retrieval in the same output batch separately. Score strict raw single-call focus as a sensitivity check.",
+    "selectivity": "In source-bank arms calculate conditional minus current first-response probability of requesting either private tool in each mode. Subtract the equal-weight mean of both explicit-mode differences from the previous_only difference.",
+    "guardrail": "In explicit_other count any first business batch querying the past order, including a batch that also queries the current one. Report both real-bank arms, other wrong orders, mutation requests and missing cases. Bound the conditional minus current difference across all matched source-bank cases.",
+    "cost": "For each mode and arm report worker calls, prompt and completion tokens, cache usage, confirmed charges and maximum held unpriced submissions through the first decision. Include charges for technical failures. Give both registered and observed denominators. Historical source and writing costs are separate."
+  },
+  "continuation": {
+    "stage_in_scope": false,
+    "checkpoint_customers": 26,
+    "checkpoint_sessions": 624,
+    "selection": "Use the previous preflight's frozen 18 plus 8 position-stratified customers. Keep every arm and case for those customers that reaches a first business decision.",
+    "review": "Review after all first decisions. Recommend a separate same-session continuation only with a positive lower customer interval and positive worst-case missing bound for the primary contrast, positive benefit for each of conditional_query versus current_query and conditional_query versus conditional_empty_query, positive selectivity, and a previous_only conditional_query correct decision with a source title or body already in its input. Report how many of these inputs contained the target identifier. For prior-order lookup in explicit_other require the upper missing-outcome bound on conditional_query minus current_query to be at most zero. Report uncertainty in harms. A future continuation needs its own scope and funding."
+  }
+}

@@ -282,6 +282,8 @@ def recover_finished(folder, stage, job, keep):
     ended = next((e["payload"] for e in reversed(events) if e["type"] == "run.ended"), None)
     blobs = BlobStore(folder)
     if stage == "decision":
+        if ended and ended["termination_reason"] == "private_read_limit":
+            return {"status": "private_read_limit", "run": job["run"]}
         marker = next(
             (e["payload"] for e in events if e["payload"].get("origin") == "revisit.first_decision"), None
         )
@@ -400,7 +402,9 @@ def run_job(stage, job, runtime, tasks, prefixes, folder, dest, sources, writers
         upstream = read_receipt(dest / src["run"], "source")
         if not upstream or upstream["status"] != "completed":
             return {"status": "source_missing"}
-    if stage == "decision" and arm in {"query", "preload"}:
+    if stage == "decision" and job.get("native_arm") == "query":
+        items, lineage = runtime["source_banks"][job["source"]]
+    elif stage == "decision" and arm in {"query", "preload"}:
         for form in runtime["protocol"]["forms"]:
             w = writers[job["source"], form]
             wr = read_receipt(dest / w["run"], "writer")
@@ -442,7 +446,7 @@ def run_job(stage, job, runtime, tasks, prefixes, folder, dest, sources, writers
             raise
 
 
-def live(root, study):
+def live(root, study, *, design_path=DRAFT, preflight_path=PREFLIGHT):
     p = study["protocol"]
     require(
         p.get("status") == "ready"
@@ -463,7 +467,7 @@ def live(root, study):
         and auth["max_seconds"] > 0,
         "Invalid authorization",
     )
-    require(read(root / PREFLIGHT) == study["record"], "Live allocation differs from the published preflight")
+    require(read(root / preflight_path) == study["record"], "Live allocation differs from the published preflight")
     freeze = implementation_identity(root)
     frozen = study["models"]
     models = live_models(study["connection"])
@@ -481,7 +485,7 @@ def live(root, study):
         fixed(
             dest / "registration.json",
             {
-                "design": read(root / DRAFT),
+                "design": read(root / design_path),
                 "freeze": freeze,
                 "preflight": study["record"],
                 "jobs": study["jobs"],
@@ -511,19 +515,20 @@ def live(root, study):
         guard = ExpenseLedger(
             dest / "expense.jsonl", auth["max_usd"], auth["max_requests"], time.monotonic() + remaining
         )
+        episode = study.get("episode_protocol", p)
         clients = {
             r: OpenRouterClient(
                 m,
                 guard,
                 route=study["connection"][r]["provider"],
-                max_input_bytes=p["limits"]["max_input_bytes"],
-                timeout_seconds=p["request_timeout_seconds"],
+                max_input_bytes=episode["limits"]["max_input_bytes"],
+                timeout_seconds=episode["request_timeout_seconds"],
             )
             for r, m in models.items()
         }
         totals = execute(
             study,
-            dict(study, models=models, guard=guard, clients=clients),
+            dict(study, protocol=episode, models=models, guard=guard, clients=clients),
             through=auth["through"],
             continuation=auth["continuation"],
             destination=dest,

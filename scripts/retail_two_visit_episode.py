@@ -8,6 +8,7 @@ from agent_memory_eval.adapters.tau2 import Tau2Bridge
 from agent_memory_eval.adapters.tau2_memory import Tau2MemoryBridge
 from agent_memory_eval.contracts.connection import provider_route
 from agent_memory_eval.contracts.core import (
+    ContractError,
     MemoryPolicy,
     RunContext,
     canonical,
@@ -382,20 +383,32 @@ def bridge_instruction(arm, instructions):
     return instructions["query"] if arm in {"query", "empty_query"} else ""
 
 
+def decision_interface(job, instructions):
+    arm = job.get("native_arm", job["arm"])
+    instruction = instructions[job["instruction"]] if "instruction" in job else bridge_instruction(arm, instructions)
+    return arm, policy_for(arm), instruction
+
+
 def first_decision(journal, job, task, prefix, runtime, items, sources, *, keep):
     protocol = runtime["protocol"]
+    arm, policy, inst = decision_interface(job, runtime["instructions"])
     require(
         digest(canonical(prefix)) == job["prefix"]
-        and not (job["arm"] in {"no_memory", "empty_query", "empty_preload"} and items),
+        and not (arm in {"no_memory", "empty_query", "empty_preload"} and items),
         "Wrong public prefix or control bank",
     )
     cfg, orch, _ = build_episode(protocol, runtime["connection"], task, prefix=prefix)
-    policy = policy_for(job["arm"])
-    ctx, memory, bank = start(journal, job, runtime, orch, policy, items, sources)
-    inst = bridge_instruction(job["arm"], runtime["instructions"])
-    bridge = target_bridge(journal, ctx, orch, cfg, runtime, memory, bank, policy, inst)
     expected = first_wire(cfg, orch, prefix, policy, inst, items)
-    limit = protocol["first_worker_requests"] if job["arm"] in {"query", "empty_query"} else 1
+    if "initial_sha256" in job:
+        require(
+            digest(canonical(expected)) == job["initial_sha256"]
+            and digest(canonical(items)) == job["items_sha256"]
+            and sources == job["writer_runs"],
+            "Decision input, source writers or bank differ from registration",
+        )
+    ctx, memory, bank = start(journal, job, runtime, orch, policy, items, sources)
+    bridge = target_bridge(journal, ctx, orch, cfg, runtime, memory, bank, policy, inst)
+    limit = protocol["first_worker_requests"] if arm in {"query", "empty_query"} else 1
     bridge.gateway = FirstDecisionGateway(journal, expected, limit)
     orch.initialize()  # Auth and profile are read-only and checked by the native strict replay.
     for i, (public, rendered) in enumerate(
@@ -408,8 +421,19 @@ def first_decision(journal, job, task, prefix, runtime, items, sources, *, keep)
         journal.append([event])
         bridge.remember(i, rendered, (bridge.registry.add("business_result", event["event_id"]), ""))
     t0 = time.perf_counter()
-    with bridge:
-        orch.step()  # Private memory-only rounds happen inside this one native agent step.
+    try:
+        with bridge:
+            orch.step()  # Private memory-only rounds happen inside this one native agent step.
+    except ContractError as error:
+        if str(error) != "FIRST_DECISION_LIMIT" or not job.get("score_private_limit"):
+            raise
+        private = [
+            e for e in journal.events.values()
+            if e["payload"].get("origin") == "tau2_memory_dispatch" and e["payload"]["memory_only"]
+        ]
+        require(len(private) == bridge.gateway.count == limit, "Unverified private-only response limit")
+        finish(journal, ctx, memory, bank, "private_read_limit")
+        return {"status": "private_read_limit", "run": job["run"]}
     raw, _, rid = bridge.last_response
     require(
         orch.step_count == 1
@@ -492,9 +516,9 @@ def continue_decision(journal, job, task, prefix, runtime, record):
         "solve",
         started["record_kind"],
     )
-    policy, bank = policy_for(job["arm"]), started["payload"]["bank_id"]
+    _, policy, inst = decision_interface(job, runtime["instructions"])
+    bank = started["payload"]["bank_id"]
     memory = MemoryService(journal, record_kind=ctx.record_kind)
-    inst = bridge_instruction(job["arm"], runtime["instructions"])
     bridge = target_bridge(journal, ctx, orch, cfg, runtime, memory, bank, policy, inst)
     items = snapshot_items(journal.blobs, journal.state, started["payload"]["start_snapshot_id"]) if bank else []
     require(

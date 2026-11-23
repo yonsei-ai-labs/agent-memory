@@ -7,11 +7,16 @@ from copy import deepcopy
 from decimal import Decimal
 from pathlib import Path
 from tempfile import TemporaryDirectory
+from unittest.mock import patch
 
+from agent_memory_eval.analysis.paired_policy import customer_contrast
 from agent_memory_eval.contracts.core import ContractError, canonical, digest
 from agent_memory_eval.contracts.validation import ROOT
-from agent_memory_eval.models.openrouter import ProviderError
-from agent_memory_eval.recording.journal import Journal
+from agent_memory_eval.models.openrouter import ProviderError, request_reservation_usd
+from agent_memory_eval.recording.journal import BlobStore, Journal
+from scripts.audit_retail_two_visit_billing import audit as audit_billing
+from scripts.analyze_retail_conditional_retrieval import score_session, summarize as summarize_conditional
+from scripts.run_retail_conditional_retrieval import DRAFT as CONDITIONAL_DRAFT
 from scripts.analyze_retail_two_visit import (
     decision,
     differences,
@@ -20,8 +25,11 @@ from scripts.analyze_retail_two_visit import (
 )
 from scripts.prepare_retail_order_pairs import current_cases
 from scripts.retail_two_visit_episode import (
+    build_episode,
     continue_decision,
     first_decision,
+    first_wire,
+    policy_for,
     run_source,
     run_writer,
 )
@@ -309,8 +317,135 @@ class NativeTwoVisitTests(unittest.TestCase):
         self.assertEqual(run()["decision"], {"bank_missing": 2, "decision": 1})
         self.assertEqual(len(rt["clients"]["worker"].wires), 1)
 
+    def test_conditional_decisions_and_exposure_from_the_generating_request(self):
+        oid, src = self.case["target"], self.case["source"]
+        item = dict(self.item, body="Earlier order was " + oid)
+        locate = call("get_order_details", order_id=oid)
+        listing, get = call("memory_list"), call("memory_get", id=item["id"])
+        examples = [
+            ("mixed", "query", [[listing], [get, locate]], "checkpoint", True, {"title"}),
+            ("body", "query", [[listing], [get], [locate]], "decision", True, {"title", "body"}),
+            ("limit", "query", [[listing]] * 4, "private_read_limit", False, set()),
+            ("empty", "empty_query", [[listing], "Which order?"], "decision", False, set()),
+            ("error", "query", [], "error", None, set()),
+        ]
+        for label, interface, responses, status, focused, fields in examples:
+            with self.subTest(label=label):
+                rt = self.runtime(responses, [])
+                rt["instructions"] = {"conditional": "If the order is unclear, you may consult notes."}
+                rt["source_banks"] = {src: ([item], ["r_writer"])}
+                rt["guard"] = ExpenseLedger(self.root / "ledger", "1", 4, time.monotonic() + 60)
+                cfg, orch, _ = build_episode(self.protocol, self.connection, self.task, prefix=self.prefix)
+                wire = first_wire(cfg, orch, self.prefix, policy_for(interface), rt["instructions"]["conditional"], [])
+                real = interface == "query"
+                job = dict(self.job("conditional_" + interface), native_arm=interface, instruction="conditional",
+                           run="r_" + label, source=src, customer="test_customer", position=2, mode="previous_only",
+                           history=oid, score_private_limit=True, in_sample=label == "mixed",
+                           items_sha256=digest(canonical([item] if real else [])), writer_runs=["r_writer"] if real else [],
+                           initial_sha256=digest(canonical(wire)))
+                jobs = {"source": [], "writer": [], "decision": [job], "continuation": []}
+                study = {"jobs": jobs, "tasks": self.tasks, "public": self.prefixes}
+                client = rt["clients"]["worker"]
+                with patch.object(client, "respond", wraps=client.respond) as send, patch("scripts.run_retail_two_visit.time.sleep"):
+                    if label == "error":
+                        send.side_effect = ProviderError("HTTP_503", submitted=True)
+                    for _ in range(2):
+                        counts = execute(study, rt, through="decision", continuation="sample", destination=self.root)
+                        self.assertEqual(counts["decision"], {status: 1})
+                    self.assertEqual(send.call_count, max(1, len(responses)))
+                folder = self.root / job["run"]
+                receipt = read(folder / "decision.json")
+                result = score_session(folder, job, receipt)
+                self.assertEqual(result["focused"], focused)
+                self.assertEqual({e["field"] for e in result["included"]}, fields)
+                self.assertEqual(any(e["target_identifier"] for e in result["included"]), label == "body")
+                self.assertEqual(rt["clients"]["user_simulator"].wires, [])
+                if label == "mixed":
+                    self.assertTrue(result["mixed"])
+                    self.assertFalse(result["strict_focused"])
+                    self.assertTrue(result["first_lookup"])
+                    resumed = self.runtime(["Shall I cancel " + oid + " because it is no longer needed?",
+                                            [call("cancel_pending_order", order_id=oid, reason="no longer needed")],
+                                            "Cancelled."], ["Yes, please cancel that order.", "###STOP###"])
+                    resumed["instructions"] = rt["instructions"]
+                    with Journal(folder, job["run"], contract_version="1.2") as journal:
+                        self.assertEqual(continue_decision(journal, job, self.task, self.prefix, resumed, receipt)["db_reward"], 1)
+                    self.assertEqual(score_session(folder, job, receipt), result)
+                if label == "limit":
+                    self.assertEqual(recover_finished(folder, "decision", job, False)["status"], status)
+
 
 class LedgerTests(unittest.TestCase):
+    def test_interrupted_decision_retains_its_verified_wire_reservation(self):
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            path = root / "r_interrupted"
+            path.mkdir()
+            (path / "decision.started").touch()
+            endpoint = {"model": "synthetic", "pricing": {"prompt": "0.00001", "completion": "0.00002"}}
+            wire = {"model": "synthetic", "messages": [], "max_tokens": 2}
+            reservation = str(request_reservation_usd(wire, endpoint))
+            ref = BlobStore(path).put(wire)
+            req = {"actor_role": "worker", "request_id": "q1", "request_ref": ref}
+            event = {"type": "model.request_started", "payload": req}
+            (path / "log.jsonl").write_bytes(canonical({"events": [event]}) + b"\n")
+            reg = {"jobs": {"source": [], "writer": [], "decision": [{"run": path.name}]},
+                   "endpoints": {"worker": endpoint}, "freeze": {"implementation_commit": "mock"}}
+            (root / "registration.json").write_bytes(canonical(reg))
+            (root / "authorization.json").write_bytes(canonical({"max_usd": 1, "max_requests": 4}))
+            (root / "summary.json").write_bytes(canonical({"confirmed_usd": "0", "held_usd": "0", "reserved_calls": 0}))
+            first = audit_billing(root, allow_interrupted_decisions=True)
+            self.assertEqual(first["interrupted_requests"], {"before_reservation": 1})
+            line = {"seq": 1, "reserved": reservation, "wire_sha256": ref["sha256"], "model": "synthetic",
+                    "stage": "decision", "run": path.name}
+            (root / "expense.jsonl").write_bytes(canonical(line) + b"\n")
+            (root / "summary.json").write_bytes(canonical({"confirmed_usd": "0", "held_usd": reservation, "reserved_calls": 1}))
+            held = audit_billing(root, allow_interrupted_decisions=True)
+            self.assertEqual(held["held_usd"], reservation)
+            self.assertEqual(held["interrupted_requests"], {"reserved_without_journal_finish": 1})
+            with self.assertRaises(ContractError):
+                audit_billing(root)
+
+    def test_continuation_requires_real_improvement_and_exposure(self):
+        design = read(ROOT / CONDITIONAL_DRAFT)
+        rows = []
+        for customer in ("a", "b"):
+            for scenario in design["allocation"]["modes"]:
+                for arm in design["arms"]:
+                    prev = scenario == "previous_only"
+                    informed = prev and arm == "conditional_query"
+                    rows.append(dict(customer=customer, source=customer, mode=scenario, arm=arm,
+                        focused=not prev or informed, strict_focused=not prev or informed, prior_lookup=False,
+                        status="decision", behavior="focused_target" if not prev or informed else "customer_reply",
+                        first_lookup=informed, other_order_lookup=False, mutation=False, list_requested=informed,
+                        get_requested=False, title_returned=informed, body_returned=False, mixed=False,
+                        requests_started=1, prompt_tokens=1, completion_tokens=1, cached_tokens=0,
+                        cache_write_tokens=0, submissions=1, confirmed_usd="0", held_usd="0",
+                        included=[{"field": "title", "target_identifier": True}] if informed else []))
+        positive = summarize_conditional(rows, design)
+        self.assertTrue(positive["recommend_continuation"])
+        self.assertEqual(positive["correct_after_target_identifier"], 2)
+        for r in rows:
+            if r["mode"] == "previous_only" and r["arm"].startswith("current_"):
+                r["focused"] = True
+        ambiguous = summarize_conditional(rows, design)
+        self.assertEqual(ambiguous["primary"]["difference"], 1)
+        self.assertFalse(ambiguous["recommend_continuation"])
+
+    def test_four_way_bounds_and_equal_customer_weighting(self):
+        terms = {"new": 1, "new_empty": -1, "old": -1, "old_empty": 1}
+        cases = {
+            ("a", "1"): dict(zip(terms, [1, 0, 0, 0])),
+            ("a", "2"): dict(zip(terms, [1, None, 0, 0])),
+            ("b", "3"): dict(zip(terms, [0, 0, 1, 0])),
+            ("b", "4"): dict(zip(terms, [0, 0, 1, 0])),
+        }
+        result = customer_contrast(cases, terms, uncertainty={"seed": 12, "replicates": 100})
+        self.assertEqual(result["complete_cases"], 3)
+        self.assertEqual(result["difference"], 0)
+        self.assertEqual(result["bounds"], [-.25, 0])
+        self.assertEqual(result["interval"], [-1, 1])
+
     def test_missing_binary_outcomes_keep_registered_bounds_and_customer_weights(self):
         rows = []
         for u, task, a, b in (
