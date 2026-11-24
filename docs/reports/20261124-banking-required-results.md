@@ -1,6 +1,6 @@
 # τ³ 은행 과제에서 필수 작성과 메모 전달을 비교한 결과
 
-같은 무기억 상담 네 건에서 사실·경험·절차·교훈·자유 메모를 각각 하나씩 저장했다. 작성 20건과 이후 상담 40건 모두 완료됐다. 원천의 무기억 성공은 1/4, 2회차 성공은 자동 제공 8/20과 자율 조회 7/20이었다. 자율 조회 상담원이 메모 목록이나 본문을 연 횟수는 0이었다. 메모에서 가져온 표현을 첫 업무 판단까지 추적한 사례는 있었고, 성공률 개선을 일반화할 근거는 부족하다. [등록과 배정](../../protocols/pilots/tau-banking-required-v1.json) · [전체 결과와 요청별 근거](../../artifacts/analyses/20261124-banking-required-results.json)
+같은 무기억 상담 네 건에서 사실·경험·절차·교훈·자유 메모를 각각 하나씩 저장했다. 작성 20건과 이후 상담 40건 모두 완료됐다. 원천의 무기억 성공은 1/4, 2회차 성공은 자동 제공 8/20과 자율 조회 7/20이었다. 자율 조회 상담원이 메모 목록이나 본문을 연 횟수는 0이었다. 원천 문서, 메모 본문, 첫 업무 검색에 같은 도구 이름이 등장한 사례는 있었고, 성공률 개선을 일반화할 근거는 부족하다. [등록과 배정](../../protocols/pilots/tau-banking-required-v1.json) · [전체 결과와 요청별 근거](../../artifacts/analyses/20261124-banking-required-results.json)
 
 ## 작성과 회차 격리
 
@@ -68,5 +68,7 @@
 python -m scripts.analyze_banking_memory > /tmp/banking-required-results.json
 cmp /tmp/banking-required-results.json artifacts/analyses/20261124-banking-required-results.json
 ```
+
+최종 코드에서 발견한 전체 테스트 594건을 여섯 묶음으로 실행해 모두 통과했다. 설계·저장소·과거 자료 검증 세 명령도 통과했다. 통합 테스트에서는 형식 하나가 빠지면 후속 열 배정의 요청·비용이 0임을 확인했다. 별도로 선택형 실행의 실제 공급자 응답을 재생해 글로만 끝난 작성을 새 계약이 거부하는지 확인했다. [필수 작성과 미시작 경계의 통합 검사](../../tests/test_banking_memory.py) · [원래 공급자 응답 재생](20261124-banking-storage-review.md)
 
 다음 검증에서는 015의 첫 판단처럼 비기억 입력이 고정된 곳에서 도구 이름을 담은 문장을 지웠을 때 첫 행동이 다시 달라지는지 볼 수 있다. 같은 길이의 다른 문장을 지운 조건을 함께 두면 메모를 줄인 효과와 어떤 정보가 쓰였는지를 가를 수 있다. 실제 후속 성공은 별도 과제의 고객 행동과 최종 DB까지 확인해야 한다. 검색·읽기 단계를 구분한 LongMemEval과 도구·인수의 기억 의존성을 구분한 Mem2ActBench를 이 판정에 적용했다. [연구 근거와 설계](../research/tau-banking-memory-pilot.md) · [LongMemEval](https://arxiv.org/abs/2410.10813) · [Mem2ActBench](https://aclanthology.org/2026.acl-long.370/)
