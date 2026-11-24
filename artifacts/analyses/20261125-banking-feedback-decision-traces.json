@@ -1,0 +1,489 @@
+{
+  "format": "banking-feedback-case-traces/v1",
+  "selection": "Retrospective cases: sole note naming the official grade and both preload losses in the mail-offer task.",
+  "explicit_grade": {
+    "task": "task_001",
+    "form": "procedure",
+    "source_grade": {
+      "run": "r_7aef376340c34a7aab3a320eb35eea0d",
+      "event": "e_d96170fcae094b20acbc4e450d4a26c8",
+      "report_sha256": "6e02f3d1b5b07760c2ad291fdc2f67d31622d671731dbfdf4b0a0db5bf972b55",
+      "success": false
+    },
+    "readers": {
+      "preload": {
+        "first_action": [
+          {
+            "name": "grep",
+            "arguments": {
+              "pattern": "personal.*(cash ?back|credit card)|Bronze Rewards Card|annual fee|cashback"
+            }
+          }
+        ],
+        "provenance": {
+          "worker_run": "r_8ed12a4ffb0941828799a1134d975ca7",
+          "record_kind": "observed",
+          "model": "openai/gpt-6-luna",
+          "starting_snapshot_id": "snap_d64cce0308ca4a50ae104709b13f8dbd",
+          "writer_lineage": "declared_writer",
+          "request_id": "request_0b33c7aa92a64300be79682a2659bc46",
+          "request_sha256": "a21ddf2e832a9e7d7e8f3c5b74fe01ebc08ef524f17c9a64db4a275ecfbfa097",
+          "response_sha256": "b8c0f0b028973b9cdce353e5d99f2c89eb9813a31d71047e79910753df50addb",
+          "exposure": [
+            {
+              "source": {
+                "kind": "memory_snapshot",
+                "preloaded_event_id": "e_84c1cd0f931b4597863b46314a005db3"
+              },
+              "pointer": "/messages/1/content",
+              "char_start": 19,
+              "char_end": 2410,
+              "rendered_sha256": "42b94de36b06cef72f588c08d50d13bc156e0be00714fd1a03d8ad7d434756f8",
+              "clause_char_start": 1051,
+              "clause_char_end": 1124
+            }
+          ],
+          "current_citations": [],
+          "action_citations": [
+            {
+              "pointer": "/tool_calls/0/function/name",
+              "quote": "grep",
+              "char_start": 0,
+              "char_end": 4
+            }
+          ]
+        },
+        "grade": {
+          "run": "r_8ed12a4ffb0941828799a1134d975ca7",
+          "event": "e_1624fa4220a444fe9fbb7f6186ca8178",
+          "report_sha256": "850be3ed32bb2a23bd684f1a24c930ed68cc4afffbda0429e9aabbe25056bd85",
+          "success": false
+        }
+      },
+      "on_demand": {
+        "first_action": [
+          {
+            "name": "grep",
+            "arguments": {
+              "pattern": "credit card recommendation|rewards|cash back|everyday purchases|travel card"
+            }
+          }
+        ],
+        "provenance": {
+          "worker_run": "r_cf09aa55017145dcb13ebd9741145ff4",
+          "record_kind": "observed",
+          "model": "openai/gpt-6-luna",
+          "starting_snapshot_id": "snap_a2975a16b5aa4bcf8ce629ad02e005e1",
+          "writer_lineage": "declared_writer",
+          "request_id": "request_f2762f6e286148bba1b94dcafd276243",
+          "request_sha256": "4d7bb04e26c26c9448117e35a779fb10596de14b2c429379c22f9b61ecf5f29b",
+          "response_sha256": "691decd21229e580b0396d01fd9e08e00f93466c82866e49362a4047c53a9941",
+          "exposure": [],
+          "current_citations": [],
+          "action_citations": [
+            {
+              "pointer": "/tool_calls/0/function/name",
+              "quote": "grep",
+              "char_start": 0,
+              "char_end": 4
+            }
+          ]
+        },
+        "grade": {
+          "run": "r_cf09aa55017145dcb13ebd9741145ff4",
+          "event": "e_7632276b75f34322a9d1dda2d181dbae",
+          "report_sha256": "e7024ca1f7af7385fd020b483bc1e1896b8af06609343dc7be81874230df0aeb",
+          "success": false
+        }
+      }
+    },
+    "writing": {
+      "writer_run": "r_5026f5d01df846108e5af5148c9d7b7c",
+      "record_kind": "observed",
+      "model": "openai/gpt-6-luna",
+      "source_runs": [
+        "r_7aef376340c34a7aab3a320eb35eea0d"
+      ],
+      "experience_sha256": "0be1a23dbc0548de57c5c05d0ed0c1fc13edc7eb34344d9d9b007286c2a23dc4",
+      "public_context_sha256": "b4abf82948b4173eb05dbb25f15ad0306062e6852b997ab7abea7c58ca5be9a1",
+      "instruction_sha256": "6031bcb1349214cf1a1827562f335218b8a0468a3e68131b594023d5191fbef9",
+      "feedback": {
+        "kind": "evaluation_feedback",
+        "level": "result_only",
+        "success": false
+      },
+      "request_id": "request_dd6ee49e6132402fbdac91266b4f4ff9",
+      "request_sha256": "2b685823c3b24a5687e659ede9aa08e3e246bcdd561d90b857e2729889cf8961",
+      "response_sha256": "77f286d46225964189537c60f3967a04ce9b0a332c9846b1bd8c19cd1c30e0a4",
+      "store_event": "e_c74a1192c90844a3a29bb1f76a1395f7",
+      "snapshot_id": "snap_0d286496a48a4711bfd95efa3f0dccd9",
+      "item": "m_4d84c192e51749f9a6d09bf60e5389f0",
+      "version": "v_fe36ba6685954d69ac62fc74d389c0a5",
+      "field_sha256": "688d6dc43577f149469e44ef49f7222d017bcae96521839145e70e363dba1eca",
+      "note": {
+        "pointer": "/body",
+        "quote": "A later evaluation marker reported success=false, without explaining why.",
+        "char_start": 1032,
+        "char_end": 1105
+      },
+      "source_citations": [
+        {
+          "pointer": "/feedback/level",
+          "quote": "result_only",
+          "char_start": 0,
+          "char_end": 11,
+          "source_kind": "feedback"
+        }
+      ]
+    },
+    "previous_preload": {
+      "first_action": {
+        "request_id": "request_67e4bb6bc28143699dd223287d97f529",
+        "request_sha256": "ce9c3ce8f2e49e3c18b7edb169b9eecbc333273f17335449b453962d4ce4cd72",
+        "response_sha256": "bfa786919972cd2226d6691f86a4ddd00471e2d3c8c8bdc43bc642c94caa1756",
+        "calls": [
+          {
+            "name": "grep",
+            "arguments": {
+              "pattern": "personal.*(cashback|cash back|annual fee)|Bronze Rewards Card|highest cashback|personal card"
+            }
+          }
+        ]
+      },
+      "grade": {
+        "run": "r_05e93c9e856a4e1aa206794f376a7e03",
+        "event": "e_dcd733a46c46475d85c58b2a673b3163",
+        "report_sha256": "f139cc23c65ee84c4d5001c7c86bb5b15be37c54cb7b450cd9299d3c891bcd32",
+        "success": false
+      }
+    }
+  },
+  "handoff_losses": {
+    "procedure": {
+      "writer": {
+        "path": "runs/tau-banking-result-feedback-01/task-task_008/write/jobs/0004/log.jsonl",
+        "sha256": "d23507fce31ca1730f9a69a87f981ae3ed8386c7658b578da39a28258f81de11"
+      },
+      "reader": {
+        "path": "runs/tau-banking-result-feedback-01/task-task_008/solve/jobs/0001/log.jsonl",
+        "sha256": "9b0c96204ceeb6e94d9e0b2faad4597524fad70a24a318dabe951e25ae990f89"
+      },
+      "previous_reader": {
+        "path": "runs/tau-banking-required-01/task-task_008/solve/jobs/0001/log.jsonl",
+        "sha256": "c1e1d6d0766e3d72270c543786b155097d0f54d98955a12379805d77f10264ce"
+      },
+      "trace_arguments": {
+        "item": "m_bbd07d53c9ec4afc93b285ffad895036",
+        "version": "v_3791acd0867547789952d2cdee5b36b2",
+        "field": "body",
+        "clause": "use the documented `customer_demands_after_unavailable_offer_refusal` transfer reason",
+        "source_citations": [
+          [
+            "/experience/messages/37/content",
+            "customer_demands_after_unavailable_offer_refusal"
+          ]
+        ],
+        "request_id": "request_419b23acc03d4d1e82d584641cc1d5c7",
+        "action_citations": [
+          [
+            "/tool_calls/0/function/arguments",
+            "unconfirmed_external_communication"
+          ]
+        ],
+        "current_citations": [
+          [
+            "/messages/5/content",
+            "customer_demands_after_unavailable_offer_refusal"
+          ],
+          [
+            "/messages/5/content",
+            "unconfirmed_external_communication"
+          ]
+        ]
+      },
+      "provenance": {
+        "writing": {
+          "writer_run": "r_1c3d33f06e5847158c4300353fbacc0c",
+          "record_kind": "observed",
+          "model": "openai/gpt-6-luna",
+          "source_runs": [
+            "r_d55907719ff14aaab8380fd4fe770af9"
+          ],
+          "experience_sha256": "e3249c42f5e22c1be8c5d3b40f537477fc4f495628e5ce512896a03b84ac2e6e",
+          "public_context_sha256": "8574d2216d00352b1320c0c8ef3f04265301a491c0b5ec315c5ae9c315932e00",
+          "instruction_sha256": "6031bcb1349214cf1a1827562f335218b8a0468a3e68131b594023d5191fbef9",
+          "feedback": {
+            "kind": "evaluation_feedback",
+            "level": "result_only",
+            "success": true
+          },
+          "request_id": "request_182068c5214647349396ef88692b668d",
+          "request_sha256": "51f346635a5d9ef0a10dde74662e4f3eb643180151c5095690cdfa6624296900",
+          "response_sha256": "6c63797f6e4a656b827bb83afc89646045bd249903b727f406b6c6b898afd9f9",
+          "store_event": "e_03070f6fdeac48c0854eed1c2e5fe0c6",
+          "snapshot_id": "snap_162e61d54b644296873014d3b7e25a89",
+          "item": "m_bbd07d53c9ec4afc93b285ffad895036",
+          "version": "v_3791acd0867547789952d2cdee5b36b2",
+          "field_sha256": "b4ba91e547c24dea3729e6256cd70bbe141bbe5aeafab20c051c5275ccc6fff3",
+          "note": {
+            "pointer": "/body",
+            "quote": "use the documented `customer_demands_after_unavailable_offer_refusal` transfer reason",
+            "char_start": 1578,
+            "char_end": 1663
+          },
+          "source_citations": [
+            {
+              "pointer": "/experience/messages/37/content",
+              "quote": "customer_demands_after_unavailable_offer_refusal",
+              "char_start": 29,
+              "char_end": 77,
+              "source_kind": "past_message",
+              "role": "tool",
+              "message_sha256": "34b6dd734184624e4a98a7352ad788276ab437fc6599693a55a623708beaeb7e"
+            }
+          ]
+        },
+        "decision": {
+          "worker_run": "r_08f218d68808457fa6890a8ef04853a3",
+          "record_kind": "observed",
+          "model": "openai/gpt-6-luna",
+          "starting_snapshot_id": "snap_605acb584b1c47a3849788cc1f727256",
+          "writer_lineage": "declared_writer",
+          "request_id": "request_419b23acc03d4d1e82d584641cc1d5c7",
+          "request_sha256": "46986137c928b095ab32fc0fd445a8e5753788263d9165b2ea67bc3b04f4d48a",
+          "response_sha256": "5ef1f066b17df288cc1e31e977ef87c9b9335f39a0a3f4b79081bd67f21f23f4",
+          "exposure": [
+            {
+              "source": {
+                "kind": "memory_snapshot",
+                "preloaded_event_id": "e_0d389f17439346c6902545826fdbaf43"
+              },
+              "pointer": "/messages/1/content",
+              "char_start": 19,
+              "char_end": 2216,
+              "rendered_sha256": "a2e2711f8d82bb55a4044f05cfeefea68e57222cacf7c2d4de1be1de81b115cb",
+              "clause_char_start": 1599,
+              "clause_char_end": 1684
+            }
+          ],
+          "current_citations": [
+            {
+              "pointer": "/messages/5/content",
+              "quote": "customer_demands_after_unavailable_offer_refusal",
+              "char_start": 18243,
+              "char_end": 18291,
+              "source_kind": "business_result",
+              "producer_event": "e_25ccf99560324d9fa9ada46d5211353c"
+            },
+            {
+              "pointer": "/messages/5/content",
+              "quote": "unconfirmed_external_communication",
+              "char_start": 18666,
+              "char_end": 18700,
+              "source_kind": "business_result",
+              "producer_event": "e_25ccf99560324d9fa9ada46d5211353c"
+            }
+          ],
+          "action_citations": [
+            {
+              "pointer": "/tool_calls/0/function/arguments",
+              "quote": "unconfirmed_external_communication",
+              "char_start": 11,
+              "char_end": 45
+            }
+          ]
+        }
+      },
+      "observed_reason": "unconfirmed_external_communication",
+      "official_grade": {
+        "official_success": false,
+        "grade_event": "e_182a55938a274d45871c237fe5a3a53f",
+        "official_report_sha256": "6d1b466fce06f2b367d01fb234513999d0008684104d111ff6e94d0d0d573e10",
+        "matched": false,
+        "compared_reason": "customer_demands_after_unavailable_offer_refusal"
+      },
+      "previous_calls": [
+        {
+          "request_id": "request_f21b349399a84bdd9576f4055bbd353a",
+          "reason": "unconfirmed_external_communication"
+        },
+        {
+          "request_id": "request_a2ae0e414a4140e2b034cd4173076442",
+          "reason": "customer_demands_after_unavailable_offer_refusal"
+        },
+        {
+          "request_id": "request_b1a7301bc00b4f59afadca8188e27522",
+          "reason": "customer_demands_after_unavailable_offer_refusal"
+        }
+      ],
+      "previous_grade": {
+        "official_success": true,
+        "grade_event": "e_0039af4b70374d5998adcc4b7a15e527",
+        "official_report_sha256": "dddeff05fe0d8b9fd0750c190913195db58a7ef03c6dc051e4196b101e5f1e70",
+        "matched": true,
+        "compared_reason": "customer_demands_after_unavailable_offer_refusal"
+      }
+    },
+    "lesson": {
+      "writer": {
+        "path": "runs/tau-banking-result-feedback-01/task-task_008/write/jobs/0005/log.jsonl",
+        "sha256": "fc40c98b083549fe16ec43c6120297c2378be4c00ad9632aee98020b2d87d445"
+      },
+      "reader": {
+        "path": "runs/tau-banking-result-feedback-01/task-task_008/solve/jobs/0003/log.jsonl",
+        "sha256": "be5953bbd8b2e1cda4e329fcd92004a8f1f3cdd9c50d13f8450e98be563e7a0d"
+      },
+      "previous_reader": {
+        "path": "runs/tau-banking-required-01/task-task_008/solve/jobs/0003/log.jsonl",
+        "sha256": "20ce100bb9087636d15235b85d931cdb8224131eca8d94e2950663c3a59830a3"
+      },
+      "trace_arguments": {
+        "item": "m_93927e7e8b0b4a08b89400eac71dfd9f",
+        "version": "v_1bb5963e40b947ae8d6bd116f152a414",
+        "field": "body",
+        "clause": "the assistant transferred them under the reason code customer_demands_after_unavailable_offer_refusal",
+        "source_citations": [
+          [
+            "/experience/messages/37/content",
+            "customer_demands_after_unavailable_offer_refusal"
+          ]
+        ],
+        "request_id": "request_a99d7ed104cd4e0698defb34463081e7",
+        "action_citations": [
+          [
+            "/tool_calls/0/function/arguments",
+            "unconfirmed_external_communication"
+          ]
+        ],
+        "current_citations": [
+          [
+            "/messages/19/content",
+            "customer_demands_after_unavailable_offer_refusal"
+          ],
+          [
+            "/messages/19/content",
+            "unconfirmed_external_communication"
+          ]
+        ]
+      },
+      "provenance": {
+        "writing": {
+          "writer_run": "r_1b122bfbcf0744c5a11124af1684aa29",
+          "record_kind": "observed",
+          "model": "openai/gpt-6-luna",
+          "source_runs": [
+            "r_d55907719ff14aaab8380fd4fe770af9"
+          ],
+          "experience_sha256": "cd735d7758c2ed3213e55aa2b7c26ce116d10c365690ee927db4454ddbfe8de7",
+          "public_context_sha256": "8574d2216d00352b1320c0c8ef3f04265301a491c0b5ec315c5ae9c315932e00",
+          "instruction_sha256": "b9b85e7d349790d8d416687fe8f2f731754fb237ae7a446ceb4c6709be9d1ee6",
+          "feedback": {
+            "kind": "evaluation_feedback",
+            "level": "result_only",
+            "success": true
+          },
+          "request_id": "request_d4d5ae2694f640f78891f3704d7e510d",
+          "request_sha256": "6c1c746cbbaeff229c6f3ff8f70c972949726306d78db2272cfc6c578ad90219",
+          "response_sha256": "4556ec01e72e49ab1e56b12bef78026b1fd80785ba435453ff744da6d90ce43b",
+          "store_event": "e_f45aa4a5efe94383bde7e41d14646aaf",
+          "snapshot_id": "snap_4bb8049542414868ac27033c99bb0d1e",
+          "item": "m_93927e7e8b0b4a08b89400eac71dfd9f",
+          "version": "v_1bb5963e40b947ae8d6bd116f152a414",
+          "field_sha256": "8eef38ae50712c698fb81beebbb03c18ac919c01254c67dc397432943bd9c405",
+          "note": {
+            "pointer": "/body",
+            "quote": "the assistant transferred them under the reason code customer_demands_after_unavailable_offer_refusal",
+            "char_start": 548,
+            "char_end": 649
+          },
+          "source_citations": [
+            {
+              "pointer": "/experience/messages/37/content",
+              "quote": "customer_demands_after_unavailable_offer_refusal",
+              "char_start": 29,
+              "char_end": 77,
+              "source_kind": "past_message",
+              "role": "tool",
+              "message_sha256": "34b6dd734184624e4a98a7352ad788276ab437fc6599693a55a623708beaeb7e"
+            }
+          ]
+        },
+        "decision": {
+          "worker_run": "r_498f74f6efd7430e9c4700abc3c902ad",
+          "record_kind": "observed",
+          "model": "openai/gpt-6-luna",
+          "starting_snapshot_id": "snap_5c6ed9053fa54933b0b9ecaa58f6e5b3",
+          "writer_lineage": "declared_writer",
+          "request_id": "request_a99d7ed104cd4e0698defb34463081e7",
+          "request_sha256": "7243bf4bf5d9fec4d62cb549487f03344c034ddae237879764018c0b376deaed",
+          "response_sha256": "0cc3676bd097e9908465a1f8812b846267774263cb36592813b4364761568818",
+          "exposure": [
+            {
+              "source": {
+                "kind": "memory_snapshot",
+                "preloaded_event_id": "e_9e051652a5f145e98f82ad8bf7bc6718"
+              },
+              "pointer": "/messages/1/content",
+              "char_start": 19,
+              "char_end": 1313,
+              "rendered_sha256": "c9c37731711401c7670fb2f061d51a2a1b2be1aa5ca1754a8172e5b699be9a5f",
+              "clause_char_start": 567,
+              "clause_char_end": 668
+            }
+          ],
+          "current_citations": [
+            {
+              "pointer": "/messages/19/content",
+              "quote": "customer_demands_after_unavailable_offer_refusal",
+              "char_start": 1542,
+              "char_end": 1590,
+              "source_kind": "business_result",
+              "producer_event": "e_391ea97da7cf466897ddd79dcb44526a"
+            },
+            {
+              "pointer": "/messages/19/content",
+              "quote": "unconfirmed_external_communication",
+              "char_start": 1965,
+              "char_end": 1999,
+              "source_kind": "business_result",
+              "producer_event": "e_391ea97da7cf466897ddd79dcb44526a"
+            }
+          ],
+          "action_citations": [
+            {
+              "pointer": "/tool_calls/0/function/arguments",
+              "quote": "unconfirmed_external_communication",
+              "char_start": 11,
+              "char_end": 45
+            }
+          ]
+        }
+      },
+      "observed_reason": "unconfirmed_external_communication",
+      "official_grade": {
+        "official_success": false,
+        "grade_event": "e_2fd5e00c7aed4c4287ff6936b74993fc",
+        "official_report_sha256": "e51a4a5477e0391cc21431ed6b2691f0e94e3a89e42f28107bafcea60e9ac0ce",
+        "matched": false,
+        "compared_reason": "customer_demands_after_unavailable_offer_refusal"
+      },
+      "previous_calls": [
+        {
+          "request_id": "request_e79810a619614a329ef01067d213f9a0",
+          "reason": "customer_demands_after_unavailable_offer_refusal"
+        },
+        {
+          "request_id": "request_aeed3f8f3b414537b36122cca1876df6",
+          "reason": "customer_demands_after_unavailable_offer_refusal"
+        }
+      ],
+      "previous_grade": {
+        "official_success": true,
+        "grade_event": "e_eefde9a9c5b0474f8ca86fd2b3cbed8d",
+        "official_report_sha256": "82c69bed5d276ed1f3bc3edfc2d8a1ebdaf44bb383cd3721fc4830cb9cf551ff",
+        "matched": true,
+        "compared_reason": "customer_demands_after_unavailable_offer_refusal"
+      }
+    }
+  }
+}

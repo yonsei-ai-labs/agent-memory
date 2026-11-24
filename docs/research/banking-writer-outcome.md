@@ -33,3 +33,5 @@ uv run python -m scripts.review_banking_evidence --writer-comparison --workspace
 ```
 
 작성 내용 판독은 `blinded-notes.json`에서 한다. 텍스트 자체가 공식 결과를 언급해 작성 조건을 짐작할 수 있다. `note-assignments.json`에는 조건과 봉인본 식별자가 있다. 먼저 문장과 판정을 기록하고, `--note-ratings`로 원문 인용 위치를 검증한 뒤 배정표에 연결한다.
+
+11월 25일 전체 배정을 마쳤다. 성패를 받은 작성자의 메모 20개 중 한 개가 과제 전체의 공식 성패를 명시했다. 기존 대비 자동 제공 성공은 8/20에서 6/20으로 바뀌었다. [과제별 성패·실제 조회·업무 판단의 근거](../reports/20261125-banking-result-feedback.md)
