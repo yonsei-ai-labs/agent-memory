@@ -102,6 +102,10 @@ def audit_requests(root, *, evidence=None):
                 if (finish["status"] != "error" or finish["delivery_status"] != "not_submitted"
                         or finish["response_ref"] is not None or finish["cost_status"] != "not_applicable"):
                     raise ContractError("Oversized input was submitted or misclassified")
+        if "archived_first_pass" in config:
+            cap = blobs.get(config["connection_ref"])["guards"]["max_model_requests"]
+            if config["archived_first_pass"]["aggregate_request_limit"] != cap or sum(counts.values()) > cap:
+                raise ContractError("Requests differ from the archived aggregate limit")
     return dict(status="passed", requests=sum(roles.values()), requests_by_role=dict(roles),
                 memory_input_spans=len(actual), responses_by_status=dict(statuses),
                 observed_cost_usd_decimal=str(cost), unknown_cost_requests=unknown,

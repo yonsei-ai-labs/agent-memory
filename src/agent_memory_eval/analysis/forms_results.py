@@ -168,7 +168,11 @@ def checked_rows(output, *, observe_job=None, observe_parent=None):
                 instruction = blobs.get(cfg["instruction_ref"])
                 if digest(instruction.encode()) != design["second_pass"]["solve_instruction_ref"]["sha256"]:
                     raise ContractError("Solve instruction changed")
-                system += memory_system_suffix(policy, instruction if delivery else past_memory_instruction(instruction))
+                notice = design.get("preload_notice_version")
+                if cfg.get("preload_notice_version") != notice:
+                    raise ContractError("The recorded memory notice differs from the assigned version")
+                rendered = instruction if delivery else past_memory_instruction(instruction, notice_version=notice)
+                system += memory_system_suffix(policy, rendered)
             for e in scan["events"].values():
                 if delivery and e["type"] == "memory.returned":
                     p = e["payload"]

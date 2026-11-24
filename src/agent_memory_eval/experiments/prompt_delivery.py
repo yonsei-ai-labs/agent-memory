@@ -6,6 +6,7 @@ import os
 from pathlib import Path
 
 from agent_memory_eval.contracts.core import ContractError, canonical, digest, read_json
+from agent_memory_eval.experiments.first_pass_match import check_common_read_instruction
 from agent_memory_eval.experiments.forms_batch import (
     BatchGuard, endpoint_terms, execute_prepared, live_models, ordered_jobs, prepare,
 )
@@ -60,6 +61,8 @@ def run_delivery_comparison(root, workspace, checkout, config_path, *, live=Fals
         raise ContractError("Frozen banks come from another prompt comparison")
     plan = prepare(root, workspace, checkout, expected)
     design = deepcopy(expected)
+    # Both delivery arms use the same registered tool-use instruction.
+    design.pop("preload_notice_version", None)
     design.update(format="agent-memory-prompt-delivery-design/v1", writer_parent=pin, delivery_arms={})
     for c in design["conditions"]:
         for mode in config["read_modes"]:
@@ -78,7 +81,12 @@ def run_delivery_comparison(root, workspace, checkout, config_path, *, live=Fals
     summary = dict(public_sources=len(plan["sources"]), writers=0, episodes=len(rows), borrowed_banks=len(banks),
                    empty_banks=sum(b["status"] == "empty" for b in banks.values()), parent=pin,
                    ordered_jobs_sha256=design["allocation"]["ordered_jobs_sha256"])
-    plan.update(jobs=rows, summary=summary, instruction=asset_text(root, config["instruction_ref"]))
+    if "first_pass_match" in plan["summary"]:
+        summary["first_pass_match"] = plan["summary"]["first_pass_match"]
+    instruction = asset_text(root, config["instruction_ref"])
+    if design["second_pass"].get("baseline") == "archived_first_pass":
+        check_common_read_instruction(instruction, paired_delivery=True)
+    plan.update(jobs=rows, summary=summary, instruction=instruction)
     if not live:
         return summary
     identity = implementation_identity(root)

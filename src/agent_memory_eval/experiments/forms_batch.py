@@ -27,13 +27,15 @@ FORMS = ("fact", "episode", "lesson", "procedure")
 DESIGN = "protocols/drafts/tau2-two-pass-memory-forms-v1.json"
 RETAIL_RECHECK = "agent-memory-retail-recheck-design/v1"
 RETAIL_FULL = "agent-memory-retail-full-design/v1"
+FRESH_MATCHED = "agent-memory-fresh-matched/v1"
 
 
 def ordered_jobs(design):
     if design.get("format") == "agent-memory-new-customer-design/v1":
         from agent_memory_eval.experiments.fresh_forms import planned_jobs
         return planned_jobs(design)
-    if design.get("format") in {"agent-memory-prompt-comparison-design/v1", "agent-memory-prompt-delivery-design/v1"}:
+    if design.get("format") in {"agent-memory-prompt-comparison-design/v1", "agent-memory-prompt-comparison-design/v2",
+                                "agent-memory-prompt-delivery-design/v1"}:
         from agent_memory_eval.experiments.prompt_comparison import comparison_jobs
         return comparison_jobs(design)
     allocation = design["allocation"]
@@ -128,6 +130,8 @@ def solve_connection(connection, design, row, cap):
         cfg["benchmark"]["split"] = design["target"]["split"]
     elif design.get("format") == "agent-memory-new-customer-design/v1":
         cfg["benchmark"]["split"] = design["source"]["split"]
+    elif design.get("format") == FRESH_MATCHED:
+        cfg["benchmark"].update(domain=design["source"]["domain"], split=design["source"]["split"])
     elif design.get("format") in (RETAIL_RECHECK, RETAIL_FULL):
         if design["source"]["domain"] != "retail":
             raise ContractError("The retail recheck design requires the retail domain")
@@ -178,6 +182,7 @@ def preflight_sizes(jobs, design, sources, tasks, connection, instruction, commo
 
 def prepare(root, workspace, checkout, design):
     from agent_memory_eval.experiments.forms_write import load_form_sources
+    from agent_memory_eval.experiments.first_pass_match import archived_controls, check_common_read_instruction, check_native
     jobs = ordered_jobs(design)
     checkout = verify_checkout(checkout)
     modules = native_modules(checkout)
@@ -194,15 +199,31 @@ def prepare(root, workspace, checkout, design):
     instruction = asset_text(root, design["second_pass"]["solve_instruction_ref"])
     common = asset_text(root, design["writing"]["common_instruction_ref"])
     sources = load_form_sources(design, workspace)
+    matches = {}
+    receipts = {}
+    if design["second_pass"].get("baseline") == "archived_first_pass":
+        check_common_read_instruction(instruction, paired_delivery=False)
+        matches = archived_controls(workspace, checkout, design["source"])
     for block in design["allocation"]["blocks"]:
-        native_config(solve_connection(connection, design, block, 1))
+        task_id = block["task_id"]
+        if matches:
+            match = matches[task_id]
+            cap = match["control"]["config"]["guards"]["max_reported_cost_usd"]
+            cfg = solve_connection(connection, design, block, cap)
+            orch, native = build_baseline_orchestrator(cfg, tasks[task_id])
+            receipts.setdefault(task_id, {})[str(block["repetition"])] = check_native(match, cfg, orch, native)
+        else:
+            native_config(solve_connection(connection, design, block, 1))
     summary = dict(writers=sum(r["phase"] == "write" for r in jobs), episodes=sum(r["phase"] == "solve" for r in jobs),
         public_sources=len(sources), successful_sources=sum(s.official_success for s in sources.values()),
         public_context_bytes_range=[f(s.public_context_bytes for s in sources.values()) for f in (min, max)],
         customer_groups=len({s["source_group"] for s in design["source"]["cohort"]}),
         ordered_jobs_sha256=design["allocation"]["ordered_jobs_sha256"], tau2_revision=PIN,
         **preflight_sizes(jobs, design, sources, tasks, connection, instruction, common))
+    if matches:
+        summary["first_pass_match"] = receipts
     return dict(summary=summary, jobs=jobs, sources=sources, tasks=tasks, modules=modules, connection=connection,
+                first_pass_matches=matches,
                 instruction=instruction)
 
 
@@ -246,7 +267,8 @@ def run_jobs(rows, execute, guard, persist, *, written_arms=(*FORMS, "summary"),
             writers[key] = row
         if data["unknown_cost"]:
             guard.unknown_cost = not (close_cost and close_cost(row))
-        stop = guard.stop()
+        error = data.get("error_code")
+        stop = error.lower() if error in {"FIRST_PASS_MISMATCH", "TASK_START_MISMATCH"} else guard.stop()
         persist(rows)
     persist(rows)
     return stop
@@ -290,6 +312,19 @@ def execute_prepared(profile, root, destination, identity, design, plan, models,
     """Execute a verified schedule once, preserving every job's original journal."""
     from agent_memory_eval.experiments.forms_solve import run_forms_solve
     from agent_memory_eval.experiments.forms_write import read_form_bank, run_form_writer
+    from agent_memory_eval.experiments.first_pass_match import BASELINE_HTTP_SECONDS
+    matches = plan.get("first_pass_matches", {})
+    trial = plan.get("matched_trial")
+    if design.get("format") == FRESH_MATCHED and design["stage"] != "write" and trial is None:
+        raise ContractError("A fresh matched consultation needs a registered native control")
+    if design["second_pass"].get("baseline") == "archived_first_pass":
+        from tau2.data_model.tasks import Task
+        if (not matches or set(matches) != {r["task_id"] for r in plan["jobs"]} or "task_variants" in plan
+                or any("task_variant" in r or "source_task_id" in r or r["arm"] == "no_memory" for r in plan["jobs"])
+                or any(digest(canonical(Task.model_validate(plan["tasks"][t]).model_dump(mode="json"))) != m["task_sha256"]
+                       for t, m in matches.items())
+                or profile["http_timeout_seconds"] != BASELINE_HTTP_SECONDS):
+            raise ContractError("Same-task memory comparison requires verified first-pass assignments and transport")
     written_arms = tuple(design["writing"]["lines"])
     delivery_arms = design.get("delivery_arms", {})
     pools = plan.get("retrieval_pools")
@@ -304,6 +339,8 @@ def execute_prepared(profile, root, destination, identity, design, plan, models,
                    source_outcomes={**dict.fromkeys(plan.get("missing_sources", [])),
                                     **{task: source.official_success for task, source in plan["sources"].items()}},
                    preflight=plan["summary"], design=design, started_at=datetime.now(timezone.utc).isoformat())
+    if "task_variants" in plan:
+        control["task_variants"] = plan["task_variants"]
     write_json(destination / "control.json", control)
     writer_limits = design["writing"]["proposed_limits"]
     limits = design["second_pass"]["proposed_limits"]
@@ -323,20 +360,29 @@ def execute_prepared(profile, root, destination, identity, design, plan, models,
                 result.pop("bank", None)
             else:
                 arm = row["arm"]
-                cfg = solve_connection(plan["connection"], design, row, guard.max_usd)
-                orch, native = build_baseline_orchestrator(cfg, plan["tasks"][row["task_id"]])
+                match = matches.get(row["task_id"])
+                cap = trial["episode_cap_usd"] if trial else guard.max_usd
+                if match:
+                    cap = match["control"]["config"]["guards"]["max_reported_cost_usd"]
+                cfg = solve_connection(plan["connection"], design, row, cap)
+                task = plan["tasks"][row["task_id"]]
+                if "task_variant" in row:
+                    task = plan["task_variants"][row["task_id"]][row["task_variant"]]
+                orch, native = build_baseline_orchestrator(cfg, task)
                 bank = (read_form_bank(safe_path(writer_root, writer["directory"]), expected_log_sha256=writer["result"]["log_sha256"])
                         if writer else None)
                 result = run_forms_solve(journal, arm=arm, task_id=row["task_id"], repetition=row["repetition"],
                     run_id=row["run_id"], connection=cfg, prepared=(orch, native, models, plan["modules"]),
                     guard=guard, clients=episode_clients, limits=limits, instruction=plan["instruction"] if arm != "no_memory" else "",
                     writer_bank=bank, public_record=source.public_context if arm == "public_record" else None,
+                    first_pass_match=match, matched_trial=trial,
                     public_context_sha256=source.public_context_sha256 if arm not in {"no_memory", "empty_preload"} else None,
                     written_arms=written_arms, delivery=delivery_arms.get(arm) or design.get("delivery_controls", {}).get(arm),
                     expected_split=design.get("target", design["source"]).get("split", "train"),
                     source_task_id=row.get("source_task_id") if bank else None,
                     preload_notice_version=design.get("preload_notice_version") if arm != "no_memory" else None,
-                    expected_domain="retail" if design.get("format") in (RETAIL_RECHECK, RETAIL_FULL) else "airline",
+                    expected_domain=design["source"]["domain"] if design.get("format") == FRESH_MATCHED else
+                        ("retail" if design.get("format") in (RETAIL_RECHECK, RETAIL_FULL) else "airline"),
                     native_grader=plan.get("grader"), writer_pool=pools.get(arm) if pools is not None else None)
             if result["run_id"] != row["run_id"]:
                 raise ContractError("Run differs from preallocated identity")

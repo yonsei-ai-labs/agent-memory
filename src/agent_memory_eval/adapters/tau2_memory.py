@@ -10,6 +10,7 @@ from agent_memory_eval.contracts.connection import native_parameters
 from agent_memory_eval.memory.tools import memory_tools
 from agent_memory_eval.memory.context import memory_system_suffix
 from agent_memory_eval.memory.router import ToolRouter
+from agent_memory_eval.recording.provenance import public_assistant_message
 
 
 class NativeBusiness:
@@ -123,7 +124,8 @@ class Tau2MemoryBridge(Tau2Bridge):
         # Native parsing reserializes arguments. Reuse the provider's original text
         # on subsequent requests so self-authored spans retain their exact producer.
         self.remember(len(messages), self.utils.to_litellm_messages([answer])[0], (source, ""))
-        self.publish(raw, "tau2_worker_output")
+        public = public_assistant_message(raw) if self.project_worker_history else raw
+        self.publish(public, "tau2_worker_output")
         return answer
 
     def business_dispatch(self, wire_call, arguments):

@@ -435,7 +435,24 @@ def matches_accounting_seal(folder, recorded_grant, seal):
     )
 
 
-def run_study(workspace, cfg, base, conn, rows, tasks, record, *, stage_runner=stage_job):
+def release_groups(cfg, rows):
+    groups = [(stage, stage, stage_order(cfg, rows, stage)) for stage in cfg["stages"]]
+    pilot = cfg.get("first_remaining_tasks")
+    if pilot is None:
+        return groups
+    stages = ("source", "write", "solve")
+    members = set(pilot)
+    nominal = [(label, stage, group) for label, stage, group in groups if stage in stages]
+    if (len(members) != len(pilot) or [s for _, s, _ in nominal] != list(stages)
+            or any(not members <= {r["task"] for r in group} for _, _, group in nominal)):
+        raise ContractError("The release check must use existing members of all three stages")
+    initial = [g for g in groups if g[1] not in stages]
+    checked = [("check-" + stage, stage, [r for r in group if r["task"] in members]) for _, stage, group in nominal]
+    remainder = [(stage, stage, [r for r in group if r["task"] not in members]) for _, stage, group in nominal]
+    return initial + checked + remainder
+
+
+def run_study(workspace, cfg, base, conn, rows, tasks, record, *, stage_runner=stage_job, model_resolver=None):
     root = workspace / "runs" / cfg.get("run_directory", cfg["name"])
     root.mkdir(parents=True, exist_ok=True)
     descriptor = os.open(root, os.O_RDONLY | os.O_DIRECTORY)
@@ -444,16 +461,22 @@ def run_study(workspace, cfg, base, conn, rows, tasks, record, *, stage_runner=s
         if not os.environ.get("OPENROUTER_API_KEY"):
             raise ContractError("Missing OpenRouter credentials")
         identity = implementation_identity(ROOT)
-        models, judge = resolve_live(cfg, conn)
-        terms = endpoint_terms(dict(models, grader=judge))
+        models, judge = (model_resolver or resolve_live)(cfg, conn)
+        terms = endpoint_terms(dict(models, grader=judge) if judge is not None else models)
         if "expected_endpoint_terms" in cfg and terms != cfg["expected_endpoint_terms"]:
             raise ContractError("Expansion endpoint terms differ from the source study")
         reg = dict(
             implementation=identity,
             preflight=record,
             endpoint_terms=terms,
-            judge_slug=judge["canonical_slug"],
         )
+        if judge is not None:
+            reg["judge_slug"] = judge["canonical_slug"]
+        groups = release_groups(cfg, rows)
+        if "continued_from" in cfg:
+            reg["continued_from"] = cfg["continued_from"]
+            reg["release_groups"] = [{"label": label, "stage": stage, "tasks": [r["task"] for r in group]}
+                                     for label, stage, group in groups]
         fixed(root / "registration.json", reg)
         total = Decimal(cfg.get("prior_covered_usd", "0"))
         seals = {}
@@ -461,8 +484,7 @@ def run_study(workspace, cfg, base, conn, rows, tasks, record, *, stage_runner=s
         with ProcessPoolExecutor(
             max_workers=size, mp_context=get_context("spawn")
         ) as pool:
-            for stage in cfg["stages"]:
-                ordered = stage_order(cfg, rows, stage)
+            for label, stage, ordered in groups:
                 width = cfg.get("concurrency_by_stage", {}).get(stage, size)
                 for begin in range(0, len(ordered), width):
                     wave = ordered[begin : begin + width]
@@ -472,7 +494,7 @@ def run_study(workspace, cfg, base, conn, rows, tasks, record, *, stage_runner=s
                     if grant < 0 or (grant == 0 and not cfg.get("record_unfunded_shards")):
                         raise ContractError("Study budget exhausted")
                     fixed(
-                        root / f"{stage}-wave-{begin // width + 1}.json",
+                        root / f"{label}-wave-{begin // width + 1}.json",
                         dict(
                             tasks=[r["task"] for r in wave],
                             per_shard_grant=str(grant),
@@ -515,7 +537,7 @@ def run_study(workspace, cfg, base, conn, rows, tasks, record, *, stage_runner=s
                         total += Decimal(entry["spent"])
                         seals[name] = entry
                     print(
-                        stage,
+                        label,
                         begin + len(wave),
                         "of",
                         len(ordered),

@@ -69,6 +69,8 @@ class Tau2Bridge:
         self.message_sources, self.costs = {}, {}
         self.active = None
         self.last_response = None
+        self.verify_wire = None
+        self.project_worker_history = False
         self.original_generate = self.utils.generate
 
     def config_role(self, actor):
@@ -134,9 +136,14 @@ class Tau2Bridge:
         template = self.registry.template(config, roles=(actor,))
         entries = self.message_entries(actor, expected["messages"])
         began = time.monotonic()
+        validation = {}
+        if self.project_worker_history and actor == "worker":
+            validation["project_self_authored"] = True
+        if self.verify_wire is not None:
+            validation["validate_wire"] = lambda request: self.verify_wire(actor, request, expected["messages"])
         message, source, request_id = self.gateway.call(self.ctx, self.registry, actor, template, entries,
             self.clients[actor], max_requests=None if self.execution_limits else self.config["guards"]["max_model_requests"],
-            execution_limits=self.execution_limits)
+            execution_limits=self.execution_limits, **validation)
         finish = next(e for e in reversed(list(self.journal.events.values()))
                       if e["type"] == "model.request_finished" and e["payload"]["request_id"] == request_id)
         response = self.journal.blobs.get(finish["payload"]["response_ref"])

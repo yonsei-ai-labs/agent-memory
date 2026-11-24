@@ -249,7 +249,8 @@ def _usage(journal, run_id):
 def run_forms_solve(journal, *, arm, task_id, repetition, run_id, connection, prepared, guard, limits,
                     instruction, writer_bank=None, public_record=None, public_context_sha256=None, opener=None, clients=None,
                     written_arms=WRITTEN_ARMS, delivery=None, expected_split="train", source_task_id=None,
-                    expected_domain="airline", native_grader=None, writer_pool=None, preload_notice_version=None):
+                    expected_domain="airline", native_grader=None, writer_pool=None, preload_notice_version=None,
+                    first_pass_match=None, matched_trial=None):
     """Run one assigned episode in a new per-job journal with a batch guard and verified input.
 
     The caller verifies a writer bank against its sealed journal and supplies the cohort's public hash.
@@ -263,6 +264,10 @@ def run_forms_solve(journal, *, arm, task_id, repetition, run_id, connection, pr
         raise ContractError("Memory arms require the common instruction and pure no-memory requires none")
     if preload_notice_version is not None and (arm == "no_memory" or delivery is not None):
         raise ContractError("Versioned preload notices require a start-of-session snapshot")
+    if first_pass_match is not None and delivery is None:
+        if preload_notice_version not in (None, "memory-only-v1"):
+            raise ContractError("Same-task comparisons use the domain-neutral memory notice")
+        preload_notice_version = "memory-only-v1"
     rendered_instruction = past_memory_instruction(instruction, notice_version=preload_notice_version)
     _prepared_for_job(connection, prepared, limits, task_id, expected_split, expected_domain, native_grader is not None)
     if delivery is not None and (delivery["read_mode"] not in {"preload", "on_demand"} or arm == "no_memory"
@@ -293,7 +298,31 @@ def run_forms_solve(journal, *, arm, task_id, repetition, run_id, connection, pr
                           read_mode=delivery["read_mode"] if delivery else ("none" if arm == "no_memory" else "preload"),
                           max_items=limits["read_bank_items"],
                           max_payload_bytes=limits["read_bank_payload_bytes"], max_return_bytes=limits["read_bank_return_bytes"])
-    local_guard = _EpisodeGuard(guard, limits)
+    if matched_trial is not None:
+        from agent_memory_eval.experiments.first_pass_match import FirstPassMismatch
+        from agent_memory_eval.runner.tau2_baseline import ScopedGuard, spend_guard
+        if (first_pass_match is not None or source_task_id is not None or writer_pool is not None
+                or public_record is not None or preload_notice_version is not None or clients is None
+                or (policy.enabled and (writer_bank is None or delivery is None
+                    or public_context_sha256 != matched_trial.get("public_context_sha256")))
+                or any(c.max_input_bytes != execution.max_input_bytes
+                       or c.timeout_seconds != matched_trial["http_timeout_seconds"] for c in clients.values())):
+            raise FirstPassMismatch("Fresh comparison requires its registered transport and own-source bank")
+        local_guard = ScopedGuard(guard, spend_guard(connection["guards"]))
+    elif first_pass_match is None:
+        local_guard = _EpisodeGuard(guard, limits)
+    else:
+        from agent_memory_eval.experiments.first_pass_match import (
+            BASELINE_HTTP_SECONDS, BASELINE_INPUT_BYTES, check_common_read_instruction, check_native,
+        )
+        from agent_memory_eval.runner.tau2_baseline import ScopedGuard, spend_guard
+        check_common_read_instruction(instruction, paired_delivery=delivery is not None)
+        if (execution.max_input_bytes != BASELINE_INPUT_BYTES or source_task_id is not None or not policy.enabled
+                or native_grader is not None or writer_pool is not None
+                or (clients is not None and any(c.max_input_bytes != BASELINE_INPUT_BYTES or c.timeout_seconds != BASELINE_HTTP_SECONDS
+                                               for c in clients.values()))):
+            raise ContractError("Same-task memory comparison differs from its archived solver environment")
+        local_guard = ScopedGuard(guard, spend_guard(connection["guards"]))
     if clients is not None and (opener is not None or set(clients) != set(ROLES)
             or any(c.guard is not guard or c.model != prepared[2][r] or c.route != provider_route(connection, r)
                    for r, c in clients.items())):
@@ -321,6 +350,10 @@ def run_forms_solve(journal, *, arm, task_id, repetition, run_id, connection, pr
         source_writer_run_id=writer_bank["run_id"] if writer_bank else None,
         source_writer_bank_sha256=digest(canonical(writer_bank)) if writer_bank else None,
         input_items_sha256=digest(canonical(items)) if policy.enabled else None)
+    if first_pass_match is not None:
+        state["assignments"][run_id]["archived_first_pass"] = dict(
+            source_run_id=first_pass_match["run_id"], control_sha256=first_pass_match["control_sha256"],
+            aggregate_request_limit=connection["guards"]["max_model_requests"])
     if preload_notice_version is not None:
         state["assignments"][run_id]["preload_notice_version"] = preload_notice_version
     if native_grader is not None:
@@ -346,34 +379,57 @@ def run_forms_solve(journal, *, arm, task_id, repetition, run_id, connection, pr
         if bank_sizes and any(size > getattr(policy, "max_" + key) for key, size in bank_sizes.items()):
             raise SnapshotBudgetExceeded("Read bank exceeds its item, payload or return limit")
         orch = fresh_orchestrator(prepared)
+        trial_wire = None
+        if matched_trial is not None:
+            from agent_memory_eval.experiments.matched_trial import native_control, verify_trial
+            control = native_control(orch, prepared[1], connection, limits, matched_trial["http_timeout_seconds"],
+                                     native_grader[0] if native_grader else None)
+            trial_wire = verify_trial(journal, ctx, matched_trial, control, policy, instruction, items)
+        if first_pass_match is not None:
+            receipt = check_native(first_pass_match, connection, orch, prepared[1])
+            journal.append([ctx.event("business.transition", dict(
+                origin="forms.first_pass_match", receipt_ref=journal.blobs.put(receipt)))])
         # The stock bridge also accepts the model's canonical slug. A missing alias must never admit a missing model ID.
         models = {r: dict(m, canonical_slug=m.get("canonical_slug") or m["id"]) for r, m in prepared[2].items()}
-        if delivery:
+        bridge_limits = execution if first_pass_match is None else None
+        if delivery or matched_trial is not None:
             from agent_memory_eval.adapters.tau2_memory import Tau2MemoryBridge
             bridge = Tau2MemoryBridge(journal, ctx, orch, connection, models, local_guard, prepared[3], opener=opener,
-                execution_limits=execution, memory=memory, bank_id=bank, policy=policy,
+                execution_limits=bridge_limits, memory=memory, bank_id=bank, policy=policy,
                 solve_instruction=instruction, post_instruction="")
         else:
             bridge_type = _PreloadBridge if policy.enabled else Tau2Bridge
             bridge = bridge_type(journal, ctx, orch, connection, models, local_guard, prepared[3],
-                                 opener=opener, execution_limits=execution)
+                                 opener=opener, execution_limits=bridge_limits)
         if clients is not None:
             bridge.clients = {r: copy(c) for r, c in clients.items()}
             for client in bridge.clients.values():
                 client.guard = local_guard
-        if delivery:
+        if delivery or matched_trial is not None:
             bridge.ensure_preload()
         elif policy.enabled:
             bridge.prepare_preload(memory, bank, policy, rendered_instruction)
+        if trial_wire is not None:
+            bridge.project_worker_history = True
+            bridge.verify_wire = trial_wire
+        elif first_pass_match is not None:
+            from agent_memory_eval.experiments.first_pass_match import wire_verifier
+            bridge.verify_wire = wire_verifier(first_pass_match, policy, instruction if delivery else rendered_instruction, items)
         from tau2.runner.simulation import run_simulation
         grade_context = nullcontext()
         if native_grader is not None:
             from agent_memory_eval.adapters.retail_grader import native_grade_transport
             judge_config, judge_model = native_grader
-            judge_client = OpenRouterClient(judge_model, guard, route=judge_config["route"],
+            judge_guard = local_guard if matched_trial is not None else guard
+            judge_client = OpenRouterClient(judge_model, judge_guard, route=judge_config["route"],
                 max_input_bytes=judge_config["max_input_bytes"], timeout_seconds=judge_config["timeout_seconds"])
             grade_context = native_grade_transport(journal, ctx, orch.task, native_grader, judge_client, native_calls)
-        with bridge, grade_context:
+        task_start = nullcontext()
+        if matched_trial is not None and "task_start_mode" in matched_trial:
+            from agent_memory_eval.experiments.matched_trial import bind_task_start
+            task_start = bind_task_start(journal, ctx, matched_trial, control, bridge, prepared[3],
+                                         policy, instruction, items)
+        with bridge, grade_context, task_start:
             result = run_simulation(orch, communicate_scoring=prepared[1].communicate_scoring)
         raw_report_ref = journal.blobs.put(result.model_dump(mode="json"))
         termination, raw_reward = result.termination_reason.value, result.reward_info.reward

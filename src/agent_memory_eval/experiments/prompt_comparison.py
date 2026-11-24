@@ -4,7 +4,11 @@ import os
 from pathlib import Path
 import re
 
+from jsonschema import Draft202012Validator, ValidationError
+
 from agent_memory_eval.contracts.core import ContractError, canonical, digest, read_json
+from agent_memory_eval.contracts.validation import ROOT, leaves, pointer
+from agent_memory_eval.experiments.first_pass_match import BASELINE_HTTP_SECONDS, BASELINE_INPUT_BYTES
 from agent_memory_eval.experiments.forms_batch import BatchGuard, endpoint_terms, execute_prepared, live_models, prepare
 from agent_memory_eval.recording.assets import asset_text
 from agent_memory_eval.recording.journal import safe_path
@@ -12,6 +16,8 @@ from agent_memory_eval.reproduction.freeze import implementation_identity
 
 FORMAT = "agent-memory-prompt-comparison/v1"
 DESIGN_FORMAT = "agent-memory-prompt-comparison-design/v1"
+FIRST_PASS_FORMAT = "agent-memory-prompt-comparison/v2"
+FIRST_PASS_DESIGN = "agent-memory-prompt-comparison-design/v2"
 CONTROLS = ("no_memory", "empty_preload")
 SLUG = re.compile(r"[a-z][a-z0-9_-]{0,63}")
 
@@ -25,6 +31,13 @@ def _schedule(design):
     namespace = design["allocation"]["namespace"]
     conditions = [c["id"] for c in design["conditions"]]
     delivery = design.get("delivery_arms")
+    if design["format"] == FIRST_PASS_DESIGN:
+        if (design["second_pass"].get("baseline") != "archived_first_pass" or design["second_pass"]["matched_controls"]
+                or set(conditions).intersection(CONTROLS) or delivery):
+            raise ContractError("The first-pass baseline requires a memory-only second-pass schedule")
+        solve_arms = conditions
+    else:
+        solve_arms = delivery or [*conditions, *CONTROLS]
     blocks = []
     for seeds in design["model"]["seed_pairs"]:
         rep = seeds["repetition"]
@@ -34,7 +47,7 @@ def _schedule(design):
         for task in sorted(tasks, key=lambda t: rank(t, "block")):
             blocks.append(dict(task_id=task, repetition=rep,
                 write=[] if delivery else sorted(conditions, key=lambda a: rank(task, "write", a)),
-                solve=sorted(delivery or [*conditions, *CONTROLS], key=lambda a: rank(task, "solve", a))))
+                solve=sorted(solve_arms, key=lambda a: rank(task, "solve", a))))
     sequence = [[phase, b["repetition"], b["task_id"], arm] for phase in ("write", "solve")
                 for b in blocks for arm in b[phase]]
     return blocks, sequence
@@ -49,13 +62,22 @@ def comparison_jobs(design):
 
 def compile_config(root, config):
     """Separate condition identity, representation, prompt text/version and delivery."""
-    _keys(config, ("format", "status", "name", "base_design_ref", "endpoint_ref", "conditions", "read_mode",
-                   "task_sets", "seed_pairs", "guards", "http_timeout_seconds", "selection_reason"), "comparison")
-    if (config["format"] != FORMAT or config["status"] not in ("draft", "ready") or config["read_mode"] != "preload"
-            or not isinstance(config["name"], str) or not SLUG.fullmatch(config["name"])):
+    first_pass = isinstance(config, dict) and config.get("format") == FIRST_PASS_FORMAT
+    if first_pass:
+        schema = read_json((ROOT / "schemas/prompt-comparison-v2.schema.json").read_bytes())
+        try:
+            Draft202012Validator(schema).validate(config)
+        except ValidationError as error:
+            raise ContractError(f"Invalid first-pass comparison at {error.json_path}: {error.message}") from error
+    else:
+        _keys(config, ("format", "status", "name", "base_design_ref", "endpoint_ref", "conditions", "read_mode",
+                       "task_sets", "seed_pairs", "guards", "http_timeout_seconds", "selection_reason"), "comparison")
+    if (config["format"] not in (FORMAT, FIRST_PASS_FORMAT) or config["status"] not in ("draft", "ready")
+            or config["read_mode"] != "preload" or not isinstance(config["name"], str) or not SLUG.fullmatch(config["name"])):
         raise ContractError("Expected a named, full-preload writing comparison")
-    _keys(config["guards"], ("max_calls", "max_usd", "max_seconds"), "batch limits")
-    BatchGuard(**config["guards"])
+    if not first_pass or config["guards"] is not None:
+        _keys(config["guards"], ("max_calls", "max_usd", "max_seconds"), "batch limits")
+        BatchGuard(**config["guards"])
     if type(config["http_timeout_seconds"]) is not int or config["http_timeout_seconds"] <= 0:
         raise ContractError("HTTP timeout must be a positive integer")
     base = read_json(asset_text(root, config["base_design_ref"]).encode())
@@ -103,14 +125,44 @@ def compile_config(root, config):
     source.update(selection=config["selection_reason"], exclusion_basis="Explicit task sets in the comparison config",
                   cohort_sha256=digest(canonical(source["cohort"])))
     solve = {k: deepcopy(base["second_pass"][k]) for k in ("solve_instruction_ref", "proposed_limits", "no_memory", "preload")}
-    solve.update(primary_arms=list(writing["lines"]), diagnostic_task_ids=[], matched_controls=list(CONTROLS),
+    solve.update(primary_arms=list(writing["lines"]), diagnostic_task_ids=[], matched_controls=[] if first_pass else list(CONTROLS),
                  read_mode=config["read_mode"])
-    design = dict(format=DESIGN_FORMAT, conditions=resolved, task_sets=deepcopy(sets), source=source, writing=writing,
-                  second_pass=solve, model=dict(base["model"], seed_pairs=deepcopy(seeds)),
+    if first_pass:
+        solve["baseline"] = config["baseline"]
+        # The archived client had one shared call limit for both actors.
+        limits = solve["proposed_limits"]
+        limits.update(worker_requests=limits["max_total_requests_per_episode"],
+                      user_simulator_requests=limits["max_total_requests_per_episode"], max_input_bytes=BASELINE_INPUT_BYTES)
+        if config["http_timeout_seconds"] != BASELINE_HTTP_SECONDS:
+            raise ContractError("Same-task comparisons must use the archived HTTP timeout")
+    design = dict(format=FIRST_PASS_DESIGN if first_pass else DESIGN_FORMAT, conditions=resolved,
+                  task_sets=deepcopy(sets), source=source, writing=writing, second_pass=solve,
+                  model=dict(base["model"], seed_pairs=deepcopy(seeds)),
                   allocation=dict(namespace=config["name"], planned=dict(eligible_source_episodes=len(selected))))
+    if first_pass:
+        design["preload_notice_version"] = "memory-only-v1"
+    if "candidate_proposal" in config:
+        proposal = config["candidate_proposal"]
+        if (proposal["writer_prompt"] != resolved[1]["prompt"]
+                or any(e["task_id"] not in sets["development"] for e in proposal["evidence"])):
+            raise ContractError("The proposal must change the candidate writer and cite development tasks only")
+        design["candidate_proposal"] = deepcopy(proposal)
     blocks, sequence = _schedule(design)
     design["allocation"].update(blocks=blocks, ordered_jobs_sha256=digest(canonical(sequence)))
     return design
+
+
+def verify_proposal_quotes(proposal, public_messages):
+    for citation in proposal["evidence"]:
+        if citation["task_id"] not in public_messages:
+            raise ContractError("Proposal citation is absent from the public development experience")
+        public = {"messages": public_messages[citation["task_id"]]}
+        location, quote = citation["pointer"], citation["quote"]
+        if location not in leaves(public):
+            raise ContractError("Proposal citation is absent from the public development experience")
+        value = pointer(public, location)
+        if not isinstance(value, str) or not quote.strip() or value.count(quote) != 1:
+            raise ContractError("Proposal quote must match one excerpt in the cited public field")
 
 
 def run_comparison(root, workspace, checkout, config_path, *, live=False):
@@ -121,6 +173,15 @@ def run_comparison(root, workspace, checkout, config_path, *, live=False):
     if live and config["status"] != "ready":
         raise ContractError("Only a ready comparison can send model requests")
     plan = prepare(root, workspace, checkout, design)
+    if design["format"] == FIRST_PASS_DESIGN:
+        if "candidate_proposal" in design:
+            messages = {t: read_json(plan["sources"][t].public_context.encode())["messages"] for t in design["task_sets"]["development"]}
+            verify_proposal_quotes(design["candidate_proposal"], messages)
+        episodes = [r for r in plan["jobs"] if r["phase"] == "solve"]
+        plan["summary"].update(baseline=design["second_pass"]["baseline"],
+                               second_pass_by_policy={c["id"]: sum(r["arm"] == c["id"] for r in episodes)
+                                                      for c in design["conditions"]},
+                               second_pass_no_memory=sum(r["arm"] == "no_memory" for r in episodes))
     if not live:
         return dict(preflight=plan["summary"], conditions=design["conditions"], task_sets=design["task_sets"],
                     guards=config["guards"], config_sha256=digest(config_data))
