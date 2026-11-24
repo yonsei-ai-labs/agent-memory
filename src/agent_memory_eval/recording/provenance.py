@@ -233,7 +233,7 @@ class RecordingGateway:
         self.journal = journal
 
     def call(self, ctx, registry, actor, template, messages, worker, *, max_requests, cancel=False, transform=None,
-             project_self_authored=False, execution_limits=None):
+             project_self_authored=False, execution_limits=None, validate_wire=None):
         if execution_limits is None:
             if type(max_requests) is not int or max_requests < 1:
                 raise ContractError("Explicit request limit required")
@@ -264,6 +264,8 @@ class RecordingGateway:
         if canonical(final_wire) != canonical(request):
             self.journal.append([ctx.event("runtime.error", dict(code="UNAPPROVED_WIRE_CHANGE"))])
             raise ContractError("Final request differs from its approved manifest")
+        if validate_wire is not None:
+            validate_wire(deepcopy(final_wire))
         events = [start]
         for span in manifest["memory_spans"]:
             source = registry.sources[span["source_id"]]

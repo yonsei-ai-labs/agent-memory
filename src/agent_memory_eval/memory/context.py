@@ -20,7 +20,8 @@ DOMAIN_AUTH_NOTICE = _PAST_MEMORY_CONTEXT + (
     "Identifiers in past notes do not establish the current customer's identity. "
     "Follow the authentication steps in the current domain policy."
 )
-PRELOAD_NOTICES = {"legacy-id-v1": PAST_MEMORY_NOTICE, "domain-auth-v2": DOMAIN_AUTH_NOTICE}
+PRELOAD_NOTICES = {"legacy-id-v1": PAST_MEMORY_NOTICE, "domain-auth-v2": DOMAIN_AUTH_NOTICE,
+                   "memory-only-v1": _PAST_MEMORY_CONTEXT.rstrip()}
 
 
 def past_memory_instruction(instruction, *, notice_version=None):

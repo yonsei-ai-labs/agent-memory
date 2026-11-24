@@ -435,7 +435,7 @@ def matches_accounting_seal(folder, recorded_grant, seal):
     )
 
 
-def run_study(workspace, cfg, base, conn, rows, tasks, record, *, stage_runner=stage_job):
+def run_study(workspace, cfg, base, conn, rows, tasks, record, *, stage_runner=stage_job, model_resolver=None):
     root = workspace / "runs" / cfg.get("run_directory", cfg["name"])
     root.mkdir(parents=True, exist_ok=True)
     descriptor = os.open(root, os.O_RDONLY | os.O_DIRECTORY)
@@ -444,16 +444,17 @@ def run_study(workspace, cfg, base, conn, rows, tasks, record, *, stage_runner=s
         if not os.environ.get("OPENROUTER_API_KEY"):
             raise ContractError("Missing OpenRouter credentials")
         identity = implementation_identity(ROOT)
-        models, judge = resolve_live(cfg, conn)
-        terms = endpoint_terms(dict(models, grader=judge))
+        models, judge = (model_resolver or resolve_live)(cfg, conn)
+        terms = endpoint_terms(dict(models, grader=judge) if judge is not None else models)
         if "expected_endpoint_terms" in cfg and terms != cfg["expected_endpoint_terms"]:
             raise ContractError("Expansion endpoint terms differ from the source study")
         reg = dict(
             implementation=identity,
             preflight=record,
             endpoint_terms=terms,
-            judge_slug=judge["canonical_slug"],
         )
+        if judge is not None:
+            reg["judge_slug"] = judge["canonical_slug"]
         fixed(root / "registration.json", reg)
         total = Decimal(cfg.get("prior_covered_usd", "0"))
         seals = {}
