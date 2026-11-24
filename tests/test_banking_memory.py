@@ -29,6 +29,7 @@ class BankingMemoryTests(unittest.TestCase):
         models = study.read(ROOT / cfg["endpoints"]["path"])["models"]
         opening_count = 0
         grep_returns = []
+        omit_procedure = False
 
         def respond(client, wire):
             nonlocal opening_count
@@ -46,7 +47,9 @@ class BankingMemoryTests(unittest.TestCase):
                     text = "###STOP###"
             elif names == {"memory_store"}:
                 self.assertEqual(wire["tool_choice"], "required")
-                if messages[-1]["role"] != "tool":
+                if omit_procedure and messages[0]["content"].endswith(strict["writing"]["lines"]["procedure"]):
+                    text = "First clarify the terms. Then look up the current policy."
+                elif messages[-1]["role"] != "tool":
                     call = ("memory_store", {"title": "Observation", "body": "private sample note"})
             else:
                 self.assertTrue(any(m.get("content") == "Please help with my card." for m in messages))
@@ -135,7 +138,25 @@ class BankingMemoryTests(unittest.TestCase):
             bad = {**bindings, key: bindings[(1, case["task_id"], "episode__preload")]}
             with self.assertRaises(ContractError):
                 verify_required_form_sets(design, plan, wdir, bad)
+            wrong_prompt = deepcopy(design)
+            wrong_prompt["writing"]["lines"]["fact"] = wrong_prompt["writing"]["lines"]["procedure"]
+            with self.assertRaises(ContractError):
+                verify_required_form_sets(wrong_prompt, plan, wdir, bindings)
             from dataclasses import replace
             with self.assertRaises(ContractError):
                 verify_required_form_sets(design, dict(plan, sources={case["task_id"]: replace(source, source_run_id="another")}),
                                           wdir, bindings)
+
+            # Exercise the missing form through the normal controller, including its durable allocations.
+            omit_procedure = True
+            rejected = output/"failed-form"
+            rejected.mkdir()
+            for stage in ("write", "solve"):
+                study.stage_job((workspace, rejected, strict, {}, conn, case, tasks[case["task"]], stage,
+                                 {"fixture": True}, models, None, "1.50"))
+            failed_task = rejected/("task-" + case["task"])
+            bad_writer = next(w for w in study.sealed_rows(failed_task/"write")[2] if w["arm"] == "procedure")
+            self.assertEqual(bad_writer["result"]["error_code"], "WRITER_REQUIRED_STORE_MISSING")
+            close, _, skipped = study.sealed_rows(failed_task/"solve")
+            self.assertEqual((close["http_calls"], close["reported_usd"]), (0, 0))
+            self.assertEqual([r["reason"] for r in skipped], ["required_form_set_incomplete"] * 10)

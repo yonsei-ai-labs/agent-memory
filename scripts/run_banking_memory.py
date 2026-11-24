@@ -98,6 +98,7 @@ def prepare(workspace):
 
 def required_design(cfg, spec):
     from copy import deepcopy
+    from jsonschema import Draft202012Validator
     from agent_memory_eval.memory.writing import REQUIRED_STORE_CONTRACT
 
     if (spec["completion_contract"] != REQUIRED_STORE_CONTRACT or set(spec["lines"]) != set(matched.FORMS)
@@ -107,6 +108,8 @@ def required_design(cfg, spec):
     cfg["name"] = spec["name"]
     cfg["writing"].update(completion_contract=REQUIRED_STORE_CONTRACT, lines=spec["lines"],
                           common_instruction_ref=spec["common_instruction_ref"])
+    schema = matched.read(ROOT / "schemas/required-form-writing-v1.schema.json")
+    Draft202012Validator(schema).validate(cfg["writing"])
     return cfg
 
 

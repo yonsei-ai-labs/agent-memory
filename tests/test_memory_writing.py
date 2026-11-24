@@ -37,15 +37,32 @@ class ScriptedWriter:
 
 
 class MemoryWritingTests(unittest.TestCase):
+    def test_required_writer_can_repair_rejected_empty_body_before_completion(self):
+        class CorrectingWriter(ScriptedWriter):
+            def respond(self, wire):
+                step = len(self.requests)
+                self.requests.append(wire)
+                out = ScriptedWriter().respond(wire)
+                call = out["choices"][0]["message"]["tool_calls"][0]
+                call["id"] = "store-" + str(step)
+                if step == 0:
+                    call["function"]["arguments"] = json.dumps({"title": "Procedure", "body": "  "})
+                return out
+        client = CorrectingWriter()
+        result = self.write(WriterFeedback("none"), client, completion_contract=REQUIRED_STORE_CONTRACT)
+        self.assertEqual((result["status"], result["memory_stores"], len(client.requests)), ("completed", 1, 2))
+        self.assertEqual(audit_memory_writes(self.folder.name)["status"], "passed")
+
     def test_required_form_accepts_only_a_persisted_public_store(self):
+        fixture = json.loads((Path(__file__).parent/"fixtures/writer-required-store-v1.json").read_bytes())
+        self.assertEqual(fixture["contract"], REQUIRED_STORE_CONTRACT)
         for empty in (True, False):
             with self.subTest(empty=empty):
                 client = ScriptedWriter(empty=empty)
                 result = self.write(WriterFeedback("none"), client, completion_contract=REQUIRED_STORE_CONTRACT)
-                self.assertEqual([r["tool_choice"] for r in client.requests], ["required"])
-                self.assertEqual(result["status"], "error" if empty else "completed")
-                self.assertEqual(result["memory_stores"], 0 if empty else 1)
-                self.assertEqual(result["error_code"], "WRITER_REQUIRED_STORE_MISSING" if empty else None)
+                self.assertEqual([r["tool_choice"] for r in client.requests], [fixture["tool_choice"]])
+                expected = fixture["natural_language_only" if empty else "accepted_nonempty_store"]
+                self.assertEqual({k: result[k] for k in expected}, expected)
                 self.assertEqual(audit_memory_writes(self.folder.name)["status"], "passed")
 
     def setUp(self):

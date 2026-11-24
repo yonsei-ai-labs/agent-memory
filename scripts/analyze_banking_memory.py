@@ -8,7 +8,7 @@ from pathlib import Path
 import re
 
 from agent_memory_eval.analysis.action_grounding import argument_literals, input_evidence, literal_matches
-from agent_memory_eval.analysis.claim_evidence import paired_counts
+from agent_memory_eval.analysis.claim_evidence import paired_counts, trace_claim
 from agent_memory_eval.analysis.decision_attribution import compare_episodes
 from agent_memory_eval.analysis.recorded_decisions import RecordedDecisions, require
 from agent_memory_eval.analysis.tau2_attribution import graded_episode
@@ -72,7 +72,37 @@ def optional_storage(workspace):
                         require(not (job/"log.jsonl").exists(), "Empty-bank attempt has unaccounted requests")
                         affected.append(dict(arm=trial["arm"], task=tid, status="stopped_before_first_request"))
             authors.append(author)
-    return dict(source_public_hashes=inputs, authors=authors, empty_bank_readers=affected)
+    # A post-hoc case study with a falsifiable literal from the worker's first action.
+    case = next(c for c in reg["cases"] if c["task_id"] == "task_015")
+    base = root / ("task-" + case["task"])
+    writer = next(r for r in study.sealed_rows(base/"write")[2] if r["arm"] == "lesson")
+    reader = next(r for r in study.sealed_rows(base/"solve")[2] if r["arm"] == "lesson__preload")
+    first, = study.sealed_rows(base/"source")[2]
+    wdir, rdir = base/"write"/writer["directory"], base/"solve"/reader["directory"]
+    bank = read_form_bank(wdir, expected_log_sha256=writer["result"]["log_sha256"])
+    item, = bank["items"]
+    histories = {}
+    second, _ = graded_episode(base/"solve", reader, case, cfg["delivery_instruction"]["sha256"], first,
+                               public_inputs=histories)
+    original, _ = graded_episode(base/"source", first, case, cfg["delivery_instruction"]["sha256"])
+    a, b = original[0], second[0]
+    literal = "get_referral_link"
+    require(a.history == b.history and a.controls == b.controls and len(a.actions) == len(b.actions) == 1
+            and a.actions[0].name == b.actions[0].name == "grep", "Case study is not one matched search decision")
+    log = RecordedDecisions(rdir, reader["run_id"], reader["result"]["log_sha256"])
+    wire = log.blobs.get(log.starts[b.request][0]["payload"]["request_ref"])
+    require(not literal_matches(literal, input_evidence(histories[b.request], wire["tools"], {"grep"})) and
+            literal not in a.actions[0].record()["arguments"]["pattern"], "Literal also appears in a public source")
+    evidence = trace_claim(wdir, rdir, item=item["id"], version=item["version"], field="body",
+        clause="get_referral_link(user_id, card_name)", request_id=b.request,
+        source_citations=[("/experience/messages/3/content", "get_referral_link(user_id: str, card_name: str)")],
+        action_citations=[("/tool_calls/0/function/arguments", literal)])
+    require(evidence["decision"]["exposure"], "Case study lacks actual input exposure")
+    example = dict(task=case["task_id"], form=reader["arm"], reference_request=a.request,
+                   first_search=a.actions[0].record(), second_search=b.actions[0].record(),
+                   first_success=first["result"]["official_success"], second_success=reader["result"]["official_success"],
+                   competing_public_literal_sources=[], provenance=evidence)
+    return dict(source_public_hashes=inputs, authors=authors, empty_bank_readers=affected, exploratory_example=example)
 
 
 def decision_evidence(log, steps, histories, source_fields, required):

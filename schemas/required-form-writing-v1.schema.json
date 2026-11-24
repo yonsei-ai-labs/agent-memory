@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Post-task writing with a committed item per registered form",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["completion_contract", "common_instruction_ref", "tool", "lines", "proposed_limits"],
+  "properties": {
+    "completion_contract": {"const": "writer-required-store/v1"},
+    "common_instruction_ref": {
+      "type": "object", "additionalProperties": false, "required": ["path", "sha256"],
+      "properties": {"path": {"type": "string", "minLength": 1}, "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}
+    },
+    "tool": {"const": "memory_store"},
+    "lines": {
+      "type": "object", "minProperties": 1, "propertyNames": {"type": "string", "minLength": 1},
+      "additionalProperties": {"type": "string", "pattern": "\\S"}
+    },
+    "proposed_limits": {
+      "type": "object", "additionalProperties": false,
+      "required": ["requests", "input_bytes", "bank_items", "bank_payload_bytes", "bank_return_bytes"],
+      "properties": {
+        "requests": {"type": "integer", "minimum": 1}, "input_bytes": {"type": "integer", "minimum": 1},
+        "bank_items": {"type": "integer", "minimum": 1}, "bank_payload_bytes": {"type": "integer", "minimum": 1},
+        "bank_return_bytes": {"type": "integer", "minimum": 1}
+      }
+    }
+  }
+}

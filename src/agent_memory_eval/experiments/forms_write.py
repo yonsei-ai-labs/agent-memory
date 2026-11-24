@@ -206,7 +206,8 @@ def _bank_descriptor(blobs, scan, state):
         if not heads:
             raise ContractError("The required writer has no committed item")
         extra = dict(completion_contract=REQUIRED_STORE_CONTRACT, source_run_id=source["source_run_id"],
-                     source_log_sha256=source["source_log_sha256"])
+                     source_log_sha256=source["source_log_sha256"],
+                     instruction_sha256=digest(config["instruction"].encode()))
     if end[0]["termination_reason"] != "memory_write_" + status:
         raise ContractError("The writer's terminal status differs from the stored items")
     return dict(task_id=assignment["task_id"], repetition=assignment["repetition"], arm=assignment["arm"],

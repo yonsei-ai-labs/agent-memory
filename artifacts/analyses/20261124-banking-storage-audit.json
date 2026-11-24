@@ -281,6 +281,101 @@
       "task": "task_008"
     }
   ],
+  "exploratory_example": {
+    "competing_public_literal_sources": [],
+    "first_search": {
+      "arguments": {
+        "pattern": "Crypto-Cash Back|referral link|referral program|refer.*spends"
+      },
+      "name": "grep"
+    },
+    "first_success": false,
+    "form": "lesson__preload",
+    "provenance": {
+      "decision": {
+        "action_citations": [
+          {
+            "char_end": 58,
+            "char_start": 41,
+            "pointer": "/tool_calls/0/function/arguments",
+            "quote": "get_referral_link"
+          }
+        ],
+        "current_citations": [],
+        "exposure": [
+          {
+            "char_end": 904,
+            "char_start": 19,
+            "clause_char_end": 187,
+            "clause_char_start": 150,
+            "pointer": "/messages/1/content",
+            "rendered_sha256": "bb3d36685896e5bbd6d7401cf78b67aabd5bf2fa43007af42daa587facce733e",
+            "source": {
+              "kind": "memory_snapshot",
+              "preloaded_event_id": "e_10a0e1590df04a14bfa21aad59693eaa"
+            }
+          }
+        ],
+        "model": "openai/gpt-6-luna",
+        "record_kind": "observed",
+        "request_id": "request_359abbc451ff4104a96b9738734800c1",
+        "request_sha256": "0ff22e7dd921a6ab5d42eca345bd9799119ed1c6e98c09d659d9f2a40a1f8fe2",
+        "response_sha256": "d1f18f78736c21fc2bb98c5d504a6da36549ea04858259d643c1ef99990da45f",
+        "starting_snapshot_id": "snap_804d7fe449f745f39989f6287ff047ee",
+        "worker_run": "r_b1511d23db724ee68d97e220caddb844",
+        "writer_lineage": "declared_writer"
+      },
+      "writing": {
+        "experience_sha256": "2eb6609b4ded5c545a6af56221d288423eaf07eabc08d0112b1e68ebf6f38f08",
+        "feedback": {
+          "kind": "evaluation_feedback",
+          "level": "none"
+        },
+        "field_sha256": "bb3d36685896e5bbd6d7401cf78b67aabd5bf2fa43007af42daa587facce733e",
+        "instruction_sha256": "21fc2a5337f4db488879df1406b63e52c0b255ea43e470a3894219b94f3b0e43",
+        "item": "m_346fef5ae8424d4aae30053a08856691",
+        "model": "openai/gpt-6-luna",
+        "note": {
+          "char_end": 168,
+          "char_start": 131,
+          "pointer": "/body",
+          "quote": "get_referral_link(user_id, card_name)"
+        },
+        "public_context_sha256": "e9de58e74cd53fba8e094ccacb7c0c03b7858ee69ea56dec2e370c41340ca8ea",
+        "record_kind": "observed",
+        "request_id": "request_7d0eeb41f4bf405195237f18c69a6e93",
+        "request_sha256": "87cf8abf9bbcc4dad7cb8884743f1a248b34c78ed300cf3533c1cdfdeaeb6ff9",
+        "response_sha256": "1caf7eb85278ee8a85e74159163d4d2083394814cd0b2ae0a6b988a8d932fa1b",
+        "snapshot_id": "snap_2486166ab38047e592f9c12861d40f86",
+        "source_citations": [
+          {
+            "char_end": 3400,
+            "char_start": 3353,
+            "message_sha256": "4c31cdf49662b07ef26760289fd60418d954f1c5b4939f60442322a14d67cebf",
+            "pointer": "/experience/messages/3/content",
+            "quote": "get_referral_link(user_id: str, card_name: str)",
+            "role": "tool",
+            "source_kind": "past_message"
+          }
+        ],
+        "source_runs": [
+          "r_8a83ed241a7840878dd99a3680898d94"
+        ],
+        "store_event": "e_ede9b4b6a11643eeaab6ba13b28a3953",
+        "version": "v_72f9f654f346434b8d71264475359afa",
+        "writer_run": "r_e217cb0f76bc4eb68f27811b9537dcaa"
+      }
+    },
+    "reference_request": "request_1ea0634778f143f1abb1690bcb58d753",
+    "second_search": {
+      "arguments": {
+        "pattern": "referral.*(link|credit card)|get_referral_link|Crypto-Cash Back"
+      },
+      "name": "grep"
+    },
+    "second_success": false,
+    "task": "task_015"
+  },
   "source_public_hashes": {
     "task_001": "b4abf82948b4173eb05dbb25f15ad0306062e6852b997ab7abea7c58ca5be9a1",
     "task_008": "8574d2216d00352b1320c0c8ef3f04265301a491c0b5ec315c5ae9c315932e00",

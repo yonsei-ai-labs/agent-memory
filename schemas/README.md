@@ -1,5 +1,7 @@
 # 설정과 사건 계약
 
+필수 형식 비교는 [필수 저장 정책](required-form-writing-v1.schema.json)을 사용한다. `writer-required-store/v1`은 저장 도구 호출이 실제 항목을 남겨야 완결된다. 선택형 저장의 기존 `writer-finish/v1` 기록은 원래 계약으로 감사한다. [성공·실패 fixture](../tests/fixtures/writer-required-store-v1.json)
+
 [written-replay-batch.schema.json](written-replay-batch.schema.json)은 네 조건의 한 응답 배치 프로필이다. v2 준비물의 해시, 반복 단위·배정 시드·한도, 판정 및 비용 승인을 명시한다. 미정값은 초안에 보존한다. [실행과 감사](../docs/development/written-replay-batch.md)
 
 [snapshot-replay.schema.json](snapshot-replay.schema.json)은 고정 문맥·snapshot으로 한 응답을 실행하는 설정/결과의 별도 v1 계약이다. 한 worker 요청과 명시적 입력 한도, 공식 성공 미측정, 오류/비용 미확인 시 중단 표시를 검사한다. [합성 예시](../tests/fixtures/snapshot-replay-v1.json)는 형식 자료이며, [실행기와 원본 감사](../docs/development/snapshot-replay-runtime.md)의 행동 검증과 구분한다. 기존 journal/event/manifest v1.1/v1.2 의미는 바꾸지 않는다.
