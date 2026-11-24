@@ -9,8 +9,9 @@ import re
 
 from agent_memory_eval.analysis.action_grounding import argument_features, input_evidence, literal_matches
 from agent_memory_eval.analysis.claim_evidence import paired_counts, trace_claim
-from agent_memory_eval.analysis.decision_attribution import compare_episodes
+from agent_memory_eval.analysis.decision_attribution import compare_episodes, compare_steps
 from agent_memory_eval.analysis.recorded_decisions import RecordedDecisions, require
+from agent_memory_eval.analysis.selection import allocation_exposure
 from agent_memory_eval.analysis.tau2_attribution import graded_episode
 from agent_memory_eval.contracts.core import canonical, digest
 from agent_memory_eval.experiments.forms_write import read_form_bank
@@ -214,10 +215,10 @@ def summarize(sources, writers, trials):
                                  second=str(sum((b for a,b in values), Decimal(0))))
         return dict(outcomes=paired_counts([(r["success"],r["baseline_success"]) for r in rows]),
                     graded=len(graded), success=sum(r["success"] for r in graded),
-                    with_title=sum("title" in r["exposed_fields"] for r in graded),
-                    with_body=sum("body" in r["exposed_fields"] for r in graded),
-                    list_calls=sum(r["calls"].get("memory_list",0) for r in graded),
-                    get_calls=sum(r["calls"].get("memory_get",0) for r in graded),
+                    with_title=sum("title" in r.get("exposed_fields", ()) for r in rows),
+                    with_body=sum("body" in r.get("exposed_fields", ()) for r in rows),
+                    list_calls=sum(r.get("calls", {}).get("memory_list", 0) for r in rows),
+                    get_calls=sum(r.get("calls", {}).get("memory_get", 0) for r in rows),
                     matched_first_business=sum(v is not None and v.get("status") == "matched_visible_memory" for v in changed),
                     joint_success_effort=stats)
     by_cell = {(r["task"],r["arm"]):r for r in trials}
@@ -229,25 +230,67 @@ def summarize(sources, writers, trials):
                 on_demand_to_preload_same_bank=paired_counts(same_bank))
 
 
-def analyze(workspace):
+def feedback_contrasts(current, previous):
+    """Pair the two writer policies within task, form and delivery; keep missing grades in the denominator."""
+    def by_key(rows):
+        indexed = {(r["task"], r["arm"]): r for r in rows}
+        require(len(indexed) == len(rows), "Duplicate feedback comparison allocation")
+        return indexed
+    old, new = by_key(previous), by_key(current)
+    require(new.keys() == old.keys(), "Feedback cohorts differ")
+    def group(keys):
+        pairs = [(old[k], new[k]) for k in keys]
+        counts = paired_counts([(b["success"], a["success"]) for a, b in pairs])
+        both = [(a, b) for a, b in pairs if a["success"] is True and b["success"] is True]
+        effort = {}
+        for metric in ("customer_turns", "business_calls", "tokens", "usd", "document_searches"):
+            def value(row):
+                return row["calls"].get("grep", 0) if metric == "document_searches" else row["effort"].get(metric)
+            vals = [(Decimal(str(value(a))), Decimal(str(value(b)))) for a, b in both
+                    if value(a) is not None and value(b) is not None]
+            effort[metric] = dict(pairs=len(vals), none=str(sum((a for a, b in vals), Decimal(0))),
+                                  result_only=str(sum((b for a, b in vals), Decimal(0))))
+        return dict(outcomes=counts, paired=counts["assigned"] - counts["missing"],
+                    none_success=counts["both_success"] + counts["loss"],
+                    result_only_success=counts["both_success"] + counts["gain"], joint_success_effort=effort)
+    return dict(by_delivery={m: group(k for k in new if k[1].endswith("__" + m)) for m in pilot.matched.MODES},
+                by_task={t: {m: group(k for k in new if k[0] == t and k[1].endswith("__" + m))
+                             for m in pilot.matched.MODES} for t in sorted({k[0] for k in new})},
+                by_form={f: {m: group(k for k in new if k[1] == f + "__" + m)
+                             for m in pilot.matched.MODES} for f in pilot.matched.FORMS})
+
+
+def analyze(workspace, *, exposure_report=False, result_feedback=False):
     study = pilot.matched
-    protocol = study.read(pilot.ROOT / pilot.REQUIRED_PROFILE)
+    profile, preflight, approval = ((pilot.FEEDBACK_PROFILE, pilot.FEEDBACK_PREFLIGHT, pilot.FEEDBACK_APPROVAL)
+                                    if result_feedback else (pilot.REQUIRED_PROFILE, pilot.REQUIRED_PREFLIGHT, pilot.REQUIRED_APPROVAL))
+    protocol = study.read(pilot.ROOT / profile)
     root = workspace / "runs" / protocol["name"]
     completion = study.read(root / "completion.json")
     reg = study.read(root / "registration.json")
+    if result_feedback and reg["preflight"].get("scope") == "writing":
+        preflight = pilot.FEEDBACK_WRITING_PREFLIGHT
     require(completion["registration_sha256"] == digest((root / "registration.json").read_bytes()), "Bad registration seal")
-    frozen = study.read(pilot.ROOT / pilot.REQUIRED_PREFLIGHT)
-    approved = dict(frozen, authorization=study.read(pilot.ROOT / pilot.REQUIRED_APPROVAL))
-    require(reg["preflight"] == approved and frozen["protocol_sha256"] == digest((pilot.ROOT / pilot.REQUIRED_PROFILE).read_bytes()),
+    frozen = study.read(pilot.ROOT / preflight)
+    approved = dict(frozen, authorization=study.read(pilot.ROOT / approval))
+    require(reg["preflight"] == approved and frozen["protocol_sha256"] == digest((pilot.ROOT / profile).read_bytes()),
             "Cohort changed after registration")
     rid = digest(canonical(approved))
-    parent = json.loads(study.asset_text(pilot.ROOT, protocol["parent"]))
-    cfg = pilot.required_design(json.loads(study.asset_text(pilot.ROOT, parent["base"])), protocol)
+    required_protocol = json.loads(study.asset_text(pilot.ROOT, protocol["required_protocol"])) if result_feedback else protocol
+    parent = json.loads(study.asset_text(pilot.ROOT, required_protocol["parent"]))
+    cfg = pilot.required_design(json.loads(study.asset_text(pilot.ROOT, parent["base"])), required_protocol)
+    stages = study.STAGES
+    if result_feedback:
+        cfg["writer_feedback_level"] = protocol["writer_feedback_level"]
+        previous = json.loads(study.asset_text(pilot.ROOT, protocol["comparison_results"]))
+        previous_trials = {(r["task"], r["arm"]): r for r in previous["trials"]}
+        stages = ["source", *protocol["scopes"][frozen["scope"]]]
     common = study.asset_text(pilot.ROOT, cfg["writing"]["common_instruction_ref"]).rstrip("\r\n")
     prompts = {f: digest((common + "\n" + line).encode()) for f, line in cfg["writing"]["lines"].items()}
     read_sha = cfg["delivery_instruction"]["sha256"]
     costs = defaultdict(lambda: defaultdict(Decimal))
     cells, writers, firsts = [], [], []
+    observations = []
     examples = {}
     session_ids = set()
     for case in frozen["cases"]:
@@ -257,8 +300,11 @@ def analyze(workspace):
         required = set(raw["required_documents"])
         imported = case["imported_first_pass"]
         source_dir = safe_path(workspace/"runs", imported["directory"])
-        data = {}
-        for phase in study.STAGES:
+        data = {"solve": []}
+        if result_feedback and "solve" in stages:
+            old_folder = workspace/"runs"/required_protocol["name"]/("task-" + tid)/"solve"
+            old_readers = {r["arm"]:r for r in study.sealed_rows(old_folder)[2]}
+        for phase in stages:
             jobs = study.jobs_for(case, phase)
             if phase == "source":
                 _, control, rows = study.sealed_rows(source_dir)
@@ -272,7 +318,7 @@ def analyze(workspace):
             seal = completion["stages"][str(folder.relative_to(root))]
             if seal.get("status") == "not_started":
                 require(not folder.exists(), "Unfunded shard unexpectedly exists")
-                data[phase] = [dict(j, status=seal["reason"]) for j in jobs]
+                data[phase] = [dict(j, status="not_started", reason=seal["reason"]) for j in jobs]
             else:
                 _, control, rows = study.sealed_rows(folder)
                 require(matches_accounting_seal(folder, control["profile"]["guards"]["max_usd"], seal)
@@ -289,12 +335,17 @@ def analyze(workspace):
         source_fields = input_evidence([public["task_context"], *public["messages"]], [], {"grep"}) if public else []
         by_form = {}
         for w in data["write"]:
-            result = w.get("result", {})
+            result = w.get("result") or {}
             bank = None
+            registrar = dict(writer_prompt_sha256=prompts, writer_feedback_level=cfg.get("writer_feedback_level", "none"))
+            if result_feedback:
+                registrar["first_writer_inputs"] = case["first_writer_inputs"]
             if result.get("log_sha256"):
-                verify_writer_input(base / "write", w, source, dict(writer_prompt_sha256=prompts))
+                verify_writer_input(base / "write", w, source, registrar)
                 if result.get("status") in {"completed", "empty"}:
                     bank = read_form_bank(base / "write" / w["directory"], expected_log_sha256=result["log_sha256"])
+                    if result_feedback:
+                        require(bank.get("result_feedback") == source.result_receipt(), "Wrong writer outcome receipt")
             by_form[w["arm"]] = bank
             writers.append(dict(task=tid, form=w["arm"], status=result.get("status", w["status"]),
                                 run=w.get("run_id"), log_sha256=result.get("log_sha256"),
@@ -304,20 +355,30 @@ def analyze(workspace):
         baseline_steps = []
         for phase, rows in (("source", [first]), ("solve", data["solve"])):
             for row in rows:
-                result = row.get("result", {})
+                result = row.get("result") or {}
                 is_second = phase == "solve"
                 bank = by_form[row["arm"].split("__")[0]] if is_second else None
                 rec = dict(task=tid, arm=row["arm"], run=row.get("run_id"), success=result.get("official_success"),
                            status=result.get("grading_status", row["status"]), error=result.get("error_code") or row.get("reason"))
+                observation = dict(state="not_started" if row["status"] == "not_started" else "unavailable")
+                if observation["state"] == "not_started" and row.get("directory"):
+                    require(not (safe_path(base/phase, row["directory"])/"log.jsonl").exists(),
+                            "Unstarted allocation has a journal")
                 if result.get("log_sha256"):
                     parent_dir = base / phase if is_second else source_dir
                     folder = safe_path(parent_dir, row["directory"])
                     e = episode(folder, row, case, rid if is_second else imported["registration_sha256"],
-                                first.get("run_id") if is_second else None, bank)
+                                first.get("run_id") if is_second else None, bank, include_exposure=is_second)
                     require(e["session_id"] not in session_ids, "Shared worker session")
                     session_ids.add(e["session_id"])
                     rec.update(log_sha256=e["log_sha256"], opening=e.get("task_start_sha256"), effort=e["effort"],
                                setup=e.get("setup_requests"), body=e["body_seen"], read_calls=e["reads"])
+                    if is_second:
+                        observation = e["worker_exposure"]
+                        if rec["success"] is None:
+                            rec["exposed_fields"] = observation["confirmed"]
+                            rec["calls"] = {k: observation["counts"][k] for k in ("memory_list", "memory_get")
+                                            if k in observation["counts"]}
                     if rec["success"] is not None:
                         histories = {}
                         steps, _ = graded_episode(parent_dir, row, case, read_sha, first if is_second else None,
@@ -334,32 +395,69 @@ def analyze(workspace):
                                     e["source_worker_request_id"] == baseline["first_worker_request"],
                                     "Replayed start differs from the graded first pass")
                             rec["divergence"] = compare_episodes(baseline_steps, steps)
+                            if result_feedback:
+                                old = old_readers[row["arm"]]
+                                reference = previous_trials[tid, row["arm"]]
+                                require(old["run_id"] == reference["run"] and old["result"]["log_sha256"] ==
+                                        reference["log_sha256"] and old["run_id"] != row["run_id"], "Wrong control reader")
+                                old_steps, _ = graded_episode(old_folder, old, case, read_sha, first)
+                                a, b = [next(s for s in seq if s.actor == "worker") for seq in (old_steps, steps)]
+                                require(a.controls == b.controls and a.history == b.history, "Different first public decision")
+                                rec["feedback_first_decision"] = compare_steps(a, b)
                         else:
                             baseline_steps = steps
                             rec["first_worker_request"] = e["first_worker_request_id"]
                 if is_second:
                     rec["baseline_success"] = baseline["success"]
                     cells.append(rec)
+                    observations.append(dict(task=tid, arm=row["arm"], run=rec["run"], log_sha256=result.get("log_sha256"),
+                                             success=rec["success"], status=rec["status"], observation=observation))
                 else:
                     baseline = rec
                     firsts.append(rec)
-        if tid == "task_015":
+        if tid == "task_015" and not result_feedback:
             examples = referral_search_citations(base, data, by_form, cells)
     total = Decimal(frozen["prior_covered_usd"]) + sum(stage["spent"] for stage in costs.values())
-    require(len(cells) == 40 and len(writers) == 20 and len(firsts) == 4 and
+    require(len(cells) == frozen["assigned"]["solve"] and len(writers) == frozen["assigned"]["write"]
+            and len(firsts) == frozen["assigned"]["reused_first_pass"] and
             total == Decimal(completion["total_covered_usd"]) <= Decimal(approved["authorization"]["total_usd"]),
             "Allocation or total cost differs")
-    return dict(implementation=reg["implementation"]["implementation_commit"], registration_sha256=rid,
+    def coverage(group):
+        return allocation_exposure((r["success"], r["observation"]) for r in group)
+    coverage_summary = dict(total=coverage(observations), by_delivery={
+        mode: coverage(r for r in observations if r["arm"].endswith("__" + mode)) for mode in study.MODES})
+    if exposure_report:
+        return dict(format="agent-memory-banking-exposure/v1", registration_sha256=rid,
+                    **coverage_summary, allocations=observations)
+    summary = summarize(firsts, writers, cells) if cells else dict(stored_forms=sum(bool(w["items"]) for w in writers))
+    if result_feedback:
+        summary["allocation_exposure"] = coverage_summary
+        if cells:
+            summary["paired_writer_feedback"] = feedback_contrasts(cells, previous["trials"])
+    if coverage_summary["total"]["ungraded"]:
+        summary["allocation_exposure"] = coverage_summary
+    report = dict(implementation=reg["implementation"]["implementation_commit"], registration_sha256=rid,
                 costs={phase: {k:str(v) for k,v in values.items()} for phase,values in costs.items()},
                 prior_covered_usd=frozen["prior_covered_usd"], total_covered_usd=str(total),
-                summary=summarize(firsts, writers, cells), sources=firsts, writers=writers, trials=cells,
-                exploratory_referral_search_citations=examples)
+                summary=summary, sources=firsts, writers=writers, trials=cells)
+    if result_feedback:
+        report.update(writer_feedback_level=cfg["writer_feedback_level"], control_results=protocol["comparison_results"])
+    else:
+        report["exploratory_referral_search_citations"] = examples
+    return report
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--workspace", type=Path, default=pilot.ROOT)
-    parser.add_argument("--optional-storage", action="store_true")
+    view = parser.add_mutually_exclusive_group()
+    view.add_argument("--optional-storage", action="store_true")
+    view.add_argument("--exposure-coverage", action="store_true", help="Use all registered allocations for exposure coverage")
+    parser.add_argument("--result-feedback", action="store_true", help="Analyze the result-only writer replication")
     args = parser.parse_args()
-    analysis = optional_storage if args.optional_storage else analyze
-    print(json.dumps(analysis(args.workspace.resolve()), ensure_ascii=False, indent=2, sort_keys=True))
+    workspace = args.workspace.resolve()
+    if args.result_feedback and args.optional_storage:
+        parser.error("Optional storage is a separate historical series")
+    result = optional_storage(workspace) if args.optional_storage else analyze(
+        workspace, exposure_report=args.exposure_coverage, result_feedback=args.result_feedback)
+    print(json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True))

@@ -1,0 +1,79 @@
+{
+  "evidence": {
+    "source": {
+      "messages": [
+        {
+          "role": "tool",
+          "content": "The account was verified before the address update."
+        }
+      ]
+    },
+    "claim": "Verify the account before updating its address.",
+    "current": {
+      "messages": [
+        {
+          "role": "user",
+          "content": "Please update my address."
+        }
+      ]
+    },
+    "action": {
+      "calls": [
+        {
+          "name": "verify_account"
+        }
+      ]
+    }
+  },
+  "receipt": {
+    "outcome_event_id": "e_fixture",
+    "success": false
+  },
+  "submission": {
+    "format": "semantic-memory-ratings/v1",
+    "rubric_sha256": "5f0bc5927fb3589855d73399f4d71fa8d7773b74d75f0753dd75ec922ffaaeff",
+    "reviewer": {
+      "kind": "human",
+      "id": "illustrative-reader"
+    },
+    "reviews": [
+      {
+        "packet_id": "ea9ac3031ea5d5acb21a2c8e3236dfac085fd04fcce2939d7e972e929e90eb05",
+        "input_sha256": "99c516ca966cd513977569afff50ab843ad5e771fb617868e522edde7a1e2274",
+        "ratings": {
+          "source_support": {
+            "label": "supported",
+            "citations": [
+              {
+                "pointer": "/source/messages/0/content",
+                "quote": "verified before the address update"
+              }
+            ]
+          },
+          "applicability": {
+            "label": "applicable",
+            "citations": [
+              {
+                "pointer": "/current/messages/0/content",
+                "quote": "update my address"
+              }
+            ]
+          },
+          "alternative_support": {
+            "label": "unclear",
+            "citations": []
+          },
+          "action_alignment": {
+            "label": "consistent",
+            "citations": [
+              {
+                "pointer": "/action/calls/0/name",
+                "quote": "verify_account"
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

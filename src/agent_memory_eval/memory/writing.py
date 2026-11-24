@@ -3,7 +3,7 @@
 from copy import deepcopy
 from dataclasses import asdict, dataclass
 
-from agent_memory_eval.contracts.core import ContractError, RunContext, canonical, new_id
+from agent_memory_eval.contracts.core import ContractError, RunContext, canonical, digest, new_id
 from agent_memory_eval.memory.router import ToolRouter
 from agent_memory_eval.memory.service import MemoryService
 from agent_memory_eval.memory.tools import memory_tools
@@ -106,7 +106,7 @@ def read_public_experience(blobs, scan, ref):
     if value.get("format") == "agent-memory-public-experience/v2":
         from agent_memory_eval.recording.experience import read_imported_experience
         return read_imported_experience(blobs, scan, value)
-    if value.get("format") == "agent-memory-forms-public-experience/v1":
+    if value.get("format") in {"agent-memory-forms-public-experience/v1", "agent-memory-forms-public-experience/v2"}:
         from agent_memory_eval.experiments.forms_write import read_form_experience
         return read_form_experience(blobs, scan, value)
     if canonical(value) != canonical(_experience(blobs, scan, value["source_run_id"])):
@@ -129,20 +129,33 @@ class WriterFeedback:
         elif self.critique is not None or self.critique_origin is not None:
             raise ContractError("This feedback level cannot contain a critique")
 
+    def message(self, success=None):
+        value = dict(kind="evaluation_feedback", level=self.level)
+        if self.level != "none":
+            if type(success) is not bool:
+                raise ContractError("Result feedback requires an available source outcome")
+            value["success"] = success
+        if self.level == "critique":
+            value["critique"] = self.critique
+        return value
+
 
 def writer_inputs(blobs, scan, experience, feedback):
     context = dict(kind="past_public_experience", task_context=public_message(blobs.get(experience["task_ref"])),
                    messages=[o["message"] for o in experience["observations"]])
-    result = dict(kind="evaluation_feedback", level=feedback.level)
+    success = None
+    if experience["format"] == "agent-memory-forms-public-experience/v2" and feedback.level != "result_only":
+        raise ContractError("The imported form source authorizes only the registered binary result")
     if feedback.level != "none":
-        outcome = (experience["recorded_outcome"] if experience["format"] == "agent-memory-public-experience/v2"
+        if experience["format"] == "agent-memory-forms-public-experience/v1":
+            raise ContractError("The imported source does not authorize result feedback")
+        imported = experience["format"] in {"agent-memory-public-experience/v2", "agent-memory-forms-public-experience/v2"}
+        outcome = (experience["recorded_outcome"] if imported
                    else scan["events"][experience["outcome_event_id"]]["payload"])
-        if outcome["grading_status"] != "graded" or type(outcome["official_success"]) is not bool:
+        if outcome["grading_status"] != "graded":
             raise ContractError("Result feedback requires an available source outcome")
-        result["success"] = outcome["official_success"]
-    if feedback.level == "critique":
-        result["critique"] = feedback.critique
-    return [dict(role="user", content=canonical(value).decode()) for value in (context, result)]
+        success = outcome["official_success"]
+    return [dict(role="user", content=canonical(value).decode()) for value in (context, feedback.message(success))]
 
 
 def writer_template(model_config, instruction, *, completion_contract=WRITER_COMPLETION_CONTRACT):
@@ -166,7 +179,7 @@ class UnknownWriterCost(ContractError):
 
 def write_from_experience(journal, experience_ref, feedback, *, instruction, policy, client,
                           model_config, max_requests, condition_id, run_id=None, execution_limits=None,
-                          completion_contract=WRITER_COMPLETION_CONTRACT):
+                          completion_contract=WRITER_COMPLETION_CONTRACT, first_input_sha256=None):
     """No collection rerun, source grading artifact, business tools or shared writer session."""
     if (not policy.enabled or policy.write_timing != "post_task" or policy.read_mode != "none"
             or policy.same_episode_read or not isinstance(instruction, str) or not instruction.strip()
@@ -176,6 +189,11 @@ def write_from_experience(journal, experience_ref, feedback, *, instruction, pol
     template_config = writer_template(model_config, instruction, completion_contract=completion_contract)
     experience = read_public_experience(journal.blobs, journal.scan, experience_ref)
     inputs = writer_inputs(journal.blobs, journal.scan, experience, feedback)
+    if first_input_sha256 is not None:
+        first_wire = dict(template_config)
+        first_wire["messages"] = [first_wire.pop("system"), *inputs]
+        if digest(canonical(first_wire)) != first_input_sha256:
+            raise ContractError("First writer request differs from its registered feedback comparison")
     kind = "illustrative" if getattr(client, "offline", False) else "observed"
     if experience["record_kind"] != kind:
         raise ContractError("Source and writer record kinds differ")

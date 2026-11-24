@@ -1,4 +1,4 @@
-"""Verified first-pass public experience and isolated, optional form writers."""
+"""Verified first-pass public experience and isolated, protocol-configured form writers."""
 
 from copy import deepcopy
 from dataclasses import dataclass
@@ -26,7 +26,30 @@ class FormSource:
     public_context: str
     public_context_sha256: str
     public_context_bytes: int
-    official_success: bool | None  # For analysis only, never installed in a writer journal.
+    official_success: bool | None
+    outcome_event_id: str | None = None
+
+    def result_receipt(self):
+        if type(self.official_success) is not bool or not isinstance(self.outcome_event_id, str) or not self.outcome_event_id:
+            raise ContractError("Result-only writing requires a verified, graded source")
+        return dict(outcome_event_id=self.outcome_event_id, success=self.official_success)
+
+    def feedback_message(self, level):
+        if level not in {"none", "result_only"}:
+            raise ContractError("Unknown multi-form writer feedback")
+        return WriterFeedback(level).message(self.result_receipt()["success"] if level == "result_only" else None)
+
+
+def feedback_pair(wire, source):
+    """Pin the first writer request with only the official first-pass bit changed."""
+    messages = wire["messages"]
+    if ([m["role"] for m in messages] != ["system", "user", "user"] or messages[1]["content"] != source.public_context
+            or messages[2] != dict(role="user", content=canonical(source.feedback_message("none")).decode())):
+        raise ContractError("Unexpected baseline writer input")
+    binary = dict(role="user", content=canonical(source.feedback_message("result_only")).decode())
+    return dict(none_input_sha256=digest(canonical(wire)),
+                result_only_input_sha256=digest(canonical(dict(wire, messages=[*messages[:2], binary]))),
+                public_experience_sha256=source.public_context_sha256, **source.result_receipt())
 
 
 def _project_context(wire, response):
@@ -46,7 +69,7 @@ def load_form_sources(design, root):
     root = Path(root).absolute()
     source = design["source"]
     cohort = source["cohort"]
-    if source["feedback_level"] != "none" or digest(canonical(cohort)) != source["cohort_sha256"]:
+    if source["feedback_level"] not in {"none", "result_only"} or digest(canonical(cohort)) != source["cohort_sha256"]:
         raise ContractError("The source cohort or its feedback policy changed")
     source_root = safe_path(root, source["root"])
     summary_ref = dict(path="baseline-summary.json", sha256=source["summary_sha256"])
@@ -90,12 +113,15 @@ def load_form_sources(design, root):
             if digest(data) != row["public_context_sha256"] or len(data) != row["public_context_bytes"]:
                 raise ContractError("Public context hash or byte length differs for task " + task)
             sources[task] = FormSource(task, run, source["log_sha256"], end["event_id"], end["event_seq"],
-                                       data.decode(), row["public_context_sha256"], len(data), scored["official_success"])
+                                       data.decode(), row["public_context_sha256"], len(data), scored["official_success"],
+                                       outcome["event_id"])
+            if source["feedback_level"] == "result_only" and row.get("result_feedback") != sources[task].result_receipt():
+                raise ContractError("Registered writer feedback differs from the scored first pass")
     return sources
 
 
 def read_form_experience(blobs, scan, value):
-    """Reopen an imported projection without the private source, grade, or simulator artifacts."""
+    """Reopen the public projection and, for v2, its separately bound binary result."""
     ref = value["source_ref"]
     event = scan["events"][value["import_event_id"]]
     if (event["type"] != "business.transition" or event["run_id"] is not None
@@ -112,7 +138,16 @@ def read_form_experience(blobs, scan, value):
             or not context["messages"] or context["messages"][-1]["role"] != "assistant"
             or any(m["role"] == "system" or public_text_message(m) != m for m in context["messages"])):
         raise ContractError("The imported first-pass projection or its provenance changed")
-    return dict(format=value["format"], source_run_id=source["source_run_id"], task_ref=source["task_ref"],
+    extra = {}
+    if value["format"] == "agent-memory-forms-public-experience/v2":
+        receipt = source.get("result_feedback", {})
+        if (not isinstance(receipt, dict) or set(receipt) != {"success", "outcome_event_id"} or type(receipt["success"]) is not bool
+                or not isinstance(receipt["outcome_event_id"], str) or not receipt["outcome_event_id"]):
+            raise ContractError("Imported result-only feedback lacks a binary outcome receipt")
+        extra["recorded_outcome"] = dict(grading_status="graded", official_success=receipt["success"])
+    elif "result_feedback" in source:
+        raise ContractError("Unexpected feedback on a public-only import")
+    return dict(format=value["format"], source_run_id=source["source_run_id"], task_ref=source["task_ref"], **extra,
                 record_kind=event["record_kind"], source_record_kind=source["source_record_kind"],
                 source_end_event_id=source["source_end_event_id"], source_end_seq=source["source_end_seq"],
                 local_ready_seq=event["event_seq"], observations=[dict(message=m) for m in context["messages"]])
@@ -133,10 +168,17 @@ def _import(journal, design, source, repetition, arm, run_id, record_kind):
                  source_end_seq=source.source_end_seq, source_record_kind="observed",
                  public_context_sha256=source.public_context_sha256, public_context_bytes=len(data),
                  public_context_ref=journal.blobs.put(context), task_ref=journal.blobs.put(context["task_context"]))
+    version = "v1"
+    if design["source"]["feedback_level"] == "result_only":
+        receipt = source.result_receipt()
+        if row.get("result_feedback") != receipt:
+            raise ContractError("Writer feedback differs from the registered first-pass outcome")
+        proof["result_feedback"] = receipt
+        version = "v2"
     proof_ref = journal.blobs.put(proof)
     event = RunContext(journal.experiment_id, record_kind=record_kind).event(
         "business.transition", dict(origin="forms.public_experience_import", source_ref=proof_ref))
-    value = dict(format="agent-memory-forms-public-experience/v1", import_event_id=event["event_id"], source_ref=proof_ref)
+    value = dict(format="agent-memory-forms-public-experience/" + version, import_event_id=event["event_id"], source_ref=proof_ref)
     ref = journal.blobs.put(value)
     state = deepcopy(journal.state)
     state["form_writer"] = dict(task_id=source.task_id, repetition=repetition, arm=arm, run_id=run_id,
@@ -151,10 +193,12 @@ def _bank_descriptor(blobs, scan, state):
     config = state["memory_writes"][run]
     if (set(scan["starts"]) != {run} or set(state["memory_writes"]) != {run}
             or config["completion_contract"] not in WRITER_CONTRACTS
-            or config["feedback"] != {"level": "none", "critique": None, "critique_origin": None}
             or config["experience_ref"] != assignment["experience_ref"]):
         raise ContractError("The journal does not contain the assigned isolated writer")
     source = blobs.get(blobs.get(config["experience_ref"])["source_ref"])
+    level = "result_only" if "result_feedback" in source else "none"
+    if config["feedback"] != {"level": level, "critique": None, "critique_origin": None}:
+        raise ContractError("Writer feedback differs from its imported source policy")
     start = scan["starts"][run]
     if (source["task_id"] != assignment["task_id"] or source["public_context_sha256"] != assignment["public_context_sha256"]
             or start["payload"]["source_run_ids"] != [source["source_run_id"]] or start["condition_id"] != assignment["arm"]
@@ -210,6 +254,8 @@ def _bank_descriptor(blobs, scan, state):
                      instruction_sha256=digest(config["instruction"].encode()))
     if end[0]["termination_reason"] != "memory_write_" + status:
         raise ContractError("The writer's terminal status differs from the stored items")
+    if level == "result_only":
+        extra.update(feedback_level=level, result_feedback=source["result_feedback"])
     return dict(task_id=assignment["task_id"], repetition=assignment["repetition"], arm=assignment["arm"],
                 run_id=run, snapshot_id=snapshot_id, status=status, items=snapshot_items(blobs, state, snapshot_id),
                 head_revision=len(stores), public_context_sha256=source["public_context_sha256"], **extra)
@@ -228,7 +274,7 @@ def run_form_writer(journal, design, source, *, repetition, arm, client, guard, 
     """Run one scheduled assignment with the caller's client and common per-request spend guard."""
     writing = design["writing"]
     if (journal.scan["records"] or guard is None or getattr(client, "guard", None) is not guard
-            or design["source"]["feedback_level"] != "none" or writing["completion_contract"] not in WRITER_CONTRACTS
+            or design["source"]["feedback_level"] not in {"none", "result_only"} or writing["completion_contract"] not in WRITER_CONTRACTS
             or writing["tool"] != "memory_store"):
         raise ContractError("Writing requires a fresh journal, the shared guard and the frozen feedback/tool contract")
     blocks = [b for b in design["allocation"]["blocks"] if b["task_id"] == source.task_id and b["repetition"] == repetition]
@@ -254,10 +300,12 @@ def run_form_writer(journal, design, source, *, repetition, arm, client, guard, 
         raise ContractError("An assigned writer run ID must be a nonempty string")
     run_id = new_id("writer") if run_id is None else run_id
     ref = _import(journal, design, source, repetition, arm, run_id, "illustrative" if offline else "observed")
-    result = write_from_experience(journal, ref, WriterFeedback("none"), instruction=instruction, policy=policy,
+    entry = next(r for r in design["source"]["cohort"] if r["task_id"] == source.task_id)
+    pinned = entry["first_writer_inputs"][arm] if "first_writer_inputs" in entry else None
+    result = write_from_experience(journal, ref, WriterFeedback(design["source"]["feedback_level"]), instruction=instruction, policy=policy,
                                    client=client, model_config=config, condition_id=arm, run_id=run_id,
                                    max_requests=None, execution_limits=execution,
-                                   completion_contract=writing["completion_contract"])
+                                   completion_contract=writing["completion_contract"], first_input_sha256=pinned)
     finishes = [e["payload"] for e in journal.events.values() if e["type"] == "model.request_finished"]
     reported_cost = sum((Decimal(str(p["cost_usd"])) for p in finishes if p["cost_status"] == "observed"), Decimal(0))
     token_counts = [(p["usage"] or {}).get("total_tokens") for p in finishes]

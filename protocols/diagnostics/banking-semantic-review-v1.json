@@ -1,0 +1,27 @@
+{
+  "format": "banking-semantic-review-selection/v1",
+  "selection": "Retrospective. One fixed clause per procedure and lesson bank from every required-writing source. Include both delivery assignments at public worker decisions 1 and 3, retaining unreached decisions.",
+  "source_result": {
+    "path": "artifacts/analyses/20261124-banking-required-results.json",
+    "sha256": "35de5a43a8a36f859aaf31cb8d8a956301b05ae9a4c600af82b6e5616c7a322b"
+  },
+  "worker_decisions": [1, 3],
+  "claims": {
+    "task_001": {
+      "procedure": "Verify that the evidence covers both rate and fee for comparable options before ranking.",
+      "lesson": "When recommending a financial product, only compare and rank offers using verified, applicable terms."
+    },
+    "task_008": {
+      "procedure": "Clarify which specific offer/card the customer means, then search available knowledge for the exact offer terms.",
+      "lesson": "A related product term or similar promotion is not evidence that a specific mailed offer applies."
+    },
+    "task_010": {
+      "procedure": "Retrieve referrals only after verification.",
+      "lesson": "If the lookup lacks the rejection explanation and the customer requests deeper investigation, escalation is a reasonable next step."
+    },
+    "task_015": {
+      "procedure": "Actually invoke the tool-giving function before telling the user it is available; verify the tool response names the tool and its arguments.",
+      "lesson": "Verify the exact product and terms against documentation before offering a referral tool, and when a user says a tool is missing, explicitly issue it rather than merely describing it."
+    }
+  }
+}

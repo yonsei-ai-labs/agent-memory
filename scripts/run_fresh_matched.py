@@ -40,13 +40,20 @@ def jobs_for(case, stage):
 
 
 def design_for(cfg, case, stage, source=None):
+    feedback = cfg.get("writer_feedback_level", "none")
+    if feedback not in {"none", "result_only"}:
+        raise ContractError("Unknown matched writer feedback level")
     cohort = dict(task_id=case["task_id"], source_group=case["customer"])
     if source is not None:
         cohort.update(run_id=source.source_run_id, source_log_sha256=source.source_log_sha256,
                       public_context_sha256=source.public_context_sha256, public_context_bytes=source.public_context_bytes)
+        if feedback == "result_only":
+            cohort["result_feedback"] = source.result_receipt()
+    if "first_writer_inputs" in case:
+        cohort["first_writer_inputs"] = case["first_writer_inputs"]
     jobs = jobs_for(case, stage)
     return dict(format=FRESH_MATCHED, stage=stage, source=dict(domain=case["domain"], split=case["split"],
-        feedback_level="none", cohort=[cohort]), writing=cfg["writing"],
+        feedback_level=feedback, cohort=[cohort]), writing=cfg["writing"],
         second_pass=dict(proposed_limits=cfg["limits"]), model=dict(connection_profile_ref=cfg["connection"],
         seed_pairs=[dict(repetition=1, writer=cfg["writer_seed"], native_and_solver=cfg["native_and_worker_seed"])]),
         delivery_arms={j["arm"]: dict(zip(("writer", "read_mode"), j["arm"].split("__"))) for j in jobs
@@ -155,6 +162,8 @@ def prepare(root, workspace, scope, *, protocol=PROFILE):
     record = dict(series=cfg["name"], scope=scope, protocol_sha256=profile_sha, native_revision=cfg["benchmark_revision"],
         writer_prompt_sha256={f: digest((common + "\n" + line).encode()) for f, line in cfg["writing"]["lines"].items()},
         read_instruction_sha256=digest(instruction.encode()), **allocation_record(cases))
+    if "writer_feedback_level" in cfg:
+        record["writer_feedback_level"] = cfg["writer_feedback_level"]
     return cfg, conn, cases, tasks, record
 
 

@@ -30,6 +30,7 @@ class BankingMemoryTests(unittest.TestCase):
         opening_count = 0
         grep_returns = []
         omit_procedure = False
+        feedback_messages = []
 
         def respond(client, wire):
             nonlocal opening_count
@@ -47,11 +48,14 @@ class BankingMemoryTests(unittest.TestCase):
                     text = "###STOP###"
             elif names == {"memory_store"}:
                 self.assertEqual(wire["tool_choice"], "required")
+                if len(messages) == 3:
+                    feedback_messages.append(json.loads(messages[2]["content"]))
                 if omit_procedure and messages[0]["content"].endswith(strict["writing"]["lines"]["procedure"]):
                     text = "First clarify the terms. Then look up the current policy."
                 elif messages[-1]["role"] != "tool":
                     call = ("memory_store", {"title": "Observation", "body": "private sample note"})
             else:
+                self.assertNotIn('"kind":"evaluation_feedback"', str(messages))
                 self.assertTrue(any(m.get("content") == "Please help with my card." for m in messages))
                 seen = {c["function"]["name"] for m in messages for c in m.get("tool_calls") or []}
                 if "memory_list" in names and "memory_list" not in seen:
@@ -146,6 +150,22 @@ class BankingMemoryTests(unittest.TestCase):
             with self.assertRaises(ContractError):
                 verify_required_form_sets(design, dict(plan, sources={case["task_id"]: replace(source, source_run_id="another")}),
                                           wdir, bindings)
+
+            result_cfg = dict(strict, writer_feedback_level="result_only",
+                              registration_sha256=digest(canonical([record, "binary-result-fixture"])))
+            binary_design = study.design_for(result_cfg, case, "solve", source)
+            with self.assertRaisesRegex(ContractError, "another feedback condition"):
+                verify_required_form_sets(binary_design, plan, wdir, bindings)
+            self.assertEqual(feedback_messages, [source.feedback_message("none")] * 5)
+            binary = output/"binary-feedback"
+            binary.mkdir()
+            for stage in ("write", "solve"):
+                study.stage_job((workspace, binary, result_cfg, {}, conn, case, tasks[case["task"]], stage,
+                                 {"fixture": True}, models, None, "1.50"))
+            self.assertEqual(feedback_messages[5:], [source.feedback_message("result_only")] * 5)
+            _, _, binary_readers = study.sealed_rows(binary/("task-" + case["task"])/"solve")
+            self.assertEqual(len(binary_readers), 10)
+            self.assertTrue(all(r["result"]["grading_status"] == "graded" for r in binary_readers))
 
             # Exercise the missing form through the normal controller, including its durable allocations.
             omit_procedure = True

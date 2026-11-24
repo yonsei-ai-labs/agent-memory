@@ -214,7 +214,7 @@ def design_for(cfg, base, cohort, row, stage, source):
 def source_from(folder, task):
     _, ctl, rows = sealed_rows(folder)
     (row,) = rows
-    res = row.get("result", {})
+    res = row.get("result") or {}
     if (row["arm"], row["task_id"], ctl["design"]["stage"]) != ("no_memory", task, "source"):
         raise ContractError("Expected the matching first-pass source")
     if res.get("grading_status") != "graded":
@@ -247,6 +247,7 @@ def source_from(folder, task):
             digest(data),
             len(data),
             res["official_success"],
+            grade["event_id"],
         )
 
 

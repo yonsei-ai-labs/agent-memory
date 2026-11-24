@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Independent ratings of a blinded public memory claim and decision",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["format", "rubric_sha256", "reviewer", "reviews"],
+  "properties": {
+    "format": {"const": "semantic-memory-ratings/v1"},
+    "rubric_sha256": {"$ref": "#/$defs/hash"},
+    "reviewer": {
+      "type": "object", "required": ["kind", "id"],
+      "properties": {
+        "kind": {"enum": ["human", "llm"]}, "id": {"$ref": "#/$defs/text"},
+        "model": {"$ref": "#/$defs/text"}, "revision": {"$ref": "#/$defs/text"},
+        "provider": {"$ref": "#/$defs/text"}, "settings": {"type": "object"}
+      },
+      "if": {"properties": {"kind": {"const": "llm"}}},
+      "then": {"required": ["model", "revision", "provider", "settings"]}
+    },
+    "reviews": {
+      "type": "array",
+      "items": {
+        "type": "object", "additionalProperties": false, "required": ["packet_id", "input_sha256"],
+        "properties": {
+          "packet_id": {"$ref": "#/$defs/hash"}, "input_sha256": {"$ref": "#/$defs/hash"},
+          "ratings": {"$ref": "#/$defs/ratings"},
+          "response_id": {"$ref": "#/$defs/text"}, "response_text": {"$ref": "#/$defs/text"}
+        }
+      }
+    }
+  },
+  "if": {"properties": {"reviewer": {"properties": {"kind": {"const": "llm"}}}}},
+  "then": {"properties": {"reviews": {"items": {"required": ["response_id", "response_text"], "not": {"required": ["ratings"]}}}}},
+  "else": {"properties": {"reviews": {"items": {"required": ["ratings"], "not": {"anyOf": [{"required": ["response_id"]}, {"required": ["response_text"]}]}}}}},
+  "$defs": {
+    "hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "text": {"type": "string", "pattern": "\\S"},
+    "rating": {
+      "type": "object", "required": ["label", "citations"], "additionalProperties": false,
+      "properties": {
+        "label": {"type": "string"},
+        "citations": {"type": "array", "items": {"type": "object", "additionalProperties": false, "required": ["pointer", "quote"],
+          "properties": {"pointer": {"type": "string", "pattern": "^/"}, "quote": {"type": "string", "minLength": 1}}}}
+      }
+    },
+    "ratings": {
+      "type": "object", "additionalProperties": false, "required": ["source_support", "applicability", "alternative_support", "action_alignment"],
+      "properties": {
+        "source_support": {"$ref": "#/$defs/rating", "properties": {"label": {"enum": ["supported", "contradicted", "unclear"]}}},
+        "applicability": {"$ref": "#/$defs/rating", "properties": {"label": {"enum": ["applicable", "inapplicable", "unclear"]}}},
+        "alternative_support": {"$ref": "#/$defs/rating", "properties": {"label": {"enum": ["supported", "contradicted", "unclear"]}}},
+        "action_alignment": {"$ref": "#/$defs/rating", "properties": {"label": {"enum": ["consistent", "conflicting", "unclear"]}}}
+      }
+    }
+  }
+}

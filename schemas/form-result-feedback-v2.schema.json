@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Official first-pass result bound to an agent-memory-forms-public-experience/v2 import",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["outcome_event_id", "success"],
+  "properties": {
+    "outcome_event_id": {"type": "string", "minLength": 1},
+    "success": {"type": "boolean"}
+  }
+}

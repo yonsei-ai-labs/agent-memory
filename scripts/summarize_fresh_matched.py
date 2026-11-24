@@ -27,13 +27,16 @@ def verify_writer_input(folder, row, source, registration):
                 raise ContractError("A completed writer lacks its first input")
             return False
         wire = blobs.get(first["payload"]["request_ref"])
+        if "first_writer_inputs" in registration and (first["payload"]["request_ref"]["sha256"] !=
+                registration["first_writer_inputs"][row["arm"]]):
+            raise ContractError("Observed writer request differs from the preregistered feedback comparison")
         if first["payload"]["actor_role"] != "writer" or [m["role"] for m in wire["messages"]] != ["system", "user", "user"]:
             raise ContractError("Unexpected role or extra messages in the first writer input")
         instruction, experience, feedback = (m["content"] for m in wire["messages"])
         if (source is None or scan["starts"][row["run_id"]]["payload"]["source_run_ids"] != [source.source_run_id]
                 or digest(instruction.encode()) != registration["writer_prompt_sha256"][row["arm"]]
                 or experience != source.public_context
-                or read_json(feedback.encode()) != {"kind": "evaluation_feedback", "level": "none"}
+                or read_json(feedback.encode()) != source.feedback_message(registration.get("writer_feedback_level", "none"))
                 or [t["function"]["name"] for t in wire["tools"]] != ["memory_store"]):
             raise ContractError("Writer did not receive exactly its assigned instruction and fresh public experience")
         return True

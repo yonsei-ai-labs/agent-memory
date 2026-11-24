@@ -146,6 +146,73 @@ class FormsWriteTests(unittest.TestCase):
         with self.assertRaisesRegex(ContractError, "source differs"):
             self.write(self.work / "wrong", source=replace(self.sources["3"], public_context=self.sources["17"].public_context))
 
+    def feedback_design(self):
+        design = deepcopy(self.design)
+        selection = design["source"]
+        selection["feedback_level"] = "result_only"
+        for row in selection["cohort"]:
+            row["result_feedback"] = self.sources[row["task_id"]].result_receipt()
+        selection["cohort_sha256"] = digest(canonical(selection["cohort"]))
+        return design
+
+    def test_official_success_and_failure_are_sent_only_in_the_writer_feedback_message(self):
+        from scripts.review_banking_evidence import feedback_pair
+        from agent_memory_eval.memory.writing import REQUIRED_STORE_CONTRACT
+
+        design = self.feedback_design()
+        baseline_design = deepcopy(self.design)
+        for variant in (baseline_design, design):
+            variant["writing"]["completion_contract"] = REQUIRED_STORE_CONTRACT
+        sources = load_form_sources(design, self.source_root)
+        for task, source in sources.items():
+            for arm in design["writing"]["lines"]:
+                with self.subTest(task=task, arm=arm):
+                    directory = self.work / task / arm
+                    _, baseline = self.write(directory/"none", source=source, arm=arm, design=baseline_design,
+                                             replies=[store("saved")])
+                    result, observed = self.write(directory/"binary", source=source, arm=arm, design=design,
+                                                  replies=[store("saved"), completion()])
+                    first, second = baseline.requests[0], deepcopy(observed.requests[0])
+                    self.assertEqual(second["tool_choice"], "required")
+                    expected = feedback_pair(first, source)
+                    self.assertEqual(expected["result_only_input_sha256"], digest(canonical(second)))
+                    self.assertEqual(read_json(second["messages"][2]["content"].encode()),
+                                     dict(kind="evaluation_feedback", level="result_only", success=task=="3"))
+                    self.assertNotIn(source.outcome_event_id, canonical(second).decode())
+                    self.assertNotIn("HIDDEN_", canonical(second).decode())
+                    second["messages"][2] = first["messages"][2]
+                    self.assertEqual(second, first)
+                    bank = read_form_bank(directory/"binary", expected_log_sha256=result["log_sha256"])
+                    self.assertEqual((bank["feedback_level"], bank["result_feedback"]), ("result_only", source.result_receipt()))
+
+    def test_result_only_rejects_missing_and_substituted_outcomes_before_model_call(self):
+        design = self.feedback_design()
+        source = self.sources["3"]
+        writer = ScriptedWriter(self.guard, [completion()])
+        for index, altered in enumerate((replace(source, official_success=None), replace(source, outcome_event_id=None),
+                                         replace(source, official_success=False), replace(source, outcome_event_id="other"))):
+            with self.subTest(index=index), self.assertRaises(ContractError):
+                self.write(self.work/str(index), source=altered, design=design, client=writer)
+        self.assertEqual(writer.requests, [])
+        cohort = design["source"]["cohort"]
+        cohort[0]["result_feedback"] = self.sources["17"].result_receipt()
+        design["source"]["cohort_sha256"] = digest(canonical(cohort))
+        with self.assertRaisesRegex(ContractError, "differs from the scored first pass"):
+            load_form_sources(design, self.source_root)
+
+    def test_frozen_first_writer_request_is_checked_before_transport(self):
+        design = self.feedback_design()
+        _, recorded = self.write(self.work/"reference", design=design)
+        source = self.sources["3"]
+        entry = next(r for r in design["source"]["cohort"] if r["task_id"] == source.task_id)
+        entry["first_writer_inputs"] = {"fact": digest(canonical(recorded.requests[0]))}
+        self.write(self.work/"matched", design=design)
+        entry["first_writer_inputs"]["fact"] = "0" * 64
+        never = ScriptedWriter(self.guard, [completion()])
+        with self.assertRaisesRegex(ContractError, "registered feedback comparison"):
+            self.write(self.work/"different", design=design, client=never)
+        self.assertEqual(never.requests, [])
+
     def test_all_five_forms_share_the_same_wire_except_one_line_and_have_independent_banks(self):
         wires, banks, sessions = [], set(), set()
         common = (ROOT / self.design["writing"]["common_instruction_ref"]["path"]).read_text().rstrip("\r\n")

@@ -103,7 +103,7 @@ def experiences(parent, config_hash, expected_design):
             if projected["task_context"] != blobs.get(start["payload"]["task_ref"]):
                 raise ContractError("Initial native worker policy differs from its recorded public input")
             sources[tid] = FormSource(tid, row["run_id"], sha, end["event_id"], end["event_seq"], data.decode(),
-                                      digest(data), len(data), result["official_success"])
+                                      digest(data), len(data), result["official_success"], grade["event_id"])
             cat.update(source_log_sha256=sha, public_context_sha256=digest(data), public_context_bytes=len(data))
     return sources, sorted(entries, key=lambda e: int(e["task_id"])), missing
 

@@ -8,7 +8,7 @@ from pathlib import Path
 
 from agent_memory_eval.analysis.efficiency import episode_effort, paired_effort, request_effort_by_start
 from agent_memory_eval.analysis.requests import audit_requests
-from agent_memory_eval.analysis.selection import worker_choices
+from agent_memory_eval.analysis.selection import worker_choices, worker_exposure
 from agent_memory_eval.contracts.core import ContractError, canonical, digest
 from agent_memory_eval.experiments.forms_write import read_form_bank
 from agent_memory_eval.experiments.matched_trial import source_task_start
@@ -19,7 +19,7 @@ from agent_memory_eval.runner.task_start import FORMAT as TASK_START_FORMAT, Tas
 from scripts.run_fresh_matched import FORMS, MODES, PREFLIGHT, PROFILE, ROOT, STAGES, check_published_cases, jobs_for, read, sealed_rows
 
 
-def episode(folder, row, case, registration, source_id, writer):
+def episode(folder, row, case, registration, source_id, writer, *, include_exposure=False):
     result, run = row["result"], row["run_id"]
     with _source(folder, result["log_sha256"]) as (scan, blobs, _, exp):
         state = blobs.get(scan["records"][-1]["state_ref"])
@@ -83,6 +83,8 @@ def episode(folder, row, case, registration, source_id, writer):
                     msg = blobs.get(p["response_ref"])["choices"][0]["message"]
                     opening_reply = digest(canonical(public_assistant_message(msg)))
         trace = worker_choices(folder, run_id=run, evidence=evidence)["choices"]
+        if include_exposure:
+            extra["worker_exposure"] = worker_exposure(trace)
         replies = [s for s in trace if s["status"] == "response"]
         body = [s for s in replies if any(v["field"] == "body" for v in s["visible_memory"])]
         messages = blobs.get(result["report_ref"])["messages"] if result["report_ref"] else None

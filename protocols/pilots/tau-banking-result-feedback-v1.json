@@ -1,0 +1,19 @@
+{
+  "format": "banking-writer-feedback-comparison/v1",
+  "name": "tau-banking-result-feedback-01",
+  "required_protocol": {"path": "protocols/pilots/tau-banking-required-v1.json", "sha256": "22813f83a62e718df76e1c8ec323248a67141a03fd7bbbc7a5ed70ad6d14e0cf"},
+  "comparison_results": {"path": "artifacts/analyses/20261124-banking-required-results.json", "sha256": "35de5a43a8a36f859aaf31cb8d8a956301b05ae9a4c600af82b6e5616c7a322b"},
+  "feedback_audit": {"path": "artifacts/analyses/20261124-banking-evidence-review.json", "sha256": "f042585d6c8684de7d3847565c31aae0d800e5c6cf58cf536d9ea276952be6a0"},
+  "comparison_completion_sha256": "8e362a0819fabcb9a0ab2dc0ac55f40832625ec00fcd0e9968147a35579fcd70",
+  "writer_feedback_level": "result_only",
+  "scopes": {"full": ["write", "solve"], "writing": ["write"]},
+  "cumulative_limit_usd": "1.50",
+  "question": "Does providing only the verified first-pass outcome to a required writer change its memory, and does the resulting bank improve the same task under the same delivery policy?",
+  "assignment": "Reuse all four graded first passes, prior none-feedback writers and their readers. Use the original task, public opening, complete writer instruction, form, seeds, model routes, native controls and storage contract. Only the evaluation_feedback message at the initial writer request changes. Five new banks per source and, for full scope, two independent readers per bank. No new first pass, no second-pass no-memory or empty arm, no paid semantic judge. Submit each assigned episode at most once and preserve technical missingness.",
+  "analysis": {
+    "primary": "Count gains, losses, both-success, both-failure and missing against the previous none-feedback consultation paired by task, form and delivery. Report denominators and the four task-level rows. Preload is the primary delivery because every admitted bank is offered. On-demand is a registered secondary policy. Summarize first-pass-to-reader recovery and loss separately. The nonconcurrent comparison and a single writer per task and form are descriptive limitations.",
+    "memory_content": "Review all authored notes from both conditions. For the three failed sources, code the prior endpoint as endorsed as sufficient, explicitly limited or unresolved, or indeterminate. Record an exact quote per decisive rating. A conditional handoff recommendation or a report of local tool success alone is not an endorsement of whole-task success. For successful source 008 assess whether successful transfer is generalized beyond its documented conditions. Count explicit acknowledgment of the overall official result separately from local events. These are exploratory analyst annotations, not independent human or LLM scores.",
+    "source_endpoints": {"task_001": "Offer a handoff after searching for a personal cashback card without reaching a verified selection or application.", "task_008": "Transfer after the mailed offers remain unverified and the customer requests escalation.", "task_010": "Transfer the unresolved referral investigation after verification without establishing completion of the referral task.", "task_015": "Rely on making the link tool available and the customer's reported success as evidence of overall task completion."},
+    "path_and_effort": "Record submitted bank versions, body exposure, actual list and get calls, whether the first public decision or business call/arguments differed at the same start, and native action checks. Among paired successes report matched business calls, grep searches, customer turns, tokens and solve cost. Account for writer cost once, separately. Do not make a significance claim from four tasks or infer a causal reading from agreement."
+  }
+}

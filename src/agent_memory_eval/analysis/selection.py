@@ -1,6 +1,6 @@
 """Reconstruct the evidence available at each worker choice from its submitted request."""
 
-from collections import defaultdict
+from collections import Counter, defaultdict
 from pathlib import Path
 
 from agent_memory_eval.contracts.core import ContractError, canonical, digest, read_json
@@ -149,6 +149,57 @@ def worker_choices(folder, *, run_id=None, through_request=None, evidence=None):
                  scope=scope, through_request=through_request, choices=choices)
     trace["first_body_choice"] = first_body_choice(trace)
     return trace
+
+
+def worker_exposure(choices):
+    """Count verified fields on responded requests and keep uncertain deliveries separate."""
+    counts = Counter()
+    confirmed, uncertain = set(), set()
+    for step in choices:
+        counts["worker_requests"] += 1
+        fields = {f["field"] for f in step["visible_memory"]}
+        if step["status"] == "response":
+            counts["worker_responses"] += 1
+            confirmed.update(fields)
+            counts.update(field + "_requests" for field in fields)
+            counts.update(r["name"] for r in step["reads"])
+        elif step["delivery"] == "not_submitted":
+            counts["not_submitted_requests"] += 1
+        else:
+            counts["unresolved_requests"] += 1
+            uncertain.update(fields)
+    return dict(state="recorded", counts=dict(counts), confirmed=sorted(confirmed),
+                possible_only=sorted(uncertain - confirmed))
+
+
+def allocation_exposure(rows):
+    """Summarize (official outcome, observation) for every allocation, including missing grades."""
+    counts = Counter()
+    states = Counter()
+    fields = {field: dict(confirmed=0, absent=0, unknown=0) for field in ("title", "body")}
+    graded = 0
+    for success, obs in rows:
+        if success is not None and type(success) is not bool:
+            raise ContractError("Expected an official binary outcome or a missing grade")
+        state = obs["state"]
+        if state not in {"recorded", "not_started", "unavailable"}:
+            raise ContractError("Unknown exposure observation state")
+        states[state] += 1
+        graded += success is not None
+        counts.update(obs.get("counts", {}))
+        for field, tally in fields.items():
+            if field in obs.get("confirmed", ()):
+                label = "confirmed"
+            elif state == "unavailable" or field in obs.get("possible_only", ()):
+                label = "unknown"
+            else:
+                label = "absent"
+            tally[label] += 1
+    assigned = sum(states.values())
+    return dict(assigned=assigned, graded=graded, ungraded=assigned - graded,
+                observations={k: states[k] for k in ("recorded", "not_started", "unavailable")}, fields=fields,
+                counts={k: counts[k] for k in ("worker_requests", "worker_responses", "not_submitted_requests",
+                    "unresolved_requests", "title_requests", "body_requests", "memory_list", "memory_get")})
 
 
 def first_body_choice(trace):

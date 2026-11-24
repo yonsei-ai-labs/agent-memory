@@ -21,6 +21,10 @@ APPROVAL = "artifacts/pilots/20261124-banking-memory-authorization.json"
 REQUIRED_PROFILE = "protocols/pilots/tau-banking-required-v1.json"
 REQUIRED_PREFLIGHT = "artifacts/pilots/20261124-banking-required-preflight.json"
 REQUIRED_APPROVAL = "artifacts/pilots/20261124-banking-required-authorization.json"
+FEEDBACK_PROFILE = "protocols/pilots/tau-banking-result-feedback-v1.json"
+FEEDBACK_PREFLIGHT = "artifacts/pilots/20261125-banking-result-feedback-preflight.json"
+FEEDBACK_WRITING_PREFLIGHT = "artifacts/pilots/20261125-banking-result-feedback-writing-preflight.json"
+FEEDBACK_APPROVAL = "artifacts/pilots/20261125-banking-result-feedback-authorization.json"
 
 
 def stratum(task):
@@ -106,6 +110,10 @@ def required_design(cfg, spec):
         raise ContractError("The banking pilot requires all five storage formats")
     cfg = deepcopy(cfg)
     cfg["name"] = spec["name"]
+    if "writer_feedback_level" in spec:
+        if spec["writer_feedback_level"] not in {"none", "result_only"}:
+            raise ContractError("Unsupported banking writer feedback")
+        cfg["writer_feedback_level"] = spec["writer_feedback_level"]
     cfg["writing"].update(completion_contract=REQUIRED_STORE_CONTRACT, lines=spec["lines"],
                           common_instruction_ref=spec["common_instruction_ref"])
     schema = matched.read(ROOT / "schemas/required-form-writing-v1.schema.json")
@@ -131,6 +139,72 @@ def prepare_required(workspace):
         raise ContractError("Unexpected required writer or reader count")
     record = dict(original, series=spec["name"], cases=cases, assigned=counts, prior_covered_usd=closed["covered_usd"],
                   protocol_sha256=digest((ROOT / REQUIRED_PROFILE).read_bytes()), source_close_sha256=digest(canonical(closed)))
+    if "writer_feedback_level" in cfg:
+        record["writer_feedback_level"] = cfg["writer_feedback_level"]
+    return spec, cfg, conn, cases, tasks, record
+
+
+def prepare_feedback(workspace, scope):
+    from agent_memory_eval.analysis.recorded_decisions import RecordedDecisions, require
+    from agent_memory_eval.contracts.connection import provider_route
+    from agent_memory_eval.experiments.forms_write import feedback_pair
+    from agent_memory_eval.memory.writing import writer_template
+    from agent_memory_eval.recording.journal import safe_path
+
+    spec = matched.read(ROOT / FEEDBACK_PROFILE)
+    required, cfg, conn, cases, tasks, prior = prepare_required(workspace)
+    require(json.loads(matched.asset_text(ROOT, spec["required_protocol"])) == required
+            and spec["writer_feedback_level"] == "result_only", "Unexpected parent writer contract")
+    previous = json.loads(matched.asset_text(ROOT, spec["comparison_results"]))
+    audit = json.loads(matched.asset_text(ROOT, spec["feedback_audit"]))
+    stages = spec["scopes"][scope]
+    parent = workspace / "runs" / required["name"]
+    close = matched.read(parent/"completion.json")
+    previous_reg = matched.read(parent/"registration.json")["preflight"]
+    require(digest((parent/"completion.json").read_bytes()) == spec["comparison_completion_sha256"]
+            and close["registration_sha256"] == digest((parent/"registration.json").read_bytes())
+            and previous_reg == dict(prior, authorization=matched.read(ROOT / REQUIRED_APPROVAL))
+            and digest(canonical(previous_reg)) == previous["registration_sha256"]
+            and close["total_covered_usd"] == previous["total_covered_usd"], "Prior comparison or cumulative cost changed")
+    expected = {(w["task"], w["form"]): w for w in previous["writers"]}
+    common = matched.asset_text(ROOT, cfg["writing"]["common_instruction_ref"]).rstrip("\r\n")
+    model = dict(conn["worker"]["parameters"], model=conn["worker"]["model_id"],
+                 provider=provider_route(conn, "worker"), stream=False, seed=cfg["writer_seed"])
+    pairs = []
+    for case in cases:
+        tid = case["task_id"]
+        source = matched.source_from(safe_path(workspace/"runs", case["imported_first_pass"]["directory"]), tid)
+        folder = parent / ("task-" + tid) / "write"
+        written = matched.sealed_rows(folder)[2]
+        case["first_writer_inputs"] = {}
+        for row in written:
+            form, run = row["arm"], row["run_id"]
+            checksum = row["result"]["log_sha256"]
+            old = expected[tid, form]
+            require((old["run"], old["log_sha256"], old["source_public_sha256"]) ==
+                    (run, checksum, source.public_context_sha256), "Wrong historical writer or public experience")
+            log = RecordedDecisions(safe_path(folder, row["directory"]), run, checksum)
+            request = log.requests[0]
+            require(request["actor_role"] == "writer", "Expected the first writer request")
+            pair = feedback_pair(log.blobs.get(request["request_ref"]), source)
+            planned = writer_template(model, common + "\n" + cfg["writing"]["lines"][form],
+                                      completion_contract=cfg["writing"]["completion_contract"])
+            planned["messages"] = [planned.pop("system"), dict(role="user", content=source.public_context),
+                                   dict(role="user", content=canonical(source.feedback_message("result_only")).decode())]
+            require(digest(canonical(planned)) == pair["result_only_input_sha256"],
+                    "New runtime writer settings differ beyond the official result")
+            pairs.append(dict(task=tid, form=form, source_run=source.source_run_id, source_log_sha256=source.source_log_sha256,
+                              writer_run=run, writer_log_sha256=checksum, original_request=request["request_id"], **pair))
+            case["first_writer_inputs"][form] = pair["result_only_input_sha256"]
+        require(set(case["first_writer_inputs"]) == set(matched.FORMS), "Missing frozen writer format")
+    require(digest(canonical(pairs)) == audit["feedback_pairs_sha256"], "Projected request pairs differ from the sealed audit")
+    cfg.update(name=spec["name"], writer_feedback_level=spec["writer_feedback_level"], stages=stages)
+    assigned = dict(prior["assigned"], solve=prior["assigned"]["solve"] if "solve" in stages else 0)
+    schedule = {c["task"]: {s: matched.jobs_for(c, s) for s in stages} for c in cases}
+    record = dict(prior, series=spec["name"], protocol_sha256=digest((ROOT / FEEDBACK_PROFILE).read_bytes()),
+                  assigned=assigned, cases=cases, scope=scope, writer_feedback_level=cfg["writer_feedback_level"],
+                  prior_covered_usd=close["total_covered_usd"], comparison_registration_sha256=previous["registration_sha256"],
+                  feedback_schedule_sha256=digest(canonical(schedule)), writer_input_pairs_sha256=digest(canonical(pairs)))
     return spec, cfg, conn, cases, tasks, record
 
 
@@ -138,28 +212,43 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("mode", choices=("source-preflight", "preflight", "run"))
     parser.add_argument("--workspace", type=Path, default=ROOT)
+    parser.add_argument("--series", choices=("required", "result-feedback"), default="required")
+    parser.add_argument("--scope", choices=("full", "writing"), default="full")
     args = parser.parse_args()
     workspace = args.workspace.resolve()
     if args.mode == "source-preflight":
+        if args.series != "required" or args.scope != "full":
+            parser.error("source-preflight belongs to the original four first passes")
         print(json.dumps(prepare(workspace)[-1], ensure_ascii=False, indent=2, sort_keys=True))
         return
-    spec, cfg, conn, cases, tasks, record = prepare_required(workspace)
+    if args.series == "result-feedback":
+        spec, cfg, conn, cases, tasks, record = prepare_feedback(workspace, args.scope)
+        preflight_file = FEEDBACK_PREFLIGHT if args.scope == "full" else FEEDBACK_WRITING_PREFLIGHT
+        approval_file = FEEDBACK_APPROVAL
+        stages = spec["scopes"][args.scope]
+    else:
+        if args.scope != "full":
+            parser.error("the original required-writing series has a fixed full scope")
+        spec, cfg, conn, cases, tasks, record = prepare_required(workspace)
+        preflight_file, approval_file = REQUIRED_PREFLIGHT, REQUIRED_APPROVAL
+        stages = ["write", "solve"]
     if args.mode == "preflight":
         print(json.dumps(record, ensure_ascii=False, indent=2, sort_keys=True))
         return
-    if not (ROOT / REQUIRED_APPROVAL).is_file():
-        raise ContractError("The additional 20 mandatory writers and 40 readers require a registered authorization")
-    approval = matched.read(ROOT / REQUIRED_APPROVAL)
-    if (record != matched.read(ROOT / REQUIRED_PREFLIGHT) or approval.get("series") != cfg["name"]
+    if not (ROOT / approval_file).is_file():
+        raise ContractError("The registered banking allocations require their own spending authorization")
+    approval = matched.read(ROOT / approval_file)
+    if (record != matched.read(ROOT / preflight_file) or approval.get("series") != cfg["name"]
             or approval.get("protocol_sha256") != record["protocol_sha256"]
             or approval.get("preflight_sha256") != digest(canonical(record))
             or approval.get("total_usd") != spec["cumulative_limit_usd"] or approval.get("assigned") != record["assigned"]
+            or approval.get("prior_covered_usd") != record["prior_covered_usd"]
             or not approval.get("user_authorization")):
         raise ContractError("Published registration or banking spending approval differs")
     record["authorization"] = approval
     cfg.update(registration_sha256=digest(canonical(record)), total_usd_limit=approval["total_usd"],
                expected_endpoint_terms={r: cfg["endpoint_terms"][r] for r in ("worker", "user_simulator")},
-               prior_covered_usd=record["prior_covered_usd"], record_unfunded_shards=True, stages=["write", "solve"])
+               prior_covered_usd=record["prior_covered_usd"], record_unfunded_shards=True, stages=stages)
     matched.run_study(workspace, cfg, {}, conn, cases, tasks, record, stage_runner=matched.stage_job,
                       model_resolver=matched.study_models)
 

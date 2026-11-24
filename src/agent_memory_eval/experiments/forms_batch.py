@@ -158,7 +158,7 @@ def preflight_sizes(jobs, design, sources, tasks, connection, instruction, commo
             template = writer_template(dict(base, seed=seed), common.rstrip("\r\n") + "\n" + w["lines"][row["arm"]],
                                        completion_contract=w.get("completion_contract", WRITER_COMPLETION_CONTRACT))
             template["messages"] = [template.pop("system"), dict(role="user", content=source.public_context),
-                                    dict(role="user", content=canonical(dict(kind="evaluation_feedback", level="none")).decode())]
+                                    dict(role="user", content=canonical(source.feedback_message(design["source"]["feedback_level"])).decode())]
             writer_sizes.append(len(canonical(template)))
         elif row["arm"] == "public_record":
             original = read_json(source.public_context.encode())
@@ -350,6 +350,10 @@ def verify_required_form_sets(design, plan, writer_root, bindings, *, root=ROOT)
                     raise ContractError("Readers were assigned different banks for one format")
                 continue
             bank = read_form_bank(safe_path(writer_root, row["directory"]), expected_log_sha256=key[1])
+            feedback = design["source"]["feedback_level"]
+            if (bank.get("feedback_level", "none") != feedback or
+                    (feedback == "result_only" and bank.get("result_feedback") != source.result_receipt())):
+                raise ContractError("Reader was assigned a bank from another feedback condition")
             if (not bank["items"] or bank["snapshot_id"] != row["result"].get("snapshot_id")
                     or not all(i["title"].strip() and i["body"].strip() for i in bank["items"])
                     or bank.get("instruction_sha256") != digest((common + "\n" + design["writing"]["lines"][form]).encode())
