@@ -69,7 +69,8 @@ def audit_memory_writes(root):
                     if observed and (not isinstance(config.get("verified_model"), dict)
                             or config["verified_model"]["id"] != config["model_config"]["model"]):
                         raise ContractError("Writer lacks its verified response identity")
-                    rejected = writer_response_error(raw, model_identity=config["verified_model"], observed=observed)
+                    rejected = writer_response_error(raw, model_identity=config["verified_model"], observed=observed,
+                                                     completion_contract=completion)
                     if rejected:
                         pending, terminal = [], True
                         continue
@@ -78,8 +79,6 @@ def audit_memory_writes(root):
                 calls = message.get("tool_calls") or []
                 pending = [call["id"] for call in calls]
                 terminal = not pending
-                if strict and not calls and payload["cost_status"] != "unknown":
-                    rejected = "WRITER_REQUIRED_STORE_MISSING"
             elif kind == "memory.stored":
                 if strict and (not pending or terminal):
                     raise ContractError("Storage is outside the required public tool call")

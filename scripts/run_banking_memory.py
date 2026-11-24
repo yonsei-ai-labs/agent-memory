@@ -147,6 +147,8 @@ def main():
     if args.mode == "preflight":
         print(json.dumps(record, ensure_ascii=False, indent=2, sort_keys=True))
         return
+    if not (ROOT / REQUIRED_APPROVAL).is_file():
+        raise ContractError("The additional 20 mandatory writers and 40 readers require a registered authorization")
     approval = matched.read(ROOT / REQUIRED_APPROVAL)
     if (record != matched.read(ROOT / REQUIRED_PREFLIGHT) or approval.get("series") != cfg["name"]
             or approval.get("protocol_sha256") != record["protocol_sha256"]

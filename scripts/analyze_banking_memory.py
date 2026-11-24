@@ -58,8 +58,15 @@ def optional_storage(workspace):
             require(author["source_public_sha256"] == source.public_context_sha256, "Wrong optional trajectory")
             if not bank["items"]:
                 text = replies[-1].get("content") or ""
+                from agent_memory_eval.memory.writing import REQUIRED_STORE_CONTRACT, writer_response_error
+                finished = log.finishes[log.requests[-1]["request_id"]]
+                raw_reply = log.blobs.get(finished["response_ref"])
+                required_error = writer_response_error(raw_reply, observed=True, completion_contract=REQUIRED_STORE_CONTRACT,
+                    model_identity=log.state["memory_writes"][row["run_id"]]["verified_model"])
+                require(required_error == "WRITER_REQUIRED_STORE_MISSING", "Original failure escaped the new writer check")
                 author.update(final_text_chars=len(text), final_text_sha256=digest(text.encode()),
-                              final_text_excerpt=text[:160], provider_request=log.requests[-1]["request_id"])
+                              final_text_excerpt=text[:160], provider_request=log.requests[-1]["request_id"],
+                              required_contract_replay=required_error)
                 for trial in study.read(base/"solve/allocations.json"):
                     if trial["arm"].split("__")[0] != form:
                         continue

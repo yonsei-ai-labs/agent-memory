@@ -35,13 +35,18 @@ def writer_reply_error(response, *, require_finish_reason):
     return None
 
 
-def writer_response_error(response, *, model_identity, observed):
+def writer_response_error(response, *, model_identity, observed, completion_contract=WRITER_COMPLETION_CONTRACT):
     if observed:
         aliases = {v for v in (model_identity["id"], model_identity.get("canonical_slug")) if isinstance(v, str) and v}
         if (not isinstance(response.get("model"), str) or response["model"] not in aliases
                 or response.get("provider") != model_identity["provider_name"]):
             return "WRITER_MODEL_MISMATCH"
-    return writer_reply_error(response, require_finish_reason=observed)
+    error = writer_reply_error(response, require_finish_reason=observed)
+    if error:
+        return error
+    if completion_contract == REQUIRED_STORE_CONTRACT and not response["choices"][0]["message"].get("tool_calls"):
+        return "WRITER_REQUIRED_STORE_MISSING"
+    return None
 
 
 class IncompleteWriterReply(ContractError):
@@ -216,7 +221,8 @@ def write_from_experience(journal, experience_ref, feedback, *, instruction, pol
                                                        max_requests=max_requests, project_self_authored=True,
                                                        execution_limits=execution_limits)
             raw = journal.blobs.get(registry.sources[source]["artifact_ref"])
-            completion_error = writer_response_error(raw, model_identity=verified_model, observed=kind == "observed")
+            completion_error = writer_response_error(raw, model_identity=verified_model, observed=kind == "observed",
+                                                      completion_contract=completion_contract)
             if completion_error:
                 raise IncompleteWriterReply(completion_error)
             history.append((source, ""))
@@ -225,8 +231,6 @@ def write_from_experience(journal, experience_ref, feedback, *, instruction, pol
             if not calls:
                 if unknown:
                     raise UnknownWriterCost("Writer completion has an unverified cost")
-                if completion_contract == REQUIRED_STORE_CONTRACT:
-                    raise IncompleteWriterReply("WRITER_REQUIRED_STORE_MISSING")
                 break
             for _, source_kind, event_id in router.dispatch(ctx, request_id, calls):
                 history.append((registry.add(source_kind, event_id, roles=("writer",)), ""))
