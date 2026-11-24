@@ -1,6 +1,7 @@
 """Literal evidence for action arguments in observed public and memory inputs."""
 
 import json
+import re
 
 
 def input_evidence(messages, tools, document_tools):
@@ -41,3 +42,13 @@ def argument_literals(value, path=""):
 def literal_matches(value, sources):
     """Case-sensitive verbatim matches; an empty list means no literal match in these fields."""
     return sorted({name for name, content in sources if value in content})
+
+
+def argument_features(arguments):
+    """Also retain identifier tokens embedded in search patterns or summaries."""
+    for path, value in argument_literals(arguments):
+        yield path, "whole_argument", value
+        identifiers = re.findall(r"(?<!\w)[A-Za-z][A-Za-z0-9]*(?:_[A-Za-z0-9]+)+(?!\w)", value)
+        for token in dict.fromkeys(identifiers):
+            if token != value:
+                yield path, "embedded_identifier", token

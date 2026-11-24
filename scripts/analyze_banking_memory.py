@@ -7,7 +7,7 @@ import json
 from pathlib import Path
 import re
 
-from agent_memory_eval.analysis.action_grounding import argument_literals, input_evidence, literal_matches
+from agent_memory_eval.analysis.action_grounding import argument_features, input_evidence, literal_matches
 from agent_memory_eval.analysis.claim_evidence import paired_counts, trace_claim
 from agent_memory_eval.analysis.decision_attribution import compare_episodes
 from agent_memory_eval.analysis.recorded_decisions import RecordedDecisions, require
@@ -139,9 +139,7 @@ def decision_evidence(log, steps, histories, source_fields, required):
         reply = log.reply(req)["message"]
         read_counts.update(c["function"]["name"] for c in reply.get("tool_calls") or [])
         seen_fields.update(s["field"] for s in log.spans[req["request_id"]])
-    for step in steps:
-        if step.actor != "worker":
-            continue
+    for index, step in enumerate(s for s in steps if s.actor == "worker"):
         req = log.starts[step.request][0]["payload"]
         wire = log.blobs.get(req["request_ref"])
         tools = [t for t in wire.get("tools", []) if not t["function"]["name"].startswith("memory_")]
@@ -150,14 +148,51 @@ def decision_evidence(log, steps, histories, source_fields, required):
         fields = [(f'{s["item_id"]}/{s["version_id"]}/{s["field"]}',
                    log.versions[s["item_id"], s["version_id"]][s["field"]]) for s in log.spans[step.request]]
         for action in step.actions:
-            for pointer, value in argument_literals(action.record().get("arguments")):
+            for pointer, kind, value in argument_features(action.record().get("arguments")):
                 support = literal_matches(value, fields)
                 if support:
-                    matched.append(dict(request=step.request, action=action.name, pointer=pointer, value=value,
+                    matched.append(dict(request=step.request, worker_decision=index+1, action=action.name,
+                                        pointer=pointer, matching_rule=kind, value=value,
                                         visible_note_fields=support, first_pass_sources=literal_matches(value, source_fields),
                                         current_sources=literal_matches(value, current)))
     return dict(calls=dict(read_counts), exposed_fields=sorted(seen_fields), documents_seen=len(documents),
                 tagged_documents_seen=sorted(documents & required), literal_argument_matches=matched)
+
+
+def native_checks(log, expected_success):
+    score, = log.of_type("outcome.scored")
+    info = log.blobs.get(score["payload"]["official_artifact_ref"])["reward_info"]
+    require((info["reward"] == 1) == expected_success == score["payload"]["official_success"],
+            "Official banking reward differs from the observed grade")
+    return [dict(id=c["action"]["action_id"], actor=c["action"]["requestor"],
+                 name=c["action"]["name"], matched=c["action_match"]) for c in info["action_checks"]]
+
+
+def referral_search_citations(base, data, banks, trials):
+    """Post-hoc literal provenance at the first matched decision in two referral-link trials."""
+    clauses = {"episode": "user-facing get_referral_link tool",
+               "fact": "their own link via get_referral_link(user_id, card_name)"}
+    citations = {}
+    for form, clause in clauses.items():
+        arm = form + "__preload"
+        trial = next(r for r in trials if r["task"] == "task_015" and r["arm"] == arm)
+        choice = (trial.get("divergence") or {}).get("first_business_response") or {}
+        evidence = [m for m in trial.get("literal_argument_matches", [])
+                    if m["worker_decision"] == 1 and m["request"] == choice.get("candidate_request")
+                    and m["value"] == "get_referral_link" and m["action"] == "grep" and not m["current_sources"]]
+        if not evidence or choice.get("status") != "matched_visible_memory":
+            continue
+        writer = next(w for w in data["write"] if w["arm"] == form)
+        reader = next(r for r in data["solve"] if r["arm"] == arm)
+        item, = banks[form]["items"]
+        trace = trace_claim(base/"write"/writer["directory"], base/"solve"/reader["directory"],
+                            item=item["id"], version=item["version"], field="body", clause=clause,
+                            request_id=choice["candidate_request"],
+                            source_citations=[("/experience/messages/3/content", "get_referral_link(user_id: str, card_name: str)")],
+                            action_citations=[("/tool_calls/0/function/arguments", "get_referral_link")])
+        require(trace["decision"]["exposure"], "Referral tool name was not visible in the first search")
+        citations[arm] = trace
+    return citations
 
 
 def summarize(sources, writers, trials):
@@ -213,6 +248,7 @@ def analyze(workspace):
     read_sha = cfg["delivery_instruction"]["sha256"]
     costs = defaultdict(lambda: defaultdict(Decimal))
     cells, writers, firsts = [], [], []
+    examples = {}
     session_ids = set()
     for case in frozen["cases"]:
         tid = case["task_id"]
@@ -287,6 +323,11 @@ def analyze(workspace):
                         steps, _ = graded_episode(parent_dir, row, case, read_sha, first if is_second else None,
                                                   public_inputs=histories)
                         log = RecordedDecisions(folder, row["run_id"], e["log_sha256"])
+                        if is_second:
+                            assigned = log.state["assignments"][row["run_id"]]
+                            require(bank and assigned["source_writer_bank_sha256"] == digest(canonical(bank))
+                                    and log.items == bank["items"], "Reader content differs from sealed author output")
+                        rec["native_action_checks"] = native_checks(log, rec["success"])
                         rec.update(decision_evidence(log, steps, histories, source_fields, required))
                         if is_second:
                             require(baseline and rec["opening"] == baseline["opening"] and
@@ -302,6 +343,8 @@ def analyze(workspace):
                 else:
                     baseline = rec
                     firsts.append(rec)
+        if tid == "task_015":
+            examples = referral_search_citations(base, data, by_form, cells)
     total = Decimal(frozen["prior_covered_usd"]) + sum(stage["spent"] for stage in costs.values())
     require(len(cells) == 40 and len(writers) == 20 and len(firsts) == 4 and
             total == Decimal(completion["total_covered_usd"]) <= Decimal(approved["authorization"]["total_usd"]),
@@ -309,7 +352,8 @@ def analyze(workspace):
     return dict(implementation=reg["implementation"]["implementation_commit"], registration_sha256=rid,
                 costs={phase: {k:str(v) for k,v in values.items()} for phase,values in costs.items()},
                 prior_covered_usd=frozen["prior_covered_usd"], total_covered_usd=str(total),
-                summary=summarize(firsts, writers, cells), sources=firsts, writers=writers, trials=cells)
+                summary=summarize(firsts, writers, cells), sources=firsts, writers=writers, trials=cells,
+                exploratory_referral_search_citations=examples)
 
 
 if __name__ == "__main__":
