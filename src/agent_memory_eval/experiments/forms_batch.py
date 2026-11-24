@@ -304,6 +304,8 @@ def execute_prepared(profile, root, destination, identity, design, plan, models,
                    source_outcomes={**dict.fromkeys(plan.get("missing_sources", [])),
                                     **{task: source.official_success for task, source in plan["sources"].items()}},
                    preflight=plan["summary"], design=design, started_at=datetime.now(timezone.utc).isoformat())
+    if "task_variants" in plan:
+        control["task_variants"] = plan["task_variants"]
     write_json(destination / "control.json", control)
     writer_limits = design["writing"]["proposed_limits"]
     limits = design["second_pass"]["proposed_limits"]
@@ -324,7 +326,10 @@ def execute_prepared(profile, root, destination, identity, design, plan, models,
             else:
                 arm = row["arm"]
                 cfg = solve_connection(plan["connection"], design, row, guard.max_usd)
-                orch, native = build_baseline_orchestrator(cfg, plan["tasks"][row["task_id"]])
+                task = plan["tasks"][row["task_id"]]
+                if "task_variant" in row:
+                    task = plan["task_variants"][row["task_id"]][row["task_variant"]]
+                orch, native = build_baseline_orchestrator(cfg, task)
                 bank = (read_form_bank(safe_path(writer_root, writer["directory"]), expected_log_sha256=writer["result"]["log_sha256"])
                         if writer else None)
                 result = run_forms_solve(journal, arm=arm, task_id=row["task_id"], repetition=row["repetition"],

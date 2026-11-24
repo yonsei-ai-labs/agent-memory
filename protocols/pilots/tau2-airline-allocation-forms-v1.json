@@ -1,0 +1,38 @@
+{
+  "format": "agent-memory-airline-allocation-forms/v1",
+  "name": "tau2-airline-allocation-forms-01",
+  "base_design_ref": {
+    "path": "protocols/drafts/tau2-two-pass-memory-forms-v1.json",
+    "sha256": "d4b06f72f4bcf5f656587e80645e042e7cf77e687cd5d1c38a20e2aff2cc373a"
+  },
+  "endpoint_ref": {
+    "path": "artifacts/pilots/20261118-two-pass-forms-endpoints.json",
+    "sha256": "9b5bd1d9898ede15030b062fa81e451875fee0adff31d3a279d974a74435a872"
+  },
+  "native_tasks_sha256": "ccd8ba737b4cc371415af70151187788f728d6108d0916e73bb4317b40542052",
+  "task_id": "23",
+  "source_public_sha256": "4e9930c1dcf5a1ead264d180578860224f8fabf19bab962a1a1513f740faf09f",
+  "forms": ["fact", "episode", "procedure", "lesson", "free"],
+  "free_instruction": "If you write, choose how to organize whatever may help with later work. You may combine different kinds of observations in one note or keep them in separate notes.",
+  "variants": ["past_only", "explicit_same", "explicit_swapped"],
+  "original_payment_phrase": "certificate_9984806 for Raj, and the other certificate for Liam",
+  "swapped_payment_phrase": "certificate_9984806 for Liam, and the other certificate for Raj",
+  "past_payment_phrase": "the two 250 dollar certificates for Raj and Liam in the same allocation as last time",
+  "past_private_rule": "When proposing the three separate reservations, ask for the same allocation of the two 250 dollar certificates as last time. On that first request, do not volunteer which passenger gets which of those two certificates. If the agent specifically asks you for the previous assignment or proposes the wrong one, clarify that last time you assigned certificate_9984806 to Raj and certificate_2765295 to Liam. If the agent proposes the correct split, you can confirm it normally.",
+  "seed_pair": {"repetition": 1, "writer": 0, "native_and_solver": 2},
+  "read_mode": "preload",
+  "baseline": "archived_first_pass_same_native_task_only",
+  "feedback": "none",
+  "scope": "One previously reviewed development customer, five fresh optional writers, three fresh native episodes per writer. One copy of the assigned sealed bank per episode. No second-pass no-memory episodes.",
+  "analysis": {
+    "primary": "Native final reward equals 1 for a graded episode, by request and writing assignment. The explicit_same case alone has the identical archived first-pass task.",
+    "writing": "Blind to assigned instruction and second-pass outcome. Keep exact public evidence, reconstructability of the two assignments, observed action versus interpretation, and scope of approval. Keep empty writes and technical failures in their assigned cells.",
+    "action": "Before the first booking proposal specifying either passenger's certificate, record whether the customer already disclosed the mapping, was asked, or corrected the agent. Record wrong, partial, correct or absent proposals and actual final passenger-to-certificate assignments separately.",
+    "efficiency": "Separate repeated allocation questions from required purchase approval. Report customer turns, business calls, input/output tokens, writing and consulting costs, including successfully completed pairs; report missingness.",
+    "inference": "Within each request compare the five fixed writers descriptively. All fifteen consultations share one source and each bank is reused three times. No population interval or policy promotion."
+  },
+  "max_calls": 3020,
+  "max_seconds": 12600,
+  "http_timeout_seconds": 180,
+  "unpriced_http": {"codes": [429, 500, 502, 503, 504], "reserve_uncertain_transport": true, "maximum_per_stage": 20}
+}
