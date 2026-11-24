@@ -94,6 +94,11 @@ def _history(messages):
     # arguments. The journal keeps the provider's original assistant message.
     values = deepcopy(messages)
     for message in values:
+        if message.get("role") == "assistant":
+            if message.get("tool_calls") is None:
+                message.pop("tool_calls", None)
+            elif message["tool_calls"] and message.get("content") is None:
+                message.pop("content", None)
         for call in message.get("tool_calls") or []:
             if "name" in call and call["name"] == call["function"]["name"]:
                 del call["name"]

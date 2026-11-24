@@ -45,11 +45,12 @@ class FreshMatchedTests(unittest.TestCase):
         def respond(client, wire):
             client.guard.before(wire, client.model)
             wires.append(wire)
+            self.assertFalse(any({"reasoning", "reasoning_details", "refusal"} & set(m) for m in wire["messages"]))
             tools = [t["function"]["name"] for t in wire.get("tools", [])]
             content = "I can help."
             call = None
             if wire["model"] == self.conn["user_simulator"]["model_id"]:
-                content = "Help me." if len(wire["messages"]) == 2 else "###STOP###"
+                content = {2: "Help me.", 4: "One more question."}.get(len(wire["messages"]), "###STOP###")
             elif tools == ["memory_store"]:
                 form, = [f for f, line in cfg["writing"]["lines"].items() if wire["messages"][0]["content"].endswith(line)]
                 if form != "free" and wire["messages"][-1]["role"] != "tool":
@@ -64,7 +65,8 @@ class FreshMatchedTests(unittest.TestCase):
             result = response()
             result.update(id=f"new-fixture-{len(wires)}", model=wire["model"],
                           provider=client.model["selected_endpoint"]["provider_name"])
-            message = dict(role="assistant", content=content)
+            message = dict(role="assistant", content=content, reasoning="fixture-provider-only",
+                           reasoning_details=[{"type": "fixture"}], refusal=None)
             if call:
                 message.update(content=None, tool_calls=[dict(id=f"tc-{len(wires)}", type="function",
                     function=dict(name=call[0], arguments=json.dumps(call[1])))])
@@ -98,6 +100,10 @@ class FreshMatchedTests(unittest.TestCase):
                 self.assertEqual(allocation["source_writer_snapshot_id"], by_form[form]["result"]["snapshot_id"])
                 blobs = BlobStore(folder)
                 events = list(scan["events"].values())
+                for e in events:
+                    if e["payload"].get("origin") == "tau2_worker_output":
+                        published = blobs.get(e["payload"]["public_message_ref"])
+                        self.assertFalse({"reasoning", "reasoning_details", "refusal"} & set(published))
                 receipt, = [blobs.get(e["payload"]["receipt_ref"]) for e in events
                             if e["payload"].get("origin") == "matched_trial.native_control"]
                 self.assertEqual(receipt["source_run_id"], first[0]["run_id"])

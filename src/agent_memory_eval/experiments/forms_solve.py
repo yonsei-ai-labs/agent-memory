@@ -410,6 +410,7 @@ def run_forms_solve(journal, *, arm, task_id, repetition, run_id, connection, pr
         elif policy.enabled:
             bridge.prepare_preload(memory, bank, policy, rendered_instruction)
         if trial_wire is not None:
+            bridge.project_worker_history = True
             bridge.verify_wire = trial_wire
         elif first_pass_match is not None:
             from agent_memory_eval.experiments.first_pass_match import wire_verifier
