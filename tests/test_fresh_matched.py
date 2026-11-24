@@ -138,6 +138,13 @@ class FreshMatchedTests(unittest.TestCase):
             self.assertEqual(lookup["outcomes"]["assigned"], 2)
             self.assertEqual(lookup["outcomes"]["missing"], 1)
             self.assertEqual((lookup["body_seen"], lookup["read_calls"], lookup["identical_opening_replies"]), (1, 2, 1))
+            from scripts.summarize_fresh_matched import render
+            page = render(output, summary)
+            self.assertIn("2회차 메모 상담 10/20건", page)
+            self.assertIn("그중 1건에서 작성자가 저장을 생략", page)
+            summary["stage_cost_usd"]["source"]["confirmed"] = "100"
+            with self.assertRaises(ContractError):
+                render(output, summary)
 
     def test_retail_native_judge_is_private_to_grading(self):
         from tau2.multilingual.runtime import load_run_language
