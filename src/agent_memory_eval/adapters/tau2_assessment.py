@@ -14,7 +14,13 @@ def assess_reached_state(orchestrator, config):
     trajectory = orchestrator.get_trajectory()
     env_kwargs = {}
     context = orchestrator.call_context
-    if context is not None:
+    if config["benchmark"]["domain"] == "banking_knowledge":
+        from agent_memory_eval.runner.tau2_baseline import native_config
+        from tau2.runner.build import _build_env_kwargs
+        if "DB" not in orchestrator.task.evaluation_criteria.reward_basis:
+            return dict(status="not_assessed", reason="task_has_no_db_reward")
+        env_kwargs = _build_env_kwargs(native_config(config), orchestrator.task, language_context=context.language)
+    elif context is not None:
         from tau2.multilingual.runtime import language_environment_kwargs
         from tau2.runner.presets import reload_recorded_call
         loaded = reload_recorded_call(context.language, orchestrator.environment.get_domain_name(), canonical_tasks=False)

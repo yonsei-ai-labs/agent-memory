@@ -156,6 +156,8 @@ def model_free_basis(domain, criteria):
     basis = set(criteria.reward_basis)
     if domain == "airline":
         return basis == {"DB", "COMMUNICATE"}
+    if domain == "banking_knowledge":
+        return basis in ({"DB"}, {"ACTION"}) and not criteria.nl_assertions
     return (domain == "retail" and basis in ({"DB", "NL_ASSERTION"}, {"DB"})
             and not criteria.nl_assertions and not criteria.communicate_info)
 
@@ -166,7 +168,9 @@ def _prepared_for_job(connection, prepared, limits, task_id, expected_split="tra
     criteria = template.task.evaluation_criteria
     basis_ok = (expected_domain == "retail" and criteria is not None
                 and set(criteria.reward_basis) in ({"DB"}, {"DB", "NL_ASSERTION"})) if full_retail else model_free_basis(expected_domain, criteria)
-    if (expected_split not in {"train", "test"} or (bench["domain"], bench["split"], bench["source_revision"], bench["communicate_scorer"])
+    valid_split = (expected_split is None and bench.get("retrieval_config") == "grep_only"
+                   if expected_domain == "banking_knowledge" else expected_split in {"train", "test"})
+    if (not valid_split or (bench["domain"], bench["split"], bench["source_revision"], bench["communicate_scorer"])
             != (expected_domain, expected_split, PIN, "substring")
             or not basis_ok
             or bench["task_id"] != task_id or template.task.id != task_id or native != native_config(connection)
@@ -429,8 +433,12 @@ def run_forms_solve(journal, *, arm, task_id, repetition, run_id, connection, pr
             from agent_memory_eval.experiments.matched_trial import bind_task_start
             task_start = bind_task_start(journal, ctx, matched_trial, control, bridge, prepared[3],
                                          policy, instruction, items)
+        env_options = {}
+        if expected_domain == "banking_knowledge":
+            from tau2.runner.build import _build_env_kwargs
+            env_options["env_kwargs"] = _build_env_kwargs(prepared[1], orch.task, language_context=orch.call_context.language)
         with bridge, grade_context, task_start:
-            result = run_simulation(orch, communicate_scoring=prepared[1].communicate_scoring)
+            result = run_simulation(orch, communicate_scoring=prepared[1].communicate_scoring, **env_options)
         raw_report_ref = journal.blobs.put(result.model_dump(mode="json"))
         termination, raw_reward = result.termination_reason.value, result.reward_info.reward
         if termination in {"user_stop", "agent_stop"}:

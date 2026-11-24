@@ -1,0 +1,37 @@
+{
+  "format": "agent-memory-tau-banking-pilot/v1",
+  "name": "tau-banking-memory-01",
+  "base": {
+    "path": "protocols/pilots/tau2-fresh-matched-v1.json",
+    "sha256": "47c8801aceac146e292649164108057271b0918c90ac122ddfaa03bf1aaa6af1"
+  },
+  "revision": "c06b07dd7c4d4ec61ba6ff9bcdf0b15dd7ef36d4",
+  "domain": "banking_knowledge",
+  "retrieval_config": "grep_only",
+  "language": "english",
+  "task_start_mode": "agent-memory-task-start/v1",
+  "tasks": {
+    "single_db": "task_001",
+    "required_action": "task_008",
+    "multiple_db": "task_010",
+    "discoverable_db": "task_015"
+  },
+  "selection": "Native default greeting, at least two tagged documents, DB or ACTION and no NL assertions. Take the lexicographically first official ID per evaluation stratum. Strata are fixed before outcomes. No official split.",
+  "assigned": {
+    "source": 4,
+    "write": 20,
+    "solve": 40,
+    "second_pass_no_memory": 0
+  },
+  "max_input_bytes": 160000,
+  "max_concurrent": 4,
+  "authorization": {
+    "maximum_usd": "1.50",
+    "scope": "All model roles and outstanding holds in this series. No replacement of submitted cells."
+  },
+  "analysis": {
+    "unit": "Task. One shared first pass and one frozen bank per form in each task. Descriptive development sample.",
+    "primary": "Paired official recovery, loss, joint success, joint failure and missing for each form and delivery, plus contrasts across delivery on the identical bank.",
+    "secondary": "Exposure at each request, independent document search vs private retrieval, changed tool or arguments, quotes and alternative current sources, matched vs downstream choices. Joint-success search calls, turns, business calls, tokens and costs. Show writing once and amortized at stated reuse."
+  }
+}

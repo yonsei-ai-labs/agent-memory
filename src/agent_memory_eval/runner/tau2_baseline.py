@@ -118,7 +118,8 @@ def native_config(config):
         max_steps=bench["max_steps"], max_errors=bench["max_errors"], seed=bench["seed"],
         timeout=config["guards"]["max_seconds"], localize_db=bench["localize_db"],
         communicate_scoring=dict(scorer=bench["communicate_scorer"]), task_ids=[bench["task_id"]],
-        task_split_name=bench["split"], num_trials=1, max_concurrency=1)
+        task_split_name=bench["split"], num_trials=1, max_concurrency=1,
+        **({"retrieval_config": bench["retrieval_config"]} if "retrieval_config" in bench else {}))
 
 
 def build_baseline_orchestrator(config, task):
