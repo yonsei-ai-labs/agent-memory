@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Public business input at the first worker decision",
+  "type": "object",
+  "required": ["format", "benchmark", "revision", "task_id", "controls_sha256", "public_input"],
+  "additionalProperties": false,
+  "properties": {
+    "format": {"const": "agent-memory-task-start/v1"},
+    "benchmark": {"type": "string", "pattern": "\\S"},
+    "revision": {"type": "string", "pattern": "\\S"},
+    "task_id": {"type": "string", "pattern": "\\S"},
+    "controls_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "public_input": {"type": "object", "minProperties": 1}
+  }
+}

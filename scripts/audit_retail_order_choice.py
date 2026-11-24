@@ -3,17 +3,14 @@
 import argparse
 from collections import Counter
 from copy import deepcopy
-import json
-import os
 from pathlib import Path
 import re
-from tempfile import TemporaryDirectory
 
 from agent_memory_eval.contracts.core import MemoryPolicy, canonical, digest, read_json
 from agent_memory_eval.contracts.validation import ROOT
 from agent_memory_eval.experiments.forms_write import read_form_bank
 from agent_memory_eval.memory.context import PAST_MEMORY_NOTICE, request_with_past_memory
-from agent_memory_eval.recording.assets import asset_text
+from agent_memory_eval.recording.assets import asset_text, publish_json as publish
 from agent_memory_eval.recording.journal import safe_path
 from scripts.analyze_full_retail import require
 from scripts.analyze_recheck_rounds import MUTATIONS
@@ -233,18 +230,6 @@ def audit(root, cfg, db):
         neutral_responses=dict(sorted(Counter(r["observed_next"] for r in eligible).items())),
         archive_support=dict(support), byte_identical_after_treatment_removal=sum(r["exact"] for r in comparisons),
         identical_allowing_call_id_renaming=len(comparisons)))
-
-
-def publish(path, result):
-    # Publish complete bytes exclusively, including when independent reproductions race.
-    with TemporaryDirectory(dir=path.parent) as directory:
-        provisional = Path(directory) / "evidence.json"
-        with provisional.open("x", encoding="utf-8") as stream:
-            json.dump(result, stream, ensure_ascii=False, indent=2, allow_nan=False)
-            stream.write("\n")
-            stream.flush()
-            os.fsync(stream.fileno())
-        os.link(provisional, path)
 
 
 if __name__ == "__main__":

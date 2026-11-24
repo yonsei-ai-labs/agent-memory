@@ -1,0 +1,1289 @@
+{
+  "format": "decision-attribution-audit/v1",
+  "fixed": {
+    "registered": 1848,
+    "status": {
+      "decision": 1221,
+      "checkpoint": 622,
+      "private_read_limit": 4,
+      "error": 1
+    },
+    "paired_openings_equal": 924,
+    "decision_inputs": {
+      "matched_no_visible_memory": 791,
+      "matched_visible_memory": 128,
+      "unobserved": 5
+    },
+    "previous_only_conditional": {
+      "customers": 77,
+      "decision_inputs": {
+        "matched_visible_memory": 128,
+        "unobserved": 4,
+        "matched_no_visible_memory": 22
+      },
+      "outcome": "focused_target_first_business_action",
+      "pairs": {
+        "assigned": 154,
+        "gain": 75,
+        "loss": 3,
+        "both_success": 31,
+        "both_failure": 45,
+        "missing": 0
+      },
+      "changes": {
+        "call_vs_no_call": 53,
+        "arguments": 34,
+        "same": 50,
+        "wording": 7,
+        "unobserved": 4,
+        "function_or_batch": 6
+      },
+      "worker_requests": {
+        "real": 448,
+        "empty": 284
+      },
+      "identifier": {
+        "in_public_source": 154,
+        "in_past_customer": 154,
+        "stored": 122,
+        "exposed": 94,
+        "current_user": 0,
+        "current_tool": 150,
+        "current_profile_with_other_orders": 150,
+        "observed_business_reply": 150,
+        "focused": 106,
+        "focused_after_body": 101,
+        "focused_with_chain": 91
+      }
+    }
+  },
+  "full": {
+    "assigned": {
+      "source": 100,
+      "write": 500,
+      "solve": 1000,
+      "second_pass_no_memory": 0
+    },
+    "statuses": {
+      "completed": 929,
+      "error": 51,
+      "not_started": 20
+    },
+    "graded_sources": 98,
+    "first_public_actor": {
+      "customer": 775,
+      "worker": 154
+    },
+    "exposure": {
+      "body": 388,
+      "nonempty_unopened": 395,
+      "empty": 146
+    },
+    "all_worker_inputs": {
+      "downstream": 9725,
+      "unpaired_tail": 2249,
+      "matched_no_visible_memory": 105,
+      "matched_visible_memory": 55
+    },
+    "outcome_by_assigned_policy": {
+      "airline/episode__on_demand": {
+        "assigned": 34,
+        "gain": 2,
+        "loss": 3,
+        "both_success": 21,
+        "both_failure": 4,
+        "missing": 4
+      },
+      "airline/episode__preload": {
+        "assigned": 34,
+        "gain": 1,
+        "loss": 2,
+        "both_success": 20,
+        "both_failure": 5,
+        "missing": 6
+      },
+      "airline/fact__on_demand": {
+        "assigned": 34,
+        "gain": 1,
+        "loss": 5,
+        "both_success": 21,
+        "both_failure": 5,
+        "missing": 2
+      },
+      "airline/fact__preload": {
+        "assigned": 34,
+        "gain": 0,
+        "loss": 4,
+        "both_success": 22,
+        "both_failure": 4,
+        "missing": 4
+      },
+      "airline/free__on_demand": {
+        "assigned": 34,
+        "gain": 3,
+        "loss": 4,
+        "both_success": 22,
+        "both_failure": 3,
+        "missing": 2
+      },
+      "airline/free__preload": {
+        "assigned": 34,
+        "gain": 1,
+        "loss": 1,
+        "both_success": 23,
+        "both_failure": 5,
+        "missing": 4
+      },
+      "airline/lesson__on_demand": {
+        "assigned": 34,
+        "gain": 1,
+        "loss": 7,
+        "both_success": 18,
+        "both_failure": 4,
+        "missing": 4
+      },
+      "airline/lesson__preload": {
+        "assigned": 34,
+        "gain": 2,
+        "loss": 2,
+        "both_success": 23,
+        "both_failure": 3,
+        "missing": 4
+      },
+      "airline/procedure__on_demand": {
+        "assigned": 34,
+        "gain": 2,
+        "loss": 1,
+        "both_success": 23,
+        "both_failure": 4,
+        "missing": 4
+      },
+      "airline/procedure__preload": {
+        "assigned": 34,
+        "gain": 2,
+        "loss": 5,
+        "both_success": 19,
+        "both_failure": 4,
+        "missing": 4
+      },
+      "retail/episode__on_demand": {
+        "assigned": 66,
+        "gain": 7,
+        "loss": 5,
+        "both_success": 41,
+        "both_failure": 10,
+        "missing": 3
+      },
+      "retail/episode__preload": {
+        "assigned": 66,
+        "gain": 7,
+        "loss": 4,
+        "both_success": 41,
+        "both_failure": 12,
+        "missing": 2
+      },
+      "retail/fact__on_demand": {
+        "assigned": 66,
+        "gain": 8,
+        "loss": 6,
+        "both_success": 39,
+        "both_failure": 10,
+        "missing": 3
+      },
+      "retail/fact__preload": {
+        "assigned": 66,
+        "gain": 5,
+        "loss": 3,
+        "both_success": 42,
+        "both_failure": 12,
+        "missing": 4
+      },
+      "retail/free__on_demand": {
+        "assigned": 66,
+        "gain": 6,
+        "loss": 7,
+        "both_success": 37,
+        "both_failure": 11,
+        "missing": 5
+      },
+      "retail/free__preload": {
+        "assigned": 66,
+        "gain": 8,
+        "loss": 3,
+        "both_success": 41,
+        "both_failure": 10,
+        "missing": 4
+      },
+      "retail/lesson__on_demand": {
+        "assigned": 66,
+        "gain": 11,
+        "loss": 6,
+        "both_success": 40,
+        "both_failure": 7,
+        "missing": 2
+      },
+      "retail/lesson__preload": {
+        "assigned": 66,
+        "gain": 9,
+        "loss": 4,
+        "both_success": 40,
+        "both_failure": 9,
+        "missing": 4
+      },
+      "retail/procedure__on_demand": {
+        "assigned": 66,
+        "gain": 10,
+        "loss": 5,
+        "both_success": 40,
+        "both_failure": 8,
+        "missing": 3
+      },
+      "retail/procedure__preload": {
+        "assigned": 66,
+        "gain": 9,
+        "loss": 7,
+        "both_success": 37,
+        "both_failure": 10,
+        "missing": 3
+      }
+    },
+    "delivery": {
+      "body/preload": 388,
+      "nonempty_unopened/on_demand": 395,
+      "empty/preload": 73,
+      "empty/on_demand": 73
+    },
+    "first_business_response": {
+      "downstream": 860,
+      "matched_no_visible_memory": 3,
+      "matched_visible_memory": 2,
+      "sequence_same": 58,
+      "unpaired_tail": 6
+    },
+    "first_ordered_call": {
+      "downstream": 687,
+      "unpaired_tail": 59,
+      "sequence_same": 181,
+      "matched_no_visible_memory": 2
+    },
+    "worker_first": {
+      "nonempty_unopened": {
+        "pairs": 68,
+        "first_worker_reply": 66,
+        "both_speech": 65,
+        "immediate_calls_differ": 3,
+        "matched_input": 68,
+        "next_customer_observed": 68,
+        "next_customer_changed": 39,
+        "adjacent_customer_observed": 65,
+        "adjacent_customer_changed": 39,
+        "whole_call_sequence_differs": 53,
+        "first_different_ordered_call_at_matched_input": 2
+      },
+      "body": {
+        "pairs": 55,
+        "first_worker_reply": 55,
+        "both_speech": 53,
+        "immediate_calls_differ": 2,
+        "matched_input": 55,
+        "next_customer_observed": 55,
+        "next_customer_changed": 41,
+        "adjacent_customer_observed": 53,
+        "adjacent_customer_changed": 39,
+        "whole_call_sequence_differs": 45
+      },
+      "empty": {
+        "pairs": 31,
+        "first_worker_reply": 31,
+        "both_speech": 31,
+        "immediate_calls_differ": 0,
+        "matched_input": 31,
+        "next_customer_observed": 31,
+        "next_customer_changed": 19,
+        "adjacent_customer_observed": 31,
+        "adjacent_customer_changed": 19,
+        "whole_call_sequence_differs": 21
+      }
+    },
+    "outcome_effort_by_domain_and_exposure": {
+      "airline/body": {
+        "outcomes": {
+          "assigned": 129,
+          "gain": 3,
+          "loss": 12,
+          "both_success": 95,
+          "both_failure": 19,
+          "missing": 0
+        },
+        "jointly_graded": {
+          "pairs": 129,
+          "metrics": {
+            "customer_turns": {
+              "observed": 129,
+              "missing": 0,
+              "candidate_total": "606",
+              "reference_total": "630",
+              "difference": "-24",
+              "relative_difference_pct": -3.81,
+              "lower": 59,
+              "equal": 48,
+              "higher": 22
+            },
+            "business_calls": {
+              "observed": 129,
+              "missing": 0,
+              "candidate_total": "770",
+              "reference_total": "820",
+              "difference": "-50",
+              "relative_difference_pct": -6.098,
+              "lower": 50,
+              "equal": 58,
+              "higher": 21
+            },
+            "memory_read_calls": {
+              "observed": 129,
+              "missing": 0,
+              "candidate_total": "0",
+              "reference_total": "0",
+              "difference": "0",
+              "relative_difference_pct": null,
+              "lower": 0,
+              "equal": 129,
+              "higher": 0
+            },
+            "http_calls": {
+              "observed": 129,
+              "missing": 0,
+              "candidate_total": "1902",
+              "reference_total": "1895",
+              "difference": "7",
+              "relative_difference_pct": 0.369,
+              "lower": 69,
+              "equal": 22,
+              "higher": 38
+            },
+            "tokens": {
+              "observed": 129,
+              "missing": 0,
+              "candidate_total": "7212331",
+              "reference_total": "6671301",
+              "difference": "541030",
+              "relative_difference_pct": 8.11,
+              "lower": 65,
+              "equal": 0,
+              "higher": 64
+            },
+            "usd": {
+              "observed": 129,
+              "missing": 0,
+              "candidate_total": "0.237123912",
+              "reference_total": "0.227740907",
+              "difference": "0.009383005",
+              "relative_difference_pct": 4.12,
+              "lower": 73,
+              "equal": 0,
+              "higher": 56
+            }
+          }
+        },
+        "both_success": {
+          "pairs": 95,
+          "metrics": {
+            "customer_turns": {
+              "observed": 95,
+              "missing": 0,
+              "candidate_total": "421",
+              "reference_total": "425",
+              "difference": "-4",
+              "relative_difference_pct": -0.941,
+              "lower": 37,
+              "equal": 42,
+              "higher": 16
+            },
+            "business_calls": {
+              "observed": 95,
+              "missing": 0,
+              "candidate_total": "507",
+              "reference_total": "522",
+              "difference": "-15",
+              "relative_difference_pct": -2.874,
+              "lower": 29,
+              "equal": 54,
+              "higher": 12
+            },
+            "memory_read_calls": {
+              "observed": 95,
+              "missing": 0,
+              "candidate_total": "0",
+              "reference_total": "0",
+              "difference": "0",
+              "relative_difference_pct": null,
+              "lower": 0,
+              "equal": 95,
+              "higher": 0
+            },
+            "http_calls": {
+              "observed": 95,
+              "missing": 0,
+              "candidate_total": "1304",
+              "reference_total": "1299",
+              "difference": "5",
+              "relative_difference_pct": 0.385,
+              "lower": 47,
+              "equal": 21,
+              "higher": 27
+            },
+            "tokens": {
+              "observed": 95,
+              "missing": 0,
+              "candidate_total": "4785699",
+              "reference_total": "4373965",
+              "difference": "411734",
+              "relative_difference_pct": 9.413,
+              "lower": 44,
+              "equal": 0,
+              "higher": 51
+            },
+            "usd": {
+              "observed": 95,
+              "missing": 0,
+              "candidate_total": "0.158914368",
+              "reference_total": "0.149174287",
+              "difference": "0.009740081",
+              "relative_difference_pct": 6.529,
+              "lower": 50,
+              "equal": 0,
+              "higher": 45
+            }
+          }
+        }
+      },
+      "airline/empty": {
+        "outcomes": {
+          "assigned": 39,
+          "gain": 6,
+          "loss": 6,
+          "both_success": 23,
+          "both_failure": 4,
+          "missing": 0
+        },
+        "jointly_graded": {
+          "pairs": 39,
+          "metrics": {
+            "customer_turns": {
+              "observed": 39,
+              "missing": 0,
+              "candidate_total": "218",
+              "reference_total": "183",
+              "difference": "35",
+              "relative_difference_pct": 19.126,
+              "lower": 16,
+              "equal": 8,
+              "higher": 15
+            },
+            "business_calls": {
+              "observed": 39,
+              "missing": 0,
+              "candidate_total": "201",
+              "reference_total": "182",
+              "difference": "19",
+              "relative_difference_pct": 10.44,
+              "lower": 10,
+              "equal": 15,
+              "higher": 14
+            },
+            "memory_read_calls": {
+              "observed": 39,
+              "missing": 0,
+              "candidate_total": "0",
+              "reference_total": "0",
+              "difference": "0",
+              "relative_difference_pct": null,
+              "lower": 0,
+              "equal": 39,
+              "higher": 0
+            },
+            "http_calls": {
+              "observed": 39,
+              "missing": 0,
+              "candidate_total": "610",
+              "reference_total": "509",
+              "difference": "101",
+              "relative_difference_pct": 19.843,
+              "lower": 16,
+              "equal": 3,
+              "higher": 20
+            },
+            "tokens": {
+              "observed": 39,
+              "missing": 0,
+              "candidate_total": "2260089",
+              "reference_total": "1704656",
+              "difference": "555433",
+              "relative_difference_pct": 32.583,
+              "lower": 15,
+              "equal": 0,
+              "higher": 24
+            },
+            "usd": {
+              "observed": 39,
+              "missing": 0,
+              "candidate_total": "0.076804036",
+              "reference_total": "0.060047521",
+              "difference": "0.016756515",
+              "relative_difference_pct": 27.905,
+              "lower": 13,
+              "equal": 0,
+              "higher": 26
+            }
+          }
+        },
+        "both_success": {
+          "pairs": 23,
+          "metrics": {
+            "customer_turns": {
+              "observed": 23,
+              "missing": 0,
+              "candidate_total": "117",
+              "reference_total": "109",
+              "difference": "8",
+              "relative_difference_pct": 7.339,
+              "lower": 12,
+              "equal": 7,
+              "higher": 4
+            },
+            "business_calls": {
+              "observed": 23,
+              "missing": 0,
+              "candidate_total": "96",
+              "reference_total": "102",
+              "difference": "-6",
+              "relative_difference_pct": -5.882,
+              "lower": 8,
+              "equal": 13,
+              "higher": 2
+            },
+            "memory_read_calls": {
+              "observed": 23,
+              "missing": 0,
+              "candidate_total": "0",
+              "reference_total": "0",
+              "difference": "0",
+              "relative_difference_pct": null,
+              "lower": 0,
+              "equal": 23,
+              "higher": 0
+            },
+            "http_calls": {
+              "observed": 23,
+              "missing": 0,
+              "candidate_total": "307",
+              "reference_total": "287",
+              "difference": "20",
+              "relative_difference_pct": 6.969,
+              "lower": 13,
+              "equal": 3,
+              "higher": 7
+            },
+            "tokens": {
+              "observed": 23,
+              "missing": 0,
+              "candidate_total": "974280",
+              "reference_total": "854582",
+              "difference": "119698",
+              "relative_difference_pct": 14.007,
+              "lower": 12,
+              "equal": 0,
+              "higher": 11
+            },
+            "usd": {
+              "observed": 23,
+              "missing": 0,
+              "candidate_total": "0.033811481",
+              "reference_total": "0.030063720",
+              "difference": "0.003747761",
+              "relative_difference_pct": 12.466,
+              "lower": 10,
+              "equal": 0,
+              "higher": 13
+            }
+          }
+        }
+      },
+      "airline/nonempty_unopened": {
+        "outcomes": {
+          "assigned": 134,
+          "gain": 6,
+          "loss": 16,
+          "both_success": 94,
+          "both_failure": 18,
+          "missing": 0
+        },
+        "jointly_graded": {
+          "pairs": 134,
+          "metrics": {
+            "customer_turns": {
+              "observed": 134,
+              "missing": 0,
+              "candidate_total": "871",
+              "reference_total": "657",
+              "difference": "214",
+              "relative_difference_pct": 32.572,
+              "lower": 39,
+              "equal": 40,
+              "higher": 55
+            },
+            "business_calls": {
+              "observed": 134,
+              "missing": 0,
+              "candidate_total": "870",
+              "reference_total": "860",
+              "difference": "10",
+              "relative_difference_pct": 1.163,
+              "lower": 50,
+              "equal": 48,
+              "higher": 36
+            },
+            "memory_read_calls": {
+              "observed": 134,
+              "missing": 0,
+              "candidate_total": "0",
+              "reference_total": "0",
+              "difference": "0",
+              "relative_difference_pct": null,
+              "lower": 0,
+              "equal": 134,
+              "higher": 0
+            },
+            "http_calls": {
+              "observed": 134,
+              "missing": 0,
+              "candidate_total": "2468",
+              "reference_total": "1973",
+              "difference": "495",
+              "relative_difference_pct": 25.089,
+              "lower": 50,
+              "equal": 18,
+              "higher": 66
+            },
+            "tokens": {
+              "observed": 134,
+              "missing": 0,
+              "candidate_total": "9562766",
+              "reference_total": "6965357",
+              "difference": "2597409",
+              "relative_difference_pct": 37.29,
+              "lower": 50,
+              "equal": 0,
+              "higher": 84
+            },
+            "usd": {
+              "observed": 134,
+              "missing": 0,
+              "candidate_total": "0.302052805",
+              "reference_total": "0.238088592",
+              "difference": "0.063964213",
+              "relative_difference_pct": 26.866,
+              "lower": 52,
+              "equal": 0,
+              "higher": 82
+            }
+          }
+        },
+        "both_success": {
+          "pairs": 94,
+          "metrics": {
+            "customer_turns": {
+              "observed": 94,
+              "missing": 0,
+              "candidate_total": "601",
+              "reference_total": "429",
+              "difference": "172",
+              "relative_difference_pct": 40.093,
+              "lower": 26,
+              "equal": 35,
+              "higher": 33
+            },
+            "business_calls": {
+              "observed": 94,
+              "missing": 0,
+              "candidate_total": "559",
+              "reference_total": "527",
+              "difference": "32",
+              "relative_difference_pct": 6.072,
+              "lower": 29,
+              "equal": 43,
+              "higher": 22
+            },
+            "memory_read_calls": {
+              "observed": 94,
+              "missing": 0,
+              "candidate_total": "0",
+              "reference_total": "0",
+              "difference": "0",
+              "relative_difference_pct": null,
+              "lower": 0,
+              "equal": 94,
+              "higher": 0
+            },
+            "http_calls": {
+              "observed": 94,
+              "missing": 0,
+              "candidate_total": "1662",
+              "reference_total": "1306",
+              "difference": "356",
+              "relative_difference_pct": 27.259,
+              "lower": 37,
+              "equal": 16,
+              "higher": 41
+            },
+            "tokens": {
+              "observed": 94,
+              "missing": 0,
+              "candidate_total": "6260814",
+              "reference_total": "4472491",
+              "difference": "1788323",
+              "relative_difference_pct": 39.985,
+              "lower": 36,
+              "equal": 0,
+              "higher": 58
+            },
+            "usd": {
+              "observed": 94,
+              "missing": 0,
+              "candidate_total": "0.195010535",
+              "reference_total": "0.152710019",
+              "difference": "0.042300516",
+              "relative_difference_pct": 27.7,
+              "lower": 41,
+              "equal": 0,
+              "higher": 53
+            }
+          }
+        }
+      },
+      "retail/body": {
+        "outcomes": {
+          "assigned": 259,
+          "gain": 31,
+          "loss": 20,
+          "both_success": 161,
+          "both_failure": 47,
+          "missing": 0
+        },
+        "jointly_graded": {
+          "pairs": 259,
+          "metrics": {
+            "customer_turns": {
+              "observed": 259,
+              "missing": 0,
+              "candidate_total": "1578",
+              "reference_total": "1599",
+              "difference": "-21",
+              "relative_difference_pct": -1.313,
+              "lower": 98,
+              "equal": 78,
+              "higher": 83
+            },
+            "business_calls": {
+              "observed": 259,
+              "missing": 0,
+              "candidate_total": "2010",
+              "reference_total": "1989",
+              "difference": "21",
+              "relative_difference_pct": 1.056,
+              "lower": 63,
+              "equal": 116,
+              "higher": 80
+            },
+            "memory_read_calls": {
+              "observed": 259,
+              "missing": 0,
+              "candidate_total": "0",
+              "reference_total": "0",
+              "difference": "0",
+              "relative_difference_pct": null,
+              "lower": 0,
+              "equal": 259,
+              "higher": 0
+            },
+            "http_calls": {
+              "observed": 259,
+              "missing": 0,
+              "candidate_total": "5074",
+              "reference_total": "5084",
+              "difference": "-10",
+              "relative_difference_pct": -0.197,
+              "lower": 118,
+              "equal": 32,
+              "higher": 109
+            },
+            "tokens": {
+              "observed": 259,
+              "missing": 0,
+              "candidate_total": "21582897",
+              "reference_total": "20163396",
+              "difference": "1419501",
+              "relative_difference_pct": 7.04,
+              "lower": 105,
+              "equal": 0,
+              "higher": 154
+            },
+            "usd": {
+              "observed": 259,
+              "missing": 0,
+              "candidate_total": "0.586560592",
+              "reference_total": "0.561591003",
+              "difference": "0.024969589",
+              "relative_difference_pct": 4.446,
+              "lower": 111,
+              "equal": 0,
+              "higher": 148
+            }
+          }
+        },
+        "both_success": {
+          "pairs": 161,
+          "metrics": {
+            "customer_turns": {
+              "observed": 161,
+              "missing": 0,
+              "candidate_total": "1005",
+              "reference_total": "1008",
+              "difference": "-3",
+              "relative_difference_pct": -0.298,
+              "lower": 54,
+              "equal": 59,
+              "higher": 48
+            },
+            "business_calls": {
+              "observed": 161,
+              "missing": 0,
+              "candidate_total": "1194",
+              "reference_total": "1180",
+              "difference": "14",
+              "relative_difference_pct": 1.186,
+              "lower": 37,
+              "equal": 75,
+              "higher": 49
+            },
+            "memory_read_calls": {
+              "observed": 161,
+              "missing": 0,
+              "candidate_total": "0",
+              "reference_total": "0",
+              "difference": "0",
+              "relative_difference_pct": null,
+              "lower": 0,
+              "equal": 161,
+              "higher": 0
+            },
+            "http_calls": {
+              "observed": 161,
+              "missing": 0,
+              "candidate_total": "3154",
+              "reference_total": "3153",
+              "difference": "1",
+              "relative_difference_pct": 0.032,
+              "lower": 73,
+              "equal": 21,
+              "higher": 67
+            },
+            "tokens": {
+              "observed": 161,
+              "missing": 0,
+              "candidate_total": "13056020",
+              "reference_total": "12124695",
+              "difference": "931325",
+              "relative_difference_pct": 7.681,
+              "lower": 64,
+              "equal": 0,
+              "higher": 97
+            },
+            "usd": {
+              "observed": 161,
+              "missing": 0,
+              "candidate_total": "0.349458679",
+              "reference_total": "0.336432257",
+              "difference": "0.013026422",
+              "relative_difference_pct": 3.872,
+              "lower": 68,
+              "equal": 0,
+              "higher": 93
+            }
+          }
+        }
+      },
+      "retail/empty": {
+        "outcomes": {
+          "assigned": 107,
+          "gain": 11,
+          "loss": 4,
+          "both_success": 78,
+          "both_failure": 14,
+          "missing": 0
+        },
+        "jointly_graded": {
+          "pairs": 107,
+          "metrics": {
+            "customer_turns": {
+              "observed": 107,
+              "missing": 0,
+              "candidate_total": "657",
+              "reference_total": "613",
+              "difference": "44",
+              "relative_difference_pct": 7.178,
+              "lower": 26,
+              "equal": 43,
+              "higher": 38
+            },
+            "business_calls": {
+              "observed": 107,
+              "missing": 0,
+              "candidate_total": "761",
+              "reference_total": "724",
+              "difference": "37",
+              "relative_difference_pct": 5.11,
+              "lower": 17,
+              "equal": 59,
+              "higher": 31
+            },
+            "memory_read_calls": {
+              "observed": 107,
+              "missing": 0,
+              "candidate_total": "0",
+              "reference_total": "0",
+              "difference": "0",
+              "relative_difference_pct": null,
+              "lower": 0,
+              "equal": 107,
+              "higher": 0
+            },
+            "http_calls": {
+              "observed": 107,
+              "missing": 0,
+              "candidate_total": "2046",
+              "reference_total": "1893",
+              "difference": "153",
+              "relative_difference_pct": 8.082,
+              "lower": 30,
+              "equal": 20,
+              "higher": 57
+            },
+            "tokens": {
+              "observed": 107,
+              "missing": 0,
+              "candidate_total": "8129729",
+              "reference_total": "7146536",
+              "difference": "983193",
+              "relative_difference_pct": 13.758,
+              "lower": 30,
+              "equal": 0,
+              "higher": 77
+            },
+            "usd": {
+              "observed": 107,
+              "missing": 0,
+              "candidate_total": "0.227313894",
+              "reference_total": "0.206528218",
+              "difference": "0.020785676",
+              "relative_difference_pct": 10.064,
+              "lower": 46,
+              "equal": 0,
+              "higher": 61
+            }
+          }
+        },
+        "both_success": {
+          "pairs": 78,
+          "metrics": {
+            "customer_turns": {
+              "observed": 78,
+              "missing": 0,
+              "candidate_total": "470",
+              "reference_total": "451",
+              "difference": "19",
+              "relative_difference_pct": 4.213,
+              "lower": 17,
+              "equal": 36,
+              "higher": 25
+            },
+            "business_calls": {
+              "observed": 78,
+              "missing": 0,
+              "candidate_total": "510",
+              "reference_total": "490",
+              "difference": "20",
+              "relative_difference_pct": 4.082,
+              "lower": 12,
+              "equal": 48,
+              "higher": 18
+            },
+            "memory_read_calls": {
+              "observed": 78,
+              "missing": 0,
+              "candidate_total": "0",
+              "reference_total": "0",
+              "difference": "0",
+              "relative_difference_pct": null,
+              "lower": 0,
+              "equal": 78,
+              "higher": 0
+            },
+            "http_calls": {
+              "observed": 78,
+              "missing": 0,
+              "candidate_total": "1445",
+              "reference_total": "1372",
+              "difference": "73",
+              "relative_difference_pct": 5.321,
+              "lower": 23,
+              "equal": 17,
+              "higher": 38
+            },
+            "tokens": {
+              "observed": 78,
+              "missing": 0,
+              "candidate_total": "5497021",
+              "reference_total": "4971550",
+              "difference": "525471",
+              "relative_difference_pct": 10.57,
+              "lower": 23,
+              "equal": 0,
+              "higher": 55
+            },
+            "usd": {
+              "observed": 78,
+              "missing": 0,
+              "candidate_total": "0.153854880",
+              "reference_total": "0.144427322",
+              "difference": "0.009427558",
+              "relative_difference_pct": 6.528,
+              "lower": 37,
+              "equal": 0,
+              "higher": 41
+            }
+          }
+        }
+      },
+      "retail/nonempty_unopened": {
+        "outcomes": {
+          "assigned": 261,
+          "gain": 38,
+          "loss": 26,
+          "both_success": 159,
+          "both_failure": 38,
+          "missing": 0
+        },
+        "jointly_graded": {
+          "pairs": 261,
+          "metrics": {
+            "customer_turns": {
+              "observed": 261,
+              "missing": 0,
+              "candidate_total": "1670",
+              "reference_total": "1606",
+              "difference": "64",
+              "relative_difference_pct": 3.985,
+              "lower": 74,
+              "equal": 71,
+              "higher": 116
+            },
+            "business_calls": {
+              "observed": 261,
+              "missing": 0,
+              "candidate_total": "2049",
+              "reference_total": "2006",
+              "difference": "43",
+              "relative_difference_pct": 2.144,
+              "lower": 58,
+              "equal": 123,
+              "higher": 80
+            },
+            "memory_read_calls": {
+              "observed": 261,
+              "missing": 0,
+              "candidate_total": "0",
+              "reference_total": "0",
+              "difference": "0",
+              "relative_difference_pct": null,
+              "lower": 0,
+              "equal": 261,
+              "higher": 0
+            },
+            "http_calls": {
+              "observed": 261,
+              "missing": 0,
+              "candidate_total": "5282",
+              "reference_total": "5118",
+              "difference": "164",
+              "relative_difference_pct": 3.204,
+              "lower": 94,
+              "equal": 36,
+              "higher": 131
+            },
+            "tokens": {
+              "observed": 261,
+              "missing": 0,
+              "candidate_total": "21856032",
+              "reference_total": "20326336",
+              "difference": "1529696",
+              "relative_difference_pct": 7.526,
+              "lower": 88,
+              "equal": 0,
+              "higher": 173
+            },
+            "usd": {
+              "observed": 261,
+              "missing": 0,
+              "candidate_total": "0.602236261",
+              "reference_total": "0.567207240",
+              "difference": "0.035029021",
+              "relative_difference_pct": 6.176,
+              "lower": 108,
+              "equal": 0,
+              "higher": 153
+            }
+          }
+        },
+        "both_success": {
+          "pairs": 159,
+          "metrics": {
+            "customer_turns": {
+              "observed": 159,
+              "missing": 0,
+              "candidate_total": "1064",
+              "reference_total": "981",
+              "difference": "83",
+              "relative_difference_pct": 8.461,
+              "lower": 28,
+              "equal": 52,
+              "higher": 79
+            },
+            "business_calls": {
+              "observed": 159,
+              "missing": 0,
+              "candidate_total": "1213",
+              "reference_total": "1192",
+              "difference": "21",
+              "relative_difference_pct": 1.762,
+              "lower": 36,
+              "equal": 80,
+              "higher": 43
+            },
+            "memory_read_calls": {
+              "observed": 159,
+              "missing": 0,
+              "candidate_total": "0",
+              "reference_total": "0",
+              "difference": "0",
+              "relative_difference_pct": null,
+              "lower": 0,
+              "equal": 159,
+              "higher": 0
+            },
+            "http_calls": {
+              "observed": 159,
+              "missing": 0,
+              "candidate_total": "3291",
+              "reference_total": "3110",
+              "difference": "181",
+              "relative_difference_pct": 5.82,
+              "lower": 48,
+              "equal": 24,
+              "higher": 87
+            },
+            "tokens": {
+              "observed": 159,
+              "missing": 0,
+              "candidate_total": "13308039",
+              "reference_total": "12083727",
+              "difference": "1224312",
+              "relative_difference_pct": 10.132,
+              "lower": 44,
+              "equal": 0,
+              "higher": 115
+            },
+            "usd": {
+              "observed": 159,
+              "missing": 0,
+              "candidate_total": "0.359850804",
+              "reference_total": "0.335441793",
+              "difference": "0.024409011",
+              "relative_difference_pct": 7.277,
+              "lower": 62,
+              "equal": 0,
+              "higher": 97
+            }
+          }
+        }
+      }
+    }
+  },
+  "bfcl": {
+    "task": "simple_python_0",
+    "revision": "6ea57973c7a6097fd7c5915698c54c17c5b1b6c8",
+    "kind": "scripted_decoded_calls",
+    "public_sha256": "0052bac4ff4542023dfc7a1f1cfbf0a7c9cc1fa2ba3a047c2bb029a469cce681",
+    "reordered": {
+      "status": "matched_no_visible_memory",
+      "change": "same",
+      "reference_request": "reference",
+      "candidate_request": "reordered",
+      "reference_fields": [],
+      "candidate_fields": []
+    },
+    "argument": {
+      "status": "matched_no_visible_memory",
+      "change": "arguments",
+      "reference_request": "reference",
+      "candidate_request": "argument",
+      "reference_fields": [],
+      "candidate_fields": [],
+      "reference_actions": [
+        {
+          "name": "calculate_triangle_area",
+          "arguments": {
+            "base": 10,
+            "height": 5
+          }
+        }
+      ],
+      "candidate_actions": [
+        {
+          "name": "calculate_triangle_area",
+          "arguments": {
+            "base": 10,
+            "height": 6
+          }
+        }
+      ]
+    },
+    "function": {
+      "status": "matched_no_visible_memory",
+      "change": "function_or_batch",
+      "reference_request": "reference",
+      "candidate_request": "undeclared-function",
+      "reference_fields": [],
+      "candidate_fields": [],
+      "reference_actions": [
+        {
+          "name": "calculate_triangle_area",
+          "arguments": {
+            "base": 10,
+            "height": 5
+          }
+        }
+      ],
+      "candidate_actions": [
+        {
+          "name": "unlisted_function",
+          "arguments": {
+            "base": 10,
+            "height": 5
+          }
+        }
+      ]
+    }
+  }
+}
