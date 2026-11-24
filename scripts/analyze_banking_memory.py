@@ -35,12 +35,16 @@ def optional_storage(workspace):
     common = study.asset_text(pilot.ROOT, cfg["writing"]["common_instruction_ref"]).rstrip("\r\n")
     prompts = {f: digest((common+"\n"+v).encode()) for f,v in cfg["writing"]["lines"].items()}
     authors, affected, inputs = [], [], {}
+    readers = Counter()
     for case in reg["cases"]:
         tid = case["task_id"]
         base = root / ("task-" + tid)
         source = study.source_from(base/"source", tid)
+        first, = study.sealed_rows(base/"source")[2]
+        original = episode(base/"source"/first["directory"], first, case, digest(canonical(reg)), None, None)
         _, _, rows = study.sealed_rows(base/"write")
         inputs[tid] = source.public_context_sha256
+        by_form = {}
         for row in rows:
             form = row["arm"]
             require(verify_writer_input(base/"write", row, source, dict(writer_prompt_sha256=prompts)),
@@ -48,6 +52,7 @@ def optional_storage(workspace):
             folder = base/"write"/row["directory"]
             checksum = row["result"]["log_sha256"]
             bank = read_form_bank(folder, expected_log_sha256=checksum)
+            by_form[form] = bank
             log = RecordedDecisions(folder, row["run_id"], checksum)
             replies = [log.reply(req)["message"] for req in log.requests]
             store_calls = sum(c["function"]["name"] == "memory_store" for msg in replies for c in msg.get("tool_calls") or [])
@@ -67,18 +72,28 @@ def optional_storage(workspace):
                 author.update(final_text_chars=len(text), final_text_sha256=digest(text.encode()),
                               final_text_excerpt=text[:160], provider_request=log.requests[-1]["request_id"],
                               required_contract_replay=required_error)
-                for trial in study.read(base/"solve/allocations.json"):
-                    if trial["arm"].split("__")[0] != form:
-                        continue
-                    job = base/"solve"/trial["directory"]
-                    if trial.get("result"):
-                        seen = episode(job, trial, case, digest(canonical(reg)), source.source_run_id, bank)
-                        affected.append(dict(arm=trial["arm"], task=tid, run=trial["run_id"], status=trial["status"],
-                                             body_seen=seen["body_seen"], success=seen["success"], snapshot=bank["snapshot_id"]))
-                    else:
-                        require(not (job/"log.jsonl").exists(), "Empty-bank attempt has unaccounted requests")
-                        affected.append(dict(arm=trial["arm"], task=tid, status="stopped_before_first_request"))
             authors.append(author)
+        for trial in study.read(base/"solve/allocations.json"):
+            form, mode = trial["arm"].split("__")
+            bank = by_form[form]
+            job = base/"solve"/trial["directory"]
+            if not trial.get("result"):
+                require(not (job/"log.jsonl").exists() and not bank["items"], "Unaccounted optional reader")
+                affected.append(dict(arm=trial["arm"], task=tid, status="stopped_before_first_request"))
+                readers["stopped_before_request"] += 1
+                continue
+            seen = episode(job, trial, case, digest(canonical(reg)), source.source_run_id, bank)
+            require(seen["task_start_sha256"] == original["task_start_sha256"] and
+                    seen["source_worker_request_id"] == original["first_worker_request_id"],
+                    "Reader was attached to a different first decision")
+            readers["matched_opening_and_writer"] += 1
+            readers["nonempty_assigned" if bank["items"] else "empty_assigned"] += 1
+            readers[mode + "_graded"] += int(seen["status"] == "graded")
+            readers[mode + "_body_seen"] += int(bool(seen["body_seen"]))
+            readers[mode + "_read_calls"] += seen["reads"] or 0
+            if not bank["items"]:
+                affected.append(dict(arm=trial["arm"], task=tid, run=trial["run_id"], status=trial["status"],
+                                     body_seen=seen["body_seen"], success=seen["success"], snapshot=bank["snapshot_id"]))
     # A post-hoc case study with a falsifiable literal from the worker's first action.
     case = next(c for c in reg["cases"] if c["task_id"] == "task_015")
     base = root / ("task-" + case["task"])
@@ -109,7 +124,8 @@ def optional_storage(workspace):
                    first_search=a.actions[0].record(), second_search=b.actions[0].record(),
                    first_success=first["result"]["official_success"], second_success=reader["result"]["official_success"],
                    competing_public_literal_sources=[], provenance=evidence)
-    return dict(source_public_hashes=inputs, authors=authors, empty_bank_readers=affected, exploratory_example=example)
+    return dict(source_public_hashes=inputs, authors=authors, reader_audit=dict(readers),
+                empty_bank_readers=affected, exploratory_example=example)
 
 
 def decision_evidence(log, steps, histories, source_fields, required):
