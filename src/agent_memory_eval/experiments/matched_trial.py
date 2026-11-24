@@ -55,7 +55,7 @@ def verify_trial(journal, ctx, spec, control, policy, instruction, items):
         raise FirstPassMismatch("Fresh task configuration, memory instruction or assignment changed")
     settings = role_settings(control)
     if first is not None and (
-        first["registration_sha256"] != spec["registration_sha256"]
+        first["registration_sha256"] != spec.get("source_registration_sha256", spec["registration_sha256"])
         or first["native_sha256"] != fingerprint or first["wire"] != settings
         or first["customer_opening_sha256"] != spec["customer_opening_sha256"]
         or first["public_context_sha256"] != spec["public_context_sha256"]
@@ -65,6 +65,8 @@ def verify_trial(journal, ctx, spec, control, policy, instruction, items):
                    source_run_id=first["run_id"] if first else None,
                    source_log_sha256=first["log_sha256"] if first else None,
                    customer_opening_sha256=spec["customer_opening_sha256"])
+    if "source_registration_sha256" in spec:
+        receipt["source_registration_sha256"] = spec["source_registration_sha256"]
     journal.append([ctx.event("business.transition", dict(origin="matched_trial.native_control",
         control_ref=journal.blobs.put(control), receipt_ref=journal.blobs.put(receipt)))])
     match = dict(control=control, wire=settings, customer_opening_sha256=spec["customer_opening_sha256"])

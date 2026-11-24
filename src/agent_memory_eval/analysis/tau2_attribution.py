@@ -90,9 +90,22 @@ def graded_episode(folder, row, case, read_instruction_sha, source=None, *, publ
                 "Wrong memory policy, instruction or bank")
     else:
         require(not policy.enabled and not log.items, "First pass has memory")
-    opening = next(r for r in log.requests if r["actor_role"] == "user_simulator")
-    require(opening["request_ref"]["sha256"] == case["customer_opening_sha256"],
-            "First customer request differs from the registered opening")
+    from agent_memory_eval.runner.task_start import FORMAT as START_FORMAT, TaskStart
+    start = None
+    if case.get("task_start_mode") == START_FORMAT:
+        proof, = [e["payload"] for e in log.of_type("business.transition")
+                  if e["payload"].get("origin") == "task_start.first_decision"]
+        start = TaskStart.from_record(log.blobs.get(proof["task_start_ref"]))
+        require(start.controls_sha256 == case["native_sha256"] and start.task.task_id ==
+                f'{case["domain"]}/{case["task_id"]}' and proof["source_run_id"] == receipt["source_run_id"]
+                and proof["source_log_sha256"] == receipt["source_log_sha256"], "Unregistered decision start")
+    imported = start is not None and source is not None
+    opening = None if imported else log.requests[0]
+    if imported:
+        require(log.requests[0]["actor_role"] == "worker", "Imported opening generated a new customer request")
+    else:
+        require(opening["actor_role"] == "user_simulator" and opening["request_ref"]["sha256"] ==
+                case["customer_opening_sha256"], "First customer request differs from the registered opening")
     systems = {role: dict(role="system", content=value) for role, value in control["systems"].items()}
     expected_system = systems["worker"]
     if policy.enabled:
@@ -102,6 +115,7 @@ def graded_episode(folder, row, case, read_instruction_sha, source=None, *, publ
     if private_tools:
         expected_settings["tools"] = [*expected_settings.get("tools", []), *memory_tools(private_tools)]
     steps, effort_choices = [], []
+    first_worker = True
     for req in log.requests:
         role = req["actor_role"]
         if role not in systems:
@@ -116,6 +130,10 @@ def graded_episode(folder, row, case, read_instruction_sha, source=None, *, publ
                 require(history[1] == snapshot_message(log.items), "Undeclared preload")
                 history = [history[0], *history[2:]]
             history = [systems[role], *log.business_history(history[1:])]
+            if start is not None and first_worker:
+                require(read_json(start.public_input) == dict(messages=history, tools=settings[role].get("tools", [])),
+                        "Observed first worker input differs outside of memory")
+            first_worker = False
             spans = log.visible(req, wire)
             calls = choice["message"].get("tool_calls") or []
             reads = [c for c in calls if c["function"]["name"] in private_tools]
@@ -128,6 +146,10 @@ def graded_episode(folder, row, case, read_instruction_sha, source=None, *, publ
         else:
             require({k: v for k, v in wire.items() if k != "messages"} == settings[role] and history[0] == systems[role],
                     "Undeclared customer settings")
+            if start is not None and req is opening:
+                require(choice["message"]["content"] == read_json(start.public_input)["messages"][-1]["content"],
+                        "Source opening differs from the registered public observation")
+                continue  # The shared opening precedes the first decision in both episodes.
             spans, actor = [], "customer"
         steps.append(observed_step(actor, req, settings[role], choice, case["native_sha256"], history, spans,
                                    private_names=private_tools if role == "worker" else ()))

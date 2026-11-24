@@ -165,6 +165,11 @@ def stage_job(args):
     task_dir.mkdir(exist_ok=True)
     dest = task_dir / stage_name
     source_dir, write_dir = [task_dir / s for s in case["scheduled_stages"][:2]]
+    imported = case.get("imported_first_pass")
+    if imported:
+        if stage == "source":
+            raise ContractError("An imported first pass cannot be resubmitted")
+        source_dir = safe_path(workspace / "runs", imported["directory"])
     tid = case["task_id"]
     plan = dict(sources={}, tasks={tid: task}, connection=conn, modules=modules_for(workspace),
                 instruction=asset_text(ROOT, cfg["delivery_instruction"]))
@@ -178,14 +183,21 @@ def stage_job(args):
     source = None
     if stage != "source":
         _, parent, first_rows = sealed_rows(source_dir)
-        if parent["profile"]["registration_sha256"] != cfg["registration_sha256"] or parent["design"]["stage"] != "source":
+        source_registration = imported["registration_sha256"] if imported else cfg["registration_sha256"]
+        if parent["profile"]["registration_sha256"] != source_registration or parent["design"]["stage"] != "source":
             raise ContractError("The new writer or reader was linked to another study")
         source = source_from(source_dir, tid)
         if source is None:
             plan["missing_sources"] = [tid]
         else:
             first_row, = first_rows
-            spec.update(source=source_receipt(safe_path(source_dir, first_row["directory"]), source, spec),
+            if imported:
+                if (source.source_run_id, source.source_log_sha256, source.public_context_sha256) != (
+                        imported["run_id"], imported["log_sha256"], imported["public_context_sha256"]):
+                    raise ContractError("Imported first pass or public experience changed")
+                spec["source_registration_sha256"] = source_registration
+            spec.update(source=source_receipt(safe_path(source_dir, first_row["directory"]), source,
+                                              dict(spec, registration_sha256=source_registration)),
                         public_context_sha256=source.public_context_sha256)
             plan["sources"][tid] = source
     design = design_for(cfg, case, stage, source)

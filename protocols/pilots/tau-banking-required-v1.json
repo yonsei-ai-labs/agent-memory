@@ -1,0 +1,32 @@
+{
+  "format": "agent-memory-required-banking/v1",
+  "name": "tau-banking-required-01",
+  "parent": {
+    "path": "protocols/pilots/tau-banking-memory-v1.json",
+    "sha256": "755c3161124ff4bd6b7f373657abc52997a3a57055d0a3e0c7f7158258280320"
+  },
+  "source_close": "artifacts/pilots/20261124-banking-optional-close.json",
+  "common_instruction_ref": {
+    "path": "protocols/instructions/required-experience-writer-v1.txt",
+    "sha256": "54c0838ec92092c2accd1d78253ba560c95fadac6c65d698243f23cb38a67ed7"
+  },
+  "lines": {
+    "fact": "Record observed facts and values, who or what they refer to, and limits of the evidence.",
+    "episode": "Recount the situation, actions, and observed responses or outcomes in chronological order.",
+    "procedure": "Describe an ordered procedure, including when to verify a condition or stop. Identify steps whose validity is uncertain.",
+    "lesson": "State an evidence-supported lesson or caution and the conditions under which it applies.",
+    "free": "Choose how to organize useful observations from this experience. You may combine forms."
+  },
+  "completion_contract": "writer-required-store/v1",
+  "forms_per_source": 5,
+  "assigned": {
+    "reused_first_pass": 4,
+    "source": 0,
+    "write": 20,
+    "solve": 40,
+    "second_pass_no_memory": 0
+  },
+  "cumulative_limit_usd": "1.50",
+  "reader_admission": "Before any reader of a task, verify all five sealed writers against the same source run, source journal and public experience hash. A writer must commit a nonempty item. A missing form blocks all ten consultations for that task.",
+  "analysis": "Use the four original first passes and the required writers/readers only for policy outcomes. The optional pilot is a storage diagnostic with its own ledger. Compare preload and on-demand on the same bank. More or fewer searches alone cannot establish success or causation. Writing and solving charges remain separately accountable."
+}

@@ -11,7 +11,7 @@ from agent_memory_eval.analysis.memory_writing import audit_memory_writes
 from agent_memory_eval.contracts.core import ContractError, MemoryPolicy, RunContext, canonical
 from agent_memory_eval.contracts.execution import ExecutionLimits
 from agent_memory_eval.memory.writing import (
-    WRITER_COMPLETION_CONTRACT, WriterFeedback, freeze_public_experience, write_from_experience,
+    REQUIRED_STORE_CONTRACT, WRITER_COMPLETION_CONTRACT, WriterFeedback, freeze_public_experience, write_from_experience,
     writer_reply_error, writer_response_error,
 )
 from agent_memory_eval.recording.journal import Journal
@@ -37,6 +37,17 @@ class ScriptedWriter:
 
 
 class MemoryWritingTests(unittest.TestCase):
+    def test_required_form_accepts_only_a_persisted_public_store(self):
+        for empty in (True, False):
+            with self.subTest(empty=empty):
+                client = ScriptedWriter(empty=empty)
+                result = self.write(WriterFeedback("none"), client, completion_contract=REQUIRED_STORE_CONTRACT)
+                self.assertEqual([r["tool_choice"] for r in client.requests], ["required"])
+                self.assertEqual(result["status"], "error" if empty else "completed")
+                self.assertEqual(result["memory_stores"], 0 if empty else 1)
+                self.assertEqual(result["error_code"], "WRITER_REQUIRED_STORE_MISSING" if empty else None)
+                self.assertEqual(audit_memory_writes(self.folder.name)["status"], "passed")
+
     def setUp(self):
         self.folder = TemporaryDirectory()
         self.addCleanup(self.folder.cleanup)

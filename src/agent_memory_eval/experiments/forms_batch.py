@@ -16,7 +16,7 @@ from agent_memory_eval.models.openrouter import (
     OpenRouterClient, ProviderError, SpendGuard, model_catalog, model_endpoints, resolve_endpoint, resolve_model,
 )
 from agent_memory_eval.memory.context import request_with_past_memory
-from agent_memory_eval.memory.writing import writer_template
+from agent_memory_eval.memory.writing import REQUIRED_STORE_CONTRACT, WRITER_COMPLETION_CONTRACT, writer_template
 from agent_memory_eval.recording.assets import asset_text
 from agent_memory_eval.recording.journal import Journal, safe_path, sync_directory
 from agent_memory_eval.reproduction.freeze import implementation_identity
@@ -155,7 +155,8 @@ def preflight_sizes(jobs, design, sources, tasks, connection, instruction, commo
         source = sources[row["task_id"]]
         if row["phase"] == "write":
             seed = next(p["writer"] for p in design["model"]["seed_pairs"] if p["repetition"] == row["repetition"])
-            template = writer_template(dict(base, seed=seed), common.rstrip("\r\n") + "\n" + w["lines"][row["arm"]])
+            template = writer_template(dict(base, seed=seed), common.rstrip("\r\n") + "\n" + w["lines"][row["arm"]],
+                                       completion_contract=w.get("completion_contract", WRITER_COMPLETION_CONTRACT))
             template["messages"] = [template.pop("system"), dict(role="user", content=source.public_context),
                                     dict(role="user", content=canonical(dict(kind="evaluation_feedback", level="none")).decode())]
             writer_sizes.append(len(canonical(template)))
@@ -228,7 +229,7 @@ def prepare(root, workspace, checkout, design):
 
 
 def run_jobs(rows, execute, guard, persist, *, written_arms=(*FORMS, "summary"), initial_writers=None,
-             missing_sources=(), close_cost=None):
+             missing_sources=(), incomplete_form_sets=(), close_cost=None):
     """Persist all assignments before HTTP, a start before side effects, and every terminal disposition."""
     writers = dict(initial_writers or {})
     persist(rows)
@@ -243,6 +244,9 @@ def run_jobs(rows, execute, guard, persist, *, written_arms=(*FORMS, "summary"),
             continue
         if row.get("source_task_id", row["task_id"]) in missing_sources:
             row.update(status="not_started", reason="first_pass_ungraded")
+            continue
+        if row["phase"] == "solve" and (row["repetition"], row["task_id"]) in incomplete_form_sets:
+            row.update(status="not_started", reason="required_form_set_incomplete")
             continue
         if row["phase"] == "solve" and row["arm"] in written_arms:
             if writer is None:
@@ -307,6 +311,57 @@ def run_batch(profile, workspace, checkout):
     return execute_prepared(profile, root, destination, identity, design, plan, models, guard)
 
 
+def verify_required_form_sets(design, plan, writer_root, bindings):
+    """Check the whole registered set before the first reader can send, including both deliveries."""
+    from agent_memory_eval.experiments.forms_write import read_form_bank
+    if design["writing"].get("completion_contract") != REQUIRED_STORE_CONTRACT:
+        return set()
+    reader_jobs = [j for j in plan["jobs"] if j["phase"] == "solve" and j["arm"] != "no_memory"]
+    if not reader_jobs:
+        return set()
+    forms = set(design["writing"]["lines"])
+    if design.get("stage") != "solve" or not forms or not design.get("delivery_arms") or not bindings:
+        raise ContractError("Required writing needs registered forms and sealed writer bindings")
+    delivery = design["delivery_arms"]
+    groups = {(j["repetition"], j["task_id"]) for j in reader_jobs}
+    incomplete = set()
+    for rep, tid in groups:
+        assigned = [j["arm"] for j in reader_jobs if (j["repetition"],j["task_id"]) == (rep,tid)]
+        if len(assigned) != len(delivery) or set(assigned) != set(delivery):
+            raise ContractError("Required reader assignments differ from the declared delivery arms")
+        source = plan["sources"].get(tid)
+        if source is None and tid in plan.get("missing_sources", []):
+            continue
+        if source is None:
+            raise ContractError("Required memories have no authorized first pass")
+        verified = {}
+        for arm, spec in delivery.items():
+            form = spec["writer"]
+            row = bindings.get((rep, tid, arm))
+            if row is None or row.get("status") != "completed":
+                incomplete.add((rep, tid))
+                continue
+            if (row["task_id"], row["repetition"], row["arm"]) != (tid, rep, form) or form not in forms:
+                raise ContractError("Wrong task, repetition or format for the assigned writer")
+            key = (row["run_id"], row["result"]["log_sha256"])
+            if form in verified:
+                if key != verified[form]:
+                    raise ContractError("Readers were assigned different banks for one format")
+                continue
+            bank = read_form_bank(safe_path(writer_root, row["directory"]), expected_log_sha256=key[1])
+            if (not bank["items"] or bank["snapshot_id"] != row["result"].get("snapshot_id")
+                    or not all(i["title"].strip() and i["body"].strip() for i in bank["items"])
+                    or (bank.get("completion_contract"), bank["run_id"], bank["arm"], bank["task_id"], bank["repetition"])
+                    != (REQUIRED_STORE_CONTRACT, key[0], form, tid, rep)
+                    or (bank.get("source_run_id"), bank.get("source_log_sha256"), bank["public_context_sha256"])
+                    != (source.source_run_id, source.source_log_sha256, source.public_context_sha256)):
+                raise ContractError("Required sealed memory differs from its form or original trajectory")
+            verified[form] = key
+        if set(verified) != forms:
+            incomplete.add((rep, tid))
+    return incomplete
+
+
 def execute_prepared(profile, root, destination, identity, design, plan, models, guard, *, imported_writers=None,
                      close_cost=None):
     """Execute a verified schedule once, preserving every job's original journal."""
@@ -332,6 +387,7 @@ def execute_prepared(profile, root, destination, identity, design, plan, models,
             or any(delivery_arms[a].get("pool") not in {"own", "mixed"} for a in pools)):
         raise ContractError("Every registered retrieval arm needs its own verified source binding")
     writer_root, bindings = imported_writers or (destination, {})
+    incomplete_form_sets = verify_required_form_sets(design, plan, writer_root, bindings)
     rows = [dict(row, status="planned", directory=f'jobs/{row["index"]:04d}', run_id=new_id("r")) for row in plan["jobs"]]
     destination.mkdir(exist_ok=False)
     (destination / "jobs").mkdir()
@@ -399,7 +455,8 @@ def execute_prepared(profile, root, destination, identity, design, plan, models,
     dispatch = (lambda row, writer: admission.run(execute, row, writer)) if admission is not None else execute
     stop = run_jobs(rows, dispatch, guard, lambda values: write_json(ledger, values),
                     written_arms=() if pools is not None else (delivery_arms or written_arms), initial_writers=bindings,
-                    missing_sources=plan.get("missing_sources", ()), close_cost=close_cost)
+                    missing_sources=plan.get("missing_sources", ()), incomplete_form_sets=incomplete_form_sets,
+                    close_cost=close_cost)
     summary = dict(stop_reason=stop, http_calls=guard.calls, reported_usd=guard.reported_usd,
         unknown_cost=guard.unknown_cost, ended_at=datetime.now(timezone.utc).isoformat(),
         allocation_sha256=digest(ledger.read_bytes()), control_sha256=digest((destination / "control.json").read_bytes()))

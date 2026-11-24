@@ -5,7 +5,7 @@ from agent_memory_eval.contracts.core import ContractError, MemoryPolicy, canoni
 from agent_memory_eval.contracts.execution import ExecutionLimits
 from agent_memory_eval.memory.tools import memory_tools
 from agent_memory_eval.memory.writing import (
-    WRITER_COMPLETION_CONTRACT, WriterFeedback, read_public_experience, writer_inputs, writer_response_error,
+    REQUIRED_STORE_CONTRACT, WRITER_CONTRACTS, WriterFeedback, read_public_experience, writer_inputs, writer_response_error,
 )
 from agent_memory_eval.recording.journal import BlobStore, read_experiment
 from agent_memory_eval.recording.provenance import public_assistant_message
@@ -34,7 +34,7 @@ def audit_memory_writes(root):
         if projection not in (None, "public-assistant/v1"):
             raise ContractError("Unknown writer response projection")
         completion = config.get("completion_contract")
-        if completion not in (None, WRITER_COMPLETION_CONTRACT):
+        if completion not in (None, *WRITER_CONTRACTS):
             raise ContractError("Unknown writer completion contract")
         requests = [e for e in events if e["type"] == "model.request_started"]
         limits = ExecutionLimits(**config["execution_limits"]) if "execution_limits" in config else None
@@ -42,6 +42,7 @@ def audit_memory_writes(root):
         if len(requests) > cap:
             raise ContractError("Writer exceeded the request limit")
         history, pending, terminal, rejected = list(expected), [], False, None
+        strict, stored = completion == REQUIRED_STORE_CONTRACT, False
         for event in events:
             payload, kind = event["payload"], event["type"]
             if rejected and kind in {"memory.stored", "memory.returned", "policy.denied"}:
@@ -49,7 +50,7 @@ def audit_memory_writes(root):
             if kind == "model.request_started":
                 wire = blobs.get(payload["request_ref"])
                 wanted = dict(config["model_config"], messages=history,
-                    tools=memory_tools(policy.tools("post_task_write")), tool_choice="auto")
+                    tools=memory_tools(policy.tools("post_task_write")), tool_choice="required" if strict else "auto")
                 if (pending or terminal or payload["actor_role"] != "writer" or event["phase"] != "post_task_write"
                         or wire != wanted):
                     raise ContractError("Complete writer history, tools or configuration differs from its recorded producers")
@@ -77,12 +78,20 @@ def audit_memory_writes(root):
                 calls = message.get("tool_calls") or []
                 pending = [call["id"] for call in calls]
                 terminal = not pending
+                if strict and not calls and payload["cost_status"] != "unknown":
+                    rejected = "WRITER_REQUIRED_STORE_MISSING"
+            elif kind == "memory.stored":
+                if strict and (not pending or terminal):
+                    raise ContractError("Storage is outside the required public tool call")
+                stored = True
             elif kind == "memory.returned" or (kind == "policy.denied" and "tool_result_ref" in payload):
                 ref = payload["result_ref"] if kind == "memory.returned" else payload["tool_result_ref"]
                 message = blobs.get(ref)
                 if not pending or message["tool_call_id"] != pending.pop(0):
                     raise ContractError("Writer tool results differ from the response call order")
                 history.append(message)
+                if strict and stored and not pending:
+                    terminal = True
             elif kind == "business.transition" and "action" in payload:
                 raise ContractError("A post-task writer executed a business action")
         bank = state["banks"][config["bank_id"]]
@@ -100,6 +109,8 @@ def audit_memory_writes(root):
         failed = any(e["type"] == "runtime.error" or (e["type"] == "model.request_finished"
             and (e["payload"]["status"] != "response" or e["payload"]["cost_status"] == "unknown")) for e in events)
         expected_status = "error" if failed else "completed" if stores else "empty"
+        if strict and expected_status == "empty":
+            raise ContractError("A required writer closed without committing a memory")
         if not failed and (pending or not terminal):
             raise ContractError("Writer completion has no final reply or unfinished tool calls")
         if end["payload"]["termination_reason"] != "memory_write_" + expected_status:

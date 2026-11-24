@@ -10,7 +10,7 @@ from agent_memory_eval.contracts.connection import provider_route
 from agent_memory_eval.contracts.core import ContractError, MemoryPolicy, RunContext, canonical, digest, new_id, read_json
 from agent_memory_eval.contracts.execution import ExecutionLimits
 from agent_memory_eval.memory.preparation import snapshot_items
-from agent_memory_eval.memory.writing import WRITER_COMPLETION_CONTRACT, WriterFeedback, write_from_experience
+from agent_memory_eval.memory.writing import REQUIRED_STORE_CONTRACT, WRITER_CONTRACTS, WriterFeedback, write_from_experience
 from agent_memory_eval.recording.assets import asset_text
 from agent_memory_eval.recording.experience import _closed_run, _pair, _source, public_text_message
 from agent_memory_eval.recording.journal import safe_path
@@ -150,7 +150,7 @@ def _bank_descriptor(blobs, scan, state):
     run = assignment["run_id"]
     config = state["memory_writes"][run]
     if (set(scan["starts"]) != {run} or set(state["memory_writes"]) != {run}
-            or config["completion_contract"] != WRITER_COMPLETION_CONTRACT
+            or config["completion_contract"] not in WRITER_CONTRACTS
             or config["feedback"] != {"level": "none", "critique": None, "critique_origin": None}
             or config["experience_ref"] != assignment["experience_ref"]):
         raise ContractError("The journal does not contain the assigned isolated writer")
@@ -201,11 +201,17 @@ def _bank_descriptor(blobs, scan, state):
             or (bank["heads"], bank["order"], bank["revision"]) != (heads, list(heads), len(stores))):
         raise ContractError("The final bank differs from the ordered writer events")
     status = "completed" if heads else "empty"
+    extra = {}
+    if config["completion_contract"] == REQUIRED_STORE_CONTRACT:
+        if not heads:
+            raise ContractError("The required writer has no committed item")
+        extra = dict(completion_contract=REQUIRED_STORE_CONTRACT, source_run_id=source["source_run_id"],
+                     source_log_sha256=source["source_log_sha256"])
     if end[0]["termination_reason"] != "memory_write_" + status:
         raise ContractError("The writer's terminal status differs from the stored items")
     return dict(task_id=assignment["task_id"], repetition=assignment["repetition"], arm=assignment["arm"],
                 run_id=run, snapshot_id=snapshot_id, status=status, items=snapshot_items(blobs, state, snapshot_id),
-                head_revision=len(stores), public_context_sha256=source["public_context_sha256"])
+                head_revision=len(stores), public_context_sha256=source["public_context_sha256"], **extra)
 
 
 def read_form_bank(writer_root, *, expected_log_sha256=None):
@@ -221,7 +227,7 @@ def run_form_writer(journal, design, source, *, repetition, arm, client, guard, 
     """Run one scheduled assignment with the caller's client and common per-request spend guard."""
     writing = design["writing"]
     if (journal.scan["records"] or guard is None or getattr(client, "guard", None) is not guard
-            or design["source"]["feedback_level"] != "none" or writing["completion_contract"] != WRITER_COMPLETION_CONTRACT
+            or design["source"]["feedback_level"] != "none" or writing["completion_contract"] not in WRITER_CONTRACTS
             or writing["tool"] != "memory_store"):
         raise ContractError("Writing requires a fresh journal, the shared guard and the frozen feedback/tool contract")
     blocks = [b for b in design["allocation"]["blocks"] if b["task_id"] == source.task_id and b["repetition"] == repetition]
@@ -249,7 +255,8 @@ def run_form_writer(journal, design, source, *, repetition, arm, client, guard, 
     ref = _import(journal, design, source, repetition, arm, run_id, "illustrative" if offline else "observed")
     result = write_from_experience(journal, ref, WriterFeedback("none"), instruction=instruction, policy=policy,
                                    client=client, model_config=config, condition_id=arm, run_id=run_id,
-                                   max_requests=None, execution_limits=execution)
+                                   max_requests=None, execution_limits=execution,
+                                   completion_contract=writing["completion_contract"])
     finishes = [e["payload"] for e in journal.events.values() if e["type"] == "model.request_finished"]
     reported_cost = sum((Decimal(str(p["cost_usd"])) for p in finishes if p["cost_status"] == "observed"), Decimal(0))
     token_counts = [(p["usage"] or {}).get("total_tokens") for p in finishes]

@@ -18,6 +18,9 @@ from scripts import run_fresh_matched as matched
 PROFILE = "protocols/pilots/tau-banking-memory-v1.json"
 PREFLIGHT = "artifacts/pilots/20261124-banking-memory-preflight.json"
 APPROVAL = "artifacts/pilots/20261124-banking-memory-authorization.json"
+REQUIRED_PROFILE = "protocols/pilots/tau-banking-required-v1.json"
+REQUIRED_PREFLIGHT = "artifacts/pilots/20261124-banking-required-preflight.json"
+REQUIRED_APPROVAL = "artifacts/pilots/20261124-banking-required-authorization.json"
 
 
 def stratum(task):
@@ -93,27 +96,65 @@ def prepare(workspace):
     return spec, cfg, conn, cases, tasks, record
 
 
+def required_design(cfg, spec):
+    from copy import deepcopy
+    from agent_memory_eval.memory.writing import REQUIRED_STORE_CONTRACT
+
+    if (spec["completion_contract"] != REQUIRED_STORE_CONTRACT or set(spec["lines"]) != set(matched.FORMS)
+            or spec["forms_per_source"] != len(matched.FORMS)):
+        raise ContractError("The banking pilot requires all five storage formats")
+    cfg = deepcopy(cfg)
+    cfg["name"] = spec["name"]
+    cfg["writing"].update(completion_contract=REQUIRED_STORE_CONTRACT, lines=spec["lines"],
+                          common_instruction_ref=spec["common_instruction_ref"])
+    return cfg
+
+
+def prepare_required(workspace):
+    from scripts.close_banking_optional import close_optional
+    spec = matched.read(ROOT / REQUIRED_PROFILE)
+    if matched.asset_text(ROOT, spec["parent"]) != (ROOT / PROFILE).read_text():
+        raise ContractError("Unexpected source protocol")
+    _, base, conn, cases, tasks, original = prepare(workspace)
+    closed = close_optional(workspace)
+    if (closed != matched.read(ROOT / spec["source_close"]) or original != matched.read(ROOT / PREFLIGHT)):
+        raise ContractError("Original first passes or previous spending changed")
+    cfg = required_design(base, spec)
+    for case in cases:
+        case["imported_first_pass"] = closed["sources"][case["task_id"]]
+    counts = matched.allocation_record(cases)["assigned"]
+    counts.update(reused_first_pass=counts["source"], source=0)
+    if counts != spec["assigned"]:
+        raise ContractError("Unexpected required writer or reader count")
+    record = dict(original, series=spec["name"], cases=cases, assigned=counts, prior_covered_usd=closed["covered_usd"],
+                  protocol_sha256=digest((ROOT / REQUIRED_PROFILE).read_bytes()), source_close_sha256=digest(canonical(closed)))
+    return spec, cfg, conn, cases, tasks, record
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("mode", choices=("preflight", "run"))
+    parser.add_argument("mode", choices=("source-preflight", "preflight", "run"))
     parser.add_argument("--workspace", type=Path, default=ROOT)
     args = parser.parse_args()
     workspace = args.workspace.resolve()
-    spec, cfg, conn, cases, tasks, record = prepare(workspace)
+    if args.mode == "source-preflight":
+        print(json.dumps(prepare(workspace)[-1], ensure_ascii=False, indent=2, sort_keys=True))
+        return
+    spec, cfg, conn, cases, tasks, record = prepare_required(workspace)
     if args.mode == "preflight":
         print(json.dumps(record, ensure_ascii=False, indent=2, sort_keys=True))
         return
-    approval = matched.read(ROOT / APPROVAL)
-    if (record != matched.read(ROOT / PREFLIGHT) or approval.get("series") != cfg["name"]
+    approval = matched.read(ROOT / REQUIRED_APPROVAL)
+    if (record != matched.read(ROOT / REQUIRED_PREFLIGHT) or approval.get("series") != cfg["name"]
             or approval.get("protocol_sha256") != record["protocol_sha256"]
             or approval.get("preflight_sha256") != digest(canonical(record))
-            or approval.get("total_usd") != spec["authorization"]["maximum_usd"]
+            or approval.get("total_usd") != spec["cumulative_limit_usd"] or approval.get("assigned") != record["assigned"]
             or not approval.get("user_authorization")):
         raise ContractError("Published registration or banking spending approval differs")
     record["authorization"] = approval
     cfg.update(registration_sha256=digest(canonical(record)), total_usd_limit=approval["total_usd"],
                expected_endpoint_terms={r: cfg["endpoint_terms"][r] for r in ("worker", "user_simulator")},
-               record_unfunded_shards=True, stages=list(matched.STAGES))
+               prior_covered_usd=record["prior_covered_usd"], record_unfunded_shards=True, stages=["write", "solve"])
     matched.run_study(workspace, cfg, {}, conn, cases, tasks, record, stage_runner=matched.stage_job,
                       model_resolver=matched.study_models)
 

@@ -14,6 +14,8 @@ WRITER_MODEL_FIELDS = frozenset({
     "model", "temperature", "seed", "reasoning", "provider", "stream", "max_completion_tokens", "max_tokens",
 })
 WRITER_COMPLETION_CONTRACT = "writer-finish/v1"
+REQUIRED_STORE_CONTRACT = "writer-required-store/v1"
+WRITER_CONTRACTS = (WRITER_COMPLETION_CONTRACT, REQUIRED_STORE_CONTRACT)
 
 
 def writer_reply_error(response, *, require_finish_reason):
@@ -138,12 +140,15 @@ def writer_inputs(blobs, scan, experience, feedback):
     return [dict(role="user", content=canonical(value).decode()) for value in (context, result)]
 
 
-def writer_template(model_config, instruction):
+def writer_template(model_config, instruction, *, completion_contract=WRITER_COMPLETION_CONTRACT):
     if (set(model_config) - WRITER_MODEL_FIELDS or not isinstance(model_config.get("model"), str)
             or not isinstance(instruction, str) or not instruction.strip()):
         raise ContractError("Unexpected writer model configuration or instruction")
+    if completion_contract not in WRITER_CONTRACTS:
+        raise ContractError("Unknown writer completion contract")
     return dict(deepcopy(model_config), system=dict(role="system", content=instruction),
-                tools=memory_tools(["memory_store"]), tool_choice="auto")
+                tools=memory_tools(["memory_store"]),
+                tool_choice="required" if completion_contract == REQUIRED_STORE_CONTRACT else "auto")
 
 
 class FrozenBusiness:
@@ -155,14 +160,15 @@ class UnknownWriterCost(ContractError):
 
 
 def write_from_experience(journal, experience_ref, feedback, *, instruction, policy, client,
-                          model_config, max_requests, condition_id, run_id=None, execution_limits=None):
+                          model_config, max_requests, condition_id, run_id=None, execution_limits=None,
+                          completion_contract=WRITER_COMPLETION_CONTRACT):
     """No collection rerun, source grading artifact, business tools or shared writer session."""
     if (not policy.enabled or policy.write_timing != "post_task" or policy.read_mode != "none"
             or policy.same_episode_read or not isinstance(instruction, str) or not instruction.strip()
             or (execution_limits is None and (type(max_requests) is not int or max_requests < 1))
             or (execution_limits is not None and max_requests is not None)):
         raise ContractError("Writing requires explicit post-task-only policy, instruction and request limit")
-    template_config = writer_template(model_config, instruction)
+    template_config = writer_template(model_config, instruction, completion_contract=completion_contract)
     experience = read_public_experience(journal.blobs, journal.scan, experience_ref)
     inputs = writer_inputs(journal.blobs, journal.scan, experience, feedback)
     kind = "illustrative" if getattr(client, "offline", False) else "observed"
@@ -182,7 +188,7 @@ def write_from_experience(journal, experience_ref, feedback, *, instruction, pol
     bank = memory.create_bank(ctx.run_id, policy)
     verified_model = (dict(id=model["id"], canonical_slug=model.get("canonical_slug"),
         provider_name=model["selected_endpoint"]["provider_name"]) if kind == "observed" else None)
-    config = dict(response_projection="public-assistant/v1", completion_contract=WRITER_COMPLETION_CONTRACT,
+    config = dict(response_projection="public-assistant/v1", completion_contract=completion_contract,
                   verified_model=verified_model,
                   experience_ref=experience_ref,
                   feedback=asdict(feedback), instruction=instruction,
@@ -219,11 +225,15 @@ def write_from_experience(journal, experience_ref, feedback, *, instruction, pol
             if not calls:
                 if unknown:
                     raise UnknownWriterCost("Writer completion has an unverified cost")
+                if completion_contract == REQUIRED_STORE_CONTRACT:
+                    raise IncompleteWriterReply("WRITER_REQUIRED_STORE_MISSING")
                 break
             for _, source_kind, event_id in router.dispatch(ctx, request_id, calls):
                 history.append((registry.add(source_kind, event_id, roles=("writer",)), ""))
             if unknown:
                 raise UnknownWriterCost("Writer response has an unverified cost")
+            if completion_contract == REQUIRED_STORE_CONTRACT and journal.state["banks"][bank]["heads"]:
+                break
     except Exception as error:
         status, error_code = "error", getattr(error, "code", type(error).__name__)
         if getattr(error, "recorded_event_id", None) not in journal.events:
