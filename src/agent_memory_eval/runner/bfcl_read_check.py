@@ -128,11 +128,15 @@ def inspect_reader(record, expected_snapshot, *, constrain_names=False, advertis
             value = canonical(note[field]).decode()[1:-1]
             require(any(value in message for message in tool_messages), "Memory field missing from a tool return")
         names = [c["function"]["name"] for c in raw["choices"][0]["message"].get("tool_calls") or []]
+        read_args = [read_json(c["function"]["arguments"].encode()) for c in raw["choices"][0]["message"].get("tool_calls") or []
+                     if c["function"]["name"] in {"memory_list", "memory_get"}]
         literal_calls = re.findall(r"<function=([^>\s]+)>", gen["text"])
         malformed = bool(gen.get("decode_error")) or not gen["ended"]
         if not malformed:
             require(literal_calls == names, "A generated tool call was lost during decoding")
-        steps.append(dict(request=req["request_ref"]["sha256"], prompt=gen["input_sha256"],
+        steps.append(dict(request=req["request_ref"]["sha256"], response=finish["response_ref"]["sha256"],
+            prompt=gen["input_sha256"], read_arguments=read_args, decode_error=gen.get("decode_error"),
+            extra_text_after_chat_end=bool(gen["text"].partition("<|im_end|>")[2].strip()),
             output_tokens_sha256=digest(canonical(gen["output_token_ids"])), calls=names, fields=fields,
             raw_mentions_read=bool(re.search(r"\bmemory_(?:list|get)\b", gen["emitted_text"], re.I)),
             constrained_name=choice["function"]["name"] if choice else None, prompt_tokens=gen["prompt_tokens"],
@@ -146,9 +150,10 @@ def inspect_reader(record, expected_snapshot, *, constrain_names=False, advertis
                     "A tool returned a different memory version")
         returns.append([result["operation"], result["status"]])
     end, = record.of_type("run.ended")
+    outcome, = record.of_type("outcome.scored")
     return first, dict(run=record.run, snapshot=expected_snapshot, session=end["session_id"], steps=steps,
                        returns=returns, denials=[e["payload"]["code"] for e in record.of_type("policy.denied")],
-                       termination=end["payload"]["termination_reason"])
+                       termination=end["payload"]["termination_reason"], success=outcome["payload"]["official_success"])
 
 
 def summarize(rows):
@@ -161,6 +166,7 @@ def summarize(rows):
         first_business_call=sum(any(n not in {"memory_list", "memory_get"} for n in r["steps"][0]["calls"]) for r in rows),
         first_text_only=sum(not r["steps"][0]["calls"] and not r["steps"][0]["incomplete"] for r in rows),
         list_calls=counts["memory_list"], get_calls=counts["memory_get"],
+        first_list_ok=sum(r["steps"][0]["calls"] == ["memory_list"] and r["returns"][:1] == [["list", "ok"]] for r in rows),
         successful_returns=dict(Counter(op for r in rows for op, status in r["returns"] if status == "ok")),
         readers_with_title=sum(any("title" in s["fields"] for s in r["steps"]) for r in rows),
         readers_with_body=sum(any("body" in s["fields"] for s in r["steps"]) for r in rows),
@@ -169,6 +175,8 @@ def summarize(rows):
         raw_mentions_read=sum(s["raw_mentions_read"] for s in steps), incomplete=sum(s["incomplete"] for s in steps),
         prompt_tokens=sum(s["prompt_tokens"] for s in steps), completion_tokens=sum(s["completion_tokens"] for s in steps),
         reused=sum(s["reused"] for s in steps), denials=sum(len(r["denials"]) for r in rows),
+        text_after_chat_end=sum(s["extra_text_after_chat_end"] for s in steps),
+        graded=sum(r["success"] is not None for r in rows), successes=sum(r["success"] is True for r in rows),
         terminations=dict(Counter(r["termination"] for r in rows)))
 
 

@@ -28,6 +28,15 @@ class QwenReplyTests(unittest.TestCase):
         self.assertEqual(stop_ids(248044, 248046, stop_at_chat_end=True), [248044, 248046])
         self.assertEqual(stop_ids([248044, 248046], 248046, stop_at_chat_end=True), [248044, 248046])
 
+    def test_matched_input_requires_the_registered_list_schema(self):
+        cfg = {"memory_notice": "notes", "advertise_list_limit": True}
+        wire = {"messages": [{"role": "system", "content": "worker\nnotes"}, {"role": "user", "content": "q"}],
+                "tools": [*TOOLS, *read_tools(cfg)]}
+        expected = {"messages": [{"role": "system", "content": "worker"}, {"role": "user", "content": "q"}], "tools": TOOLS}
+        self.assertEqual(normalized_first(wire, cfg, "on_demand", []), expected)
+        with self.assertRaises(ContractError):
+            normalized_first(wire, {"memory_notice": "notes"}, "on_demand", [])
+
     def test_named_decoder_constraint_keeps_model_generated_arguments(self):
         tools = [*TOOLS, {"type": "function", "function": {"name": "memory_get", "parameters": {}}}]
         wire = {"tools": tools, "tool_choice": {"type": "function", "function": {"name": "memory_get"}}}
