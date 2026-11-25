@@ -1,0 +1,296 @@
+{
+  "protocol_sha256": "88ff3acc46360f3ca8fae580ba06f43e6bdff31a749feb3e18849947d3c411f6",
+  "case": {
+    "task": "task_036",
+    "task_id": "task_036",
+    "domain": "banking_knowledge",
+    "split": null,
+    "customer": "source-task_036",
+    "stratum": "replacement_order",
+    "task_start_mode": "agent-memory-task-start/v1",
+    "scheduled_stages": [
+      "source",
+      "write",
+      "solve"
+    ],
+    "native_sha256": "016ef23c0139139ca3d71e22c9ff93862d09b578b43cccf82e5d266f8c2bb781",
+    "task_sha256": "a3ce195cb4b9750ff6a4a57f716ff703ea5f7399e70cdde184fdea74350ef942",
+    "customer_opening_sha256": "91136be5811b5decba26a24896f22f34c16d29e11c4f4ef19644c17e7ff3ee07",
+    "initial_db": "af324a7d72aced5889daf6cc044e573ad94ffa3bfe7cf65114fd3cfed5daaa48",
+    "official_criteria_sha256": "bdd7670fe8c68692a79f2b6a164b87140020d811350135051628d782c166e87a",
+    "reader_modes": [
+      "preload"
+    ]
+  },
+  "corpus_sha256": "26b4ba4a71602911fe637700cc1b36aeb10fe8fa4a43d138a5e23225039b0dfe",
+  "schedules": {
+    "existing": {
+      "write": [
+        {
+          "index": 1,
+          "repetition": 1,
+          "task_id": "task_036",
+          "phase": "write",
+          "arm": "procedure"
+        },
+        {
+          "index": 2,
+          "repetition": 1,
+          "task_id": "task_036",
+          "phase": "write",
+          "arm": "fact"
+        },
+        {
+          "index": 3,
+          "repetition": 1,
+          "task_id": "task_036",
+          "phase": "write",
+          "arm": "lesson"
+        },
+        {
+          "index": 4,
+          "repetition": 1,
+          "task_id": "task_036",
+          "phase": "write",
+          "arm": "free"
+        },
+        {
+          "index": 5,
+          "repetition": 1,
+          "task_id": "task_036",
+          "phase": "write",
+          "arm": "episode"
+        }
+      ],
+      "solve": [
+        {
+          "index": 1,
+          "repetition": 1,
+          "task_id": "task_036",
+          "phase": "solve",
+          "arm": "fact__preload"
+        },
+        {
+          "index": 2,
+          "repetition": 1,
+          "task_id": "task_036",
+          "phase": "solve",
+          "arm": "procedure__preload"
+        },
+        {
+          "index": 3,
+          "repetition": 1,
+          "task_id": "task_036",
+          "phase": "solve",
+          "arm": "free__preload"
+        },
+        {
+          "index": 4,
+          "repetition": 1,
+          "task_id": "task_036",
+          "phase": "solve",
+          "arm": "episode__preload"
+        },
+        {
+          "index": 5,
+          "repetition": 1,
+          "task_id": "task_036",
+          "phase": "solve",
+          "arm": "lesson__preload"
+        }
+      ]
+    },
+    "candidate": {
+      "write": [
+        {
+          "index": 1,
+          "repetition": 1,
+          "task_id": "task_036",
+          "phase": "write",
+          "arm": "fact"
+        },
+        {
+          "index": 2,
+          "repetition": 1,
+          "task_id": "task_036",
+          "phase": "write",
+          "arm": "procedure"
+        },
+        {
+          "index": 3,
+          "repetition": 1,
+          "task_id": "task_036",
+          "phase": "write",
+          "arm": "free"
+        },
+        {
+          "index": 4,
+          "repetition": 1,
+          "task_id": "task_036",
+          "phase": "write",
+          "arm": "lesson"
+        },
+        {
+          "index": 5,
+          "repetition": 1,
+          "task_id": "task_036",
+          "phase": "write",
+          "arm": "episode"
+        }
+      ],
+      "solve": [
+        {
+          "index": 1,
+          "repetition": 1,
+          "task_id": "task_036",
+          "phase": "solve",
+          "arm": "episode__preload"
+        },
+        {
+          "index": 2,
+          "repetition": 1,
+          "task_id": "task_036",
+          "phase": "solve",
+          "arm": "free__preload"
+        },
+        {
+          "index": 3,
+          "repetition": 1,
+          "task_id": "task_036",
+          "phase": "solve",
+          "arm": "fact__preload"
+        },
+        {
+          "index": 4,
+          "repetition": 1,
+          "task_id": "task_036",
+          "phase": "solve",
+          "arm": "lesson__preload"
+        },
+        {
+          "index": 5,
+          "repetition": 1,
+          "task_id": "task_036",
+          "phase": "solve",
+          "arm": "procedure__preload"
+        }
+      ]
+    }
+  },
+  "source_schedule": [
+    {
+      "index": 1,
+      "repetition": 1,
+      "task_id": "task_036",
+      "phase": "solve",
+      "arm": "no_memory"
+    }
+  ],
+  "scorer_checks": {
+    "reference": {
+      "db_match": true,
+      "new_orders": 1,
+      "fields": [
+        {
+          "credit_card_account_id": true,
+          "user_id": true,
+          "shipping_address": true,
+          "reason": true,
+          "expedited_shipping": true
+        }
+      ],
+      "target_closed": true,
+      "other_cards_closed": 0
+    },
+    "no_order": {
+      "db_match": false,
+      "new_orders": 0,
+      "fields": [],
+      "target_closed": false,
+      "other_cards_closed": 0
+    },
+    "wrong_card": {
+      "db_match": false,
+      "new_orders": 1,
+      "fields": [
+        {
+          "credit_card_account_id": false,
+          "user_id": true,
+          "shipping_address": true,
+          "reason": true,
+          "expedited_shipping": true
+        }
+      ],
+      "target_closed": false,
+      "other_cards_closed": 1
+    },
+    "home_instead_of_work": {
+      "db_match": false,
+      "new_orders": 1,
+      "fields": [
+        {
+          "credit_card_account_id": true,
+          "user_id": true,
+          "shipping_address": false,
+          "reason": true,
+          "expedited_shipping": true
+        }
+      ],
+      "target_closed": true,
+      "other_cards_closed": 0
+    },
+    "standard_shipping": {
+      "db_match": false,
+      "new_orders": 1,
+      "fields": [
+        {
+          "credit_card_account_id": true,
+          "user_id": true,
+          "shipping_address": true,
+          "reason": true,
+          "expedited_shipping": false
+        }
+      ],
+      "target_closed": true,
+      "other_cards_closed": 0
+    },
+    "wrong_reason": {
+      "db_match": false,
+      "new_orders": 1,
+      "fields": [
+        {
+          "credit_card_account_id": true,
+          "user_id": true,
+          "shipping_address": true,
+          "reason": false,
+          "expedited_shipping": true
+        }
+      ],
+      "target_closed": true,
+      "other_cards_closed": 0
+    },
+    "additional_wrong_card": {
+      "db_match": false,
+      "new_orders": 2,
+      "fields": [
+        {
+          "credit_card_account_id": true,
+          "user_id": true,
+          "shipping_address": true,
+          "reason": true,
+          "expedited_shipping": true
+        },
+        {
+          "credit_card_account_id": false,
+          "user_id": true,
+          "shipping_address": true,
+          "reason": true,
+          "expedited_shipping": true
+        }
+      ],
+      "target_closed": true,
+      "other_cards_closed": 1
+    }
+  },
+  "additional_model_requests": 0
+}

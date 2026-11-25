@@ -472,6 +472,13 @@ def validation_run(workspace, phase):
         preflight_sha256=approval["preflight_sha256"],
         approval=approval,
     )
+    return run_paired_validation(workspace, phase, spec, proposal, covered, cfg, conn, cases, tasks, common)
+
+
+def run_paired_validation(workspace, phase, spec, proposal, covered, cfg, conn, cases, tasks, common):
+    """Share one untouched first pass between registered writers, then run their full consultations."""
+    require(phase in {"sources", "validation"} and spec["validation"]["writer_policies"] == ["existing", "candidate"],
+            "Unknown paired validation phase or writer assignment")
     source_root = workspace / "runs" / spec["source_study"]
     for case in cases:
         case["reader_modes"] = ["preload"]

@@ -1,0 +1,53 @@
+{
+  "format": "banking-paired-outcome/v1",
+  "task": "task_036",
+  "case_type": "replacement_order",
+  "case_selection": "Unused in the previous two groups of four banking tasks. A card replacement can close the wrong account or ship to the wrong address and has an independently inspectable database order. Selected before observing the new memory-free run. No selection or exclusion based on first-pass success.",
+  "banking_profile": {
+    "path": "protocols/pilots/tau-banking-memory-v1.json",
+    "sha256": "755c3161124ff4bd6b7f373657abc52997a3a57055d0a3e0c7f7158258280320"
+  },
+  "required_writer": {
+    "path": "protocols/pilots/tau-banking-required-v1.json",
+    "sha256": "22813f83a62e718df76e1c8ec323248a67141a03fd7bbbc7a5ed70ad6d14e0cf"
+  },
+  "base_instruction": {
+    "path": "protocols/instructions/required-experience-writer-v1.txt",
+    "sha256": "54c0838ec92092c2accd1d78253ba560c95fadac6c65d698243f23cb38a67ed7"
+  },
+  "candidate_instruction": {
+    "path": "protocols/instructions/scoped-experience-writer-v1.txt",
+    "sha256": "73b9a784c71ee98bfa900fdbcfb4a4e9666f9e01b7a822847788cdffde01a163"
+  },
+  "previous_cases": [
+    "task_001",
+    "task_002",
+    "task_008",
+    "task_010",
+    "task_014",
+    "task_015",
+    "task_016",
+    "task_017"
+  ],
+  "source_study": "tau-banking-replacement-sources-01",
+  "validation_study": "tau-banking-replacement-01",
+  "source": 1,
+  "validation": {
+    "writer_policies": [
+      "existing",
+      "candidate"
+    ],
+    "write": 10,
+    "solve": 10,
+    "second_pass_no_memory": 0
+  },
+  "reader": "preload",
+  "feedback": "result_only",
+  "additional_limit_usd": "0.30",
+  "primary": "Official native DB success in completed full consultations. Report the shared first pass separately and the five paired forms across writer policies; one task is one independent case.",
+  "secondary": "New replacement order for the intended customer and card, with the requested destination, reason and expedited shipping. Record missing or extra orders and unrequested closures. Inspect actual tool-return and final DB, not promises.",
+  "evidence": "Trace source-public observations, stored and exposed content, current public evidence before the action, and its receipt. Distinguish the worker from the customer simulator. Record missing opportunities and changes after the matched opening.",
+  "efficiency": "Customer turns, worker business calls, request tokens and actual costs with writing separate. Compare paired efficiency on joint official successes when available.",
+  "offline_validation": "Use isolated, analyst-only reference and counterfactual tool trajectories with the native database grader. These are grader tests and never enter the customer, writer or solver prompt.",
+  "missing": "Each fixed slot is submitted at most once. Record technical missingness, costs and reservations. A graded first-pass failure remains in the sample and supplies the same public experience and outcome bit to all writers."
+}

@@ -41,6 +41,34 @@ def stratum(task):
     return "single_db" if len(criteria.actions) == 1 else "multiple_db"
 
 
+def native_case(cfg, conn, modules, registered, group):
+    """Bind the actual English task, native state, tools, opening and grading configuration."""
+    from tau2.multilingual.runtime import load_run_language
+    from tau2.runner.helpers import select_run_tasks
+
+    tid = registered.id
+    domain = conn["benchmark"]["domain"]
+    case = dict(task=tid, task_id=tid, domain=domain, split=None, customer="source-" + tid,
+                stratum=group, task_start_mode=START_FORMAT, scheduled_stages=list(matched.STAGES))
+    conf = solve_connection(conn, matched.design_for(cfg, case, "source"),
+                            matched.jobs_for(case, "source")[0], cfg["episode_cap_usd"])
+    native = native_config(conf)
+    task, = select_run_tasks(native, load_run_language(native))
+    if task.id != registered.id or task.evaluation_criteria != registered.evaluation_criteria:
+        raise ContractError("Runtime task differs from the registered selection or grading")
+    task_data = task.model_dump(mode="json")
+    orch, native = build_baseline_orchestrator(conf, task_data)
+    control = native_control(orch, native, conf, cfg["limits"], cfg["http_timeout_seconds"], None)
+    opening = opening_hash(orch, role_settings(control)["user_simulator"], modules[2])
+    names = {t.name for t in orch.agent.tools}
+    if "grep" not in names or any(n.startswith("memory_") for n in names):
+        raise ContractError("Expected native document search before memory assignment")
+    case.update(native_sha256=digest(canonical(control)), task_sha256=control["task_sha256"],
+                customer_opening_sha256=opening, initial_db=control["initial_db"],
+                official_criteria_sha256=digest(canonical(task.evaluation_criteria.model_dump(mode="json"))))
+    return case, task_data
+
+
 def prepare(workspace, *, heldout_tasks=None):
     spec = matched.read(ROOT / PROFILE)
     cfg = json.loads(matched.asset_text(ROOT, spec["base"]))
@@ -55,8 +83,7 @@ def prepare(workspace, *, heldout_tasks=None):
     conn["benchmark"].update(domain=domain, split=None, retrieval_config=spec["retrieval_config"])
     modules = matched.modules_for(workspace)
     from tau2.domains.banking_knowledge.environment import get_knowledge_base, get_tasks
-    from tau2.multilingual.runtime import load_run_language
-    from tau2.runner.helpers import load_task_splits, select_run_tasks
+    from tau2.runner.helpers import load_task_splits
 
     population = sorted(get_tasks(), key=lambda task: task.id)
     candidates = {}
@@ -77,25 +104,10 @@ def prepare(workspace, *, heldout_tasks=None):
     corpus_sha = digest(canonical(knowledge.model_dump(mode="json")))
     cases, tasks = [], {}
     for group, tid in selected.items():
-        case = dict(task=tid, task_id=tid, domain=domain, split=None, customer="source-" + tid,
-                    stratum=group, task_start_mode=START_FORMAT, scheduled_stages=list(matched.STAGES))
-        conf = solve_connection(conn, matched.design_for(cfg, case, "source"),
-                                matched.jobs_for(case, "source")[0], cfg["episode_cap_usd"])
-        native = native_config(conf)
-        task, = select_run_tasks(native, load_run_language(native))
         registered = next(t for t in population if t.id == tid)
-        if task.evaluation_criteria != registered.evaluation_criteria or stratum(task) != group:
+        if stratum(registered) != group:
             raise ContractError("Runtime task differs from the registered grading or selection")
-        tasks[tid] = task.model_dump(mode="json")
-        orch, native = build_baseline_orchestrator(conf, tasks[tid])
-        control = native_control(orch, native, conf, cfg["limits"], cfg["http_timeout_seconds"], None)
-        opening = opening_hash(orch, role_settings(control)["user_simulator"], modules[2])
-        names = {t.name for t in orch.agent.tools}
-        if "grep" not in names or any(n.startswith("memory_") for n in names):
-            raise ContractError("Expected native document search before memory assignment")
-        case.update(native_sha256=digest(canonical(control)), task_sha256=control["task_sha256"],
-                    customer_opening_sha256=opening, initial_db=control["initial_db"],
-                    official_criteria_sha256=digest(canonical(task.evaluation_criteria.model_dump(mode="json"))))
+        case, tasks[tid] = native_case(cfg, conn, modules, registered, group)
         cases.append(case)
     allocations = matched.allocation_record(cases)
     del allocations["unique_customers"]  # Anonymous source groups above represent tasks.

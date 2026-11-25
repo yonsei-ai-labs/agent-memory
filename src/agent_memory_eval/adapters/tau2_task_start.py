@@ -8,6 +8,16 @@ from agent_memory_eval.contracts.core import canonical, digest
 from agent_memory_eval.runner.task_start import TaskKey, TaskStartMismatch, open_task_start
 
 
+def empty_initial_state(state):
+    """Some native tasks serialize an otherwise empty initialization object."""
+    if state is None:
+        return True
+    data = state.initialization_data
+    return not state.message_history and not state.initialization_actions and (
+        data is None or (data.agent_data is None and data.user_data is None)
+    )
+
+
 def task_key(control):
     bench = control["config"]["benchmark"]
     return TaskKey("tau2", bench["source_revision"], f'{bench["domain"]}/{bench["task_id"]}')
@@ -63,7 +73,7 @@ def _restore_customer(orch, utils, control, customer_settings, verify_wire, publ
 @contextmanager
 def matched_opening(orch, modules, control, customer_settings, verify_wire, record, *, reference=None):
     """Preserve native run/step/termination. Only the first customer generation can be imported."""
-    if orch.solo_mode or orch.task.initial_state is not None:
+    if orch.solo_mode or not empty_initial_state(orch.task.initial_state):
         raise TaskStartMismatch("This τ² adapter supports text tasks starting at the native greeting")
     utils = modules[2]
     native_step = orch.step

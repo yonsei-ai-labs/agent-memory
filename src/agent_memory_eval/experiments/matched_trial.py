@@ -1,6 +1,6 @@
 """Verify a new no-memory episode and its same-task descendants before dispatch."""
 
-from agent_memory_eval.adapters.tau2_task_start import matched_opening, recorded_task_start
+from agent_memory_eval.adapters.tau2_task_start import empty_initial_state, matched_opening, recorded_task_start
 from agent_memory_eval.contracts.connection import provider_route
 from agent_memory_eval.contracts.core import canonical, digest, read_json
 from agent_memory_eval.experiments.first_pass_match import FirstPassMismatch, wire_verifier
@@ -35,7 +35,7 @@ def role_settings(control):
 
 def opening_hash(orch, customer_settings, utils):
     """Render the registered default greeting from a disposable native environment."""
-    if orch.task.initial_state is not None:
+    if not empty_initial_state(orch.task.initial_state):
         raise FirstPassMismatch("This comparison requires an original task with empty initial history")
     orch.initialize()
     if orch.to_role.value != "user" or orch.user_state.messages:

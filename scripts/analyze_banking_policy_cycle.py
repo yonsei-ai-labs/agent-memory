@@ -203,8 +203,18 @@ def grade_record(
 
 
 def validation(workspace):
-    spec, _, _, strict, _ = cycle.design(workspace)
+    spec, _, base, strict, _ = cycle.design(workspace)
     proposal, start = cycle.candidate_binding(workspace, spec, strict)
+    return paired_validation_results(
+        workspace, spec, proposal, start=start, task_ids=set(spec["heldout"].values()),
+        read_sha=base["delivery_instruction"]["sha256"], ceiling=spec["total_ceiling_usd"],
+        protocol_sha=digest((cycle.ROOT / cycle.PROFILE).read_bytes()),
+        binding={"candidate_sha256": digest((cycle.ROOT / cycle.CANDIDATE).read_bytes())},
+    )
+
+
+def paired_validation_results(workspace, spec, proposal, *, start, task_ids, read_sha, ceiling, protocol_sha, binding):
+    """Verify full banking consultations against their registered sources, banks, grades and costs."""
     sr = workspace / "runs" / spec["source_study"]
     vr = workspace / "runs" / spec["validation_study"]
     regs, regv = [read(root / "registration.json") for root in (sr, vr)]
@@ -212,7 +222,7 @@ def validation(workspace):
     for root, reg, close in ((sr, regs, sc), (vr, regv, vc)):
         require(
             close["registration_sha256"] == digest((root / "registration.json").read_bytes())
-            and reg["preflight"]["candidate_sha256"] == digest((cycle.ROOT / cycle.CANDIDATE).read_bytes()),
+            and all(reg["preflight"].get(k) == v for k, v in binding.items()),
             "Sealed study or candidate mismatch",
         )
     require(
@@ -224,8 +234,6 @@ def validation(workspace):
         p: {stage: {"reported": Decimal(0), "held": Decimal(0)} for stage in ("write", "solve")}
         for p in trials
     }
-    _, _, base, _, _ = cycle.design(workspace)
-    read_sha = base["delivery_instruction"]["sha256"]
     docs = {
         c["task_id"]: read(
             workspace / "data/tau2-bench/data/tau2/domains/banking_knowledge/tasks" / (c["task_id"] + ".json")
@@ -316,7 +324,9 @@ def validation(workspace):
                         )
                     trials[policy].append(rec)
     require(
-        len(sources) == 4 and len(writers) == 40 and all(len(c) == 20 for c in trials.values()),
+        set(sources) == task_ids and len(writers) == spec["validation"]["write"]
+        and sum(map(len, trials.values())) == spec["validation"]["solve"]
+        and all(len(rows) == len(task_ids) * len(cycle.bank.matched.FORMS) for rows in trials.values()),
         "Missing registered allocations",
     )
     sessions = [
@@ -355,9 +365,9 @@ def validation(workspace):
             "Unreconciled cumulative costs",
         )
         costs.update(totals)
-    require(Decimal(vc["total_covered_usd"]) <= Decimal(spec["total_ceiling_usd"]), "Cumulative cap exceeded")
+    require(Decimal(vc["total_covered_usd"]) <= Decimal(ceiling), "Cumulative cap exceeded")
     return dict(
-        protocol_sha256=digest((cycle.ROOT / cycle.PROFILE).read_bytes()),
+        protocol_sha256=protocol_sha,
         candidate=proposal,
         source_registration=sc["registration_sha256"],
         validation_registration=vc["registration_sha256"],
