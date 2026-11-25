@@ -1,4 +1,5 @@
 from copy import deepcopy
+from importlib.util import find_spec
 import json
 from types import SimpleNamespace
 import unittest
@@ -7,12 +8,41 @@ from unittest.mock import patch
 from agent_memory_eval.contracts.core import ContractError
 from agent_memory_eval.experiments.clause_contrast import clause_variants, next_action, preload_at_decision
 from scripts.analyze_banking_policy_cycle import dev_summary, first_wire_proof
+from scripts.diagnose_banking_policy_cycle import compare_dispute_calls
 from scripts.run_banking_policy_cycle import POLICY
 from scripts import run_banking_policy_cycle as cycle
 from scripts.run_fresh_matched import jobs_for
 
 
 class BankingPolicyCycleTests(unittest.TestCase):
+    @unittest.skipUnless(find_spec("tau2"), "requires the native action comparator")
+    def test_dispute_diagnostic_recognizes_encoding_but_preserves_a_wrong_target(self):
+        gold = {
+            "action_id": "goal",
+            "requestor": "user",
+            "name": "call_discoverable_user_tool",
+            "arguments": {"discoverable_tool_name": "dispute", "arguments": '{"transaction_id": "target"}'},
+        }
+        call = {
+            "id": "returned",
+            "requestor": "user",
+            "name": gold["name"],
+            "arguments": {"discoverable_tool_name": "dispute", "arguments": '{"transaction_id":"target"}'},
+        }
+        self.assertEqual(
+            compare_dispute_calls(call, [gold]),
+            [
+                {
+                    "action": "goal",
+                    "original": False,
+                    "edit": "use_expected_serialization_of_same_inner_values",
+                    "edited": True,
+                }
+            ],
+        )
+        call["arguments"]["arguments"] = '{"transaction_id":"other"}'
+        self.assertEqual(compare_dispute_calls(call, [gold]), [])
+
     note = dict(
         id="m_origin",
         version="v_origin",
