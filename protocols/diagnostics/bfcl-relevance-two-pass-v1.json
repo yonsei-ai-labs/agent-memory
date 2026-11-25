@@ -1,0 +1,42 @@
+{
+  "name": "bfcl-relevance-two-pass-01",
+  "purpose": "Local real-model platform pilot on tool use and abstention. Experimental unit is the public question, with one shared first pass per task.",
+  "revision": "6ea57973c7a6097fd7c5915698c54c17c5b1b6c8",
+  "data_sha256": {
+    "live_relevance": "e03f9e241657a137cba48a89ee12f47bf3fcb7e4f6274263e9c699a0c974203a",
+    "irrelevance": "2b6ed4c2e992cdcf5f1678a701851f944bef7550ee026ed1ddb89efed5be01a6"
+  },
+  "tasks": {
+    "live_relevance": ["live_relevance_2-2-0", "live_relevance_3-3-0", "live_relevance_7-7-0", "live_relevance_8-8-0"],
+    "irrelevance": ["irrelevance_0", "irrelevance_20", "irrelevance_150", "irrelevance_180"]
+  },
+  "selection": "Four public questions per category chosen before model generation for a mixture of domains and obvious or plausible tools. Each is a single user turn. This is a purposive platform check.",
+  "model": "Qwen/Qwen3.5-4B",
+  "model_revision": "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
+  "checkpoint_sha256": {
+    "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715",
+    "config.json": "ddc63e1c717afa86c865bb5e01313d89d72bb53b97ad4a8a03ba8510c0621670",
+    "model.safetensors.index.json": "cf3f798ee02ba45f9622aa8892a47369ab667d0afbf154ee7c2212de42e6302d",
+    "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+    "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+    "model.safetensors-00001-of-00002.safetensors": "26a93f066e1916adb13453dae5a0c707c0fbc71299ed98779571a907b8e74c61",
+    "model.safetensors-00002-of-00002.safetensors": "cb544bd9bfae93dc59b0f22b292f5933573854a7f9b97835c67060d7d910e188"
+  },
+  "generation": {"seed": 0, "do_sample": false, "dtype": "bfloat16", "attention": "sdpa", "thinking": false, "worker_tokens": 256, "writer_tokens": 256},
+  "worker_instruction": "Respond to the user's request. Use an available function if it is appropriate. Otherwise respond to the user directly.",
+  "memory_notice": "You may use your notes from earlier work. Notes can be incomplete or mistaken.",
+  "writer_instruction": "Save exactly one useful note from this public attempt using memory_store. Give it a short title and a body of at most 40 words. Use the supplied overall success or failure when warranted. Do not invent tool results.",
+  "forms": {
+    "fact": "Record directly observed facts and values and their scope.",
+    "episode": "Recount what was requested, what was attempted and the observed outcome.",
+    "procedure": "Describe a procedure with checks supported by this experience.",
+    "lesson": "State a lesson or caution and when it applies.",
+    "free": "Choose your own organization for what is worth remembering."
+  },
+  "delivery": ["preload", "on_demand"],
+  "limits": {"source_calls": 1, "writer_calls": 1, "preload_calls": 1, "on_demand_calls": 3, "new_external_calls": 0, "second_pass_no_memory": 0},
+  "feedback": "Only the binary first-pass outcome is provided to writers, separately from the shared public question, function definitions and actual response. No category labels or reference answers enter worker or writer requests.",
+  "release": "All five writers must each commit one nonempty note to an isolated bank for the task. Otherwise retain missing reader allocations. Use the same snapshot for both delivery policies. Fresh context and greedy decoding per request. Native tool syntax, required writer tool-name prefix only, with the model generating all note text.",
+  "grade": "Use BFCL's pinned is_empty_output on decoded business calls and the category's native call-presence rule. An invalid/truncated completion or exhausted private read loop is ungraded. Track undeclared functions and missing required arguments separately. Never execute a business or external function.",
+  "outcomes": "Report per-task and per-format grades and first-pass gains/losses, successful storage, actual returned memory and versioned title/body inclusion, prompt/completion tokens for writing and solving, zero external charges, and missing slots. Descriptive only. Repeated forms and modes are not independent tasks."
+}

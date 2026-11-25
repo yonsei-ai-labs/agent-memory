@@ -33,3 +33,17 @@ def open_simple_python(row, run_controls, *, reference=None):
     controls = dict(category="simple_python", task_sha256=digest(canonical(row)), run=run_controls)
     return open_task_start(task, controls, lambda _: dict(messages=row["question"][0], functions=row["function"]),
                            reference=reference)
+
+
+def open_relevance(row, category, run_controls, *, reference=None):
+    """A public, single-turn decision about whether to call a function."""
+    if (category not in ("live_relevance", "irrelevance") or not row["id"].startswith(category + "_")
+            or len(row["question"]) != 1 or len(row["question"][0]) != 1
+            or set(row["question"][0][0]) != {"role", "content"} or row["question"][0][0]["role"] != "user"
+            or not isinstance(row["question"][0][0]["content"], str) or not row["function"]
+            or not isinstance(run_controls, dict) or not run_controls):
+        raise TaskStartMismatch("Expected a single BFCL relevance question and explicit run controls")
+    task = TaskKey("bfcl", REVISION, row["id"])
+    controls = dict(category=category, task_sha256=digest(canonical(row)), run=run_controls)
+    return open_task_start(task, controls, lambda _: dict(messages=row["question"][0], functions=row["function"]),
+                           reference=reference)
