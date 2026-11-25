@@ -1,11 +1,12 @@
 from copy import deepcopy
 import json
+from types import SimpleNamespace
 import unittest
 from unittest.mock import patch
 
 from agent_memory_eval.contracts.core import ContractError
 from agent_memory_eval.experiments.clause_contrast import clause_variants, next_action, preload_at_decision
-from scripts.analyze_banking_policy_cycle import dev_summary
+from scripts.analyze_banking_policy_cycle import dev_summary, first_wire_proof
 from scripts.run_banking_policy_cycle import POLICY
 from scripts import run_banking_policy_cycle as cycle
 from scripts.run_fresh_matched import jobs_for
@@ -131,3 +132,21 @@ class BankingPolicyCycleTests(unittest.TestCase):
             models["user_simulator"]["canonical_slug"] = "updated"
             with self.assertRaises(ContractError):
                 cycle.registered_models(cfg, {})
+
+    def test_paired_writer_audit_preserves_changes_outside_the_candidate_instruction(self):
+        addition = "Use the observed condition."
+        request = {"request_id": "q", "request_ref": {"sha256": "frozen"}}
+
+        def normalized(policy, system, experience):
+            wire = {
+                "messages": [{"role": "system", "content": system}, {"role": "user", "content": experience}]
+            }
+            log = SimpleNamespace(run="r", blobs=SimpleNamespace(get=lambda ref: deepcopy(wire)))
+            return first_wire_proof(log, request, "journal", "write", policy, addition)["normalized_sha256"]
+
+        old = normalized("existing", "Base\nFacts only", "shared")
+        new = "Base\n" + addition + "\nFacts only"
+        self.assertEqual(old, normalized("candidate", new, "shared"))
+        self.assertNotEqual(old, normalized("candidate", new, "different experience"))
+        with self.assertRaises(ContractError):
+            normalized("candidate", "Base\nFacts only", "shared")

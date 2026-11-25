@@ -6,10 +6,12 @@ from decimal import Decimal
 from pathlib import Path
 
 from agent_memory_eval.analysis.claim_evidence import paired_counts
+from agent_memory_eval.analysis.decision_attribution import Action
 from agent_memory_eval.analysis.recorded_decisions import RecordedDecisions, require
 from agent_memory_eval.analysis.tau2_attribution import graded_episode
 from agent_memory_eval.contracts.core import canonical, digest
 from agent_memory_eval.experiments.forms_write import read_form_bank
+from agent_memory_eval.memory.context import snapshot_message
 from agent_memory_eval.recording.journal import safe_path
 from agent_memory_eval.recording.provenance import public_assistant_message
 from agent_memory_eval.runner import fixed_decision
@@ -378,12 +380,113 @@ def validation(workspace):
     )
 
 
+def first_wire_proof(log, req, checksum, stage, policy, instruction):
+    wire = log.blobs.get(req["request_ref"])
+    if stage == "write":
+        mark = "\n" + instruction
+        system = wire["messages"][0]["content"]
+        require(system.count(mark) == int(policy == "candidate"), "Unexpected writer treatment")
+        wire["messages"][0]["content"] = system.replace(mark, "", 1)
+    else:
+        spans = log.visible(req, wire)
+        require(
+            wire["messages"][1] == snapshot_message(log.items)
+            and {s["field"] for s in spans} == {"title", "body"},
+            "First worker request lacks its assigned visible note",
+        )
+        wire["messages"].pop(1)
+    return dict(
+        run=log.run,
+        journal_sha256=checksum,
+        request=req["request_id"],
+        wire_sha256=req["request_ref"]["sha256"],
+        normalized_sha256=digest(canonical(wire)),
+    )
+
+
+def reported_native_actions(log, arguments):
+    actions = []
+    for q in log.requests:
+        finish = log.finishes.get(q["request_id"], {})
+        if finish.get("status") != "response":
+            continue
+        for call in log.reply(q)["message"].get("tool_calls") or []:
+            f = call["function"]
+            if f["name"] in arguments:
+                arg = arguments[f["name"]]
+                values = Action.from_function(f).record().get("arguments")
+                actions.append(
+                    dict(
+                        role=q["actor_role"],
+                        tool=f["name"],
+                        argument=arg,
+                        value=values.get(arg) if isinstance(values, dict) else None,
+                        request=q["request_id"],
+                        response_sha256=finish["response_ref"]["sha256"],
+                    )
+                )
+    return actions
+
+
+def input_audit(workspace):
+    """Reopen actual paired inputs and index the two native actions discussed in the report."""
+    spec, _, _, strict, _ = cycle.design(workspace)
+    proposal, _ = cycle.candidate_binding(workspace, spec, strict)
+    root = workspace / "runs" / spec["validation_study"]
+    reg, close = read(root / "registration.json"), read(root / "completion.json")
+    require(
+        close["registration_sha256"] == digest((root / "registration.json").read_bytes())
+        and reg["preflight"]["candidate_sha256"] == digest((cycle.ROOT / cycle.CANDIDATE).read_bytes()),
+        "Input audit requires the registered writer comparison",
+    )
+    pairs = {}
+    role = {"write": "writer", "solve": "worker"}
+    arguments = {"transfer_to_human_agents": "reason", "apply_for_credit_card": "card_type"}
+    for case in reg["preflight"]["cases"]:
+        for stage in role:
+            policy = case["writer_policy"]
+            folder = root / ("task-" + case["task"]) / stage
+            rows = checked_shard(root, folder, close, reg) if stage in case["scheduled_stages"] else None
+            by_arm = {r["arm"]: r for r in rows or []}
+            for job in cycle.bank.matched.jobs_for(case, stage):
+                row = by_arm.get(job["arm"], {})
+                form = job["arm"].split("__")[0]
+                arms = pairs.setdefault((stage, case["task_id"], form), {})
+                arms[policy] = None
+                checksum = (row.get("result") or {}).get("log_sha256")
+                if not checksum:
+                    continue
+                log = RecordedDecisions(folder / row["directory"], row["run_id"], checksum)
+                req = next((q for q in log.requests if q["actor_role"] == role[stage]), None)
+                if not req:
+                    continue
+                proof = first_wire_proof(log, req, checksum, stage, policy, proposal["add"])
+                arms[policy] = proof
+                if stage == "solve":
+                    proof["reported_native_actions"] = reported_native_actions(log, arguments)
+    records = []
+    for (stage, task, form), arms in sorted(pairs.items()):
+        require(set(arms) == {"existing", "candidate"}, "Missing allocated policy")
+        matched = all(arms.values())
+        if matched:
+            require(
+                arms["candidate"]["normalized_sha256"] == arms["existing"]["normalized_sha256"],
+                "The actual paired inputs differ outside the intervention",
+            )
+        records.append(dict(stage=stage, task=task, form=form, both_checked=matched, arms=arms))
+    return dict(
+        registration_sha256=close["registration_sha256"],
+        checked={stage: sum(r["stage"] == stage and r["both_checked"] for r in records) for stage in role},
+        native_arguments=arguments,
+        pairs=records,
+    )
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("phase", choices=("development", "validation"))
+    analyzers = {"development": development, "validation": validation, "input-audit": input_audit}
+    parser.add_argument("phase", choices=analyzers)
     parser.add_argument("--workspace", type=Path, default=cycle.ROOT)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
-    cycle.save(
-        args.output, (development if args.phase == "development" else validation)(args.workspace.resolve())
-    )
+    cycle.save(args.output, analyzers[args.phase](args.workspace.resolve()))

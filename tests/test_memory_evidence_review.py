@@ -140,6 +140,7 @@ class ExposureCoverageTests(unittest.TestCase):
                                    step("error", "unknown", ["title","body"])])
         never_sent = worker_exposure([step("error", "not_submitted", ["body"])])
         seen = worker_exposure([step("response", "submitted", ["title","body","body"], ["memory_list"])])
+        self.assertLess(list(seen["counts"]).index("title_requests"), list(seen["counts"]).index("body_requests"))
         coverage = allocation_exposure([(None, partial), (None, never_sent), (False, seen),
                                         (None, dict(state="not_started")), (None, dict(state="unavailable"))])
         self.assertEqual(coverage["fields"]["body"], dict(confirmed=1, absent=2, unknown=2))

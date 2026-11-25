@@ -157,7 +157,8 @@ def worker_exposure(choices):
     confirmed, uncertain = set(), set()
     for step in choices:
         counts["worker_requests"] += 1
-        fields = {f["field"] for f in step["visible_memory"]}
+        # Publish title and then content counters consistently across Python hash seeds.
+        fields = sorted({f["field"] for f in step["visible_memory"]}, key=lambda f: (f != "title", f))
         if step["status"] == "response":
             counts["worker_responses"] += 1
             confirmed.update(fields)
