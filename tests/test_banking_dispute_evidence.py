@@ -1,4 +1,5 @@
 import json
+from importlib.util import find_spec
 import unittest
 from types import SimpleNamespace
 
@@ -89,3 +90,39 @@ class FormRepeatControlsTest(unittest.TestCase):
             self.assertIsNone(dispute_submissions([request, receipt])[0][2])
             self.assertIs(dispute_submissions([request, receipt], native_argument_errors=True)[0][2], expected)
         self.assertIsNone(dispute_submissions([request], native_argument_errors=True)[0][2])
+
+    @unittest.skipUnless(find_spec("tau2"), "Requires the pinned native banking environment")
+    def test_two_accepted_calls_for_the_same_other_transaction_match_one_native_db_row(self):
+        from agent_memory_eval.adapters.banking_dispute_evidence import SUBMIT, dispute_targets
+        from agent_memory_eval.adapters.tau2 import native_modules, verify_checkout
+        from agent_memory_eval.adapters.tau_banking_results import dispute_effects, verify_dispute_state
+        from agent_memory_eval.contracts.validation import ROOT
+
+        checkout = ROOT / "data/tau2-bench"
+        if not (checkout / ".git").exists():
+            self.skipTest("Requires the pinned banking checkout")
+        native_modules(verify_checkout(checkout))
+        from tau2.data_model.message import AssistantMessage, ToolCall, UserMessage
+        from tau2.data_model.tasks import Task
+        from tau2.domains.banking_knowledge.environment import get_environment
+
+        raw = json.loads((checkout / "data/tau2/domains/banking_knowledge/tasks/task_021.json").read_bytes())
+        task = Task.model_validate(raw)
+        owner, targets = dispute_targets(raw)
+        env = get_environment(retrieval_variant="grep_only", task=task)
+        env.set_state(initialization_data=None, initialization_actions=None, message_history=[])
+        other = next(t for t, r in env.tools.db.credit_card_transaction_history.data.items()
+                     if r["user_id"] == owner and t not in targets)
+        args = dict(discoverable_tool_name=SUBMIT, arguments=json.dumps(dict(user_id=owner, transaction_id=other)))
+        calls = [(a.name, a.requestor, a.arguments) for a in task.evaluation_criteria.actions if a.name != "call_discoverable_user_tool"]
+        calls.extend([("call_discoverable_user_tool", "user", args)] * 2)
+        messages = []
+        for i, (name, actor, arguments) in enumerate(calls):
+            call = ToolCall(id=f"control-{i}", name=name, requestor=actor, arguments=arguments)
+            receipt = env.get_response(call)
+            self.assertFalse(receipt.error)
+            message = (AssistantMessage if actor == "assistant" else UserMessage)(role=actor, tool_calls=[call])
+            messages.extend(m.model_dump(mode="json") for m in (message, receipt))
+        counts = dispute_effects(raw, messages, native_argument_errors=True)
+        db = verify_dispute_state(raw, messages, counts, env.get_db_hash(), False)
+        self.assertEqual((counts["accepted_other"], counts["accepted_duplicate"], db["new_dispute_rows"]), (1, 1, 1))

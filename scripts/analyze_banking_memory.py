@@ -169,6 +169,53 @@ def native_checks(log, expected_success):
                  name=c["action"]["name"], matched=c["action_match"]) for c in info["action_checks"]]
 
 
+def action_attempt_report(workspace, shards):
+    """Compare the official grade and first attempt over explicitly selected native allocation shards."""
+    from agent_memory_eval.adapters.tau2 import verify_checkout
+    from agent_memory_eval.adapters.tau2_assessment import action_attempt_counts, action_attempt_observation
+
+    checkout = verify_checkout(workspace / "data/tau2-bench")
+    tasks = checkout / "data/tau2/domains/banking_knowledge/tasks"
+    study = pilot.matched
+    observations, groups, seen_runs = [], defaultdict(lambda: defaultdict(list)), set()
+    folders = sorted((workspace / shard).resolve() for shard in shards)
+    require(len(folders) == len(set(folders)), "Duplicate allocation shard")
+    for folder in folders:
+        relative = folder.relative_to(workspace / "runs")
+        require(len(relative.parts) == 3 and (folder.name == "source" or re.fullmatch(r"solve(?:-repeat-\d+)?", folder.name)),
+                "Expected a source or solve allocation shard")
+        if (folder / "completion.json").is_file():
+            _, _, allocations = study.sealed_rows(folder)
+        else:
+            # The first optional-writing pilot closed its last shard with a separate receipt.
+            close = study.read(pilot.ROOT / "artifacts/pilots/20261124-banking-optional-close.json")
+            require(digest((folder.parent.parent / "registration.json").read_bytes()) == close["original_registration_sha256"],
+                    "No closure receipt for this allocation shard")
+            phase = folder.parent.name.removeprefix("task-") + "/" + folder.name
+            raw = (folder / "allocations.json").read_bytes()
+            seal = close["phases"][phase]
+            require(seal["completion_sha256"] is None and digest(raw) == seal["allocations_sha256"],
+                    "Allocation shard differs from its closure")
+            allocations = json.loads(raw)
+        for row in allocations:
+            task = row["task_id"]
+            criteria = study.read(safe_path(tasks, task + ".json"))["evaluation_criteria"]
+            require(criteria["reward_basis"] == ["ACTION"] and len(criteria["actions"]) == 1,
+                    f"{task} is outside the single required action metric")
+            require(row["phase"] == "solve", "Expected a consultation allocation")
+            run = row.get("run_id")
+            if run is not None:
+                require(run not in seen_runs, "A consultation has been counted twice")
+                seen_runs.add(run)
+            record = action_attempt_observation(folder, row, criteria["actions"][0])
+            record["shard"] = str(relative)
+            observations.append(record)
+            stage = "source" if folder.name == "source" else "solve"
+            groups[task][stage].append(record)
+    counts = {t: {stage: action_attempt_counts(rows) for stage, rows in stages.items()} for t, stages in groups.items()}
+    return dict(format="tau-single-action-attempts/v1", by_task=counts, allocations=observations)
+
+
 def referral_search_citations(base, data, banks, trials):
     """Post-hoc literal provenance at the first matched decision in two referral-link trials."""
     clauses = {"episode": "user-facing get_referral_link tool",
@@ -674,6 +721,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--workspace", type=Path, default=pilot.ROOT)
     view = parser.add_mutually_exclusive_group()
+    view.add_argument("--action-attempts", nargs="+", type=Path, metavar="SHARD",
+                      help="Compare first and later attempts for single-ACTION tasks in sealed source/solve folders")
     view.add_argument("--dispute-grader-controls", action="store_true", help="Rebuild the native offline dispute controls")
     view.add_argument("--form-repeats", action="store_true", help="Compare sealed memories on repeated multi-target tasks")
     view.add_argument("--optional-storage", action="store_true")
@@ -681,6 +730,11 @@ if __name__ == "__main__":
     parser.add_argument("--result-feedback", action="store_true", help="Analyze the result-only writer replication")
     args = parser.parse_args()
     workspace = args.workspace.resolve()
+    if args.action_attempts:
+        if args.result_feedback:
+            parser.error("Select result-feedback shards directly with --action-attempts")
+        print(json.dumps(action_attempt_report(workspace, args.action_attempts), ensure_ascii=False, indent=2, sort_keys=True))
+        raise SystemExit(0)
     if args.dispute_grader_controls:
         from agent_memory_eval.adapters.tau_banking_results import dispute_grader_controls
         from scripts.run_banking_form_repeats import PROFILE

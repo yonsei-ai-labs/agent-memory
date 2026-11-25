@@ -163,13 +163,11 @@ def target_effects(expected, attempts):
             raise ContractError("An effect needs a binary receipt or an unconfirmed outcome")
         elif not accepted:
             result["rejected"] += 1
-        elif target not in required:
-            result["accepted_other"] += 1
         elif target in seen:
             result["accepted_duplicate"] += 1
         else:
-            result["accepted_target"] += 1
             seen.add(target)
+            result["accepted_target" if target in required else "accepted_other"] += 1
     result["targets_without_confirmed_effect"] = len(required - seen)
     return result
 

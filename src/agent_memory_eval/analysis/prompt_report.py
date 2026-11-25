@@ -1,12 +1,14 @@
 """Build an offline, browsable comparison from verified writing and native episode journals."""
 from collections import Counter, defaultdict, deque
 from decimal import Decimal
+from importlib.util import find_spec
 from itertools import combinations, zip_longest
 import os
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from urllib.parse import quote
 
+from agent_memory_eval.adapters.tau2_assessment import single_action_attempts
 from agent_memory_eval.analysis.forms_actions import check_judgment
 from agent_memory_eval.analysis.forms_results import checked_rows, contrast
 from agent_memory_eval.contracts.core import ContractError, canonical, digest, read_json
@@ -53,7 +55,11 @@ def _grade_evidence(report, messages):
         turn = next((i for i, m in enumerate(messages) if m["role"] == "assistant" and m["content"]
                      and cited.endswith("'" + m["content"] + "'")), None)
         required.append(dict(info=check["info"], met=check["met"], cited_turn=turn))
+    needs_native = (reward.get("reward_basis") == ["ACTION"] and len(reward.get("action_checks") or []) == 1
+                    and find_spec("tau2") is None)
     return dict(db_match=(reward.get("db_check") or {}).get("db_match"), communication=required,
+                reward_basis=reward.get("reward_basis"), needs_native=needs_native,
+                single_action=None if needs_native else single_action_attempts(report),
                 reference_actions=[dict(name=c["action"]["name"], matched=c["action_match"])
                                    for c in reward.get("action_checks") or []])
 
@@ -69,8 +75,23 @@ def _grade_section(grade):
     if not grade["communication"]:
         lines.append("- 필수 안내 항목 0개")
     if grade["reference_actions"]:
-        lines += ["", "참조 행동과의 일치 여부도 native 결과에 기록됩니다. 이 항공 실험의 공식 점수는 최종 DB와 필수 안내를 사용합니다.", ""]
+        basis = ", ".join(grade["reward_basis"] or []) or "기록 없음"
+        lines += ["", f"공식 보상 기준은 `{basis}`이다. 아래는 공식 채점기의 참조 행동 검사다.", ""]
         lines += [f"- `{a['name']}` · {match[a['matched']]}" for a in grade["reference_actions"]]
+    action = grade["single_action"]
+    if grade["needs_native"]:
+        lines += ["", "첫 시도 판정에는 이 실험의 τ 벤치마크 패키지가 필요하다."]
+    if action is not None:
+        attempts = action["attempts"]
+        lines += ["", f"**{action['actor']}의 `{action['name']}` 호출** · 총 {len(attempts)}회", ""]
+        if attempts:
+            first = attempts[0]
+            lines.append(f"- [첫 시도](#m-{first['turn']}) · {match[first['matched']]}")
+            hit = action["first_correct_attempt"]
+            if hit and hit > 1:
+                lines.append(f"- [처음 일치한 시도](#m-{attempts[hit - 1]['turn']}) · {hit}번째 호출")
+        else:
+            lines.append("- 해당 행위자의 호출 0회")
     return lines
 
 

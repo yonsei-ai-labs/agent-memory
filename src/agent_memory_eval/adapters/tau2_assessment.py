@@ -1,4 +1,81 @@
-"""Offline reached-state diagnostics without inventing a native successful termination."""
+"""Offline assessment of recorded native actions and of the state reached before termination."""
+
+from agent_memory_eval.contracts.core import ContractError
+
+
+def single_action_attempts(report, *, expected_action=None):
+    """Score the declared actor's attempts in transcript order for a single native ACTION grade."""
+    reward = report["reward_info"]
+    checks = reward.get("action_checks") or []
+    if reward.get("reward_basis") != ["ACTION"] or len(checks) != 1:
+        return None
+
+    from tau2.data_model.message import ToolCall
+    from tau2.data_model.tasks import Action
+
+    check, = checks
+    action = Action.model_validate(check["action"])
+    if expected_action is not None and action != Action.model_validate(expected_action):
+        raise ContractError("Native action check differs from the registered task")
+
+    attempts = []
+    any_actor_matched = False
+    for turn, message in enumerate(report["messages"]):
+        actor = message["role"]
+        if actor not in ("assistant", "user"):
+            continue
+        for index, call in enumerate(message.get("tool_calls") or []):
+            if call["name"] != action.name:
+                continue
+            matched = action.compare_with_tool_call(ToolCall.model_validate(call))
+            # Native ACTION considers both actors. The diagnostic follows the declared actor.
+            any_actor_matched |= matched
+            if actor == action.requestor:
+                attempts.append(dict(turn=turn, call_index=index, matched=matched))
+    if check["action_match"] is not any_actor_matched or (reward["reward"] == 1) != any_actor_matched:
+        raise ContractError("Native single-action grade disagrees with its recorded tool calls")
+    first_correct = next((n for n, a in enumerate(attempts, 1) if a["matched"]), None)
+    return dict(action_id=action.action_id, name=action.name, actor=action.requestor,
+                official_match=any_actor_matched, first_correct_attempt=first_correct, attempts=attempts)
+
+
+def action_attempt_observation(folder, row, expected_action):
+    """Bind an allocated consultation to its recorded grade and the calls in the sealed transcript."""
+    from agent_memory_eval.analysis.recorded_decisions import RecordedDecisions, require
+    from agent_memory_eval.recording.journal import safe_path
+
+    result = row.get("result") or {}
+    success = result.get("official_success")
+    graded = result.get("grading_status") == "graded"
+    require(type(success) is bool if graded else success is None, "Allocation grade and status disagree")
+    record = dict(task=row["task_id"], slot=row["index"], arm=row["arm"], run=row.get("run_id"),
+                  status=result.get("grading_status", row["status"]), official_success=success, action=None)
+    if not graded:
+        return record
+    log = RecordedDecisions(safe_path(folder, row["directory"]), record["run"], result["log_sha256"])
+    scored, = log.of_type("outcome.scored")
+    ref = scored["payload"]["official_artifact_ref"]
+    report = log.blobs.get(ref)
+    allocated_ref = result.get("report_ref") or result.get("native_report_ref")
+    require(ref == allocated_ref and report["task_id"] == row["task_id"] and
+            success is scored["payload"]["official_success"] and success == (report["reward_info"]["reward"] == 1),
+            "The native report and recorded grade differ")
+    action = single_action_attempts(report, expected_action=expected_action)
+    require(action is not None or report["reward_info"].get("reward_basis") is None,
+            "Native report has a different action assessment")
+    return dict(record, report_sha256=ref["sha256"], action=action)
+
+
+def action_attempt_counts(records):
+    """Count first and later hits over assessed consultations, keeping ungraded allocations explicit."""
+    records = list(records)
+    actions = [r["action"] for r in records if r["action"] is not None]
+    hits = [a["first_correct_attempt"] for a in actions]
+    return dict(assigned=len(records), graded=sum(r["official_success"] is not None for r in records),
+                official_success=sum(r["official_success"] is True for r in records),
+                assessed_consultations=len(actions), first_correct=hits.count(1),
+                later_correct=sum(hit is not None and hit > 1 for hit in hits), no_correct_attempt=hits.count(None),
+                no_attempt=sum(not a["attempts"] for a in actions))
 
 
 def assess_reached_state(orchestrator, config):
