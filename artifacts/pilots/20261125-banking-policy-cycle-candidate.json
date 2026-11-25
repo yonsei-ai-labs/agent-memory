@@ -1,0 +1,103 @@
+{
+  "format": "banking-policy-cycle-candidate/v1",
+  "author": "Codex analyst; development judgments only",
+  "base_instruction": {
+    "path": "protocols/instructions/required-experience-writer-v1.txt",
+    "sha256": "54c0838ec92092c2accd1d78253ba560c95fadac6c65d698243f23cb38a67ed7"
+  },
+  "candidate_instruction": {
+    "path": "protocols/instructions/banking-condition-writer-v1.txt",
+    "sha256": "99de07ebed7545e1aa636a7a8588ff469d2b961f73b294fe105f3b2669722bb7"
+  },
+  "add": "For one consequential decision, put its observed trigger, the action actually taken (including any decisive argument), and the result observed together in one concise sentence, marking any missing link as unknown.",
+  "development_results": {
+    "path": "artifacts/analyses/20261125-banking-policy-cycle-development.json",
+    "sha256": "8128e5466cbc21458cf7586e1871c72fe307499aec8fb52c810410226031ad45"
+  },
+  "observations": [
+    {
+      "slot": 1,
+      "journal_sha256": "fe9289ff362aa8854257b753f8d3bdeea2ba47505f87de26731840b60966d7a2",
+      "case": "task_015/6",
+      "form": "episode",
+      "arm": "original",
+      "observed": "target_action",
+      "rationale": "Unedited episode note, actual provision after the customer corrected the previous claim."
+    },
+    {
+      "slot": 2,
+      "journal_sha256": "0c5cd0a85f03e582fed5560c1fd9c6664958daf7e8b48113a1a0127694db5e86",
+      "case": "task_015/6",
+      "form": "episode",
+      "arm": "omit_background",
+      "observed": "target_action",
+      "rationale": "Target sentence retained, same point and same action."
+    },
+    {
+      "slot": 3,
+      "journal_sha256": "f6b237fe3587a6e0b3db945dbcaade721f95b72e945bd75e471edde1f119b8e5",
+      "case": "task_015/6",
+      "form": "episode",
+      "arm": "omit_target",
+      "observed": "search",
+      "rationale": "Target sentence removed, another document search."
+    },
+    {
+      "slot": 94,
+      "journal_sha256": "da2e1c3672569e8a1c9c9d789e21283301a64e347dba543f507154caf4e278c0",
+      "case": "task_008/17",
+      "form": "episode",
+      "arm": "original",
+      "observed": "search",
+      "rationale": "Unedited episode note, another search before transfer."
+    },
+    {
+      "slot": 95,
+      "journal_sha256": "f7d1cb9d9073c22fc88fdcb52c7eee348fdfdfdf058b737163b13498deff13a7",
+      "case": "task_008/17",
+      "form": "episode",
+      "arm": "omit_background",
+      "observed": "target_action",
+      "rationale": "Background removed while trigger, reason and observed transfer are together, immediate target transfer."
+    },
+    {
+      "slot": 96,
+      "journal_sha256": "18167e4e2e2adc9e409c1a2fbd7e492cf13b5bf9236cf39f31616280885b3aa8",
+      "case": "task_008/17",
+      "form": "episode",
+      "arm": "omit_target",
+      "observed": "text",
+      "rationale": "Target removed at the same point, response in text."
+    },
+    {
+      "slot": 16,
+      "journal_sha256": "947ca6afa5f03e1974cab0915be0664c9e23e93a679c95ecc4a8639913fc7b62",
+      "case": "task_008/18",
+      "form": "episode",
+      "arm": "omit_background",
+      "observed": "target_action",
+      "rationale": "After the current document search, transfer with the target reason even with a background deletion."
+    },
+    {
+      "slot": 17,
+      "journal_sha256": "eba480f12dfbcc46f271e4d98b4838281294daadbe83039e779312a94f523bb5",
+      "case": "task_008/18",
+      "form": "episode",
+      "arm": "omit_target",
+      "observed": "target_action",
+      "rationale": "Same later decision still performs the target transfer after the target deletion."
+    },
+    {
+      "slot": 47,
+      "journal_sha256": "2e3f28dda0b127ea3c9a486ed25457df76a37d04e622e4a036c737d32abacaa1",
+      "case": "task_015/6",
+      "form": "fact",
+      "arm": "omit_target",
+      "observed": "target_action",
+      "rationale": "Fact format at the link correction still performs the target action after the deletion."
+    }
+  ],
+  "hypothesis": "A compact account of a conditional action and its observed effect will help a later worker select a suitable action more often. On the four held-out tasks this predicts more candidate-only than existing-only official successes across the 20 task/form pairs.",
+  "falsifier": "If candidate-only official successes are no more frequent than existing-only successes among graded pairs, the directional prediction has no observed support in this pilot. Report missing pairs, task concentration, action evidence and efficiency separately.",
+  "limits": "The development comparison involves two tasks with overlapping current document evidence. It tests immediate tool choice; support for this new writing rule is evaluated separately. An incomplete nested argument can pass the immediate name check."
+}
