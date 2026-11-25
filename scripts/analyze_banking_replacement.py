@@ -5,8 +5,10 @@ import re
 from copy import deepcopy
 from decimal import Decimal
 from pathlib import Path
+from unittest.mock import patch
 
 from agent_memory_eval.analysis.recorded_decisions import RecordedDecisions, require
+from agent_memory_eval.contracts.connection import native_parameters
 from agent_memory_eval.contracts.core import canonical, digest, read_json
 from scripts import analyze_banking_policy_cycle as scores
 from scripts import run_banking_replacement as study
@@ -276,11 +278,137 @@ def observed(workspace):
     return result
 
 
+def interruption(workspace):
+    """Reconstruct the first unobserved native turn from sealed public replies without transport."""
+    spec, cfg, conn, case, task, _ = study.prepare(workspace)
+    from tau2.data_model.message import AssistantMessage
+
+    bank = cycle.bank
+    tid = case["task_id"]
+    root = workspace / "runs" / spec["source_study"]
+    reg, close = [cycle.read(root / name) for name in ("registration.json", "completion.json")]
+    require(
+        close["registration_sha256"] == digest((root / "registration.json").read_bytes())
+        and reg["preflight"]["protocol_sha256"] == digest((study.ROOT / study.PROFILE).read_bytes())
+        and reg["preflight"]["approval"] == cycle.read(study.ROOT / study.APPROVAL),
+        "The failed source belongs to a different registration",
+    )
+    folder = root / ("task-" + tid) / "source"
+    (row,) = scores.checked_shard(root, folder, close, reg)
+    outcome = row["result"]
+    require(
+        outcome["error_code"] == "HTTP_429" and outcome["official_success"] is None,
+        "Expected the archived, ungraded rate-limited source",
+    )
+    log = RecordedDecisions(folder / row["directory"], row["run_id"], outcome["log_sha256"])
+    roles = ["user_simulator", "worker", "user_simulator"]
+    require([r["actor_role"] for r in log.requests] == roles, "Unexpected source prefix")
+    finishes = [log.finishes[r["request_id"]] for r in log.requests]
+    require(
+        [f["status"] for f in finishes] == ["response", "response", "error"], "Unexpected response sequence"
+    )
+    error = log.blobs.get(finishes[-1]["response_ref"])
+    hold = outcome["unpriced_reservation"]
+    require(
+        error["error"]["code"] == hold["code"] == 429
+        and "choices" not in error
+        and hold["request_ref"] == log.requests[-1]["request_ref"]
+        and hold["response_ref"] == finishes[-1]["response_ref"],
+        "The reservation differs from the interruption receipt",
+    )
+    conf = bank.solve_connection(
+        conn,
+        bank.matched.design_for(cfg, case, "source"),
+        bank.matched.jobs_for(case, "source")[0],
+        cfg["episode_cap_usd"],
+    )
+    orch, native = bank.build_baseline_orchestrator(conf, task)
+    control = bank.native_control(orch, native, conf, cfg["limits"], cfg["http_timeout_seconds"], None)
+    modules = bank.matched.modules_for(workspace)
+    settings = bank.role_settings(control)
+    checked = []
+
+    class Frontier(Exception):
+        pass
+
+    def render(role, *, model, tools, messages, call_name, **params):
+        i = len(checked)
+        req, finish = log.requests[i], finishes[i]
+        require(
+            role == roles[i]
+            and model == settings[role]["model"]
+            and params == native_parameters(conf, role)
+            and [t.openai_schema for t in (tools or [])] == control["tools"][role],
+            "Native actor, model, parameters or tools changed",
+        )
+        wire = dict(settings[role], messages=modules[2].to_litellm_messages(messages))
+        require(wire == log.blobs.get(req["request_ref"]), "Reconstructed native request differs")
+        checked.append(
+            {
+                "role": role,
+                "request_id": req["request_id"],
+                "request_sha256": digest(canonical(wire)),
+                "response_sha256": finish["response_ref"]["sha256"],
+                "status": finish["status"],
+            }
+        )
+        if i == 2:
+            raise Frontier
+        reply = log.reply(req)["message"]
+        require(
+            reply["role"] == "assistant"
+            and not reply.get("tool_calls")
+            and isinstance(reply.get("content"), str),
+            "Expected a public text reply",
+        )
+        return AssistantMessage(role="assistant", content=reply["content"])
+
+    with (
+        patch.object(modules[0], "generate", lambda **kw: render("worker", **kw)),
+        patch.object(modules[1], "generate", lambda **kw: render("user_simulator", **kw)),
+        patch.object(modules[2], "completion", side_effect=AssertionError("Unexpected transport")),
+    ):
+        orch.initialize()
+        initial_db = orch.environment.get_db_hash()
+        require(
+            initial_db == case["initial_db"] and digest(canonical(control)) == case["native_sha256"],
+            "Changed native source or initial DB",
+        )
+        try:
+            for _ in roles:
+                orch.step()
+        except Frontier:
+            pass
+    require(
+        len(checked) == 3 and orch.environment.get_db_hash() == initial_db == outcome["final_db_hash"],
+        "Native replay did not reach the original interruption and DB",
+    )
+    archived_messages = log.blobs.get(outcome["partial_trajectory_ref"])
+    require(
+        [(m["role"], m["content"]) for m in archived_messages]
+        == [(m.role, m.content) for m in orch.trajectory],
+        "Public trajectory differs at interruption",
+    )
+    return {
+        "task": tid,
+        "source_run": row["run_id"],
+        "journal_sha256": outcome["log_sha256"],
+        "source_registration_sha256": close["registration_sha256"],
+        "initial_and_frontier_db": initial_db,
+        "public_prefix_turns": len(orch.trajectory),
+        "requests": checked,
+        "error": error["error"],
+        "previous_reported_usd": outcome["reported_cost_usd_decimal"],
+        "previous_held_usd": hold["usd"],
+        "model_calls_during_reconstruction": 0,
+    }
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("phase", choices=("case", "results"))
+    phases = {"case": case_facts, "results": observed, "interruption": interruption}
+    parser.add_argument("phase", choices=phases)
     parser.add_argument("--workspace", type=Path, default=study.ROOT)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
-    compute = case_facts if args.phase == "case" else observed
-    cycle.save(args.output, compute(args.workspace.resolve()))
+    cycle.save(args.output, phases[args.phase](args.workspace.resolve()))

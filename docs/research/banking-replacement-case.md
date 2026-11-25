@@ -28,11 +28,22 @@
 
 주 지표는 전체 상담의 공식 DB 일치다. 같은 형식에서 기존만 성공·보완만 성공·공동 성공·공동 실패·기술 결측을 센다. 공동 성공에서는 호출·고객 발화·토큰·비용을 비교한다. 보조 분석은 원천에서 보인 단서, 실제 전달된 메모, 주문 직전의 현재 대화·도구 근거, 주문 필드와 비대상 카드 취소를 연결한다. 다섯 형식은 한 고객·한 무기억 상담을 공유한다. [근거·주문 재생 분석기](../../scripts/analyze_banking_replacement.py)
 
-이 단계에서 완료된 것은 무과금 검증이다. 새 모델 실행의 예상 비용은 $0.05~0.15이고, 1회차 1건·필수 작성 10건·2회차 전체 상담 10건에 제안한 새 총한도는 $0.30이다. 이전 과제 예산은 그 실험에서 종료됐다.
+새 모델 실행의 예상 비용은 $0.05~0.15이고, 1회차 1건·필수 작성 10건·2회차 전체 상담 10건의 승인 총한도는 $0.30이다. [배정과 승인](../../artifacts/pilots/20261125-banking-replacement-authorization.json)
 
 공식 과제는 과거 대화와 초기 변경이 모두 빈 초기화 객체를 명시한다. 무기억 시작과 새 세션 복원에서 동일한 첫 업무 입력과 초기 DB를 확인했고, 대화·초기 동작·DB 변경이 실제로 들어 있는 경우는 기존 거부 조건을 검증했다. 도구·채점·격리 점검에 든 유료 호출은 0건이다. [시작점 검증](../../tests/test_banking_replacement.py)
 
 ```bash
 uv run python -m scripts.run_banking_replacement preflight --workspace . --output /tmp/banking-replacement-preflight.json
 uv run python -m scripts.analyze_banking_replacement case --workspace . --output /tmp/banking-replacement-case.json
+```
+
+## 최초 실행과 중단 지점
+
+무기억 1회차에서 고객은 실버 카드의 최근 거래를 요청했고, 상담원은 본인확인에 필요한 정보를 요청했다. 다음 고객 차례에 공급자가 HTTP 429와 56초 후 재시도 안내를 반환했다. 이 시점까지 업무 도구 호출과 DB 변경은 0건이었다. 원천의 공식 성패는 미채점이며 작성 10건과 후속 상담 10건은 모두 미시작이다. 다섯 형식 모두 비교 가능한 짝이 0개여서 이 실행에서 기억의 효과를 추정할 수 없다. [최초 실행 분석과 비용 원장](../../artifacts/analyses/20261125-banking-replacement-original-results.json)
+
+모델 요청 3건 중 2건에 정상 응답이 있었다. 확인 비용은 $0.000751475, 사용량이 보고되지 않은 429 요청의 보류액은 $0.003572400이다. 둘을 포함한 금액은 $0.004323875다. 별도의 무과금 점검에서 원본 환경을 초기화하고 보관된 두 응답을 순서대로 넣었다. 중단된 세 번째 요청까지 세 요청의 내용·도구·모델 설정이 원문과 일치했고, 중단 시점의 공개 대화와 DB 해시도 일치했다. 해당 고객 차례의 답변은 아직 관측되지 않았다. [요청별 해시와 무과금 복원 결과](../../artifacts/analyses/20261125-banking-replacement-interruption.json)
+
+```bash
+uv run python -m scripts.analyze_banking_replacement results --workspace . --output /tmp/banking-replacement-original.json
+uv run python -m scripts.analyze_banking_replacement interruption --workspace . --output /tmp/banking-replacement-interruption.json
 ```
