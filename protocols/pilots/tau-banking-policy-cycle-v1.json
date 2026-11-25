@@ -1,0 +1,163 @@
+{
+  "format": "banking-memory-policy-cycle/v1",
+  "development_study": "tau-banking-clause-decisions-01",
+  "source_study": "tau-banking-policy-check-sources-01",
+  "validation_study": "tau-banking-policy-check-01",
+  "previous": {
+    "path": "artifacts/analyses/20261125-banking-result-feedback-results.json",
+    "sha256": "e07a6ca84f3210c839b80b69c27825c48a42a4a118fd406d55f95b39b4b214fd"
+  },
+  "previous_close": {
+    "path": "runs/tau-banking-result-feedback-01/completion.json",
+    "sha256": "7dd3295a4649456f1fbb4abb699eab0010b6507a09a3c0e542923d0ce33ace19"
+  },
+  "banking_source_protocol": {
+    "path": "protocols/pilots/tau-banking-memory-v1.json",
+    "sha256": "755c3161124ff4bd6b7f373657abc52997a3a57055d0a3e0c7f7158258280320"
+  },
+  "writing_protocol": {
+    "path": "protocols/pilots/tau-banking-required-v1.json",
+    "sha256": "22813f83a62e718df76e1c8ec323248a67141a03fd7bbbc7a5ed70ad6d14e0cf"
+  },
+  "previous_allocation": {
+    "path": "artifacts/pilots/20261125-banking-result-feedback-preflight.json",
+    "sha256": "b236c854e0ae23ec0673140b9e8ae9a96c6e41e5c6c8566ec80d62d0f7703bc2"
+  },
+  "feedback": "result_only",
+  "forms": [
+    "fact",
+    "episode",
+    "procedure",
+    "lesson",
+    "free"
+  ],
+  "development_forms": [
+    "episode",
+    "fact"
+  ],
+  "development_arms": [
+    "original",
+    "omit_target",
+    "omit_background"
+  ],
+  "repeats": 4,
+  "schedule_seed": 20261125,
+  "max_input_bytes": 160000,
+  "dev_max_usd": "0.20",
+  "total_ceiling_usd": "1.50",
+  "prior_usd": "0.589813143",
+  "decisions": {
+    "task_008": {
+      "source": {
+        "path": "runs/tau-banking-memory-01/task-task_008/source/jobs/0001/log.jsonl",
+        "sha256": "6b69c51eef7f3634d3cae3871a7168603524dd01c80be015336c5f6eab180fdc"
+      },
+      "source_run": "r_d55907719ff14aaab8380fd4fe770af9",
+      "tool": "transfer_to_human_agents",
+      "arguments": {
+        "reason": "customer_demands_after_unavailable_offer_refusal"
+      },
+      "states": [
+        {
+          "ordinal": 17,
+          "request_id": "request_c816f2d273d4405693e6ee46c902037b",
+          "sha256": "6a62f38fe567fd8fe17087e4ad1e09e31683685e83375613e6572abfd013c48a"
+        },
+        {
+          "ordinal": 18,
+          "request_id": "request_bd4be5b509ab48dbb7901e2ac516855c",
+          "sha256": "02f9a8fab1b0ef9229ed579edc54f992f148c5552e17b021cbe3db43ddc90a63"
+        }
+      ]
+    },
+    "task_015": {
+      "source": {
+        "path": "runs/tau-banking-memory-01/task-task_015/source/jobs/0001/log.jsonl",
+        "sha256": "c1dbeff7e79277dc5082473ca5bdd87e20f9203b55264e32dda4ebeefdfe9977"
+      },
+      "source_run": "r_8a83ed241a7840878dd99a3680898d94",
+      "tool": "give_discoverable_user_tool",
+      "arguments": {
+        "discoverable_tool_name": "get_referral_link"
+      },
+      "states": [
+        {
+          "ordinal": 5,
+          "request_id": "request_a29255ff9dd14adcb5fd66c8f2acc076",
+          "sha256": "a3d7d8b246cb74ddf64d4d801e0b1cff5d7d7c1a22cdd17584dc409cced0f158"
+        },
+        {
+          "ordinal": 6,
+          "request_id": "request_d8378982661e42cba6eee3876535ab61",
+          "sha256": "4bdf9dd0b331d77dff531637599ff15864a15b79bb13b0cabccc59f7cca3759c"
+        }
+      ]
+    }
+  },
+  "clauses": {
+    "task_008": {
+      "episode": {
+        "source_writer": "r_0277ff7a7c5a421db22f7e23a06597fd",
+        "snapshot": "snap_30a4f2488ea64d9eba086a2d81ea5515",
+        "item_id": "m_a009978c6c4d46df98efb92f38f4c3d0",
+        "version": "v_839a56f51f334c8b9ead042bccca0feb",
+        "writer_log_sha256": "07d16103a24c7e4bf7ad9ce3b3fbe354d978242b44c7f9bab834b48a2c339bf4",
+        "target": "After the customer persisted in demanding one of the unavailable offers, the assistant invoked transfer_to_human_agents with reason customer_demands_after_unavailable_offer_refusal.",
+        "background": "In a Rho-Bank customer-service interaction, the customer said they had mailed promotional flyers and first asked about a $1,000 statement credit after spending $10,000 in two months."
+      },
+      "fact": {
+        "source_writer": "r_4dd4f2700ae249b39eb6f1f58b4e1240",
+        "snapshot": "snap_7f69585ac21245a7b74c9b0ceebe232f",
+        "item_id": "m_2b723dcb0c1142fe9993a2e162afcd35",
+        "version": "v_7a873175c9214c03b021cb1ccae272c9",
+        "writer_log_sha256": "de478918779ab13351ef7188685a661e74463216f6c2d47a1659a548c444935c",
+        "target": "After repeated insistence, the assistant invoked transfer_to_human_agents with reason customer_demands_after_unavailable_offer_refusal; tool response was “Transfer successful” and said a human agent would assist shortly.",
+        "background": "Observed conversation: A customer said mailed Rho-Bank flyers advertised (1) a $1,000 statement credit after spending $10,000 in the first two months, (2) $0 foreign transaction fees for three years, and (3) a first-year annual-fee waiver."
+      }
+    },
+    "task_015": {
+      "episode": {
+        "source_writer": "r_cf989ff8e15045f2a397def1ff13f29d",
+        "snapshot": "snap_efa17c0b67344256bba7515a582bd3bd",
+        "item_id": "m_cd9c4119b27e4529ac822723c4deffd1",
+        "version": "v_0dfd639b2c46415ea49c1e078f24e208",
+        "writer_log_sha256": "28ef8b9ea582fd1b71bb2a6d9065a8c7c850519af478e6eb69991dbe59ac8158",
+        "target": "The assistant then explicitly gave the get_referral_link tool; its response said the tool was now available and required no arguments.",
+        "background": "This establishes only that the available knowledge-base results did not confirm the offer, not whether the letter or offer was valid."
+      },
+      "fact": {
+        "source_writer": "r_124bb2b652994812b43c369bf352c651",
+        "snapshot": "snap_13b1769e081543008ab10eb9c3870122",
+        "item_id": "m_636142672dc74b9d95a1e073073d0fd2",
+        "version": "v_3827b428df7a4f97b6c51f041becefdd",
+        "writer_log_sha256": "83c7971ba1667a82ad36acb3097fef3860e657328d306d10df5cc65df4abfae1",
+        "target": "However, the assistant subsequently surfaced the discoverable user tool as `get_referral_link` with no arguments; the user said it then worked and they obtained their link.",
+        "background": "Observed in the provided conversation: the user first asked about a Crypto-Cash Back card referral offer claiming $100 for a referred person's $500 spend in their first 2 months."
+      }
+    }
+  },
+  "heldout": {
+    "single_db": "task_002",
+    "required_action": "task_014",
+    "multiple_db": "task_016",
+    "discoverable_db": "task_017"
+  },
+  "split_rule": "Second lexicographic task in each original eligible native grading stratum. Only task IDs, eligibility, and task/control hashes can enter registration. All four prior development tasks excluded. Never select by outcome. Distinct tasks, no claim of independent customers.",
+  "validation": {
+    "writer_policies": [
+      "existing",
+      "candidate"
+    ],
+    "modes": [
+      "preload"
+    ],
+    "source": 4,
+    "write": 40,
+    "solve": 40,
+    "second_pass_no_memory": 0,
+    "development_decisions": 96
+  },
+  "development_primary": "Per state and form, rate of a single schema-valid immediate specified action among graded replies. Contrast background deletion minus target deletion; original anchors both. Keep other legal actions, missing replies, identical wires and common document evidence separate. These immediate actions are not complete official scores.",
+  "validation_primary": "Official successes gained and lost vs existing writer, paired by task and form. Record comparisons to the single graded first pass separately. Report per-task outcomes, missing, official action checks, actual body exposure, and joint-success searches, business calls, turns, tokens and cost. Four tasks are developmental validation; do not promote a policy on statistical significance.",
+  "candidate_policy": "After development and before any validation outcome, freeze one domain-neutral writer instruction appended identically to each of the five formats, with cited development evidence, hypothesis and falsifier. The writer receives public experience and verified binary outcome only; no case IDs, private scripts, grade actions, correct arguments or development notes in its instruction."
+}

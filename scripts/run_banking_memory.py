@@ -41,7 +41,7 @@ def stratum(task):
     return "single_db" if len(criteria.actions) == 1 else "multiple_db"
 
 
-def prepare(workspace):
+def prepare(workspace, *, heldout_tasks=None):
     spec = matched.read(ROOT / PROFILE)
     cfg = json.loads(matched.asset_text(ROOT, spec["base"]))
     if (spec["revision"] != cfg["benchmark_revision"] or spec["revision"] != PIN
@@ -59,17 +59,24 @@ def prepare(workspace):
     from tau2.runner.helpers import load_task_splits, select_run_tasks
 
     population = sorted(get_tasks(), key=lambda task: task.id)
-    selected = {}
+    candidates = {}
     for task in population:
         group = stratum(task)
         if group:
-            selected.setdefault(group, task.id)
-    if selected != spec["tasks"] or load_task_splits(domain) is not None:
+            candidates.setdefault(group, []).append(task.id)
+    first = {group: ids[0] for group, ids in candidates.items()}
+    if first != spec["tasks"] or load_task_splits(domain) is not None:
         raise ContractError("Official population, splits or prespecified task selection changed")
+    selected = spec["tasks"]
+    if heldout_tasks is not None:
+        if (any(len(ids) < 2 for ids in candidates.values()) or
+                heldout_tasks != {group: ids[1] for group, ids in candidates.items()}):
+            raise ContractError("The held-out tasks must be the second eligible IDs in the registered strata")
+        selected = heldout_tasks
     knowledge = get_knowledge_base()
     corpus_sha = digest(canonical(knowledge.model_dump(mode="json")))
     cases, tasks = [], {}
-    for group, tid in spec["tasks"].items():
+    for group, tid in selected.items():
         case = dict(task=tid, task_id=tid, domain=domain, split=None, customer="source-" + tid,
                     stratum=group, task_start_mode=START_FORMAT, scheduled_stages=list(matched.STAGES))
         conf = solve_connection(conn, matched.design_for(cfg, case, "source"),

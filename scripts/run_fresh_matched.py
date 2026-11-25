@@ -31,8 +31,11 @@ STAGES = ("source", "write", "solve")
 
 def jobs_for(case, stage):
     forms = list(FORMS)
+    modes = tuple(case.get("reader_modes", MODES))
+    if not modes or len(set(modes)) != len(modes) or any(m not in MODES for m in modes):
+        raise ContractError("Invalid registered reader delivery modes")
     arms = {"source": ["no_memory"], "write": forms,
-            "solve": [f"{form}__{mode}" for form in forms for mode in MODES]}[stage]
+            "solve": [f"{form}__{mode}" for form in forms for mode in modes]}[stage]
     ordered = sorted(arms, key=lambda a: digest(canonical([FRESH_MATCHED, case["task"], stage, a])))
     return [dict(index=i, repetition=1, task_id=case["task_id"],
                  phase="write" if stage == "write" else "solve", arm=arm)

@@ -1,0 +1,566 @@
+"""Compare clauses at four public decisions, then validate one writer policy on held-out banking tasks."""
+
+import argparse
+from copy import deepcopy
+from decimal import Decimal
+import json
+from pathlib import Path
+import random
+from tempfile import TemporaryDirectory
+
+from agent_memory_eval.analysis.action_grounding import input_evidence, literal_matches
+from agent_memory_eval.analysis.recorded_decisions import RecordedDecisions, require
+from agent_memory_eval.contracts.connection import provider_route
+from agent_memory_eval.contracts.core import MemoryPolicy, canonical, digest, read_json
+from agent_memory_eval.contracts.execution import ExecutionLimits
+from agent_memory_eval.contracts.validation import ROOT
+from agent_memory_eval.experiments.clause_contrast import clause_variants, next_action, preload_at_decision
+from agent_memory_eval.experiments.forms_write import read_form_bank
+from agent_memory_eval.memory.writing import writer_template
+from agent_memory_eval.recording.assets import asset_text, publish_json
+from agent_memory_eval.recording.journal import Journal, safe_path
+from agent_memory_eval.runner import fixed_decision
+from scripts import run_banking_memory as bank
+
+PROFILE = "protocols/pilots/tau-banking-policy-cycle-v1.json"
+PREFLIGHT = "artifacts/pilots/20261125-banking-policy-cycle-preflight.json"
+APPROVAL = "artifacts/pilots/20261125-banking-policy-cycle-authorization.json"
+CANDIDATE = "artifacts/pilots/20261125-banking-policy-cycle-candidate.json"
+POLICY = MemoryPolicy(
+    True,
+    "none",
+    False,
+    page_size=4,
+    read_mode="preload",
+    max_items=4,
+    max_payload_bytes=65536,
+    max_return_bytes=131072,
+)
+ORIGIN = "fixed_decision.result"
+read = bank.matched.read
+
+
+def save(path, value):
+    try:
+        publish_json(path, value)
+    except FileExistsError:
+        require(read(path) == value, f"Existing artifact differs at {path}")
+
+
+def design(workspace):
+    spec = read(ROOT / PROFILE)
+    previous = read_json(asset_text(ROOT, spec["previous"]).encode())
+    close = read_json(asset_text(workspace, spec["previous_close"]).encode())
+    require(
+        close["total_covered_usd"] == previous["total_covered_usd"] == spec["prior_usd"],
+        "Different earlier experiment or ledger balance",
+    )
+    parent = read_json(asset_text(ROOT, spec["banking_source_protocol"]).encode())
+    base = read_json(asset_text(ROOT, parent["base"]).encode())
+    strict = read_json(asset_text(ROOT, spec["writing_protocol"]).encode())
+    archived = read_json(asset_text(ROOT, spec["previous_allocation"]).encode())
+    return spec, previous, base, strict, archived
+
+
+def development(workspace):
+    spec, previous, base, _, archived = design(workspace)
+    instruction = asset_text(ROOT, base["delivery_instruction"])
+    target_tasks = set(spec["decisions"])
+    require(
+        target_tasks == set(spec["clauses"]) and not target_tasks.intersection(spec["heldout"].values()),
+        "Development and validation overlap or a note is missing",
+    )
+    forms, arms = spec["development_forms"], spec["development_arms"]
+    cells, notes, sources = {}, {}, {}
+    for task in sorted(target_tasks):
+        rule = spec["decisions"][task]
+        (first,) = [r for r in previous["sources"] if r["task"] == task]
+        parent = safe_path(workspace, rule["source"]["path"]).parent
+        source = RecordedDecisions(parent, rule["source_run"], rule["source"]["sha256"])
+        require(
+            first["log_sha256"] == rule["source"]["sha256"]
+            and first["run"] == source.run
+            and not source.start["source_run_ids"]
+            and not source.start["start_snapshot_id"]
+            and not any(e["type"].startswith("memory.") for e in source.events.values()),
+            "Decision must come from the original, graded memory-free trajectory",
+        )
+        (score,) = source.of_type("outcome.scored")
+        require(
+            score["payload"]["grading_status"] == "graded"
+            and score["payload"]["official_success"] is first["success"],
+            "Ungraded or different task source",
+        )
+        worker = [r for r in source.requests if r["actor_role"] == "worker"]
+        bank_root = workspace / "runs" / archived["series"] / ("task-" + task)
+        available = bank.matched.sealed_rows(bank_root / "write")[2]
+        old_readers = bank.matched.sealed_rows(bank_root / "solve")[2]
+        for form in forms:
+            ref = spec["clauses"][task][form]
+            name = f"{task}/{form}"
+            (writer,) = [r for r in available if r["arm"] == form]
+            written = read_form_bank(
+                bank_root / "write" / writer["directory"], expected_log_sha256=ref["writer_log_sha256"]
+            )
+            (original,) = written["items"]
+            require(
+                writer["run_id"] == ref["source_writer"] == written["run_id"]
+                and (original["id"], original["version"]) == (ref["item_id"], ref["version"])
+                and written["snapshot_id"] == ref["snapshot"]
+                and written["source_run_id"] == source.run
+                and written["feedback_level"] == spec["feedback"],
+                "The immutable note or its source changed",
+            )
+            (identifier,) = rule["arguments"].values()
+            variants, edits = clause_variants(original, ref["target"], ref["background"], identifier)
+            notes[name] = dict(
+                source_writer=written["run_id"],
+                snapshot=written["snapshot_id"],
+                source_item=original,
+                source_log_sha256=ref["writer_log_sha256"],
+                edits=edits,
+                variants=variants,
+            )
+            # Match the original automatic-delivery convention against an actual reader, including its exact neutral notice.
+            (prior,) = [r for r in old_readers if r["arm"] == form + "__preload"]
+            logged = RecordedDecisions(
+                bank_root / "solve" / prior["directory"], prior["run_id"], prior["result"]["log_sha256"]
+            )
+            prior_first = next(r for r in logged.requests if r["actor_role"] == "worker")
+            require(
+                preload_at_decision(source.blobs.get(worker[0]["request_ref"]), POLICY, instruction, original)
+                == logged.blobs.get(prior_first["request_ref"]),
+                "The public preload rendering changed",
+            )
+            for state in rule["states"]:
+                case = task + "/" + str(state["ordinal"])
+                req = worker[state["ordinal"] - 1]
+                wire = source.blobs.get(req["request_ref"])
+                require(
+                    (req["request_id"], req["request_ref"]["sha256"])
+                    == (state["request_id"], state["sha256"])
+                    and not source.visible(req, wire)
+                    and source.reply(req),
+                    "Frozen public decision changed",
+                )
+                public = input_evidence(wire["messages"], wire["tools"], {"grep"})
+                sources[case] = dict(
+                    task=task,
+                    ordinal=state["ordinal"],
+                    source_request=req["request_id"],
+                    source_log_sha256=first["log_sha256"],
+                    source_wire_sha256=state["sha256"],
+                    current_identifier_sources=literal_matches(identifier, public),
+                    source_next_action=next_action(
+                        source.reply(req), wire["tools"], rule["tool"], rule["arguments"]
+                    ),
+                )
+                common = None
+                for arm in arms:
+                    item = variants[arm]
+                    new = preload_at_decision(wire, POLICY, instruction, item)
+                    masked = deepcopy(new)
+                    (public_item,) = json.loads(masked["messages"][1]["content"])["items"]
+                    masked["messages"][1]["content"] = canonical(
+                        dict(items=[dict(public_item, body="")])
+                    ).decode()
+                    common = common or masked
+                    require(
+                        common == masked and len(canonical(new)) <= spec["max_input_bytes"],
+                        "Treatment changed something outside the note body or exceeds the input limit",
+                    )
+                    cells[case, form, arm] = (wire, POLICY, [item], new, [source.run, writer["run_id"]])
+    rng = random.Random(spec["schedule_seed"])
+    blocks = [
+        (case, form, rep)
+        for case in sorted(sources)
+        for form in forms
+        for rep in range(1, spec["repeats"] + 1)
+    ]
+    rng.shuffle(blocks)
+    slots = []
+    for case, form, rep in blocks:
+        ordered = arms.copy()
+        rng.shuffle(ordered)
+        for arm in ordered:
+            key = [spec["development_study"], case, form, rep, arm]
+            cell = cells[case, form, arm]
+            slots.append(
+                dict(
+                    slot=len(slots) + 1,
+                    case=case,
+                    task=sources[case]["task"],
+                    form=form,
+                    repeat=rep,
+                    arm=arm,
+                    run="r_" + digest(canonical(key))[:32],
+                    initial_sha256=digest(canonical(cell[3])),
+                    items_sha256=digest(canonical(cell[2])),
+                )
+            )
+    require(
+        len({s["run"] for s in slots}) == len(slots) == spec["validation"]["development_decisions"],
+        "Incorrect or duplicate fixed-decision allocations",
+    )
+    return dict(sources=sources, notes=notes, slots=slots), cells
+
+
+def preflight(workspace):
+    spec, _, _, _, _ = design(workspace)
+    probe, _ = development(workspace)
+    _, _, _, cases, _, native = bank.prepare(workspace, heldout_tasks=spec["heldout"])
+    original = read(ROOT / bank.PREFLIGHT)
+    require(
+        not {r["task"] for r in original["cases"]}.intersection(c["task"] for c in cases)
+        and native["corpus_sha256"] == original["corpus_sha256"],
+        "Holdout overlaps or uses another corpus",
+    )
+    return dict(
+        protocol_sha256=digest((ROOT / PROFILE).read_bytes()),
+        prior_usd=spec["prior_usd"],
+        development=probe,
+        validation=dict(tasks=cases, corpus_sha256=native["corpus_sha256"], assigned=spec["validation"]),
+    )
+
+
+def authorization(workspace, *, validation=False):
+    cfg = read(ROOT / PROFILE)
+    frozen = read(ROOT / PREFLIGHT)
+    approval = read(ROOT / APPROVAL)
+    require(
+        frozen == preflight(workspace)
+        and approval["preflight_sha256"] == digest(canonical(frozen))
+        and approval["protocol_sha256"] == frozen["protocol_sha256"]
+        and approval["prior_covered_usd"] == cfg["prior_usd"]
+        and approval["user_authorization"]
+        and approval["scope"] in {"development", "full"}
+        and approval["dev_max_usd"] == cfg["dev_max_usd"]
+        and (approval["scope"] != "full" or approval["total_usd"] == cfg["total_ceiling_usd"])
+        and (
+            approval["scope"] != "development"
+            or Decimal(approval["total_usd"]) == Decimal(cfg["prior_usd"]) + Decimal(cfg["dev_max_usd"])
+        )
+        and (not validation or approval["scope"] == "full"),
+        "Unapproved scope or changed preregistration",
+    )
+    return approval
+
+
+def cell_for(cells, slot):
+    return cells[slot["case"], slot["form"], slot["arm"]]
+
+
+def classification(cells, spec, slot, choice):
+    rule = spec["decisions"][slot["task"]]
+    return next_action(choice, cell_for(cells, slot)[0]["tools"], rule["tool"], rule["arguments"])
+
+
+def smoke(workspace):
+    """Exercise every distinct wire with the already recorded source reply, without a transport."""
+    spec, _, _, _, _ = design(workspace)
+    plan, cells = development(workspace)
+    replies = {}
+    for task, rule in spec["decisions"].items():
+        log = RecordedDecisions(
+            safe_path(workspace, rule["source"]["path"]).parent, rule["source_run"], rule["source"]["sha256"]
+        )
+        for state in rule["states"]:
+            req = log.starts[state["request_id"]][0]["payload"]
+            replies[task + "/" + str(state["ordinal"])] = log.reply(req)
+
+    class RecordedReply:
+        offline = True
+
+        def __init__(self, expected, choice):
+            self.expected, self.choice, self.calls = expected, choice, 0
+
+        def respond(self, request):
+            require(request == self.expected and self.calls == 0, "Unplanned mock submission")
+            self.calls += 1
+            return dict(
+                id="offline-replay",
+                choices=[self.choice],
+                usage=dict(prompt_tokens=0, completion_tokens=0, total_tokens=0, cost=0),
+            )
+
+    checked = []
+    for s in (s for s in plan["slots"] if s["repeat"] == 1):
+        cell = cell_for(cells, s)
+        require(digest(canonical(cell[3])) == s["initial_sha256"], "Registered live wire changed")
+        # The illustrative transport requires its own model identity. Everything else is replayed verbatim.
+        wire = dict(cell[3], model="synthetic-offline")
+        mock_cell = (dict(cell[0], model="synthetic-offline"), cell[1], cell[2], wire, cell[4])
+        mock_slot = dict(s, initial_sha256=digest(canonical(wire)))
+        with TemporaryDirectory() as tmp:
+            folder = Path(tmp)
+            client = RecordedReply(wire, replies[s["case"]])
+            with Journal(folder, "clause_smoke", contract_version="1.2") as journal:
+                fixed_decision.execute(
+                    journal,
+                    mock_slot,
+                    mock_cell,
+                    client,
+                    ExecutionLimits(1, 0, 0, spec["max_input_bytes"]),
+                    None,
+                    result_origin=ORIGIN,
+                )
+            rec = fixed_decision.receipt(
+                folder,
+                mock_slot,
+                {"pricing": {"prompt": 0, "completion": 0}},
+                lambda slot, choice: classification(cells, spec, slot, choice),
+                result_origin=ORIGIN,
+                full_audit=True,
+            )
+            require(
+                client.calls == 1
+                and rec["complete"]
+                and rec["confirmed_input_fields"] == ["body", "title"]
+                and rec["behavior"] == plan["sources"][s["case"]]["source_next_action"],
+                "Offline transport or rubric differs",
+            )
+            checked.append(
+                dict(
+                    case=s["case"],
+                    form=s["form"],
+                    arm=s["arm"],
+                    wire=s["initial_sha256"],
+                    original_response_class=rec["behavior"],
+                )
+            )
+    return dict(
+        transport="offline_recorded_source_reply",
+        model_calls=0,
+        transport_model="synthetic-offline",
+        unique_wires=len(checked),
+        checked=checked,
+    )
+
+
+def decisions(workspace):
+    approval = authorization(workspace)
+    spec, _, base, _, _ = design(workspace)
+    plan, cells = development(workspace)
+    endpoint_record = read_json(asset_text(ROOT, base["endpoints"]).encode())
+    cfg = dict(
+        name=spec["development_study"],
+        status="ready",
+        max_usd=approval["dev_max_usd"],
+        max_seconds=4800,
+        timeout_seconds=base["http_timeout_seconds"],
+        max_model_requests=len(plan["slots"]),
+        query_worker_limit=1,
+        max_input_bytes=spec["max_input_bytes"],
+        expected_canonical_slug=endpoint_record["models"]["worker"]["canonical_slug"],
+        authorization=approval,
+    )
+    return fixed_decision.run_slots(
+        workspace,
+        cfg,
+        plan["slots"],
+        lambda s: cell_for(cells, s),
+        base["endpoint_terms"]["worker"],
+        lambda s, choice: classification(cells, spec, s, choice),
+        result_origin=ORIGIN,
+        journal_prefix="clause",
+    )
+
+
+def candidate_binding(workspace, spec, strict):
+    proposal = read(ROOT / CANDIDATE)
+    result = read_json(asset_text(ROOT, proposal["development_results"]).encode())
+    dev = workspace / "runs" / spec["development_study"]
+    seal = read(dev / "completion.json")
+    require(
+        seal == result["completion"]
+        and digest((dev / "registration.json").read_bytes()) == seal["registration_sha256"]
+        and result["protocol_sha256"] == digest((ROOT / PROFILE).read_bytes())
+        and proposal["base_instruction"] == strict["common_instruction_ref"],
+        "Proposal or development evidence changed",
+    )
+    citations = {(r["slot"], r["journal_sha256"]) for r in result["rows"] if r["behavior"] != "unobserved"}
+    require(
+        proposal["observations"]
+        and all((c["slot"], c["journal_sha256"]) in citations for c in proposal["observations"])
+        and proposal["hypothesis"]
+        and proposal["falsifier"],
+        "A candidate needs observed development evidence",
+    )
+    old = asset_text(ROOT, proposal["base_instruction"]).rstrip("\r\n")
+    new = asset_text(ROOT, proposal["candidate_instruction"]).rstrip("\r\n")
+    extra = proposal["add"]
+    require(
+        extra.strip() == extra
+        and extra
+        and "\n" not in extra
+        and new == old + "\n" + extra
+        and not any(v in extra for d in spec["decisions"].values() for v in d["arguments"].values())
+        and not any(t in extra for t in [*spec["decisions"], *spec["heldout"].values()]),
+        "Candidate must append exactly one domain-neutral instruction",
+    )
+    covered = Decimal(spec["prior_usd"]) + Decimal(seal["confirmed_usd"]) + Decimal(seal["held_usd"])
+    return proposal, covered
+
+
+def writer_hashes(conn, cfg, source, instruction):
+    model = dict(
+        conn["worker"]["parameters"],
+        model=conn["worker"]["model_id"],
+        provider=provider_route(conn, "worker"),
+        stream=False,
+        seed=cfg["writer_seed"],
+    )
+    inputs = {}
+    for form, line in cfg["writing"]["lines"].items():
+        wire = writer_template(
+            model, instruction + "\n" + line, completion_contract=cfg["writing"]["completion_contract"]
+        )
+        wire["messages"] = [
+            wire.pop("system"),
+            dict(role="user", content=source.public_context),
+            dict(
+                role="user", content=canonical(source.feedback_message(cfg["writer_feedback_level"])).decode()
+            ),
+        ]
+        inputs[form] = digest(canonical(wire))
+    return inputs
+
+
+def policy_stage_job(args):
+    workspace, root, cfg, base, conn, case, task, stage, identity, models, judge, grant = args
+    if "writer_instruction" in case:
+        cfg = deepcopy(cfg)
+        cfg["writing"]["common_instruction_ref"] = case["writer_instruction"]
+    return bank.matched.stage_job(
+        (workspace, root, cfg, base, conn, case, task, stage, identity, models, judge, grant)
+    )
+
+
+def validation_run(workspace, phase):
+    approval = authorization(workspace, validation=True)
+    spec, _, _, strict, _ = design(workspace)
+    proposal, covered = candidate_binding(workspace, spec, strict)
+    _, base, conn, cases, tasks, _ = bank.prepare(workspace, heldout_tasks=spec["heldout"])
+    cfg = bank.required_design(base, strict)
+    cfg.update(
+        writer_feedback_level=spec["feedback"],
+        total_usd_limit=approval["total_usd"],
+        record_unfunded_shards=True,
+        expected_endpoint_terms={r: cfg["endpoint_terms"][r] for r in ("worker", "user_simulator")},
+    )
+    common = dict(
+        cycle_sha256=digest((ROOT / PROFILE).read_bytes()),
+        candidate_sha256=digest((ROOT / CANDIDATE).read_bytes()),
+        preflight_sha256=approval["preflight_sha256"],
+        approval=approval,
+    )
+    source_root = workspace / "runs" / spec["source_study"]
+    for case in cases:
+        case["reader_modes"] = ["preload"]
+    if phase == "sources":
+        cfg.update(name=spec["source_study"], stages=["source"])
+        record = dict(**common, cases=cases, phase=phase, assigned=len(cases), prior_covered_usd=str(covered))
+    else:
+        source_reg, source_close = (
+            read(source_root / "registration.json"),
+            read(source_root / "completion.json"),
+        )
+        require(
+            source_reg["preflight"]
+            == dict(
+                **common, cases=cases, phase="sources", assigned=len(cases), prior_covered_usd=str(covered)
+            )
+            and source_close["registration_sha256"]
+            == digest((source_root / "registration.json").read_bytes()),
+            "Unregistered validation first passes",
+        )
+        source_rid = digest(canonical(source_reg["preflight"]))
+        covered = Decimal(source_close["total_covered_usd"])
+        paired, task_map = [], {}
+        for case in cases:
+            tid = case["task_id"]
+            folder = source_root / ("task-" + tid) / "source"
+            seal = source_close["stages"][str(folder.relative_to(source_root))]
+            source = None
+            if seal.get("status") != "not_started":
+                require(
+                    digest((folder / "completion.json").read_bytes()) == seal["seal"],
+                    "Changed first-pass shard",
+                )
+                source = bank.matched.source_from(folder, tid)
+            for policy in spec["validation"]["writer_policies"]:
+                instruction = proposal[
+                    "candidate_instruction" if policy == "candidate" else "base_instruction"
+                ]
+                cell = dict(
+                    case, task=f"{tid}__{policy}", writer_policy=policy, writer_instruction=instruction
+                )
+                if source is None:
+                    cell.update(scheduled_stages=[], missing="first_pass_ungraded_or_unstarted")
+                else:
+                    cell["imported_first_pass"] = dict(
+                        directory=str(folder.relative_to(workspace / "runs")),
+                        registration_sha256=source_rid,
+                        run_id=source.source_run_id,
+                        log_sha256=source.source_log_sha256,
+                        public_context_sha256=source.public_context_sha256,
+                    )
+                    cell["first_writer_inputs"] = writer_hashes(
+                        conn, cfg, source, asset_text(ROOT, instruction).rstrip("\r\n")
+                    )
+                paired.append(cell)
+                task_map[cell["task"]] = tasks[tid]
+        cases, tasks = paired, task_map
+        cfg.update(name=spec["validation_study"], stages=["write", "solve"])
+        schedule = {
+            r["task"]: {stage: bank.matched.jobs_for(r, stage) for stage in cfg["stages"]} for r in cases
+        }
+        counts = {s: sum(len(row[s]) for row in schedule.values()) for s in cfg["stages"]}
+        require(all(counts[s] == spec["validation"][s] for s in counts), "Validation allocation changed")
+        record = dict(
+            **common,
+            cases=cases,
+            phase=phase,
+            assigned=counts,
+            prior_covered_usd=str(covered),
+            source_registration_sha256=source_close["registration_sha256"],
+            schedule_sha256=digest(canonical(schedule)),
+        )
+    cfg.update(prior_covered_usd=str(covered), registration_sha256=digest(canonical(record)))
+    bank.matched.run_study(
+        workspace,
+        cfg,
+        {},
+        conn,
+        cases,
+        tasks,
+        record,
+        stage_runner=policy_stage_job,
+        model_resolver=bank.matched.study_models,
+    )
+    return read(workspace / "runs" / cfg["name"] / "completion.json")
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("mode", choices=("preflight", "smoke", "decisions", "sources", "validation"))
+    parser.add_argument("--workspace", type=Path, default=ROOT)
+    parser.add_argument("--output", type=Path)
+    args = parser.parse_args()
+    workspace = args.workspace.resolve()
+    if args.mode == "preflight":
+        result = preflight(workspace)
+    elif args.mode == "smoke":
+        result = smoke(workspace)
+    elif args.mode == "decisions":
+        result = decisions(workspace)
+    else:
+        result = validation_run(workspace, args.mode)
+    if args.output:
+        save(args.output, result)
+    else:
+        print(json.dumps(result, indent=2, ensure_ascii=False))
+
+
+if __name__ == "__main__":
+    main()
