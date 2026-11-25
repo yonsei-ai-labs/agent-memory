@@ -1,0 +1,669 @@
+{
+  "format": "scoped-memory-note-review/v1",
+  "registration": "6f3e635c164d982fd83ef95246fd78ed7b7468887a548893817fd38bf4f8cd7d",
+  "ratings_sha256": "bd104d0fc59f4f4478b157495a733b83c4f27c569655b76cdb16794b1dc88929",
+  "packet_sha256": "45fd44a5386c3fe8fcedc2aaea7225bf12e18c0169af2313db92634cefc29160",
+  "reviewer": "Codex, single analyst of masked pairs; familiar with the earlier study, no independent second rater",
+  "gate_passed": true,
+  "reviewed": 20,
+  "missing": 0,
+  "counts": {
+    "incumbent": 9,
+    "only_incumbent": 4,
+    "scoped_candidate": 11,
+    "only_scoped_candidate": 6,
+    "mixed": 5,
+    "tie": 5
+  },
+  "writer_ledger": {
+    "registration_sha256": "6f3e635c164d982fd83ef95246fd78ed7b7468887a548893817fd38bf4f8cd7d",
+    "stages": {
+      "task-task_017/write": {
+        "reported": "0.013046375",
+        "held": "0E-9",
+        "spent": "0.013046375",
+        "http": 5,
+        "seal": "1be6be75905562c2682170591c72cb715f4b6dd5d779206ddd0419421f3d0841"
+      },
+      "task-task_014/write": {
+        "reported": "0.006846000",
+        "held": "0E-9",
+        "spent": "0.006846000",
+        "http": 5,
+        "seal": "e1aa659862d7a81e62a2b8c1b20b5431f19deb0fd70a38c8d7ddb9010164f52e"
+      },
+      "task-task_002/write": {
+        "reported": "0.008354625",
+        "held": "0E-9",
+        "spent": "0.008354625",
+        "http": 5,
+        "seal": "a70d0d16ffd38a208d91eac49c7ff6f959e2ce29f0299d69de5c13ba3cdaf871"
+      },
+      "task-task_016/write": {
+        "reported": "0.010871375",
+        "held": "0E-9",
+        "spent": "0.010871375",
+        "http": 5,
+        "seal": "56834036ed5454de89aa0ed296e56e3d55682890d2a34bb53d3a929b1cd04201"
+      }
+    },
+    "total_covered_usd": "0.039118375"
+  },
+  "pairs": [
+    {
+      "pair": "0dbdb608959d",
+      "task": "task_002",
+      "form": "episode",
+      "assignments": {
+        "A": "scoped_candidate",
+        "B": "incumbent"
+      },
+      "advantages": [
+        "incumbent"
+      ],
+      "unsupported_completion": [],
+      "references": {
+        "incumbent": {
+          "source": "r_7e8c96bfdc624791a1fcb24f8d4f79dd",
+          "writer": "r_ac618f689928462d9821248700010496",
+          "log_sha256": "568c96109e86c3227104391e3660de95d32103237bcdc8f5f924156faab47897",
+          "snapshot": "snap_7d276cdb96424483825579cf29273d98",
+          "id": "m_c3bd8bce2d8e479b85846de142177f7f",
+          "version": "v_474a259fce294cbc92ef113bb27ed639"
+        },
+        "scoped_candidate": {
+          "source": "r_7e8c96bfdc624791a1fcb24f8d4f79dd",
+          "writer": "r_97fc890ed2fc4f35b49847aff3d4115e",
+          "log_sha256": "227a9242f06bb1a41eb7c135e901ab0ac1aadb87d188ef0a6f05e3394052ad4d",
+          "snapshot": "snap_b607d49ecce84b5eb3c92c46390b001a",
+          "id": "m_59c5f4db39444dbbbc22c30f88d8e4ca",
+          "version": "v_0ee3fc7e845e440badbbf7615b7a654b"
+        }
+      }
+    },
+    {
+      "pair": "0ebe7ecc792b",
+      "task": "task_002",
+      "form": "lesson",
+      "assignments": {
+        "A": "scoped_candidate",
+        "B": "incumbent"
+      },
+      "advantages": [
+        "incumbent"
+      ],
+      "unsupported_completion": [],
+      "references": {
+        "incumbent": {
+          "source": "r_7e8c96bfdc624791a1fcb24f8d4f79dd",
+          "writer": "r_5911f532e7fe4d16a60e4374aea7646a",
+          "log_sha256": "c1e367b6acb8b9a6824d92af65736eac77d49d45285e35b086ee305cc30b69af",
+          "snapshot": "snap_8e197d55ecff46dea266555a067f3900",
+          "id": "m_22530a59cd1e45f4a31755c36157e9a1",
+          "version": "v_eb7c56b89f9c449f8ea70169436a807b"
+        },
+        "scoped_candidate": {
+          "source": "r_7e8c96bfdc624791a1fcb24f8d4f79dd",
+          "writer": "r_0b05f22d938f4b2c95f4b8eed0c9e9db",
+          "log_sha256": "acd25246f169783e56da4b3a0f4d4512fd30e0eb6ae535b1cde38fb22a82f730",
+          "snapshot": "snap_d3a3947bee47462c836e805693480aa3",
+          "id": "m_f6c3b7ab61d245fc99326902e12df42a",
+          "version": "v_55ec68f87df542ae8d44df5b4a949395"
+        }
+      }
+    },
+    {
+      "pair": "2cbd858b725a",
+      "task": "task_014",
+      "form": "fact",
+      "assignments": {
+        "A": "scoped_candidate",
+        "B": "incumbent"
+      },
+      "advantages": [
+        "scoped_candidate"
+      ],
+      "unsupported_completion": [],
+      "references": {
+        "incumbent": {
+          "source": "r_922a0c4ec5be4f86b51f419e00c1d8de",
+          "writer": "r_64282e0de7494c198a0442bde018d90c",
+          "log_sha256": "123b98477e4e1c697b781f6ed0f5a6b6e16162c8bc5e6e40bc21ddb1b95857a3",
+          "snapshot": "snap_2b97d4527c3243908550364648fafc3a",
+          "id": "m_229d899e73cb491bae0a024baea7f143",
+          "version": "v_6696d2d2102147e598468dff336c198d"
+        },
+        "scoped_candidate": {
+          "source": "r_922a0c4ec5be4f86b51f419e00c1d8de",
+          "writer": "r_1119244a6a9b4ee2be0923a8e604186c",
+          "log_sha256": "7015c9158c80449a5040c3717cfeb15cdb368c7aa3a3435a1b032d7004d99ecb",
+          "snapshot": "snap_9b85cb16db4c412bbd51a3a27b5e8d28",
+          "id": "m_a76cfc21647f4854b2645f38b18ad829",
+          "version": "v_7be8c9e743a6495d8021f75ebc93b8f9"
+        }
+      }
+    },
+    {
+      "pair": "3e9bc764d230",
+      "task": "task_016",
+      "form": "fact",
+      "assignments": {
+        "A": "incumbent",
+        "B": "scoped_candidate"
+      },
+      "advantages": [
+        "incumbent",
+        "scoped_candidate"
+      ],
+      "unsupported_completion": [],
+      "references": {
+        "incumbent": {
+          "source": "r_d914c049e28c492d893e0d4e5ce2c6ae",
+          "writer": "r_eb95308ec9b84ea19778f7945d68e3e1",
+          "log_sha256": "6163c81170a140280dc68f7a902ddaf066552a436ceec8721bee6886a69b9b76",
+          "snapshot": "snap_941532425900453c95147ec91553aa4e",
+          "id": "m_148ddeb657c0422e832358e588506394",
+          "version": "v_f42d2acf46cc4206a66605834f750224"
+        },
+        "scoped_candidate": {
+          "source": "r_d914c049e28c492d893e0d4e5ce2c6ae",
+          "writer": "r_b9ac469c087e4056a1de95b0d2f5a993",
+          "log_sha256": "0b21a555dc86f9a225caa3a79660e04a0b46b78e96b66c09079792e80a3450e2",
+          "snapshot": "snap_8e87bb252e064715a29c71f70a0cd59f",
+          "id": "m_97db9f9134c94e099e0aab1cb7010490",
+          "version": "v_f02608c2c9c8476d8ed8bab53f90cb90"
+        }
+      }
+    },
+    {
+      "pair": "41695ee6a639",
+      "task": "task_017",
+      "form": "episode",
+      "assignments": {
+        "A": "scoped_candidate",
+        "B": "incumbent"
+      },
+      "advantages": [
+        "scoped_candidate"
+      ],
+      "unsupported_completion": [],
+      "references": {
+        "incumbent": {
+          "source": "r_77b7490f996d462d8323a65c8d8c06bc",
+          "writer": "r_470fae85768d4053bf9c5666d9eb5cb1",
+          "log_sha256": "a2dcd0bb7030345fa16b2d17c3eebac47aca8887d840321233fc6e06dcd9f6dd",
+          "snapshot": "snap_a4c654dc8bf947718a8b4c369dc90ab6",
+          "id": "m_6574052eb4134ef195821067c1494384",
+          "version": "v_07a2e83dadbd402892e3e68721e7332a"
+        },
+        "scoped_candidate": {
+          "source": "r_77b7490f996d462d8323a65c8d8c06bc",
+          "writer": "r_4bb6c50dcc344ea195ce828886329730",
+          "log_sha256": "b1ca09d042c6f0c378425c8a3b35ac389b414a647e19e92d3f5031c478144975",
+          "snapshot": "snap_9e9f9988d45346978aed4d4d3858632b",
+          "id": "m_677a96d6183245b4999f167bc982bc24",
+          "version": "v_bbed777433a244efa06b93e8d6c41cf8"
+        }
+      }
+    },
+    {
+      "pair": "5b7228deff12",
+      "task": "task_016",
+      "form": "free",
+      "assignments": {
+        "A": "incumbent",
+        "B": "scoped_candidate"
+      },
+      "advantages": [
+        "scoped_candidate"
+      ],
+      "unsupported_completion": [],
+      "references": {
+        "incumbent": {
+          "source": "r_d914c049e28c492d893e0d4e5ce2c6ae",
+          "writer": "r_128adde7d5474399b9f9e93cacbf88ff",
+          "log_sha256": "f7f59b3a1b0b722f34885a08da466868de93606a7e0c6f5dec73666059d8fb77",
+          "snapshot": "snap_20a12c0ea3aa4483b46aeea1e4d1e327",
+          "id": "m_0ec29c04bc1249cf8498d805af41ba38",
+          "version": "v_a668d8b3d4f946de932bbead9fa8442e"
+        },
+        "scoped_candidate": {
+          "source": "r_d914c049e28c492d893e0d4e5ce2c6ae",
+          "writer": "r_d2d520668bf04b1899cee2ae77213576",
+          "log_sha256": "f5480ee2077997f92cb179a1b1d32d6369e1a025e0979864304f08e47b80a251",
+          "snapshot": "snap_488c2f03014a4271a42c69bcb85d13a1",
+          "id": "m_28d0fec2430542238ae50a4e3588df05",
+          "version": "v_8bae4d0098b54e7b88e5ded1bad046b1"
+        }
+      }
+    },
+    {
+      "pair": "7b2b099e5f38",
+      "task": "task_017",
+      "form": "lesson",
+      "assignments": {
+        "A": "incumbent",
+        "B": "scoped_candidate"
+      },
+      "advantages": [
+        "scoped_candidate"
+      ],
+      "unsupported_completion": [],
+      "references": {
+        "incumbent": {
+          "source": "r_77b7490f996d462d8323a65c8d8c06bc",
+          "writer": "r_55cd3b1dc95a496d9ac92a45ac212335",
+          "log_sha256": "504656ad705cfe7f6dce58edba22f36d414c10d0cfe3374d94bae93dc0749641",
+          "snapshot": "snap_e6eab28bf62e4abdbf4af1fbe27bdbfe",
+          "id": "m_a1c5d123f8834924a070bc12ca164486",
+          "version": "v_66bb0d705f03456fa6585114a97c6fb9"
+        },
+        "scoped_candidate": {
+          "source": "r_77b7490f996d462d8323a65c8d8c06bc",
+          "writer": "r_90feda8ef3914f1585451495a92dda3d",
+          "log_sha256": "58572cf255732ca8eb00eb2a620c01117135cf929a3972a3b3c1fd3609dee41f",
+          "snapshot": "snap_d79101c274ac4c30bd27af1c863f94e9",
+          "id": "m_442cfdff3c524d89a10ac21ac2432b4f",
+          "version": "v_867144f64c0348178880cc579736b71f"
+        }
+      }
+    },
+    {
+      "pair": "7c75dc645402",
+      "task": "task_016",
+      "form": "lesson",
+      "assignments": {
+        "A": "scoped_candidate",
+        "B": "incumbent"
+      },
+      "advantages": [
+        "scoped_candidate",
+        "incumbent"
+      ],
+      "unsupported_completion": [],
+      "references": {
+        "incumbent": {
+          "source": "r_d914c049e28c492d893e0d4e5ce2c6ae",
+          "writer": "r_32d8701d9b024c91aeccc6b412f59109",
+          "log_sha256": "91fd4db7e0bf23b629741ab115b48750300818ad48232e69d06be00b425bbeca",
+          "snapshot": "snap_f966bb792fb5454d957cb245c13dcc95",
+          "id": "m_bd1fa2f03f0042c49347d2ca8ecc4328",
+          "version": "v_791d86fd2e494782aba00e39c869ce07"
+        },
+        "scoped_candidate": {
+          "source": "r_d914c049e28c492d893e0d4e5ce2c6ae",
+          "writer": "r_e93095a787084afcac851d22fa0fa168",
+          "log_sha256": "f3b98e511e49458c32fbaa001d8a9625d4aaee4aa312850539fe17e296ed3ce3",
+          "snapshot": "snap_100b457e94e548db8798fb2ab000cedc",
+          "id": "m_1afaf7bdcad94f6e842c07035292bf0f",
+          "version": "v_358420b1473f43b88c67a7d7f167d6ad"
+        }
+      }
+    },
+    {
+      "pair": "7e94a32e85cc",
+      "task": "task_016",
+      "form": "procedure",
+      "assignments": {
+        "A": "scoped_candidate",
+        "B": "incumbent"
+      },
+      "advantages": [
+        "incumbent"
+      ],
+      "unsupported_completion": [],
+      "references": {
+        "incumbent": {
+          "source": "r_d914c049e28c492d893e0d4e5ce2c6ae",
+          "writer": "r_13018f491b204cf2931a3b06c444437d",
+          "log_sha256": "f36e0cdd564d3f3d986e59e58e026a5f9864c4f1510f933346543f0dd4844ee8",
+          "snapshot": "snap_4db69bc668dc45a380ddd65afaeede32",
+          "id": "m_97a6feeefe8446e6b21fcd6462f473d5",
+          "version": "v_e5e99a798e724694948ee6a61937c8d6"
+        },
+        "scoped_candidate": {
+          "source": "r_d914c049e28c492d893e0d4e5ce2c6ae",
+          "writer": "r_8a442138215d4ee086313bac5ac86928",
+          "log_sha256": "b44816c7b591eb53f3863ae5c2057a67a35dc8a21cccbd2821bcdf61c72f50ea",
+          "snapshot": "snap_88e546b10f294bb2a09b39f25b3cc3a0",
+          "id": "m_293e5024e6a04300be088cdd570f938c",
+          "version": "v_818f687e538f40799e156177b38d8b1d"
+        }
+      }
+    },
+    {
+      "pair": "85d058fdec25",
+      "task": "task_017",
+      "form": "fact",
+      "assignments": {
+        "A": "scoped_candidate",
+        "B": "incumbent"
+      },
+      "advantages": [
+        "scoped_candidate",
+        "incumbent"
+      ],
+      "unsupported_completion": [],
+      "references": {
+        "incumbent": {
+          "source": "r_77b7490f996d462d8323a65c8d8c06bc",
+          "writer": "r_78c3e43b186844df8c4e01def1078e8f",
+          "log_sha256": "0bc33cb4e0d6d262e5558666000193f1134d549c74868e5d52a57eaba58c6171",
+          "snapshot": "snap_0b2e90958f19407ca2d25757cb930375",
+          "id": "m_067993dfb89e4333bbc56c5b25ae0034",
+          "version": "v_8cb2cdccff2d4924b4a3a10ac8127c57"
+        },
+        "scoped_candidate": {
+          "source": "r_77b7490f996d462d8323a65c8d8c06bc",
+          "writer": "r_c8fd2ba03b5c403fb893dbf8284a0176",
+          "log_sha256": "4eb15102d8a91b06a286f601a9bed89c32670fd987c1c485d83ccb671a658b49",
+          "snapshot": "snap_0bd469d6664f43269812127aa7b6e983",
+          "id": "m_85687d6517c64980b4a66d8a365ce8f1",
+          "version": "v_2e8c493b0cbb4cfba886a7108805b351"
+        }
+      }
+    },
+    {
+      "pair": "91d80ae8d1e5",
+      "task": "task_014",
+      "form": "free",
+      "assignments": {
+        "A": "scoped_candidate",
+        "B": "incumbent"
+      },
+      "advantages": [],
+      "unsupported_completion": [],
+      "references": {
+        "incumbent": {
+          "source": "r_922a0c4ec5be4f86b51f419e00c1d8de",
+          "writer": "r_ec54c2731ce347ad897c44cd66f8f893",
+          "log_sha256": "298ca47e68697fa51d1478e3182696008fa3a8ead8857ea11f211664418baab5",
+          "snapshot": "snap_7a31d06941a44346a57d96f24ff280ff",
+          "id": "m_2e688feac42f426b80bcec8ffc808084",
+          "version": "v_0f3c99ead7d642079369038906442527"
+        },
+        "scoped_candidate": {
+          "source": "r_922a0c4ec5be4f86b51f419e00c1d8de",
+          "writer": "r_056d1a8f412941ba844ca43270249b79",
+          "log_sha256": "3d261d0b0768e090b8a067835bf9cfaabd42ccaf2daa9145f52ee850d9aca2cf",
+          "snapshot": "snap_1873f4d6969a4317b860c3e327aea612",
+          "id": "m_f6073195f08146ba985e8dae1d0a3ccb",
+          "version": "v_334b19dbb9774231807e12daa02a2372"
+        }
+      }
+    },
+    {
+      "pair": "93913ff6864c",
+      "task": "task_017",
+      "form": "procedure",
+      "assignments": {
+        "A": "incumbent",
+        "B": "scoped_candidate"
+      },
+      "advantages": [
+        "incumbent",
+        "scoped_candidate"
+      ],
+      "unsupported_completion": [],
+      "references": {
+        "incumbent": {
+          "source": "r_77b7490f996d462d8323a65c8d8c06bc",
+          "writer": "r_3068725604824700a110664edbf72e97",
+          "log_sha256": "20356d1335039f370ffe8d4566e8e7598d30ae72111a0aac6d7cae279bc78313",
+          "snapshot": "snap_68de1112b4174db087069ba75b1193fa",
+          "id": "m_f2f1da695f104a49b11210186bbc6c46",
+          "version": "v_e21ef0ff1ba84497a24a36ffe5664d30"
+        },
+        "scoped_candidate": {
+          "source": "r_77b7490f996d462d8323a65c8d8c06bc",
+          "writer": "r_b234f960dff24be2923d33f2fa7c1e13",
+          "log_sha256": "e848cd060ee838c52d81c92d2e52217de2d2ad4c8cf72a60938baaf191f89514",
+          "snapshot": "snap_487c992df6bd47fc8024d43abced9c8f",
+          "id": "m_31c022c816514157b776529c8335c143",
+          "version": "v_f382f9e1acf8402880d0069caeca3289"
+        }
+      }
+    },
+    {
+      "pair": "94d0bd182be2",
+      "task": "task_017",
+      "form": "free",
+      "assignments": {
+        "A": "scoped_candidate",
+        "B": "incumbent"
+      },
+      "advantages": [
+        "scoped_candidate",
+        "incumbent"
+      ],
+      "unsupported_completion": [],
+      "references": {
+        "incumbent": {
+          "source": "r_77b7490f996d462d8323a65c8d8c06bc",
+          "writer": "r_821df2e07cf844acaffb9a6390e88d8a",
+          "log_sha256": "8808b5d6d2123e244aee9df41857af85409f65846e70a49c579eed3cb7c0d5dd",
+          "snapshot": "snap_981ce6b2351245f09d3515d9ec3c46cd",
+          "id": "m_dc3ad5633db141338c720365f4cb9d0a",
+          "version": "v_4a988ecb8be34f14af48fa8f241b1db3"
+        },
+        "scoped_candidate": {
+          "source": "r_77b7490f996d462d8323a65c8d8c06bc",
+          "writer": "r_62b4a7c07a744ff0aeb71e76825452aa",
+          "log_sha256": "d28aecfba60e5d74efd19dfb1a6a4462d6f3d578731d6c72e80233105795f33b",
+          "snapshot": "snap_56c0fed9d93244aa9ceee650c1587ec7",
+          "id": "m_ae61fe1477994d6a836b0c97859b171d",
+          "version": "v_ee6b09db29224ec6a437cdd63d6c3929"
+        }
+      }
+    },
+    {
+      "pair": "9631abaf9d04",
+      "task": "task_002",
+      "form": "free",
+      "assignments": {
+        "A": "incumbent",
+        "B": "scoped_candidate"
+      },
+      "advantages": [],
+      "unsupported_completion": [],
+      "references": {
+        "incumbent": {
+          "source": "r_7e8c96bfdc624791a1fcb24f8d4f79dd",
+          "writer": "r_a801b32a6e1542ad97128efc7a2b13df",
+          "log_sha256": "bd96f70f0c8a66c19a14ab27914c44b892ebe92584291be4116ca3b63f0e78a4",
+          "snapshot": "snap_0a66d7b3f20f49d4a3839a00c9c47be1",
+          "id": "m_bb7cde9c2da54d98a7bf36a5c59fdd00",
+          "version": "v_101d9c2f91c947eab36b6b3780dcb1f1"
+        },
+        "scoped_candidate": {
+          "source": "r_7e8c96bfdc624791a1fcb24f8d4f79dd",
+          "writer": "r_e5db4043f0d14a9aa11d52f28da7a9f2",
+          "log_sha256": "e4ee30e655fbb8c8ec9d09daff62557408e4e2970bcc25484c373cab125c8621",
+          "snapshot": "snap_88c5d4d4bb4943519008f6cee5698381",
+          "id": "m_e760554d88a14d608ea552fde7494aa9",
+          "version": "v_bc9d3cbf455a47f3999355711c900c57"
+        }
+      }
+    },
+    {
+      "pair": "988b6876da9d",
+      "task": "task_016",
+      "form": "episode",
+      "assignments": {
+        "A": "scoped_candidate",
+        "B": "incumbent"
+      },
+      "advantages": [
+        "scoped_candidate"
+      ],
+      "unsupported_completion": [],
+      "references": {
+        "incumbent": {
+          "source": "r_d914c049e28c492d893e0d4e5ce2c6ae",
+          "writer": "r_2f3946dcabaa46139a9f2bb853ee57f5",
+          "log_sha256": "174018e160473ce7650f9e65f8254c8a7f10fba8ae6d53b88ae9c4458415679f",
+          "snapshot": "snap_ae75b4f25c054d2bb4a7f1fc87edf155",
+          "id": "m_d04b2ec90ef44e69bf4e272b7326d5bb",
+          "version": "v_5adbb5094f124a2ea7af123e4eb02ce5"
+        },
+        "scoped_candidate": {
+          "source": "r_d914c049e28c492d893e0d4e5ce2c6ae",
+          "writer": "r_9cbb4e66b5b441e6a702386dbdb623f2",
+          "log_sha256": "242f4392885339d620b1c1c30c492ed8128966e07510f28d56bc96789ef08df9",
+          "snapshot": "snap_9a1a37c4720c4d578a306bfa147144b0",
+          "id": "m_1f4c6e7850b149dfac3e75c5ab7c33a8",
+          "version": "v_68a24fe3659644058a7ffee0e1d82d80"
+        }
+      }
+    },
+    {
+      "pair": "a6dd5982981d",
+      "task": "task_014",
+      "form": "episode",
+      "assignments": {
+        "A": "scoped_candidate",
+        "B": "incumbent"
+      },
+      "advantages": [],
+      "unsupported_completion": [],
+      "references": {
+        "incumbent": {
+          "source": "r_922a0c4ec5be4f86b51f419e00c1d8de",
+          "writer": "r_f5ba983805bd468092b792c6e10e0500",
+          "log_sha256": "400ce5284004e76f12afddd34b50e18a8fdf6710377381be844a7f2ca9ad9679",
+          "snapshot": "snap_e1c10b9875974fcc9d7f6f32e7c70793",
+          "id": "m_99397a33bc304db881b37d0701d36fb0",
+          "version": "v_d294a51c4bad457a82c7fba42fb1af67"
+        },
+        "scoped_candidate": {
+          "source": "r_922a0c4ec5be4f86b51f419e00c1d8de",
+          "writer": "r_c94288c5a1ca47db984f069aa60bdb2c",
+          "log_sha256": "91f5e531c58557e4ab9fab4e1782f1e858d21829bf4feb75fc90b88499d1df25",
+          "snapshot": "snap_c1797bc2e1bc49afaebdfd1f84f53040",
+          "id": "m_22477f91ef74468eba2a262fe5cab115",
+          "version": "v_5ad1a47d4b554b85865ba6ff1d6005f5"
+        }
+      }
+    },
+    {
+      "pair": "b7ce5abe931b",
+      "task": "task_002",
+      "form": "fact",
+      "assignments": {
+        "A": "incumbent",
+        "B": "scoped_candidate"
+      },
+      "advantages": [
+        "scoped_candidate"
+      ],
+      "unsupported_completion": [],
+      "references": {
+        "incumbent": {
+          "source": "r_7e8c96bfdc624791a1fcb24f8d4f79dd",
+          "writer": "r_792305b5e7164bdf8cdbf0649702a4e0",
+          "log_sha256": "bf944ce054c23c580cdf065486c5dcd2a84628faf1c2ebe38f6d76b0c98fa869",
+          "snapshot": "snap_8eeaa71346da4408ad7365ccfca1fb5b",
+          "id": "m_1a1e0c996c6b4619902aa5cd614c8951",
+          "version": "v_8b1c925b484e411693ee63ec78f40d59"
+        },
+        "scoped_candidate": {
+          "source": "r_7e8c96bfdc624791a1fcb24f8d4f79dd",
+          "writer": "r_a4e1698440e04c429e719ce113c336ee",
+          "log_sha256": "a3e038c1f6a4b76f9eed8aa72f5603b013771ab760bd158d996f29fd98327d9f",
+          "snapshot": "snap_0851190c1d234f508f2d80820d37ee11",
+          "id": "m_2f8c02ae8577428dbd91a98c8aec0aef",
+          "version": "v_eb02ff05a9804651895c01d4625b93d4"
+        }
+      }
+    },
+    {
+      "pair": "e050b14a760e",
+      "task": "task_002",
+      "form": "procedure",
+      "assignments": {
+        "A": "scoped_candidate",
+        "B": "incumbent"
+      },
+      "advantages": [],
+      "unsupported_completion": [],
+      "references": {
+        "incumbent": {
+          "source": "r_7e8c96bfdc624791a1fcb24f8d4f79dd",
+          "writer": "r_5e7b098da1474d578f4bcecccfa76c36",
+          "log_sha256": "93c145f75cb6023e1e5166159c104ad7f0f4a7b840b0ef4c431564d8e4183eb8",
+          "snapshot": "snap_eed3f3a16d5b43e3a35bebb7eb7f9861",
+          "id": "m_c569a21b3ac44c5c89d6a7e7cdb96899",
+          "version": "v_483af161ebb5465ab4630558c54132b0"
+        },
+        "scoped_candidate": {
+          "source": "r_7e8c96bfdc624791a1fcb24f8d4f79dd",
+          "writer": "r_4de412fe360348bd9b99cc5c68db01a3",
+          "log_sha256": "f0d8e69cdcb95f09af76b6da624919247d77a452753fb31e2b6a6472a3e13855",
+          "snapshot": "snap_ee34505064e040dd9de64824a75b7b53",
+          "id": "m_9cd75f4ac0bf48e3bb6d9161edc8e4a8",
+          "version": "v_03b3071fdd3b4363802ebfb2e6926133"
+        }
+      }
+    },
+    {
+      "pair": "e7a36f0c07ef",
+      "task": "task_014",
+      "form": "lesson",
+      "assignments": {
+        "A": "incumbent",
+        "B": "scoped_candidate"
+      },
+      "advantages": [],
+      "unsupported_completion": [],
+      "references": {
+        "incumbent": {
+          "source": "r_922a0c4ec5be4f86b51f419e00c1d8de",
+          "writer": "r_56f190cab8744bc4a59a40b260d605c7",
+          "log_sha256": "7cd404fbb8b2308a9ba2c2fa7778beb04e787220978bd892e990f502021648e8",
+          "snapshot": "snap_05eac965cd414f549817148e89d5e830",
+          "id": "m_982d9c71c23a4671ad2f5b56069a7e40",
+          "version": "v_54148ace4dde403e9432b9af0bddcab2"
+        },
+        "scoped_candidate": {
+          "source": "r_922a0c4ec5be4f86b51f419e00c1d8de",
+          "writer": "r_11c8aeeb2adf4cf791be837359753c72",
+          "log_sha256": "9493e93ce0c3f246dbbdfb6d83366c97d02970afec36bb0fda0b726686f85578",
+          "snapshot": "snap_6e32c51b43784ad987acff5fc5ad957a",
+          "id": "m_770cf65794e449d9a8fa2efd8d2add3d",
+          "version": "v_b57b9e9283944153bec7d05b5f341f64"
+        }
+      }
+    },
+    {
+      "pair": "f8c0359c8daf",
+      "task": "task_014",
+      "form": "procedure",
+      "assignments": {
+        "A": "incumbent",
+        "B": "scoped_candidate"
+      },
+      "advantages": [
+        "incumbent"
+      ],
+      "unsupported_completion": [],
+      "references": {
+        "incumbent": {
+          "source": "r_922a0c4ec5be4f86b51f419e00c1d8de",
+          "writer": "r_7ecf864050a34dde93fc5688173522e6",
+          "log_sha256": "21e33d24a2c92e1cf477c5ebb9619f7902b021e3f959597baddf10655c24e654",
+          "snapshot": "snap_403c1d8e5a194505b7fe4fb5c98d1217",
+          "id": "m_976bcbd79e4c4d648acd24cac5e8a513",
+          "version": "v_01bea2c8e5d8459f912f2241bacd8a11"
+        },
+        "scoped_candidate": {
+          "source": "r_922a0c4ec5be4f86b51f419e00c1d8de",
+          "writer": "r_08ae36a62dc543ac877570a486a8fe93",
+          "log_sha256": "f8cd5a5876db5773529cb488cfd63bae9c2dc0fcc1cf869a1274250f127c6b66",
+          "snapshot": "snap_128cc2d1b82d41da959e4027c6960129",
+          "id": "m_5b871336895f41209a05b440289cb05e",
+          "version": "v_040733d3f289477b8d4fa90a75328223"
+        }
+      }
+    }
+  ]
+}
