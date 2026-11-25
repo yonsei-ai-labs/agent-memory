@@ -447,15 +447,250 @@ def analyze(workspace, *, exposure_report=False, result_feedback=False):
     return report
 
 
+def repeat_episode(folder, row, case, registration, source=None, writer=None, note_labels=None, customer_id=None):
+    from agent_memory_eval.adapters.banking_dispute_evidence import TRANSACTION, merchant_amount_mentions
+    from agent_memory_eval.analysis.efficiency import business_calls_by_role
+    from agent_memory_eval.contracts.core import MemoryPolicy
+    from agent_memory_eval.memory.context import memory_system_suffix, snapshot_message
+
+    res = row.get("result", {})
+    rec = dict(started=bool(row.get("run_id") and res.get("log_sha256")), run=row.get("run_id"),
+               task=case["task"], success=None, status=row["status"], reason=row.get("reason"),
+               billing=res.get("billing_by_role", {}))
+    if not rec["started"]:
+        return rec
+    folder = safe_path(folder, row["directory"])
+    log = RecordedDecisions(folder, row["run_id"], res["log_sha256"])
+    require(log.start["fresh_session"], "A consultation reused a native session")
+    checked = episode(folder, row, case, registration, source["run"] if source else None, writer)
+    rec.update(success=checked["success"], status=checked["status"], effort=checked["effort"],
+               setup=checked.get("setup_requests"), opening=checked.get("task_start_sha256"),
+               first_request=checked.get("first_worker_request_id"), session=checked["session_id"],
+               journal=res["log_sha256"], reason=res["termination_reason"], error=res.get("error_code"))
+    workers = [q for q in log.requests if q["actor_role"] == "worker"]
+    if workers:
+        q = workers[0]
+        wire = log.blobs.get(q["request_ref"])
+        rec["first_wire"] = q["request_ref"]["sha256"]
+        if source is not None:
+            a = log.state["assignments"][log.run]
+            require(writer and log.items == writer["items"] and wire["messages"][1] == snapshot_message(log.items)
+                    and {p["field"] for p in log.visible(q, wire)} == {"title", "body"},
+                    "Sealed memory not present at the first decision")
+            require(checked["source_worker_request_id"] == source["first_request"] and rec["opening"] == source["opening"],
+                    "Reader opening changed")
+            suffix = memory_system_suffix(MemoryPolicy(**a["policy"]), log.blobs.get(a["instruction_ref"]))
+            require(wire["messages"][0]["content"].endswith(suffix), "Missing memory policy in reader request")
+            wire["messages"].pop(1)
+            wire["messages"][0]["content"] = wire["messages"][0]["content"].removesuffix(suffix)
+            require(digest(canonical(wire)) == source["first_wire"], "Reader business request differs from source")
+            rec.update(verified_first_body=True, first_delivery=log.finishes[q["request_id"]]["delivery_status"],
+                       first_model_response=log.finishes[q["request_id"]]["status"] == "response", source_request=source["first_request"],
+                       writer=writer["run_id"], snapshot=writer["snapshot_id"])
+        else:
+            require(not log.items, "Baseline contains memory")
+        if log.finishes[q["request_id"]]["status"] == "response":
+            reply = log.reply(q)["message"]
+            calls = [c["function"] for c in reply.get("tool_calls") or []]
+            rec["first_business_calls"] = calls
+            if writer and customer_id:
+                rec["first_customer_id"] = dict(
+                    present_in_normalized_input=customer_id in canonical(wire).decode(),
+                    present_in_note=any(customer_id in i["title"] or customer_id in i["body"] for i in writer["items"]),
+                    argument_indexes=[n for n, c in enumerate(calls) if customer_id in c["arguments"]])
+    if rec["success"] is None:
+        return rec
+    score, = log.of_type("outcome.scored")
+    ref = score["payload"]["official_artifact_ref"]
+    report = log.blobs.get(ref)
+    info = report["reward_info"]
+    require(report["task_id"] == case["task"] and (info["reward"] == 1) == rec["success"] == info["db_check"]["db_match"],
+            "Official DB result differs from the sealed grade")
+    messages = report["messages"]
+    rec["report_sha256"] = ref["sha256"]
+    rec["calls"] = business_calls_by_role(messages)
+    rec["grep"] = sum(c["name"] == "grep" for m in messages if m["role"] == "assistant" for c in m.get("tool_calls") or [])
+    rec["exposed_decisions"] = sum(any(p["field"] == "body" for p in log.spans[q["request_id"]]) for q in workers)
+    rec["worker_decisions"] = len(workers)
+    echoes = []
+    if writer:
+        memory_ids = set().union(*(TRANSACTION.findall(i["title"] + "\n" + i["body"]) for i in writer["items"]))
+        seen_ids, seen_labels = set(), set()
+        for q in workers:
+            reply = log.reply(q)["message"]
+            text = json.dumps([reply.get("content"), reply.get("tool_calls")], ensure_ascii=False)
+            hits = (set(TRANSACTION.findall(text)) & memory_ids) - seen_ids
+            merchant_hits = {k: v for k, v in merchant_amount_mentions(text, note_labels or {}).items() if k not in seen_labels}
+            if hits or merchant_hits:
+                wire = log.blobs.get(q["request_ref"])
+                require({p["field"] for p in log.visible(q, wire)} == {"title", "body"}
+                        and wire["messages"][1] == snapshot_message(log.items), "Claimed echo without visible bank")
+                current = json.dumps([wire["messages"][0], *wire["messages"][2:], wire.get("tools", [])], ensure_ascii=False)
+                public = set(TRANSACTION.findall(current))
+                prior_labels = merchant_amount_mentions(current, note_labels or {})
+                echoes.append(dict(request=q["request_id"], ids=sorted(hits), ids_already_public=sorted(hits & public),
+                                   merchant_amount=merchant_hits,
+                                   labels_already_public=sorted(set(merchant_hits) & prior_labels.keys())))
+                seen_ids.update(hits)
+                seen_labels.update(merchant_hits)
+    rec["first_worker_mentions_from_note"] = echoes
+    return rec
+
+
+def form_repeat_report(workspace):
+    from agent_memory_eval.adapters.banking_dispute_evidence import (
+        SUBMIT, TRANSACTION, dispute_targets, merchant_amount_mentions, public_opportunity, public_transaction_labels,
+    )
+    from agent_memory_eval.adapters.tau_banking_results import BANKING_SUCCESS, NATIVE_DISPUTE_RECEIPTS, dispute_effects, dispute_submissions, verify_dispute_state
+    from agent_memory_eval.analysis.form_repeats import summarize_form_repeats
+    from agent_memory_eval.recording.journal import BlobStore
+    from scripts import run_banking_form_repeats as registry
+
+    spec, cfg, _, cases, tasks, published = registry.prepare(workspace)
+    root = workspace / "runs" / spec["name"]
+    baseline = pilot.matched.read(root / "registration.json")
+    close = pilot.matched.read(root / "completion.json")
+    approval = pilot.matched.read(pilot.ROOT / registry.APPROVAL)
+    require(published == pilot.matched.read(pilot.ROOT / registry.PREFLIGHT)
+            and baseline["preflight"] == dict(published, authorization=approval)
+            and close["registration_sha256"] == digest((root / "registration.json").read_bytes()), "Changed experiment registration")
+    rid = digest(canonical(baseline["preflight"]))
+    common = pilot.matched.asset_text(pilot.ROOT, cfg["writing"]["common_instruction_ref"]).rstrip("\r\n")
+    prompts = {f: digest((common + "\n" + line).encode()) for f, line in cfg["writing"]["lines"].items()}
+    writer_checks = dict(writer_prompt_sha256=prompts, writer_feedback_level=spec["feedback"])
+    sources, readers, notes, gates, costs, sessions = {}, [], [], {}, defaultdict(Counter), set()
+    for case in cases:
+        tid = case["task"]
+        task = tasks[tid]
+        owner, targets = dispute_targets(task)
+        banks, hints, writer_paths, source, public_labels = {}, {}, {}, None, {}
+        base = root / ("task-" + tid)
+        for stage in case["scheduled_stages"]:
+            folder = base / stage
+            kind = cfg["stage_kinds"].get(stage, stage)
+            jobs = pilot.matched.jobs_for(case, kind)
+            seal = close["stages"][str(folder.relative_to(root))]
+            costs[kind].update({k: Decimal(seal[k]) for k in ("reported", "held", "spent")})
+            if seal.get("status") == "not_started":
+                require(not folder.exists(), "An excluded allocation unexpectedly has records")
+                rows = [dict(job, status="not_started", reason=seal["reason"]) for job in jobs]
+            else:
+                _, ctl, rows = pilot.matched.sealed_rows(folder)
+                require(matches_accounting_seal(folder, ctl["profile"]["guards"]["max_usd"], seal)
+                        and ctl["profile"]["registration_sha256"] == rid and len(jobs) == len(rows)
+                        and all(all(r[k] == v for k, v in j.items()) for r, j in zip(rows, jobs)), "Changed shard or allocation")
+            for row in rows:
+                form = row["arm"].split("__")[0]
+                res = row.get("result") or {}
+                if res.get("session_id"):
+                    require(res["session_id"] not in sessions, "An allocation reused another session")
+                    sessions.add(res["session_id"])
+                if kind == "write":
+                    note = dict(task=tid, form=form, status=res.get("status", row["status"]), billing=res.get("billing_by_role", {}),
+                                reason=res.get("error_code") or row.get("reason"), run=row.get("run_id"))
+                    if res.get("log_sha256"):
+                        note["verified_writer_input"] = verify_writer_input(folder, row, source, writer_checks)
+                    if note["status"] == "completed":
+                        bank = read_form_bank(safe_path(folder, row["directory"]), expected_log_sha256=res["log_sha256"])
+                        require(source and bank["source_run_id"] == source.source_run_id and bank["arm"] == form
+                                and bank["public_context_sha256"] == source.public_context_sha256 and bank["items"], "Wrong bank")
+                        banks[form] = bank
+                        writer_paths[form] = safe_path(folder, row["directory"])
+                        text = "\n".join(i["title"] + "\n" + i["body"] for i in bank["items"])
+                        ids = set(TRANSACTION.findall(text))
+                        aliases = merchant_amount_mentions(text, public_labels)
+                        hints[form] = {k: public_labels[k] for k in aliases}
+                        note.update(merchant_amount_matches=aliases, target_merchant_amount=sorted(targets & aliases.keys()), items=bank["items"], snapshot=bank["snapshot_id"], source=source.source_run_id,
+                                    source_public_sha256=source.public_context_sha256, journal=res["log_sha256"],
+                                    target_ids=sorted(ids & targets), other_ids=sorted(ids - targets),
+                                    ids_absent_from_source=sorted(ids-set(TRANSACTION.findall(source.public_context))),
+                                    has_submission_name=SUBMIT in text)
+                    notes.append(note)
+                    continue
+                record = repeat_episode(folder, row, case, rid, sources.get(tid), banks.get(form), hints.get(form), owner)
+                if record["success"] is not None:
+                    messages = BlobStore(safe_path(folder, row["directory"])).get(res["report_ref"])["messages"]
+                    record["effects"] = dispute_effects(task, messages, native_argument_errors=True)
+                    record["replayed_db"] = verify_dispute_state(task, messages, record["effects"], res["final_db_hash"], record["success"])
+                    accepted = [(rid, json.loads(args["arguments"])) for rid, args, ok in dispute_submissions(messages, native_argument_errors=True) if ok]
+                    owner, _ = dispute_targets(task)
+                    record["accepted_target_receipts"] = {m["transaction_id"]: rid for rid, m in accepted
+                                                          if m.get("user_id") == owner and m.get("transaction_id") in targets}
+                    require(len(record["accepted_target_receipts"]) == record["effects"]["accepted_target"],
+                            "Native receipt list and target count differ")
+                elif res.get("partial_trajectory_ref"):
+                    ref = res["partial_trajectory_ref"]
+                    messages = BlobStore(safe_path(folder, row["directory"])).get(ref)
+                    require(isinstance(messages, list), "Expected a sealed prefix of native messages")
+                    record["partial_effects"] = dispute_effects(task, messages, native_argument_errors=True)
+                    record["partial_trajectory_sha256"] = ref["sha256"]
+                    assessment = BlobStore(safe_path(folder, row["directory"])).get(res["reached_state_assessment_ref"])
+                    record["replayed_db"] = verify_dispute_state(task, messages, record["partial_effects"], assessment["reached_db_hash"], None)
+                first_id = record.get("first_customer_id", {})
+                if (first_id.get("argument_indexes") and first_id["present_in_note"]
+                        and not first_id["present_in_normalized_input"]):
+                    item = next((i for i in banks[form]["items"] if i["body"].count(owner) == 1), None)
+                    messages = json.loads(source.public_context)["messages"]
+                    for i, m in enumerate(messages):
+                        if item is None or m["role"] != "tool":
+                            continue
+                        quote = "user_id: " + owner if "user_id: " + owner in m["content"] else owner
+                        if m["content"].count(quote) != 1:
+                            continue
+                        call_index = first_id["argument_indexes"][0]
+                        record["first_id_trace"] = trace_claim(
+                            writer_paths[form], safe_path(folder, row["directory"]), item=item["id"], version=item["version"],
+                            field="body", clause=owner, request_id=record["first_request"],
+                            source_citations=[(f"/experience/messages/{i}/content", quote)],
+                            action_citations=[(f"/tool_calls/{call_index}/function/arguments", owner)])
+                        break
+                if kind == "source":
+                    source = pilot.matched.source_from(folder, tid) if folder.exists() else None
+                    sources[tid] = record
+                    gates[tid] = public_opportunity(task, source)
+                    public_labels = public_transaction_labels(source)
+                    if source:
+                        public_messages = json.loads(source.public_context)["messages"]
+                        record["public_transaction_count"] = len(public_labels)
+                        record["public_submission_confirmation_messages"] = [
+                            i for i, m in enumerate(public_messages) if "Cash back dispute submitted successfully." in (m.get("content") or "")]
+                else:
+                    if folder.exists():
+                        require(gates[tid]["eligible"], "An ineligible source created a reader shard")
+                    readers.append(dict(record, form=form, repeat=case["scheduled_stages"][2:].index(stage)+1))
+        gate_file = base / "reader-admission.json"
+        if gate_file.exists():
+            require(pilot.matched.read(gate_file) == gates[tid], "Recomputed public gate changed")
+    total = sum(entry["spent"] for entry in costs.values())
+    require(total == Decimal(close["total_covered_usd"]) <= Decimal(approval["total_usd"]), "Series ledger does not balance")
+    return dict(series=spec["name"], receipt_definition=NATIVE_DISPUTE_RECEIPTS, commit=baseline["implementation"]["implementation_commit"], registration_sha256=rid,
+                costs={s:{k:str(v) for k,v in c.items()} for s,c in costs.items()}, covered_usd=str(total),
+                assigned=spec["assigned"], gates=gates, sources=sources, writers=notes, readers=readers,
+                by_form=summarize_form_repeats(sources, readers, spec["forms"], spec["repetitions"],
+                                               metric=BANKING_SUCCESS, cohort=rid))
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--workspace", type=Path, default=pilot.ROOT)
     view = parser.add_mutually_exclusive_group()
+    view.add_argument("--dispute-grader-controls", action="store_true", help="Rebuild the native offline dispute controls")
+    view.add_argument("--form-repeats", action="store_true", help="Compare sealed memories on repeated multi-target tasks")
     view.add_argument("--optional-storage", action="store_true")
     view.add_argument("--exposure-coverage", action="store_true", help="Use all registered allocations for exposure coverage")
     parser.add_argument("--result-feedback", action="store_true", help="Analyze the result-only writer replication")
     args = parser.parse_args()
     workspace = args.workspace.resolve()
+    if args.dispute_grader_controls:
+        from agent_memory_eval.adapters.tau_banking_results import dispute_grader_controls
+        from scripts.run_banking_form_repeats import PROFILE
+        print(json.dumps(dispute_grader_controls(workspace, pilot.matched.read(pilot.ROOT / PROFILE)["tasks"]), indent=2))
+        raise SystemExit(0)
+    if args.form_repeats:
+        if args.result_feedback:
+            parser.error("The repeated-form registration already fixes writer feedback")
+        print(json.dumps(form_repeat_report(workspace), ensure_ascii=False, indent=2, sort_keys=True))
+        raise SystemExit(0)
     if args.result_feedback and args.optional_storage:
         parser.error("Optional storage is a separate historical series")
     result = optional_storage(workspace) if args.optional_storage else analyze(

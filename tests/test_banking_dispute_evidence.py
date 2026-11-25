@@ -29,3 +29,63 @@ class PublicDisputeEvidenceTest(unittest.TestCase):
 
     def test_ungraded_sources_do_not_release_readers(self):
         self.assertFalse(public_opportunity({}, None)["eligible"])
+
+
+class FormRepeatControlsTest(unittest.TestCase):
+    def test_nonpercentage_nonmatching_document_does_not_change_the_registered_gate(self):
+        self.assertFalse(PublicDisputeEvidenceTest().fixture(rate="5 points per dollar")["eligible"])
+
+    def test_public_merchant_and_amount_must_resolve_to_one_transaction(self):
+        from agent_memory_eval.adapters.banking_dispute_evidence import merchant_amount_mentions
+        labels = {"12": dict(merchant_name="Market", transaction_amount="$1,230.00"),
+                  "13": dict(merchant_name="Market", transaction_amount="$1.23"),
+                  "14": dict(merchant_name="Market", transaction_amount="$1.23")}
+        self.assertEqual(merchant_amount_mentions("Market paid $1230, then Market ($1.23).", labels),
+                         {"12": "Market paid $1230"})
+        self.assertFalse(merchant_amount_mentions("Aftermarket $1230", labels))
+        self.assertFalse(merchant_amount_mentions("Market " + "x" * 70 + "$1230", labels))
+
+    def test_equal_bank_repeats_share_their_reference_source(self):
+        from agent_memory_eval.analysis.form_repeats import summarize_form_repeats
+        from agent_memory_eval.adapters.tau_banking_results import BANKING_SUCCESS
+        from agent_memory_eval.contracts.core import ContractError
+        first = {"T": dict(run="one", started=True, success=False)}
+        readers = [dict(task="T", form="fact", repeat=i, started=True, success=i == 1) for i in (1, 2)]
+        def summary(rows):
+            return summarize_form_repeats(first, rows, ["fact"], 2, metric=BANKING_SUCCESS, cohort="study")["fact"]
+        report = summary(readers)
+        self.assertEqual(report["same_bank_discordant_pairs"], 1)
+        self.assertEqual(report["comparison"]["sources"]["included"], 1)
+        self.assertEqual(report["comparison"]["sources"]["two_sided_sign_p"], 1.0)
+        self.assertEqual(summary([readers[0], dict(readers[1], success=None)])["same_bank_complete_pairs"], 0)
+        with self.assertRaises(ContractError):
+            summary([readers[0], readers[0]])
+
+    def test_excluded_shard_has_zero_http_and_no_job_directory(self):
+        import os
+        from pathlib import Path
+        from tempfile import TemporaryDirectory
+        from unittest.mock import patch
+        from scripts import run_full_retail as study
+        cfg = dict(name="gate-test", stages=["solve"], max_concurrent=1, total_usd_limit="1")
+        with TemporaryDirectory() as tmp, patch.dict(os.environ, {"OPENROUTER_API_KEY": "offline-placeholder"}), \
+                patch.object(study, "implementation_identity", return_value={"test": True}):
+            workspace = Path(tmp)
+            study.run_study(workspace, cfg, {}, {}, [dict(task="task")], {"task":{}}, {},
+                            model_resolver=lambda *_: ({}, None), stage_admission=lambda *_: "absent_clue")
+            root = workspace / "runs/gate-test"
+            entry = json.loads((root / "completion.json").read_bytes())["stages"]["task-task/solve"]
+            self.assertEqual((entry["reason"], entry["http"], entry["spent"]), ("absent_clue", 0, "0"))
+            self.assertFalse((root / "task-task/solve").exists())
+
+    def test_parameter_rejections_are_distinct_from_unconfirmed_receipts(self):
+        from agent_memory_eval.adapters.tau_banking_results import dispute_submissions
+        args = dict(discoverable_tool_name="submit_cash_back_dispute_0589", arguments="{}")
+        call = dict(id="one", name="call_discoverable_user_tool", arguments=args)
+        request = dict(role="user", tool_calls=[call])
+        for text, expected in [("Error: Missing required parameter: user_id", False),
+                               ("Error: Unexpected parameter: context", False), ("Unrecognized response", None)]:
+            receipt = dict(role="tool", id="one", requestor="user", execution_status="executed", error=False, content=text)
+            self.assertIsNone(dispute_submissions([request, receipt])[0][2])
+            self.assertIs(dispute_submissions([request, receipt], native_argument_errors=True)[0][2], expected)
+        self.assertIsNone(dispute_submissions([request], native_argument_errors=True)[0][2])

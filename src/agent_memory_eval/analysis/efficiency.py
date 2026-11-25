@@ -31,12 +31,22 @@ def request_effort_by_start(events, boundary, roles):
     return result
 
 
+def business_calls_by_role(messages):
+    """Count issued business calls by speaker, including turns without speech. Receipts are separate."""
+    counts = {"assistant": 0, "user": 0}
+    for message in messages:
+        for call in message.get("tool_calls") or []:
+            if not call["name"].startswith("memory_"):
+                role = message["role"]
+                counts[role] = counts.get(role, 0) + 1
+    return counts
+
+
 def _public_effort(messages):
     end_signals = {"###STOP###", "###TRANSFER###", "###OUT-OF-SCOPE###"}
     return dict(customer_turns=sum(m["role"] == "user" and bool(m.get("content"))
                                    and m["content"].strip() not in end_signals for m in messages),
-                business_calls=sum(not c["name"].startswith("memory_") for m in messages if m["role"] == "assistant"
-                                   for c in m.get("tool_calls") or []))
+                business_calls=business_calls_by_role(messages)["assistant"])
 
 
 def episode_effort(row, public_messages, choices):

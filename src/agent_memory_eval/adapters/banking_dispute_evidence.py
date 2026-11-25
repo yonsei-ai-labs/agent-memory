@@ -67,3 +67,45 @@ def public_opportunity(task, source):
                 source_run_id=source.source_run_id, public_context_sha256=source.public_context_sha256,
                 target_ids_observed=sorted(observed), applicable_rate_docs=sorted(rates),
                 documented_submission_tool=bool(procedure), witnesses=witnesses)
+
+
+def public_transaction_labels(source):
+    """Extract merchant and amount from each distinct public native transaction record."""
+    if source is None:
+        return {}
+    labels = {}
+    for msg in json.loads(source.public_context)["messages"]:
+        if msg["role"] != "tool":
+            continue
+        for row in re.split(r"(?m)^\s*\d+\. Record ID: ", msg.get("content") or "")[1:]:
+            fields = dict(re.findall(r"(?m)^\s+(transaction_id|merchant_name|transaction_amount): ([^\n]+)", row))
+            if len(fields) == 3:
+                tid = fields.pop("transaction_id")
+                if tid in labels and labels[tid] != fields:
+                    raise ContractError("Inconsistent versions of one public transaction")
+                labels[tid] = fields
+    return labels
+
+
+def merchant_amount_mentions(text, labels):
+    """Count a unique public merchant/amount pair when both literals occur within 64 characters."""
+    from decimal import Decimal
+    from collections import Counter
+
+    def money(value):
+        return Decimal(value.replace(",", "").replace("$", "").strip())
+
+    keys = {tid:(row["merchant_name"].casefold(), money(row["transaction_amount"])) for tid, row in labels.items()}
+    frequency = Counter(keys.values())
+    amounts = [(m.start(), m.end(), money(m.group(1))) for m in re.finditer(r"\$\s*(\d+(?:,\d{3})*(?:\.\d{1,2})?)(?!\d)", text)]
+    result = {}
+    for tid, (merchant, value) in keys.items():
+        if frequency[merchant, value] != 1:
+            continue
+        for m in re.finditer(r"(?<!\w)" + re.escape(merchant) + r"(?!\w)", text, flags=re.I):
+            window = next(((min(begin, m.start()), max(end, m.end())) for begin, end, v in amounts
+                           if v == value and max(begin - m.end(), m.start() - end, 0) <= 64), None)
+            if window:
+                result[tid] = text[window[0]:window[1]]
+                break
+    return result
