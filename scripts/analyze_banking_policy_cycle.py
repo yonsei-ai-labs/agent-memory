@@ -253,7 +253,9 @@ def validation(workspace):
             (first,) = cycle.bank.matched.sealed_rows(source_dir)[2]
             source = cycle.bank.matched.source_from(source_dir, tid)
             public = cycle.read_json(source.public_context.encode())
-            source_fields = cycle.input_evidence([public["task_context"], *public["messages"]], [], {"grep"})
+            source_fields = cycle.input_evidence(
+                [public["task_context"], *public["messages"]], [], cycle.SEARCH_TOOLS
+            )
         for stage in ("write", "solve"):
             folder = root / stage
             scheduled = cycle.bank.matched.jobs_for(case, stage)

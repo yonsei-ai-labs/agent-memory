@@ -37,6 +37,7 @@ POLICY = MemoryPolicy(
     max_return_bytes=131072,
 )
 ORIGIN = "fixed_decision.result"
+SEARCH_TOOLS = {"grep"}
 read = bank.matched.read
 
 
@@ -143,7 +144,7 @@ def development(workspace):
                     and source.reply(req),
                     "Frozen public decision changed",
                 )
-                public = input_evidence(wire["messages"], wire["tools"], {"grep"})
+                public = input_evidence(wire["messages"], wire["tools"], SEARCH_TOOLS)
                 sources[case] = dict(
                     task=task,
                     ordinal=state["ordinal"],
@@ -152,7 +153,11 @@ def development(workspace):
                     source_wire_sha256=state["sha256"],
                     current_identifier_sources=literal_matches(identifier, public),
                     source_next_action=next_action(
-                        source.reply(req), wire["tools"], rule["tool"], rule["arguments"]
+                        source.reply(req),
+                        wire["tools"],
+                        rule["tool"],
+                        rule["arguments"],
+                        search_tools=SEARCH_TOOLS,
                     ),
                 )
                 common = None
@@ -252,7 +257,9 @@ def cell_for(cells, slot):
 
 def classification(cells, spec, slot, choice):
     rule = spec["decisions"][slot["task"]]
-    return next_action(choice, cell_for(cells, slot)[0]["tools"], rule["tool"], rule["arguments"])
+    return next_action(
+        choice, cell_for(cells, slot)[0]["tools"], rule["tool"], rule["arguments"], search_tools=SEARCH_TOOLS
+    )
 
 
 def smoke(workspace):

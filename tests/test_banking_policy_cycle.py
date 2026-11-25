@@ -86,6 +86,11 @@ class BankingPolicyCycleTests(unittest.TestCase):
         self.assertEqual(score([call({"reason": "another"})]), "other_arguments")
         self.assertEqual(score([call({"reason": "chosen"})]), "target_action")
         self.assertEqual(score([call({"reason": "chosen"})] * 2), "multiple_calls")
+        observed = {"message": {"tool_calls": [call({"reason": "chosen"})]}}
+        self.assertEqual(next_action(observed, self.base["tools"], "answer", {}), "other_tool")
+        self.assertEqual(
+            next_action(observed, self.base["tools"], "answer", {}, search_tools={"route"}), "search"
+        )
 
     def test_missing_trials_remain_in_block_and_preload_only_is_respected(self):
         arms = ["original", "omit_target", "omit_background"]

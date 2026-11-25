@@ -55,7 +55,7 @@ def preload_at_decision(base, policy, instruction, item):
     return wire
 
 
-def next_action(choice, native_tools, name, arguments):
+def next_action(choice, native_tools, name, arguments, *, search_tools=()):
     """Classify the proposed public action; a printed JSON object is still a text reply."""
     calls = choice["message"].get("tool_calls") or []
     if not calls:
@@ -71,7 +71,7 @@ def next_action(choice, native_tools, name, arguments):
     if function["name"] not in schemas or not Draft202012Validator(schemas[function["name"]]).is_valid(args):
         return "invalid_arguments"
     if function["name"] != name:
-        return "search" if function["name"] == "grep" else "other_tool"
+        return "search" if function["name"] in search_tools else "other_tool"
     if not isinstance(args, dict) or any(args.get(k) != value for k, value in arguments.items()):
         return "other_arguments"
     return "target_action"

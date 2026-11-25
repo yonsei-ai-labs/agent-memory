@@ -37,3 +37,5 @@
 uv run python -m scripts.run_banking_policy_cycle preflight --workspace . --output /tmp/banking-cycle-preflight.json
 uv run python -m scripts.run_banking_policy_cycle smoke --workspace . --output /tmp/banking-cycle-smoke.json
 ```
+
+유료 배정은 같은 실험의 승인 원장에 범위와 금액을 기록한 뒤 실행한다. `decisions`가 96개 배정을 처리하면 `scripts.analyze_banking_policy_cycle development`가 원응답과 짝별 차이를 복원한다. 전체 검증을 진행할 때는 개발 응답의 슬롯·저널 해시와 후보 규칙을 먼저 봉인한다. 이어서 `sources`, `validation`, `scripts.analyze_banking_policy_cycle validation` 순서로 새 과제 상담과 기존·후보 비교를 재현한다. 개발만 승인하면 96개 배정에서 실행을 마친다.
