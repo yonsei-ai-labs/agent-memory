@@ -1,0 +1,16 @@
+{
+  "format": "banking-matched-form-repeats/v1",
+  "name": "tau-banking-multitarget-forms-01",
+  "tasks": {"task_019": 4, "task_020": 4, "task_021": 2, "task_022": 10},
+  "selection": "Four unused native, DB-only cash-back dispute cases with multiple required transactions and four identifiable, distinct customers. No source or reader outcome used in selection. An intentionally difficult case family, not a population sample.",
+  "forms": ["fact", "episode", "procedure", "lesson", "free"],
+  "delivery": "preload",
+  "repetitions": 2,
+  "feedback": "result_only",
+  "maximum_usd": "1.00",
+  "assigned": {"source": 4, "write": 20, "solve": 40, "second_pass_no_memory": 0},
+  "gate": "Before readers, verify a graded source and a newly visible required transaction ID in a public tool result. Also require either an applicable card-specific document with a percentage returned by native grep, or the named cash-back dispute submission tool returned by native grep. Exclude evidence already present before the first worker decision. Analyst-only grading labels verify witnesses and never enter a model request. Apply to all five forms together. Writers run for every graded source regardless of gate. All five banks must be sealed and nonempty before any reader of that source.",
+  "comparison": "Two fresh same-seed consultations for each frozen bank. Actual first customer utterance, native task, worker, customer, tools, initial DB and grading match the no-memory source, with only the neutral memory instruction and one bank added. Randomized by deterministic hash for task order per wave and form order per task. Reader repetitions share the same per-task form order. No second-pass no-memory, empty memory, retrieval, or retry of submitted allocations.",
+  "outcomes": "Native DB success and accepted unique target/required, missing targets, accepted nontarget and duplicate submissions. Report each source and all five forms, also official discordance under identical bank repeats and missingness. Descriptive within four customer/source blocks. Neither target IDs in a list nor copying one ID establishes the cause of a result.",
+  "effort": "Worker, customer and writer tokens and reported USD separately, native search calls and accepted submissions. Report successful and failed episodes and joint-success contrasts where available. Account for replay of the source's first customer response and one-time storage."
+}

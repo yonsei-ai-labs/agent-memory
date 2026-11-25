@@ -452,7 +452,7 @@ def release_groups(cfg, rows):
     return initial + checked + remainder
 
 
-def run_study(workspace, cfg, base, conn, rows, tasks, record, *, stage_runner=stage_job, model_resolver=None):
+def run_study(workspace, cfg, base, conn, rows, tasks, record, *, stage_runner=stage_job, model_resolver=None, stage_admission=None):
     root = workspace / "runs" / cfg.get("run_directory", cfg["name"])
     root.mkdir(parents=True, exist_ok=True)
     descriptor = os.open(root, os.O_RDONLY | os.O_DIRECTORY)
@@ -509,6 +509,17 @@ def run_study(workspace, cfg, base, conn, rows, tasks, record, *, stage_runner=s
                             seals[name] = dict(status="not_started", reason="spend_limit", reported="0",
                                                held="0", spent="0", http=0)
                         continue
+                    admitted = []
+                    for row in wave:
+                        reason = stage_admission(root, stage, row, tasks[row["task"]]) if stage_admission else None
+                        if reason is None:
+                            admitted.append(row)
+                        else:
+                            name = "task-" + row["task"] + "/" + stage
+                            if (root / name).exists():
+                                raise ContractError("Excluded shard already has an execution directory")
+                            seals[name] = dict(status="not_started", reason=reason, reported="0",
+                                               held="0", spent="0", http=0)
                     list(
                         pool.map(
                             stage_runner,
@@ -527,11 +538,11 @@ def run_study(workspace, cfg, base, conn, rows, tasks, record, *, stage_runner=s
                                     judge,
                                     str(grant),
                                 )
-                                for r in wave
+                                for r in admitted
                             ],
                         )
                     )
-                    for r in wave:
+                    for r in admitted:
                         name = "task-" + r["task"] + "/" + stage
                         entry = accounting(root / name, grant)
                         total += Decimal(entry["spent"])

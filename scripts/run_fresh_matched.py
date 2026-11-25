@@ -172,7 +172,7 @@ def prepare(root, workspace, scope, *, protocol=PROFILE):
 
 def stage_job(args):
     workspace, output, cfg, _, conn, case, task, stage_name, identity, models, judge, grant = args
-    stage = stage_name.removeprefix("initial-")
+    stage = cfg.get("stage_kinds", {}).get(stage_name, stage_name.removeprefix("initial-"))
     task_dir = output / ("task-" + case["task"])
     task_dir.mkdir(exist_ok=True)
     dest = task_dir / stage_name
