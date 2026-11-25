@@ -1,0 +1,13 @@
+{
+  "name": "bfcl-on-demand-routing-control-01",
+  "parent_profile_sha256": "7b75b0c760a6652471e8965244e16749d2e2fd8d233639f25563b0f7ffaf3bbb",
+  "parent_archive_sha256": "588bc155fdf34743c24c79aab14a4637187c7a5054e59c1e1ef634ec3f85f144",
+  "selection": "All eight original questions, one frozen fact note each, following a directed-language control in which the model still never initiated retrieval.",
+  "parent_form": "fact",
+  "control_label": "fact-routing-check",
+  "append_to_neutral_notice": "",
+  "constrain_read_names": true,
+  "limits": {"allocated": 8, "worker_calls_per_question": 3, "new_external_calls": 0, "new_writers": 0, "second_pass_no_memory": 0},
+  "endpoint": "Keep the neutral notice, all schemas, original questions and one-note snapshots. Constrain only the Qwen tool-name generation prefix to memory_list on turn one, memory_get on turn two. Generate all arguments, including the opaque item ID, with the real model. Give the model free choice on turn three. Check successful returns and version-bound body inclusion in the rendered business-decision input.",
+  "interpretation": "Technical routing control. Cannot measure spontaneous retrieval, behavioral use of a read note, or a benefit to task success. Preserve invalid arguments, read denials, truncation and ungraded outcomes."
+}

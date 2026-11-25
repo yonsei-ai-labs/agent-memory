@@ -4,7 +4,7 @@ from collections import defaultdict, deque
 from copy import deepcopy
 
 from agent_memory_eval.analysis.bfcl_relevance import corruptions, trials
-from agent_memory_eval.models.local_qwen import LocalQwen, public_reply
+from agent_memory_eval.models.local_qwen import LocalQwen, public_reply, required_prefix
 from agent_memory_eval.runner.bfcl_relevance import grade_reply, normalized_first
 from agent_memory_eval.contracts.core import ContractError
 
@@ -15,6 +15,15 @@ CALL = "<tool_call>\n<function=weather>\n<parameter=city>\nSeoul\n</parameter>\n
 
 
 class QwenReplyTests(unittest.TestCase):
+    def test_named_decoder_constraint_keeps_model_generated_arguments(self):
+        tools = [*TOOLS, {"type": "function", "function": {"name": "memory_get", "parameters": {}}}]
+        wire = {"tools": tools, "tool_choice": {"type": "function", "function": {"name": "memory_get"}}}
+        self.assertEqual(required_prefix(wire), "<tool_call>\n<function=memory_get>\n")
+        self.assertEqual(required_prefix({"tools": tools}), "")
+        self.assertEqual(required_prefix({"tools": TOOLS, "tool_choice": "required"}), "<tool_call>\n<function=weather>\n")
+        with self.assertRaises(ValueError):
+            required_prefix({**wire, "tool_choice": {"type": "function", "function": {"name": "unregistered"}}})
+
     def test_chat_end_is_framing_and_does_not_erase_the_call(self):
         reply, error = public_reply(CALL + "<|im_end|>\n", TOOLS)
         self.assertIsNone(error)

@@ -58,6 +58,20 @@ def public_reply(text, tools):
     return {"role": "assistant", "content": prefix.strip() or None, "tool_calls": calls}, None
 
 
+def required_prefix(request):
+    choice = request.get("tool_choice")
+    if choice is None or choice in ("auto", "none"):
+        return ""
+    names = [t["function"]["name"] for t in request["tools"]]
+    if choice == "required" and len(names) == 1:
+        name = names[0]
+    elif isinstance(choice, dict) and choice.get("type") == "function" and choice.get("function", {}).get("name") in names:
+        name = choice["function"]["name"]
+    else:
+        raise ValueError("The local transport requires one declared function for constrained decoding")
+    return "<tool_call>\n<function=" + name + ">\n"
+
+
 class LocalQwen:
     """An observed local transport. Each generation starts from the complete recorded request."""
 
@@ -153,10 +167,7 @@ def serve(checkpoint, seed):
                         call["function"]["arguments"] = json.loads(args)
             prompt = tokenizer.apply_chat_template(messages, tools=request.get("tools") or None, tokenize=False,
                                                    add_generation_prompt=True, enable_thinking=False)
-            prefix = ""
-            if request.get("tool_choice") == "required":
-                tool, = request["tools"]
-                prefix = "<tool_call>\n<function=" + tool["function"]["name"] + ">\n"
+            prefix = required_prefix(request)
             rendered = prompt + prefix
             inputs = tokenizer(rendered, add_special_tokens=False, return_tensors="pt").to(model.device)
             torch.manual_seed(seed)

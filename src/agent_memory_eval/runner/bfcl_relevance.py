@@ -88,7 +88,7 @@ def grade_reply(reply, category, is_empty, tools):
                 undeclared_functions=unknown, missing_required=missing)
 
 
-def solve(journal, cfg, case, client, is_empty, *, source=None, writer=None, form=None, mode=None):
+def solve(journal, cfg, case, client, is_empty, *, source=None, writer=None, form=None, mode=None, read_control=False):
     category, row = case
     controls = dict(model=cfg["model"], revision=cfg["model_revision"], generation=cfg["generation"])
     start = open_relevance(row, category, controls, reference=source["start"] if source else None)
@@ -125,11 +125,18 @@ def solve(journal, cfg, case, client, is_empty, *, source=None, writer=None, for
     router = ToolRouter(journal, memory, SimpleNamespace(stop_tools=set(), ended=False), bank, policy)
     limit = cfg["limits"][(mode or "source") + "_calls"]
     grade, reason = None, "private_read_limit"
+    require(not read_control or mode == "on_demand", "A constrained read control needs the retrieval interface")
     for turn in range(limit):
+        turn_template, choice = template, None
+        if read_control and turn < 2:
+            choice = dict(type="function", function=dict(name=("memory_list", "memory_get")[turn]))
+            turn_template = registry.template(dict(wire, tool_choice=choice), roles=("worker",))
         def check(actual):
+            require(actual.get("tool_choice") == choice, "Unexpected decoder constraint")
             if turn == 0:
-                require(actual == first, "Submitted first request differs from its approved input")
-        reply, own, request_id = gateway.call(ctx, registry, "worker", template, history, client,
+                expected = dict(first, tool_choice=choice) if choice else first
+                require(actual == expected, "Submitted first request differs from its approved input")
+        reply, own, request_id = gateway.call(ctx, registry, "worker", turn_template, history, client,
             max_requests=limit, validate_wire=check, project_self_authored=True)
         response = journal.blobs.get(registry.sources[own]["artifact_ref"])
         if response["choices"][0]["finish_reason"] == "length" or response["local_generation"].get("decode_error"):
