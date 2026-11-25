@@ -3,6 +3,7 @@ import unittest
 from collections import defaultdict, deque
 from copy import deepcopy
 
+from agent_memory_eval.analysis.bfcl_relevance import corruptions, trials
 from agent_memory_eval.models.local_qwen import LocalQwen, public_reply
 from agent_memory_eval.runner.bfcl_relevance import grade_reply, normalized_first
 from agent_memory_eval.contracts.core import ContractError
@@ -57,3 +58,26 @@ class QwenReplyTests(unittest.TestCase):
         with self.assertRaises(ContractError):
             normalized_first(wire, {"memory_notice": "notes"}, "on_demand", [])
         self.assertEqual(wire["messages"][0]["content"], "worker\nnotes")
+
+    def test_scoring_probes_leave_observed_response_intact(self):
+        original, _ = public_reply(CALL, TOOLS)
+        saved = deepcopy(original)
+        changes = corruptions(original, TOOLS)
+        scores = {k: grade_reply(m, "live_relevance", lambda output: not output, TOOLS) for k, m in changes.items()}
+        self.assertFalse(scores["remove_calls"]["valid"])
+        self.assertTrue(scores["replace_function_name"]["valid"])
+        self.assertEqual(scores["replace_function_name"]["undeclared_functions"], ["unregistered_control_function"])
+        self.assertEqual(scores["remove_required_argument"]["missing_required"], [["weather", "city"]])
+        self.assertEqual(original, saved)
+
+    def test_missing_allocation_is_explicit_and_retains_the_assigned_question(self):
+        row = dict(task="q", phase="solve", form="fact", mode="preload", status="not_started", success=None)
+        study = {"format": "bfcl-local-two-pass/v1", "registration": {"tasks": ["q"]},
+                 "tasks": {"q": {"allocations": [row]}}}
+        trial, = trials(study, "solve", "fact", "preload")
+        self.assertFalse(trial.started)
+        self.assertIsNone(trial.success)
+        self.assertEqual(trial.source, "q-source")
+        study["tasks"]["q"]["allocations"].append(deepcopy(row))
+        with self.assertRaises(ContractError):
+            trials(study, "solve", "fact", "preload")

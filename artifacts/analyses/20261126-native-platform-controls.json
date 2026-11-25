@@ -1,0 +1,329 @@
+{
+  "format": "agent-memory-benchmark-portability-audit/v2",
+  "profile_sha256": "d0cb5d017d547f68966344abdf3c6c932b0e21ab312a11ce6584a4716610346f",
+  "new_provider_requests": 0,
+  "tau2": {
+    "scope": "recorded_worker_runs",
+    "benchmark_revision": "c06b07dd7c4d4ec61ba6ff9bcdf0b15dd7ef36d4",
+    "samples": {
+      "retail_previous_order": {
+        "journal_status": "closed",
+        "native_status": "not_available",
+        "native_success": null,
+        "native_score": null,
+        "native_artifact_sha256": null,
+        "common_request_audit": {
+          "status": "passed",
+          "requests": 3,
+          "requests_by_role": {
+            "worker": 3
+          },
+          "memory_input_spans": 8,
+          "responses_by_status": {
+            "response": 3
+          },
+          "observed_cost_usd_decimal": "0.00022942",
+          "unknown_cost_requests": 0,
+          "memory_spans_by_delivery": {
+            "response_received": 8
+          },
+          "normal_response_memory_spans": 8
+        }
+      },
+      "retail_handoff": {
+        "journal_status": "closed",
+        "native_status": "graded",
+        "native_success": false,
+        "native_score": 0.0,
+        "native_artifact_sha256": "ad5724ce891bc3fa9bd7b7ea4152eb2ed08632f528410d3fc2bb1ca279b05768",
+        "common_request_audit": {
+          "status": "passed",
+          "requests": 13,
+          "requests_by_role": {
+            "user_simulator": 4,
+            "worker": 9
+          },
+          "memory_input_spans": 18,
+          "responses_by_status": {
+            "response": 13
+          },
+          "observed_cost_usd_decimal": "0.001198063",
+          "unknown_cost_requests": 0,
+          "memory_spans_by_delivery": {
+            "response_received": 18
+          },
+          "normal_response_memory_spans": 18
+        }
+      },
+      "retail_handoff_no_memory": {
+        "journal_status": "closed",
+        "native_status": "graded",
+        "native_success": true,
+        "native_score": 1.0,
+        "native_artifact_sha256": "09693d2e3a71c0ae9c99d59cb7fef57b07f1c507a53078d6745fb13525ab0ba1",
+        "common_request_audit": {
+          "status": "passed",
+          "requests": 30,
+          "requests_by_role": {
+            "user_simulator": 11,
+            "worker": 19
+          },
+          "memory_input_spans": 0,
+          "responses_by_status": {
+            "response": 30
+          },
+          "observed_cost_usd_decimal": "0.003351205",
+          "unknown_cost_requests": 0,
+          "memory_spans_by_delivery": {},
+          "normal_response_memory_spans": 0
+        }
+      },
+      "airline_upgrade": {
+        "journal_status": "closed",
+        "native_status": "graded",
+        "native_success": false,
+        "native_score": 0.0,
+        "native_artifact_sha256": "d2b541a3a861c0773ed6fb8fa2e80d7211fcf55f26820a4bdce5bad8e783f71a",
+        "common_request_audit": {
+          "status": "passed",
+          "requests": 15,
+          "requests_by_role": {
+            "user_simulator": 6,
+            "worker": 9
+          },
+          "memory_input_spans": 18,
+          "responses_by_status": {
+            "response": 15
+          },
+          "observed_cost_usd_decimal": "0.003136159",
+          "unknown_cost_requests": 0,
+          "memory_spans_by_delivery": {
+            "response_received": 18
+          },
+          "normal_response_memory_spans": 18
+        }
+      },
+      "airline_upgrade_no_memory": {
+        "journal_status": "closed",
+        "native_status": "graded",
+        "native_success": true,
+        "native_score": 1.0,
+        "native_artifact_sha256": "ecd2bb949d3aa31faa35aae324ed4b4988b33bf0d0e07f35248c54c792f1b922",
+        "common_request_audit": {
+          "status": "passed",
+          "requests": 20,
+          "requests_by_role": {
+            "user_simulator": 8,
+            "worker": 12
+          },
+          "memory_input_spans": 0,
+          "responses_by_status": {
+            "response": 20
+          },
+          "observed_cost_usd_decimal": "0.003788802",
+          "unknown_cost_requests": 0,
+          "memory_spans_by_delivery": {},
+          "normal_response_memory_spans": 0
+        }
+      },
+      "retail_unfinished": {
+        "journal_status": "open",
+        "provider_error": "HTTP_520",
+        "native_success": null,
+        "common_request_audit": "requires_closed_journal",
+        "unknown_cost_requests": 1
+      }
+    },
+    "grade_agreement": {
+      "allocated": 6,
+      "matched_success": 2,
+      "matched_failure": 2,
+      "ungraded": 2
+    },
+    "retail_first_action": {
+      "assigned": 154,
+      "gain": 75,
+      "loss": 3,
+      "both_success": 31,
+      "both_failure": 45,
+      "missing": 0
+    },
+    "airline_official_task_success": {
+      "assigned": 224,
+      "gain": 18,
+      "loss": 16,
+      "both_success": 101,
+      "both_failure": 14,
+      "missing": 75
+    }
+  },
+  "bfcl": {
+    "scope": "native_component_controls",
+    "benchmark_revision": "6ea57973c7a6097fd7c5915698c54c17c5b1b6c8",
+    "tasks": 155,
+    "grade_agreement": {
+      "allocated": 310,
+      "matched_success": 155,
+      "matched_failure": 155,
+      "ungraded": 0
+    },
+    "reference_answer_passed": 155,
+    "decoy_answer_passed": 0,
+    "restored_marker_in_fresh_instances": [
+      true,
+      true
+    ],
+    "default_framework_router": {
+      "without_framework_bank": {
+        "scripted_requests": 3,
+        "common_request_audit": "passed",
+        "native_callback_received": [],
+        "tool_results": {
+          "memory_append": {
+            "provenance_kind": "policy_result",
+            "error_code": "POLICY_DENIED"
+          },
+          "memory_retrieve": {
+            "provenance_kind": "policy_result",
+            "error_code": "POLICY_DENIED"
+          }
+        },
+        "native_value_in_next_tool_message": false,
+        "native_value_spans_in_next_input": 0,
+        "native_return_attributed": false
+      },
+      "with_framework_bank": {
+        "scripted_requests": 3,
+        "common_request_audit": "passed",
+        "native_callback_received": [],
+        "tool_results": {
+          "memory_append": {
+            "provenance_kind": "policy_result",
+            "error_code": "POLICY_DENIED"
+          },
+          "memory_retrieve": {
+            "provenance_kind": "policy_result",
+            "error_code": "POLICY_DENIED"
+          }
+        },
+        "native_value_in_next_tool_message": false,
+        "native_value_spans_in_next_input": 0,
+        "native_return_attributed": false
+      }
+    },
+    "routing_criteria": {
+      "memory_enabled_native_return_attributed": false,
+      "memory_disabled_access_blocked": true
+    }
+  },
+  "appworld": {
+    "scope": "native_db_regrade_controls",
+    "split": "train",
+    "benchmark_revision": "42b5bcf3cd334fee33f0c37c02070a9f5807add5",
+    "grade_agreement": {
+      "allocated": 6,
+      "matched_success": 3,
+      "matched_failure": 3,
+      "ungraded": 0
+    },
+    "order_per_task": [
+      "initial",
+      "recorded",
+      "initial"
+    ],
+    "same_initial_grade_after_reset": true,
+    "tasks": {
+      "2a163ab_1": {
+        "initial": {
+          "success": false,
+          "passed": 1,
+          "failed": 5,
+          "required": 6,
+          "passed_no_op": 1,
+          "requirements_sha256": "4c12e244d40c6eed271d46718a3d4469b067a5206833f65a3402c57c2b3b5cc8"
+        },
+        "recorded": {
+          "success": true,
+          "passed": 6,
+          "failed": 0,
+          "required": 6,
+          "passed_no_op": 1,
+          "requirements_sha256": "4a0c9cbf3ff7eeb65be064b596886eff0cf3a151565d590d30fd899b7c0b3a29"
+        }
+      },
+      "6ea6792_1": {
+        "initial": {
+          "success": false,
+          "passed": 1,
+          "failed": 5,
+          "required": 6,
+          "passed_no_op": 1,
+          "requirements_sha256": "c0eee9ad6e7497fb0080f947d0dfa1244e403a58d3ab28808af032c634c208ec"
+        },
+        "recorded": {
+          "success": true,
+          "passed": 6,
+          "failed": 0,
+          "required": 6,
+          "passed_no_op": 1,
+          "requirements_sha256": "e7aa3e246ac826e439197faebc40d9d4e8ba9f092255bae88d863c4319ff7490"
+        }
+      },
+      "e3d6c94_1": {
+        "initial": {
+          "success": false,
+          "passed": 1,
+          "failed": 8,
+          "required": 9,
+          "passed_no_op": 1,
+          "requirements_sha256": "a4dd69e7a595ae0c0c35a6f6fd1bf3e91f22fc584a9eeef56c28138895174e49"
+        },
+        "recorded": {
+          "success": true,
+          "passed": 9,
+          "failed": 0,
+          "required": 9,
+          "passed_no_op": 1,
+          "requirements_sha256": "f8a589b79609ae550c3b573c9f43a594690859bc23ceadc21dcdc3b1d1e3adf6"
+        }
+      }
+    }
+  },
+  "bfcl_native_control": {
+    "format": "bfcl-native-memory-control/v1",
+    "benchmark_revision": "6ea57973c7a6097fd7c5915698c54c17c5b1b6c8",
+    "task": "memory_0-customer-0",
+    "prerequisite": "memory_prereq_0-customer-0",
+    "scripted": true,
+    "equal_first_reader_wire": true,
+    "source_fact_sha256": "e349fa43e96c430227ac6fa0995a6b16815e181e67ee4846875dc69bc4526075",
+    "native_snapshot_restored": true,
+    "version_bound_input_spans": {
+      "read_enabled": 1,
+      "access_control": 0
+    },
+    "official_success": {
+      "read_enabled": true,
+      "access_control": false
+    },
+    "request_audit": {
+      "status": "passed",
+      "requests": 6,
+      "requests_by_role": {
+        "worker": 5,
+        "writer": 1
+      },
+      "memory_input_spans": 1,
+      "responses_by_status": {
+        "response": 6
+      },
+      "observed_cost_usd_decimal": "0",
+      "unknown_cost_requests": 0,
+      "memory_spans_by_delivery": {
+        "response_received": 1
+      },
+      "normal_response_memory_spans": 1
+    },
+    "new_provider_requests": 0
+  }
+}
