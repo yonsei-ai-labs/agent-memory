@@ -3,6 +3,7 @@
 import hashlib
 import json
 import os
+from collections import defaultdict, deque
 from pathlib import Path
 import re
 import subprocess
@@ -11,6 +12,9 @@ import sys
 
 def public_reply(text, tools):
     """Decode Qwen's native XML-style calls. Keep undecodable replies available for audit."""
+    # This text checkpoint can emit the chat end marker followed by a newline and model EOS.
+    # Remove only the terminal chat framing. Preserve the unmodified generation separately.
+    text = text.rstrip().removesuffix("<|im_end|>").rstrip()
     if text.lstrip().startswith("<think>") and "</think>" in text:
         text = text.split("</think>", 1)[1].lstrip()
     if not any(tag in text for tag in ("<tool_call", "<function=", "</tool_call>")):
@@ -59,6 +63,7 @@ class LocalQwen:
 
     def __init__(self, python, checkpoint, model, seed):
         self.model = dict(id=model, selected_endpoint={"provider_name": "local-transformers"})
+        self.saved = defaultdict(deque)
         self.worker = subprocess.Popen(
             [str(python), "-u", __file__, str(checkpoint), str(seed)], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
             text=True, encoding="utf-8", env={**os.environ, "HF_HUB_OFFLINE": "1", "TRANSFORMERS_OFFLINE": "1",
@@ -83,9 +88,15 @@ class LocalQwen:
     def respond(self, request):
         if request["model"] != self.model["id"]:
             raise ValueError("Different local model requested")
-        self.worker.stdin.write(json.dumps(request, ensure_ascii=False) + "\n")
-        self.worker.stdin.flush()
-        output = self.read()
+        key = self.wire_key(request)
+        reused = None
+        if self.saved.get(key):
+            output, reused = self.saved[key].popleft()
+            output = {k: v for k, v in output.items() if k != "decode_error"}
+        else:
+            self.worker.stdin.write(json.dumps(request, ensure_ascii=False) + "\n")
+            self.worker.stdin.flush()
+            output = self.read()
         message, error = public_reply(output["text"], request.get("tools", []))
         tag = output["input_sha256"][:12]
         for c in message.get("tool_calls", []):
@@ -93,10 +104,17 @@ class LocalQwen:
         finish = "length" if not output["ended"] else ("tool_calls" if message.get("tool_calls") else "stop")
         if error:
             output["decode_error"] = error
-        return dict(model=self.model["id"], provider="local-transformers", local_generation=output,
+        result = dict(model=self.model["id"], provider="local-transformers", local_generation=output,
                     usage=dict(prompt_tokens=output["prompt_tokens"], completion_tokens=output["completion_tokens"],
                                total_tokens=output["prompt_tokens"] + output["completion_tokens"], cost=0),
                     choices=[dict(message=message, finish_reason=finish)])
+        if reused is not None:
+            result["reused_local_generation"] = reused
+        return result
+
+    @staticmethod
+    def wire_key(request):
+        return json.dumps(request, sort_keys=True, ensure_ascii=False, separators=(",", ":"), allow_nan=False)
 
     def close(self):
         self.worker.stdin.close()

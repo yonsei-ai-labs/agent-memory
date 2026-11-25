@@ -213,12 +213,13 @@ def audit_task(root, cfg, case, is_empty):
         finishes = {e["payload"]["request_id"]: e["payload"] for e in batch if e["type"] == "model.request_finished"}
         end, = [e["payload"] for e in batch if e["type"] == "run.ended"]
         rec.update(status=end["termination_reason"], session=scan["starts"][run]["session_id"], requests=len(starts),
-                   prompt_tokens=0, completion_tokens=0)
+                   reused_requests=0, prompt_tokens=0, completion_tokens=0)
         reads = Counter()
         for q in starts:
             f = finishes[q["request_id"]]
             require(f["status"] == "response" and f["cost_usd"] == 0, "Local request lacks an observed receipt")
             raw = blobs.get(f["response_ref"])
+            rec["reused_requests"] += int("reused_local_generation" in raw)
             generation = raw["local_generation"]
             require(digest(generation["rendered_input"].encode()) == generation["input_sha256"], "Changed model prompt")
             for key in ("prompt_tokens", "completion_tokens"):
@@ -269,6 +270,35 @@ def audit_task(root, cfg, case, is_empty):
     return dict(journal_sha256=digest((folder / "log.jsonl").read_bytes()), allocations=rows)
 
 
+def reuse_generations(root, client, registration):
+    previous = read_json((root / "registration.json").read_bytes())
+    require(previous["profile_sha256"] == registration["profile_sha256"] and previous["tasks"] == registration["tasks"]
+            and read_json((root / "runtime.json").read_bytes()) == client.runtime, "Incompatible local recording")
+    for task in previous["tasks"]:
+        folder = root / task
+        evidence = read_experiment(folder)
+        audit_requests(folder, evidence=evidence)
+        scan = evidence[0]
+        require(not scan["incomplete_runs"] and not scan["pending_requests"], "Recovery expects closed prior sessions")
+        events = list(scan["events"].values())
+        starts = {e["payload"]["request_id"]: e["payload"] for e in events if e["type"] == "model.request_started"}
+        blobs = BlobStore(folder)
+        for e in events:
+            if e["type"] != "model.request_finished" or e["payload"]["status"] != "response":
+                continue
+            f = e["payload"]
+            raw = blobs.get(f["response_ref"])
+            gen = raw["local_generation"]
+            req = starts[f["request_id"]]["request_ref"]
+            wire = blobs.get(req)
+            require(raw["model"] == wire["model"] == client.model["id"] and raw["provider"] == "local-transformers"
+                    and "reused_local_generation" not in raw and digest(gen["rendered_input"].encode()) == gen["input_sha256"]
+                    and gen["completion_tokens"] == len(gen["output_token_ids"]), "Unverified original generation")
+            origin = dict(recording=root.name, task=task, run=e["run_id"], request_id=f["request_id"],
+                          request_sha256=req["sha256"], response_sha256=f["response_ref"]["sha256"])
+            client.saved[client.wire_key(wire)].append((gen, origin))
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("phase", choices=["run", "analyze"])
@@ -277,6 +307,7 @@ def main():
     parser.add_argument("--recording", type=Path, required=True)
     parser.add_argument("--model-python", type=Path)
     parser.add_argument("--checkpoint", type=Path)
+    parser.add_argument("--reuse-recording", type=Path, help="Reuse each identical original local request at most once")
     args = parser.parse_args()
     cfg = read_json(args.profile.read_bytes())
     cases, is_empty = load_inputs(args.checkout, cfg)
@@ -289,11 +320,16 @@ def main():
                 require(hashlib.file_digest(stream, "sha256").hexdigest() == expected, f"Changed checkpoint file {name}")
         root.mkdir(parents=True, exist_ok=False)
         identity = subprocess.check_output(["git", "-C", str(Path(__file__).parent), "rev-parse", "HEAD"], text=True).strip()
-        (root / "registration.json").write_bytes(canonical(dict(profile_sha256=digest(args.profile.read_bytes()),
-            implementation=identity, tasks=[case[1]["id"] for case in cases])) + b"\n")
+        reg = dict(profile_sha256=digest(args.profile.read_bytes()), implementation=identity, tasks=[c[1]["id"] for c in cases])
+        if args.reuse_recording:
+            reg["original_recording"] = args.reuse_recording.name
+            reg["original_registration_sha256"] = digest((args.reuse_recording / "registration.json").read_bytes())
+        (root / "registration.json").write_bytes(canonical(reg) + b"\n")
         client = LocalQwen(args.model_python, args.checkpoint, cfg["model"], cfg["generation"]["seed"])
         try:
             (root / "runtime.json").write_bytes(canonical(client.runtime) + b"\n")
+            if args.reuse_recording:
+                reuse_generations(args.reuse_recording, client, reg)
             for case in cases:
                 collect_task(root, cfg, case, client, is_empty)
                 print("Finished", case[1]["id"], file=sys.stderr, flush=True)

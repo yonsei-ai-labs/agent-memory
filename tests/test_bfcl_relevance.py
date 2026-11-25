@@ -1,0 +1,59 @@
+import json
+import unittest
+from collections import defaultdict, deque
+from copy import deepcopy
+
+from agent_memory_eval.models.local_qwen import LocalQwen, public_reply
+from agent_memory_eval.runner.bfcl_relevance import grade_reply, normalized_first
+from agent_memory_eval.contracts.core import ContractError
+
+
+TOOLS = [{"type": "function", "function": {"name": "weather", "parameters": {
+    "type": "object", "required": ["city"], "properties": {"city": {"type": "string"}}}}}]
+CALL = "<tool_call>\n<function=weather>\n<parameter=city>\nSeoul\n</parameter>\n</function>\n</tool_call>"
+
+
+class QwenReplyTests(unittest.TestCase):
+    def test_chat_end_is_framing_and_does_not_erase_the_call(self):
+        reply, error = public_reply(CALL + "<|im_end|>\n", TOOLS)
+        self.assertIsNone(error)
+        call, = reply["tool_calls"]
+        self.assertEqual(call["function"]["name"], "weather")
+        self.assertEqual(json.loads(call["function"]["arguments"]), {"city": "Seoul"})
+        self.assertEqual(public_reply("Forecast<|im_end|>\n", TOOLS)[0]["content"], "Forecast")
+        for malformed in [CALL + "<|im_end|> extra", CALL.replace("</parameter>", ""), CALL + "unparsed"]:
+            self.assertIsNotNone(public_reply(malformed, TOOLS)[1])
+
+    def test_identical_wire_reuses_only_its_raw_generation_and_reparses_it(self):
+        client = object.__new__(LocalQwen)
+        client.model = {"id": "model"}
+        client.saved = defaultdict(deque)
+        wire = {"model": "model", "tools": TOOLS}
+        raw = {"text": CALL + "<|im_end|>\n", "ended": True, "input_sha256": "abc", "prompt_tokens": 11,
+               "completion_tokens": 3, "decode_error": "old framing error"}
+        key = client.wire_key(wire)
+        client.saved[key].append((raw, {"response_sha256": "original"}))
+        self.assertNotEqual(client.wire_key({**wire, "tools": []}), key)
+        result = client.respond(wire)
+        self.assertEqual(result["choices"][0]["finish_reason"], "tool_calls")
+        self.assertEqual(result["local_generation"]["text"], raw["text"])
+        self.assertNotIn("decode_error", result["local_generation"])
+        self.assertIn("decode_error", raw)
+        self.assertEqual(result["reused_local_generation"]["response_sha256"], "original")
+        self.assertFalse(client.saved[key])
+
+    def test_wrong_call_still_counts_as_call_but_has_independent_diagnostics(self):
+        reply, _ = public_reply(CALL, TOOLS)
+        broken = deepcopy(reply)
+        broken["tool_calls"][0]["function"]["arguments"] = "{}"
+        scored = grade_reply(broken, "live_relevance", lambda output: not output, TOOLS)
+        self.assertTrue(scored["valid"])
+        self.assertEqual(scored["missing_required"], [["weather", "city"]])
+        self.assertFalse(grade_reply(reply, "irrelevance", lambda output: not output, TOOLS)["valid"])
+
+    def test_only_registered_memory_interface_can_be_removed(self):
+        wire = {"messages": [{"role": "system", "content": "worker\nnotes"}, {"role": "user", "content": "question"}],
+                "tools": TOOLS}
+        with self.assertRaises(ContractError):
+            normalized_first(wire, {"memory_notice": "notes"}, "on_demand", [])
+        self.assertEqual(wire["messages"][0]["content"], "worker\nnotes")
