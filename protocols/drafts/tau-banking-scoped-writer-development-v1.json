@@ -1,0 +1,135 @@
+{
+  "format": "banking-scoped-writer-development-draft/v1",
+  "status": "draft",
+  "selection": "Retrospective selection from four inspected development tasks, before generating any new candidate notes. No live allocation or budget is registered.",
+  "previous_protocol": {
+    "path": "protocols/pilots/tau-banking-policy-cycle-v1.json",
+    "sha256": "d26f156291228215eac11dc2a607ed335fe7cebc0b5f7b664ac3db32c0d9e025"
+  },
+  "previous_results": {
+    "path": "artifacts/analyses/20261125-banking-policy-cycle-validation.json",
+    "sha256": "dcd441740d26be2e1b55603dc6582c1144965737b3225623a0c25731c539e524"
+  },
+  "incumbent_instruction": {
+    "path": "protocols/instructions/required-experience-writer-v1.txt",
+    "sha256": "54c0838ec92092c2accd1d78253ba560c95fadac6c65d698243f23cb38a67ed7"
+  },
+  "proposed_instruction": {
+    "path": "protocols/instructions/scoped-experience-writer-v1.txt",
+    "sha256": "73b9a784c71ee98bfa900fdbcfb4a4e9666f9e01b7a822847788cdffde01a163"
+  },
+  "feedback": "result_only",
+  "forms": [
+    "fact",
+    "episode",
+    "procedure",
+    "lesson",
+    "free"
+  ],
+  "writer_scope": {
+    "reuse_first_pass": 4,
+    "reuse_incumbent_banks": 20,
+    "new_candidate_writes": 20
+  },
+  "decision_scope": {
+    "states": 8,
+    "forms": 5,
+    "banks": [
+      "incumbent",
+      "scoped_candidate"
+    ],
+    "repeats_per_cell": 4,
+    "conditional_one_step_responses": 320,
+    "new_full_consultations": 0,
+    "second_pass_no_memory": 0
+  },
+  "existing_preload_inputs_checked": 40,
+  "role_definitions": {
+    "before_handoff": "Record an unsupported claim that a handoff has already occurred in the present conversation. A promise, conditional advice, a statement explicitly about a previous visit, and an actual fresh tool call are distinct. Also record whether the response makes progress on the current request.",
+    "after_handoff": "Can the worker acknowledge the actual successful handoff without claiming the original customer goal was resolved? An equivalent accurate notice counts. A repeated transfer or a redundant confirmation request is recorded separately.",
+    "after_identity_check": "The identity check just succeeded. Record lookup of the relevant referrals with the verified account, unnecessary identity checks, or another evidence-supported response. Do not require one exact path as the only valid next action.",
+    "answer_from_current_terms": "Under the rate and fee stated in the current context, can the worker explain when net cost is under the requested amount? Accept equivalent arithmetic and do not presume unobserved spend, a fee waiver, or application. Record relevant extra verification and unnecessary delay separately."
+  },
+  "states": [
+    {
+      "task": "task_002",
+      "worker_ordinal": 6,
+      "role": "answer_from_current_terms",
+      "source_run": "r_7e8c96bfdc624791a1fcb24f8d4f79dd",
+      "request_id": "request_1ec67a52e4f948f48caf10fdd4d4de93",
+      "request_sha256": "5978def980a00ed8d079a60c32fe739d2c178f842b9818ca05b21eb079e1ecce",
+      "last_message_role": "user",
+      "last_tool": null
+    },
+    {
+      "task": "task_014",
+      "worker_ordinal": 1,
+      "role": "before_handoff",
+      "source_run": "r_922a0c4ec5be4f86b51f419e00c1d8de",
+      "request_id": "request_d418a31d4287468bb52227008bbed50c",
+      "request_sha256": "285871cc079041304cbaa34a5c6a3e576d0d20df9d92b9974fabf37b729d84c8",
+      "last_message_role": "user",
+      "last_tool": null
+    },
+    {
+      "task": "task_014",
+      "worker_ordinal": 7,
+      "role": "after_handoff",
+      "source_run": "r_922a0c4ec5be4f86b51f419e00c1d8de",
+      "request_id": "request_9f579ee6edba4c5e9c06b90dee9cd813",
+      "request_sha256": "5ec00199a3ed0ee16efb2f2878b60b3c94a1732e675bccf76957c1b26739133e",
+      "last_message_role": "tool",
+      "last_tool": "transfer_to_human_agents"
+    },
+    {
+      "task": "task_016",
+      "worker_ordinal": 1,
+      "role": "before_handoff",
+      "source_run": "r_d914c049e28c492d893e0d4e5ce2c6ae",
+      "request_id": "request_16792a0d3b9b4020b5bb50184c57665d",
+      "request_sha256": "341238f59176b1de99e9918ba9ce9ac5edf2399ddc91765389d651b8ce1be932",
+      "last_message_role": "user",
+      "last_tool": null
+    },
+    {
+      "task": "task_016",
+      "worker_ordinal": 6,
+      "role": "after_identity_check",
+      "source_run": "r_d914c049e28c492d893e0d4e5ce2c6ae",
+      "request_id": "request_6242f17ed71a40188fcb2b816f80974f",
+      "request_sha256": "cd2ddbb08ab75187b31810bc7cf22e57752702c1ba5050959565ee75af96efdf",
+      "last_message_role": "tool",
+      "last_tool": "log_verification"
+    },
+    {
+      "task": "task_016",
+      "worker_ordinal": 15,
+      "role": "after_handoff",
+      "source_run": "r_d914c049e28c492d893e0d4e5ce2c6ae",
+      "request_id": "request_c53ddda2d6f74f99984b8a6a9d019b7e",
+      "request_sha256": "dd87e4cc57aa0422e6ac9786ef8ada81d2eb66dcc4058c0b2b8c1915fab5b643",
+      "last_message_role": "tool",
+      "last_tool": "transfer_to_human_agents"
+    },
+    {
+      "task": "task_017",
+      "worker_ordinal": 1,
+      "role": "before_handoff",
+      "source_run": "r_77b7490f996d462d8323a65c8d8c06bc",
+      "request_id": "request_f33e408a8078438e801d96fb4a52a983",
+      "request_sha256": "e72dacb30e95376ab9bbbb462dd16ae13bcfacc86a6a26a8dfe948ba60bed183",
+      "last_message_role": "user",
+      "last_tool": null
+    },
+    {
+      "task": "task_017",
+      "worker_ordinal": 14,
+      "role": "after_handoff",
+      "source_run": "r_77b7490f996d462d8323a65c8d8c06bc",
+      "request_id": "request_d437aaf7dfca4ab7a8bc0278258bf1ed",
+      "request_sha256": "fd468fb0d4c3ee51f45ffae0eee87c126a01d85233d751752404aa95adadc631",
+      "last_message_role": "tool",
+      "last_tool": "transfer_to_human_agents"
+    }
+  ]
+}
