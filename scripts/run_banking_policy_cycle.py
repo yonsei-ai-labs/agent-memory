@@ -436,17 +436,28 @@ def policy_stage_job(args):
     )
 
 
+def registered_models(cfg, conn):
+    models, judge = bank.matched.study_models(cfg, conn)
+    require(
+        {role: m.get("canonical_slug") for role, m in models.items()} == cfg["expected_model_revisions"],
+        "Validation model revisions differ from the original worker or customer",
+    )
+    return models, judge
+
+
 def validation_run(workspace, phase):
     approval = authorization(workspace, validation=True)
     spec, _, _, strict, _ = design(workspace)
     proposal, covered = candidate_binding(workspace, spec, strict)
     _, base, conn, cases, tasks, _ = bank.prepare(workspace, heldout_tasks=spec["heldout"])
     cfg = bank.required_design(base, strict)
+    endpoints = read_json(asset_text(ROOT, base["endpoints"]).encode())["models"]
     cfg.update(
         writer_feedback_level=spec["feedback"],
         total_usd_limit=approval["total_usd"],
         record_unfunded_shards=True,
         expected_endpoint_terms={r: cfg["endpoint_terms"][r] for r in ("worker", "user_simulator")},
+        expected_model_revisions={r: endpoints[r]["canonical_slug"] for r in ("worker", "user_simulator")},
     )
     common = dict(
         cycle_sha256=digest((ROOT / PROFILE).read_bytes()),
@@ -536,7 +547,7 @@ def validation_run(workspace, phase):
         tasks,
         record,
         stage_runner=policy_stage_job,
-        model_resolver=bank.matched.study_models,
+        model_resolver=registered_models,
     )
     return read(workspace / "runs" / cfg["name"] / "completion.json")
 

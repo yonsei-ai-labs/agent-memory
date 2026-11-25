@@ -117,3 +117,12 @@ class BankingPolicyCycleTests(unittest.TestCase):
             used = execute.call_args.args[0][2]
         self.assertEqual(used["writing"], dict(old["writing"], common_instruction_ref={"path": "candidate"}))
         self.assertEqual(cfg, old)
+
+    def test_worker_and_customer_revisions_must_remain_fixed(self):
+        models = {r: {"canonical_slug": r + "-1"} for r in ("worker", "user_simulator")}
+        cfg = {"expected_model_revisions": {r: m["canonical_slug"] for r, m in models.items()}}
+        with patch.object(cycle.bank.matched, "study_models", return_value=(models, None)):
+            self.assertEqual(cycle.registered_models(cfg, {}), (models, None))
+            models["user_simulator"]["canonical_slug"] = "updated"
+            with self.assertRaises(ContractError):
+                cycle.registered_models(cfg, {})
