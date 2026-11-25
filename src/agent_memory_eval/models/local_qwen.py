@@ -65,21 +65,33 @@ def required_prefix(request):
     names = [t["function"]["name"] for t in request["tools"]]
     if choice == "required" and len(names) == 1:
         name = names[0]
-    elif isinstance(choice, dict) and choice.get("type") == "function" and choice.get("function", {}).get("name") in names:
+    elif (isinstance(choice, dict) and choice.get("type") == "function" and isinstance(choice.get("function"), dict)
+          and choice["function"].get("name") in names):
         name = choice["function"]["name"]
     else:
         raise ValueError("The local transport requires one declared function for constrained decoding")
     return "<tool_call>\n<function=" + name + ">\n"
 
 
+def stop_ids(model_eos, chat_eos, *, stop_at_chat_end):
+    ids = list(model_eos) if isinstance(model_eos, (tuple, list)) else [model_eos]
+    if stop_at_chat_end:
+        if not isinstance(chat_eos, int):
+            raise ValueError("Missing tokenizer chat-end token")
+        if chat_eos not in ids:
+            ids.append(chat_eos)
+    return ids
+
+
 class LocalQwen:
     """An observed local transport. Each generation starts from the complete recorded request."""
 
-    def __init__(self, python, checkpoint, model, seed):
+    def __init__(self, python, checkpoint, model, seed, *, stop_at_chat_end=False):
         self.model = dict(id=model, selected_endpoint={"provider_name": "local-transformers"})
         self.saved = defaultdict(deque)
         self.worker = subprocess.Popen(
-            [str(python), "-u", __file__, str(checkpoint), str(seed)], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+            [str(python), "-u", __file__, str(checkpoint), str(seed)] + (["--chat-end"] if stop_at_chat_end else []),
+            stdin=subprocess.PIPE, stdout=subprocess.PIPE,
             text=True, encoding="utf-8", env={**os.environ, "HF_HUB_OFFLINE": "1", "TRANSFORMERS_OFFLINE": "1",
                                               "TOKENIZERS_PARALLELISM": "false"})
         try:
@@ -140,7 +152,7 @@ class LocalQwen:
         self.worker.stdout.close()
 
 
-def serve(checkpoint, seed):
+def serve(checkpoint, seed, *, stop_at_chat_end=False):
     import torch
     import transformers
     from transformers import AutoTokenizer, Qwen3_5ForCausalLM
@@ -152,10 +164,15 @@ def serve(checkpoint, seed):
     if loading.get("missing_keys") or loading.get("mismatched_keys"):
         raise ValueError("The local text model has uninitialized parameters")
     model.eval()
+    eos = stop_ids(model.generation_config.eos_token_id, tokenizer.eos_token_id, stop_at_chat_end=stop_at_chat_end)
+    generation_options = {"eos_token_id": eos} if stop_at_chat_end else {}
     def send(obj):
         print(json.dumps(obj, ensure_ascii=False, allow_nan=False), flush=True)
-    send(dict(checkpoint=Path(checkpoint).name, torch=torch.__version__, transformers=transformers.__version__,
-              device=torch.cuda.get_device_name(), dtype="bfloat16", attention="sdpa", seed=seed))
+    runtime = dict(checkpoint=Path(checkpoint).name, torch=torch.__version__, transformers=transformers.__version__,
+                   device=torch.cuda.get_device_name(), dtype="bfloat16", attention="sdpa", seed=seed)
+    if stop_at_chat_end:
+        runtime["stop_token_ids"] = eos
+    send(runtime)
     for line in sys.stdin:
         try:
             request = json.loads(line)
@@ -173,10 +190,9 @@ def serve(checkpoint, seed):
             torch.manual_seed(seed)
             with torch.inference_mode():
                 out = model.generate(**inputs, max_new_tokens=request["max_completion_tokens"], do_sample=False,
-                                     pad_token_id=tokenizer.pad_token_id, return_dict_in_generate=False)
+                                     pad_token_id=tokenizer.pad_token_id, return_dict_in_generate=False, **generation_options)
             ids = out[0, inputs.input_ids.shape[1]:].tolist()
-            eos = model.generation_config.eos_token_id
-            ended = bool(ids) and ids[-1] in (eos if isinstance(eos, list) else [eos])
+            ended = bool(ids) and ids[-1] in eos
             decoded = tokenizer.decode(ids[:-1] if ended else ids, skip_special_tokens=False)
             send(dict(text=prefix + decoded, emitted_text=decoded, forced_prefix=prefix, ended=ended,
                       rendered_input=rendered, input_sha256=hashlib.sha256(rendered.encode()).hexdigest(),
@@ -186,4 +202,4 @@ def serve(checkpoint, seed):
 
 
 if __name__ == "__main__":
-    serve(sys.argv[1], int(sys.argv[2]))
+    serve(sys.argv[1], int(sys.argv[2]), stop_at_chat_end="--chat-end" in sys.argv[3:])

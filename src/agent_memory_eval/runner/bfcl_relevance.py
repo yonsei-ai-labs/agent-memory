@@ -24,6 +24,12 @@ from agent_memory_eval.models.local_qwen import LocalQwen
 from agent_memory_eval.recording.journal import BlobStore, Journal, read_experiment
 from agent_memory_eval.recording.provenance import RecordingGateway, SourceRegistry, public_assistant_message
 
+PAGE_SIZE = 1
+
+
+def read_tools(cfg):
+    return memory_tools(["memory_list", "memory_get"], page_size=PAGE_SIZE if cfg.get("advertise_list_limit") else None)
+
 
 def load_inputs(checkout, cfg):
     require(subprocess.check_output(["git", "-C", checkout, "rev-parse", "HEAD"], text=True).strip()
@@ -65,7 +71,7 @@ def normalized_first(wire, cfg, mode, items):
         if mode == "preload":
             require(value["messages"].pop(1) == snapshot_message(items), "Different preloaded bank")
         else:
-            private = memory_tools(["memory_list", "memory_get"])
+            private = read_tools(cfg)
             require(mode == "on_demand" and value["tools"][-len(private):] == private, "Different retrieval interface")
             del value["tools"][-len(private):]
     return value
@@ -98,7 +104,7 @@ def solve(journal, cfg, case, client, is_empty, *, source=None, writer=None, for
     run = row["id"] + "-" + (f"{form}-{mode}" if mode else "source")
     ctx = RunContext(journal.experiment_id, run, new_id("s"), f"{form}-{mode}" if mode else "no_memory",
                      "diagnostic", "solve", "observed")
-    policy = MemoryPolicy(bool(mode), "none", False, 1, read_mode=mode or "none")
+    policy = MemoryPolicy(bool(mode), "none", False, PAGE_SIZE, read_mode=mode or "none")
     memory = MemoryService(journal, record_kind="observed")
     snapshot = writer["snapshot_id"] if writer else None
     items = snapshot_items(journal.blobs, journal.state, snapshot) if writer else []
@@ -109,7 +115,7 @@ def solve(journal, cfg, case, client, is_empty, *, source=None, writer=None, for
     registry = SourceRegistry(journal, ctx)
     wire = dict(model=cfg["model"], seed=cfg["generation"]["seed"], max_completion_tokens=cfg["generation"]["worker_tokens"],
                 system=dict(role="system", content=cfg["worker_instruction"] + ("\n" + cfg["memory_notice"] if mode else "")),
-                tools=tools + (memory_tools(["memory_list", "memory_get"]) if mode == "on_demand" else []))
+                tools=tools + (read_tools(cfg) if mode == "on_demand" else []))
     template = registry.template(wire, roles=("worker",))
     history = [(template, "/system")]
     if mode == "preload":
@@ -332,7 +338,8 @@ def main():
             reg["original_recording"] = args.reuse_recording.name
             reg["original_registration_sha256"] = digest((args.reuse_recording / "registration.json").read_bytes())
         (root / "registration.json").write_bytes(canonical(reg) + b"\n")
-        client = LocalQwen(args.model_python, args.checkpoint, cfg["model"], cfg["generation"]["seed"])
+        client = LocalQwen(args.model_python, args.checkpoint, cfg["model"], cfg["generation"]["seed"],
+                           stop_at_chat_end=cfg["generation"].get("stop_at_chat_end", False))
         try:
             (root / "runtime.json").write_bytes(canonical(client.runtime) + b"\n")
             if args.reuse_recording:

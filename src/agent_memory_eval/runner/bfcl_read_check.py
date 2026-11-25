@@ -13,10 +13,16 @@ from agent_memory_eval.adapters.bfcl_task_start import open_relevance
 from agent_memory_eval.analysis.recorded_decisions import RecordedDecisions, require, sealed_bytes
 from agent_memory_eval.analysis.requests import audit_requests
 from agent_memory_eval.contracts.core import canonical, digest, read_json
-from agent_memory_eval.memory.tools import memory_tools
 from agent_memory_eval.models.local_qwen import LocalQwen, required_prefix
 from agent_memory_eval.recording.journal import Journal
-from agent_memory_eval.runner.bfcl_relevance import load_inputs, solve
+from agent_memory_eval.runner.bfcl_relevance import load_inputs, read_tools, solve
+
+
+def expected_runtime(parent, spec):
+    runtime = dict(parent)
+    if "stop_token_ids" in spec:
+        runtime["stop_token_ids"] = spec["stop_token_ids"]
+    return runtime
 
 
 def run(args, cfg, spec, archive):
@@ -33,13 +39,16 @@ def run(args, cfg, spec, archive):
     reg = dict(spec_sha256=digest(args.spec.read_bytes()), original_archive_sha256=digest(args.archive.read_bytes()),
                implementation=subprocess.check_output(["git", "-C", str(Path(__file__).parent), "rev-parse", "HEAD"],
                                                       text=True).strip(), tasks=archive["registration"]["tasks"])
+    if args.arm:
+        reg["arm"] = args.arm
     (args.control / "registration.json").write_bytes(canonical(reg) + b"\n")
-    client = LocalQwen(args.model_python, args.checkpoint, cfg["model"], cfg["generation"]["seed"])
+    client = LocalQwen(args.model_python, args.checkpoint, cfg["model"], cfg["generation"]["seed"],
+                       stop_at_chat_end="stop_token_ids" in spec)
     try:
-        require(client.runtime == read_json((args.parent / "runtime.json").read_bytes()), "Different inference runtime")
+        require(client.runtime == expected_runtime(archive["runtime"], spec), "Different inference runtime")
         (args.control / "runtime.json").write_bytes(canonical(client.runtime) + b"\n")
         notice = "\n".join(filter(None, (cfg["memory_notice"], spec["append_to_neutral_notice"])))
-        guided = dict(cfg, memory_notice=notice)
+        guided = dict(cfg, memory_notice=notice, advertise_list_limit=spec.get("advertise_list_limit", False))
         controls = dict(model=cfg["model"], revision=cfg["model_revision"], generation=cfg["generation"])
         for case in cases:
             category, row = case
@@ -66,6 +75,9 @@ def run(args, cfg, spec, archive):
 
 def inputs(args):
     spec = read_json(args.spec.read_bytes())
+    if "arms" in spec or args.arm:
+        require(args.arm and args.arm in spec.get("arms", {}), "Select a registered arm")
+        spec = dict(spec, **spec["arms"][args.arm])
     cfg = read_json(sealed_bytes(args.parent_profile, spec["parent_profile_sha256"]))
     archive = read_json(sealed_bytes(args.archive, spec["parent_archive_sha256"]))
     require(read_json((args.parent / "registration.json").read_bytes()) == archive["registration"]
@@ -74,7 +86,7 @@ def inputs(args):
     return cfg, spec, archive
 
 
-def inspect_reader(record, expected_snapshot, *, constrain_names=False):
+def inspect_reader(record, expected_snapshot, *, constrain_names=False, advertise_list_limit=False, stops=()):
     note, = record.items
     bank = record.state["banks"][record.start["bank_id"]]
     require(bank["parent_snapshot"] == record.start["start_snapshot_id"] == expected_snapshot
@@ -84,19 +96,25 @@ def inspect_reader(record, expected_snapshot, *, constrain_names=False):
     first = None
     for turn, req in enumerate(record.requests):
         wire = record.blobs.get(req["request_ref"])
-        raw = record.blobs.get(record.finishes[req["request_id"]]["response_ref"])
+        finish = record.finishes[req["request_id"]]
+        raw = record.blobs.get(finish["response_ref"])
         gen = raw["local_generation"]
         rendered = gen["rendered_input"]
         definitions = rendered.split("<tools>\n", 1)[1].split("\n</tools>", 1)[0].splitlines()
         choice = None
         if constrain_names and turn < 2:
             choice = dict(type="function", function=dict(name=("memory_list", "memory_get")[turn]))
-        require([read_json(line.encode()) for line in definitions] == wire["tools"]
-                and wire["tools"][-2:] == memory_tools(["memory_list", "memory_get"])
+        require(finish["status"] == "response" and finish["cost_usd"] == 0 and raw["provider"] == "local-transformers"
+                and [read_json(line.encode()) for line in definitions] == wire["tools"]
+                and wire["tools"][-2:] == read_tools(dict(advertise_list_limit=advertise_list_limit))
                 and wire.get("tool_choice") == choice and gen["forced_prefix"] == required_prefix(wire)
                 and gen["text"] == gen["forced_prefix"] + gen["emitted_text"]
                 and digest(rendered.encode()) == gen["input_sha256"]
                 and len(gen["output_token_ids"]) == gen["completion_tokens"], "Wrong tool interface or generation record")
+        if stops:
+            ids = gen["output_token_ids"]
+            require(not set(stops).intersection(ids[:-1]) and gen["ended"] == (bool(ids) and ids[-1] in stops),
+                    "Generation continued past a registered end token")
         if first is None:
             first = wire
             require([m["role"] for m in wire["messages"]] == ["system", "user"] and note["id"] not in rendered,
@@ -117,7 +135,8 @@ def inspect_reader(record, expected_snapshot, *, constrain_names=False):
         steps.append(dict(request=req["request_ref"]["sha256"], prompt=gen["input_sha256"],
             output_tokens_sha256=digest(canonical(gen["output_token_ids"])), calls=names, fields=fields,
             raw_mentions_read=bool(re.search(r"\bmemory_(?:list|get)\b", gen["emitted_text"], re.I)),
-            constrained_name=choice["function"]["name"] if choice else None,
+            constrained_name=choice["function"]["name"] if choice else None, prompt_tokens=gen["prompt_tokens"],
+            completion_tokens=gen["completion_tokens"],
             incomplete=malformed, reused="reused_local_generation" in raw))
     returns = []
     for event in record.of_type("memory.returned"):
@@ -148,6 +167,7 @@ def summarize(rows):
         body_before_business_decision=sum(r["termination"] == "business_decision" and "body" in r["steps"][-1]["fields"]
                                           for r in rows),
         raw_mentions_read=sum(s["raw_mentions_read"] for s in steps), incomplete=sum(s["incomplete"] for s in steps),
+        prompt_tokens=sum(s["prompt_tokens"] for s in steps), completion_tokens=sum(s["completion_tokens"] for s in steps),
         reused=sum(s["reused"] for s in steps), denials=sum(len(r["denials"]) for r in rows),
         terminations=dict(Counter(r["termination"] for r in rows)))
 
@@ -156,8 +176,10 @@ def audit(args, cfg, spec, archive):
     reg = read_json((args.control / "registration.json").read_bytes())
     require(reg["spec_sha256"] == digest(args.spec.read_bytes()) and reg["tasks"] == archive["registration"]["tasks"]
             and reg["original_archive_sha256"] == spec["parent_archive_sha256"]
-            and read_json((args.control / "runtime.json").read_bytes()) == archive["runtime"], "Control registration changed")
-    original, guided = [], []
+            and reg.get("arm") == args.arm
+            and read_json((args.control / "runtime.json").read_bytes()) == expected_runtime(archive["runtime"], spec),
+            "Control registration changed")
+    original, guided, unique_by_question = [], [], {}
     seals = {}
     for task in reg["tasks"]:
         data = archive["tasks"][task]
@@ -168,6 +190,7 @@ def audit(args, cfg, spec, archive):
         require(control_log.startswith(source_log), "Control did not branch from the sealed parent")
         audit_requests(folder)
         seals[task] = digest(control_log)
+        first_prompts, first_outputs = set(), set()
         for row in data["allocations"]:
             if row["mode"] != "on_demand":
                 continue
@@ -176,12 +199,18 @@ def audit(args, cfg, spec, archive):
             require(first["messages"][0]["content"] == cfg["worker_instruction"] + "\n" + cfg["memory_notice"],
                     "Unexpected original memory notice")
             original.append(observation)
+            first_prompts.add(observation["steps"][0]["prompt"])
+            first_outputs.add(observation["steps"][0]["output_tokens_sha256"])
             if row["form"] == spec["parent_form"]:
                 control_id = task + "-" + spec["control_label"] + "-on_demand"
                 control = RecordedDecisions(folder, control_id, seals[task])
                 constrain = spec.get("constrain_read_names", False)
-                wire, observed = inspect_reader(control, row["snapshot"], constrain_names=constrain)
+                limited = spec.get("advertise_list_limit", False)
+                wire, observed = inspect_reader(control, row["snapshot"], constrain_names=constrain,
+                    advertise_list_limit=limited, stops=spec.get("stop_token_ids", ()))
                 expected = deepcopy(first)
+                if limited:
+                    expected["tools"][-2:] = read_tools(dict(advertise_list_limit=True))
                 if spec["append_to_neutral_notice"]:
                     expected["messages"][0]["content"] += "\n" + spec["append_to_neutral_notice"]
                 if constrain:
@@ -189,11 +218,13 @@ def audit(args, cfg, spec, archive):
                 require(wire == expected and control.start["source_run_ids"] == evidence.start["source_run_ids"],
                         "Control differs beyond the registered guidance")
                 guided.append(observed)
+        unique_by_question[task] = dict(prompts=len(first_prompts), token_outputs=len(first_outputs))
     require(len(original) == len(reg["tasks"]) * len(cfg["forms"]) and len(guided) == spec["limits"]["allocated"],
             "Missing assigned readers")
-    return dict(format="bfcl-on-demand-read-check/v1", registration=reg, control_journals_sha256=seals,
-                neutral=dict(summary=summarize(original), readers=original),
-                directed=dict(summary=summarize(guided), readers=guided))
+    condition = args.arm or ("constrained" if spec.get("constrain_read_names") else "directed")
+    return {"format": "bfcl-on-demand-read-check/v1", "registration": reg, "control_journals_sha256": seals,
+            "neutral": dict(summary=summarize(original), unique_first_by_question=unique_by_question, readers=original),
+            condition: dict(summary=summarize(guided), readers=guided)}
 
 
 def arguments():
@@ -203,6 +234,7 @@ def arguments():
     p.add_argument("--parent-profile", type=Path, required=True)
     p.add_argument("--spec", type=Path, required=True)
     p.add_argument("--archive", type=Path, required=True)
+    p.add_argument("--arm", help="Arm name for a multi-arm registered check")
     return p
 
 

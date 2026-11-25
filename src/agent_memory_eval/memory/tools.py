@@ -3,13 +3,18 @@
 from agent_memory_eval.contracts.core import ContractError
 
 
-def memory_tools(names):
+def memory_tools(names, *, page_size=None):
     properties = {
         "memory_store": dict(title={"type": "string"}, body={"type": "string"},
             id={"type": ["string", "null"]}, expected_version={"type": ["string", "null"]}),
         "memory_list": dict(cursor={"type": ["string", "null"]}, limit={"type": ["integer", "null"]}),
         "memory_get": dict(id={"type": "string"}),
     }
+    if page_size is not None:
+        if type(page_size) is not int or page_size < 1:
+            raise ContractError("The catalog page size must be a positive integer")
+        properties["memory_list"]["limit"].update(minimum=1, maximum=page_size,
+            description=f"Omit to use the default of {page_size}. The maximum is {page_size}.")
     required = {"memory_store": ["title", "body"], "memory_list": [], "memory_get": ["id"]}
     descriptions = {
         "memory_store": "Create a persistent memory, or update one using its id and expected_version. Preserve conditions and uncertainty.",

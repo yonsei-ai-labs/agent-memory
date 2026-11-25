@@ -4,8 +4,9 @@ from collections import defaultdict, deque
 from copy import deepcopy
 
 from agent_memory_eval.analysis.bfcl_relevance import corruptions, trials
-from agent_memory_eval.models.local_qwen import LocalQwen, public_reply, required_prefix
-from agent_memory_eval.runner.bfcl_relevance import grade_reply, normalized_first
+from agent_memory_eval.models.local_qwen import LocalQwen, public_reply, required_prefix, stop_ids
+from agent_memory_eval.runner.bfcl_relevance import grade_reply, normalized_first, read_tools
+from agent_memory_eval.memory.tools import memory_tools
 from agent_memory_eval.contracts.core import ContractError
 
 
@@ -15,6 +16,18 @@ CALL = "<tool_call>\n<function=weather>\n<parameter=city>\nSeoul\n</parameter>\n
 
 
 class QwenReplyTests(unittest.TestCase):
+    def test_read_interface_advertises_actual_bound_and_stops_at_chat_end(self):
+        old = read_tools({})
+        limit = lambda tools: tools[0]["function"]["parameters"]["properties"]["limit"]
+        self.assertNotIn("maximum", limit(old))
+        self.assertEqual(limit(read_tools({"advertise_list_limit": True}))["maximum"], 1)
+        self.assertEqual(limit(memory_tools(["memory_list"], page_size=4))["maximum"], 4)
+        with self.assertRaises(ContractError):
+            memory_tools(["memory_list"], page_size=0)
+        self.assertEqual(stop_ids(248044, 248046, stop_at_chat_end=False), [248044])
+        self.assertEqual(stop_ids(248044, 248046, stop_at_chat_end=True), [248044, 248046])
+        self.assertEqual(stop_ids([248044, 248046], 248046, stop_at_chat_end=True), [248044, 248046])
+
     def test_named_decoder_constraint_keeps_model_generated_arguments(self):
         tools = [*TOOLS, {"type": "function", "function": {"name": "memory_get", "parameters": {}}}]
         wire = {"tools": tools, "tool_choice": {"type": "function", "function": {"name": "memory_get"}}}

@@ -1,0 +1,17 @@
+{
+  "name": "bfcl-read-interface-v2-check",
+  "parent_profile_sha256": "7b75b0c760a6652471e8965244e16749d2e2fd8d233639f25563b0f7ffaf3bbb",
+  "parent_archive_sha256": "588bc155fdf34743c24c79aab14a4637187c7a5054e59c1e1ef634ec3f85f144",
+  "selection": "Use the same eight original fact snapshots and public tasks in both checks. Do not replace failed or truncated responses.",
+  "parent_form": "fact",
+  "append_to_neutral_notice": "",
+  "advertise_list_limit": true,
+  "stop_token_ids": [248044, 248046],
+  "arms": {
+    "voluntary": {"control_label": "fact-interface-v2-voluntary", "constrain_read_names": false},
+    "constrained": {"control_label": "fact-interface-v2-routing", "constrain_read_names": true}
+  },
+  "limits": {"allocated": 8, "worker_calls_per_question": 3, "new_external_calls": 0, "new_writers": 0, "second_pass_no_memory": 0},
+  "endpoint": "Count spontaneous list/get, successful returns and actual version-bound body inclusion before the free business decision. In the routing arm constrain only the first two function names. Verify the registered catalog bound in the model's tool definitions and stop at the first model or tokenizer chat EOS.",
+  "interpretation": "Post-hoc local engineering checks. The two fixes change the interface together. Compare activation on eight unique questions, keep all failures, and do not combine with the original trial or infer a causal benefit from reading."
+}
