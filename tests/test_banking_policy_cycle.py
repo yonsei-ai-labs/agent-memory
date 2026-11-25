@@ -5,7 +5,8 @@ from types import SimpleNamespace
 import unittest
 from unittest.mock import patch
 
-from agent_memory_eval.contracts.core import ContractError
+from agent_memory_eval.analysis.recorded_decisions import RecordedDecisions
+from agent_memory_eval.contracts.core import ContractError, canonical, digest
 from agent_memory_eval.experiments.clause_contrast import clause_variants, next_action, preload_at_decision
 from scripts.analyze_banking_policy_cycle import dev_summary, first_wire_proof
 from scripts.diagnose_banking_policy_cycle import compare_dispute_calls
@@ -15,6 +16,47 @@ from scripts.run_fresh_matched import jobs_for
 
 
 class BankingPolicyCycleTests(unittest.TestCase):
+    def test_scoped_writer_pairs_match_only_the_instruction_change_on_recorded_inputs(self):
+        root = cycle.ROOT
+        spec = cycle.read(root / cycle.PROFILE)
+        archives = root / "runs" / spec["validation_study"]
+        if not (archives / "completion.json").is_file():
+            self.skipTest("Requires the completed banking writer recordings")
+        _, _, base, strict, _ = cycle.design(root)
+        conn = json.loads(cycle.asset_text(root, base["connection"]))
+        cfg = cycle.bank.required_design(base, strict)
+        cfg["writer_feedback_level"] = spec["feedback"]
+        common = cycle.asset_text(root, strict["common_instruction_ref"]).rstrip("\r\n")
+        candidate_path = root / "protocols/instructions/scoped-experience-writer-v1.txt"
+        candidate = candidate_path.read_text(encoding="utf-8").rstrip("\r\n")
+        self.assertTrue(candidate.startswith(common + "\n"))
+
+        checked = 0
+        for task in spec["heldout"].values():
+            source_folder = root / "runs" / spec["source_study"] / ("task-" + task) / "source"
+            source = cycle.bank.matched.source_from(source_folder, task)
+            base_hashes = cycle.writer_hashes(conn, cfg, source, common)
+            proposed_hashes = cycle.writer_hashes(conn, cfg, source, candidate)
+            folder = archives / ("task-" + task + "__existing") / "write"
+            _, _, rows = cycle.bank.matched.sealed_rows(folder)
+            self.assertCountEqual([row["arm"] for row in rows], strict["lines"])
+            for row in rows:
+                form = row["arm"]
+                with self.subTest(task=task, form=form):
+                    log = RecordedDecisions(
+                        folder / row["directory"], row["run_id"], row["result"]["log_sha256"]
+                    )
+                    request = next(q for q in log.requests if q["actor_role"] == "writer")
+                    wire = log.blobs.get(request["request_ref"])
+                    self.assertEqual(base_hashes[form], request["request_ref"]["sha256"])
+                    self.assertEqual(digest(canonical(wire)), base_hashes[form])
+                    form_line = strict["lines"][form]
+                    self.assertEqual(wire["messages"][0], {"role": "system", "content": common + "\n" + form_line})
+                    wire["messages"][0]["content"] = candidate + "\n" + form_line
+                    self.assertEqual(digest(canonical(wire)), proposed_hashes[form])
+                    checked += 1
+        self.assertEqual(checked, 20)
+
     @unittest.skipUnless(find_spec("tau2"), "requires the native action comparator")
     def test_dispute_diagnostic_recognizes_encoding_but_preserves_a_wrong_target(self):
         gold = {
