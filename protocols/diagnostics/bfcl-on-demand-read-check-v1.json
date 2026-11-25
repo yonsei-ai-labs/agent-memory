@@ -1,0 +1,12 @@
+{
+  "name": "bfcl-on-demand-read-check-01",
+  "parent_profile_sha256": "7b75b0c760a6652471e8965244e16749d2e2fd8d233639f25563b0f7ffaf3bbb",
+  "parent_archive_sha256": "588bc155fdf34743c24c79aab14a4637187c7a5054e59c1e1ef634ec3f85f144",
+  "selection": "All eight original questions, one frozen fact note per question. No selection by original outcome.",
+  "parent_form": "fact",
+  "control_label": "fact-read-check",
+  "append_to_neutral_notice": "Before answering the user or calling any task function, call memory_list, then call memory_get using the item ID returned by the list. After reading the note, decide how to respond to the original request.",
+  "limits": {"allocated": 8, "worker_calls_per_question": 3, "new_external_calls": 0, "new_writers": 0, "second_pass_no_memory": 0},
+  "endpoint": "Inspect raw model calls, successful private list/get results, version-bound title and body spans in the next submitted request and actual rendered tokenized prompt. Stop at the first business decision or original three-request limit. Keep all missing or unsuccessful controls.",
+  "interpretation": "Post-hoc positive control for the ability to request, deliver and record a read. All original arms and scores remain sealed. No forced tool prefix, task answer or change to the user request. Do not pool this directed check with voluntary retrieval or score it as an autonomous policy."
+}
