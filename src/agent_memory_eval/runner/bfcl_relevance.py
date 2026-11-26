@@ -349,6 +349,9 @@ def audit_task(root, cfg, case, is_empty):
 
 
 def comparison_inputs(cfg, args):
+    parent, output = args.parent_recording.resolve(), args.recording.resolve()
+    require(not output.is_relative_to(parent) and not parent.is_relative_to(output),
+            "Use separate directories for the archived and new recordings")
     spec = read_json(args.writer_comparison.read_bytes())
     require(spec["format"] == "bfcl-archived-writer-comparison/v1" and spec["read_mode"] in cfg["delivery"]
             and spec["parent_profile_sha256"] == digest(args.profile.read_bytes()), "Wrong parent or delivery mode")
