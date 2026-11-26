@@ -19,11 +19,13 @@
 
 완료된 상담 세 건, 원장만 닫힌 상담 한 건, 아직 시작하지 않은 상담 한 건이 있는 사본으로 재개를 검증했다. 네 번째 상담의 채점·비용을 원장에서 복원하고 다섯 번째 상담만 실행했다. 재개 명령을 한 번 더 호출했을 때 추가 요청은 0건이었다. 종료 기록 복원을 과거 은행 실측 342건에도 적용해 기존 작성·채점·역할별 비용 필드를 대조했고 차이는 0건이었다. [복구 검증 코드](../../tests/replay_opening_cohort.py) · [검증값](../../artifacts/analyses/20261126-banking-opening-reliability-check.json)
 
-고정 체크아웃과 벤치 데이터가 있는 작업 공간에서 검증 전용 전송을 써서 전체 일정을 재현할 수 있다. 출력에는 새 디렉터리를 지정한다. [전체 일정 검증 코드](../../tests/replay_opening_cohort.py)
+깨끗한 v3 체크아웃에서 아래 명령을 실행한다. `bench_workspace`는 은행 데이터와 가상환경이 있는 작업 공간이다. 출력 디렉터리는 매번 새 경로를 쓴다. [전체 일정 검증 코드](../../tests/replay_opening_cohort.py)
 
 ```bash
-PYTHONPATH="$PWD/src:$PWD:$PWD/tests" TAU2_DATA_DIR="$PWD/data/tau2-bench/data" LITELLM_LOCAL_MODEL_COST_MAP=True \
-  uv run --offline python tests/replay_opening_cohort.py --workspace "$PWD" --output outputs/opening-v3-fixture
+bench_workspace=/home/depa/agent-memory
+PYTHONPATH="$PWD/src:$PWD:$PWD/tests" TAU2_DATA_DIR="$bench_workspace/data/tau2-bench/data" \
+  LITELLM_LOCAL_MODEL_COST_MAP=True "$bench_workspace/.venv/bin/python" tests/replay_opening_cohort.py \
+  --workspace "$bench_workspace" --output "$bench_workspace/outputs/opening-v3-fixture"
 ```
 
 ## 전체 과제로 확대한 본 실험
@@ -54,7 +56,7 @@ TAU2_DATA_DIR="$PWD/data/tau2-bench/data" LITELLM_LOCAL_MODEL_COST_MAP=True \
 
 ## 확대 실행 전 원기록과 실행기 리뷰
 
-11월 26일 리뷰 시점에 19과제의 유료 배정은 전부 미시작이었다. 직전 은행 다중 거래와 BFCL 작성 비교는 원기록으로 분석을 다시 돌려 공개 결과의 모든 JSON 값이 일치했다. 은행 2회차의 30개 세션은 서로 달랐고 1회차와도 겹치지 않았다. 같은 기억을 쓴 15쌍 모두 원천 작성물·기억 버전·첫 고객 발화·첫 상담원 입력이 일치했다. 30건 전부에 본문이 노출됐고 29건이 공식 실패, 1건이 입력 한도 미채점이었다. BFCL은 양쪽 모두 채점된 38쌍에서 후보만 정답 3건, 기존만 정답 0건이었다. 한 개선 사례의 후보 메모는 실제로 반환된 적 없는 경기 검색 결과를 서술했다. 공식 성패와 기억의 사실성을 따로 판정해야 하는 실제 사례다. [은행 실측](../../artifacts/analyses/20261125-banking-multitarget-forms.json) · [BFCL 원문과 판단](20261126-writer-representation-pairs.md)
+11월 26일 리뷰 시점에 19과제의 유료 배정은 전부 미시작이었다. 직전 은행 다중 거래와 BFCL 작성 비교는 원기록으로 분석을 다시 돌려 공개 결과의 모든 JSON 값이 일치했다. 은행 2회차의 30개 세션은 서로 달랐고 1회차와도 겹치지 않았다. 같은 기억을 쓴 15쌍 모두 원천 작성물·기억 버전·첫 고객 발화·첫 상담원 입력이 일치했다. 30건 전부에 본문이 노출됐고 29건이 공식 실패, 1건이 입력 한도 미채점이었다. BFCL은 양쪽 모두 채점된 38쌍에서 후보만 정답 3건, 기존만 정답 0건이었다. 한 개선 사례의 후보 메모는 실제로 반환된 적 없는 경기 검색 결과를 서술했다. 공식 성패와 기억의 사실성을 따로 판정해야 하는 실제 사례다. [은행 실측](../../artifacts/analyses/20261125-banking-multitarget-forms.json) · [BFCL 원문과 판단](../../artifacts/analyses/20261126-bfcl-writer-pairs.json)
 
 확대 실험의 고정 커밋 `262ac84`에서 95개 은행 환경 대조를 다시 실행해 사전 검증 파일과 바이트 단위로 일치했다. 추가로 076번에서 외부 통신을 차단하고 모델 응답을 지정해 저장·전달·공식 채점·집계를 끝까지 실행했다. 정상 조건은 1회차 1건, 작성 20건, 2회차 60건이 완료됐다. 작성물 20개 각각을 세 번 사용할 때 첫 상담원 입력이 세 번 모두 같았다. 이 모의 실행의 성공률은 모델 성과 추정에 쓰지 않는다. [리뷰 조건과 경로별 건수](../../artifacts/analyses/20261126-banking-opening-launch-review.json)
 

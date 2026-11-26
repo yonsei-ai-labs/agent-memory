@@ -165,13 +165,14 @@ class ArchivedBankingRecoveryTests(unittest.TestCase):
             "tau-banking-multitarget-forms-01",
         ]
         roots = [ROOT / "runs" / study for study in studies]
-        if not all((root / "completion.json").is_file() for root in roots):
+        if not all((root / "registration.json").is_file() for root in roots):
             self.skipTest("Local historical banking records are unavailable")
         counts = Counter()
         for root in roots:
             for ledger in sorted(root.glob("task-*/*/allocations.json")):
                 stage = ledger.parent
-                for row in sealed_rows(stage)[2]:
+                records = sealed_rows(stage)[2] if (stage / "completion.json").exists() else read_json(ledger.read_bytes())
+                for row in records:
                     expected = row.get("result") or {}
                     if not expected.get("log_sha256"):
                         continue
