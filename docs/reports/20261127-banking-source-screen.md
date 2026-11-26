@@ -26,3 +26,9 @@
 uv run --offline python -m scripts.run_banking_memory preflight --series source-screen
 uv run --offline python -m scripts.run_banking_memory results --series source-screen
 ```
+
+## 실행 중 고객이 먼저 도구를 호출한 경우
+
+28건을 전송한 시점에 081번 첫 반복에서 고객이 첫 인사에 응답하며 `request_human_agent_transfer`를 바로 호출했다. 원래 실행기는 첫 상담원 입력에 고객 텍스트가 필요해 이 배정을 미채점으로 닫고 전체 일정을 중단했다. 당시 27건은 공식 채점됐고, 나머지 110개 배정은 미시작이었다.
+
+재개 시 원래 실행기 커밋과 등록을 고정한다. 별도 제어 코드는 등록된 요청에 대한 고객의 도구 응답 하나, 원 궤적의 같은 호출, 상담원 요청 0건, 공식 미채점, 동일한 구현·가격·배정을 모두 확인한 경우에만 다음 배정으로 진행한다. 최초 28개 마감 파일의 해시와 두 구현의 커밋은 실행 폴더의 `source-resume.json`에 기록한다. 확인된 중단은 배정별 `customer-opening-stop.json`에 남긴다. 과제 선별 기준과 $2 총한도는 최초 등록을 따른다. [유료 승인](../../artifacts/pilots/20261127-banking-source-screen-authorization.json)

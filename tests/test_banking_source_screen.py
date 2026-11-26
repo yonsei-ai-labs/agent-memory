@@ -10,6 +10,24 @@ from scripts import run_banking_memory as bank
 
 
 class SourceScreenTests(TestCase):
+    def test_archived_customer_tool_opening_is_missing_only_under_its_exact_registration(self):
+        root = bank.ROOT / "runs/tau-banking-source-screen-01"
+        if not (root / "registration.json").is_file():
+            self.skipTest("Requires the recorded customer-tool opening")
+        reg = bank.matched.read(root / "registration.json")
+        case = next(c for c in reg["preflight"]["cases"] if c["task"] == "task_081__source-1")
+        folder = root / ("task-" + case["task"]) / "source"
+        if not (folder / "completion.json").is_file():
+            self.skipTest("Source not sealed")
+        _, ctl, _ = bank.matched.sealed_rows(folder)
+        args = [folder, case, ctl["profile"], ctl["design"], reg["implementation"], ctl["model_catalog_entries"]]
+        self.assertEqual(bank.verified_customer_tool_stop(*args)["reason"], "customer_tool_before_first_worker_input")
+        for index in (2, 3, 4, 5):
+            changed = args.copy()
+            changed[index] = {}
+            with self.subTest(field=index), self.assertRaises(ContractError):
+                bank.verified_customer_tool_stop(*changed)
+
     def test_confirmed_customer_alias_is_quarantined_even_without_a_verification_target(self):
         past = [dict(task="a", unit="A", identified=True, room="floor"),
                 dict(task="b", unit="B12345", identified=True, room="not_run"),

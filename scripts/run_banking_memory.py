@@ -235,6 +235,99 @@ def prepare_feedback(workspace, scope):
     return spec, cfg, conn, cases, tasks, record
 
 
+def verified_customer_tool_stop(folder, case, profile, design, identity, models):
+    """Certify a terminal first-pass observation before the study advances its original schedule."""
+    from agent_memory_eval.adapters.banking_source_screen import source_observation
+    from agent_memory_eval.analysis.recorded_decisions import RecordedDecisions, require
+
+    close, ctl, rows = matched.sealed_rows(folder)
+    expected = matched.jobs_for(case, "source")
+    require(close["stop_reason"] == "task_start_mismatch" and len(rows) == len(expected) == 1
+            and ctl["profile"] == profile and ctl["design"] == design and ctl["implementation"] == identity
+            and matched.endpoint_terms(ctl["model_catalog_entries"]) == matched.endpoint_terms(models),
+            "The terminal source is not bound to the same schedule, settings and implementation")
+    row = rows[0]
+    result = row["result"]
+    require(all(row[k] == v for k, v in expected[0].items()) and row["status"] == "error"
+            and result["error_code"] == "TASK_START_MISMATCH" and result["grading_status"] == "incomplete"
+            and result["official_success"] is None and result["report_ref"] is None,
+            "Expected an ungraded no-memory source")
+    # Includes fresh-session, grade, native-control and first-customer wire checks.
+    source_observation(folder, row, case, set())
+    log = RecordedDecisions(folder / row["directory"], row["run_id"], result["log_sha256"])
+    require(len(log.requests) == len(log.finishes) == 1 and result["http_calls"] == result["native_steps"] == 1,
+            "An unsupported customer opening must precede all worker traffic")
+    request, = log.requests
+    finish = log.finishes[request["request_id"]]
+    require(request["actor_role"] == "user_simulator" and finish["status"] == "response"
+            and [e["payload"]["code"] for e in log.of_type("runtime.error")] == ["TASK_START_MISMATCH"],
+            "The original customer opening must have one recorded provider response")
+    wire = log.blobs.get(request["request_ref"])
+    choice = log.reply(request)
+    calls = choice["message"].get("tool_calls") or []
+    trajectory = log.blobs.get(result["partial_trajectory_ref"])
+    require(choice["finish_reason"] == "tool_calls" and calls
+            and [m["role"] for m in trajectory] == ["assistant", "user"]
+            and trajectory[0]["content"] == wire["messages"][-1]["content"],
+            "Expected a native user tool action on the ordinary greeting")
+    allowed = {tool["function"]["name"] for tool in wire["tools"]}
+    native_calls = trajectory[1].get("tool_calls") or []
+    require(len(native_calls) == len(calls) and all(c["function"]["name"] in allowed and
+            (c["id"], c["function"]["name"], json.loads(c["function"]["arguments"]), "user")
+            == (n["id"], n["name"], n["arguments"], n["requestor"]) for c, n in zip(calls, native_calls)),
+            "Provider response and native customer tool actions disagree")
+    return dict(reason="customer_tool_before_first_worker_input", allocation=case["task"], run=row["run_id"],
+                shard_completion_sha256=digest((folder / "completion.json").read_bytes()),
+                journal_sha256=result["log_sha256"], customer_request_sha256=request["request_ref"]["sha256"],
+                customer_response_sha256=finish["response_ref"]["sha256"])
+
+
+def checked_source_stage(args):
+    """Dispatch using the original worker. A proven out-of-scope customer opening stays missing."""
+    _, root, cfg, _, _, case, _, stage, identity, models, _, grant = args
+    if stage != "source" or case["scheduled_stages"] != ["source"]:
+        raise ContractError("The source screen can only resume first passes")
+    try:
+        return matched.stage_job(args)
+    except ContractError as error:
+        if str(error) != "The sealed trial does not match its registration":
+            raise
+    folder = root / ("task-" + case["task"]) / stage
+    profile = dict(name=cfg["name"], stage=stage, case=case["task"], registration_sha256=cfg["registration_sha256"],
+                   guards=dict(max_usd=float(grant), max_calls=201, max_seconds=1500),
+                   http_timeout_seconds=cfg["http_timeout_seconds"], task_start_mode=cfg["task_start_mode"],
+                   interruption_policy=cfg["interruption_policy"])
+    observation = verified_customer_tool_stop(folder, case, profile, matched.design_for(cfg, case, stage), identity, models)
+    from scripts.run_recheck_rounds import fixed
+    fixed(folder.parent / "customer-opening-stop.json", observation)
+
+
+def record_source_resume(root, record):
+    from agent_memory_eval.analysis.recorded_decisions import require
+    from agent_memory_eval.reproduction.freeze import implementation_identity
+    from scripts.run_recheck_rounds import fixed
+
+    reg = matched.read(root / "registration.json")
+    worker = implementation_identity(ROOT)
+    controller_root = Path(__file__).resolve().parents[1]
+    supervisor = implementation_identity(controller_root)
+    require(reg["preflight"] == record and reg["implementation"] == worker,
+            "Resume with the original paid implementation and the unchanged approval")
+    path = root / "source-resume.json"
+    known = {("task-" + case["task"]): case for case in record["cases"]}
+    if path.exists():
+        sealed = matched.read(path)["original_shard_seals"]
+    else:
+        sealed = {f.parent.parent.name: digest(f.read_bytes()) for f in sorted(root.glob("task-*/source/completion.json"))}
+        require(sealed and set(sealed) == {d.name for d in root.glob("task-*") if d.is_dir()},
+                "Close all original in-flight sources before resuming")
+    require(set(sealed) <= known.keys() and all(digest((root / name / "source/completion.json").read_bytes()) == sha
+            for name, sha in sealed.items()), "Original source seals changed")
+    fixed(path, dict(format="banking-source-resume/v1", worker=worker, controller=supervisor,
+                     registration_sha256=digest((root / "registration.json").read_bytes()), original_shard_seals=sealed,
+                     rule="Keep the frozen worker and all submitted cells; a verified native customer tool before the first worker input is ungraded."))
+
+
 def source_screen(workspace, mode):
     from collections import Counter
     from decimal import Decimal
@@ -247,7 +340,7 @@ def source_screen(workspace, mode):
     if mode == "results":
         return screen_report(workspace / "runs" / spec["name"], protocol_sha, matched.read(ROOT / SCREEN_PREFLIGHT),
                              domain, spec["source_draws_per_task"])
-    require(mode in {"preflight", "run"} and spec["banking_setup"]["path"] == PROFILE, "Unknown screening mode or setup")
+    require(mode in {"preflight", "run", "resume"} and spec["banking_setup"]["path"] == PROFILE, "Unknown screening mode or setup")
     matched.asset_text(ROOT, spec["banking_setup"])
     history = json.loads(matched.asset_text(ROOT, spec["previous_task_table"]))
     _, cfg, conn, _, _, base = prepare(workspace)
@@ -290,12 +383,15 @@ def source_screen(workspace, mode):
                expected_endpoint_terms={r: cfg["endpoint_terms"][r] for r in ("worker", "user_simulator")})
     endpoints = json.loads(matched.asset_text(ROOT, cfg["endpoints"]))["models"]
     cfg["expected_model_revisions"] = {r: endpoints[r]["canonical_slug"] for r in cfg["expected_endpoint_terms"]}
-    matched.run_study(workspace, cfg, {}, conn, cases, tasks, record, stage_runner=matched.stage_job, model_resolver=matched.study_models)
+    if mode == "resume":
+        record_source_resume(workspace / "runs" / cfg["name"], record)
+    matched.run_study(workspace, cfg, {}, conn, cases, tasks, record, stage_runner=checked_source_stage,
+                      model_resolver=matched.study_models)
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("mode", choices=("source-preflight", "preflight", "run", "results"))
+    parser.add_argument("mode", choices=("source-preflight", "preflight", "run", "results", "resume"))
     parser.add_argument("--workspace", type=Path, default=ROOT)
     parser.add_argument("--series", choices=("required", "result-feedback", "source-screen"), default="required")
     parser.add_argument("--scope", choices=("full", "writing"), default="full")
@@ -308,8 +404,8 @@ def main():
         if output is not None:
             print(json.dumps(output, ensure_ascii=False, indent=2, sort_keys=True))
         return
-    if args.mode == "results":
-        parser.error("This results mode belongs to the source screen")
+    if args.mode in {"results", "resume"}:
+        parser.error("This operation belongs to the source screen")
     if args.mode == "source-preflight":
         if args.series != "required" or args.scope != "full":
             parser.error("source-preflight belongs to the original four first passes")
