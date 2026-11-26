@@ -55,6 +55,33 @@ cmp "$audit" artifacts/analyses/20261126-bfcl-read-path/v2-constrained.json
 
 별도 토큰 검산에서는 모델 가중치 로드 없이 같은 리비전의 토크나이저로 원래 40개와 추가 63개 요청의 입력 템플릿·토큰 수를 복원하고, 생성된 토큰 ID를 다시 디코딩해 저장된 원문과 일치하는지 확인했다. [재검산 코드](../../src/agent_memory_eval/analysis/local_token_receipts.py)
 
+## 목록을 본 뒤에는 스스로 본문을 여는가
+
+같은 로컬 Qwen3.5-4B에 원래 질문 8개와 각 질문의 봉인된 사실 메모를 사용했다. 메모 안내에 ‘바로 이 질문을 이전에 풀고 남긴 메모 한 건이 있다’는 사실을 덧붙이는 경우와, 첫 호출만 목록 도구로 지정하는 경우를 교차했다. 목록 도구가 성공하면 모델은 제목과 ID를 본다. 다음 응답에서는 업무 함수를 호출하거나, 바로 답하거나, 그 ID로 본문을 요청할 수 있다. 아래 네 조건에서 본문 호출은 모두 자유 선택이었다. 첫 행은 인터페이스 보완 후의 기존 기록이며, 나머지 24개 판단은 실행 전에 등록했다. [등록 조건과 해석 범위](../../protocols/diagnostics/bfcl-read-initiation-v1.json)
+
+| 메모 안내 | 첫 행동 | 제목을 본 질문 | 스스로 연 본문이 다음 업무 판단 입력에 포함된 질문 | 업무 함수 호출 여부 정답 |
+| --- | --- | ---: | ---: | ---: |
+| 기존 안내 | 자유 선택 | 0/8 | 0/8 | 7/8 |
+| 이 질문의 메모가 있다고 명시 | 자유 선택 | 0/8 | 0/8 | 7/8 |
+| 기존 안내 | 목록 호출만 지정 | 8/8 | 8/8 | 4/8 |
+| 이 질문의 메모가 있다고 명시 | 목록 호출만 지정 | 8/8 | 8/8 | 5/8 |
+
+자유 선택 두 조건에서 여덟 질문 각각의 첫 행동 유형이 같았다. 뉴욕 날씨 질문에서는 날씨 함수를 바로 불렀고, 밑변과 높이가 주어진 삼각형 질문에서는 넓이를 바로 답했다. 첫 업무 행동 뒤에는 실행이 끝나므로 이후에 돌아가 메모를 읽을 기회도 없었다. 목록 호출만 지정한 두 조건에서는 16회 모두 모델이 실제 메모 ID를 넣어 본문을 요청했고, 본문이 다음 업무 판단 입력에 포함됐다. 거절이나 결측은 0건이었다. 이 여덟 질문에서 자율 조회가 멈춘 곳은 목록을 처음 여는 단계였다. 목록을 먼저 열면 제목·ID와 직전 도구 호출 이력이 함께 생기므로, 제목 자체의 효과와 이미 시작한 조회를 이어가는 효과는 이 비교에서 따로 추정할 수 없다. [기존 자유 선택](../../artifacts/analyses/20261126-bfcl-read-path/v2-voluntary.json) · [존재 안내](../../artifacts/analyses/20261126-bfcl-read-path/initiation-availability.json) · [첫 목록 지정](../../artifacts/analyses/20261126-bfcl-read-path/initiation-list_only.json) · [두 조건 결합](../../artifacts/analyses/20261126-bfcl-read-path/initiation-availability_list_only.json)
+
+케이프타운 공연 질문은 본문 노출과 과제 성과가 갈린 예다. 1회차 공개 기록에는 검색 요청까지만 있었는데, 모델이 남긴 사실 메모는 공연을 찾았고 검색이 끝났다고 적었다. 메모가 있다고 알려 준 조건에서는 공연 검색을 바로 요청했다. 첫 목록을 지정한 두 조건에서는 본문을 스스로 읽은 뒤, 공연을 찾았다고 답하고 검색을 생략했다. 원래 자유 선택에서 모델은 이 메모의 제목이나 내용을 접하지 않았다. 더 넓은 표본에서의 효과나 모델이 조회 비용을 따졌는지는 이번 기록으로 결정할 수 없다. [원천과 메모 원문](../../artifacts/analyses/20261126-bfcl-relevance-evidence.json) · [추가 56개 모델 요청의 토큰 검산](../../artifacts/analyses/20261126-bfcl-read-path/initiation-token-receipts.json)
+
+아래 명령의 `arm`에는 `availability`, `list_only`, `availability_list_only`를 쓸 수 있다. 세 원장이 생성된 구현은 `46bf0c8`이며 추가 모델 호출 없이 감사 파일을 재현한다.
+
+```bash
+arm=list_only
+audit=$(mktemp)
+uv run --offline python -m agent_memory_eval.runner.bfcl_read_check --audit \
+  --parent runs/bfcl-relevance-two-pass-01-decoded --parent-profile protocols/diagnostics/bfcl-relevance-two-pass-v1.json \
+  --archive artifacts/analyses/20261126-bfcl-relevance-local.json --spec protocols/diagnostics/bfcl-read-initiation-v1.json \
+  --arm "$arm" --control "runs/bfcl-read-initiation-${arm}-01" > "$audit"
+cmp "$audit" "artifacts/analyses/20261126-bfcl-read-path/initiation-${arm}.json"
+```
+
 ## 무엇을 기억했고 다음 행동이 어떻게 달라졌나
 
 | 과제 | 1회차 공개 기록 | 실제 메모와 다음 행동 |
