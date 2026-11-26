@@ -1,0 +1,70 @@
+{
+  "format": "banking-registered-writer-pairs/v1",
+  "source_study": "tau-banking-opening-sources-01",
+  "validation_study": "tau-banking-opening-writers-01",
+  "banking_profile": {
+    "path": "protocols/pilots/tau-banking-memory-v1.json",
+    "sha256": "755c3161124ff4bd6b7f373657abc52997a3a57055d0a3e0c7f7158258280320"
+  },
+  "required_writer": {
+    "path": "protocols/pilots/tau-banking-required-v1.json",
+    "sha256": "22813f83a62e718df76e1c8ec323248a67141a03fd7bbbc7a5ed70ad6d14e0cf"
+  },
+  "base_instruction": {
+    "path": "protocols/instructions/required-experience-writer-v1.txt",
+    "sha256": "54c0838ec92092c2accd1d78253ba560c95fadac6c65d698243f23cb38a67ed7"
+  },
+  "clause": {
+    "path": "protocols/instructions/attempt-result-clause-v1.txt",
+    "sha256": "5a53605dea9a0a66d0f1ba7db756ed6de80250e104c15c6b6f991d46c0657882"
+  },
+  "candidate_instruction": {
+    "path": "protocols/instructions/required-attempt-result-writer-v1.txt",
+    "sha256": "a3f77f279aa55129d9c6a6af7e98fc6c633f4a2fce0603c74ec9b26bedcf29e9"
+  },
+  "tasks": {
+    "task_055": "checking",
+    "task_076": "checking",
+    "task_060": "savings",
+    "task_069": "savings",
+    "task_056": "business_checking",
+    "task_071": "business_checking"
+  },
+  "previous_cases": [
+    "task_001",
+    "task_002",
+    "task_008",
+    "task_010",
+    "task_014",
+    "task_015",
+    "task_016",
+    "task_017",
+    "task_019",
+    "task_020",
+    "task_021",
+    "task_022",
+    "task_036"
+  ],
+  "case_selection": "Six unused native DB tasks chosen before observing agent results, two per first requested product; all have distinct identified customers and source scenarios. Include all six regardless of reference, first-pass outcome, or observed target tool use. Old anonymous customers are unresolved.",
+  "source": 6,
+  "validation": {
+    "writer_policies": [
+      "existing",
+      "candidate"
+    ],
+    "write": 60,
+    "solve": 60,
+    "second_pass_no_memory": 0
+  },
+  "reader": "preload",
+  "feedback": "result_only",
+  "preflight_file": "artifacts/pilots/20261126-banking-opening-preflight.json",
+  "authorization_file": "artifacts/pilots/20261126-banking-opening-authorization.json",
+  "source_outcomes": "Only a call from the assistant to the actual opening tool plus the response bearing its call ID establishes opened, eligibility refusal, invalid/rejected request, or other opening failure. Missing and unrecognized returns remain unknown. Exclude document examples, unlocks, customer utterances and global grades as proof. Reconcile returned account IDs with new native DB rows. Reference and counterfactual actions are for analyst-only controls.",
+  "writing_primary": "Blind to policy, form label and later outcome, inspect both title and body. Extract each retrospective opening result or attempt with an exact quote and identify its product/holder. Grade claims as supported by a public linked receipt, contradicted, or unsupported. Keep a future plan, an explicitly unknown result, and no claim distinct. Primary: stored items with at least one unsupported or contradicted retrospective outcome claim per rated item. Report coverage of each source-confirmed receipt separately, including omissions. Report missing writers/ratings explicitly. A task grade is never evidence of a particular action.",
+  "business_primary": "For every graded fresh consultation report distinct registered target accounts actually opened, extra accounts, refused/invalid attempts and the official final DB grade separately. Infer no causal use from exposure alone. First pass is a descriptive anchor. Compare existing and candidate within source and form, summarize by independent customer with independent count and missing data.",
+  "efficiency": "Report worker business calls, customer turns, all billed tokens and USD by stage and reader policy. Present matched efficiency on joint official successes with denominator. If there are zero pairs the estimate is unavailable.",
+  "isolation": "Replay the original first public customer utterance into each fresh consultation. Bind native task, initial DB, official grade, worker/customer endpoints and seeds. Required five forms per policy share identical public source and a separate binary grade. Only the common candidate clause changes; reader instruction and supported memory tools remain identical. No hidden criteria or native control outputs enter model inputs.",
+  "operation": "Use the registered native runner and cumulative confirmed-plus-held cap. Keep all assigned slots including technical missing. No resubmission of an admitted model assignment. The authorization file selects full or source-only scope. Never fund a later stage from a source-only approval.",
+  "adapter": "account_opening"
+}

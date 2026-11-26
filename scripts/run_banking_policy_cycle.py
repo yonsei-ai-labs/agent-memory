@@ -566,14 +566,106 @@ def run_paired_validation(workspace, phase, spec, proposal, covered, cfg, conn, 
     return read(workspace / "runs" / cfg["name"] / "completion.json")
 
 
+def registered_pairs(workspace, profile, mode):
+    """Use the existing paired full-consultation runner with a fixed multi-customer cohort."""
+    from agent_memory_eval.adapters.tau_banking_opening import grader_controls, target_accounts
+    from agent_memory_eval.adapters.tau_banking_results import known_customer_groups
+    from agent_memory_eval.policies.writer_pairs import writer_pairs
+
+    spec = read(ROOT / profile)
+    require(spec["format"] == "banking-registered-writer-pairs/v1" and spec["adapter"] == "account_opening"
+            and mode in {"preflight", "sources", "validation"} and spec["reader"] == "preload"
+            and spec["feedback"] == "result_only", "Unknown paired consultation protocol")
+    require(spec["banking_profile"]["path"] == bank.PROFILE, "Different banking base")
+    asset_text(ROOT, spec["banking_profile"])
+    strict = read_json(asset_text(ROOT, spec["required_writer"]).encode())
+    require(strict["common_instruction_ref"] == spec["base_instruction"], "Changed baseline author")
+    old = asset_text(ROOT, spec["base_instruction"]).rstrip("\r\n")
+    new = asset_text(ROOT, spec["candidate_instruction"]).rstrip("\r\n")
+    clause = asset_text(ROOT, spec["clause"]).rstrip("\r\n")
+    conditions, pairs = writer_pairs(strict["lines"], clause)
+    instructions = {c["id"]: c["prompt"] for c in conditions}
+    for form, pair in pairs.items():
+        require(new + "\n" + strict["lines"][form] == old + "\n" + instructions[pair["candidate"]],
+                "Writer policies differ beyond the registered common clause")
+
+    _, base, conn, _, _, cohort = bank.prepare(workspace)
+    from tau2.domains.banking_knowledge.environment import get_tasks
+    modules = bank.matched.modules_for(workspace)
+    native = {task.id: task for task in get_tasks()}
+    cfg = bank.required_design(base, strict)
+    endpoints = read_json(asset_text(ROOT, cfg["endpoints"]).encode())["models"]
+    roles = ("worker", "user_simulator")
+    cfg.update(writer_feedback_level=spec["feedback"], max_concurrent=2, record_unfunded_shards=True,
+               expected_endpoint_terms={r: cfg["endpoint_terms"][r] for r in roles},
+               expected_model_revisions={r: endpoints[r]["canonical_slug"] for r in roles})
+    domain = workspace / "data/tau2-bench/data/tau2/domains/banking_knowledge"
+    groups = known_customer_groups(domain, spec["previous_cases"], spec["tasks"])
+    cases, tasks, controls = [], {}, {}
+    customers = set()
+    for tid, product in spec["tasks"].items():
+        task = native[tid]
+        targets = target_accounts(task)
+        owners = {target["user_id"] for target in targets}
+        require(task.evaluation_criteria.reward_basis == ["DB"] and not task.evaluation_criteria.nl_assertions
+                and len(owners) == 1 and targets[0]["account_type"] == product
+                and groups[tid]["identified"] and not groups[tid]["overlapping_development"]
+                and not customers.intersection(owners), "Changed native task, product or customer overlap")
+        owner, = owners
+        verification = {a.arguments.get("user_id") for a in task.evaluation_criteria.actions
+                        if a.name == "log_verification"}
+        require(verification == owners, "Reference openings do not belong to the verified customer")
+        customers.add(owner)
+        case, tasks[tid] = bank.native_case(cfg, conn, modules, task, product)
+        case.update(customer=digest(owner.encode()), reader_modes=[spec["reader"]])
+        cases.append(case)
+        controls[tid] = grader_controls(task)
+
+    count = len(cases) * len(pairs) * 2
+    require(len(cases) == spec["source"] and spec["validation"] == dict(
+        writer_policies=["existing", "candidate"], write=count, solve=count, second_pass_no_memory=0),
+        "Changed allocation")
+    schedule = {}
+    for case in cases:
+        schedule[case["task"]] = {"source": bank.matched.jobs_for(case, "source")}
+        for policy in spec["validation"]["writer_policies"]:
+            cell = dict(case, task=case["task"] + "__" + policy)
+            schedule[case["task"]][policy] = {s: bank.matched.jobs_for(cell, s) for s in ("write", "solve")}
+    check = dict(protocol_sha256=digest((ROOT / profile).read_bytes()), cases=cases, customers=len(customers),
+                 customer_overlap=groups, corpus_sha256=cohort["corpus_sha256"],
+                 native_revision=cohort["native_revision"], expected_models=cfg["expected_model_revisions"],
+                 schedule_sha256=digest(canonical(schedule)), writer_conditions=conditions, grader_controls=controls,
+                 assigned=dict(source=len(cases), write=count, solve=count, second_pass_no_memory=0),
+                 model_requests=0)
+    if mode == "preflight":
+        return check
+    require(check == read(ROOT / spec["preflight_file"]), "Registered offline preflight differs")
+    approval = read(ROOT / spec["authorization_file"])
+    expected = dict(check["assigned"])
+    if approval["scope"] == "sources":
+        expected.update(write=0, solve=0)
+    cap = Decimal(approval["maximum_usd"])
+    require(approval["scope"] in {"sources", "full"} and (mode == "sources" or approval["scope"] == "full")
+            and approval["assigned"] == expected and approval["preflight_sha256"] == digest(canonical(check))
+            and approval["protocol_sha256"] == check["protocol_sha256"] and approval["user_authorization"]
+            and cap.is_finite() and cap > 0, "No matching authorization for this phase")
+    cfg["total_usd_limit"] = str(cap)
+    common = dict(protocol_sha256=check["protocol_sha256"], preflight_sha256=approval["preflight_sha256"],
+                  approval=approval)
+    return run_paired_validation(workspace, mode, spec, spec, Decimal(0), cfg, conn, cases, tasks, common)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("mode", choices=("preflight", "smoke", "decisions", "sources", "validation"))
     parser.add_argument("--workspace", type=Path, default=ROOT)
+    parser.add_argument("--profile", type=Path, help="Registered multi-customer writer comparison")
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
     workspace = args.workspace.resolve()
-    if args.mode == "preflight":
+    if args.profile:
+        result = registered_pairs(workspace, args.profile, args.mode)
+    elif args.mode == "preflight":
         result = preflight(workspace)
     elif args.mode == "smoke":
         result = smoke(workspace)

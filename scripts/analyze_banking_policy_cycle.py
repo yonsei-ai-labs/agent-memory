@@ -492,11 +492,128 @@ def input_audit(workspace):
     )
 
 
+def registered_account_results(workspace, profile, *, packets_only=False, ratings=None):
+    from dataclasses import replace
+    from agent_memory_eval.adapters.tau_banking_opening import observed_accounts, opening_receipts
+    from agent_memory_eval.adapters.tau_banking_results import BANKING_SUCCESS, banking_trials
+    from agent_memory_eval.analysis.paired_trials import compare_trials
+    from agent_memory_eval.analysis.receipt_review import join_outcome_reviews, outcome_packet
+    from agent_memory_eval.recording.assets import asset_text
+    from agent_memory_eval.recording.journal import BlobStore
+    from tau2.domains.banking_knowledge.environment import get_tasks
+
+    spec = read(cycle.ROOT / profile)
+    approval = read(cycle.ROOT / spec["authorization_file"])
+    protocol_sha = digest((cycle.ROOT / profile).read_bytes())
+    binding = dict(protocol_sha256=protocol_sha, preflight_sha256=approval["preflight_sha256"], approval=approval)
+    base = read(cycle.ROOT / spec["banking_profile"]["path"])
+    read_sha = read(cycle.ROOT / base["base"]["path"])["delivery_instruction"]["sha256"]
+    result = paired_validation_results(workspace, spec, spec, start=Decimal(0), task_ids=set(spec["tasks"]),
+                                       read_sha=read_sha, ceiling=approval["maximum_usd"], protocol_sha=protocol_sha,
+                                       binding=binding)
+    tasks = {t.id: t for t in get_tasks()}
+    keys, packets, public_sources, normalized, token_usage = [], {}, {}, {}, {}
+    for phase, run in (("source", spec["source_study"]), ("validation", spec["validation_study"])):
+        root = workspace / "runs" / run
+        reg, close = read(root / "registration.json"), read(root / "completion.json")
+        for case in reg["preflight"]["cases"]:
+            tid = case["task_id"]
+            policy = case.get("writer_policy")
+            for stage in (("source",) if phase == "source" else ("write", "solve")):
+                folder = root / ("task-" + case["task"]) / stage
+                if str(folder.relative_to(root)) not in close["stages"]:
+                    require(not case["scheduled_stages"], "Active registered shard is unaccounted")
+                    continue
+                for row in checked_shard(root, folder, close, reg) or []:
+                    raw = row.get("result") or {}
+                    form = row["arm"].split("__")[0]
+                    usage = token_usage.setdefault(stage, {}).setdefault(policy or "no_memory", Counter())
+                    if raw:
+                        usage["recorded_assignments"] += 1
+                        bills = raw.get("billing_by_role", {}).values()
+                        usage["reported_tokens"] += sum(b["total_tokens"] for b in bills)
+                        usage["http_requests_with_unknown_cost"] += sum(b["unknown_count"] for b in bills)
+                    if stage != "source" and raw.get("log_sha256"):
+                        log = RecordedDecisions(folder / row["directory"], row["run_id"], raw["log_sha256"])
+                        role = "writer" if stage == "write" else "worker"
+                        req = next((r for r in log.requests if r["actor_role"] == role), None)
+                        if req:
+                            clause = asset_text(cycle.ROOT, spec["clause"]).strip()
+                            proof = first_wire_proof(log, req, raw["log_sha256"], stage, policy, clause)
+                            normalized.setdefault((stage, tid, form), {})[policy] = proof
+                    if stage == "write" or raw.get("grading_status") != "graded":
+                        continue
+                    messages = BlobStore(folder / row["directory"]).get(raw["report_ref"])["messages"]
+                    business = observed_accounts(tasks[tid], messages, raw["final_db_hash"])
+                    if stage == "source":
+                        src = cycle.bank.matched.source_from(folder, tid)
+                        public = cycle.read_json(src.public_context.encode())["messages"]
+                        receipts = opening_receipts(public)
+                        provenance = lambda rr: [(r["call_id"], r["arguments"], r["outcome"], r["receipt_sha256"]) for r in rr]
+                        require(provenance(receipts) == provenance(business["receipts"]),
+                                "The writer's public projection and the agent's recorded opening receipts disagree")
+                        public_sources[tid] = (receipts, next(m["content"] for m in public if m["role"] == "user"))
+                        target = result["sources"][tid]
+                    else:
+                        target, = [r for r in result["trials"][policy] if r["task"] == tid and r["arm"] == row["arm"]]
+                    target["account_opening"] = business
+
+    for writer in result["writers"]:
+        key = None
+        if writer["bank"]:
+            item, = writer["bank"]["items"]
+            receipts, opening = public_sources[writer["task"]]
+            key, packet = outcome_packet(item, receipts, opening)
+            packets[key] = packet
+        keys.append(dict(policy=writer["policy"], task=writer["task"], form=writer["form"], packet=key))
+    if packets_only:
+        return dict(format="receipt-review-packets/v1", packets={k: packets[k] for k in sorted(packets)})
+
+    wire_checks = []
+    for (stage, tid, form), pair in sorted(normalized.items()):
+        complete = set(pair) == {"candidate", "existing"}
+        if complete:
+            require(pair["existing"]["normalized_sha256"] == pair["candidate"]["normalized_sha256"],
+                    "Paired actual requests differ outside the treatment")
+        wire_checks.append(dict(stage=stage, task=tid, form=form, paired=complete, proofs=pair))
+    if ratings is None:
+        votes = {}
+    else:
+        require(ratings["format"] == "opening-outcome-ratings/v1" and ratings["reviewer"]
+                and set(ratings["ratings"]) == set(packets), "Incomplete named outcome review")
+        votes = ratings["ratings"]
+    result["token_usage"] = token_usage
+    result["wire_checks"] = wire_checks
+    result["writing_outcomes"] = join_outcome_reviews(packets, keys, votes)
+    result["reviewer"] = ratings["reviewer"] if ratings else None
+    arms = [banking_trials(result, p, BANKING_SUCCESS) for p in ("existing", "candidate")]
+    result["official_paired"] = compare_trials(*arms)
+    metric = replace(BANKING_SUCCESS, name="banking.all_target_accounts_opened",
+                     definition="Every registered owner, account type and class produced a new native account row.")
+    process = []
+    for group, policy in zip(arms, ("existing", "candidate")):
+        rows = result["trials"][policy]
+        process.append([replace(t, metric=metric, success=None if t.success is None else
+                                r["account_opening"]["effects"]["all_target_accounts_opened"])
+                        for t, r in zip(group, rows, strict=True)])
+    result["all_targets_paired"] = compare_trials(*process)
+    return result
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     analyzers = {"development": development, "validation": validation, "input-audit": input_audit}
-    parser.add_argument("phase", choices=analyzers)
+    parser.add_argument("phase", choices=[*analyzers, "account-outcomes", "account-review"])
+    parser.add_argument("--profile", type=Path)
+    parser.add_argument("--ratings", type=Path)
     parser.add_argument("--workspace", type=Path, default=cycle.ROOT)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
-    cycle.save(args.output, analyzers[args.phase](args.workspace.resolve()))
+    if args.phase in {"account-outcomes", "account-review"}:
+        require(args.profile is not None, "The receipt audit needs its registered protocol")
+        result = registered_account_results(args.workspace.resolve(), args.profile,
+                                            packets_only=args.phase == "account-review",
+                                            ratings=read(args.ratings) if args.ratings else None)
+    else:
+        result = analyzers[args.phase](args.workspace.resolve())
+    cycle.save(args.output, result)
