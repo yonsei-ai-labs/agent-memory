@@ -494,7 +494,7 @@ def input_audit(workspace):
 
 def registered_account_results(workspace, profile, *, packets_only=False, ratings=None):
     from dataclasses import replace
-    from agent_memory_eval.adapters.tau_banking_opening import observed_accounts, opening_receipts
+    from agent_memory_eval.adapters.tau_banking_opening import OPENING_OUTCOMES, observed_accounts, opening_receipts
     from agent_memory_eval.adapters.tau_banking_results import BANKING_SUCCESS, banking_trials
     from agent_memory_eval.analysis.paired_trials import compare_trials
     from agent_memory_eval.analysis.receipt_review import join_outcome_reviews, outcome_packet
@@ -563,7 +563,7 @@ def registered_account_results(workspace, profile, *, packets_only=False, rating
         if writer["bank"]:
             item, = writer["bank"]["items"]
             receipts, opening = public_sources[writer["task"]]
-            key, packet = outcome_packet(item, receipts, opening)
+            key, packet = outcome_packet(item, receipts, opening, claim_outcomes=OPENING_OUTCOMES)
             packets[key] = packet
         keys.append(dict(policy=writer["policy"], task=writer["task"], form=writer["form"], packet=key))
     if packets_only:

@@ -4,12 +4,14 @@ from copy import deepcopy
 import json
 import re
 
+from agent_memory_eval.analysis.paired_trials import target_effects
 from agent_memory_eval.analysis.recorded_decisions import require
 from agent_memory_eval.contracts.core import canonical, digest
 
 OPEN = "open_bank_account_4821"
 DISPATCH = "call_discoverable_agent_tool"
 FIELDS = ("user_id", "account_type", "account_class")
+OPENING_OUTCOMES = ("opened", "eligibility_rejected", "request_rejected", "opening_failed")
 
 
 def _object(value):
@@ -80,17 +82,16 @@ def opening_receipts(messages):
 
 
 def account_effects(targets, receipts):
-    expected = {canonical(t) for t in targets}
-    opened = [r for r in receipts if r["outcome"] == "opened"]
-    accepted = {canonical(r["arguments"]) for r in opened}
-    return dict(required_targets=len(expected), distinct_targets_opened=len(expected & accepted),
-                all_target_accounts_opened=expected <= accepted,
-                other_accounts_opened=len(accepted - expected),
-                repeated_confirmations=len(opened) - len({r["account_id"] for r in opened}),
-                refused_or_invalid=sum(r["outcome"] in {"request_rejected", "eligibility_rejected", "opening_failed"}
-                                       for r in receipts),
-                unresolved=sum(r["outcome"] in {"unobserved", "unrecognized"} for r in receipts),
-                opening_attempts=len(receipts))
+    attempted = [(canonical(r["arguments"]), r["outcome"] == "opened" if r["outcome"] in OPENING_OUTCOMES else None)
+                 for r in receipts]
+    effects = target_effects([canonical(t) for t in targets], attempted)
+    confirmed_ids = [r["account_id"] for r in receipts if r["outcome"] == "opened"]
+    return dict(required_targets=effects["expected"], distinct_targets_opened=effects["accepted_target"],
+                all_target_accounts_opened=effects["targets_without_confirmed_effect"] == 0,
+                other_accounts_opened=effects["accepted_other"],
+                repeated_confirmations=len(confirmed_ids) - len(set(confirmed_ids)),
+                refused_or_invalid=effects["rejected"], unresolved=effects["unconfirmed"],
+                opening_attempts=effects["attempted"])
 
 
 def _environment(task):

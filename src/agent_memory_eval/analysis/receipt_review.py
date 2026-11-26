@@ -7,9 +7,14 @@ from agent_memory_eval.analysis.recorded_decisions import require
 from agent_memory_eval.contracts.core import canonical, digest
 
 
-def outcome_packet(item, receipts, opening):
+def outcome_packet(item, receipts, opening, *, claim_outcomes):
     """Deduplicate identical evidence without showing writer policy, form, grade or later behavior."""
-    content = dict(memory={k: item[k] for k in ("title", "body")}, public_opening=opening, receipts=receipts)
+    labels = sorted(claim_outcomes)
+    require(labels and all(isinstance(label, str) and label for label in labels)
+            and len(labels) == len(set(labels)) and not {"unobserved", "unrecognized"}.intersection(labels),
+            "Declare the business outcomes that an observed return can establish")
+    content = dict(memory={k: item[k] for k in ("title", "body")}, public_opening=opening, receipts=receipts,
+                   claim_outcomes=labels)
     return digest(canonical(content)), content
 
 
@@ -28,8 +33,8 @@ def score_outcome_review(packet, rating):
     for claim in claims:
         require(set(claim) == {"field", "quote", "judgment", "outcome", "call_ids"}
                 and claim["field"] in {"title", "body"} and claim["judgment"] in {"supported", "contradicted", "unsupported"}
-                and claim["outcome"] in {"opened", "eligibility_rejected", "request_rejected", "opening_failed"}
-                and isinstance(claim["call_ids"], list), "Invalid retrospective opening claim")
+                and claim["outcome"] in packet["claim_outcomes"]
+                and isinstance(claim["call_ids"], list), "Invalid retrospective outcome claim")
         citation = _citation(packet, "/memory/" + claim["field"], claim["quote"])
         ids = claim["call_ids"]
         require(len(set(ids)) == len(ids) and all(k in by_id for k in ids), "Invalid receipt citation")
@@ -53,10 +58,12 @@ def join_outcome_reviews(packets, assignments, review):
     require(set(review) <= set(packets) and all(digest(canonical(v)) == k for k, v in packets.items()),
             "Unknown or changed masked packet")
     scored = {k: score_outcome_review(packets[k], rating) for k, rating in review.items()}
+    counts = ("assigned_writers", "stored", "rated", "items_with_unsupported_or_contradicted",
+              "items_without_outcome_claim", "covered_receipts", "observable_receipts_across_items")
     totals = {}
     rows = []
     for item in assignments:
-        group = totals.setdefault(item["policy"], Counter())
+        group = totals.setdefault(item["policy"], Counter(dict.fromkeys(counts, 0)))
         row = dict(item, rating=scored.get(item["packet"]))
         rows.append(row)
         group["assigned_writers"] += 1

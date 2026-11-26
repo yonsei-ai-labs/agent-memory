@@ -2,7 +2,7 @@ import json
 import unittest
 from copy import deepcopy
 
-from agent_memory_eval.adapters.tau_banking_opening import DISPATCH, OPEN, account_effects, opening_receipts, verify_account_rows
+from agent_memory_eval.adapters.tau_banking_opening import DISPATCH, OPEN, OPENING_OUTCOMES, account_effects, opening_receipts, verify_account_rows
 from agent_memory_eval.analysis.receipt_review import join_outcome_reviews, outcome_packet, score_outcome_review
 from agent_memory_eval.contracts.core import ContractError
 
@@ -49,7 +49,8 @@ class AccountReceiptTests(unittest.TestCase):
             self.assertFalse(account_effects([self.params], r)["all_target_accounts_opened"])
 
     def test_notes_have_separate_accuracy_and_coverage_denominators(self):
-        key, packet = outcome_packet(dict(title="Result", body="We did open it."), opening_receipts([self.call, self.result]), "Open an account")
+        key, packet = outcome_packet(dict(title="Result", body="We did open it."), opening_receipts([self.call, self.result]), "Open an account",
+                                     claim_outcomes=OPENING_OUTCOMES)
         claim = dict(field="body", quote="did open it", judgment="supported", outcome="opened", call_ids=["a"])
         rating = dict(claims=[claim], no_outcome_reason=None)
         scored = score_outcome_review(packet, rating)
@@ -72,3 +73,11 @@ class AccountReceiptTests(unittest.TestCase):
         corrupted["memory"]["body"] += "Changed"
         with self.assertRaises(ContractError):
             join_outcome_reviews({key: corrupted}, rows, {})
+
+
+    def test_a_second_adapter_owns_its_outcome_vocabulary(self):
+        receipt = dict(call_id="i", outcome="delivered")
+        _, packet = outcome_packet(dict(title="Dispatch", body="Parcel arrived"), [receipt], "Track my shipment",
+                                   claim_outcomes=["delivered", "returned"])
+        claim = dict(field="body", quote="Parcel arrived", judgment="supported", outcome="delivered", call_ids=["i"])
+        self.assertEqual(score_outcome_review(packet, dict(claims=[claim], no_outcome_reason=None))["covered_receipts"], 1)
