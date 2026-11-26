@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Named blind assessment of public account-opening claims",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["format", "reviewer", "ratings"],
+  "properties": {
+    "format": {"const": "opening-outcome-ratings/v2"},
+    "reviewer": {"type": "string", "minLength": 1},
+    "ratings": {
+      "type": "object",
+      "propertyNames": {"pattern": "^[0-9a-f]{64}$"},
+      "additionalProperties": {"$ref": "#/$defs/rating"}
+    }
+  },
+  "$defs": {
+    "literal": {"type": ["string", "null"], "minLength": 1},
+    "rating": {
+      "type": "object", "additionalProperties": false,
+      "required": ["claims", "no_outcome_reason"],
+      "properties": {
+        "claims": {"type": "array", "items": {"$ref": "#/$defs/claim"}},
+        "no_outcome_reason": {"enum": [null, "explicitly_unknown", "attempt_only", "future_or_general", "no_mention"]}
+      },
+      "if": {"properties": {"claims": {"minItems": 1}}},
+      "then": {"properties": {"no_outcome_reason": {"type": "null"}}},
+      "else": {"properties": {"no_outcome_reason": {"type": "string"}}}
+    },
+    "claim": {
+      "type": "object", "additionalProperties": false,
+      "required": ["field", "quote", "subject", "outcome", "judgment", "call_ids"],
+      "properties": {
+        "field": {"enum": ["title", "body"]},
+        "quote": {"type": "string", "minLength": 1},
+        "subject": {
+          "type": "object", "additionalProperties": false,
+          "required": ["user_id", "account_type", "account_class"],
+          "properties": {
+            "user_id": {"$ref": "#/$defs/literal"},
+            "account_type": {"$ref": "#/$defs/literal"},
+            "account_class": {"$ref": "#/$defs/literal"}
+          }
+        },
+        "outcome": {"enum": ["opened", "eligibility_rejected", "request_rejected", "opening_failed"]},
+        "judgment": {"enum": ["supported", "contradicted", "unsupported", "outcome_only"]},
+        "call_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
+      }
+    }
+  }
+}

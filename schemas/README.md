@@ -1,5 +1,7 @@
 # 설정과 사건 계약
 
+은행 개설 기억을 판독할 때는 상품·계좌 유형·소유자, 주장한 결과와 공개 반환의 호출 ID를 함께 기록한다. 각 작성 배정의 모든 항목을 판독하면 고객별 비교에 한 건으로 들어간다. [판독 제출 형식 v2](opening-outcome-ratings-v2.schema.json) · [대상과 인용 검증 사례](../tests/test_opening_review_v2.py)
+
 필수 형식 비교는 [필수 저장 정책](required-form-writing-v1.schema.json)을 사용한다. `writer-required-store/v1`은 저장 도구 호출이 실제 항목을 남겨야 완결된다. 선택형 저장의 기존 `writer-finish/v1` 기록은 원래 계약으로 감사한다. [성공·실패 fixture](../tests/fixtures/writer-required-store-v1.json)
 
 [written-replay-batch.schema.json](written-replay-batch.schema.json)은 네 조건의 한 응답 배치 프로필이다. v2 준비물의 해시, 반복 단위·배정 시드·한도, 판정 및 비용 승인을 명시한다. 미정값은 초안에 보존한다. [실행과 감사](../docs/development/written-replay-batch.md)

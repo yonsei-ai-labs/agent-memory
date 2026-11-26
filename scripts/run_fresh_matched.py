@@ -9,6 +9,7 @@ from pathlib import Path
 from agent_memory_eval.contracts.connection import validate_profile
 from agent_memory_eval.contracts.core import ContractError, canonical, digest, read_json
 from agent_memory_eval.contracts.validation import ROOT
+from agent_memory_eval.experiments.batch_recovery import POLICY as RESUME_UNSTARTED, stage_lease
 from agent_memory_eval.experiments.forms_batch import (
     BatchGuard, FRESH_MATCHED, endpoint_terms, execute_prepared, live_models, solve_connection,
 )
@@ -55,13 +56,16 @@ def design_for(cfg, case, stage, source=None):
     if "first_writer_inputs" in case:
         cohort["first_writer_inputs"] = case["first_writer_inputs"]
     jobs = jobs_for(case, stage)
-    return dict(format=FRESH_MATCHED, stage=stage, source=dict(domain=case["domain"], split=case["split"],
+    design = dict(format=FRESH_MATCHED, stage=stage, source=dict(domain=case["domain"], split=case["split"],
         feedback_level=feedback, cohort=[cohort]), writing=cfg["writing"],
         second_pass=dict(proposed_limits=cfg["limits"]), model=dict(connection_profile_ref=cfg["connection"],
         seed_pairs=[dict(repetition=1, writer=cfg["writer_seed"], native_and_solver=cfg["native_and_worker_seed"])]),
         delivery_arms={j["arm"]: dict(zip(("writer", "read_mode"), j["arm"].split("__"))) for j in jobs
                        if stage == "solve"}, allocation=dict(blocks=[dict(task_id=case["task_id"], repetition=1,
             write=[j["arm"] for j in jobs if stage == "write"])], jobs_sha256=digest(canonical(jobs))))
+    if "reader_admission" in cfg:
+        design["reader_admission"] = cfg["reader_admission"]
+    return design
 
 
 def judge_config(cfg, domain):
@@ -171,6 +175,14 @@ def prepare(root, workspace, scope, *, protocol=PROFILE):
 
 
 def stage_job(args):
+    _, output, cfg, _, _, case, *_ = args
+    if cfg.get("interruption_policy") == RESUME_UNSTARTED:
+        with stage_lease(output / ("task-" + case["task"])):
+            return _stage_job(args)
+    return _stage_job(args)
+
+
+def _stage_job(args):
     workspace, output, cfg, _, conn, case, task, stage_name, identity, models, judge, grant = args
     stage = cfg.get("stage_kinds", {}).get(stage_name, stage_name.removeprefix("initial-"))
     task_dir = output / ("task-" + case["task"])
@@ -220,7 +232,10 @@ def stage_job(args):
         http_timeout_seconds=cfg["http_timeout_seconds"])
     if "task_start_mode" in cfg:
         profile["task_start_mode"] = cfg["task_start_mode"]
-    if not dest.exists():
+    if "interruption_policy" in cfg:
+        profile["interruption_policy"] = cfg["interruption_policy"]
+    if not dest.exists() or (cfg.get("interruption_policy") == RESUME_UNSTARTED
+                             and not (dest / "completion.json").exists()):
         bindings = None
         if stage == "solve":
             _, parent, written = sealed_rows(write_dir)

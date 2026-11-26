@@ -216,6 +216,7 @@ def validation(workspace):
 def paired_validation_results(workspace, spec, proposal, *, start, task_ids, read_sha, ceiling, protocol_sha, binding):
     """Verify full banking consultations against their registered sources, banks, grades and costs."""
     repeats = cycle.PairedRepetitions.from_spec(spec)
+    disposition = spec.get("reader_admission") == "sealed_bank"
     sr = workspace / "runs" / spec["source_study"]
     vr = workspace / "runs" / spec["validation_study"]
     regs, regv = [read(root / "registration.json") for root in (sr, vr)]
@@ -247,11 +248,15 @@ def paired_validation_results(workspace, spec, proposal, *, start, task_ids, rea
         source_rows = checked_shard(sr, folder, sc, regs)
         if source_rows is None:
             sources[tid] = dict(task=tid, success=None)
+            if disposition:
+                sources[tid].update(status="not_started", reason=sc["stages"][str(folder.relative_to(sr))]["reason"])
             continue
         (r,) = source_rows
         sources[tid] = grade_record(
             folder, r, case, digest(canonical(regs["preflight"])), read_sha, documents=docs[tid]
         )
+        if disposition and sources[tid]["success"] is None:
+            sources[tid]["reason"] = r.get("reason") or (r.get("result") or {}).get("error_code")
     for case in regv["preflight"]["cases"]:
         policy, tid = case["writer_policy"], case["task_id"]
         root = vr / ("task-" + case["task"])
@@ -275,7 +280,9 @@ def paired_validation_results(workspace, spec, proposal, *, start, task_ids, rea
                 seal = vc["stages"][str(folder.relative_to(vr))]
                 for key in costs_by_policy[policy][stage]:
                     costs_by_policy[policy][stage][key] += Decimal(seal[key])
-            rows = rows if rows is not None else [dict(r, status="not_started") for r in scheduled]
+            if rows is None:
+                reason = (seal.get("reason") if active else case.get("missing"))
+                rows = [dict(r, status="not_started", reason=reason) for r in scheduled]
             require(
                 len(rows) == len(scheduled)
                 and all(all(r[k] == v for k, v in j.items()) for j, r in zip(scheduled, rows)),
@@ -286,6 +293,8 @@ def paired_validation_results(workspace, spec, proposal, *, start, task_ids, rea
                 arm = row["arm"]
                 if stage == "write":
                     rec = dict(task=tid, policy=policy, form=arm, status=row["status"], bank=None)
+                    if disposition and row["status"] != "completed":
+                        rec["reason"] = row.get("reason") or result.get("error_code")
                     if row["status"] == "completed":
                         b = read_form_bank(
                             folder / row["directory"], expected_log_sha256=result["log_sha256"]
@@ -327,6 +336,8 @@ def paired_validation_results(workspace, spec, proposal, *, start, task_ids, rea
                         )
                     if "writer_draw" in case:
                         rec.update(writer_draw=case["writer_draw"], reader_repeat=reader_repeat)
+                    if disposition and rec["success"] is None:
+                        rec["reason"] = row.get("reason") or result.get("error_code")
                     trials[policy].append(rec)
     require(
         set(sources) == task_ids and len(writers) == spec["validation"]["write"]
@@ -523,8 +534,9 @@ def clustered_results(result, customers):
         key = row["task"], row["form"], row["writer_draw"]
         writing.setdefault(key, {})[row["policy"]] = (row["rating"]["unsupported_or_contradicted"]
                                                       if row["rating"] is not None else None)
-    return dict(official_success=summaries(official), all_requested_accounts_opened=summaries(opened),
-                items_with_unsupported_or_contradicted=summaries(writing))
+    unit = "banks" if result["writing_outcomes"].get("unit") == "writer_bank" else "items"
+    return {"official_success": summaries(official), "all_requested_accounts_opened": summaries(opened),
+            unit + "_with_unsupported_or_contradicted": summaries(writing)}
 
 
 def repetition_results(result, inputs, repeats):
@@ -562,10 +574,10 @@ def repetition_results(result, inputs, repeats):
 
 def registered_account_results(workspace, profile, *, packets_only=False, ratings=None):
     from dataclasses import replace
-    from agent_memory_eval.adapters.tau_banking_opening import OPENING_OUTCOMES, observed_accounts, opening_receipts
+    from agent_memory_eval.adapters.tau_banking_opening import FIELDS, OPENING_OUTCOMES, observed_accounts, opening_receipts
     from agent_memory_eval.adapters.tau_banking_results import BANKING_SUCCESS, banking_trials
     from agent_memory_eval.analysis.paired_trials import compare_trials
-    from agent_memory_eval.analysis.receipt_review import join_outcome_reviews, outcome_packet
+    from agent_memory_eval.analysis.receipt_review import join_bank_reviews, join_outcome_reviews, outcome_packet
     from agent_memory_eval.recording.assets import asset_text
     from agent_memory_eval.recording.journal import BlobStore
     from tau2.domains.banking_knowledge.environment import get_tasks
@@ -638,19 +650,29 @@ def registered_account_results(workspace, profile, *, packets_only=False, rating
                         target = by_slot[policy, tid, row["arm"], draw, reader_repeat]
                     target["account_opening"] = business
 
+    bank_review = spec.get("reader_admission") == "sealed_bank" or any(
+        len(w["bank"]["items"]) > 1 for w in result["writers"] if w["bank"])
+    version = "v2" if bank_review else "v1"
     for writer in result["writers"]:
-        key = None
+        items = []
         if writer["bank"]:
-            item, = writer["bank"]["items"]
             receipts, opening = public_sources[writer["task"]]
-            key, packet = outcome_packet(item, receipts, opening, claim_outcomes=OPENING_OUTCOMES)
-            packets[key] = packet
-        assignment = dict(policy=writer["policy"], task=writer["task"], form=writer["form"], packet=key)
+            for item in writer["bank"]["items"]:
+                key, packet = outcome_packet(item, receipts, opening, claim_outcomes=OPENING_OUTCOMES,
+                                             subject_fields=FIELDS if bank_review else (),
+                                             required_subject_fields=("account_class",) if bank_review else ())
+                packets[key] = packet
+                items.append(dict(id=item["id"], version=item["version"], packet=key))
+        assignment = dict(policy=writer["policy"], task=writer["task"], form=writer["form"])
+        if bank_review:
+            assignment.update(items=items, status=writer["status"], reason=writer.get("reason"))
+        else:
+            assignment["packet"] = items[0]["packet"] if items else None
         if repeated:
             assignment["writer_draw"] = writer["writer_draw"]
         keys.append(assignment)
     if packets_only:
-        return dict(format="receipt-review-packets/v1", packets={k: packets[k] for k in sorted(packets)})
+        return dict(format="receipt-review-packets/" + version, packets={k: packets[k] for k in sorted(packets)})
 
     wire_checks = []
     for (stage, tid, form, draw, repeat), pair in sorted(normalized.items()):
@@ -665,12 +687,22 @@ def registered_account_results(workspace, profile, *, packets_only=False, rating
     if ratings is None:
         votes = {}
     else:
-        require(ratings["format"] == "opening-outcome-ratings/v1" and ratings["reviewer"]
-                and set(ratings["ratings"]) == set(packets), "Incomplete named outcome review")
+        if "ratings_schema" in spec:
+            from jsonschema import Draft202012Validator
+            Draft202012Validator(cycle.read_json(asset_text(cycle.ROOT, spec["ratings_schema"]).encode())).validate(ratings)
+        rated_keys = set(ratings["ratings"])
+        require(ratings["format"] == "opening-outcome-ratings/" + version and ratings["reviewer"]
+                and (rated_keys <= set(packets) if bank_review else rated_keys == set(packets)),
+                "Invalid named outcome review or masked packet keys")
         votes = ratings["ratings"]
     result["token_usage"] = token_usage
     result["wire_checks"] = wire_checks
-    result["writing_outcomes"] = join_outcome_reviews(packets, keys, votes)
+    join = join_bank_reviews if bank_review else join_outcome_reviews
+    result["writing_outcomes"] = join(packets, keys, votes)
+    if bank_review:
+        result["missing_readers_by_reason"] = {
+            policy: Counter(row.get("reason") or row.get("error") or row["status"] for row in rows
+                            if row["success"] is None) for policy, rows in result["trials"].items()}
     result["reviewer"] = ratings["reviewer"] if ratings else None
     arms = [banking_trials(result, p, BANKING_SUCCESS) for p in ("existing", "candidate")]
     result["official_paired"] = compare_trials(*arms, test_signs=not repeated)

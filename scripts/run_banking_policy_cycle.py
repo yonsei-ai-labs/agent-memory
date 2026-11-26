@@ -481,6 +481,10 @@ def run_paired_validation(workspace, phase, spec, proposal, covered, cfg, conn, 
     require(phase in {"sources", "validation"} and spec["validation"]["writer_policies"] == ["existing", "candidate"],
             "Unknown paired validation phase or writer assignment")
     repeats = PairedRepetitions.from_spec(spec)
+    if spec.get("format") == "banking-registered-writer-pairs/v3":
+        require(spec["reader_admission"] == "sealed_bank" and spec["interruption_policy"] == bank.matched.RESUME_UNSTARTED,
+                "Unknown admission or interruption policy")
+        cfg.update(reader_admission=spec["reader_admission"], interruption_policy=spec["interruption_policy"])
     stages = repeats.stages()
     source_root = workspace / "runs" / spec["source_study"]
     for case in cases:
@@ -575,7 +579,7 @@ def registered_pairs(workspace, profile, mode):
     from agent_memory_eval.policies.writer_pairs import writer_pairs
 
     spec = read(ROOT / profile)
-    census = spec["format"] == "banking-registered-writer-pairs/v2"
+    census = spec["format"] in {"banking-registered-writer-pairs/v2", "banking-registered-writer-pairs/v3"}
     repeats = PairedRepetitions.from_spec(spec)
     require(census == ("repetitions" in spec), "The cohort protocol must register its repetition axes")
     require((census or spec["format"] == "banking-registered-writer-pairs/v1") and spec["adapter"] == "account_opening"
@@ -649,6 +653,12 @@ def registered_pairs(workspace, profile, mode):
                  schedule_sha256=digest(canonical(schedule)), writer_conditions=conditions, grader_controls=controls,
                  assigned=dict(source=len(cases), write=write_count, solve=solve_count, second_pass_no_memory=0),
                  model_requests=0)
+    if spec["format"] == "banking-registered-writer-pairs/v3":
+        require(spec["reader_admission"] == "sealed_bank" and spec["interruption_policy"] == bank.matched.RESUME_UNSTARTED,
+                "Unknown admission or interruption policy")
+        asset_text(ROOT, spec["ratings_schema"])
+        check.update(reader_admission=spec["reader_admission"], interruption_policy=spec["interruption_policy"],
+                     ratings_schema_sha256=spec["ratings_schema"]["sha256"])
     if census:
         from agent_memory_eval.adapters.tau_banking_opening import initial_record_audit
         require(len(customers) == spec["expected_customers"], "Changed independent customer count")

@@ -302,15 +302,31 @@ def run_form_writer(journal, design, source, *, repetition, arm, client, guard, 
     ref = _import(journal, design, source, repetition, arm, run_id, "illustrative" if offline else "observed")
     entry = next(r for r in design["source"]["cohort"] if r["task_id"] == source.task_id)
     pinned = entry["first_writer_inputs"][arm] if "first_writer_inputs" in entry else None
-    result = write_from_experience(journal, ref, WriterFeedback(design["source"]["feedback_level"]), instruction=instruction, policy=policy,
+    write_from_experience(journal, ref, WriterFeedback(design["source"]["feedback_level"]), instruction=instruction, policy=policy,
                                    client=client, model_config=config, condition_id=arm, run_id=run_id,
                                    max_requests=None, execution_limits=execution,
                                    completion_contract=writing["completion_contract"], first_input_sha256=pinned)
-    finishes = [e["payload"] for e in journal.events.values() if e["type"] == "model.request_finished"]
+    return recorded_writer_result(journal, run_id)
+
+
+def recorded_writer_result(journal, run_id):
+    assignment = journal.state["form_writer"]
+    config = journal.state["memory_writes"][run_id]
+    events = [e for e in journal.events.values() if e["run_id"] == run_id]
+    end, = [e["payload"] for e in events if e["type"] == "run.ended"]
+    status = end["termination_reason"].removeprefix("memory_write_")
+    if status not in {"completed", "empty", "error"} or assignment["run_id"] != run_id:
+        raise ContractError("Missing terminal writer evidence")
+    errors = [e["payload"]["code"] for e in events if e["type"] == "runtime.error"]
+    finishes = [e["payload"] for e in events if e["type"] == "model.request_finished"]
+    result = dict(run_id=run_id, bank_id=config["bank_id"], snapshot_id=end["end_snapshot_id"], status=status,
+                  memory_stores=sum(e["type"] == "memory.stored" for e in events),
+                  error_code=errors[-1] if status == "error" else None, experience_ref=config["experience_ref"],
+                  feedback_level=config["feedback"]["level"], unknown_cost=any(p["cost_status"] == "unknown" for p in finishes))
     reported_cost = sum((Decimal(str(p["cost_usd"])) for p in finishes if p["cost_status"] == "observed"), Decimal(0))
     token_counts = [(p["usage"] or {}).get("total_tokens") for p in finishes]
     bank = None if result["status"] == "error" else _bank_descriptor(journal.blobs, journal.scan, journal.state)
-    return dict(result, task_id=source.task_id, repetition=repetition, arm=arm,
+    return dict(result, task_id=assignment["task_id"], repetition=assignment["repetition"], arm=assignment["arm"],
                 record_kind=journal.scan["starts"][run_id]["record_kind"],
                 session_id=journal.scan["starts"][run_id]["session_id"], requests=len(finishes),
                 reported_tokens=sum(n for n in token_counts if type(n) is int and n >= 0),

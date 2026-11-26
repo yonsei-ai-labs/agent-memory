@@ -12,6 +12,7 @@ from agent_memory_eval.adapters.tau2 import PIN, native_modules, verify_checkout
 from agent_memory_eval.contracts.connection import validate_profile
 from agent_memory_eval.contracts.core import ContractError, MemoryPolicy, canonical, digest, new_id, read_json
 from agent_memory_eval.contracts.validation import ROOT
+from agent_memory_eval.experiments.batch_recovery import POLICY as RESUME_UNSTARTED, restore_batch, usage_from_events
 from agent_memory_eval.models.openrouter import (
     OpenRouterClient, ProviderError, SpendGuard, model_catalog, model_endpoints, resolve_endpoint, resolve_model,
 )
@@ -229,12 +230,16 @@ def prepare(root, workspace, checkout, design):
 
 
 def run_jobs(rows, execute, guard, persist, *, written_arms=(*FORMS, "summary"), initial_writers=None,
-             missing_sources=(), incomplete_form_sets=(), close_cost=None):
+             missing_sources=(), incomplete_form_sets=(), close_cost=None, resumable=False):
     """Persist all assignments before HTTP, a start before side effects, and every terminal disposition."""
     writers = dict(initial_writers or {})
     persist(rows)
     stop = None
     for position, row in enumerate(rows):
+        if resumable and row["status"] != "planned":
+            if row["phase"] == "write":
+                writers[row["repetition"], row["task_id"], row["arm"]] = row
+            continue
         if stop is None:
             stop = guard.stop()
         key = (row["repetition"], row.get("source_task_id", row["task_id"]), row["arm"])
@@ -247,6 +252,9 @@ def run_jobs(rows, execute, guard, persist, *, written_arms=(*FORMS, "summary"),
             continue
         if row["phase"] == "solve" and (row["repetition"], row["task_id"]) in incomplete_form_sets:
             row.update(status="not_started", reason="required_form_set_incomplete")
+            continue
+        if row["phase"] == "solve" and (row["repetition"], row["task_id"], row["arm"]) in incomplete_form_sets:
+            row.update(status="not_started", reason="required_bank_incomplete")
             continue
         if row["phase"] == "solve" and row["arm"] in written_arms:
             if writer is None:
@@ -262,8 +270,9 @@ def run_jobs(rows, execute, guard, persist, *, written_arms=(*FORMS, "summary"),
         except Exception as error:
             stop = guard.stop() or "controller_error"
             row.update(status="interrupted", reason=stop, error_type=type(error).__name__)
-            for pending in rows[position + 1:]:
-                pending.update(status="not_started", reason=stop)
+            if not resumable:
+                for pending in rows[position + 1:]:
+                    pending.update(status="not_started", reason=stop)
             persist(rows)
             raise
         row.update(status=data["status"], result=data)
@@ -275,7 +284,7 @@ def run_jobs(rows, execute, guard, persist, *, written_arms=(*FORMS, "summary"),
         stop = error.lower() if error in {"FIRST_PASS_MISMATCH", "TASK_START_MISMATCH"} else guard.stop()
         persist(rows)
     persist(rows)
-    return stop
+    return (stop or guard.stop()) if resumable else stop
 
 
 def run_batch(profile, workspace, checkout):
@@ -320,6 +329,9 @@ def verify_required_form_sets(design, plan, writer_root, bindings, *, root=ROOT)
     if not reader_jobs:
         return set()
     forms = set(design["writing"]["lines"])
+    admission = design.get("reader_admission", "complete_form_set")
+    if admission not in {"complete_form_set", "sealed_bank"}:
+        raise ContractError("Unknown required memory admission policy")
     if design.get("stage") != "solve" or not forms or not design.get("delivery_arms") or not bindings:
         raise ContractError("Required writing needs registered forms and sealed writer bindings")
     delivery = design["delivery_arms"]
@@ -340,7 +352,7 @@ def verify_required_form_sets(design, plan, writer_root, bindings, *, root=ROOT)
             form = spec["writer"]
             row = bindings.get((rep, tid, arm))
             if row is None or row.get("status") != "completed":
-                incomplete.add((rep, tid))
+                incomplete.add((rep, tid, arm) if admission == "sealed_bank" else (rep, tid))
                 continue
             if (row["task_id"], row["repetition"], row["arm"]) != (tid, rep, form) or form not in forms:
                 raise ContractError("Wrong task, repetition or format for the assigned writer")
@@ -363,7 +375,7 @@ def verify_required_form_sets(design, plan, writer_root, bindings, *, root=ROOT)
                     != (source.source_run_id, source.source_log_sha256, source.public_context_sha256)):
                 raise ContractError("Required sealed memory differs from its form or original trajectory")
             verified[form] = key
-        if set(verified) != forms:
+        if set(verified) != forms and admission == "complete_form_set":
             incomplete.add((rep, tid))
     return incomplete
 
@@ -395,15 +407,21 @@ def execute_prepared(profile, root, destination, identity, design, plan, models,
     writer_root, bindings = imported_writers or (destination, {})
     incomplete_form_sets = verify_required_form_sets(design, plan, writer_root, bindings, root=root)
     rows = [dict(row, status="planned", directory=f'jobs/{row["index"]:04d}', run_id=new_id("r")) for row in plan["jobs"]]
-    destination.mkdir(exist_ok=False)
-    (destination / "jobs").mkdir()
+    resumable = profile.get("interruption_policy") == RESUME_UNSTARTED
+    destination.mkdir(exist_ok=resumable)
     control = dict(profile=profile, implementation=identity, model_catalog_entries=models,
                    source_outcomes={**dict.fromkeys(plan.get("missing_sources", [])),
                                     **{task: source.official_success for task, source in plan["sources"].items()}},
                    preflight=plan["summary"], design=design, started_at=datetime.now(timezone.utc).isoformat())
     if "task_variants" in plan:
         control["task_variants"] = plan["task_variants"]
-    write_json(destination / "control.json", control)
+    if resumable:
+        if (destination / "completion.json").exists():
+            raise ContractError("Completed batches must be read through their seal")
+        rows = restore_batch(destination, control, plan["jobs"], rows, guard, close_cost)
+    else:
+        (destination / "jobs").mkdir()
+        write_json(destination / "control.json", control)
     writer_limits = design["writing"]["proposed_limits"]
     limits = design["second_pass"]["proposed_limits"]
     def make_client(role, byte_limit):
@@ -462,10 +480,15 @@ def execute_prepared(profile, root, destination, identity, design, plan, models,
     stop = run_jobs(rows, dispatch, guard, lambda values: write_json(ledger, values),
                     written_arms=() if pools is not None else (delivery_arms or written_arms), initial_writers=bindings,
                     missing_sources=plan.get("missing_sources", ()), incomplete_form_sets=incomplete_form_sets,
-                    close_cost=close_cost)
+                    close_cost=close_cost, resumable=resumable)
     summary = dict(stop_reason=stop, http_calls=guard.calls, reported_usd=guard.reported_usd,
         unknown_cost=guard.unknown_cost, ended_at=datetime.now(timezone.utc).isoformat(),
         allocation_sha256=digest(ledger.read_bytes()), control_sha256=digest((destination / "control.json").read_bytes()))
+    if resumable:
+        known = sum((Decimal(v["reported_usd"]) for r in rows
+                     for v in r.get("result", {}).get("billing_by_role", {}).values()), Decimal(0))
+        summary["reported_usd"] = float(known)
+        summary["reported_usd_decimal"] = str(known)
     if close_cost:
         summary.update(unknown_cost=any(r.get("result", {}).get("unknown_cost") for r in rows),
                        reserved_usd=str(close_cost.reserved))
@@ -474,21 +497,4 @@ def execute_prepared(profile, root, destination, identity, design, plan, models,
 
 
 def request_usage(journal):
-    roles = {}
-    stats = {}
-    for event in journal.events.values():
-        pay = event["payload"]
-        if event["type"] == "model.request_started":
-            roles[pay["request_id"]] = pay["actor_role"]
-        elif event["type"] == "model.request_finished":
-            role = roles[pay["request_id"]]
-            cell = stats.setdefault(role, dict(requests=0, http_calls=0, total_tokens=0, reported_usd=Decimal(0), unknown_count=0))
-            cell["requests"] += 1
-            cell["http_calls"] += pay["delivery_status"] != "not_submitted"
-            cell["unknown_count"] += pay["cost_status"] == "unknown"
-            cell["total_tokens"] += (pay.get("usage") or {}).get("total_tokens") or 0
-            if pay["cost_status"] == "observed":
-                cell["reported_usd"] += Decimal(str(pay["cost_usd"]))
-    for cell in stats.values():
-        cell["reported_usd"] = str(cell["reported_usd"])
-    return stats
+    return usage_from_events(journal.events.values())

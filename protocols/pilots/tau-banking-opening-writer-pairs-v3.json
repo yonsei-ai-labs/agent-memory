@@ -1,0 +1,97 @@
+{
+  "format": "banking-registered-writer-pairs/v3",
+  "source_study": "tau-banking-opening-sources-03",
+  "validation_study": "tau-banking-opening-writers-03",
+  "banking_profile": {
+    "path": "protocols/pilots/tau-banking-memory-v1.json",
+    "sha256": "755c3161124ff4bd6b7f373657abc52997a3a57055d0a3e0c7f7158258280320"
+  },
+  "required_writer": {
+    "path": "protocols/pilots/tau-banking-required-v1.json",
+    "sha256": "22813f83a62e718df76e1c8ec323248a67141a03fd7bbbc7a5ed70ad6d14e0cf"
+  },
+  "base_instruction": {
+    "path": "protocols/instructions/required-experience-writer-v1.txt",
+    "sha256": "54c0838ec92092c2accd1d78253ba560c95fadac6c65d698243f23cb38a67ed7"
+  },
+  "clause": {
+    "path": "protocols/instructions/attempt-result-clause-v1.txt",
+    "sha256": "5a53605dea9a0a66d0f1ba7db756ed6de80250e104c15c6b6f991d46c0657882"
+  },
+  "candidate_instruction": {
+    "path": "protocols/instructions/required-attempt-result-writer-v1.txt",
+    "sha256": "a3f77f279aa55129d9c6a6af7e98fc6c633f4a2fce0603c74ec9b26bedcf29e9"
+  },
+  "tasks": {
+    "task_055": "checking",
+    "task_056": "business_checking",
+    "task_057": "checking",
+    "task_058": "savings",
+    "task_059": "savings",
+    "task_060": "savings",
+    "task_061": "savings",
+    "task_062": "business_checking",
+    "task_063": "savings",
+    "task_064": "savings",
+    "task_065": "savings",
+    "task_066": "savings",
+    "task_067": "savings",
+    "task_068": "savings",
+    "task_069": "savings",
+    "task_070": "business_checking",
+    "task_071": "business_checking",
+    "task_075": "checking",
+    "task_076": "checking"
+  },
+  "previous_cases": [
+    "task_001",
+    "task_002",
+    "task_008",
+    "task_010",
+    "task_014",
+    "task_015",
+    "task_016",
+    "task_017",
+    "task_019",
+    "task_020",
+    "task_021",
+    "task_022",
+    "task_036"
+  ],
+  "case_selection": "Census of the pinned 97 native banking tasks. Include every DB-graded task with the assistant opening an account in the official reference. Keep repeated customers and different scenarios under the same customer cluster. Include all outcomes. None of the 19 task IDs was used in earlier banking model runs.",
+  "source": 19,
+  "validation": {
+    "writer_policies": [
+      "existing",
+      "candidate"
+    ],
+    "write": 380,
+    "solve": 1140,
+    "second_pass_no_memory": 0
+  },
+  "reader": "preload",
+  "feedback": "result_only",
+  "preflight_file": "artifacts/pilots/20261126-banking-opening-reliability-preflight.json",
+  "authorization_file": "artifacts/pilots/20261126-banking-opening-reliability-authorization.json",
+  "source_outcomes": "Only a call from the assistant to the actual opening tool plus the response bearing its call ID establishes opened, eligibility refusal, invalid/rejected request, or other opening failure. Missing and unrecognized returns remain unknown. Exclude document examples, unlocks, customer utterances and global grades as proof. Reconcile returned account IDs with new native DB rows. Reference and counterfactual actions are for analyst-only controls.",
+  "writing_primary": "Mask every stored item separately. Retain each local item ID and version in its private bank assignment. For each retrospective claim quote the memory exactly, cite the public call IDs for that same event, and transcribe the stated user_id, account_type and account_class (null when unspecified). A product-level supported claim requires the named account_class and all other stated fields and outcome to match every cited receipt. A verified status without a named product is outcome_only and earns no product coverage. An incompatible stated subject or status on the same event is contradicted. Unrelated and missing evidence are unsupported. Report item counts, omissions, status-only claims and receipt coverage separately. Primary paired writer outcome: any unsupported or contradicted claim in the bank, evaluated only when every stored version has a rating. Each assigned writer contributes exactly one slot regardless of item count; absent and partially rated banks are missing.",
+  "business_primary": "For every graded fresh consultation report distinct registered target accounts actually opened, extra accounts, refused/invalid attempts and the official final DB grade separately. Infer no causal use from exposure alone. First pass is a descriptive anchor. Compare existing and candidate within source and form, summarize by independent customer with independent count and missing data.",
+  "efficiency": "Report worker business calls, customer turns, all billed tokens and USD by stage and reader policy. Present matched efficiency on joint official successes with denominator. If there are zero pairs the estimate is unavailable.",
+  "isolation": "Replay the original first public customer utterance into each fresh consultation. Bind native task, initial DB, official grade, worker/customer endpoints and seeds. Required five forms per policy share identical public source and a separate binary grade. Only the common candidate clause changes; reader instruction and supported memory tools remain identical. No hidden criteria or native control outputs enter model inputs.",
+  "operation": "Use the registered required writer prompt and completion contract. Each completed nonempty bank is admitted independently after validating its source, version, feedback and writing contract. Only readers of an absent or failed bank are missing. Preserve all allocation reasons. Continue interrupted shards under an exclusive lock with the same registered inputs, identities, deadline and grant. Keep completed receipts, never resend a started allocation, and dispatch only untouched allocations. If a started request lacks confirmed billing and a recorded bound, hold its remaining shard grant. Reconcile stage charges, reservations and observed or potentially submitted requests before any continuation. Previous registrations and costs have separate directories.",
+  "adapter": "account_opening",
+  "repetitions": {
+    "writer_draws": 2,
+    "readers_per_bank": 3
+  },
+  "max_concurrent": 8,
+  "expected_customers": 13,
+  "sampling": "One shared no-memory first pass per official task. Two separately submitted writers per policy and form with identical settings, then three fresh full consultations per sealed bank, starting from the exact first public customer utterance. Match policies by preassigned task, form, draw and reader number. A repeated submission can produce identical contents. Count unique contents and compare actual first input hashes within each bank.",
+  "inference": "Each task and form has six preassigned matched consultation pairs. Compute candidate minus existing on jointly observed pairs within a form, average the five form means within task, then tasks within customer, then customers equally. A customer enters a point estimate only when each of its registered task/form strata has at least one paired observation. Show available and total customers, counts, raw per-form results and worst/best-case bounds over every registered slot. Use the exact two-sided sign test only on customer-level differences. Apply the same aggregation to the two paired writers per form for the fraction of fully rated banks containing any unsupported/contradicted claim (lower is better). Note omission and receipt coverage are separate.",
+  "reader_admission": "sealed_bank",
+  "interruption_policy": "resume_unstarted/v1",
+  "ratings_schema": {
+    "path": "schemas/opening-outcome-ratings-v2.schema.json",
+    "sha256": "eb74278d5abc6c7aa8f256dec1cce554b34edf392668b85adb3f49e977331d64"
+  }
+}

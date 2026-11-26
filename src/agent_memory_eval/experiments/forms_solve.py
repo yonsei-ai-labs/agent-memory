@@ -476,7 +476,24 @@ def run_forms_solve(journal, *, arm, task_id, repetition, run_id, connection, pr
         memory.seal(bank)
     journal.append([ctx.at("seal").event("run.ended", dict(termination_reason=termination,
         grading_status=grading, end_snapshot_id=end_snapshot))])
-    return dict(arm=arm, task_id=task_id, repetition=repetition, run_id=run_id, session_id=ctx.session_id,
-                status="completed" if grading == "graded" else "error", grading_status=grading, official_success=success,
-                official_score=score, report_ref=report_ref, bank_id=bank, start_snapshot_id=parent,
-                snapshot_id=end_snapshot, bank_sizes=bank_sizes, **native_state, **_usage(journal, run_id))
+    return recorded_solve_result(journal, run_id)
+
+
+def recorded_solve_result(journal, run_id):
+    """Project the terminal native receipt identically during normal completion and recovery."""
+    assignment = journal.state["assignments"][run_id]
+    start = journal.scan["starts"][run_id]
+    events = [e for e in journal.events.values() if e["run_id"] == run_id]
+    native, = [e["payload"] for e in events if e["type"] == "business.transition"
+               and e["payload"].get("origin") == "forms.native_result"]
+    grade, = [e["payload"] for e in events if e["type"] == "outcome.scored"]
+    end, = [e["payload"] for e in events if e["type"] == "run.ended"]
+    if end["grading_status"] != grade["grading_status"] or end["termination_reason"] != native["termination_reason"]:
+        raise ContractError("Native terminal receipts disagree")
+    return dict(arm=assignment["arm"], task_id=assignment["task_id"], repetition=assignment["repetition"],
+                run_id=run_id, session_id=start["session_id"], status="completed" if grade["grading_status"] == "graded" else "error",
+                grading_status=grade["grading_status"], official_success=grade["official_success"],
+                official_score=grade["official_score"], report_ref=grade["official_artifact_ref"],
+                bank_id=start["payload"]["bank_id"], start_snapshot_id=start["payload"]["start_snapshot_id"],
+                snapshot_id=end["end_snapshot_id"], bank_sizes=assignment["bank_sizes"],
+                **{k: v for k, v in native.items() if k != "origin"}, **_usage(journal, run_id))
