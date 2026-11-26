@@ -82,6 +82,29 @@ uv run --offline python -m agent_memory_eval.runner.bfcl_read_check --audit \
 cmp "$audit" "artifacts/analyses/20261126-bfcl-read-path/initiation-${arm}.json"
 ```
 
+## 조회 용도를 도구 설명에만 둔 경우
+
+자율 조회에서 모델이 아는 것은 도구의 용도까지로 두었다. 목록 도구는 과거 상황·사실·절차·교훈이 현재 문제에 도움이 될 때 제목을 살펴볼 수 있고 빈 목록도 반환한다고 설명한다. 본문 도구는 선택한 ID로 메모를 읽고 현재 상황에 적용할 수 있는지 확인하는 용도다. 과제별로 메모가 있다는 안내, 제목 미리 보기, 함수 호출 지정은 없었다. 같은 로컬 Qwen3.5-4B와 기존 8개 사실 메모로 두 조건을 사전등록했다. [도구 설명 영문 원문과 조건](../../protocols/diagnostics/bfcl-tool-only-retrieval-v1.json)
+
+| 도구에 적은 설명 | 자율 목록 호출 | 업무 판단 전 본문 포함 | 업무 함수 호출 여부 정답 | 입력 토큰 |
+| --- | ---: | ---: | ---: | ---: |
+| 기존 사용법 | 0/8 | 0/8 | 7/8 | 5,635 |
+| 현재 문제에 참고할 상황과 사용법 | 0/8 | 0/8 | 7/8 | 6,027 |
+
+실제로 보낸 16개 첫 요청에서 두 기억 도구를 제거하고 1회차 원요청과 대조했다. 시스템·사용자 메시지, 업무 함수와 모델 설정이 16/16건 일치했다. 두 후속 조건을 질문별로 맞대면 차이는 조회 도구 두 개의 설명 문자열뿐이었다. 각 조건에서 다섯 질문은 같은 이름의 업무 함수를 바로 호출했고, 나머지 세 질문은 바로 답했다. 도구 거절이나 결측은 없었다. 이 표본에서는 설명을 구체화해도 첫 조회가 늘지 않았다. 이 점수의 기준은 첫 업무 함수의 호출 여부이며, 과거 기록에만 단서가 있는 과제에서 조회를 시작할지는 이번 자료로 알 수 없다. 외부 모델 호출은 0건이었다. [기존 설명 원장 감사](../../artifacts/analyses/20261126-bfcl-read-path/tool-only-original.json) · [새 설명 원장 감사](../../artifacts/analyses/20261126-bfcl-read-path/tool-only-contextual.json) · [토큰 재검산](../../artifacts/analyses/20261126-bfcl-read-path/tool-only-token-receipts.json)
+
+원기록은 `39cf192`로 수집했다. 아래 명령은 같은 기록을 채점하고 봉인된 결과 파일과 대조한다. 다른 조건은 `arm=original`로 확인한다.
+
+```bash
+arm=contextual
+audit=$(mktemp)
+uv run --offline python -m agent_memory_eval.runner.bfcl_read_check --audit \
+  --parent runs/bfcl-relevance-two-pass-01-decoded --parent-profile protocols/diagnostics/bfcl-relevance-two-pass-v1.json \
+  --archive artifacts/analyses/20261126-bfcl-relevance-local.json --spec protocols/diagnostics/bfcl-tool-only-retrieval-v1.json \
+  --arm "$arm" --control "runs/bfcl-tool-only-${arm}-01" > "$audit"
+cmp "$audit" "artifacts/analyses/20261126-bfcl-read-path/tool-only-${arm}.json"
+```
+
 ## 무엇을 기억했고 다음 행동이 어떻게 달라졌나
 
 | 과제 | 1회차 공개 기록 | 실제 메모와 다음 행동 |

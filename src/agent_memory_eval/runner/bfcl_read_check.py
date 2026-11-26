@@ -15,7 +15,9 @@ from agent_memory_eval.analysis.requests import audit_requests
 from agent_memory_eval.contracts.core import canonical, digest, read_json
 from agent_memory_eval.models.local_qwen import LocalQwen, required_prefix
 from agent_memory_eval.recording.journal import Journal
-from agent_memory_eval.runner.bfcl_relevance import load_inputs, read_choice, read_tools, solve, worker_instruction
+from agent_memory_eval.runner.bfcl_relevance import (
+    load_inputs, normalized_first, read_choice, read_tools, solve, worker_instruction,
+)
 
 
 def expected_runtime(parent, spec):
@@ -204,6 +206,9 @@ def audit(args, cfg, spec, archive):
         require(control_log.startswith(source_log), "Control did not branch from the sealed parent")
         audit_requests(folder)
         seals[task] = digest(control_log)
+        source = RecordedDecisions(parent, task + "-source", data["journal_sha256"])
+        source_request, = source.requests
+        source_wire = source.blobs.get(source_request["request_ref"])
         first_prompts, first_outputs = set(), set()
         for row in data["allocations"]:
             if row["mode"] != "on_demand":
@@ -228,6 +233,10 @@ def audit(args, cfg, spec, archive):
                     expected["tool_choice"] = dict(type="function", function=dict(name="memory_list"))
                 require(wire == expected and control.start["source_run_ids"] == evidence.start["source_run_ids"],
                         "Control differs beyond the registered guidance")
+                business = normalized_first(wire, control_cfg, "on_demand", [])
+                if constrain:
+                    business.pop("tool_choice")
+                require(business == source_wire, "Control opening differs from the original no-memory task")
                 guided.append(observed)
         unique_by_question[task] = dict(prompts=len(first_prompts), token_outputs=len(first_outputs))
     require(len(original) == len(reg["tasks"]) * len(cfg["forms"]) and len(guided) == spec["limits"]["allocated"],
