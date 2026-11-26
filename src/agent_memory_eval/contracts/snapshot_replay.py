@@ -6,7 +6,7 @@ from jsonschema import Draft202012Validator, ValidationError
 
 from agent_memory_eval.contracts.core import ContractError, MemoryPolicy, canonical, read_json
 from agent_memory_eval.contracts.execution import ExecutionLimits
-from agent_memory_eval.contracts.validation import ROOT
+from agent_memory_eval.contracts.validation import ROOT, SCHEMA_ROOT
 from agent_memory_eval.recording.provenance import public_assistant_message
 
 
@@ -15,7 +15,7 @@ SCOPE = "single_reply_no_business_execution_or_official_score"
 
 @lru_cache(maxsize=1)
 def _validator():
-    return Draft202012Validator(read_json((ROOT / "schemas/snapshot-replay.schema.json").read_bytes()))
+    return Draft202012Validator(read_json((SCHEMA_ROOT / "snapshot-replay.schema.json").read_bytes()))
 
 
 def validate_replay_record(value):

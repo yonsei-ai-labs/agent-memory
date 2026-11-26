@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "A literal in the writer's public experience, assigned bank, worker input and response",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["format", "literal", "record_kind", "writers", "reader", "outcome"],
+  "properties": {
+    "format": {"const": "agent-memory-decision-cue/v1"},
+    "literal": {"$ref": "#/$defs/text"},
+    "record_kind": {"$ref": "#/$defs/text"},
+    "writers": {"type": "array", "items": {
+      "type": "object", "additionalProperties": false,
+      "required": ["run", "condition", "snapshot", "source", "journal_head_sha256", "first_request_sha256", "instruction_sha256", "feedback", "guidance_matches", "items"],
+      "properties": {
+        "source": {"type": "object", "additionalProperties": false, "required": ["run", "public_context_sha256", "matches"],
+          "properties": {"run": {"$ref": "#/$defs/text"}, "public_context_sha256": {"$ref": "#/$defs/hash"},
+                         "matches": {"type": "array", "items": {"$ref": "#/$defs/hit", "required": ["role"]}}}},
+        "run": {"$ref": "#/$defs/text"}, "condition": {"$ref": "#/$defs/text"}, "snapshot": {"$ref": "#/$defs/text"},
+        "journal_head_sha256": {"$ref": "#/$defs/hash"}, "first_request_sha256": {"$ref": "#/$defs/hash"},
+        "instruction_sha256": {"$ref": "#/$defs/hash"}, "feedback": {"type": "object", "required": ["level"]}, "guidance_matches": {"$ref": "#/$defs/hits"},
+        "items": {"type": "array", "items": {
+          "type": "object", "additionalProperties": false,
+          "required": ["item", "version", "assigned", "store_event", "item_sha256", "request_sha256", "response_sha256", "matches"],
+          "properties": {
+            "assigned": {"type": "boolean"},
+            "item": {"$ref": "#/$defs/text"}, "version": {"$ref": "#/$defs/text"}, "store_event": {"$ref": "#/$defs/text"},
+            "item_sha256": {"$ref": "#/$defs/hash"}, "request_sha256": {"$ref": "#/$defs/hash"},
+            "response_sha256": {"$ref": "#/$defs/hash"}, "matches": {"$ref": "#/$defs/hits"}
+          }
+        }}
+      }
+    }},
+    "reader": {
+      "type": "object", "additionalProperties": false,
+      "required": ["run", "condition", "snapshot", "assigned_versions", "request_id", "journal_head_sha256", "request_sha256", "manifest_sha256", "response_sha256",
+        "status", "delivery", "available_reads", "reads_through_response", "other_input_matches", "visible_fields", "exposed_matches",
+        "action_status", "action", "request_usage", "cost_status", "request_cost_usd"],
+      "properties": {
+        "assigned_versions": {"type": "array", "uniqueItems": true, "items": {"type": "object", "required": ["item", "version"],
+          "properties": {"item": {"$ref": "#/$defs/text"}, "version": {"$ref": "#/$defs/text"}}}},
+        "run": {"$ref": "#/$defs/text"}, "condition": {"$ref": "#/$defs/text"},
+        "snapshot": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/text"}]},
+        "request_id": {"$ref": "#/$defs/text"}, "journal_head_sha256": {"$ref": "#/$defs/hash"},
+        "request_sha256": {"$ref": "#/$defs/hash"}, "manifest_sha256": {"$ref": "#/$defs/hash"},
+        "response_sha256": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/hash"}]},
+        "status": {"$ref": "#/$defs/text"}, "delivery": {"$ref": "#/$defs/text"},
+        "available_reads": {"type": "array", "items": {"$ref": "#/$defs/text"}},
+        "reads_through_response": {"type": "array", "items": {
+          "type": "object", "required": ["request_id", "request_sha256", "visible_before_read", "calls"],
+          "properties": {
+            "request_id": {"$ref": "#/$defs/text"}, "request_sha256": {"$ref": "#/$defs/hash"},
+            "visible_before_read": {"type": "array", "items": {"$ref": "#/$defs/visible"}},
+            "calls": {"type": "array", "minItems": 1, "items": {"type": "object", "required": ["name", "arguments", "returned"]}}
+          }
+        }},
+        "other_input_matches": {"type": ["null", "array"], "items": {"$ref": "#/$defs/hit", "required": ["input_kind", "source", "producer_event"]}},
+        "visible_fields": {"type": ["null", "array"], "items": {"$ref": "#/$defs/visible"}},
+        "exposed_matches": {"type": ["null", "array"], "items": {"type": "object",
+          "required": ["item", "version", "field", "source", "pointer", "char_start", "char_end", "rendered_sha256", "clause_char_start", "clause_char_end"]}},
+        "action_status": {"$ref": "#/$defs/text"},
+        "action": {"type": ["null", "object"], "required": ["choice", "calls", "matches"],
+          "properties": {"choice": {"$ref": "#/$defs/text"}, "calls": {"type": "array", "items": {"$ref": "#/$defs/text"}},
+                         "matches": {"$ref": "#/$defs/hits"}}},
+        "request_usage": {"type": ["object", "null"]}, "cost_status": {"type": ["string", "null"]},
+        "request_cost_usd": {"type": ["number", "null"]}
+      },
+      "allOf": [
+        {"if": {"properties": {"status": {"const": "response"}}},
+         "then": {"properties": {"response_sha256": {"$ref": "#/$defs/hash"}, "visible_fields": {"type": "array"},
+                                 "exposed_matches": {"type": "array"}, "other_input_matches": {"type": "array"}}},
+         "else": {"properties": {"visible_fields": {"type": "null"}, "exposed_matches": {"type": "null"},
+                                 "other_input_matches": {"type": "null"}, "action": {"type": "null"}}}},
+        {"if": {"properties": {"action_status": {"const": "observed"}}},
+         "then": {"properties": {"action": {"type": "object"}}}, "else": {"properties": {"action": {"type": "null"}}}}
+      ]
+    },
+    "outcome": {
+      "type": ["object", "null"], "required": ["grading_status", "success", "artifact_sha256"],
+      "properties": {
+        "grading_status": {"$ref": "#/$defs/text"}, "success": {"type": ["boolean", "null"]},
+        "artifact_sha256": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/hash"}]}
+      }
+    }
+  },
+  "if": {"properties": {"reader": {"properties": {"snapshot": {"type": "null"}}}}},
+  "then": {"properties": {"writers": {"maxItems": 0}, "reader": {"properties": {"assigned_versions": {"maxItems": 0}}}}},
+  "else": {"properties": {"writers": {"minItems": 1}}},
+  "$defs": {
+    "text": {"type": "string", "minLength": 1},
+    "hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "hit": {"type": "object", "required": ["pointer", "start", "quote"], "properties": {
+      "pointer": {"$ref": "#/$defs/text"}, "start": {"type": "integer", "minimum": 0}, "quote": {"$ref": "#/$defs/text"}
+    }},
+    "hits": {"type": "array", "items": {"$ref": "#/$defs/hit"}},
+    "visible": {"type": "object", "required": ["item_id", "version_id", "field", "via", "pointer", "char_start", "char_end", "rendered_sha256"]}
+  }
+}

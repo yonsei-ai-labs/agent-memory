@@ -5,7 +5,7 @@ from dataclasses import asdict, dataclass
 
 from agent_memory_eval.contracts.core import (ContractError, MemoryFault, MemoryPolicy,
                                               RunContext, canonical, digest, new_id, read_json)
-from agent_memory_eval.contracts.validation import read_public_prefix
+from agent_memory_eval.contracts.validation import read_public_prefix, validate_public_return
 from agent_memory_eval.memory.context import snapshot_message
 
 
@@ -151,10 +151,11 @@ class MemoryService:
         if not isinstance(arguments, dict) or set(arguments) - set(allowed) or not set(required) <= arguments.keys():
             raise MemoryFault("INVALID_ARGUMENT")
 
-    def _store(self, state, bank, arguments, prefix):
+    def _store(self, state, bank, arguments, prefix, *, native_body=False):
         self._args(arguments, ("title", "body", "id", "expected_version"), ("title", "body"))
         title, body = arguments["title"], arguments["body"]
-        if any(not isinstance(s, str) or not s.strip() for s in (title, body)):
+        if (not isinstance(title, str) or not title.strip() or not isinstance(body, str)
+                or not (body if native_body else body.strip())):
             raise MemoryFault("INVALID_ARGUMENT")
         item, expected = arguments.get("id"), arguments.get("expected_version")
         if item is None:
@@ -224,12 +225,29 @@ class MemoryService:
         return dict(status="ok", items=[{k: item[k] for k in ("id", "version", "title")} for item in items],
                     next_cursor=next_cursor)
 
-    def execute(self, ctx, bank_id, operation_id, name, arguments, *, call_id, prefix=None, denial=None):
+    def _native_head(self, state, heads, label):
+        if not heads:
+            return None
+        if len(heads) != 1:
+            raise ContractError("A single-document native backend cannot bind a multi-item bank")
+        version = self._version(state, next(iter(heads.values())))
+        if version["title"] != label:
+            raise ContractError("Native bank contains a different memory representation")
+        return version
+
+    def execute(self, ctx, bank_id, operation_id, name, arguments, *, call_id, prefix=None, denial=None, native=None):
         """Only infrastructure retries reuse operation_id; fresh model calls remain distinct."""
         if ctx.run_id is None or ctx.experiment_id != self.journal.experiment_id:
             raise ContractError("Memory operation needs its owning run")
-        request_hash = digest(canonical(dict(run_id=ctx.run_id, session_id=ctx.session_id, phase=ctx.phase,
-            bank_id=bank_id, name=name, arguments=arguments, call_id=call_id, denial=denial)))
+        fingerprint = dict(run_id=ctx.run_id, session_id=ctx.session_id, phase=ctx.phase,
+                           bank_id=bank_id, name=name, arguments=arguments, call_id=call_id, denial=denial)
+        regular_tool = name
+        if native is not None:
+            if self.journal.contract_version != "1.3" or name not in native.tools:
+                raise ContractError("Unsupported native memory contract or tool")
+            regular_tool = native.tools[name]
+            fingerprint["native_format"] = native.format
+        request_hash = digest(canonical(fingerprint))
         with self.journal.lock:
             previous = self.journal.operations.get(operation_id)
             if previous is not None:
@@ -238,11 +256,19 @@ class MemoryService:
                     raise ContractError("Operation ID reused with a different request")
                 wire = self.journal.blobs.get(op["result_ref"])
                 event = next(e for e in previous["events"] if e["type"] == "memory.returned")
+                if native is not None:
+                    for stored in (e["payload"] for e in previous["events"] if e["type"] == "memory.stored"):
+                        current = self._bank(self.journal.state, bank_id)["heads"]
+                        if current.get(stored["item_id"]) == stored["version_id"]:
+                            prior = stored["parent_version_id"]
+                            prior_body = self._version(self.journal.state, prior)["body"] if prior else ""
+                            native.recover_committed(prior_body, self._version(self.journal.state, stored["version_id"])["body"])
                 return OperationResult(read_json(wire["content"].encode()), wire, op["result_ref"], event["event_id"], True)
             state = deepcopy(self.journal.state)
             memory, body_ref, error = None, None, None
+            annotations, new_body = [], None
             operation = "update" if name == "memory_store" and isinstance(arguments, dict) and arguments.get("id") else {
-                "memory_store": "create", "memory_list": "list", "memory_get": "get"}.get(name)
+                "memory_store": "create", "memory_list": "list", "memory_get": "get"}.get(regular_tool)
             if operation is None:
                 raise ContractError("Unsupported memory tool")
             try:
@@ -251,13 +277,30 @@ class MemoryService:
                 if (bank["owner_run"] != ctx.run_id or bank["sealed"] or start is None
                         or start["payload"]["bank_id"] != bank_id):
                     raise MemoryFault("ACCESS_DENIED")
-                if denial or not MemoryPolicy(**bank["policy"]).permits(name, ctx.phase):
+                if denial or not MemoryPolicy(**bank["policy"]).permits(regular_tool, ctx.phase):
                     raise MemoryFault(denial or "POLICY_DENIED")
-                if name == "memory_store":
+                if regular_tool == "memory_store":
                     prefix = prefix or self.journal.public_prefix(ctx)
                     if prefix["run_id"] != ctx.run_id:
                         raise MemoryFault("ACCESS_DENIED")
                     read_public_prefix(self.journal.root, prefix, self.journal.events, len(self.journal.events) + 1)
+                if native is not None:
+                    live = self._native_head(state, bank["heads"], native.format)
+                    visible = live if bank["policy"]["same_episode_read"] else self._native_head(state, bank["start_heads"], native.format)
+                    value, new_body = native.evaluate(name, arguments, live["body"] if live else "",
+                                                      visible["body"] if visible else "")
+                    if regular_tool == "memory_store" and live:
+                        operation = "update"
+                    if "error" not in value and new_body is not None and new_body != (live["body"] if live else ""):
+                        change = dict(title=native.format, body=new_body)
+                        if live:
+                            change.update(id=live["id"], expected_version=live["version"])
+                        _, memory, body_ref = self._store(state, bank, change, prefix, native_body=True)
+                    if regular_tool == "memory_get" and "error" not in value:
+                        if not visible or value.get("memory_content") != visible["body"]:
+                            raise ContractError("Native read does not match its visible version")
+                        annotations = [dict(item_id=visible["id"], version_id=visible["version"], fields=["body"])]
+                elif name == "memory_store":
                     value, memory, body_ref = self._store(state, bank, arguments, prefix)
                 else:
                     value = self._read(state, bank_id, bank, name, arguments)
@@ -270,6 +313,7 @@ class MemoryService:
                 state["return_bytes"][ctx.run_id] = used + size
             except MemoryFault as fault:
                 state, memory, body_ref = deepcopy(self.journal.state), None, None
+                annotations, new_body = [], None
                 error = fault.code
                 value = dict(status="error", error=dict(code=error))
             wire = dict(role="tool", tool_call_id=call_id, content=canonical(value).decode())
@@ -285,10 +329,16 @@ class MemoryService:
                     public_context_prefix=prefix)))
             items = value.get("items", [value["item"]] if "item" in value else [])
             returned = ctx.event("memory.returned", dict(bank_id=bank_id, operation_id=operation_id,
-                operation=operation, status=value["status"], result_ref=ref,
+                operation=operation, status=value["status"] if native is None else ("error" if "error" in value else "ok"), result_ref=ref,
                 items=[dict(item_id=item["id"], version_id=item["version"],
                             fields=[field for field in ("title", "body") if field in item]) for item in items]),
                 causes=[events[-1]["event_id"]] if events else [])
+            if native is not None:
+                returned["schema_version"] = "1.3"
+                returned["payload"].update(native_format=native.format, native_tool=name, items=annotations)
+                validate_public_return(wire, returned["payload"])
             row = self.journal.append(events + [returned], state=state,
                 operation=dict(operation_id=operation_id, request_sha256=request_hash, result_ref=ref))
+            if native is not None and new_body is not None and "error" not in value:
+                native.commit(new_body)
             return OperationResult(value, wire, ref, row["events"][-1]["event_id"])

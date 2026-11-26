@@ -48,6 +48,15 @@ class FormsBatchTests(unittest.TestCase):
         self.assertEqual(len(seen), 584 - 56)
         self.assertEqual([r["reason"] for r in rows if r["status"] == "not_started"], ["writer_incomplete"] * 56)
 
+    def test_first_pass_mismatch_stops_remaining_assignments(self):
+        rows = [dict(phase="solve", task_id="23", repetition=1, arm=a) for a in ("a", "b")]
+        def execute(row, writer):
+            self.assertEqual(row["arm"], "a")
+            return dict(status="error", error_code="FIRST_PASS_MISMATCH", unknown_cost=False)
+        guard = BatchGuard(max_calls=5, max_usd=1, max_seconds=10)
+        self.assertEqual(run_jobs(rows, execute, guard, lambda _: None), "first_pass_mismatch")
+        self.assertEqual(rows[1]["status"], "not_started")
+
     def test_unknown_cost_preserves_full_unstarted_assignment_and_useful_empty(self):
         rows = ordered_jobs(self.design)
         states = []

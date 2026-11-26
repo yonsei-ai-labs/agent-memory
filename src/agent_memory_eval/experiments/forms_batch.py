@@ -12,13 +12,15 @@ from agent_memory_eval.adapters.tau2 import PIN, native_modules, verify_checkout
 from agent_memory_eval.contracts.connection import validate_profile
 from agent_memory_eval.contracts.core import ContractError, MemoryPolicy, canonical, digest, new_id, read_json
 from agent_memory_eval.contracts.validation import ROOT
-from agent_memory_eval.experiments.batch_recovery import POLICY as RESUME_UNSTARTED, restore_batch, usage_from_events
+from agent_memory_eval.experiments.batch_recovery import POLICY as RESUME_UNSTARTED, restore_batch
+from agent_memory_eval.experiments.paired_repetitions import FRESH_MATCHED
 from agent_memory_eval.models.openrouter import (
     OpenRouterClient, ProviderError, SpendGuard, model_catalog, model_endpoints, resolve_endpoint, resolve_model,
 )
 from agent_memory_eval.memory.context import request_with_past_memory
 from agent_memory_eval.memory.writing import REQUIRED_STORE_CONTRACT, WRITER_COMPLETION_CONTRACT, writer_template
 from agent_memory_eval.recording.assets import asset_text
+from agent_memory_eval.recording.batch import usage_from_events
 from agent_memory_eval.recording.journal import Journal, safe_path, sync_directory
 from agent_memory_eval.reproduction.freeze import implementation_identity
 from agent_memory_eval.runner.tau2_baseline import batch_stop, build_baseline_orchestrator, native_config
@@ -28,7 +30,6 @@ FORMS = ("fact", "episode", "lesson", "procedure")
 DESIGN = "protocols/drafts/tau2-two-pass-memory-forms-v1.json"
 RETAIL_RECHECK = "agent-memory-retail-recheck-design/v1"
 RETAIL_FULL = "agent-memory-retail-full-design/v1"
-FRESH_MATCHED = "agent-memory-fresh-matched/v1"
 
 
 def ordered_jobs(design):
@@ -36,7 +37,7 @@ def ordered_jobs(design):
         from agent_memory_eval.experiments.fresh_forms import planned_jobs
         return planned_jobs(design)
     if design.get("format") in {"agent-memory-prompt-comparison-design/v1", "agent-memory-prompt-comparison-design/v2",
-                                "agent-memory-prompt-delivery-design/v1"}:
+                                "agent-memory-prompt-comparison-design/v3", "agent-memory-prompt-delivery-design/v1"}:
         from agent_memory_eval.experiments.prompt_comparison import comparison_jobs
         return comparison_jobs(design)
     allocation = design["allocation"]
@@ -205,7 +206,7 @@ def prepare(root, workspace, checkout, design):
     receipts = {}
     if design["second_pass"].get("baseline") == "archived_first_pass":
         check_common_read_instruction(instruction, paired_delivery=False)
-        matches = archived_controls(workspace, checkout, design["source"])
+        matches = archived_controls(workspace, checkout, design["source"], match_opening="representation_pairs" in design)
     for block in design["allocation"]["blocks"]:
         task_id = block["task_id"]
         if matches:
@@ -230,7 +231,7 @@ def prepare(root, workspace, checkout, design):
 
 
 def run_jobs(rows, execute, guard, persist, *, written_arms=(*FORMS, "summary"), initial_writers=None,
-             missing_sources=(), incomplete_form_sets=(), close_cost=None, resumable=False):
+             missing_sources=(), incomplete_form_sets=(), close_cost=None, verify_written=None, resumable=False):
     """Persist all assignments before HTTP, a start before side effects, and every terminal disposition."""
     writers = dict(initial_writers or {})
     persist(rows)
@@ -247,6 +248,9 @@ def run_jobs(rows, execute, guard, persist, *, written_arms=(*FORMS, "summary"),
         if stop:
             row.update(status="not_started", reason=stop)
             continue
+        if row["phase"] == "solve" and verify_written is not None:
+            incomplete_form_sets = verify_written(writers)
+            verify_written = None
         if row.get("source_task_id", row["task_id"]) in missing_sources:
             row.update(status="not_started", reason="first_pass_ungraded")
             continue
@@ -332,11 +336,13 @@ def verify_required_form_sets(design, plan, writer_root, bindings, *, root=ROOT)
     admission = design.get("reader_admission", "complete_form_set")
     if admission not in {"complete_form_set", "sealed_bank"}:
         raise ContractError("Unknown required memory admission policy")
-    if design.get("stage") != "solve" or not forms or not design.get("delivery_arms") or not bindings:
+    delivery = design.get("delivery_arms", {})
+    if "representation_pairs" in design:
+        delivery = delivery or {form: {"writer": form} for form in forms}
+    elif design.get("stage") != "solve" or not forms or not delivery or not bindings:
         raise ContractError("Required writing needs registered forms and sealed writer bindings")
-    if admission == "sealed_bank" and {d["writer"] for d in design["delivery_arms"].values()} != forms:
+    if admission == "sealed_bank" and {d["writer"] for d in delivery.values()} != forms:
         raise ContractError("Required reader arms must cover every registered writing form")
-    delivery = design["delivery_arms"]
     common = asset_text(root, design["writing"]["common_instruction_ref"]).rstrip("\r\n")
     groups = {(j["repetition"], j["task_id"]) for j in reader_jobs}
     incomplete = set()
@@ -407,7 +413,10 @@ def execute_prepared(profile, root, destination, identity, design, plan, models,
             or any(delivery_arms[a].get("pool") not in {"own", "mixed"} for a in pools)):
         raise ContractError("Every registered retrieval arm needs its own verified source binding")
     writer_root, bindings = imported_writers or (destination, {})
-    incomplete_form_sets = verify_required_form_sets(design, plan, writer_root, bindings, root=root)
+    def verify_written(writers):
+        return verify_required_form_sets(design, plan, writer_root, writers, root=root)
+    combined_writing = "representation_pairs" in design and imported_writers is None
+    incomplete_form_sets = set() if combined_writing else verify_written(bindings)
     rows = [dict(row, status="planned", directory=f'jobs/{row["index"]:04d}', run_id=new_id("r")) for row in plan["jobs"]]
     resumable = profile.get("interruption_policy") == RESUME_UNSTARTED
     destination.mkdir(exist_ok=resumable)
@@ -482,6 +491,7 @@ def execute_prepared(profile, root, destination, identity, design, plan, models,
     stop = run_jobs(rows, dispatch, guard, lambda values: write_json(ledger, values),
                     written_arms=() if pools is not None else (delivery_arms or written_arms), initial_writers=bindings,
                     missing_sources=plan.get("missing_sources", ()), incomplete_form_sets=incomplete_form_sets,
+                    verify_written=verify_written if combined_writing else None,
                     close_cost=close_cost, resumable=resumable)
     summary = dict(stop_reason=stop, http_calls=guard.calls, reported_usd=guard.reported_usd,
         unknown_cost=guard.unknown_cost, ended_at=datetime.now(timezone.utc).isoformat(),

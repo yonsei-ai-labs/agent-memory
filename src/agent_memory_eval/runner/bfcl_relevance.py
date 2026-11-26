@@ -242,14 +242,16 @@ def collect_task(root, cfg, case, client, is_empty, *, parent=None, pairs=None):
                     max_completion_tokens=cfg["generation"]["writer_tokens"]),
                 max_requests=cfg["limits"]["writer_calls"], condition_id=form, run_id=f"{task}-write-{form}",
                 completion_contract=REQUIRED_STORE_CONTRACT, first_input_sha256=expected.get(form))
-        if not all(w["status"] == "completed" and w["memory_stores"] == 1 for w in writers.values()):
+        completed = {f: w for f, w in writers.items() if w["status"] == "completed" and w["memory_stores"] == 1}
+        if len(completed) != len(writers) and not cfg.get("policy_registration"):
             return
+        writers = completed
         slots = [(f, m) for f in writers for m in cfg["delivery"]]
         for form, mode in sorted(slots, key=lambda slot: digest(canonical([task, *slot]))):
             solve(journal, cfg, case, client, is_empty, source=source, writer=writers[form], form=form, mode=mode)
 
 
-def audit_task(root, cfg, case, is_empty):
+def audit_task(root, cfg, case, is_empty, *, sources_only=False):
     category, row = case
     task = row["id"]
     folder = root / task
@@ -263,8 +265,9 @@ def audit_task(root, cfg, case, is_empty):
     require(len(sessions) == len(set(sessions)), "Reused session")
     firsts, rows, source_wire, experience_ref = {}, [], None, None
     slots = [(source, "source", None, None)]
-    slots += [(f"{task}-write-{f}", "write", f, None) for f in cfg["forms"]]
-    slots += [(f"{task}-{f}-{m}", "solve", f, m) for f in cfg["forms"] for m in cfg["delivery"]]
+    if not sources_only:
+        slots += [(f"{task}-write-{f}", "write", f, None) for f in cfg["forms"]]
+        slots += [(f"{task}-{f}-{m}", "solve", f, m) for f in cfg["forms"] for m in cfg["delivery"]]
     for run, phase, form, mode in slots:
         rec = dict(task=task, run=run, phase=phase, form=form, mode=mode, success=None, status="not_started")
         rows.append(rec)
@@ -297,7 +300,7 @@ def audit_task(root, cfg, case, is_empty):
             if experience_ref is None:
                 experience_ref = writer["experience_ref"]
             require(writer["experience_ref"] == experience_ref, "Formats received different public experiences")
-            if "representation_pairs" in cfg:
+            if "representation_pairs" in cfg or "policy_writer_pairs" in cfg:
                 wire = blobs.get(starts[0]["request_ref"])
                 instruction = cfg["writer_instruction"] + "\n" + cfg["forms"][form]
                 require(writer["instruction"] == instruction and wire["messages"][0] == dict(role="system", content=instruction)
@@ -408,6 +411,11 @@ def main():
     parser.add_argument("--parent-recording", type=Path, help="Sealed source and reference decisions for the writer comparison")
     args = parser.parse_args()
     cfg = read_json(args.profile.read_bytes())
+    if "policy_registration" in cfg:
+        from agent_memory_eval.runner.policy_round import verify_native_registration
+        verify_native_registration(args.profile, cfg, "bfcl-relevance")
+        require(not (args.writer_comparison or args.reuse_recording or args.parent_recording),
+                "A registered two-pass round starts from its own first pass")
     cases, is_empty = load_inputs(args.checkout, cfg)
     archive = None
     if bool(args.writer_comparison) != bool(args.parent_recording) or (args.writer_comparison and args.reuse_recording):

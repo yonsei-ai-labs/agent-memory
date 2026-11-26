@@ -29,6 +29,7 @@ from agent_memory_eval.experiments.forms_solve import model_free_basis
 from agent_memory_eval.experiments.forms_write import FormSource, _project_context, read_form_bank
 from agent_memory_eval.experiments.fresh_forms import CostReservations
 from agent_memory_eval.recording.assets import asset_text
+from agent_memory_eval.recording.batch import sealed_rows
 from agent_memory_eval.recording.experience import _closed_run, _pair, _source
 from agent_memory_eval.recording.journal import safe_path
 from agent_memory_eval.reproduction.freeze import implementation_identity
@@ -52,18 +53,6 @@ def fixed(path, data):
             raise ContractError(f"Previously sealed {path.name} has different contents")
     else:
         write_json(path, data)
-
-
-def sealed_rows(folder):
-    close = read(folder / "completion.json")
-
-    def load(name, key):
-        raw = (folder / name).read_bytes()
-        if digest(raw) != close[key]:
-            raise ContractError(f"Broken ledger seal in {folder}")
-        return read_json(raw)
-
-    return close, load("control.json", "control_sha256"), load("allocations.json", "allocation_sha256")
 
 
 def select_cohorts(tasks, splits, db):

@@ -300,6 +300,22 @@ class OfflineCoreTests(unittest.TestCase):
         self.assertEqual(worker.requests, [])
         self.assertFalse(any(e["type"] == "model.request_started" for e in self.journal.events.values()))
 
+    def test_registered_prefix_and_first_pass_validation_both_precede_transport(self):
+        registry, template, history = self.requests()
+        gateway, worker, inspected = OfflineGateway(self.journal), FakeWorker(), []
+        def prefix_check(wire):
+            inspected.append(canonical(wire))
+            return wire
+        def reject_first_pass(wire):
+            self.assertEqual(canonical(wire), inspected[-1])
+            raise ContractError("different source")
+        with self.assertRaisesRegex(ContractError, "different source"):
+            gateway.call(self.ctx, registry, "worker", template, history, worker, max_requests=5,
+                         transform=prefix_check, validate_wire=reject_first_pass)
+        self.assertEqual(len(inspected), 1)
+        self.assertEqual(worker.requests, [])
+        self.assertFalse(any(e["type"] == "model.request_started" for e in self.journal.events.values()))
+
     def test_registry_rejects_other_run_and_other_session(self):
         registry, template, history = self.requests()
         other_ctx, other_bank = self.start()

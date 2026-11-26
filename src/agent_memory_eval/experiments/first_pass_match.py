@@ -28,7 +28,7 @@ def check_common_read_instruction(text, *, paired_delivery):
         raise FirstPassMismatch("Common memory-use instruction changed outside the declared comparison")
 
 
-def archived_controls(workspace, checkout, source):
+def archived_controls(workspace, checkout, source, *, match_opening=False):
     from tau2.domains.airline.data_model import FlightDB
     selected = {r["run_id"]: r["task_id"] for r in source["cohort"]}
     controls = {task: {"run_id": run, "wire": {}} for run, task in selected.items()}
@@ -64,6 +64,14 @@ def archived_controls(workspace, checkout, source):
             if "control" not in match or set(match["wire"]) != {"worker", "user_simulator"}:
                 raise ContractError("Missing archived role input or first-pass control")
             match["initial_db"] = initial_db
+            if match_opening:
+                from agent_memory_eval.experiments.matched_trial import source_task_start
+                events = [e for e in scan["events"].values() if e["run_id"] == match["run_id"]]
+                requests = [e for e in events if e["type"] == "model.request_started"]
+                control = dict(match["control"], initial_db=initial_db, initial_user_db=None, task_sha256=match["task_sha256"])
+                start = source_task_start(control, events, requests, blobs)
+                match.update(opening_control=control, opening_source=dict(run_id=match["run_id"], log_sha256=source["log_sha256"],
+                             task_start=start.record(), first_worker_request_id=requests[1]["payload"]["request_id"]))
     return controls
 
 
@@ -81,7 +89,12 @@ def check_native(match, config, orch, native):
     for field, value in actual.items():
         if canonical(value) != canonical(expected[field]):
             raise FirstPassMismatch(f"Same-task comparison differs from first pass in {field} ({match['run_id']})")
-    return dict(source_run_id=match["run_id"], source_control_sha256=match["control_sha256"],
+    opening = {}
+    if "opening_source" in match:
+        source = match["opening_source"]
+        opening = dict(task_start_sha256=digest(canonical(source["task_start"])), source_log_sha256=source["log_sha256"],
+                       source_worker_request_id=source["first_worker_request_id"])
+    return dict(**opening, source_run_id=match["run_id"], source_control_sha256=match["control_sha256"],
                 task_sha256=actual["task"], native_seed=native.seed, initial_db=orch.environment.get_db_hash(),
                 initial_user_db=orch.environment.get_user_db_hash(), native_config_sha256=digest(canonical(actual["native"])),
                 systems_sha256=digest(canonical(actual["systems"])), tools_sha256=digest(canonical(actual["tools"])),

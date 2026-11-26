@@ -42,14 +42,9 @@ def rank_hits(ranked, witnesses):
 
 
 def query_replayer(workspace, corpus_hash):
+    from agent_memory_eval.adapters.tau_banking_results import native_grep
     cycle.bank.matched.modules_for(workspace)
-    from tau2.domains.banking_knowledge.environment import get_knowledge_base
-    from tau2.domains.banking_knowledge.retrieval import create_grep_retrieval_pipeline, resolve_variant
-
-    corpus = get_knowledge_base()
-    require(digest(canonical(corpus.model_dump(mode="json"))) == corpus_hash, "Changed native corpus")
-    cfg = resolve_variant("grep_only").grep
-    native = create_grep_retrieval_pipeline(corpus, top_k=cfg.top_k, case_sensitive=cfg.case_sensitive)
+    native, documents, top_k = native_grep(corpus_hash)
     state = native.state
     alternate = dict(
         state,
@@ -70,7 +65,7 @@ def query_replayer(workspace, corpus_hash):
             with_titles=rank_hits(amended, witnesses),
         )
 
-    return replay, len(corpus.documents), cfg.top_k
+    return replay, documents, top_k
 
 
 def wire_evidence(log):

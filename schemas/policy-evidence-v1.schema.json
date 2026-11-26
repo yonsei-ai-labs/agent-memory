@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Policy evidence from a native two-pass recording",
+  "type": "object", "additionalProperties": false,
+  "required": ["format", "benchmark", "scope", "bindings", "observation_count", "trajectory_sha256", "observations_sha256",
+               "writers_sha256", "by_condition", "policy_comparisons", "writers", "study_cost", "same_input_repetitions"],
+  "$defs": {
+    "count": {"type": "integer", "minimum": 0},
+    "hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "statusCounts": {"type": "object", "required": ["success", "failure", "ungraded"], "additionalProperties": {"$ref": "#/$defs/count"}},
+    "matchCounts": {"type": "object", "required": ["exact", "normalized_only", "absent", "unobserved"],
+                    "additionalProperties": {"$ref": "#/$defs/count"}},
+    "matches": {"enum": ["exact", "normalized_only", "absent", null]}
+  },
+  "properties": {
+    "format": {"const": "agent-memory-policy-evidence/v1"}, "benchmark": {"type": "string"},
+    "scope": {"enum": ["sources", "sources_and_readers"]}, "observation_count": {"$ref": "#/$defs/count"},
+    "bindings": {"type": "object"}, "trajectory_sha256": {"$ref": "#/$defs/hash"},
+    "observations_sha256": {"$ref": "#/$defs/hash"}, "writers_sha256": {"$ref": "#/$defs/hash"},
+    "by_condition": {"type": "array", "items": {
+      "type": "object", "required": ["phase", "condition", "assigned", "started", "graded", "first_decision", "clusters",
+        "decisions_with_body", "decisions_with_title", "read_calls", "literal_matches", "source_cue_occurrences", "effort", "versus_first_pass"],
+      "properties": {
+        "phase": {"enum": ["solve", "source"]}, "condition": {"type": "string"},
+        "assigned": {"$ref": "#/$defs/count"}, "started": {"$ref": "#/$defs/count"}, "graded": {"$ref": "#/$defs/count"},
+        "first_decision": {"type": "object", "required": ["call", "no_call", "unobserved"], "additionalProperties": {"$ref": "#/$defs/statusCounts"}},
+        "literal_matches": {"type": "object", "required": ["source", "guidance", "stored", "current", "exposed", "action"],
+                            "additionalProperties": {"$ref": "#/$defs/matchCounts"}}
+      }
+    }},
+    "writers": {"type": "object", "required": ["assigned", "observed", "sealed_nonempty", "source_candidate_occurrences", "stored_matches", "effort"]},
+    "study_cost": {"type": ["object", "null"], "required": ["confirmed_usd", "held_usd", "covered_usd"]},
+    "same_input_repetitions": {"type": "object"}, "policy_comparisons": {"type": "array"},
+    "writer_allocations": {"type": "array"},
+    "observations": {"type": "array", "items": {
+      "type": "object", "required": ["task", "cluster", "status", "decision", "evidence", "cues"],
+      "properties": {"cues": {"type": ["array", "null"], "items": {
+        "type": "object", "required": ["term", "source_candidate", "source", "guidance", "stored", "current", "exposed", "action"],
+        "properties": {"term": {"type": "string"}, "source_candidate": {"type": ["boolean","null"]}},
+        "additionalProperties": {"$ref": "#/$defs/matches"}
+      }}}
+    }}
+  },
+  "dependentRequired": {"observations": ["writer_allocations"], "writer_allocations": ["observations"]}
+}

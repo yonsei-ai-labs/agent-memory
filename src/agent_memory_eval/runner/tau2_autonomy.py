@@ -12,7 +12,7 @@ from jsonschema import Draft202012Validator
 from agent_memory_eval.adapters.tau2 import prepare_native
 from agent_memory_eval.contracts.connection import validate_profile
 from agent_memory_eval.contracts.core import ContractError, MemoryPolicy, digest, new_id, read_json
-from agent_memory_eval.contracts.validation import ROOT
+from agent_memory_eval.contracts.validation import ROOT, SCHEMA_ROOT
 from agent_memory_eval.models.openrouter import SpendGuard
 from agent_memory_eval.memory.imports import import_source, load_source
 from agent_memory_eval.runner.tau2_memory import Tau2MemoryRunner, checked_asset
@@ -26,7 +26,7 @@ def compile_pilot(profile, *, source_texts=None):
     schema_file = {"1.0":"autonomy-pilot.schema.json","1.1":"autonomy-pilot-v1.1.schema.json"}.get(profile.get("profile_version"))
     if schema_file is None:
         raise ContractError("Unsupported autonomy pilot version")
-    schema = read_json((ROOT/"schemas"/schema_file).read_bytes())
+    schema = read_json((SCHEMA_ROOT / schema_file).read_bytes())
     Draft202012Validator(schema).validate(profile)
     refs = dict(connection=profile["connection_profile_ref"], **profile["instructions"])
     texts = {key:checked_asset(ref) for key,ref in refs.items()} if source_texts is None else source_texts

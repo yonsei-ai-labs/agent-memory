@@ -1,0 +1,138 @@
+{
+  "format": "agent-memory-benchmark-portability-inputs/v1",
+  "purpose": "Offline framework compatibility and grader controls. No model trial is assigned here.",
+  "tau2": {
+    "revision": "c06b07dd7c4d4ec61ba6ff9bcdf0b15dd7ef36d4",
+    "cohort_citations_sha256": "c0168de1ad1cbb3a263c6775838ac24c471bce2823ec3407471127158fcfa2b0",
+    "samples": [
+      {
+        "id": "retail_previous_order",
+        "run": "r_10a2b8a60d689f57f83b12e778c593a0",
+        "journal": {
+          "path": "runs/tau2-retail-conditional-retrieval-01/r_10a2b8a60d689f57f83b12e778c593a0/log.jsonl",
+          "sha256": "7f31bcdc96cd288760d4feb530476f0fdcb178c486ecb965fcd17d46cc20eec6"
+        },
+        "expected": [
+          "not_available",
+          null
+        ]
+      },
+      {
+        "id": "retail_handoff",
+        "run": "r_2feac04279ad42959ef3d2bfb37a3ed0",
+        "journal": {
+          "path": "runs/tau2-retail-transfer-revision-01/task-31/solve2/jobs/0003/log.jsonl",
+          "sha256": "515b4de49832ef6bb35938326cd8efd90dd83dd01f5f8029c86a909bdd197ee4"
+        },
+        "expected": [
+          "graded",
+          false
+        ]
+      },
+      {
+        "id": "retail_handoff_no_memory",
+        "run": "r_0db99921fc9c4ad6855ee7ccc3d39844",
+        "journal": {
+          "path": "runs/tau2-retail-transfer-revision-01/task-31/solve2/jobs/0004/log.jsonl",
+          "sha256": "77a47e75509eefb23ce1c28dad78b691646b16e75ec1113acec40202289d3fb8"
+        },
+        "expected": [
+          "graded",
+          true
+        ]
+      },
+      {
+        "id": "airline_upgrade",
+        "run": "r_020577c1a80a4e8c9f1eec6ea4fb72e6",
+        "journal": {
+          "path": "runs/tau2-two-pass-forms-luna-deepseek-supplement-02/jobs/0427/log.jsonl",
+          "sha256": "c978daaa2b477981d2d509f1d83e66928d48640d382a89bc20aa89db1986c7a9"
+        },
+        "expected": [
+          "graded",
+          false
+        ]
+      },
+      {
+        "id": "airline_upgrade_no_memory",
+        "run": "r_7d41c604d5ee48bd89372ecc849c7d30",
+        "journal": {
+          "path": "runs/tau2-two-pass-forms-luna-deepseek-supplement-02/jobs/0426/log.jsonl",
+          "sha256": "4cce87a101595a5cef857bdb693a3827f76e65425b3a2a4330abae5ed7e843b2"
+        },
+        "expected": [
+          "graded",
+          true
+        ]
+      },
+      {
+        "id": "retail_unfinished",
+        "run": "r_e2a2f86d171048b0e4ec032fa06fd307",
+        "journal": {
+          "path": "runs/tau2-retail-conditional-retrieval-01/r_e2a2f86d171048b0e4ec032fa06fd307/log.jsonl",
+          "sha256": "7abe1072be944d923df36a1be1782eff25f224f0724f42ebdca988b8ef8a7b95"
+        },
+        "expected": "open",
+        "receipt": {
+          "path": "runs/tau2-retail-conditional-retrieval-01/r_e2a2f86d171048b0e4ec032fa06fd307/decision.json",
+          "sha256": "3f58bff1409a5a80b4d8984f20091b768128260a93edeb51c241ae6efb31f59d"
+        }
+      }
+    ]
+  },
+  "bfcl": {
+    "revision": "6ea57973c7a6097fd7c5915698c54c17c5b1b6c8",
+    "backend": "rec_sum",
+    "packages": {
+      "overrides": "7.7.0",
+      "filelock": "3.20.0"
+    },
+    "inputs": {
+      "__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utils.py": "3703b9bb63f83581c60b8e0b82aac74c360c9ca781e99e7d4eb28b0cce2285dd",
+      "constants/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "constants/category_mapping.py": "ef31291f17c1ac0504b246345bd56e6bac44fec4239741e158f9fcf2c819cb35",
+      "constants/default_prompts.py": "4cc033be99ae2b10bbde30e7751ddcac5468cb45841b6dc7b3a97b92adf38205",
+      "constants/eval_config.py": "9048643628b150d53d59424365f8ca869b8aa39b503efe7a2d26b7ec93b4cb50",
+      "constants/executable_backend_config.py": "1214b960de5d86840e379007c70bc9570203e0b5a926ea740ff00c605a531e57",
+      "eval_checker/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "eval_checker/multi_turn_eval/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "eval_checker/multi_turn_eval/func_source_code/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "eval_checker/multi_turn_eval/func_source_code/memory_api_metaclass.py": "5b924c2482797fa2055c4c606788db517470d0a65d1a64c97f21bceb5f820611",
+      "eval_checker/multi_turn_eval/func_source_code/memory_rec_sum.py": "e5a08f4183ab2c14a330eb3db1aca5e13533e0ffe70ce1c424851944295b898c",
+      "eval_checker/agentic_eval/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "eval_checker/agentic_eval/agentic_checker.py": "b9d008cc0afccc006471f315444923119150e66df56114b1ea2be15f52dea1b6",
+      "data/BFCL_v4_memory.json": "40fc21d4528af53c6b44204def89e81515d0101654229e2c2e82bbf5f047b14f",
+      "data/possible_answer/BFCL_v4_memory.json": "2355cf8d842f94af6bcb7bfa6ad2f9e472bc6d825d6ecd45702cfc41e27d7e5d",
+      "data/multi_turn_func_doc/memory_rec_sum.json": "4ceff946df00983c7f0b95d1b70ae402247f3312fb898bac9ecfa1de52f5a783"
+    }
+  },
+  "appworld": {
+    "revision": "42b5bcf3cd334fee33f0c37c02070a9f5807add5",
+    "evaluator_sha256": "bde9deb3b1e6ac0fa9819013729c0e817a97c90f579108fa032a90bba0ca51cb",
+    "apps_bundle_sha256": "88d21fc526c1655bb3eee4adfca78ccac793921e4506f28f734ecdb19af77a62",
+    "shared_inputs": {
+      "data/base_dbs": "9e47ed93ab66f1d13b6de805855e4f7202a84fa08692a7d47d80f9c4421102dc",
+      "data/api_docs": "1ddf849e48a8a9eda1d842c111e6ffd0080b355399272fb085a7edf648d609e9",
+      "data/datasets": "d2ff3c5e91162ec1974ea573c8a4f9f4a076919bab7c3500feabb9fc97b0092e",
+      "data/version.txt": "911fc0c48cb0c70601db5775a9bef1b740dc4cc9f9b46389b9f0563fe7eb94d7"
+    },
+    "tasks": {
+      "2a163ab_1": {
+        "task_sha256": "23246ca9410aca4b2a2de252812446c22dc3f91027e40ef23c75d8fd8f462721",
+        "recorded_db_sha256": "1b2582c95b42b153b31d0a50f93b9b551cbaa22b90471d50ddabe3fbe50cc474",
+        "requirements": 6
+      },
+      "6ea6792_1": {
+        "task_sha256": "f5ff70e07210ed2197264e21c18a854684ff6d5fc70784e58b12e2053d5ed114",
+        "recorded_db_sha256": "d6060a0ea188a300235fbdf815b2d7ba5ab6f8d07fea5b64e583ffeb9ba09a58",
+        "requirements": 6
+      },
+      "e3d6c94_1": {
+        "task_sha256": "7a7627659437b8c0325031b754ad412197bff7a6d0e248c40c46689ab68c86cb",
+        "recorded_db_sha256": "eef31664227e0ca824030e4e48bf09d91778fce72db33b821caa4561a56769db",
+        "requirements": 9
+      }
+    }
+  }
+}

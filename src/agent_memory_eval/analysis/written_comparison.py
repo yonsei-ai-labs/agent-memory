@@ -6,7 +6,7 @@ from math import isfinite
 from jsonschema import Draft202012Validator, ValidationError
 
 from agent_memory_eval.contracts.core import ContractError, canonical, digest, read_json
-from agent_memory_eval.contracts.validation import ROOT
+from agent_memory_eval.contracts.validation import ROOT, SCHEMA_ROOT
 from agent_memory_eval.memory.writing import public_message
 
 
@@ -33,7 +33,7 @@ def validate_rubrics(packet, document):
     """Validate evidence binding, not the truth or independence of a semantic judgment."""
     try:
         canonical(document)
-        schema = read_json((ROOT / "schemas/written-comparison-rubrics.schema.json").read_bytes())
+        schema = read_json((SCHEMA_ROOT / "written-comparison-rubrics.schema.json").read_bytes())
         Draft202012Validator(schema).validate(document)
     except (ValueError, TypeError, ValidationError) as error:
         raise ContractError("Invalid written-comparison rubric") from error

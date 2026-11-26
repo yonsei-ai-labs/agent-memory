@@ -1,0 +1,535 @@
+{
+  "format": "agent-memory-claim-evidence/v1",
+  "citations_sha256": "c0168de1ad1cbb3a263c6775838ac24c471bce2823ec3407471127158fcfa2b0",
+  "retail_first_decisions": {
+    "metric": "focused_target_first_business_action",
+    "guidance": "conditional",
+    "control": "empty_query",
+    "by_target_identifier_in_bank": {
+      "absent": {
+        "assigned": 32,
+        "gain": 4,
+        "loss": 2,
+        "both_success": 6,
+        "both_failure": 20,
+        "missing": 0
+      },
+      "present": {
+        "assigned": 122,
+        "gain": 71,
+        "loss": 1,
+        "both_success": 25,
+        "both_failure": 25,
+        "missing": 0
+      }
+    },
+    "all": {
+      "assigned": 154,
+      "gain": 75,
+      "loss": 3,
+      "both_success": 31,
+      "both_failure": 45,
+      "missing": 0
+    },
+    "target_identifier_in_decision_input": 94,
+    "correct_with_identifier_in_input": 91,
+    "costs_to_first_decision": {
+      "real": {
+        "worker_requests": 448,
+        "confirmed_usd": "0.035661965",
+        "held_usd": "0E-8"
+      },
+      "empty": {
+        "worker_requests": 284,
+        "confirmed_usd": "0.019576195",
+        "held_usd": "0E-8"
+      }
+    }
+  },
+  "airline_second_pass": {
+    "metric": "official_success",
+    "control": "no_memory",
+    "distinct_control_assignments": 56,
+    "by_bank_grounding": {
+      "empty": {
+        "assigned": 41,
+        "gain": 4,
+        "loss": 6,
+        "both_success": 19,
+        "both_failure": 2,
+        "missing": 10
+      },
+      "mixed": {
+        "assigned": 55,
+        "gain": 3,
+        "loss": 5,
+        "both_success": 24,
+        "both_failure": 4,
+        "missing": 19
+      },
+      "supported": {
+        "assigned": 128,
+        "gain": 11,
+        "loss": 5,
+        "both_success": 58,
+        "both_failure": 8,
+        "missing": 46
+      }
+    },
+    "all": {
+      "assigned": 224,
+      "gain": 18,
+      "loss": 16,
+      "both_success": 101,
+      "both_failure": 14,
+      "missing": 75
+    }
+  },
+  "selection": "Purposive examples selected after outcomes were known. Interpretations are single analyst annotations, outside all writer and worker inputs.",
+  "traces": {
+    "retail_previous_order": {
+      "annotation": {
+        "source_basis": "customer_stated_fact",
+        "current_applicability": "same_customer_references_previous_order",
+        "action_alignment": "matches_prior_identifier"
+      },
+      "source": {
+        "path": "runs/tau2-retail-two-visit-01/r_ee9948674178aa9bc4e1e314c3758dfb/log.jsonl",
+        "sha256": "074dd122fbce896aca97d5387101c2baa5dcc845f7ebcadcb36ac3b17641f807",
+        "source_run": "r_ee9948674178aa9bc4e1e314c3758dfb",
+        "final_request_sha256": "18b6360f440740d38fb26623dbe1cde04841244b5da2f5bd5a0ce5fb26ca0ec5",
+        "final_response_sha256": "636937a31160fa09fba3d0b61d73b203a7b81df43a391dfbe8a494ae5334f4b8",
+        "end_event": "e_fd0f16046c61448ab253fdb6f1ce5ba2",
+        "score_event": "e_05b7e5c12ad5468182fcd0b0f7377ab0",
+        "analyst_official_success": true
+      },
+      "writer": {
+        "path": "runs/tau2-retail-two-visit-01/r_96409b97e4067a3c0da366dfb6320891/log.jsonl",
+        "sha256": "7ebe17025a5a7710c6e4826ae9911fbf5aa7d630829f4755a65786e5c1dc6f04"
+      },
+      "worker": {
+        "path": "runs/tau2-retail-conditional-retrieval-01/r_10a2b8a60d689f57f83b12e778c593a0/log.jsonl",
+        "sha256": "7f31bcdc96cd288760d4feb530476f0fdcb178c486ecb965fcd17d46cc20eec6"
+      },
+      "writing": {
+        "writer_run": "r_96409b97e4067a3c0da366dfb6320891",
+        "record_kind": "observed",
+        "model": "openai/gpt-6-luna",
+        "source_runs": [
+          "r_ee9948674178aa9bc4e1e314c3758dfb"
+        ],
+        "experience_sha256": "60d986023f6200a64e725d9f62b88814d6d3baffa59beaf97a46bdf48c9ca8cc",
+        "public_context_sha256": "d157f5c4926e955ad7f1364f3e655d163a876800c136476adba61595be4a060b",
+        "instruction_sha256": "e261afaa64be4f17dade9e9a288874ef864631a7c25708f3b6c641170b141e9b",
+        "feedback": {
+          "kind": "evaluation_feedback",
+          "level": "none"
+        },
+        "request_id": "request_22f2b56a18be4ee78e30735431be9a94",
+        "request_sha256": "822162d73c363aea79f1d51fa6d6012fef3b8cc215c387878ad474d8a7e75b7f",
+        "response_sha256": "031cc654f48a1c984a399cd936e344afa643cfb9fa93cb1e01bbb2e2ef99db32",
+        "store_event": "e_acc1d24e00884a8e87f60d5e64de3b62",
+        "snapshot_id": "snap_84a3ed5b9d3b48269a512d5c8a5f68fa",
+        "item": "m_90f8a4442d214af987704ee3673f9465",
+        "version": "v_898f0546eade4490bc9cc19fd2b9cb3d",
+        "field_sha256": "6042292216affee035b5d707637eada50ee837db4bc6b04a3427a332e40801b7",
+        "note": {
+          "pointer": "/body",
+          "quote": "the user requested information only about order #W9903153.",
+          "char_start": 36,
+          "char_end": 94
+        },
+        "source_citations": [
+          {
+            "pointer": "/experience/messages/1/content",
+            "quote": "Could you look up order #W9903153 and tell me which items are in it?",
+            "char_start": 0,
+            "char_end": 68,
+            "source_kind": "past_message",
+            "role": "user",
+            "message_sha256": "cfa232f0289231c9c642806f6da6b229ea01c7ac66c761b7493a9208f762f96f"
+          },
+          {
+            "pointer": "/experience/messages/9/content",
+            "quote": "\"order_id\": \"#W9903153\"",
+            "char_start": 1,
+            "char_end": 24,
+            "source_kind": "past_message",
+            "role": "tool",
+            "message_sha256": "3b520732dc4aec20f9ff772b367e966fc808f07970e9781ad3f431d832296729"
+          }
+        ]
+      },
+      "decision": {
+        "worker_run": "r_10a2b8a60d689f57f83b12e778c593a0",
+        "record_kind": "observed",
+        "model": "openai/gpt-6-luna",
+        "starting_snapshot_id": "snap_a1694918b0314d5cb60377a0ccfd25c6",
+        "writer_lineage": "declared_writer",
+        "request_id": "request_c7c6c08a59254cdfb1cf3e31393cba2b",
+        "request_sha256": "302a7e0027b4b8b4565c980a72d5b90311603f80ae88a976d02397866ce0a00b",
+        "response_sha256": "f8f621b6d6dea50cfcab557a50a2bbc5a65fd0b1787fcc7b2a9b47813d0d6a71",
+        "exposure": [
+          {
+            "source": {
+              "kind": "memory_return",
+              "returned_event_id": "e_faf0e4b4f9ef40d89d941a90bdfe9d1e"
+            },
+            "pointer": "/messages/11/content",
+            "char_start": 17,
+            "char_end": 676,
+            "rendered_sha256": "6042292216affee035b5d707637eada50ee837db4bc6b04a3427a332e40801b7",
+            "clause_char_start": 53,
+            "clause_char_end": 111
+          }
+        ],
+        "current_citations": [
+          {
+            "pointer": "/messages/1/content",
+            "quote": "I would like to cancel the order we discussed last time because I no longer need it.",
+            "char_start": 0,
+            "char_end": 84,
+            "source_kind": "business_result",
+            "producer_event": "e_698cdf420ca94dba879ecfcf4f4c4cd6"
+          },
+          {
+            "pointer": "/messages/7/content",
+            "quote": "\"orders\":[\"#W3113816\",\"#W9903153\"",
+            "char_start": 215,
+            "char_end": 248,
+            "source_kind": "business_result",
+            "producer_event": "e_fabc6abaaa934d77ba668b158775be94"
+          }
+        ],
+        "action_citations": [
+          {
+            "pointer": "/tool_calls/0/function/name",
+            "quote": "get_order_details",
+            "char_start": 0,
+            "char_end": 17
+          },
+          {
+            "pointer": "/tool_calls/0/function/arguments",
+            "quote": "#W9903153",
+            "char_start": 13,
+            "char_end": 22
+          }
+        ]
+      }
+    },
+    "retail_handoff": {
+      "annotation": {
+        "source_basis": "writer_inference_from_policy_and_denial",
+        "current_applicability": "depends_on_which_current_requests_are_actionable",
+        "action_alignment": "matches_recommendation"
+      },
+      "source": {
+        "path": "runs/tau2-retail-full-forms-01/task-32/source/jobs/0001/log.jsonl",
+        "sha256": "d3abe7203405c376352b21f87d46f73d26855c0089c5353b6b519d5d100a0fe0",
+        "source_run": "r_3181e130c3fa4938821df3eeb0198283",
+        "final_request_sha256": "770ddc0d54e3cfd92d5013172beb5ad715a43d45e89ffb8efca855c678f4e2d1",
+        "final_response_sha256": "324c69daf680fcf4f4d917446a7edd8c2241f34ac54a9a14e3c5d608c52f9e3e",
+        "end_event": "e_847d68c832c540089622ab018a58a865",
+        "score_event": "e_84f547ffb1d64ed199cac94f32f564cc",
+        "analyst_official_success": true
+      },
+      "writer": {
+        "path": "runs/tau2-retail-transfer-revision-01/task-32/write/jobs/0007/log.jsonl",
+        "sha256": "248fbf9b00dd8d0945fe0dccc11300f8a9079b3114de278525249412bdd6aae5"
+      },
+      "worker": {
+        "path": "runs/tau2-retail-transfer-revision-01/task-31/solve2/jobs/0003/log.jsonl",
+        "sha256": "515b4de49832ef6bb35938326cd8efd90dd83dd01f5f8029c86a909bdd197ee4"
+      },
+      "writing": {
+        "writer_run": "r_9020d52799714e268078bb9d95b0a7cf",
+        "record_kind": "observed",
+        "model": "openai/gpt-6-luna",
+        "source_runs": [
+          "r_3181e130c3fa4938821df3eeb0198283"
+        ],
+        "experience_sha256": "fed814bc071bf466c4a7a1608e133c5111721dc166847ace0a307c2606e52b2e",
+        "public_context_sha256": "729b7af726ec396db1df888620c1a9669fd1086c796ca6917cc52e9cdc287333",
+        "instruction_sha256": "21fc2a5337f4db488879df1406b63e52c0b255ea43e470a3894219b94f3b0e43",
+        "feedback": {
+          "kind": "evaluation_feedback",
+          "level": "none"
+        },
+        "request_id": "request_af634d0728bc4669b2953b7953c1a5e9",
+        "request_sha256": "24354eeb1c33b35ab6023ec2d0eb5519240f8b059767d3a6eba056a7c8175783",
+        "response_sha256": "fa696f13964474adca743f74df4652bb459720b9dcb93581253694d21e026911",
+        "store_event": "e_cdb1ffeb786e46fc84cd1e79c5b502b5",
+        "snapshot_id": "snap_335231f0eb0e459b9b72e188c85f0f94",
+        "item": "m_79be7ef1758b41fb8d563c52409def83",
+        "version": "v_c35f1adab5d945439eda1cd63a6a24a3",
+        "field_sha256": "a556b7e1cd9abc23ba0b4842cdfd8db786033d6fa7e70624fecef670c026b60f",
+        "note": {
+          "pointer": "/body",
+          "quote": "in this kind of unresolved lost-item request, transfer is a relevant next step rather than ending with a denial.",
+          "char_start": 580,
+          "char_end": 692
+        },
+        "source_citations": [
+          {
+            "pointer": "/experience/task_context/content",
+            "quote": "You should transfer the user to a human agent if and only if the request cannot be handled within the scope of your actions.",
+            "char_start": 1754,
+            "char_end": 1878,
+            "source_kind": "past_task_context"
+          },
+          {
+            "pointer": "/experience/messages/22/content",
+            "quote": "Since you don’t have it, I can’t process either request.",
+            "char_start": 133,
+            "char_end": 189,
+            "source_kind": "past_message",
+            "role": "assistant",
+            "message_sha256": "a6366614402383e13a02728f896dfcffe004ecedab060144b09523351bc2b172"
+          },
+          {
+            "pointer": "/experience/messages/23/content",
+            "quote": "Then cancel the charger I just bought",
+            "char_start": 32,
+            "char_end": 69,
+            "source_kind": "past_message",
+            "role": "user",
+            "message_sha256": "15d2a79aabbafd7a7cbead328ad372da4a11676c6d409e6208da6e0566ac6c75"
+          },
+          {
+            "pointer": "/experience/messages/44/content",
+            "quote": "The return request for the sneakers in order **#W7449508** has been submitted.",
+            "char_start": 0,
+            "char_end": 78,
+            "source_kind": "past_message",
+            "role": "assistant",
+            "message_sha256": "1da0c22f6254681e653b572dd57bd7b8212dbf6113e8822018b2f205d2b39a7e"
+          }
+        ]
+      },
+      "decision": {
+        "worker_run": "r_2feac04279ad42959ef3d2bfb37a3ed0",
+        "record_kind": "observed",
+        "model": "openai/gpt-6-luna",
+        "starting_snapshot_id": "snap_fff743b4b661418fb7a91b714c972e5c",
+        "writer_lineage": "declared_writer",
+        "request_id": "request_93af32a7ae674f9d94c66ed8060fe154",
+        "request_sha256": "c9ad6891cd581bc2e5e4bebb2e43a04d9eacff708a73f64a882c475cf29a5b33",
+        "response_sha256": "7cfdef9fbd955bee35ee28bf1c40d516be4e5a2680b9c8195c317a8ba2e9bedd",
+        "exposure": [
+          {
+            "source": {
+              "kind": "memory_snapshot",
+              "preloaded_event_id": "e_25cb756805b84578ac35e477fa1f7f5e"
+            },
+            "pointer": "/messages/1/content",
+            "char_start": 19,
+            "char_end": 1131,
+            "rendered_sha256": "a556b7e1cd9abc23ba0b4842cdfd8db786033d6fa7e70624fecef670c026b60f",
+            "clause_char_start": 599,
+            "clause_char_end": 711
+          }
+        ],
+        "current_citations": [
+          {
+            "pointer": "/messages/17/content",
+            "quote": "Is there any way you could help me with a refund or maybe reorder it?",
+            "char_start": 64,
+            "char_end": 133,
+            "source_kind": "benchmark_message",
+            "producer_event": "e_c8bbb91a22704148a9d165dfee4735b9"
+          }
+        ],
+        "action_citations": [
+          {
+            "pointer": "/tool_calls/0/function/name",
+            "quote": "transfer_to_human_agents",
+            "char_start": 0,
+            "char_end": 24
+          }
+        ]
+      }
+    },
+    "airline_upgrade": {
+      "annotation": {
+        "source_basis": "procedure_supported_by_past_customer_constraint",
+        "current_applicability": "price_and_consent_need_current_verification",
+        "action_alignment": "upgrade_before_price_disclosure"
+      },
+      "source": {
+        "path": "runs/tau2-baseline-luna-deepseek1017-train-01/log.jsonl",
+        "sha256": "ec0994a536729872ce8ee7ff06ae63c2e640e70091146b9a361535174ee8fbb5",
+        "source_run": "r_7cbc2c6a3e2941c6bfa3913c5a906a96",
+        "final_request_sha256": "bebba5ef18120039913a3195afbd2f3c81bb395fc0b4daf72675b0c7f6edc95c",
+        "final_response_sha256": "384f22340e3ac6665cadc3378138cfe1b5ffe6845fee27570cb4cf26f0d85b92",
+        "end_event": "e_e893496fad5a43d5b5fbc5fd57e00b58",
+        "score_event": "e_b5827a3f1a91471db87789bb551381ac",
+        "analyst_official_success": true
+      },
+      "writer": {
+        "path": "runs/tau2-two-pass-forms-luna-deepseek-01/jobs/0129/log.jsonl",
+        "sha256": "faef9f524d48c84bc14595b68be1f33ba47fa78f5a2b616653c7f6cf06a36730"
+      },
+      "worker": {
+        "path": "runs/tau2-two-pass-forms-luna-deepseek-supplement-02/jobs/0427/log.jsonl",
+        "sha256": "c978daaa2b477981d2d509f1d83e66928d48640d382a89bc20aa89db1986c7a9"
+      },
+      "writing": {
+        "writer_run": "r_5a70e823cd4447babc9399a92e1e9e9f",
+        "record_kind": "observed",
+        "model": "openai/gpt-6-luna",
+        "source_runs": [
+          "r_7cbc2c6a3e2941c6bfa3913c5a906a96"
+        ],
+        "experience_sha256": "53a975499e934043c174bb90755132908d0c669bd3dd510eb7084ecc2a676947",
+        "public_context_sha256": "849009aaef0eb2f48bf52736e7c5102f7a06e27eba33df56102b5e4facfc7ac3",
+        "instruction_sha256": "47a7c91f71203d3c73ca4c81b9b91cc7ce99517b048e8854e97eadcf501c32f2",
+        "feedback": {
+          "kind": "evaluation_feedback",
+          "level": "none"
+        },
+        "request_id": "request_fcd42a2dbec2437d880060ab0b5d45fc",
+        "request_sha256": "78e3da58b16f25fb1c41850592e1e4cb603c2c612964e6695ee8be26b5c27fb5",
+        "response_sha256": "a986e31419f20324adf3076f91f8aebeee12e849cffc5f34ab6e1f5e048963b1",
+        "store_event": "e_95f525a9297f45faab03a525652baf4e",
+        "snapshot_id": "snap_debf0f8fca0646aba5f6f10265da2b91",
+        "item": "m_e16bb62c8e1a4b26867b9f08a84b5f9d",
+        "version": "v_2ebd42f14ff34da59daee3ce855a3065",
+        "field_sha256": "4e2d01b99f7b84b11db3bb76fd7d7db0e83ad3b60607fa4ec235bd52091408a8",
+        "note": {
+          "pointer": "/body",
+          "quote": "Seek confirmation only after giving the estimate/limitation, and do not modify if user has not explicitly agreed.",
+          "char_start": 871,
+          "char_end": 984
+        },
+        "source_citations": [
+          {
+            "pointer": "/experience/messages/15/content",
+            "quote": "I need a number before I say yes.",
+            "char_start": 109,
+            "char_end": 142,
+            "source_kind": "past_message",
+            "role": "user",
+            "message_sha256": "662883fb65aab1bdc745584c060edfc6fd995012f59089d4809be14ad98b0e36"
+          },
+          {
+            "pointer": "/experience/messages/27/content",
+            "quote": "Okay, so no upgrade at all then. Fine. Yes, add the two checked bags under my name.",
+            "char_start": 0,
+            "char_end": 83,
+            "source_kind": "past_message",
+            "role": "user",
+            "message_sha256": "6f798c2cb5fcb6121b24ae903c2c01ccd7c9db97006b1178b49c94e6aae02b33"
+          }
+        ]
+      },
+      "decision": {
+        "worker_run": "r_020577c1a80a4e8c9f1eec6ea4fb72e6",
+        "record_kind": "observed",
+        "model": "openai/gpt-6-luna",
+        "starting_snapshot_id": "snap_67da7bafd3b54164832570106d0030b9",
+        "writer_lineage": "declared_writer",
+        "request_id": "request_40aebf93ba74455997be88fdd9b9f1d9",
+        "request_sha256": "8c577b9e7a6be9db832771abd8b205832020f03186a6ff9b24ac8659b3429c6a",
+        "response_sha256": "3d4cd04e73cd7b2c169247031979246ded2782b0f828981b4070b765d71ff26b",
+        "exposure": [
+          {
+            "source": {
+              "kind": "memory_snapshot",
+              "preloaded_event_id": "e_34563b1b049d4391b288e4624fe4feef"
+            },
+            "pointer": "/messages/1/content",
+            "char_start": 19,
+            "char_end": 1936,
+            "rendered_sha256": "4e2d01b99f7b84b11db3bb76fd7d7db0e83ad3b60607fa4ec235bd52091408a8",
+            "clause_char_start": 890,
+            "clause_char_end": 1003
+          }
+        ],
+        "current_citations": [
+          {
+            "pointer": "/messages/10/content",
+            "quote": "Change both passengers to business on those flights.",
+            "char_start": 75,
+            "char_end": 127,
+            "source_kind": "benchmark_message",
+            "producer_event": "e_fe4b9fbaff794597a31bec3e913faec6"
+          }
+        ],
+        "action_citations": [
+          {
+            "pointer": "/tool_calls/0/function/name",
+            "quote": "update_reservation_flights",
+            "char_start": 0,
+            "char_end": 26
+          },
+          {
+            "pointer": "/tool_calls/0/function/arguments",
+            "quote": "\"cabin\":\"business\"",
+            "char_start": 1,
+            "char_end": 19
+          }
+        ]
+      }
+    }
+  },
+  "matched_outcomes": {
+    "retail_previous_order": {
+      "conditional_query": {
+        "run": "r_10a2b8a60d689f57f83b12e778c593a0",
+        "decision_request": "request_c7c6c08a59254cdfb1cf3e31393cba2b",
+        "behavior": "focused_target",
+        "focused": true
+      },
+      "conditional_empty_query": {
+        "run": "r_ef7e61a106f0b4a6033ce116f8482761",
+        "decision_request": "request_3003c38467674c15b8072950fc9bc0ed",
+        "behavior": "other_order_only",
+        "focused": false
+      }
+    },
+    "retail_handoff": {
+      "empty_preload": {
+        "run": "r_237ba4a2d2654120854f82264762de4b",
+        "official": true,
+        "position": "transfer_after_change"
+      },
+      "lesson_original": {
+        "run": "r_2feac04279ad42959ef3d2bfb37a3ed0",
+        "official": false,
+        "position": "transfer_without_successful_change"
+      },
+      "no_memory": {
+        "run": "r_0db99921fc9c4ad6855ee7ccc3d39844",
+        "official": true,
+        "position": "no_transfer"
+      }
+    },
+    "airline_upgrade": {
+      "official_pair": {
+        "task": "12",
+        "repetition": 2,
+        "job": 427,
+        "control": 426,
+        "direction": "loss",
+        "empty_control_success": true
+      },
+      "selected_public_turns": [
+        {
+          "index": 8,
+          "role": "user",
+          "text": "Yeah, that's the one — the Boston to Orlando, then Orlando to Minneapolis. Change both passengers to business on those flights. And yes, two checked bags total under my name."
+        },
+        {
+          "index": 14,
+          "role": "user",
+          "text": "Wait, hold on. $1,200? That's way over what I'm willing to pay. I said I'd go up to $650 for the upgrade. That's not gonna work for me."
+        }
+      ],
+      "db_probe": {
+        "edit": "Omit the cabin upgrade and retain the recorded baggage change",
+        "original_db_match": false,
+        "edited_db_match": true
+      }
+    }
+  }
+}

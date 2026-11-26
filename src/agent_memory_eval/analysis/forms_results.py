@@ -130,7 +130,8 @@ def checked_rows(output, *, observe_job=None, observe_parent=None):
             if prompt_hashes and digest(cfg["instruction"].encode()) != prompt_hashes[row["arm"]]:
                 raise ContractError("The complete writer instruction differs from its configured version")
             if (start["source_run_ids"] != [sources[row["task_id"]]["run_id"]]
-                    or cfg["feedback"]["level"] != "none" or cfg["completion_contract"] != "writer-finish/v1"
+                    or cfg["feedback"]["level"] != design["source"].get("feedback_level", "none")
+                    or cfg["completion_contract"] != design["writing"].get("completion_contract", "writer-finish/v1")
                     or not cfg["instruction"].endswith("\n" + design["writing"]["lines"][row["arm"]])):
                 raise ContractError("Archived writer differs from its first-pass source or instruction")
             if row["status"] in {"completed", "empty"}:

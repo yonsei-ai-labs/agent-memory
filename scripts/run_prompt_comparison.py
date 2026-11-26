@@ -1,4 +1,4 @@
-"""Preflight or execute a user-configured pair of writing prompts."""
+"""Preflight or execute writing-policy pairs on registered source experiences."""
 import argparse
 import json
 from pathlib import Path

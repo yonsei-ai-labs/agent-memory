@@ -13,7 +13,10 @@ from referencing import Registry, Resource
 
 
 ROOT = Path(__file__).resolve().parents[3]
-SCHEMAS = ROOT / "schemas" / "v1.1"
+SCHEMA_ROOT = Path(__file__).resolve().parents[1] / "schemas"
+if not SCHEMA_ROOT.is_dir():
+    SCHEMA_ROOT = ROOT / "schemas"
+SCHEMAS = SCHEMA_ROOT / "v1.1"
 FIXTURE = ROOT / "tests" / "fixtures" / "contracts-v1.1"
 
 
@@ -45,15 +48,19 @@ def validators():
     The resources are fixed for a process. Schema edits require a new process;
     tests switching schema roots get their own cache entry.
     """
-    return dict(_compiled_validators(SCHEMAS.resolve(), (ROOT / "schemas/v1.2").resolve()))
+    return dict(_compiled_validators(SCHEMAS.resolve(), (SCHEMAS.parent / "v1.2").resolve()))
 
 
 @lru_cache(maxsize=8)
 def _compiled_validators(primary, extension):
+    if not primary.is_dir():
+        raise FileNotFoundError(f"Missing runtime contract schemas in {primary}")
     schemas = {path.stem.split(".")[0]: read_json(path.read_bytes())
                for path in primary.glob("*.schema.json")}
     schemas.update({path.stem.split(".")[0] + "-v1.2": read_json(path.read_bytes())
                     for path in extension.glob("*.schema.json")})
+    schemas.update({path.stem.split(".")[0] + "-v1.3": read_json(path.read_bytes())
+                    for path in (extension.parent / "v1.3").glob("*.schema.json")})
     registry = Registry()
     for schema in schemas.values():
         Draft202012Validator.check_schema(schema)
@@ -134,7 +141,8 @@ def inspect_journal(data: bytes, checks=None, *, validated_prefix=0):
         try:
             row = read_json(line)
             if len(records) >= validated_prefix:
-                name = {"1.0": "journal", "1.1": "journal-state", "1.2": "journal-state-v1.2"}[row["journal_version"]]
+                name = {"1.0": "journal", "1.1": "journal-state", "1.2": "journal-state-v1.2",
+                        "1.3": "journal-state-v1.3"}[row["journal_version"]]
                 checks[name].validate(row)
             if row["commit_seq"] != len(records) + 1 or row["prev_sha256"] != previous:
                 raise ValueError("Journal sequence or previous hash mismatch")
@@ -270,7 +278,15 @@ def resolve_source(base, source, request_event, events, approved_templates):
     return pointer(artifact(base, source["artifact_ref"]), source.get("pointer", ""))
 
 
-def check_source_memory(source, value, events):
+def authored_fields(name, version):
+    if name == "memory_store":
+        return {"title": "title", "body": "body"}
+    if name == "memory_append" and version == "1.3":
+        return {"body": "text"}
+    return {}
+
+
+def check_source_memory(source, value, events, base=None):
     spans = source.get("memory_spans", [])
     if source["kind"] in {"memory_return", "memory_snapshot"}:
         event = events[source["producer_event_id"]]
@@ -281,6 +297,31 @@ def check_source_memory(source, value, events):
             raise ValueError("Memory source fields are not completely annotated")
         result = read_json(value["content"].encode("utf-8"))
         items = result.get("items", [result["item"]] if "item" in result else [])
+        if event["schema_version"] == "1.3":
+            validate_public_return(value, event["payload"])
+            if spans:
+                item, = event["payload"]["items"]
+                body = result["memory_content"]
+                stored = [e["payload"] for e in events.values() if e["type"] == "memory.stored"
+                          and e["event_seq"] < event["event_seq"] and e["payload"]["item_id"] == item["item_id"]
+                          and e["payload"]["version_id"] == item["version_id"]]
+                if len(stored) != 1 or stored[0]["body_sha256"] != digest(body.encode()):
+                    raise ValueError("Native return differs from its stored item version")
+                start, = [e["payload"] for e in events.values() if e["type"] == "run.started"
+                          and e["run_id"] == event["run_id"]]
+                if start["bank_id"] != event["payload"]["bank_id"]:
+                    raise ValueError("Native return came from another bank")
+                if stored[0]["bank_id"] != start["bank_id"]:
+                    parent = [e["payload"] for e in events.values() if e["type"] == "bank.snapshot_created"
+                              and e["payload"]["snapshot_id"] == start["start_snapshot_id"] and e["event_seq"] < event["event_seq"]]
+                    if (base is None or len(parent) != 1 or
+                            artifact(base, parent[0]["manifest_ref"])["heads"].get(item["item_id"]) != item["version_id"]):
+                        raise ValueError("Native version is absent from the reader's starting snapshot")
+                span, = spans
+                if (value["content"] != canonical(result).decode() or span["pointer"] != "/content"
+                        or (span["char_start"], span["char_end"]) != (len('{"memory_content":"'), len(value["content"]) - 2)):
+                    raise ValueError("Native exposure must cover the returned value at its exact location")
+                items = [dict(id=item["item_id"], version=item["version_id"], body=body)]
         for span in spans:
             item = next(item for item in items if item["id"] == span["item_id"]
                         and item["version"] == span["version_id"])
@@ -289,27 +330,29 @@ def check_source_memory(source, value, events):
                 raise ValueError("Memory span does not identify its returned field")
     elif source["kind"] == "self_authored":
         calls = value.get("tool_calls") or []
-        expected = set()
+        expected = {}
+        version = events[source["producer_event_id"]]["schema_version"]
         for i, call in enumerate(calls):
-            if call["function"]["name"] != "memory_store":
+            fields = authored_fields(call["function"]["name"], version)
+            if not fields:
                 continue
             try:
                 arguments = read_json(call["function"]["arguments"].encode())
             except (ValueError, TypeError, AttributeError):
                 continue
             if isinstance(arguments, dict):
-                expected.update((f"/tool_calls/{i}/function/arguments", field)
-                                for field in ("title", "body")
-                                if isinstance(arguments.get(field), str) and arguments[field])
+                expected.update({(f"/tool_calls/{i}/function/arguments", field): arguments[key]
+                                 for field, key in fields.items()
+                                 if isinstance(arguments.get(key), str) and arguments[key]})
         actual = {(span["pointer"], span["field"]) for span in spans}
-        if actual != expected or len(actual) != len(spans):
+        if actual != expected.keys() or len(actual) != len(spans):
             raise ValueError("Self-authored store arguments are not completely annotated")
         for span in spans:
             if span["item_id"] is not None or span["version_id"] is not None:
                 raise ValueError("Uncommitted self-authored text must not invent memory IDs")
             text = pointer(value, span["pointer"])
             encoded = text[span["char_start"]:span["char_end"]]
-            if json.loads('"' + encoded + '"') != read_json(text.encode())[span["field"]]:
+            if json.loads('"' + encoded + '"') != expected[span["pointer"], span["field"]]:
                 raise ValueError("Self-authored span is not its named argument")
     elif spans:
         raise ValueError("Memory spans require a memory producer")
@@ -359,6 +402,27 @@ def validate_preload(base, event, events, state=None):
 
 def validate_public_return(wire, payload):
     result = read_json(wire["content"].encode())
+    if "native_format" in payload:
+        if payload["native_format"] != "bfcl-rec-sum/v1":
+            raise ValueError("Unknown native return format")
+        allowed_operations = {"memory_append": {"create", "update"}, "memory_retrieve": {"get"}}
+        if not isinstance(result, dict) or payload["operation"] not in allowed_operations.get(payload["native_tool"], ()):
+            raise ValueError("Invalid native operation or result")
+        items = payload["items"]
+        if payload["status"] == "error":
+            native_error = set(result) == {"error"} and isinstance(result["error"], str)
+            policy_error = (set(result) == {"status", "error"} and result["status"] == "error"
+                            and isinstance(result["error"], dict) and set(result["error"]) == {"code"}
+                            and isinstance(result["error"]["code"], str))
+            valid = not items and (native_error or policy_error)
+        elif payload["native_tool"] == "memory_retrieve":
+            valid = (set(result) == {"memory_content"}
+                     and isinstance(result["memory_content"], str) and len(items) == 1 and items[0]["fields"] == ["body"])
+        else:
+            valid = not items and result == {"status": "Memory appended."}
+        if not valid:
+            raise ValueError("Invalid native return or version attribution")
+        return
     def contains_revision(value):
         if isinstance(value, dict):
             return "head_revision" in value or any(contains_revision(child) for child in value.values())
@@ -394,7 +458,7 @@ def validate_manifest(base, manifest, request_event, catalog, events, approved_t
     for binding in manifest["bindings"]:
         source = catalog[binding["source_id"]]
         value = resolve_source(base, source, request_event, events, approved_templates)
-        check_source_memory(source, value, events)
+        check_source_memory(source, value, events, base)
         source_value = pointer(value, binding["source_pointer"])
         target = pointer(request, binding["pointer"])
         if canonical(source_value) != canonical(target):
@@ -506,7 +570,7 @@ def validate_fixture(base=FIXTURE):
     batches = artifact(base, bundle["tool_batches_ref"])
     for batch in batches:
         validate_batch(batch)
-    return {"schemas_valid": sum(not name.endswith("-v1.2") for name in checks), "journal_records_valid": len(scan["records"]),
+    return {"schemas_valid": sum("-v1." not in name for name in checks), "journal_records_valid": len(scan["records"]),
             "synthetic_events_valid": len(events), "input_spans_verified": len(expected),
             "tool_batches_verified": len(batches), "runtime_readiness_verified": False,
             "benchmark_or_model_calls": 0}

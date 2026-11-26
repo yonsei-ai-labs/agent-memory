@@ -49,6 +49,8 @@ uv run python -m scripts.analyze_banking_memory --exposure-coverage
 
 판독자에게는 `blinded-inputs.json`만 전달한다. `analyst-key.json`은 원천·작성 로그, 항목 버전·문장 위치, 각 판단의 요청·응답 및 공식 결과에 연결된다. `writer-feedback-pairs.json`은 기존 요청과 성패를 제공하는 요청의 해시를 보존한다. 노출 보고는 미채점 상담도 배정 분모에 두고, 확인된 노출·확인된 미시작·불확실한 전송을 구분한다.
 
+새 독립 판독의 `--reviewer-only`는 새 폴더에 공개 `inputs.json`만 내보낸다. 판독자는 배정표에 접근할 수 없는 환경에서 평정·인용·조건 추측을 봉인하고 최초 해시를 보관한다. 분석자는 봉인본과 배정표를 결합해 조건 추측 정확도, 보류, 한 자료가 여러 조건에 해당하는 경우를 보고한다. [내보내기·봉인·대조 명령](../reports/20261125-common-policy-measurements.md#재현)
+
 아래 명령은 제출된 판독을 원래 봉인된 기록에 대조한다. 사람 기준 파일을 지정하면 항목별 혼동표와 재검토 대상이 나온다. 모델 판독에는 모델·버전·공급자·설정, 원응답 ID와 원문, 실제 판독 입력 해시가 필요하다. 이 도구에서 모델 호출이나 비용은 발생하지 않는다. [판독 제출 형식](../../schemas/semantic-memory-ratings-v1.schema.json) · [합성 입력·판독 예시](../../tests/fixtures/semantic-memory-review-v1.json)
 
 ```bash

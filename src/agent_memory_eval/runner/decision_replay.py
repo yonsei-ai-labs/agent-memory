@@ -14,7 +14,7 @@ from jsonschema import Draft202012Validator, ValidationError
 
 from agent_memory_eval.analysis.decision_replay import screen_reply
 from agent_memory_eval.contracts.core import ContractError, RunContext, canonical, digest, new_id, read_json
-from agent_memory_eval.contracts.validation import ROOT, validate_manifest
+from agent_memory_eval.contracts.validation import ROOT, SCHEMA_ROOT, validate_manifest
 from agent_memory_eval.models.openrouter import OpenRouterClient, model_catalog, model_endpoints, resolve_endpoint, resolve_model
 from agent_memory_eval.recording.journal import BlobStore, read_experiment
 from agent_memory_eval.recording.provenance import RecordingGateway, SourceRegistry
@@ -63,7 +63,7 @@ def selected_rows(diagnosis):
 def compile_replay(profile, *, require_ready=False, diagnosis_text=None, memo_text=None):
     try:
         canonical(profile)
-        schema = read_json((ROOT / "schemas/decision-replay.schema.json").read_bytes())
+        schema = read_json((SCHEMA_ROOT / "decision-replay.schema.json").read_bytes())
         Draft202012Validator(schema).validate(profile)
     except (ValueError, TypeError, ValidationError) as error:
         raise ContractError("Invalid finite replay profile") from error

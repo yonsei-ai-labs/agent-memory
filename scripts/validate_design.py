@@ -41,6 +41,8 @@ def pointer_value(document, pointer: str):
 def main() -> None:
     schemas = {
         "plan": read_json(ROOT / "schemas" / "run-plan.schema.json"),
+        "policy-round": read_json(ROOT / "schemas" / "policy-round-v1.schema.json"),
+        "policy-evidence": read_json(ROOT / "schemas" / "policy-evidence-v1.schema.json"),
         "event": read_json(ROOT / "schemas" / "event.schema.json"),
         "connection-check": read_json(ROOT / "schemas" / "connection-check.schema.json"),
         "connection-check-v1.1": read_json(ROOT / "schemas" / "connection-check-v1.1.schema.json"),
@@ -49,8 +51,15 @@ def main() -> None:
         "autonomy-pilot-v1.1": read_json(ROOT / "schemas" / "autonomy-pilot-v1.1.schema.json"),
         "delivery-comparison": read_json(ROOT / "schemas" / "delivery-comparison.schema.json"),
         "execution-limits": read_json(ROOT / "schemas" / "execution-limits.schema.json"),
+        "task-start-v1": read_json(ROOT / "schemas" / "task-start-v1.schema.json"),
+        "paired-outcomes-v1": read_json(ROOT / "schemas" / "paired-outcomes-v1.schema.json"),
+        "trajectory-outcomes-v1": read_json(ROOT / "schemas" / "trajectory-outcomes-v1.schema.json"),
+        "decision-cue-v1": read_json(ROOT / "schemas" / "decision-cue-v1.schema.json"),
+        "source-opportunity-v1": read_json(ROOT / "schemas" / "source-opportunity-v1.schema.json"),
         "recorded-preparation": read_json(ROOT / "schemas" / "recorded-preparation.schema.json"),
         "writing-exploration": read_json(ROOT / "schemas" / "writing-exploration.schema.json"),
+        "prompt-comparison-v2": read_json(ROOT / "schemas" / "prompt-comparison-v2.schema.json"),
+        "prompt-comparison-v3": read_json(ROOT / "schemas" / "prompt-comparison-v3.schema.json"),
         "written-comparison-v2": read_json(ROOT / "schemas" / "written-memory-comparison-v2.schema.json"),
         "written-comparison-rubrics": read_json(ROOT / "schemas" / "written-comparison-rubrics.schema.json"),
         "snapshot-replay": read_json(ROOT / "schemas" / "snapshot-replay.schema.json"),
@@ -61,9 +70,13 @@ def main() -> None:
         Draft202012Validator.check_schema(schema)
         validators[name] = Draft202012Validator(schema, format_checker=FormatChecker())
 
+    validators["paired-outcomes-v1"].validate(read_json(ROOT / "tests/fixtures/paired-outcomes-v1.json"))
     execution_fixture = read_json(ROOT / "tests/fixtures/execution-limits-v1.json")
     if execution_fixture["contract"] != "per-role-limits/v1":
         raise ValueError("Unknown execution limit fixture contract")
+    validators["policy-round"].validate(read_json(ROOT / "protocols/diagnostics/portable-writer-round-v1.json"))
+    for result in read_json(ROOT / "artifacts/analyses/20261126-policy-evidence-summary.json").values():
+        validators["policy-evidence"].validate(result)
     validators["execution-limits"].validate(execution_fixture["limits"])
     preparation_fixture = read_json(ROOT / "tests/fixtures/recorded-preparation-v1.json")
     for artifact in preparation_fixture["artifacts"]:
@@ -75,6 +88,19 @@ def main() -> None:
     validators["writing-exploration"].validate(writing_draft)
     if writing_profile(writing_draft)["ready"]:
         raise ValueError("Unresolved writing exploration must remain a draft")
+    policy_path = ROOT / "protocols/drafts/tau2-airline-payment-memory-v2.json"
+    policy = read_json(policy_path)
+    proposal = read_json(ROOT / "tests/fixtures/airline-payment-writer-proposal.json")
+    if proposal["parent_config_sha256"] != digest(policy_path.read_bytes()):
+        raise ValueError("The writer proposal fixture cites a different parent configuration")
+    policy_validator = validators["prompt-comparison-v2"]
+    policy_validator.validate(policy)
+    candidate = dict(policy["conditions"][1], prompt=proposal["writer_prompt"])
+    policy_validator.validate(dict(policy, conditions=[policy["conditions"][0], candidate], candidate_proposal=proposal))
+    reject(policy_validator, dict(policy, status="ready"), "unbudgeted writer comparison promoted to live")
+    pair_policy = read_json(ROOT / "protocols/drafts/tau2-airline-writer-pairs-v3.json")
+    validators["prompt-comparison-v3"].validate(pair_policy)
+    reject(validators["prompt-comparison-v3"], dict(pair_policy, forms={}), "unassigned representations")
     from agent_memory_eval.analysis.written_comparison import validate_rubrics
     from agent_memory_eval.experiments.writing_comparison import _profile
     comparison = read_json(ROOT / "protocols/drafts/tau2-written-memory-replay-v2.json")
@@ -256,7 +282,7 @@ def main() -> None:
     result_v11 = validate_fixture()
     # The v1.2 fixture is a real illustrative file-core trace, never a model result.
     from agent_memory_eval.recording.journal import BlobStore, read_experiment
-    from agent_memory_eval.contracts.validation import validate_manifest
+    from agent_memory_eval.contracts.validation import canonical, validate_manifest, validate_public_return
     from agent_memory_eval.recording.provenance import exposure_payload
     from agent_memory_eval.runner.tau2_delivery import compile_delivery
     compile_delivery(read_json(ROOT / "protocols/drafts/tau2-delivery-comparison-v1.json"), require_ready=False)
@@ -283,6 +309,14 @@ def main() -> None:
     if expected_v12 != actual_v12 or not expected_v12:
         raise ValueError("Preload fixture exposure coverage differs")
 
+    native = read_json(ROOT / "tests/fixtures/contracts-v1.3/native-return.json")
+    native_event, native_wire = native["event"], native["wire"]
+    checks_v11["event-v1.3"].validate(native_event)
+    reject(checks_v11["event"], native_event, "native return accepted as v1.1")
+    if digest(canonical(native_wire)) != native_event["payload"]["result_ref"]["sha256"]:
+        raise ValueError("Native fixture wire digest differs")
+    validate_public_return(native_wire, native_event["payload"])
+
     print(json.dumps({
         "status": "passed",
         "scope": "design_schemas_and_synthetic_references_only",
@@ -294,10 +328,12 @@ def main() -> None:
         "invalid_contract_cases_rejected": 6,
         "v1_1": result_v11,
         "v1_2": dict(schemas_valid=3, synthetic_events_valid=len(scan_v12["events"]), input_spans_verified=len(expected_v12)),
+        "v1_3": dict(schemas_valid=2, illustrative_native_returns_valid=1),
         "execution_limits": dict(contract="per-role-limits/v1", fixtures_valid=1, invalid_cases_rejected=3),
         "snapshot_replay": dict(fixtures_valid=len(replay_fixture["artifacts"]), invalid_cases_rejected=1,
             runtime_readiness_verified=False),
         "written_replay_batch": dict(draft_valid=True, anchored_assets=2, unresolved_ready_rejected=True),
+        "prompt_comparison_v2": dict(draft_valid=True, proposal_fixture_valid=True, unbudgeted_ready_rejected=True),
         "runtime_readiness_verified": False,
         "benchmark_or_model_calls": 0,
     }, ensure_ascii=False, indent=2))

@@ -10,7 +10,7 @@ from jsonschema import Draft202012Validator, ValidationError
 from agent_memory_eval.adapters.tau2 import PIN, Tau2Bridge, native_modules, verify_checkout
 from agent_memory_eval.contracts.connection import provider_route, validate_profile
 from agent_memory_eval.contracts.core import ContractError, RunContext, canonical, digest, new_id, read_json
-from agent_memory_eval.contracts.validation import ROOT
+from agent_memory_eval.contracts.validation import ROOT, SCHEMA_ROOT
 from agent_memory_eval.models.openrouter import (
     ProviderError, SpendGuard, model_catalog, model_endpoints, resolve_endpoint, resolve_model,
 )
@@ -22,7 +22,7 @@ def compile_baseline(profile, *, require_ready=True, connection_text=None):
         canonical(profile)
     except (ValueError, TypeError) as error:
         raise ContractError("Baseline settings must be finite JSON values") from error
-    schema = read_json((ROOT / "schemas/baseline-screening.schema.json").read_bytes())
+    schema = read_json((SCHEMA_ROOT / "baseline-screening.schema.json").read_bytes())
     try:
         Draft202012Validator(schema).validate(profile)
     except ValidationError as error:

@@ -237,6 +237,21 @@ extract_business_decision(ModelReply) -> BusinessDecision | NoBusinessDecision
 
 공통 함수 `open_task_start`는 벤치·버전·과제 ID와 어댑터가 확인한 초기 조건의 해시를 먼저 비교한다. 어댑터는 새 세션에서 업무 입력을 구성하고, 공통 함수가 원천의 입력과 정규 JSON 바이트 단위로 대조한다. 입력의 구조는 어댑터가 정한다. 원천 상담 식별자와 로그 해시는 실험 원장이 연결한다. 비공개 사용자 지시와 채점 정답은 환경과 채점기에만 두며, 새 작업자는 시작 시 공개된 업무 입력과 배정된 기억만 받는다. 시작 조건을 확인할 수 없는 과제는 같은 시작점 비교에서 결측으로 기록한다. [공통 시작 코드](../../src/agent_memory_eval/runner/task_start.py) · [시작 기록 스키마](../../schemas/task-start-v1.schema.json)
 
+| 벤치와 과제 형태 | 새 세션에서 준비하는 것 | 확인 범위 |
+| --- | --- | --- |
+| τ² 항공·소매, 기본 인사로 시작하는 텍스트 상담 | 원래 DB·고객·업무 도구를 초기화하고 1회차의 첫 공개 고객 발화를 고객과 작업자의 이력에 반영한다. 작업자의 첫 요청을 보내기 전에 업무 문구와 배정된 메모를 대조한다. | 첫 발화 가져오기는 모델 요청이나 비용으로 기록하지 않는다. 다음 고객 발화부터 원래 시뮬레이터가 새 행동에 응답한다. [어댑터](../../src/agent_memory_eval/adapters/tau2_task_start.py) |
+| BFCL V4 `simple_python`, 한 번의 함수 선택 | 고정 버전의 공개 질문과 함수 정의를 매번 새로 읽어 같은 입력을 구성한다. 이 과제에는 고객이나 변경 가능한 업무 DB가 없다. | 공개 과제 입력까지 확인한다. 모델별 함수 렌더링·호출·공식 채점까지 연결하는 작업은 남아 있다. [어댑터](../../src/agent_memory_eval/adapters/bfcl_task_start.py) |
+| AppWorld, 코드와 업무 DB | 같은 과제 지시·초기 DB·시계·API 설정에서 새 코드 실행 세션을 열고 첫 관측을 대조하는 것이 목표다. | 기존 공식 채점과 DB 복원 검증에 더해 실행 변수·작업자 첫 입력의 격리를 연결해야 한다. [기존 검증](../reports/20261123-framework-portability.md) |
+
+τ² 등록에는 `task_start_mode`를 `agent-memory-task-start/v1`로 명시한다. 기존 등록은 당시의 독립적인 고객 생성 절차를 재현한다. 새 방식에서는 첫 질문 생성에 든 요청·토큰·비용을 준비 비용으로 기록하고, 회차별 효율은 공통 시작점 이후 사용량으로 비교한다. 전체 비용은 원장에 보존한다. 다음 명령은 보관된 1회차와 고정된 BFCL 공개 과제만 읽으며, 과제별 시작점을 유료 호출 없이 점검한다. τ²에서는 원래 발화가 실제 첫 작업자 입력에 그대로 들어갔는지와 새 작업자 행동 뒤 고객이 다시 응답하는지도 검사한다. [검증 명령 구현](../../scripts/check_task_starts.py)
+
+```bash
+uv run --frozen --no-sync python -m scripts.check_task_starts tau2 --study runs/tau2-fresh-matched-01-continuation
+uv run --frozen --no-sync python -m scripts.check_task_starts bfcl --checkout .local/benchmark-portability/bfcl-6ea5797
+```
+
+새 τ² 프로토콜은 `scripts.run_fresh_matched preflight`의 `--protocol`로 오프라인 배정을 확인한다. 실행과 결과 검산에는 같은 프로토콜과 고정한 전체 배정 파일을 `--published-preflight`로 지정한다. 유료 실행의 승인은 해당 프로토콜 해시와 비용 한도에 연결된다. [실행 진입점](../../scripts/run_fresh_matched.py) · [결과 검산](../../scripts/report_fresh_matched.py)
+
 ### 8.1 τ²-bench 연결
 
 상위 에이전트의 모델 요청·도구 결과 지점과 도메인 환경·사용자 시뮬레이터·공식 채점을 연결한다. 기억 호출은 도메인 DB에 적용하지 않고 별도 도구로 처리한다. 추가 기억 호출로 상위 실행기의 업무 단계 한도가 소모되는지도 검사하고 원래 한도와 우리 실행 한도를 함께 기록한다.
@@ -252,6 +267,8 @@ AppWorld는 코드/API 실행과 DB 상태 기반 평가를 제공한다. 공식
 업무 실행은 `execute_code` 같은 어댑터 행동으로 감싸거나 지원되는 도구 호출 경로를 사용한다. 기억 도구 호출을 코드의 업무 API 호출과 구분하고, 환경 초기화 시 실행 변수와 캐시도 분리한다. 공식 테스트 중 아무것도 하지 않아도 통과하는 보존 조건은 목표 달성 진척의 분자로 자동 합산하지 않는다.
 
 ### 8.3 BFCL 연결
+
+고정 BFCL V4 `rec_sum`의 `memory_append`·`memory_retrieve`를 선택하면 공통 라우터가 공식 백엔드로 전달한다. 공개 도구 반환은 고유 형식을 유지하고 분석 원장에는 본문을 반환한 항목·버전과 다음 입력의 문자 구간이 연결된다. 기록 계약 v1.3에서 명시적으로 사용할 수 있다. 한 공개 과제에서 실제 백엔드의 체크포인트 복원, 읽기 권한 양쪽의 최초 입력 일치, 스크립트 답안에 대한 공식 채점을 확인했다. [검증 결과와 범위](../reports/20261125-common-policy-measurements.md) · [어댑터](../../src/agent_memory_eval/adapters/bfcl_memory.py)
 
 두 모드를 분리한다. `external_memory`는 적합한 Multi-turn 등 과제에 우리 기억 정책을 추가하는 변형 실험이다. `native_memory_observed`는 BFCL V4 Memory의 기존 도구·백엔드·수집과 평가 절차를 유지하고 사건을 공통 형식으로 관측한다.
 

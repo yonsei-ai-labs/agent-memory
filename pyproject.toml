@@ -18,8 +18,12 @@ tau2 = [
     "tau2[knowledge] @ git+https://github.com/sierra-research/tau2-bench.git@c06b07dd7c4d4ec61ba6ff9bcdf0b15dd7ef36d4 ; python_version >= '3.12' and python_version < '3.14'",
 ]
 
-[tool.setuptools.packages.find]
-where = ["src"]
+[tool.setuptools.package-dir]
+"" = "src"
+"agent_memory_eval.schemas" = "schemas"
+
+[tool.setuptools.package-data]
+"agent_memory_eval.schemas" = ["*.schema.json", "v*/*.schema.json"]
 
 [tool.uv]
 package = true

@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:agent-memory-eval:journal:1.3",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "journal_version",
+    "commit_seq",
+    "prev_sha256",
+    "record_sha256",
+    "operation",
+    "events",
+    "experiment_id",
+    "state_ref"
+  ],
+  "properties": {
+    "commit_seq": {
+      "$ref": "urn:agent-memory-eval:journal:1.2#/properties/commit_seq"
+    },
+    "prev_sha256": {
+      "$ref": "urn:agent-memory-eval:journal:1.2#/properties/prev_sha256"
+    },
+    "record_sha256": {
+      "$ref": "urn:agent-memory-eval:journal:1.2#/properties/record_sha256"
+    },
+    "operation": {
+      "$ref": "urn:agent-memory-eval:journal:1.2#/properties/operation"
+    },
+    "experiment_id": {
+      "$ref": "urn:agent-memory-eval:journal:1.2#/properties/experiment_id"
+    },
+    "state_ref": {
+      "$ref": "urn:agent-memory-eval:journal:1.2#/properties/state_ref"
+    },
+    "journal_version": {
+      "const": "1.3"
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "$ref": "urn:agent-memory-eval:event:1.1"
+          },
+          {
+            "$ref": "urn:agent-memory-eval:event:1.2"
+          },
+          {
+            "$ref": "urn:agent-memory-eval:event:1.3"
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,193 @@
+{
+  "format": "agent-memory-retrospective-claim-citations/v1",
+  "selection": "Purposive examples selected after outcomes were known. Interpretations are single analyst annotations, outside all writer and worker inputs.",
+  "inputs": {
+    "airline_scores": {
+      "path": "artifacts/analyses/20261118-two-pass-forms-final-cells/second-pass.csv",
+      "sha256": "51b68ccd57d3ad604d089324150ffda5bd8b41d94fdfe859c3bd66365f6a85d3"
+    },
+    "airline_writing": {
+      "path": "artifacts/analyses/20261118-two-pass-forms-writing-review.json",
+      "sha256": "b01304cb6b84d3e7f96faabe94f0c3e226c55fe575cee0d6d9f7a7c1b8ef7c60"
+    },
+    "airline_diagnostics": {
+      "path": "artifacts/analyses/20261118-two-pass-memory-success-factors.json",
+      "sha256": "7f4f32aeb1981cb985c6471356265364e774a3f9dd5233d7510ce29f7941caf9"
+    },
+    "retail_decisions": {
+      "path": "artifacts/analyses/20261123-retail-conditional-retrieval-results.json",
+      "sha256": "0a03ca89e87d7d219d4a2e734bd3ce05d657424667a4475c85740aef748458b1"
+    },
+    "retail_banks": {
+      "path": "artifacts/analyses/20261122-retail-two-visit-results-with-recovery.json",
+      "sha256": "5808756f078cc26b39f0453460582d079d9e4eb2eefd47b5dae8b8b586892ad3"
+    },
+    "retail_handoffs": {
+      "path": "artifacts/analyses/20261122-retail-handoff-factors.json",
+      "sha256": "deba29ce5a0247aa877ec1fd21a494b09171a5972e5042b6b893d0554b28e88f"
+    }
+  },
+  "cases": [
+    {
+      "id": "retail_previous_order",
+      "annotation": {
+        "source_basis": "customer_stated_fact",
+        "current_applicability": "same_customer_references_previous_order",
+        "action_alignment": "matches_prior_identifier"
+      },
+      "writer": {
+        "path": "runs/tau2-retail-two-visit-01/r_96409b97e4067a3c0da366dfb6320891/log.jsonl",
+        "sha256": "7ebe17025a5a7710c6e4826ae9911fbf5aa7d630829f4755a65786e5c1dc6f04"
+      },
+      "worker": {
+        "path": "runs/tau2-retail-conditional-retrieval-01/r_10a2b8a60d689f57f83b12e778c593a0/log.jsonl",
+        "sha256": "7f31bcdc96cd288760d4feb530476f0fdcb178c486ecb965fcd17d46cc20eec6"
+      },
+      "item": "m_90f8a4442d214af987704ee3673f9465",
+      "version": "v_898f0546eade4490bc9cc19fd2b9cb3d",
+      "field": "body",
+      "clause": "the user requested information only about order #W9903153.",
+      "source_citations": [
+        [
+          "/experience/messages/1/content",
+          "Could you look up order #W9903153 and tell me which items are in it?"
+        ],
+        [
+          "/experience/messages/9/content",
+          "\"order_id\": \"#W9903153\""
+        ]
+      ],
+      "request_id": "request_c7c6c08a59254cdfb1cf3e31393cba2b",
+      "current_citations": [
+        [
+          "/messages/1/content",
+          "I would like to cancel the order we discussed last time because I no longer need it."
+        ],
+        [
+          "/messages/7/content",
+          "\"orders\":[\"#W3113816\",\"#W9903153\""
+        ]
+      ],
+      "action_citations": [
+        [
+          "/tool_calls/0/function/name",
+          "get_order_details"
+        ],
+        [
+          "/tool_calls/0/function/arguments",
+          "#W9903153"
+        ]
+      ],
+      "source": {
+        "path": "runs/tau2-retail-two-visit-01/r_ee9948674178aa9bc4e1e314c3758dfb/log.jsonl",
+        "sha256": "074dd122fbce896aca97d5387101c2baa5dcc845f7ebcadcb36ac3b17641f807"
+      }
+    },
+    {
+      "id": "retail_handoff",
+      "annotation": {
+        "source_basis": "writer_inference_from_policy_and_denial",
+        "current_applicability": "depends_on_which_current_requests_are_actionable",
+        "action_alignment": "matches_recommendation"
+      },
+      "writer": {
+        "path": "runs/tau2-retail-transfer-revision-01/task-32/write/jobs/0007/log.jsonl",
+        "sha256": "248fbf9b00dd8d0945fe0dccc11300f8a9079b3114de278525249412bdd6aae5"
+      },
+      "worker": {
+        "path": "runs/tau2-retail-transfer-revision-01/task-31/solve2/jobs/0003/log.jsonl",
+        "sha256": "515b4de49832ef6bb35938326cd8efd90dd83dd01f5f8029c86a909bdd197ee4"
+      },
+      "item": "m_79be7ef1758b41fb8d563c52409def83",
+      "version": "v_c35f1adab5d945439eda1cd63a6a24a3",
+      "field": "body",
+      "clause": "in this kind of unresolved lost-item request, transfer is a relevant next step rather than ending with a denial.",
+      "source_citations": [
+        [
+          "/experience/task_context/content",
+          "You should transfer the user to a human agent if and only if the request cannot be handled within the scope of your actions."
+        ],
+        [
+          "/experience/messages/22/content",
+          "Since you don’t have it, I can’t process either request."
+        ],
+        [
+          "/experience/messages/23/content",
+          "Then cancel the charger I just bought"
+        ],
+        [
+          "/experience/messages/44/content",
+          "The return request for the sneakers in order **#W7449508** has been submitted."
+        ]
+      ],
+      "request_id": "request_93af32a7ae674f9d94c66ed8060fe154",
+      "current_citations": [
+        [
+          "/messages/17/content",
+          "Is there any way you could help me with a refund or maybe reorder it?"
+        ]
+      ],
+      "action_citations": [
+        [
+          "/tool_calls/0/function/name",
+          "transfer_to_human_agents"
+        ]
+      ],
+      "source": {
+        "path": "runs/tau2-retail-full-forms-01/task-32/source/jobs/0001/log.jsonl",
+        "sha256": "d3abe7203405c376352b21f87d46f73d26855c0089c5353b6b519d5d100a0fe0"
+      }
+    },
+    {
+      "id": "airline_upgrade",
+      "annotation": {
+        "source_basis": "procedure_supported_by_past_customer_constraint",
+        "current_applicability": "price_and_consent_need_current_verification",
+        "action_alignment": "upgrade_before_price_disclosure"
+      },
+      "writer": {
+        "path": "runs/tau2-two-pass-forms-luna-deepseek-01/jobs/0129/log.jsonl",
+        "sha256": "faef9f524d48c84bc14595b68be1f33ba47fa78f5a2b616653c7f6cf06a36730"
+      },
+      "worker": {
+        "path": "runs/tau2-two-pass-forms-luna-deepseek-supplement-02/jobs/0427/log.jsonl",
+        "sha256": "c978daaa2b477981d2d509f1d83e66928d48640d382a89bc20aa89db1986c7a9"
+      },
+      "item": "m_e16bb62c8e1a4b26867b9f08a84b5f9d",
+      "version": "v_2ebd42f14ff34da59daee3ce855a3065",
+      "field": "body",
+      "clause": "Seek confirmation only after giving the estimate/limitation, and do not modify if user has not explicitly agreed.",
+      "source_citations": [
+        [
+          "/experience/messages/15/content",
+          "I need a number before I say yes."
+        ],
+        [
+          "/experience/messages/27/content",
+          "Okay, so no upgrade at all then. Fine. Yes, add the two checked bags under my name."
+        ]
+      ],
+      "request_id": "request_40aebf93ba74455997be88fdd9b9f1d9",
+      "current_citations": [
+        [
+          "/messages/10/content",
+          "Change both passengers to business on those flights."
+        ]
+      ],
+      "action_citations": [
+        [
+          "/tool_calls/0/function/name",
+          "update_reservation_flights"
+        ],
+        [
+          "/tool_calls/0/function/arguments",
+          "\"cabin\":\"business\""
+        ]
+      ],
+      "source": {
+        "path": "runs/tau2-baseline-luna-deepseek1017-train-01/log.jsonl",
+        "sha256": "ec0994a536729872ce8ee7ff06ae63c2e640e70091146b9a361535174ee8fbb5"
+      }
+    }
+  ]
+}

@@ -6,14 +6,14 @@ from random import Random
 from jsonschema import Draft202012Validator, ValidationError
 
 from agent_memory_eval.contracts.core import ContractError, canonical, digest, read_json
-from agent_memory_eval.contracts.validation import ROOT
+from agent_memory_eval.contracts.validation import ROOT, SCHEMA_ROOT
 from agent_memory_eval.experiments.writing_comparison import ARMS
 
 
 def validate_profile(profile, *, require_ready=False):
     try:
         canonical(profile)
-        schema = read_json((ROOT / "schemas/written-replay-batch.schema.json").read_bytes())
+        schema = read_json((SCHEMA_ROOT / "written-replay-batch.schema.json").read_bytes())
         Draft202012Validator(schema).validate(profile)
     except (ValueError, TypeError, ValidationError) as error:
         raise ContractError("Invalid written replay batch profile or unresolved ready settings") from error

@@ -1,5 +1,15 @@
 # 같은 저장 형식의 작성 프롬프트를 비교하는 방법
 
+v3는 사용자가 등록한 형식마다 기존·후보 작성 정책을 짝짓는다. 예를 들어 `forms`에 사실·경험·절차·교훈·자유를 적으면 한 원천에서 10개의 독립된 작성 세션이 생긴다. 각 쌍은 같은 공통 지침·형식 지침·공개 기록·피드백을 받으며 후보에만 `writer_clause`가 추가된다. 원천별 필수 저장을 검증한 뒤 후속 세션을 시작한다. 보고서에서 같은 형식 안의 성패·결측·토큰과 실제 본문 노출을 비교할 수 있다. [v3 계약](../../schemas/prompt-comparison-v3.schema.json) · [항공 설정 예시](../../protocols/drafts/tau2-airline-writer-pairs-v3.json) · [BFCL에서 측정한 결과](../reports/20261126-writer-representation-pairs.md)
+
+```bash
+uv run python -m scripts.run_prompt_comparison protocols/drafts/tau2-airline-writer-pairs-v3.json --preflight
+```
+
+`scripts.prepare_memory_candidate`에 v3 설정을 주면 개발 원천과 각 형식의 기존 지침이 제안자에게 전달된다. 제안자는 `writer_clause`, 가설, 예상 행동과 공개 기록의 인용을 제출한다. 새 초안은 개발 과제만 포함하고 작성·수행 조건 모두를 한 배치 예산으로 관리한다. 항공 어댑터는 1회차의 실제 첫 고객 발화를 복원한 뒤 같은 업무 입력이 각 형식의 첫 판단에 도달하는지 검사한다. 이후 대화는 해당 실행의 행동에 따라 진행된다.
+
+새 v2 작성 비교는 보관한 1회차 무기억 성적을 기준으로 쓰고, 2회차에는 기존 작성 정책과 후보 정책만 배정한다. 개발 대화에서 인용한 LLM 제안을 별도 초안으로 준비할 수 있다. [제안 입력·검산 명령과 채택 기준](memory-policy-improvement.md) · [항공 결제 개발 초안](../../protocols/drafts/tau2-airline-payment-memory-v2.json)
+
 실험 설정의 `conditions`에 기준 조건과 비교 조건을 순서대로 적는다. 각 조건의 `id`는 배정과 분석에 쓰이며 모델에게 제공하는 내용은 공통 작성 지침과 `prompt` 원문이다. 같은 `representation`을 여러 조건에 사용할 수 있다. `prompt_version`과 조합한 전체 프롬프트의 SHA-256으로 실제 전송된 버전을 확인한다. `task_sets`는 개발과 평가에 사용할 과제, `seed_pairs`는 반복별 작성·수행 시드를 지정한다. [사용 가능한 실험 설정 예](../../protocols/pilots/tau2-fact-recheck-v1.json)
 
 저장소 루트에서 다음 명령으로 공개 원천, 순서, 작성 요청 크기, native 환경, 한도와 두 지침을 확인한다.

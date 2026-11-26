@@ -7,7 +7,7 @@ import re
 from jsonschema import Draft202012Validator
 
 from agent_memory_eval.contracts.core import ContractError, canonical, digest, read_json
-from agent_memory_eval.contracts.validation import ROOT
+from agent_memory_eval.contracts.validation import ROOT, SCHEMA_ROOT
 
 
 FORMAT = "agent-memory-first-customer-query/v1"
@@ -17,7 +17,7 @@ PROFILE_READ = "agent-memory-public-profile-read/v1"
 
 @lru_cache(maxsize=3)
 def _validator(filename="first-customer-query.schema.json"):
-    schema = read_json((ROOT / "schemas" / filename).read_bytes())
+    schema = read_json((SCHEMA_ROOT / filename).read_bytes())
     return Draft202012Validator(schema)
 
 

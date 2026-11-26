@@ -49,6 +49,18 @@ def save(path, value):
         require(read(path) == value, f"Existing artifact differs at {path}")
 
 
+def record_source_admission(directory, measured):
+    from agent_memory_eval.analysis.trajectory import source_admission
+    receipt = source_admission(measured)
+    directory.mkdir(exist_ok=True)
+    path = directory / "source-opportunity.json"
+    present = {p.name for p in directory.iterdir()}
+    require(not present or path.name in present, "Existing validation work has no source admission")
+    require(receipt["decision"] != "stop" or present <= {path.name}, "Stopped study contains validation work")
+    save(path, receipt)
+    return receipt
+
+
 def design(workspace):
     spec = read(ROOT / PROFILE)
     previous = read_json(asset_text(ROOT, spec["previous"]).encode())
@@ -476,8 +488,9 @@ def validation_run(workspace, phase):
     return run_paired_validation(workspace, phase, spec, proposal, covered, cfg, conn, cases, tasks, common)
 
 
-def run_paired_validation(workspace, phase, spec, proposal, covered, cfg, conn, cases, tasks, common):
+def run_paired_validation(workspace, phase, spec, proposal, covered, cfg, conn, cases, tasks, common, *, source_check=None):
     """Share one untouched first pass between registered writers, then run their full consultations."""
+    policy_root = workspace if spec.get("policy_registration") else ROOT
     require(phase in {"sources", "validation"} and spec["validation"]["writer_policies"] == ["existing", "candidate"],
             "Unknown paired validation phase or writer assignment")
     repeats = PairedRepetitions.from_spec(spec)
@@ -488,11 +501,15 @@ def run_paired_validation(workspace, phase, spec, proposal, covered, cfg, conn, 
     stages = repeats.stages()
     source_root = workspace / "runs" / spec["source_study"]
     for case in cases:
-        case["reader_modes"] = ["preload"]
+        case["reader_modes"] = [spec.get("reader", "preload")]
     if phase == "sources":
         cfg.update(name=spec["source_study"], stages=["source"])
         record = dict(**common, cases=cases, phase=phase, assigned=len(cases), prior_covered_usd=str(covered))
     else:
+        if "source_opportunity_requirement" in spec:
+            require(source_check and source_check["assessment"]["met"]
+                    and all(source_check["assessment"].get(k) == v for k, v in spec["source_opportunity_requirement"].items()),
+                    "Registered source opportunity requirement was not met")
         source_reg, source_close = (
             read(source_root / "registration.json"),
             read(source_root / "completion.json"),
@@ -536,7 +553,7 @@ def run_paired_validation(workspace, phase, spec, proposal, covered, cfg, conn, 
                         public_context_sha256=source.public_context_sha256,
                     )
                     cell["first_writer_inputs"] = writer_hashes(
-                        conn, cfg, source, asset_text(ROOT, instruction).rstrip("\r\n")
+                        conn, cfg, source, asset_text(policy_root, instruction).rstrip("\r\n")
                     )
                 paired.append(cell)
                 task_map[cell["task"]] = tasks[tid]
@@ -557,6 +574,10 @@ def run_paired_validation(workspace, phase, spec, proposal, covered, cfg, conn, 
             source_registration_sha256=source_close["registration_sha256"],
             schedule_sha256=digest(canonical(schedule)),
         )
+        if source_check is not None:
+            require(source_check["source"]["completion_sha256"] == digest((source_root / "completion.json").read_bytes()),
+                    "Source opportunity check used another cohort")
+            record["source_opportunity_check"] = source_check
     cfg.update(prior_covered_usd=str(covered), registration_sha256=digest(canonical(record)))
     bank.matched.run_study(
         workspace,
@@ -579,19 +600,29 @@ def registered_pairs(workspace, profile, mode):
     from agent_memory_eval.policies.writer_pairs import writer_pairs
 
     spec = read(ROOT / profile)
+    if "source_opportunity_requirement" in spec:
+        from agent_memory_eval.adapters.banking_trajectories import CUES
+        from agent_memory_eval.analysis.trajectory import validate_opportunity_requirement
+        validate_opportunity_requirement(spec["source_opportunity_requirement"], CUES)
     census = spec["format"] in {"banking-registered-writer-pairs/v2", "banking-registered-writer-pairs/v3"}
     repeats = PairedRepetitions.from_spec(spec)
     require(census == ("repetitions" in spec), "The cohort protocol must register its repetition axes")
+    portable = spec.get("policy_registration")
+    if portable is not None:
+        from agent_memory_eval.runner.policy_round import verify_native_registration
+        verify_native_registration(ROOT / profile, spec, "banking-opening")
+    supported_readers = {"preload", "on_demand"} if portable else {"preload"}
     require((census or spec["format"] == "banking-registered-writer-pairs/v1") and spec["adapter"] == "account_opening"
-            and mode in {"preflight", "sources", "validation"} and spec["reader"] == "preload"
+            and mode in {"preflight", "sources", "validation"} and spec["reader"] in supported_readers
             and spec["feedback"] == "result_only", "Unknown paired consultation protocol")
     require(spec["banking_profile"]["path"] == bank.PROFILE, "Different banking base")
     asset_text(ROOT, spec["banking_profile"])
-    strict = read_json(asset_text(ROOT, spec["required_writer"]).encode())
+    policy_root = workspace if portable else ROOT
+    strict = read_json(asset_text(policy_root, spec["required_writer"]).encode())
     require(strict["common_instruction_ref"] == spec["base_instruction"], "Changed baseline author")
-    old = asset_text(ROOT, spec["base_instruction"]).rstrip("\r\n")
-    new = asset_text(ROOT, spec["candidate_instruction"]).rstrip("\r\n")
-    clause = asset_text(ROOT, spec["clause"]).rstrip("\r\n")
+    old = asset_text(policy_root, spec["base_instruction"]).rstrip("\r\n")
+    new = asset_text(policy_root, spec["candidate_instruction"]).rstrip("\r\n")
+    clause = asset_text(policy_root, spec["clause"]).rstrip("\r\n")
     conditions, pairs = writer_pairs(strict["lines"], clause)
     instructions = {c["id"]: c["prompt"] for c in conditions}
     for form, pair in pairs.items():
@@ -603,6 +634,10 @@ def registered_pairs(workspace, profile, mode):
     modules = bank.matched.modules_for(workspace)
     native = {task.id: task for task in get_tasks()}
     cfg = bank.required_design(base, strict)
+    if portable:
+        cfg["writing"]["proposed_limits"]["bank_items"] = 1
+        cfg["policy_registration"] = portable
+        cfg["delivery_instruction"] = portable["reader_instruction"]
     endpoints = read_json(asset_text(ROOT, cfg["endpoints"]).encode())["models"]
     roles = ("worker", "user_simulator")
     cfg.update(writer_feedback_level=spec["feedback"], max_concurrent=spec.get("max_concurrent", 2), record_unfunded_shards=True,
@@ -653,6 +688,8 @@ def registered_pairs(workspace, profile, mode):
                  schedule_sha256=digest(canonical(schedule)), writer_conditions=conditions, grader_controls=controls,
                  assigned=dict(source=len(cases), write=write_count, solve=solve_count, second_pass_no_memory=0),
                  model_requests=0)
+    if "source_opportunity_requirement" in spec:
+        check["source_opportunity_requirement"] = spec["source_opportunity_requirement"]
     if spec["format"] == "banking-registered-writer-pairs/v3":
         require(spec["reader_admission"] == "sealed_bank" and spec["interruption_policy"] == bank.matched.RESUME_UNSTARTED,
                 "Unknown admission or interruption policy")
@@ -666,8 +703,9 @@ def registered_pairs(workspace, profile, mode):
                      initial_records=initial_record_audit(domain, native, spec["tasks"]))
     if mode == "preflight":
         return check
-    require(check == read(ROOT / spec["preflight_file"]), "Registered offline preflight differs")
-    approval = read(ROOT / spec["authorization_file"])
+    control_root = workspace if portable else ROOT
+    require(check == read(control_root / spec["preflight_file"]), "Registered offline preflight differs")
+    approval = read(control_root / spec["authorization_file"])
     expected = dict(check["assigned"])
     if approval["scope"] == "sources":
         expected.update(write=0, solve=0)
@@ -679,6 +717,15 @@ def registered_pairs(workspace, profile, mode):
     cfg["total_usd_limit"] = str(cap)
     common = dict(protocol_sha256=check["protocol_sha256"], preflight_sha256=approval["preflight_sha256"],
                   approval=approval)
+    if mode == "validation" and "source_opportunity_requirement" in spec:
+        from agent_memory_eval.adapters.banking_trajectories import banking_report
+        measured = banking_report(ROOT / profile, workspace, workspace / "data/tau2-bench", sources_only=True)
+        directory = safe_path(workspace / "runs", spec["validation_study"])
+        source_check = record_source_admission(directory, measured)
+        if source_check["decision"] == "stop":
+            return source_check
+        return run_paired_validation(workspace, mode, spec, spec, Decimal(0), cfg, conn, cases, tasks, common,
+                                     source_check=source_check)
     return run_paired_validation(workspace, mode, spec, spec, Decimal(0), cfg, conn, cases, tasks, common)
 
 

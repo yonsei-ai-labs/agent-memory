@@ -11,7 +11,7 @@ from jsonschema import Draft202012Validator
 from agent_memory_eval.adapters.tau2 import PIN, prepare_native
 from agent_memory_eval.adapters.tau2_memory import Tau2MemoryBridge
 from agent_memory_eval.contracts.core import ContractError, MemoryPolicy, RunContext, digest, new_id
-from agent_memory_eval.contracts.validation import ROOT
+from agent_memory_eval.contracts.validation import ROOT, SCHEMA_ROOT
 from agent_memory_eval.memory.service import MemoryService
 from agent_memory_eval.models.openrouter import SpendGuard
 from agent_memory_eval.recording.provenance import InputSizeLimit, RoleRequestLimit
@@ -25,7 +25,7 @@ def checked_asset(ref):
 
 
 def prepare_memory_check(profile, checkout):
-    schema = json.loads((ROOT / "schemas/memory-connection-check.schema.json").read_text())
+    schema = json.loads((SCHEMA_ROOT / "memory-connection-check.schema.json").read_text())
     Draft202012Validator(schema).validate(profile)
     connection = json.loads(checked_asset(profile["connection_profile_ref"]))
     if connection["profile_version"] != "1.1":

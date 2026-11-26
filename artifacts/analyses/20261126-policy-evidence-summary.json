@@ -1,0 +1,2976 @@
+{
+  "banking-opening": {
+    "benchmark": "tau3.banking.account_opening",
+    "bindings": {
+      "benchmark_revision": "c06b07dd7c4d4ec61ba6ff9bcdf0b15dd7ef36d4",
+      "protocol_sha256": "2b65641d4226d967e2a6ffaf85ee012069f1ce231528a4e968ed3e2881f6a1cd",
+      "source": {
+        "completion_sha256": "6913b066282f4ceb97914581331081a253f8991130c841e779a593cdf8cb324c",
+        "recording": "tau-banking-opening-sources-03",
+        "registration_sha256": "0b2da9cbc38639a961c821e5fe1ec2f5e34fb27a9e1c523d0485a45ce1a37288"
+      },
+      "validation": {
+        "completion_sha256": "da0a1ea6252ed9eb2ba08e54e7805bfa75474c8001535456d8099583131c4802",
+        "recording": "tau-banking-opening-writers-03",
+        "registration_sha256": "3d40cf90725edc36886ae5b21b24114e09d5ad0d20cbf2823cd456c7deee9338"
+      }
+    },
+    "by_condition": [
+      {
+        "assigned": 570,
+        "clusters": 13,
+        "condition": "candidate",
+        "decisions_with_body": 330,
+        "decisions_with_source_evidence": 330,
+        "decisions_with_title": 330,
+        "effort": {
+          "dispatched": 4923,
+          "observed_runs": 330,
+          "reported_tokens": 60035741,
+          "reported_usd": "1.495734745",
+          "requests": 4942,
+          "reused_local_generations": 0,
+          "tokens_reported_on": 4853,
+          "unknown_cost_requests": 70
+        },
+        "first_decision": {
+          "call": {
+            "failure": 236,
+            "success": 0,
+            "ungraded": 89
+          },
+          "no_call": {
+            "failure": 5,
+            "success": 0,
+            "ungraded": 0
+          },
+          "unobserved": {
+            "failure": 0,
+            "success": 0,
+            "ungraded": 240
+          }
+        },
+        "graded": 241,
+        "literal_matches": {
+          "action": {
+            "absent": 23709,
+            "exact": 709,
+            "normalized_only": 0,
+            "unobserved": 0
+          },
+          "current": {
+            "absent": 17728,
+            "exact": 6690,
+            "normalized_only": 0,
+            "unobserved": 0
+          },
+          "exposed": {
+            "absent": 24016,
+            "exact": 402,
+            "normalized_only": 0,
+            "unobserved": 0
+          },
+          "guidance": {
+            "absent": 24418,
+            "exact": 0,
+            "normalized_only": 0,
+            "unobserved": 0
+          },
+          "source": {
+            "absent": 328,
+            "exact": 24090,
+            "normalized_only": 0,
+            "unobserved": 0
+          },
+          "stored": {
+            "absent": 24016,
+            "exact": 402,
+            "normalized_only": 0,
+            "unobserved": 0
+          }
+        },
+        "phase": "solve",
+        "read_calls": {},
+        "source_cue_occurrences": {
+          "also_exposed": 402,
+          "also_stored": 402,
+          "exposed_without_action_match": 361,
+          "in_action_and_current": 10,
+          "in_action_without_current_match": 31,
+          "source_candidates": 24090
+        },
+        "started": 330,
+        "tasks": 19,
+        "versus_first_pass": {
+          "both_success": {
+            "metrics": {
+              "business_calls": {
+                "candidate_total": null,
+                "difference": null,
+                "equal": 0,
+                "higher": 0,
+                "lower": 0,
+                "missing": 0,
+                "observed": 0,
+                "reference_total": null,
+                "relative_difference_pct": null
+              },
+              "tokens": {
+                "candidate_total": null,
+                "difference": null,
+                "equal": 0,
+                "higher": 0,
+                "lower": 0,
+                "missing": 0,
+                "observed": 0,
+                "reference_total": null,
+                "relative_difference_pct": null
+              }
+            },
+            "pairs": 0
+          },
+          "jointly_graded": {
+            "metrics": {
+              "business_calls": {
+                "candidate_total": "1829",
+                "difference": "43",
+                "equal": 27,
+                "higher": 97,
+                "lower": 117,
+                "missing": 0,
+                "observed": 241,
+                "reference_total": "1786",
+                "relative_difference_pct": 2.408
+              },
+              "tokens": {
+                "candidate_total": "47619655",
+                "difference": "-424162",
+                "equal": 0,
+                "higher": 99,
+                "lower": 142,
+                "missing": 0,
+                "observed": 241,
+                "reference_total": "48043817",
+                "relative_difference_pct": -0.883
+              }
+            },
+            "pairs": 241
+          },
+          "outcomes": {
+            "assigned": 570,
+            "both_failure": 241,
+            "both_success": 0,
+            "gain": 0,
+            "loss": 0,
+            "missing": 329
+          }
+        }
+      },
+      {
+        "assigned": 570,
+        "clusters": 13,
+        "condition": "existing",
+        "decisions_with_body": 330,
+        "decisions_with_source_evidence": 330,
+        "decisions_with_title": 330,
+        "effort": {
+          "dispatched": 5166,
+          "observed_runs": 330,
+          "reported_tokens": 63130416,
+          "reported_usd": "1.561201689",
+          "requests": 5188,
+          "reused_local_generations": 0,
+          "tokens_reported_on": 5104,
+          "unknown_cost_requests": 62
+        },
+        "first_decision": {
+          "call": {
+            "failure": 239,
+            "success": 0,
+            "ungraded": 79
+          },
+          "no_call": {
+            "failure": 7,
+            "success": 0,
+            "ungraded": 5
+          },
+          "unobserved": {
+            "failure": 0,
+            "success": 0,
+            "ungraded": 240
+          }
+        },
+        "graded": 246,
+        "literal_matches": {
+          "action": {
+            "absent": 23716,
+            "exact": 706,
+            "normalized_only": 0,
+            "unobserved": 0
+          },
+          "current": {
+            "absent": 17732,
+            "exact": 6690,
+            "normalized_only": 0,
+            "unobserved": 0
+          },
+          "exposed": {
+            "absent": 23984,
+            "exact": 438,
+            "normalized_only": 0,
+            "unobserved": 0
+          },
+          "guidance": {
+            "absent": 24422,
+            "exact": 0,
+            "normalized_only": 0,
+            "unobserved": 0
+          },
+          "source": {
+            "absent": 332,
+            "exact": 24090,
+            "normalized_only": 0,
+            "unobserved": 0
+          },
+          "stored": {
+            "absent": 23984,
+            "exact": 438,
+            "normalized_only": 0,
+            "unobserved": 0
+          }
+        },
+        "phase": "solve",
+        "read_calls": {},
+        "source_cue_occurrences": {
+          "also_exposed": 438,
+          "also_stored": 438,
+          "exposed_without_action_match": 403,
+          "in_action_and_current": 5,
+          "in_action_without_current_match": 30,
+          "source_candidates": 24090
+        },
+        "started": 330,
+        "tasks": 19,
+        "versus_first_pass": {
+          "both_success": {
+            "metrics": {
+              "business_calls": {
+                "candidate_total": null,
+                "difference": null,
+                "equal": 0,
+                "higher": 0,
+                "lower": 0,
+                "missing": 0,
+                "observed": 0,
+                "reference_total": null,
+                "relative_difference_pct": null
+              },
+              "tokens": {
+                "candidate_total": null,
+                "difference": null,
+                "equal": 0,
+                "higher": 0,
+                "lower": 0,
+                "missing": 0,
+                "observed": 0,
+                "reference_total": null,
+                "relative_difference_pct": null
+              }
+            },
+            "pairs": 0
+          },
+          "jointly_graded": {
+            "metrics": {
+              "business_calls": {
+                "candidate_total": "1858",
+                "difference": "-20",
+                "equal": 26,
+                "higher": 87,
+                "lower": 133,
+                "missing": 0,
+                "observed": 246,
+                "reference_total": "1878",
+                "relative_difference_pct": -1.065
+              },
+              "tokens": {
+                "candidate_total": "48926130",
+                "difference": "-2874270",
+                "equal": 0,
+                "higher": 91,
+                "lower": 155,
+                "missing": 0,
+                "observed": 246,
+                "reference_total": "51800400",
+                "relative_difference_pct": -5.549
+              }
+            },
+            "pairs": 246
+          },
+          "outcomes": {
+            "assigned": 570,
+            "both_failure": 246,
+            "both_success": 0,
+            "gain": 0,
+            "loss": 0,
+            "missing": 324
+          }
+        }
+      },
+      {
+        "assigned": 19,
+        "clusters": 13,
+        "condition": "no_memory",
+        "decisions_with_body": 0,
+        "decisions_with_source_evidence": 19,
+        "decisions_with_title": 0,
+        "effort": {
+          "dispatched": 414,
+          "observed_runs": 19,
+          "reported_tokens": 5513506,
+          "reported_usd": "0.128737030",
+          "requests": 421,
+          "reused_local_generations": 0,
+          "tokens_reported_on": 414,
+          "unknown_cost_requests": 0
+        },
+        "first_decision": {
+          "call": {
+            "failure": 12,
+            "success": 0,
+            "ungraded": 7
+          },
+          "no_call": {
+            "failure": 0,
+            "success": 0,
+            "ungraded": 0
+          },
+          "unobserved": {
+            "failure": 0,
+            "success": 0,
+            "ungraded": 0
+          }
+        },
+        "graded": 12,
+        "literal_matches": {
+          "action": {
+            "absent": 1625,
+            "exact": 39,
+            "normalized_only": 0,
+            "unobserved": 0
+          },
+          "current": {
+            "absent": 1349,
+            "exact": 315,
+            "normalized_only": 0,
+            "unobserved": 0
+          },
+          "exposed": {
+            "absent": 1664,
+            "exact": 0,
+            "normalized_only": 0,
+            "unobserved": 0
+          },
+          "guidance": {
+            "absent": 0,
+            "exact": 0,
+            "normalized_only": 0,
+            "unobserved": 1664
+          },
+          "source": {
+            "absent": 0,
+            "exact": 1664,
+            "normalized_only": 0,
+            "unobserved": 0
+          },
+          "stored": {
+            "absent": 1664,
+            "exact": 0,
+            "normalized_only": 0,
+            "unobserved": 0
+          }
+        },
+        "phase": "source",
+        "read_calls": {},
+        "source_cue_occurrences": {
+          "also_exposed": 0,
+          "also_stored": 0,
+          "exposed_without_action_match": 0,
+          "in_action_and_current": 0,
+          "in_action_without_current_match": 0,
+          "source_candidates": 1664
+        },
+        "started": 19,
+        "tasks": 19,
+        "versus_first_pass": null
+      }
+    ],
+    "format": "agent-memory-policy-evidence/v1",
+    "observation_count": 1159,
+    "observations_sha256": "7316670004964bfee4838a94ad6e1a531a7a32e380a7b2bcea7668bbbad4c360",
+    "policy_comparisons": [
+      {
+        "both_success": {
+          "metrics": {
+            "business_calls": {
+              "candidate_total": null,
+              "difference": null,
+              "equal": 0,
+              "higher": 0,
+              "lower": 0,
+              "missing": 0,
+              "observed": 0,
+              "reference_total": null,
+              "relative_difference_pct": null
+            },
+            "tokens": {
+              "candidate_total": null,
+              "difference": null,
+              "equal": 0,
+              "higher": 0,
+              "lower": 0,
+              "missing": 0,
+              "observed": 0,
+              "reference_total": null,
+              "relative_difference_pct": null
+            }
+          },
+          "pairs": 0
+        },
+        "candidate": "candidate",
+        "cluster_contrast": {
+          "assigned_pairs": 570,
+          "by_cluster": {
+            "04a61fb25b4c67fe1ecd7954d3e881a83de02e4991014a7562cf306c51dad649": {
+              "difference": null,
+              "missing_bounds": [
+                -1.0,
+                1.0
+              ],
+              "tasks": 1
+            },
+            "0c50fa7ed3e26a993ba8a33d641cdbdf25d569ae731a9cf0a4816a62d86cb3bd": {
+              "difference": 0.0,
+              "missing_bounds": [
+                -0.23333333333333334,
+                0.2
+              ],
+              "tasks": 2
+            },
+            "17f279564b8fe1af55b4c005bf55baf204503db917e9807de8349fbfdfc484fa": {
+              "difference": 0.0,
+              "missing_bounds": [
+                -0.5,
+                0.4
+              ],
+              "tasks": 1
+            },
+            "1d8abf224c885ac89eb56792b6787c51024e2f51738e93faab5f7dba67da9ea8": {
+              "difference": null,
+              "missing_bounds": [
+                -1.0,
+                1.0
+              ],
+              "tasks": 5
+            },
+            "3487f8ae710ccf3d3180da7b682fdffed6bbe62d078ccfe1d84f629b10f8accd": {
+              "difference": 0.0,
+              "missing_bounds": [
+                -0.16666666666666666,
+                0.16666666666666666
+              ],
+              "tasks": 1
+            },
+            "417ffbf8795f93e0f1c9dcd40239683fa119da4d188f170aa56e4e398f6ac012": {
+              "difference": 0.0,
+              "missing_bounds": [
+                -0.06666666666666667,
+                0.26666666666666666
+              ],
+              "tasks": 1
+            },
+            "5511342b135ec0993fc1e839b1c0456e423c78eea28ab001f43addabe070f3d3": {
+              "difference": 0.0,
+              "missing_bounds": [
+                -0.16666666666666666,
+                0.23333333333333334
+              ],
+              "tasks": 1
+            },
+            "66558ec1f6be3368f0f26415161fe2a0370420d627668f0cb6c1194dc4f8f05c": {
+              "difference": null,
+              "missing_bounds": [
+                -1.0,
+                1.0
+              ],
+              "tasks": 1
+            },
+            "8f23d098f0320167bf2660b4e4b77845bc0dd7f5aa0c1546085cb913e51b9728": {
+              "difference": 0.0,
+              "missing_bounds": [
+                -0.36666666666666664,
+                0.4166666666666667
+              ],
+              "tasks": 2
+            },
+            "9c0a65e2f150fbc80be3a27257e64be44b6153c1b6313ccc00a5c0d98a263633": {
+              "difference": 0.0,
+              "missing_bounds": [
+                -0.3333333333333333,
+                0.3333333333333333
+              ],
+              "tasks": 1
+            },
+            "b975221d06dfe48bd098cc43c9dfedb7e44bff0c73a0fb734bbe4c94a2dbd9fd": {
+              "difference": null,
+              "missing_bounds": [
+                -1.0,
+                1.0
+              ],
+              "tasks": 1
+            },
+            "ce950b90e93e0a2e338f854ee52802be6c789bd0c799bc7f72834287c905c799": {
+              "difference": 0.0,
+              "missing_bounds": [
+                -0.3,
+                0.3333333333333333
+              ],
+              "tasks": 1
+            },
+            "d93e47242c82360d6bd2b805008686d959921fe696eac2f7d1c7cf3dabd9f608": {
+              "difference": 0.0,
+              "missing_bounds": [
+                -0.06666666666666667,
+                0.0
+              ],
+              "tasks": 1
+            }
+          },
+          "cluster_unit": "customer",
+          "clusters": 13,
+          "difference": 0.0,
+          "missing_bounds": [
+            -0.47692307692307695,
+            0.48846153846153845
+          ],
+          "negative_clusters": 0,
+          "observed_clusters": 9,
+          "observed_pairs": 210,
+          "positive_clusters": 0,
+          "tasks": 19,
+          "tied_clusters": 9,
+          "two_sided_cluster_sign_p": null
+        },
+        "clusters": 13,
+        "form": null,
+        "jointly_graded": {
+          "metrics": {
+            "business_calls": {
+              "candidate_total": "1596",
+              "difference": "76",
+              "equal": 25,
+              "higher": 94,
+              "lower": 91,
+              "missing": 0,
+              "observed": 210,
+              "reference_total": "1520",
+              "relative_difference_pct": 5.0
+            },
+            "tokens": {
+              "candidate_total": "41480761",
+              "difference": "2249889",
+              "equal": 0,
+              "higher": 101,
+              "lower": 109,
+              "missing": 0,
+              "observed": 210,
+              "reference_total": "39230872",
+              "relative_difference_pct": 5.735
+            }
+          },
+          "pairs": 210
+        },
+        "outcomes": {
+          "assigned": 570,
+          "both_failure": 210,
+          "both_success": 0,
+          "gain": 0,
+          "loss": 0,
+          "missing": 360
+        },
+        "reference": "existing"
+      },
+      {
+        "both_success": {
+          "metrics": {
+            "business_calls": {
+              "candidate_total": null,
+              "difference": null,
+              "equal": 0,
+              "higher": 0,
+              "lower": 0,
+              "missing": 0,
+              "observed": 0,
+              "reference_total": null,
+              "relative_difference_pct": null
+            },
+            "tokens": {
+              "candidate_total": null,
+              "difference": null,
+              "equal": 0,
+              "higher": 0,
+              "lower": 0,
+              "missing": 0,
+              "observed": 0,
+              "reference_total": null,
+              "relative_difference_pct": null
+            }
+          },
+          "pairs": 0
+        },
+        "candidate": "candidate",
+        "cluster_contrast": {
+          "assigned_pairs": 114,
+          "by_cluster": {
+            "04a61fb25b4c67fe1ecd7954d3e881a83de02e4991014a7562cf306c51dad649": {
+              "difference": null,
+              "missing_bounds": [
+                -1.0,
+                1.0
+              ],
+              "tasks": 1
+            },
+            "0c50fa7ed3e26a993ba8a33d641cdbdf25d569ae731a9cf0a4816a62d86cb3bd": {
+              "difference": 0.0,
+              "missing_bounds": [
+                -0.25,
+                0.25
+              ],
+              "tasks": 2
+            },
+            "17f279564b8fe1af55b4c005bf55baf204503db917e9807de8349fbfdfc484fa": {
+              "difference": 0.0,
+              "missing_bounds": [
+                -0.3333333333333333,
+                0.5
+              ],
+              "tasks": 1
+            },
+            "1d8abf224c885ac89eb56792b6787c51024e2f51738e93faab5f7dba67da9ea8": {
+              "difference": null,
+              "missing_bounds": [
+                -1.0,
+                1.0
+              ],
+              "tasks": 5
+            },
+            "3487f8ae710ccf3d3180da7b682fdffed6bbe62d078ccfe1d84f629b10f8accd": {
+              "difference": 0.0,
+              "missing_bounds": [
+                -0.16666666666666666,
+                0.16666666666666666
+              ],
+              "tasks": 1
+            },
+            "417ffbf8795f93e0f1c9dcd40239683fa119da4d188f170aa56e4e398f6ac012": {
+              "difference": 0.0,
+              "missing_bounds": [
+                -0.16666666666666666,
+                0.16666666666666666
+              ],
+              "tasks": 1
+            },
+            "5511342b135ec0993fc1e839b1c0456e423c78eea28ab001f43addabe070f3d3": {
+              "difference": 0.0,
+              "missing_bounds": [
+                -0.16666666666666666,
+                0.16666666666666666
+              ],
+              "tasks": 1
+            },
+            "66558ec1f6be3368f0f26415161fe2a0370420d627668f0cb6c1194dc4f8f05c": {
+              "difference": null,
+              "missing_bounds": [
+                -1.0,
+                1.0
+              ],
+              "tasks": 1
+            },
+            "8f23d098f0320167bf2660b4e4b77845bc0dd7f5aa0c1546085cb913e51b9728": {
+              "difference": 0.0,
+              "missing_bounds": [
+                -0.16666666666666666,
+                0.3333333333333333
+              ],
+              "tasks": 2
+            },
+            "9c0a65e2f150fbc80be3a27257e64be44b6153c1b6313ccc00a5c0d98a263633": {
+              "difference": 0.0,
+              "missing_bounds": [
+                -0.3333333333333333,
+                0.3333333333333333
+              ],
+              "tasks": 1
+            },
+            "b975221d06dfe48bd098cc43c9dfedb7e44bff0c73a0fb734bbe4c94a2dbd9fd": {
+              "difference": null,
+              "missing_bounds": [
+                -1.0,
+                1.0
+              ],
+              "tasks": 1
+            },
+            "ce950b90e93e0a2e338f854ee52802be6c789bd0c799bc7f72834287c905c799": {
+              "difference": 0.0,
+              "missing_bounds": [
+                -0.3333333333333333,
+                0.3333333333333333
+              ],
+              "tasks": 1
+            },
+            "d93e47242c82360d6bd2b805008686d959921fe696eac2f7d1c7cf3dabd9f608": {
+              "difference": 0.0,
+              "missing_bounds": [
+                0.0,
+                0.0
+              ],
+              "tasks": 1
+            }
+          },
+          "cluster_unit": "customer",
+          "clusters": 13,
+          "difference": 0.0,
+          "missing_bounds": [
+            -0.4551282051282051,
+            0.4807692307692308
+          ],
+          "negative_clusters": 0,
+          "observed_clusters": 9,
+          "observed_pairs": 44,
+          "positive_clusters": 0,
+          "tasks": 19,
+          "tied_clusters": 9,
+          "two_sided_cluster_sign_p": null
+        },
+        "clusters": 13,
+        "form": "episode",
+        "jointly_graded": {
+          "metrics": {
+            "business_calls": {
+              "candidate_total": "351",
+              "difference": "-4",
+              "equal": 4,
+              "higher": 19,
+              "lower": 21,
+              "missing": 0,
+              "observed": 44,
+              "reference_total": "355",
+              "relative_difference_pct": -1.127
+            },
+            "tokens": {
+              "candidate_total": "9436703",
+              "difference": "-215478",
+              "equal": 0,
+              "higher": 24,
+              "lower": 20,
+              "missing": 0,
+              "observed": 44,
+              "reference_total": "9652181",
+              "relative_difference_pct": -2.232
+            }
+          },
+          "pairs": 44
+        },
+        "outcomes": {
+          "assigned": 114,
+          "both_failure": 44,
+          "both_success": 0,
+          "gain": 0,
+          "loss": 0,
+          "missing": 70
+        },
+        "reference": "existing"
+      },
+      {
+        "both_success": {
+          "metrics": {
+            "business_calls": {
+              "candidate_total": null,
+              "difference": null,
+              "equal": 0,
+              "higher": 0,
+              "lower": 0,
+              "missing": 0,
+              "observed": 0,
+              "reference_total": null,
+              "relative_difference_pct": null
+            },
+            "tokens": {
+              "candidate_total": null,
+              "difference": null,
+              "equal": 0,
+              "higher": 0,
+              "lower": 0,
+              "missing": 0,
+              "observed": 0,
+              "reference_total": null,
+              "relative_difference_pct": null
+            }
+          },
+          "pairs": 0
+        },
+        "candidate": "candidate",
+        "cluster_contrast": {
+          "assigned_pairs": 114,
+          "by_cluster": {
+            "04a61fb25b4c67fe1ecd7954d3e881a83de02e4991014a7562cf306c51dad649": {
+              "difference": null,
+              "missing_bounds": [
+                -1.0,
+                1.0
+              ],
+              "tasks": 1
+            },
+            "0c50fa7ed3e26a993ba8a33d641cdbdf25d569ae731a9cf0a4816a62d86cb3bd": {
+              "difference": 0.0,
+              "missing_bounds": [
+                -0.25,
+                0.16666666666666666
+              ],
+              "tasks": 2
+            },
+            "17f279564b8fe1af55b4c005bf55baf204503db917e9807de8349fbfdfc484fa": {
+              "difference": 0.0,
+              "missing_bounds": [
+                -0.5,
+                0.3333333333333333
+              ],
+              "tasks": 1
+            },
+            "1d8abf224c885ac89eb56792b6787c51024e2f51738e93faab5f7dba67da9ea8": {
+              "difference": null,
+              "missing_bounds": [
+                -1.0,
+                1.0
+              ],
+              "tasks": 5
+            },
+            "3487f8ae710ccf3d3180da7b682fdffed6bbe62d078ccfe1d84f629b10f8accd": {
+              "difference": 0.0,
+              "missing_bounds": [
+                -0.16666666666666666,
+                0.16666666666666666
+              ],
+              "tasks": 1
+            },
+            "417ffbf8795f93e0f1c9dcd40239683fa119da4d188f170aa56e4e398f6ac012": {
+              "difference": 0.0,
+              "missing_bounds": [
+                0.0,
+                0.3333333333333333
+              ],
+              "tasks": 1
+            },
+            "5511342b135ec0993fc1e839b1c0456e423c78eea28ab001f43addabe070f3d3": {
+              "difference": 0.0,
+              "missing_bounds": [
+                -0.16666666666666666,
+                0.16666666666666666
+              ],
+              "tasks": 1
+            },
+            "66558ec1f6be3368f0f26415161fe2a0370420d627668f0cb6c1194dc4f8f05c": {
+              "difference": null,
+              "missing_bounds": [
+                -1.0,
+                1.0
+              ],
+              "tasks": 1
+            },
+            "8f23d098f0320167bf2660b4e4b77845bc0dd7f5aa0c1546085cb913e51b9728": {
+              "difference": 0.0,
+              "missing_bounds": [
+                -0.5,
+                0.4166666666666667
+              ],
+              "tasks": 2
+            },
+            "9c0a65e2f150fbc80be3a27257e64be44b6153c1b6313ccc00a5c0d98a263633": {
+              "difference": 0.0,
+              "missing_bounds": [
+                -0.3333333333333333,
+                0.3333333333333333
+              ],
+              "tasks": 1
+            },
+            "b975221d06dfe48bd098cc43c9dfedb7e44bff0c73a0fb734bbe4c94a2dbd9fd": {
+              "difference": null,
+              "missing_bounds": [
+                -1.0,
+                1.0
+              ],
+              "tasks": 1
+            },
+            "ce950b90e93e0a2e338f854ee52802be6c789bd0c799bc7f72834287c905c799": {
+              "difference": 0.0,
+              "missing_bounds": [
+                -0.16666666666666666,
+                0.3333333333333333
+              ],
+              "tasks": 1
+            },
+            "d93e47242c82360d6bd2b805008686d959921fe696eac2f7d1c7cf3dabd9f608": {
+              "difference": 0.0,
+              "missing_bounds": [
+                -0.16666666666666666,
+                0.0
+              ],
+              "tasks": 1
+            }
+          },
+          "cluster_unit": "customer",
+          "clusters": 13,
+          "difference": 0.0,
+          "missing_bounds": [
+            -0.4807692307692308,
+            0.4807692307692308
+          ],
+          "negative_clusters": 0,
+          "observed_clusters": 9,
+          "observed_pairs": 43,
+          "positive_clusters": 0,
+          "tasks": 19,
+          "tied_clusters": 9,
+          "two_sided_cluster_sign_p": null
+        },
+        "clusters": 13,
+        "form": "fact",
+        "jointly_graded": {
+          "metrics": {
+            "business_calls": {
+              "candidate_total": "312",
+              "difference": "25",
+              "equal": 4,
+              "higher": 20,
+              "lower": 19,
+              "missing": 0,
+              "observed": 43,
+              "reference_total": "287",
+              "relative_difference_pct": 8.711
+            },
+            "tokens": {
+              "candidate_total": "7803252",
+              "difference": "968823",
+              "equal": 0,
+              "higher": 20,
+              "lower": 23,
+              "missing": 0,
+              "observed": 43,
+              "reference_total": "6834429",
+              "relative_difference_pct": 14.176
+            }
+          },
+          "pairs": 43
+        },
+        "outcomes": {
+          "assigned": 114,
+          "both_failure": 43,
+          "both_success": 0,
+          "gain": 0,
+          "loss": 0,
+          "missing": 71
+        },
+        "reference": "existing"
+      },
+      {
+        "both_success": {
+          "metrics": {
+            "business_calls": {
+              "candidate_total": null,
+              "difference": null,
+              "equal": 0,
+              "higher": 0,
+              "lower": 0,
+              "missing": 0,
+              "observed": 0,
+              "reference_total": null,
+              "relative_difference_pct": null
+            },
+            "tokens": {
+              "candidate_total": null,
+              "difference": null,
+              "equal": 0,
+              "higher": 0,
+              "lower": 0,
+              "missing": 0,
+              "observed": 0,
+              "reference_total": null,
+              "relative_difference_pct": null
+            }
+          },
+          "pairs": 0
+        },
+        "candidate": "candidate",
+        "cluster_contrast": {
+          "assigned_pairs": 114,
+          "by_cluster": {
+            "04a61fb25b4c67fe1ecd7954d3e881a83de02e4991014a7562cf306c51dad649": {
+              "difference": null,
+              "missing_bounds": [
+                -1.0,
+                1.0
+              ],
+              "tasks": 1
+            },
+            "0c50fa7ed3e26a993ba8a33d641cdbdf25d569ae731a9cf0a4816a62d86cb3bd": {
+              "difference": 0.0,
+              "missing_bounds": [
+                -0.25,
+                0.16666666666666666
+              ],
+              "tasks": 2
+            },
+            "17f279564b8fe1af55b4c005bf55baf204503db917e9807de8349fbfdfc484fa": {
+              "difference": 0.0,
+              "missing_bounds": [
+                -0.5,
+                0.3333333333333333
+              ],
+              "tasks": 1
+            },
+            "1d8abf224c885ac89eb56792b6787c51024e2f51738e93faab5f7dba67da9ea8": {
+              "difference": null,
+              "missing_bounds": [
+                -1.0,
+                1.0
+              ],
+              "tasks": 5
+            },
+            "3487f8ae710ccf3d3180da7b682fdffed6bbe62d078ccfe1d84f629b10f8accd": {
+              "difference": 0.0,
+              "missing_bounds": [
+                -0.16666666666666666,
+                0.16666666666666666
+              ],
+              "tasks": 1
+            },
+            "417ffbf8795f93e0f1c9dcd40239683fa119da4d188f170aa56e4e398f6ac012": {
+              "difference": 0.0,
+              "missing_bounds": [
+                0.0,
+                0.3333333333333333
+              ],
+              "tasks": 1
+            },
+            "5511342b135ec0993fc1e839b1c0456e423c78eea28ab001f43addabe070f3d3": {
+              "difference": 0.0,
+              "missing_bounds": [
+                -0.16666666666666666,
+                0.3333333333333333
+              ],
+              "tasks": 1
+            },
+            "66558ec1f6be3368f0f26415161fe2a0370420d627668f0cb6c1194dc4f8f05c": {
+              "difference": null,
+              "missing_bounds": [
+                -1.0,
+                1.0
+              ],
+              "tasks": 1
+            },
+            "8f23d098f0320167bf2660b4e4b77845bc0dd7f5aa0c1546085cb913e51b9728": {
+              "difference": 0.0,
+              "missing_bounds": [
+                -0.4166666666666667,
+                0.5
+              ],
+              "tasks": 2
+            },
+            "9c0a65e2f150fbc80be3a27257e64be44b6153c1b6313ccc00a5c0d98a263633": {
+              "difference": 0.0,
+              "missing_bounds": [
+                -0.3333333333333333,
+                0.3333333333333333
+              ],
+              "tasks": 1
+            },
+            "b975221d06dfe48bd098cc43c9dfedb7e44bff0c73a0fb734bbe4c94a2dbd9fd": {
+              "difference": null,
+              "missing_bounds": [
+                -1.0,
+                1.0
+              ],
+              "tasks": 1
+            },
+            "ce950b90e93e0a2e338f854ee52802be6c789bd0c799bc7f72834287c905c799": {
+              "difference": 0.0,
+              "missing_bounds": [
+                -0.3333333333333333,
+                0.3333333333333333
+              ],
+              "tasks": 1
+            },
+            "d93e47242c82360d6bd2b805008686d959921fe696eac2f7d1c7cf3dabd9f608": {
+              "difference": 0.0,
+              "missing_bounds": [
+                -0.16666666666666666,
+                0.0
+              ],
+              "tasks": 1
+            }
+          },
+          "cluster_unit": "customer",
+          "clusters": 13,
+          "difference": 0.0,
+          "missing_bounds": [
+            -0.48717948717948717,
+            0.5
+          ],
+          "negative_clusters": 0,
+          "observed_clusters": 9,
+          "observed_pairs": 39,
+          "positive_clusters": 0,
+          "tasks": 19,
+          "tied_clusters": 9,
+          "two_sided_cluster_sign_p": null
+        },
+        "clusters": 13,
+        "form": "free",
+        "jointly_graded": {
+          "metrics": {
+            "business_calls": {
+              "candidate_total": "299",
+              "difference": "48",
+              "equal": 4,
+              "higher": 21,
+              "lower": 14,
+              "missing": 0,
+              "observed": 39,
+              "reference_total": "251",
+              "relative_difference_pct": 19.124
+            },
+            "tokens": {
+              "candidate_total": "8191159",
+              "difference": "1545057",
+              "equal": 0,
+              "higher": 22,
+              "lower": 17,
+              "missing": 0,
+              "observed": 39,
+              "reference_total": "6646102",
+              "relative_difference_pct": 23.248
+            }
+          },
+          "pairs": 39
+        },
+        "outcomes": {
+          "assigned": 114,
+          "both_failure": 39,
+          "both_success": 0,
+          "gain": 0,
+          "loss": 0,
+          "missing": 75
+        },
+        "reference": "existing"
+      },
+      {
+        "both_success": {
+          "metrics": {
+            "business_calls": {
+              "candidate_total": null,
+              "difference": null,
+              "equal": 0,
+              "higher": 0,
+              "lower": 0,
+              "missing": 0,
+              "observed": 0,
+              "reference_total": null,
+              "relative_difference_pct": null
+            },
+            "tokens": {
+              "candidate_total": null,
+              "difference": null,
+              "equal": 0,
+              "higher": 0,
+              "lower": 0,
+              "missing": 0,
+              "observed": 0,
+              "reference_total": null,
+              "relative_difference_pct": null
+            }
+          },
+          "pairs": 0
+        },
+        "candidate": "candidate",
+        "cluster_contrast": {
+          "assigned_pairs": 114,
+          "by_cluster": {
+            "04a61fb25b4c67fe1ecd7954d3e881a83de02e4991014a7562cf306c51dad649": {
+              "difference": null,
+              "missing_bounds": [
+                -1.0,
+                1.0
+              ],
+              "tasks": 1
+            },
+            "0c50fa7ed3e26a993ba8a33d641cdbdf25d569ae731a9cf0a4816a62d86cb3bd": {
+              "difference": 0.0,
+              "missing_bounds": [
+                -0.25,
+                0.16666666666666666
+              ],
+              "tasks": 2
+            },
+            "17f279564b8fe1af55b4c005bf55baf204503db917e9807de8349fbfdfc484fa": {
+              "difference": 0.0,
+              "missing_bounds": [
+                -0.5,
+                0.6666666666666666
+              ],
+              "tasks": 1
+            },
+            "1d8abf224c885ac89eb56792b6787c51024e2f51738e93faab5f7dba67da9ea8": {
+              "difference": null,
+              "missing_bounds": [
+                -1.0,
+                1.0
+              ],
+              "tasks": 5
+            },
+            "3487f8ae710ccf3d3180da7b682fdffed6bbe62d078ccfe1d84f629b10f8accd": {
+              "difference": 0.0,
+              "missing_bounds": [
+                -0.16666666666666666,
+                0.16666666666666666
+              ],
+              "tasks": 1
+            },
+            "417ffbf8795f93e0f1c9dcd40239683fa119da4d188f170aa56e4e398f6ac012": {
+              "difference": 0.0,
+              "missing_bounds": [
+                0.0,
+                0.16666666666666666
+              ],
+              "tasks": 1
+            },
+            "5511342b135ec0993fc1e839b1c0456e423c78eea28ab001f43addabe070f3d3": {
+              "difference": 0.0,
+              "missing_bounds": [
+                -0.16666666666666666,
+                0.16666666666666666
+              ],
+              "tasks": 1
+            },
+            "66558ec1f6be3368f0f26415161fe2a0370420d627668f0cb6c1194dc4f8f05c": {
+              "difference": null,
+              "missing_bounds": [
+                -1.0,
+                1.0
+              ],
+              "tasks": 1
+            },
+            "8f23d098f0320167bf2660b4e4b77845bc0dd7f5aa0c1546085cb913e51b9728": {
+              "difference": 0.0,
+              "missing_bounds": [
+                -0.5833333333333334,
+                0.5
+              ],
+              "tasks": 2
+            },
+            "9c0a65e2f150fbc80be3a27257e64be44b6153c1b6313ccc00a5c0d98a263633": {
+              "difference": 0.0,
+              "missing_bounds": [
+                -0.3333333333333333,
+                0.3333333333333333
+              ],
+              "tasks": 1
+            },
+            "b975221d06dfe48bd098cc43c9dfedb7e44bff0c73a0fb734bbe4c94a2dbd9fd": {
+              "difference": null,
+              "missing_bounds": [
+                -1.0,
+                1.0
+              ],
+              "tasks": 1
+            },
+            "ce950b90e93e0a2e338f854ee52802be6c789bd0c799bc7f72834287c905c799": {
+              "difference": 0.0,
+              "missing_bounds": [
+                -0.3333333333333333,
+                0.3333333333333333
+              ],
+              "tasks": 1
+            },
+            "d93e47242c82360d6bd2b805008686d959921fe696eac2f7d1c7cf3dabd9f608": {
+              "difference": 0.0,
+              "missing_bounds": [
+                0.0,
+                0.0
+              ],
+              "tasks": 1
+            }
+          },
+          "cluster_unit": "customer",
+          "clusters": 13,
+          "difference": 0.0,
+          "missing_bounds": [
+            -0.48717948717948717,
+            0.5
+          ],
+          "negative_clusters": 0,
+          "observed_clusters": 9,
+          "observed_pairs": 40,
+          "positive_clusters": 0,
+          "tasks": 19,
+          "tied_clusters": 9,
+          "two_sided_cluster_sign_p": null
+        },
+        "clusters": 13,
+        "form": "lesson",
+        "jointly_graded": {
+          "metrics": {
+            "business_calls": {
+              "candidate_total": "274",
+              "difference": "-14",
+              "equal": 7,
+              "higher": 13,
+              "lower": 20,
+              "missing": 0,
+              "observed": 40,
+              "reference_total": "288",
+              "relative_difference_pct": -4.861
+            },
+            "tokens": {
+              "candidate_total": "7021901",
+              "difference": "-611515",
+              "equal": 0,
+              "higher": 12,
+              "lower": 28,
+              "missing": 0,
+              "observed": 40,
+              "reference_total": "7633416",
+              "relative_difference_pct": -8.011
+            }
+          },
+          "pairs": 40
+        },
+        "outcomes": {
+          "assigned": 114,
+          "both_failure": 40,
+          "both_success": 0,
+          "gain": 0,
+          "loss": 0,
+          "missing": 74
+        },
+        "reference": "existing"
+      },
+      {
+        "both_success": {
+          "metrics": {
+            "business_calls": {
+              "candidate_total": null,
+              "difference": null,
+              "equal": 0,
+              "higher": 0,
+              "lower": 0,
+              "missing": 0,
+              "observed": 0,
+              "reference_total": null,
+              "relative_difference_pct": null
+            },
+            "tokens": {
+              "candidate_total": null,
+              "difference": null,
+              "equal": 0,
+              "higher": 0,
+              "lower": 0,
+              "missing": 0,
+              "observed": 0,
+              "reference_total": null,
+              "relative_difference_pct": null
+            }
+          },
+          "pairs": 0
+        },
+        "candidate": "candidate",
+        "cluster_contrast": {
+          "assigned_pairs": 114,
+          "by_cluster": {
+            "04a61fb25b4c67fe1ecd7954d3e881a83de02e4991014a7562cf306c51dad649": {
+              "difference": null,
+              "missing_bounds": [
+                -1.0,
+                1.0
+              ],
+              "tasks": 1
+            },
+            "0c50fa7ed3e26a993ba8a33d641cdbdf25d569ae731a9cf0a4816a62d86cb3bd": {
+              "difference": 0.0,
+              "missing_bounds": [
+                -0.16666666666666666,
+                0.25
+              ],
+              "tasks": 2
+            },
+            "17f279564b8fe1af55b4c005bf55baf204503db917e9807de8349fbfdfc484fa": {
+              "difference": 0.0,
+              "missing_bounds": [
+                -0.6666666666666666,
+                0.16666666666666666
+              ],
+              "tasks": 1
+            },
+            "1d8abf224c885ac89eb56792b6787c51024e2f51738e93faab5f7dba67da9ea8": {
+              "difference": null,
+              "missing_bounds": [
+                -1.0,
+                1.0
+              ],
+              "tasks": 5
+            },
+            "3487f8ae710ccf3d3180da7b682fdffed6bbe62d078ccfe1d84f629b10f8accd": {
+              "difference": 0.0,
+              "missing_bounds": [
+                -0.16666666666666666,
+                0.16666666666666666
+              ],
+              "tasks": 1
+            },
+            "417ffbf8795f93e0f1c9dcd40239683fa119da4d188f170aa56e4e398f6ac012": {
+              "difference": 0.0,
+              "missing_bounds": [
+                -0.16666666666666666,
+                0.3333333333333333
+              ],
+              "tasks": 1
+            },
+            "5511342b135ec0993fc1e839b1c0456e423c78eea28ab001f43addabe070f3d3": {
+              "difference": 0.0,
+              "missing_bounds": [
+                -0.16666666666666666,
+                0.3333333333333333
+              ],
+              "tasks": 1
+            },
+            "66558ec1f6be3368f0f26415161fe2a0370420d627668f0cb6c1194dc4f8f05c": {
+              "difference": null,
+              "missing_bounds": [
+                -1.0,
+                1.0
+              ],
+              "tasks": 1
+            },
+            "8f23d098f0320167bf2660b4e4b77845bc0dd7f5aa0c1546085cb913e51b9728": {
+              "difference": 0.0,
+              "missing_bounds": [
+                -0.16666666666666666,
+                0.3333333333333333
+              ],
+              "tasks": 2
+            },
+            "9c0a65e2f150fbc80be3a27257e64be44b6153c1b6313ccc00a5c0d98a263633": {
+              "difference": 0.0,
+              "missing_bounds": [
+                -0.3333333333333333,
+                0.3333333333333333
+              ],
+              "tasks": 1
+            },
+            "b975221d06dfe48bd098cc43c9dfedb7e44bff0c73a0fb734bbe4c94a2dbd9fd": {
+              "difference": null,
+              "missing_bounds": [
+                -1.0,
+                1.0
+              ],
+              "tasks": 1
+            },
+            "ce950b90e93e0a2e338f854ee52802be6c789bd0c799bc7f72834287c905c799": {
+              "difference": 0.0,
+              "missing_bounds": [
+                -0.3333333333333333,
+                0.3333333333333333
+              ],
+              "tasks": 1
+            },
+            "d93e47242c82360d6bd2b805008686d959921fe696eac2f7d1c7cf3dabd9f608": {
+              "difference": 0.0,
+              "missing_bounds": [
+                0.0,
+                0.0
+              ],
+              "tasks": 1
+            }
+          },
+          "cluster_unit": "customer",
+          "clusters": 13,
+          "difference": 0.0,
+          "missing_bounds": [
+            -0.47435897435897434,
+            0.4807692307692308
+          ],
+          "negative_clusters": 0,
+          "observed_clusters": 9,
+          "observed_pairs": 44,
+          "positive_clusters": 0,
+          "tasks": 19,
+          "tied_clusters": 9,
+          "two_sided_cluster_sign_p": null
+        },
+        "clusters": 13,
+        "form": "procedure",
+        "jointly_graded": {
+          "metrics": {
+            "business_calls": {
+              "candidate_total": "360",
+              "difference": "21",
+              "equal": 6,
+              "higher": 21,
+              "lower": 17,
+              "missing": 0,
+              "observed": 44,
+              "reference_total": "339",
+              "relative_difference_pct": 6.195
+            },
+            "tokens": {
+              "candidate_total": "9027746",
+              "difference": "563002",
+              "equal": 0,
+              "higher": 23,
+              "lower": 21,
+              "missing": 0,
+              "observed": 44,
+              "reference_total": "8464744",
+              "relative_difference_pct": 6.651
+            }
+          },
+          "pairs": 44
+        },
+        "outcomes": {
+          "assigned": 114,
+          "both_failure": 44,
+          "both_success": 0,
+          "gain": 0,
+          "loss": 0,
+          "missing": 70
+        },
+        "reference": "existing"
+      }
+    ],
+    "same_input_repetitions": {
+      "groups": {
+        "changed_function_sequence": 20,
+        "changed_functions_or_arguments": 217,
+        "comparable": 220,
+        "different_inputs_or_banks": 0,
+        "missing_decisions": 160,
+        "registered": 380
+      },
+      "metrics": {
+        "all_targets_opened": {
+          "changed_groups": 0,
+          "observed_groups": 220
+        },
+        "first_search_hit": {
+          "changed_groups": 49,
+          "observed_groups": 198
+        },
+        "new_account_rows": {
+          "changed_groups": 14,
+          "observed_groups": 220
+        },
+        "other_accounts": {
+          "changed_groups": 4,
+          "observed_groups": 220
+        },
+        "target_accounts": {
+          "changed_groups": 12,
+          "observed_groups": 220
+        }
+      }
+    },
+    "scope": "sources_and_readers",
+    "study_cost": {
+      "confirmed_usd": "3.520013634",
+      "covered_usd": "4.002546534",
+      "held_usd": "0.482532900"
+    },
+    "trajectory_sha256": "8af6697c74bcdc224ba4936e189b5002f08de23cc30076409076866806c7886e",
+    "writers": {
+      "assigned": 380,
+      "effort": {
+        "dispatched": 220,
+        "observed_runs": 240,
+        "reported_tokens": 4452641,
+        "reported_usd": "0.334340170",
+        "requests": 240,
+        "reused_local_generations": 0,
+        "tokens_reported_on": 220,
+        "unknown_cost_requests": 0
+      },
+      "observed": 240,
+      "sealed_nonempty": 220,
+      "source_candidate_occurrences": 17920,
+      "stored_matches": 280
+    },
+    "writers_sha256": "bdef7e1d8080474e5ac832fb1516676151ae380d6a2f2f46f4dece50f59357c8"
+  },
+  "bfcl-relevance": {
+    "benchmark": "bfcl.relevance",
+    "bindings": {
+      "benchmark_revision": "6ea57973c7a6097fd7c5915698c54c17c5b1b6c8",
+      "protocol_sha256": "7b75b0c760a6652471e8965244e16749d2e2fd8d233639f25563b0f7ffaf3bbb",
+      "source": {
+        "recording": "bfcl-relevance-two-pass-01-decoded",
+        "registration_sha256": "b8bc21b076194f172208ffb3a7697b770f37dc1cba76d786fc6b2b8354e8a450"
+      }
+    },
+    "by_condition": [
+      {
+        "assigned": 40,
+        "clusters": 8,
+        "condition": "on_demand",
+        "decisions_with_body": 0,
+        "decisions_with_source_evidence": 40,
+        "decisions_with_title": 0,
+        "effort": {
+          "dispatched": 40,
+          "observed_runs": 40,
+          "reported_tokens": 31070,
+          "reported_usd": "0",
+          "requests": 40,
+          "reused_local_generations": 0,
+          "tokens_reported_on": 40,
+          "unknown_cost_requests": 0
+        },
+        "first_decision": {
+          "call": {
+            "failure": 5,
+            "success": 20,
+            "ungraded": 0
+          },
+          "no_call": {
+            "failure": 0,
+            "success": 15,
+            "ungraded": 0
+          },
+          "unobserved": {
+            "failure": 0,
+            "success": 0,
+            "ungraded": 0
+          }
+        },
+        "graded": 40,
+        "literal_matches": {
+          "action": {
+            "absent": 160,
+            "exact": 85,
+            "normalized_only": 0,
+            "unobserved": 0
+          },
+          "current": {
+            "absent": 70,
+            "exact": 175,
+            "normalized_only": 0,
+            "unobserved": 0
+          },
+          "exposed": {
+            "absent": 245,
+            "exact": 0,
+            "normalized_only": 0,
+            "unobserved": 0
+          },
+          "guidance": {
+            "absent": 245,
+            "exact": 0,
+            "normalized_only": 0,
+            "unobserved": 0
+          },
+          "source": {
+            "absent": 5,
+            "exact": 240,
+            "normalized_only": 0,
+            "unobserved": 0
+          },
+          "stored": {
+            "absent": 187,
+            "exact": 58,
+            "normalized_only": 0,
+            "unobserved": 0
+          }
+        },
+        "phase": "solve",
+        "read_calls": {},
+        "source_cue_occurrences": {
+          "also_exposed": 0,
+          "also_stored": 58,
+          "exposed_without_action_match": 0,
+          "in_action_and_current": 0,
+          "in_action_without_current_match": 0,
+          "source_candidates": 235
+        },
+        "started": 40,
+        "tasks": 8,
+        "versus_first_pass": {
+          "both_success": {
+            "metrics": {
+              "business_calls": {
+                "candidate_total": "20",
+                "difference": "0",
+                "equal": 35,
+                "higher": 0,
+                "lower": 0,
+                "missing": 0,
+                "observed": 35,
+                "reference_total": "20",
+                "relative_difference_pct": 0.0
+              },
+              "tokens": {
+                "candidate_total": "27940",
+                "difference": "6825",
+                "equal": 0,
+                "higher": 35,
+                "lower": 0,
+                "missing": 0,
+                "observed": 35,
+                "reference_total": "21115",
+                "relative_difference_pct": 32.323
+              }
+            },
+            "pairs": 35
+          },
+          "jointly_graded": {
+            "metrics": {
+              "business_calls": {
+                "candidate_total": "25",
+                "difference": "0",
+                "equal": 40,
+                "higher": 0,
+                "lower": 0,
+                "missing": 0,
+                "observed": 40,
+                "reference_total": "25",
+                "relative_difference_pct": 0.0
+              },
+              "tokens": {
+                "candidate_total": "31070",
+                "difference": "7750",
+                "equal": 0,
+                "higher": 40,
+                "lower": 0,
+                "missing": 0,
+                "observed": 40,
+                "reference_total": "23320",
+                "relative_difference_pct": 33.233
+              }
+            },
+            "pairs": 40
+          },
+          "outcomes": {
+            "assigned": 40,
+            "both_failure": 5,
+            "both_success": 35,
+            "gain": 0,
+            "loss": 0,
+            "missing": 0
+          }
+        }
+      },
+      {
+        "assigned": 40,
+        "clusters": 8,
+        "condition": "preload",
+        "decisions_with_body": 40,
+        "decisions_with_source_evidence": 40,
+        "decisions_with_title": 40,
+        "effort": {
+          "dispatched": 40,
+          "observed_runs": 40,
+          "reported_tokens": 28260,
+          "reported_usd": "0",
+          "requests": 40,
+          "reused_local_generations": 0,
+          "tokens_reported_on": 40,
+          "unknown_cost_requests": 0
+        },
+        "first_decision": {
+          "call": {
+            "failure": 5,
+            "success": 18,
+            "ungraded": 0
+          },
+          "no_call": {
+            "failure": 2,
+            "success": 15,
+            "ungraded": 0
+          },
+          "unobserved": {
+            "failure": 0,
+            "success": 0,
+            "ungraded": 0
+          }
+        },
+        "graded": 40,
+        "literal_matches": {
+          "action": {
+            "absent": 150,
+            "exact": 85,
+            "normalized_only": 0,
+            "unobserved": 0
+          },
+          "current": {
+            "absent": 65,
+            "exact": 170,
+            "normalized_only": 0,
+            "unobserved": 0
+          },
+          "exposed": {
+            "absent": 177,
+            "exact": 58,
+            "normalized_only": 0,
+            "unobserved": 0
+          },
+          "guidance": {
+            "absent": 235,
+            "exact": 0,
+            "normalized_only": 0,
+            "unobserved": 0
+          },
+          "source": {
+            "absent": 0,
+            "exact": 235,
+            "normalized_only": 0,
+            "unobserved": 0
+          },
+          "stored": {
+            "absent": 177,
+            "exact": 58,
+            "normalized_only": 0,
+            "unobserved": 0
+          }
+        },
+        "phase": "solve",
+        "read_calls": {},
+        "source_cue_occurrences": {
+          "also_exposed": 58,
+          "also_stored": 58,
+          "exposed_without_action_match": 7,
+          "in_action_and_current": 31,
+          "in_action_without_current_match": 20,
+          "source_candidates": 235
+        },
+        "started": 40,
+        "tasks": 8,
+        "versus_first_pass": {
+          "both_success": {
+            "metrics": {
+              "business_calls": {
+                "candidate_total": "18",
+                "difference": "0",
+                "equal": 33,
+                "higher": 0,
+                "lower": 0,
+                "missing": 0,
+                "observed": 33,
+                "reference_total": "18",
+                "relative_difference_pct": 0.0
+              },
+              "tokens": {
+                "candidate_total": "23677",
+                "difference": "4052",
+                "equal": 0,
+                "higher": 33,
+                "lower": 0,
+                "missing": 0,
+                "observed": 33,
+                "reference_total": "19625",
+                "relative_difference_pct": 20.647
+              }
+            },
+            "pairs": 33
+          },
+          "jointly_graded": {
+            "metrics": {
+              "business_calls": {
+                "candidate_total": "23",
+                "difference": "-2",
+                "equal": 38,
+                "higher": 0,
+                "lower": 2,
+                "missing": 0,
+                "observed": 40,
+                "reference_total": "25",
+                "relative_difference_pct": -8.0
+              },
+              "tokens": {
+                "candidate_total": "28260",
+                "difference": "4940",
+                "equal": 0,
+                "higher": 40,
+                "lower": 0,
+                "missing": 0,
+                "observed": 40,
+                "reference_total": "23320",
+                "relative_difference_pct": 21.184
+              }
+            },
+            "pairs": 40
+          },
+          "outcomes": {
+            "assigned": 40,
+            "both_failure": 5,
+            "both_success": 33,
+            "gain": 0,
+            "loss": 2,
+            "missing": 0
+          }
+        }
+      },
+      {
+        "assigned": 8,
+        "clusters": 8,
+        "condition": "no_memory",
+        "decisions_with_body": 0,
+        "decisions_with_source_evidence": 8,
+        "decisions_with_title": 0,
+        "effort": {
+          "dispatched": 8,
+          "observed_runs": 8,
+          "reported_tokens": 4664,
+          "reported_usd": "0",
+          "requests": 8,
+          "reused_local_generations": 8,
+          "tokens_reported_on": 8,
+          "unknown_cost_requests": 0
+        },
+        "first_decision": {
+          "call": {
+            "failure": 1,
+            "success": 4,
+            "ungraded": 0
+          },
+          "no_call": {
+            "failure": 0,
+            "success": 3,
+            "ungraded": 0
+          },
+          "unobserved": {
+            "failure": 0,
+            "success": 0,
+            "ungraded": 0
+          }
+        },
+        "graded": 8,
+        "literal_matches": {
+          "action": {
+            "absent": 29,
+            "exact": 18,
+            "normalized_only": 0,
+            "unobserved": 0
+          },
+          "current": {
+            "absent": 13,
+            "exact": 34,
+            "normalized_only": 0,
+            "unobserved": 0
+          },
+          "exposed": {
+            "absent": 47,
+            "exact": 0,
+            "normalized_only": 0,
+            "unobserved": 0
+          },
+          "guidance": {
+            "absent": 0,
+            "exact": 0,
+            "normalized_only": 0,
+            "unobserved": 47
+          },
+          "source": {
+            "absent": 0,
+            "exact": 47,
+            "normalized_only": 0,
+            "unobserved": 0
+          },
+          "stored": {
+            "absent": 47,
+            "exact": 0,
+            "normalized_only": 0,
+            "unobserved": 0
+          }
+        },
+        "phase": "source",
+        "read_calls": {},
+        "source_cue_occurrences": {
+          "also_exposed": 0,
+          "also_stored": 0,
+          "exposed_without_action_match": 0,
+          "in_action_and_current": 0,
+          "in_action_without_current_match": 0,
+          "source_candidates": 47
+        },
+        "started": 8,
+        "tasks": 8,
+        "versus_first_pass": null
+      }
+    ],
+    "format": "agent-memory-policy-evidence/v1",
+    "observation_count": 88,
+    "observations_sha256": "0720a44e7f584e8afeaed37d5982a3f8aaf52b72886c7294d4eaf36f0de695aa",
+    "policy_comparisons": [
+      {
+        "both_success": {
+          "metrics": {
+            "business_calls": {
+              "candidate_total": "18",
+              "difference": "0",
+              "equal": 33,
+              "higher": 0,
+              "lower": 0,
+              "missing": 0,
+              "observed": 33,
+              "reference_total": "18",
+              "relative_difference_pct": 0.0
+            },
+            "tokens": {
+              "candidate_total": "23677",
+              "difference": "-2404",
+              "equal": 0,
+              "higher": 0,
+              "lower": 33,
+              "missing": 0,
+              "observed": 33,
+              "reference_total": "26081",
+              "relative_difference_pct": -9.217
+            }
+          },
+          "pairs": 33
+        },
+        "candidate": "preload",
+        "cluster_contrast": {
+          "assigned_pairs": 40,
+          "by_cluster": {
+            "irrelevance_0": {
+              "difference": 0.0,
+              "missing_bounds": [
+                0.0,
+                0.0
+              ],
+              "tasks": 1
+            },
+            "irrelevance_150": {
+              "difference": 0.0,
+              "missing_bounds": [
+                0.0,
+                0.0
+              ],
+              "tasks": 1
+            },
+            "irrelevance_180": {
+              "difference": 0.0,
+              "missing_bounds": [
+                0.0,
+                0.0
+              ],
+              "tasks": 1
+            },
+            "irrelevance_20": {
+              "difference": 0.0,
+              "missing_bounds": [
+                0.0,
+                0.0
+              ],
+              "tasks": 1
+            },
+            "live_relevance_2-2-0": {
+              "difference": -0.2,
+              "missing_bounds": [
+                -0.2,
+                -0.2
+              ],
+              "tasks": 1
+            },
+            "live_relevance_3-3-0": {
+              "difference": 0.0,
+              "missing_bounds": [
+                0.0,
+                0.0
+              ],
+              "tasks": 1
+            },
+            "live_relevance_7-7-0": {
+              "difference": 0.0,
+              "missing_bounds": [
+                0.0,
+                0.0
+              ],
+              "tasks": 1
+            },
+            "live_relevance_8-8-0": {
+              "difference": -0.2,
+              "missing_bounds": [
+                -0.2,
+                -0.2
+              ],
+              "tasks": 1
+            }
+          },
+          "cluster_unit": "public_question",
+          "clusters": 8,
+          "difference": -0.05,
+          "missing_bounds": [
+            -0.05,
+            -0.05
+          ],
+          "negative_clusters": 2,
+          "observed_clusters": 8,
+          "observed_pairs": 40,
+          "positive_clusters": 0,
+          "tasks": 8,
+          "tied_clusters": 6,
+          "two_sided_cluster_sign_p": 0.5
+        },
+        "clusters": 8,
+        "form": null,
+        "jointly_graded": {
+          "metrics": {
+            "business_calls": {
+              "candidate_total": "23",
+              "difference": "-2",
+              "equal": 38,
+              "higher": 0,
+              "lower": 2,
+              "missing": 0,
+              "observed": 40,
+              "reference_total": "25",
+              "relative_difference_pct": -8.0
+            },
+            "tokens": {
+              "candidate_total": "28260",
+              "difference": "-2810",
+              "equal": 0,
+              "higher": 0,
+              "lower": 40,
+              "missing": 0,
+              "observed": 40,
+              "reference_total": "31070",
+              "relative_difference_pct": -9.044
+            }
+          },
+          "pairs": 40
+        },
+        "outcomes": {
+          "assigned": 40,
+          "both_failure": 5,
+          "both_success": 33,
+          "gain": 0,
+          "loss": 2,
+          "missing": 0
+        },
+        "reference": "on_demand"
+      },
+      {
+        "both_success": {
+          "metrics": {
+            "business_calls": {
+              "candidate_total": "4",
+              "difference": "0",
+              "equal": 7,
+              "higher": 0,
+              "lower": 0,
+              "missing": 0,
+              "observed": 7,
+              "reference_total": "4",
+              "relative_difference_pct": 0.0
+            },
+            "tokens": {
+              "candidate_total": "5117",
+              "difference": "-471",
+              "equal": 0,
+              "higher": 0,
+              "lower": 7,
+              "missing": 0,
+              "observed": 7,
+              "reference_total": "5588",
+              "relative_difference_pct": -8.429
+            }
+          },
+          "pairs": 7
+        },
+        "candidate": "preload",
+        "cluster_contrast": {
+          "assigned_pairs": 8,
+          "by_cluster": {
+            "irrelevance_0": {
+              "difference": 0.0,
+              "missing_bounds": [
+                0.0,
+                0.0
+              ],
+              "tasks": 1
+            },
+            "irrelevance_150": {
+              "difference": 0.0,
+              "missing_bounds": [
+                0.0,
+                0.0
+              ],
+              "tasks": 1
+            },
+            "irrelevance_180": {
+              "difference": 0.0,
+              "missing_bounds": [
+                0.0,
+                0.0
+              ],
+              "tasks": 1
+            },
+            "irrelevance_20": {
+              "difference": 0.0,
+              "missing_bounds": [
+                0.0,
+                0.0
+              ],
+              "tasks": 1
+            },
+            "live_relevance_2-2-0": {
+              "difference": 0.0,
+              "missing_bounds": [
+                0.0,
+                0.0
+              ],
+              "tasks": 1
+            },
+            "live_relevance_3-3-0": {
+              "difference": 0.0,
+              "missing_bounds": [
+                0.0,
+                0.0
+              ],
+              "tasks": 1
+            },
+            "live_relevance_7-7-0": {
+              "difference": 0.0,
+              "missing_bounds": [
+                0.0,
+                0.0
+              ],
+              "tasks": 1
+            },
+            "live_relevance_8-8-0": {
+              "difference": 0.0,
+              "missing_bounds": [
+                0.0,
+                0.0
+              ],
+              "tasks": 1
+            }
+          },
+          "cluster_unit": "public_question",
+          "clusters": 8,
+          "difference": 0.0,
+          "missing_bounds": [
+            0.0,
+            0.0
+          ],
+          "negative_clusters": 0,
+          "observed_clusters": 8,
+          "observed_pairs": 8,
+          "positive_clusters": 0,
+          "tasks": 8,
+          "tied_clusters": 8,
+          "two_sided_cluster_sign_p": null
+        },
+        "clusters": 8,
+        "form": "episode",
+        "jointly_graded": {
+          "metrics": {
+            "business_calls": {
+              "candidate_total": "5",
+              "difference": "0",
+              "equal": 8,
+              "higher": 0,
+              "lower": 0,
+              "missing": 0,
+              "observed": 8,
+              "reference_total": "5",
+              "relative_difference_pct": 0.0
+            },
+            "tokens": {
+              "candidate_total": "5698",
+              "difference": "-516",
+              "equal": 0,
+              "higher": 0,
+              "lower": 8,
+              "missing": 0,
+              "observed": 8,
+              "reference_total": "6214",
+              "relative_difference_pct": -8.304
+            }
+          },
+          "pairs": 8
+        },
+        "outcomes": {
+          "assigned": 8,
+          "both_failure": 1,
+          "both_success": 7,
+          "gain": 0,
+          "loss": 0,
+          "missing": 0
+        },
+        "reference": "on_demand"
+      },
+      {
+        "both_success": {
+          "metrics": {
+            "business_calls": {
+              "candidate_total": "3",
+              "difference": "0",
+              "equal": 6,
+              "higher": 0,
+              "lower": 0,
+              "missing": 0,
+              "observed": 6,
+              "reference_total": "3",
+              "relative_difference_pct": 0.0
+            },
+            "tokens": {
+              "candidate_total": "3944",
+              "difference": "-473",
+              "equal": 0,
+              "higher": 0,
+              "lower": 6,
+              "missing": 0,
+              "observed": 6,
+              "reference_total": "4417",
+              "relative_difference_pct": -10.709
+            }
+          },
+          "pairs": 6
+        },
+        "candidate": "preload",
+        "cluster_contrast": {
+          "assigned_pairs": 8,
+          "by_cluster": {
+            "irrelevance_0": {
+              "difference": 0.0,
+              "missing_bounds": [
+                0.0,
+                0.0
+              ],
+              "tasks": 1
+            },
+            "irrelevance_150": {
+              "difference": 0.0,
+              "missing_bounds": [
+                0.0,
+                0.0
+              ],
+              "tasks": 1
+            },
+            "irrelevance_180": {
+              "difference": 0.0,
+              "missing_bounds": [
+                0.0,
+                0.0
+              ],
+              "tasks": 1
+            },
+            "irrelevance_20": {
+              "difference": 0.0,
+              "missing_bounds": [
+                0.0,
+                0.0
+              ],
+              "tasks": 1
+            },
+            "live_relevance_2-2-0": {
+              "difference": 0.0,
+              "missing_bounds": [
+                0.0,
+                0.0
+              ],
+              "tasks": 1
+            },
+            "live_relevance_3-3-0": {
+              "difference": 0.0,
+              "missing_bounds": [
+                0.0,
+                0.0
+              ],
+              "tasks": 1
+            },
+            "live_relevance_7-7-0": {
+              "difference": 0.0,
+              "missing_bounds": [
+                0.0,
+                0.0
+              ],
+              "tasks": 1
+            },
+            "live_relevance_8-8-0": {
+              "difference": -1.0,
+              "missing_bounds": [
+                -1.0,
+                -1.0
+              ],
+              "tasks": 1
+            }
+          },
+          "cluster_unit": "public_question",
+          "clusters": 8,
+          "difference": -0.125,
+          "missing_bounds": [
+            -0.125,
+            -0.125
+          ],
+          "negative_clusters": 1,
+          "observed_clusters": 8,
+          "observed_pairs": 8,
+          "positive_clusters": 0,
+          "tasks": 8,
+          "tied_clusters": 7,
+          "two_sided_cluster_sign_p": 1.0
+        },
+        "clusters": 8,
+        "form": "fact",
+        "jointly_graded": {
+          "metrics": {
+            "business_calls": {
+              "candidate_total": "4",
+              "difference": "-1",
+              "equal": 7,
+              "higher": 0,
+              "lower": 1,
+              "missing": 0,
+              "observed": 8,
+              "reference_total": "5",
+              "relative_difference_pct": -20.0
+            },
+            "tokens": {
+              "candidate_total": "5636",
+              "difference": "-578",
+              "equal": 0,
+              "higher": 0,
+              "lower": 8,
+              "missing": 0,
+              "observed": 8,
+              "reference_total": "6214",
+              "relative_difference_pct": -9.302
+            }
+          },
+          "pairs": 8
+        },
+        "outcomes": {
+          "assigned": 8,
+          "both_failure": 1,
+          "both_success": 6,
+          "gain": 0,
+          "loss": 1,
+          "missing": 0
+        },
+        "reference": "on_demand"
+      },
+      {
+        "both_success": {
+          "metrics": {
+            "business_calls": {
+              "candidate_total": "3",
+              "difference": "0",
+              "equal": 6,
+              "higher": 0,
+              "lower": 0,
+              "missing": 0,
+              "observed": 6,
+              "reference_total": "3",
+              "relative_difference_pct": 0.0
+            },
+            "tokens": {
+              "candidate_total": "4419",
+              "difference": "-481",
+              "equal": 0,
+              "higher": 0,
+              "lower": 6,
+              "missing": 0,
+              "observed": 6,
+              "reference_total": "4900",
+              "relative_difference_pct": -9.816
+            }
+          },
+          "pairs": 6
+        },
+        "candidate": "preload",
+        "cluster_contrast": {
+          "assigned_pairs": 8,
+          "by_cluster": {
+            "irrelevance_0": {
+              "difference": 0.0,
+              "missing_bounds": [
+                0.0,
+                0.0
+              ],
+              "tasks": 1
+            },
+            "irrelevance_150": {
+              "difference": 0.0,
+              "missing_bounds": [
+                0.0,
+                0.0
+              ],
+              "tasks": 1
+            },
+            "irrelevance_180": {
+              "difference": 0.0,
+              "missing_bounds": [
+                0.0,
+                0.0
+              ],
+              "tasks": 1
+            },
+            "irrelevance_20": {
+              "difference": 0.0,
+              "missing_bounds": [
+                0.0,
+                0.0
+              ],
+              "tasks": 1
+            },
+            "live_relevance_2-2-0": {
+              "difference": -1.0,
+              "missing_bounds": [
+                -1.0,
+                -1.0
+              ],
+              "tasks": 1
+            },
+            "live_relevance_3-3-0": {
+              "difference": 0.0,
+              "missing_bounds": [
+                0.0,
+                0.0
+              ],
+              "tasks": 1
+            },
+            "live_relevance_7-7-0": {
+              "difference": 0.0,
+              "missing_bounds": [
+                0.0,
+                0.0
+              ],
+              "tasks": 1
+            },
+            "live_relevance_8-8-0": {
+              "difference": 0.0,
+              "missing_bounds": [
+                0.0,
+                0.0
+              ],
+              "tasks": 1
+            }
+          },
+          "cluster_unit": "public_question",
+          "clusters": 8,
+          "difference": -0.125,
+          "missing_bounds": [
+            -0.125,
+            -0.125
+          ],
+          "negative_clusters": 1,
+          "observed_clusters": 8,
+          "observed_pairs": 8,
+          "positive_clusters": 0,
+          "tasks": 8,
+          "tied_clusters": 7,
+          "two_sided_cluster_sign_p": 1.0
+        },
+        "clusters": 8,
+        "form": "free",
+        "jointly_graded": {
+          "metrics": {
+            "business_calls": {
+              "candidate_total": "4",
+              "difference": "-1",
+              "equal": 7,
+              "higher": 0,
+              "lower": 1,
+              "missing": 0,
+              "observed": 8,
+              "reference_total": "5",
+              "relative_difference_pct": -20.0
+            },
+            "tokens": {
+              "candidate_total": "5567",
+              "difference": "-647",
+              "equal": 0,
+              "higher": 0,
+              "lower": 8,
+              "missing": 0,
+              "observed": 8,
+              "reference_total": "6214",
+              "relative_difference_pct": -10.412
+            }
+          },
+          "pairs": 8
+        },
+        "outcomes": {
+          "assigned": 8,
+          "both_failure": 1,
+          "both_success": 6,
+          "gain": 0,
+          "loss": 1,
+          "missing": 0
+        },
+        "reference": "on_demand"
+      },
+      {
+        "both_success": {
+          "metrics": {
+            "business_calls": {
+              "candidate_total": "4",
+              "difference": "0",
+              "equal": 7,
+              "higher": 0,
+              "lower": 0,
+              "missing": 0,
+              "observed": 7,
+              "reference_total": "4",
+              "relative_difference_pct": 0.0
+            },
+            "tokens": {
+              "candidate_total": "5108",
+              "difference": "-480",
+              "equal": 0,
+              "higher": 0,
+              "lower": 7,
+              "missing": 0,
+              "observed": 7,
+              "reference_total": "5588",
+              "relative_difference_pct": -8.59
+            }
+          },
+          "pairs": 7
+        },
+        "candidate": "preload",
+        "cluster_contrast": {
+          "assigned_pairs": 8,
+          "by_cluster": {
+            "irrelevance_0": {
+              "difference": 0.0,
+              "missing_bounds": [
+                0.0,
+                0.0
+              ],
+              "tasks": 1
+            },
+            "irrelevance_150": {
+              "difference": 0.0,
+              "missing_bounds": [
+                0.0,
+                0.0
+              ],
+              "tasks": 1
+            },
+            "irrelevance_180": {
+              "difference": 0.0,
+              "missing_bounds": [
+                0.0,
+                0.0
+              ],
+              "tasks": 1
+            },
+            "irrelevance_20": {
+              "difference": 0.0,
+              "missing_bounds": [
+                0.0,
+                0.0
+              ],
+              "tasks": 1
+            },
+            "live_relevance_2-2-0": {
+              "difference": 0.0,
+              "missing_bounds": [
+                0.0,
+                0.0
+              ],
+              "tasks": 1
+            },
+            "live_relevance_3-3-0": {
+              "difference": 0.0,
+              "missing_bounds": [
+                0.0,
+                0.0
+              ],
+              "tasks": 1
+            },
+            "live_relevance_7-7-0": {
+              "difference": 0.0,
+              "missing_bounds": [
+                0.0,
+                0.0
+              ],
+              "tasks": 1
+            },
+            "live_relevance_8-8-0": {
+              "difference": 0.0,
+              "missing_bounds": [
+                0.0,
+                0.0
+              ],
+              "tasks": 1
+            }
+          },
+          "cluster_unit": "public_question",
+          "clusters": 8,
+          "difference": 0.0,
+          "missing_bounds": [
+            0.0,
+            0.0
+          ],
+          "negative_clusters": 0,
+          "observed_clusters": 8,
+          "observed_pairs": 8,
+          "positive_clusters": 0,
+          "tasks": 8,
+          "tied_clusters": 8,
+          "two_sided_cluster_sign_p": null
+        },
+        "clusters": 8,
+        "form": "lesson",
+        "jointly_graded": {
+          "metrics": {
+            "business_calls": {
+              "candidate_total": "5",
+              "difference": "0",
+              "equal": 8,
+              "higher": 0,
+              "lower": 0,
+              "missing": 0,
+              "observed": 8,
+              "reference_total": "5",
+              "relative_difference_pct": 0.0
+            },
+            "tokens": {
+              "candidate_total": "5696",
+              "difference": "-518",
+              "equal": 0,
+              "higher": 0,
+              "lower": 8,
+              "missing": 0,
+              "observed": 8,
+              "reference_total": "6214",
+              "relative_difference_pct": -8.336
+            }
+          },
+          "pairs": 8
+        },
+        "outcomes": {
+          "assigned": 8,
+          "both_failure": 1,
+          "both_success": 7,
+          "gain": 0,
+          "loss": 0,
+          "missing": 0
+        },
+        "reference": "on_demand"
+      },
+      {
+        "both_success": {
+          "metrics": {
+            "business_calls": {
+              "candidate_total": "4",
+              "difference": "0",
+              "equal": 7,
+              "higher": 0,
+              "lower": 0,
+              "missing": 0,
+              "observed": 7,
+              "reference_total": "4",
+              "relative_difference_pct": 0.0
+            },
+            "tokens": {
+              "candidate_total": "5089",
+              "difference": "-499",
+              "equal": 0,
+              "higher": 0,
+              "lower": 7,
+              "missing": 0,
+              "observed": 7,
+              "reference_total": "5588",
+              "relative_difference_pct": -8.93
+            }
+          },
+          "pairs": 7
+        },
+        "candidate": "preload",
+        "cluster_contrast": {
+          "assigned_pairs": 8,
+          "by_cluster": {
+            "irrelevance_0": {
+              "difference": 0.0,
+              "missing_bounds": [
+                0.0,
+                0.0
+              ],
+              "tasks": 1
+            },
+            "irrelevance_150": {
+              "difference": 0.0,
+              "missing_bounds": [
+                0.0,
+                0.0
+              ],
+              "tasks": 1
+            },
+            "irrelevance_180": {
+              "difference": 0.0,
+              "missing_bounds": [
+                0.0,
+                0.0
+              ],
+              "tasks": 1
+            },
+            "irrelevance_20": {
+              "difference": 0.0,
+              "missing_bounds": [
+                0.0,
+                0.0
+              ],
+              "tasks": 1
+            },
+            "live_relevance_2-2-0": {
+              "difference": 0.0,
+              "missing_bounds": [
+                0.0,
+                0.0
+              ],
+              "tasks": 1
+            },
+            "live_relevance_3-3-0": {
+              "difference": 0.0,
+              "missing_bounds": [
+                0.0,
+                0.0
+              ],
+              "tasks": 1
+            },
+            "live_relevance_7-7-0": {
+              "difference": 0.0,
+              "missing_bounds": [
+                0.0,
+                0.0
+              ],
+              "tasks": 1
+            },
+            "live_relevance_8-8-0": {
+              "difference": 0.0,
+              "missing_bounds": [
+                0.0,
+                0.0
+              ],
+              "tasks": 1
+            }
+          },
+          "cluster_unit": "public_question",
+          "clusters": 8,
+          "difference": 0.0,
+          "missing_bounds": [
+            0.0,
+            0.0
+          ],
+          "negative_clusters": 0,
+          "observed_clusters": 8,
+          "observed_pairs": 8,
+          "positive_clusters": 0,
+          "tasks": 8,
+          "tied_clusters": 8,
+          "two_sided_cluster_sign_p": null
+        },
+        "clusters": 8,
+        "form": "procedure",
+        "jointly_graded": {
+          "metrics": {
+            "business_calls": {
+              "candidate_total": "5",
+              "difference": "0",
+              "equal": 8,
+              "higher": 0,
+              "lower": 0,
+              "missing": 0,
+              "observed": 8,
+              "reference_total": "5",
+              "relative_difference_pct": 0.0
+            },
+            "tokens": {
+              "candidate_total": "5663",
+              "difference": "-551",
+              "equal": 0,
+              "higher": 0,
+              "lower": 8,
+              "missing": 0,
+              "observed": 8,
+              "reference_total": "6214",
+              "relative_difference_pct": -8.867
+            }
+          },
+          "pairs": 8
+        },
+        "outcomes": {
+          "assigned": 8,
+          "both_failure": 1,
+          "both_success": 7,
+          "gain": 0,
+          "loss": 0,
+          "missing": 0
+        },
+        "reference": "on_demand"
+      }
+    ],
+    "same_input_repetitions": {
+      "groups": {
+        "changed_function_sequence": 0,
+        "changed_functions_or_arguments": 0,
+        "comparable": 0,
+        "different_inputs_or_banks": 0,
+        "missing_decisions": 0,
+        "registered": 0
+      },
+      "metrics": {
+        "function_called": {
+          "changed_groups": 0,
+          "observed_groups": 0
+        },
+        "missing_arguments": {
+          "changed_groups": 0,
+          "observed_groups": 0
+        },
+        "undeclared_functions": {
+          "changed_groups": 0,
+          "observed_groups": 0
+        }
+      }
+    },
+    "scope": "sources_and_readers",
+    "study_cost": {
+      "confirmed_usd": "0",
+      "covered_usd": "0",
+      "held_usd": "0"
+    },
+    "trajectory_sha256": "ea574ee5a7f597b8560438b0bb24a92247cde16cddc4721b8966efd7aa1a2fae",
+    "writers": {
+      "assigned": 40,
+      "effort": {
+        "dispatched": 40,
+        "observed_runs": 40,
+        "reported_tokens": 34205,
+        "reported_usd": "0",
+        "requests": 40,
+        "reused_local_generations": 0,
+        "tokens_reported_on": 40,
+        "unknown_cost_requests": 0
+      },
+      "observed": 40,
+      "sealed_nonempty": 40,
+      "source_candidate_occurrences": 235,
+      "stored_matches": 58
+    },
+    "writers_sha256": "ddff688c2d949d678db53fc312f1990949d1b71a616c86a4d2240edf615752f8"
+  }
+}

@@ -11,7 +11,7 @@ from jsonschema import Draft202012Validator
 from agent_memory_eval.adapters.tau2 import prepare_native, verify_checkout
 from agent_memory_eval.contracts.connection import validate_profile
 from agent_memory_eval.contracts.core import ContractError, MemoryPolicy, canonical, digest, new_id, read_json
-from agent_memory_eval.contracts.validation import ROOT
+from agent_memory_eval.contracts.validation import ROOT, SCHEMA_ROOT
 from agent_memory_eval.memory.imports import import_source, load_source
 from agent_memory_eval.models.openrouter import SpendGuard
 from agent_memory_eval.recording.journal import BlobStore
@@ -22,7 +22,7 @@ CONDITIONS = ("no_memory", "empty_bank", "on_demand", "full_preload")
 
 
 def compile_delivery(profile, *, require_ready=True, source_texts=None):
-    schema = read_json((ROOT / "schemas/delivery-comparison.schema.json").read_bytes())
+    schema = read_json((SCHEMA_ROOT / "delivery-comparison.schema.json").read_bytes())
     try:
         Draft202012Validator(schema).validate(profile)
     except Exception as error:

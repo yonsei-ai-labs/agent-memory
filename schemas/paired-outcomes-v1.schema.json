@@ -1,0 +1,106 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Paired binary outcomes from a single archived result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["format", "archive_name", "archive_sha256", "record_kind", "conditions", "selection", "comparison", "observations"],
+  "properties": {
+    "format": {"const": "agent-memory-paired-outcomes/v1"},
+    "archive_name": {"$ref": "#/$defs/text"},
+    "archive_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "record_kind": {"enum": ["observed", "scripted_control"]},
+    "conditions": {
+      "type": "object", "additionalProperties": false, "required": ["reference", "candidate"],
+      "properties": {"reference": {"$ref": "#/$defs/text"}, "candidate": {"$ref": "#/$defs/text"}}
+    },
+    "selection": {"type": "object", "additionalProperties": false, "properties": {"mode": {"$ref": "#/$defs/text"}}},
+    "comparison": {
+      "type": "object", "additionalProperties": false,
+      "required": ["metric", "cohort", "reference", "candidate", "pairs", "sources", "joint_success_members", "joint_success_effort", "jointly_graded_effort"],
+      "properties": {
+        "metric": {
+          "type": "object", "additionalProperties": false,
+          "required": ["name", "version", "definition", "stage", "unit", "denominator", "cluster_unit", "cluster_eligibility"],
+          "properties": {
+            "name": {"$ref": "#/$defs/text"}, "version": {"type": "integer", "minimum": 1}, "definition": {"$ref": "#/$defs/text"},
+            "stage": {"$ref": "#/$defs/text"}, "unit": {"$ref": "#/$defs/text"},
+            "denominator": {"$ref": "#/$defs/text"}, "cluster_unit": {"$ref": "#/$defs/text"},
+            "cluster_eligibility": {"enum": ["all_pairs_graded", "any_pair_graded"]}
+          }
+        },
+        "cohort": {"$ref": "#/$defs/text"},
+        "reference": {"$ref": "#/$defs/coverage"}, "candidate": {"$ref": "#/$defs/coverage"},
+        "pairs": {
+          "type": "object", "additionalProperties": false,
+          "required": ["assigned", "both_failure", "both_success", "gain", "loss", "missing", "jointly_graded", "discordance_rate", "sign_p_if_independent"],
+          "properties": {
+            "assigned": {"$ref": "#/$defs/count"}, "both_failure": {"$ref": "#/$defs/count"}, "both_success": {"$ref": "#/$defs/count"},
+            "gain": {"$ref": "#/$defs/count"}, "loss": {"$ref": "#/$defs/count"}, "missing": {"$ref": "#/$defs/count"},
+            "jointly_graded": {"$ref": "#/$defs/count"}, "discordance_rate": {"$ref": "#/$defs/rate"}, "sign_p_if_independent": {"$ref": "#/$defs/rate"}
+          }
+        },
+        "sources": {
+          "type": "object", "additionalProperties": false, "required": ["assigned", "complete", "included", "gain", "loss", "tie", "unknown_source_pairs", "sign_p_if_independent"],
+          "properties": {
+            "assigned": {"$ref": "#/$defs/count"}, "complete": {"$ref": "#/$defs/count"}, "included": {"$ref": "#/$defs/count"},
+            "gain": {"$ref": "#/$defs/count"}, "loss": {"$ref": "#/$defs/count"},
+            "tie": {"$ref": "#/$defs/count"}, "unknown_source_pairs": {"$ref": "#/$defs/count"}, "sign_p_if_independent": {"$ref": "#/$defs/rate"}
+          }
+        },
+        "joint_success_members": {"type": "array", "items": {"$ref": "#/$defs/member"}},
+        "joint_success_effort": {"$ref": "#/$defs/effort"}, "jointly_graded_effort": {"$ref": "#/$defs/effort"}
+      }
+    },
+    "observations": {
+      "type": "object", "additionalProperties": false, "required": ["reference", "candidate"],
+      "properties": {"reference": {"$ref": "#/$defs/arm"}, "candidate": {"$ref": "#/$defs/arm"}}
+    }
+  },
+  "if": {"properties": {"record_kind": {"const": "scripted_control"}}},
+  "then": {"properties": {"comparison": {"properties": {
+    "pairs": {"properties": {"sign_p_if_independent": {"type": "null"}}},
+    "sources": {"properties": {"sign_p_if_independent": {"type": "null"}}}
+  }}}},
+  "$defs": {
+    "text": {"type": "string", "pattern": "\\S"},
+    "count": {"type": "integer", "minimum": 0},
+    "rate": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
+    "coverage": {
+      "type": "object", "additionalProperties": false, "required": ["assigned", "started", "graded", "successes", "success_rate"],
+      "properties": {
+        "assigned": {"$ref": "#/$defs/count"}, "started": {"$ref": "#/$defs/count"}, "graded": {"$ref": "#/$defs/count"},
+        "successes": {"$ref": "#/$defs/count"}, "success_rate": {"$ref": "#/$defs/rate"}
+      }
+    },
+    "member": {
+      "type": "object", "required": ["task", "slot", "source"],
+      "properties": {"task": {"$ref": "#/$defs/text"}, "slot": {"$ref": "#/$defs/text"}, "source": {"type": ["string", "null"], "pattern": "\\S"}}
+    },
+    "arm": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/member", "unevaluatedProperties": false,
+        "required": ["started", "success", "pointer"],
+        "properties": {
+          "started": {"type": "boolean"}, "success": {"type": ["boolean", "null"]},
+          "pointer": {"type": "string", "pattern": "^(?:/(?:[^~/]|~[01])*)+$"}
+        },
+        "if": {"properties": {"started": {"const": false}}}, "then": {"properties": {"success": {"type": "null"}}}
+      }
+    },
+    "effort": {
+      "type": "object", "additionalProperties": false, "required": ["pairs", "metrics"],
+      "properties": {
+        "pairs": {"$ref": "#/$defs/count"}, "metrics": {"type": "object", "additionalProperties": {
+          "type": "object", "additionalProperties": false,
+          "required": ["observed", "missing", "candidate_total", "reference_total", "difference", "relative_difference_pct", "lower", "equal", "higher"],
+          "properties": {
+            "observed": {"$ref": "#/$defs/count"}, "missing": {"$ref": "#/$defs/count"},
+            "candidate_total": {"type": ["string", "null"]}, "reference_total": {"type": ["string", "null"]}, "difference": {"type": ["string", "null"]},
+            "relative_difference_pct": {"type": ["number", "null"]}, "lower": {"$ref": "#/$defs/count"}, "equal": {"$ref": "#/$defs/count"}, "higher": {"$ref": "#/$defs/count"}
+          }
+        }}
+      }
+    }
+  }
+}

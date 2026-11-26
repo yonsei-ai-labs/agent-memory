@@ -167,7 +167,7 @@ def read_experiment(root):
         raise ContractError("Runtime journal versions cannot change within an experiment")
     state, experiment, verified = empty_state(), None, set()
     for row in scan["records"]:
-        if row["journal_version"] not in {"1.1", "1.2"}:
+        if row["journal_version"] not in {"1.1", "1.2", "1.3"}:
             raise ContractError("Unsupported runtime journal version")
         experiment = experiment or row["experiment_id"]
         if row["experiment_id"] != experiment:
@@ -188,7 +188,7 @@ def read_experiment(root):
 
 class Journal:
     def __init__(self, root, experiment_id, fault=None, *, contract_version="1.1"):
-        if contract_version not in {"1.1", "1.2"}:
+        if contract_version not in {"1.1", "1.2", "1.3"}:
             raise ContractError("Unsupported journal contract version")
         self.contract_version = contract_version
         self.root = Path(root).absolute()

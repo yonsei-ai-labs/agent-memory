@@ -138,3 +138,7 @@ v1.1 계획은 단계별 `instructions.solve`·`instructions.post_task_write`를
 [고정 은행 전달 비교](../development/tau2-delivery.md)는 `memory.preloaded`에 시작 snapshot·원문 버전·준비한 메시지를 기록하고, `memory_snapshot` 출처를 실제 요청 구간과 연결한다. 에이전트가 부르지 않은 list/get 사건을 만들지 않는다. 같은 요청이 반복돼도 동일 원문의 재노출을 매번 기록하며 준비와 전송 상태·활용을 구분한다.
 
 별도 journal/manifest/event v1.2 스키마와 [닫힌 합성 fixture](../../tests/fixtures/contracts-v1.2/README.md)를 추가했다. 새 journal은 기존 v1.1 사건도 수용하지만 과거 원본의 버전을 바꾸지 않는다. 준비 검사·실제 worker wire·은행/역할/세션 격리·한도·원본 재계산을 행동 테스트로 검증한다. 실제 모델 효과·자동 의미 주석·통계 추론은 별도다.
+
+## 7. BFCL 고유 기억 반환의 v1.3 확장
+
+명시적으로 선택한 v1.3 원장은 고유 도구의 반환과 모델 응답을 식별하고 기존 사건도 수용한다. `rec_sum`의 읽기 응답은 공식 `memory_content` 문자열을 공개한다. 내부 사건에는 저장 항목·버전을 기록하고, 다음 요청의 정확한 문자 구간과 SHA-256을 검증한다. 서로 다른 은행에서 전달할 때는 시작 snapshot에 해당 버전이 있었는지도 검사한다. 권한 거부와 저장 확인 응답의 본문 노출은 0이다. `memory_append`를 모델 본인이 작성한 시점과 이후 다른 세션에서 조회한 시점은 서로 다른 출처로 기록한다. [계약과 예시](../../schemas/README.md) · [설치한 실행기의 연결 검증](../reports/20261125-common-policy-measurements.md)

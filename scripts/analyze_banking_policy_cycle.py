@@ -512,6 +512,154 @@ def input_audit(workspace):
     )
 
 
+def referral_search_reference(domain, search, corpus_sha256, top_k):
+    from agent_memory_eval.adapters.tau_banking_results import grep_ranking
+    # A previously observed source-to-action citation serves only as a development reference.
+    ref_path = cycle.ROOT / "artifacts/analyses/20261124-banking-required-results.json"
+    ref = cycle.read(ref_path)
+    token = "get_referral_link"
+    receipts = {}
+    for arm, proof in ref["exploratory_referral_search_citations"].items():
+        w, b = proof["writing"], proof["decision"]
+        require(any(token in c["quote"] for c in w["source_citations"]) and token in w["note"]["quote"]
+                and b["exposure"] and any(token in c["quote"] for c in b["action_citations"]),
+                "Development search lacks a cited public source, note, exposure or action")
+        trial, = [r for r in ref["trials"] if r["task"] == "task_015" and r["arm"] == arm]
+        receipts[arm] = dict(version=w["version"], decision_sha256=b["request_sha256"], official_success=trial["success"])
+    targets = cycle.read(domain / "tasks/task_015.json")["required_documents"]
+    return dict(task="task_015", reference_sha256=digest(ref_path.read_bytes()),
+        corpus_sha256=corpus_sha256, top_k=top_k, receipts=receipts,
+        exact_literal_search=grep_ranking(search, token, {doc: doc for doc in targets}))
+
+
+def common_measurements(workspace):
+    from agent_memory_eval.adapters.tau_banking_results import BANKING_SUCCESS, grep_ranking, known_customer_groups, native_grep, policy_table
+    from agent_memory_eval.analysis.paired_trials import Trial, compare_trials
+    from agent_memory_eval.analysis.action_grounding import literal_citations
+    from scripts import analyze_banking_replacement as replacement
+
+    def published_v1(comparison):
+        # The v1 bank table reports fully graded sources. New reports name the inclusion rule explicitly.
+        require(comparison["sources"].pop("included") == comparison["sources"]["complete"], "Changed v1 source denominator")
+        del comparison["metric"], comparison["cohort"]
+        return comparison
+
+    domain = workspace / "data/tau2-bench/data/tau2/domains/banking_knowledge"
+    studies = {}
+    validation_data = validation(workspace)
+    for name, profile, results in (
+        ("writer_cycle", cycle.PROFILE, validation_data),
+        ("replacement_036", replacement.study.PROFILE, replacement.observed(workspace)),
+    ):
+        spec = cycle.read(cycle.ROOT / profile)
+        table = policy_table(results, workspace / "runs" / spec["validation_study"], domain)
+        table["comparison"] = published_v1(table["comparison"])
+        table["customer_split"] = known_customer_groups(domain, ["task_001", "task_008", "task_010", "task_015"],
+                                                       results["sources"])
+        table["protocol_sha256"] = results["protocol_sha256"]
+        studies[name] = table
+
+    # Verify the actual first inputs and every worker choice before designating an unexposed calibration.
+    arms, first_wires, first_actions = [], [], []
+    for run in ("tau-banking-required-01", "tau-banking-result-feedback-01"):
+        rows, wires, actions = [], {}, {}
+        root = workspace / "runs" / run
+        for folder in sorted(root.glob("task-*/solve")):
+            for row in cycle.bank.matched.sealed_rows(folder)[2]:
+                if not row["arm"].endswith("__on_demand"):
+                    continue
+                result = row["result"]
+                log = RecordedDecisions(safe_path(folder, row["directory"]), row["run_id"], result["log_sha256"])
+                worker = [r for r in log.requests if r["actor_role"] == "worker"]
+                require(not log.of_type("memory.input_included") and not any(
+                    c["function"]["name"] in {"memory_list", "memory_get"} for req in worker
+                    for c in log.reply(req)["message"].get("tool_calls") or []
+                ), "The calibration includes a read or exposure")
+                task = row["task_id"]
+                key = (task, row["arm"])
+                require(key not in wires, "Duplicate calibration allocation")
+                wires[key] = digest(canonical(log.blobs.get(worker[0]["request_ref"])))
+                actions[key] = [Action.from_function(c["function"]).record() for c in
+                                log.reply(worker[0])["message"].get("tool_calls") or []]
+                require([a["name"] for a in actions[key]] == ["grep"], "Calibration first action is not one search")
+                receipt, = [e["payload"]["receipt_ref"] for e in log.of_type("business.transition")
+                            if e["payload"].get("origin") == "matched_trial.native_control"]
+                source_run = log.blobs.get(receipt)["source_run_id"]
+                scored, = log.of_type("outcome.scored")
+                require(scored["payload"]["official_success"] is result["official_success"], "Changed calibration grade")
+                rows.append(Trial(task, row["arm"], source_run, True, result["official_success"],
+                                  metric=BANKING_SUCCESS, cohort="banking-writer-feedback-unexposed-pairs"))
+        arms.append(rows)
+        first_wires.append(wires)
+        first_actions.append(actions)
+    require(len(first_wires[0]) == 20 and first_wires[0] == first_wires[1], "Different calibration inputs")
+    aa = published_v1(compare_trials(*arms, metrics=()))
+
+    design = cycle.read(cycle.ROOT / "protocols/drafts/tau-banking-scoped-writer-development-v1.json")
+    decisions = {(s["task"], s["worker_ordinal"]): s for s in design["states"]}
+    source_root = workspace / "runs" / cycle.read(cycle.ROOT / cycle.PROFILE)["source_study"]
+
+    diagnostic_path = cycle.ROOT / "artifacts/analyses/20261125-banking-policy-cycle-diagnosis.json"
+    diagnostic = cycle.read(diagnostic_path)
+    cycle.bank.matched.modules_for(workspace)
+    search, _, top_k = native_grep(diagnostic["corpus_sha256"])
+    opportunities = []
+    for task, ordinal, term, use in (
+        ("task_017", 1, "Silver Rewards", "candidate_product_hint_requires_current_verification"),
+        ("task_016", 1, "IN_PROGRESS", "historical_status_requires_current_verification"),
+        ("task_002", 6, "$200", "current_information_control"),
+    ):
+        state = decisions[task, ordinal]
+        folder = source_root / ("task-" + task) / "source"
+        row, = cycle.bank.matched.sealed_rows(folder)[2]
+        log = RecordedDecisions(safe_path(folder, row["directory"]), state["source_run"], validation_data["sources"][task]["log_sha256"])
+        req = [r for r in log.requests if r["actor_role"] == "worker"][ordinal - 1]
+        wire = log.blobs.get(req["request_ref"])
+        require(row["run_id"] == state["source_run"] and req["request_id"] == state["request_id"]
+                and req["request_ref"]["sha256"] == state["request_sha256"]
+                and not log.of_type("memory.input_included"), "Wrong memory-free decision")
+        experience = cycle.bank.matched.source_from(folder, task)
+        public = cycle.read_json(experience.public_context.encode())
+        source_hits = literal_citations(public["messages"], term)
+        current_hits = literal_citations(dict(messages=wire["messages"], tools=wire.get("tools", [])), term)
+        notes = {}
+        for w in validation_data["writers"]:
+            if w["task"] == task:
+                item, = w["bank"]["items"]
+                require(w["bank"]["source_run_id"] == state["source_run"], "Different writer source")
+                notes[w["policy"] + "/" + w["form"]] = dict(version=item["version"],
+                    citations=literal_citations({k: item[k] for k in ("title", "body")}, term))
+        opportunity = dict(task=task, ordinal=ordinal, proposed_use=use, term=term,
+            decision_request=req["request_ref"]["sha256"], source_public_sha256=experience.public_context_sha256,
+            current=current_hits, source=source_hits, notes=notes, memory_free_observations=1,
+            positive_control_tested=False)
+        if task == "task_017":
+            # The search term is selected from public experience. Witnesses are used only to score the rankings.
+            archived, = [e for e in diagnostic["episodes"] if e["policy"] == "source" and e["task"] == task]
+            original = archived["searches"][0]
+            worker_requests = [r for r in log.requests if r["actor_role"] == "worker"]
+            grep_index, = [i for i, r in enumerate(worker_requests) if r["request_id"] == original["request"]]
+            actions = [Action.from_function(c["function"]).record() for c in
+                       log.reply(worker_requests[grep_index])["message"]["tool_calls"]]
+            require(any(a["name"] == "grep" and a["arguments"]["pattern"] == original["pattern"] for a in actions)
+                    and archived["first_worker"]["request"] == req["request_id"] and source_hits, "Unbound search inputs")
+            witnesses = diagnostic["witnesses"][task]
+            rankings = {label: grep_ranking(search, pattern, witnesses) for label, pattern in
+                        (("archived", original["pattern"]), ("source_literal", term))}
+            require(rankings["archived"]["ranking_sha256"] == original["ranking_sha256"], "Archived ranking changed")
+            opportunity["native_search_check"] = dict(corpus_sha256=diagnostic["corpus_sha256"], top_k=top_k,
+                archived_first_search_ordinal=grep_index + 1, archived_first_search_request=original["request"],
+                witness_documents=witnesses, diagnostic_sha256=digest(diagnostic_path.read_bytes()), rankings=rankings)
+        opportunities.append(opportunity)
+    development_search = referral_search_reference(domain, search, diagnostic["corpus_sha256"], top_k)
+    return dict(format="agent-memory-policy-measurements/v1", studies=studies,
+                unexposed_calibration=dict(scope="four separate calibration tasks and archived periods",
+                    verified_equal_first_inputs=len(first_wires[0]),
+                    changed_first_business_calls=sum(first_actions[0][k] != first_actions[1][k] for k in first_wires[0]),
+                    pairs=aa["pairs"], sources=aa["sources"]),
+                retrospective_decision_screen=opportunities, development_search_reference=development_search, new_provider_requests=0)
+
+
 def clustered_results(result, customers):
     from agent_memory_eval.analysis.clustered_outcomes import clustered_contrast
 
@@ -723,7 +871,8 @@ def registered_account_results(workspace, profile, *, packets_only=False, rating
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    analyzers = {"development": development, "validation": validation, "input-audit": input_audit}
+    analyzers = {"development": development, "validation": validation, "input-audit": input_audit,
+                 "common-measurements": common_measurements}
     parser.add_argument("phase", choices=[*analyzers, "account-outcomes", "account-review"])
     parser.add_argument("--profile", type=Path)
     parser.add_argument("--ratings", type=Path)

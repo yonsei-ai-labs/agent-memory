@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Cross-benchmark two-pass writer comparison",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["format", "id", "purpose", "hypothesis", "prediction", "criterion", "evidence", "policy", "benchmarks"],
+  "$defs": {
+    "text": {"type": "string", "pattern": "\\S"},
+    "ref": {
+      "type": "object", "additionalProperties": false, "required": ["path", "sha256"],
+      "properties": {"path": {"$ref": "#/$defs/text"}, "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}}
+    },
+    "tasks": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Za-z0-9_-]+$"}}
+  },
+  "properties": {
+    "format": {"const": "agent-memory-policy-round/v1"},
+    "id": {"type": "string", "pattern": "^[a-z][a-z0-9-]{1,64}$"},
+    "purpose": {"enum": ["development", "confirmation"]},
+    "hypothesis": {"$ref": "#/$defs/text"}, "prediction": {"$ref": "#/$defs/text"}, "criterion": {"$ref": "#/$defs/text"},
+    "previous_decision": {"$ref": "#/$defs/ref"},
+    "evidence": {"type": "array", "uniqueItems": true, "items": {
+      "type": "object", "additionalProperties": false, "required": ["artifact", "benchmark", "tasks"],
+      "properties": {"artifact": {"$ref": "#/$defs/ref"}, "benchmark": {"enum": ["banking-opening", "bfcl-relevance"]},
+                     "tasks": {"allOf": [{"$ref": "#/$defs/tasks"}, {"minItems": 1}]}}
+    }},
+    "policy": {
+      "type": "object", "additionalProperties": false,
+      "required": ["writing", "candidate_instruction", "clause", "reader", "reader_instruction", "feedback"],
+      "properties": {
+        "writing": {"$ref": "#/$defs/ref"}, "candidate_instruction": {"$ref": "#/$defs/ref"}, "clause": {"$ref": "#/$defs/ref"},
+        "reader": {"enum": ["preload", "on_demand"]}, "reader_instruction": {"$ref": "#/$defs/ref"}, "feedback": {"const": "result_only"}
+      }
+    },
+    "benchmarks": {
+      "type": "object", "additionalProperties": false, "required": ["banking-opening", "bfcl-relevance"],
+      "properties": {
+        "banking-opening": {
+          "type": "object", "additionalProperties": false, "required": ["profile", "development_tasks"],
+          "properties": {"profile": {"$ref": "#/$defs/ref"}, "development_tasks": {"$ref": "#/$defs/tasks"}}
+        },
+        "bfcl-relevance": {
+          "type": "object", "additionalProperties": false, "required": ["profile", "development_tasks", "question_families"],
+          "properties": {
+            "profile": {"$ref": "#/$defs/ref"}, "development_tasks": {"$ref": "#/$defs/tasks"},
+            "question_families": {"type": "object", "additionalProperties": {"$ref": "#/$defs/text"}}
+          }
+        }
+      }
+    }
+  }
+}

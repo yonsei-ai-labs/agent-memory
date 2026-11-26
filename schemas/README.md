@@ -1,8 +1,26 @@
 # 설정과 사건 계약
 
+두 벤치의 공통 정책 라운드는 공개 근거와 개발 과제, 형식별 작성·조회 정책, 확인 전 기준을 등록한다. 정책 근거 결과는 행과 작성 기록을 생략한 요약에도 각 집합의 해시를 남긴다. [라운드 선언](policy-round-v1.schema.json) · [정책 근거 결과](policy-evidence-v1.schema.json) · [실제 사용 방법](../docs/reports/20261126-evidence-foundation-plan.md)
+
+원기록 결과는 1회차 공개 단서와 첫 업무 입력, 기억 노출, 함수 선택, 공식 성패 및 관측한 중단 시점의 진척을 연결한다. 개별 행을 생략한 요약에도 전체 행의 해시가 들어간다. [궤적 결과 v1](trajectory-outcomes-v1.schema.json) · [은행·BFCL 재현 명령](../docs/development/trajectory-outcomes.md)
+
+개별 판단에서 같은 문자열이 원천·기억·다른 업무 입력·응답에 각각 있었는지 저장 버전과 요청 위치로 대조한다. [판단 단서 v1](decision-cue-v1.schema.json) · [세 벤치의 실제 사례](../docs/development/trajectory-outcomes.md#한-판단에서-단서의-출처를-검산하기)
+
+원천 근거를 사전에 등록한 연구는 작성 전에 전체 연구의 진행·중단 판정과 원천 해시를 보관한다. [원천 판정 v1](source-opportunity-v1.schema.json)
+
 은행 개설 기억을 판독할 때는 상품·계좌 유형·소유자, 주장한 결과와 공개 반환의 호출 ID를 함께 기록한다. 각 작성 배정의 모든 항목을 판독하면 고객별 비교에 한 건으로 들어간다. [판독 제출 형식 v2](opening-outcome-ratings-v2.schema.json) · [대상과 인용 검증 사례](../tests/test_opening_review_v2.py)
 
+공통 [짝비교 결과 v1](paired-outcomes-v1.schema.json)은 지표의 정의·버전·시점·단위와 집계 분모, 비교 배정, 원본 파일 해시, 조건별 관측의 JSON Pointer를 담는다. BFCL 스크립트 대조 예시로 지표 구조와 동작을 검증한다. [결과 스키마의 예시](../tests/fixtures/paired-outcomes-v1.json) · [보관 결과를 읽는 명령](../docs/development/framework-scoring-plan.md#보관-결과-짝비교-실행)
+
+BFCL `rec_sum`에서 고유 도구를 쓰는 실행은 기록 계약 v1.3을 선택한다. `memory_append`의 자기 작성 본문, `memory_retrieve`가 반환한 본문의 항목·버전과 실제 입력 구간을 검사한다. 공식 반환에 내부 식별자를 추가하면 검증이 실패한다. 공통 파일 기록의 기본 버전은 v1.1, snapshot 자동 제공은 v1.2다. [v1.3 사건](v1.3/event.schema.json) · [원장](v1.3/journal-state.schema.json) · [반환 예시](../tests/fixtures/contracts-v1.3/native-return.json) · [BFCL 연결 검증](../docs/reports/20261125-common-policy-measurements.md)
+
+다형식 작성의 `result_only`는 공식 1회차 성패와 그 이벤트를 묶어 보존한다. 별도 판독 계약은 가려진 자료에 대한 사람·모델 판독을 요청 해시와 원문 인용으로 연결한다. [성패 수신](form-result-feedback-v2.schema.json) · [근거 판독 제출](semantic-memory-ratings-v1.schema.json) · [동작과 검증](../docs/development/memory-evidence-review.md)
+
 필수 형식 비교는 [필수 저장 정책](required-form-writing-v1.schema.json)을 사용한다. `writer-required-store/v1`은 저장 도구 호출이 실제 항목을 남겨야 완결된다. 선택형 저장의 기존 `writer-finish/v1` 기록은 원래 계약으로 감사한다. [성공·실패 fixture](../tests/fixtures/writer-required-store-v1.json)
+
+[prompt-comparison-v2.schema.json](prompt-comparison-v2.schema.json)은 보관된 1회차와 두 메모 정책을 비교하는 v2 설정이다. 공개 개발 원문에 근거한 작성 지침 제안도 검증한다. [초안 예시](../protocols/drafts/tau2-airline-payment-memory-v2.json) · [제안·실행·판정](../docs/development/memory-policy-improvement.md)
+
+v3는 등록한 각 메모리 형식에서 공통 후보 문구 하나의 효과를 기존 작성물과 짝지어 비교한다. [v3 계약](prompt-comparison-v3.schema.json) · [형식별 배정 예시](../protocols/drafts/tau2-airline-writer-pairs-v3.json)
 
 [written-replay-batch.schema.json](written-replay-batch.schema.json)은 네 조건의 한 응답 배치 프로필이다. v2 준비물의 해시, 반복 단위·배정 시드·한도, 판정 및 비용 승인을 명시한다. 미정값은 초안에 보존한다. [실행과 감사](../docs/development/written-replay-batch.md)
 
@@ -25,6 +43,7 @@
 | [v1.1/run-plan.schema.json](v1.1/run-plan.schema.json) | 단계별 지침, 사용자 시뮬레이터·native 한도·응답 캐시 확인·adapter 설정 해시 |
 | [v1.1/event.schema.json](v1.1/event.schema.json) | 요청 manifest·과제 입력 참조, 공개 경험 접두부, 반환/자기 작성 출처 |
 | [v1.1/input-manifest.schema.json](v1.1/input-manifest.schema.json) | 실제 요청의 출처 binding과 렌더링된 기억 구간 |
+| [task-start-v1.schema.json](task-start-v1.schema.json) | 동일 과제 첫 판단의 벤치·버전·과제·초기 조건 해시와 메모 제공 전 공개 입력. 공개 입력의 구조는 벤치 어댑터가 검증한다. |
 | [v1.1/journal.schema.json](v1.1/journal.schema.json) | 모든 사건을 확정하는 journal envelope v1.0. 사건 버전과 별개 |
 | [v1.1/journal-state.schema.json](v1.1/journal-state.schema.json) | 첫 코어의 journal envelope v1.1. 불변 내부 상태 참조와 상태 전용 commit |
 | [기존 run-plan](run-plan.schema.json), [기존 event](event.schema.json) | v1.0 호환 자료, 새 필드로 덮어쓰지 않음 |

@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "A shared writer change paired within each declared memory representation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["format", "status", "name", "baseline", "base_design_ref", "endpoint_ref", "forms", "writer_clause", "common_writer_ref", "read_mode", "task_sets", "seed_pairs", "guards", "http_timeout_seconds", "selection_reason"],
+  "properties": {
+    "format": {"const": "agent-memory-prompt-comparison/v3"},
+    "status": {"enum": ["draft", "ready"]},
+    "name": {"$ref": "#/$defs/slug"},
+    "baseline": {"const": "archived_first_pass", "description": "Replay the archived task, customer scenario, business tools, model settings, starting state, evaluation and episode limits. Only the assigned memory interface may vary."},
+    "candidate_proposal": {"$ref": "#/$defs/proposal"},
+    "base_design_ref": {"$ref": "#/$defs/ref"},
+    "endpoint_ref": {"$ref": "#/$defs/ref"},
+    "forms": {
+      "type": "object", "minProperties": 1,
+      "propertyNames": {"type": "string", "pattern": "^[a-z][a-z0-9_-]{0,52}$"},
+      "additionalProperties": {"$ref": "#/$defs/text"}
+    },
+    "writer_clause": {"$ref": "#/$defs/text"},
+    "common_writer_ref": {"$ref": "#/$defs/ref"},
+    "read_mode": {"const": "preload"},
+    "task_sets": {
+      "type": "object", "additionalProperties": false, "required": ["development", "evaluation"],
+      "properties": {"development": {"$ref": "#/$defs/tasks"}, "evaluation": {"$ref": "#/$defs/tasks"}}
+    },
+    "seed_pairs": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object", "additionalProperties": false, "required": ["repetition", "writer", "native_and_solver"],
+        "properties": {
+          "repetition": {"type": "integer", "minimum": 1},
+          "writer": {"type": "integer", "minimum": 0},
+          "native_and_solver": {"type": "integer", "minimum": 0, "description": "Must match the archived native and worker seed for every paired source in this repetition."}
+        }
+      }
+    },
+    "guards": {
+      "type": ["null", "object"], "additionalProperties": false, "required": ["max_calls", "max_usd", "max_seconds"],
+      "properties": {
+        "max_calls": {"type": "integer", "minimum": 1},
+        "max_usd": {"type": "number", "exclusiveMinimum": 0},
+        "max_seconds": {"type": "number", "exclusiveMinimum": 0}
+      }
+    },
+    "http_timeout_seconds": {"type": "integer", "minimum": 1},
+    "selection_reason": {"$ref": "#/$defs/text"}
+  },
+  "if": {"properties": {"status": {"const": "ready"}}},
+  "then": {"properties": {"guards": {"type": "object"}}},
+  "$defs": {
+    "proposal": {
+      "type": "object", "additionalProperties": false,
+      "required": ["parent_config_sha256", "hypothesis", "expected_action", "writer_clause", "evidence"],
+      "properties": {
+        "parent_config_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "hypothesis": {"$ref": "#/$defs/text"},
+        "expected_action": {"$ref": "#/$defs/text"},
+        "writer_clause": {"$ref": "#/$defs/text"},
+        "evidence": {
+          "type": "array", "minItems": 1, "uniqueItems": true,
+          "items": {
+            "type": "object", "additionalProperties": false, "required": ["task_id", "pointer", "quote"],
+            "properties": {
+              "task_id": {"$ref": "#/$defs/text"},
+              "pointer": {"type": "string", "pattern": "^/messages/(0|[1-9][0-9]*)/(content|tool_calls/(0|[1-9][0-9]*)/function/(arguments|name))$"},
+              "quote": {"$ref": "#/$defs/text"}
+            }
+          }
+        }
+      }
+    },
+    "slug": {"type": "string", "pattern": "^[a-z][a-z0-9_-]{0,63}$"},
+    "text": {"type": "string", "minLength": 1, "pattern": "\\S"},
+    "tasks": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/text"}},
+    "ref": {
+      "type": "object", "additionalProperties": false, "required": ["path", "sha256"],
+      "properties": {"path": {"$ref": "#/$defs/text"}, "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}
+    }
+  }
+}

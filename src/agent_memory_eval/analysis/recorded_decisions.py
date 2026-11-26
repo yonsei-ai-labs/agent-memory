@@ -32,6 +32,8 @@ class RecordedDecisions:
         data = sealed_bytes(folder / "log.jsonl", checksum, size)
         records = [read_json(line) for line in data.splitlines()]
         self.all_events = {e["event_id"]: e for record in records for e in record["events"]}
+        self.scan = dict(records=records, events=self.all_events,
+                         starts={e["run_id"]: e for e in self.all_events.values() if e["type"] == "run.started"})
         self.events = {key: e for key, e in self.all_events.items() if e["run_id"] == run}
         starts = self.of_type("run.started")
         require(len(starts) == 1, f"Expected one start for {run}")

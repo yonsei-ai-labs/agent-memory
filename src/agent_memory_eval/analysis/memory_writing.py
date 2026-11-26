@@ -11,8 +11,9 @@ from agent_memory_eval.recording.journal import BlobStore, read_experiment
 from agent_memory_eval.recording.provenance import public_assistant_message
 
 
-def audit_memory_writes(root):
-    evidence = read_experiment(root)
+def audit_memory_writes(root, *, evidence=None):
+    if evidence is None:
+        evidence = read_experiment(root)
     scan, state, _ = evidence
     common = audit_requests(root, evidence=evidence)
     blobs, writes = BlobStore(root), []

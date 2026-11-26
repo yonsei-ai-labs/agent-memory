@@ -1,0 +1,1980 @@
+{
+  "format": "agent-memory-policy-measurements/v1",
+  "studies": {
+    "writer_cycle": {
+      "comparison": {
+        "reference": {
+          "assigned": 20,
+          "started": 20,
+          "graded": 20,
+          "successes": 7,
+          "success_rate": 0.35
+        },
+        "candidate": {
+          "assigned": 20,
+          "started": 20,
+          "graded": 20,
+          "successes": 4,
+          "success_rate": 0.2
+        },
+        "pairs": {
+          "assigned": 20,
+          "gain": 1,
+          "loss": 4,
+          "both_success": 3,
+          "both_failure": 12,
+          "missing": 0,
+          "jointly_graded": 20,
+          "discordance_rate": 0.25,
+          "sign_p_if_independent": 0.375
+        },
+        "sources": {
+          "assigned": 4,
+          "unknown_source_pairs": 0,
+          "complete": 4,
+          "gain": 0,
+          "loss": 2,
+          "tie": 2,
+          "sign_p_if_independent": 0.5
+        },
+        "joint_success_members": [
+          {
+            "task": "task_014",
+            "slot": "episode__preload",
+            "source": "r_922a0c4ec5be4f86b51f419e00c1d8de"
+          },
+          {
+            "task": "task_014",
+            "slot": "fact__preload",
+            "source": "r_922a0c4ec5be4f86b51f419e00c1d8de"
+          },
+          {
+            "task": "task_014",
+            "slot": "free__preload",
+            "source": "r_922a0c4ec5be4f86b51f419e00c1d8de"
+          }
+        ],
+        "joint_success_effort": {
+          "pairs": 3,
+          "metrics": {
+            "customer_turns": {
+              "observed": 3,
+              "missing": 0,
+              "candidate_total": "9",
+              "reference_total": "7",
+              "difference": "2",
+              "relative_difference_pct": 28.571,
+              "lower": 0,
+              "equal": 2,
+              "higher": 1
+            },
+            "business_calls": {
+              "observed": 3,
+              "missing": 0,
+              "candidate_total": "13",
+              "reference_total": "12",
+              "difference": "1",
+              "relative_difference_pct": 8.333,
+              "lower": 0,
+              "equal": 2,
+              "higher": 1
+            },
+            "memory_read_calls": {
+              "observed": 3,
+              "missing": 0,
+              "candidate_total": "0",
+              "reference_total": "0",
+              "difference": "0",
+              "relative_difference_pct": null,
+              "lower": 0,
+              "equal": 3,
+              "higher": 0
+            },
+            "http_calls": {
+              "observed": 3,
+              "missing": 0,
+              "candidate_total": "33",
+              "reference_total": "32",
+              "difference": "1",
+              "relative_difference_pct": 3.125,
+              "lower": 1,
+              "equal": 0,
+              "higher": 2
+            },
+            "tokens": {
+              "observed": 3,
+              "missing": 0,
+              "candidate_total": "215807",
+              "reference_total": "206221",
+              "difference": "9586",
+              "relative_difference_pct": 4.648,
+              "lower": 2,
+              "equal": 0,
+              "higher": 1
+            },
+            "usd": {
+              "observed": 3,
+              "missing": 0,
+              "candidate_total": "0.007223397",
+              "reference_total": "0.007454867",
+              "difference": "-0.000231470",
+              "relative_difference_pct": -3.105,
+              "lower": 2,
+              "equal": 0,
+              "higher": 1
+            },
+            "worker_calls": {
+              "observed": 3,
+              "missing": 0,
+              "candidate_total": "13",
+              "reference_total": "12",
+              "difference": "1",
+              "relative_difference_pct": 8.333,
+              "lower": 0,
+              "equal": 2,
+              "higher": 1
+            },
+            "customer_calls": {
+              "observed": 3,
+              "missing": 0,
+              "candidate_total": "0",
+              "reference_total": "0",
+              "difference": "0",
+              "relative_difference_pct": null,
+              "lower": 0,
+              "equal": 3,
+              "higher": 0
+            }
+          }
+        },
+        "jointly_graded_effort": {
+          "pairs": 20,
+          "metrics": {
+            "customer_turns": {
+              "observed": 20,
+              "missing": 0,
+              "candidate_total": "68",
+              "reference_total": "54",
+              "difference": "14",
+              "relative_difference_pct": 25.926,
+              "lower": 6,
+              "equal": 4,
+              "higher": 10
+            },
+            "business_calls": {
+              "observed": 20,
+              "missing": 0,
+              "candidate_total": "121",
+              "reference_total": "123",
+              "difference": "-2",
+              "relative_difference_pct": -1.626,
+              "lower": 9,
+              "equal": 6,
+              "higher": 5
+            },
+            "memory_read_calls": {
+              "observed": 20,
+              "missing": 0,
+              "candidate_total": "0",
+              "reference_total": "0",
+              "difference": "0",
+              "relative_difference_pct": null,
+              "lower": 0,
+              "equal": 20,
+              "higher": 0
+            },
+            "http_calls": {
+              "observed": 20,
+              "missing": 0,
+              "candidate_total": "265",
+              "reference_total": "252",
+              "difference": "13",
+              "relative_difference_pct": 5.159,
+              "lower": 10,
+              "equal": 2,
+              "higher": 8
+            },
+            "tokens": {
+              "observed": 20,
+              "missing": 0,
+              "candidate_total": "1959826",
+              "reference_total": "1835381",
+              "difference": "124445",
+              "relative_difference_pct": 6.78,
+              "lower": 10,
+              "equal": 0,
+              "higher": 10
+            },
+            "usd": {
+              "observed": 20,
+              "missing": 0,
+              "candidate_total": "0.062015220",
+              "reference_total": "0.058993584",
+              "difference": "0.003021636",
+              "relative_difference_pct": 5.122,
+              "lower": 11,
+              "equal": 0,
+              "higher": 9
+            },
+            "worker_calls": {
+              "observed": 20,
+              "missing": 0,
+              "candidate_total": "121",
+              "reference_total": "123",
+              "difference": "-2",
+              "relative_difference_pct": -1.626,
+              "lower": 9,
+              "equal": 6,
+              "higher": 5
+            },
+            "customer_calls": {
+              "observed": 20,
+              "missing": 0,
+              "candidate_total": "5",
+              "reference_total": "3",
+              "difference": "2",
+              "relative_difference_pct": 66.667,
+              "lower": 1,
+              "equal": 17,
+              "higher": 2
+            }
+          }
+        }
+      },
+      "role_calls": {
+        "existing": {
+          "observed": 20,
+          "worker": 123,
+          "customer": 3
+        },
+        "candidate": {
+          "observed": 20,
+          "worker": 121,
+          "customer": 5
+        }
+      },
+      "reply_format": {
+        "existing": {
+          "text_replies": 67,
+          "json_objects": 20,
+          "message_only_objects": 20,
+          "verbatim_in_next_input": 20
+        },
+        "candidate": {
+          "text_replies": 74,
+          "json_objects": 20,
+          "message_only_objects": 19,
+          "verbatim_in_next_input": 20
+        }
+      },
+      "process_checks": {
+        "existing": [
+          {
+            "task": "task_002",
+            "slot": "lesson__preload",
+            "run": "r_9230eeb0d1fb466a866ddfc8c56cf837",
+            "report_sha256": "f68b34e2f017660a6ac91d1e37519573e72af41ff53a4dd90763ea0593620793",
+            "tagged_documents": {
+              "required": 6,
+              "confirmed": 2,
+              "missing": 4
+            },
+            "official_actions": {
+              "required": 1,
+              "confirmed": 0,
+              "missing": 1
+            }
+          },
+          {
+            "task": "task_002",
+            "slot": "episode__preload",
+            "run": "r_a8799bc7bcd542e2b7a4e133d44efed5",
+            "report_sha256": "c68dfef8126645f9e2491b62290470e4f053bdbaa99b196bc465686a87d77d78",
+            "tagged_documents": {
+              "required": 6,
+              "confirmed": 0,
+              "missing": 6
+            },
+            "official_actions": {
+              "required": 1,
+              "confirmed": 0,
+              "missing": 1
+            }
+          },
+          {
+            "task": "task_002",
+            "slot": "free__preload",
+            "run": "r_26c9a70f3172493981fbc88f1393f72b",
+            "report_sha256": "7402c989be894375c377c8a2c7d66f922ee5eefedcd62efb39de44822f34f59d",
+            "tagged_documents": {
+              "required": 6,
+              "confirmed": 1,
+              "missing": 5
+            },
+            "official_actions": {
+              "required": 1,
+              "confirmed": 1,
+              "missing": 0
+            }
+          },
+          {
+            "task": "task_002",
+            "slot": "fact__preload",
+            "run": "r_9fe74d34d9ca4bd2a15ca4d5a2de6c18",
+            "report_sha256": "01e2454954d0ec2c414cd29741dd8b590bc044c58016f9d67615bb671a3af184",
+            "tagged_documents": {
+              "required": 6,
+              "confirmed": 4,
+              "missing": 2
+            },
+            "official_actions": {
+              "required": 1,
+              "confirmed": 0,
+              "missing": 1
+            }
+          },
+          {
+            "task": "task_002",
+            "slot": "procedure__preload",
+            "run": "r_17b09928ed214365880a32c6e486cc11",
+            "report_sha256": "2a8bddf7f0191641a61835870b35bfe45c1165885bd540a77ecfe406a061beca",
+            "tagged_documents": {
+              "required": 6,
+              "confirmed": 1,
+              "missing": 5
+            },
+            "official_actions": {
+              "required": 1,
+              "confirmed": 1,
+              "missing": 0
+            }
+          },
+          {
+            "task": "task_014",
+            "slot": "free__preload",
+            "run": "r_ed91e326e9fd40a89866d79e2eaa7c41",
+            "report_sha256": "9a633195102e01221fe7b93b61d15e708b4e5f2dcc5816dcafc3a4de893624f6",
+            "tagged_documents": {
+              "required": 5,
+              "confirmed": 2,
+              "missing": 3
+            },
+            "official_actions": {
+              "required": 1,
+              "confirmed": 1,
+              "missing": 0
+            }
+          },
+          {
+            "task": "task_014",
+            "slot": "procedure__preload",
+            "run": "r_aa38ced3703a4352b4dd121d9b4e75e5",
+            "report_sha256": "2155d08666f36ef87381e53de532ce399f277b60641bf65ad689e70437197e82",
+            "tagged_documents": {
+              "required": 5,
+              "confirmed": 2,
+              "missing": 3
+            },
+            "official_actions": {
+              "required": 1,
+              "confirmed": 1,
+              "missing": 0
+            }
+          },
+          {
+            "task": "task_014",
+            "slot": "fact__preload",
+            "run": "r_3444c2af50c34d44a87750576c3c5c89",
+            "report_sha256": "d2c3d51ad843b445992b2969da6cbf6f4e6f174beb88ac92beaafe668130b95e",
+            "tagged_documents": {
+              "required": 5,
+              "confirmed": 2,
+              "missing": 3
+            },
+            "official_actions": {
+              "required": 1,
+              "confirmed": 1,
+              "missing": 0
+            }
+          },
+          {
+            "task": "task_014",
+            "slot": "episode__preload",
+            "run": "r_d4b9ee06eb04453190e384ed9080a817",
+            "report_sha256": "00503b58c1cc4da7d0c48f491da0f4ef2828234145b333fa2bd1a14a2d5e030b",
+            "tagged_documents": {
+              "required": 5,
+              "confirmed": 2,
+              "missing": 3
+            },
+            "official_actions": {
+              "required": 1,
+              "confirmed": 1,
+              "missing": 0
+            }
+          },
+          {
+            "task": "task_014",
+            "slot": "lesson__preload",
+            "run": "r_c11a642186524fd99df8ab5c2439f83e",
+            "report_sha256": "28199a2eb641a0faa567d71c2291df55302455db617f4deb87f5510ba94b7889",
+            "tagged_documents": {
+              "required": 5,
+              "confirmed": 3,
+              "missing": 2
+            },
+            "official_actions": {
+              "required": 1,
+              "confirmed": 1,
+              "missing": 0
+            }
+          },
+          {
+            "task": "task_016",
+            "slot": "lesson__preload",
+            "run": "r_7925c585624c4d688937dc1d16f265d0",
+            "report_sha256": "a9364e392ab5266666efcac0e980092637e7c8c404f892e2539972746c40164c",
+            "tagged_documents": {
+              "required": 3,
+              "confirmed": 1,
+              "missing": 2
+            },
+            "official_actions": {
+              "required": 2,
+              "confirmed": 1,
+              "missing": 1
+            }
+          },
+          {
+            "task": "task_016",
+            "slot": "fact__preload",
+            "run": "r_f42f0a1599c547ec86f4a2491ca728a4",
+            "report_sha256": "67aba1b53cd740e827d57881b85c137b9a05979a36d9f37279c66ec9deca06ca",
+            "tagged_documents": {
+              "required": 3,
+              "confirmed": 1,
+              "missing": 2
+            },
+            "official_actions": {
+              "required": 2,
+              "confirmed": 1,
+              "missing": 1
+            }
+          },
+          {
+            "task": "task_016",
+            "slot": "free__preload",
+            "run": "r_0aafb333b86c4522a254f027efa05d22",
+            "report_sha256": "afeb2604d513f2510bfe88ee26806523bacb99881773ad912ecd85451e85b383",
+            "tagged_documents": {
+              "required": 3,
+              "confirmed": 1,
+              "missing": 2
+            },
+            "official_actions": {
+              "required": 2,
+              "confirmed": 1,
+              "missing": 1
+            }
+          },
+          {
+            "task": "task_016",
+            "slot": "procedure__preload",
+            "run": "r_fe24766074d547b68231aa73f6194cee",
+            "report_sha256": "1f133fd8e548103ecd07d444be667dd362f3fb26b5cd30c31aa480eef19ec4fe",
+            "tagged_documents": {
+              "required": 3,
+              "confirmed": 1,
+              "missing": 2
+            },
+            "official_actions": {
+              "required": 2,
+              "confirmed": 0,
+              "missing": 2
+            }
+          },
+          {
+            "task": "task_016",
+            "slot": "episode__preload",
+            "run": "r_763532491ee14ea4a3098372d2708a76",
+            "report_sha256": "3d8c3b1ab64b0d5e7f2ec761b0139c298d8119a1d4d3a51657d1a305c0f20d8d",
+            "tagged_documents": {
+              "required": 3,
+              "confirmed": 2,
+              "missing": 1
+            },
+            "official_actions": {
+              "required": 2,
+              "confirmed": 1,
+              "missing": 1
+            }
+          },
+          {
+            "task": "task_017",
+            "slot": "episode__preload",
+            "run": "r_eaa751ad872a424790bcbe289006f430",
+            "report_sha256": "2f49d81cbd1bc1713cc36b4ed940a3c1e893e97489722faa52915b9976a761f2",
+            "tagged_documents": {
+              "required": 4,
+              "confirmed": 0,
+              "missing": 4
+            },
+            "official_actions": {
+              "required": 4,
+              "confirmed": 1,
+              "missing": 3
+            }
+          },
+          {
+            "task": "task_017",
+            "slot": "procedure__preload",
+            "run": "r_bb391e143339467e9ff723ee7e5c8ed1",
+            "report_sha256": "54b9cce010f58e93e155c5ea396ec2400b554f217be5998b5d25a15515258ce4",
+            "tagged_documents": {
+              "required": 4,
+              "confirmed": 1,
+              "missing": 3
+            },
+            "official_actions": {
+              "required": 4,
+              "confirmed": 1,
+              "missing": 3
+            }
+          },
+          {
+            "task": "task_017",
+            "slot": "lesson__preload",
+            "run": "r_d407947cd2c1474096d15a329f8ec7c9",
+            "report_sha256": "26caa058fb871465afd7d99151b701db16b042cda1f969e002db6f5a6ed0507c",
+            "tagged_documents": {
+              "required": 4,
+              "confirmed": 1,
+              "missing": 3
+            },
+            "official_actions": {
+              "required": 4,
+              "confirmed": 1,
+              "missing": 3
+            }
+          },
+          {
+            "task": "task_017",
+            "slot": "fact__preload",
+            "run": "r_616484574e724d8a823c74335d977bb0",
+            "report_sha256": "f5ef8821e9108a06932feeb4673564da5df4a3c0c3622d899008a8cf0dd28e2b",
+            "tagged_documents": {
+              "required": 4,
+              "confirmed": 1,
+              "missing": 3
+            },
+            "official_actions": {
+              "required": 4,
+              "confirmed": 1,
+              "missing": 3
+            }
+          },
+          {
+            "task": "task_017",
+            "slot": "free__preload",
+            "run": "r_30e53634ec3f49d586714ee3f341d09c",
+            "report_sha256": "414f21901cfa197e2c11554b3406d5dc158d8ec4bf8874dba5880fff244da6df",
+            "tagged_documents": {
+              "required": 4,
+              "confirmed": 1,
+              "missing": 3
+            },
+            "official_actions": {
+              "required": 4,
+              "confirmed": 1,
+              "missing": 3
+            }
+          }
+        ],
+        "candidate": [
+          {
+            "task": "task_002",
+            "slot": "fact__preload",
+            "run": "r_d7a1ae2ca6404ea5a6cdfd34f376b9a1",
+            "report_sha256": "c68c3d906a66e3a1c3621e5aa23d6e4db92835255a1130c5db84dc601ec1206d",
+            "tagged_documents": {
+              "required": 6,
+              "confirmed": 2,
+              "missing": 4
+            },
+            "official_actions": {
+              "required": 1,
+              "confirmed": 0,
+              "missing": 1
+            }
+          },
+          {
+            "task": "task_002",
+            "slot": "free__preload",
+            "run": "r_ced597bd45434f93ac4c10c40f5adeb2",
+            "report_sha256": "b993cfc36729bd525471826ef8602169b139b107cff2b0a84d360d5d0eb6e1cf",
+            "tagged_documents": {
+              "required": 6,
+              "confirmed": 2,
+              "missing": 4
+            },
+            "official_actions": {
+              "required": 1,
+              "confirmed": 0,
+              "missing": 1
+            }
+          },
+          {
+            "task": "task_002",
+            "slot": "procedure__preload",
+            "run": "r_320b4d799c034ecabc2f5196801e2898",
+            "report_sha256": "3513804c228ae46f81d7c86f092a0a73e9d41805670805d5e7119968017bb1bd",
+            "tagged_documents": {
+              "required": 6,
+              "confirmed": 0,
+              "missing": 6
+            },
+            "official_actions": {
+              "required": 1,
+              "confirmed": 0,
+              "missing": 1
+            }
+          },
+          {
+            "task": "task_002",
+            "slot": "lesson__preload",
+            "run": "r_cb06e1c95c83466d9fd4fbfc656200fe",
+            "report_sha256": "b0aea61f0751dbfcb410e44eaf1f52490fc61648b1bcc315c6f0180f5b07659f",
+            "tagged_documents": {
+              "required": 6,
+              "confirmed": 2,
+              "missing": 4
+            },
+            "official_actions": {
+              "required": 1,
+              "confirmed": 0,
+              "missing": 1
+            }
+          },
+          {
+            "task": "task_002",
+            "slot": "episode__preload",
+            "run": "r_f689f30e93c442c1a544ce924e6171a8",
+            "report_sha256": "82104ef5fbefad98950125aaebdf03dc919e27aa980b1984a2dec42cdb9f546c",
+            "tagged_documents": {
+              "required": 6,
+              "confirmed": 1,
+              "missing": 5
+            },
+            "official_actions": {
+              "required": 1,
+              "confirmed": 1,
+              "missing": 0
+            }
+          },
+          {
+            "task": "task_014",
+            "slot": "free__preload",
+            "run": "r_856f836714694122954598350a5d920e",
+            "report_sha256": "6a7cd7c182bbfa4f30f7086d349bf2ab3c6fb398bfd0a910f167c3e5879483bd",
+            "tagged_documents": {
+              "required": 5,
+              "confirmed": 4,
+              "missing": 1
+            },
+            "official_actions": {
+              "required": 1,
+              "confirmed": 1,
+              "missing": 0
+            }
+          },
+          {
+            "task": "task_014",
+            "slot": "fact__preload",
+            "run": "r_3b8fbba8abf14a73982d9c6d6dfbfb62",
+            "report_sha256": "f36a833cc0d3506e543ac21957c516b50d610ae48238d8726a47c4d334054169",
+            "tagged_documents": {
+              "required": 5,
+              "confirmed": 2,
+              "missing": 3
+            },
+            "official_actions": {
+              "required": 1,
+              "confirmed": 1,
+              "missing": 0
+            }
+          },
+          {
+            "task": "task_014",
+            "slot": "episode__preload",
+            "run": "r_95d256c39db94c8aa42fe6a79e4347a1",
+            "report_sha256": "4cd41d27c26acf0e04da3b40f5de02d8c5786a1b0f4245ed0442514adb099def",
+            "tagged_documents": {
+              "required": 5,
+              "confirmed": 2,
+              "missing": 3
+            },
+            "official_actions": {
+              "required": 1,
+              "confirmed": 1,
+              "missing": 0
+            }
+          },
+          {
+            "task": "task_014",
+            "slot": "lesson__preload",
+            "run": "r_7fc47424968848d89756f8a86842b204",
+            "report_sha256": "1c7ae2880d675e959e036f1ed9b10eb71d80fb539c4cd03b310e9709dc44678f",
+            "tagged_documents": {
+              "required": 5,
+              "confirmed": 2,
+              "missing": 3
+            },
+            "official_actions": {
+              "required": 1,
+              "confirmed": 0,
+              "missing": 1
+            }
+          },
+          {
+            "task": "task_014",
+            "slot": "procedure__preload",
+            "run": "r_3618b6370f614eae850638a50a19e25c",
+            "report_sha256": "6e404d8f74bc4d549d66e48705c8f84d56b5e045661898e9be970906d8b06ee4",
+            "tagged_documents": {
+              "required": 5,
+              "confirmed": 1,
+              "missing": 4
+            },
+            "official_actions": {
+              "required": 1,
+              "confirmed": 0,
+              "missing": 1
+            }
+          },
+          {
+            "task": "task_016",
+            "slot": "episode__preload",
+            "run": "r_9423c93f088b498e97bed3f356004dbe",
+            "report_sha256": "bf133f9e3888d945bcc64637b99a8ad076154a36cb4edd1cd95fe9caaf4b3354",
+            "tagged_documents": {
+              "required": 3,
+              "confirmed": 2,
+              "missing": 1
+            },
+            "official_actions": {
+              "required": 2,
+              "confirmed": 1,
+              "missing": 1
+            }
+          },
+          {
+            "task": "task_016",
+            "slot": "procedure__preload",
+            "run": "r_448f1bc11f9c40dbb7dec800964523a9",
+            "report_sha256": "655a0d33b56a94716a30e7e286ec32cfa1b0832ad1a6ba79977cf8ac31de4727",
+            "tagged_documents": {
+              "required": 3,
+              "confirmed": 1,
+              "missing": 2
+            },
+            "official_actions": {
+              "required": 2,
+              "confirmed": 1,
+              "missing": 1
+            }
+          },
+          {
+            "task": "task_016",
+            "slot": "free__preload",
+            "run": "r_cc44d095c387485591d077d0529fc438",
+            "report_sha256": "e36e8c1da14207c2dece7de5e651945d4e38d97cbab8f58789bbe0f8c57088d5",
+            "tagged_documents": {
+              "required": 3,
+              "confirmed": 1,
+              "missing": 2
+            },
+            "official_actions": {
+              "required": 2,
+              "confirmed": 1,
+              "missing": 1
+            }
+          },
+          {
+            "task": "task_016",
+            "slot": "fact__preload",
+            "run": "r_4b1914a6bab04ebbb799c7a47a04f621",
+            "report_sha256": "9fddb8ebb39097b6c7c83dfba277b34508afec7dd3fe697f9cce45d0277a0697",
+            "tagged_documents": {
+              "required": 3,
+              "confirmed": 0,
+              "missing": 3
+            },
+            "official_actions": {
+              "required": 2,
+              "confirmed": 0,
+              "missing": 2
+            }
+          },
+          {
+            "task": "task_016",
+            "slot": "lesson__preload",
+            "run": "r_1a4324b7e34b4f94895efdca6d914653",
+            "report_sha256": "55ca335e25154d1c3849487d1c72b65251cb5eff92e8110470c5952003952016",
+            "tagged_documents": {
+              "required": 3,
+              "confirmed": 2,
+              "missing": 1
+            },
+            "official_actions": {
+              "required": 2,
+              "confirmed": 1,
+              "missing": 1
+            }
+          },
+          {
+            "task": "task_017",
+            "slot": "lesson__preload",
+            "run": "r_583c1b86e70145acbac2d32f6b92cd33",
+            "report_sha256": "e7cf92e6d87b345b30f5b3e81dffde54c5640ab523923ee823858f763ecf4f1b",
+            "tagged_documents": {
+              "required": 4,
+              "confirmed": 0,
+              "missing": 4
+            },
+            "official_actions": {
+              "required": 4,
+              "confirmed": 1,
+              "missing": 3
+            }
+          },
+          {
+            "task": "task_017",
+            "slot": "procedure__preload",
+            "run": "r_1dbab6e3b52c49fcb6ec344a8f787b7e",
+            "report_sha256": "8964246cbeb411dc07dc0a33a8f665ac5ce99b962b581aea6666b0ab532b1ac1",
+            "tagged_documents": {
+              "required": 4,
+              "confirmed": 2,
+              "missing": 2
+            },
+            "official_actions": {
+              "required": 4,
+              "confirmed": 1,
+              "missing": 3
+            }
+          },
+          {
+            "task": "task_017",
+            "slot": "episode__preload",
+            "run": "r_7f2d67e9cca741b297c250786146eb73",
+            "report_sha256": "d8a278d0b24999861f05ee93aee0b621288787c95db5d0bc2f5a6993e3864906",
+            "tagged_documents": {
+              "required": 4,
+              "confirmed": 2,
+              "missing": 2
+            },
+            "official_actions": {
+              "required": 4,
+              "confirmed": 0,
+              "missing": 4
+            }
+          },
+          {
+            "task": "task_017",
+            "slot": "fact__preload",
+            "run": "r_dfb5d0ed443346d8948cd5e02b094053",
+            "report_sha256": "921a933768a4affaa4ab14434d5d87011f3f6b7c3235ca229b80293ea988f661",
+            "tagged_documents": {
+              "required": 4,
+              "confirmed": 1,
+              "missing": 3
+            },
+            "official_actions": {
+              "required": 4,
+              "confirmed": 1,
+              "missing": 3
+            }
+          },
+          {
+            "task": "task_017",
+            "slot": "free__preload",
+            "run": "r_4d8706bc6ad8462b8644fc8bcb81f22a",
+            "report_sha256": "ab19f7444a16ba011196b06d20da34d520d5eafc2a5ed0efd09a96547b0229e0",
+            "tagged_documents": {
+              "required": 4,
+              "confirmed": 0,
+              "missing": 4
+            },
+            "official_actions": {
+              "required": 4,
+              "confirmed": 1,
+              "missing": 3
+            }
+          }
+        ]
+      },
+      "dispute_receipts": [
+        {
+          "task": "task_017",
+          "slot": "episode__preload",
+          "policy": "existing",
+          "run": "r_eaa751ad872a424790bcbe289006f430",
+          "report_sha256": "2f49d81cbd1bc1713cc36b4ed940a3c1e893e97489722faa52915b9976a761f2",
+          "expected": 2,
+          "attempted": 0,
+          "accepted_target": 0,
+          "accepted_other": 0,
+          "accepted_duplicate": 0,
+          "rejected": 0,
+          "unconfirmed": 0,
+          "targets_without_confirmed_effect": 2
+        },
+        {
+          "task": "task_017",
+          "slot": "procedure__preload",
+          "policy": "existing",
+          "run": "r_bb391e143339467e9ff723ee7e5c8ed1",
+          "report_sha256": "54b9cce010f58e93e155c5ea396ec2400b554f217be5998b5d25a15515258ce4",
+          "expected": 2,
+          "attempted": 0,
+          "accepted_target": 0,
+          "accepted_other": 0,
+          "accepted_duplicate": 0,
+          "rejected": 0,
+          "unconfirmed": 0,
+          "targets_without_confirmed_effect": 2
+        },
+        {
+          "task": "task_017",
+          "slot": "lesson__preload",
+          "policy": "existing",
+          "run": "r_d407947cd2c1474096d15a329f8ec7c9",
+          "report_sha256": "26caa058fb871465afd7d99151b701db16b042cda1f969e002db6f5a6ed0507c",
+          "expected": 2,
+          "attempted": 0,
+          "accepted_target": 0,
+          "accepted_other": 0,
+          "accepted_duplicate": 0,
+          "rejected": 0,
+          "unconfirmed": 0,
+          "targets_without_confirmed_effect": 2
+        },
+        {
+          "task": "task_017",
+          "slot": "fact__preload",
+          "policy": "existing",
+          "run": "r_616484574e724d8a823c74335d977bb0",
+          "report_sha256": "f5ef8821e9108a06932feeb4673564da5df4a3c0c3622d899008a8cf0dd28e2b",
+          "expected": 2,
+          "attempted": 0,
+          "accepted_target": 0,
+          "accepted_other": 0,
+          "accepted_duplicate": 0,
+          "rejected": 0,
+          "unconfirmed": 0,
+          "targets_without_confirmed_effect": 2
+        },
+        {
+          "task": "task_017",
+          "slot": "free__preload",
+          "policy": "existing",
+          "run": "r_30e53634ec3f49d586714ee3f341d09c",
+          "report_sha256": "414f21901cfa197e2c11554b3406d5dc158d8ec4bf8874dba5880fff244da6df",
+          "expected": 2,
+          "attempted": 0,
+          "accepted_target": 0,
+          "accepted_other": 0,
+          "accepted_duplicate": 0,
+          "rejected": 0,
+          "unconfirmed": 0,
+          "targets_without_confirmed_effect": 2
+        },
+        {
+          "task": "task_017",
+          "slot": "lesson__preload",
+          "policy": "candidate",
+          "run": "r_583c1b86e70145acbac2d32f6b92cd33",
+          "report_sha256": "e7cf92e6d87b345b30f5b3e81dffde54c5640ab523923ee823858f763ecf4f1b",
+          "expected": 2,
+          "attempted": 0,
+          "accepted_target": 0,
+          "accepted_other": 0,
+          "accepted_duplicate": 0,
+          "rejected": 0,
+          "unconfirmed": 0,
+          "targets_without_confirmed_effect": 2
+        },
+        {
+          "task": "task_017",
+          "slot": "procedure__preload",
+          "policy": "candidate",
+          "run": "r_1dbab6e3b52c49fcb6ec344a8f787b7e",
+          "report_sha256": "8964246cbeb411dc07dc0a33a8f665ac5ce99b962b581aea6666b0ab532b1ac1",
+          "expected": 2,
+          "attempted": 2,
+          "accepted_target": 1,
+          "accepted_other": 1,
+          "accepted_duplicate": 0,
+          "rejected": 0,
+          "unconfirmed": 0,
+          "targets_without_confirmed_effect": 1
+        },
+        {
+          "task": "task_017",
+          "slot": "episode__preload",
+          "policy": "candidate",
+          "run": "r_7f2d67e9cca741b297c250786146eb73",
+          "report_sha256": "d8a278d0b24999861f05ee93aee0b621288787c95db5d0bc2f5a6993e3864906",
+          "expected": 2,
+          "attempted": 0,
+          "accepted_target": 0,
+          "accepted_other": 0,
+          "accepted_duplicate": 0,
+          "rejected": 0,
+          "unconfirmed": 0,
+          "targets_without_confirmed_effect": 2
+        },
+        {
+          "task": "task_017",
+          "slot": "fact__preload",
+          "policy": "candidate",
+          "run": "r_dfb5d0ed443346d8948cd5e02b094053",
+          "report_sha256": "921a933768a4affaa4ab14434d5d87011f3f6b7c3235ca229b80293ea988f661",
+          "expected": 2,
+          "attempted": 0,
+          "accepted_target": 0,
+          "accepted_other": 0,
+          "accepted_duplicate": 0,
+          "rejected": 0,
+          "unconfirmed": 0,
+          "targets_without_confirmed_effect": 2
+        },
+        {
+          "task": "task_017",
+          "slot": "free__preload",
+          "policy": "candidate",
+          "run": "r_4d8706bc6ad8462b8644fc8bcb81f22a",
+          "report_sha256": "ab19f7444a16ba011196b06d20da34d520d5eafc2a5ed0efd09a96547b0229e0",
+          "expected": 2,
+          "attempted": 0,
+          "accepted_target": 0,
+          "accepted_other": 0,
+          "accepted_duplicate": 0,
+          "rejected": 0,
+          "unconfirmed": 0,
+          "targets_without_confirmed_effect": 2
+        }
+      ],
+      "source_status": {
+        "task_002": {
+          "run": "r_7e8c96bfdc624791a1fcb24f8d4f79dd",
+          "status": "graded",
+          "success": true
+        },
+        "task_014": {
+          "run": "r_922a0c4ec5be4f86b51f419e00c1d8de",
+          "status": "graded",
+          "success": false
+        },
+        "task_016": {
+          "run": "r_d914c049e28c492d893e0d4e5ce2c6ae",
+          "status": "graded",
+          "success": false
+        },
+        "task_017": {
+          "run": "r_77b7490f996d462d8323a65c8d8c06bc",
+          "status": "graded",
+          "success": false
+        }
+      },
+      "costs_by_phase": {
+        "source": {
+          "reported": "0.015459213",
+          "held": "0E-9",
+          "http": "63"
+        },
+        "solve": {
+          "reported": "0.121008804",
+          "held": "0E-9",
+          "http": "517"
+        },
+        "write": {
+          "reported": "0.077540250",
+          "held": "0E-9",
+          "http": "40"
+        }
+      },
+      "customer_split": {
+        "task_002": {
+          "identified": false,
+          "overlapping_development": [],
+          "unresolved_development": [
+            "task_001",
+            "task_008"
+          ]
+        },
+        "task_014": {
+          "identified": true,
+          "overlapping_development": [
+            "task_015"
+          ],
+          "unresolved_development": [
+            "task_001",
+            "task_008"
+          ]
+        },
+        "task_016": {
+          "identified": true,
+          "overlapping_development": [],
+          "unresolved_development": [
+            "task_001",
+            "task_008"
+          ]
+        },
+        "task_017": {
+          "identified": true,
+          "overlapping_development": [],
+          "unresolved_development": [
+            "task_001",
+            "task_008"
+          ]
+        }
+      },
+      "protocol_sha256": "d26f156291228215eac11dc2a607ed335fe7cebc0b5f7b664ac3db32c0d9e025"
+    },
+    "replacement_036": {
+      "comparison": {
+        "reference": {
+          "assigned": 5,
+          "started": 0,
+          "graded": 0,
+          "successes": 0,
+          "success_rate": null
+        },
+        "candidate": {
+          "assigned": 5,
+          "started": 0,
+          "graded": 0,
+          "successes": 0,
+          "success_rate": null
+        },
+        "pairs": {
+          "assigned": 5,
+          "gain": 0,
+          "loss": 0,
+          "both_success": 0,
+          "both_failure": 0,
+          "missing": 5,
+          "jointly_graded": 0,
+          "discordance_rate": null,
+          "sign_p_if_independent": null
+        },
+        "sources": {
+          "assigned": 1,
+          "unknown_source_pairs": 0,
+          "complete": 0,
+          "gain": 0,
+          "loss": 0,
+          "tie": 0,
+          "sign_p_if_independent": null
+        },
+        "joint_success_members": [],
+        "joint_success_effort": {
+          "pairs": 0,
+          "metrics": {
+            "customer_turns": {
+              "observed": 0,
+              "missing": 0,
+              "candidate_total": null,
+              "reference_total": null,
+              "difference": null,
+              "relative_difference_pct": null,
+              "lower": 0,
+              "equal": 0,
+              "higher": 0
+            },
+            "business_calls": {
+              "observed": 0,
+              "missing": 0,
+              "candidate_total": null,
+              "reference_total": null,
+              "difference": null,
+              "relative_difference_pct": null,
+              "lower": 0,
+              "equal": 0,
+              "higher": 0
+            },
+            "memory_read_calls": {
+              "observed": 0,
+              "missing": 0,
+              "candidate_total": null,
+              "reference_total": null,
+              "difference": null,
+              "relative_difference_pct": null,
+              "lower": 0,
+              "equal": 0,
+              "higher": 0
+            },
+            "http_calls": {
+              "observed": 0,
+              "missing": 0,
+              "candidate_total": null,
+              "reference_total": null,
+              "difference": null,
+              "relative_difference_pct": null,
+              "lower": 0,
+              "equal": 0,
+              "higher": 0
+            },
+            "tokens": {
+              "observed": 0,
+              "missing": 0,
+              "candidate_total": null,
+              "reference_total": null,
+              "difference": null,
+              "relative_difference_pct": null,
+              "lower": 0,
+              "equal": 0,
+              "higher": 0
+            },
+            "usd": {
+              "observed": 0,
+              "missing": 0,
+              "candidate_total": null,
+              "reference_total": null,
+              "difference": null,
+              "relative_difference_pct": null,
+              "lower": 0,
+              "equal": 0,
+              "higher": 0
+            },
+            "worker_calls": {
+              "observed": 0,
+              "missing": 0,
+              "candidate_total": null,
+              "reference_total": null,
+              "difference": null,
+              "relative_difference_pct": null,
+              "lower": 0,
+              "equal": 0,
+              "higher": 0
+            },
+            "customer_calls": {
+              "observed": 0,
+              "missing": 0,
+              "candidate_total": null,
+              "reference_total": null,
+              "difference": null,
+              "relative_difference_pct": null,
+              "lower": 0,
+              "equal": 0,
+              "higher": 0
+            }
+          }
+        },
+        "jointly_graded_effort": {
+          "pairs": 0,
+          "metrics": {
+            "customer_turns": {
+              "observed": 0,
+              "missing": 0,
+              "candidate_total": null,
+              "reference_total": null,
+              "difference": null,
+              "relative_difference_pct": null,
+              "lower": 0,
+              "equal": 0,
+              "higher": 0
+            },
+            "business_calls": {
+              "observed": 0,
+              "missing": 0,
+              "candidate_total": null,
+              "reference_total": null,
+              "difference": null,
+              "relative_difference_pct": null,
+              "lower": 0,
+              "equal": 0,
+              "higher": 0
+            },
+            "memory_read_calls": {
+              "observed": 0,
+              "missing": 0,
+              "candidate_total": null,
+              "reference_total": null,
+              "difference": null,
+              "relative_difference_pct": null,
+              "lower": 0,
+              "equal": 0,
+              "higher": 0
+            },
+            "http_calls": {
+              "observed": 0,
+              "missing": 0,
+              "candidate_total": null,
+              "reference_total": null,
+              "difference": null,
+              "relative_difference_pct": null,
+              "lower": 0,
+              "equal": 0,
+              "higher": 0
+            },
+            "tokens": {
+              "observed": 0,
+              "missing": 0,
+              "candidate_total": null,
+              "reference_total": null,
+              "difference": null,
+              "relative_difference_pct": null,
+              "lower": 0,
+              "equal": 0,
+              "higher": 0
+            },
+            "usd": {
+              "observed": 0,
+              "missing": 0,
+              "candidate_total": null,
+              "reference_total": null,
+              "difference": null,
+              "relative_difference_pct": null,
+              "lower": 0,
+              "equal": 0,
+              "higher": 0
+            },
+            "worker_calls": {
+              "observed": 0,
+              "missing": 0,
+              "candidate_total": null,
+              "reference_total": null,
+              "difference": null,
+              "relative_difference_pct": null,
+              "lower": 0,
+              "equal": 0,
+              "higher": 0
+            },
+            "customer_calls": {
+              "observed": 0,
+              "missing": 0,
+              "candidate_total": null,
+              "reference_total": null,
+              "difference": null,
+              "relative_difference_pct": null,
+              "lower": 0,
+              "equal": 0,
+              "higher": 0
+            }
+          }
+        }
+      },
+      "role_calls": {
+        "existing": {
+          "observed": 0,
+          "worker": null,
+          "customer": null
+        },
+        "candidate": {
+          "observed": 0,
+          "worker": null,
+          "customer": null
+        }
+      },
+      "reply_format": {
+        "existing": null,
+        "candidate": null
+      },
+      "process_checks": {
+        "existing": [],
+        "candidate": []
+      },
+      "dispute_receipts": [],
+      "source_status": {
+        "task_036": {
+          "run": "r_c047a2dae1ca4c3bb09f4ceb5344fbd4",
+          "status": "incomplete",
+          "success": null
+        }
+      },
+      "costs_by_phase": {
+        "source": {
+          "reported": "0.000751475",
+          "held": "0.003572400",
+          "http": "3"
+        }
+      },
+      "customer_split": {
+        "task_036": {
+          "identified": true,
+          "overlapping_development": [
+            "task_015"
+          ],
+          "unresolved_development": [
+            "task_001",
+            "task_008"
+          ]
+        }
+      },
+      "protocol_sha256": "88ff3acc46360f3ca8fae580ba06f43e6bdff31a749feb3e18849947d3c411f6"
+    }
+  },
+  "unexposed_calibration": {
+    "scope": "four separate calibration tasks and archived periods",
+    "verified_equal_first_inputs": 20,
+    "changed_first_business_calls": 20,
+    "pairs": {
+      "assigned": 20,
+      "gain": 2,
+      "loss": 3,
+      "both_success": 4,
+      "both_failure": 11,
+      "missing": 0,
+      "jointly_graded": 20,
+      "discordance_rate": 0.25,
+      "sign_p_if_independent": 1.0
+    },
+    "sources": {
+      "assigned": 4,
+      "unknown_source_pairs": 0,
+      "complete": 4,
+      "gain": 1,
+      "loss": 2,
+      "tie": 1,
+      "sign_p_if_independent": 1.0
+    }
+  },
+  "retrospective_decision_screen": [
+    {
+      "task": "task_017",
+      "ordinal": 1,
+      "proposed_use": "candidate_product_hint_requires_current_verification",
+      "term": "Silver Rewards",
+      "decision_request": "e72dacb30e95376ab9bbbb462dd16ae13bcfacc86a6a26a8dfe948ba60bed183",
+      "source_public_sha256": "f5c14a17f83ad6e74d035ffd7bec710fb67c192519f3e10a1c197957d223b7a7",
+      "current": [],
+      "source": [
+        {
+          "pointer": "/11/content",
+          "start": 154,
+          "quote": "Silver Rewards"
+        },
+        {
+          "pointer": "/13/content",
+          "start": 5161,
+          "quote": "Silver Rewards"
+        },
+        {
+          "pointer": "/15/content",
+          "start": 168,
+          "quote": "Silver Rewards"
+        },
+        {
+          "pointer": "/16/tool_calls/0/function/arguments",
+          "start": 12,
+          "quote": "Silver Rewards"
+        },
+        {
+          "pointer": "/17/content",
+          "start": 1512,
+          "quote": "Silver Rewards"
+        },
+        {
+          "pointer": "/18/content",
+          "start": 48,
+          "quote": "Silver Rewards"
+        },
+        {
+          "pointer": "/20/tool_calls/0/function/arguments",
+          "start": 12,
+          "quote": "Silver Rewards"
+        },
+        {
+          "pointer": "/21/content",
+          "start": 435,
+          "quote": "Silver Rewards"
+        },
+        {
+          "pointer": "/22/tool_calls/0/function/arguments",
+          "start": 12,
+          "quote": "Silver Rewards"
+        },
+        {
+          "pointer": "/23/content",
+          "start": 1512,
+          "quote": "Silver Rewards"
+        },
+        {
+          "pointer": "/24/content",
+          "start": 29,
+          "quote": "Silver Rewards"
+        },
+        {
+          "pointer": "/26/tool_calls/0/function/arguments",
+          "start": 180,
+          "quote": "Silver Rewards"
+        }
+      ],
+      "notes": {
+        "existing/fact": {
+          "version": "v_8cb2cdccff2d4924b4a3a10ac8127c57",
+          "citations": [
+            {
+              "pointer": "/body",
+              "start": 193,
+              "quote": "Silver Rewards"
+            }
+          ]
+        },
+        "existing/lesson": {
+          "version": "v_66bb0d705f03456fa6585114a97c6fb9",
+          "citations": [
+            {
+              "pointer": "/body",
+              "start": 252,
+              "quote": "Silver Rewards"
+            }
+          ]
+        },
+        "existing/free": {
+          "version": "v_4a988ecb8be34f14af48fa8f241b1db3",
+          "citations": [
+            {
+              "pointer": "/body",
+              "start": 91,
+              "quote": "Silver Rewards"
+            }
+          ]
+        },
+        "existing/episode": {
+          "version": "v_07a2e83dadbd402892e3e68721e7332a",
+          "citations": [
+            {
+              "pointer": "/body",
+              "start": 292,
+              "quote": "Silver Rewards"
+            }
+          ]
+        },
+        "existing/procedure": {
+          "version": "v_e21ef0ff1ba84497a24a36ffe5664d30",
+          "citations": [
+            {
+              "pointer": "/body",
+              "start": 100,
+              "quote": "Silver Rewards"
+            }
+          ]
+        },
+        "candidate/lesson": {
+          "version": "v_6cf82d560d13492cbfaf8ab14ad95892",
+          "citations": [
+            {
+              "pointer": "/body",
+              "start": 145,
+              "quote": "Silver Rewards"
+            }
+          ]
+        },
+        "candidate/free": {
+          "version": "v_7c7e45348df94406935cdaa3de21f001",
+          "citations": [
+            {
+              "pointer": "/body",
+              "start": 214,
+              "quote": "Silver Rewards"
+            }
+          ]
+        },
+        "candidate/fact": {
+          "version": "v_17fb0a4ce48f48d1b2d7ddd982536cae",
+          "citations": [
+            {
+              "pointer": "/body",
+              "start": 233,
+              "quote": "Silver Rewards"
+            },
+            {
+              "pointer": "/title",
+              "start": 0,
+              "quote": "Silver Rewards"
+            }
+          ]
+        },
+        "candidate/procedure": {
+          "version": "v_8b71551ebc1c4dfaba413cdab1745514",
+          "citations": [
+            {
+              "pointer": "/body",
+              "start": 84,
+              "quote": "Silver Rewards"
+            }
+          ]
+        },
+        "candidate/episode": {
+          "version": "v_f3b922a8f8a24a84a7fb453386dddb6e",
+          "citations": [
+            {
+              "pointer": "/body",
+              "start": 219,
+              "quote": "Silver Rewards"
+            }
+          ]
+        }
+      },
+      "memory_free_observations": 1,
+      "positive_control_tested": false,
+      "native_search_check": {
+        "corpus_sha256": "26b4ba4a71602911fe637700cc1b36aeb10fe8fa4a43d138a5e23225039b0dfe",
+        "top_k": 10,
+        "archived_first_search_ordinal": 6,
+        "archived_first_search_request": "request_c63e87093fdb4285a1501e83c2f9567c",
+        "witness_documents": {
+          "dispute": "doc_credit_cards_credit_cards_(general)_003",
+          "silver_base": "doc_credit_cards_silver_rewards_card_001",
+          "silver_bonus": "doc_credit_cards_silver_rewards_card_002"
+        },
+        "diagnostic_sha256": "32057f33220b619f8b9c98934c11f83061d65d204c8c390c53b0b4c1af38b037",
+        "rankings": {
+          "archived": {
+            "pattern": "cash back|cashback|reward points|rewards.*statement|credit card rewards",
+            "returned": 10,
+            "ranking_sha256": "ff2a1603475804e7442e298ac520c54f1858d6eb42dbea8f5f9b94694b5818b4",
+            "witness_ranks": {}
+          },
+          "source_literal": {
+            "pattern": "Silver Rewards",
+            "returned": 10,
+            "ranking_sha256": "36fd13f9950a07df505b45ec413bf6d40b0c3f9310563c985195ade082cc9085",
+            "witness_ranks": {}
+          }
+        }
+      }
+    },
+    {
+      "task": "task_016",
+      "ordinal": 1,
+      "proposed_use": "historical_status_requires_current_verification",
+      "term": "IN_PROGRESS",
+      "decision_request": "341238f59176b1de99e9918ba9ce9ac5edf2399ddc91765389d651b8ce1be932",
+      "source_public_sha256": "b19b8f1c6a46a42ee6e58386504519d144991c0c04d7aa5aa0fbe450df93cfb1",
+      "current": [],
+      "source": [
+        {
+          "pointer": "/13/content",
+          "start": 380,
+          "quote": "IN_PROGRESS"
+        },
+        {
+          "pointer": "/14/tool_calls/0/function/arguments",
+          "start": 72,
+          "quote": "IN_PROGRESS"
+        },
+        {
+          "pointer": "/15/content",
+          "start": 90,
+          "quote": "IN_PROGRESS"
+        },
+        {
+          "pointer": "/16/content",
+          "start": 92,
+          "quote": "IN_PROGRESS"
+        },
+        {
+          "pointer": "/20/content",
+          "start": 130,
+          "quote": "IN_PROGRESS"
+        },
+        {
+          "pointer": "/28/tool_calls/0/function/arguments",
+          "start": 247,
+          "quote": "IN_PROGRESS"
+        },
+        {
+          "pointer": "/3/content",
+          "start": 3148,
+          "quote": "IN_PROGRESS"
+        }
+      ],
+      "notes": {
+        "existing/free": {
+          "version": "v_a668d8b3d4f946de932bbead9fa8442e",
+          "citations": [
+            {
+              "pointer": "/body",
+              "start": 187,
+              "quote": "IN_PROGRESS"
+            }
+          ]
+        },
+        "existing/procedure": {
+          "version": "v_e5e99a798e724694948ee6a61937c8d6",
+          "citations": [
+            {
+              "pointer": "/body",
+              "start": 199,
+              "quote": "IN_PROGRESS"
+            }
+          ]
+        },
+        "existing/lesson": {
+          "version": "v_791d86fd2e494782aba00e39c869ce07",
+          "citations": [
+            {
+              "pointer": "/body",
+              "start": 180,
+              "quote": "IN_PROGRESS"
+            }
+          ]
+        },
+        "existing/fact": {
+          "version": "v_f42d2acf46cc4206a66605834f750224",
+          "citations": [
+            {
+              "pointer": "/body",
+              "start": 319,
+              "quote": "IN_PROGRESS"
+            }
+          ]
+        },
+        "existing/episode": {
+          "version": "v_5adbb5094f124a2ea7af123e4eb02ce5",
+          "citations": [
+            {
+              "pointer": "/body",
+              "start": 499,
+              "quote": "IN_PROGRESS"
+            }
+          ]
+        },
+        "candidate/free": {
+          "version": "v_c23c3fae3c1f4dbdbec7df5e6ff06700",
+          "citations": [
+            {
+              "pointer": "/body",
+              "start": 113,
+              "quote": "IN_PROGRESS"
+            }
+          ]
+        },
+        "candidate/procedure": {
+          "version": "v_33381ee22eb9460a88dd4e627bab80c1",
+          "citations": [
+            {
+              "pointer": "/body",
+              "start": 201,
+              "quote": "IN_PROGRESS"
+            }
+          ]
+        },
+        "candidate/episode": {
+          "version": "v_cd37d4165cf14130bafae749b9cc9508",
+          "citations": [
+            {
+              "pointer": "/body",
+              "start": 212,
+              "quote": "IN_PROGRESS"
+            }
+          ]
+        },
+        "candidate/lesson": {
+          "version": "v_daaa59c295ad4cf19bd16dfcb51b50de",
+          "citations": [
+            {
+              "pointer": "/body",
+              "start": 162,
+              "quote": "IN_PROGRESS"
+            }
+          ]
+        },
+        "candidate/fact": {
+          "version": "v_b5934d240661475ebf2bffed860c8556",
+          "citations": [
+            {
+              "pointer": "/body",
+              "start": 318,
+              "quote": "IN_PROGRESS"
+            }
+          ]
+        }
+      },
+      "memory_free_observations": 1,
+      "positive_control_tested": false
+    },
+    {
+      "task": "task_002",
+      "ordinal": 6,
+      "proposed_use": "current_information_control",
+      "term": "$200",
+      "decision_request": "5978def980a00ed8d079a60c32fe739d2c178f842b9818ca05b21eb079e1ecce",
+      "source_public_sha256": "d42cb76090da02da5ea50f2a3593c6e26ee36ad796e38a6e859f8d2c107d3a13",
+      "current": [
+        {
+          "pointer": "/messages/10/content",
+          "start": 11616,
+          "quote": "$200"
+        },
+        {
+          "pointer": "/messages/11/content",
+          "start": 163,
+          "quote": "$200"
+        },
+        {
+          "pointer": "/messages/12/content",
+          "start": 5,
+          "quote": "$200"
+        }
+      ],
+      "source": [
+        {
+          "pointer": "/10/content",
+          "start": 163,
+          "quote": "$200"
+        },
+        {
+          "pointer": "/11/content",
+          "start": 5,
+          "quote": "$200"
+        },
+        {
+          "pointer": "/12/content",
+          "start": 11,
+          "quote": "$200"
+        },
+        {
+          "pointer": "/9/content",
+          "start": 11616,
+          "quote": "$200"
+        }
+      ],
+      "notes": {
+        "existing/free": {
+          "version": "v_101d9c2f91c947eab36b6b3780dcb1f1",
+          "citations": [
+            {
+              "pointer": "/body",
+              "start": 461,
+              "quote": "$200"
+            }
+          ]
+        },
+        "existing/lesson": {
+          "version": "v_eb7c56b89f9c449f8ea70169436a807b",
+          "citations": [
+            {
+              "pointer": "/body",
+              "start": 271,
+              "quote": "$200"
+            }
+          ]
+        },
+        "existing/episode": {
+          "version": "v_474a259fce294cbc92ef113bb27ed639",
+          "citations": [
+            {
+              "pointer": "/body",
+              "start": 598,
+              "quote": "$200"
+            }
+          ]
+        },
+        "existing/procedure": {
+          "version": "v_483af161ebb5465ab4630558c54132b0",
+          "citations": [
+            {
+              "pointer": "/body",
+              "start": 518,
+              "quote": "$200"
+            }
+          ]
+        },
+        "existing/fact": {
+          "version": "v_8b1c925b484e411693ee63ec78f40d59",
+          "citations": [
+            {
+              "pointer": "/body",
+              "start": 508,
+              "quote": "$200"
+            }
+          ]
+        },
+        "candidate/procedure": {
+          "version": "v_9ef0803a6d034858bf73025735777457",
+          "citations": [
+            {
+              "pointer": "/body",
+              "start": 285,
+              "quote": "$200"
+            }
+          ]
+        },
+        "candidate/free": {
+          "version": "v_6ac4ecccd1ea488c98434d1612a8e9fb",
+          "citations": [
+            {
+              "pointer": "/body",
+              "start": 301,
+              "quote": "$200"
+            }
+          ]
+        },
+        "candidate/episode": {
+          "version": "v_534d0f9973ff428db8f4d8e67506960c",
+          "citations": [
+            {
+              "pointer": "/body",
+              "start": 515,
+              "quote": "$200"
+            }
+          ]
+        },
+        "candidate/fact": {
+          "version": "v_c8d1383f56a145ccbef13854217b62fe",
+          "citations": [
+            {
+              "pointer": "/body",
+              "start": 332,
+              "quote": "$200"
+            }
+          ]
+        },
+        "candidate/lesson": {
+          "version": "v_cff5795e98fb4f3ea1eb3dd9e1e77f4c",
+          "citations": [
+            {
+              "pointer": "/body",
+              "start": 344,
+              "quote": "$200"
+            }
+          ]
+        }
+      },
+      "memory_free_observations": 1,
+      "positive_control_tested": false
+    }
+  ],
+  "development_search_reference": {
+    "task": "task_015",
+    "reference_sha256": "35de5a43a8a36f859aaf31cb8d8a956301b05ae9a4c600af82b6e5616c7a322b",
+    "corpus_sha256": "26b4ba4a71602911fe637700cc1b36aeb10fe8fa4a43d138a5e23225039b0dfe",
+    "top_k": 10,
+    "receipts": {
+      "episode__preload": {
+        "version": "v_a8fbb2af416f46fcab7aedcb2b4c4d61",
+        "decision_sha256": "92281dc8099552c06da60e4d36807cc0b25d8e3c8332e1c097b87171a99c7648",
+        "official_success": true
+      },
+      "fact__preload": {
+        "version": "v_9554abe4d01547729892fd2edc0533d6",
+        "decision_sha256": "b94cc209054898d610b43274f8fb2cea4948b29524a5de2139463059c50e684d",
+        "official_success": false
+      }
+    },
+    "exact_literal_search": {
+      "pattern": "get_referral_link",
+      "returned": 1,
+      "ranking_sha256": "323b294942d62f187c4a287c092ad600357b6c1d9d6114b4aa016842cbb1b3e2",
+      "witness_ranks": {
+        "doc_credit_cards_credit_cards_(general)_009": 1
+      }
+    }
+  },
+  "new_provider_requests": 0
+}

@@ -6,7 +6,7 @@ import json
 from jsonschema import Draft202012Validator
 
 from agent_memory_eval.contracts.core import ContractError
-from agent_memory_eval.contracts.validation import ROOT
+from agent_memory_eval.contracts.validation import ROOT, SCHEMA_ROOT
 
 
 def validate_profile(profile):
@@ -14,7 +14,7 @@ def validate_profile(profile):
     filename = schemas.get(profile.get("profile_version"))
     if filename is None:
         raise ContractError("Unsupported connection profile version")
-    schema = json.loads((ROOT / "schemas" / filename).read_text())
+    schema = json.loads((SCHEMA_ROOT / filename).read_text())
     Draft202012Validator(schema).validate(profile)
 
 

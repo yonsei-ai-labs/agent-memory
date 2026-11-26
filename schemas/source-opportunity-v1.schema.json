@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Whole-study admission after closing the first-pass sources",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["format", "scope", "decision", "reason", "protocol_sha256", "source", "observations_sha256", "assessment"],
+  "properties": {
+    "format": {"const": "agent-memory-source-admission/v1"},
+    "scope": {"const": "whole_study"},
+    "decision": {"enum": ["continue", "stop"]},
+    "reason": {"enum": [null, "source_evidence_unconfirmed", "source_evidence_below_minimum"]},
+    "protocol_sha256": {"$ref": "#/$defs/digest"},
+    "source": {
+      "type": "object", "required": ["recording", "registration_sha256"],
+      "properties": {"recording": {"type": "string", "minLength": 1}, "registration_sha256": {"$ref": "#/$defs/digest"}, "completion_sha256": {"$ref": "#/$defs/digest"}}
+    },
+    "observations_sha256": {"$ref": "#/$defs/digest"},
+    "assessment": {
+      "type": "object", "additionalProperties": false,
+      "required": ["cue", "evidence", "minimum_clusters", "eligible_graded_sources", "unknown_graded_sources", "observed_clusters", "met"],
+      "properties": {
+        "cue": {"type": "string", "minLength": 1}, "evidence": {"enum": ["source", "source_only"]},
+        "minimum_clusters": {"type": "integer", "minimum": 1}, "eligible_graded_sources": {"$ref": "#/$defs/count"},
+        "unknown_graded_sources": {"$ref": "#/$defs/count"}, "observed_clusters": {"$ref": "#/$defs/count"}, "met": {"type": "boolean"}
+      }
+    }
+  },
+  "if": {"properties": {"decision": {"const": "continue"}}},
+  "then": {"properties": {"reason": {"const": null}, "assessment": {"properties": {"met": {"const": true}}}}},
+  "else": {"properties": {"reason": {"type": "string"}, "assessment": {"properties": {"met": {"const": false}}}}},
+  "$defs": {"digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"}, "count": {"type": "integer", "minimum": 0}}
+}

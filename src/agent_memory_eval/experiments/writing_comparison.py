@@ -8,7 +8,7 @@ from jsonschema import Draft202012Validator, ValidationError
 
 from agent_memory_eval.analysis.writing_export import collect
 from agent_memory_eval.contracts.core import ContractError, MemoryPolicy, canonical, digest, read_json
-from agent_memory_eval.contracts.validation import ROOT
+from agent_memory_eval.contracts.validation import ROOT, SCHEMA_ROOT
 from agent_memory_eval.memory.context import request_with_past_memory
 from agent_memory_eval.memory.preparation import SnapshotBudgetExceeded
 from agent_memory_eval.recording.assets import asset_text
@@ -23,7 +23,7 @@ def _profile(profile):
     if profile.get("format") == PROFILE_V2:
         try:
             canonical(profile)
-            schema = read_json((ROOT / "schemas/written-memory-comparison-v2.schema.json").read_bytes())
+            schema = read_json((SCHEMA_ROOT / "written-memory-comparison-v2.schema.json").read_bytes())
             Draft202012Validator(schema).validate(profile)
         except (ValueError, TypeError, ValidationError) as error:
             raise ContractError("Invalid written-memory comparison v2 profile") from error

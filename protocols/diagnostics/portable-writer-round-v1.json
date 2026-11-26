@@ -1,0 +1,115 @@
+{
+  "format": "agent-memory-policy-round/v1",
+  "id": "two-pass-writer-development-v1",
+  "purpose": "development",
+  "hypothesis": "Recording whether a business action produced an observed result may change later tool use.",
+  "prediction": "The candidate will make fewer claims of completion without a successful public return.",
+  "criterion": "For this development round, verify policy delivery, complete allocation accounting and native outcome evidence on both benchmarks. Use observed outcome and effort differences to decide whether to propose a confirmation study.",
+  "evidence": [
+    {
+      "artifact": {
+        "path": "artifacts/analyses/20261126-banking-trajectory-summary.json",
+        "sha256": "e173775867d27457aeaf9424531ee224ac7388132b57366c560119a27de8a0a1"
+      },
+      "benchmark": "banking-opening",
+      "tasks": [
+        "task_055",
+        "task_056",
+        "task_057",
+        "task_058",
+        "task_059",
+        "task_060",
+        "task_061",
+        "task_062",
+        "task_063",
+        "task_064",
+        "task_065",
+        "task_066",
+        "task_067",
+        "task_068",
+        "task_069",
+        "task_070",
+        "task_071",
+        "task_075",
+        "task_076"
+      ]
+    },
+    {
+      "artifact": {
+        "path": "artifacts/analyses/20261126-bfcl-trajectory-summary.json",
+        "sha256": "0c128855683cc39cd11a259ab545a99db630c6b8e96c9efd46683feadda79fc7"
+      },
+      "benchmark": "bfcl-relevance",
+      "tasks": [
+        "live_relevance_2-2-0",
+        "live_relevance_3-3-0",
+        "live_relevance_7-7-0",
+        "live_relevance_8-8-0",
+        "irrelevance_0",
+        "irrelevance_20",
+        "irrelevance_150",
+        "irrelevance_180"
+      ]
+    }
+  ],
+  "policy": {
+    "writing": {
+      "path": "protocols/pilots/tau-banking-required-v1.json",
+      "sha256": "22813f83a62e718df76e1c8ec323248a67141a03fd7bbbc7a5ed70ad6d14e0cf"
+    },
+    "clause": {
+      "path": "protocols/instructions/attempt-result-clause-v1.txt",
+      "sha256": "5a53605dea9a0a66d0f1ba7db756ed6de80250e104c15c6b6f991d46c0657882"
+    },
+    "candidate_instruction": {
+      "path": "protocols/instructions/required-attempt-result-writer-v1.txt",
+      "sha256": "a3f77f279aa55129d9c6a6af7e98fc6c633f4a2fce0603c74ec9b26bedcf29e9"
+    },
+    "reader": "preload",
+    "reader_instruction": {
+      "path": "protocols/instructions/matched-memory-read-v1.txt",
+      "sha256": "b623028e1bc06ca35d89b2f91a30159dd22999db0fa391cb95b61d5793f659a7"
+    },
+    "feedback": "result_only"
+  },
+  "benchmarks": {
+    "banking-opening": {
+      "profile": {
+        "path": "protocols/pilots/tau-banking-opening-writer-pairs-v3.json",
+        "sha256": "2b65641d4226d967e2a6ffaf85ee012069f1ce231528a4e968ed3e2881f6a1cd"
+      },
+      "development_tasks": [
+        "task_001",
+        "task_002",
+        "task_008",
+        "task_010",
+        "task_014",
+        "task_015",
+        "task_016",
+        "task_017",
+        "task_019",
+        "task_020",
+        "task_021",
+        "task_022",
+        "task_036"
+      ]
+    },
+    "bfcl-relevance": {
+      "profile": {
+        "path": "protocols/diagnostics/bfcl-relevance-two-pass-v1.json",
+        "sha256": "7b75b0c760a6652471e8965244e16749d2e2fd8d233639f25563b0f7ffaf3bbb"
+      },
+      "development_tasks": [],
+      "question_families": {
+        "live_relevance_2-2-0": "live_relevance_2-2-0",
+        "live_relevance_3-3-0": "live_relevance_3-3-0",
+        "live_relevance_7-7-0": "live_relevance_7-7-0",
+        "live_relevance_8-8-0": "live_relevance_8-8-0",
+        "irrelevance_0": "irrelevance_0",
+        "irrelevance_20": "irrelevance_20",
+        "irrelevance_150": "irrelevance_150",
+        "irrelevance_180": "irrelevance_180"
+      }
+    }
+  }
+}

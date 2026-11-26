@@ -14,6 +14,7 @@ from agent_memory_eval.experiments.forms_batch import (
     BatchGuard, FRESH_MATCHED, endpoint_terms, execute_prepared, live_models, solve_connection,
 )
 from agent_memory_eval.experiments.fresh_forms import CostReservations, scenario_customer
+from agent_memory_eval.experiments.paired_repetitions import FORMS, MODES, jobs_for
 from agent_memory_eval.experiments.matched_trial import native_control, opening_hash, role_settings, source_receipt
 from agent_memory_eval.recording.assets import asset_text
 from agent_memory_eval.recording.journal import safe_path
@@ -25,22 +26,7 @@ from scripts.run_recheck_rounds import read, sealed_rows, source_from
 
 PROFILE = "protocols/pilots/tau2-fresh-matched-v1.json"
 PREFLIGHT = "artifacts/pilots/20261124-fresh-matched-preflight.json"
-FORMS = ("fact", "episode", "procedure", "lesson", "free")
-MODES = ("preload", "on_demand")
 STAGES = ("source", "write", "solve")
-
-
-def jobs_for(case, stage):
-    forms = list(FORMS)
-    modes = tuple(case.get("reader_modes", MODES))
-    if not modes or len(set(modes)) != len(modes) or any(m not in MODES for m in modes):
-        raise ContractError("Invalid registered reader delivery modes")
-    arms = {"source": ["no_memory"], "write": forms,
-            "solve": [f"{form}__{mode}" for form in forms for mode in modes]}[stage]
-    ordered = sorted(arms, key=lambda a: digest(canonical([FRESH_MATCHED, case["task"], stage, a])))
-    return [dict(index=i, repetition=1, task_id=case["task_id"],
-                 phase="write" if stage == "write" else "solve", arm=arm)
-            for i, arm in enumerate(ordered, 1)]
 
 
 def design_for(cfg, case, stage, source=None):
@@ -195,8 +181,9 @@ def _stage_job(args):
             raise ContractError("An imported first pass cannot be resubmitted")
         source_dir = safe_path(workspace / "runs", imported["directory"])
     tid = case["task_id"]
+    policy_root = workspace if cfg.get("policy_registration") else ROOT
     plan = dict(sources={}, tasks={tid: task}, connection=conn, modules=modules_for(workspace),
-                instruction=asset_text(ROOT, cfg["delivery_instruction"]))
+                instruction=asset_text(policy_root, cfg["delivery_instruction"]))
     spec = dict(registration_sha256=cfg["registration_sha256"], native_sha256=case["native_sha256"],
                 customer_opening_sha256=case["customer_opening_sha256"], instruction_sha256=cfg["delivery_instruction"]["sha256"],
                 episode_cap_usd=cfg["episode_cap_usd"], http_timeout_seconds=cfg["http_timeout_seconds"])
@@ -252,7 +239,7 @@ def _stage_job(args):
         guard = BatchGuard(**profile["guards"])
         reserve = CostReservations(dest, dict(codes=cfg["unpriced_http_codes"], maximum_per_stage=len(jobs),
                                    reserve_uncertain_transport=True), guard, dict(models, grader=judge))
-        execute_prepared(profile, ROOT, dest, identity, design, plan, models, guard,
+        execute_prepared(profile, policy_root, dest, identity, design, plan, models, guard,
                          imported_writers=bindings, close_cost=reserve)
     _, ctl, rows = sealed_rows(dest)
     if (ctl["profile"] != profile or ctl["design"] != design or ctl["implementation"] != identity

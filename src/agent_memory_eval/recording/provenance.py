@@ -5,7 +5,7 @@ import json
 import math
 
 from agent_memory_eval.contracts.core import ContractError, canonical, digest, new_id, pointer, read_json
-from agent_memory_eval.contracts.validation import leaves, resolve_source, validate_manifest
+from agent_memory_eval.contracts.validation import authored_fields, leaves, resolve_source, validate_manifest
 
 
 def public_assistant_message(value):
@@ -75,6 +75,11 @@ def source_spans(kind, value, producer):
     if kind in {"memory_return", "memory_snapshot"}:
         content = read_json(value["content"].encode())
         ranges = json_string_ranges(value["content"])
+        if producer["schema_version"] == "1.3" and producer["payload"]["items"]:
+            item, = producer["payload"]["items"]
+            begin, end = ranges["/memory_content"]
+            return [dict(pointer="/content", char_start=begin, char_end=end, item_id=item["item_id"],
+                         version_id=item["version_id"], field="body")]
         items = [(f"/items/{i}", item) for i, item in enumerate(content.get("items", []))]
         if "item" in content:
             items.append(("/item", content["item"]))
@@ -86,16 +91,17 @@ def source_spans(kind, value, producer):
                                        item_id=item["id"], version_id=item["version"], field=field))
     if kind == "self_authored":
         for index, call in enumerate(value.get("tool_calls") or []):
-            if call["function"]["name"] != "memory_store":
+            fields = authored_fields(call["function"]["name"], producer.get("schema_version"))
+            if not fields:
                 continue
             text = call["function"]["arguments"]
             try:
                 ranges = json_string_ranges(text)
             except (ValueError, TypeError, IndexError):
                 continue
-            for field in ("title", "body"):
-                if "/" + field in ranges:
-                    begin, end = ranges["/" + field]
+            for field, key in fields.items():
+                if "/" + key in ranges:
+                    begin, end = ranges["/" + key]
                     if end > begin:
                         result.append(dict(pointer=f"/tool_calls/{index}/function/arguments",
                             char_start=begin, char_end=end, item_id=None, version_id=None, field=field))
@@ -321,6 +327,8 @@ class RecordingGateway:
         finish = ctx.event("model.request_finished", dict(request_id=manifest["request_id"], status=status,
             delivery_status=delivery, response_ref=ref, usage=usage, cost_usd=cost,
             cost_status=cost_status), causes=[start["event_id"]])
+        if self.journal.contract_version == "1.3" and status == "response":
+            finish["schema_version"] = "1.3"
         self.journal.append([finish])
         if error:
             if isinstance(error, InputSizeLimit):

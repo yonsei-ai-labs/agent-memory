@@ -1,0 +1,44 @@
+{
+  "event": {
+    "schema_version": "1.3",
+    "event_id": "e_fixture",
+    "event_seq": 1,
+    "experiment_id": "native-fixture",
+    "run_id": "reader",
+    "session_id": "fixture-session",
+    "condition_id": "read",
+    "stage": "probe",
+    "phase": "solve",
+    "type": "memory.returned",
+    "timestamp_utc": "2026-11-25T00:00:00Z",
+    "record_kind": "illustrative",
+    "caused_by": [],
+    "payload": {
+      "bank_id": "b_fixture",
+      "operation_id": "op_fixture",
+      "operation": "get",
+      "status": "ok",
+      "result_ref": {
+        "path": "blobs/sha256/b6a0da67ac623c64b6103885f012ea0620ee273894283391964a63ddecbac647",
+        "sha256": "b6a0da67ac623c64b6103885f012ea0620ee273894283391964a63ddecbac647",
+        "media_type": "application/json"
+      },
+      "items": [
+        {
+          "item_id": "m_fixture",
+          "version_id": "v_fixture",
+          "fields": [
+            "body"
+          ]
+        }
+      ],
+      "native_format": "bfcl-rec-sum/v1",
+      "native_tool": "memory_retrieve"
+    }
+  },
+  "wire": {
+    "role": "tool",
+    "tool_call_id": "fixture-call",
+    "content": "{\"memory_content\":\"A \\\"quoted\\\" note.\"}"
+  }
+}

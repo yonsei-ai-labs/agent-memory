@@ -1,14 +1,15 @@
 """Prepare blinded decisions and paired writer inputs from the sealed banking pilot, or import independent reviews."""
 
 import argparse
-from collections import Counter
+from collections import Counter, defaultdict
 import json
 from pathlib import Path
 
+from agent_memory_eval.analysis.blind_review import blinding_check, compare_sealed_reviews, export_public, public_bundle
 from agent_memory_eval.analysis.claim_evidence import _citation
 from agent_memory_eval.analysis.decision_attribution import compare_steps
 from agent_memory_eval.analysis.recorded_decisions import RecordedDecisions, require
-from agent_memory_eval.analysis.semantic_review import RUBRIC_HASH, compare_reviews, judge_messages, review_packet, validate_reviews
+from agent_memory_eval.analysis.semantic_review import RUBRIC_HASH, compare_reviews, review_packet, validate_reviews
 from agent_memory_eval.analysis.tau2_attribution import graded_episode
 from agent_memory_eval.contracts.core import canonical, digest, read_json
 from agent_memory_eval.experiments.forms_write import feedback_pair, read_form_bank
@@ -238,7 +239,15 @@ def main():
     parser.add_argument("--human-reference", type=Path, help="Compare to a separately identified human submission")
     parser.add_argument("--writer-comparison", action="store_true", help="Review the two feedback conditions' authored text")
     parser.add_argument("--note-ratings", type=Path, help="Import complete quote-checked analyst ratings of the authored text")
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument("--reviewer-only", action="store_true", help="Create a fresh directory with only public claim inputs")
+    group.add_argument("--sealed-review", type=Path, help="Score delivery-condition guesses after a claim review has been sealed")
+    parser.add_argument("--second-sealed-review", type=Path, help="Measure agreement with another sealed reviewer")
     args = parser.parse_args()
+    if args.second_sealed_review and not args.sealed_review:
+        parser.error("--second-sealed-review requires --sealed-review")
+    if (args.reviewer_only or args.sealed_review) and (args.writer_comparison or args.ratings or args.human_reference or args.note_ratings):
+        parser.error("The isolated claim review has its own export and sealed-submission modes")
     if args.writer_comparison:
         if args.ratings or args.human_reference:
             parser.error("Use --note-ratings for the writer comparison")
@@ -255,6 +264,24 @@ def main():
     if args.human_reference and not args.ratings:
         parser.error("--human-reference requires --ratings")
     packets, mapping, pairs = prepare(args.workspace.resolve())
+    if args.reviewer_only:
+        print(export_public(args.output, packets))
+        return
+    if args.sealed_review:
+        conditions = defaultdict(set)
+        for row in mapping:
+            if row["status"] == "recorded":
+                conditions[row["packet_id"]].add(row["arm"].split("__")[-1])
+        bundle = public_bundle(packets)
+        sealed = read_json(args.sealed_review.read_bytes())
+        result = blinding_check(bundle, sealed, conditions)
+        if args.second_sealed_review:
+            second = read_json(args.second_sealed_review.read_bytes())
+            result = dict(first=result, second=blinding_check(bundle, second, conditions),
+                          agreement=compare_sealed_reviews(bundle, sealed, second))
+        save(args.output, result)
+        print(json.dumps(result))
+        return
     report = summary(packets, mapping, pairs)
     args.output.mkdir(parents=True, exist_ok=True)
     if args.ratings:
@@ -274,11 +301,7 @@ def main():
         if args.human_reference:
             report["paired_human_reviews"] = result["calibration"]["paired"]
     else:
-        public = []
-        for key in sorted(packets):
-            messages = judge_messages(packets[key])
-            public.append(dict(packet_id=key, input_sha256=digest(canonical(messages)), messages=messages))
-        save(args.output / "blinded-inputs.json", dict(rubric_sha256=RUBRIC_HASH, packets=public))
+        save(args.output / "blinded-inputs.json", public_bundle(packets))
         save(args.output / "analyst-key.json", mapping)
         save(args.output / "writer-feedback-pairs.json", pairs)
         save(args.output / "summary.json", report)

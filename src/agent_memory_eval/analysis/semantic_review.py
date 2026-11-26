@@ -106,6 +106,11 @@ def compare_reviews(packets, submission, human_reference):
     right = validate_reviews(packets, human_reference)
     if human_reference["reviewer"]["kind"] != "human" or submission["reviewer"]["id"] == human_reference["reviewer"]["id"]:
         raise ContractError("Calibration requires a separately identified human reference")
+    return dict(unique_packets=len(packets), reviewed=len(left), human_reviewed=len(right), **rating_agreement(left, right))
+
+
+def rating_agreement(left, right):
+    """Compare already citation-validated decisions on their shared public packets."""
     shared = sorted(left.keys() & right.keys())
     axes = {}
     for axis in RUBRIC:
@@ -115,4 +120,4 @@ def compare_reviews(packets, submission, human_reference):
                           decisive_agree=sum(n for (a, b), n in pairs.items() if a == b != "unclear"),
                           disagreements=[k for k in shared if left[k]["ratings"][axis]["label"] != right[k]["ratings"][axis]["label"]],
                           confusion=[dict(rating=a, reference=b, count=n) for (a, b), n in sorted(pairs.items())])
-    return dict(unique_packets=len(packets), reviewed=len(left), human_reviewed=len(right), paired=len(shared), axes=axes)
+    return dict(paired=len(shared), axes=axes)

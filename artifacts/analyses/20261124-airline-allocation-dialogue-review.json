@@ -1,0 +1,357 @@
+{
+  "format": "agent-memory-airline-allocation-blind-dialogue-review/v1",
+  "masked_dialogue_packet_sha256": "1e85fee5dac64ccefe72bc3d3f241d570f7c21db0e9a990096d92afa009f1278",
+  "coded_utc": "2026-11-24T01:29:39+00:00",
+  "writing_review_sha256": "cf47670b5e0f8fdda29f0340d618ca83524e7a0603b729fe5128f1ed7bd371f4",
+  "review": "한 판독자가 공식 점수, 실제 발권 DB, 배정된 작성 형식과 대본 라벨을 열기 전에 공개 대화로 판정했다. 고객의 발화는 대본을 짐작하게 할 수 있다. 대화 위치는 네이티브 메시지의 0번 시작 인덱스다.",
+  "criteria": {
+    "direction": "original은 Raj에게 끝자리 4806, Liam에게 5295이다. swapped는 반대다. 한 명과 번호를 지시하고 다른 사람에게 나머지 한 장을 지시해도 배분이 정해진다.",
+    "specific": "첫 발권 전 제안에서 상담원 본인의 말로 두 증서 중 하나라도 특정 승객에 대응시켜야 한다. 금액만 말하거나 고객의 지시대로 하겠다는 포괄적 언급은 따로 기록한다. 발권 뒤 확인은 사후 보고다.",
+    "questions": "어느 250달러 증서를 누구에게 쓸지 되묻는 질문만 센다. 단일 예약의 결제수단 질문, 총액 확인, 구매 승인과 고객이 상담원에게 한 질문은 각각 구별한다.",
+    "authorization": "고객이 공개 대화에서 특정 예약을 진행해도 좋다고 한 발화의 위치다. 환불·취소나 가격 검색만 승인한 경우는 제외한다. 승인 발화 수는 정책상 필요한 횟수에 대한 판정이 아니다.",
+    "generic": "두 장이 필요하다는 숫자나 개인별 금액을 제시하는 첫 관련 상담원 발화의 예다. 특정 번호를 바로 지정한 경우는 비워 둔다."
+  },
+  "records": [
+    {
+      "case": "047e7fd3cf89",
+      "first_split_discussion": 24,
+      "first_customer_pair": 26,
+      "customer_direction": "swapped",
+      "disclosure_context": "volunteered",
+      "first_specific_agent_proposal": 27,
+      "agent_direction": "swapped",
+      "amount_or_count_only": 25,
+      "agent_asks_for_pair": [],
+      "repeat_request_after_pair_disclosed": [],
+      "customer_asks_agent_for_pair": [],
+      "customer_correction_of_wrong_pair": [],
+      "customer_authorizes_booking": [
+        28
+      ],
+      "interpretation": "고객이 금액을 확인하면서 한 번호와 다른 한 장의 수혜자를 지정했다. 상담원이 두 번호를 모두 명시했다.",
+      "excerpt": [
+        26,
+        "certificate_9984806 for Liam, and the other certificate for Raj"
+      ]
+    },
+    {
+      "case": "34c59ca19405",
+      "first_split_discussion": 22,
+      "first_customer_pair": null,
+      "customer_direction": null,
+      "disclosure_context": "not_stated",
+      "first_specific_agent_proposal": null,
+      "agent_direction": null,
+      "amount_or_count_only": 23,
+      "agent_asks_for_pair": [],
+      "repeat_request_after_pair_disclosed": [],
+      "customer_asks_agent_for_pair": [],
+      "customer_correction_of_wrong_pair": [],
+      "customer_authorizes_booking": [
+        24
+      ],
+      "interpretation": "고객은 같은 배분을 두 번 요청했다. 승인 시점에도 250달러 두 장을 구별하는 제안이나 공개 발화가 없다.",
+      "excerpt": [
+        24,
+        "in the same allocation as last time"
+      ]
+    },
+    {
+      "case": "53970e620726",
+      "first_split_discussion": 21,
+      "first_customer_pair": 21,
+      "customer_direction": "original",
+      "disclosure_context": "volunteered",
+      "first_specific_agent_proposal": null,
+      "agent_direction": null,
+      "amount_or_count_only": 22,
+      "agent_asks_for_pair": [],
+      "repeat_request_after_pair_disclosed": [],
+      "customer_asks_agent_for_pair": [],
+      "customer_correction_of_wrong_pair": [],
+      "customer_authorizes_booking": [
+        33,
+        37
+      ],
+      "interpretation": "고객이 배분을 지정했다. 상담원은 그 제안에 동의하고 승인 전에 승객별 금액을 두 번 제시했다. 어느 250달러 증서인지는 다시 말하지 않았다.",
+      "excerpt": [
+        22,
+        "the payment allocation you described fits the booking limits"
+      ]
+    },
+    {
+      "case": "5651c195d4da",
+      "first_split_discussion": 31,
+      "first_customer_pair": null,
+      "customer_direction": null,
+      "disclosure_context": "not_stated",
+      "first_specific_agent_proposal": null,
+      "agent_direction": null,
+      "amount_or_count_only": 32,
+      "agent_asks_for_pair": [],
+      "repeat_request_after_pair_disclosed": [],
+      "customer_asks_agent_for_pair": [],
+      "customer_correction_of_wrong_pair": [],
+      "customer_authorizes_booking": [
+        35
+      ],
+      "interpretation": "고객은 승객당 한 장을 제안했다. 이후 금액을 재검토하고 승인했으나 두 증서의 개인별 번호는 제시되지 않았다.",
+      "excerpt": [
+        31,
+        "use a different certificate on each"
+      ]
+    },
+    {
+      "case": "70e9a0ed4af7",
+      "first_split_discussion": 26,
+      "first_customer_pair": 30,
+      "customer_direction": "original",
+      "disclosure_context": "in_reply_to_pair_question",
+      "first_specific_agent_proposal": 31,
+      "agent_direction": "original",
+      "amount_or_count_only": 27,
+      "agent_asks_for_pair": [
+        29
+      ],
+      "repeat_request_after_pair_disclosed": [],
+      "customer_asks_agent_for_pair": [],
+      "customer_correction_of_wrong_pair": [],
+      "customer_authorizes_booking": [
+        32
+      ],
+      "interpretation": "고객이 예전 배분을 요청한 후 상담원이 두 번호를 나열하며 어느 쪽인지 물었다. 고객이 답했고 세 예약을 일괄 승인했다.",
+      "excerpt": [
+        29,
+        "Which certificate should go to each?"
+      ]
+    },
+    {
+      "case": "8b3581105bbd",
+      "first_split_discussion": null,
+      "first_customer_pair": null,
+      "customer_direction": null,
+      "disclosure_context": "split_not_reached",
+      "first_specific_agent_proposal": null,
+      "agent_direction": null,
+      "amount_or_count_only": null,
+      "agent_asks_for_pair": [],
+      "repeat_request_after_pair_disclosed": [],
+      "customer_asks_agent_for_pair": [],
+      "customer_correction_of_wrong_pair": [],
+      "customer_authorizes_booking": [],
+      "interpretation": "ID를 확인한 뒤 사람에게 이관해 배분을 논의할 기회가 없었다.",
+      "excerpt": [
+        10,
+        "TRANSFERRED TO A HUMAN AGENT"
+      ]
+    },
+    {
+      "case": "9a6a34d7e9de",
+      "first_split_discussion": 25,
+      "first_customer_pair": 29,
+      "customer_direction": "original",
+      "disclosure_context": "confirmed_agent_pair",
+      "first_specific_agent_proposal": 28,
+      "agent_direction": "original",
+      "amount_or_count_only": 26,
+      "agent_asks_for_pair": [],
+      "repeat_request_after_pair_disclosed": [],
+      "customer_asks_agent_for_pair": [
+        27
+      ],
+      "customer_correction_of_wrong_pair": [],
+      "customer_authorizes_booking": [
+        31
+      ],
+      "interpretation": "상담원이 금액만 제시하자 고객이 번호를 물었다. 상담원이 먼저 번호를 배분했고 고객이 맞다고 확인한 뒤 별도로 발권을 승인했다.",
+      "excerpt": [
+        29,
+        "that's the right split"
+      ]
+    },
+    {
+      "case": "a26f21025621",
+      "first_split_discussion": 25,
+      "first_customer_pair": null,
+      "customer_direction": null,
+      "disclosure_context": "not_stated",
+      "first_specific_agent_proposal": null,
+      "agent_direction": null,
+      "amount_or_count_only": 26,
+      "agent_asks_for_pair": [],
+      "repeat_request_after_pair_disclosed": [],
+      "customer_asks_agent_for_pair": [],
+      "customer_correction_of_wrong_pair": [],
+      "customer_authorizes_booking": [
+        27
+      ],
+      "interpretation": "상담원은 250달러 두 장을 금액으로 제시하고 기프트카드 한 장을 Raj에게 배정했다. 고객이 그 제안을 승인했다.",
+      "excerpt": [
+        26,
+        "Raj: $250 certificate + $129 gift card + $492 Mastercard"
+      ]
+    },
+    {
+      "case": "a83ac68d173a",
+      "first_split_discussion": 24,
+      "first_customer_pair": 24,
+      "customer_direction": "original",
+      "disclosure_context": "volunteered",
+      "first_specific_agent_proposal": 27,
+      "agent_direction": "original",
+      "amount_or_count_only": 25,
+      "agent_asks_for_pair": [],
+      "repeat_request_after_pair_disclosed": [],
+      "customer_asks_agent_for_pair": [],
+      "customer_correction_of_wrong_pair": [],
+      "customer_authorizes_booking": [
+        26,
+        28
+      ],
+      "interpretation": "고객이 번호를 먼저 정했다. 금액 안내 후 처음 승인하고, 번호까지 명시한 제안을 다시 승인했다.",
+      "excerpt": [
+        24,
+        "certificate_9984806 for Raj, and the other certificate for Liam"
+      ]
+    },
+    {
+      "case": "c3a12592629b",
+      "first_split_discussion": 19,
+      "first_customer_pair": 19,
+      "customer_direction": "original",
+      "disclosure_context": "volunteered",
+      "first_specific_agent_proposal": null,
+      "agent_direction": null,
+      "amount_or_count_only": 20,
+      "agent_asks_for_pair": [],
+      "repeat_request_after_pair_disclosed": [],
+      "customer_asks_agent_for_pair": [],
+      "customer_correction_of_wrong_pair": [],
+      "customer_authorizes_booking": [
+        21
+      ],
+      "interpretation": "고객은 Raj에게 번호를 지정하고 Liam에게 나머지를 지시했다. 상담원의 발권 전 제안은 두 사람에게 각각 250달러라고만 했다.",
+      "excerpt": [
+        19,
+        "certificate_9984806 for Raj, and the other certificate for Liam"
+      ]
+    },
+    {
+      "case": "c4b4d47be694",
+      "first_split_discussion": 25,
+      "first_customer_pair": 31,
+      "customer_direction": "original",
+      "disclosure_context": "in_reply_to_pair_question",
+      "first_specific_agent_proposal": 32,
+      "agent_direction": "original",
+      "amount_or_count_only": 28,
+      "agent_asks_for_pair": [
+        30
+      ],
+      "repeat_request_after_pair_disclosed": [],
+      "customer_asks_agent_for_pair": [
+        29
+      ],
+      "customer_correction_of_wrong_pair": [],
+      "customer_authorizes_booking": [
+        33,
+        37,
+        41
+      ],
+      "interpretation": "고객이 누가 어느 증서를 쓸지 물었고 상담원이 다시 물어 번호를 받았다. 이후 승객별 발권 승인을 세 번 따로 받았다.",
+      "excerpt": [
+        30,
+        "Which one should I assign to Raj, and which to Liam?"
+      ]
+    },
+    {
+      "case": "d7138744fc28",
+      "first_split_discussion": 22,
+      "first_customer_pair": 24,
+      "customer_direction": "original",
+      "disclosure_context": "volunteered_at_approval",
+      "first_specific_agent_proposal": null,
+      "agent_direction": null,
+      "amount_or_count_only": 23,
+      "agent_asks_for_pair": [],
+      "repeat_request_after_pair_disclosed": [],
+      "customer_asks_agent_for_pair": [],
+      "customer_correction_of_wrong_pair": [],
+      "customer_authorizes_booking": [
+        24
+      ],
+      "interpretation": "상담원은 금액으로만 승인을 요청했다. 고객이 그 자리에서 두 번호를 먼저 밝혔고 상담원은 발권 후 31번에서 번호를 읽어 줬다.",
+      "excerpt": [
+        24,
+        "last time I gave certificate_9984806 to Raj and certificate_2765295 to Liam"
+      ]
+    },
+    {
+      "case": "dcdf834d5f51",
+      "first_split_discussion": 23,
+      "first_customer_pair": 23,
+      "customer_direction": "swapped",
+      "disclosure_context": "after_single_booking_question",
+      "first_specific_agent_proposal": null,
+      "agent_direction": null,
+      "amount_or_count_only": 24,
+      "agent_asks_for_pair": [],
+      "repeat_request_after_pair_disclosed": [],
+      "customer_asks_agent_for_pair": [],
+      "customer_correction_of_wrong_pair": [],
+      "customer_authorizes_booking": [
+        25
+      ],
+      "interpretation": "상담원이 단일 예약에 쓸 증서를 물었고 고객이 별도 예약으로 바꾸며 Liam에게 4806번을 지정했다. 상담원은 지정한 배분을 사용하겠다고 하고 금액만 읽어 줬다.",
+      "excerpt": [
+        23,
+        "the certificate ending 4806 for Liam, and the other $250 certificate for Raj"
+      ]
+    },
+    {
+      "case": "f53e784af63f",
+      "first_split_discussion": 27,
+      "first_customer_pair": 27,
+      "customer_direction": "swapped",
+      "disclosure_context": "volunteered",
+      "first_specific_agent_proposal": 28,
+      "agent_direction": "swapped",
+      "amount_or_count_only": null,
+      "agent_asks_for_pair": [],
+      "repeat_request_after_pair_disclosed": [],
+      "customer_asks_agent_for_pair": [],
+      "customer_correction_of_wrong_pair": [],
+      "customer_authorizes_booking": [
+        29,
+        31
+      ],
+      "interpretation": "고객이 바뀐 배분을 지정하자 상담원이 두 증서 번호로 답했다. 고객이 동의하고 최종 제안에도 승인했다.",
+      "excerpt": [
+        27,
+        "certificate_9984806 for Liam, and the other certificate for Raj"
+      ]
+    },
+    {
+      "case": "ffa21589e74c",
+      "first_split_discussion": 29,
+      "first_customer_pair": 31,
+      "customer_direction": "original",
+      "disclosure_context": "volunteered_at_approval",
+      "first_specific_agent_proposal": null,
+      "agent_direction": null,
+      "amount_or_count_only": 30,
+      "agent_asks_for_pair": [],
+      "repeat_request_after_pair_disclosed": [],
+      "customer_asks_agent_for_pair": [],
+      "customer_correction_of_wrong_pair": [],
+      "customer_authorizes_booking": [
+        31
+      ],
+      "interpretation": "상담원이 각자 한 장일 때 총액을 설명했고 고객이 발권을 승인하며 번호를 지정했다. 그 전에 번호를 적은 제안은 없었다.",
+      "excerpt": [
+        31,
+        "certificate_9984806 for Raj, and the other certificate for Liam"
+      ]
+    }
+  ]
+}

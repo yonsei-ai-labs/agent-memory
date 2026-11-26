@@ -6,10 +6,13 @@ from agent_memory_eval.contracts.core import ContractError, canonical, digest, r
 
 
 class ToolRouter:
-    def __init__(self, journal, memory, benchmark, bank_id, policy, *, business_dispatch=None):
+    def __init__(self, journal, memory, benchmark, bank_id, policy, *, business_dispatch=None, native_memory=None):
         self.journal, self.memory, self.benchmark = journal, memory, benchmark
         self.bank_id, self.policy = bank_id, policy
         self.business_dispatch = business_dispatch
+        self.native_memory = native_memory
+        if native_memory is not None and journal.contract_version != "1.3":
+            raise ContractError("Native memory routing requires a v1.3 journal")
 
     def _denied(self, ctx, call, code):
         wire = dict(role="tool", tool_call_id=call["id"],
@@ -54,13 +57,15 @@ class ToolRouter:
                     results.append(self._denied(ctx, call, "INVALID_ARGUMENT"))
                     continue
                 if name.startswith("memory_"):
-                    if self.bank_id is None or name not in {"memory_store", "memory_list", "memory_get"}:
+                    allowed = self.native_memory.tools if self.native_memory is not None else {"memory_store", "memory_list", "memory_get"}
+                    if self.bank_id is None or name not in allowed:
                         results.append(self._denied(ctx, call, "POLICY_DENIED"))
                         continue
                     op_id = "op_" + digest(canonical([ctx.run_id, request_id, call["id"], index]))
                     denial = "POLICY_DENIED" if ctx.phase == "solve" and self.benchmark.ended else None
+                    native_options = {"native": self.native_memory} if self.native_memory is not None else {}
                     result = self.memory.execute(ctx, self.bank_id, op_id, name, arguments,
-                                                 call_id=call["id"], denial=denial, prefix=public_prefix)
+                                                 call_id=call["id"], denial=denial, prefix=public_prefix, **native_options)
                     results.append((result.wire, "memory_return", result.returned_event_id))
                 elif ctx.phase != "solve" or self.benchmark.ended:
                     results.append(self._denied(ctx, call, "POLICY_DENIED"))

@@ -3,6 +3,20 @@
 import json
 import re
 
+from agent_memory_eval.contracts.validation import leaves, pointer
+
+
+def literal_citations(document, term):
+    """First exact match per public string leaf, in stable JSON pointer order."""
+    if not isinstance(term, str) or not term:
+        raise ValueError("A literal citation needs a nonempty string")
+    matches = []
+    for location in sorted(leaves(document)):
+        text = pointer(document, location)
+        if isinstance(text, str) and (start := text.find(term)) >= 0:
+            matches.append(dict(pointer=location, start=start, quote=term))
+    return matches
+
 
 def input_evidence(messages, tools, document_tools):
     """Classify the *current worker request*, including ordinary tools and earlier worker speech."""

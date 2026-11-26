@@ -1,0 +1,97 @@
+{
+  "preflight": {
+    "writers": 4,
+    "episodes": 4,
+    "public_sources": 2,
+    "successful_sources": 1,
+    "public_context_bytes_range": [
+      28810,
+      31348
+    ],
+    "customer_groups": 2,
+    "ordered_jobs_sha256": "3d4209d3427bd4c2332b8f88fec1120e1ccecee1fb045ef939a7606753ecf29a",
+    "tau2_revision": "c06b07dd7c4d4ec61ba6ff9bcdf0b15dd7ef36d4",
+    "writer_initial_wires": 4,
+    "writer_initial_wire_bytes": [
+      34753,
+      37346
+    ],
+    "public_record_archived_final_wire_checks": 0,
+    "public_record_archived_final_wire_bytes": [],
+    "first_pass_match": {
+      "23": {
+        "1": {
+          "source_run_id": "r_ebe376c9de3d4433909026bedc1ed3de",
+          "source_control_sha256": "c909953759f96bed480503a2abfcbfddb069f8798c6429d46d3e8902de7e354d",
+          "task_sha256": "9562a382e17de03f8790770e1a2a470230f4d70e949b298f392fecab0f47e37b",
+          "native_seed": 0,
+          "initial_db": "124e39a664b56402bcd09cb8a6a9cece6acb8462337c969799d5658e3250f263",
+          "initial_user_db": null,
+          "native_config_sha256": "b773f7d88683d715c3461bbac88605e9a145dbc0c67f288aed77fe182e29d737",
+          "systems_sha256": "d9abb7a2d1d30b62e1ebaa8c1123ca94952f06ce661e146eeabaf799de4192c2",
+          "tools_sha256": "6b6569e56f469ecbb64e2d7ae8e2ad2a689369ba6873fe732df4c04b67041e7c",
+          "customer_opening_sha256": "daa8053dc93627d3ac762d3396d54f9fc7f99cae00f85e36558ecfa519c917c0",
+          "episode_limits": {
+            "max_model_requests": 200,
+            "max_reported_cost_usd": 0.1,
+            "max_seconds": 600,
+            "max_input_bytes": 64000,
+            "http_timeout_seconds": 45
+          }
+        }
+      },
+      "21": {
+        "1": {
+          "source_run_id": "r_932eb0f7180942009398402127a40d04",
+          "source_control_sha256": "ff86a2265176a28f4e920a84f90f43e382a9c28ab73d3702fd4100b1f56ebaac",
+          "task_sha256": "7b01ec854bfbd967971091b06c868a052d5210ed22afc50d51187fbd5cdcd8e6",
+          "native_seed": 0,
+          "initial_db": "124e39a664b56402bcd09cb8a6a9cece6acb8462337c969799d5658e3250f263",
+          "initial_user_db": null,
+          "native_config_sha256": "4a3cc39d367f15ddd7828eedd4881b1c00d606fd5a0ccb6025299f9c5262e4ee",
+          "systems_sha256": "4e794b8658d21038acc357c660f2a091408715bec054c91db165042a1cb2af60",
+          "tools_sha256": "6b6569e56f469ecbb64e2d7ae8e2ad2a689369ba6873fe732df4c04b67041e7c",
+          "customer_opening_sha256": "f609a75d6923173affddfe244913664e7e08b7b96ba3c2cb55cbcefabef412d8",
+          "episode_limits": {
+            "max_model_requests": 200,
+            "max_reported_cost_usd": 0.1,
+            "max_seconds": 600,
+            "max_input_bytes": 64000,
+            "http_timeout_seconds": 45
+          }
+        }
+      }
+    },
+    "baseline": "archived_first_pass",
+    "second_pass_by_policy": {
+      "fact_original": 2,
+      "fact_payment_scope": 2
+    },
+    "second_pass_no_memory": 0
+  },
+  "conditions": [
+    {
+      "id": "fact_original",
+      "representation": "fact",
+      "prompt_version": "fact-v1",
+      "prompt": "If you write, record directly observed facts and values, their scope, and any uncertainty about them.",
+      "writer_instruction_sha256": "0524c6e6e3477da85bff9f4e720d879f2a79d66ef71ce9d11ce7dc81eb529807"
+    },
+    {
+      "id": "fact_payment_scope",
+      "representation": "fact",
+      "prompt_version": "fact-payment-scope-v1",
+      "prompt": "If you write, record directly observed facts and values, their scope, and any uncertainty about them. For a payment decision, distinguish the customer's criterion from the transaction-specific values or permissions, and record how those were checked when the interaction shows it.",
+      "writer_instruction_sha256": "9fd448fb69c7417ba630ab36f0ab12398973af20657d94797a12c5ddf5c4a28f"
+    }
+  ],
+  "task_sets": {
+    "development": [
+      "21",
+      "23"
+    ],
+    "evaluation": []
+  },
+  "guards": null,
+  "config_sha256": "d931497141367e6217ddcb4f0998105d500377a9757715b75dce474d4b5be6c6"
+}

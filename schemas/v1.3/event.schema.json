@@ -1,0 +1,135 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:agent-memory-eval:event:1.3",
+  "title": "Native memory operation observations",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "event_id",
+    "event_seq",
+    "experiment_id",
+    "run_id",
+    "session_id",
+    "condition_id",
+    "stage",
+    "phase",
+    "type",
+    "timestamp_utc",
+    "record_kind",
+    "caused_by",
+    "payload"
+  ],
+  "properties": {
+    "event_id": {
+      "$ref": "urn:agent-memory-eval:event:1.1#/properties/event_id"
+    },
+    "event_seq": {
+      "$ref": "urn:agent-memory-eval:event:1.1#/properties/event_seq"
+    },
+    "experiment_id": {
+      "$ref": "urn:agent-memory-eval:event:1.1#/properties/experiment_id"
+    },
+    "run_id": {
+      "$ref": "urn:agent-memory-eval:event:1.1#/properties/run_id"
+    },
+    "session_id": {
+      "$ref": "urn:agent-memory-eval:event:1.1#/properties/session_id"
+    },
+    "condition_id": {
+      "$ref": "urn:agent-memory-eval:event:1.1#/properties/condition_id"
+    },
+    "stage": {
+      "$ref": "urn:agent-memory-eval:event:1.1#/properties/stage"
+    },
+    "phase": {
+      "$ref": "urn:agent-memory-eval:event:1.1#/properties/phase"
+    },
+    "timestamp_utc": {
+      "$ref": "urn:agent-memory-eval:event:1.1#/properties/timestamp_utc"
+    },
+    "record_kind": {
+      "$ref": "urn:agent-memory-eval:event:1.1#/properties/record_kind"
+    },
+    "caused_by": {
+      "$ref": "urn:agent-memory-eval:event:1.1#/properties/caused_by"
+    },
+    "schema_version": {
+      "const": "1.3"
+    },
+    "type": {
+      "enum": [
+        "memory.returned",
+        "model.request_finished"
+      ]
+    },
+    "payload": {
+      "type": "object"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "type": {
+            "const": "memory.returned"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "bank_id",
+              "operation_id",
+              "operation",
+              "status",
+              "result_ref",
+              "items",
+              "native_format",
+              "native_tool"
+            ],
+            "properties": {
+              "bank_id": {
+                "$ref": "urn:agent-memory-eval:event:1.1#/$defs/memory_returned/properties/bank_id"
+              },
+              "operation_id": {
+                "$ref": "urn:agent-memory-eval:event:1.1#/$defs/memory_returned/properties/operation_id"
+              },
+              "operation": {
+                "$ref": "urn:agent-memory-eval:event:1.1#/$defs/memory_returned/properties/operation"
+              },
+              "status": {
+                "$ref": "urn:agent-memory-eval:event:1.1#/$defs/memory_returned/properties/status"
+              },
+              "result_ref": {
+                "$ref": "urn:agent-memory-eval:event:1.1#/$defs/memory_returned/properties/result_ref"
+              },
+              "items": {
+                "$ref": "urn:agent-memory-eval:event:1.1#/$defs/memory_returned/properties/items"
+              },
+              "native_format": {
+                "const": "bfcl-rec-sum/v1"
+              },
+              "native_tool": {
+                "enum": [
+                  "memory_append",
+                  "memory_retrieve"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "payload": {
+            "$ref": "urn:agent-memory-eval:event:1.1#/$defs/request_finished"
+          }
+        }
+      }
+    }
+  ]
+}

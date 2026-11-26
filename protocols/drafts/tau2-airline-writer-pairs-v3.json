@@ -1,0 +1,44 @@
+{
+  "format": "agent-memory-prompt-comparison/v3",
+  "status": "draft",
+  "name": "tau2-airline-writer-pairs-dev-01",
+  "baseline": "archived_first_pass",
+  "base_design_ref": {
+    "path": "protocols/drafts/tau2-two-pass-memory-forms-v1.json",
+    "sha256": "d4b06f72f4bcf5f656587e80645e042e7cf77e687cd5d1c38a20e2aff2cc373a"
+  },
+  "endpoint_ref": {
+    "path": "artifacts/pilots/20261118-two-pass-forms-endpoints.json",
+    "sha256": "9b5bd1d9898ede15030b062fa81e451875fee0adff31d3a279d974a74435a872"
+  },
+  "read_mode": "preload",
+  "task_sets": {
+    "development": [
+      "21",
+      "23"
+    ],
+    "evaluation": []
+  },
+  "selection_reason": "Offline development fixture on two archived sources. Compare one writer change within every declared representation, using the archived first public decision and fixed preload. No paid assignments approved.",
+  "seed_pairs": [
+    {
+      "repetition": 1,
+      "writer": 0,
+      "native_and_solver": 0
+    }
+  ],
+  "guards": null,
+  "http_timeout_seconds": 45,
+  "common_writer_ref": {
+    "path": "protocols/instructions/required-experience-writer-v1.txt",
+    "sha256": "54c0838ec92092c2accd1d78253ba560c95fadac6c65d698243f23cb38a67ed7"
+  },
+  "forms": {
+    "fact": "Record directly observed facts and values and their scope.",
+    "episode": "Recount what was requested, what was attempted and the observed outcome.",
+    "procedure": "Describe a procedure with checks supported by this experience.",
+    "lesson": "State a lesson or caution and when it applies.",
+    "free": "Choose your own organization for what is worth remembering."
+  },
+  "writer_clause": "When the title or contents describe a past action, distinguish the attempt from the result confirmed by the public experience. Treat the task grade as separate feedback. Preserve a relevant unknown in the assigned memory form."
+}

@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Source evidence, memory exposure, first public action and observed stopping state",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["format", "benchmark", "scope", "bindings", "metric_definitions", "cue_definitions", "source_opportunities", "source_requirement", "by_condition", "same_input_repetitions", "observation_count", "observations_sha256", "request_error_summary", "request_errors_sha256"],
+  "dependentRequired": {"observations": ["request_errors"], "request_errors": ["observations"]},
+  "properties": {
+    "format": {"const": "agent-memory-trajectory-outcomes/v1"},
+    "benchmark": {"$ref": "#/$defs/text"},
+    "scope": {"enum": ["sources", "sources_and_readers"]},
+    "bindings": {"type": "object", "required": ["protocol_sha256", "source"], "properties": {"protocol_sha256": {"$ref": "#/$defs/hash"}, "source": {"$ref": "#/$defs/binding"}, "validation": {"$ref": "#/$defs/binding"}}},
+    "metric_definitions": {"$ref": "#/$defs/definitions"},
+    "cue_definitions": {"$ref": "#/$defs/definitions"},
+    "source_opportunities": {"type": "object", "additionalProperties": {"allOf": [{"$ref": "#/$defs/opportunities"}, {"required": ["graded_sources"], "properties": {"graded_sources": {"$ref": "#/$defs/opportunities"}}}]}},
+    "source_requirement": {"oneOf": [{"type": "null"}, {"type": "object", "required": ["cue", "evidence", "minimum_clusters", "met", "observed_clusters", "eligible_graded_sources", "unknown_graded_sources"], "properties": {"cue": {"$ref": "#/$defs/text"}, "evidence": {"enum": ["source", "source_only"]}, "minimum_clusters": {"type": "integer", "minimum": 1}, "met": {"type": "boolean"}}}]},
+    "by_condition": {"type": "array", "items": {"type": "object", "required": ["phase", "condition", "assigned", "started", "graded", "official_successes", "decisions", "decisions_with_body", "decisions_with_title", "decisions_with_function", "read_calls", "read_returns", "progress", "stops"], "properties": {"progress": {"type": "object", "required": ["graded", "ungraded", "not_started"], "additionalProperties": {"type": "object", "required": ["assigned", "metrics"], "properties": {"assigned": {"$ref": "#/$defs/count"}, "metrics": {"type": "object", "additionalProperties": {"$ref": "#/$defs/cell"}}}}}}}},
+    "same_input_repetitions": {"type": "object", "required": ["groups", "metrics"], "properties": {"groups": {"$ref": "#/$defs/counts"}, "metrics": {"type": "object", "additionalProperties": {"$ref": "#/$defs/counts"}}}},
+    "observation_count": {"$ref": "#/$defs/count"},
+    "observations_sha256": {"$ref": "#/$defs/hash"},
+    "observations": {"type": "array", "items": {"$ref": "#/$defs/observation"}},
+    "request_errors_sha256": {"$ref": "#/$defs/hash"},
+    "request_error_summary": {"type": "array", "items": {"type": "object", "required": ["phase", "reader_repeat", "actor", "code", "delivery", "requests", "min_wire_bytes", "max_wire_bytes", "first_role_requests", "later_role_requests", "min_first_role_wire_bytes", "max_first_role_wire_bytes", "with_retry_after"]}},
+    "request_errors": {"type": "array", "items": {"type": "object", "required": ["run", "phase", "actor", "code", "delivery", "wire_bytes", "request_sha256", "role_request_number", "first_role_request_sha256", "first_role_wire_bytes"], "properties": {"request_sha256": {"$ref": "#/$defs/hash"}, "wire_bytes": {"$ref": "#/$defs/count"}}}}
+  },
+  "$defs": {
+    "text": {"type": "string", "minLength": 1},
+    "hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "count": {"type": "integer", "minimum": 0},
+    "counts": {"type": "object", "additionalProperties": {"$ref": "#/$defs/count"}},
+    "nullableCount": {"type": ["integer", "null"], "minimum": 0},
+    "definitions": {"type": "object", "additionalProperties": {"$ref": "#/$defs/text"}},
+    "binding": {"type": "object", "required": ["recording", "registration_sha256"], "properties": {"recording": {"$ref": "#/$defs/text"}, "registration_sha256": {"$ref": "#/$defs/hash"}, "completion_sha256": {"$ref": "#/$defs/hash"}}},
+    "opportunities": {"type": "object", "required": ["assigned", "observed", "unknown", "source_observed", "current_observed", "with_source_evidence", "with_current_evidence", "with_source_only_evidence", "distinct_clusters", "clusters_with_source_evidence", "clusters_with_source_only_evidence"]},
+    "cell": {"type": "object", "additionalProperties": false, "required": ["observed", "nonzero", "total"], "properties": {"observed": {"$ref": "#/$defs/count"}, "nonzero": {"$ref": "#/$defs/nullableCount"}, "total": {"$ref": "#/$defs/nullableCount"}}, "if": {"properties": {"observed": {"const": 0}}}, "then": {"properties": {"nonzero": {"type": "null"}, "total": {"type": "null"}}}, "else": {"properties": {"nonzero": {"$ref": "#/$defs/count"}, "total": {"$ref": "#/$defs/count"}}}},
+    "identifiers": {"type": ["array", "null"], "uniqueItems": true, "items": {"$ref": "#/$defs/text"}},
+    "decision": {
+      "type": ["object", "null"], "additionalProperties": false, "required": ["request_id", "request_sha256", "response_sha256", "manifest_sha256", "memory", "calls"],
+      "properties": {
+        "request_id": {"$ref": "#/$defs/text"}, "request_sha256": {"$ref": "#/$defs/hash"}, "response_sha256": {"$ref": "#/$defs/hash"}, "manifest_sha256": {"$ref": "#/$defs/hash"},
+        "memory": {"type": "array", "uniqueItems": true, "items": {"type": "object", "required": ["item", "version", "field"], "properties": {"field": {"enum": ["title", "body"]}}}},
+        "calls": {"type": "array", "items": {"type": "object", "required": ["id", "name"], "oneOf": [{"required": ["arguments"]}, {"required": ["invalid_arguments"]}]}}
+      }
+    },
+    "observation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["task", "cluster", "phase", "condition", "form", "delivery", "writer_draw", "reader_repeat", "run", "source_run", "writer_run", "snapshot", "status", "reason", "official_success", "first_input_sha256", "decision", "reads_before_decision", "read_returns", "effort", "progress", "source_cues", "evidence"],
+      "properties": {
+        "task": {"$ref": "#/$defs/text"}, "cluster": {"$ref": "#/$defs/text"}, "phase": {"enum": ["source", "solve"]}, "condition": {"$ref": "#/$defs/text"},
+        "form": {"type": ["string", "null"]}, "delivery": {"type": ["string", "null"]}, "writer_draw": {"type": ["integer", "null"], "minimum": 1}, "reader_repeat": {"type": ["integer", "null"], "minimum": 1},
+        "run": {"type": ["string", "null"]}, "source_run": {"type": ["string", "null"]}, "writer_run": {"type": ["string", "null"]}, "snapshot": {"type": ["string", "null"]},
+        "status": {"enum": ["graded", "ungraded", "not_started"]}, "reason": {"type": ["string", "null"]}, "official_success": {"type": ["boolean", "null"]},
+        "first_input_sha256": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/hash"}]}, "decision": {"$ref": "#/$defs/decision"},
+        "reads_before_decision": {"type": ["object", "null"], "additionalProperties": {"$ref": "#/$defs/count"}}, "read_returns": {"type": ["object", "null"], "additionalProperties": {"$ref": "#/$defs/count"}},
+        "effort": {"type": ["object", "null"], "required": ["requests", "dispatched", "reused_local_generations", "tokens_reported_on", "reported_tokens", "reported_usd", "unknown_cost_requests"]},
+        "progress": {"type": ["object", "null"], "additionalProperties": {"type": ["integer", "boolean", "null"], "minimum": 0}},
+        "source_cues": {"type": ["object", "null"], "additionalProperties": {"type": "object", "required": ["source", "current"], "properties": {"source": {"$ref": "#/$defs/identifiers"}, "current": {"$ref": "#/$defs/identifiers"}}}},
+        "evidence": {"type": "object"}
+      },
+      "allOf": [
+        {"if": {"properties": {"status": {"const": "graded"}}}, "then": {"properties": {"official_success": {"type": "boolean"}, "run": {"$ref": "#/$defs/text"}}}, "else": {"properties": {"official_success": {"type": "null"}, "reason": {"$ref": "#/$defs/text"}}}},
+        {"if": {"properties": {"status": {"const": "not_started"}}}, "then": {"properties": {"decision": {"type": "null"}, "progress": {"type": "null"}, "effort": {"type": "null"}, "first_input_sha256": {"type": "null"}, "source_cues": {"type": "null"}, "reads_before_decision": {"type": "null"}, "read_returns": {"type": "null"}}}},
+        {"if": {"properties": {"phase": {"const": "solve"}}}, "then": {"properties": {"source_cues": {"type": "null"}}}}
+      ]
+    }
+  }
+}

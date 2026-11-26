@@ -1,0 +1,731 @@
+{
+  "all_banking": {
+    "combined_first_worker_and_source": {
+      "assignments": 159,
+      "different_first_action_type": 13,
+      "different_text_or_normal_calls": 157,
+      "different_text_or_raw_calls": 157,
+      "endpoints_equal": 159,
+      "first_worker_responses": 159,
+      "graded": 159,
+      "identical_business_start": 159,
+      "identical_customer_opening": 159,
+      "identical_native_control": 159,
+      "rebuilt_exact_from_source": 159,
+      "unstarted": 1,
+      "user_policy_and_tools_and_settings_equal": 159
+    },
+    "customers": {
+      "development_validation_replacement_share_customer": [
+        14,
+        15,
+        36
+      ],
+      "identified_tasks": 59,
+      "selected_identified_tasks": [
+        10,
+        14,
+        15,
+        16,
+        17
+      ],
+      "selected_unidentified_tasks": [
+        1,
+        2,
+        8
+      ],
+      "selected_unique_identified_customers": 4,
+      "tasks": 97,
+      "unique_identified_customers": 32
+    },
+    "first_pass_summaries": {
+      "tau-banking-memory-01": {
+        "graded": 4,
+        "official_successes": 1
+      },
+      "tau-banking-policy-check-sources-01": {
+        "graded": 4,
+        "official_successes": 1
+      },
+      "tau-banking-replacement-sources-01": {
+        "graded": 0,
+        "official_successes": 0
+      }
+    },
+    "fixed_decisions": {
+      "tau-banking-clause-decisions-01": {
+        "distinct_states": 4,
+        "exposed_before_request": 96,
+        "public_requests_matched": 96
+      },
+      "tau-banking-scoped-decisions-01": {
+        "distinct_states": 8,
+        "exposed_before_request": 320,
+        "public_requests_matched": 320
+      }
+    },
+    "interrupted_sources": {
+      "task_036": {
+        "error": "HTTP_429",
+        "grade": "incomplete",
+        "http": 3,
+        "status": "error"
+      }
+    },
+    "on_demand_list_or_get": {
+      "tau-banking-memory-01": 0,
+      "tau-banking-required-01": 0,
+      "tau-banking-result-feedback-01": 0
+    },
+    "on_demand_zero_input_exposure": {
+      "tau-banking-memory-01": 19,
+      "tau-banking-required-01": 20,
+      "tau-banking-result-feedback-01": 20
+    },
+    "privacy_check_method": "Match 120-character spans at stride 60 and whole sentences of at least 60 characters from whitespace-normalized task instructions. Decode JSON message content before matching. Attribute overlaps to recorded public customer utterances. Every business user message in full consultations is additionally matched, in temporal order, to the recorded opening or an already observed simulator response in that consultation.",
+    "private_literal_check": {
+      "fixed_decision": {
+        "inspected_requests": 416,
+        "requests_with_literal": 248,
+        "requests_with_literal_outside_current_public_customer_speech": 0,
+        "requests_with_unexplained_literal": 0
+      },
+      "reader": {
+        "inspected_requests": 1906,
+        "requests_with_literal": 609,
+        "requests_with_literal_outside_current_public_customer_speech": 0,
+        "requests_with_unexplained_literal": 0
+      },
+      "writer": {
+        "inspected_requests": 139,
+        "requests_with_literal": 50,
+        "requests_with_unexplained_literal": 0
+      }
+    },
+    "public_utterance_origins": {
+      "on_demand_consultations": 59,
+      "unmatched_customer_messages": 0,
+      "user_message_appearances": 7056
+    },
+    "readers": {
+      "tau-banking-memory-01": {
+        "on_demand": {
+          "graded": 19,
+          "success": 6
+        },
+        "preload": {
+          "graded": 20,
+          "success": 5
+        }
+      },
+      "tau-banking-policy-check-01": {
+        "candidate": {
+          "graded": 20,
+          "success": 4
+        },
+        "existing": {
+          "graded": 20,
+          "success": 7
+        }
+      },
+      "tau-banking-required-01": {
+        "on_demand": {
+          "graded": 20,
+          "success": 7
+        },
+        "preload": {
+          "graded": 20,
+          "success": 8
+        }
+      },
+      "tau-banking-result-feedback-01": {
+        "on_demand": {
+          "graded": 20,
+          "success": 6
+        },
+        "preload": {
+          "graded": 20,
+          "success": 6
+        }
+      }
+    },
+    "run_folders": 10,
+    "solve_costs": {
+      "groups": {
+        "tau-banking-memory-01": {
+          "max": "0.008228926",
+          "mean": "0.003752750",
+          "min": "0.001410822",
+          "n": 39,
+          "sum": "0.146357261"
+        },
+        "tau-banking-policy-check-01": {
+          "max": "0.006246740",
+          "mean": "0.003025220",
+          "min": "0.000513120",
+          "n": 40,
+          "sum": "0.121008804"
+        },
+        "tau-banking-required-01": {
+          "max": "0.008145677",
+          "mean": "0.003988768",
+          "min": "0.001101131",
+          "n": 40,
+          "sum": "0.159550714"
+        },
+        "tau-banking-result-feedback-01": {
+          "max": "0.006973226",
+          "mean": "0.003669842",
+          "min": "0.000391823",
+          "n": 40,
+          "sum": "0.146793684"
+        }
+      },
+      "included": "Archived provider charges over the 159 graded second-pass consultations, excluding separate first-pass, writing and fixed-decision runs.",
+      "max_usd": "0.008228926",
+      "mean_usd": "0.003608242",
+      "min_usd": "0.000391823",
+      "sum_usd": "0.573710463"
+    },
+    "solve_log_set_sha256": "d1aaa6556aa090ec70d1659122e43342814f4efb8f967cf5da6bc9926e393fd0",
+    "sources": {
+      "task_001": false,
+      "task_002": true,
+      "task_008": true,
+      "task_010": false,
+      "task_014": false,
+      "task_015": false,
+      "task_016": false,
+      "task_017": false,
+      "task_036": null
+    },
+    "tasks": {
+      "task_001": {
+        "graded": 30,
+        "success": 2
+      },
+      "task_002": {
+        "graded": 10,
+        "success": 3
+      },
+      "task_008": {
+        "graded": 29,
+        "success": 24
+      },
+      "task_010": {
+        "graded": 30,
+        "success": 0
+      },
+      "task_014": {
+        "graded": 10,
+        "success": 8
+      },
+      "task_015": {
+        "graded": 30,
+        "success": 12
+      },
+      "task_016": {
+        "graded": 10,
+        "success": 0
+      },
+      "task_017": {
+        "graded": 10,
+        "success": 0
+      }
+    },
+    "unique_visible_experience_hashes_per_trajectory": {
+      "r_174da10158af45cf93206ada60e87997": 1,
+      "r_77b7490f996d462d8323a65c8d8c06bc": 1,
+      "r_7aef376340c34a7aab3a320eb35eea0d": 1,
+      "r_7e8c96bfdc624791a1fcb24f8d4f79dd": 1,
+      "r_8a83ed241a7840878dd99a3680898d94": 1,
+      "r_922a0c4ec5be4f86b51f419e00c1d8de": 1,
+      "r_d55907719ff14aaab8380fd4fe770af9": 1,
+      "r_d914c049e28c492d893e0d4e5ce2c6ae": 1
+    },
+    "writers": {
+      "tau-banking-memory-01": {
+        "first_tool_choice_auto": 20,
+        "none_requests": 39,
+        "stored_notes": 19,
+        "verified_public_request": 39,
+        "writer_runs": 20
+      },
+      "tau-banking-policy-check-01": {
+        "first_tool_choice_required": 40,
+        "result_only_requests": 40,
+        "stored_notes": 40,
+        "verified_public_request": 40,
+        "writer_runs": 40
+      },
+      "tau-banking-required-01": {
+        "first_tool_choice_required": 20,
+        "none_requests": 20,
+        "stored_notes": 20,
+        "verified_public_request": 20,
+        "writer_runs": 20
+      },
+      "tau-banking-result-feedback-01": {
+        "first_tool_choice_required": 20,
+        "result_only_requests": 20,
+        "stored_notes": 20,
+        "verified_public_request": 20,
+        "writer_runs": 20
+      },
+      "tau-banking-scoped-writers-01": {
+        "first_tool_choice_required": 20,
+        "result_only_requests": 20,
+        "stored_notes": 20,
+        "verified_public_request": 20,
+        "writer_runs": 20
+      }
+    }
+  },
+  "archive_sha256": {
+    "20261118-two-pass-forms-final-cells/second-pass.csv": "51b68ccd57d3ad604d089324150ffda5bd8b41d94fdfe859c3bd66365f6a85d3",
+    "20261119-retail-full-cells.json": "34d877c4d778cee4a39490a640ab11dcd9455ec991df44788fc29f13663907e2",
+    "20261120-retail-sample-expansion-cells.json": "ff32b8b009456f4bd1efee362dc1b3ef8fbd2df08079a1eccf81f55bd093f31b",
+    "20261122-retail-two-visit-results-with-recovery.json": "5808756f078cc26b39f0453460582d079d9e4eb2eefd47b5dae8b8b586892ad3",
+    "20261123-retail-conditional-retrieval-results.json": "0a03ca89e87d7d219d4a2e734bd3ce05d657424667a4475c85740aef748458b1",
+    "20261124-banking-required-results.json": "35de5a43a8a36f859aaf31cb8d8a956301b05ae9a4c600af82b6e5616c7a322b",
+    "20261124-banking-storage-audit.json": "74fecd002e6b572e5f87aca06f2b11b56b832b9b943b3736b70b9e97c30cb6eb",
+    "20261125-banking-policy-cycle-development.json": "8128e5466cbc21458cf7586e1871c72fe307499aec8fb52c810410226031ad45",
+    "20261125-banking-replacement-original-results.json": "2eb870cf8105b2a9bd0505de7ce58bf57d4cc581ea5675f4d13e92c671ff8c38",
+    "20261125-banking-result-feedback-results.json": "e07a6ca84f3210c839b80b69c27825c48a42a4a118fd406d55f95b39b4b214fd",
+    "20261125-common-policy-measurements.json": "f5abe8c64615eecccf160d615381d70b920a732134420bd24dfcd76557f8501d",
+    "20261125-scoped-decision-results.json": "59c5379c623679905998bb63f58bc678709634fc03171dba11f186a3113b82b1"
+  },
+  "banking_start": {
+    "additional_optional_writing_study": {
+      "by_mode": {
+        "on_demand": {
+          "assigned": 19,
+          "suffix_characters": 455
+        },
+        "preload": {
+          "assigned": 20,
+          "suffix_characters": 453
+        }
+      },
+      "counts": {
+        "assignments": 39,
+        "different_first_action_type": 1,
+        "different_text_or_normal_calls": 38,
+        "different_text_or_raw_calls": 38,
+        "endpoints_equal": 39,
+        "first_worker_responses": 39,
+        "graded": 39,
+        "identical_business_start": 39,
+        "identical_customer_opening": 39,
+        "identical_native_control": 39,
+        "rebuilt_exact_from_source": 39,
+        "unstarted": 1,
+        "user_policy_and_tools_and_settings_equal": 39
+      },
+      "first_action_types": {
+        "on_demand": {
+          "grep -> grep": 19
+        },
+        "preload": {
+          "grep -> TEXT": 1,
+          "grep -> grep": 19
+        }
+      },
+      "first_worker_endpoint": {
+        "(['openai/gpt-6-luna-20260922'], 'ICN', 'OpenAI')": 39
+      },
+      "log_set_sha256": "9e8aea8c0c50034028b14bc667f5e0d6da5d4cc8f0cb9edec62222e47fdf45a2",
+      "sources": [
+        [
+          "task_001",
+          "r_7aef376340c34a7aab3a320eb35eea0d"
+        ],
+        [
+          "task_008",
+          "r_d55907719ff14aaab8380fd4fe770af9"
+        ],
+        [
+          "task_010",
+          "r_174da10158af45cf93206ada60e87997"
+        ],
+        [
+          "task_015",
+          "r_8a83ed241a7840878dd99a3680898d94"
+        ]
+      ]
+    },
+    "cohorts": {
+      "tau-banking-policy-check-01": {
+        "by_mode": {
+          "preload": {
+            "assigned": 40,
+            "suffix_characters": 453
+          }
+        },
+        "counts": {
+          "assignments": 40,
+          "different_first_action_type": 9,
+          "different_text_or_normal_calls": 40,
+          "different_text_or_raw_calls": 40,
+          "endpoints_equal": 40,
+          "first_worker_responses": 40,
+          "graded": 40,
+          "identical_business_start": 40,
+          "identical_customer_opening": 40,
+          "identical_native_control": 40,
+          "rebuilt_exact_from_source": 40,
+          "user_policy_and_tools_and_settings_equal": 40
+        },
+        "first_action_types": {
+          "preload": {
+            "TEXT -> TEXT": 5,
+            "TEXT -> grep": 5,
+            "grep -> TEXT": 4,
+            "grep -> grep": 26
+          }
+        },
+        "first_worker_endpoint": {
+          "(['openai/gpt-6-luna-20260922'], 'ICN', 'OpenAI')": 40
+        },
+        "log_set_sha256": "1573586ec8a966ab9081f9ff8656e3b2387b2875749ac682d1afd52994003a34",
+        "sources": [
+          [
+            "task_002",
+            "r_7e8c96bfdc624791a1fcb24f8d4f79dd"
+          ],
+          [
+            "task_014",
+            "r_922a0c4ec5be4f86b51f419e00c1d8de"
+          ],
+          [
+            "task_016",
+            "r_d914c049e28c492d893e0d4e5ce2c6ae"
+          ],
+          [
+            "task_017",
+            "r_77b7490f996d462d8323a65c8d8c06bc"
+          ]
+        ]
+      },
+      "tau-banking-required-01": {
+        "by_mode": {
+          "on_demand": {
+            "assigned": 20,
+            "suffix_characters": 455
+          },
+          "preload": {
+            "assigned": 20,
+            "suffix_characters": 453
+          }
+        },
+        "counts": {
+          "assignments": 40,
+          "different_first_action_type": 2,
+          "different_text_or_normal_calls": 39,
+          "different_text_or_raw_calls": 39,
+          "endpoints_equal": 40,
+          "first_worker_responses": 40,
+          "graded": 40,
+          "identical_business_start": 40,
+          "identical_customer_opening": 40,
+          "identical_native_control": 40,
+          "rebuilt_exact_from_source": 40,
+          "user_policy_and_tools_and_settings_equal": 40
+        },
+        "first_action_types": {
+          "on_demand": {
+            "grep -> grep": 20
+          },
+          "preload": {
+            "grep -> TEXT": 2,
+            "grep -> grep": 18
+          }
+        },
+        "first_worker_endpoint": {
+          "(['openai/gpt-6-luna-20260922'], 'ICN', 'OpenAI')": 40
+        },
+        "log_set_sha256": "538dbc0c198181839122f5a5bd344423e98d7d4e7d5b0ae4683aa9ead0dbb257",
+        "sources": [
+          [
+            "task_001",
+            "r_7aef376340c34a7aab3a320eb35eea0d"
+          ],
+          [
+            "task_008",
+            "r_d55907719ff14aaab8380fd4fe770af9"
+          ],
+          [
+            "task_010",
+            "r_174da10158af45cf93206ada60e87997"
+          ],
+          [
+            "task_015",
+            "r_8a83ed241a7840878dd99a3680898d94"
+          ]
+        ]
+      },
+      "tau-banking-result-feedback-01": {
+        "by_mode": {
+          "on_demand": {
+            "assigned": 20,
+            "suffix_characters": 455
+          },
+          "preload": {
+            "assigned": 20,
+            "suffix_characters": 453
+          }
+        },
+        "counts": {
+          "assignments": 40,
+          "different_first_action_type": 1,
+          "different_text_or_normal_calls": 40,
+          "different_text_or_raw_calls": 40,
+          "endpoints_equal": 40,
+          "first_worker_responses": 40,
+          "graded": 40,
+          "identical_business_start": 40,
+          "identical_customer_opening": 40,
+          "identical_native_control": 40,
+          "rebuilt_exact_from_source": 40,
+          "user_policy_and_tools_and_settings_equal": 40
+        },
+        "first_action_types": {
+          "on_demand": {
+            "grep -> grep": 20
+          },
+          "preload": {
+            "grep -> TEXT": 1,
+            "grep -> grep": 19
+          }
+        },
+        "first_worker_endpoint": {
+          "(['openai/gpt-6-luna-20260922'], 'ICN', 'OpenAI')": 40
+        },
+        "log_set_sha256": "b7337234ef480750d6becbf575ce41439decc777034e877e51b714b395abd636",
+        "sources": [
+          [
+            "task_001",
+            "r_7aef376340c34a7aab3a320eb35eea0d"
+          ],
+          [
+            "task_008",
+            "r_d55907719ff14aaab8380fd4fe770af9"
+          ],
+          [
+            "task_010",
+            "r_174da10158af45cf93206ada60e87997"
+          ],
+          [
+            "task_015",
+            "r_8a83ed241a7840878dd99a3680898d94"
+          ]
+        ]
+      }
+    },
+    "combined": {
+      "assignments": 120,
+      "different_first_action_type": 12,
+      "different_text_or_normal_calls": 119,
+      "different_text_or_raw_calls": 119,
+      "endpoints_equal": 120,
+      "first_worker_responses": 120,
+      "graded": 120,
+      "identical_business_start": 120,
+      "identical_customer_opening": 120,
+      "identical_native_control": 120,
+      "rebuilt_exact_from_source": 120,
+      "user_policy_and_tools_and_settings_equal": 120
+    }
+  },
+  "conditional_retrieval": {
+    "conditional_empty_query": {
+      "first_lookup": 129,
+      "focused": 34,
+      "observed": 154,
+      "scheduled": 154
+    },
+    "conditional_query": {
+      "first_lookup": 136,
+      "focused": 106,
+      "observed": 154,
+      "scheduled": 154
+    },
+    "current_empty_query": {
+      "first_lookup": 0,
+      "focused": 30,
+      "observed": 153,
+      "scheduled": 154
+    },
+    "current_query": {
+      "first_lookup": 0,
+      "focused": 35,
+      "observed": 154,
+      "scheduled": 154
+    }
+  },
+  "format": "agent-memory-fixed-decision-review/v1",
+  "fresh_series_reconciliation": {
+    "duplicate_simulator_responses": 4,
+    "duplicate_worker_responses": 2,
+    "original_logs_also_copied_into_continuation": 2,
+    "quoted_simulator": {
+      "equal_response_pairs": 1479,
+      "groups_with_different_replies": 112,
+      "pairs": 5442,
+      "repeated_groups": 131
+    },
+    "quoted_worker": {
+      "equal_response_pairs": 32,
+      "groups_with_different_replies": 90,
+      "pairs": 351,
+      "repeated_groups": 107
+    },
+    "transport_errors_with_body_and_no_choices": 49,
+    "transport_errors_without_body": 1
+  },
+  "historical_baselines": {
+    "public_record": {
+      "allocation_entries": {
+        "solve/completed": 5,
+        "solve/not_started": 16
+      },
+      "final_slots": 8,
+      "graded_consultations": 5
+    },
+    "summary": {
+      "allocation_entries": {
+        "solve/completed": 5,
+        "solve/not_started": 16,
+        "write/completed": 6,
+        "write/empty": 2
+      },
+      "final_slots": 8,
+      "graded_consultations": 5
+    }
+  },
+  "input_scope": "All journals of each named cohort. The fresh continuation includes both original journals. Transport stream is constant within all repeated groups. The banking audit compares first worker inputs, recorded native controls and simulator configuration.",
+  "new_provider_requests": 0,
+  "observed_storage_inventory": {
+    "deduplicated_observed_write_events_by_phase": {
+      "post_task_write": 1638
+    },
+    "runs_with_both_preload_and_list_or_get_return": 0
+  },
+  "repeated_inputs": {
+    "tau-banking-clause-decisions-01": {
+      "worker": {
+        "group_sizes": {
+          "4": 24
+        },
+        "groups_changed_first_action_type": 10,
+        "groups_changed_reply": 20,
+        "groups_merged_by_dropping_stream": 0,
+        "groups_with_different_target_scores": 9,
+        "pairs": 144,
+        "pairs_equal_first_action_type": 111,
+        "pairs_equal_reply": 41,
+        "pairs_with_different_target_scores": 29,
+        "repeated_groups": 24,
+        "responses": 96
+      }
+    },
+    "tau-banking-scoped-decisions-01": {
+      "worker": {
+        "group_sizes": {
+          "4": 80
+        },
+        "groups_changed_first_action_type": 18,
+        "groups_changed_reply": 70,
+        "groups_merged_by_dropping_stream": 0,
+        "groups_with_different_target_scores": 5,
+        "pairs": 480,
+        "pairs_equal_first_action_type": 419,
+        "pairs_equal_reply": 81,
+        "pairs_with_different_target_scores": 17,
+        "repeated_groups": 80,
+        "responses": 320
+      }
+    },
+    "tau2-fresh-matched-01-continuation": {
+      "user_simulator": {
+        "group_sizes": {
+          "10": 4,
+          "11": 88,
+          "2": 20,
+          "3": 7,
+          "4": 2,
+          "7": 2,
+          "8": 1,
+          "9": 2
+        },
+        "groups_changed_first_action_type": 0,
+        "groups_changed_reply": 111,
+        "groups_merged_by_dropping_stream": 0,
+        "pairs": 5215,
+        "pairs_equal_first_action_type": 5215,
+        "pairs_equal_reply": 1437,
+        "repeated_groups": 126,
+        "responses": 1117
+      },
+      "worker": {
+        "group_sizes": {
+          "2": 53,
+          "3": 26,
+          "4": 15,
+          "5": 10,
+          "8": 1
+        },
+        "groups_changed_first_action_type": 0,
+        "groups_changed_reply": 90,
+        "groups_merged_by_dropping_stream": 0,
+        "pairs": 349,
+        "pairs_equal_first_action_type": 349,
+        "pairs_equal_reply": 30,
+        "repeated_groups": 105,
+        "responses": 302
+      }
+    },
+    "tau2-retail-conditional-retrieval-01": {
+      "worker": {
+        "group_sizes": {
+          "3": 1,
+          "4": 461
+        },
+        "groups_changed_first_action_type": 87,
+        "groups_changed_reply": 97,
+        "groups_merged_by_dropping_stream": 0,
+        "pairs": 2769,
+        "pairs_equal_first_action_type": 2481,
+        "pairs_equal_reply": 2364,
+        "repeated_groups": 462,
+        "responses": 1847
+      }
+    }
+  },
+  "response_signature": "Message content and ordered pairs of function name and serialized arguments. Call IDs are excluded. Only responses with status response enter the counts. Each pair is unordered within the same request hash and role.",
+  "retail_historical_no_memory": {
+    "assigned_tasks": 66,
+    "fully_graded": 57,
+    "mixed_among_fully_graded": 20
+  },
+  "retail_revisit": {
+    "calls_per_case_arm": 1,
+    "cases": 154,
+    "customers": 77,
+    "first_focused": {
+      "empty_preload": 27,
+      "preload": 129
+    },
+    "full_db": {
+      "empty_preload": {
+        "completed": 154,
+        "db_success": 154
+      },
+      "preload": {
+        "completed": 153,
+        "db_success": 153
+      }
+    }
+  },
+  "scope": "Retrospective audit of the named archived cohorts"
+}

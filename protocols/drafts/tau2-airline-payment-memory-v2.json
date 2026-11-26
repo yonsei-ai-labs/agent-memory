@@ -1,0 +1,34 @@
+{
+  "format": "agent-memory-prompt-comparison/v2",
+  "status": "draft",
+  "name": "tau2-airline-payment-memory-dev-01",
+  "baseline": "archived_first_pass",
+  "base_design_ref": {
+    "path": "protocols/drafts/tau2-two-pass-memory-forms-v1.json",
+    "sha256": "d4b06f72f4bcf5f656587e80645e042e7cf77e687cd5d1c38a20e2aff2cc373a"
+  },
+  "endpoint_ref": {
+    "path": "artifacts/pilots/20261118-two-pass-forms-endpoints.json",
+    "sha256": "9b5bd1d9898ede15030b062fa81e451875fee0adff31d3a279d974a74435a872"
+  },
+  "conditions": [
+    {
+      "id": "fact_original",
+      "representation": "fact",
+      "prompt_version": "fact-v1",
+      "prompt": "If you write, record directly observed facts and values, their scope, and any uncertainty about them."
+    },
+    {
+      "id": "fact_payment_scope",
+      "representation": "fact",
+      "prompt_version": "fact-payment-scope-v1",
+      "prompt": "If you write, record directly observed facts and values, their scope, and any uncertainty about them. For a payment decision, distinguish the customer's criterion from the transaction-specific values or permissions, and record how those were checked when the interaction shows it."
+    }
+  ],
+  "read_mode": "preload",
+  "task_sets": {"development": ["21", "23"], "evaluation": []},
+  "selection_reason": "These two previously inspected tasks involve payment choices. They illustrate a development hypothesis about using current evidence before making a payment. Both are development examples. This draft assigns no confirmation tasks.",
+  "seed_pairs": [{"repetition": 1, "writer": 0, "native_and_solver": 0}],
+  "guards": null,
+  "http_timeout_seconds": 45
+}

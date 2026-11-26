@@ -1,0 +1,90 @@
+{
+  "archive_name": "20261125-bfcl-native-memory-control.json",
+  "archive_sha256": "377385fec769cdd0e54bd3ed931e7d8430ff7c930cc418f9f7dca10b55cd5339",
+  "comparison": {
+    "candidate": {
+      "assigned": 1,
+      "graded": 1,
+      "started": 1,
+      "success_rate": 1.0,
+      "successes": 1
+    },
+    "cohort": "42ec81c098a5da63deea6dfa57ed2510a9e4cb49947692f685fa673e2bafc38a",
+    "joint_success_effort": {
+      "metrics": {},
+      "pairs": 0
+    },
+    "joint_success_members": [],
+    "jointly_graded_effort": {
+      "metrics": {},
+      "pairs": 1
+    },
+    "metric": {
+      "cluster_eligibility": "all_pairs_graded",
+      "cluster_unit": "prerequisite",
+      "definition": "The native BFCL agentic checker accepts the answer.",
+      "denominator": "graded_scripted_probes",
+      "name": "bfcl.official_answer",
+      "stage": "episode_end",
+      "unit": "probe",
+      "version": 1
+    },
+    "pairs": {
+      "assigned": 1,
+      "both_failure": 0,
+      "both_success": 0,
+      "discordance_rate": 1.0,
+      "gain": 1,
+      "jointly_graded": 1,
+      "loss": 0,
+      "missing": 0,
+      "sign_p_if_independent": null
+    },
+    "reference": {
+      "assigned": 1,
+      "graded": 1,
+      "started": 1,
+      "success_rate": 0.0,
+      "successes": 0
+    },
+    "sources": {
+      "assigned": 1,
+      "complete": 1,
+      "gain": 1,
+      "included": 1,
+      "loss": 0,
+      "sign_p_if_independent": null,
+      "tie": 0,
+      "unknown_source_pairs": 0
+    }
+  },
+  "conditions": {
+    "candidate": "read_enabled",
+    "reference": "access_control"
+  },
+  "format": "agent-memory-paired-outcomes/v1",
+  "observations": {
+    "candidate": [
+      {
+        "pointer": "/official_success/read_enabled",
+        "slot": "probe",
+        "source": "memory_prereq_0-customer-0",
+        "started": true,
+        "success": true,
+        "task": "memory_0-customer-0"
+      }
+    ],
+    "reference": [
+      {
+        "pointer": "/official_success/access_control",
+        "slot": "probe",
+        "source": "memory_prereq_0-customer-0",
+        "started": true,
+        "success": false,
+        "task": "memory_0-customer-0"
+      }
+    ]
+  },
+  "record_kind": "scripted_control",
+  "selection": {}
+}

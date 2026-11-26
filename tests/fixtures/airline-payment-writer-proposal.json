@@ -1,0 +1,10 @@
+{
+  "parent_config_sha256": "d931497141367e6217ddcb4f0998105d500377a9757715b75dce474d4b5be6c6",
+  "hypothesis": "Recording the customer's payment criterion separately from the values observed for one transaction may reduce reuse of stale payment choices.",
+  "expected_action": "Before charging, check the applicable transaction and the current values, then follow the customer's expressed criterion or clarify an unresolved choice.",
+  "writer_prompt": "If you write, record directly observed facts and their scope. For a payment choice, record the criterion the customer expressed, what transaction it applied to, and how it was checked. Mark balances and permissions as observations from that transaction to verify at use time.",
+  "evidence": [
+    {"task_id": "21", "pointer": "/messages/20/content", "quote": "use my gift card with the smallest balance"},
+    {"task_id": "23", "pointer": "/messages/25/content", "quote": "let's do three separate reservations"}
+  ]
+}

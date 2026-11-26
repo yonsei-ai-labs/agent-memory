@@ -1,11 +1,14 @@
 """Offline regressions for missing grades, blinded semantic evidence and independent review calibration."""
 
 from copy import deepcopy
+from pathlib import Path
+from tempfile import TemporaryDirectory
 import unittest
 
 from jsonschema import Draft202012Validator
 
 from agent_memory_eval.analysis.selection import allocation_exposure, worker_exposure
+from agent_memory_eval.analysis.blind_review import blinding_check, compare_sealed_reviews, export_public, public_bundle, seal_review
 from agent_memory_eval.analysis.semantic_review import RUBRIC, compare_reviews, judge_messages, review_packet, validate_reviews
 from agent_memory_eval.contracts.core import ContractError, canonical, digest, read_json
 from agent_memory_eval.contracts.validation import ROOT
@@ -96,6 +99,35 @@ class SemanticReviewTests(unittest.TestCase):
         self.assertEqual(set(report["axes"]), set(RUBRIC))
         with self.assertRaisesRegex(ContractError, "separately identified"):
             compare_reviews(self.packets, self.human, self.human)
+
+    def test_reviewer_gets_only_public_inputs_and_guesses_are_sealed_before_the_join(self):
+        bundle = public_bundle(self.packets)
+        with TemporaryDirectory() as folder:
+            dest = Path(folder) / "reviewer"
+            export_public(dest, self.packets)
+            self.assertEqual([p.name for p in dest.iterdir()], ["inputs.json"])
+            self.assertEqual(read_json((dest / "inputs.json").read_bytes()), bundle)
+            with self.assertRaises(FileExistsError):
+                export_public(dest, self.packets)
+        sealed = seal_review(bundle, self.human, {self.key: "preload"})
+        scored = blinding_check(bundle, sealed, {self.key: {"preload"}})
+        self.assertEqual((scored["guessed"], scored["accuracy"]), (1, 1))
+        self.assertEqual(blinding_check(bundle, sealed, {self.key: {"preload", "on_demand"}})["shared_conditions"], 1)
+        abstained = seal_review(bundle, self.human, {self.key: None})
+        self.assertIsNone(blinding_check(bundle, abstained, {self.key: {"preload"}})["accuracy"])
+        model = seal_review(bundle, self.model, {self.key: None})
+        self.assertEqual(compare_sealed_reviews(bundle, sealed, model)["axes"]["source_support"]["agree"], 1)
+        with self.assertRaises(ContractError):
+            compare_sealed_reviews(bundle, sealed, sealed)
+        duplicate = deepcopy(self.model)
+        duplicate["reviewer"]["id"] = "different-id"
+        with self.assertRaisesRegex(ContractError, "reuse"):
+            compare_sealed_reviews(bundle, model, seal_review(bundle, duplicate, {self.key: None}))
+        sealed["condition_guesses"][self.key] = None
+        with self.assertRaises(ContractError):
+            blinding_check(bundle, sealed, {self.key: {"preload"}})
+        with self.assertRaises(ContractError):
+            seal_review(bundle, self.human, {})
 
 
 class ExposureCoverageTests(unittest.TestCase):

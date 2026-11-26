@@ -8,12 +8,12 @@ from jsonschema import Draft202012Validator, ValidationError
 
 from agent_memory_eval.contracts.core import ContractError, MemoryPolicy, canonical, read_json
 from agent_memory_eval.contracts.execution import ExecutionLimits
-from agent_memory_eval.contracts.validation import ROOT
+from agent_memory_eval.contracts.validation import ROOT, SCHEMA_ROOT
 
 
 @lru_cache(maxsize=1)
 def _validator():
-    schema = read_json((ROOT / "schemas/writing-exploration.schema.json").read_bytes())
+    schema = read_json((SCHEMA_ROOT / "writing-exploration.schema.json").read_bytes())
     Draft202012Validator.check_schema(schema)
     return Draft202012Validator(schema)
 

@@ -433,6 +433,12 @@ def run_forms_solve(journal, *, arm, task_id, repetition, run_id, connection, pr
             from agent_memory_eval.experiments.matched_trial import bind_task_start
             task_start = bind_task_start(journal, ctx, matched_trial, control, bridge, prepared[3],
                                          policy, instruction, items)
+        elif first_pass_match is not None and "opening_source" in first_pass_match:
+            from agent_memory_eval.experiments.matched_trial import bind_task_start
+            from agent_memory_eval.runner.task_start import FORMAT as TASK_START_FORMAT
+            spec = dict(task_start_mode=TASK_START_FORMAT, source=first_pass_match["opening_source"])
+            task_start = bind_task_start(journal, ctx, spec, first_pass_match["opening_control"], bridge, prepared[3],
+                                         policy, instruction if delivery else rendered_instruction, items)
         env_options = {}
         if expected_domain == "banking_knowledge":
             from tau2.runner.build import _build_env_kwargs
