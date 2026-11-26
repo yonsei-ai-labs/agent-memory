@@ -5,14 +5,16 @@ from collections import Counter
 from copy import deepcopy
 import hashlib
 from pathlib import Path
+import shutil
 import subprocess
 import sys
 from types import SimpleNamespace
 
 from agent_memory_eval.adapters.bfcl_task_start import REVISION, open_relevance
-from agent_memory_eval.analysis.recorded_decisions import require
+from agent_memory_eval.analysis.recorded_decisions import require, sealed_bytes
 from agent_memory_eval.analysis.requests import audit_requests
 from agent_memory_eval.contracts.core import MemoryPolicy, RunContext, canonical, digest, new_id, read_json
+from agent_memory_eval.contracts.validation import ROOT
 from agent_memory_eval.memory.context import snapshot_message
 from agent_memory_eval.memory.preparation import snapshot_items
 from agent_memory_eval.memory.router import ToolRouter
@@ -21,6 +23,8 @@ from agent_memory_eval.memory.tools import memory_tools
 from agent_memory_eval.memory.writing import (REQUIRED_STORE_CONTRACT, WriterFeedback, freeze_public_experience,
                                                write_from_experience)
 from agent_memory_eval.models.local_qwen import LocalQwen
+from agent_memory_eval.policies.writer_pairs import writer_pairs
+from agent_memory_eval.recording.assets import asset_text
 from agent_memory_eval.recording.journal import BlobStore, Journal, read_experiment
 from agent_memory_eval.recording.provenance import RecordingGateway, SourceRegistry, public_assistant_message
 
@@ -197,22 +201,50 @@ def solve(journal, cfg, case, client, is_empty, *, source=None, writer=None, for
     return dict(start=start, business=business, run=run, grade=grade)
 
 
-def collect_task(root, cfg, case, client, is_empty):
-    task = case[1]["id"]
-    with Journal(root / task, cfg["name"], contract_version="1.2") as journal:
-        source = solve(journal, cfg, case, client, is_empty)
-        if source["grade"] is None:
-            return
+def collect_task(root, cfg, case, client, is_empty, *, parent=None, pairs=None):
+    category, row = case
+    task = row["id"]
+    folder = root / task
+    if parent is not None:
+        origin, checksum = parent
+        shutil.copytree(origin, folder)
+        sealed_bytes(folder / "log.jsonl", checksum)
+    with Journal(folder, cfg["name"], contract_version="1.2") as journal:
+        expected = {}
+        if parent is None:
+            source = solve(journal, cfg, case, client, is_empty)
+            if source["grade"] is None:
+                return
+            forms = cfg["forms"]
+        else:
+            # The parent journal is sealed. Compare each actual old wire before the new writer can send.
+            requests = {}
+            for e in journal.events.values():
+                if e["type"] == "model.request_started" and e["run_id"] not in requests:
+                    requests[e["run_id"]] = journal.blobs.get(e["payload"]["request_ref"])
+            source_run = task + "-source"
+            source = dict(run=source_run, business=requests[source_run], start=open_relevance(row, category,
+                dict(model=cfg["model"], revision=cfg["model_revision"], generation=cfg["generation"])))
+            forms = {}
+            for pair in pairs.values():
+                ref, new = pair["reference"], pair["candidate"]
+                wire = deepcopy(requests[f"{task}-write-{ref}"])
+                system = wire["messages"][0]
+                require(system == dict(role="system", content=cfg["writer_instruction"] + "\n" + cfg["forms"][ref]),
+                        "Archived reference did not receive its registered representation")
+                forms[new] = cfg["forms"][new]
+                system["content"] = cfg["writer_instruction"] + "\n" + forms[new]
+                expected[new] = digest(canonical(wire))
         experience = freeze_public_experience(journal, source["run"])
         writers = {}
-        for form, line in cfg["forms"].items():
+        for form, line in forms.items():
             writers[form] = write_from_experience(journal, experience, WriterFeedback("result_only"),
                 instruction=cfg["writer_instruction"] + "\n" + line,
                 policy=MemoryPolicy(True, "post_task", False, 1, read_mode="none", max_items=1),
                 client=client, model_config=dict(model=cfg["model"], seed=cfg["generation"]["seed"],
                     max_completion_tokens=cfg["generation"]["writer_tokens"]),
                 max_requests=cfg["limits"]["writer_calls"], condition_id=form, run_id=f"{task}-write-{form}",
-                completion_contract=REQUIRED_STORE_CONTRACT)
+                completion_contract=REQUIRED_STORE_CONTRACT, first_input_sha256=expected.get(form))
         if not all(w["status"] == "completed" and w["memory_stores"] == 1 for w in writers.values()):
             return
         slots = [(f, m) for f in writers for m in cfg["delivery"]]
@@ -268,6 +300,15 @@ def audit_task(root, cfg, case, is_empty):
             if experience_ref is None:
                 experience_ref = writer["experience_ref"]
             require(writer["experience_ref"] == experience_ref, "Formats received different public experiences")
+            if "representation_pairs" in cfg:
+                wire = blobs.get(starts[0]["request_ref"])
+                instruction = cfg["writer_instruction"] + "\n" + cfg["forms"][form]
+                require(writer["instruction"] == instruction and wire["messages"][0] == dict(role="system", content=instruction)
+                        and writer["completion_contract"] == REQUIRED_STORE_CONTRACT and wire["tool_choice"] == "required",
+                        "Writer changed the registered instruction or storage contract")
+                rec["writer_instruction_sha256"] = digest(instruction.encode())
+                rec["writer_request_sha256"] = starts[0]["request_ref"]["sha256"]
+                rec["writer_shared_input_sha256"] = digest(canonical(dict(wire, messages=wire["messages"][1:])))
             snapshot = end["end_snapshot_id"]
             stored = snapshot_items(blobs, state, snapshot)
             rec.update(snapshot=snapshot, items=len(stored), experience_sha256=experience_ref["sha256"])
@@ -301,6 +342,21 @@ def audit_task(root, cfg, case, is_empty):
             require(g == blobs.get(scored["official_artifact_ref"]) and g["valid"] is rec["success"], "Grade mismatch")
             rec.update(any_call=g["any_call"], undeclared=g["undeclared_functions"], missing_required=g["missing_required"])
     return dict(journal_sha256=digest((folder / "log.jsonl").read_bytes()), allocations=rows)
+
+
+def comparison_inputs(cfg, args):
+    spec = read_json(args.writer_comparison.read_bytes())
+    require(spec["format"] == "bfcl-archived-writer-comparison/v1" and spec["read_mode"] in cfg["delivery"]
+            and spec["parent_profile_sha256"] == digest(args.profile.read_bytes()), "Wrong parent or delivery mode")
+    archive = read_json(asset_text(ROOT, spec["parent_archive_ref"]).encode())
+    require(archive["registration"]["profile_sha256"] == spec["parent_profile_sha256"]
+            and read_json((args.parent_recording / "registration.json").read_bytes()) == archive["registration"]
+            and read_json((args.parent_recording / "runtime.json").read_bytes()) == archive["runtime"],
+            "Source recording differs from the pinned study")
+    clause = asset_text(ROOT, spec["writer_clause_ref"]).rstrip("\r\n")
+    conditions, pairs = writer_pairs(cfg["forms"], clause)
+    return dict(cfg, forms={c["id"]: c["prompt"] for c in conditions}, delivery=[spec["read_mode"]],
+                representation_pairs=pairs), archive
 
 
 def reuse_generations(root, client, registration):
@@ -341,9 +397,17 @@ def main():
     parser.add_argument("--model-python", type=Path)
     parser.add_argument("--checkpoint", type=Path)
     parser.add_argument("--reuse-recording", type=Path, help="Reuse each identical original local request at most once")
+    parser.add_argument("--writer-comparison", type=Path, help="Apply one registered writer change across representations")
+    parser.add_argument("--parent-recording", type=Path, help="Sealed source and reference decisions for the writer comparison")
     args = parser.parse_args()
     cfg = read_json(args.profile.read_bytes())
     cases, is_empty = load_inputs(args.checkout, cfg)
+    archive = None
+    if bool(args.writer_comparison) != bool(args.parent_recording) or (args.writer_comparison and args.reuse_recording):
+        parser.error("An archived writer comparison needs its own parent recording and fresh candidate requests")
+    if args.writer_comparison:
+        cfg, archive = comparison_inputs(cfg, args)
+        require([row["id"] for _, row in cases] == archive["registration"]["tasks"], "Changed source cohort")
     root = args.recording
     if args.phase == "run":
         if not args.model_python or not args.checkpoint or args.checkpoint.name != cfg["model_revision"]:
@@ -354,6 +418,8 @@ def main():
         root.mkdir(parents=True, exist_ok=False)
         identity = subprocess.check_output(["git", "-C", str(Path(__file__).parent), "rev-parse", "HEAD"], text=True).strip()
         reg = dict(profile_sha256=digest(args.profile.read_bytes()), implementation=identity, tasks=[c[1]["id"] for c in cases])
+        if archive:
+            reg["writer_comparison_sha256"] = digest(args.writer_comparison.read_bytes())
         if args.reuse_recording:
             reg["original_recording"] = args.reuse_recording.name
             reg["original_registration_sha256"] = digest((args.reuse_recording / "registration.json").read_bytes())
@@ -361,20 +427,43 @@ def main():
         client = LocalQwen(args.model_python, args.checkpoint, cfg["model"], cfg["generation"]["seed"],
                            stop_at_chat_end=cfg["generation"].get("stop_at_chat_end", False))
         try:
+            if archive:
+                require(client.runtime == archive["runtime"], "Candidate generation settings differ from the references")
             (root / "runtime.json").write_bytes(canonical(client.runtime) + b"\n")
             if args.reuse_recording:
                 reuse_generations(args.reuse_recording, client, reg)
             for case in cases:
-                collect_task(root, cfg, case, client, is_empty)
+                task = case[1]["id"]
+                parent = (args.parent_recording / task, archive["tasks"][task]["journal_sha256"]) if archive else None
+                collect_task(root, cfg, case, client, is_empty, parent=parent, pairs=cfg.get("representation_pairs"))
                 print("Finished", case[1]["id"], file=sys.stderr, flush=True)
         finally:
             client.close()
     reg = read_json((root / "registration.json").read_bytes())
-    require(reg["profile_sha256"] == digest(args.profile.read_bytes()) and reg["tasks"] == [r["id"] for _, r in cases],
+    require(reg["profile_sha256"] == digest(args.profile.read_bytes()) and reg["tasks"] == [r["id"] for _, r in cases]
+            and reg.get("writer_comparison_sha256") == (digest(args.writer_comparison.read_bytes()) if archive else None),
             "Protocol or allocations changed")
     tasks = {case[1]["id"]: audit_task(root, cfg, case, is_empty) for case in cases}
     report = dict(format="bfcl-local-two-pass/v1", registration=reg, runtime=read_json((root / "runtime.json").read_bytes()),
                   external_calls=0, tasks=tasks)
+    if archive:
+        from agent_memory_eval.analysis.bfcl_relevance import trace_questions, trials
+        from agent_memory_eval.analysis.paired_trials import compare_trials
+        mode, = cfg["delivery"]
+        require(report["runtime"] == archive["runtime"], "Different registered model runtime")
+        for task, data in tasks.items():
+            parent_log = args.parent_recording / task / "log.jsonl"
+            checksum = archive["tasks"][task]["journal_sha256"]
+            prefix_size = len(sealed_bytes(parent_log, checksum))
+            sealed_bytes(root / task / "log.jsonl", checksum, prefix_size)
+            writers = [r for r in data["allocations"] if r["phase"] == "write" and r["status"] != "not_started"]
+            require(len({w["writer_shared_input_sha256"] for w in writers}) == 1
+                    and len({w["snapshot"] for w in writers}) == len(writers), "Changed shared writer input or reused bank")
+        report["representation_pairs"] = cfg["representation_pairs"]
+        report["paired_outcomes"] = {form: compare_trials(trials(report, "solve", pair["reference"], mode),
+            trials(report, "solve", pair["candidate"], mode), metrics=("tokens", "requests"), test_signs=False)
+            for form, pair in cfg["representation_pairs"].items()}
+        report["evidence"] = trace_questions(report, root)
     print(canonical(report).decode())
 
 
