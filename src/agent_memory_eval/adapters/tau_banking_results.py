@@ -67,10 +67,11 @@ def grep_ranking(search, pattern, witnesses):
                 witness_ranks={k: hits.index(v) + 1 for k, v in witnesses.items() if v in hits})
 
 
-def known_customer_groups(domain, development, evaluated):
+def task_customers(domain, tasks):
+    """Registered customers named by each task's verification target or by its name and phone number."""
     customers = read_json((domain / "db.json").read_bytes())["users"]["data"]
     identities = {}
-    for task in sorted(set(development) | set(evaluated)):
+    for task in sorted(set(tasks)):
         case = read_json((domain / "tasks" / (task + ".json")).read_bytes())
         text = case["user_scenario"]["instructions"].casefold()
         found = {a["arguments"].get("user_id") for a in case["evaluation_criteria"]["actions"]
@@ -78,6 +79,11 @@ def known_customer_groups(domain, development, evaluated):
         found.update(key for key, person in customers.items()
                      if all(person[k] and person[k].casefold() in text for k in ("name", "phone_number")))
         identities[task] = found
+    return identities
+
+
+def known_customer_groups(domain, development, evaluated):
+    identities = task_customers(domain, set(development) | set(evaluated))
     return {task: dict(identified=len(identities[task]) == 1,
                        overlapping_development=sorted(d for d in development if identities[d] & identities[task]),
                        unresolved_development=sorted(d for d in development if len(identities[d]) != 1))

@@ -1,0 +1,18 @@
+{
+  "format": "agent-memory-task-room-plan/v1",
+  "studies": [
+    {"id": "banking-required-results", "result": {"path": "artifacts/analyses/20261124-banking-required-results.json", "sha256": "35de5a43a8a36f859aaf31cb8d8a956301b05ae9a4c600af82b6e5616c7a322b"}},
+    {"id": "banking-result-feedback-results", "result": {"path": "artifacts/analyses/20261125-banking-result-feedback-results.json", "sha256": "e07a6ca84f3210c839b80b69c27825c48a42a4a118fd406d55f95b39b4b214fd"}},
+    {"id": "banking-policy-cycle-validation", "result": {"path": "artifacts/analyses/20261125-banking-policy-cycle-validation.json", "sha256": "dcd441740d26be2e1b55603dc6582c1144965737b3225623a0c25731c539e524"}},
+    {"id": "banking-replacement-original-results", "result": {"path": "artifacts/analyses/20261125-banking-replacement-original-results.json", "sha256": "2eb870cf8105b2a9bd0505de7ce58bf57d4cc581ea5675f4d13e92c671ff8c38"}},
+    {"id": "banking-multitarget-forms", "result": {"path": "artifacts/analyses/20261125-banking-multitarget-forms.json", "sha256": "032538fa855e7b23a55c0bf4a683d80004500b0c4c36f9c1020e96c5d2892767"}},
+    {"id": "banking-opening-model-trials", "result": {"path": "artifacts/analyses/20261126-banking-opening-model-trials.json", "sha256": "3284e5423c2041e43a3044bb4c1b702870d7959b2fe734a9da01db42a452bb69"}}
+  ],
+  "comparisons": [
+    {"id": "result-feedback", "reference": {"study": "banking-required-results", "condition": "registered"}, "candidate": {"study": "banking-result-feedback-results", "condition": "registered"}},
+    {"id": "policy-cycle", "reference": {"study": "banking-policy-cycle-validation", "condition": "existing"}, "candidate": {"study": "banking-policy-cycle-validation", "condition": "candidate"}},
+    {"id": "replacement", "reference": {"study": "banking-replacement-original-results", "condition": "existing"}, "candidate": {"study": "banking-replacement-original-results", "condition": "candidate"}},
+    {"id": "opening-writers", "reference": {"study": "banking-opening-model-trials", "condition": "existing"}, "candidate": {"study": "banking-opening-model-trials", "condition": "candidate"}}
+  ],
+  "sizing": {"alpha": 0.05, "power": 0.8, "scenarios": [[0.5, 0.6], [0.5, 0.65], [0.5, 0.75], [0.25, 0.4]]}
+}

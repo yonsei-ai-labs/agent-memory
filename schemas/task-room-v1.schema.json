@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Where memory can still change official outcomes, and the paired comparison size it needs",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["format", "plan_sha256", "inputs", "domain", "summary", "tasks", "comparisons", "noise", "sizing"],
+  "$defs": {
+    "sha": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "count": {"type": "integer", "minimum": 0},
+    "grades": {
+      "type": "object", "additionalProperties": false, "required": ["success", "failure", "ungraded"],
+      "properties": {"success": {"$ref": "#/$defs/count"}, "failure": {"$ref": "#/$defs/count"}, "ungraded": {"$ref": "#/$defs/count"}}
+    },
+    "cells": {
+      "type": "object", "additionalProperties": false,
+      "required": ["both_success", "reference_only", "candidate_only", "both_failure"],
+      "properties": {
+        "both_success": {"$ref": "#/$defs/count"}, "reference_only": {"$ref": "#/$defs/count"},
+        "candidate_only": {"$ref": "#/$defs/count"}, "both_failure": {"$ref": "#/$defs/count"},
+        "ungraded": {"$ref": "#/$defs/count"}
+      }
+    },
+    "side": {
+      "type": "object", "additionalProperties": false, "required": ["study", "condition"],
+      "properties": {"study": {"type": "string"}, "condition": {"type": "string"}}
+    }
+  },
+  "properties": {
+    "format": {"const": "agent-memory-task-room/v1"},
+    "plan_sha256": {"$ref": "#/$defs/sha"},
+    "inputs": {"type": "array", "minItems": 1, "items": {
+      "type": "object", "additionalProperties": false, "required": ["study", "result"],
+      "properties": {"study": {"type": "string"}, "result": {
+        "type": "object", "additionalProperties": false, "required": ["path", "sha256"],
+        "properties": {"path": {"type": "string"}, "sha256": {"$ref": "#/$defs/sha"}}
+      }}
+    }},
+    "domain": {
+      "type": "object", "additionalProperties": false, "required": ["tasks", "sha256"],
+      "properties": {"tasks": {"$ref": "#/$defs/count"}, "sha256": {"$ref": "#/$defs/sha"}}
+    },
+    "summary": {
+      "type": "object", "additionalProperties": false,
+      "required": ["rows", "distinct_rows", "reused_runs", "by_room", "mixed_tasks", "mixed_units",
+                   "identified_customers", "unresolved_tasks", "units_only_in_tasks_not_run"],
+      "properties": {
+        "rows": {"$ref": "#/$defs/count"}, "distinct_rows": {"$ref": "#/$defs/count"}, "reused_runs": {"$ref": "#/$defs/count"},
+        "by_room": {
+          "type": "object", "additionalProperties": false,
+          "required": ["mixed", "floor", "ceiling", "unobserved", "not_run"],
+          "properties": {
+            "mixed": {"$ref": "#/$defs/count"}, "floor": {"$ref": "#/$defs/count"}, "ceiling": {"$ref": "#/$defs/count"},
+            "unobserved": {"$ref": "#/$defs/count"}, "not_run": {"$ref": "#/$defs/count"}
+          }
+        },
+        "mixed_tasks": {"type": "array", "items": {"type": "string"}},
+        "mixed_units": {"type": "array", "items": {"type": "string"}},
+        "identified_customers": {"$ref": "#/$defs/count"},
+        "unresolved_tasks": {"$ref": "#/$defs/count"},
+        "units_only_in_tasks_not_run": {"$ref": "#/$defs/count"}
+      }
+    },
+    "tasks": {"type": "array", "items": {
+      "type": "object", "additionalProperties": false,
+      "required": ["task", "unit", "identified", "room", "source", "solve", "studies"],
+      "properties": {
+        "task": {"type": "string"}, "unit": {"type": "string"}, "identified": {"type": "boolean"},
+        "room": {"enum": ["mixed", "floor", "ceiling", "unobserved", "not_run"]},
+        "source": {"anyOf": [{"$ref": "#/$defs/grades"}, {"type": "null"}]},
+        "solve": {"anyOf": [{"$ref": "#/$defs/grades"}, {"type": "null"}]},
+        "studies": {"type": "array", "items": {"type": "string"}}
+      }
+    }},
+    "comparisons": {"type": "array", "items": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "reference", "candidate", "by_task", "totals", "mixed_tasks", "sign_test_p",
+                   "unopened_on_demand_in_mixed_tasks"],
+      "properties": {
+        "id": {"type": "string"}, "reference": {"$ref": "#/$defs/side"}, "candidate": {"$ref": "#/$defs/side"},
+        "by_task": {"type": "object", "additionalProperties": {"$ref": "#/$defs/cells"}},
+        "totals": {"$ref": "#/$defs/cells"}, "mixed_tasks": {"$ref": "#/$defs/cells"},
+        "sign_test_p": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
+        "unopened_on_demand_in_mixed_tasks": {"$ref": "#/$defs/cells"}
+      }
+    }},
+    "noise": {
+      "type": "object", "additionalProperties": false, "required": ["definition", "pairs", "discordant", "rate"],
+      "properties": {
+        "definition": {"type": "string"}, "pairs": {"$ref": "#/$defs/count"}, "discordant": {"$ref": "#/$defs/count"},
+        "rate": {"type": ["number", "null"], "minimum": 0, "maximum": 1}
+      }
+    },
+    "sizing": {
+      "type": "object", "additionalProperties": false, "required": ["test", "alpha", "power", "scenarios"],
+      "properties": {
+        "test": {"type": "string"}, "alpha": {"type": "number"}, "power": {"type": "number"},
+        "scenarios": {"type": "array", "items": {
+          "type": "object", "additionalProperties": false,
+          "required": ["reference_rate", "candidate_rate", "discordance", "candidate_share", "discordant_pairs", "pairs"],
+          "properties": {
+            "reference_rate": {"type": "number"}, "candidate_rate": {"type": "number"},
+            "discordance": {"type": "number"}, "candidate_share": {"type": "number"},
+            "discordant_pairs": {"type": ["integer", "null"]}, "pairs": {"type": ["integer", "null"]}
+          }
+        }}
+      }
+    }
+  }
+}

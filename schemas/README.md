@@ -8,6 +8,8 @@
 
 원천 근거를 사전에 등록한 연구는 작성 전에 전체 연구의 진행·중단 판정과 원천 해시를 보관한다. [원천 판정 v1](source-opportunity-v1.schema.json)
 
+과제 여지 결과는 등록한 결과 파일의 해시로 과제마다 독립 단위, 단계별 공식 성패, 성패가 섞였는지를 집계한다. 기억을 아무도 열지 않은 짝의 성패 갈림과 정확한 부호 검정의 필요 짝 수를 함께 둔다. [과제 여지 v1](task-room-v1.schema.json) · [은행 적용 결과](../docs/reports/20261127-banking-task-room.md)
+
 은행 개설 기억을 판독할 때는 상품·계좌 유형·소유자, 주장한 결과와 공개 반환의 호출 ID를 함께 기록한다. 각 작성 배정의 모든 항목을 판독하면 고객별 비교에 한 건으로 들어간다. [판독 제출 형식 v2](opening-outcome-ratings-v2.schema.json) · [대상과 인용 검증 사례](../tests/test_opening_review_v2.py)
 
 공통 [짝비교 결과 v1](paired-outcomes-v1.schema.json)은 지표의 정의·버전·시점·단위와 집계 분모, 비교 배정, 원본 파일 해시, 조건별 관측의 JSON Pointer를 담는다. BFCL 스크립트 대조 예시로 지표 구조와 동작을 검증한다. [결과 스키마의 예시](../tests/fixtures/paired-outcomes-v1.json) · [보관 결과를 읽는 명령](../docs/development/framework-scoring-plan.md#보관-결과-짝비교-실행)

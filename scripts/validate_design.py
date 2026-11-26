@@ -56,6 +56,7 @@ def main() -> None:
         "trajectory-outcomes-v1": read_json(ROOT / "schemas" / "trajectory-outcomes-v1.schema.json"),
         "decision-cue-v1": read_json(ROOT / "schemas" / "decision-cue-v1.schema.json"),
         "source-opportunity-v1": read_json(ROOT / "schemas" / "source-opportunity-v1.schema.json"),
+        "task-room-v1": read_json(ROOT / "schemas" / "task-room-v1.schema.json"),
         "recorded-preparation": read_json(ROOT / "schemas" / "recorded-preparation.schema.json"),
         "writing-exploration": read_json(ROOT / "schemas" / "writing-exploration.schema.json"),
         "prompt-comparison-v2": read_json(ROOT / "schemas" / "prompt-comparison-v2.schema.json"),
@@ -77,6 +78,7 @@ def main() -> None:
     validators["policy-round"].validate(read_json(ROOT / "protocols/diagnostics/portable-writer-round-v1.json"))
     for result in read_json(ROOT / "artifacts/analyses/20261126-policy-evidence-summary.json").values():
         validators["policy-evidence"].validate(result)
+    validators["task-room-v1"].validate(read_json(ROOT / "artifacts/analyses/20261127-banking-task-room.json"))
     validators["execution-limits"].validate(execution_fixture["limits"])
     preparation_fixture = read_json(ROOT / "tests/fixtures/recorded-preparation-v1.json")
     for artifact in preparation_fixture["artifacts"]:

@@ -1,0 +1,1654 @@
+{
+  "format": "agent-memory-task-room/v1",
+  "plan_sha256": "4c84718612d3ac70b0ba7058d236a8adf21af7fbb49ac3964ddb9f02d8e73893",
+  "inputs": [
+    {
+      "study": "banking-required-results",
+      "result": {
+        "path": "artifacts/analyses/20261124-banking-required-results.json",
+        "sha256": "35de5a43a8a36f859aaf31cb8d8a956301b05ae9a4c600af82b6e5616c7a322b"
+      }
+    },
+    {
+      "study": "banking-result-feedback-results",
+      "result": {
+        "path": "artifacts/analyses/20261125-banking-result-feedback-results.json",
+        "sha256": "e07a6ca84f3210c839b80b69c27825c48a42a4a118fd406d55f95b39b4b214fd"
+      }
+    },
+    {
+      "study": "banking-policy-cycle-validation",
+      "result": {
+        "path": "artifacts/analyses/20261125-banking-policy-cycle-validation.json",
+        "sha256": "dcd441740d26be2e1b55603dc6582c1144965737b3225623a0c25731c539e524"
+      }
+    },
+    {
+      "study": "banking-replacement-original-results",
+      "result": {
+        "path": "artifacts/analyses/20261125-banking-replacement-original-results.json",
+        "sha256": "2eb870cf8105b2a9bd0505de7ce58bf57d4cc581ea5675f4d13e92c671ff8c38"
+      }
+    },
+    {
+      "study": "banking-multitarget-forms",
+      "result": {
+        "path": "artifacts/analyses/20261125-banking-multitarget-forms.json",
+        "sha256": "032538fa855e7b23a55c0bf4a683d80004500b0c4c36f9c1020e96c5d2892767"
+      }
+    },
+    {
+      "study": "banking-opening-model-trials",
+      "result": {
+        "path": "artifacts/analyses/20261126-banking-opening-model-trials.json",
+        "sha256": "3284e5423c2041e43a3044bb4c1b702870d7959b2fe734a9da01db42a452bb69"
+      }
+    }
+  ],
+  "domain": {
+    "tasks": 97,
+    "sha256": "af50e42d98f4b0feb0328939bf24fc1eca16e5dd70f958954b5d23ab0cc87fbb"
+  },
+  "summary": {
+    "rows": 1346,
+    "distinct_rows": 1342,
+    "reused_runs": 4,
+    "by_room": {
+      "mixed": 5,
+      "floor": 19,
+      "ceiling": 0,
+      "unobserved": 8,
+      "not_run": 65
+    },
+    "mixed_tasks": [
+      "task_001",
+      "task_002",
+      "task_008",
+      "task_014",
+      "task_015"
+    ],
+    "mixed_units": [
+      "890389b165",
+      "task:task_001",
+      "task:task_002",
+      "task:task_008"
+    ],
+    "identified_customers": 32,
+    "unresolved_tasks": 38,
+    "units_only_in_tasks_not_run": 46
+  },
+  "tasks": [
+    {
+      "task": "task_001",
+      "unit": "task:task_001",
+      "identified": false,
+      "room": "mixed",
+      "source": {
+        "success": 0,
+        "failure": 1,
+        "ungraded": 0
+      },
+      "solve": {
+        "success": 1,
+        "failure": 19,
+        "ungraded": 0
+      },
+      "studies": [
+        "banking-required-results",
+        "banking-result-feedback-results"
+      ]
+    },
+    {
+      "task": "task_002",
+      "unit": "task:task_002",
+      "identified": false,
+      "room": "mixed",
+      "source": {
+        "success": 1,
+        "failure": 0,
+        "ungraded": 0
+      },
+      "solve": {
+        "success": 3,
+        "failure": 7,
+        "ungraded": 0
+      },
+      "studies": [
+        "banking-policy-cycle-validation"
+      ]
+    },
+    {
+      "task": "task_003",
+      "unit": "task:task_003",
+      "identified": false,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_004",
+      "unit": "6680a37184",
+      "identified": true,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_005",
+      "unit": "6680a37184",
+      "identified": true,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_006",
+      "unit": "task:task_006",
+      "identified": false,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_007",
+      "unit": "task:task_007",
+      "identified": false,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_008",
+      "unit": "task:task_008",
+      "identified": false,
+      "room": "mixed",
+      "source": {
+        "success": 1,
+        "failure": 0,
+        "ungraded": 0
+      },
+      "solve": {
+        "success": 17,
+        "failure": 3,
+        "ungraded": 0
+      },
+      "studies": [
+        "banking-required-results",
+        "banking-result-feedback-results"
+      ]
+    },
+    {
+      "task": "task_010",
+      "unit": "76ad9cc60e",
+      "identified": true,
+      "room": "floor",
+      "source": {
+        "success": 0,
+        "failure": 1,
+        "ungraded": 0
+      },
+      "solve": {
+        "success": 0,
+        "failure": 20,
+        "ungraded": 0
+      },
+      "studies": [
+        "banking-required-results",
+        "banking-result-feedback-results"
+      ]
+    },
+    {
+      "task": "task_012",
+      "unit": "task:task_012",
+      "identified": false,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_014",
+      "unit": "890389b165",
+      "identified": true,
+      "room": "mixed",
+      "source": {
+        "success": 0,
+        "failure": 1,
+        "ungraded": 0
+      },
+      "solve": {
+        "success": 8,
+        "failure": 2,
+        "ungraded": 0
+      },
+      "studies": [
+        "banking-policy-cycle-validation"
+      ]
+    },
+    {
+      "task": "task_015",
+      "unit": "890389b165",
+      "identified": true,
+      "room": "mixed",
+      "source": {
+        "success": 0,
+        "failure": 1,
+        "ungraded": 0
+      },
+      "solve": {
+        "success": 9,
+        "failure": 11,
+        "ungraded": 0
+      },
+      "studies": [
+        "banking-required-results",
+        "banking-result-feedback-results"
+      ]
+    },
+    {
+      "task": "task_016",
+      "unit": "86e92f639e",
+      "identified": true,
+      "room": "floor",
+      "source": {
+        "success": 0,
+        "failure": 1,
+        "ungraded": 0
+      },
+      "solve": {
+        "success": 0,
+        "failure": 10,
+        "ungraded": 0
+      },
+      "studies": [
+        "banking-policy-cycle-validation"
+      ]
+    },
+    {
+      "task": "task_017",
+      "unit": "6680a37184",
+      "identified": true,
+      "room": "floor",
+      "source": {
+        "success": 0,
+        "failure": 1,
+        "ungraded": 0
+      },
+      "solve": {
+        "success": 0,
+        "failure": 10,
+        "ungraded": 0
+      },
+      "studies": [
+        "banking-policy-cycle-validation"
+      ]
+    },
+    {
+      "task": "task_018",
+      "unit": "890389b165",
+      "identified": true,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_019",
+      "unit": "af0581dcbf",
+      "identified": true,
+      "room": "floor",
+      "source": {
+        "success": 0,
+        "failure": 1,
+        "ungraded": 0
+      },
+      "solve": {
+        "success": 0,
+        "failure": 0,
+        "ungraded": 10
+      },
+      "studies": [
+        "banking-multitarget-forms"
+      ]
+    },
+    {
+      "task": "task_020",
+      "unit": "755bcb4d5d",
+      "identified": true,
+      "room": "floor",
+      "source": {
+        "success": 0,
+        "failure": 1,
+        "ungraded": 0
+      },
+      "solve": {
+        "success": 0,
+        "failure": 10,
+        "ungraded": 0
+      },
+      "studies": [
+        "banking-multitarget-forms"
+      ]
+    },
+    {
+      "task": "task_021",
+      "unit": "d2e5bc4124",
+      "identified": true,
+      "room": "floor",
+      "source": {
+        "success": 0,
+        "failure": 1,
+        "ungraded": 0
+      },
+      "solve": {
+        "success": 0,
+        "failure": 10,
+        "ungraded": 0
+      },
+      "studies": [
+        "banking-multitarget-forms"
+      ]
+    },
+    {
+      "task": "task_022",
+      "unit": "f9bf8de0be",
+      "identified": true,
+      "room": "floor",
+      "source": {
+        "success": 0,
+        "failure": 1,
+        "ungraded": 0
+      },
+      "solve": {
+        "success": 0,
+        "failure": 9,
+        "ungraded": 1
+      },
+      "studies": [
+        "banking-multitarget-forms"
+      ]
+    },
+    {
+      "task": "task_023",
+      "unit": "224959b99e",
+      "identified": true,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_024",
+      "unit": "task:task_024",
+      "identified": false,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_025",
+      "unit": "task:task_025",
+      "identified": false,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_026",
+      "unit": "755bcb4d5d",
+      "identified": true,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_027",
+      "unit": "755bcb4d5d",
+      "identified": true,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_028",
+      "unit": "890389b165",
+      "identified": true,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_029",
+      "unit": "890389b165",
+      "identified": true,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_031",
+      "unit": "890389b165",
+      "identified": true,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_032",
+      "unit": "task:task_032",
+      "identified": false,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_033",
+      "unit": "task:task_033",
+      "identified": false,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_034",
+      "unit": "task:task_034",
+      "identified": false,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_035",
+      "unit": "task:task_035",
+      "identified": false,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_036",
+      "unit": "890389b165",
+      "identified": true,
+      "room": "unobserved",
+      "source": {
+        "success": 0,
+        "failure": 0,
+        "ungraded": 1
+      },
+      "solve": {
+        "success": 0,
+        "failure": 0,
+        "ungraded": 10
+      },
+      "studies": [
+        "banking-replacement-original-results"
+      ]
+    },
+    {
+      "task": "task_037",
+      "unit": "890389b165",
+      "identified": true,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_038",
+      "unit": "890389b165",
+      "identified": true,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_039",
+      "unit": "01f21c9970",
+      "identified": true,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_040",
+      "unit": "01f21c9970",
+      "identified": true,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_041",
+      "unit": "a6a7d745b2",
+      "identified": true,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_043",
+      "unit": "224959b99e",
+      "identified": true,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_044",
+      "unit": "584f9c5d00",
+      "identified": true,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_045",
+      "unit": "224959b99e",
+      "identified": true,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_046",
+      "unit": "224959b99e",
+      "identified": true,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_047",
+      "unit": "c7d8e9f0a1",
+      "identified": true,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_048",
+      "unit": "e3f4a5b6c7",
+      "identified": true,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_049",
+      "unit": "h1i2j3k4l5",
+      "identified": true,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_050",
+      "unit": "584f9c5d00",
+      "identified": true,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_051",
+      "unit": "5e4c1a83b0",
+      "identified": true,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_052",
+      "unit": "5e4c1a83b0",
+      "identified": true,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_053",
+      "unit": "e9d195fe8e",
+      "identified": true,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_054",
+      "unit": "584f9c5d00",
+      "identified": true,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_055",
+      "unit": "224959b99e",
+      "identified": true,
+      "room": "floor",
+      "source": {
+        "success": 0,
+        "failure": 1,
+        "ungraded": 0
+      },
+      "solve": {
+        "success": 0,
+        "failure": 33,
+        "ungraded": 27
+      },
+      "studies": [
+        "banking-opening-model-trials"
+      ]
+    },
+    {
+      "task": "task_056",
+      "unit": "b5e8f2a1c9",
+      "identified": true,
+      "room": "floor",
+      "source": {
+        "success": 0,
+        "failure": 1,
+        "ungraded": 0
+      },
+      "solve": {
+        "success": 0,
+        "failure": 50,
+        "ungraded": 10
+      },
+      "studies": [
+        "banking-opening-model-trials"
+      ]
+    },
+    {
+      "task": "task_057",
+      "unit": "a8c4e2f7b3",
+      "identified": true,
+      "room": "unobserved",
+      "source": {
+        "success": 0,
+        "failure": 0,
+        "ungraded": 1
+      },
+      "solve": {
+        "success": 0,
+        "failure": 0,
+        "ungraded": 60
+      },
+      "studies": [
+        "banking-opening-model-trials"
+      ]
+    },
+    {
+      "task": "task_058",
+      "unit": "tb58a3c9d2",
+      "identified": true,
+      "room": "floor",
+      "source": {
+        "success": 0,
+        "failure": 1,
+        "ungraded": 0
+      },
+      "solve": {
+        "success": 0,
+        "failure": 39,
+        "ungraded": 21
+      },
+      "studies": [
+        "banking-opening-model-trials"
+      ]
+    },
+    {
+      "task": "task_059",
+      "unit": "cr59b4d8e3",
+      "identified": true,
+      "room": "floor",
+      "source": {
+        "success": 0,
+        "failure": 1,
+        "ungraded": 0
+      },
+      "solve": {
+        "success": 0,
+        "failure": 48,
+        "ungraded": 12
+      },
+      "studies": [
+        "banking-opening-model-trials"
+      ]
+    },
+    {
+      "task": "task_060",
+      "unit": "jm60a8b9c2",
+      "identified": true,
+      "room": "unobserved",
+      "source": {
+        "success": 0,
+        "failure": 0,
+        "ungraded": 1
+      },
+      "solve": {
+        "success": 0,
+        "failure": 0,
+        "ungraded": 60
+      },
+      "studies": [
+        "banking-opening-model-trials"
+      ]
+    },
+    {
+      "task": "task_061",
+      "unit": "mm61b4c8d3",
+      "identified": true,
+      "room": "unobserved",
+      "source": {
+        "success": 0,
+        "failure": 0,
+        "ungraded": 1
+      },
+      "solve": {
+        "success": 0,
+        "failure": 0,
+        "ungraded": 60
+      },
+      "studies": [
+        "banking-opening-model-trials"
+      ]
+    },
+    {
+      "task": "task_062",
+      "unit": "jc61f7a8d2",
+      "identified": true,
+      "room": "floor",
+      "source": {
+        "success": 0,
+        "failure": 1,
+        "ungraded": 0
+      },
+      "solve": {
+        "success": 0,
+        "failure": 33,
+        "ungraded": 27
+      },
+      "studies": [
+        "banking-opening-model-trials"
+      ]
+    },
+    {
+      "task": "task_063",
+      "unit": "tb58a3c9d2",
+      "identified": true,
+      "room": "floor",
+      "source": {
+        "success": 0,
+        "failure": 1,
+        "ungraded": 0
+      },
+      "solve": {
+        "success": 0,
+        "failure": 55,
+        "ungraded": 5
+      },
+      "studies": [
+        "banking-opening-model-trials"
+      ]
+    },
+    {
+      "task": "task_064",
+      "unit": "jl72b4e9d1",
+      "identified": true,
+      "room": "floor",
+      "source": {
+        "success": 0,
+        "failure": 1,
+        "ungraded": 0
+      },
+      "solve": {
+        "success": 0,
+        "failure": 40,
+        "ungraded": 20
+      },
+      "studies": [
+        "banking-opening-model-trials"
+      ]
+    },
+    {
+      "task": "task_065",
+      "unit": "rp65a7b3c4",
+      "identified": true,
+      "room": "floor",
+      "source": {
+        "success": 0,
+        "failure": 1,
+        "ungraded": 0
+      },
+      "solve": {
+        "success": 0,
+        "failure": 0,
+        "ungraded": 60
+      },
+      "studies": [
+        "banking-opening-model-trials"
+      ]
+    },
+    {
+      "task": "task_066",
+      "unit": "rp65a7b3c4",
+      "identified": true,
+      "room": "unobserved",
+      "source": {
+        "success": 0,
+        "failure": 0,
+        "ungraded": 1
+      },
+      "solve": {
+        "success": 0,
+        "failure": 0,
+        "ungraded": 60
+      },
+      "studies": [
+        "banking-opening-model-trials"
+      ]
+    },
+    {
+      "task": "task_067",
+      "unit": "rp65a7b3c4",
+      "identified": true,
+      "room": "unobserved",
+      "source": {
+        "success": 0,
+        "failure": 0,
+        "ungraded": 1
+      },
+      "solve": {
+        "success": 0,
+        "failure": 0,
+        "ungraded": 60
+      },
+      "studies": [
+        "banking-opening-model-trials"
+      ]
+    },
+    {
+      "task": "task_068",
+      "unit": "rp65a7b3c4",
+      "identified": true,
+      "room": "unobserved",
+      "source": {
+        "success": 0,
+        "failure": 0,
+        "ungraded": 1
+      },
+      "solve": {
+        "success": 0,
+        "failure": 0,
+        "ungraded": 60
+      },
+      "studies": [
+        "banking-opening-model-trials"
+      ]
+    },
+    {
+      "task": "task_069",
+      "unit": "rp65a7b3c4",
+      "identified": true,
+      "room": "unobserved",
+      "source": {
+        "success": 0,
+        "failure": 0,
+        "ungraded": 1
+      },
+      "solve": {
+        "success": 0,
+        "failure": 0,
+        "ungraded": 60
+      },
+      "studies": [
+        "banking-opening-model-trials"
+      ]
+    },
+    {
+      "task": "task_070",
+      "unit": "224959b99e",
+      "identified": true,
+      "room": "floor",
+      "source": {
+        "success": 0,
+        "failure": 1,
+        "ungraded": 0
+      },
+      "solve": {
+        "success": 0,
+        "failure": 40,
+        "ungraded": 20
+      },
+      "studies": [
+        "banking-opening-model-trials"
+      ]
+    },
+    {
+      "task": "task_071",
+      "unit": "yt71c9e4f2",
+      "identified": true,
+      "room": "floor",
+      "source": {
+        "success": 0,
+        "failure": 1,
+        "ungraded": 0
+      },
+      "solve": {
+        "success": 0,
+        "failure": 41,
+        "ungraded": 19
+      },
+      "studies": [
+        "banking-opening-model-trials"
+      ]
+    },
+    {
+      "task": "task_072",
+      "unit": "lj82d4f1a9",
+      "identified": true,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_073",
+      "unit": "kj93a7b2e1",
+      "identified": true,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_074",
+      "unit": "ar72c5d8e3",
+      "identified": true,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_075",
+      "unit": "mv93f8a7b2",
+      "identified": true,
+      "room": "floor",
+      "source": {
+        "success": 0,
+        "failure": 1,
+        "ungraded": 0
+      },
+      "solve": {
+        "success": 0,
+        "failure": 50,
+        "ungraded": 10
+      },
+      "studies": [
+        "banking-opening-model-trials"
+      ]
+    },
+    {
+      "task": "task_076",
+      "unit": "av96d4e7f1",
+      "identified": true,
+      "room": "floor",
+      "source": {
+        "success": 0,
+        "failure": 1,
+        "ungraded": 0
+      },
+      "solve": {
+        "success": 0,
+        "failure": 58,
+        "ungraded": 2
+      },
+      "studies": [
+        "banking-opening-model-trials"
+      ]
+    },
+    {
+      "task": "task_077",
+      "unit": "lj82d4f1a9",
+      "identified": true,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_078",
+      "unit": "task:task_078",
+      "identified": false,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_079",
+      "unit": "task:task_079",
+      "identified": false,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_080",
+      "unit": "task:task_080",
+      "identified": false,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_081",
+      "unit": "task:task_081",
+      "identified": false,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_082",
+      "unit": "task:task_082",
+      "identified": false,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_083",
+      "unit": "task:task_083",
+      "identified": false,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_084",
+      "unit": "task:task_084",
+      "identified": false,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_085",
+      "unit": "task:task_085",
+      "identified": false,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_086",
+      "unit": "task:task_086",
+      "identified": false,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_087",
+      "unit": "task:task_087",
+      "identified": false,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_088",
+      "unit": "task:task_088",
+      "identified": false,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_089",
+      "unit": "task:task_089",
+      "identified": false,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_090",
+      "unit": "task:task_090",
+      "identified": false,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_091",
+      "unit": "task:task_091",
+      "identified": false,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_092",
+      "unit": "task:task_092",
+      "identified": false,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_093",
+      "unit": "task:task_093",
+      "identified": false,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_094",
+      "unit": "task:task_094",
+      "identified": false,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_095",
+      "unit": "task:task_095",
+      "identified": false,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_096",
+      "unit": "task:task_096",
+      "identified": false,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_097",
+      "unit": "task:task_097",
+      "identified": false,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_098",
+      "unit": "task:task_098",
+      "identified": false,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_099",
+      "unit": "task:task_099",
+      "identified": false,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_100",
+      "unit": "task:task_100",
+      "identified": false,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_101",
+      "unit": "task:task_101",
+      "identified": false,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    },
+    {
+      "task": "task_102",
+      "unit": "task:task_102",
+      "identified": false,
+      "room": "not_run",
+      "source": null,
+      "solve": null,
+      "studies": []
+    }
+  ],
+  "comparisons": [
+    {
+      "id": "result-feedback",
+      "reference": {
+        "study": "banking-required-results",
+        "condition": "registered"
+      },
+      "candidate": {
+        "study": "banking-result-feedback-results",
+        "condition": "registered"
+      },
+      "by_task": {
+        "task_001": {
+          "both_success": 0,
+          "reference_only": 1,
+          "candidate_only": 0,
+          "both_failure": 9,
+          "ungraded": 0
+        },
+        "task_008": {
+          "both_success": 7,
+          "reference_only": 2,
+          "candidate_only": 1,
+          "both_failure": 0,
+          "ungraded": 0
+        },
+        "task_010": {
+          "both_success": 0,
+          "reference_only": 0,
+          "candidate_only": 0,
+          "both_failure": 10,
+          "ungraded": 0
+        },
+        "task_015": {
+          "both_success": 2,
+          "reference_only": 3,
+          "candidate_only": 2,
+          "both_failure": 3,
+          "ungraded": 0
+        }
+      },
+      "totals": {
+        "both_success": 9,
+        "reference_only": 6,
+        "candidate_only": 3,
+        "both_failure": 22,
+        "ungraded": 0
+      },
+      "mixed_tasks": {
+        "both_success": 9,
+        "reference_only": 6,
+        "candidate_only": 3,
+        "both_failure": 12
+      },
+      "sign_test_p": 0.5078125,
+      "unopened_on_demand_in_mixed_tasks": {
+        "both_success": 4,
+        "reference_only": 3,
+        "candidate_only": 2,
+        "both_failure": 6
+      }
+    },
+    {
+      "id": "policy-cycle",
+      "reference": {
+        "study": "banking-policy-cycle-validation",
+        "condition": "existing"
+      },
+      "candidate": {
+        "study": "banking-policy-cycle-validation",
+        "condition": "candidate"
+      },
+      "by_task": {
+        "task_002": {
+          "both_success": 0,
+          "reference_only": 2,
+          "candidate_only": 1,
+          "both_failure": 2,
+          "ungraded": 0
+        },
+        "task_014": {
+          "both_success": 3,
+          "reference_only": 2,
+          "candidate_only": 0,
+          "both_failure": 0,
+          "ungraded": 0
+        },
+        "task_016": {
+          "both_success": 0,
+          "reference_only": 0,
+          "candidate_only": 0,
+          "both_failure": 5,
+          "ungraded": 0
+        },
+        "task_017": {
+          "both_success": 0,
+          "reference_only": 0,
+          "candidate_only": 0,
+          "both_failure": 5,
+          "ungraded": 0
+        }
+      },
+      "totals": {
+        "both_success": 3,
+        "reference_only": 4,
+        "candidate_only": 1,
+        "both_failure": 12,
+        "ungraded": 0
+      },
+      "mixed_tasks": {
+        "both_success": 3,
+        "reference_only": 4,
+        "candidate_only": 1,
+        "both_failure": 2
+      },
+      "sign_test_p": 0.375,
+      "unopened_on_demand_in_mixed_tasks": {
+        "both_success": 0,
+        "reference_only": 0,
+        "candidate_only": 0,
+        "both_failure": 0
+      }
+    },
+    {
+      "id": "replacement",
+      "reference": {
+        "study": "banking-replacement-original-results",
+        "condition": "existing"
+      },
+      "candidate": {
+        "study": "banking-replacement-original-results",
+        "condition": "candidate"
+      },
+      "by_task": {
+        "task_036": {
+          "both_success": 0,
+          "reference_only": 0,
+          "candidate_only": 0,
+          "both_failure": 0,
+          "ungraded": 5
+        }
+      },
+      "totals": {
+        "both_success": 0,
+        "reference_only": 0,
+        "candidate_only": 0,
+        "both_failure": 0,
+        "ungraded": 5
+      },
+      "mixed_tasks": {
+        "both_success": 0,
+        "reference_only": 0,
+        "candidate_only": 0,
+        "both_failure": 0
+      },
+      "sign_test_p": null,
+      "unopened_on_demand_in_mixed_tasks": {
+        "both_success": 0,
+        "reference_only": 0,
+        "candidate_only": 0,
+        "both_failure": 0
+      }
+    },
+    {
+      "id": "opening-writers",
+      "reference": {
+        "study": "banking-opening-model-trials",
+        "condition": "existing"
+      },
+      "candidate": {
+        "study": "banking-opening-model-trials",
+        "condition": "candidate"
+      },
+      "by_task": {
+        "task_055": {
+          "both_success": 0,
+          "reference_only": 0,
+          "candidate_only": 0,
+          "both_failure": 12,
+          "ungraded": 18
+        },
+        "task_056": {
+          "both_success": 0,
+          "reference_only": 0,
+          "candidate_only": 0,
+          "both_failure": 21,
+          "ungraded": 9
+        },
+        "task_057": {
+          "both_success": 0,
+          "reference_only": 0,
+          "candidate_only": 0,
+          "both_failure": 0,
+          "ungraded": 30
+        },
+        "task_058": {
+          "both_success": 0,
+          "reference_only": 0,
+          "candidate_only": 0,
+          "both_failure": 19,
+          "ungraded": 11
+        },
+        "task_059": {
+          "both_success": 0,
+          "reference_only": 0,
+          "candidate_only": 0,
+          "both_failure": 20,
+          "ungraded": 10
+        },
+        "task_060": {
+          "both_success": 0,
+          "reference_only": 0,
+          "candidate_only": 0,
+          "both_failure": 0,
+          "ungraded": 30
+        },
+        "task_061": {
+          "both_success": 0,
+          "reference_only": 0,
+          "candidate_only": 0,
+          "both_failure": 0,
+          "ungraded": 30
+        },
+        "task_062": {
+          "both_success": 0,
+          "reference_only": 0,
+          "candidate_only": 0,
+          "both_failure": 11,
+          "ungraded": 19
+        },
+        "task_063": {
+          "both_success": 0,
+          "reference_only": 0,
+          "candidate_only": 0,
+          "both_failure": 25,
+          "ungraded": 5
+        },
+        "task_064": {
+          "both_success": 0,
+          "reference_only": 0,
+          "candidate_only": 0,
+          "both_failure": 20,
+          "ungraded": 10
+        },
+        "task_065": {
+          "both_success": 0,
+          "reference_only": 0,
+          "candidate_only": 0,
+          "both_failure": 0,
+          "ungraded": 30
+        },
+        "task_066": {
+          "both_success": 0,
+          "reference_only": 0,
+          "candidate_only": 0,
+          "both_failure": 0,
+          "ungraded": 30
+        },
+        "task_067": {
+          "both_success": 0,
+          "reference_only": 0,
+          "candidate_only": 0,
+          "both_failure": 0,
+          "ungraded": 30
+        },
+        "task_068": {
+          "both_success": 0,
+          "reference_only": 0,
+          "candidate_only": 0,
+          "both_failure": 0,
+          "ungraded": 30
+        },
+        "task_069": {
+          "both_success": 0,
+          "reference_only": 0,
+          "candidate_only": 0,
+          "both_failure": 0,
+          "ungraded": 30
+        },
+        "task_070": {
+          "both_success": 0,
+          "reference_only": 0,
+          "candidate_only": 0,
+          "both_failure": 15,
+          "ungraded": 15
+        },
+        "task_071": {
+          "both_success": 0,
+          "reference_only": 0,
+          "candidate_only": 0,
+          "both_failure": 19,
+          "ungraded": 11
+        },
+        "task_075": {
+          "both_success": 0,
+          "reference_only": 0,
+          "candidate_only": 0,
+          "both_failure": 20,
+          "ungraded": 10
+        },
+        "task_076": {
+          "both_success": 0,
+          "reference_only": 0,
+          "candidate_only": 0,
+          "both_failure": 28,
+          "ungraded": 2
+        }
+      },
+      "totals": {
+        "both_success": 0,
+        "reference_only": 0,
+        "candidate_only": 0,
+        "both_failure": 210,
+        "ungraded": 360
+      },
+      "mixed_tasks": {
+        "both_success": 0,
+        "reference_only": 0,
+        "candidate_only": 0,
+        "both_failure": 0
+      },
+      "sign_test_p": null,
+      "unopened_on_demand_in_mixed_tasks": {
+        "both_success": 0,
+        "reference_only": 0,
+        "candidate_only": 0,
+        "both_failure": 0
+      }
+    }
+  ],
+  "noise": {
+    "definition": "Pairs in mixed tasks where neither on-demand reader opened its memory",
+    "pairs": 15,
+    "discordant": 5,
+    "rate": 0.3333333333333333
+  },
+  "sizing": {
+    "test": "exact two-sided sign test on discordant pairs; pairs assumed independent",
+    "alpha": 0.05,
+    "power": 0.8,
+    "scenarios": [
+      {
+        "reference_rate": 0.5,
+        "candidate_rate": 0.6,
+        "discordance": 0.5,
+        "candidate_share": 0.6,
+        "discordant_pairs": 199,
+        "pairs": 398
+      },
+      {
+        "reference_rate": 0.5,
+        "candidate_rate": 0.65,
+        "discordance": 0.5,
+        "candidate_share": 0.65,
+        "discordant_pairs": 90,
+        "pairs": 180
+      },
+      {
+        "reference_rate": 0.5,
+        "candidate_rate": 0.75,
+        "discordance": 0.5,
+        "candidate_share": 0.75,
+        "discordant_pairs": 30,
+        "pairs": 60
+      },
+      {
+        "reference_rate": 0.25,
+        "candidate_rate": 0.4,
+        "discordance": 0.45,
+        "candidate_share": 0.6666666666666666,
+        "discordant_pairs": 72,
+        "pairs": 160
+      }
+    ]
+  }
+}
