@@ -15,7 +15,7 @@ from agent_memory_eval.analysis.requests import audit_requests
 from agent_memory_eval.contracts.core import canonical, digest, read_json
 from agent_memory_eval.models.local_qwen import LocalQwen, required_prefix
 from agent_memory_eval.recording.journal import Journal
-from agent_memory_eval.runner.bfcl_relevance import load_inputs, read_tools, solve
+from agent_memory_eval.runner.bfcl_relevance import load_inputs, read_choice, read_tools, solve
 
 
 def expected_runtime(parent, spec):
@@ -101,9 +101,7 @@ def inspect_reader(record, expected_snapshot, *, constrain_names=False, advertis
         gen = raw["local_generation"]
         rendered = gen["rendered_input"]
         definitions = rendered.split("<tools>\n", 1)[1].split("\n</tools>", 1)[0].splitlines()
-        choice = None
-        if constrain_names and turn < 2:
-            choice = dict(type="function", function=dict(name=("memory_list", "memory_get")[turn]))
+        choice = read_choice(constrain_names, turn)
         require(finish["status"] == "response" and finish["cost_usd"] == 0 and raw["provider"] == "local-transformers"
                 and [read_json(line.encode()) for line in definitions] == wire["tools"]
                 and wire["tools"][-2:] == read_tools(dict(advertise_list_limit=advertise_list_limit))

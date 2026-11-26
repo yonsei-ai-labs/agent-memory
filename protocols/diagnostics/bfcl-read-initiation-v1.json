@@ -1,0 +1,19 @@
+{
+  "name": "bfcl-read-initiation-01",
+  "parent_profile_sha256": "7b75b0c760a6652471e8965244e16749d2e2fd8d233639f25563b0f7ffaf3bbb",
+  "parent_archive_sha256": "588bc155fdf34743c24c79aab14a4637187c7a5054e59c1e1ef634ec3f85f144",
+  "neutral_v2_audit_sha256": "5f83ec897849f4dbd6c489196a3b51338daf84da02801df0f58403d7077fb331",
+  "routing_v2_audit_sha256": "a5832b9840a3b35feeab2a19af6f22e6be04ff0c4d6827279e228c1a4e3d41e8",
+  "selection": "All eight original public questions, existing frozen fact note per question, same repaired tool schemas, order, tokenizer stops and greedy model. Reuse the archived repaired voluntary condition for the fourth cell. Do not change the user message or business tools. No new source, writer or memory-free session.",
+  "parent_form": "fact",
+  "advertise_list_limit": true,
+  "stop_token_ids": [248044, 248046],
+  "arms": {
+    "availability": {"control_label": "fact-availability", "constrain_read_names": false, "append_to_neutral_notice": "One saved note from your previous attempt at this exact request is available in this session."},
+    "list_only": {"control_label": "fact-list-only", "constrain_read_names": ["memory_list"], "append_to_neutral_notice": ""},
+    "availability_list_only": {"control_label": "fact-availability-list-only", "constrain_read_names": ["memory_list"], "append_to_neutral_notice": "One saved note from your previous attempt at this exact request is available in this session."}
+  },
+  "limits": {"allocated": 8, "worker_calls_per_question": 3, "new_external_calls": 0, "new_writers": 0, "second_pass_no_memory": 0},
+  "endpoint": "Count questions with a free first list call in the unassisted arms, a free get call after a successful list return in every arm, and a verified note body in the submitted business-decision input. Record list/get errors, timeouts, missing decisions, and unchanged or changed business-call presence. Report all eight assigned questions separately from successful lists. Do not count constrained calls as voluntary.",
+  "interpretation": "A factual availability notice changes the knowledge that an exact-case note exists. A constrained first list also changes the action history, supplies a specific title and opaque ID, and removes a search step. Its effect cannot be assigned to any one of those components. These are post-hoc mechanism diagnostics; do not infer the model's private motive, the effect of note form, or correctness of business arguments."
+}

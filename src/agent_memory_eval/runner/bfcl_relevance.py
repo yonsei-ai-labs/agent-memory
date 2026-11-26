@@ -31,6 +31,18 @@ def read_tools(cfg):
     return memory_tools(["memory_list", "memory_get"], page_size=PAGE_SIZE if cfg.get("advertise_list_limit") else None)
 
 
+def read_choice(setting, turn):
+    """Historical booleans constrain zero or two calls. A prefix can release the reader after listing."""
+    sequence = ("memory_list", "memory_get")
+    if isinstance(setting, bool):
+        names = sequence if setting else ()
+    else:
+        require(isinstance(setting, (list, tuple)) and tuple(setting) == sequence[:len(setting)],
+                "A read control may only constrain a prefix of list, get")
+        names = setting
+    return dict(type="function", function=dict(name=names[turn])) if turn < len(names) else None
+
+
 def load_inputs(checkout, cfg):
     require(subprocess.check_output(["git", "-C", checkout, "rev-parse", "HEAD"], text=True).strip()
             == cfg["revision"] == REVISION, "Wrong BFCL revision")
@@ -133,10 +145,8 @@ def solve(journal, cfg, case, client, is_empty, *, source=None, writer=None, for
     grade, reason = None, "private_read_limit"
     require(not read_control or mode == "on_demand", "A constrained read control needs the retrieval interface")
     for turn in range(limit):
-        turn_template, choice = template, None
-        if read_control and turn < 2:
-            choice = dict(type="function", function=dict(name=("memory_list", "memory_get")[turn]))
-            turn_template = registry.template(dict(wire, tool_choice=choice), roles=("worker",))
+        choice = read_choice(read_control, turn)
+        turn_template = registry.template(dict(wire, tool_choice=choice), roles=("worker",)) if choice else template
         def check(actual):
             require(actual.get("tool_choice") == choice, "Unexpected decoder constraint")
             if turn == 0:

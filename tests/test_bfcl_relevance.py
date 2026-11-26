@@ -5,7 +5,7 @@ from copy import deepcopy
 
 from agent_memory_eval.analysis.bfcl_relevance import corruptions, trials
 from agent_memory_eval.models.local_qwen import LocalQwen, public_reply, required_prefix, stop_ids
-from agent_memory_eval.runner.bfcl_relevance import grade_reply, normalized_first, read_tools
+from agent_memory_eval.runner.bfcl_relevance import grade_reply, normalized_first, read_choice, read_tools
 from agent_memory_eval.memory.tools import memory_tools
 from agent_memory_eval.contracts.core import ContractError
 
@@ -16,6 +16,17 @@ CALL = "<tool_call>\n<function=weather>\n<parameter=city>\nSeoul\n</parameter>\n
 
 
 class QwenReplyTests(unittest.TestCase):
+    def test_list_only_leaves_get_and_the_business_action_unconstrained(self):
+        setting = ["memory_list"]
+        self.assertEqual(read_choice(setting, 0), read_choice(True, 0))
+        self.assertIsNone(read_choice(setting, 1))
+        self.assertIsNone(read_choice(setting, 2))
+        self.assertEqual(read_choice(True, 1)["function"]["name"], "memory_get")
+        self.assertIsNone(read_choice(False, 0))
+        for bad in (["memory_get"], ["memory_get", "memory_list"], "memory_list"):
+            with self.subTest(bad=bad), self.assertRaises(ContractError):
+                read_choice(bad, 0)
+
     def test_read_interface_advertises_actual_bound_and_stops_at_chat_end(self):
         old = read_tools({})
         limit = lambda tools: tools[0]["function"]["parameters"]["properties"]["limit"]
