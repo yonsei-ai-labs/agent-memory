@@ -1,0 +1,99 @@
+{
+  "format": "agent-memory-task-room-review/v1",
+  "report_sha256": "6a39182d4f4a07579ed028508f94c855baed41465281342f1df02940c11601c1",
+  "plan_sha256": "4c84718612d3ac70b0ba7058d236a8adf21af7fbb49ac3964ddb9f02d8e73893",
+  "domain_sha256": "af50e42d98f4b0feb0328939bf24fc1eca16e5dd70f958954b5d23ab0cc87fbb",
+  "unused": {
+    "tasks": 65,
+    "identified_new_customers": 11,
+    "unresolved_tasks": 35
+  },
+  "unopened": {
+    "all_graded": {
+      "pairs": 20,
+      "discordant": 5
+    },
+    "outcome_selected_mixed": {
+      "pairs": 15,
+      "discordant": 5
+    }
+  },
+  "comparisons": [
+    {
+      "id": "result-feedback",
+      "assigned": 40,
+      "graded": 40,
+      "allocation_sign_p": 0.5078125,
+      "observed_units": 4,
+      "positive_units": 0,
+      "negative_units": 3,
+      "tied_units": 1,
+      "unit_sign_p": 0.25
+    },
+    {
+      "id": "policy-cycle",
+      "assigned": 20,
+      "graded": 20,
+      "allocation_sign_p": 0.375,
+      "observed_units": 4,
+      "positive_units": 0,
+      "negative_units": 2,
+      "tied_units": 2,
+      "unit_sign_p": 0.5
+    },
+    {
+      "id": "replacement",
+      "assigned": 5,
+      "graded": 0,
+      "allocation_sign_p": null,
+      "observed_units": 0,
+      "positive_units": 0,
+      "negative_units": 0,
+      "tied_units": 0,
+      "unit_sign_p": null
+    },
+    {
+      "id": "opening-writers",
+      "assigned": 570,
+      "graded": 210,
+      "allocation_sign_p": null,
+      "observed_units": 9,
+      "positive_units": 0,
+      "negative_units": 0,
+      "tied_units": 9,
+      "unit_sign_p": null
+    }
+  ],
+  "alpha": 0.05,
+  "target_power": 0.8,
+  "scenarios": [
+    {
+      "reference_rate": 0.5,
+      "candidate_rate": 0.6,
+      "discordance": 0.5,
+      "pairs": 408,
+      "achieved_power": 0.8002055299858517
+    },
+    {
+      "reference_rate": 0.5,
+      "candidate_rate": 0.65,
+      "discordance": 0.5,
+      "pairs": 183,
+      "achieved_power": 0.8000255147821261
+    },
+    {
+      "reference_rate": 0.5,
+      "candidate_rate": 0.75,
+      "discordance": 0.5,
+      "pairs": 67,
+      "achieved_power": 0.8027752707153544
+    },
+    {
+      "reference_rate": 0.25,
+      "candidate_rate": 0.4,
+      "discordance": 0.45,
+      "pairs": 166,
+      "achieved_power": 0.802085100473947
+    }
+  ]
+}

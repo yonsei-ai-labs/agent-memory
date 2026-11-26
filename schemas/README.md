@@ -8,7 +8,7 @@
 
 원천 근거를 사전에 등록한 연구는 작성 전에 전체 연구의 진행·중단 판정과 원천 해시를 보관한다. [원천 판정 v1](source-opportunity-v1.schema.json)
 
-과제 여지 결과는 등록한 결과 파일의 해시로 과제마다 독립 단위, 단계별 공식 성패, 성패가 섞였는지를 집계한다. 기억을 아무도 열지 않은 짝의 성패 갈림과 정확한 부호 검정의 필요 짝 수를 함께 둔다. [과제 여지 v1](task-room-v1.schema.json) · [은행 적용 결과](../docs/reports/20261127-banking-task-room.md)
+과제별 표는 등록한 결과 파일에서 단계별 공식 성패를 집계한다. 검산표는 확인된 고객과 신원 미확정 과제, 전체 미조회 짝과 결과를 본 뒤 고른 부분집합을 구분한다. 지정된 총 짝 수의 검정력은 실제로 성패가 갈릴 짝 수의 변동을 포함해 계산한다. [과제별 원표](task-room-v1.schema.json) · [검산표](task-room-review-v1.schema.json) · [은행 적용 결과](../docs/reports/20261127-banking-task-room.md)
 
 은행 개설 기억을 판독할 때는 상품·계좌 유형·소유자, 주장한 결과와 공개 반환의 호출 ID를 함께 기록한다. 각 작성 배정의 모든 항목을 판독하면 고객별 비교에 한 건으로 들어간다. [판독 제출 형식 v2](opening-outcome-ratings-v2.schema.json) · [대상과 인용 검증 사례](../tests/test_opening_review_v2.py)
 

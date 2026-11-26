@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Reviewed population counts and fixed-pair power for a published task-room result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["format", "report_sha256", "plan_sha256", "domain_sha256", "unused", "unopened", "comparisons", "alpha", "target_power", "scenarios"],
+  "$defs": {
+    "hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "count": {"type": "integer", "minimum": 0},
+    "p": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
+    "probability": {"type": "number", "exclusiveMinimum": 0, "exclusiveMaximum": 1},
+    "unopened": {
+      "type": "object", "additionalProperties": false, "required": ["pairs", "discordant"],
+      "properties": {"pairs": {"$ref": "#/$defs/count"}, "discordant": {"$ref": "#/$defs/count"}}
+    }
+  },
+  "properties": {
+    "format": {"const": "agent-memory-task-room-review/v1"},
+    "report_sha256": {"$ref": "#/$defs/hash"},
+    "plan_sha256": {"$ref": "#/$defs/hash"},
+    "domain_sha256": {"$ref": "#/$defs/hash"},
+    "unused": {
+      "type": "object", "additionalProperties": false, "required": ["tasks", "identified_new_customers", "unresolved_tasks"],
+      "properties": {"tasks": {"$ref": "#/$defs/count"}, "identified_new_customers": {"$ref": "#/$defs/count"}, "unresolved_tasks": {"$ref": "#/$defs/count"}}
+    },
+    "unopened": {
+      "type": "object", "additionalProperties": false, "required": ["all_graded", "outcome_selected_mixed"],
+      "properties": {"all_graded": {"$ref": "#/$defs/unopened"}, "outcome_selected_mixed": {"$ref": "#/$defs/unopened"}}
+    },
+    "comparisons": {"type": "array", "items": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "assigned", "graded", "allocation_sign_p", "observed_units", "positive_units", "negative_units", "tied_units", "unit_sign_p"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "assigned": {"$ref": "#/$defs/count"}, "graded": {"$ref": "#/$defs/count"},
+        "allocation_sign_p": {"$ref": "#/$defs/p"}, "observed_units": {"$ref": "#/$defs/count"},
+        "positive_units": {"$ref": "#/$defs/count"}, "negative_units": {"$ref": "#/$defs/count"},
+        "tied_units": {"$ref": "#/$defs/count"}, "unit_sign_p": {"$ref": "#/$defs/p"}
+      }
+    }},
+    "alpha": {"$ref": "#/$defs/probability"}, "target_power": {"$ref": "#/$defs/probability"},
+    "scenarios": {"type": "array", "items": {
+      "type": "object", "additionalProperties": false, "required": ["reference_rate", "candidate_rate", "discordance", "pairs", "achieved_power"],
+      "properties": {
+        "reference_rate": {"$ref": "#/$defs/probability"}, "candidate_rate": {"$ref": "#/$defs/probability"},
+        "discordance": {"$ref": "#/$defs/probability"}, "pairs": {"type": ["integer", "null"], "minimum": 1},
+        "achieved_power": {"$ref": "#/$defs/p"}
+      }
+    }}
+  }
+}

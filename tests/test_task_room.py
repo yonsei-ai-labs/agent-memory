@@ -127,6 +127,34 @@ class TaskRoomTest(unittest.TestCase):
         self.assertEqual((case["discordance"], case["candidate_share"]), (0.5, 0.75))
         self.assertEqual(case["pairs"], 2 * case["discordant_pairs"])
 
+    def test_fixed_enrolment_integrates_over_discordant_counts(self):
+        result = room.fixed_pairs(0.5, 0.75, alpha=0.05, target=0.8, limit=67)
+        self.assertEqual(result["pairs"], 67)
+        self.assertAlmostEqual(result["achieved_power"], 0.802775, places=6)
+        self.assertIsNone(room.fixed_pairs(0.5, 0.75, 0.05, 0.8, limit=66)["pairs"])
+        self.assertEqual(room.fixed_pairs(0.5, 0.25, 0.05, 0.8, limit=67)["pairs"], 67)
+
+    def test_review_keeps_floor_pairs_and_verifies_the_archived_domain(self):
+        for arm in self.keyed["trials"].values():
+            arm[1].update(arm="fact__on_demand", read_calls=0)
+        plan = self.plan()
+        original = room.task_room(self.root, plan, self.domain)
+        archive = self.root / "room.json"
+        archive.write_text(json.dumps(original))
+        audit = room.reviewed_counts(self.root, plan, self.domain, archive)
+        self.assertEqual(
+            audit["unopened"],
+            dict(all_graded=dict(pairs=2, discordant=1), outcome_selected_mixed=dict(pairs=1, discordant=1)),
+        )
+        self.assertEqual(audit["unused"], dict(tasks=1, identified_new_customers=1, unresolved_tasks=0))
+        self.assertEqual(audit["comparisons"][0]["observed_units"], 1)
+        self.assertEqual(audit["comparisons"][0]["graded"], 2)
+        self.assertEqual(audit["report_sha256"], digest(archive.read_bytes()))
+        other = self.domain / "tasks/t5.json"
+        other.write_bytes((self.domain / "tasks/t3.json").read_bytes())
+        with self.assertRaisesRegex(ContractError, "domain changed"):
+            room.reviewed_counts(self.root, plan, self.domain, archive)
+
 
 if __name__ == "__main__":
     unittest.main()
