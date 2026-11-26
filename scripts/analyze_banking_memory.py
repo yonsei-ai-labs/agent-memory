@@ -280,7 +280,7 @@ def summarize(sources, writers, trials):
 def feedback_contrasts(current, previous):
     """Pair the two writer policies within task, form and delivery; keep missing grades in the denominator."""
     def by_key(rows):
-        indexed = {(r["task"], r["arm"]): r for r in rows}
+        indexed = {(r["task"], r["arm"], r.get("writer_draw", 1), r.get("reader_repeat", 1)): r for r in rows}
         require(len(indexed) == len(rows), "Duplicate feedback comparison allocation")
         return indexed
     old, new = by_key(previous), by_key(current)

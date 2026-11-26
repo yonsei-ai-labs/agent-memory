@@ -23,6 +23,32 @@ def _object(value):
     return value if isinstance(value, dict) else {}
 
 
+def account_opening_population(tasks):
+    return {task.id for task in tasks if task.evaluation_criteria
+            and task.evaluation_criteria.reward_basis == ["DB"]
+            and any(a.requestor == "assistant" and a.name == DISPATCH and a.arguments.get("agent_tool_name") == OPEN
+                    for a in (task.evaluation_criteria.actions or []))}
+
+
+def initial_record_audit(domain, native, task_ids):
+    """Some raw tasks repeat default DB rows using fields the pinned native loader ignores."""
+    base = json.loads((domain / "db.json").read_bytes())
+    evidence = {}
+    for tid in task_ids:
+        raw = json.loads((domain / "tasks" / (tid + ".json")).read_bytes())
+        initial = (raw.get("initial_state") or {}).get("initialization_data") or {}
+        if not initial:
+            continue
+        state = native[tid].initial_state.initialization_data
+        require(state.agent_data is None and state.user_data is None, "Native initialization changed")
+        matched = {table: sum(base[table]["data"].get(key) == row for key, row in records.items())
+                   for table, records in initial.items()}
+        require(all(matched[t] == len(rows) for t, rows in initial.items()),
+                "Native loader discarded a non-default initial DB record")
+        evidence[tid] = dict(identical_default_rows=matched, raw_sha256=digest(canonical(initial)))
+    return evidence
+
+
 def target_accounts(task):
     result = []
     for action in task.evaluation_criteria.actions:

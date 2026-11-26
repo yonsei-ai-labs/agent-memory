@@ -31,7 +31,12 @@ def official_trial(result, policy, index, row, effort=None):
     if effort is None:
         effort = row.get("effort") or {}
     key = policy.replace("~", "~0").replace("/", "~1")
-    return Trial(row["task"], row["arm"], source.get("run"), status not in unstarted, success, effort,
+    slot = row["arm"]
+    if "writer_draw" in row or "reader_repeat" in row:
+        draw, repeat = row.get("writer_draw"), row.get("reader_repeat")
+        require(all(type(n) is int and n >= 1 for n in (draw, repeat)), "Incomplete repetition identity")
+        slot = f"{slot}/writer-{draw}/reader-{repeat}"
+    return Trial(row["task"], slot, source.get("run"), status not in unstarted, success, effort,
                  metric=BANKING_SUCCESS, cohort=result["validation_registration"], evidence_pointer=f"/trials/{key}/{index}")
 
 

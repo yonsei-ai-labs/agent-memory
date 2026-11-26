@@ -16,6 +16,7 @@ from agent_memory_eval.contracts.execution import ExecutionLimits
 from agent_memory_eval.contracts.validation import ROOT
 from agent_memory_eval.experiments.clause_contrast import clause_variants, next_action, preload_at_decision
 from agent_memory_eval.experiments.forms_write import read_form_bank
+from agent_memory_eval.experiments.paired_repetitions import PairedRepetitions
 from agent_memory_eval.memory.writing import writer_template
 from agent_memory_eval.recording.assets import asset_text, publish_json
 from agent_memory_eval.recording.journal import Journal, safe_path
@@ -479,6 +480,8 @@ def run_paired_validation(workspace, phase, spec, proposal, covered, cfg, conn, 
     """Share one untouched first pass between registered writers, then run their full consultations."""
     require(phase in {"sources", "validation"} and spec["validation"]["writer_policies"] == ["existing", "candidate"],
             "Unknown paired validation phase or writer assignment")
+    repeats = PairedRepetitions.from_spec(spec)
+    stages = repeats.stages()
     source_root = workspace / "runs" / spec["source_study"]
     for case in cases:
         case["reader_modes"] = ["preload"]
@@ -513,13 +516,11 @@ def run_paired_validation(workspace, phase, spec, proposal, covered, cfg, conn, 
                     "Changed first-pass shard",
                 )
                 source = bank.matched.source_from(folder, tid)
-            for policy in spec["validation"]["writer_policies"]:
+            for _, cell in repeats.writer_cells(case, spec["validation"]["writer_policies"]):
                 instruction = proposal[
-                    "candidate_instruction" if policy == "candidate" else "base_instruction"
+                    "candidate_instruction" if cell["writer_policy"] == "candidate" else "base_instruction"
                 ]
-                cell = dict(
-                    case, task=f"{tid}__{policy}", writer_policy=policy, writer_instruction=instruction
-                )
+                cell["writer_instruction"] = instruction
                 if source is None:
                     cell.update(scheduled_stages=[], missing="first_pass_ungraded_or_unstarted")
                 else:
@@ -536,11 +537,12 @@ def run_paired_validation(workspace, phase, spec, proposal, covered, cfg, conn, 
                 paired.append(cell)
                 task_map[cell["task"]] = tasks[tid]
         cases, tasks = paired, task_map
-        cfg.update(name=spec["validation_study"], stages=["write", "solve"])
-        schedule = {
-            r["task"]: {stage: bank.matched.jobs_for(r, stage) for stage in cfg["stages"]} for r in cases
-        }
-        counts = {s: sum(len(row[s]) for row in schedule.values()) for s in cfg["stages"]}
+        cfg.update(name=spec["validation_study"], stages=[name for name, _, _ in stages])
+        if repeats.readers_per_bank > 1:
+            cfg["stage_kinds"] = {name: operation for name, operation, _ in stages}
+        schedule = {r["task"]: {name: bank.matched.jobs_for(r, kind) for name, kind, _ in stages} for r in cases}
+        counts = {operation: sum(len(row[name]) for row in schedule.values() for name, kind, _ in stages
+                                 if kind == operation) for operation in ("write", "solve")}
         require(all(counts[s] == spec["validation"][s] for s in counts), "Validation allocation changed")
         record = dict(
             **common,
@@ -573,7 +575,10 @@ def registered_pairs(workspace, profile, mode):
     from agent_memory_eval.policies.writer_pairs import writer_pairs
 
     spec = read(ROOT / profile)
-    require(spec["format"] == "banking-registered-writer-pairs/v1" and spec["adapter"] == "account_opening"
+    census = spec["format"] == "banking-registered-writer-pairs/v2"
+    repeats = PairedRepetitions.from_spec(spec)
+    require(census == ("repetitions" in spec), "The cohort protocol must register its repetition axes")
+    require((census or spec["format"] == "banking-registered-writer-pairs/v1") and spec["adapter"] == "account_opening"
             and mode in {"preflight", "sources", "validation"} and spec["reader"] == "preload"
             and spec["feedback"] == "result_only", "Unknown paired consultation protocol")
     require(spec["banking_profile"]["path"] == bank.PROFILE, "Different banking base")
@@ -596,12 +601,16 @@ def registered_pairs(workspace, profile, mode):
     cfg = bank.required_design(base, strict)
     endpoints = read_json(asset_text(ROOT, cfg["endpoints"]).encode())["models"]
     roles = ("worker", "user_simulator")
-    cfg.update(writer_feedback_level=spec["feedback"], max_concurrent=2, record_unfunded_shards=True,
+    cfg.update(writer_feedback_level=spec["feedback"], max_concurrent=spec.get("max_concurrent", 2), record_unfunded_shards=True,
                expected_endpoint_terms={r: cfg["endpoint_terms"][r] for r in roles},
                expected_model_revisions={r: endpoints[r]["canonical_slug"] for r in roles})
     domain = workspace / "data/tau2-bench/data/tau2/domains/banking_knowledge"
     groups = known_customer_groups(domain, spec["previous_cases"], spec["tasks"])
     cases, tasks, controls = [], {}, {}
+    if census:
+        from agent_memory_eval.adapters.tau_banking_opening import account_opening_population
+
+        require(account_opening_population(native.values()) == set(spec["tasks"]), "Account-opening census changed")
     customers = set()
     for tid, product in spec["tasks"].items():
         task = native[tid]
@@ -610,7 +619,7 @@ def registered_pairs(workspace, profile, mode):
         require(task.evaluation_criteria.reward_basis == ["DB"] and not task.evaluation_criteria.nl_assertions
                 and len(owners) == 1 and targets[0]["account_type"] == product
                 and groups[tid]["identified"] and not groups[tid]["overlapping_development"]
-                and not customers.intersection(owners), "Changed native task, product or customer overlap")
+                and (census or not customers.intersection(owners)), "Changed native task, product or customer overlap")
         owner, = owners
         verification = {a.arguments.get("user_id") for a in task.evaluation_criteria.actions
                         if a.name == "log_verification"}
@@ -618,25 +627,33 @@ def registered_pairs(workspace, profile, mode):
         customers.add(owner)
         case, tasks[tid] = bank.native_case(cfg, conn, modules, task, product)
         case.update(customer=digest(owner.encode()), reader_modes=[spec["reader"]])
+        if census:
+            case["scheduled_stages"] = ["source"] + [stage for stage, _, _ in repeats.stages()]
         cases.append(case)
         controls[tid] = grader_controls(task)
 
-    count = len(cases) * len(pairs) * 2
-    require(len(cases) == spec["source"] and spec["validation"] == dict(
-        writer_policies=["existing", "candidate"], write=count, solve=count, second_pass_no_memory=0),
-        "Changed allocation")
+    write_count = len(cases) * len(pairs) * 2 * repeats.writer_draws
+    solve_count = write_count * repeats.readers_per_bank
+    expected_validation = dict(writer_policies=["existing", "candidate"], write=write_count,
+                               solve=solve_count, second_pass_no_memory=0)
+    require(len(cases) == spec["source"] and spec["validation"] == expected_validation, "Changed allocation")
     schedule = {}
     for case in cases:
         schedule[case["task"]] = {"source": bank.matched.jobs_for(case, "source")}
-        for policy in spec["validation"]["writer_policies"]:
-            cell = dict(case, task=case["task"] + "__" + policy)
-            schedule[case["task"]][policy] = {s: bank.matched.jobs_for(cell, s) for s in ("write", "solve")}
+        for label, cell in repeats.writer_cells(case, spec["validation"]["writer_policies"]):
+            schedule[case["task"]][label] = {stage: bank.matched.jobs_for(cell, kind)
+                                             for stage, kind, _ in repeats.stages()}
     check = dict(protocol_sha256=digest((ROOT / profile).read_bytes()), cases=cases, customers=len(customers),
                  customer_overlap=groups, corpus_sha256=cohort["corpus_sha256"],
                  native_revision=cohort["native_revision"], expected_models=cfg["expected_model_revisions"],
                  schedule_sha256=digest(canonical(schedule)), writer_conditions=conditions, grader_controls=controls,
-                 assigned=dict(source=len(cases), write=count, solve=count, second_pass_no_memory=0),
+                 assigned=dict(source=len(cases), write=write_count, solve=solve_count, second_pass_no_memory=0),
                  model_requests=0)
+    if census:
+        from agent_memory_eval.adapters.tau_banking_opening import initial_record_audit
+        require(len(customers) == spec["expected_customers"], "Changed independent customer count")
+        check.update(native_tasks_screened=len(native), repetitions=spec["repetitions"],
+                     initial_records=initial_record_audit(domain, native, spec["tasks"]))
     if mode == "preflight":
         return check
     require(check == read(ROOT / spec["preflight_file"]), "Registered offline preflight differs")

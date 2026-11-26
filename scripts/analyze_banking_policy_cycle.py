@@ -215,6 +215,7 @@ def validation(workspace):
 
 def paired_validation_results(workspace, spec, proposal, *, start, task_ids, read_sha, ceiling, protocol_sha, binding):
     """Verify full banking consultations against their registered sources, banks, grades and costs."""
+    repeats = cycle.PairedRepetitions.from_spec(spec)
     sr = workspace / "runs" / spec["source_study"]
     vr = workspace / "runs" / spec["validation_study"]
     regs, regv = [read(root / "registration.json") for root in (sr, vr)]
@@ -266,8 +267,8 @@ def paired_validation_results(workspace, spec, proposal, *, start, task_ids, rea
             source_fields = cycle.input_evidence(
                 [public["task_context"], *public["messages"]], [], cycle.SEARCH_TOOLS
             )
-        for stage in ("write", "solve"):
-            folder = root / stage
+        for stage_name, stage, reader_repeat in repeats.stages():
+            folder = root / stage_name
             scheduled = cycle.bank.matched.jobs_for(case, stage)
             rows = checked_shard(vr, folder, vc, regv) if active else None
             if active:
@@ -301,6 +302,8 @@ def paired_validation_results(workspace, spec, proposal, *, start, task_ids, rea
                         )
                         bank_map[arm] = b
                         rec.update(bank=b, writer_log_sha256=result["log_sha256"])
+                    if "writer_draw" in case:
+                        rec["writer_draw"] = case["writer_draw"]
                     writers.append(rec)
                 else:
                     b = bank_map.get(arm.split("__")[0])
@@ -322,11 +325,13 @@ def paired_validation_results(workspace, spec, proposal, *, start, task_ids, rea
                             and rec["source_request"] == sources[tid]["first_request"],
                             "Changed opening",
                         )
+                    if "writer_draw" in case:
+                        rec.update(writer_draw=case["writer_draw"], reader_repeat=reader_repeat)
                     trials[policy].append(rec)
     require(
         set(sources) == task_ids and len(writers) == spec["validation"]["write"]
         and sum(map(len, trials.values())) == spec["validation"]["solve"]
-        and all(len(rows) == len(task_ids) * len(cycle.bank.matched.FORMS) for rows in trials.values()),
+        and all(len(rows) == spec["validation"]["solve"] // 2 for rows in trials.values()),
         "Missing registered allocations",
     )
     sessions = [
@@ -366,6 +371,10 @@ def paired_validation_results(workspace, spec, proposal, *, start, task_ids, rea
         )
         costs.update(totals)
     require(Decimal(vc["total_covered_usd"]) <= Decimal(ceiling), "Cumulative cap exceeded")
+    if repeats.readers_per_bank > 1:
+        waves = [costs.pop(name) for name, kind, _ in repeats.stages() if kind == "solve" and name in costs]
+        costs["solve"] = {key: str(sum((Decimal(v[key]) for v in waves), Decimal(0)))
+                          for key in ("reported", "held", "http")}
     return dict(
         protocol_sha256=protocol_sha,
         candidate=proposal,
@@ -492,6 +501,65 @@ def input_audit(workspace):
     )
 
 
+def clustered_results(result, customers):
+    from agent_memory_eval.analysis.clustered_outcomes import clustered_contrast
+
+    def summaries(slots):
+        def evaluate(selected):
+            return clustered_contrast(((customers[t], t, f, slot, arms["existing"], arms["candidate"])
+                                       for (t, f, slot), arms in selected), cluster_unit="customer")
+        forms = sorted({f for _, f, _ in slots})
+        return dict(overall=evaluate(slots.items()),
+                    by_form={f: evaluate((k, a) for k, a in slots.items() if k[1] == f) for f in forms})
+
+    official, opened, writing = {}, {}, {}
+    for policy, rows in result["trials"].items():
+        for row in rows:
+            key = row["task"], row["arm"].split("__")[0], (row["writer_draw"], row["reader_repeat"])
+            official.setdefault(key, {})[policy] = row["success"]
+            opened.setdefault(key, {})[policy] = (row["account_opening"]["effects"]["all_target_accounts_opened"]
+                                                  if row["success"] is not None else None)
+    for row in result["writing_outcomes"]["rows"]:
+        key = row["task"], row["form"], row["writer_draw"]
+        writing.setdefault(key, {})[row["policy"]] = (row["rating"]["unsupported_or_contradicted"]
+                                                      if row["rating"] is not None else None)
+    return dict(official_success=summaries(official), all_requested_accounts_opened=summaries(opened),
+                items_with_unsupported_or_contradicted=summaries(writing))
+
+
+def repetition_results(result, inputs, repeats):
+    from collections import defaultdict
+
+    counts = {}
+    for stage, expected in (("write", repeats.writer_draws), ("solve", repeats.readers_per_bank)):
+        groups = [hashes for (s, *_), hashes in inputs.items() if s == stage]
+        require(all(len(hashes) <= expected and len(set(hashes)) == 1 for hashes in groups),
+                "Actual first input changed between repeated writers or readers of one bank")
+        assigned = (len(result["writers"]) // repeats.writer_draws if stage == "write" else len(result["writers"]))
+        counts[stage] = dict(assigned_groups=assigned, groups_with_input=len(groups),
+                             complete_identical_groups=sum(len(g) == expected for g in groups))
+    contents = defaultdict(list)
+    writer_ids = [row["bank"]["run_id"] for row in result["writers"] if row["bank"]]
+    require(len(writer_ids) == len(set(writer_ids)), "Separate writing assignments reused a recorded writer")
+    for row in result["writers"]:
+        if row["bank"]:
+            contents[row["task"], row["policy"], row["form"]].append(
+                digest(canonical([{k: item[k] for k in ("title", "body")} for item in row["bank"]["items"]])))
+    complete = [group for group in contents.values() if len(group) == repeats.writer_draws]
+    writer_copies = dict(assigned_groups=len(result["writers"]) // repeats.writer_draws,
+                         all_draws_stored=len(complete), identical_contents=sum(len(set(g)) == 1 for g in complete))
+    outcomes = {}
+    for policy, rows in result["trials"].items():
+        banks = defaultdict(list)
+        for row in rows:
+            banks[row["task"], row["arm"], row["writer_draw"]].append(row["success"])
+        require(all(len(v) == repeats.readers_per_bank for v in banks.values()), "Incomplete reader registration")
+        graded = [values for values in banks.values() if None not in values]
+        outcomes[policy] = dict(assigned_banks=len(banks), all_readers_graded=len(graded),
+                                banks_with_both_success_and_failure=sum(len(set(v)) > 1 for v in graded))
+    return dict(first_inputs=counts, writer_contents=writer_copies, official_outcome_within_bank=outcomes)
+
+
 def registered_account_results(workspace, profile, *, packets_only=False, ratings=None):
     from dataclasses import replace
     from agent_memory_eval.adapters.tau_banking_opening import OPENING_OUTCOMES, observed_accounts, opening_receipts
@@ -503,6 +571,8 @@ def registered_account_results(workspace, profile, *, packets_only=False, rating
     from tau2.domains.banking_knowledge.environment import get_tasks
 
     spec = read(cycle.ROOT / profile)
+    repeats = cycle.PairedRepetitions.from_spec(spec)
+    repeated = "repetitions" in spec
     approval = read(cycle.ROOT / spec["authorization_file"])
     protocol_sha = digest((cycle.ROOT / profile).read_bytes())
     binding = dict(protocol_sha256=protocol_sha, preflight_sha256=approval["preflight_sha256"], approval=approval)
@@ -513,14 +583,21 @@ def registered_account_results(workspace, profile, *, packets_only=False, rating
                                        binding=binding)
     tasks = {t.id: t for t in get_tasks()}
     keys, packets, public_sources, normalized, token_usage = [], {}, {}, {}, {}
+    by_slot = {(p, r["task"], r["arm"], r.get("writer_draw", 1), r.get("reader_repeat", 1)): r
+               for p, rows in result["trials"].items() for r in rows}
+    require(len(by_slot) == spec["validation"]["solve"], "Duplicate reader slot")
+    customer_ids = {}
+    consistent_inputs = {}
     for phase, run in (("source", spec["source_study"]), ("validation", spec["validation_study"])):
         root = workspace / "runs" / run
         reg, close = read(root / "registration.json"), read(root / "completion.json")
         for case in reg["preflight"]["cases"]:
             tid = case["task_id"]
             policy = case.get("writer_policy")
-            for stage in (("source",) if phase == "source" else ("write", "solve")):
-                folder = root / ("task-" + case["task"]) / stage
+            require(customer_ids.setdefault(tid, case["customer"]) == case["customer"], "Customer identity changed")
+            draw = case.get("writer_draw", 1)
+            for stage_name, stage, reader_repeat in ([("source", "source", 0)] if phase == "source" else repeats.stages()):
+                folder = root / ("task-" + case["task"]) / stage_name
                 if str(folder.relative_to(root)) not in close["stages"]:
                     require(not case["scheduled_stages"], "Active registered shard is unaccounted")
                     continue
@@ -540,7 +617,10 @@ def registered_account_results(workspace, profile, *, packets_only=False, rating
                         if req:
                             clause = asset_text(cycle.ROOT, spec["clause"]).strip()
                             proof = first_wire_proof(log, req, raw["log_sha256"], stage, policy, clause)
-                            normalized.setdefault((stage, tid, form), {})[policy] = proof
+                            normalized.setdefault((stage, tid, form, draw, reader_repeat), {})[policy] = proof
+                            if repeated:
+                                group = (stage, tid, policy, form, draw if stage == "solve" else 0)
+                                consistent_inputs.setdefault(group, []).append(proof["wire_sha256"])
                     if stage == "write" or raw.get("grading_status") != "graded":
                         continue
                     messages = BlobStore(folder / row["directory"]).get(raw["report_ref"])["messages"]
@@ -555,7 +635,7 @@ def registered_account_results(workspace, profile, *, packets_only=False, rating
                         public_sources[tid] = (receipts, next(m["content"] for m in public if m["role"] == "user"))
                         target = result["sources"][tid]
                     else:
-                        target, = [r for r in result["trials"][policy] if r["task"] == tid and r["arm"] == row["arm"]]
+                        target = by_slot[policy, tid, row["arm"], draw, reader_repeat]
                     target["account_opening"] = business
 
     for writer in result["writers"]:
@@ -565,17 +645,23 @@ def registered_account_results(workspace, profile, *, packets_only=False, rating
             receipts, opening = public_sources[writer["task"]]
             key, packet = outcome_packet(item, receipts, opening, claim_outcomes=OPENING_OUTCOMES)
             packets[key] = packet
-        keys.append(dict(policy=writer["policy"], task=writer["task"], form=writer["form"], packet=key))
+        assignment = dict(policy=writer["policy"], task=writer["task"], form=writer["form"], packet=key)
+        if repeated:
+            assignment["writer_draw"] = writer["writer_draw"]
+        keys.append(assignment)
     if packets_only:
         return dict(format="receipt-review-packets/v1", packets={k: packets[k] for k in sorted(packets)})
 
     wire_checks = []
-    for (stage, tid, form), pair in sorted(normalized.items()):
+    for (stage, tid, form, draw, repeat), pair in sorted(normalized.items()):
         complete = set(pair) == {"candidate", "existing"}
         if complete:
             require(pair["existing"]["normalized_sha256"] == pair["candidate"]["normalized_sha256"],
                     "Paired actual requests differ outside the treatment")
-        wire_checks.append(dict(stage=stage, task=tid, form=form, paired=complete, proofs=pair))
+        check = dict(stage=stage, task=tid, form=form, paired=complete, proofs=pair)
+        if repeated:
+            check.update(writer_draw=draw, reader_repeat=repeat)
+        wire_checks.append(check)
     if ratings is None:
         votes = {}
     else:
@@ -587,7 +673,7 @@ def registered_account_results(workspace, profile, *, packets_only=False, rating
     result["writing_outcomes"] = join_outcome_reviews(packets, keys, votes)
     result["reviewer"] = ratings["reviewer"] if ratings else None
     arms = [banking_trials(result, p, BANKING_SUCCESS) for p in ("existing", "candidate")]
-    result["official_paired"] = compare_trials(*arms)
+    result["official_paired"] = compare_trials(*arms, test_signs=not repeated)
     metric = replace(BANKING_SUCCESS, name="banking.all_target_accounts_opened",
                      definition="Every registered owner, account type and class produced a new native account row.")
     process = []
@@ -596,7 +682,10 @@ def registered_account_results(workspace, profile, *, packets_only=False, rating
         process.append([replace(t, metric=metric, success=None if t.success is None else
                                 r["account_opening"]["effects"]["all_target_accounts_opened"])
                         for t, r in zip(group, rows, strict=True)])
-    result["all_targets_paired"] = compare_trials(*process)
+    result["all_targets_paired"] = compare_trials(*process, test_signs=not repeated)
+    if repeated:
+        result["customer_weighted"] = clustered_results(result, customer_ids)
+        result["repetitions"] = repetition_results(result, consistent_inputs, repeats)
     return result
 
 
