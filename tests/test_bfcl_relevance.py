@@ -5,7 +5,8 @@ from copy import deepcopy
 
 from agent_memory_eval.analysis.bfcl_relevance import corruptions, trials
 from agent_memory_eval.models.local_qwen import LocalQwen, public_reply, required_prefix, stop_ids
-from agent_memory_eval.runner.bfcl_relevance import grade_reply, normalized_first, read_choice, read_tools
+from agent_memory_eval.runner.bfcl_read_check import reader_config
+from agent_memory_eval.runner.bfcl_relevance import grade_reply, normalized_first, read_choice, read_tools, worker_instruction
 from agent_memory_eval.memory.tools import memory_tools
 from agent_memory_eval.contracts.core import ContractError
 
@@ -16,6 +17,30 @@ CALL = "<tool_call>\n<function=weather>\n<parameter=city>\nSeoul\n</parameter>\n
 
 
 class QwenReplyTests(unittest.TestCase):
+    def test_tool_only_descriptions_preserve_the_original_messages_and_tool_abi(self):
+        source = {"worker_instruction": "Solve the task.", "memory_notice": "Previous notice."}
+        descriptions = {"memory_list": "Browse notes from past situations.", "memory_get": "Read a selected note."}
+        cfg = reader_config(source, {"memory_notice": "", "read_tool_descriptions": descriptions})
+        self.assertEqual(worker_instruction(cfg, "on_demand"), source["worker_instruction"])
+        self.assertEqual(reader_config(source, {})["memory_notice"], source["memory_notice"])
+        standard = memory_tools(["memory_list", "memory_get"])
+        customized = read_tools(cfg)
+        for old, new in zip(standard, customized, strict=True):
+            fn = old["function"]
+            self.assertEqual(new, {"type": "function", "function": {**fn, "description": descriptions[fn["name"]]}})
+        baseline = {"messages": [{"role": "system", "content": "Solve the task."}, {"role": "user", "content": "q"}],
+                    "tools": TOOLS}
+        wire = {**deepcopy(baseline), "tools": [*TOOLS, *customized]}
+        self.assertEqual(normalized_first(wire, cfg, "on_demand", []), baseline)
+        with self.assertRaises(ContractError):
+            normalized_first({**wire, "tools": [*TOOLS, *standard]}, cfg, "on_demand", [])
+        wire["messages"][0]["content"] += "\nA note exists."
+        with self.assertRaises(ContractError):
+            normalized_first(wire, cfg, "on_demand", [])
+        for invalid in ({"memory_store": "write"}, {"memory_get": " "}, {"memory_list": 1}):
+            with self.subTest(invalid=invalid), self.assertRaises(ContractError):
+                memory_tools(["memory_list"], read_descriptions=invalid)
+
     def test_list_only_leaves_get_and_the_business_action_unconstrained(self):
         setting = ["memory_list"]
         self.assertEqual(read_choice(setting, 0), read_choice(True, 0))

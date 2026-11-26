@@ -1,0 +1,26 @@
+{
+  "name": "bfcl-tool-only-retrieval-01",
+  "parent_profile_sha256": "7b75b0c760a6652471e8965244e16749d2e2fd8d233639f25563b0f7ffaf3bbb",
+  "parent_archive_sha256": "588bc155fdf34743c24c79aab14a4637187c7a5054e59c1e1ef634ec3f85f144",
+  "selection": "All eight original BFCL questions, their frozen fact notes, and the repaired interface. Each arm uses a fresh worker session. Keep the exact original first-pass system message and user question, business tools, memory tool order and parameter schemas, and model configuration.",
+  "parent_form": "fact",
+  "memory_notice": "",
+  "constrain_read_names": false,
+  "advertise_list_limit": true,
+  "stop_token_ids": [248044, 248046],
+  "arms": {
+    "original": {
+      "control_label": "fact-tool-only-original"
+    },
+    "contextual": {
+      "control_label": "fact-tool-only-contextual",
+      "read_tool_descriptions": {
+        "memory_list": "Browse note titles when a past situation, fact, procedure, or lesson could help with the current task. The list can be empty. It returns ids, versions, and titles. Use an id with memory_get to read a note, or the returned cursor for another page.",
+        "memory_get": "Read the title and body of a note by id when it looks relevant. A note describes prior work and may be incomplete or mistaken. Check whether it applies to the current situation."
+      }
+    }
+  },
+  "limits": {"allocated": 8, "worker_calls_per_question": 3, "new_external_calls": 0, "new_writers": 0, "second_pass_no_memory": 0},
+  "endpoint": "By arm and question, record requests to list and get, actual title and body inclusion before the first business decision, missing, call-presence grades and tokens. Check the complete source and arm opening requests differ only by the registered read tools. Between the two arms only the two function descriptions can differ. No hints about bank contents, titles, or the need to read are supplied in either arm. No decoder constraint.",
+  "interpretation": "Eight existing single-decision tasks on one greedy local model. A zero rate is observable policy behavior in this sample. The comparison does not establish the value of memory on tasks that require it. The descriptions jointly change their meaning and length."
+}

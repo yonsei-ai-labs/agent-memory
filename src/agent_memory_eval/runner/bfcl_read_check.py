@@ -15,7 +15,7 @@ from agent_memory_eval.analysis.requests import audit_requests
 from agent_memory_eval.contracts.core import canonical, digest, read_json
 from agent_memory_eval.models.local_qwen import LocalQwen, required_prefix
 from agent_memory_eval.recording.journal import Journal
-from agent_memory_eval.runner.bfcl_relevance import load_inputs, read_choice, read_tools, solve
+from agent_memory_eval.runner.bfcl_relevance import load_inputs, read_choice, read_tools, solve, worker_instruction
 
 
 def expected_runtime(parent, spec):
@@ -23,6 +23,14 @@ def expected_runtime(parent, spec):
     if "stop_token_ids" in spec:
         runtime["stop_token_ids"] = spec["stop_token_ids"]
     return runtime
+
+
+def reader_config(cfg, spec):
+    notice = spec.get("memory_notice", cfg["memory_notice"])
+    extra = spec.get("append_to_neutral_notice", "")
+    return dict(cfg, memory_notice="\n".join(filter(None, (notice, extra))),
+                advertise_list_limit=spec.get("advertise_list_limit", False),
+                read_tool_descriptions=spec.get("read_tool_descriptions"))
 
 
 def run(args, cfg, spec, archive):
@@ -47,8 +55,7 @@ def run(args, cfg, spec, archive):
     try:
         require(client.runtime == expected_runtime(archive["runtime"], spec), "Different inference runtime")
         (args.control / "runtime.json").write_bytes(canonical(client.runtime) + b"\n")
-        notice = "\n".join(filter(None, (cfg["memory_notice"], spec["append_to_neutral_notice"])))
-        guided = dict(cfg, memory_notice=notice, advertise_list_limit=spec.get("advertise_list_limit", False))
+        guided = reader_config(cfg, spec)
         controls = dict(model=cfg["model"], revision=cfg["model_revision"], generation=cfg["generation"])
         for case in cases:
             category, row = case
@@ -86,7 +93,7 @@ def inputs(args):
     return cfg, spec, archive
 
 
-def inspect_reader(record, expected_snapshot, *, constrain_names=False, advertise_list_limit=False, stops=()):
+def inspect_reader(record, expected_snapshot, cfg, *, constrain_names=False, stops=()):
     note, = record.items
     bank = record.state["banks"][record.start["bank_id"]]
     require(bank["parent_snapshot"] == record.start["start_snapshot_id"] == expected_snapshot
@@ -104,7 +111,7 @@ def inspect_reader(record, expected_snapshot, *, constrain_names=False, advertis
         choice = read_choice(constrain_names, turn)
         require(finish["status"] == "response" and finish["cost_usd"] == 0 and raw["provider"] == "local-transformers"
                 and [read_json(line.encode()) for line in definitions] == wire["tools"]
-                and wire["tools"][-2:] == read_tools(dict(advertise_list_limit=advertise_list_limit))
+                and wire["tools"][-2:] == read_tools(cfg)
                 and wire.get("tool_choice") == choice and gen["forced_prefix"] == required_prefix(wire)
                 and gen["text"] == gen["forced_prefix"] + gen["emitted_text"]
                 and digest(rendered.encode()) == gen["input_sha256"]
@@ -186,6 +193,7 @@ def audit(args, cfg, spec, archive):
             and read_json((args.control / "runtime.json").read_bytes()) == expected_runtime(archive["runtime"], spec),
             "Control registration changed")
     original, guided, unique_by_question = [], [], {}
+    control_cfg = reader_config(cfg, spec)
     seals = {}
     for task in reg["tasks"]:
         data = archive["tasks"][task]
@@ -201,8 +209,8 @@ def audit(args, cfg, spec, archive):
             if row["mode"] != "on_demand":
                 continue
             evidence = RecordedDecisions(parent, row["run"], data["journal_sha256"])
-            first, observation = inspect_reader(evidence, row["snapshot"])
-            require(first["messages"][0]["content"] == cfg["worker_instruction"] + "\n" + cfg["memory_notice"],
+            first, observation = inspect_reader(evidence, row["snapshot"], cfg)
+            require(first["messages"][0]["content"] == worker_instruction(cfg, "on_demand"),
                     "Unexpected original memory notice")
             original.append(observation)
             first_prompts.add(observation["steps"][0]["prompt"])
@@ -211,14 +219,11 @@ def audit(args, cfg, spec, archive):
                 control_id = task + "-" + spec["control_label"] + "-on_demand"
                 control = RecordedDecisions(folder, control_id, seals[task])
                 constrain = spec.get("constrain_read_names", False)
-                limited = spec.get("advertise_list_limit", False)
-                wire, observed = inspect_reader(control, row["snapshot"], constrain_names=constrain,
-                    advertise_list_limit=limited, stops=spec.get("stop_token_ids", ()))
+                wire, observed = inspect_reader(control, row["snapshot"], control_cfg, constrain_names=constrain,
+                    stops=spec.get("stop_token_ids", ()))
                 expected = deepcopy(first)
-                if limited:
-                    expected["tools"][-2:] = read_tools(dict(advertise_list_limit=True))
-                if spec["append_to_neutral_notice"]:
-                    expected["messages"][0]["content"] += "\n" + spec["append_to_neutral_notice"]
+                expected["tools"][-2:] = read_tools(control_cfg)
+                expected["messages"][0]["content"] = worker_instruction(control_cfg, "on_demand")
                 if constrain:
                     expected["tool_choice"] = dict(type="function", function=dict(name="memory_list"))
                 require(wire == expected and control.start["source_run_ids"] == evidence.start["source_run_ids"],

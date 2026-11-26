@@ -3,7 +3,7 @@
 from agent_memory_eval.contracts.core import ContractError
 
 
-def memory_tools(names, *, page_size=None):
+def memory_tools(names, *, page_size=None, read_descriptions=None):
     properties = {
         "memory_store": dict(title={"type": "string"}, body={"type": "string"},
             id={"type": ["string", "null"]}, expected_version={"type": ["string", "null"]}),
@@ -21,6 +21,11 @@ def memory_tools(names, *, page_size=None):
         "memory_list": "List memory ids, versions and titles. Use the returned opaque cursor for another page. Bodies require memory_get.",
         "memory_get": "Read one memory's title and body by id. Check whether its conditions apply to the current task.",
     }
+    if read_descriptions is not None:
+        if (not isinstance(read_descriptions, dict) or read_descriptions.keys() - {"memory_list", "memory_get"}
+                or any(not isinstance(text, str) or not text.strip() for text in read_descriptions.values())):
+            raise ContractError("Read tool descriptions must name a retrieval tool and contain nonempty text")
+        descriptions.update(read_descriptions)
     if set(names) - properties.keys():
         raise ContractError("Unknown memory tool")
     return [dict(type="function", function=dict(name=name, description=descriptions[name],

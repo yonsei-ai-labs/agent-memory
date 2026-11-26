@@ -28,7 +28,13 @@ PAGE_SIZE = 1
 
 
 def read_tools(cfg):
-    return memory_tools(["memory_list", "memory_get"], page_size=PAGE_SIZE if cfg.get("advertise_list_limit") else None)
+    return memory_tools(["memory_list", "memory_get"], page_size=PAGE_SIZE if cfg.get("advertise_list_limit") else None,
+                        read_descriptions=cfg.get("read_tool_descriptions"))
+
+
+def worker_instruction(cfg, mode):
+    base = cfg["worker_instruction"]
+    return base + "\n" + cfg["memory_notice"] if mode and cfg["memory_notice"] else base
 
 
 def read_choice(setting, turn):
@@ -77,9 +83,13 @@ def business_tools(functions):
 def normalized_first(wire, cfg, mode, items):
     value = deepcopy(wire)
     if mode:
-        suffix = "\n" + cfg["memory_notice"]
-        require(value["messages"][0]["content"].endswith(suffix), "Unexpected memory instructions")
-        value["messages"][0]["content"] = value["messages"][0]["content"].removesuffix(suffix)
+        system = value["messages"][0]
+        notice = cfg["memory_notice"]
+        suffix = "\n" + notice if notice else ""
+        require(system["role"] == "system" and system["content"].endswith(suffix), "Unexpected memory instructions")
+        system["content"] = system["content"].removesuffix(suffix)
+        if "worker_instruction" in cfg:
+            require(system["content"] == cfg["worker_instruction"], "Unexpected business instructions")
         if mode == "preload":
             require(value["messages"].pop(1) == snapshot_message(items), "Different preloaded bank")
         else:
@@ -126,7 +136,7 @@ def solve(journal, cfg, case, client, is_empty, *, source=None, writer=None, for
     journal.append([event])
     registry = SourceRegistry(journal, ctx)
     wire = dict(model=cfg["model"], seed=cfg["generation"]["seed"], max_completion_tokens=cfg["generation"]["worker_tokens"],
-                system=dict(role="system", content=cfg["worker_instruction"] + ("\n" + cfg["memory_notice"] if mode else "")),
+                system=dict(role="system", content=worker_instruction(cfg, mode)),
                 tools=tools + (read_tools(cfg) if mode == "on_demand" else []))
     template = registry.template(wire, roles=("worker",))
     history = [(template, "/system")]
