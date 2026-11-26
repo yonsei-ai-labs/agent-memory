@@ -1,6 +1,7 @@
 import json
 import unittest
 from copy import deepcopy
+from importlib.util import find_spec
 
 from agent_memory_eval.adapters.tau_banking_opening import DISPATCH, OPEN, OPENING_OUTCOMES, account_effects, opening_receipts, verify_account_rows
 from agent_memory_eval.analysis.receipt_review import join_outcome_reviews, outcome_packet, score_outcome_review
@@ -47,6 +48,32 @@ class AccountReceiptTests(unittest.TestCase):
             r = opening_receipts([self.call, dict(self.result, content=content)])
             self.assertEqual(r[0]["outcome"], label)
             self.assertFalse(account_effects([self.params], r)["all_target_accounts_opened"])
+
+    @unittest.skipUnless(find_spec("tau2"), "Requires the pinned native banking environment")
+    def test_required_read_is_part_of_the_sealed_database_hash(self):
+        from tau2.data_model.message import AssistantMessage, ToolCall
+        from tau2.domains.banking_knowledge.environment import get_environment, get_tasks
+        from agent_memory_eval.adapters.tau_banking_opening import observed_accounts
+
+        task = next(t for t in get_tasks() if t.id == "task_055")
+        reference = task.evaluation_criteria.actions[:3]
+        read = reference[-1]
+        self.assertEqual((read.name, read.arguments["agent_tool_name"]), (DISPATCH, "get_all_user_accounts_by_user_id_3847"))
+        native = get_environment(task=task, retrieval_variant="grep_only",
+                                 read_log_allowlist={read.arguments["agent_tool_name"]})
+        native.set_state(initialization_data=None, initialization_actions=None, message_history=[])
+        history = []
+        for action in reference:
+            call = ToolCall(id=action.action_id, requestor=action.requestor, name=action.name, arguments=action.arguments)
+            reply = native.get_response(call)
+            self.assertFalse(reply.error)
+            history.extend([AssistantMessage(role="assistant", tool_calls=[call]), reply])
+        unlogged = get_environment(task=task, retrieval_variant="grep_only")
+        unlogged.set_state(initialization_data=None, initialization_actions=None, message_history=history, strict=True)
+        self.assertNotEqual(unlogged.get_db_hash(), native.get_db_hash())
+        messages = [m.model_dump(mode="json") for m in history]
+        audit = observed_accounts(task, messages, native.get_db_hash())
+        self.assertEqual((audit["receipts"], audit["new_account_rows"]), ([], 0))
 
     def test_notes_have_separate_accuracy_and_coverage_denominators(self):
         key, packet = outcome_packet(dict(title="Result", body="We did open it."), opening_receipts([self.call, self.result]), "Open an account",

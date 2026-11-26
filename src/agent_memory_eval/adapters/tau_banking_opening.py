@@ -120,10 +120,17 @@ def account_effects(targets, receipts):
                 opening_attempts=effects["attempted"])
 
 
+def _environment_options(task):
+    from tau2.runner.build import _derive_read_log_allowlist
+
+    # The native scorer includes task-required reads in the hashed tool log.
+    return dict(task=task, retrieval_variant="grep_only", read_log_allowlist=_derive_read_log_allowlist(task))
+
+
 def _environment(task):
     from tau2.domains.banking_knowledge.environment import get_environment
 
-    env = get_environment(task=task, retrieval_variant="grep_only")
+    env = get_environment(**_environment_options(task))
     start = task.initial_state
     require(not start or not start.message_history, "This account audit requires an empty initial conversation")
     env.set_state(initialization_data=start.initialization_data if start else None,
@@ -180,7 +187,7 @@ def grader_controls(task):
         require(replay["receipts"] == receipts and replay["new_account_rows"] == new_rows,
                 "Native replay and controlled effects differ")
         grade = EnvironmentEvaluator.calculate_reward(get_environment, task, messages,
-                                                     env_kwargs=dict(task=task, retrieval_variant="grep_only"))
+                                                     env_kwargs=_environment_options(task))
         result[variant] = dict(official_db_success=grade.db_check.db_match, new_account_rows=new_rows,
                                effects=account_effects(targets, receipts), receipts=receipts)
     require(result["reference"]["official_db_success"] and result["omit_openings"]["effects"]["opening_attempts"] == 0
