@@ -2,6 +2,8 @@
 
 계좌를 열기로 한 대화, 개설 도구의 반환, 올바른 상품이 실제로 생긴 DB 상태를 구별할 수 있는 은행 과제 전체를 비교한다. 이번에 바꾸는 것은 과거 행동의 시도와 확인된 결과를 구분하라는 작성 문장 하나다. [작성 문장](../../protocols/instructions/attempt-result-clause-v1.txt) · [실험 등록](../../protocols/pilots/tau-banking-opening-writer-pairs-v1.json)
 
+19과제의 모델 실행을 마쳤다. 실제 작성물, 후속 상담, 중단된 상담의 DB 변경과 비용은 [유료 실행 결과](20261126-banking-opening-model-results.md)에 기록했다.
+
 ## 19과제 보완 등록 v3
 
 두 작성 지침, 다섯 형식, 고객 13명·과제 19개, 원천 19건·작성 380건·후속 상담 1,140건은 v2와 같다. v3는 상품 근거의 판독, 여러 기억 항목의 집계, 상담을 시작하는 조건과 중단 복구를 명시한다. 2회차는 기억 시작 제공으로 고정한다. 유료 실행의 원천·상담 디렉터리와 승인 파일은 v3 전용이다. [고정 프로토콜](../../protocols/pilots/tau-banking-opening-writer-pairs-v3.json) · [배정·95개 DB 경로의 사전 검증](../../artifacts/pilots/20261126-banking-opening-reliability-preflight.json)
