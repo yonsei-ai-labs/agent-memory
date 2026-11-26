@@ -46,7 +46,8 @@ def local_reply(request, timeout):
         if cell["task_id"] == "task_076" and setting == ("existing", 2, "fact"):
             msg = dict(content="No stored memory.")
         else:
-            product = json.loads(actions[-1]["arguments"]["arguments"])["account_class"]
+            args = actions[-1]["arguments"]["arguments"]
+            product = (json.loads(args) if isinstance(args, str) else args)["account_class"]
             item = dict(title="Opening result", body=f"The call opened {product}.")
             calls = [call("memory_store", item, 1)]
             if setting == ("candidate", 1, "episode"):
@@ -93,7 +94,9 @@ def check(workspace, folder):
     cycle.save(Path(spec["authorization_file"]), dict(scope="full", assigned=plan["assigned"],
                maximum_usd="10", protocol_sha256=plan["protocol_sha256"], preflight_sha256=digest(canonical(plan)),
                user_authorization="Isolated zero-cost test fixture with network disabled"))
-    models = cycle.read(cycle.ROOT / cycle.read(cycle.ROOT / spec["banking_profile"]["path"])["endpoints"]["path"])["models"]
+    bank = cycle.read(cycle.ROOT / spec["banking_profile"]["path"])
+    cfg = cycle.read(cycle.ROOT / bank["base"]["path"])
+    models = cycle.read(cycle.ROOT / cfg["endpoints"]["path"])["models"]
     cycle.bank.matched.study_models = lambda *args: ({r: models[r] for r in ("worker", "user_simulator")}, None)
     run_full_retail.ProcessPoolExecutor = partial(ProcessPoolExecutor, initializer=init_transport)
     cycle.policy_stage_job = fixture_stage
