@@ -1,6 +1,7 @@
 """The original public text opening of a pinned τ² task, before any worker action."""
 
 from contextlib import contextmanager, nullcontext
+from copy import deepcopy
 from unittest.mock import patch
 
 from agent_memory_eval.contracts.connection import native_parameters
@@ -16,6 +17,21 @@ def empty_initial_state(state):
     return not state.message_history and not state.initialization_actions and (
         data is None or (data.agent_data is None and data.user_data is None)
     )
+
+
+def greeting_start(state):
+    """The native reset may populate the database before the ordinary first greeting."""
+    return state is None or (not state.message_history and not state.initialization_actions)
+
+
+def initialized_databases(orch):
+    """Predict data-only resets with the native implementation, keeping the live environment pristine."""
+    state = orch.task.initial_state
+    if empty_initial_state(state) or not greeting_start(state):
+        return None
+    environment = deepcopy(orch.environment)
+    environment.set_state(state.initialization_data, None, [])
+    return dict(agent=environment.get_db_hash(), user=environment.get_user_db_hash())
 
 
 def task_key(control):
@@ -73,8 +89,11 @@ def _restore_customer(orch, utils, control, customer_settings, verify_wire, publ
 @contextmanager
 def matched_opening(orch, modules, control, customer_settings, verify_wire, record, *, reference=None):
     """Preserve native run/step/termination. Only the first customer generation can be imported."""
-    if orch.solo_mode or not empty_initial_state(orch.task.initial_state):
+    state = orch.task.initial_state
+    if (orch.solo_mode or not greeting_start(state)
+            or ("initialized_databases" in control) != (not empty_initial_state(state))):
         raise TaskStartMismatch("This τ² adapter supports text tasks starting at the native greeting")
+    databases = control.get("initialized_databases", dict(agent=control["initial_db"], user=control["initial_user_db"]))
     utils = modules[2]
     native_step = orch.step
     start = None
@@ -96,8 +115,8 @@ def matched_opening(orch, modules, control, customer_settings, verify_wire, reco
             return native_step()
         if (orch.to_role.value != "user" or orch.from_role.value != "agent" or orch.user_state.messages
                 or orch.agent_state.messages != [orch.message] or orch.trajectory != [orch.message]
-                or control["initial_db"] != orch.environment.get_db_hash()
-                or control["initial_user_db"] != orch.environment.get_user_db_hash()
+                or databases["agent"] != orch.environment.get_db_hash()
+                or databases["user"] != orch.environment.get_user_db_hash()
                 or control["task_sha256"] != digest(canonical(orch.task.model_dump(mode="json")))):
             raise TaskStartMismatch("Expected the original task and a newly initialized native environment")
 

@@ -60,8 +60,13 @@ def judge_config(cfg, domain):
 
 def study_models(cfg, conn):
     if "grader" in cfg["expected_endpoint_terms"]:
-        return resolve_live(cfg, conn)
-    return live_models(conn), None
+        models, judge = resolve_live(cfg, conn)
+    else:
+        models, judge = live_models(conn), None
+    revisions = cfg.get("expected_model_revisions")
+    if revisions is not None and {r: m.get("canonical_slug") for r, m in models.items()} != revisions:
+        raise ContractError("Worker or customer model differs from the registered revision")
+    return models, judge
 
 
 def check_published_cases(record, published):
@@ -174,7 +179,7 @@ def _stage_job(args):
     task_dir = output / ("task-" + case["task"])
     task_dir.mkdir(exist_ok=True)
     dest = task_dir / stage_name
-    source_dir, write_dir = [task_dir / s for s in case["scheduled_stages"][:2]]
+    source_dir = task_dir / case["scheduled_stages"][0]
     imported = case.get("imported_first_pass")
     if imported:
         if stage == "source":
@@ -225,6 +230,7 @@ def _stage_job(args):
                              and not (dest / "completion.json").exists()):
         bindings = None
         if stage == "solve":
+            write_dir = task_dir / case["scheduled_stages"][1]
             _, parent, written = sealed_rows(write_dir)
             if (parent["profile"]["registration_sha256"] != cfg["registration_sha256"]
                     or parent["design"] != design_for(cfg, case, "write", source)

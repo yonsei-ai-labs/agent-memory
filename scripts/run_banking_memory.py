@@ -25,6 +25,9 @@ FEEDBACK_PROFILE = "protocols/pilots/tau-banking-result-feedback-v1.json"
 FEEDBACK_PREFLIGHT = "artifacts/pilots/20261125-banking-result-feedback-preflight.json"
 FEEDBACK_WRITING_PREFLIGHT = "artifacts/pilots/20261125-banking-result-feedback-writing-preflight.json"
 FEEDBACK_APPROVAL = "artifacts/pilots/20261125-banking-result-feedback-authorization.json"
+SCREEN_PROFILE = "protocols/pilots/tau-banking-source-screen-v1.json"
+SCREEN_PREFLIGHT = "artifacts/pilots/20261127-banking-source-screen-preflight.json"
+SCREEN_APPROVAL = "artifacts/pilots/20261127-banking-source-screen-authorization.json"
 
 
 def stratum(task):
@@ -66,6 +69,11 @@ def native_case(cfg, conn, modules, registered, group):
     case.update(native_sha256=digest(canonical(control)), task_sha256=control["task_sha256"],
                 customer_opening_sha256=opening, initial_db=control["initial_db"],
                 official_criteria_sha256=digest(canonical(task.evaluation_criteria.model_dump(mode="json"))))
+    if "initialized_databases" in control:
+        observed = dict(agent=orch.environment.get_db_hash(), user=orch.environment.get_user_db_hash())
+        if observed != control["initialized_databases"]:
+            raise ContractError("Native opening differs from the registered initialized databases")
+        case["initialized_databases"] = observed
     return case, task_data
 
 
@@ -227,14 +235,81 @@ def prepare_feedback(workspace, scope):
     return spec, cfg, conn, cases, tasks, record
 
 
+def source_screen(workspace, mode):
+    from collections import Counter
+    from decimal import Decimal
+    from agent_memory_eval.adapters.banking_source_screen import partition, screen_report
+    from agent_memory_eval.analysis.recorded_decisions import require
+
+    spec = matched.read(ROOT / SCREEN_PROFILE)
+    protocol_sha = digest((ROOT / SCREEN_PROFILE).read_bytes())
+    domain = workspace / "data/tau2-bench/data/tau2/domains/banking_knowledge"
+    if mode == "results":
+        return screen_report(workspace / "runs" / spec["name"], protocol_sha, matched.read(ROOT / SCREEN_PREFLIGHT),
+                             domain, spec["source_draws_per_task"])
+    require(mode in {"preflight", "run"} and spec["banking_setup"]["path"] == PROFILE, "Unknown screening mode or setup")
+    matched.asset_text(ROOT, spec["banking_setup"])
+    history = json.loads(matched.asset_text(ROOT, spec["previous_task_table"]))
+    _, cfg, conn, _, _, base = prepare(workspace)
+    cfg["limits"]["max_input_bytes"] = spec["max_input_bytes"]
+    modules = matched.modules_for(workspace)
+    from tau2.domains.banking_knowledge.environment import get_tasks
+
+    native = {t.id: t for t in get_tasks()}
+    files = {tid: (domain / "tasks" / (tid + ".json")).read_bytes() for tid in native}
+    source_tasks = {tid: json.loads(data) for tid, data in files.items()}
+    split = partition(history["tasks"], source_tasks, matched.read(domain / "db.json")["users"]["data"])
+    require(dict(Counter(r["group"] for r in split.values())) == spec["expected_split"], "Prespecified split changed")
+    develops = [tid for tid, r in split.items() if r["group"] == "development"]
+    tasks, cases = {}, []
+    for tid in develops:
+        group = native[tid].evaluation_criteria.reward_basis[0].value
+        case, task = native_case(cfg, conn, modules, native[tid], group)
+        case["customer"] = split[tid]["customer"] or ("unresolved-" + tid)
+        for draw in range(1, spec["source_draws_per_task"] + 1):
+            name = f"{tid}__source-{draw}"
+            tasks[name] = task
+            cases.append(dict(case, source_draw=draw, task=name, scheduled_stages=["source"]))
+    assigned = dict(source=len(cases), write=0, solve=0, second_pass_no_memory=0)
+    require(assigned == spec["assigned"], "Source draw count changed")
+    frozen = dict(series=spec["name"], protocol_sha256=protocol_sha, native_revision=PIN, corpus_sha256=base["corpus_sha256"],
+                  max_input_bytes=cfg["limits"]["max_input_bytes"],
+                  split=split, cases_sha256=digest(canonical(cases)), assigned=assigned,
+                  task_files_sha256={tid: digest(files[tid]) for tid in develops})
+    if mode == "preflight":
+        return frozen
+    require(frozen == matched.read(ROOT / SCREEN_PREFLIGHT), "Source screen differs from frozen preflight")
+    approval = matched.read(ROOT / SCREEN_APPROVAL)
+    limit = Decimal(approval["total_usd"])
+    require(approval["series"] == spec["name"] and approval["protocol_sha256"] == protocol_sha
+            and approval["preflight_sha256"] == digest(canonical(frozen)) and approval["assigned"] == assigned
+            and limit.is_finite() and 0 < limit <= Decimal(spec["maximum_usd"]), "Source screen funding scope changed")
+    record = dict(frozen, cases=cases, authorization=approval)
+    cfg.update(name=spec["name"], stages=["source"], registration_sha256=digest(canonical(record)),
+               total_usd_limit=approval["total_usd"], record_unfunded_shards=True, interruption_policy=matched.RESUME_UNSTARTED,
+               expected_endpoint_terms={r: cfg["endpoint_terms"][r] for r in ("worker", "user_simulator")})
+    endpoints = json.loads(matched.asset_text(ROOT, cfg["endpoints"]))["models"]
+    cfg["expected_model_revisions"] = {r: endpoints[r]["canonical_slug"] for r in cfg["expected_endpoint_terms"]}
+    matched.run_study(workspace, cfg, {}, conn, cases, tasks, record, stage_runner=matched.stage_job, model_resolver=matched.study_models)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("mode", choices=("source-preflight", "preflight", "run"))
+    parser.add_argument("mode", choices=("source-preflight", "preflight", "run", "results"))
     parser.add_argument("--workspace", type=Path, default=ROOT)
-    parser.add_argument("--series", choices=("required", "result-feedback"), default="required")
+    parser.add_argument("--series", choices=("required", "result-feedback", "source-screen"), default="required")
     parser.add_argument("--scope", choices=("full", "writing"), default="full")
     args = parser.parse_args()
     workspace = args.workspace.resolve()
+    if args.series == "source-screen":
+        if args.scope != "full":
+            parser.error("The source screen covers its complete development split")
+        output = source_screen(workspace, args.mode)
+        if output is not None:
+            print(json.dumps(output, ensure_ascii=False, indent=2, sort_keys=True))
+        return
+    if args.mode == "results":
+        parser.error("This results mode belongs to the source screen")
     if args.mode == "source-preflight":
         if args.series != "required" or args.scope != "full":
             parser.error("source-preflight belongs to the original four first passes")
