@@ -23,7 +23,7 @@ from agent_memory_eval.memory.tools import memory_tools
 from agent_memory_eval.memory.writing import (REQUIRED_STORE_CONTRACT, WriterFeedback, freeze_public_experience,
                                                write_from_experience)
 from agent_memory_eval.models.local_qwen import LocalQwen
-from agent_memory_eval.policies.writer_pairs import writer_pairs
+from agent_memory_eval.policies.writer_pairs import paired_writer_request, writer_pairs
 from agent_memory_eval.recording.assets import asset_text
 from agent_memory_eval.recording.journal import BlobStore, Journal, read_experiment
 from agent_memory_eval.recording.provenance import RecordingGateway, SourceRegistry, public_assistant_message
@@ -228,12 +228,9 @@ def collect_task(root, cfg, case, client, is_empty, *, parent=None, pairs=None):
             forms = {}
             for pair in pairs.values():
                 ref, new = pair["reference"], pair["candidate"]
-                wire = deepcopy(requests[f"{task}-write-{ref}"])
-                system = wire["messages"][0]
-                require(system == dict(role="system", content=cfg["writer_instruction"] + "\n" + cfg["forms"][ref]),
-                        "Archived reference did not receive its registered representation")
                 forms[new] = cfg["forms"][new]
-                system["content"] = cfg["writer_instruction"] + "\n" + forms[new]
+                wire = paired_writer_request(requests[f"{task}-write-{ref}"], cfg["writer_instruction"],
+                                             cfg["forms"][ref], forms[new])
                 expected[new] = digest(canonical(wire))
         experience = freeze_public_experience(journal, source["run"])
         writers = {}
@@ -336,6 +333,13 @@ def audit_task(root, cfg, case, is_empty):
         scored, = [e["payload"] for e in batch if e["type"] == "outcome.scored"]
         rec.update(success=scored["official_success"], fields=fields, reads=dict(reads),
                    business_sha256=digest(canonical(original)), snapshot=head["start_snapshot_id"])
+        if "representation_pairs" in cfg:
+            last = starts[-1]
+            finish = finishes[last["request_id"]]
+            raw = blobs.get(finish["response_ref"])
+            rec["decision"] = dict(request_sha256=last["request_ref"]["sha256"],
+                input_manifest_sha256=last["input_manifest_ref"]["sha256"], response_sha256=finish["response_ref"]["sha256"],
+                finish_reason=raw["choices"][0]["finish_reason"], decode_error=raw["local_generation"].get("decode_error"))
         if rec["success"] is not None:
             raw = blobs.get(finishes[starts[-1]["request_id"]]["response_ref"])
             g = grade_reply(raw["choices"][0]["message"], category, is_empty, original["tools"])
@@ -459,6 +463,12 @@ def main():
             writers = [r for r in data["allocations"] if r["phase"] == "write" and r["status"] != "not_started"]
             require(len({w["writer_shared_input_sha256"] for w in writers}) == 1
                     and len({w["snapshot"] for w in writers}) == len(writers), "Changed shared writer input or reused bank")
+            candidates = {p["candidate"] for p in cfg["representation_pairs"].values()}
+            fresh = {r["run"] for r in data["allocations"] if r["form"] in candidates and r["status"] != "not_started"}
+            with (root / task / "log.jsonl").open("rb") as stream:
+                stream.seek(prefix_size)
+                added = [e for line in stream for e in read_json(line)["events"] if e["type"] == "model.request_started"]
+            require({e["run_id"] for e in added} == fresh, "Additional model calls outside the registered candidate slots")
         report["representation_pairs"] = cfg["representation_pairs"]
         report["paired_outcomes"] = {form: compare_trials(trials(report, "solve", pair["reference"], mode),
             trials(report, "solve", pair["candidate"], mode), metrics=("tokens", "requests"), test_signs=False)

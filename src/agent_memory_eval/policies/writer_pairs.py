@@ -1,5 +1,6 @@
 """Apply one proposed change to each registered memory representation."""
 
+from copy import deepcopy
 import re
 
 from agent_memory_eval.contracts.core import ContractError, digest
@@ -25,3 +26,13 @@ def writer_pairs(forms, clause):
             conditions.append(dict(id=arm, representation=form, prompt=text,
                                    prompt_version=digest(text.encode())))
     return conditions, pairs
+
+
+def paired_writer_request(reference_wire, common, reference_prompt, candidate_prompt):
+    """Preserve the observed model, feedback, tools and public experience byte for byte."""
+    messages = reference_wire.get("messages")
+    if not messages or messages[0] != {"role": "system", "content": common + "\n" + reference_prompt}:
+        raise ContractError("Archived writer did not receive its registered representation")
+    updated = deepcopy(reference_wire)
+    updated["messages"][0]["content"] = common + "\n" + candidate_prompt
+    return updated
