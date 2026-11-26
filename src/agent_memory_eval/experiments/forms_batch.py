@@ -334,6 +334,8 @@ def verify_required_form_sets(design, plan, writer_root, bindings, *, root=ROOT)
         raise ContractError("Unknown required memory admission policy")
     if design.get("stage") != "solve" or not forms or not design.get("delivery_arms") or not bindings:
         raise ContractError("Required writing needs registered forms and sealed writer bindings")
+    if admission == "sealed_bank" and {d["writer"] for d in design["delivery_arms"].values()} != forms:
+        raise ContractError("Required reader arms must cover every registered writing form")
     delivery = design["delivery_arms"]
     common = asset_text(root, design["writing"]["common_instruction_ref"]).rstrip("\r\n")
     groups = {(j["repetition"], j["task_id"]) for j in reader_jobs}
@@ -489,6 +491,8 @@ def execute_prepared(profile, root, destination, identity, design, plan, models,
                      for v in r.get("result", {}).get("billing_by_role", {}).values()), Decimal(0))
         summary["reported_usd"] = float(known)
         summary["reported_usd_decimal"] = str(known)
+        summary["requests_with_unconfirmed_submission"] = sum(
+            len(r.get("result", {}).get("pending_request_ids", ())) for r in rows)
     if close_cost:
         summary.update(unknown_cost=any(r.get("result", {}).get("unknown_cost") for r in rows),
                        reserved_usd=str(close_cost.reserved))

@@ -7,7 +7,9 @@ from functools import partial
 import json
 import os
 from pathlib import Path
+import shutil
 import sys
+from unittest.mock import patch
 
 from agent_memory_eval.contracts.core import canonical, digest
 from agent_memory_eval.experiments import forms_batch
@@ -77,6 +79,63 @@ def fixture_stage(args):
     return real_stage(args)
 
 
+def verify_interruption(folder, spec, destination):
+    """Emulate a crash after reader four's journal close but before its allocation update."""
+    from tau2.domains.banking_knowledge.environment import get_tasks
+
+    root = folder / "runs" / spec["validation_study"]
+    reg = cycle.read(root / "registration.json")
+    case = next(c for c in reg["preflight"]["cases"] if c["task"] == "task_076__candidate__draw-2")
+    task_dir = "task-" + case["task"]
+    source = root / task_dir
+    dest = destination / task_dir
+    dest.mkdir(parents=True)
+    original = cycle.bank.matched.sealed_rows(source / "solve")[2]
+    assert len(original) == 5
+    last_job = Path(original[-1]["directory"]).name
+
+    def omit(path, names):
+        if Path(path) == source / "solve":
+            return ["completion.json"]
+        return [last_job] if Path(path) == source / "solve/jobs" else []
+
+    shutil.copytree(source / "write", dest / "write", copy_function=os.link)
+    shutil.copytree(source / "solve", dest / "solve", copy_function=os.link, ignore=omit)
+    ledger = dest / "solve/allocations.json"
+    rows = cycle.read(ledger)
+    for row, state in zip(rows[-2:], ("started", "planned"), strict=True):
+        row.pop("result")
+        row["status"] = state
+    forms_batch.write_json(ledger, rows)
+    ctl = cycle.read(dest / "solve/control.json")
+    _, base, conn, _, _, _ = cycle.bank.prepare(folder)
+    cfg = cycle.bank.required_design(base, cycle.read(cycle.ROOT / cycle.bank.REQUIRED_PROFILE))
+    cfg.update(name=spec["validation_study"], writer_feedback_level=spec["feedback"],
+               reader_admission=spec["reader_admission"], interruption_policy=spec["interruption_policy"],
+               registration_sha256=ctl["profile"]["registration_sha256"])
+    task = next(t for t in get_tasks() if t.id == case["task_id"])
+    _, raw = cycle.bank.native_case(cfg, conn, cycle.bank.matched.modules_for(folder), task, spec["tasks"][task.id])
+    args = (folder, destination, cfg, {}, conn, case, raw, "solve", reg["implementation"], ctl["model_catalog_entries"],
+            None, str(ctl["profile"]["guards"]["max_usd"]))
+    calls = []
+
+    def counted(request, timeout):
+        calls.append(None)
+        return local_reply(request, timeout)
+
+    with patch.object(forms_batch, "OpenRouterClient", partial(OpenRouterClient, opener=counted)):
+        fixture_stage(args)
+        submitted = len(calls)
+        fixture_stage(args)
+    closed = cycle.bank.matched.sealed_rows(dest / "solve")[2]
+    assert submitted == len(calls) and submitted > 0
+    assert closed[:-1] == original[:-1] and [r["run_id"] for r in closed] == [r["run_id"] for r in original]
+    assert closed[-1]["result"]["grading_status"] == "graded"
+    assert submitted == sum(b["http_calls"] for b in closed[-1]["result"]["billing_by_role"].values())
+    return dict(already_finished=3, recovered_from_closed_journal=1, newly_dispatched_readers=1,
+                new_local_transport_requests=submitted, extra_requests_on_second_resume=0)
+
+
 def check(workspace, folder):
     from agent_memory_eval.adapters.tau_banking_opening import FIELDS
 
@@ -128,6 +187,7 @@ def check(workspace, folder):
                    writing=writers, missing=missing, first_inputs=report["repetitions"]["first_inputs"],
                    paired_readers={k:pairs[k] for k in ("assigned_pairs", "observed_pairs", "observed_clusters")},
                    reader_status={p:Counter(r["status"] for r in rows) for p, rows in report["trials"].items()})
+    summary["interruption"] = verify_interruption(folder, spec, folder / "interruption-copy")
     cycle.save(folder / "verification.json", summary)
     print(json.dumps(summary, indent=2))
 

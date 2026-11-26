@@ -216,7 +216,7 @@ def validation(workspace):
 def paired_validation_results(workspace, spec, proposal, *, start, task_ids, read_sha, ceiling, protocol_sha, binding):
     """Verify full banking consultations against their registered sources, banks, grades and costs."""
     repeats = cycle.PairedRepetitions.from_spec(spec)
-    disposition = spec.get("reader_admission") == "sealed_bank"
+    report_reasons = spec.get("adapter") == "account_opening"
     sr = workspace / "runs" / spec["source_study"]
     vr = workspace / "runs" / spec["validation_study"]
     regs, regv = [read(root / "registration.json") for root in (sr, vr)]
@@ -248,14 +248,14 @@ def paired_validation_results(workspace, spec, proposal, *, start, task_ids, rea
         source_rows = checked_shard(sr, folder, sc, regs)
         if source_rows is None:
             sources[tid] = dict(task=tid, success=None)
-            if disposition:
-                sources[tid].update(status="not_started", reason=sc["stages"][str(folder.relative_to(sr))]["reason"])
+            if report_reasons:
+                sources[tid].update(status="not_started", reason=sc["stages"][str(folder.relative_to(sr))].get("reason"))
             continue
         (r,) = source_rows
         sources[tid] = grade_record(
             folder, r, case, digest(canonical(regs["preflight"])), read_sha, documents=docs[tid]
         )
-        if disposition and sources[tid]["success"] is None:
+        if report_reasons and sources[tid]["success"] is None:
             sources[tid]["reason"] = r.get("reason") or (r.get("result") or {}).get("error_code")
     for case in regv["preflight"]["cases"]:
         policy, tid = case["writer_policy"], case["task_id"]
@@ -293,7 +293,7 @@ def paired_validation_results(workspace, spec, proposal, *, start, task_ids, rea
                 arm = row["arm"]
                 if stage == "write":
                     rec = dict(task=tid, policy=policy, form=arm, status=row["status"], bank=None)
-                    if disposition and row["status"] != "completed":
+                    if report_reasons and row["status"] != "completed":
                         rec["reason"] = row.get("reason") or result.get("error_code")
                     if row["status"] == "completed":
                         b = read_form_bank(
@@ -336,7 +336,7 @@ def paired_validation_results(workspace, spec, proposal, *, start, task_ids, rea
                         )
                     if "writer_draw" in case:
                         rec.update(writer_draw=case["writer_draw"], reader_repeat=reader_repeat)
-                    if disposition and rec["success"] is None:
+                    if report_reasons and rec["success"] is None:
                         rec["reason"] = row.get("reason") or result.get("error_code")
                     trials[policy].append(rec)
     require(
@@ -650,7 +650,7 @@ def registered_account_results(workspace, profile, *, packets_only=False, rating
                         target = by_slot[policy, tid, row["arm"], draw, reader_repeat]
                     target["account_opening"] = business
 
-    bank_review = spec.get("reader_admission") == "sealed_bank" or any(
+    bank_review = "ratings_schema" in spec or any(
         len(w["bank"]["items"]) > 1 for w in result["writers"] if w["bank"])
     version = "v2" if bank_review else "v1"
     for writer in result["writers"]:

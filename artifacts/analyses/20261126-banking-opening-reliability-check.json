@@ -1,0 +1,136 @@
+{
+  "format": "banking-opening-reliability-verification/v1",
+  "date": "2026-11-26",
+  "protocol": {
+    "file": "protocols/pilots/tau-banking-opening-writer-pairs-v3.json",
+    "sha256": "2b65641d4226d967e2a6ffaf85ee012069f1ce231528a4e968ed3e2881f6a1cd",
+    "preflight_file": "artifacts/pilots/20261126-banking-opening-reliability-preflight.json",
+    "preflight_sha256": "b734b87af863f0e3182ebafc64142a48040735c1155becfab473503dce4f18d8",
+    "schedule_sha256": "81f76e894f2d210918e72fa76edcd5bd1b2f05d32127ccd9810057214abd7df7",
+    "native_controls_unchanged_since_v2": 95,
+    "assigned": {
+      "source": 19,
+      "write": 380,
+      "solve": 1140,
+      "second_pass_no_memory": 0
+    },
+    "operational_source_started": false,
+    "operational_validation_started": false,
+    "operational_authorization_present": false
+  },
+  "receipt_subjects": {
+    "method": "Submit the same scoped assertion against native matching and wrong-product calls; check both judgments.",
+    "receipts_tested": 28,
+    "wrong_product_supported_accepted": 0,
+    "wrong_product_contradiction_accepted": 28,
+    "matching_product_supported_accepted": 28,
+    "matching_product_contradiction_accepted": 0
+  },
+  "full_cohort_fixture": {
+    "method": "scripted model replies in native banking, no provider network",
+    "runner_commit": "22905f2d4a4241abaf720354b25f8bb3aae114fe",
+    "transport": "in-process scripted responses with socket connections and DNS blocked",
+    "external_calls": 0,
+    "source": {
+      "assigned": 19,
+      "completed": 19
+    },
+    "writers": {
+      "assigned": 380,
+      "completed": 379,
+      "error": 1
+    },
+    "readers": {
+      "assigned": 1140,
+      "completed": 1137,
+      "not_started": 3,
+      "required_bank_incomplete": 3
+    },
+    "distinct_reader_sessions": 1137,
+    "stored_banks_by_item_count": {
+      "1": 360,
+      "2": 19
+    },
+    "first_inputs": {
+      "write": {
+        "assigned_groups": 190,
+        "groups_with_input": 190,
+        "complete_identical_groups": 190
+      },
+      "solve": {
+        "assigned_groups": 380,
+        "groups_with_input": 379,
+        "complete_identical_groups": 379
+      }
+    },
+    "pairs": {
+      "assigned_pairs": 570,
+      "observed_pairs": 567,
+      "observed_clusters": 13
+    },
+    "injections": [
+      "task_076 existing/fact writer draw 2 returned text without a store",
+      "candidate/episode writer draw 1 stored two items on every task; the second claimed an imaginary product was opened"
+    ],
+    "scripted_ratings": {
+      "distinct_masked_packets": 36,
+      "policy_totals": {
+        "existing": {
+          "assigned_writers": 190,
+          "stored_banks": 189,
+          "fully_rated_banks": 189,
+          "banks_with_unsupported_or_contradicted": 0,
+          "stored_items": 189,
+          "rated_items": 189,
+          "items_with_unsupported_or_contradicted": 0,
+          "items_without_outcome_claim": 0,
+          "outcome_only_claims": 0,
+          "covered_receipts": 189,
+          "observable_receipts_across_items": 279
+        },
+        "candidate": {
+          "assigned_writers": 190,
+          "stored_banks": 190,
+          "fully_rated_banks": 190,
+          "banks_with_unsupported_or_contradicted": 19,
+          "stored_items": 209,
+          "rated_items": 209,
+          "items_with_unsupported_or_contradicted": 19,
+          "items_without_outcome_claim": 0,
+          "outcome_only_claims": 0,
+          "covered_receipts": 190,
+          "observable_receipts_across_items": 308
+        }
+      }
+    }
+  },
+  "recovery": {
+    "method": "Copy a native five-reader shard, preserve three completed results, leave the fourth terminal journal unprojected, remove the fifth journal, and invoke the stage entry point twice.",
+    "already_finished": 3,
+    "recovered_from_closed_journal": 1,
+    "newly_dispatched_readers": 1,
+    "new_local_transport_requests": 5,
+    "extra_requests_on_second_resume": 0
+  },
+  "archive_compatibility": {
+    "method": "Reproject terminal journals from a simulated started allocation and compare all recorded result fields, including per-role billing and journal SHA. Separately managed unpriced reservations are tested using an interrupted 503.",
+    "closed_rows": {
+      "solve": 189,
+      "source": 13,
+      "write": 140
+    },
+    "changed_result_fields": {},
+    "additional_fields": {}
+  },
+  "previous_version_edge_fixture": {
+    "assigned": 60,
+    "missing_readers_by_reason": {
+      "existing": {
+        "required_form_set_incomplete": 15
+      },
+      "candidate": {}
+    }
+  },
+  "provider_calls": 0,
+  "new_spend_usd": "0"
+}

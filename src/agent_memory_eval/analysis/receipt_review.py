@@ -1,6 +1,7 @@
 """Blind, citation-checked review of retrospective business outcome claims in stored memory."""
 
 from collections import Counter
+import re
 
 from agent_memory_eval.analysis.claim_evidence import _citation
 from agent_memory_eval.analysis.recorded_decisions import require
@@ -24,11 +25,29 @@ def outcome_packet(item, receipts, opening, *, claim_outcomes, subject_fields=()
     return digest(canonical(content)), content
 
 
+def _mentions(text, literal):
+    return re.search(r"(?<!\w)" + re.escape(literal) + r"(?!\w)", text, re.IGNORECASE) is not None
+
+
+def _receipt_relation(receipt, outcome, subject):
+    if receipt["outcome"] in {"unobserved", "unrecognized"}:
+        return "unknown"
+    args = receipt.get("arguments", {})
+    if receipt["outcome"] != outcome or any(
+        isinstance(args.get(k), str) and args[k].casefold() != v.casefold() for k, v in subject.items()
+    ):
+        return "contradicted"
+    if all(isinstance(args.get(k), str) and args[k].casefold() == v.casefold() for k, v in subject.items()):
+        return "supported"
+    return "unknown"
+
+
 def score_outcome_review(packet, rating):
     """Check the quoted claim against the status and subject of each cited public return."""
     require(set(rating) == {"claims", "no_outcome_reason"} and isinstance(rating["claims"], list),
             "Invalid outcome review")
     by_id = {r["call_id"]: r for r in packet["receipts"]}
+    require(len(by_id) == len(packet["receipts"]), "Ambiguous cited call ID")
     claims = rating["claims"]
     if claims:
         require(rating["no_outcome_reason"] is None, "An outcome claim has been rated as absent")
@@ -55,33 +74,29 @@ def score_outcome_review(packet, rating):
             require(isinstance(claim["subject"], dict) and set(claim["subject"]) == set(fields),
                     "Record every declared subject field, using null for an unspecified value")
             subject = {k: v for k, v in claim["subject"].items() if v is not None}
-            require(all(isinstance(v, str) and v.strip() and v in claim["quote"]
+            require(all(isinstance(v, str) and v.strip() and _mentions(claim["quote"], v)
                         for v in subject.values()), "A subject value must appear in the quoted claim")
         specified = bool(subject) and set(packet.get("required_subject_fields", ())) <= subject.keys()
-        evidence = []
-        for key in ids:
-            receipt = by_id[key]
-            args = receipt.get("arguments", {})
-            if receipt["outcome"] in {"unobserved", "unrecognized"}:
-                evidence.append("unknown")
-            elif receipt["outcome"] != claim["outcome"] or any(
-                isinstance(args.get(k), str) and args[k].casefold() != v.casefold() for k, v in subject.items()
-            ):
-                evidence.append("contradicted")
-            elif all(isinstance(args.get(k), str) and args[k].casefold() == v.casefold() for k, v in subject.items()):
-                evidence.append("supported")
-            else:
-                evidence.append("unknown")
+        evidence = {_receipt_relation(by_id[key], claim["outcome"], subject) for key in ids}
         if claim["judgment"] == "supported":
-            require((not fields or specified) and evidence and set(evidence) == {"supported"},
+            require((not fields or specified) and evidence == {"supported"},
                     "The cited returns must confirm the reported outcome and its stated subject")
             covered.update(ids)
         elif claim["judgment"] == "contradicted":
-            require(evidence and set(evidence) == {"contradicted"},
+            require(evidence == {"contradicted"},
                     "A contradiction needs an observed incompatible outcome or subject")
+            if fields and any(_receipt_relation(r, claim["outcome"], subject) == "supported"
+                              for k, r in by_id.items() if k not in ids):
+                require(all(_mentions(claim["quote"], k) for k in ids),
+                        "Another return supports this claim; the quote must identify the contradicted call")
         elif claim["judgment"] == "outcome_only":
-            require(not specified and evidence and set(evidence) == {"supported"},
+            require(not specified and evidence == {"supported"},
                     "Outcome-only requires a confirmed status and no confirmed product-level claim")
+            for field in packet["required_subject_fields"]:
+                named = (r.get("arguments", {}).get(field) for r in by_id.values())
+                require(field in subject or not any(isinstance(v, str) and v and _mentions(claim["quote"], v)
+                                                    for v in named),
+                        "The quote names a receipt subject that is missing from the rating")
         checked.append(dict(**claim, citation=citation))
     observable = {k for k, r in by_id.items() if r["outcome"] not in {"unobserved", "unrecognized"}}
     return dict(claims=checked, no_outcome_reason=rating["no_outcome_reason"],

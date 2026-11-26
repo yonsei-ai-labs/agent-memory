@@ -1,0 +1,162 @@
+{
+  "format": "banking-opening-prelaunch-review/v1",
+  "date": "2026-11-26",
+  "frozen_implementation": "262ac84e3ee54f5a79655f8dceb3a429f8dd229d",
+  "protocol": {
+    "file": "protocols/pilots/tau-banking-opening-writer-pairs-v2.json",
+    "sha256": "1afc5142cd4ab661e1e077f54d0e90247798c2f393a9f7bacb8b2d5f5a2a0852",
+    "identified_customers": 13,
+    "tasks": 19,
+    "source_allocations": 19,
+    "writer_allocations": 380,
+    "reader_allocations": 1140,
+    "operational_source_directory_present": false,
+    "operational_validation_directory_present": false,
+    "operational_authorization_file_present": false
+  },
+  "review_provider_requests": 0,
+  "archived_model_run_reanalysis": {
+    "tau-banking-multitarget-forms-01": {
+      "file": "artifacts/analyses/20261125-banking-multitarget-forms.json",
+      "published_sha256": "032538fa855e7b23a55c0bf4a683d80004500b0c4c36f9c1020e96c5d2892767",
+      "rerun_json_equal": true
+    },
+    "bfcl-writer-pairs-01": {
+      "file": "artifacts/analyses/20261126-bfcl-writer-pairs.json",
+      "published_sha256": "7c6dae6e5abc07f5dbf1c387fffc2af8a596621dba4fca9e63a56c269591ca0e",
+      "rerun_json_equal": true
+    }
+  },
+  "archived_banking_reader_rows": {
+    "reader_records": 30,
+    "exposed": 30,
+    "graded": 29,
+    "successful": 0,
+    "input_size_limit": 1,
+    "repeated_pairs": 15,
+    "pairs_with_identical_source_writer_snapshot_opening_and_first_input": 15,
+    "distinct_reader_sessions": 30,
+    "reader_sessions_shared_with_first_pass": 0
+  },
+  "archived_banking_completed_writers_by_stored_item_count": {
+    "1": 139
+  },
+  "archived_banking_completed_writers_by_series": {
+    "tau-banking-memory-01": 19,
+    "tau-banking-multitarget-forms-01": 20,
+    "tau-banking-policy-check-01": 40,
+    "tau-banking-required-01": 20,
+    "tau-banking-result-feedback-01": 20,
+    "tau-banking-scoped-writers-01": 20
+  },
+  "official_environment_preflight": {
+    "file": "artifacts/pilots/20261126-banking-opening-cohort-preflight.json",
+    "sha256": "38525d39e8b5bb8529b3568029b7c46d75d028e5e1277014fe59e4157b4aa54c",
+    "rerun_byte_identical": true,
+    "paths": 95,
+    "wrong_product_db_successes": 0,
+    "wrong_products_created": 28
+  },
+  "isolated_runner_checks": {
+    "study_kind": "Scripted local transport with external sockets disabled. Official task_076, native business tools, DB, scorer, writer tools, ledgers, repetition schedule and frozen analyzer. One case per fixture. Each case reuses its own recorded source only. No LLM performance is measured.",
+    "ordinary": {
+      "source": {
+        "source": {
+          "assigned": 1,
+          "completed": 1,
+          "graded": 1,
+          "success": 1
+        }
+      },
+      "writer": {
+        "assigned": 20,
+        "completed": 20,
+        "items_1": 20
+      },
+      "reader": {
+        "assigned": 60,
+        "completed": 60,
+        "graded": 60,
+        "success": 60
+      },
+      "analyzer": "completed",
+      "first_input_checks": {
+        "solve": {
+          "assigned_groups": 20,
+          "complete_identical_groups": 20,
+          "groups_with_input": 20
+        },
+        "write": {
+          "assigned_groups": 10,
+          "complete_identical_groups": 10,
+          "groups_with_input": 10
+        }
+      },
+      "paired_wire_checks": {
+        "solve": 30,
+        "write": 10
+      }
+    },
+    "edge_cases": {
+      "writer_injections": [
+        "existing/fact/draw-2 sent text without a store",
+        "candidate/episode/draw-1 sent two valid memory_store calls in one response"
+      ],
+      "writer": {
+        "assigned": 20,
+        "completed": 19,
+        "error": 1,
+        "error WRITER_REQUIRED_STORE_MISSING": 1,
+        "items_1": 18,
+        "items_2": 1
+      },
+      "reader": {
+        "assigned": 60,
+        "completed": 45,
+        "graded": 45,
+        "not_started": 15,
+        "reason required_form_set_incomplete": 15,
+        "success": 45
+      },
+      "analyzer": "ValueError: too many values to unpack (expected 1)",
+      "first_failing_expression": "item, = writer[\"bank\"][\"items\"]",
+      "unstarted_for_missing_bank": 3,
+      "unstarted_for_other_four_completed_banks": 12,
+      "ledger_reason": [
+        "required_form_set_incomplete"
+      ],
+      "unstarted_trial_summaries_with_reason": 0
+    },
+    "interrupted_shard": {
+      "method": "Copy the fixture source control and allocations to an isolated existing shard without its completion seal, and invoke its registered stage entry point.",
+      "exception": "FileNotFoundError",
+      "missing_member": "completion.json",
+      "network_calls": 0
+    }
+  },
+  "writer_rating_challenge": {
+    "method": "For each native wrong-product receipt, construct one retrospective claim naming the requested product. Cite the real wrong-product call ID, preserving the opened status. Submit the same exact claim once as supported and once as contradicted. These are fabricated test claims, not model-generated memories.",
+    "tasks": 19,
+    "wrong_product_receipts": 28,
+    "incorrect_supported_ratings_accepted": 28,
+    "correct_contradicted_ratings_rejected": 28,
+    "example": {
+      "task": "task_076",
+      "call_id": "control-2",
+      "claim_product": "Purple Account",
+      "receipt_product": "Unrequested control product",
+      "supported_accepted": true,
+      "contradicted_rejected": true
+    }
+  },
+  "repository_verification": {
+    "main_workspace_checks_passed": [
+      "scripts/validate_design.py",
+      "scripts/check_repository.py",
+      "scripts/verify_legacy_data.py"
+    ],
+    "frozen_implementation_unittest_discovered": 622,
+    "frozen_implementation_unittest_passed": 533,
+    "frozen_implementation_unittest_skipped": 89
+  }
+}

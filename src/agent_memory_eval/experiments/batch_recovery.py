@@ -58,7 +58,8 @@ def _restore_result(folder, row):
     scan, state, _ = read_experiment(folder) if raw is not None else (None, None, None)
     checksum = digest(raw) if raw is not None else None
     events = list(scan["events"].values()) if scan is not None else []
-    if any(e["run_id"] != row["run_id"] for e in events if e["type"].startswith("model.request_")):
+    if ((scan and set(scan["starts"]) - {row["run_id"]})
+            or any(e["run_id"] != row["run_id"] for e in events if e["type"].startswith("model.request_"))):
         raise ContractError("Interrupted job contains another assignment's requests")
     billing = usage_from_events(events)
     if scan and not scan["tail_bytes"] and any(e["type"] == "run.ended" and e["run_id"] == row["run_id"] for e in events):
@@ -89,7 +90,7 @@ def _restore_result(folder, row):
             cell["unknown_count"] += 1
     result = dict(run_id=row["run_id"], status="interrupted", error_code="CONTROLLER_INTERRUPTED",
                   billing_by_role=billing, partial_log_sha256=checksum, pending_request_ids=pending,
-                  unknown_cost=bool(pending or (scan and scan["tail_bytes"])
+                  unknown_cost=bool(scan is None or pending or scan["tail_bytes"]
                                     or any(v["unknown_count"] for v in billing.values())))
     if stored and stored != result:
         raise ContractError("Interrupted allocation changed since it was recorded")
@@ -109,8 +110,10 @@ def restore_batch(directory, expected, jobs, new_rows, guard, reservations):
         write_json(control, expected)
     previous = read_json(control.read_bytes())
     ignore = {"started_at", "model_catalog_entries"}
+    old_models, models = previous["model_catalog_entries"], expected["model_catalog_entries"]
     if ({k: v for k, v in previous.items() if k not in ignore} != {k: v for k, v in expected.items() if k not in ignore}
-            or endpoint_terms(previous["model_catalog_entries"]) != endpoint_terms(expected["model_catalog_entries"])):
+            or endpoint_terms(old_models) != endpoint_terms(models)
+            or any(v.get("canonical_slug") != models[k].get("canonical_slug") for k, v in old_models.items())):
         raise ContractError("Interrupted batch differs from the registered inputs or prices")
     started = datetime.fromisoformat(previous["started_at"])
     guard.deadline -= max(0, (datetime.now(timezone.utc) - started).total_seconds())
@@ -149,9 +152,9 @@ def restore_batch(directory, expected, jobs, new_rows, guard, reservations):
                 raise ContractError("Unpriced request reservation differs from the original ledger")
             if not bounded:
                 guard.unknown_cost = True
-        if result.get("error_code") in {"FIRST_PASS_MISMATCH", "TASK_START_MISMATCH", "SPEND_LIMIT",
-                                        "TIME_LIMIT", "CALL_LIMIT"}:
-            guard.denied = result["error_code"]
+        error = (result.get("error_code") or "").removeprefix("BATCH_")
+        if error in {"FIRST_PASS_MISMATCH", "TASK_START_MISMATCH", "SPEND_LIMIT", "TIME_LIMIT", "CALL_LIMIT"}:
+            guard.denied = error
     if confirmed > Decimal(str(guard.max_usd)):
         raise ContractError("Restored spending exceeds the remaining registered grant")
     guard.reported_usd = float(confirmed)

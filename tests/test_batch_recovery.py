@@ -1,14 +1,17 @@
+from collections import Counter
 from decimal import Decimal
 from functools import partial
+from io import BytesIO
 from pathlib import Path
 from tempfile import TemporaryDirectory
 import unittest
 from unittest.mock import patch
+from urllib.error import HTTPError
 
-from agent_memory_eval.contracts.core import ContractError, read_json
+from agent_memory_eval.contracts.core import ContractError, canonical, read_json
 from agent_memory_eval.contracts.validation import ROOT
 from agent_memory_eval.experiments import forms_batch as batch
-from agent_memory_eval.experiments.batch_recovery import POLICY, stage_lease
+from agent_memory_eval.experiments.batch_recovery import POLICY, _restore_result, stage_lease
 from agent_memory_eval.experiments.forms_write import load_form_sources
 from agent_memory_eval.experiments.fresh_forms import CostReservations
 from agent_memory_eval.models.openrouter import OpenRouterClient
@@ -36,6 +39,7 @@ class BatchRecoveryTests(unittest.TestCase):
                           reservation_pricing=MODEL["pricing"])
         self.calls = 0
         self.drop_at = None
+        self.unpriced_at = None
         self.addCleanup(patch.stopall)
         patch.dict("os.environ", OPENROUTER_API_KEY="offline-test-only").start()
         patch.object(batch, "OpenRouterClient", partial(OpenRouterClient, opener=self.opener)).start()
@@ -44,6 +48,9 @@ class BatchRecoveryTests(unittest.TestCase):
         self.calls += 1
         if self.calls == self.drop_at:
             raise KeyboardInterrupt("interrupted while awaiting the HTTP response")
+        if self.calls == self.unpriced_at:
+            body = canonical(dict(error=dict(code=503, message="fixture unavailable")))
+            raise HTTPError("https://fixture.invalid", 503, "Unavailable", {}, BytesIO(body))
         return Reply(response(cost=0.003))
 
     def execute(self):
@@ -88,6 +95,7 @@ class BatchRecoveryTests(unittest.TestCase):
         close, _, rows = sealed_rows(self.folder)
         cost = accounting(self.folder, "1")
         self.assertEqual((self.calls, close["http_calls"]), (2, 2))
+        self.assertEqual(close["requests_with_unconfirmed_submission"], 1)
         self.assertEqual([r["status"] for r in rows], ["empty", "interrupted", "not_started"])
         self.assertEqual(rows[2]["reason"], "unknown_cost")
         self.assertEqual(len(rows[1]["result"]["pending_request_ids"]), 1)
@@ -111,3 +119,66 @@ class BatchRecoveryTests(unittest.TestCase):
         with stage_lease(self.folder), self.assertRaises(ContractError):
             with stage_lease(self.folder):
                 self.fail("simultaneous stage entry")
+
+    def test_started_slot_without_a_journal_keeps_the_grant_reserved(self):
+        write = batch.write_json
+
+        def stop_after_start(path, rows):
+            write(path, rows)
+            if path.name == "allocations.json" and rows[0]["status"] == "started":
+                raise KeyboardInterrupt("no durable request log")
+
+        with patch.object(batch, "write_json", stop_after_start), self.assertRaises(KeyboardInterrupt):
+            self.execute()
+        self.execute()
+        self.assertEqual(self.calls, 0)
+        self.assertEqual(Decimal(accounting(self.folder, "1")["held"]), 1)
+
+    def test_resuming_reconciles_a_bounded_provider_error_only_once(self):
+        self.unpriced_at = 2
+        write = batch.write_json
+
+        def stop_after_error(path, rows):
+            if path.name == "allocations.json" and rows[1]["status"] == "error":
+                write(path, rows)
+                raise KeyboardInterrupt("cost reservation and job are already recorded")
+            write(path, rows)
+
+        with patch.object(batch, "write_json", stop_after_error), self.assertRaises(KeyboardInterrupt):
+            self.execute()
+        before = read_json((self.folder / "allocations.json").read_bytes())
+        held = Decimal(before[1]["result"]["unpriced_reservation"]["usd"])
+        self.assertGreater(held, 0)
+        self.execute()
+        close, _, rows = sealed_rows(self.folder)
+        self.assertEqual(rows[1], before[1])
+        self.assertEqual((self.calls, Decimal(close["reserved_usd"]), Decimal(close["reported_usd_decimal"])),
+                         (3, held, Decimal(".006")))
+
+
+class ArchivedBankingRecoveryTests(unittest.TestCase):
+    def test_closed_banking_journals_reproduce_preexisting_results(self):
+        studies = [
+            "tau-banking-memory-01", "tau-banking-required-01", "tau-banking-result-feedback-01",
+            "tau-banking-policy-check-sources-01", "tau-banking-policy-check-01",
+            "tau-banking-scoped-writers-01", "tau-banking-replacement-sources-01",
+            "tau-banking-multitarget-forms-01",
+        ]
+        roots = [ROOT / "runs" / study for study in studies]
+        if not all((root / "completion.json").is_file() for root in roots):
+            self.skipTest("Local historical banking records are unavailable")
+        counts = Counter()
+        for root in roots:
+            for ledger in sorted(root.glob("task-*/*/allocations.json")):
+                stage = ledger.parent
+                for row in sealed_rows(stage)[2]:
+                    expected = row.get("result") or {}
+                    if not expected.get("log_sha256"):
+                        continue
+                    with self.subTest(study=root.name, run=row["run_id"]):
+                        interrupted = {k: v for k, v in row.items() if k != "result"}
+                        interrupted["status"] = "started"
+                        restored = _restore_result(stage / row["directory"], interrupted)
+                        self.assertEqual(restored, {k: v for k, v in expected.items() if k != "unpriced_reservation"})
+                    counts[stage.name.split("-repeat-")[0]] += 1
+        self.assertEqual(counts, {"source": 13, "write": 140, "solve": 189})

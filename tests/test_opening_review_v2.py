@@ -80,3 +80,13 @@ class SubjectReviewTests(unittest.TestCase):
         self.assertIsNone(out["rows"][1]["rating"])
         del votes[key2]
         self.assertIsNone(join_bank_reviews(packets, assignments, votes)["rows"][0]["rating"])
+
+    def test_another_product_opening_is_not_a_contradiction_of_a_supported_claim(self):
+        actual = dict(call_id="call-1", outcome="opened", arguments=dict(user_id="owner", account_class="Blue"))
+        _, packet, claim = claim_packet("Blue", actual)
+        other = dict(actual, call_id="call-2", arguments=dict(actual["arguments"], account_class="Red"))
+        packet["receipts"].append(other)
+        with self.assertRaises(ContractError):
+            score_outcome_review(packet, vote(dict(claim, judgment="contradicted", call_ids=["call-2"])))
+        with self.assertRaises(ContractError):
+            score_outcome_review(packet, vote(dict(claim, judgment="outcome_only", subject=dict.fromkeys(FIELDS))))
