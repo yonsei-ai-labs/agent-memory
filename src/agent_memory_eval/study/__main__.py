@@ -12,8 +12,9 @@ from agent_memory_eval.study.records import fixed, read
 from agent_memory_eval.study.scorecard import scorecard
 
 
-def approval_path(workspace, plan):
-    return Path(workspace) / "artifacts" / "approvals" / f"{plan['id']}.json"
+def approval_path(plan):
+    """Approvals are kept with the plans in the code repository; run data stays in the workspace."""
+    return ROOT / "artifacts" / "approvals" / f"{plan['id']}.json"
 
 
 def main(argv=None):
@@ -48,13 +49,13 @@ def main(argv=None):
         if not (args.max_usd and args.quote):
             parser.error("Record the approved ceiling and the person's own words")
         record = adapter.resolve(plan, workspace, ROOT)["record"]
-        path = approval_path(workspace, plan)
+        path = approval_path(plan)
         path.parent.mkdir(parents=True, exist_ok=True)
         fixed(path, approval_for(plan, record, max_usd=args.max_usd, user_authorization=args.quote))
-        out = dict(approval=str(path.relative_to(workspace)), assigned=record["assigned"], max_usd=args.max_usd)
+        out = dict(approval=str(path.relative_to(ROOT)), assigned=record["assigned"], max_usd=args.max_usd)
     elif args.command in {"run", "resume"}:
         if staged:
-            out = adapter.run(plan, workspace, ROOT, approval=read(approval_path(workspace, plan)),
+            out = adapter.run(plan, workspace, ROOT, approval=read(approval_path(plan)),
                               progress=lambda label, done, total, spent: print(label, done, "of", total, "USD", spent,
                                                                               file=sys.stderr, flush=True))
         else:
