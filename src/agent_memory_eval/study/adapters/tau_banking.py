@@ -50,6 +50,19 @@ DOMAINS = {
 }
 
 
+STEP_CAP = "NATIVE_MAX_STEPS"
+
+
+def outcome_fields(obs):
+    """(status, success, missing reason, step_cap). τ² scores an episode stopped at its native step cap 0."""
+    if obs["success"] is not None:
+        return "graded", obs["success"], None, False
+    reason = obs.get("reason") or obs["status"]
+    if reason == STEP_CAP:
+        return "graded", False, None, True
+    return "missing", None, reason, False
+
+
 def judge_config(cfg):
     return dict(cfg["judge"], timeout_seconds=cfg["http_timeout_seconds"])
 
@@ -603,11 +616,10 @@ class Tau2Study:
                     return canonical([[c["function"]["name"], c["function"]["arguments"]] for c in calls]).decode()
             return "no_business_call" if result.get("grading_status") == "graded" else None
         def row(condition, obs, attempt, repeat=1, origin_name=origin, decision=None, memory=None):
-            graded = obs["success"] is not None
+            status, success, reason, step_cap = outcome_fields(obs)
             effort = obs.get("effort") or {}
             return dict(task=case["task_id"], source=case["task"], repeat=repeat, condition=condition, origin=origin_name,
-                        attempt=attempt, status="graded" if graded else "missing", success=obs["success"],
-                        missing_reason=None if graded else (obs.get("reason") or obs["status"]),
+                        attempt=attempt, status=status, success=success, missing_reason=reason, step_cap=step_cap,
                         tokens=effort.get("tokens"), business_calls=effort.get("business_calls"),
                         reads_list=obs.get("reads", {}).get("memory_list", 0), reads_get=obs.get("reads", {}).get("memory_get", 0),
                         preloaded="body" in obs.get("first_fields", []), cost_usd=effort.get("usd"), first_decision=decision,

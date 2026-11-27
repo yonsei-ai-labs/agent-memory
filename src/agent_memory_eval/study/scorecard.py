@@ -29,7 +29,7 @@ def effective_slots(rows):
     for key, attempts in grouped.items():
         attempts.sort(key=lambda r: (origins[r["origin"]], r["attempt"]))
         graded = [r for r in attempts if r["status"] == "graded"]
-        chosen = graded[0] if graded else attempts[0]
+        chosen = graded[0] if graded else attempts[-1]  # A slot still missing reports why its last attempt failed.
         slots[key] = dict(chosen, after_retry=chosen is not attempts[0])
     return slots
 
@@ -77,6 +77,7 @@ def scorecard(rows):
             expected_no_memory_successes=sum(baseline[r["task"]] for r in graded if r["task"] in baseline),
             slots_without_baseline=sum(r["task"] not in baseline for r in graded),
             graded_after_retry=sum(r["after_retry"] for r in graded),
+            step_capped=sum(bool(r.get("step_cap")) for r in graded),
             missing=dict(Counter(r["missing_reason"] for r in own if r["status"] == "missing")),
             paired_with_source=len(paired),
             recoveries=sum(not s["success"] and r["success"] for r, s in paired),

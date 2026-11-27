@@ -105,6 +105,14 @@ class Tau2DomainTests(unittest.TestCase):
                 self.assertEqual(done.returncode, 0, done.stderr[-1500:])
                 self.assertEqual(json.loads(done.stdout)["assigned"], dict(source=1, reused_first_pass=0, write=1, solve=2))
 
+    def test_step_capped_episode_is_an_official_failure(self):
+        from agent_memory_eval.study.adapters.tau_banking import outcome_fields
+        self.assertEqual(outcome_fields(dict(success=None, status="error", reason="NATIVE_MAX_STEPS")),
+                         ("graded", False, None, True))
+        self.assertEqual(outcome_fields(dict(success=None, status="error", reason="HTTP_503")),
+                         ("missing", None, "HTTP_503", False))
+        self.assertEqual(outcome_fields(dict(success=True, status="completed", reason=None)), ("graded", True, None, False))
+
     def test_task_outside_the_split_is_rejected(self):
         from agent_memory_eval.study.adapters import adapter_for
         plan = domain_plan("tau2-airline", "protocols/studies/setups/tau2-airline-v1.json", "19", "airline-split-01")

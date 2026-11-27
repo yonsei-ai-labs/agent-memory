@@ -107,6 +107,16 @@ class ScorecardTests(unittest.TestCase):
                                    scorecard([r for r in rows if r["task"] == "A"]), tasks=["A"])
             self.assertNotEqual(subset["scorecard"]["path"], refs["scorecard"]["path"])
 
+    def test_a_slot_still_missing_reports_its_last_attempt(self):
+        rows = first_passes() + [row("A", "A-1", "fact__preload", None, reason="HTTP_503"),
+                                 row("A", "A-1", "fact__preload", None, attempt=1, reason="BATCH_SPEND_LIMIT")]
+        self.assertEqual(self.card(rows)["conditions"]["fact__preload"]["missing"], {"BATCH_SPEND_LIMIT": 1})
+
+    def test_step_capped_failures_are_counted_apart(self):
+        rows = first_passes() + [dict(row("A", "A-1", "fact__preload", False), step_cap=True), row("A", "A-2", "fact__preload", False)]
+        fact = self.card(rows)["conditions"]["fact__preload"]
+        self.assertEqual((fact["graded"], fact["successes"], fact["step_capped"]), (2, 0, 1))
+
     def test_rows_must_name_a_known_status(self):
         from agent_memory_eval.contracts.core import ContractError
         broken = dict(first_passes()[0], status="started")
