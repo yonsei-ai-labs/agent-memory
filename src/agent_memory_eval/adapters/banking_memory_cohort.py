@@ -4,13 +4,16 @@ from collections import Counter, defaultdict
 from decimal import Decimal
 
 from agent_memory_eval.adapters.banking_business import BankingBusiness, bind_call_requests
+from agent_memory_eval.adapters.banking_source_screen import contains, document_opportunity
 from agent_memory_eval.adapters.banking_trajectories import _shard, _study
 from agent_memory_eval.adapters.tau2 import native_modules, verify_checkout
 from agent_memory_eval.analysis.claim_evidence import paired_counts
 from agent_memory_eval.analysis.clustered_outcomes import clustered_contrast
-from agent_memory_eval.analysis.efficiency import episode_effort, paired_effort
+from agent_memory_eval.analysis.decision_attribution import compare_episodes
+from agent_memory_eval.analysis.efficiency import METRICS, customer_questions, episode_effort, paired_effort
 from agent_memory_eval.analysis.policy_evidence import PolicyEvidence, counted
 from agent_memory_eval.analysis.recorded_decisions import READS, RecordedDecisions, require
+from agent_memory_eval.analysis.tau2_attribution import graded_episode
 from agent_memory_eval.analysis.trajectory import decision_path
 from agent_memory_eval.contracts.core import canonical, digest, read_json
 from agent_memory_eval.experiments.forms_write import _project_context, read_form_bank
@@ -89,7 +92,7 @@ def observation(folder, row, *, writer=None, business=None, policy=None):
     result = row.get("result") or {}
     obs = dict(run=row.get("run_id"), status=row["status"], reason=row.get("reason") or result.get("error_code"),
                journal=result.get("log_sha256"), success=None, effort={}, dispatched_worker=0,
-               body_requests=0, title_requests=0, reads={}, returns={})
+               body_requests=0, body_requests_with_response=0, title_requests=0, reads={}, returns={})
     if not obs["journal"]:
         require(result.get("official_success") is None, "Unsealed grade")
         return obs
@@ -115,6 +118,7 @@ def observation(folder, row, *, writer=None, business=None, policy=None):
             obs["dispatched_worker"] += 1
             obs["title_requests"] += "title" in fields
             obs["body_requests"] += "body" in fields
+            obs["body_requests_with_response"] += "body" in fields and end["status"] == "response"
         calls = []
         if end["status"] == "response":
             calls = log.reply(req)["message"].get("tool_calls") or []
@@ -133,6 +137,11 @@ def observation(folder, row, *, writer=None, business=None, policy=None):
         messages = official["messages"]
         obs.update(success=grade["official_success"], report=grade["official_artifact_ref"]["sha256"])
     obs["effort"] = episode_effort(row, messages, choices)
+    if messages is not None:
+        questions = customer_questions(messages)
+        obs["customer_questions"] = questions
+        obs["effort"].update(question_turns=len(questions),
+                             repeated_question_turns=sum("repeated_from_index" in q for q in questions))
     if business is not None:
         native, = [e["payload"] for e in log.of_type("business.transition") if e["payload"].get("origin") == "forms.native_result"]
         require(all(native[k] == result[k] for k in ("partial_trajectory_ref", "final_db_hash", "error_code")),
@@ -154,6 +163,10 @@ def observation(folder, row, *, writer=None, business=None, policy=None):
                 source = _project_context(log.blobs.get(req["request_ref"]), dict(choices=[log.reply(req)]))
                 policy.source(task, [source["task_context"], *source["messages"]])
                 obs["public_context_sha256"] = digest(canonical(source))
+                if business is not None:
+                    first_wire = log.blobs.get(completed[0]["request_ref"])
+                    obs["public_document_opportunity"] = document_opportunity(
+                        set(business.task.required_documents or []), first_wire, source["messages"])
         path = decision_path(log)
         obs["first_business"] = path["decision"]
         policy.decision(dict(task=task, writer_run=writer["run_id"] if writer else None, decision=path["decision"]), log)
@@ -172,6 +185,7 @@ def arm_summary(readers):
     graded = [r for r in readers if r["success"] is not None]
     return dict(assigned=len(readers), dispatched=len(seen), graded=len(graded), successes=sum(r["success"] for r in graded),
                 with_body=sum(bool(r["body_requests"]) for r in seen), with_title=sum(bool(r["title_requests"]) for r in seen),
+                with_body_and_response=sum(bool(r["body_requests_with_response"]) for r in seen),
                 body_at_open=sum("body" in r["first_fields"] for r in seen),
                 list_attempts=sum(r["reads"].get("memory_list", 0) for r in seen),
                 get_attempts=sum(r["reads"].get("memory_get", 0) for r in seen),
@@ -282,19 +296,20 @@ def outcome_tables(cells):
             clusters[subgroup].append((r["customer"], r["task"], r["form"], slot, other["success"], r["success"]))
             deliveries[subgroup].append((r["success"], other["success"], r["effort"], other["effort"]))
             progress[subgroup].append((r["success"], other["success"], business_metrics(r), business_metrics(other)))
-    return dict(versus_first_pass={k: paired_effort(v) for k, v in sorted(arms.items())},
-                delivery_pairs={k: paired_effort(v) for k, v in sorted(deliveries.items())},
+    effort_metrics = (*METRICS, "question_turns", "repeated_question_turns")
+    return dict(versus_first_pass={k: paired_effort(v, effort_metrics) for k, v in sorted(arms.items())},
+                delivery_pairs={k: paired_effort(v, effort_metrics) for k, v in sorted(deliveries.items())},
                 business_delivery_pairs={k: paired_effort(v, BUSINESS_METRICS) for k, v in sorted(progress.items())},
                 preload_minus_on_demand={k: clustered_contrast(v, cluster_unit="customer" if k == "confirmation"
                     else "identified customer or unresolved task") for k, v in sorted(clusters.items())})
 
 
-def read_release(workspace, frozen, release):
+def read_release(workspace, frozen, release, *, decision_interface=None):
     root = workspace / "runs" / (frozen["series"] + "-" + release)
     plan, close, binding = _study(root, frozen["protocol_sha256"])
     require(all(plan[k] == v for k, v in frozen.items()) and plan["release"] == release, "Different cohort release")
     registration = digest(canonical(plan))
-    sources, writers, readers = [], [], []
+    sources, writers, readers, decision_pairs = [], [], [], []
     native_modules(verify_checkout(workspace / "data/tau2-bench"))
     from tau2.domains.banking_knowledge.environment import get_tasks
     tasks = {t.id: t for t in get_tasks()}
@@ -306,6 +321,7 @@ def read_release(workspace, frozen, release):
             require(row["run_id"] == ref["run_id"] and row["result"]["log_sha256"] == ref["log_sha256"], "Changed source receipt")
         else:
             folder, (row,) = _shard(root, case, "source", "source", close, registration)
+        source_row = row
         policy = PolicyEvidence()
         business = BankingBusiness(tasks[case["task_id"]], case)
         src = observation(folder, row, business=business, policy=policy)
@@ -329,12 +345,22 @@ def read_release(workspace, frozen, release):
                         [(src["run"], src["public_context_sha256"])] and bank["public_context_sha256"] == src["public_context_sha256"],
                         "Decision evidence was harvested from a different public experience")
                 writer_evidence = {k: proof[k] for k in ("public_contexts", "request_sha256", "instruction_sha256", "versions")}
+                item, = bank["items"]
+                source_cues = proof["source_cues"]
+                writer_evidence.update(version_sha256=writer_log.state["versions"][item["version"]]["sha256"],
+                                       title_chars=len(item["title"]), body_chars=len(item["body"]),
+                                       source_literal_candidates=len(source_cues),
+                                       stored_source_literals=[c for c in source_cues if counted(c["stored"])])
+                writer_evidence["source_document_fields"] = {
+                    doc: [field for field in ("title", "body") if contains(item[field], doc)]
+                    for doc in src["public_document_opportunity"]["source_only"]}
             writers.append(dict(task=case["task_id"], draw=case["source_draw"], form=w["arm"], status=w["status"],
                                 reason=w.get("reason") or res.get("error_code"), run=w.get("run_id"),
                                 journal=res.get("log_sha256"), snapshot=res.get("snapshot_id"), source=src["run"],
                                 evidence=writer_evidence))
         for repeat, stage in enumerate([s for s in case["scheduled_stages"] if s.startswith("solve")], 1):
             folder, rows = _shard(root, case, stage, "solve", close, registration)
+            steps = {}
             for row in rows:
                 form, mode = row["arm"].split("__")
                 bank = banks.get(form)
@@ -346,6 +372,16 @@ def read_release(workspace, frozen, release):
                                     delivery=mode, cohort=case["cohort"], customer=case["customer"],
                                     expected_writer=bank["run_id"] if bank else None,
                                     source={k: src[k] for k in ("run", "success", "effort")}))
+                if decision_interface is not None and obs["success"] is not None:
+                    path, _ = graded_episode(folder, row, case, source=source_row, **decision_interface)
+                    steps[form, mode] = (obs["run"], path)
+            if decision_interface is not None:
+                for form in FORMS:
+                    reference, candidate = (steps.get((form, mode)) for mode in ("on_demand", "preload"))
+                    decision_pairs.append(dict(task=case["task_id"], draw=case["source_draw"], form=form,
+                        repeat=repeat, reference=reference[0] if reference else None,
+                        candidate=candidate[0] if candidate else None,
+                        comparison=compare_episodes(reference[1], candidate[1]) if reference and candidate else None))
     expected = plan["assigned"]
     require(len(sources) == expected["source"] + expected["reused_first_pass"] and len(writers) == expected["write"]
             and len(readers) == expected["solve"], "Unaccounted cohort assignment")
@@ -357,14 +393,17 @@ def read_release(workspace, frozen, release):
     spend = sum((v["spent"] for v in costs.values()), Decimal(0))
     require(spend + Decimal(plan["prior_covered_usd"]) == Decimal(close["total_covered_usd"])
             <= Decimal(plan["authorization"]["total_usd"]), "Cohort budget does not reconcile")
-    return dict(binding=binding, prior_binding=plan["prior_release"], prior_covered_usd=plan["prior_covered_usd"],
+    result = dict(binding=binding, prior_binding=plan["prior_release"], prior_covered_usd=plan["prior_covered_usd"],
                 by_stage_usd={k: {f: str(s) for f, s in v.items()} for k, v in costs.items()},
                 spent=str(spend), sources=sources, writers=writers, readers=readers)
+    if decision_interface is not None:
+        result["decision_pairs"] = decision_pairs
+    return result
 
 
-def cohort_results(workspace, frozen, rules, *, full):
+def cohort_results(workspace, frozen, rules, *, full, decision_interface=None):
     releases = ["first", "remainder"] if full else ["first"]
-    raw = {name: read_release(workspace, frozen, name) for name in releases}
+    raw = {name: read_release(workspace, frozen, name, decision_interface=decision_interface) for name in releases}
     if full:
         require(raw["remainder"]["prior_binding"] == raw["first"]["binding"]
                 and Decimal(raw["remainder"]["prior_covered_usd"]) == Decimal(raw["first"]["spent"]),

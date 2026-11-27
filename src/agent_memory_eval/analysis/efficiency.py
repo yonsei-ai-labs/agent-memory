@@ -2,6 +2,7 @@
 
 from collections import defaultdict
 from decimal import Decimal
+import json
 
 from agent_memory_eval.analysis.claim_evidence import paired_counts
 from agent_memory_eval.contracts.core import ContractError, read_json
@@ -11,6 +12,7 @@ from agent_memory_eval.recording.journal import safe_path
 
 
 METRICS = ("customer_turns", "business_calls", "memory_read_calls", "http_calls", "tokens", "usd")
+END_SIGNALS = {"###STOP###", "###TRANSFER###", "###OUT-OF-SCOPE###"}
 
 
 def request_effort_by_start(events, boundary, roles):
@@ -42,10 +44,43 @@ def business_calls_by_role(messages):
     return counts
 
 
+def customer_questions(messages):
+    """Locate explicit public questions and full-turn repeats after an intervening customer reply."""
+    previous = {}
+    questions = []
+    customer_index = None
+    for index, message in enumerate(messages):
+        text = (message.get("content") or "").strip()
+        if not text or text in END_SIGNALS or message.get("tool_calls"):
+            continue
+        if message["role"] == "user":
+            customer_index = index
+            continue
+        if message["role"] != "assistant" or customer_index is None or "?" not in text:
+            continue
+        if text.startswith("{"):
+            try:
+                wrapper = json.loads(text)
+            except ValueError:
+                wrapper = None
+            if isinstance(wrapper, dict):
+                if wrapper.keys() != {"message"} or not isinstance(wrapper["message"], str):
+                    continue
+                text = wrapper["message"]
+        if "?" not in text:
+            continue
+        wording = " ".join(text.casefold().split())
+        row = dict(message_index=index, preceding_customer_index=customer_index)
+        if wording in previous and previous[wording] < customer_index:
+            row["repeated_from_index"] = previous[wording]
+        previous[wording] = index
+        questions.append(row)
+    return questions
+
+
 def _public_effort(messages):
-    end_signals = {"###STOP###", "###TRANSFER###", "###OUT-OF-SCOPE###"}
     return dict(customer_turns=sum(m["role"] == "user" and bool(m.get("content"))
-                                   and m["content"].strip() not in end_signals for m in messages),
+                                   and m["content"].strip() not in END_SIGNALS for m in messages),
                 business_calls=business_calls_by_role(messages)["assistant"])
 
 

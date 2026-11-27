@@ -4,13 +4,25 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 import unittest
 
-from agent_memory_eval.analysis.efficiency import archived_effort, episode_effort, paired_effort
+from agent_memory_eval.analysis.efficiency import archived_effort, customer_questions, episode_effort, paired_effort
 from agent_memory_eval.analysis.selection import first_body_choice, worker_choices
 from agent_memory_eval.contracts.core import ContractError, read_json
 from agent_memory_eval.contracts.validation import ROOT
 
 
 class BehaviorTests(unittest.TestCase):
+    def test_customer_questions_require_public_speech_and_a_reply_between_literal_repeats(self):
+        messages = [dict(role="assistant", content="How can I help?"), dict(role="user", content="I lost my card."),
+                    dict(role="assistant", content="Which card?"), dict(role="tool", content="Which card?"),
+                    dict(role="assistant", content="Which card?"), dict(role="user", content="The debit card."),
+                    dict(role="assistant", content='{"message":" WHICH  CARD? "}'),
+                    dict(role="assistant", content="Is it debit?", tool_calls=[dict(name="lookup")]),
+                    dict(role="assistant", content="Can you tell me which card it was?")]
+        self.assertEqual(customer_questions(messages), [
+            dict(message_index=2, preceding_customer_index=1), dict(message_index=4, preceding_customer_index=1),
+            dict(message_index=6, preceding_customer_index=5, repeated_from_index=4),
+            dict(message_index=8, preceding_customer_index=5)])
+
     def test_outcome_and_metric_denominators_and_zero_reference(self):
         pairs = [(True, True, {"tokens": 8, "calls": 0}, {"tokens": 10, "calls": 0}),
                  (True, True, {}, {"tokens": 9}), (True, False, {"tokens": 16}, {"tokens": 8}),

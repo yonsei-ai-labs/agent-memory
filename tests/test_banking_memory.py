@@ -306,13 +306,25 @@ class BankingMemoryTests(unittest.TestCase):
             fixed(binary/"completion.json", dict(stages=metrics, registration_sha256=digest((binary/"registration.json").read_bytes()),
                                                 total_covered_usd=str(sum(Decimal(v["spent"]) for v in metrics.values()))))
             report = cohort_results(workspace, frozen, dict(minimum_graded_fraction_per_delivery=0.9,
-                require_every_dispatched_preload_has_body=True, minimum_distinct_tasks_with_on_demand_body=1), full=False)
+                require_every_dispatched_preload_has_body=True, minimum_distinct_tasks_with_on_demand_body=1), full=False,
+                decision_interface=dict(read_instruction_sha=cfg["delivery_instruction"]["sha256"],
+                                        query_tool_descriptions=descriptions))
             self.assertEqual(report["delivery"]["on_demand"]["with_body"], 5)
+            self.assertEqual(report["delivery"]["on_demand"]["with_body_and_response"], 5)
             self.assertEqual(report["delivery"]["on_demand"]["body_at_open"], 0)
             self.assertEqual(report["delivery"]["preload"]["body_at_open"], 5)
             self.assertTrue(report["first_release_check"]["meets_readiness_targets"])
             self.assertEqual(report["sensitivity_without_083"], report["tables"]["preload_minus_on_demand"])
             trials = report["releases"]["first"]["readers"]
+            decisions = report["releases"]["first"]["decision_pairs"]
+            self.assertEqual(len(decisions), 5)
+            self.assertTrue(all(p["reference"] and p["candidate"] and p["comparison"]["worker_inputs"] for p in decisions))
+            for writer in report["releases"]["first"]["writers"]:
+                evidence = writer["evidence"]
+                self.assertTrue(evidence["version_sha256"] and evidence["body_chars"] > 0)
+                self.assertLessEqual(len(evidence["stored_source_literals"]), evidence["source_literal_candidates"])
+            self.assertEqual(report["tables"]["delivery_pairs"]["development"]["both_success"]["metrics"]
+                             ["question_turns"]["observed"], 5)
             self.assertTrue(all(t["business"]["verified_db_sha256"] and t["first_business"]["request_sha256"]
                                 and t["first_action_literals"] is not None for t in trials))
             self.assertTrue(all(any(c["request"] for c in t["business"]["calls"]) for t in trials))

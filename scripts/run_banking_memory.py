@@ -513,8 +513,15 @@ def memory_cohort(workspace, mode, scope):
         require(frozen["protocol_sha256"] == digest((ROOT / COHORT_PROFILE).read_bytes()), "Different source plan")
         return first_source_evidence(workspace, frozen, json.loads(matched.asset_text(ROOT, spec["previous_results"])))
     if mode == "results":
-        rules = matched.read(ROOT / COHORT_PROFILE)["release_check"]
-        return cohort_results(workspace, matched.read(ROOT / COHORT_PREFLIGHT), rules, full=not first)
+        spec = matched.read(ROOT / COHORT_PROFILE)
+        frozen = matched.read(ROOT / COHORT_PREFLIGHT)
+        require(frozen["protocol_sha256"] == digest((ROOT / COHORT_PROFILE).read_bytes()), "Different cohort protocol")
+        native = json.loads(matched.asset_text(ROOT, spec["native_setup"]))
+        config = json.loads(matched.asset_text(ROOT, native["base"]))
+        query = json.loads(matched.asset_text(ROOT, spec["query_interface"]))["arms"]["contextual"]
+        interface = dict(read_instruction_sha=config["delivery_instruction"]["sha256"],
+                         query_tool_descriptions=query["read_tool_descriptions"])
+        return cohort_results(workspace, frozen, spec["release_check"], full=not first, decision_interface=interface)
     require(mode in {"preflight", "run", "resume"}, "Unknown cohort operation")
     approval_path = ROOT / (COHORT_FIRST_APPROVAL if first else COHORT_APPROVAL)
     if mode != "preflight":
