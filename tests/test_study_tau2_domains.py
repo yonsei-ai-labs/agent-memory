@@ -91,6 +91,20 @@ class Tau2DomainTests(unittest.TestCase):
         with self.assertRaisesRegex(ContractError, "judge endpoint terms changed"):
             self.run_domain("tau2-retail", "protocols/studies/setups/tau2-retail-v1.json", "0", endpoint_models)
 
+    def test_command_line_resolves_every_tau2_domain(self):
+        import subprocess
+        import sys
+        for adapter, setup, task in (("tau2-airline", "protocols/studies/setups/tau2-airline-v1.json", "0"),
+                                     ("tau2-retail", "protocols/studies/setups/tau2-retail-v1.json", "2")):
+            path = self.workspace / f"{adapter}.json"
+            path.write_text(json.dumps(domain_plan(adapter, setup, task, adapter + "-cli-01")), encoding="utf-8")
+            env = {k: v for k, v in os.environ.items() if k != "TAU2_DATA_DIR"}
+            done = subprocess.run([sys.executable, "-m", "agent_memory_eval.study", "plan", "resolve", "--plan", str(path),
+                                   "--workspace", str(self.workspace)], capture_output=True, text=True, env=env, cwd=ROOT)
+            with self.subTest(adapter=adapter):
+                self.assertEqual(done.returncode, 0, done.stderr[-1500:])
+                self.assertEqual(json.loads(done.stdout)["assigned"], dict(source=1, reused_first_pass=0, write=1, solve=2))
+
     def test_task_outside_the_split_is_rejected(self):
         from agent_memory_eval.study.adapters import adapter_for
         plan = domain_plan("tau2-airline", "protocols/studies/setups/tau2-airline-v1.json", "19", "airline-split-01")

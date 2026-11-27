@@ -33,10 +33,11 @@ def main(argv=None):
     plan = load_plan(args.plan, ROOT)
     adapter = adapter_for(plan["benchmark"]["adapter"])
     workspace = args.workspace.resolve()
+    staged = hasattr(adapter, "resolve")  # τ² domains resolve paid stages; BFCL compiles a local profile.
     if args.command == "plan":
         if args.action == "validate":
             out = dict(plan=plan["id"], sha256=plan_digest(plan), adapter=adapter.name, conditions=conditions(plan))
-        elif adapter.name == "tau-banking":
+        elif staged:
             record = adapter.resolve(plan, workspace, ROOT)["record"]
             out = dict(plan=plan["id"], assigned=record["assigned"], stages=record["stages"], cases=len(record["cases"]))
         else:
@@ -52,7 +53,7 @@ def main(argv=None):
         fixed(path, approval_for(plan, record, max_usd=args.max_usd, user_authorization=args.quote))
         out = dict(approval=str(path.relative_to(workspace)), assigned=record["assigned"], max_usd=args.max_usd)
     elif args.command in {"run", "resume"}:
-        if adapter.name == "tau-banking":
+        if staged:
             out = adapter.run(plan, workspace, ROOT, approval=read(approval_path(workspace, plan)),
                               progress=lambda label, done, total, spent: print(label, done, "of", total, "USD", spent,
                                                                               file=sys.stderr, flush=True))
