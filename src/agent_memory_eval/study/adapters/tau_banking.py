@@ -39,6 +39,36 @@ RESOLVED = "agent-memory-study-resolved/v1"
 CASE_KEYS = ("task_sha256", "native_sha256", "customer_opening_sha256", "official_criteria_sha256", "initial_db")
 CALLS = {"source": lambda n: 201, "write": lambda n: 4 * n, "solve": lambda n: 201 * n}
 SECONDS = {"source": lambda n: 1500, "write": lambda n: 360 * n, "solve": lambda n: 1200 * n}
+# What differs between τ² domains. Everything else (stages, matching, sealing, scoring) is shared.
+DOMAINS = {
+    "tau-banking": dict(domain="banking_knowledge", retrieval="grep_only", native_tool="grep",
+                        basis=({"DB"}, {"ACTION"}), nl_assertions=False, judge=False),
+    "tau2-airline": dict(domain="airline", retrieval=None, native_tool=None,
+                         basis=({"COMMUNICATE", "DB"},), nl_assertions=True, judge=False),
+    "tau2-retail": dict(domain="retail", retrieval=None, native_tool=None,
+                        basis=({"DB"}, {"DB", "NL_ASSERTION"}), nl_assertions=True, judge=True),
+}
+
+
+def judge_config(cfg):
+    return dict(cfg["judge"], timeout_seconds=cfg["http_timeout_seconds"])
+
+
+def judge_endpoint(cfg):
+    """The pinned native NL-assertion judge, resolved the way the November retail studies did."""
+    from agent_memory_eval.models.openrouter import model_catalog, model_endpoints, resolve_endpoint, resolve_model
+    judge = cfg["judge"]
+    model = resolve_model(model_catalog(), judge["model"], judge["parameters"])
+    require(model["canonical_slug"] == judge["canonical_slug"], "Judge alias no longer points at the pinned date")
+    return resolve_endpoint(model, model_endpoints(model["id"]), judge["route"], judge["parameters"])
+
+
+def owner_ids(task, db):
+    """Retail customers named by a task's reference actions, directly or through an order."""
+    args = [a["arguments"] for a in task["evaluation_criteria"]["actions"] or []]
+    users = {a["user_id"] for a in args if a.get("user_id") in db["users"]}
+    users.update(db["orders"][a["order_id"]]["user_id"] for a in args if a.get("order_id") in db["orders"])
+    return users
 
 
 @lru_cache(maxsize=None)
@@ -195,11 +225,13 @@ def _bank_shard(common, case, stage_name, grant):
                     writer = bindings[1][1, tid, job["arm"]]
                     require((old["index"], old["writer"], old["snapshot"]) == (job["index"], writer["run_id"],
                             writer["result"]["snapshot_id"]), "A retried slot has another assignment or memory")
+        if stage != "write" and common.get("judge") is not None:
+            plan["grader"] = judge_config(cfg), common["judge"]
         plan.update(jobs=jobs, matched_trial=spec, summary=dict(native_sha256=case["native_sha256"],
                     jobs_sha256=design["allocation"]["jobs_sha256"]))
         guard = BatchGuard(**profile["guards"])
         reserve = CostReservations(dest, dict(codes=cfg["unpriced_http_codes"], maximum_per_stage=len(jobs),
-                                   reserve_uncertain_transport=True), guard, dict(models, grader=None))
+                                   reserve_uncertain_transport=True), guard, dict(models, grader=common.get("judge")))
         execute_prepared(profile, workspace, dest, identity, design, plan, models, guard, imported_writers=bindings,
                          close_cost=reserve)
     _, ctl, rows = sealed_rows(dest)
@@ -224,11 +256,16 @@ def study_models(cfg, conn):
     models = live_models(conn)
     require({r: m.get("canonical_slug") for r, m in models.items()} == cfg["expected_model_revisions"],
             "Worker or customer model differs from the registered revision")
-    return models, None
+    return models, judge_endpoint(cfg) if "grader" in cfg["expected_endpoint_terms"] else None
 
 
-class TauBanking:
-    name = "tau-banking"
+class Tau2Study:
+    """A τ² domain behind the declared-study runner; subclasses only name the domain."""
+    name = None
+
+    @property
+    def spec(self):
+        return DOMAINS[self.name]
 
     def _pin(self, workspace, plan_id, name, content):
         """A pinned file the stage job can read from the workspace; inline text is written once under the run."""
@@ -248,17 +285,19 @@ class TauBanking:
     def _configure(self, plan, workspace, root):
         setup = read_json(asset_text(root, plan["benchmark"]["setup"]).encode())
         base = read_json(asset_text(root, setup["base"]).encode())
+        spec = self.spec
         require(setup["revision"] == base["benchmark_revision"] == PIN and setup["task_start_mode"] == START_FORMAT
-                and setup["retrieval_config"] == "grep_only", "The banking setup differs from its pinned implementation")
+                and setup["domain"] == spec["domain"] and setup.get("retrieval_config") == spec["retrieval"],
+                f"The {self.name} setup differs from its pinned implementation")
         require(plan["purpose"] == "development" or "references" not in plan, "Confirmation plans compare fresh runs only")
         readers = plan.get("reading", {})
         writing = plan.get("writing")
         for name, reader in readers.items():
             tool_only = reader["read_mode"] == "on_demand" and "tool_descriptions" in reader
             require(tool_only != ("notice" in reader),
-                    f"Banking reader {name}: a tool-only on_demand reader shows no notice; every other reader needs one")
+                    f"Reader {name}: a tool-only on_demand reader shows no notice; every other reader needs one")
         shown = [r["notice"] for r in readers.values() if "notice" in r]
-        require(len({canonical(n) for n in shown}) <= 1, "Readers in a banking plan share one notice in version 1")
+        require(len({canonical(n) for n in shown}) <= 1, "Readers in a τ² plan share one notice in version 1")
         notice = shown[0] if shown else dict(text="Notes from earlier work may be available.")
         limits = plan.get("limits", {})
         pairs = conditions(plan)
@@ -287,10 +326,12 @@ class TauBanking:
         asset_text(workspace, cfg["connection"])
         conn = read_json(asset_text(root, cfg["connection"]).encode())
         validate_profile(conn)
-        conn["benchmark"].update(domain=setup["domain"], split=None, retrieval_config=setup["retrieval_config"])
+        conn["benchmark"].update(domain=setup["domain"], split=setup.get("split"))
+        if spec["retrieval"]:
+            conn["benchmark"]["retrieval_config"] = spec["retrieval"]
         endpoints = read_json(asset_text(root, cfg["endpoints"]).encode())["models"]
         roles = ("worker", "user_simulator")
-        cfg["expected_endpoint_terms"] = {r: cfg["endpoint_terms"][r] for r in roles}
+        cfg["expected_endpoint_terms"] = {r: cfg["endpoint_terms"][r] for r in (*roles, *(("grader",) if spec["judge"] else ()))}
         cfg["expected_model_revisions"] = {r: endpoints[r]["canonical_slug"] for r in roles}
         solves = ["solve", *(f"solve-repeat-{n}" for n in range(2, plan["repeats"] + 1))]
         cfg["stage_kinds"] = {"source": "source", "write": "write", **{s: "solve" for s in solves}}
@@ -306,7 +347,8 @@ class TauBanking:
         from tau2.multilingual.runtime import load_run_language
         from tau2.runner.helpers import select_run_tasks
         tid = registered.id
-        case = dict(task=tid, task_id=tid, domain=conn["benchmark"]["domain"], split=None, customer="source-" + tid,
+        case = dict(task=tid, task_id=tid, domain=conn["benchmark"]["domain"], split=conn["benchmark"]["split"],
+                    customer="source-" + tid,
                     task_start_mode=START_FORMAT, representations=[], arms=[], arm_writer={}, arm_mode={})
         conf = solve_connection(conn, study_design(cfg, case, "source"), study_jobs(case, "source")[0], cfg["episode_cap_usd"])
         native = native_config(conf)
@@ -315,11 +357,13 @@ class TauBanking:
                 "Runtime task differs from the registered selection or grading")
         task_data = task.model_dump(mode="json")
         orch, native = build_baseline_orchestrator(conf, task_data)
-        control = native_control(orch, native, conf, cfg["limits"], cfg["http_timeout_seconds"], None)
+        control = native_control(orch, native, conf, cfg["limits"], cfg["http_timeout_seconds"],
+                                 judge_config(cfg) if self.spec["judge"] else None)
         opening = opening_hash(orch, role_settings(control)["user_simulator"], modules[2])
         names = {t.name for t in orch.agent.tools}
-        require("grep" in names and not any(n.startswith("memory_") for n in names),
-                "Expected native document search before memory assignment")
+        require(not any(n.startswith("memory_") for n in names) and self.spec["native_tool"] in (None, *names),
+                "Expected only the native business tools before memory assignment")
+        require(control["initial_db"] == orch.environment.get_db_hash(), "The native initial state changed while opening")
         native_case = dict(native_sha256=digest(canonical(control)), task_sha256=control["task_sha256"],
                            customer_opening_sha256=opening, initial_db=control["initial_db"],
                            official_criteria_sha256=digest(canonical(task.evaluation_criteria.model_dump(mode="json"))))
@@ -352,31 +396,55 @@ class TauBanking:
                         log_sha256=result["log_sha256"], public_context_sha256=source.public_context_sha256))
         return {}
 
+    def _customers(self, domain_dir, tids, population):
+        """Customer identity per task, for reporting and customer-level grouping. Unresolved stays explicit."""
+        if self.spec["domain"] == "banking_knowledge":
+            from agent_memory_eval.adapters.tau_banking_results import task_customers
+            return task_customers(domain_dir, set(tids))
+        from agent_memory_eval.experiments.fresh_forms import scenario_customer
+        db = read_json((domain_dir / "db.json").read_bytes())
+        found = {}
+        for tid in tids:
+            task = population[tid].model_dump(mode="json") if tid in population else None
+            if task is None:
+                continue
+            if self.spec["domain"] == "airline":
+                try:
+                    found[tid] = {scenario_customer(task, db)}
+                except ContractError:
+                    found[tid] = set()
+            else:
+                found[tid] = owner_ids(task, db)
+        return found
+
     def resolve(self, plan, workspace, root):
         """Cases, stage schedule and allocation counts for this plan, before any model call."""
         workspace, root = Path(workspace), Path(root)
         setup, cfg, conn, pairs, reps = self._configure(plan, workspace, root)
         modules = modules_for(str(workspace))  # Binds tau2 to the pinned checkout before its first import.
-        from tau2.domains.banking_knowledge.environment import get_knowledge_base, get_tasks
+        import importlib
         from agent_memory_eval.adapters.tau2_task_start import greeting_start
-        from agent_memory_eval.adapters.tau_banking_results import task_customers
-        population = {t.id: t for t in get_tasks()}
+        spec = self.spec
+        env = importlib.import_module(f"tau2.domains.{spec['domain']}.environment")
+        population = {t.id: t for t in env.get_tasks()}
+        split = setup.get("split")
+        allowed = set(env.get_tasks_split()[split]) if split else set(population)
         domain_dir = workspace / "data/tau2-bench/data/tau2/domains" / setup["domain"]
-        identities = task_customers(domain_dir, set(plan["benchmark"]["tasks"]))
+        identities = self._customers(domain_dir, plan["benchmark"]["tasks"], population)
         cases, tasks = [], {}
         readers = plan.get("reading", {})
         arms = [arm_name(rep, reader) for rep, reader in pairs]
         for tid in plan["benchmark"]["tasks"]:
-            require(tid in population, f"Unknown banking task {tid}")
+            require(tid in population and tid in allowed, f"Task {tid} is not in the {self.name} setup's split")
             task = population[tid]
-            basis = [r.value for r in task.evaluation_criteria.reward_basis]
-            require(basis in (["DB"], ["ACTION"]) and not task.evaluation_criteria.nl_assertions
+            basis = {r.value for r in task.evaluation_criteria.reward_basis}
+            require(basis in spec["basis"] and (spec["nl_assertions"] or not task.evaluation_criteria.nl_assertions)
                     and greeting_start(task.initial_state), f"Task {tid} has unregistered grading or an initial action")
             native, data = self._native_case(cfg, conn, modules, task)
             people = identities.get(tid, set())
             for draw in range(1, plan["first_pass"]["draws"] + 1):
                 name = f"{tid}__source-{draw}"
-                case = dict(task=name, task_id=tid, source_draw=draw, domain=conn["benchmark"]["domain"], split=None,
+                case = dict(task=name, task_id=tid, source_draw=draw, domain=conn["benchmark"]["domain"], split=split,
                             customer=next(iter(people)) if len(people) == 1 else "unresolved-" + tid,
                             task_start_mode=START_FORMAT, representations=reps, arms=arms,
                             arm_writer={arm_name(rep, reader): rep for rep, reader in pairs},
@@ -396,10 +464,12 @@ class TauBanking:
         assigned = dict(source=sum("source" in c["scheduled_stages"] for c in cases),
                         reused_first_pass=sum("imported_first_pass" in c for c in cases),
                         write=len(live) * len(reps), solve=len(live) * len(arms) * plan["repeats"])
-        knowledge = get_knowledge_base()
         record = dict(format=RESOLVED, adapter=self.name, plan_id=plan["id"], plan_sha256=plan_digest(plan),
-                      native_revision=PIN, corpus_sha256=digest(canonical(knowledge.model_dump(mode="json"))),
+                      native_revision=PIN, domain=spec["domain"], split=split,
+                      domain_db_sha256=digest((domain_dir / "db.json").read_bytes()),
                       stages=["source", "write", *cfg["solve_stages"]], assigned=assigned, cases=cases)
+        if spec["domain"] == "banking_knowledge":
+            record["corpus_sha256"] = digest(canonical(env.get_knowledge_base().model_dump(mode="json")))
         cfg["registration_sha256"] = digest(canonical(record))
         return dict(cfg=cfg, conn=conn, cases=cases, tasks=tasks, record=record)
 
@@ -473,15 +543,16 @@ class TauBanking:
                 "Spending is not authorized for this resolved plan")
         require(bool(os.environ.get("OPENROUTER_API_KEY")), "Missing OpenRouter credentials")
         identity = identity or implementation_identity(root)
-        models, _ = (model_resolver or study_models)(cfg, resolved["conn"])
-        require(endpoint_terms(models) == cfg["expected_endpoint_terms"], "Worker or customer endpoint terms changed")
+        models, judge = (model_resolver or study_models)(cfg, resolved["conn"])
+        terms = endpoint_terms(dict(models, grader=judge) if judge is not None else models)
+        require(terms == cfg["expected_endpoint_terms"], "Worker, customer or judge endpoint terms changed")
         run_root = workspace / "runs" / plan["id"]
         run_root.mkdir(parents=True, exist_ok=True)
         fixed(run_root / "resolved-plan.json", record)
         registration = dict(format="agent-memory-study-run/v1", adapter=self.name, implementation=identity,
-                            preflight=record, endpoint_terms=endpoint_terms(models), approval=approval)
+                            preflight=record, endpoint_terms=terms, approval=approval)
         common = dict(workspace=str(workspace), output=str(run_root), cfg=cfg, conn=resolved["conn"], identity=identity,
-                      models=models, tasks=resolved["tasks"])
+                      models=models, judge=judge, tasks=resolved["tasks"])
         return run_stages(run_root, registration, self._groups(run_root, plan, cfg, resolved["cases"], sleep),
                           (bank_shard, common), total_usd_limit=approval["max_usd"], max_concurrent=cfg["max_concurrent"],
                           admission=self._admission(cfg), pool_factory=pool_factory, progress=progress)
@@ -564,3 +635,15 @@ class TauBanking:
                                                     lambda arm, p=label_root: f"{p}/{arm}", 1 if "attempt_of" in ref else 0)
                          if r["condition"] != "no_memory"]
         return rows
+
+
+class TauBanking(Tau2Study):
+    name = "tau-banking"
+
+
+class Tau2Airline(Tau2Study):
+    name = "tau2-airline"
+
+
+class Tau2Retail(Tau2Study):
+    name = "tau2-retail"
