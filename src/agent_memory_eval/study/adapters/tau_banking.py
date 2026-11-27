@@ -350,12 +350,12 @@ class TauBanking:
 
     def resolve(self, plan, workspace, root):
         """Cases, stage schedule and allocation counts for this plan, before any model call."""
+        workspace, root = Path(workspace), Path(root)
+        setup, cfg, conn, pairs, reps = self._configure(plan, workspace, root)
+        modules = modules_for(str(workspace))  # Binds tau2 to the pinned checkout before its first import.
         from tau2.domains.banking_knowledge.environment import get_knowledge_base, get_tasks
         from agent_memory_eval.adapters.tau2_task_start import greeting_start
         from agent_memory_eval.adapters.tau_banking_results import task_customers
-        workspace, root = Path(workspace), Path(root)
-        setup, cfg, conn, pairs, reps = self._configure(plan, workspace, root)
-        modules = modules_for(str(workspace))
         population = {t.id: t for t in get_tasks()}
         domain_dir = workspace / "data/tau2-bench/data/tau2/domains" / setup["domain"]
         identities = task_customers(domain_dir, set(plan["benchmark"]["tasks"]))
@@ -516,7 +516,8 @@ class TauBanking:
                 if w["status"] == "completed":
                     banks[w["arm"]] = read_form_bank(safe_path(write_dir, w["directory"]),
                                                      expected_log_sha256=w["result"]["log_sha256"])
-        for folder in sorted(p for p in task_dir.iterdir() if p.is_dir() and p.name.startswith("solve")):
+        solves = sorted(p for p in task_dir.iterdir() if p.is_dir() and p.name.startswith("solve")) if task_dir.is_dir() else []
+        for folder in solves:
             name = folder.name
             base, _, retry = name.partition("-retry-")
             repeat = int(base.removeprefix("solve-repeat-")) if base.startswith("solve-repeat-") else 1
@@ -532,8 +533,11 @@ class TauBanking:
         """Rows for this plan's run, then for each reference recording in the order declared."""
         workspace = Path(workspace)
         run_root = workspace / "runs" / plan["id"]
-        record = read(run_root / "resolved-plan.json")
-        require(record["plan_sha256"] == plan_digest(plan), "The run was resolved from another plan")
+        if (run_root / "resolved-plan.json").is_file():
+            record = read(run_root / "resolved-plan.json")
+            require(record["plan_sha256"] == plan_digest(plan), "The run was resolved from another plan")
+        else:  # Not run yet: first passes and references only.
+            record = self.resolve(plan, workspace, root)["record"]
         rows = []
         for case in record["cases"]:
             rows += self._case_rows(workspace, run_root, case, plan["id"], lambda arm: arm, 0)

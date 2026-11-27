@@ -1,0 +1,154 @@
+{
+  "format": "agent-memory-study-plan/v1",
+  "purpose": "development",
+  "repeats": 1,
+  "id": "bank-outcome-first-01",
+  "question": "On the 45 banking development tasks, using all three recorded first passes of each task as sources, does the same outcome-first writer rule change preloaded second passes against the 11-27 writer and against no memory?",
+  "benchmark": {
+    "adapter": "tau-banking",
+    "setup": {
+      "path": "protocols/pilots/tau-banking-memory-v1.json",
+      "sha256": "755c3161124ff4bd6b7f373657abc52997a3a57055d0a3e0c7f7158258280320"
+    },
+    "tasks": [
+      "task_003",
+      "task_004",
+      "task_005",
+      "task_006",
+      "task_007",
+      "task_012",
+      "task_018",
+      "task_023",
+      "task_024",
+      "task_025",
+      "task_026",
+      "task_027",
+      "task_028",
+      "task_029",
+      "task_031",
+      "task_034",
+      "task_035",
+      "task_037",
+      "task_038",
+      "task_043",
+      "task_045",
+      "task_046",
+      "task_078",
+      "task_079",
+      "task_080",
+      "task_082",
+      "task_083",
+      "task_084",
+      "task_085",
+      "task_086",
+      "task_087",
+      "task_088",
+      "task_089",
+      "task_090",
+      "task_091",
+      "task_092",
+      "task_093",
+      "task_094",
+      "task_095",
+      "task_096",
+      "task_097",
+      "task_098",
+      "task_099",
+      "task_100",
+      "task_101"
+    ]
+  },
+  "first_pass": {
+    "draws": 3,
+    "reuse": [
+      {
+        "recording": "tau-banking-source-screen-01"
+      }
+    ]
+  },
+  "writing": {
+    "instruction": {
+      "text": "Write a memory in the assigned form from this past public experience. Use memory_store to save a nonempty title and body. Ground the memory in a specific observation from the conversation or a tool response. Distinguish observed events from inferences. Preserve uncertainty and limits on where a conclusion applies. If success or the correct procedure was not established, record what was observed and what is still unknown. A text reply alone does not save a memory.\nStart the memory body with exactly one line that states the supplied outcome of the whole prior task: \"Prior task outcome: success.\" or \"Prior task outcome: failure.\" The outcome covers the whole task and does not say which action caused it. When the outcome is failure, describe the observed actions as what was tried, not as steps to repeat."
+    },
+    "feedback": "result_only",
+    "representations": {
+      "fact": {
+        "text": "Record observed facts and values, who or what they refer to, and limits of the evidence."
+      },
+      "episode": {
+        "text": "Recount the situation, actions, and observed responses or outcomes in chronological order."
+      },
+      "procedure": {
+        "text": "Describe an ordered procedure, including when to verify a condition or stop. Identify steps whose validity is uncertain."
+      },
+      "lesson": {
+        "text": "State an evidence-supported lesson or caution and the conditions under which it applies."
+      },
+      "free": {
+        "text": "Choose how to organize useful observations from this experience. You may combine forms."
+      }
+    }
+  },
+  "reading": {
+    "preload": {
+      "read_mode": "preload",
+      "notice": {
+        "path": "protocols/instructions/matched-memory-read-v1.txt",
+        "sha256": "b623028e1bc06ca35d89b2f91a30159dd22999db0fa391cb95b61d5793f659a7"
+      }
+    }
+  },
+  "conditions": [
+    {
+      "representation": "fact",
+      "reading": "preload"
+    },
+    {
+      "representation": "episode",
+      "reading": "preload"
+    },
+    {
+      "representation": "procedure",
+      "reading": "preload"
+    },
+    {
+      "representation": "lesson",
+      "reading": "preload"
+    },
+    {
+      "representation": "free",
+      "reading": "preload"
+    }
+  ],
+  "references": [
+    {
+      "recording": "tau-banking-memory-cohort-01-first"
+    },
+    {
+      "recording": "tau-banking-memory-cohort-01-first-outage-recovery",
+      "attempt_of": "tau-banking-memory-cohort-01-first"
+    }
+  ],
+  "limits": {
+    "max_concurrent": 8,
+    "max_input_bytes": 320000,
+    "writer_max_input_bytes": 512000
+  },
+  "budget": {
+    "max_usd": "7.00"
+  },
+  "retry": {
+    "http_codes": [
+      429,
+      500,
+      502,
+      503,
+      504
+    ],
+    "wait_seconds": [
+      120,
+      600,
+      1800
+    ]
+  }
+}

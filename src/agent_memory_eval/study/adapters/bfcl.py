@@ -154,11 +154,13 @@ class BfclRelevance:
         """Outcome rows for the plan's run, then for each reference recording in the order declared."""
         from agent_memory_eval.runner.bfcl_relevance import load_inputs
         run_root = Path(workspace) / "runs" / plan["id"]
-        cfg = read_json((run_root / "profile.json").read_bytes())
-        require(cfg == self.compile(plan, root), "The recorded profile differs from the plan")
+        cfg = self.compile(plan, root)
         cases, is_empty = load_inputs(Path(checkout), cfg)
-        modes = {r["read_mode"]: name for name, r in plan["reading"].items()}
-        rows = self._rows(run_root, cfg, cases, is_empty, plan["id"], modes)
+        rows = []
+        if (run_root / "profile.json").is_file():
+            require(read_json((run_root / "profile.json").read_bytes()) == cfg, "The recorded profile differs from the plan")
+            modes = {r["read_mode"]: name for name, r in plan["reading"].items()}
+            rows = self._rows(run_root, cfg, cases, is_empty, plan["id"], modes)
         wanted = set(plan["benchmark"]["tasks"])
         for ref in plan.get("references", []):
             require("setup" in ref, "A BFCL reference names the profile it was recorded with")

@@ -153,6 +153,17 @@ class BankStudyTests(unittest.TestCase):
         with self.assertRaisesRegex(ContractError, "tool-only on_demand reader shows no notice"):
             self.adapter().resolve(plan, self.workspace, ROOT)
 
+    def test_command_line_resolves_a_plan_in_a_fresh_interpreter(self):
+        import subprocess
+        import sys
+        plan_path = self.workspace / "plan.json"
+        plan_path.write_text(json.dumps(bank_plan()), encoding="utf-8")
+        env = {k: v for k, v in os.environ.items() if k != "TAU2_DATA_DIR"}
+        done = subprocess.run([sys.executable, "-m", "agent_memory_eval.study", "plan", "resolve", "--plan", str(plan_path),
+                               "--workspace", str(self.workspace)], capture_output=True, text=True, env=env, cwd=ROOT)
+        self.assertEqual(done.returncode, 0, done.stderr[-2000:])
+        self.assertEqual(json.loads(done.stdout)["assigned"], dict(source=1, reused_first_pass=0, write=2, solve=2))
+
     def test_readers_share_one_notice(self):
         plan = bank_plan()
         plan["reading"]["on_demand"] = dict(read_mode="on_demand", notice=dict(text="Another notice."))

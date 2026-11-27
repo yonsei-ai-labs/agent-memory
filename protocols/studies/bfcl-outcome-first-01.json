@@ -1,0 +1,175 @@
+{
+  "format": "agent-memory-study-plan/v1",
+  "purpose": "development",
+  "repeats": 1,
+  "id": "bfcl-outcome-first-01",
+  "question": "Against the 11-27 writer on the same 55 BFCL questions and first passes, does a writer rule that states the prior outcome first and keeps failed actions from reading as steps to repeat change second-pass decisions?",
+  "benchmark": {
+    "adapter": "bfcl-relevance",
+    "setup": {
+      "path": "protocols/diagnostics/bfcl-memory-cohort-transfer-v1.json",
+      "sha256": "b391b25a54f937257ee9e9d7e38e4e5a4af5e94a1e2441bb13e332b7e4b65189"
+    },
+    "tasks": [
+      "live_relevance_0-0-0",
+      "live_relevance_12-12-0",
+      "live_relevance_1-1-0",
+      "live_relevance_5-5-0",
+      "live_relevance_15-15-0",
+      "live_relevance_10-10-0",
+      "live_relevance_9-9-0",
+      "live_relevance_13-13-0",
+      "live_relevance_11-11-0",
+      "live_relevance_4-4-0",
+      "live_relevance_14-14-0",
+      "irrelevance_47",
+      "irrelevance_118",
+      "irrelevance_211",
+      "irrelevance_184",
+      "irrelevance_133",
+      "irrelevance_35",
+      "irrelevance_1",
+      "irrelevance_141",
+      "irrelevance_233",
+      "irrelevance_82",
+      "irrelevance_132",
+      "irrelevance_86",
+      "irrelevance_219",
+      "irrelevance_33",
+      "irrelevance_151",
+      "irrelevance_185",
+      "irrelevance_71",
+      "irrelevance_193",
+      "irrelevance_221",
+      "irrelevance_44",
+      "irrelevance_163",
+      "irrelevance_203",
+      "irrelevance_60",
+      "irrelevance_102",
+      "irrelevance_166",
+      "irrelevance_63",
+      "irrelevance_175",
+      "irrelevance_61",
+      "irrelevance_201",
+      "irrelevance_125",
+      "irrelevance_208",
+      "irrelevance_172",
+      "irrelevance_123",
+      "irrelevance_18",
+      "irrelevance_37",
+      "irrelevance_78",
+      "irrelevance_143",
+      "irrelevance_120",
+      "irrelevance_97",
+      "irrelevance_186",
+      "irrelevance_149",
+      "irrelevance_190",
+      "irrelevance_98",
+      "irrelevance_34"
+    ]
+  },
+  "first_pass": {
+    "draws": 1,
+    "reuse": [
+      {
+        "recording": "bfcl-memory-cohort-transfer-01"
+      }
+    ]
+  },
+  "writing": {
+    "instruction": {
+      "text": "Write a memory in the assigned form from this past public experience. Use memory_store to save a nonempty title and body. Ground the memory in a specific observation from the conversation or a tool response. Distinguish observed events from inferences. Preserve uncertainty and limits on where a conclusion applies. If success or the correct procedure was not established, record what was observed and what is still unknown. A text reply alone does not save a memory.\nStart the memory body with exactly one line that states the supplied outcome of the whole prior task: \"Prior task outcome: success.\" or \"Prior task outcome: failure.\" The outcome covers the whole task and does not say which action caused it. When the outcome is failure, describe the observed actions as what was tried, not as steps to repeat."
+    },
+    "feedback": "result_only",
+    "representations": {
+      "fact": {
+        "text": "Record observed facts and values, who or what they refer to, and limits of the evidence."
+      },
+      "episode": {
+        "text": "Recount the situation, actions, and observed responses or outcomes in chronological order."
+      },
+      "procedure": {
+        "text": "Describe an ordered procedure, including when to verify a condition or stop. Identify steps whose validity is uncertain."
+      },
+      "lesson": {
+        "text": "State an evidence-supported lesson or caution and the conditions under which it applies."
+      },
+      "free": {
+        "text": "Choose how to organize useful observations from this experience. You may combine forms."
+      }
+    }
+  },
+  "reading": {
+    "preload": {
+      "read_mode": "preload",
+      "notice": {
+        "text": "You may use the available notes from earlier work. A snapshot, when present, contains those notes. If memory_list and memory_get are available, reading is optional. Notes may be empty or inaccurate. Use a note only when it applies to this interaction."
+      }
+    },
+    "on_demand": {
+      "read_mode": "on_demand",
+      "tool_descriptions": {
+        "memory_list": "Browse note titles when a past situation, fact, procedure, or lesson could help with the current task. The list can be empty. It returns ids, versions, and titles. Use an id with memory_get to read a note, or the returned cursor for another page.",
+        "memory_get": "Read the title and body of a note by id when it looks relevant. A note describes prior work and may be incomplete or mistaken. Check whether it applies to the current situation."
+      }
+    }
+  },
+  "conditions": [
+    {
+      "representation": "fact",
+      "reading": "preload"
+    },
+    {
+      "representation": "fact",
+      "reading": "on_demand"
+    },
+    {
+      "representation": "episode",
+      "reading": "preload"
+    },
+    {
+      "representation": "episode",
+      "reading": "on_demand"
+    },
+    {
+      "representation": "procedure",
+      "reading": "preload"
+    },
+    {
+      "representation": "procedure",
+      "reading": "on_demand"
+    },
+    {
+      "representation": "lesson",
+      "reading": "preload"
+    },
+    {
+      "representation": "lesson",
+      "reading": "on_demand"
+    },
+    {
+      "representation": "free",
+      "reading": "preload"
+    },
+    {
+      "representation": "free",
+      "reading": "on_demand"
+    }
+  ],
+  "references": [
+    {
+      "recording": "bfcl-memory-cohort-transfer-01",
+      "setup": {
+        "path": "protocols/diagnostics/bfcl-memory-cohort-transfer-v1.json",
+        "sha256": "b391b25a54f937257ee9e9d7e38e4e5a4af5e94a1e2441bb13e332b7e4b65189"
+      }
+    }
+  ],
+  "budget": {
+    "max_usd": "0"
+  },
+  "retry": {
+    "http_codes": [],
+    "wait_seconds": []
+  }
+}
