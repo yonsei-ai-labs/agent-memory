@@ -124,12 +124,16 @@ class BfclRelevance:
         return registration
 
     def _rows(self, run_root, cfg, cases, is_empty, origin, label):
+        from agent_memory_eval.memory.preparation import snapshot_items
         from agent_memory_eval.runner.bfcl_relevance import audit_task
         modes = label if isinstance(label, dict) else None
         rows = []
         for case in cases:
             task = case[1]["id"]
-            for rec in audit_task(run_root, cfg, case, is_empty)["allocations"]:
+            audited = audit_task(run_root, cfg, case, is_empty)["allocations"]
+            _, state, _ = read_experiment(run_root / task)
+            blobs = BlobStore(run_root / task)
+            for rec in audited:
                 if rec["phase"] == "write":
                     continue
                 if rec["phase"] == "source":
@@ -148,7 +152,10 @@ class BfclRelevance:
                     business_calls=int(rec["any_call"]) if rec.get("any_call") is not None else None,
                     reads_list=rec.get("reads", {}).get("memory_list", 0), reads_get=rec.get("reads", {}).get("memory_get", 0),
                     preloaded=rec["mode"] == "preload" and "body" in rec.get("fields", []), cost_usd="0" if started else None,
+                    first_decision=None if rec.get("any_call") is None else ("call" if rec["any_call"] else "no_call"),
                 ))
+                items = snapshot_items(blobs, state, rec["snapshot"]) if rec["phase"] == "solve" and rec.get("snapshot") else []
+                rows[-1].update(memory_title=items[0]["title"] if items else None, memory_body=items[0]["body"] if items else None)
         return rows
 
     def outcomes(self, plan, workspace, root, *, checkout):

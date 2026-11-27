@@ -27,6 +27,8 @@ def main(argv=None):
     parser.add_argument("--checkpoint", type=Path, help="Pinned local model checkpoint")
     parser.add_argument("--max-usd", help="Cumulative ceiling a person approved")
     parser.add_argument("--quote", help="The person's own words approving the ceiling")
+    parser.add_argument("--tasks", help="Comma-separated task ids: score only these tasks (for example the confirmation set)")
+    parser.add_argument("--save", action="store_true", help="Keep rows and scorecard under artifacts/studies/<plan id>/")
     args = parser.parse_args(argv)
     plan = load_plan(args.plan, ROOT)
     adapter = adapter_for(plan["benchmark"]["adapter"])
@@ -60,8 +62,18 @@ def main(argv=None):
             out = adapter.run(plan, workspace, ROOT, checkout=args.checkout, model_python=args.model_python,
                               checkpoint=args.checkpoint)
     else:
+        from agent_memory_eval.study.scorecard import save_analysis
         kwargs = dict(checkout=args.checkout) if adapter.name == "bfcl-relevance" else {}
-        out = scorecard(adapter.outcomes(plan, workspace, ROOT, **kwargs))
+        rows = adapter.outcomes(plan, workspace, ROOT, **kwargs)
+        tasks = args.tasks.split(",") if args.tasks else None
+        if tasks is not None:
+            unknown = set(tasks) - set(plan["benchmark"]["tasks"])
+            if unknown:
+                parser.error(f"Tasks outside the plan: {sorted(unknown)}")
+            rows = [r for r in rows if r["task"] in tasks]
+        out = scorecard(rows)
+        if args.save:
+            out = dict(out, saved=save_analysis(ROOT, plan["id"], rows, out, tasks=tasks))
     print(json.dumps(out, ensure_ascii=False, indent=2))
 
 

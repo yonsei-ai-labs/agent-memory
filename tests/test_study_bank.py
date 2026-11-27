@@ -202,6 +202,10 @@ class BankStudyTests(unittest.TestCase):
             self.assertEqual(card["conditions"][name]["assigned"], 1)
             self.assertEqual(card["conditions"][name]["missing"], {})
         self.assertEqual(card["conditions"]["outcome-first__preload"]["preloaded"], 1)
+        rows = self.adapter().outcomes(plan, self.workspace, ROOT)
+        stored = [r for r in rows if r["condition"] == "outcome-first__preload"]
+        self.assertTrue(stored and all("Prior task outcome: failure." in r["memory_body"] for r in stored))
+        self.assertEqual({r["first_decision"] for r in rows if r["status"] == "graded"}, {"reply"})
 
     def test_undeclared_error_code_is_not_retried(self):
         from agent_memory_eval.study.scorecard import scorecard

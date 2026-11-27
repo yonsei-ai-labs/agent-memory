@@ -67,6 +67,10 @@ def scorecard(rows):
         paired = [(r, sources[r["source"]]) for r in graded
                   if r["source"] in sources and sources[r["source"]]["status"] == "graded"]
         joint = [(r, s) for r, s in paired if r["success"] and s["success"]]
+        decided = [(r, s) for r, s in paired if r.get("first_decision") is not None and s.get("first_decision") is not None]
+        reuse = {key: dict(same=sum(r["first_decision"] == s["first_decision"] for r, s in decided if s["success"] is outcome),
+                           different=sum(r["first_decision"] != s["first_decision"] for r, s in decided if s["success"] is outcome))
+                 for key, outcome in (("source_success", True), ("source_failure", False))}
         conditions[name] = dict(
             assigned=len(own), graded=len(graded), successes=sum(r["success"] for r in graded),
             success_rate=sum(r["success"] for r in graded) / len(graded) if graded else None,
@@ -79,9 +83,29 @@ def scorecard(rows):
             regressions=sum(s["success"] and not r["success"] for r, s in paired),
             joint_success_with_source=dict(pairs=len(joint), tokens=_effort(joint, "tokens"),
                                            business_calls=_effort(joint, "business_calls")),
+            same_first_decision_as_source=reuse,
             reads=dict(list_calls=sum(r["reads_list"] for r in own), get_calls=sum(r["reads_get"] for r in own),
                        slots_with_any_read=sum(bool(r["reads_list"] or r["reads_get"]) for r in own)),
             preloaded=sum(bool(r["preloaded"]) for r in own),
             cost_usd=str(cost[name]) if name in cost else None,
         )
     return dict(format=FORMAT, sources=len(sources), tasks=dict(tasks), conditions=conditions)
+
+
+def save_analysis(root, plan_id, rows, card, *, tasks):
+    """Keep the rows and scorecard an analysis read, named by content, so later plans can pin them as evidence."""
+    from agent_memory_eval.contracts.core import canonical, digest
+    folder = root / "artifacts" / "studies" / plan_id
+    folder.mkdir(parents=True, exist_ok=True)
+    refs = {}
+    scope = "all" if tasks is None else "tasks-" + digest(canonical(sorted(tasks)))[:12]
+    for key, value in (("rows", dict(format="agent-memory-study-rows/v1", plan_id=plan_id, tasks=tasks, rows=rows)),
+                       ("scorecard", dict(card, plan_id=plan_id, tasks=tasks))):
+        data = canonical(value) + b"\n"
+        path = folder / f"{key}-{scope}-{digest(data)[:12]}.json"
+        if not path.exists():
+            path.write_bytes(data)
+        if path.read_bytes() != data:
+            raise ContractError(f"Saved analysis {path.name} changed")
+        refs[key] = dict(path=str(path.relative_to(root)), sha256=digest(data))
+    return refs

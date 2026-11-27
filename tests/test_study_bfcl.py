@@ -82,6 +82,9 @@ class BfclRunTests(unittest.TestCase):
             self.assertEqual(card["conditions"]["outcome-first__preload"]["preloaded"],
                              card["conditions"]["outcome-first__preload"]["graded"])
             self.assertGreater(card["conditions"]["fact__on_demand"]["reads"]["list_calls"], 0)
+            stored = [r for r in rows if r["condition"] == "outcome-first__preload"]
+            self.assertTrue(all(r["memory_body"] == "The worker asked for clarification." for r in stored))
+            self.assertEqual({r["first_decision"] for r in rows if r["status"] == "graded"}, {"no_call"})
             folder = workspace / "runs/bfcl-fixture-01"
             self.assertTrue((folder / "registration.json").is_file())
             with self.assertRaisesRegex(ContractError, "different contents"):

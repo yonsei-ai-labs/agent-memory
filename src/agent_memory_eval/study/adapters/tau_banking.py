@@ -561,9 +561,22 @@ class Tau2Study:
         """Outcome rows of one case: its first pass, then every solve stage and retry in order."""
         from agent_memory_eval.adapters.banking_memory_cohort import observation
         from agent_memory_eval.experiments.forms_write import read_form_bank
+        from agent_memory_eval.analysis.recorded_decisions import RecordedDecisions
+        from agent_memory_eval.analysis.trajectory import decision_path
         rows = []
         task_dir = run_root / ("task-" + case["task"])
-        def row(condition, obs, attempt, repeat=1, origin_name=origin):
+        def first_decision(folder, r):
+            """The worker's first business move after any memory reads: its calls, or a plain reply."""
+            result = r.get("result") or {}
+            if not result.get("log_sha256"):
+                return None
+            decision = decision_path(RecordedDecisions(safe_path(folder, r["directory"]), r["run_id"],
+                                                       result["log_sha256"]))["decision"]
+            if decision is None:
+                return None
+            calls = [[c["name"], c.get("arguments", c.get("invalid_arguments"))] for c in decision["calls"]]
+            return canonical(calls).decode() if calls else "reply"
+        def row(condition, obs, attempt, repeat=1, origin_name=origin, decision=None, memory=None):
             graded = obs["success"] is not None
             effort = obs.get("effort") or {}
             return dict(task=case["task_id"], source=case["task"], repeat=repeat, condition=condition, origin=origin_name,
@@ -571,7 +584,8 @@ class Tau2Study:
                         missing_reason=None if graded else (obs.get("reason") or obs["status"]),
                         tokens=effort.get("tokens"), business_calls=effort.get("business_calls"),
                         reads_list=obs.get("reads", {}).get("memory_list", 0), reads_get=obs.get("reads", {}).get("memory_get", 0),
-                        preloaded="body" in obs.get("first_fields", []), cost_usd=effort.get("usd"))
+                        preloaded="body" in obs.get("first_fields", []), cost_usd=effort.get("usd"), first_decision=decision,
+                        memory_title=memory["title"] if memory else None, memory_body=memory["body"] if memory else None)
         missing = case.get("first_pass_missing")
         if missing:
             rows.append(dict(row("no_memory", dict(success=None, status="missing", reason=missing["reason"]), 0),
@@ -585,7 +599,8 @@ class Tau2Study:
             source_dir, source_origin = task_dir / "source", origin
         if (source_dir / "completion.json").is_file():
             _, _, (srow,) = sealed_rows(source_dir)
-            rows.append(row("no_memory", observation(source_dir, srow), 0, origin_name=source_origin))
+            rows.append(row("no_memory", observation(source_dir, srow), 0, origin_name=source_origin,
+                            decision=first_decision(source_dir, srow)))
         writer_stage = case.get("imported_writer_stage")
         write_dir = safe_path(workspace / "runs", writer_stage["directory"]) if writer_stage else task_dir / "write"
         banks = {}
@@ -604,7 +619,9 @@ class Tau2Study:
                 continue
             for r in sealed_rows(folder)[2]:
                 rep = r["arm"].split("__")[0]
-                rows.append(row(label(r["arm"]), observation(folder, r, writer=banks.get(rep)), attempt, repeat))
+                bank = banks.get(rep)
+                rows.append(row(label(r["arm"]), observation(folder, r, writer=bank), attempt, repeat,
+                                decision=first_decision(folder, r), memory=bank["items"][0] if bank and bank["items"] else None))
         return rows
 
     def outcomes(self, plan, workspace, root):

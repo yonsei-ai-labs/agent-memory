@@ -77,6 +77,32 @@ class ScorecardTests(unittest.TestCase):
         fact = self.card(rows)["conditions"]["fact__preload"]
         self.assertEqual((fact["assigned"], fact["graded"], fact["successes"], fact["regressions"]), (2, 2, 1, 1))
 
+    def test_first_decision_reuse_is_split_by_source_outcome(self):
+        rows = [dict(r, first_decision=d) for r, d in zip(first_passes(), ["transfer", "transfer", None, "refund"])]
+        rows += [dict(row("A", "A-1", "fact__preload", True), first_decision="transfer"),
+                 dict(row("A", "A-2", "fact__preload", False), first_decision="transfer"),
+                 dict(row("B", "B-1", "fact__preload", True), first_decision="close"),
+                 dict(row("A", "A-3", "fact__preload", True), first_decision="transfer")]
+        same = self.card(rows)["conditions"]["fact__preload"]["same_first_decision_as_source"]
+        self.assertEqual(same, dict(source_success=dict(same=1, different=0), source_failure=dict(same=1, different=1)))
+
+    def test_saved_analysis_is_content_addressed_and_write_once(self):
+        import tempfile
+        from pathlib import Path
+        from agent_memory_eval.contracts.core import digest
+        from agent_memory_eval.study.scorecard import save_analysis, scorecard
+        with tempfile.TemporaryDirectory() as tmp:
+            rows = first_passes()
+            refs = save_analysis(Path(tmp), "study-01", rows, scorecard(rows), tasks=None)
+            for key in ("rows", "scorecard"):
+                path = Path(tmp) / refs[key]["path"]
+                self.assertEqual(digest(path.read_bytes()), refs[key]["sha256"])
+                self.assertTrue(refs[key]["path"].startswith("artifacts/studies/study-01/"))
+            self.assertEqual(save_analysis(Path(tmp), "study-01", rows, scorecard(rows), tasks=None), refs)
+            subset = save_analysis(Path(tmp), "study-01", [r for r in rows if r["task"] == "A"],
+                                   scorecard([r for r in rows if r["task"] == "A"]), tasks=["A"])
+            self.assertNotEqual(subset["scorecard"]["path"], refs["scorecard"]["path"])
+
     def test_rows_must_name_a_known_status(self):
         from agent_memory_eval.contracts.core import ContractError
         broken = dict(first_passes()[0], status="started")
