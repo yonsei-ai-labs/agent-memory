@@ -363,14 +363,15 @@ class Tau2Study:
         names = {t.name for t in orch.agent.tools}
         require(not any(n.startswith("memory_") for n in names) and self.spec["native_tool"] in (None, *names),
                 "Expected only the native business tools before memory assignment")
-        require(control["initial_db"] == orch.environment.get_db_hash(), "The native initial state changed while opening")
         native_case = dict(native_sha256=digest(canonical(control)), task_sha256=control["task_sha256"],
                            customer_opening_sha256=opening, initial_db=control["initial_db"],
                            official_criteria_sha256=digest(canonical(task.evaluation_criteria.model_dump(mode="json"))))
-        if "initialized_databases" in control:
+        if "initialized_databases" in control:  # Tasks that fill their databases before the first turn.
             observed = dict(agent=orch.environment.get_db_hash(), user=orch.environment.get_user_db_hash())
             require(observed == control["initialized_databases"], "Native opening differs from the initialized databases")
             native_case["initialized_databases"] = observed
+        else:
+            require(control["initial_db"] == orch.environment.get_db_hash(), "The native initial state changed while opening")
         return native_case, task_data
 
     def _reused(self, workspace, plan, name, case):

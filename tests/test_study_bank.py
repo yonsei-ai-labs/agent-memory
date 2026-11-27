@@ -156,6 +156,13 @@ class BankStudyTests(unittest.TestCase):
         self.assertEqual(case["scheduled_stages"], ["source"])
         self.assertEqual(record["assigned"], dict(source=1, reused_first_pass=0, write=0, solve=0))
 
+    def test_database_start_task_resolves_with_its_initialized_databases(self):
+        record = self.adapter().resolve(bank_plan(benchmark=dict(bank_plan()["benchmark"], tasks=["task_093"])),
+                                        self.workspace, ROOT)["record"]
+        case, = record["cases"]
+        self.assertEqual(set(case["initialized_databases"]), {"agent", "user"})
+        self.assertNotEqual(case["initialized_databases"]["agent"], case["initial_db"])
+
     def test_tool_only_reader_cannot_claim_a_notice(self):
         plan = bank_plan()
         plan["reading"]["on_demand"]["notice"] = dict(text=ON_DEMAND_NOTICE)
