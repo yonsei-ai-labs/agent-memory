@@ -28,11 +28,16 @@ class NativeBusiness:
 
 
 class Tau2MemoryBridge(Tau2Bridge):
-    def __init__(self, *args, memory, bank_id, policy, solve_instruction, post_instruction, **kwargs):
+    def __init__(self, *args, memory, bank_id, policy, solve_instruction, post_instruction, read_descriptions=None, **kwargs):
         super().__init__(*args, **kwargs)
         self.memory, self.bank_id, self.policy = memory, bank_id, policy
         self.native_system = self.systems["worker"]
-        if policy.enabled:
+        self.read_descriptions = read_descriptions
+        if read_descriptions is not None:
+            if (policy.read_mode != "on_demand" or policy.write_timing != "none" or post_instruction
+                    or set(read_descriptions) != {"memory_list", "memory_get"}):
+                raise ContractError("Tool descriptions alone require a read-only list/get assignment")
+        elif policy.enabled:
             self.systems["worker"] += memory_system_suffix(policy, solve_instruction)
         elif solve_instruction or post_instruction:
             raise ContractError("The no-memory condition has no memory instructions")
@@ -55,7 +60,7 @@ class Tau2MemoryBridge(Tau2Bridge):
         if actor == "user_simulator":
             return super().check_tools(actor, tools_schema)
         phase = "post_task_write" if actor == "writer" else "solve"
-        expected = memory_tools(self.policy.tools(phase))
+        expected = memory_tools(self.policy.tools(phase), read_descriptions=self.read_descriptions)
         actual = [tool for tool in (tools_schema or []) if tool["function"]["name"].startswith("memory_")]
         if actual != expected:
             raise ContractError("Memory schemas differ from the allowed phase tools")
@@ -118,7 +123,7 @@ class Tau2MemoryBridge(Tau2Bridge):
         wrapped = list(messages)
         wrapped[0] = messages[0].model_copy(update=dict(content=self.systems[actor]))
         approved_tools = list(tools or []) + [SimpleNamespace(openai_schema=schema)
-            for schema in memory_tools(self.policy.tools(phase))]
+            for schema in memory_tools(self.policy.tools(phase), read_descriptions=self.read_descriptions)]
         answer = super().invoke(actor, messages=wrapped, tools=approved_tools or None, **kwargs)
         raw, source, _ = self.last_response
         # Native parsing reserializes arguments. Reuse the provider's original text

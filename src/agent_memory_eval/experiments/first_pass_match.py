@@ -121,14 +121,14 @@ def _history(messages):
     return values
 
 
-def wire_verifier(match, policy, instruction, items):
+def wire_verifier(match, policy, instruction, items, *, read_descriptions=None):
     control = match["control"]
     settings = deepcopy(match["wire"])
-    tools = memory_tools(policy.tools("solve"))
+    tools = memory_tools(policy.tools("solve"), read_descriptions=read_descriptions)
     if tools:
         settings["worker"]["tools"] = [*settings["worker"].get("tools", []), *tools]
     systems = dict(control["systems"])
-    if policy.enabled:
+    if policy.enabled and read_descriptions is None:
         systems["worker"] += memory_system_suffix(policy, instruction)
     opening = True
 

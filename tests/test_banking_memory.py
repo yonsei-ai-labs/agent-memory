@@ -14,6 +14,81 @@ from test_forms_solve import AVAILABLE, ROOT
 from test_openrouter import response
 
 
+class BankingCohortTests(unittest.TestCase):
+    def test_registration_and_initial_release_ignore_outcomes(self):
+        from agent_memory_eval.adapters.banking_memory_cohort import allocation_counts, cohort_slots, first_release
+        read = banking.matched.read
+        spec = read(ROOT / banking.COHORT_PROFILE)
+        split = read(ROOT / spec["population"]["path"])["split"]
+        history = read(ROOT / spec["previous_results"]["path"])
+        parent = dict(cases=[dict(task=f"{r['task']}__source-{r['draw']}", task_id=r["task"], source_draw=r["draw"],
+                                  customer=split[r["task"]]["customer"] or "unresolved-" + r["task"])
+                             for r in history["observations"]])
+        slots, missing = cohort_slots(spec, split, history, parent)
+        self.assertEqual((len(slots), len(missing)), (276, 6))
+        initial = first_release(slots)
+        self.assertEqual(len(initial), 45)
+        self.assertEqual(allocation_counts([r for r in slots if r["task"] in initial], 1),
+                         dict(reused_first_pass=45, source=0, write=225, solve=450, second_pass_no_memory=0))
+        for row in history["observations"]:
+            if row["success"] is not None:
+                row["success"] = not row["success"]
+        self.assertEqual(cohort_slots(spec, split, history, parent), (slots, missing))
+        self.assertEqual(first_release(list(reversed(slots))), initial)
+
+    def test_release_check_uses_coverage_and_exposure(self):
+        from agent_memory_eval.adapters.banking_memory_cohort import release_check
+        rules = banking.matched.read(ROOT / banking.COHORT_PROFILE)["release_check"]
+        arm = dict(assigned=225, graded=225, dispatched=225, body_at_open=225, tasks_exposed=45)
+        arms = dict(preload=arm, on_demand=dict(arm, body_at_open=0, tasks_exposed=0))
+        self.assertEqual(release_check(arms, rules)["reasons"], ["optional_body_task_coverage"])
+        arms["on_demand"]["tasks_exposed"] = 1
+        self.assertEqual(release_check(arms, rules)["reasons"], ["optional_body_task_coverage"])
+        arms["on_demand"].update(tasks_exposed=5, graded=200)
+        self.assertEqual(release_check(arms, rules)["reasons"], ["grade_coverage"])
+        arms["on_demand"]["graded"] = 210
+        arm["body_at_open"] = 224
+        self.assertEqual(release_check(arms, rules)["reasons"], ["preload_body_coverage"])
+        arm["body_at_open"] = 225
+        self.assertTrue(release_check(arms, rules)["meets_readiness_targets"])
+
+    def test_cohort_scorer_reproduces_the_published_forty_consultations(self):
+        import os
+        from agent_memory_eval.adapters.banking_memory_cohort import arm_summary, observation
+        from agent_memory_eval.experiments.forms_write import read_form_bank
+        from agent_memory_eval.recording.batch import sealed_rows
+        runs = Path(os.environ.get("AGENT_MEMORY_ARCHIVE", ROOT / "runs"))
+        root = runs / "tau-banking-required-01"
+        if not (root / "completion.json").is_file():
+            self.skipTest("Requires the sealed recorded banking pilot")
+        published = banking.matched.read(ROOT / "artifacts/analyses/20261124-banking-required-results.json")
+        reg = banking.matched.read(root / "registration.json")
+        self.assertEqual(digest(canonical(reg["preflight"])), published["registration_sha256"])
+        self.assertEqual(digest((root / "registration.json").read_bytes()),
+                         banking.matched.read(root / "completion.json")["registration_sha256"])
+        checked = {"preload": [], "on_demand": []}
+        for case in reg["preflight"]["cases"]:
+            tid = case["task_id"]
+            old = case["imported_first_pass"]
+            source_dir = runs / old["directory"]
+            _, _, (source_row,) = sealed_rows(source_dir)
+            self.assertEqual(source_row["result"]["log_sha256"], old["log_sha256"])
+            source = observation(source_dir, source_row)
+            task = root / ("task-" + case["task"])
+            _, _, written = sealed_rows(task / "write")
+            banks = {w["arm"]: read_form_bank(task / "write" / w["directory"], expected_log_sha256=w["result"]["log_sha256"])
+                     for w in written}
+            _, _, rows = sealed_rows(task / "solve")
+            for row in rows:
+                form, mode = row["arm"].split("__")
+                obs = observation(task / "solve", row, writer=banks[form])
+                self.assertEqual((obs["start"], obs["start_source"]), (source["start"], source["run"]))
+                checked[mode].append(dict(obs, task=tid))
+        summaries = {k: arm_summary(v) for k, v in checked.items()}
+        for mode, wins, exposed in (("preload", 8, 20), ("on_demand", 7, 0)):
+            self.assertEqual([summaries[mode][k] for k in ("graded", "successes", "with_body")], [20, wins, exposed])
+
+
 @unittest.skipUnless(AVAILABLE, "Requires the pinned τ benchmark")
 class BankingMemoryTests(unittest.TestCase):
     def test_real_search_and_graded_memory_trials_start_at_same_public_question(self):
@@ -31,6 +106,8 @@ class BankingMemoryTests(unittest.TestCase):
         grep_returns = []
         omit_procedure = False
         feedback_messages = []
+        tool_only_questions = []
+        descriptions = {"memory_list": "Browse earlier experience when relevant.", "memory_get": "Read one experience by id."}
 
         def respond(client, wire):
             nonlocal opening_count
@@ -57,6 +134,12 @@ class BankingMemoryTests(unittest.TestCase):
             else:
                 self.assertNotIn('"kind":"evaluation_feedback"', str(messages))
                 self.assertTrue(any(m.get("content") == "Please help with my card." for m in messages))
+                schemas = {t["function"]["name"]: t["function"]["description"] for t in wire.get("tools", [])}
+                if schemas.get("memory_list") == descriptions["memory_list"]:
+                    self.assertEqual(schemas["memory_get"], descriptions["memory_get"])
+                    self.assertNotIn("<memory_policy>", messages[0]["content"])
+                    if len(messages) == 3:
+                        tool_only_questions.append(messages)
                 seen = {c["function"]["name"] for m in messages for c in m.get("tool_calls") or []}
                 if "memory_list" in names and "memory_list" not in seen:
                     call = ("memory_list", {})
@@ -151,21 +234,48 @@ class BankingMemoryTests(unittest.TestCase):
                 verify_required_form_sets(design, dict(plan, sources={case["task_id"]: replace(source, source_run_id="another")}),
                                           wdir, bindings)
 
-            result_cfg = dict(strict, writer_feedback_level="result_only",
-                              registration_sha256=digest(canonical([record, "binary-result-fixture"])))
+            from agent_memory_eval.adapters.banking_memory_cohort import allocation_counts, cohort_results
+            from scripts.run_full_retail import accounting
+            from scripts.run_recheck_rounds import fixed
+            imported = dict(case, source_draw=1, cohort="development", scheduled_stages=["write", "solve"])
+            frozen = dict(series="fixture-cohort", protocol_sha256=digest(b"scripted bank comparison"), historical_missing=[])
+            release_plan = dict(frozen, cases=[imported], assigned=allocation_counts([imported], 1), release="first",
+                                authorization=dict(total_usd="1.50"), prior_release=None, prior_covered_usd="0")
+            result_cfg = dict(strict, writer_feedback_level="result_only", query_tool_descriptions=descriptions,
+                              registration_sha256=digest(canonical(release_plan)))
             binary_design = study.design_for(result_cfg, case, "solve", source)
             with self.assertRaisesRegex(ContractError, "another feedback condition"):
                 verify_required_form_sets(binary_design, plan, wdir, bindings)
             self.assertEqual(feedback_messages, [source.feedback_message("none")] * 5)
-            binary = output/"binary-feedback"
+            binary = workspace/"runs/fixture-cohort-first"
             binary.mkdir()
             for stage in ("write", "solve"):
-                study.stage_job((workspace, binary, result_cfg, {}, conn, case, tasks[case["task"]], stage,
+                study.stage_job((workspace, binary, result_cfg, {}, conn, imported, tasks[case["task"]], stage,
                                  {"fixture": True}, models, None, "1.50"))
             self.assertEqual(feedback_messages[5:], [source.feedback_message("result_only")] * 5)
             _, _, binary_readers = study.sealed_rows(binary/("task-" + case["task"])/"solve")
             self.assertEqual(len(binary_readers), 10)
-            self.assertTrue(all(r["result"]["grading_status"] == "graded" for r in binary_readers))
+            self.assertEqual([(r["arm"], r["result"]["error_code"]) for r in binary_readers
+                              if r["result"]["grading_status"] != "graded"], [])
+            self.assertEqual(len(tool_only_questions), 5)
+            self.assertTrue(all(q == tool_only_questions[0] for q in tool_only_questions))
+            queried = next(r for r in binary_readers if r["arm"] == "fact__on_demand")
+            steps, _ = graded_episode(binary/("task-" + case["task"])/"solve", queried, case,
+                                      cfg["delivery_instruction"]["sha256"], results["source"][0],
+                                      query_tool_descriptions=descriptions)
+            self.assertEqual(ref[0].history, steps[0].history)
+            from decimal import Decimal
+            metrics = {f"task-{case['task']}/{s}": accounting(binary/("task-" + case["task"])/s, "1.50")
+                       for s in ("write", "solve")}
+            fixed(binary/"registration.json", dict(preflight=release_plan))
+            fixed(binary/"completion.json", dict(stages=metrics, registration_sha256=digest((binary/"registration.json").read_bytes()),
+                                                total_covered_usd=str(sum(Decimal(v["spent"]) for v in metrics.values()))))
+            report = cohort_results(workspace, frozen, dict(minimum_graded_fraction_per_delivery=0.9,
+                require_every_dispatched_preload_has_body=True, minimum_distinct_tasks_with_on_demand_body=1), full=False)
+            self.assertEqual(report["delivery"]["on_demand"]["with_body"], 5)
+            self.assertEqual(report["delivery"]["on_demand"]["body_at_open"], 0)
+            self.assertEqual(report["delivery"]["preload"]["body_at_open"], 5)
+            self.assertTrue(report["first_release_check"]["meets_readiness_targets"])
 
             # Exercise the missing form through the normal controller, including its durable allocations.
             omit_procedure = True

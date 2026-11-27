@@ -1,6 +1,7 @@
 """Run the pinned English τ-Knowledge pilot with the matched-trial writer and readers."""
 
 import argparse
+from decimal import Decimal
 import json
 from pathlib import Path
 
@@ -28,6 +29,10 @@ FEEDBACK_APPROVAL = "artifacts/pilots/20261125-banking-result-feedback-authoriza
 SCREEN_PROFILE = "protocols/pilots/tau-banking-source-screen-v1.json"
 SCREEN_PREFLIGHT = "artifacts/pilots/20261127-banking-source-screen-preflight.json"
 SCREEN_APPROVAL = "artifacts/pilots/20261127-banking-source-screen-authorization.json"
+COHORT_PROFILE = "protocols/pilots/tau-banking-memory-cohort-v1.json"
+COHORT_PREFLIGHT = "artifacts/pilots/20261127-banking-memory-cohort-preflight.json"
+COHORT_APPROVAL = "artifacts/pilots/20261127-banking-memory-cohort-authorization.json"
+COHORT_FIRST_APPROVAL = "artifacts/pilots/20261127-banking-memory-cohort-first-authorization.json"
 
 
 def stratum(task):
@@ -285,8 +290,8 @@ def verified_customer_tool_stop(folder, case, profile, design, identity, models)
 def checked_source_stage(args):
     """Dispatch using the original worker. A proven out-of-scope customer opening stays missing."""
     _, root, cfg, _, _, case, _, stage, identity, models, _, grant = args
-    if stage != "source" or case["scheduled_stages"] != ["source"]:
-        raise ContractError("The source screen can only resume first passes")
+    if stage != "source" or case["scheduled_stages"][0] != "source" or case.get("imported_first_pass"):
+        raise ContractError("Only a scheduled native first pass can use this opening check")
     try:
         return matched.stage_job(args)
     except ContractError as error:
@@ -389,14 +394,182 @@ def source_screen(workspace, mode):
                       model_resolver=matched.study_models)
 
 
+def prepare_memory_cohort(workspace):
+    from agent_memory_eval.adapters.banking_memory_cohort import allocation_counts, cohort_slots, first_release, historical_registration
+    from agent_memory_eval.analysis.recorded_decisions import require
+    from agent_memory_eval.experiments.forms_batch import preflight_sizes
+
+    spec = matched.read(ROOT / COHORT_PROFILE)
+    require(spec["native_setup"]["path"] == PROFILE, "Cohort must use the pinned banking setup")
+    matched.asset_text(ROOT, spec["native_setup"])
+    census = json.loads(matched.asset_text(ROOT, spec["population"]))
+    history = json.loads(matched.asset_text(ROOT, spec["previous_results"]))
+    parent, close = historical_registration(workspace, history)
+    require(all(parent[k] == v for k, v in census.items()), "Original split differs from its sealed record")
+    slots, missing = cohort_slots(spec, census["split"], history, parent)
+    _, base, conn, _, _, native_record = prepare(workspace)
+    cfg = required_design(base, json.loads(matched.asset_text(ROOT, spec["writer"])))
+    require(spec["writer_bank_items"] == 1, "Each form requires exactly one stored memory")
+    cfg["writing"]["proposed_limits"].update(input_bytes=spec["writer_max_input_bytes"], bank_items=spec["writer_bank_items"])
+    cfg["limits"]["max_input_bytes"] = census["max_input_bytes"]
+    query = json.loads(matched.asset_text(ROOT, spec["query_interface"]))["arms"]["contextual"]["read_tool_descriptions"]
+    cfg.update(name=spec["name"], writer_feedback_level=spec["writer_feedback_level"], reader_admission="sealed_bank",
+               query_tool_descriptions=query, max_concurrent=spec["max_concurrent"], record_unfunded_shards=True,
+               interruption_policy=matched.RESUME_UNSTARTED)
+    roles = ("worker", "user_simulator")
+    endpoints = json.loads(matched.asset_text(ROOT, cfg["endpoints"]))["models"]
+    cfg["expected_endpoint_terms"] = {r: cfg["endpoint_terms"][r] for r in roles}
+    cfg["expected_model_revisions"] = {r: endpoints[r]["canonical_slug"] for r in roles}
+    require(native_record["corpus_sha256"] == census["corpus_sha256"] and native_record["native_revision"] == census["native_revision"],
+            "Banking corpus or native version differs")
+    from tau2.domains.banking_knowledge.environment import get_tasks
+    from agent_memory_eval.adapters.tau2_task_start import greeting_start
+
+    modules = matched.modules_for(workspace)
+    population = {t.id: t for t in get_tasks()}
+    require(population.keys() == census["split"].keys(), "Native population changed")
+    chosen = {c["task_id"] for c in slots + missing}
+    native, data = {}, {}
+    for tid in sorted(chosen):
+        task = population[tid]
+        basis = [r.value for r in task.evaluation_criteria.reward_basis]
+        require(basis in (["DB"], ["ACTION"]) and not task.evaluation_criteria.nl_assertions
+                and greeting_start(task.initial_state), "Unregistered grading or initial action")
+        native[tid], data[tid] = native_case(cfg, conn, modules, task, basis[0])
+    original = {c["task"]: c for c in parent["cases"]}
+    source_sizes = []
+    tasks, cases = {}, []
+    common = matched.asset_text(ROOT, cfg["writing"]["common_instruction_ref"]).rstrip("\r\n")
+    for slot in slots:
+        tid, name = slot["task_id"], slot["task"]
+        case = dict(native[tid], **slot)
+        tasks[name] = data[tid]
+        ref = slot.get("imported_first_pass")
+        if ref:
+            require(all(case[k] == original[name][k] for k in ("task_sha256", "native_sha256", "customer_opening_sha256",
+                    "official_criteria_sha256", "initial_db")), "Imported native case changed")
+            folder = matched.safe_path(workspace / "runs", ref["directory"])
+            key = f"task-{name}/source"
+            require(digest((folder / "completion.json").read_bytes()) == close["stages"][key]["seal"], "Source shard seal changed")
+            source = matched.source_from(folder, tid)
+            require(source and (source.source_run_id, source.source_log_sha256, source.public_context_sha256)
+                    == (ref["run_id"], ref["log_sha256"], ref["public_context_sha256"]), "Source experience changed")
+            design = matched.design_for(cfg, case, "write", source)
+            sizes = preflight_sizes(matched.jobs_for(case, "write"), design, {tid: source}, {tid: data[tid]}, conn, "", common)
+            source_sizes.extend(sizes["writer_initial_wire_bytes"])
+        cases.append(case)
+    first = first_release(cases)
+    first_options, options = {}, {}
+    for repetitions, option in spec["reader_options"].items():
+        assigned = allocation_counts(cases, int(repetitions))
+        require(assigned["solve"] == option["second_pass_max"], "Reader option no longer matches the cohort")
+        options[repetitions] = assigned
+        first_options[repetitions] = allocation_counts([c for c in cases if c["task"] in first], int(repetitions))
+    record = dict(series=spec["name"], protocol_sha256=digest((ROOT / COHORT_PROFILE).read_bytes()),
+                  native_revision=PIN, corpus_sha256=census["corpus_sha256"], historical_binding=history["binding"],
+                  groups=spec["task_groups"], distinct_tasks=len(chosen),
+                  identifiable_customers=len({c["customer"] for c in slots + missing if c["identity_basis"] != "unresolved"}),
+                  confirmation_customers=len({c["customer"] for c in slots if c["cohort"] == "confirmation"}),
+                  maximum_reader_tasks=len({c["task_id"] for c in slots}), historical_missing=missing,
+                  new_cost_excludes_historical_screen=True, archived_writer_input_bytes=[min(source_sizes), max(source_sizes)],
+                  first_release=sorted(first), first_release_options=first_options,
+                  allocation_options=options, cases_sha256=digest(canonical(cases)),
+                  task_sha256={tid: native[tid]["task_sha256"] for tid in sorted(native)})
+    return spec, cfg, conn, cases, tasks, record
+
+
+def cohort_stage(args):
+    if args[7] == "source":
+        return checked_source_stage(args)
+    return matched.stage_job(args)
+
+
+def cohort_admission(root, stage, case, task):
+    if stage == "source":
+        return None
+    task_dir = root / ("task-" + case["task"])
+    if "imported_first_pass" not in case:
+        source_dir = task_dir / "source"
+        if not source_dir.exists():
+            return "source_not_started"
+        _, _, (row,) = matched.sealed_rows(source_dir)
+        if (row.get("result") or {}).get("grading_status") != "graded":
+            return "source_ungraded"
+    if stage != "write" and not (task_dir / "write").exists():
+        return "writer_not_started"
+    return None
+
+
+def memory_cohort(workspace, mode, scope):
+    from agent_memory_eval.adapters.banking_memory_cohort import allocation_counts, cohort_results
+    from agent_memory_eval.analysis.recorded_decisions import require
+    from agent_memory_eval.experiments.paired_repetitions import PairedRepetitions
+    require(scope in {"first", "full"}, "Choose the first release or the full cohort")
+    first = scope == "first"
+    if mode == "results":
+        rules = matched.read(ROOT / COHORT_PROFILE)["release_check"]
+        return cohort_results(workspace, matched.read(ROOT / COHORT_PREFLIGHT), rules, full=not first)
+    require(mode in {"preflight", "run", "resume"}, "Unknown cohort operation")
+    approval_path = ROOT / (COHORT_FIRST_APPROVAL if first else COHORT_APPROVAL)
+    if mode != "preflight":
+        require(approval_path.is_file(), "This release has no registered spending authorization")
+    spec, cfg, conn, cases, tasks, record = prepare_memory_cohort(workspace)
+    if mode == "preflight":
+        return record
+    require(record == matched.read(ROOT / COHORT_PREFLIGHT), "Fresh memory cohort differs from frozen preflight")
+    approval = matched.read(approval_path)
+    repeat = approval["readers_per_delivery"]
+    require(type(repeat) is int and str(repeat) in spec["reader_options"], "Unregistered repeat count")
+    cap = Decimal(approval["total_usd"])
+    option = spec["reader_options"][str(repeat)]
+    authorized_counts = record["first_release_options" if first else "allocation_options"][str(repeat)]
+    require(cap.is_finite() and 0 < cap <= Decimal(option["first_release_maximum_usd" if first else "maximum_usd"])
+            and approval["series"] == spec["name"] and approval["scope"] == scope and approval.get("user_authorization")
+            and approval["assigned"] == authorized_counts
+            and approval["protocol_sha256"] == record["protocol_sha256"]
+            and approval["preflight_sha256"] == digest(canonical(record)), "Cohort funding scope changed")
+    label = "first" if first else "remainder"
+    initial_cost = "0"
+    prior_binding = None
+    prior_check = None
+    if not first:
+        prior = cohort_results(workspace, record, spec["release_check"], full=False)
+        prior_check = prior["first_release_check"]
+        first_data = prior["releases"]["first"]
+        require(len(first_data["readers"]) == record["first_release_options"][str(repeat)]["solve"], "Reader repetition changed")
+        initial_cost = first_data["spent"]
+        prior_binding = first_data["binding"]
+        require(Decimal(initial_cost) <= cap, "First release already exceeds the new cumulative ceiling")
+    first_names = set(record["first_release"])
+    cases = [c for c in cases if (c["task"] in first_names) == first]
+    stages = {stage: kind for stage, kind, _ in PairedRepetitions(readers_per_bank=repeat).stages()}
+    for case in cases:
+        case["scheduled_stages"] = list(stages) if "imported_first_pass" in case else ["source", *stages]
+    record = dict(record, cases=cases, authorization=approval, assigned=allocation_counts(cases, repeat),
+                  release=label, prior_covered_usd=initial_cost, prior_release=prior_binding, prior_readiness=prior_check)
+    cfg.update(stages=["source", *stages], stage_kinds=stages, total_usd_limit=approval["total_usd"],
+               run_directory=spec["name"] + "-" + label, prior_covered_usd=initial_cost,
+               registration_sha256=digest(canonical(record)))
+    matched.run_study(workspace, cfg, {}, conn, cases, tasks, record, stage_runner=cohort_stage,
+                      model_resolver=matched.study_models, stage_admission=cohort_admission)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("mode", choices=("source-preflight", "preflight", "run", "results", "resume"))
     parser.add_argument("--workspace", type=Path, default=ROOT)
-    parser.add_argument("--series", choices=("required", "result-feedback", "source-screen"), default="required")
-    parser.add_argument("--scope", choices=("full", "writing"), default="full")
+    parser.add_argument("--series", choices=("required", "result-feedback", "source-screen", "memory-cohort"), default="required")
+    parser.add_argument("--scope", choices=("full", "writing", "first"), default=None)
     args = parser.parse_args()
     workspace = args.workspace.resolve()
+    if args.series == "memory-cohort":
+        output = memory_cohort(workspace, args.mode, args.scope or "first")
+        if output is not None:
+            print(json.dumps(output, ensure_ascii=False, indent=2, sort_keys=True))
+        return
+    args.scope = args.scope or "full"
+    if args.scope == "first":
+        parser.error("The first release belongs to the broad memory cohort")
     if args.series == "source-screen":
         if args.scope != "full":
             parser.error("The source screen covers its complete development split")

@@ -368,6 +368,12 @@ def run_forms_solve(journal, *, arm, task_id, repetition, run_id, connection, pr
         state["assignments"][run_id]["source_task_id"] = source_task_id
     if delivery:
         state["assignments"][run_id]["fixed_bank_delivery"] = dict(delivery)
+    from agent_memory_eval.experiments.matched_trial import query_descriptions
+    read_descriptions = query_descriptions(matched_trial, policy)
+    if read_descriptions is not None:
+        assignment = state["assignments"][run_id]
+        assignment["query_tool_descriptions_ref"] = journal.blobs.put(read_descriptions)
+        assignment["instruction_ref"] = journal.blobs.put("")
     source_runs = [writer_bank["run_id"]] if writer_bank else []
     if lineage is not None:
         state["assignments"][run_id]["ordered_writer_sources_ref"] = journal.blobs.put(lineage)
@@ -400,7 +406,7 @@ def run_forms_solve(journal, *, arm, task_id, repetition, run_id, connection, pr
             from agent_memory_eval.adapters.tau2_memory import Tau2MemoryBridge
             bridge = Tau2MemoryBridge(journal, ctx, orch, connection, models, local_guard, prepared[3], opener=opener,
                 execution_limits=bridge_limits, memory=memory, bank_id=bank, policy=policy,
-                solve_instruction=instruction, post_instruction="")
+                solve_instruction=instruction, post_instruction="", read_descriptions=read_descriptions)
         else:
             bridge_type = _PreloadBridge if policy.enabled else Tau2Bridge
             bridge = bridge_type(journal, ctx, orch, connection, models, local_guard, prepared[3],

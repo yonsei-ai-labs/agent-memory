@@ -196,6 +196,8 @@ def _stage_job(args):
         raise ContractError("Task start differs from case registration")
     if "task_start_mode" in cfg:
         spec["task_start_mode"] = cfg["task_start_mode"]
+    if "query_tool_descriptions" in cfg:
+        spec["query_tool_descriptions"] = cfg["query_tool_descriptions"]
     source = None
     if stage != "source":
         _, parent, first_rows = sealed_rows(source_dir)
@@ -230,7 +232,9 @@ def _stage_job(args):
                              and not (dest / "completion.json").exists()):
         bindings = None
         if stage == "solve":
-            write_dir = task_dir / case["scheduled_stages"][1]
+            write_stage, = (s for s in case["scheduled_stages"]
+                            if cfg.get("stage_kinds", {}).get(s, s.removeprefix("initial-")) == "write")
+            write_dir = task_dir / write_stage
             _, parent, written = sealed_rows(write_dir)
             if (parent["profile"]["registration_sha256"] != cfg["registration_sha256"]
                     or parent["design"] != design_for(cfg, case, "write", source)

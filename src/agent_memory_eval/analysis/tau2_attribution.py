@@ -67,7 +67,7 @@ def listed_orders(messages):
             yield read_json(message["content"].encode()).get("orders", [])
 
 
-def graded_episode(folder, row, case, read_instruction_sha, source=None, *, public_inputs=None):
+def graded_episode(folder, row, case, read_instruction_sha, source=None, *, public_inputs=None, query_tool_descriptions=None):
     result = row["result"]
     log = RecordedDecisions(safe_path(folder, row["directory"]), row["run_id"], result["log_sha256"])
     marker, = [e["payload"] for e in log.of_type("business.transition")
@@ -84,9 +84,14 @@ def graded_episode(folder, row, case, read_instruction_sha, source=None, *, publ
     assignment = log.state["assignments"][log.run]
     policy = MemoryPolicy(**assignment["policy"])
     instruction = log.blobs.get(assignment["instruction_ref"])
+    expected_descriptions = query_tool_descriptions if policy.read_mode == "on_demand" else None
+    desc_ref = assignment.get("query_tool_descriptions_ref")
+    require((log.blobs.get(desc_ref) if desc_ref else None) == expected_descriptions,
+            "Read tool descriptions differ from the registered interface")
     if source:
         require(policy.enabled and policy.read_mode == row["arm"].split("__")[1]
-                and digest(instruction.encode()) == read_instruction_sha and len(log.items) == result["bank_sizes"]["items"],
+                and digest(instruction.encode()) == (digest(b"") if expected_descriptions is not None else read_instruction_sha)
+                and len(log.items) == result["bank_sizes"]["items"],
                 "Wrong memory policy, instruction or bank")
     else:
         require(not policy.enabled and not log.items, "First pass has memory")
@@ -108,12 +113,13 @@ def graded_episode(folder, row, case, read_instruction_sha, source=None, *, publ
                 case["customer_opening_sha256"], "First customer request differs from the registered opening")
     systems = {role: dict(role="system", content=value) for role, value in control["systems"].items()}
     expected_system = systems["worker"]
-    if policy.enabled:
+    if policy.enabled and expected_descriptions is None:
         expected_system = dict(role="system", content=expected_system["content"] + memory_system_suffix(policy, instruction))
     expected_settings = dict(settings["worker"])
     private_tools = policy.tools("solve")
     if private_tools:
-        expected_settings["tools"] = [*expected_settings.get("tools", []), *memory_tools(private_tools)]
+        expected_settings["tools"] = [*expected_settings.get("tools", []),
+                                      *memory_tools(private_tools, read_descriptions=expected_descriptions)]
     steps, effort_choices = [], []
     first_worker = True
     for req in log.requests:

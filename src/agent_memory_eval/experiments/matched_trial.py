@@ -50,6 +50,13 @@ def opening_hash(orch, customer_settings, utils):
     return digest(canonical(dict(customer_settings, messages=messages)))
 
 
+def query_descriptions(spec, policy):
+    """Only an explicitly registered on-demand arm moves retrieval guidance into the tools."""
+    if spec is None or policy.read_mode != "on_demand":
+        return None
+    return spec.get("query_tool_descriptions")
+
+
 def verify_trial(journal, ctx, spec, control, policy, instruction, items):
     """The full control is analyst-only. Each role receives its own native messages."""
     first = spec.get("source")
@@ -74,7 +81,7 @@ def verify_trial(journal, ctx, spec, control, policy, instruction, items):
     journal.append([ctx.event("business.transition", dict(origin="matched_trial.native_control",
         control_ref=journal.blobs.put(control), receipt_ref=journal.blobs.put(receipt)))])
     match = dict(control=control, wire=settings, customer_opening_sha256=spec["customer_opening_sha256"])
-    return wire_verifier(match, policy, instruction, items)
+    return wire_verifier(match, policy, instruction, items, read_descriptions=query_descriptions(spec, policy))
 
 
 def bind_task_start(journal, ctx, spec, control, bridge, modules, policy, instruction, items):
@@ -90,7 +97,7 @@ def bind_task_start(journal, ctx, spec, control, bridge, modules, policy, instru
             source_log_sha256=source["log_sha256"] if source else None,
             source_worker_request_id=source["first_worker_request_id"] if source else None))])
         messages = read_json(start.public_input)["messages"]
-        if policy.enabled:
+        if policy.enabled and query_descriptions(spec, policy) is None:
             messages[0]["content"] += memory_system_suffix(policy, instruction)
         if policy.preloads:
             messages.insert(1, snapshot_message(items))
