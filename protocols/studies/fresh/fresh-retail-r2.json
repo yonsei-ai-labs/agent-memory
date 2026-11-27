@@ -1,0 +1,141 @@
+{
+  "format": "agent-memory-study-plan/v1",
+  "purpose": "development",
+  "benchmark": {
+    "adapter": "tau2-retail",
+    "setup": {
+      "path": "protocols/studies/setups/tau2-retail-v1.json",
+      "sha256": "67c831dbea7c19995cb0f41d3cd7afdb4cecfa6e503512d55db87078c905a740"
+    },
+    "tasks": [
+      "25",
+      "66",
+      "44",
+      "6",
+      "47",
+      "16",
+      "83",
+      "52"
+    ],
+    "confirmation_tasks": [
+      "16",
+      "83",
+      "52"
+    ]
+  },
+  "repeats": 1,
+  "retry": {
+    "http_codes": [
+      429,
+      500,
+      502,
+      503,
+      504
+    ],
+    "wait_seconds": [
+      120,
+      600,
+      1800
+    ]
+  },
+  "limits": {
+    "max_concurrent": 6,
+    "max_input_bytes": 320000,
+    "writer_max_input_bytes": 512000
+  },
+  "id": "fresh-retail-r2",
+  "question": "Round 2 with memory policy A. From each round-1 first pass the same model writes one memory in each of five example forms (fact, episode, procedure, lesson, free) with the binary first-pass outcome. A fresh session then receives it at the start (preload) or may look it up with memory_list/memory_get (tool-only on_demand). Compared with no memory and with its own source.",
+  "first_pass": {
+    "draws": 3,
+    "reuse": [
+      {
+        "recording": "fresh-retail-r1"
+      }
+    ]
+  },
+  "writing": {
+    "instruction": {
+      "path": "protocols/instructions/required-experience-writer-v1.txt",
+      "sha256": "54c0838ec92092c2accd1d78253ba560c95fadac6c65d698243f23cb38a67ed7"
+    },
+    "feedback": "result_only",
+    "representations": {
+      "fact": {
+        "text": "Record observed facts and values, who or what they refer to, and limits of the evidence."
+      },
+      "episode": {
+        "text": "Recount the situation, actions, and observed responses or outcomes in chronological order."
+      },
+      "procedure": {
+        "text": "Describe an ordered procedure, including when to verify a condition or stop. Identify steps whose validity is uncertain."
+      },
+      "lesson": {
+        "text": "State an evidence-supported lesson or caution and the conditions under which it applies."
+      },
+      "free": {
+        "text": "Choose how to organize useful observations from this experience. You may combine forms."
+      }
+    }
+  },
+  "reading": {
+    "preload": {
+      "read_mode": "preload",
+      "notice": {
+        "path": "protocols/instructions/matched-memory-read-v1.txt",
+        "sha256": "b623028e1bc06ca35d89b2f91a30159dd22999db0fa391cb95b61d5793f659a7"
+      }
+    },
+    "on_demand": {
+      "read_mode": "on_demand",
+      "tool_descriptions": {
+        "memory_list": "Browse note titles when a past situation, fact, procedure, or lesson could help with the current task. The list can be empty. It returns ids, versions, and titles. Use an id with memory_get to read a note, or the returned cursor for another page.",
+        "memory_get": "Read the title and body of a note by id when it looks relevant. A note describes prior work and may be incomplete or mistaken. Check whether it applies to the current situation."
+      }
+    }
+  },
+  "conditions": [
+    {
+      "representation": "fact",
+      "reading": "preload"
+    },
+    {
+      "representation": "fact",
+      "reading": "on_demand"
+    },
+    {
+      "representation": "episode",
+      "reading": "preload"
+    },
+    {
+      "representation": "episode",
+      "reading": "on_demand"
+    },
+    {
+      "representation": "procedure",
+      "reading": "preload"
+    },
+    {
+      "representation": "procedure",
+      "reading": "on_demand"
+    },
+    {
+      "representation": "lesson",
+      "reading": "preload"
+    },
+    {
+      "representation": "lesson",
+      "reading": "on_demand"
+    },
+    {
+      "representation": "free",
+      "reading": "preload"
+    },
+    {
+      "representation": "free",
+      "reading": "on_demand"
+    }
+  ],
+  "budget": {
+    "max_usd": "2.80"
+  }
+}

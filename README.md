@@ -26,6 +26,8 @@
 
 ## 먼저 읽기
 
+새 실험은 [선언형 실험 계획](docs/development/study-plans.md) 하나로 만들고 같은 실행기·점수표로 비교한다.
+
 새 개발 세션에서 이어갈 작업과 완료한 실험의 검증 방법은 [인수인계](docs/handoff/next-session.md)와 [연구 계획](docs/research/plan.md)에서 확인한다. 파일 기반 코어의 최초 구현 범위는 [첫 구현 작업](docs/development/first-implementation.md)에 있다.
 
 첫 구현은 **SQLite 없이 JSON·JSONL 파일로 가볍게 시작한다.** 단일 원본 로그·요청 출처·혼합 호출의 [코어 계약](docs/design/core-contracts.md)과 v1.1 합성 검증을 보완했다. 제한된 연결/조회 파일럿과 일반 실증의 범위를 구분한다. 최근 탐색 질문은 [방향 논의 노트](docs/design/direction-notes.md)에 있다.

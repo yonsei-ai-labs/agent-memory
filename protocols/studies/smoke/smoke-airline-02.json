@@ -1,0 +1,73 @@
+{
+  "format": "agent-memory-study-plan/v1",
+  "purpose": "development",
+  "question": "Smoke test: does one real first pass, one written memory and two second passes run, grade and record cleanly on this benchmark through the shared runner?",
+  "first_pass": {
+    "draws": 1
+  },
+  "writing": {
+    "instruction": {
+      "path": "protocols/instructions/required-experience-writer-v1.txt",
+      "sha256": "54c0838ec92092c2accd1d78253ba560c95fadac6c65d698243f23cb38a67ed7"
+    },
+    "feedback": "result_only",
+    "representations": {
+      "fact": {
+        "text": "Record observed facts and values, who or what they refer to, and limits of the evidence."
+      }
+    }
+  },
+  "reading": {
+    "preload": {
+      "read_mode": "preload",
+      "notice": {
+        "path": "protocols/instructions/matched-memory-read-v1.txt",
+        "sha256": "b623028e1bc06ca35d89b2f91a30159dd22999db0fa391cb95b61d5793f659a7"
+      }
+    },
+    "on_demand": {
+      "read_mode": "on_demand",
+      "tool_descriptions": {
+        "memory_list": "Browse note titles when a past situation, fact, procedure, or lesson could help with the current task. The list can be empty. It returns ids, versions, and titles. Use an id with memory_get to read a note, or the returned cursor for another page.",
+        "memory_get": "Read the title and body of a note by id when it looks relevant. A note describes prior work and may be incomplete or mistaken. Check whether it applies to the current situation."
+      }
+    }
+  },
+  "conditions": [
+    {
+      "representation": "fact",
+      "reading": "preload"
+    },
+    {
+      "representation": "fact",
+      "reading": "on_demand"
+    }
+  ],
+  "repeats": 1,
+  "retry": {
+    "http_codes": [
+      429,
+      500,
+      502,
+      503,
+      504
+    ],
+    "wait_seconds": [
+      30
+    ]
+  },
+  "id": "smoke-airline-02",
+  "benchmark": {
+    "adapter": "tau2-airline",
+    "setup": {
+      "path": "protocols/studies/setups/tau2-airline-v1.json",
+      "sha256": "3eefe009fba5f5d2fa07c745b4263839c66c7624f585fb81bf047e2f7ef4d633"
+    },
+    "tasks": [
+      "0"
+    ]
+  },
+  "budget": {
+    "max_usd": "0.20"
+  }
+}

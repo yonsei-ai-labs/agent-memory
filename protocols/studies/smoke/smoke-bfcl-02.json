@@ -1,0 +1,64 @@
+{
+  "format": "agent-memory-study-plan/v1",
+  "purpose": "development",
+  "question": "Smoke test: does one real first pass, one written memory and two second passes run, grade and record cleanly on this benchmark through the shared runner?",
+  "first_pass": {
+    "draws": 1
+  },
+  "writing": {
+    "instruction": {
+      "text": "Write a memory in the assigned form from this past public experience. Use memory_store to save a nonempty title and body. Ground the memory in a specific observation from the conversation or a tool response. Distinguish observed events from inferences. Preserve uncertainty and limits on where a conclusion applies. If success or the correct procedure was not established, record what was observed and what is still unknown. A text reply alone does not save a memory."
+    },
+    "feedback": "result_only",
+    "representations": {
+      "fact": {
+        "text": "Record observed facts and values, who or what they refer to, and limits of the evidence."
+      }
+    }
+  },
+  "reading": {
+    "preload": {
+      "read_mode": "preload",
+      "notice": {
+        "text": "You may use the available notes from earlier work. A snapshot, when present, contains those notes. If memory_list and memory_get are available, reading is optional. Notes may be empty or inaccurate. Use a note only when it applies to this interaction."
+      }
+    },
+    "on_demand": {
+      "read_mode": "on_demand",
+      "tool_descriptions": {
+        "memory_list": "Browse note titles when a past situation, fact, procedure, or lesson could help with the current task. The list can be empty. It returns ids, versions, and titles. Use an id with memory_get to read a note, or the returned cursor for another page.",
+        "memory_get": "Read the title and body of a note by id when it looks relevant. A note describes prior work and may be incomplete or mistaken. Check whether it applies to the current situation."
+      }
+    }
+  },
+  "conditions": [
+    {
+      "representation": "fact",
+      "reading": "preload"
+    },
+    {
+      "representation": "fact",
+      "reading": "on_demand"
+    }
+  ],
+  "repeats": 1,
+  "retry": {
+    "http_codes": [],
+    "wait_seconds": []
+  },
+  "id": "smoke-bfcl-02",
+  "benchmark": {
+    "adapter": "bfcl-relevance",
+    "setup": {
+      "path": "protocols/diagnostics/bfcl-memory-cohort-transfer-v1.json",
+      "sha256": "b391b25a54f937257ee9e9d7e38e4e5a4af5e94a1e2441bb13e332b7e4b65189"
+    },
+    "tasks": [
+      "live_relevance_0-0-0",
+      "irrelevance_1"
+    ]
+  },
+  "budget": {
+    "max_usd": "0"
+  }
+}
