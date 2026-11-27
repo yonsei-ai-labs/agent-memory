@@ -15,6 +15,41 @@ from test_openrouter import response
 
 
 class BankingCohortTests(unittest.TestCase):
+    @unittest.skipUnless(AVAILABLE and (ROOT / "runs/tau-banking-source-screen-01/completion.json").exists(),
+                         "Requires the pinned native bank and preserved first passes")
+    def test_business_replay_distinguishes_customer_errors_and_executed_disputes(self):
+        from agent_memory_eval.adapters.banking_business import BankingBusiness
+        from agent_memory_eval.recording.batch import sealed_rows
+        from agent_memory_eval.recording.journal import BlobStore
+        banking.matched.modules_for(ROOT)
+        from tau2.domains.banking_knowledge.environment import get_tasks
+        study = ROOT / "runs/tau-banking-source-screen-01"
+        tasks = {t.id: t for t in get_tasks()}
+        registered = json.loads((study / "registration.json").read_bytes())["preflight"]["cases"]
+        close = json.loads((study / "completion.json").read_bytes())
+        observed = {}
+        for case in registered:
+            task = case["task_id"]
+            if task not in {"task_037", "task_083"}:
+                continue
+            name = "task-" + case["task"] + "/source"
+            _, _, (assignment,) = sealed_rows(study / name, close["stages"][name]["seal"])
+            result = assignment["result"]
+            native = BlobStore(study / name / assignment["directory"]).get(result["report_ref"])
+            control = BankingBusiness(tasks[task], case)
+            observed[task, case["source_draw"]] = control.observe(native["messages"], result["final_db_hash"],
+                                                                  native["reward_info"])
+            if task == "task_083":
+                self.assertEqual(len(control.reference_errors), 4)
+        user_failure = observed["task_037", 2]
+        self.assertEqual(user_failure["customer_extra_final_rows"], 1)
+        self.assertTrue(any(c["actor"] == "user" and c["receipt"] == "reported_error" and c["changed_rows"]
+                            and c.get("matches_suggested_arguments") is False for c in user_failure["calls"]))
+        success = observed["task_037", 3]
+        self.assertEqual((success["customer_extra_final_rows"], success["official_action_matches"],
+                          success["normalized_actor_matches"]), (0, 4, 7))
+        self.assertEqual([observed["task_083", i]["debit_disputes"]["target_opened"] for i in (1, 2, 3)], [4, 2, 3])
+
     def test_registration_and_initial_release_ignore_outcomes(self):
         from agent_memory_eval.adapters.banking_memory_cohort import allocation_counts, cohort_slots, first_release
         read = banking.matched.read
@@ -276,6 +311,12 @@ class BankingMemoryTests(unittest.TestCase):
             self.assertEqual(report["delivery"]["on_demand"]["body_at_open"], 0)
             self.assertEqual(report["delivery"]["preload"]["body_at_open"], 5)
             self.assertTrue(report["first_release_check"]["meets_readiness_targets"])
+            self.assertEqual(report["sensitivity_without_083"], report["tables"]["preload_minus_on_demand"])
+            trials = report["releases"]["first"]["readers"]
+            self.assertTrue(all(t["business"]["verified_db_sha256"] and t["first_business"]["request_sha256"]
+                                and t["first_action_literals"] is not None for t in trials))
+            self.assertTrue(all(any(c["request"] for c in t["business"]["calls"]) for t in trials))
+            self.assertEqual(report["tables"]["business_delivery_pairs"]["development"]["jointly_graded"]["pairs"], 5)
 
             # Exercise the missing form through the normal controller, including its durable allocations.
             omit_procedure = True

@@ -3,12 +3,17 @@
 from collections import Counter, defaultdict
 from decimal import Decimal
 
+from agent_memory_eval.adapters.banking_business import BankingBusiness, bind_call_requests
 from agent_memory_eval.adapters.banking_trajectories import _shard, _study
+from agent_memory_eval.adapters.tau2 import native_modules, verify_checkout
+from agent_memory_eval.analysis.claim_evidence import paired_counts
 from agent_memory_eval.analysis.clustered_outcomes import clustered_contrast
 from agent_memory_eval.analysis.efficiency import episode_effort, paired_effort
+from agent_memory_eval.analysis.policy_evidence import PolicyEvidence, counted
 from agent_memory_eval.analysis.recorded_decisions import READS, RecordedDecisions, require
+from agent_memory_eval.analysis.trajectory import decision_path
 from agent_memory_eval.contracts.core import canonical, digest, read_json
-from agent_memory_eval.experiments.forms_write import read_form_bank
+from agent_memory_eval.experiments.forms_write import _project_context, read_form_bank
 from agent_memory_eval.experiments.paired_repetitions import FORMS, MODES
 from agent_memory_eval.recording.batch import sealed_rows
 from agent_memory_eval.recording.journal import safe_path
@@ -79,7 +84,7 @@ def allocation_counts(cases, repeat):
                 solve=banks * len(MODES) * repeat, second_pass_no_memory=0)
 
 
-def observation(folder, row, *, writer=None):
+def observation(folder, row, *, writer=None, business=None, policy=None):
     """Audit one native episode, including delivered input and official outcome, using its sealed journal."""
     result = row.get("result") or {}
     obs = dict(run=row.get("run_id"), status=row["status"], reason=row.get("reason") or result.get("error_code"),
@@ -128,6 +133,33 @@ def observation(folder, row, *, writer=None):
         messages = official["messages"]
         obs.update(success=grade["official_success"], report=grade["official_artifact_ref"]["sha256"])
     obs["effort"] = episode_effort(row, messages, choices)
+    if business is not None:
+        native, = [e["payload"] for e in log.of_type("business.transition") if e["payload"].get("origin") == "forms.native_result"]
+        require(all(native[k] == result[k] for k in ("partial_trajectory_ref", "final_db_hash", "error_code")),
+                "Business evidence differs from the original trajectory receipt")
+        ref = grade["official_artifact_ref"] if messages is not None else native["partial_trajectory_ref"]
+        if ref and native["final_db_hash"]:
+            observed = messages if messages is not None else log.blobs.get(ref)
+            obs["business"] = business.observe(observed, native["final_db_hash"],
+                                               official["reward_info"] if messages is not None else None)
+            obs["business"]["trajectory_sha256"] = ref["sha256"]
+            bind_call_requests(obs["business"]["calls"], log)
+    if policy is not None:
+        task = row["task_id"]
+        if writer is None:
+            completed = [r for r in log.requests if r["actor_role"] == "worker"
+                         and log.finishes[r["request_id"]]["status"] == "response"]
+            if completed:
+                req = completed[-1]
+                source = _project_context(log.blobs.get(req["request_ref"]), dict(choices=[log.reply(req)]))
+                policy.source(task, [source["task_context"], *source["messages"]])
+                obs["public_context_sha256"] = digest(canonical(source))
+        path = decision_path(log)
+        obs["first_business"] = path["decision"]
+        policy.decision(dict(task=task, writer_run=writer["run_id"] if writer else None, decision=path["decision"]), log)
+        cues = policy.readers[log.run]["cues"]
+        if cues is not None:
+            obs["first_action_literals"] = [c for c in cues if counted(c["action"])]
     for entry in log.of_type("business.transition"):
         p = entry["payload"]
         if p.get("origin") == "task_start.first_decision":
@@ -159,10 +191,85 @@ def release_check(arms, rules):
     return dict(meets_readiness_targets=not failures, reasons=failures)
 
 
+BUSINESS_METRICS = ("normalized_actor_matches", "reference_business_rows_matched", "additional_business_rows",
+                    "customer_extra_final_rows", "customer_calls", "worker_reported_errors", "debit_targets_opened")
+
+
+def business_metrics(observation):
+    business = observation.get("business")
+    if business is None:
+        return {}
+    tables = [v for v in business["tables"].values() if v["kind"] == "business"]
+    reference_rows = sum(v["reference_changed"] for v in tables)
+    reference_ok = not business["reference_errors"]
+    return dict(normalized_actor_matches=business["normalized_actor_matches"],
+                reference_business_rows_matched=sum(v["target_values_matched"] for v in tables)
+                if reference_rows and reference_ok else None,
+                additional_business_rows=sum(v["additional_changed"] for v in tables) if reference_ok else None,
+                customer_extra_final_rows=business["customer_extra_final_rows"],
+                customer_calls=sum(c["actor"] == "user" for c in business["calls"]),
+                worker_reported_errors=sum(c["actor"] == "assistant" and c["receipt"] in
+                                           {"reported_error", "rejected_before_execution"} for c in business["calls"]),
+                debit_targets_opened=business.get("debit_disputes", {}).get("target_opened"))
+
+
+def first_source_evidence(workspace, frozen, history):
+    plan, close = historical_registration(workspace, history)
+    expected = set(frozen["first_release"])
+    require(frozen["historical_binding"] == history["binding"], "Different historical source study")
+    native_modules(verify_checkout(workspace / "data/tau2-bench"))
+    from tau2.domains.banking_knowledge.environment import get_tasks
+    tasks = {t.id: t for t in get_tasks()}
+    source_root = safe_path(workspace / "runs", history["binding"]["recording"])
+    archived = defaultdict(dict)
+    for row in history["observations"]:
+        archived[row["task"]][row["draw"]] = row
+    sources = {}
+    repeat_pairs = defaultdict(list)
+    for case in plan["cases"]:
+        if case["task"] not in expected:
+            continue
+        name = "task-" + case["task"] + "/source"
+        folder = safe_path(source_root, name)
+        _, _, (row,) = sealed_rows(folder, close["stages"][name]["seal"])
+        tid = case["task_id"]
+        original = archived[tid][case["source_draw"]]
+        obs = observation(folder, row, business=BankingBusiness(tasks[tid], case), policy=PolicyEvidence())
+        require((obs["run"], obs["journal"], obs["public_context_sha256"], obs["first_worker"], obs["success"]) ==
+                (original["run"], original["journal_sha256"], original["public_experience_sha256"],
+                 original["first_worker_sha256"], original["success"]),
+                "Archived evidence does not match the registered source")
+        repeats = []
+        for draw, other in sorted(archived[tid].items()):
+            if draw == case["source_draw"]:
+                continue
+            first_worker = other.get("first_worker_sha256")
+            match = "unknown"
+            if first_worker is not None:
+                match = "same" if first_worker == obs["first_worker"] else "different"
+            repeat_pairs[match].append((other["success"], obs["success"]))
+            repeats.append(dict(draw=draw, run=other["run"], journal=other.get("journal_sha256"), success=other["success"],
+                                first_worker_sha256=first_worker, first_worker_input=match))
+        b = obs["business"]
+        calls = b["calls"]
+        sources[case["task"]] = dict(task=tid, success=obs["success"], run=obs["run"], journal=obs["journal"],
+            public_context_sha256=obs["public_context_sha256"], native_report=obs["report"], db=b["verified_db_sha256"],
+            reference_actions=b["reference_actions"], reference_errors=len(b["reference_errors"]),
+            official_action_matches=b["official_action_matches"], process=business_metrics(obs),
+            business_calls=len(calls), request_bound_calls=sum(c["request"] is not None for c in calls),
+            first_worker_sha256=obs["first_worker"], other_no_memory_draws=repeats)
+    require(sources.keys() == expected, "Missing registered source")
+    return dict(format="banking-cohort-first-source-evidence/v1", binding=history["binding"],
+                graded=len(sources), successes=sum(v["success"] for v in sources.values()), sources=sources,
+                other_no_memory_draw_minus_selected=dict(
+                    all=paired_counts(p for pairs in repeat_pairs.values() for p in pairs),
+                    by_first_worker_input={k: paired_counts(v) for k, v in sorted(repeat_pairs.items())}))
+
+
 def outcome_tables(cells):
     index = {(r["task"], r["draw"], r["form"], r["repeat"], r["delivery"]): r for r in cells}
     require(len(index) == len(cells), "Duplicate reader")
-    arms, clusters, deliveries = defaultdict(list), defaultdict(list), defaultdict(list)
+    arms, clusters, deliveries, progress = (defaultdict(list) for _ in range(4))
     for r in cells:
         key = f"{r['form']}__{r['delivery']}"
         source = r["source"]
@@ -174,8 +281,10 @@ def outcome_tables(cells):
             slot = (r["draw"], r["repeat"])
             clusters[subgroup].append((r["customer"], r["task"], r["form"], slot, other["success"], r["success"]))
             deliveries[subgroup].append((r["success"], other["success"], r["effort"], other["effort"]))
+            progress[subgroup].append((r["success"], other["success"], business_metrics(r), business_metrics(other)))
     return dict(versus_first_pass={k: paired_effort(v) for k, v in sorted(arms.items())},
                 delivery_pairs={k: paired_effort(v) for k, v in sorted(deliveries.items())},
+                business_delivery_pairs={k: paired_effort(v, BUSINESS_METRICS) for k, v in sorted(progress.items())},
                 preload_minus_on_demand={k: clustered_contrast(v, cluster_unit="customer" if k == "confirmation"
                     else "identified customer or unresolved task") for k, v in sorted(clusters.items())})
 
@@ -186,6 +295,9 @@ def read_release(workspace, frozen, release):
     require(all(plan[k] == v for k, v in frozen.items()) and plan["release"] == release, "Different cohort release")
     registration = digest(canonical(plan))
     sources, writers, readers = [], [], []
+    native_modules(verify_checkout(workspace / "data/tau2-bench"))
+    from tau2.domains.banking_knowledge.environment import get_tasks
+    tasks = {t.id: t for t in get_tasks()}
     for case in plan["cases"]:
         ref = case.get("imported_first_pass")
         if ref:
@@ -194,26 +306,39 @@ def read_release(workspace, frozen, release):
             require(row["run_id"] == ref["run_id"] and row["result"]["log_sha256"] == ref["log_sha256"], "Changed source receipt")
         else:
             folder, (row,) = _shard(root, case, "source", "source", close, registration)
-        src = observation(folder, row)
+        policy = PolicyEvidence()
+        business = BankingBusiness(tasks[case["task_id"]], case)
+        src = observation(folder, row, business=business, policy=policy)
+        if ref:
+            require(src["public_context_sha256"] == ref["public_context_sha256"], "Different public source for evidence")
         sources.append(dict(src, task=case["task_id"], draw=case["source_draw"], reused=bool(ref)))
         wdir, written = _shard(root, case, "write", "write", close, registration)
         banks = {}
         for w in written:
             res = w.get("result") or {}
+            writer_evidence = {}
             if w["status"] == "completed":
                 bank = read_form_bank(safe_path(wdir, w["directory"]), expected_log_sha256=res["log_sha256"])
                 require(len(bank["items"]) == 1 and (bank["source_run_id"], bank["source_log_sha256"], bank["result_feedback"]["success"])
                         == (src["run"], src["journal"], src["success"]) and bank["arm"] == w["arm"], "Wrong writer source or feedback")
                 banks[w["arm"]] = bank
+                writer_log = RecordedDecisions(safe_path(wdir, w["directory"]), w["run_id"], res["log_sha256"])
+                policy.writer(case["task_id"], w["arm"], "registered", w["status"], writer_log, checksum=res["log_sha256"])
+                proof = policy.writers[w["run_id"]][0]
+                require([(c["run"], c["public_context_sha256"]) for c in proof["public_contexts"]] ==
+                        [(src["run"], src["public_context_sha256"])] and bank["public_context_sha256"] == src["public_context_sha256"],
+                        "Decision evidence was harvested from a different public experience")
+                writer_evidence = {k: proof[k] for k in ("public_contexts", "request_sha256", "instruction_sha256", "versions")}
             writers.append(dict(task=case["task_id"], draw=case["source_draw"], form=w["arm"], status=w["status"],
                                 reason=w.get("reason") or res.get("error_code"), run=w.get("run_id"),
-                                journal=res.get("log_sha256"), snapshot=res.get("snapshot_id"), source=src["run"]))
+                                journal=res.get("log_sha256"), snapshot=res.get("snapshot_id"), source=src["run"],
+                                evidence=writer_evidence))
         for repeat, stage in enumerate([s for s in case["scheduled_stages"] if s.startswith("solve")], 1):
             folder, rows = _shard(root, case, stage, "solve", close, registration)
             for row in rows:
                 form, mode = row["arm"].split("__")
                 bank = banks.get(form)
-                obs = observation(folder, row, writer=bank)
+                obs = observation(folder, row, writer=bank, business=business, policy=policy)
                 if obs["dispatched_worker"]:
                     require(obs.get("start_source") == src["run"] and obs.get("start") == src.get("start"),
                             "Reader first public decision differs from its source")
@@ -249,4 +374,5 @@ def cohort_results(workspace, frozen, rules, *, full):
     first_readers = raw["first"]["readers"]
     check = release_check({mode: arm_summary([r for r in first_readers if r["delivery"] == mode]) for mode in MODES}, rules)
     return dict(format="banking-memory-cohort-results/v1", scope=releases, historical_missing=frozen["historical_missing"],
-                releases=raw, tables=outcome_tables(readers), delivery=deliveries, first_release_check=check)
+                releases=raw, tables=outcome_tables(readers), delivery=deliveries, first_release_check=check,
+                sensitivity_without_083=outcome_tables([r for r in readers if r["task"] != "task_083"])["preload_minus_on_demand"])

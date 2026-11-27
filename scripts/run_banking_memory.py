@@ -501,11 +501,17 @@ def cohort_admission(root, stage, case, task):
 
 
 def memory_cohort(workspace, mode, scope):
-    from agent_memory_eval.adapters.banking_memory_cohort import allocation_counts, cohort_results
+    from agent_memory_eval.adapters.banking_memory_cohort import allocation_counts, cohort_results, first_source_evidence
     from agent_memory_eval.analysis.recorded_decisions import require
     from agent_memory_eval.experiments.paired_repetitions import PairedRepetitions
     require(scope in {"first", "full"}, "Choose the first release or the full cohort")
     first = scope == "first"
+    if mode == "source-evidence":
+        require(first, "Archived source evidence covers the initial release")
+        spec = matched.read(ROOT / COHORT_PROFILE)
+        frozen = matched.read(ROOT / COHORT_PREFLIGHT)
+        require(frozen["protocol_sha256"] == digest((ROOT / COHORT_PROFILE).read_bytes()), "Different source plan")
+        return first_source_evidence(workspace, frozen, json.loads(matched.asset_text(ROOT, spec["previous_results"])))
     if mode == "results":
         rules = matched.read(ROOT / COHORT_PROFILE)["release_check"]
         return cohort_results(workspace, matched.read(ROOT / COHORT_PREFLIGHT), rules, full=not first)
@@ -556,11 +562,13 @@ def memory_cohort(workspace, mode, scope):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("mode", choices=("source-preflight", "preflight", "run", "results", "resume"))
+    parser.add_argument("mode", choices=("source-preflight", "source-evidence", "preflight", "run", "results", "resume"))
     parser.add_argument("--workspace", type=Path, default=ROOT)
     parser.add_argument("--series", choices=("required", "result-feedback", "source-screen", "memory-cohort"), default="required")
     parser.add_argument("--scope", choices=("full", "writing", "first"), default=None)
     args = parser.parse_args()
+    if args.mode == "source-evidence" and args.series != "memory-cohort":
+        parser.error("source-evidence belongs to the banking memory cohort")
     workspace = args.workspace.resolve()
     if args.series == "memory-cohort":
         output = memory_cohort(workspace, args.mode, args.scope or "first")
