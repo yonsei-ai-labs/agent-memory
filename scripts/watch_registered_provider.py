@@ -1,4 +1,4 @@
-"""Pace an existing held process pool using receipts from its registered consultations."""
+"""Pace an existing experiment process pool using receipts from registered consultations."""
 
 import argparse
 from collections import deque
@@ -60,7 +60,11 @@ class ProviderReceipts:
 
 def descriptors(proc):
     targets = []
-    for fd in (proc / "fd").iterdir():
+    try:
+        entries = list((proc / "fd").iterdir())
+    except FileNotFoundError:
+        return targets
+    for fd in entries:
         try:
             targets.append(fd.readlink())
         except FileNotFoundError:
@@ -68,28 +72,55 @@ def descriptors(proc):
     return targets
 
 
-class HeldPool:
-    def __init__(self, study, recorded):
+def process_family(controller):
+    table = {}
+    for proc in Path("/proc").glob("[0-9]*"):
+        try:
+            fields = (proc / "stat").read_text().rsplit(")", 1)[1].split()
+        except FileNotFoundError:
+            continue
+        table[int(proc.name)] = (int(fields[1]), int(fields[19]))
+    family = {controller}
+    while True:
+        children = {pid for pid, (parent, _) in table.items() if parent in family}
+        if children <= family:
+            break
+        family.update(children)
+    return dict(controller=controller, process_starts={str(pid): table[pid][1] for pid in sorted(family)})
+
+
+class RegisteredPool:
+    def __init__(self, study, recorded, *, held):
         self.study = study
         self.controller = recorded["controller"]
         self.handles = {}
+        if study not in descriptors(Path("/proc") / str(self.controller)):
+            raise ValueError("The controller does not hold the registered study directory")
+        self.attach(recorded, held=held)
+
+    def attach(self, recorded, *, held):
         parents = {}
         for key, tick in recorded["process_starts"].items():
             pid = int(key)
             proc = Path("/proc") / key
-            self.handles[pid] = os.pidfd_open(pid)
+            if pid not in self.handles:
+                self.handles[pid] = os.pidfd_open(pid)
             fields = (proc / "stat").read_text().rsplit(")", 1)[1].split()
-            if int(fields[19]) != tick or fields[0] not in {"T", "t"}:
+            if int(fields[19]) != tick or (held and fields[0] not in {"T", "t"}):
                 raise ValueError("The recorded process identity or initial hold changed")
             parents[pid] = int(fields[1])
-        if study not in descriptors(Path("/proc") / str(self.controller)):
-            raise ValueError("The controller does not hold the registered study directory")
         for pid in parents:
             current = pid
             while current != self.controller:
                 if current not in parents:
                     raise ValueError("Unrelated process in the operator hold")
                 current = parents[current]
+
+    def hold(self):
+        # Freeze admissions before finding workers that started after the monitor attached.
+        self.send([self.controller], signal.SIGSTOP)
+        self.attach(process_family(self.controller), held=False)
+        self.send(self.handles, signal.SIGSTOP)
 
     def send(self, which, sig):
         for pid in which:
@@ -122,7 +153,7 @@ class HeldPool:
             os.close(handle)
 
 
-def supervise(study, pool, role, report):
+def supervise(study, pool, role, report, *, held):
     def note(event, **values):
         row = dict(at=datetime.now(timezone.utc).isoformat(), event=event, **values)
         print(json.dumps(row, sort_keys=True), file=report, flush=True)
@@ -134,8 +165,8 @@ def supervise(study, pool, role, report):
     probe = None
     probing_since = 0
     failures = deque()
-    state = "hold"
-    note("started", role=role, controller=pool.controller)
+    state = "hold" if held else "running"
+    note("started", role=role, controller=pool.controller, initially_held=held)
     while not (study / "completion.json").is_file():
         if not (Path("/proc") / str(pool.controller)).exists():
             raise RuntimeError("Controller exited before completion")
@@ -164,7 +195,7 @@ def supervise(study, pool, role, report):
                 while failures and rec["finish"] - failures[0]["finish"] > 30:
                     failures.popleft()
                 if state == "probe" or len(failures) >= 2:
-                    pool.send(pool.handles, signal.SIGSTOP)
+                    pool.hold()
                     if now - probing_since > 900:
                         streak = 0
                     seconds = max(delay[min(streak, len(delay) - 1)], *(v["retry"] for v in failures))
@@ -180,7 +211,7 @@ def supervise(study, pool, role, report):
                 state = "running"
                 note("resumed_after_customer_response", request=rec["request"], stage=str(probe.relative_to(study)))
         if state == "probe" and (probe / "completion.json").is_file():
-            pool.send(pool.handles, signal.SIGSTOP)
+            pool.hold()
             state = "hold"
             resume_at = now
             note("probe_ended_without_a_fresh_response", stage=str(probe.relative_to(study)))
@@ -191,15 +222,23 @@ def supervise(study, pool, role, report):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--study", required=True, type=Path)
-    parser.add_argument("--held-processes", required=True, type=Path)
+    origin = parser.add_mutually_exclusive_group(required=True)
+    origin.add_argument("--controller", type=int, help="Attach to a running controller with an open study directory.")
+    origin.add_argument("--held-processes", type=Path, help="Resume an operator-held tree identified by process start ticks.")
     parser.add_argument("--role", default="user_simulator")
     parser.add_argument("--report", required=True, type=Path)
     args = parser.parse_args()
     study = args.study.resolve()
-    pool = HeldPool(study, json.loads(args.held_processes.read_bytes()))
+    held = args.held_processes is not None
+    recorded = json.loads(args.held_processes.read_bytes()) if held else process_family(args.controller)
+    pool = RegisteredPool(study, recorded, held=held)
     try:
         with args.report.open("a") as report:
-            supervise(study, pool, args.role, report)
+            supervise(study, pool, args.role, report, held=held)
+    except BaseException:
+        if not (study / "completion.json").is_file() and (Path("/proc") / str(pool.controller)).exists():
+            pool.hold()
+        raise
     finally:
         pool.close()
 

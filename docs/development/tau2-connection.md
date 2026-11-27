@@ -52,6 +52,16 @@ worker/user별로 native system prompt를 고정하고, 새 native 상태 메시
 
 [RecordingGateway](../../src/agent_memory_eval/recording/provenance.py)와 [OpenRouterClient](../../src/agent_memory_eval/models/openrouter.py)가 실제 JSON 요청·응답·usage·provider 보고 cost를 저장한다. native 비용 함수의 가격표/오류 시 0 반환을 사용하지 않고 관측한 비용을 native message에도 연결한다. 전송 전 거절·HTTP 응답 오류·전송 불명·완료 응답을 구분한다.
 
+### 진행 중인 공급자 장애에 대응하기
+
+Linux에서 등록된 상담 묶음을 실행할 때는 원장에 기록되는 공급자 응답으로 전송 속도를 조절할 수 있다. 실행기가 연구 디렉터리를 연 뒤 아래 명령을 별도 셸에서 실행한다. `controller_pid`는 해당 실행기의 PID, `study_dir`은 그 실행의 원본 디렉터리, `operator_log`는 운영 기록을 남길 파일이다. 감시기는 실행기가 해당 디렉터리를 열고 있는지와 자식 프로세스의 신원을 확인한다.
+
+```sh
+python3 scripts/watch_registered_provider.py --controller "$controller_pid" --study "$study_dir" --role user_simulator --report "$operator_log"
+```
+
+감시 대상 역할에서 30초 안에 HTTP 429·502·503·504가 두 번 나오면 해당 실행의 전송을 잠시 멈춘다. 대기 시간은 120·600·1,800초 순으로 늘리고 공급자가 요청한 대기가 더 길면 그 시간을 따른다. 진행 중인 배정 하나에서 새 요청의 정상 응답을 확인하면 같은 실행을 재개한다. 묶음 사이에 진행 중인 상담이 없으면 다음 등록 묶음을 감시하면서 연다. 기존 오류와 비용은 원장에 남으며, 관측에 사용한 요청도 원래 배정에 포함된다. [운영 도구](../../scripts/watch_registered_provider.py) · [역할별 영수증과 프로세스 격리 검증](../../tests/test_registered_provider_watch.py)
+
 ## 현재 v1.1 실제 확인 결과
 
 [DeepSeek 1017 확인 기록](../../artifacts/connection-checks/20261114-openrouter-tau2-deepseek1017.json)에 성공 실행과 앞선 실패 2건을 함께 남겼다. 성공 원본은 `runs/tau2-openrouter-luna-deepseek1017-check-03/`이며 이전 실행을 덮어쓰지 않았다.
