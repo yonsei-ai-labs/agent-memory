@@ -148,6 +148,14 @@ class BankStudyTests(unittest.TestCase):
         self.assertEqual(case["arms"], ["outcome-first__preload", "fact__on_demand"])
         self.assertEqual(record["assigned"], dict(source=1, reused_first_pass=0, write=2, solve=2))
 
+    def test_first_pass_only_plan_schedules_sources_only(self):
+        plan = {k: v for k, v in bank_plan().items() if k not in ("writing", "reading")}
+        plan["conditions"] = []
+        record = self.adapter().resolve(plan, self.workspace, ROOT)["record"]
+        case, = record["cases"]
+        self.assertEqual(case["scheduled_stages"], ["source"])
+        self.assertEqual(record["assigned"], dict(source=1, reused_first_pass=0, write=0, solve=0))
+
     def test_tool_only_reader_cannot_claim_a_notice(self):
         plan = bank_plan()
         plan["reading"]["on_demand"]["notice"] = dict(text=ON_DEMAND_NOTICE)

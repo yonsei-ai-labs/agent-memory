@@ -47,6 +47,13 @@ class BfclCompileTests(unittest.TestCase):
         self.assertEqual(cfg["memory_notice_by_delivery"]["on_demand"], ON_DEMAND_NOTICE)
         self.assertEqual(cfg["writer_feedback"], "result_only")
 
+    def test_first_pass_only_profile_has_no_writers_or_readers(self):
+        from agent_memory_eval.study.adapters.bfcl import BfclRelevance
+        plan = {k: v for k, v in fixture_plan().items() if k not in ("writing", "reading")}
+        plan["conditions"] = []
+        cfg = BfclRelevance().compile(plan, ROOT)
+        self.assertEqual((cfg["forms"], cfg["delivery"], cfg["conditions"]), ({}, [], []))
+
     def test_task_outside_the_setup_is_rejected(self):
         from agent_memory_eval.study.adapters.bfcl import BfclRelevance
         plan = fixture_plan()

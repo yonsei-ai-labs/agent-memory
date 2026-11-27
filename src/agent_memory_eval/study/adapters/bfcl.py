@@ -34,7 +34,8 @@ class BfclRelevance:
         require(plan["first_pass"]["draws"] == 1 and plan["repeats"] == 1,
                 "The deterministic local model gives one first pass and one reader per slot")
         pairs = conditions(plan)
-        readers = plan["reading"]
+        readers = plan.get("reading", {})
+        writing = plan.get("writing")
         used_reps = list(dict.fromkeys(rep for rep, _ in pairs))
         used_readers = list(dict.fromkeys(reader for _, reader in pairs))
         cfg = deepcopy(setup)
@@ -42,9 +43,9 @@ class BfclRelevance:
             cfg.pop(key, None)
         cfg.update(
             name=plan["id"], tasks=tasks,
-            writer_instruction=content_text(root, plan["writing"]["instruction"]),
-            writer_feedback=plan["writing"]["feedback"],
-            forms={rep: content_text(root, plan["writing"]["representations"][rep]) for rep in used_reps},
+            writer_instruction=content_text(root, writing["instruction"]) if writing else setup["writer_instruction"],
+            writer_feedback=writing["feedback"] if writing else setup.get("writer_feedback", "result_only"),
+            forms={rep: content_text(root, writing["representations"][rep]) for rep in used_reps},
             delivery=[readers[name]["read_mode"] for name in used_readers],
             memory_notice_by_delivery={readers[name]["read_mode"]: content_text(root, readers[name]["notice"])
                                        if "notice" in readers[name] else "" for name in used_readers},
@@ -159,7 +160,7 @@ class BfclRelevance:
         rows = []
         if (run_root / "profile.json").is_file():
             require(read_json((run_root / "profile.json").read_bytes()) == cfg, "The recorded profile differs from the plan")
-            modes = {r["read_mode"]: name for name, r in plan["reading"].items()}
+            modes = {r["read_mode"]: name for name, r in plan.get("reading", {}).items()}
             rows = self._rows(run_root, cfg, cases, is_empty, plan["id"], modes)
         wanted = set(plan["benchmark"]["tasks"])
         for ref in plan.get("references", []):

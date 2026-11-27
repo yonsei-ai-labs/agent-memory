@@ -112,6 +112,26 @@ class StudyPlanTests(unittest.TestCase):
         with self.assertRaisesRegex(ContractError, "needs a notice, tool descriptions, or both"):
             self.load(dict(self.plan, reading=reading))
 
+    def test_first_pass_only_plan_needs_no_policies(self):
+        from agent_memory_eval.study.plan import conditions
+        plan = {k: v for k, v in self.plan.items() if k not in ("writing", "reading")}
+        plan.update(conditions=[], first_pass=dict(draws=3))
+        self.assertEqual(conditions(self.load(plan)), [])
+
+    def test_policies_are_required_once_a_condition_is_declared(self):
+        plan = {k: v for k, v in self.plan.items() if k != "reading"}
+        with self.assertRaisesRegex(ContractError, "Conditions need declared writing and reading"):
+            self.load(plan)
+
+    def test_decision_record_pins_its_evidence(self):
+        evidence = write_ref(self.root, "runs/step-2/analysis/slots.json", "[]\n")
+        decision = dict(hypothesis="Memories omit the prior outcome.", prediction="Fewer repeated failed decisions.",
+                        criterion="Report recoveries and regressions against the own first pass.", evidence=[evidence])
+        self.load(dict(self.plan, decision=decision))
+        (self.root / "runs/step-2/analysis/slots.json").write_text("changed\n", encoding="utf-8")
+        with self.assertRaisesRegex(ContractError, "Pinned asset changed"):
+            self.load(dict(self.plan, decision=decision))
+
     def test_budget_must_be_a_decimal_string(self):
         with self.assertRaisesRegex(ContractError, "Invalid study plan"):
             self.load(dict(self.plan, budget=dict(max_usd="7 dollars")))

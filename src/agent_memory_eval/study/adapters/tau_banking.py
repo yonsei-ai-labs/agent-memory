@@ -251,7 +251,8 @@ class TauBanking:
         require(setup["revision"] == base["benchmark_revision"] == PIN and setup["task_start_mode"] == START_FORMAT
                 and setup["retrieval_config"] == "grep_only", "The banking setup differs from its pinned implementation")
         require(plan["purpose"] == "development" or "references" not in plan, "Confirmation plans compare fresh runs only")
-        readers = plan["reading"]
+        readers = plan.get("reading", {})
+        writing = plan.get("writing")
         for name, reader in readers.items():
             tool_only = reader["read_mode"] == "on_demand" and "tool_descriptions" in reader
             require(tool_only != ("notice" in reader),
@@ -263,20 +264,23 @@ class TauBanking:
         pairs = conditions(plan)
         reps = list(dict.fromkeys(rep for rep, _ in pairs))
         cfg = deepcopy(base)
-        cfg.update(name=plan["id"], task_start_mode=START_FORMAT, writer_feedback_level=plan["writing"]["feedback"],
+        cfg.update(name=plan["id"], task_start_mode=START_FORMAT,
+                   writer_feedback_level=writing["feedback"] if writing else "result_only",
                    reader_admission="sealed_bank", max_concurrent=limits.get("max_concurrent", setup["max_concurrent"]),
                    delivery_instruction=self._pin(workspace, plan["id"], "reader-notice.txt", notice))
         cfg["limits"]["max_input_bytes"] = limits.get("max_input_bytes", setup["max_input_bytes"])
         cfg["writing"].update(completion_contract=REQUIRED_STORE_CONTRACT,
-                              lines={rep: content_text(root, plan["writing"]["representations"][rep]) for rep in reps},
-                              common_instruction_ref=self._pin(workspace, plan["id"], "writer-instruction.txt",
-                                                               plan["writing"]["instruction"]))
+                              lines={rep: content_text(root, writing["representations"][rep]) for rep in reps})
+        if writing:
+            cfg["writing"]["common_instruction_ref"] = self._pin(workspace, plan["id"], "writer-instruction.txt",
+                                                                 writing["instruction"])
         cfg["writing"]["proposed_limits"]["bank_items"] = 1
         if "writer_max_input_bytes" in limits:
             cfg["writing"]["proposed_limits"]["input_bytes"] = limits["writer_max_input_bytes"]
-        schema = read_json((SCHEMA_ROOT / "required-form-writing-v1.schema.json").read_bytes())
-        error = next(Draft202012Validator(schema).iter_errors(cfg["writing"]), None)
-        require(error is None, f"Invalid writing policy: {error.message if error else ''}")
+        if reps:
+            schema = read_json((SCHEMA_ROOT / "required-form-writing-v1.schema.json").read_bytes())
+            error = next(Draft202012Validator(schema).iter_errors(cfg["writing"]), None)
+            require(error is None, f"Invalid writing policy: {error.message if error else ''}")
         for reader in readers.values():
             if "tool_descriptions" in reader:
                 cfg["query_tool_descriptions"] = reader["tool_descriptions"]
@@ -360,7 +364,7 @@ class TauBanking:
         domain_dir = workspace / "data/tau2-bench/data/tau2/domains" / setup["domain"]
         identities = task_customers(domain_dir, set(plan["benchmark"]["tasks"]))
         cases, tasks = [], {}
-        readers = plan["reading"]
+        readers = plan.get("reading", {})
         arms = [arm_name(rep, reader) for rep, reader in pairs]
         for tid in plan["benchmark"]["tasks"]:
             require(tid in population, f"Unknown banking task {tid}")
@@ -379,15 +383,16 @@ class TauBanking:
                             arm_mode={arm_name(rep, reader): readers[reader]["read_mode"] for rep, reader in pairs},
                             **native)
                 case.update(self._reused(workspace, plan, name, case))
+                memory_stages = ["write", *cfg["solve_stages"]] if reps else []
                 if "first_pass_missing" in case:
                     case["scheduled_stages"] = []
                 elif "imported_first_pass" in case:
-                    case["scheduled_stages"] = ["write", *cfg["solve_stages"]]
+                    case["scheduled_stages"] = memory_stages
                 else:
-                    case["scheduled_stages"] = ["source", "write", *cfg["solve_stages"]]
+                    case["scheduled_stages"] = ["source", *memory_stages]
                 cases.append(case)
                 tasks[name] = data
-        live = [c for c in cases if c["scheduled_stages"]]
+        live = [c for c in cases if "write" in c["scheduled_stages"]]
         assigned = dict(source=sum("source" in c["scheduled_stages"] for c in cases),
                         reused_first_pass=sum("imported_first_pass" in c for c in cases),
                         write=len(live) * len(reps), solve=len(live) * len(arms) * plan["repeats"])
@@ -442,7 +447,9 @@ class TauBanking:
 
     def _groups(self, root, plan, cfg, cases, sleep):
         yield ("source", "source", [c for c in cases if "source" in c["scheduled_stages"]])
-        live = [c for c in cases if c["scheduled_stages"]]
+        live = [c for c in cases if "write" in c["scheduled_stages"]]
+        if not live:
+            return
         yield ("write", "write", live)
         codes = {f"HTTP_{code}" for code in plan["retry"]["http_codes"]}
         for stage in cfg["solve_stages"]:

@@ -42,7 +42,9 @@ def check_plan(plan, root):
     pairs = conditions(plan)
     if len(set(pairs)) != len(pairs):
         raise ContractError("Duplicate condition in the study plan")
-    reps, readers = plan["writing"]["representations"], plan["reading"]
+    if pairs and not ("writing" in plan and "reading" in plan):
+        raise ContractError("Conditions need declared writing and reading policies")
+    reps, readers = plan.get("writing", {}).get("representations", {}), plan.get("reading", {})
     if any(rep not in reps or reader not in readers for rep, reader in pairs):
         raise ContractError("Undeclared representation or reading in a condition")
     modes = [reader["read_mode"] for reader in readers.values()]
@@ -52,7 +54,8 @@ def check_plan(plan, root):
         raise ContractError("Tool descriptions apply to on_demand readers only")
     if any("notice" not in r and "tool_descriptions" not in r for r in readers.values()):
         raise ContractError("A reader needs a notice, tool descriptions, or both")
-    refs = [plan["benchmark"]["setup"], plan["writing"]["instruction"], *reps.values(),
+    refs = [plan["benchmark"]["setup"], *([plan["writing"]["instruction"]] if "writing" in plan else []), *reps.values(),
+            *plan.get("decision", {}).get("evidence", []),
             *(r["notice"] for r in readers.values() if "notice" in r),
             *(r["setup"] for r in plan.get("references", []) if "setup" in r)]
     for ref in refs:
