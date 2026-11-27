@@ -389,8 +389,11 @@ class Tau2Study:
             _, ctl, (row,) = sealed_rows(shard)
             result = row.get("result") or {}
             if result.get("grading_status") != "graded":
-                return dict(first_pass_missing=dict(recording=ref["recording"],
-                                                    reason=result.get("error_code") or row.get("reason") or row["status"]))
+                reason = result.get("error_code") or row.get("reason") or row["status"]
+                technical = {"BATCH_SPEND_LIMIT", *(f"HTTP_{code}" for code in plan["retry"]["http_codes"])}
+                if reason in technical:  # Lost to our own guard or a declared provider error, not to the task.
+                    return dict(replaces_first_pass=dict(recording=ref["recording"], reason=reason, run=row["run_id"]))
+                return dict(first_pass_missing=dict(recording=ref["recording"], reason=reason))
             source = source_from(shard, case["task_id"])
             return dict(imported_first_pass=dict(directory=f"{ref['recording']}/task-{name}/source",
                         registration_sha256=ctl["profile"]["registration_sha256"], run_id=row["run_id"],
@@ -461,6 +464,7 @@ class Tau2Study:
                     case["scheduled_stages"] = ["source", *memory_stages]
                 cases.append(case)
                 tasks[name] = data
+        record_check = self._budget_check(plan, cfg, cases)
         live = [c for c in cases if "write" in c["scheduled_stages"]]
         assigned = dict(source=sum("source" in c["scheduled_stages"] for c in cases),
                         reused_first_pass=sum("imported_first_pass" in c for c in cases),
@@ -468,11 +472,30 @@ class Tau2Study:
         record = dict(format=RESOLVED, adapter=self.name, plan_id=plan["id"], plan_sha256=plan_digest(plan),
                       native_revision=PIN, domain=spec["domain"], split=split,
                       domain_db_sha256=digest((domain_dir / "db.json").read_bytes()),
-                      stages=["source", "write", *cfg["solve_stages"]], assigned=assigned, cases=cases)
+                      stages=["source", "write", *cfg["solve_stages"]], assigned=assigned, budget_check=record_check,
+                      cases=cases)
         if spec["domain"] == "banking_knowledge":
             record["corpus_sha256"] = digest(canonical(env.get_knowledge_base().model_dump(mode="json")))
         cfg["registration_sha256"] = digest(canonical(record))
         return dict(cfg=cfg, conn=conn, cases=cases, tasks=tasks, record=record)
+
+    def _budget_check(self, plan, cfg, cases):
+        """Each shard's grant must cover the largest single-request reservation twice, or requests stop mid-episode."""
+        terms = cfg["expected_endpoint_terms"]
+        def reserve(role, input_bytes, output_tokens):
+            rates = terms[role]["reservation_pricing"]
+            return Decimal(str(input_bytes)) * Decimal(str(rates["prompt"])) + output_tokens * Decimal(str(rates["completion"]))
+        largest = max(reserve("worker", max(cfg["limits"]["max_input_bytes"], cfg["writing"]["proposed_limits"]["input_bytes"]), 4096),
+                      reserve("user_simulator", cfg["limits"]["max_input_bytes"], 4096))
+        if "grader" in terms:
+            judge = cfg["judge"]
+            largest = max(largest, reserve("grader", judge["max_input_bytes"], judge["parameters"]["max_completion_tokens"]))
+        shards = max(1, min(cfg["max_concurrent"], len([c for c in cases if c["scheduled_stages"]]) or 1))
+        grant = Decimal(plan["budget"]["max_usd"]) / shards
+        require(grant >= 2 * largest, f"Budget leaves each shard less than twice the largest request reservation "
+                                      f"(${largest:.4f} per request, ${grant:.4f} per shard). Raise budget.max_usd or lower "
+                                      f"limits.max_concurrent.")
+        return dict(largest_request_reservation_usd=f"{largest:.6f}", first_wave_shard_grant_usd=f"{grant:.6f}")
 
     def _admission(self, cfg):
         def admit(root, stage, case):

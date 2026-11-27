@@ -226,7 +226,7 @@ class BankStudyTests(unittest.TestCase):
     def test_ungraded_reused_first_pass_stays_missing(self):
         from agent_memory_eval.study.scorecard import scorecard
         first = bank_plan()
-        self.run_plan(first, FlakyCustomer(in_first_pass=True))
+        self.run_plan(first, FlakyCustomer(in_first_pass=True, code=502))
         second = bank_plan("bank-fixture-02", first_pass=dict(draws=1, reuse=[dict(recording="bank-fixture-01")]))
         resolved = self.adapter().resolve(second, self.workspace, ROOT)
         case, = resolved["record"]["cases"]
@@ -236,6 +236,21 @@ class BankStudyTests(unittest.TestCase):
         self.assertEqual(card["conditions"]["no_memory"]["graded"], 0)
         for name in ("outcome-first__preload", "fact__on_demand"):
             self.assertEqual(card["conditions"][name]["missing"], {"first_pass_ungraded": 1})
+
+    def test_first_pass_lost_to_a_declared_technical_error_runs_again(self):
+        first = bank_plan()
+        self.run_plan(first, FlakyCustomer(in_first_pass=True, code=503))
+        second = bank_plan("bank-fixture-02", first_pass=dict(draws=1, reuse=[dict(recording="bank-fixture-01")]))
+        record = self.adapter().resolve(second, self.workspace, ROOT)["record"]
+        case, = record["cases"]
+        self.assertEqual(case["scheduled_stages"][0], "source")
+        self.assertEqual(case["replaces_first_pass"]["reason"], "HTTP_503")
+        self.assertEqual(record["assigned"], dict(source=1, reused_first_pass=0, write=2, solve=2))
+
+    def test_budget_must_cover_the_largest_request_reservation(self):
+        plan = bank_plan(budget=dict(max_usd="0.05"))
+        with self.assertRaisesRegex(ContractError, "Budget leaves each shard less than twice"):
+            self.adapter().resolve(plan, self.workspace, ROOT)
 
     def test_reference_without_shared_first_passes_is_rejected(self):
         self.run_plan(bank_plan(), FlakyCustomer(fail=False))
