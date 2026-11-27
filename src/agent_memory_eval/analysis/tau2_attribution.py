@@ -68,6 +68,13 @@ def listed_orders(messages):
 
 
 def graded_episode(folder, row, case, read_instruction_sha, source=None, *, public_inputs=None, query_tool_descriptions=None):
+    return recorded_episode(folder, row, case, read_instruction_sha, source, public_inputs=public_inputs,
+                            query_tool_descriptions=query_tool_descriptions)
+
+
+def recorded_episode(folder, row, case, read_instruction_sha, source=None, *, public_inputs=None,
+                     query_tool_descriptions=None, include_partial=False):
+    """Verify public steps through the first unreplied request when an episode ends without a grade."""
     result = row["result"]
     log = RecordedDecisions(safe_path(folder, row["directory"]), row["run_id"], result["log_sha256"])
     marker, = [e["payload"] for e in log.of_type("business.transition")
@@ -126,6 +133,9 @@ def graded_episode(folder, row, case, read_instruction_sha, source=None, *, publ
         role = req["actor_role"]
         if role not in systems:
             continue
+        if include_partial and log.finishes[req["request_id"]]["status"] != "response":
+            require(result["grading_status"] != "graded", "A graded episode contains an unreplied request")
+            break
         wire = log.blobs.get(req["request_ref"])
         history = wire["messages"]
         choice = log.reply(req)
@@ -160,8 +170,12 @@ def graded_episode(folder, row, case, read_instruction_sha, source=None, *, publ
         steps.append(observed_step(actor, req, settings[role], choice, case["native_sha256"], history, spans,
                                    private_names=private_tools if role == "worker" else ()))
     score, = [e["payload"] for e in log.of_type("outcome.scored")]
-    require(type(score["official_success"]) is bool and score["grading_status"] == result["grading_status"] == "graded"
-            and score["official_success"] == result["official_success"] and score["official_artifact_ref"] == result["report_ref"],
+    require(score["grading_status"] == result["grading_status"] and score["official_success"] is result["official_success"]
+            and score["official_artifact_ref"] == result["report_ref"],
             "Ledger grade differs from the original score")
+    if include_partial and score["grading_status"] != "graded":
+        require(score["official_success"] is None and score["official_artifact_ref"] is None, "Unscored prefix carries a grade")
+        return steps, episode_effort(row, None, effort_choices)
+    require(type(score["official_success"]) is bool and score["grading_status"] == "graded", "Expected a completed official grade")
     report = log.blobs.get(score["official_artifact_ref"])
     return steps, episode_effort(row, report["messages"], effort_choices)

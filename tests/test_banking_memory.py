@@ -15,6 +15,25 @@ from test_openrouter import response
 
 
 class BankingCohortTests(unittest.TestCase):
+    def test_failed_episode_only_reports_the_observed_public_prefix(self):
+        from agent_memory_eval.analysis.tau2_attribution import recorded_episode
+        from agent_memory_eval.recording.batch import sealed_rows
+        study = ROOT / "runs/tau-banking-source-screen-01"
+        if not (study / "completion.json").is_file():
+            self.skipTest("Requires the archived interrupted banking first pass")
+        read = banking.matched.read
+        case = next(c for c in read(study / "registration.json")["preflight"]["cases"]
+                    if c["task"] == "task_018__source-1")
+        stage = "task-" + case["task"] + "/source"
+        seal = read(study / "completion.json")["stages"][stage]["seal"]
+        _, _, (row,) = sealed_rows(study / stage, seal)
+        neutral = read(ROOT / "protocols/pilots/tau2-fresh-matched-v1.json")["delivery_instruction"]["sha256"]
+        self.assertIsNone(row["result"]["official_success"])
+        steps, effort = recorded_episode(study / stage, row, case, neutral, include_partial=True)
+        self.assertEqual(steps[0].actor, "worker")
+        self.assertGreater(len(steps), 1)
+        self.assertIsNone(effort["business_calls"])
+
     @unittest.skipUnless(AVAILABLE and (ROOT / "runs/tau-banking-source-screen-01/completion.json").exists(),
                          "Requires the pinned native bank and preserved first passes")
     def test_business_replay_distinguishes_customer_errors_and_executed_disputes(self):
@@ -318,6 +337,7 @@ class BankingMemoryTests(unittest.TestCase):
             trials = report["releases"]["first"]["readers"]
             decisions = report["releases"]["first"]["decision_pairs"]
             self.assertEqual(len(decisions), 5)
+            self.assertTrue(all(p["first_worker_choice"]["status"] == "matched_visible_memory" for p in decisions))
             self.assertTrue(all(p["reference"] and p["candidate"] and p["comparison"]["worker_inputs"] for p in decisions))
             for writer in report["releases"]["first"]["writers"]:
                 evidence = writer["evidence"]

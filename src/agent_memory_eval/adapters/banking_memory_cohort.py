@@ -9,11 +9,11 @@ from agent_memory_eval.adapters.banking_trajectories import _shard, _study
 from agent_memory_eval.adapters.tau2 import native_modules, verify_checkout
 from agent_memory_eval.analysis.claim_evidence import paired_counts
 from agent_memory_eval.analysis.clustered_outcomes import clustered_contrast
-from agent_memory_eval.analysis.decision_attribution import compare_episodes
+from agent_memory_eval.analysis.decision_attribution import compare_episodes, compare_steps
 from agent_memory_eval.analysis.efficiency import METRICS, customer_questions, episode_effort, paired_effort
 from agent_memory_eval.analysis.policy_evidence import PolicyEvidence, counted
 from agent_memory_eval.analysis.recorded_decisions import READS, RecordedDecisions, require
-from agent_memory_eval.analysis.tau2_attribution import graded_episode
+from agent_memory_eval.analysis.tau2_attribution import recorded_episode
 from agent_memory_eval.analysis.trajectory import decision_path
 from agent_memory_eval.contracts.core import canonical, digest, read_json
 from agent_memory_eval.experiments.forms_write import _project_context, read_form_bank
@@ -372,16 +372,19 @@ def read_release(workspace, frozen, release, *, decision_interface=None):
                                     delivery=mode, cohort=case["cohort"], customer=case["customer"],
                                     expected_writer=bank["run_id"] if bank else None,
                                     source={k: src[k] for k in ("run", "success", "effort")}))
-                if decision_interface is not None and obs["success"] is not None:
-                    path, _ = graded_episode(folder, row, case, source=source_row, **decision_interface)
-                    steps[form, mode] = (obs["run"], path)
+                if decision_interface is not None and obs["dispatched_worker"]:
+                    path, _ = recorded_episode(folder, row, case, source=source_row, **decision_interface,
+                                               include_partial=obs["success"] is None)
+                    steps[form, mode] = dict(run=obs["run"], path=path, graded=obs["success"] is not None,
+                                             first_worker=next((s for s in path if s.actor == "worker"), None))
             if decision_interface is not None:
                 for form in FORMS:
-                    reference, candidate = (steps.get((form, mode)) for mode in ("on_demand", "preload"))
+                    reference, candidate = (steps.get((form, mode), {}) for mode in ("on_demand", "preload"))
+                    whole_pair = reference.get("graded") and candidate.get("graded")
                     decision_pairs.append(dict(task=case["task_id"], draw=case["source_draw"], form=form,
-                        repeat=repeat, reference=reference[0] if reference else None,
-                        candidate=candidate[0] if candidate else None,
-                        comparison=compare_episodes(reference[1], candidate[1]) if reference and candidate else None))
+                        repeat=repeat, reference=reference.get("run"), candidate=candidate.get("run"),
+                        first_worker_choice=compare_steps(reference.get("first_worker"), candidate.get("first_worker")),
+                        comparison=compare_episodes(reference["path"], candidate["path"]) if whole_pair else None))
     expected = plan["assigned"]
     require(len(sources) == expected["source"] + expected["reused_first_pass"] and len(writers) == expected["write"]
             and len(readers) == expected["solve"], "Unaccounted cohort assignment")

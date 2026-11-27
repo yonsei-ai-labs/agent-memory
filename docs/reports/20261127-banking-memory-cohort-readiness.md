@@ -60,3 +60,5 @@ uv run python -m unittest discover -s tests -p test_banking_memory.py
 ```bash
 uv run --offline python -m scripts.run_banking_memory source-evidence --series memory-cohort --scope first
 ```
+
+고객 공급자의 502·503 장애를 확인한 뒤, 원래 배정의 최종 결과가 봉인되기 전에 첫 판단 보조 분석을 추가했다. 두 조건 모두에서 실제 응답을 받은 첫 공개 상담원 판단을 짝짓고 그 직전의 공개 입력, 역할 설정, 본문 노출을 대조한다. 상담이 나중에 중단됐더라도 이 판단을 읽을 수 있다. 응답을 받지 못한 요청에서는 추적을 멈춘다. 최종 성공과 전체 대화 비교는 원래 규칙대로 공식 성적을 받은 상담에서만 계산한다.
