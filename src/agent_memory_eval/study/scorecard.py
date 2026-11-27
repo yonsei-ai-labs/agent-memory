@@ -17,14 +17,14 @@ def _check(row):
 
 
 def effective_slots(rows):
-    """First graded attempt per (condition, source), in listed origin order then attempt order."""
+    """First graded attempt per (condition, source, repeat), in listed origin order then attempt order."""
     origins = {}
     for r in rows:
         _check(r)
         origins.setdefault(r["origin"], len(origins))
     grouped = defaultdict(list)
     for r in rows:
-        grouped[r["condition"], r["source"]].append(r)
+        grouped[r["condition"], r["source"], r.get("repeat", 1)].append(r)
     slots = {}
     for key, attempts in grouped.items():
         attempts.sort(key=lambda r: (origins[r["origin"]], r["attempt"]))
@@ -49,7 +49,7 @@ def _effort(pairs, field):
 
 def scorecard(rows):
     slots = effective_slots(rows)
-    sources = {s: r for (c, s), r in slots.items() if c == NO_MEMORY}
+    sources = {s: r for (c, s, n), r in slots.items() if c == NO_MEMORY and n == 1}
     tasks = defaultdict(lambda: dict(first_pass_graded=0, first_pass_successes=0))
     for r in sources.values():
         if r["status"] == "graded":
@@ -61,8 +61,8 @@ def scorecard(rows):
         if r.get("cost_usd") is not None:
             cost[r["condition"]] += Decimal(r["cost_usd"])
     conditions = {}
-    for name in dict.fromkeys(c for c, _ in slots):
-        own = [r for (c, _), r in slots.items() if c == name]
+    for name in dict.fromkeys(c for c, _, _ in slots):
+        own = [r for (c, _, _), r in slots.items() if c == name]
         graded = [r for r in own if r["status"] == "graded"]
         paired = [(r, sources[r["source"]]) for r in graded
                   if r["source"] in sources and sources[r["source"]]["status"] == "graded"]

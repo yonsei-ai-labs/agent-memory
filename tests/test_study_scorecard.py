@@ -72,6 +72,11 @@ class ScorecardTests(unittest.TestCase):
         self.assertEqual(demand["cost_usd"], "0.060")
         self.assertEqual(card["fact__preload"]["preloaded"], 1)
 
+    def test_repeated_readers_are_separate_slots_paired_with_the_same_source(self):
+        rows = first_passes() + [row("A", "A-1", "fact__preload", True), dict(row("A", "A-1", "fact__preload", False), repeat=2)]
+        fact = self.card(rows)["conditions"]["fact__preload"]
+        self.assertEqual((fact["assigned"], fact["graded"], fact["successes"], fact["regressions"]), (2, 2, 1, 1))
+
     def test_rows_must_name_a_known_status(self):
         from agent_memory_eval.contracts.core import ContractError
         broken = dict(first_passes()[0], status="started")

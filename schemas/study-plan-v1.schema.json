@@ -3,62 +3,154 @@
   "title": "Declared memory-policy study on one benchmark",
   "type": "object",
   "additionalProperties": false,
-  "required": ["format", "id", "purpose", "question", "benchmark", "first_pass", "writing", "reading", "conditions", "repeats", "budget", "retry"],
+  "required": [
+    "format",
+    "id",
+    "purpose",
+    "question",
+    "benchmark",
+    "first_pass",
+    "writing",
+    "reading",
+    "conditions",
+    "repeats",
+    "budget",
+    "retry"
+  ],
   "properties": {
-    "format": {"const": "agent-memory-study-plan/v1"},
-    "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9.-]{2,80}$"},
-    "purpose": {"enum": ["development", "confirmation"]},
-    "question": {"$ref": "#/$defs/text"},
+    "format": {
+      "const": "agent-memory-study-plan/v1"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9.-]{2,80}$"
+    },
+    "purpose": {
+      "enum": [
+        "development",
+        "confirmation"
+      ]
+    },
+    "question": {
+      "$ref": "#/$defs/text"
+    },
     "benchmark": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["adapter", "setup", "tasks"],
+      "required": [
+        "adapter",
+        "setup",
+        "tasks"
+      ],
       "properties": {
-        "adapter": {"enum": ["tau-banking", "bfcl-relevance"]},
-        "setup": {"$ref": "#/$defs/ref"},
-        "tasks": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/name"}}
+        "adapter": {
+          "enum": [
+            "tau-banking",
+            "bfcl-relevance"
+          ]
+        },
+        "setup": {
+          "$ref": "#/$defs/ref"
+        },
+        "tasks": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/name"
+          }
+        }
       }
     },
     "first_pass": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["draws"],
+      "required": [
+        "draws"
+      ],
       "properties": {
-        "draws": {"type": "integer", "minimum": 1, "maximum": 10},
-        "reuse": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/recording"}}
+        "draws": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10
+        },
+        "reuse": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/recording"
+          }
+        }
       }
     },
     "writing": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["instruction", "feedback", "representations"],
+      "required": [
+        "instruction",
+        "feedback",
+        "representations"
+      ],
       "properties": {
-        "instruction": {"$ref": "#/$defs/content"},
-        "feedback": {"enum": ["none", "result_only"]},
+        "instruction": {
+          "$ref": "#/$defs/content"
+        },
+        "feedback": {
+          "enum": [
+            "none",
+            "result_only"
+          ]
+        },
         "representations": {
           "type": "object",
           "minProperties": 1,
-          "propertyNames": {"$ref": "#/$defs/policy_name"},
-          "additionalProperties": {"$ref": "#/$defs/content"}
+          "propertyNames": {
+            "$ref": "#/$defs/policy_name"
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/content"
+          }
         }
       }
     },
     "reading": {
       "type": "object",
       "minProperties": 1,
-      "propertyNames": {"$ref": "#/$defs/policy_name"},
+      "propertyNames": {
+        "$ref": "#/$defs/policy_name"
+      },
       "additionalProperties": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["read_mode", "notice"],
+        "required": [
+          "read_mode",
+          "notice"
+        ],
         "properties": {
-          "read_mode": {"enum": ["preload", "on_demand"]},
-          "notice": {"$ref": "#/$defs/content"},
+          "read_mode": {
+            "enum": [
+              "preload",
+              "on_demand"
+            ]
+          },
+          "notice": {
+            "$ref": "#/$defs/content"
+          },
           "tool_descriptions": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["memory_list", "memory_get"],
-            "properties": {"memory_list": {"$ref": "#/$defs/text"}, "memory_get": {"$ref": "#/$defs/text"}}
+            "required": [
+              "memory_list",
+              "memory_get"
+            ],
+            "properties": {
+              "memory_list": {
+                "$ref": "#/$defs/text"
+              },
+              "memory_get": {
+                "$ref": "#/$defs/text"
+              }
+            }
           }
         }
       }
@@ -69,67 +161,180 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["representation", "reading"],
-        "properties": {"representation": {"$ref": "#/$defs/policy_name"}, "reading": {"$ref": "#/$defs/policy_name"}}
+        "required": [
+          "representation",
+          "reading"
+        ],
+        "properties": {
+          "representation": {
+            "$ref": "#/$defs/policy_name"
+          },
+          "reading": {
+            "$ref": "#/$defs/policy_name"
+          }
+        }
       }
     },
-    "references": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/recording"}},
-    "repeats": {"type": "integer", "minimum": 1, "maximum": 5},
+    "references": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/recording"
+      }
+    },
+    "repeats": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 5
+    },
     "limits": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "max_concurrent": {"type": "integer", "minimum": 1, "maximum": 64},
-        "max_input_bytes": {"type": "integer", "minimum": 1000},
-        "writer_max_input_bytes": {"type": "integer", "minimum": 1000}
+        "max_concurrent": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 64
+        },
+        "max_input_bytes": {
+          "type": "integer",
+          "minimum": 1000
+        },
+        "writer_max_input_bytes": {
+          "type": "integer",
+          "minimum": 1000
+        }
       }
     },
     "budget": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["max_usd"],
-      "properties": {"max_usd": {"type": "string", "pattern": "^[0-9]{1,4}(\\.[0-9]{1,6})?$"}}
+      "required": [
+        "max_usd"
+      ],
+      "properties": {
+        "max_usd": {
+          "type": "string",
+          "pattern": "^[0-9]{1,4}(\\.[0-9]{1,6})?$"
+        }
+      }
     },
     "retry": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["http_codes", "wait_seconds"],
+      "required": [
+        "http_codes",
+        "wait_seconds"
+      ],
       "properties": {
-        "http_codes": {"type": "array", "uniqueItems": true, "items": {"enum": [429, 500, 502, 503, 504]}},
-        "wait_seconds": {"type": "array", "maxItems": 5, "items": {"type": "integer", "minimum": 0, "maximum": 7200}}
+        "http_codes": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              429,
+              500,
+              502,
+              503,
+              504
+            ]
+          }
+        },
+        "wait_seconds": {
+          "type": "array",
+          "maxItems": 5,
+          "items": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 7200
+          }
+        }
       }
     }
   },
   "$defs": {
-    "text": {"type": "string", "pattern": "\\S"},
-    "name": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"},
+    "text": {
+      "type": "string",
+      "pattern": "\\S"
+    },
+    "name": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+    },
     "policy_name": {
       "type": "string",
       "pattern": "^[a-z0-9][a-z0-9_-]*$",
       "allOf": [
-        {"not": {"pattern": "__"}},
-        {"not": {"enum": ["no_memory", "empty_preload", "public_record", "summary"]}}
+        {
+          "not": {
+            "pattern": "__"
+          }
+        },
+        {
+          "not": {
+            "enum": [
+              "no_memory",
+              "empty_preload",
+              "public_record",
+              "summary"
+            ]
+          }
+        }
       ]
     },
     "ref": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["path", "sha256"],
-      "properties": {"path": {"type": "string", "minLength": 1}, "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}
+      "required": [
+        "path",
+        "sha256"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
     },
     "content": {
       "oneOf": [
-        {"$ref": "#/$defs/ref"},
-        {"type": "object", "additionalProperties": false, "required": ["text"], "properties": {"text": {"$ref": "#/$defs/text"}}}
+        {
+          "$ref": "#/$defs/ref"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "text"
+          ],
+          "properties": {
+            "text": {
+              "$ref": "#/$defs/text"
+            }
+          }
+        }
       ]
     },
     "recording": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["recording"],
+      "required": [
+        "recording"
+      ],
       "properties": {
-        "recording": {"$ref": "#/$defs/name"},
-        "setup": {"$ref": "#/$defs/ref"}
+        "recording": {
+          "$ref": "#/$defs/name"
+        },
+        "setup": {
+          "$ref": "#/$defs/ref"
+        },
+        "attempt_of": {
+          "$ref": "#/$defs/name"
+        }
       }
     }
   }
