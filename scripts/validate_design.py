@@ -42,6 +42,7 @@ def main() -> None:
     schemas = {
         "plan": read_json(ROOT / "schemas" / "run-plan.schema.json"),
         "policy-round": read_json(ROOT / "schemas" / "policy-round-v1.schema.json"),
+        "study-plan-v1": read_json(ROOT / "schemas" / "study-plan-v1.schema.json"),
         "policy-evidence": read_json(ROOT / "schemas" / "policy-evidence-v1.schema.json"),
         "event": read_json(ROOT / "schemas" / "event.schema.json"),
         "connection-check": read_json(ROOT / "schemas" / "connection-check.schema.json"),
@@ -77,6 +78,12 @@ def main() -> None:
     if execution_fixture["contract"] != "per-role-limits/v1":
         raise ValueError("Unknown execution limit fixture contract")
     validators["policy-round"].validate(read_json(ROOT / "protocols/diagnostics/portable-writer-round-v1.json"))
+    from agent_memory_eval.study.plan import load_plan
+    for plan_path in sorted((ROOT / "protocols/studies").glob("*.json")):
+        validators["study-plan-v1"].validate(read_json(plan_path))
+        load_plan(plan_path, ROOT)
+    reject(validators["study-plan-v1"], dict(read_json(ROOT / "protocols/studies/bank-outcome-first-01.json"),
+                                             conditions=[]), "study plan without conditions")
     for result in read_json(ROOT / "artifacts/analyses/20261126-policy-evidence-summary.json").values():
         validators["policy-evidence"].validate(result)
     validators["task-room-v1"].validate(read_json(ROOT / "artifacts/analyses/20261127-banking-task-room.json"))
