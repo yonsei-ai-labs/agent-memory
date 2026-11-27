@@ -99,8 +99,8 @@ def save_analysis(root, plan_id, rows, card, *, tasks):
     folder.mkdir(parents=True, exist_ok=True)
     refs = {}
     scope = "all" if tasks is None else "tasks-" + digest(canonical(sorted(tasks)))[:12]
-    for key, value in (("rows", dict(format="agent-memory-study-rows/v1", plan_id=plan_id, tasks=tasks, rows=rows)),
-                       ("scorecard", dict(card, plan_id=plan_id, tasks=tasks))):
+    for key, value in (("rows", dict(format="agent-memory-study-rows/v1", plan_id=plan_id, scored_tasks=tasks, rows=rows)),
+                       ("scorecard", dict(card, plan_id=plan_id, scored_tasks=tasks))):
         data = canonical(value) + b"\n"
         path = folder / f"{key}-{scope}-{digest(data)[:12]}.json"
         if not path.exists():

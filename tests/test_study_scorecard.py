@@ -99,6 +99,10 @@ class ScorecardTests(unittest.TestCase):
                 self.assertEqual(digest(path.read_bytes()), refs[key]["sha256"])
                 self.assertTrue(refs[key]["path"].startswith("artifacts/studies/study-01/"))
             self.assertEqual(save_analysis(Path(tmp), "study-01", rows, scorecard(rows), tasks=None), refs)
+            import json
+            saved = json.loads((Path(tmp) / refs["scorecard"]["path"]).read_text())
+            self.assertEqual(saved["tasks"], scorecard(rows)["tasks"])
+            self.assertIsNone(saved["scored_tasks"])
             subset = save_analysis(Path(tmp), "study-01", [r for r in rows if r["task"] == "A"],
                                    scorecard([r for r in rows if r["task"] == "A"]), tasks=["A"])
             self.assertNotEqual(subset["scorecard"]["path"], refs["scorecard"]["path"])
