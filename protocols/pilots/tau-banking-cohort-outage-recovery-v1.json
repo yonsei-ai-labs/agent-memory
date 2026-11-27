@@ -1,0 +1,16 @@
+{
+  "name": "tau-banking-memory-cohort-01-first-outage-recovery",
+  "parent_recording": "tau-banking-memory-cohort-01-first",
+  "parent_protocol_sha256": "4c5727a864d93108be3374601eb0ab6ffe73ca4b6600f84f3c373eb5349dc7a1",
+  "interruptions": {
+    "path": "artifacts/pilots/20261127-banking-cohort-customer-outage.json",
+    "sha256": "3af068f60484972a863b1bee29aee109a10e580bccbfe216226e661b51a0976b"
+  },
+  "assigned": {"source": 0, "write": 0, "solve": 160, "second_pass_no_memory": 0},
+  "by_delivery": {"preload": 80, "on_demand": 80},
+  "original_pairs": {"both_interrupted": 75, "one_interrupted": 10, "neither_interrupted": 140},
+  "selection": "Only the named 160 terminal HTTP 502/503 customer requests in the registered 04:16–04:19 UTC incident. Verify the original sealed allocations, request, response, actor, missing grade, source and writer snapshot. One fresh consultation per eligible original allocation.",
+  "accounting": "Carry the full sealed, reported plus reserved, cost of the initial release. Total combined ceiling USD 7. The recovery is a new allocation and requires its own affirmative authorization.",
+  "execution": "Attach the provider receipt watcher before the consultations. Hold after two transient customer errors in 30 seconds. Probe with an existing assignment after 120, 600 or 1800 seconds or a longer Retry-After. Do not resubmit an attempted recovery consultation.",
+  "analysis": "Publish the initial registered results unchanged, followed by a sensitivity table filling only the 160 registered missing slots. Retain residual missingness and costs, report grades by wave and distinguish pairs with one versus two newly observed arms. Cross-wave contrasts can also reflect provider time. No entire-cohort performance inference or expansion without customer-disjoint confirmation."
+}

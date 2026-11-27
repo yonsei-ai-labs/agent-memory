@@ -54,6 +54,9 @@ def jobs_for(case, stage):
     arms = {"source": ["no_memory"], "write": forms,
             "solve": [f"{form}__{mode}" for form in forms for mode in modes]}[stage]
     ordered = sorted(arms, key=lambda a: digest(canonical([FRESH_MATCHED, case["task"], stage, a])))
+    recovery = case.get("interrupted_readers") if stage == "solve" else None
+    if recovery is not None and (not recovery or not set(recovery) <= set(ordered)):
+        raise ContractError("Unregistered delivery in the interrupted reader set")
     return [dict(index=i, repetition=1, task_id=case["task_id"],
                  phase="write" if stage == "write" else "solve", arm=arm)
-            for i, arm in enumerate(ordered, 1)]
+            for i, arm in enumerate(ordered, 1) if recovery is None or arm in recovery]

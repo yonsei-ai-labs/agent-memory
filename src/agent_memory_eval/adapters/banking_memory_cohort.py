@@ -304,6 +304,69 @@ def outcome_tables(cells):
                     else "identified customer or unresolved task") for k, v in sorted(clusters.items())})
 
 
+def interrupted_reader_cases(root, plan, close, manifest, spec):
+    """Bind each technical loss to its sealed original request, source and stored memory."""
+    require(close["registration_sha256"] == manifest["original_registration_sha256"],
+            "Outage manifest belongs to a different original release")
+    by_task = defaultdict(dict)
+    for receipt in manifest["records"]:
+        task, arm = receipt["task"], receipt["arm"]
+        require(arm not in by_task[task], "Duplicate recovery allocation")
+        by_task[task][arm] = receipt
+    require(sum(map(len, by_task.values())) == spec["assigned"]["solve"], "Wrong number of interrupted consultations")
+    registration = digest(canonical(plan))
+    cases, counts = [], Counter()
+    pair_sizes = Counter()
+    for case in plan["cases"]:
+        receipts = by_task.pop(case["task_id"], None)
+        if receipts is None:
+            continue
+        sdir, solved = _shard(root, case, "solve", "solve", close, registration)
+        wdir, written = _shard(root, case, "write", "write", close, registration)
+        writers = {r["arm"]: r for r in written}
+        allocations = {}
+        for row in solved:
+            arm = row["arm"]
+            if arm not in receipts:
+                continue
+            r = receipts[arm]
+            result = row["result"]
+            require(row["run_id"] == r["run"] and row["index"] == r["row_index"] and row["status"] == "error"
+                    and result["log_sha256"] == r["journal_sha256"] and result["official_success"] is None
+                    and result["report_ref"] is None and result["error_code"] == r["code"] in {"HTTP_502", "HTTP_503"}
+                    and close["stages"][str(sdir.relative_to(root))]["seal"] == r["stage_seal"], "Changed terminal loss")
+            log = RecordedDecisions(safe_path(sdir, row["directory"]), row["run_id"], result["log_sha256"])
+            req = log.requests[-1]
+            finish = log.finishes[req["request_id"]]
+            require(req["request_id"] == r["failed_request"] and req["actor_role"] == r["actor"] == "user_simulator"
+                    and req["request_ref"]["sha256"] == r["request_sha256"] and finish["status"] == "error"
+                    and finish["delivery_status"] == r["delivery"] == "response_received"
+                    and finish["response_ref"]["sha256"] == r["response_sha256"]
+                    and log.blobs.get(finish["response_ref"])["error"]["code"] == r["provider_code"]
+                    and r["code"] == "HTTP_" + str(r["provider_code"]), "Wrong provider or terminal request")
+            form, mode = arm.split("__")
+            writer = writers[form]
+            bank = read_form_bank(safe_path(wdir, writer["directory"]), expected_log_sha256=writer["result"]["log_sha256"])
+            source = case["imported_first_pass"]
+            require(log.start["fresh_session"] and log.start["source_run_ids"] == [writer["run_id"]]
+                    and log.items == bank["items"] and (bank["source_run_id"], bank["source_log_sha256"]) ==
+                    (source["run_id"], source["log_sha256"]), "Interrupted assignment had another source or bank")
+            allocations[arm] = dict(run=row["run_id"], index=row["index"], journal=result["log_sha256"],
+                                    request=r["failed_request"], writer=bank["run_id"], snapshot=bank["snapshot_id"])
+            counts[mode] += 1
+        require(allocations.keys() == receipts.keys(), "Recovery contains an unassigned delivery")
+        pair_sizes.update(Counter(a.split("__")[0] for a in allocations).values())
+        key = str(wdir.relative_to(root))
+        stage = dict(directory=root.name + "/" + key, seal=close["stages"][key]["seal"], registration_sha256=registration)
+        cases.append(dict(case, scheduled_stages=["solve"], imported_writer_stage=stage, interrupted_readers=allocations))
+    expected = spec["original_pairs"]
+    require(not by_task and counts == spec["by_delivery"] and pair_sizes[2] == expected["both_interrupted"]
+            and pair_sizes[1] == expected["one_interrupted"]
+            and plan["assigned"]["solve"] // 2 - sum(pair_sizes.values()) == expected["neither_interrupted"],
+            "Original customer and memory pairs are not covered by the recovery")
+    return cases
+
+
 def read_release(workspace, frozen, release, *, decision_interface=None):
     root = workspace / "runs" / (frozen["series"] + "-" + release)
     plan, close, binding = _study(root, frozen["protocol_sha256"])

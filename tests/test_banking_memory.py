@@ -296,6 +296,7 @@ class BankingMemoryTests(unittest.TestCase):
             release_plan = dict(frozen, cases=[imported], assigned=allocation_counts([imported], 1), release="first",
                                 authorization=dict(total_usd="1.50"), prior_release=None, prior_covered_usd="0")
             result_cfg = dict(strict, writer_feedback_level="result_only", query_tool_descriptions=descriptions,
+                              reader_admission="sealed_bank",
                               registration_sha256=digest(canonical(release_plan)))
             binary_design = study.design_for(result_cfg, case, "solve", source)
             with self.assertRaisesRegex(ContractError, "another feedback condition"):
@@ -349,6 +350,27 @@ class BankingMemoryTests(unittest.TestCase):
                                 and t["first_action_literals"] is not None for t in trials))
             self.assertTrue(all(any(c["request"] for c in t["business"]["calls"]) for t in trials))
             self.assertEqual(report["tables"]["business_delivery_pairs"]["development"]["jointly_graded"]["pairs"], 5)
+
+            # An isolated reader can import one registered arm from the original sealed write stage.
+            original = next(r for r in binary_readers if r["arm"] == "episode__preload")
+            bank = next(w for w in report["releases"]["first"]["writers"] if w["form"] == "episode")
+            stage = "task-" + case["task"] + "/write"
+            old = dict(index=original["index"], run=original["run_id"], writer=bank["run"], snapshot=bank["snapshot"])
+            repair = dict(imported, scheduled_stages=["solve"], interrupted_readers={original["arm"]: old},
+                          imported_writer_stage=dict(directory=binary.name + "/" + stage, seal=metrics[stage]["seal"],
+                                                     registration_sha256=result_cfg["registration_sha256"]))
+            recovery = workspace / "runs" / "fixture-reader-recovery"
+            recovery.mkdir()
+            rerun_cfg = dict(result_cfg, registration_sha256=digest(b"recovery"))
+            recovery_args = (workspace, recovery, rerun_cfg, {}, conn, repair, tasks[case["task"]], "solve",
+                             {"fixture": True}, models, None, "1.50")
+            with patch.dict(old, snapshot="wrong"), self.assertRaisesRegex(ContractError, "another frozen assignment"):
+                study.stage_job(recovery_args)
+            study.stage_job(recovery_args)
+            _, _, (restored,) = study.sealed_rows(recovery / ("task-" + case["task"]) / "solve")
+            self.assertNotEqual(restored["run_id"], original["run_id"])
+            self.assertEqual((restored["index"], restored["arm"], restored["result"]["official_success"]),
+                             (original["index"], original["arm"], True))
 
             # Exercise the missing form through the normal controller, including its durable allocations.
             omit_procedure = True

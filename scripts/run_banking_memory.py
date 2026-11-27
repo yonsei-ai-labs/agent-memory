@@ -33,6 +33,8 @@ COHORT_PROFILE = "protocols/pilots/tau-banking-memory-cohort-v1.json"
 COHORT_PREFLIGHT = "artifacts/pilots/20261127-banking-memory-cohort-preflight.json"
 COHORT_APPROVAL = "artifacts/pilots/20261127-banking-memory-cohort-authorization.json"
 COHORT_FIRST_APPROVAL = "artifacts/pilots/20261127-banking-memory-cohort-first-authorization.json"
+OUTAGE_PROFILE = "protocols/pilots/tau-banking-cohort-outage-recovery-v1.json"
+OUTAGE_APPROVAL = "artifacts/pilots/20261127-banking-cohort-outage-authorization.json"
 
 
 def stratum(task):
@@ -567,16 +569,63 @@ def memory_cohort(workspace, mode, scope):
                       model_resolver=matched.study_models, stage_admission=cohort_admission)
 
 
+def outage_recovery(workspace, mode):
+    from agent_memory_eval.adapters.banking_memory_cohort import interrupted_reader_cases
+    from agent_memory_eval.adapters.banking_trajectories import _study
+    from agent_memory_eval.analysis.recorded_decisions import require
+    require(mode in {"preflight", "run", "resume"}, "Unknown reader recovery operation")
+    spec = matched.read(ROOT / OUTAGE_PROFILE)
+    parent_root = matched.safe_path(workspace / "runs", spec["parent_recording"])
+    original, close, binding = _study(parent_root, spec["parent_protocol_sha256"])
+    frozen = matched.read(ROOT / COHORT_PREFLIGHT)
+    require(original["release"] == "first" and original["authorization"] == matched.read(ROOT / COHORT_FIRST_APPROVAL)
+            and all(original.get(k) == v for k, v in frozen.items()), "Recovery parent is not the approved first release")
+    manifest = json.loads(matched.asset_text(ROOT, spec["interruptions"]))
+    cases = interrupted_reader_cases(parent_root, original, close, manifest, spec)
+    ceiling = original["authorization"]["total_usd"]
+    prior = close["total_covered_usd"]
+    require(Decimal(prior) <= Decimal(ceiling), "Original ledger exceeds its authorized ceiling")
+    record = dict(series=spec["name"], protocol_sha256=digest((ROOT / OUTAGE_PROFILE).read_bytes()), cases=cases,
+                  original=binding, interruptions_sha256=spec["interruptions"]["sha256"], assigned=spec["assigned"],
+                  prior_covered_usd=prior, cumulative_maximum_usd=ceiling)
+    if mode == "preflight":
+        return record
+    approval = matched.read(ROOT / OUTAGE_APPROVAL)
+    require(approval.get("user_authorization") and approval["series"] == spec["name"] and approval["assigned"] == spec["assigned"]
+            and approval["interruptions_sha256"] == record["interruptions_sha256"]
+            and approval["protocol_sha256"] == record["protocol_sha256"] and approval["total_usd"] == ceiling,
+            "A new authorization must cover exactly the interrupted slots under the cumulative ceiling")
+    record["authorization"] = approval
+    _, cfg, conn, parent_cases, tasks, recomputed = prepare_memory_cohort(workspace)
+    require(recomputed == frozen, "Native bank controls or original source registration changed")
+    native = {c["task"]: c for c in parent_cases}
+    for case in cases:
+        require(all(case.get(k) == v for k, v in native[case["task"]].items() if k != "scheduled_stages"),
+                "Recovery changed a native control or original source")
+    cfg.update(name=spec["name"], run_directory=spec["name"], stages=["solve"], total_usd_limit=ceiling,
+               prior_covered_usd=prior, registration_sha256=digest(canonical(record)))
+    matched.run_study(workspace, cfg, {}, conn, cases, tasks, record, stage_runner=matched.stage_job,
+                      model_resolver=matched.study_models)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("mode", choices=("source-preflight", "source-evidence", "preflight", "run", "results", "resume"))
     parser.add_argument("--workspace", type=Path, default=ROOT)
-    parser.add_argument("--series", choices=("required", "result-feedback", "source-screen", "memory-cohort"), default="required")
+    parser.add_argument("--series", choices=("required", "result-feedback", "source-screen", "memory-cohort",
+                                            "memory-cohort-outage"), default="required")
     parser.add_argument("--scope", choices=("full", "writing", "first"), default=None)
     args = parser.parse_args()
     if args.mode == "source-evidence" and args.series != "memory-cohort":
         parser.error("source-evidence belongs to the banking memory cohort")
     workspace = args.workspace.resolve()
+    if args.series == "memory-cohort-outage":
+        if args.scope not in (None, "first"):
+            parser.error("Only the first release has this registered provider outage")
+        output = outage_recovery(workspace, args.mode)
+        if output is not None:
+            print(json.dumps(output, ensure_ascii=False, indent=2, sort_keys=True))
+        return
     if args.series == "memory-cohort":
         output = memory_cohort(workspace, args.mode, args.scope or "first")
         if output is not None:

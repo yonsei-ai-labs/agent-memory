@@ -51,6 +51,11 @@ def design_for(cfg, case, stage, source=None):
             write=[j["arm"] for j in jobs if stage == "write"])], jobs_sha256=digest(canonical(jobs))))
     if "reader_admission" in cfg:
         design["reader_admission"] = cfg["reader_admission"]
+    if stage == "solve" and "interrupted_readers" in case:
+        assigned_forms = {p["writer"] for p in design["delivery_arms"].values()}
+        design["writing"] = dict(cfg["writing"], lines={k: v for k, v in cfg["writing"]["lines"].items()
+                                                        if k in assigned_forms})
+        design["interrupted_readers"] = case["interrupted_readers"]
     return design
 
 
@@ -232,16 +237,31 @@ def _stage_job(args):
                              and not (dest / "completion.json").exists()):
         bindings = None
         if stage == "solve":
-            write_stage, = (s for s in case["scheduled_stages"]
-                            if cfg.get("stage_kinds", {}).get(s, s.removeprefix("initial-")) == "write")
-            write_dir = task_dir / write_stage
-            _, parent, written = sealed_rows(write_dir)
-            if (parent["profile"]["registration_sha256"] != cfg["registration_sha256"]
+            archived = case.get("imported_writer_stage")
+            if bool(archived) != ("interrupted_readers" in case):
+                raise ContractError("An interrupted reader must use its original sealed writer stage")
+            if archived:
+                write_dir = safe_path(workspace / "runs", archived["directory"])
+                writer_registration, seal = archived["registration_sha256"], archived["seal"]
+            else:
+                write_stage, = (s for s in case["scheduled_stages"]
+                                if cfg.get("stage_kinds", {}).get(s, s.removeprefix("initial-")) == "write")
+                write_dir = task_dir / write_stage
+                writer_registration, seal = cfg["registration_sha256"], None
+            _, parent, written = sealed_rows(write_dir, seal)
+            if (parent["profile"]["registration_sha256"] != writer_registration
                     or parent["design"] != design_for(cfg, case, "write", source)
                     or [r["arm"] for r in written] != [j["arm"] for j in jobs_for(case, "write")]):
                 raise ContractError("Writer banks do not belong to this registered task and first pass")
             by_arm = {r["arm"]: r for r in written}
             bindings = (write_dir, {(1, tid, arm): by_arm[d["writer"]] for arm, d in design["delivery_arms"].items()})
+            if archived:
+                for job in jobs:
+                    old = case["interrupted_readers"][job["arm"]]
+                    writer = bindings[1][1, tid, job["arm"]]
+                    if (old["index"], old["writer"], old["snapshot"]) != (
+                            job["index"], writer["run_id"], writer["result"]["snapshot_id"]):
+                        raise ContractError("Interrupted slot has another frozen assignment or memory")
         if stage != "write" and case["domain"] == "retail":
             plan["grader"] = judge_config(cfg, "retail"), judge
         plan.update(jobs=jobs, matched_trial=spec, summary=dict(native_sha256=case["native_sha256"],
