@@ -142,6 +142,25 @@ class StudyPlanTests(unittest.TestCase):
         with self.assertRaisesRegex(ContractError, "leave development tasks"):
             self.load(dict(self.plan, benchmark=benchmark))
 
+    def test_v2_plan_must_declare_its_models(self):
+        with self.assertRaisesRegex(ContractError, "Invalid study plan"):
+            self.load(dict(self.plan, format="agent-memory-study-plan/v2"))
+
+    def test_v2_plan_uses_the_project_model_profile_unless_comparing_models(self):
+        from agent_memory_eval.contracts.validation import ROOT
+        other = write_ref(self.root, "protocols/models/other.json", "{}\n")
+        plan = dict(self.plan, format="agent-memory-study-plan/v2", models=dict(profile=other))
+        with self.assertRaisesRegex(ContractError, "project model profile"):
+            self.load(plan)
+        standard = (ROOT / "protocols/models/project-standard-v1.json").read_text(encoding="utf-8")
+        ref = write_ref(self.root, "protocols/models/project-standard-v1.json", standard)
+        self.load(dict(self.plan, format="agent-memory-study-plan/v2", models=dict(profile=ref)))
+
+    def test_running_needs_declared_models(self):
+        from agent_memory_eval.study.plan import require_declared_models
+        with self.assertRaisesRegex(ContractError, "Declare the models under study"):
+            require_declared_models(self.load(self.plan))
+
     def test_budget_must_be_a_decimal_string(self):
         with self.assertRaisesRegex(ContractError, "Invalid study plan"):
             self.load(dict(self.plan, budget=dict(max_usd="7 dollars")))

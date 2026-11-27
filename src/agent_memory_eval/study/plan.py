@@ -8,8 +8,10 @@ from agent_memory_eval.contracts.core import ContractError, canonical, digest, r
 from agent_memory_eval.contracts.validation import SCHEMA_ROOT
 from agent_memory_eval.recording.assets import asset_text
 
-FORMAT = "agent-memory-study-plan/v1"
-SCHEMA = "study-plan-v1.schema.json"
+FORMAT = "agent-memory-study-plan/v2"
+LEGACY_FORMAT = "agent-memory-study-plan/v1"  # Runs recorded before models were declared; readable, not runnable.
+SCHEMA = "study-plan-v1.schema.json"  # Covers both formats; v2 requires the models block.
+STANDARD_MODELS = "protocols/models/project-standard-v1.json"
 
 
 def _schema():
@@ -59,7 +61,12 @@ def check_plan(plan, root):
         raise ContractError("Tool descriptions apply to on_demand readers only")
     if any("notice" not in r and "tool_descriptions" not in r for r in readers.values()):
         raise ContractError("A reader needs a notice, tool descriptions, or both")
-    refs = [plan["benchmark"]["setup"], *([plan["writing"]["instruction"]] if "writing" in plan else []), *reps.values(),
+    if "models" in plan:
+        models = plan["models"]
+        if models["profile"]["path"] != STANDARD_MODELS and not models.get("comparison"):
+            raise ContractError("Plans use the project model profile unless they declare a model comparison")
+    refs = [plan["benchmark"]["setup"], *([plan["models"]["profile"]] if "models" in plan else []),
+            *([plan["writing"]["instruction"]] if "writing" in plan else []), *reps.values(),
             *plan.get("decision", {}).get("evidence", []),
             *(r["notice"] for r in readers.values() if "notice" in r),
             *(r["setup"] for r in plan.get("references", []) if "setup" in r)]
@@ -72,3 +79,20 @@ def check_plan(plan, root):
 def load_plan(path, root):
     """Read and fully check a plan, including every pinned file it names."""
     return check_plan(read_json(Path(path).read_bytes()), Path(root))
+
+
+def require_declared_models(plan):
+    """Only plans that name the models under study may spend or run."""
+    if plan["format"] != FORMAT or "models" not in plan:
+        raise ContractError("Declare the models under study (plan format v2) before running")
+    return plan["models"]
+
+
+def model_profile(plan, root):
+    from agent_memory_eval.recording.assets import asset_text
+    if "models" not in plan:
+        return None
+    profile = read_json(asset_text(root, plan["models"]["profile"]).encode())
+    if profile.get("format") != "agent-memory-model-profile/v1" or profile.get("writer") != "worker":
+        raise ContractError("Model profile must name one worker model that also writes the memories")
+    return profile

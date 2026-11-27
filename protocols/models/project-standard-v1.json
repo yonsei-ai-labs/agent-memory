@@ -1,0 +1,94 @@
+{
+  "format": "agent-memory-model-profile/v1",
+  "name": "project-standard-v1",
+  "purpose": "The LLM under study and the fixed simulator and judge, shared by every benchmark. The same worker model solves the first pass, writes the memories and solves the second pass, so memory writing is part of what is compared. Changing any of these is a separate, declared model comparison.",
+  "connection": {
+    "path": "protocols/checks/openrouter-tau2-smoke.json",
+    "sha256": "fab9e52495a7fbc122ffcbcdc5fc9cfe59d8f61d18f421e822a1298a0de68d49"
+  },
+  "writer": "worker",
+  "judge": {
+    "native_model": "gpt-5.4-mini-2026-03-17",
+    "model": "openai/gpt-5.4-mini",
+    "canonical_slug": "openai/gpt-5.4-mini-20260317",
+    "route": {
+      "only": [
+        "openai"
+      ],
+      "allow_fallbacks": false,
+      "require_parameters": true
+    },
+    "parameters": {
+      "reasoning": {
+        "effort": "low"
+      },
+      "max_completion_tokens": 4096
+    },
+    "max_input_bytes": 256000,
+    "method": "native ALL and native prompts. One grader-only completion for all active assertions of a normally terminated episode. Require a complete bijection of the declared assertions and boolean judgments. Replay recorded answers, with no new grading calls."
+  },
+  "expected_revisions": {
+    "worker": "openai/gpt-6-luna-20260922",
+    "user_simulator": "deepseek/deepseek-v4.1-flash-20261017",
+    "grader": "openai/gpt-5.4-mini-20260317"
+  },
+  "endpoint_terms": {
+    "worker": {
+      "model": "openai/gpt-6-luna",
+      "provider": "openai",
+      "provider_name": "OpenAI",
+      "pricing": {
+        "prompt": "0.0000001",
+        "completion": "0.0000005",
+        "web_search": "0.01",
+        "input_cache_read": "0.00000001",
+        "input_cache_write": "0.000000125",
+        "discount": 0,
+        "overrides": [
+          {
+            "min_prompt_tokens": 272000,
+            "prompt": "0.0000002",
+            "completion": "0.00000075",
+            "input_cache_read": "0.00000002",
+            "input_cache_write": "0.00000025"
+          }
+        ]
+      },
+      "reservation_pricing": {
+        "prompt": 2e-07,
+        "completion": 7.5e-07
+      }
+    },
+    "user_simulator": {
+      "model": "deepseek/deepseek-v4.1-flash-1017",
+      "provider": "fireworks",
+      "provider_name": "Fireworks",
+      "pricing": {
+        "prompt": "0.0000003",
+        "completion": "0.0000012",
+        "input_cache_read": "0.000000006",
+        "discount": 0
+      },
+      "reservation_pricing": {
+        "prompt": 3e-07,
+        "completion": 1.2e-06
+      }
+    },
+    "grader": {
+      "model": "openai/gpt-5.4-mini",
+      "provider": "openai",
+      "provider_name": "OpenAI",
+      "pricing": {
+        "prompt": "0.00000075",
+        "completion": "0.0000045",
+        "web_search": "0.01",
+        "input_cache_read": "0.000000075",
+        "discount": 0
+      },
+      "reservation_pricing": {
+        "prompt": 7.5e-07,
+        "completion": 4.5e-06
+      }
+    }
+  }
+}

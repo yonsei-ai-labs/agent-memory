@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Declared memory-policy study on one benchmark",
+  "title": "Declared memory-policy study on one benchmark, with the models under study",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -17,7 +17,10 @@
   ],
   "properties": {
     "format": {
-      "const": "agent-memory-study-plan/v1"
+      "enum": [
+        "agent-memory-study-plan/v1",
+        "agent-memory-study-plan/v2"
+      ]
     },
     "id": {
       "type": "string",
@@ -285,6 +288,22 @@
           }
         }
       }
+    },
+    "models": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "profile"
+      ],
+      "properties": {
+        "profile": {
+          "$ref": "#/$defs/ref"
+        },
+        "comparison": {
+          "type": "boolean",
+          "description": "True only for a declared model comparison"
+        }
+      }
     }
   },
   "$defs": {
@@ -372,5 +391,21 @@
         }
       }
     }
-  }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "format": {
+            "const": "agent-memory-study-plan/v2"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "models"
+        ]
+      }
+    }
+  ]
 }
