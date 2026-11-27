@@ -1,0 +1,51 @@
+{
+  "format": "agent-memory-study-plan/v1",
+  "purpose": "development",
+  "benchmark": {
+    "adapter": "bfcl-relevance",
+    "setup": {
+      "path": "protocols/diagnostics/bfcl-memory-cohort-transfer-v1.json",
+      "sha256": "b391b25a54f937257ee9e9d7e38e4e5a4af5e94a1e2441bb13e332b7e4b65189"
+    },
+    "tasks": [
+      "live_relevance_5-5-0",
+      "live_relevance_13-13-0",
+      "live_relevance_9-9-0",
+      "live_relevance_15-15-0",
+      "live_relevance_10-10-0",
+      "irrelevance_82",
+      "irrelevance_163",
+      "irrelevance_78",
+      "irrelevance_118",
+      "irrelevance_141",
+      "live_relevance_14-14-0",
+      "live_relevance_0-0-0",
+      "live_relevance_12-12-0",
+      "irrelevance_61",
+      "irrelevance_18",
+      "irrelevance_102"
+    ],
+    "confirmation_tasks": [
+      "live_relevance_14-14-0",
+      "live_relevance_0-0-0",
+      "live_relevance_12-12-0",
+      "irrelevance_61",
+      "irrelevance_18",
+      "irrelevance_102"
+    ]
+  },
+  "repeats": 1,
+  "retry": {
+    "http_codes": [],
+    "wait_seconds": []
+  },
+  "id": "fresh-bfcl-r1",
+  "question": "Round 1 without memory. How often does the worker solve each fixed task across independent first passes, and what does it do first? These first passes are the sources and the no-memory baseline for every later round on this benchmark.",
+  "first_pass": {
+    "draws": 1
+  },
+  "conditions": [],
+  "budget": {
+    "max_usd": "0"
+  }
+}

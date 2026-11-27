@@ -1,0 +1,71 @@
+{
+ "tau-banking": {
+  "eligible": 96,
+  "development": [
+   "task_093",
+   "task_071",
+   "task_019",
+   "task_078",
+   "task_040"
+  ],
+  "confirmation": [
+   "task_020",
+   "task_067",
+   "task_089"
+  ]
+ },
+ "tau2-airline": {
+  "eligible": 30,
+  "development": [
+   "40",
+   "14",
+   "49",
+   "10",
+   "3"
+  ],
+  "confirmation": [
+   "12",
+   "38",
+   "36"
+  ]
+ },
+ "tau2-retail": {
+  "eligible": 74,
+  "development": [
+   "25",
+   "66",
+   "44",
+   "6",
+   "47"
+  ],
+  "confirmation": [
+   "16",
+   "83",
+   "52"
+  ]
+ },
+ "bfcl-relevance": {
+  "eligible": 55,
+  "development": [
+   "live_relevance_5-5-0",
+   "live_relevance_13-13-0",
+   "live_relevance_9-9-0",
+   "live_relevance_15-15-0",
+   "live_relevance_10-10-0",
+   "irrelevance_82",
+   "irrelevance_163",
+   "irrelevance_78",
+   "irrelevance_118",
+   "irrelevance_141"
+  ],
+  "confirmation": [
+   "live_relevance_14-14-0",
+   "live_relevance_0-0-0",
+   "live_relevance_12-12-0",
+   "irrelevance_61",
+   "irrelevance_18",
+   "irrelevance_102"
+  ]
+ },
+ "_rule": "Eligible tasks (adapter grading and greeting-start rules; train split for airline/retail; the 55 transfer-profile questions for BFCL) sorted by SHA-256 of fresh-loop-20261127|<domain>|<task id>. First 8 per \u03c4\u00b2 benchmark: 5 development, 3 confirmation. BFCL: first 8 per category, 5+5 development and 3+3 confirmation. Fixed before any fresh-series result."
+}

@@ -59,6 +59,14 @@
           "items": {
             "$ref": "#/$defs/name"
           }
+        },
+        "confirmation_tasks": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/name"
+          },
+          "description": "Tasks held out from analysis and policy decisions; a later policy change is judged on them."
         }
       }
     },

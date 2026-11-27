@@ -1,0 +1,55 @@
+{
+  "format": "agent-memory-study-plan/v1",
+  "purpose": "development",
+  "benchmark": {
+    "adapter": "tau2-retail",
+    "setup": {
+      "path": "protocols/studies/setups/tau2-retail-v1.json",
+      "sha256": "67c831dbea7c19995cb0f41d3cd7afdb4cecfa6e503512d55db87078c905a740"
+    },
+    "tasks": [
+      "25",
+      "66",
+      "44",
+      "6",
+      "47",
+      "16",
+      "83",
+      "52"
+    ],
+    "confirmation_tasks": [
+      "16",
+      "83",
+      "52"
+    ]
+  },
+  "repeats": 1,
+  "retry": {
+    "http_codes": [
+      429,
+      500,
+      502,
+      503,
+      504
+    ],
+    "wait_seconds": [
+      120,
+      600,
+      1800
+    ]
+  },
+  "limits": {
+    "max_concurrent": 8,
+    "max_input_bytes": 320000,
+    "writer_max_input_bytes": 512000
+  },
+  "id": "fresh-retail-r1",
+  "question": "Round 1 without memory. How often does the worker solve each fixed task across independent first passes, and what does it do first? These first passes are the sources and the no-memory baseline for every later round on this benchmark.",
+  "first_pass": {
+    "draws": 3
+  },
+  "conditions": [],
+  "budget": {
+    "max_usd": "0.25"
+  }
+}

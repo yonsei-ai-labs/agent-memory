@@ -132,6 +132,16 @@ class StudyPlanTests(unittest.TestCase):
         with self.assertRaisesRegex(ContractError, "Pinned asset changed"):
             self.load(dict(self.plan, decision=decision))
 
+    def test_confirmation_tasks_are_held_out_members_of_the_plan(self):
+        benchmark = dict(self.plan["benchmark"], confirmation_tasks=["task_023"])
+        self.load(dict(self.plan, benchmark=benchmark))
+        benchmark = dict(self.plan["benchmark"], confirmation_tasks=["task_999"])
+        with self.assertRaisesRegex(ContractError, "Confirmation tasks must be planned tasks"):
+            self.load(dict(self.plan, benchmark=benchmark))
+        benchmark = dict(self.plan["benchmark"], confirmation_tasks=list(self.plan["benchmark"]["tasks"]))
+        with self.assertRaisesRegex(ContractError, "leave development tasks"):
+            self.load(dict(self.plan, benchmark=benchmark))
+
     def test_budget_must_be_a_decimal_string(self):
         with self.assertRaisesRegex(ContractError, "Invalid study plan"):
             self.load(dict(self.plan, budget=dict(max_usd="7 dollars")))

@@ -39,6 +39,11 @@ def check_plan(plan, root):
     error = next(Draft202012Validator(_schema()).iter_errors(plan), None)
     if error is not None:
         raise ContractError(f"Invalid study plan: {error.message}")
+    held_out = plan["benchmark"].get("confirmation_tasks", [])
+    if not set(held_out) <= set(plan["benchmark"]["tasks"]):
+        raise ContractError("Confirmation tasks must be planned tasks")
+    if held_out and len(held_out) == len(plan["benchmark"]["tasks"]):
+        raise ContractError("Confirmation tasks must leave development tasks to analyze")
     pairs = conditions(plan)
     if len(set(pairs)) != len(pairs):
         raise ContractError("Duplicate condition in the study plan")

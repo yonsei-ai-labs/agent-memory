@@ -561,21 +561,23 @@ class Tau2Study:
         """Outcome rows of one case: its first pass, then every solve stage and retry in order."""
         from agent_memory_eval.adapters.banking_memory_cohort import observation
         from agent_memory_eval.experiments.forms_write import read_form_bank
-        from agent_memory_eval.analysis.recorded_decisions import RecordedDecisions
-        from agent_memory_eval.analysis.trajectory import decision_path
+        from agent_memory_eval.analysis.recorded_decisions import READS, RecordedDecisions
         rows = []
         task_dir = run_root / ("task-" + case["task"])
         def first_decision(folder, r):
-            """The worker's first business move after any memory reads: its calls, or a plain reply."""
+            """The worker's first business tool call(s), skipping replies and memory reads; none in a graded episode is kept."""
             result = r.get("result") or {}
             if not result.get("log_sha256"):
                 return None
-            decision = decision_path(RecordedDecisions(safe_path(folder, r["directory"]), r["run_id"],
-                                                       result["log_sha256"]))["decision"]
-            if decision is None:
-                return None
-            calls = [[c["name"], c.get("arguments", c.get("invalid_arguments"))] for c in decision["calls"]]
-            return canonical(calls).decode() if calls else "reply"
+            log = RecordedDecisions(safe_path(folder, r["directory"]), r["run_id"], result["log_sha256"])
+            for req in log.requests:
+                finish = log.finishes.get(req["request_id"])
+                if req["actor_role"] != "worker" or not finish or finish["status"] != "response":
+                    continue
+                calls = [c for c in log.reply(req)["message"].get("tool_calls") or [] if c["function"]["name"] not in READS]
+                if calls:
+                    return canonical([[c["function"]["name"], c["function"]["arguments"]] for c in calls]).decode()
+            return "no_business_call" if result.get("grading_status") == "graded" else None
         def row(condition, obs, attempt, repeat=1, origin_name=origin, decision=None, memory=None):
             graded = obs["success"] is not None
             effort = obs.get("effort") or {}
