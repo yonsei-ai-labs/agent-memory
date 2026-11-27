@@ -502,6 +502,14 @@ def cohort_admission(root, stage, case, task):
     return None
 
 
+def cohort_interface(spec):
+    native = json.loads(matched.asset_text(ROOT, spec["native_setup"]))
+    config = json.loads(matched.asset_text(ROOT, native["base"]))
+    query = json.loads(matched.asset_text(ROOT, spec["query_interface"]))["arms"]["contextual"]
+    return dict(read_instruction_sha=config["delivery_instruction"]["sha256"],
+                query_tool_descriptions=query["read_tool_descriptions"])
+
+
 def memory_cohort(workspace, mode, scope):
     from agent_memory_eval.adapters.banking_memory_cohort import allocation_counts, cohort_results, first_source_evidence
     from agent_memory_eval.analysis.recorded_decisions import require
@@ -518,12 +526,7 @@ def memory_cohort(workspace, mode, scope):
         spec = matched.read(ROOT / COHORT_PROFILE)
         frozen = matched.read(ROOT / COHORT_PREFLIGHT)
         require(frozen["protocol_sha256"] == digest((ROOT / COHORT_PROFILE).read_bytes()), "Different cohort protocol")
-        native = json.loads(matched.asset_text(ROOT, spec["native_setup"]))
-        config = json.loads(matched.asset_text(ROOT, native["base"]))
-        query = json.loads(matched.asset_text(ROOT, spec["query_interface"]))["arms"]["contextual"]
-        interface = dict(read_instruction_sha=config["delivery_instruction"]["sha256"],
-                         query_tool_descriptions=query["read_tool_descriptions"])
-        return cohort_results(workspace, frozen, spec["release_check"], full=not first, decision_interface=interface)
+        return cohort_results(workspace, frozen, spec["release_check"], full=not first, decision_interface=cohort_interface(spec))
     require(mode in {"preflight", "run", "resume"}, "Unknown cohort operation")
     approval_path = ROOT / (COHORT_FIRST_APPROVAL if first else COHORT_APPROVAL)
     if mode != "preflight":
@@ -573,7 +576,7 @@ def outage_recovery(workspace, mode):
     from agent_memory_eval.adapters.banking_memory_cohort import interrupted_reader_cases
     from agent_memory_eval.adapters.banking_trajectories import _study
     from agent_memory_eval.analysis.recorded_decisions import require
-    require(mode in {"preflight", "run", "resume"}, "Unknown reader recovery operation")
+    require(mode in {"preflight", "run", "resume", "results"}, "Unknown reader recovery operation")
     spec = matched.read(ROOT / OUTAGE_PROFILE)
     parent_root = matched.safe_path(workspace / "runs", spec["parent_recording"])
     original, close, binding = _study(parent_root, spec["parent_protocol_sha256"])
@@ -596,6 +599,11 @@ def outage_recovery(workspace, mode):
             and approval["protocol_sha256"] == record["protocol_sha256"] and approval["total_usd"] == ceiling,
             "A new authorization must cover exactly the interrupted slots under the cumulative ceiling")
     record["authorization"] = approval
+    if mode == "results":
+        from agent_memory_eval.adapters.banking_memory_cohort import recovery_results
+        baseline = memory_cohort(workspace, "results", "first")["releases"]["first"]
+        parent_spec = matched.read(ROOT / COHORT_PROFILE)
+        return recovery_results(workspace, record, baseline, parent_spec["release_check"], cohort_interface(parent_spec))
     _, cfg, conn, parent_cases, tasks, recomputed = prepare_memory_cohort(workspace)
     require(recomputed == frozen, "Native bank controls or original source registration changed")
     native = {c["task"]: c for c in parent_cases}

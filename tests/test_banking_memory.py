@@ -371,6 +371,13 @@ class BankingMemoryTests(unittest.TestCase):
             self.assertNotEqual(restored["run_id"], original["run_id"])
             self.assertEqual((restored["index"], restored["arm"], restored["result"]["official_success"]),
                              (original["index"], original["arm"], True))
+            from agent_memory_eval.analysis.recorded_decisions import RecordedDecisions
+            first_hashes = []
+            for base, entry in ((binary, original), (recovery, restored)):
+                d = base / ("task-" + case["task"]) / "solve" / entry["directory"]
+                log = RecordedDecisions(d, entry["run_id"], entry["result"]["log_sha256"])
+                first_hashes.append(log.requests[0]["request_ref"]["sha256"])
+            self.assertEqual(*first_hashes)
 
             # Exercise the missing form through the normal controller, including its durable allocations.
             omit_procedure = True

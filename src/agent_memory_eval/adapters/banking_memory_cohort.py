@@ -481,3 +481,83 @@ def cohort_results(workspace, frozen, rules, *, full, decision_interface=None):
     return dict(format="banking-memory-cohort-results/v1", scope=releases, historical_missing=frozen["historical_missing"],
                 releases=raw, tables=outcome_tables(readers), delivery=deliveries, first_release_check=check,
                 sensitivity_without_083=outcome_tables([r for r in readers if r["task"] != "task_083"])["preload_minus_on_demand"])
+
+
+def recovery_results(workspace, expected_plan, original, rules, interface):
+    """Re-score the named losses against the original allocation and retain both observations."""
+    root = safe_path(workspace / "runs", expected_plan["series"])
+    plan, close, binding = _study(root, expected_plan["protocol_sha256"])
+    require(plan == expected_plan and plan["original"] == original["binding"]
+            and Decimal(plan["prior_covered_usd"]) == Decimal(original["spent"]), "Wrong original release or recovery cost")
+    original_root = safe_path(workspace / "runs", original["binding"]["recording"])
+    registry = digest(canonical(plan))
+    native_modules(verify_checkout(workspace / "data/tau2-bench"))
+    from tau2.domains.banking_knowledge.environment import get_tasks
+    tasks = {t.id: t for t in get_tasks()}
+    originals = {r["run"]: r for r in original["readers"]}
+    combined = list(original["readers"])
+    positions = {r["run"]: i for i, r in enumerate(combined)}
+    observations, pairs = [], Counter()
+    for case in plan["cases"]:
+        task = case["task_id"]
+        business, policy = BankingBusiness(tasks[task], case), PolicyEvidence()
+        first_folder = safe_path(workspace / "runs", case["imported_first_pass"]["directory"])
+        _, _, (source,) = sealed_rows(first_folder)
+        observation(first_folder, source, policy=policy)
+        name = case["imported_writer_stage"]
+        wdir = safe_path(workspace / "runs", name["directory"])
+        _, _, written = sealed_rows(wdir, name["seal"])
+        banks = {}
+        for w in written:
+            folder = safe_path(wdir, w["directory"])
+            checksum = w["result"]["log_sha256"]
+            banks[w["arm"]] = read_form_bank(folder, expected_log_sha256=checksum)
+            log = RecordedDecisions(folder, w["run_id"], checksum)
+            policy.writer(task, w["arm"], "registered", w["status"], log, checksum=checksum)
+        sdir, rows = _shard(root, case, "solve", "solve", close, registry)
+        old_dir = original_root / ("task-" + case["task"]) / "solve"
+        _, _, previous = sealed_rows(old_dir)
+        old_by_arm = {r["arm"]: r for r in previous}
+        for row in rows:
+            arm = row["arm"]
+            form, mode = arm.split("__")
+            receipt = case["interrupted_readers"][arm]
+            old = originals[receipt["run"]]
+            require(old["success"] is None and old["reason"] in {"HTTP_502", "HTTP_503"} and old["journal"] == receipt["journal"]
+                    and old["expected_writer"] == receipt["writer"] and old["writer_snapshot"] == receipt["snapshot"]
+                    and (old["task"], old["form"], old["delivery"]) == (task, form, mode),
+                    "Recovery would replace a graded or unrelated observation")
+            obs = observation(sdir, row, writer=banks[form], business=business, policy=policy)
+            check = None
+            if obs["dispatched_worker"]:
+                require(obs["run"] != old["run"] and obs["start"] == old["start"] and obs["start_source"] == old["start_source"]
+                        and obs["first_worker"] == old["first_worker"], "Recovery changed the original worker's first wire")
+                old_steps, _ = recorded_episode(old_dir, old_by_arm[arm], case, source=source, include_partial=True, **interface)
+                new_steps, _ = recorded_episode(sdir, row, case, source=source, include_partial=obs["success"] is None, **interface)
+                check = compare_steps(next((s for s in old_steps if s.actor == "worker"), None),
+                                      next((s for s in new_steps if s.actor == "worker"), None))
+            annotated = dict(obs, **{k: old[k] for k in ("task", "draw", "repeat", "form", "delivery", "cohort",
+                                                         "customer", "expected_writer", "source")})
+            combined[positions[old["run"]]] = annotated
+            observations.append(dict(original_run=old["run"], original_journal=old["journal"], original_grade=old["success"],
+                                     reader=annotated, first_public_choice_under_same_policy=check))
+            pairs[task, form] += 1
+    require(len({v["original_run"] for v in observations}) == len(observations) == plan["assigned"]["solve"],
+            "Repeated or missing recovery allocation")
+    by_timing = {}
+    for count in (0, 1, 2):
+        group = [r for r in combined if pairs[r["task"], r["form"]] == count]
+        by_timing[str(count)] = outcome_tables(group)["delivery_pairs"]
+    simultaneous = [r for r in combined if pairs[r["task"], r["form"]] != 1]
+    costs = {k: sum((Decimal(s[k]) for s in close["stages"].values()), Decimal(0)) for k in ("reported", "held", "spent")}
+    total = Decimal(plan["prior_covered_usd"]) + costs["spent"]
+    require(total == Decimal(close["total_covered_usd"]) <= Decimal(plan["cumulative_maximum_usd"])
+            and costs["reported"] + costs["held"] == costs["spent"], "Recovery costs do not reconcile")
+    delivery = {mode: arm_summary([r for r in combined if r["delivery"] == mode]) for mode in MODES}
+    return dict(format="banking-memory-cohort-recovery-sensitivity/v1", binding=binding, original_binding=original["binding"],
+                original_covered_usd=plan["prior_covered_usd"], recovery_usd={k: str(v) for k, v in costs.items()},
+                cumulative_covered_usd=str(total), observations=observations, combined_delivery=delivery,
+                combined_tables=outcome_tables(combined), combined_readiness=release_check(delivery, rules),
+                paired_by_number_of_recovered_arms=by_timing,
+                without_mixed_time_pairs=outcome_tables(simultaneous)["preload_minus_on_demand"],
+                without_083=outcome_tables([r for r in combined if r["task"] != "task_083"])["preload_minus_on_demand"])
