@@ -208,6 +208,13 @@ def solve(journal, cfg, case, client, is_empty, *, source=None, writer=None, for
     return dict(start=start, business=business, run=run, grade=grade)
 
 
+def registered_slots(cfg):
+    """Declared (form, delivery) readers, or every form with every delivery for older profiles."""
+    if "conditions" in cfg:
+        return [tuple(slot) for slot in cfg["conditions"]]
+    return [(f, m) for f in cfg["forms"] for m in cfg["delivery"]]
+
+
 def collect_task(root, cfg, case, client, is_empty, *, parent=None, pairs=None):
     category, row = case
     task = row["id"]
@@ -242,7 +249,7 @@ def collect_task(root, cfg, case, client, is_empty, *, parent=None, pairs=None):
         experience = freeze_public_experience(journal, source["run"])
         writers = {}
         for form, line in forms.items():
-            writers[form] = write_from_experience(journal, experience, WriterFeedback("result_only"),
+            writers[form] = write_from_experience(journal, experience, WriterFeedback(cfg.get("writer_feedback", "result_only")),
                 instruction=cfg["writer_instruction"] + "\n" + line,
                 policy=MemoryPolicy(True, "post_task", False, 1, read_mode="none", max_items=1),
                 client=client, model_config=dict(model=cfg["model"], seed=cfg["generation"]["seed"],
@@ -253,7 +260,7 @@ def collect_task(root, cfg, case, client, is_empty, *, parent=None, pairs=None):
         if len(completed) != len(writers) and not (cfg.get("policy_registration") or cfg.get("reader_admission") == "sealed_bank"):
             return
         writers = completed
-        slots = [(f, m) for f in writers for m in cfg["delivery"]]
+        slots = [(f, m) for f, m in registered_slots(cfg) if f in writers]
         for form, mode in sorted(slots, key=lambda slot: digest(canonical([task, *slot]))):
             solve(journal, cfg, case, client, is_empty, source=source, writer=writers[form], form=form, mode=mode)
 
@@ -274,7 +281,7 @@ def audit_task(root, cfg, case, is_empty, *, sources_only=False):
     slots = [(source, "source", None, None)]
     if not sources_only:
         slots += [(f"{task}-write-{f}", "write", f, None) for f in cfg["forms"]]
-        slots += [(f"{task}-{f}-{m}", "solve", f, m) for f in cfg["forms"] for m in cfg["delivery"]]
+        slots += [(f"{task}-{f}-{m}", "solve", f, m) for f, m in registered_slots(cfg)]
     for run, phase, form, mode in slots:
         rec = dict(task=task, run=run, phase=phase, form=form, mode=mode, success=None, status="not_started")
         rows.append(rec)
@@ -303,7 +310,8 @@ def audit_task(root, cfg, case, is_empty, *, sources_only=False):
         if phase == "write":
             writer = state["memory_writes"][run]
             exp = blobs.get(writer["experience_ref"])
-            require(exp["source_run_id"] == source and writer["feedback"]["level"] == "result_only", "Wrong writer source")
+            require(exp["source_run_id"] == source and writer["feedback"]["level"] == cfg.get("writer_feedback", "result_only"),
+                    "Wrong writer source")
             if experience_ref is None:
                 experience_ref = writer["experience_ref"]
             require(writer["experience_ref"] == experience_ref, "Formats received different public experiences")
