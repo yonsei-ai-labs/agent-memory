@@ -16,6 +16,17 @@ TOOLS = [{"type": "function", "function": {"name": "weather", "parameters": {
 
 
 class DeliveryInstructionTests(unittest.TestCase):
+    def test_question_weighted_delivery_contrast_reproduces_the_published_eight(self):
+        from agent_memory_eval.analysis.bfcl_relevance import delivery_comparison
+        from agent_memory_eval.contracts.validation import ROOT
+        cfg = json.loads((ROOT / "protocols/diagnostics/bfcl-relevance-two-pass-v1.json").read_bytes())
+        archived = json.loads((ROOT / "artifacts/analyses/20261126-bfcl-relevance-local.json").read_bytes())
+        result = delivery_comparison(archived, cfg)
+        self.assertAlmostEqual(result["equal_category_difference"], -0.05)
+        self.assertEqual(result["paired"]["outcomes"]["loss"], 2)
+        self.assertEqual(result["by_category"]["live_relevance"]["assigned_pairs"], 20)
+        self.assertEqual(result["by_category"]["irrelevance"]["clusters"], 4)
+
     def test_new_cohort_reuses_the_banking_writer_and_contextual_read_descriptions(self):
         from agent_memory_eval.contracts.validation import ROOT
         from agent_memory_eval.recording.assets import asset_text

@@ -3,7 +3,10 @@
 import argparse
 from copy import deepcopy
 from pathlib import Path
+from statistics import mean
 
+from agent_memory_eval.analysis.clustered_outcomes import clustered_contrast
+from agent_memory_eval.analysis.efficiency import paired_effort
 from agent_memory_eval.analysis.paired_trials import OutcomeMetric, Trial, compare_trials
 from agent_memory_eval.analysis.recorded_decisions import RecordedDecisions, require, sealed_bytes
 from agent_memory_eval.contracts.core import canonical, digest, read_json
@@ -179,6 +182,37 @@ def trace_questions(study, root):
     return questions
 
 
+def delivery_comparison(study, cfg):
+    """Compare two deliveries of the same snapshot, with each public question counted once per category."""
+    by_category, effort, by_form = {}, [], {f: [] for f in cfg["forms"]}
+    for category, tasks in cfg["tasks"].items():
+        contrasts = []
+        for task in tasks:
+            raw = [r for r in study["tasks"][task]["allocations"] if r["phase"] == "solve"]
+            slots = {(r["form"], r["mode"]): r for r in raw}
+            require(len(raw) == len(slots) == len(cfg["forms"]) * 2, "Missing or duplicate BFCL delivery allocation")
+            for form in cfg["forms"]:
+                pre, opt = (slots[form, mode] for mode in ("preload", "on_demand"))
+                if all(r["status"] != "not_started" for r in (pre, opt)):
+                    require(pre["snapshot"] == opt["snapshot"] and pre["snapshot"]
+                            and pre["business_sha256"] == opt["business_sha256"] and pre["session"] != opt["session"],
+                            "BFCL delivery pair differs in source, public input or session isolation")
+                contrasts.append((task, task, form, 1, opt["success"], pre["success"]))
+                costs = []
+                for r in (pre, opt):
+                    costs.append(dict(tokens=r["prompt_tokens"] + r["completion_tokens"], requests=r["requests"])
+                                 if r["status"] != "not_started" else {})
+                pair = pre["success"], opt["success"], *costs
+                effort.append(pair)
+                by_form[form].append(pair)
+        by_category[category] = clustered_contrast(contrasts, cluster_unit="public question")
+    estimates = [v["difference"] for v in by_category.values()]
+    bounds = [mean(v["missing_bounds"][end] for v in by_category.values()) for end in (0, 1)]
+    return dict(by_category=by_category, equal_category_difference=mean(estimates) if None not in estimates else None,
+                equal_category_missing_bounds=bounds, paired=paired_effort(effort, ("tokens", "requests")),
+                by_form={f: paired_effort(pairs, ("tokens", "requests")) for f, pairs in by_form.items()})
+
+
 def report(study, cfg, root, cases, is_empty):
     ref = trials(study, "source")
     comparisons = {}
@@ -202,9 +236,12 @@ def report(study, cfg, root, cases, is_empty):
                 requests=sum(r.get("requests", 0) for r in rows),
                 prompt_tokens=sum(r.get("prompt_tokens", 0) for r in rows),
                 completion_tokens=sum(r.get("completion_tokens", 0) for r in rows))
-    return dict(format="bfcl-relevance-policy-check/v1", registration=study["registration"], questions=trace_questions(study, root),
+    result = dict(format="bfcl-relevance-policy-check/v1", registration=study["registration"], questions=trace_questions(study, root),
                 reused_generations=verified_reuse(study, root), by_category=groups, paired_by_question=comparisons,
                 source_score_probes=probe_sources(study, root, cases, is_empty))
+    if cfg.get("reader_admission") == "sealed_bank":
+        result["preload_minus_on_demand"] = delivery_comparison(study, cfg)
+    return result
 
 
 if __name__ == "__main__":
