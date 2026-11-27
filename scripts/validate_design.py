@@ -82,8 +82,9 @@ def main() -> None:
     for plan_path in sorted(p for p in (ROOT / "protocols/studies").rglob("*.json") if "setups" not in p.parts):
         validators["study-plan-v1"].validate(read_json(plan_path))
         load_plan(plan_path, ROOT)
-    reject(validators["study-plan-v1"], dict(read_json(ROOT / "protocols/studies/bank-outcome-first-01.json"),
-                                             conditions=[]), "study plan without conditions")
+    unknown = read_json(ROOT / "protocols/studies/bank-outcome-first-01.json")
+    unknown["benchmark"] = dict(unknown["benchmark"], adapter="tau2-telecom")
+    reject(validators["study-plan-v1"], unknown, "study plan naming an unregistered benchmark adapter")
     for result in read_json(ROOT / "artifacts/analyses/20261126-policy-evidence-summary.json").values():
         validators["policy-evidence"].validate(result)
     validators["task-room-v1"].validate(read_json(ROOT / "artifacts/analyses/20261127-banking-task-room.json"))
