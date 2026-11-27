@@ -1,0 +1,62 @@
+{
+  "direct_receipt_crosscheck": {
+    "all_pairs": {
+      "both_failure": 28,
+      "both_success": 148,
+      "gain": 17,
+      "loss": 4,
+      "missing": 78
+    },
+    "assigned": {
+      "on_demand": 275,
+      "preload": 275,
+      "source": 55,
+      "write": 275
+    },
+    "observed": {
+      "on_demand": {
+        "graded": 197,
+        "success": 152,
+        "with_body": 0
+      },
+      "preload": {
+        "graded": 203,
+        "success": 169,
+        "with_body": 207
+      },
+      "source": {
+        "graded": 42,
+        "success": 37
+      },
+      "write": {
+        "stored": 207
+      }
+    },
+    "optional_read_calls": {},
+    "original_business_wires_verified": {
+      "on_demand": 207,
+      "preload": 207
+    },
+    "tokens": {
+      "completion_tokens": 96832,
+      "prompt_tokens": 573044,
+      "requests": 679
+    },
+    "usd": 0,
+    "verified_distinct_sessions": 679
+  },
+  "format": "bfcl-memory-cohort-verification/v1",
+  "native_regrade_byte_identical": true,
+  "original_json_sha256": {
+    "effects": "7b7d501aa2cf271d3ff30096435a367ea284d04d4eae3d246801f611484da194",
+    "native": "aa399be955746c29a0d0bce2c568c6630ecbb5e91e9f26d8a634bf3c0852cdde",
+    "policy-evidence": "abc08a11b584c205b863ec54b3dc24cb6f13debc8bd04999423527191926649b"
+  },
+  "tokenizer_reconstruction": {
+    "generated_tokens": 96832,
+    "prompt_tokens": 573044,
+    "recording": "bfcl-memory-cohort-transfer-01",
+    "run_suffix": "",
+    "verified_requests": 679
+  }
+}
