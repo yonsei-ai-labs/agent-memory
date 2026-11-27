@@ -13,6 +13,40 @@ from agent_memory_eval.contracts.core import ContractError
 
 TOOLS = [{"type": "function", "function": {"name": "weather", "parameters": {
     "type": "object", "required": ["city"], "properties": {"city": {"type": "string"}}}}}]
+
+
+class DeliveryInstructionTests(unittest.TestCase):
+    def test_new_cohort_reuses_the_banking_writer_and_contextual_read_descriptions(self):
+        from agent_memory_eval.contracts.validation import ROOT
+        from agent_memory_eval.recording.assets import asset_text
+        cfg = json.loads((ROOT / "protocols/diagnostics/bfcl-memory-cohort-transfer-v1.json").read_bytes())
+        refs = cfg["policy_sources"]
+        bank = json.loads(asset_text(ROOT, refs["writer"]))
+        earlier = json.loads(asset_text(ROOT, refs["earlier_bfcl"]))
+        interface = json.loads(asset_text(ROOT, refs["tool_only"]))
+        self.assertEqual((cfg["writer_instruction"], cfg["forms"]),
+                         (asset_text(ROOT, bank["common_instruction_ref"]).rstrip("\r\n"), bank["lines"]))
+        self.assertEqual(cfg["read_tool_descriptions"], interface["arms"]["contextual"]["read_tool_descriptions"])
+        self.assertEqual(cfg["memory_notice_by_delivery"],
+                         dict(preload=asset_text(ROOT, refs["preload_notice"]).rstrip("\r\n"), on_demand=""))
+        for category, tasks in cfg["tasks"].items():
+            self.assertEqual(len(set(tasks)), len(tasks))
+            self.assertTrue(set(tasks).isdisjoint(earlier["tasks"][category]))
+        self.assertEqual([len(t) for t in cfg["tasks"].values()], [11, 44])
+
+    def test_tool_only_and_preload_share_the_original_business_instruction(self):
+        from agent_memory_eval.memory.context import snapshot_message
+        cfg = dict(worker_instruction="Serve the user.", memory_notice_by_delivery={"preload": "Earlier work.", "on_demand": ""})
+        question = {"role": "user", "content": "Forecast?"}
+        source = dict(messages=[dict(role="system", content=worker_instruction(cfg, None)), question], tools=TOOLS)
+        for mode in ("preload", "on_demand"):
+            messages = [dict(role="system", content=worker_instruction(cfg, mode))]
+            if mode == "preload":
+                messages.append(snapshot_message([]))
+            wire = dict(messages=[*messages, question], tools=TOOLS + (read_tools(cfg) if mode == "on_demand" else []))
+            self.assertEqual(normalized_first(wire, cfg, mode, []), source)
+        self.assertEqual(worker_instruction(cfg, "on_demand"), source["messages"][0]["content"])
+        self.assertTrue(worker_instruction(cfg, "preload").endswith("Earlier work."))
 CALL = "<tool_call>\n<function=weather>\n<parameter=city>\nSeoul\n</parameter>\n</function>\n</tool_call>"
 
 

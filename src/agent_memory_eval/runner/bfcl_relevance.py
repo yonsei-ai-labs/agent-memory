@@ -36,9 +36,16 @@ def read_tools(cfg):
                         read_descriptions=cfg.get("read_tool_descriptions"))
 
 
+def memory_notice(cfg, mode):
+    if "memory_notice_by_delivery" in cfg:
+        return cfg["memory_notice_by_delivery"][mode]
+    return cfg["memory_notice"]
+
+
 def worker_instruction(cfg, mode):
     base = cfg["worker_instruction"]
-    return base + "\n" + cfg["memory_notice"] if mode and cfg["memory_notice"] else base
+    notice = memory_notice(cfg, mode) if mode else ""
+    return base + "\n" + notice if notice else base
 
 
 def read_choice(setting, turn):
@@ -88,7 +95,7 @@ def normalized_first(wire, cfg, mode, items):
     value = deepcopy(wire)
     if mode:
         system = value["messages"][0]
-        notice = cfg["memory_notice"]
+        notice = memory_notice(cfg, mode)
         suffix = "\n" + notice if notice else ""
         require(system["role"] == "system" and system["content"].endswith(suffix), "Unexpected memory instructions")
         system["content"] = system["content"].removesuffix(suffix)
@@ -243,7 +250,7 @@ def collect_task(root, cfg, case, client, is_empty, *, parent=None, pairs=None):
                 max_requests=cfg["limits"]["writer_calls"], condition_id=form, run_id=f"{task}-write-{form}",
                 completion_contract=REQUIRED_STORE_CONTRACT, first_input_sha256=expected.get(form))
         completed = {f: w for f, w in writers.items() if w["status"] == "completed" and w["memory_stores"] == 1}
-        if len(completed) != len(writers) and not cfg.get("policy_registration"):
+        if len(completed) != len(writers) and not (cfg.get("policy_registration") or cfg.get("reader_admission") == "sealed_bank"):
             return
         writers = completed
         slots = [(f, m) for f in writers for m in cfg["delivery"]]
@@ -300,7 +307,7 @@ def audit_task(root, cfg, case, is_empty, *, sources_only=False):
             if experience_ref is None:
                 experience_ref = writer["experience_ref"]
             require(writer["experience_ref"] == experience_ref, "Formats received different public experiences")
-            if "representation_pairs" in cfg or "policy_writer_pairs" in cfg:
+            if "representation_pairs" in cfg or "policy_writer_pairs" in cfg or cfg.get("reader_admission") == "sealed_bank":
                 wire = blobs.get(starts[0]["request_ref"])
                 instruction = cfg["writer_instruction"] + "\n" + cfg["forms"][form]
                 require(writer["instruction"] == instruction and wire["messages"][0] == dict(role="system", content=instruction)
@@ -336,7 +343,7 @@ def audit_task(root, cfg, case, is_empty, *, sources_only=False):
         scored, = [e["payload"] for e in batch if e["type"] == "outcome.scored"]
         rec.update(success=scored["official_success"], fields=fields, reads=dict(reads),
                    business_sha256=digest(canonical(original)), snapshot=head["start_snapshot_id"])
-        if "representation_pairs" in cfg:
+        if "representation_pairs" in cfg or cfg.get("reader_admission") == "sealed_bank":
             last = starts[-1]
             finish = finishes[last["request_id"]]
             raw = blobs.get(finish["response_ref"])

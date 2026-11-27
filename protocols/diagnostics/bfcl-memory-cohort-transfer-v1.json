@@ -1,0 +1,153 @@
+{
+  "name": "bfcl-memory-cohort-transfer-01",
+  "purpose": "Cross-benchmark check of the banking cohort writing and reading policies on new single-decision BFCL questions. New sources and fresh local generations only.",
+  "revision": "6ea57973c7a6097fd7c5915698c54c17c5b1b6c8",
+  "data_sha256": {
+    "live_relevance": "e03f9e241657a137cba48a89ee12f47bf3fcb7e4f6274263e9c699a0c974203a",
+    "irrelevance": "2b6ed4c2e992cdcf5f1678a701851f944bef7550ee026ed1ddb89efed5be01a6"
+  },
+  "tasks": {
+    "live_relevance": [
+      "live_relevance_0-0-0",
+      "live_relevance_12-12-0",
+      "live_relevance_1-1-0",
+      "live_relevance_5-5-0",
+      "live_relevance_15-15-0",
+      "live_relevance_10-10-0",
+      "live_relevance_9-9-0",
+      "live_relevance_13-13-0",
+      "live_relevance_11-11-0",
+      "live_relevance_4-4-0",
+      "live_relevance_14-14-0"
+    ],
+    "irrelevance": [
+      "irrelevance_47",
+      "irrelevance_118",
+      "irrelevance_211",
+      "irrelevance_184",
+      "irrelevance_133",
+      "irrelevance_35",
+      "irrelevance_1",
+      "irrelevance_141",
+      "irrelevance_233",
+      "irrelevance_82",
+      "irrelevance_132",
+      "irrelevance_86",
+      "irrelevance_219",
+      "irrelevance_33",
+      "irrelevance_151",
+      "irrelevance_185",
+      "irrelevance_71",
+      "irrelevance_193",
+      "irrelevance_221",
+      "irrelevance_44",
+      "irrelevance_163",
+      "irrelevance_203",
+      "irrelevance_60",
+      "irrelevance_102",
+      "irrelevance_166",
+      "irrelevance_63",
+      "irrelevance_175",
+      "irrelevance_61",
+      "irrelevance_201",
+      "irrelevance_125",
+      "irrelevance_208",
+      "irrelevance_172",
+      "irrelevance_123",
+      "irrelevance_18",
+      "irrelevance_37",
+      "irrelevance_78",
+      "irrelevance_143",
+      "irrelevance_120",
+      "irrelevance_97",
+      "irrelevance_186",
+      "irrelevance_149",
+      "irrelevance_190",
+      "irrelevance_98",
+      "irrelevance_34"
+    ]
+  },
+  "selection": "Keep standard single-user text tasks and exclude every ID in the earlier eight-question profile. Sort by SHA-256 of UTF-8 memory-cohort-transfer-v1| followed by the task ID. Take all eleven remaining eligible live_relevance questions. Take the first 44 irrelevance questions with distinct sorted sets of function names. The question is the grouping unit. Report the two categories separately and with equal category weights.",
+  "model": "Qwen/Qwen3.5-4B",
+  "model_revision": "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
+  "checkpoint_sha256": {
+    "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715",
+    "config.json": "ddc63e1c717afa86c865bb5e01313d89d72bb53b97ad4a8a03ba8510c0621670",
+    "model.safetensors.index.json": "cf3f798ee02ba45f9622aa8892a47369ab667d0afbf154ee7c2212de42e6302d",
+    "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+    "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+    "model.safetensors-00001-of-00002.safetensors": "26a93f066e1916adb13453dae5a0c707c0fbc71299ed98779571a907b8e74c61",
+    "model.safetensors-00002-of-00002.safetensors": "cb544bd9bfae93dc59b0f22b292f5933573854a7f9b97835c67060d7d910e188"
+  },
+  "generation": {
+    "seed": 0,
+    "do_sample": false,
+    "dtype": "bfloat16",
+    "attention": "sdpa",
+    "thinking": false,
+    "worker_tokens": 256,
+    "writer_tokens": 512,
+    "stop_at_chat_end": true
+  },
+  "worker_instruction": "Respond to the user's request. Use an available function if it is appropriate. Otherwise respond to the user directly.",
+  "memory_notice": "",
+  "writer_instruction": "Write a memory in the assigned form from this past public experience. Use memory_store to save a nonempty title and body. Ground the memory in a specific observation from the conversation or a tool response. Distinguish observed events from inferences. Preserve uncertainty and limits on where a conclusion applies. If success or the correct procedure was not established, record what was observed and what is still unknown. A text reply alone does not save a memory.",
+  "forms": {
+    "fact": "Record observed facts and values, who or what they refer to, and limits of the evidence.",
+    "episode": "Recount the situation, actions, and observed responses or outcomes in chronological order.",
+    "procedure": "Describe an ordered procedure, including when to verify a condition or stop. Identify steps whose validity is uncertain.",
+    "lesson": "State an evidence-supported lesson or caution and the conditions under which it applies.",
+    "free": "Choose how to organize useful observations from this experience. You may combine forms."
+  },
+  "delivery": [
+    "preload",
+    "on_demand"
+  ],
+  "limits": {
+    "source_calls": 1,
+    "writer_calls": 1,
+    "preload_calls": 1,
+    "on_demand_calls": 3,
+    "new_external_calls": 0,
+    "second_pass_no_memory": 0
+  },
+  "feedback": "Only the binary first-pass outcome is provided to writers, separately from the shared public question, function definitions and actual response. No category labels or reference answers enter worker or writer requests.",
+  "release": "Each graded source receives all five required writers. For a form with one nonempty stored item, assign its sealed snapshot to both deliveries. Missing sources, writers and readers stay in the denominator. No re-sampling, substituted items or retries on model outcomes. Independent fresh sessions on the pinned local model with greedy decoding. Stop at model EOS or chat EOS.",
+  "grade": "Use BFCL's pinned is_empty_output on decoded business calls and the category's native call-presence rule. An invalid/truncated completion or exhausted private read loop is ungraded. Track undeclared functions and missing required arguments separately. Never execute a business or external function.",
+  "outcomes": "Primary: prevalence of correct BFCL call versus abstention for preload minus contextual on-demand, equal weight per category and question, with per-question sign counts; report missingness and bounds. Five forms share one source. Separately show gains and losses, verified title/body exposure, argument and function diagnostics, exact source or alternative public evidence and tokens for writing and for jointly correct reader pairs. Call presence is the native decision score, not argument accuracy or downstream execution.",
+  "policy_sources": {
+    "earlier_bfcl": {
+      "path": "protocols/diagnostics/bfcl-relevance-two-pass-v1.json",
+      "sha256": "7b75b0c760a6652471e8965244e16749d2e2fd8d233639f25563b0f7ffaf3bbb"
+    },
+    "writer": {
+      "path": "protocols/pilots/tau-banking-required-v1.json",
+      "sha256": "22813f83a62e718df76e1c8ec323248a67141a03fd7bbbc7a5ed70ad6d14e0cf"
+    },
+    "preload_notice": {
+      "path": "protocols/instructions/matched-memory-read-v1.txt",
+      "sha256": "b623028e1bc06ca35d89b2f91a30159dd22999db0fa391cb95b61d5793f659a7"
+    },
+    "tool_only": {
+      "path": "protocols/diagnostics/bfcl-tool-only-retrieval-v1.json",
+      "sha256": "43cb1ea94d2ddc01dedd019293e1c1440e2f2bf9d8972fc8a31444ab5878d404"
+    }
+  },
+  "memory_notice_by_delivery": {
+    "preload": "You may use the available notes from earlier work. A snapshot, when present, contains those notes. If memory_list and memory_get are available, reading is optional. Notes may be empty or inaccurate. Use a note only when it applies to this interaction.",
+    "on_demand": ""
+  },
+  "read_tool_descriptions": {
+    "memory_list": "Browse note titles when a past situation, fact, procedure, or lesson could help with the current task. The list can be empty. It returns ids, versions, and titles. Use an id with memory_get to read a note, or the returned cursor for another page.",
+    "memory_get": "Read the title and body of a note by id when it looks relevant. A note describes prior work and may be incomplete or mistaken. Check whether it applies to the current situation."
+  },
+  "advertise_list_limit": true,
+  "reader_admission": "sealed_bank",
+  "assigned": {
+    "source": 55,
+    "write": 275,
+    "solve": 550,
+    "second_pass_no_memory": 0,
+    "external_model_calls": 0
+  }
+}
