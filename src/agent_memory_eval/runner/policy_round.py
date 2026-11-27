@@ -5,6 +5,7 @@ from pathlib import Path
 import subprocess
 import sys
 from jsonschema import Draft202012Validator
+from referencing import Registry, Resource
 
 from agent_memory_eval.adapters.bfcl_task_start import REVISION
 from agent_memory_eval.adapters.tau_banking_results import known_customer_groups
@@ -13,41 +14,60 @@ from agent_memory_eval.contracts.core import canonical, digest, read_json
 from agent_memory_eval.contracts.validation import ROOT, SCHEMA_ROOT
 from agent_memory_eval.experiments.paired_repetitions import FORMS
 from agent_memory_eval.policies.writer_pairs import writer_pairs
-from agent_memory_eval.recording.assets import asset_text, publish_json
+from agent_memory_eval.recording.assets import asset_bytes, asset_text, publish_json, publish_text
 from agent_memory_eval.recording.journal import safe_path
 
 
 ADAPTERS = ("banking-opening", "bfcl-relevance")
+FIRST_PASS_ROUND = "agent-memory-policy-round/v2"
 
 
 def pinned_json(workspace, ref):
     return read_json(asset_text(workspace, ref).encode())
 
 
+def writing_assets(workspace, policy):
+    writing = pinned_json(workspace, policy["writing"])
+    base = asset_text(workspace, writing["common_instruction_ref"]).rstrip("\r\n")
+    clause = asset_text(workspace, policy["clause"]).rstrip("\r\n")
+    return writing, base, clause
+
+
 def compile_round(workspace, spec):
     """Derive both native configurations from the same authored policy and frozen comparison criteria."""
-    schema = read_json((SCHEMA_ROOT / "policy-round-v1.schema.json").read_bytes())
-    error = next(Draft202012Validator(schema).iter_errors(spec), None)
+    name = "policy-round-v1.schema.json"
+    schema = read_json((SCHEMA_ROOT / name).read_bytes())
+    registry = Registry().with_resource(name, Resource.from_contents(schema))
+    if spec.get("format") == FIRST_PASS_ROUND:
+        schema = read_json((SCHEMA_ROOT / "policy-round-v2.schema.json").read_bytes())
+    error = next(Draft202012Validator(schema, registry=registry).iter_errors(spec), None)
     require(error is None, f"Invalid policy round: {error.message if error else ''}")
+    lines = spec.get("evaluation", {}).get("stored_outcome_lines")
+    if lines:
+        require(lines["success"] != lines["failure"] and all(v.splitlines() == [v] for v in lines.values()),
+                "Different one-line markers are required for the two source outcomes")
     evidence_tasks = {adapter: set() for adapter in ADAPTERS}
     for evidence in spec["evidence"]:
-        asset_text(workspace, evidence["artifact"])
+        asset_bytes(workspace, evidence["artifact"])
         evidence_tasks[evidence["benchmark"]].update(evidence["tasks"])
     if spec.get("previous_decision"):
         previous = pinned_json(workspace, spec["previous_decision"])
         require(previous.get("format") == "agent-memory-policy-decision/v1", "Invalid preceding decision")
-        for adapter in ADAPTERS:
-            cohort = previous["cohorts"][adapter]
+        for adapter, cohort in previous["cohorts"].items():
             evidence_tasks[adapter].update(cohort["development_tasks"], cohort["evaluated_tasks"])
     policy = spec["policy"]
-    strict = pinned_json(workspace, policy["writing"])
+    strict, base, clause = writing_assets(workspace, policy)
     base_ref = strict["common_instruction_ref"]
-    base = asset_text(workspace, base_ref).rstrip("\r\n")
-    clause = asset_text(workspace, policy["clause"]).rstrip("\r\n")
-    candidate = asset_text(workspace, policy["candidate_instruction"]).rstrip("\r\n")
+    candidate = base + "\n" + clause
+    candidate_ref = policy.get("candidate_instruction")
+    if candidate_ref:
+        require(asset_text(workspace, candidate_ref).rstrip("\r\n") == candidate,
+                "Candidate differs beyond its registered clause")
+    else:
+        candidate_ref = dict(path=f"runs/{spec['id']}/candidate-writer.txt", sha256=digest((candidate + "\n").encode()))
     notice = asset_text(workspace, policy["reader_instruction"])
     require(
-        candidate == base + "\n" + clause and bool(notice.strip())
+        bool(clause.strip()) and bool(notice.strip())
         and policy["reader"] in {"on_demand", "preload"}
         and set(strict["lines"]) == set(FORMS)
         and strict["completion_contract"] == "writer-required-store/v1"
@@ -76,8 +96,7 @@ def compile_round(workspace, spec):
     )
     root = Path("runs") / spec["id"]
     profiles, cohorts = {}, {}
-    for adapter in ADAPTERS:
-        settings = spec["benchmarks"][adapter]
+    for adapter, settings in spec["benchmarks"].items():
         cfg = pinned_json(workspace, settings["profile"])
         observed = sorted(evidence_tasks[adapter].union(settings["development_tasks"]))
         if adapter == "banking-opening":
@@ -101,7 +120,7 @@ def compile_round(workspace, spec):
             cfg.update(
                 required_writer=policy["writing"],
                 base_instruction=base_ref,
-                candidate_instruction=policy["candidate_instruction"],
+                candidate_instruction=candidate_ref,
                 clause=policy["clause"],
                 feedback=policy["feedback"],
                 reader=policy["reader"],
@@ -140,6 +159,9 @@ def compile_round(workspace, spec):
         cfg["decision_criterion"] = spec["criterion"]
         profiles[adapter] = cfg
         cohorts[adapter] = dict(evaluated_tasks=tasks, development_tasks=observed)
+    for adapter, observed in evidence_tasks.items():
+        if adapter not in cohorts and observed:
+            cohorts[adapter] = dict(evaluated_tasks=[], development_tasks=sorted(observed))
     registration = dict(
         format="agent-memory-policy-registration/v1",
         **seal,
@@ -152,11 +174,13 @@ def compile_round(workspace, spec):
 
 
 def native_directories(workspace, profiles):
-    bank = profiles["banking-opening"]
-    return [
-        safe_path(workspace / "runs", name)
-        for name in (bank["source_study"], bank["validation_study"], profiles["bfcl-relevance"]["name"])
-    ]
+    names = []
+    if "banking-opening" in profiles:
+        bank = profiles["banking-opening"]
+        names.extend((bank["source_study"], bank["validation_study"]))
+    if "bfcl-relevance" in profiles:
+        names.append(profiles["bfcl-relevance"]["name"])
+    return [safe_path(workspace / "runs", name) for name in names]
 
 
 def verify_native_registration(profile, cfg, adapter):
@@ -183,6 +207,13 @@ def register(workspace, spec):
     )
     root.mkdir(parents=True, exist_ok=True)
     # Write the receipt last. An interrupted registration is recoverable only with the same preregistered inputs.
+    if "candidate_instruction" not in spec["policy"] and "banking-opening" in profiles:
+        _, base, clause = writing_assets(workspace, spec["policy"])
+        ref = profiles["banking-opening"]["candidate_instruction"]
+        try:
+            publish_text(safe_path(workspace, ref["path"]), base + "\n" + clause + "\n")
+        except FileExistsError:
+            asset_text(workspace, ref)
     for name, value in [("design", spec), *profiles.items(), ("registration", receipt)]:
         path = root / (name + ".json")
         try:
@@ -204,6 +235,8 @@ def registered(workspace, spec):
         require(
             read_json((root / (adapter + ".json")).read_bytes()) == cfg, "Registered native configuration changed"
         )
+        if adapter == "banking-opening" and "candidate_instruction" not in spec["policy"]:
+            asset_text(workspace, cfg["candidate_instruction"])
     return root, receipt, profiles
 
 
@@ -219,6 +252,7 @@ def execute(
     command_runner=subprocess.run,
 ):
     root, _, profiles = registered(workspace, spec)
+    require(adapter in profiles, "Adapter outside the registered round")
     profile = root / (adapter + ".json")
     if adapter == "banking-opening":
         # The native command enforces its affirmative per-study authorization, ledger and recovery policy.
@@ -244,7 +278,7 @@ def execute(
         if preflight:
             return dict(tasks=len(cases), writers_per_task=len(profiles[adapter]["forms"]), external_calls=0)
         require(model_python and checkpoint, "BFCL execution needs the registered local model")
-        directory = native_directories(workspace, profiles)[2]
+        directory = safe_path(workspace / "runs", profiles[adapter]["name"])
         command_runner(
             [
                 sys.executable,
@@ -273,25 +307,36 @@ def results(workspace, spec, checkout):
     from agent_memory_eval.analysis.policy_evidence import PolicyEvidence
 
     root, receipt, profiles = registered(workspace, spec)
-    require(checkout is not None, "Specify the pinned BFCL checkout")
-    common = profiles["bfcl-relevance"]
+    if "bfcl-relevance" in profiles:
+        require(checkout is not None, "Specify the pinned BFCL checkout")
+    policy = spec["policy"]
+    writing, base, clause = writing_assets(workspace, policy)
+    conditions, pairs = writer_pairs(writing["lines"], clause)
+    prompts = {c["id"]: c["prompt"] for c in conditions}
     expected = {
-        (form, arm): digest((common["writer_instruction"] + "\n" + common["forms"][pair[key]]).encode())
-        for form, pair in common["policy_writer_pairs"].items()
+        (form, arm): digest((base + "\n" + prompts[pair[key]]).encode())
+        for form, pair in pairs.items()
         for arm, key in (("existing", "reference"), ("candidate", "candidate"))
     }
     reports = {}
-    for adapter in ADAPTERS:
-        collector = PolicyEvidence()
+    primary = spec.get("evaluation")
+    for adapter, cfg in profiles.items():
+        collector = PolicyEvidence(collect_first_pass=primary is not None,
+                                   stored_outcome_lines=primary.get("stored_outcome_lines") if primary else None)
         profile = root / (adapter + ".json")
         if adapter == "banking-opening":
             raw = banking_report(profile, workspace, workspace / "data/tau2-bench", False, collector=collector)
         else:
             raw = bfcl_report(
-                profile, native_directories(workspace, profiles)[2], checkout, False, collector=collector
+                profile, safe_path(workspace / "runs", cfg["name"]), checkout, False, collector=collector
             )
         collector.verify_policy(expected, spec["policy"]["reader"], raw["observations"])
-        reports[adapter] = collector.report(raw, summary=True)
+        evidence = collector.report(raw, summary=True)
+        if primary:
+            reports[adapter] = dict(first_pass=collector.first_pass_report(raw, policy_axes=primary["policy_axes"],
+                                                                          details=False), policy_evidence=evidence)
+        else:
+            reports[adapter] = evidence
     return dict(registration_sha256=digest(canonical(receipt)), benchmarks=reports)
 
 

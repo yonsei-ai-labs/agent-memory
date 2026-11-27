@@ -9,7 +9,8 @@ from agent_memory_eval.analysis.action_grounding import argument_features
 from agent_memory_eval.analysis.clustered_outcomes import clustered_contrast
 from agent_memory_eval.analysis.decision_attribution import Action
 from agent_memory_eval.analysis.decision_cues import _message_field, writer_material
-from agent_memory_eval.analysis.efficiency import paired_effort
+from agent_memory_eval.analysis.efficiency import first_decision_effort, paired_effort
+from agent_memory_eval.analysis.first_pass import DEFAULT_AXES, compare_first_pass
 from agent_memory_eval.analysis.recorded_decisions import READS, require
 from agent_memory_eval.analysis.trajectory import recorded_effort, total_effort
 from agent_memory_eval.contracts.core import canonical, digest
@@ -129,13 +130,49 @@ def counted(value):
     return value in {"exact", "normalized_only"}
 
 
+def stored_outcome_check(lines, feedback, items):
+    if items is None:
+        return "unobserved_write"
+    if not items:
+        return "no_stored_item"
+    if type(feedback) is not bool or len(items) != 1:
+        return "unassessable"
+    first = items[0]["body"].splitlines()[:1]
+    expected = lines["success" if feedback else "failure"]
+    if first == [expected]:
+        return "matches_feedback"
+    return "opposes_feedback" if first and first[0] in lines.values() else "no_marker_on_first_line"
+
+
 class PolicyEvidence:
-    def __init__(self):
+    def __init__(self, *, collect_first_pass=False, stored_outcome_lines=None):
         self.sources = {}
         self.writers = {}
         self.readers = {}
         self.cost = None
         self.cluster_unit = "registered_cluster"
+        self.decision_efforts = {} if collect_first_pass else None
+        self.stored_outcome_lines = stored_outcome_lines
+        self.writer_outcomes = []
+
+    def first_pass_report(self, trajectory, *, policy_axes=DEFAULT_AXES, details=True):
+        require(self.decision_efforts is not None, "Enable first-pass effort recording")
+        rows = [dict(row, decision_effort=self.decision_efforts.get(row["run"])) for row in trajectory["observations"]]
+        result = dict(benchmark=trajectory["benchmark"], bindings=trajectory["bindings"],
+                      **compare_first_pass(rows, policy_axes=policy_axes, cluster_unit=self.cluster_unit, details=details))
+        if self.stored_outcome_lines:
+            sources = {(r["task"], r["run"]): r["official_success"] for r in rows if r["phase"] == "source"}
+            counts = defaultdict(Counter)
+            for w in self.writer_outcomes:
+                if w["feedback"] is not None:
+                    require((w["task"], w["source_run"]) in sources and sources[w["task"], w["source_run"]] is w["feedback"],
+                            "Writer feedback differs from its recorded source grade")
+                counts[w["condition"], w["form"]][w["check"]] += 1
+            result["stored_outcome"] = dict(lines=self.stored_outcome_lines, by_condition_and_form=[
+                dict(condition=c, form=f, counts=dict(v)) for (c, f), v in sorted(counts.items())])
+            if details:
+                result["stored_outcome"]["observations"] = self.writer_outcomes
+        return result
 
     def source(self, task, messages):
         self.sources[task] = (
@@ -161,6 +198,7 @@ class PolicyEvidence:
             reason=reason,
         )
         guidance = None
+        feedback = {}
         if log:
             record.update(run=log.run, effort=recorded_effort(log, reused_local_generations=reused))
             if log.requests and log.finishes.get(log.requests[0]["request_id"], {}).get("status") == "response":
@@ -185,6 +223,13 @@ class PolicyEvidence:
             snapshot = ends[0]["payload"]["end_snapshot_id"]
             items = snapshot_items(log.blobs, log.state, snapshot)
             record.update(snapshot=snapshot, versions=[dict(item=i["id"], version=i["version"]) for i in items])
+        if self.stored_outcome_lines:
+            origins = record["public_contexts"] or []
+            bit = feedback.get("success")
+            check = stored_outcome_check(self.stored_outcome_lines, bit, items if ends else None)
+            self.writer_outcomes.append(dict(task=task, run=record["run"], condition=condition, form=form,
+                                             feedback=bit, source_run=origins[0]["run"] if len(origins) == 1 else None,
+                                             check=check, request_sha256=record["request_sha256"], snapshot=record.get("snapshot")))
         if ends and source:
             stored = TextFields(i[k] for i in items for k in ("title", "body"))
             record["source_cues"] = [
@@ -196,6 +241,8 @@ class PolicyEvidence:
         self.writers[key] = record, guidance
 
     def decision(self, row, log):
+        if self.decision_efforts is not None:
+            self.decision_efforts[log.run] = first_decision_effort(log.events.values())
         business_calls = 0
         for request in log.requests:
             if request["actor_role"] != "worker":

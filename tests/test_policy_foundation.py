@@ -11,6 +11,7 @@ from agent_memory_eval.analysis.policy_evidence import (
     banking_cost,
     candidates,
     current_fields,
+    stored_outcome_check,
 )
 from agent_memory_eval.analysis.trajectory import allocation
 from agent_memory_eval.contracts.core import ContractError, canonical, digest
@@ -23,6 +24,17 @@ PLAN = ROOT / "protocols/diagnostics/portable-writer-round-v1.json"
 
 
 class EvidenceTests(unittest.TestCase):
+    def test_stored_marker_is_compared_to_the_feedback_bit(self):
+        labels = dict(success="Task passed.", failure="Task failed.")
+        for bit, items, expected in [
+            (False, [dict(body="Task failed.\nThe tool returned successfully.")], "matches_feedback"),
+            (False, [dict(body="Task passed.")], "opposes_feedback"),
+            (True, [dict(body="My summary\nTask passed.")], "no_marker_on_first_line"),
+            (False, [], "no_stored_item"), (False, None, "unobserved_write"),
+            (None, [dict(body="Task failed.")], "unassessable"),
+        ]:
+            self.assertEqual(stored_outcome_check(labels, bit, items), expected)
+
     def test_typed_matches_and_candidate_boundaries(self):
         for value, expected in (
             ("EcoCard", "exact"),
@@ -119,6 +131,25 @@ class EvidenceTests(unittest.TestCase):
 
 
 class RegistrationTests(unittest.TestCase):
+    def test_v2_selects_backends_and_freezes_the_first_pass_comparison(self):
+        self.plan.update(format="agent-memory-policy-round/v2",
+                         evaluation=dict(reference="own_no_memory_first_pass", policy_axes=["form"]))
+        del self.plan["policy"]["candidate_instruction"]
+        cfg = self.plan["benchmarks"].pop("bfcl-relevance")
+        first = register(self.root, self.plan)
+        root, _, profiles = registered(self.root, self.plan)
+        self.assertEqual(set(profiles), {"banking-opening"})
+        ref = profiles["banking-opening"]["candidate_instruction"]
+        self.assertTrue(asset_text(self.root, ref).endswith(asset_text(self.root, self.plan["policy"]["clause"])))
+        self.assertEqual(register(self.root, self.plan), first)
+        with self.assertRaises(ContractError):
+            registered(self.root, dict(self.plan, evaluation=dict(self.plan["evaluation"], policy_axes=["condition"])))
+        (root / "candidate-writer.txt").write_text("changed")
+        with self.assertRaises(ContractError):
+            registered(self.root, self.plan)
+        self.plan["benchmarks"] = {"bfcl-relevance": cfg}
+        self.assertEqual(set(compile_round(self.root, self.plan)[1]), {"bfcl-relevance"})
+
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
         self.addCleanup(self.tmp.cleanup)

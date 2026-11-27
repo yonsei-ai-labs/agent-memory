@@ -1,0 +1,1323 @@
+{
+  "confirmed_usd_excluding_sunk_source_screen": {
+    "tau-banking-memory-cohort-01-first": "2.748920443",
+    "tau-banking-memory-cohort-01-first-outage-recovery": "0.944141633"
+  },
+  "customer_attribution_scope": "Extra lasting customer-written rows compared against the reference final DB. Missing actions and downstream choices require separate checks.",
+  "discordant_pairs_with_customer_extra_final_row": [
+    {
+      "correct_product": "EcoCard",
+      "first_worker_query": {
+        "pattern": "EcoCard|foreign transaction fee|minimum monthly payment|virtual-card management|credit score|eligibility"
+      },
+      "form": "free",
+      "locations": {
+        "body": true,
+        "business_tools": false,
+        "non_memory_messages": false
+      },
+      "loss": "r_1028cf5c099745568398b575b365e8e8",
+      "task": "task_006",
+      "win": "r_ddb365dc50724ba299491b60f7fd87cb",
+      "wrong_recommended": "Crypto-Cash Back"
+    },
+    {
+      "correct_product": "EcoCard",
+      "first_worker_query": {
+        "pattern": "EcoCard|foreign transaction fee|minimum monthly payment|virtual card|credit score|Rho-Bank\\+ subscription|subscription"
+      },
+      "form": "procedure",
+      "locations": {
+        "body": true,
+        "business_tools": false,
+        "non_memory_messages": false
+      },
+      "loss": "r_20b1a4bb57aa485e97efe786ba19f909",
+      "task": "task_006",
+      "win": "r_9210f3da9cd44f4f943adb0b58c9ec39",
+      "wrong_recommended": "Crypto-Cash Back"
+    },
+    {
+      "correct_product": "Blue Account",
+      "first_worker_query": {
+        "pattern": "Blue Account|Light Blue|referral.*bonus|referrer eligibility|referral.*$500"
+      },
+      "form": "procedure",
+      "locations": {
+        "body": true,
+        "business_tools": false,
+        "non_memory_messages": false
+      },
+      "loss": "r_e96f3d38ccfc47d7990076e963eb72ac",
+      "task": "task_098",
+      "win": "r_e643cdd02dcf4c0f9b90cc411b3a7726",
+      "wrong_recommended": "Green Fee-Free"
+    }
+  ],
+  "format": "banking-cohort-review-crosscheck/v1",
+  "input_file_sha256": {
+    "artifacts/analyses/20261127-banking-cohort-first-source-evidence.json": "291b7088185a9861705895a51bcd4b95a3964c71a5d8ddd295170bf85938ca3e",
+    "artifacts/analyses/20261127-banking-memory-cohort/initial.json.gz": "0f4931094f78073199032377cd3058700e456c60c22b490ebb0424621752aefe",
+    "artifacts/analyses/20261127-banking-memory-cohort/recovery.json.gz": "e75c9053801df56e37d0b444f4ea280502f15da0b1c5bcb07f947c17e9ed07cd",
+    "artifacts/pilots/20261127-banking-cohort-customer-outage.json": "3af068f60484972a863b1bee29aee109a10e580bccbfe216226e661b51a0976b",
+    "protocols/pilots/tau-banking-cohort-outage-recovery-v1.json": "c5ae2885db90eefd754292d4f99e597ac542b3c8d935e9d6580bd8be48e70000",
+    "protocols/pilots/tau-banking-memory-cohort-v1.json": "4c5727a864d93108be3374601eb0ab6ffe73ca4b6600f84f3c373eb5349dc7a1"
+  },
+  "isolation": {
+    "followup_customer_initial_rpc_matching_source_full_rpc": 0,
+    "followup_customer_initial_rpc_matching_source_settings_and_first_two_messages": 610,
+    "fresh_first_worker_requests_minus_registered_memory_delta_equal": 610,
+    "on_demand_attempts_including_recovery": 305,
+    "on_demand_read_attempts": 0,
+    "on_demand_unique_assignments": 225,
+    "optional_provider_replies": {
+      "memory_tool_calls": {
+        "memory_get": 0,
+        "memory_list": 0
+      },
+      "reader_attempts": 305,
+      "worker_responses": 3993
+    },
+    "source_private_scenario_12_word_matches_by_public_message_role_counting_writer_inputs_separately": {
+      "user": 525
+    },
+    "source_tasks_with_a_private_12_word_match_in_public_customer_speech": 41,
+    "writers_public_experience_and_binary_result_match": 225
+  },
+  "optional_failure_case_review_tasks_004_006_024_035": [
+    {
+      "arm": "fact__on_demand",
+      "report": "073a96a654d6e3ada214015d0b54e5c6ef7d7c2bb58377dcc417c5675b7c4325",
+      "run": "r_b7ecbfac92c3479380f9949563833afa",
+      "task": "task_004",
+      "terminal_actions": [
+        [
+          "transfer_to_human_agents",
+          "customer_requests_human_no_specific_reason"
+        ]
+      ]
+    },
+    {
+      "arm": "free__on_demand",
+      "report": "b318d001435921b4aa9c85707a5f71fde2d84556475776a402ec28dbc614aa50",
+      "run": "r_4e93b9a64db9433b9ddb7e23a9cd4b4b",
+      "task": "task_004",
+      "terminal_actions": [
+        [
+          "change_user_email"
+        ]
+      ]
+    },
+    {
+      "arm": "lesson__on_demand",
+      "report": "ecc5662888cbde1d33430021f7534e5955aec2e2855b0d02c710ed37f729fa4d",
+      "run": "r_ebd902691c624bc5a09c23d7c3bd574a",
+      "task": "task_004",
+      "terminal_actions": [
+        [
+          "transfer_to_human_agents",
+          "customer_requests_human_no_specific_reason"
+        ]
+      ]
+    },
+    {
+      "arm": "procedure__on_demand",
+      "report": "c24ccc798f182699b4d71db1fa3ae0a92d33f2a03620d8a122b51744a523faf2",
+      "run": "r_8b0530fa35ea4481a0f94b66eb9dcd54",
+      "task": "task_004",
+      "terminal_actions": [
+        [
+          "transfer_to_human_agents",
+          "customer_requests_human_no_specific_reason"
+        ]
+      ]
+    },
+    {
+      "arm": "free__on_demand",
+      "report": "661a076dc6f4a7b65b4db49d8a38a4972bc061fd44ee2baddce25753b0fa160d",
+      "run": "r_1028cf5c099745568398b575b365e8e8",
+      "task": "task_006",
+      "terminal_actions": [
+        [
+          "apply_for_credit_card",
+          "Crypto-Cash Back"
+        ]
+      ]
+    },
+    {
+      "arm": "procedure__on_demand",
+      "report": "7ac6a3303791e480e344eed8696caeaafe2ab0cd1c6cfdd642cbdf6415a7cf0d",
+      "run": "r_20b1a4bb57aa485e97efe786ba19f909",
+      "task": "task_006",
+      "terminal_actions": [
+        [
+          "apply_for_credit_card",
+          "Crypto-Cash Back"
+        ]
+      ]
+    },
+    {
+      "arm": "fact__on_demand",
+      "report": "b83074a86418a191ace0f6d5ef2c95fc6a3f60b45668547c941f1fc79cff930b",
+      "run": "r_2671c732a965460992dc366b17f83e71",
+      "task": "task_024",
+      "terminal_actions": [
+        [
+          "transfer_to_human_agents",
+          "kb_search_unsuccessful_customer_requests_transfer"
+        ]
+      ]
+    },
+    {
+      "arm": "free__on_demand",
+      "report": "bc66302bb386420c6dbb9603e20ee2c82f5dc352d8014d40ee4c02ebbb596be5",
+      "run": "r_f31217f5c8154559aea9f907ccbdf97f",
+      "task": "task_024",
+      "terminal_actions": [
+        [
+          "apply_for_credit_card",
+          "Business Silver Rewards Card"
+        ]
+      ]
+    },
+    {
+      "arm": "procedure__on_demand",
+      "report": "58e750a6712bbcab75c2d91602655d5ef6031dbec9e5d72e9cd379ed875e9281",
+      "run": "r_75e5f629ab77417f9823f6fc0aa1ca1a",
+      "task": "task_035",
+      "terminal_actions": [
+        [
+          "transfer_to_human_agents",
+          "account_ownership_dispute"
+        ]
+      ]
+    }
+  ],
+  "outage": {
+    "exceptions_to_first_customer_request": [
+      {
+        "arm": "episode__preload",
+        "request_sha256": "34b797b04621ca557141958114ac51403127e146329430aeca1bb2b072de48d6",
+        "response_sha256": "661ede34da024c3312bb8efe65aa3883e8779adb2e399e8113712ea31315bb3a",
+        "role_request_number": 9,
+        "task": "task_085"
+      },
+      {
+        "arm": "free__on_demand",
+        "request_sha256": "7074715d5da49ddaf78dd6412e31b8c4c437221a872d60cef30741a96c72455f",
+        "response_sha256": "661ede34da024c3312bb8efe65aa3883e8779adb2e399e8113712ea31315bb3a",
+        "role_request_number": 2,
+        "task": "task_086"
+      }
+    ],
+    "failed_customer_request_ordinal": {
+      "1": 158,
+      "2": 1,
+      "9": 1
+    },
+    "failed_http_status_counts": {
+      "502": 144,
+      "503": 16
+    },
+    "http_request_started_utc": [
+      "2026-11-27T04:16:39.756078Z",
+      "2026-11-27T04:19:21.440313Z"
+    ],
+    "response_received_utc": [
+      "2026-11-27T04:16:40.454020Z",
+      "2026-11-27T04:19:22.283493Z"
+    ]
+  },
+  "preverification": {
+    "counts": [
+      {
+        "count": 97,
+        "definition": "all_user_id_business",
+        "delivery": "on_demand",
+        "metric": "denominator",
+        "scope": "all_assignments"
+      },
+      {
+        "count": 4,
+        "definition": "all_user_id_business",
+        "delivery": "on_demand",
+        "metric": "read_before_log_response",
+        "scope": "all_assignments"
+      },
+      {
+        "count": 3,
+        "definition": "all_user_id_business",
+        "delivery": "on_demand",
+        "metric": "read_before_log_sequence",
+        "scope": "all_assignments"
+      },
+      {
+        "count": 2,
+        "definition": "all_user_id_business",
+        "delivery": "on_demand",
+        "metric": "read_same_message_as_first_log",
+        "scope": "all_assignments"
+      },
+      {
+        "count": 92,
+        "definition": "all_user_id_business",
+        "delivery": "preload",
+        "metric": "denominator",
+        "scope": "all_assignments"
+      },
+      {
+        "count": 14,
+        "definition": "all_user_id_business",
+        "delivery": "preload",
+        "metric": "read_before_log_response",
+        "scope": "all_assignments"
+      },
+      {
+        "count": 11,
+        "definition": "all_user_id_business",
+        "delivery": "preload",
+        "metric": "read_before_log_sequence",
+        "scope": "all_assignments"
+      },
+      {
+        "count": 3,
+        "definition": "all_user_id_business",
+        "delivery": "preload",
+        "metric": "read_same_message_as_first_log",
+        "scope": "all_assignments"
+      },
+      {
+        "count": 96,
+        "definition": "get_only",
+        "delivery": "on_demand",
+        "metric": "denominator",
+        "scope": "all_assignments"
+      },
+      {
+        "count": 4,
+        "definition": "get_only",
+        "delivery": "on_demand",
+        "metric": "read_before_log_response",
+        "scope": "all_assignments"
+      },
+      {
+        "count": 3,
+        "definition": "get_only",
+        "delivery": "on_demand",
+        "metric": "read_before_log_sequence",
+        "scope": "all_assignments"
+      },
+      {
+        "count": 2,
+        "definition": "get_only",
+        "delivery": "on_demand",
+        "metric": "read_same_message_as_first_log",
+        "scope": "all_assignments"
+      },
+      {
+        "count": 91,
+        "definition": "get_only",
+        "delivery": "preload",
+        "metric": "denominator",
+        "scope": "all_assignments"
+      },
+      {
+        "count": 14,
+        "definition": "get_only",
+        "delivery": "preload",
+        "metric": "read_before_log_response",
+        "scope": "all_assignments"
+      },
+      {
+        "count": 11,
+        "definition": "get_only",
+        "delivery": "preload",
+        "metric": "read_before_log_sequence",
+        "scope": "all_assignments"
+      },
+      {
+        "count": 3,
+        "definition": "get_only",
+        "delivery": "preload",
+        "metric": "read_same_message_as_first_log",
+        "scope": "all_assignments"
+      },
+      {
+        "count": 96,
+        "definition": "all_user_id_business",
+        "delivery": "on_demand",
+        "metric": "denominator",
+        "scope": "graded"
+      },
+      {
+        "count": 4,
+        "definition": "all_user_id_business",
+        "delivery": "on_demand",
+        "metric": "read_before_log_response",
+        "scope": "graded"
+      },
+      {
+        "count": 3,
+        "definition": "all_user_id_business",
+        "delivery": "on_demand",
+        "metric": "read_before_log_sequence",
+        "scope": "graded"
+      },
+      {
+        "count": 2,
+        "definition": "all_user_id_business",
+        "delivery": "on_demand",
+        "metric": "read_same_message_as_first_log",
+        "scope": "graded"
+      },
+      {
+        "count": 92,
+        "definition": "all_user_id_business",
+        "delivery": "preload",
+        "metric": "denominator",
+        "scope": "graded"
+      },
+      {
+        "count": 14,
+        "definition": "all_user_id_business",
+        "delivery": "preload",
+        "metric": "read_before_log_response",
+        "scope": "graded"
+      },
+      {
+        "count": 11,
+        "definition": "all_user_id_business",
+        "delivery": "preload",
+        "metric": "read_before_log_sequence",
+        "scope": "graded"
+      },
+      {
+        "count": 3,
+        "definition": "all_user_id_business",
+        "delivery": "preload",
+        "metric": "read_same_message_as_first_log",
+        "scope": "graded"
+      },
+      {
+        "count": 95,
+        "definition": "get_only",
+        "delivery": "on_demand",
+        "metric": "denominator",
+        "scope": "graded"
+      },
+      {
+        "count": 4,
+        "definition": "get_only",
+        "delivery": "on_demand",
+        "metric": "read_before_log_response",
+        "scope": "graded"
+      },
+      {
+        "count": 3,
+        "definition": "get_only",
+        "delivery": "on_demand",
+        "metric": "read_before_log_sequence",
+        "scope": "graded"
+      },
+      {
+        "count": 2,
+        "definition": "get_only",
+        "delivery": "on_demand",
+        "metric": "read_same_message_as_first_log",
+        "scope": "graded"
+      },
+      {
+        "count": 91,
+        "definition": "get_only",
+        "delivery": "preload",
+        "metric": "denominator",
+        "scope": "graded"
+      },
+      {
+        "count": 14,
+        "definition": "get_only",
+        "delivery": "preload",
+        "metric": "read_before_log_response",
+        "scope": "graded"
+      },
+      {
+        "count": 11,
+        "definition": "get_only",
+        "delivery": "preload",
+        "metric": "read_before_log_sequence",
+        "scope": "graded"
+      },
+      {
+        "count": 3,
+        "definition": "get_only",
+        "delivery": "preload",
+        "metric": "read_same_message_as_first_log",
+        "scope": "graded"
+      }
+    ],
+    "memory_only_id_before_logged_verification": [
+      {
+        "exact_live_verification_fields": [],
+        "first_protected": "get_credit_card_accounts_by_user",
+        "form": "fact",
+        "log": "absent",
+        "official_success": false,
+        "report": "3d5dc3b9f5ae72f6e5fc6a71e06ee0b5a1093d89e03da53154a3a925876104d2",
+        "request": "279198d153126138e4bfd77810412d574ca917db58a6a07f7ea125d6556d175d",
+        "response": "4041a2ee0a9610fa89e072ed955ff516db97f5648023b9ff292037bfbfbafb65",
+        "result_rows": true,
+        "run": "r_c66d00c608ec4fb09cd0ef7dc77da800",
+        "task": "task_027"
+      },
+      {
+        "exact_live_verification_fields": [],
+        "first_protected": "get_credit_card_transactions_by_user",
+        "form": "free",
+        "log": "following",
+        "official_success": false,
+        "report": "d1784998934cb781418aec8a497241c1039696b42e13a8d7b9ae1ae62627bb6c",
+        "request": "4b11535c4790d121c22561eae32dd70836e7c4dba7749fd5a73183301be6cdfd",
+        "response": "f5400d5b01aba916751105221ba460a1dc41ab0f0f5d34c8d8fa6a5e8bf31bf5",
+        "result_rows": true,
+        "run": "r_456e6185e2f247a580bea9351de0d157",
+        "task": "task_037"
+      },
+      {
+        "exact_live_verification_fields": [],
+        "first_protected": "get_credit_card_transactions_by_user",
+        "form": "fact",
+        "log": "absent",
+        "official_success": false,
+        "report": "904588d07a7f4b2a9e708f7bd18be1482a5dc4df3d5e8c9125d89145c8b4ec49",
+        "request": "61d041e52971c77a035817a2e34102f0b77bef2dc0a6c3273d8bf3c58b162319",
+        "response": "86091d970465ade24689125d9ccf9fab12b7ee03c541f15e4b4888c7398ea2b0",
+        "result_rows": true,
+        "run": "r_913e441f76c142d099e906195c7fa40d",
+        "task": "task_037"
+      },
+      {
+        "exact_live_verification_fields": [],
+        "first_protected": "get_credit_card_accounts_by_user",
+        "form": "fact",
+        "log": "absent",
+        "official_success": false,
+        "report": "4ec34e139f210c86f2e719c643b5e045b79f3c7c789fe80c0be24aca06c8260a",
+        "request": "ce7bff54bd097b08f9ab05c73d621c8b126350328004cc7361db21a024bf699b",
+        "response": "f237d7924a4d48aca4a1c4c4e6ac0192c1ec44b7897a11dc8168f9a3dce4038a",
+        "result_rows": true,
+        "run": "r_85426c26d5454540ad26385bf489aa12",
+        "task": "task_046"
+      },
+      {
+        "exact_live_verification_fields": [],
+        "first_protected": "get_referrals_by_user",
+        "form": "fact",
+        "log": "absent",
+        "official_success": false,
+        "report": "64e6aff2cfda3a87c47ba55025548e131593d2fa638a3442435d9aa5260c7a0d",
+        "request": "307b4444f2658b55050d919253e1319ead3994e1bced1d730f1aaf04a6e936e1",
+        "response": "65a52e40bec2f868be0f640f5582b15a810e0345b622d61640adc1dcc87858a6",
+        "result_rows": false,
+        "run": "r_6a48c0e5353646dcb27069f7f6e58c69",
+        "task": "task_100"
+      }
+    ],
+    "ordering": "Sequence uses the ordered calls inside each message. Before_log_response includes all requests in the same assistant message as the first verification log. These are process proxies.",
+    "population": "Graded unique assignments unless scope is all_assignments, which includes the partial histories of the three ungraded readers. A tool call is a direct assistant business call with user_id, excluding get_user_information_* and log_verification. The get_only definition additionally requires a get_ prefix.",
+    "same_message_calls": [
+      {
+        "arm": "preload",
+        "form": "free",
+        "order": "log_first",
+        "run": "r_ca73fe8093784446bad2bd2e5408ce49",
+        "task": "task_023"
+      },
+      {
+        "arm": "preload",
+        "form": "free",
+        "order": "log_first",
+        "run": "r_e30a37d08e2d4961aaaa9d3911d0a525",
+        "task": "task_026"
+      },
+      {
+        "arm": "on_demand",
+        "form": "lesson",
+        "order": "read_first",
+        "run": "r_6d7d10ffd16e48c38b8a2dd8422e1ee7",
+        "task": "task_029"
+      },
+      {
+        "arm": "on_demand",
+        "form": "procedure",
+        "order": "log_first",
+        "run": "r_e96f3d38ccfc47d7990076e963eb72ac",
+        "task": "task_098"
+      },
+      {
+        "arm": "preload",
+        "form": "lesson",
+        "order": "log_first",
+        "run": "r_cf053e6ac6ee47fc93a0631201feedb3",
+        "task": "task_100"
+      }
+    ]
+  },
+  "provider_native_length_receipt": {
+    "arm": "procedure__on_demand",
+    "calls": 6,
+    "completion_tokens": 512,
+    "finish_reason": "tool_calls",
+    "grading_status": "incomplete",
+    "invalid_json_call_positions": [
+      6
+    ],
+    "max_tokens": 512,
+    "native_finish_reason": "length",
+    "recorded_error": "JSONDecodeError",
+    "request": "e7c75319e756410b50d7d3e941f24892c71cf352ce276f5124dbcfd4e73e6ffd",
+    "response": "ec9006b8583812da8f4516e4a0aa901c3cdbcaae035511c1781196951742c6d3",
+    "role": "user_simulator",
+    "run": "r_b75d435464e741e9a5085f9a3a2c3d97",
+    "task": "task_027"
+  },
+  "reference_against_other_first_pass_draws": {
+    "by_policy": {
+      "on_demand": {
+        "descriptive_task_sign_p": 0.2890625,
+        "expected_from_other_draws": 36.5,
+        "graded": 222,
+        "successes": 30,
+        "tasks_above": 2,
+        "tasks_below": 6,
+        "tasks_tied": 37
+      },
+      "preload": {
+        "descriptive_task_sign_p": 1,
+        "expected_from_other_draws": 37.5,
+        "graded": 225,
+        "successes": 37,
+        "tasks_above": 3,
+        "tasks_below": 4,
+        "tasks_tied": 38
+      }
+    },
+    "by_task": {
+      "task_003": {
+        "on_demand": [
+          0,
+          5
+        ],
+        "other": [
+          0,
+          2
+        ],
+        "preload": [
+          0,
+          5
+        ],
+        "selected": false
+      },
+      "task_004": {
+        "on_demand": [
+          1,
+          5
+        ],
+        "other": [
+          1,
+          2
+        ],
+        "preload": [
+          5,
+          5
+        ],
+        "selected": true
+      },
+      "task_005": {
+        "on_demand": [
+          0,
+          5
+        ],
+        "other": [
+          0,
+          2
+        ],
+        "preload": [
+          1,
+          5
+        ],
+        "selected": false
+      },
+      "task_006": {
+        "on_demand": [
+          3,
+          5
+        ],
+        "other": [
+          2,
+          2
+        ],
+        "preload": [
+          5,
+          5
+        ],
+        "selected": true
+      },
+      "task_007": {
+        "on_demand": [
+          0,
+          5
+        ],
+        "other": [
+          0,
+          2
+        ],
+        "preload": [
+          0,
+          5
+        ],
+        "selected": false
+      },
+      "task_012": {
+        "on_demand": [
+          5,
+          5
+        ],
+        "other": [
+          2,
+          2
+        ],
+        "preload": [
+          5,
+          5
+        ],
+        "selected": true
+      },
+      "task_018": {
+        "on_demand": [
+          0,
+          5
+        ],
+        "other": [
+          0,
+          1
+        ],
+        "preload": [
+          0,
+          5
+        ],
+        "selected": false
+      },
+      "task_023": {
+        "on_demand": [
+          2,
+          5
+        ],
+        "other": [
+          1,
+          2
+        ],
+        "preload": [
+          0,
+          5
+        ],
+        "selected": false
+      },
+      "task_024": {
+        "on_demand": [
+          3,
+          5
+        ],
+        "other": [
+          2,
+          2
+        ],
+        "preload": [
+          4,
+          5
+        ],
+        "selected": true
+      },
+      "task_025": {
+        "on_demand": [
+          0,
+          5
+        ],
+        "other": [
+          0,
+          2
+        ],
+        "preload": [
+          0,
+          5
+        ],
+        "selected": false
+      },
+      "task_026": {
+        "on_demand": [
+          0,
+          5
+        ],
+        "other": [
+          0,
+          2
+        ],
+        "preload": [
+          0,
+          5
+        ],
+        "selected": false
+      },
+      "task_027": {
+        "on_demand": [
+          0,
+          4
+        ],
+        "other": [
+          0,
+          2
+        ],
+        "preload": [
+          0,
+          5
+        ],
+        "selected": false
+      },
+      "task_028": {
+        "on_demand": [
+          0,
+          5
+        ],
+        "other": [
+          0,
+          2
+        ],
+        "preload": [
+          0,
+          5
+        ],
+        "selected": false
+      },
+      "task_029": {
+        "on_demand": [
+          0,
+          5
+        ],
+        "other": [
+          0,
+          1
+        ],
+        "preload": [
+          0,
+          5
+        ],
+        "selected": false
+      },
+      "task_031": {
+        "on_demand": [
+          5,
+          5
+        ],
+        "other": [
+          2,
+          2
+        ],
+        "preload": [
+          4,
+          5
+        ],
+        "selected": true
+      },
+      "task_034": {
+        "on_demand": [
+          4,
+          4
+        ],
+        "other": [
+          1,
+          1
+        ],
+        "preload": [
+          5,
+          5
+        ],
+        "selected": true
+      },
+      "task_035": {
+        "on_demand": [
+          4,
+          5
+        ],
+        "other": [
+          2,
+          2
+        ],
+        "preload": [
+          5,
+          5
+        ],
+        "selected": true
+      },
+      "task_037": {
+        "on_demand": [
+          1,
+          5
+        ],
+        "other": [
+          1,
+          2
+        ],
+        "preload": [
+          1,
+          5
+        ],
+        "selected": false
+      },
+      "task_038": {
+        "on_demand": [
+          0,
+          5
+        ],
+        "other": [
+          0,
+          2
+        ],
+        "preload": [
+          0,
+          5
+        ],
+        "selected": false
+      },
+      "task_043": {
+        "on_demand": [
+          0,
+          5
+        ],
+        "other": [
+          0,
+          2
+        ],
+        "preload": [
+          0,
+          5
+        ],
+        "selected": false
+      },
+      "task_045": {
+        "on_demand": [
+          1,
+          5
+        ],
+        "other": [
+          0,
+          2
+        ],
+        "preload": [
+          0,
+          5
+        ],
+        "selected": false
+      },
+      "task_046": {
+        "on_demand": [
+          0,
+          5
+        ],
+        "other": [
+          0,
+          2
+        ],
+        "preload": [
+          0,
+          5
+        ],
+        "selected": false
+      },
+      "task_078": {
+        "on_demand": [
+          0,
+          5
+        ],
+        "other": [
+          0,
+          2
+        ],
+        "preload": [
+          0,
+          5
+        ],
+        "selected": false
+      },
+      "task_079": {
+        "on_demand": [
+          0,
+          5
+        ],
+        "other": [
+          0,
+          2
+        ],
+        "preload": [
+          0,
+          5
+        ],
+        "selected": false
+      },
+      "task_080": {
+        "on_demand": [
+          0,
+          5
+        ],
+        "other": [
+          0,
+          2
+        ],
+        "preload": [
+          0,
+          5
+        ],
+        "selected": false
+      },
+      "task_082": {
+        "on_demand": [
+          0,
+          5
+        ],
+        "other": [
+          0,
+          2
+        ],
+        "preload": [
+          0,
+          5
+        ],
+        "selected": false
+      },
+      "task_083": {
+        "on_demand": [
+          0,
+          5
+        ],
+        "other": [
+          0,
+          2
+        ],
+        "preload": [
+          0,
+          5
+        ],
+        "selected": false
+      },
+      "task_084": {
+        "on_demand": [
+          0,
+          5
+        ],
+        "other": [
+          0,
+          2
+        ],
+        "preload": [
+          0,
+          5
+        ],
+        "selected": false
+      },
+      "task_085": {
+        "on_demand": [
+          0,
+          5
+        ],
+        "other": [
+          0,
+          2
+        ],
+        "preload": [
+          0,
+          5
+        ],
+        "selected": false
+      },
+      "task_086": {
+        "on_demand": [
+          0,
+          4
+        ],
+        "other": [
+          0,
+          2
+        ],
+        "preload": [
+          0,
+          5
+        ],
+        "selected": false
+      },
+      "task_087": {
+        "on_demand": [
+          0,
+          5
+        ],
+        "other": [
+          0,
+          2
+        ],
+        "preload": [
+          0,
+          5
+        ],
+        "selected": false
+      },
+      "task_088": {
+        "on_demand": [
+          0,
+          5
+        ],
+        "other": [
+          0,
+          2
+        ],
+        "preload": [
+          0,
+          5
+        ],
+        "selected": false
+      },
+      "task_089": {
+        "on_demand": [
+          0,
+          5
+        ],
+        "other": [
+          0,
+          2
+        ],
+        "preload": [
+          0,
+          5
+        ],
+        "selected": false
+      },
+      "task_090": {
+        "on_demand": [
+          0,
+          5
+        ],
+        "other": [
+          0,
+          2
+        ],
+        "preload": [
+          0,
+          5
+        ],
+        "selected": false
+      },
+      "task_091": {
+        "on_demand": [
+          0,
+          5
+        ],
+        "other": [
+          0,
+          2
+        ],
+        "preload": [
+          0,
+          5
+        ],
+        "selected": false
+      },
+      "task_092": {
+        "on_demand": [
+          0,
+          5
+        ],
+        "other": [
+          0,
+          2
+        ],
+        "preload": [
+          0,
+          5
+        ],
+        "selected": false
+      },
+      "task_093": {
+        "on_demand": [
+          0,
+          5
+        ],
+        "other": [
+          0,
+          2
+        ],
+        "preload": [
+          0,
+          5
+        ],
+        "selected": false
+      },
+      "task_094": {
+        "on_demand": [
+          0,
+          5
+        ],
+        "other": [
+          0,
+          2
+        ],
+        "preload": [
+          0,
+          5
+        ],
+        "selected": false
+      },
+      "task_095": {
+        "on_demand": [
+          0,
+          5
+        ],
+        "other": [
+          0,
+          2
+        ],
+        "preload": [
+          0,
+          5
+        ],
+        "selected": false
+      },
+      "task_096": {
+        "on_demand": [
+          0,
+          5
+        ],
+        "other": [
+          0,
+          2
+        ],
+        "preload": [
+          0,
+          5
+        ],
+        "selected": false
+      },
+      "task_097": {
+        "on_demand": [
+          0,
+          5
+        ],
+        "other": [
+          0,
+          2
+        ],
+        "preload": [
+          0,
+          5
+        ],
+        "selected": false
+      },
+      "task_098": {
+        "on_demand": [
+          1,
+          5
+        ],
+        "other": [
+          0,
+          2
+        ],
+        "preload": [
+          2,
+          5
+        ],
+        "selected": true
+      },
+      "task_099": {
+        "on_demand": [
+          0,
+          5
+        ],
+        "other": [
+          0,
+          2
+        ],
+        "preload": [
+          0,
+          5
+        ],
+        "selected": false
+      },
+      "task_100": {
+        "on_demand": [
+          0,
+          5
+        ],
+        "other": [
+          0,
+          2
+        ],
+        "preload": [
+          0,
+          5
+        ],
+        "selected": false
+      },
+      "task_101": {
+        "on_demand": [
+          0,
+          5
+        ],
+        "other": [
+          0,
+          2
+        ],
+        "preload": [
+          0,
+          5
+        ],
+        "selected": false
+      }
+    },
+    "other_source_first_worker_request_match": {
+      "different": 12,
+      "same": 75,
+      "unknown": 3
+    }
+  },
+  "registered_customer_aggregation": {
+    "complete_clusters": 32,
+    "difference_pp": 4.114583333333333,
+    "improved": 5,
+    "p": 0.453125,
+    "pairs": {
+      "(False, False)": 180,
+      "(False, None)": 2,
+      "(False, True)": 6,
+      "(True, False)": 12,
+      "(True, None)": 1,
+      "(True, True)": 24
+    },
+    "ties": 25,
+    "worse": 2
+  },
+  "scope": "Offline post hoc review of the first 45 development tasks and the registered outage recovery. Means across previous draws are descriptive. Exact string provenance uses the full worker request.",
+  "sensitivity_count_native_max_steps_as_failure": {
+    "complete_clusters": 33,
+    "difference_pp": 4.595959595959596,
+    "improved": 6,
+    "p": 0.2890625,
+    "pairs": {
+      "(False, False)": 180,
+      "(False, None)": 2,
+      "(False, True)": 6,
+      "(True, False)": 13,
+      "(True, True)": 24
+    },
+    "ties": 25,
+    "worse": 2
+  },
+  "wave_registration_sha256": {
+    "runs/tau-banking-memory-cohort-01-first": "c2cf5d2e4bbba59395113a302d006275cc8f99ef3e0d3f3cbe8a0bfb71134aea",
+    "runs/tau-banking-memory-cohort-01-first-outage-recovery": "302de5c9f3dd3f88ab518e93d389df21ec2f6aaf88c2bbcc20b8efa33f04aaeb"
+  }
+}

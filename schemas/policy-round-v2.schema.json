@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Two-pass memory policy comparison against its own first pass",
+  "type": "object", "additionalProperties": false,
+  "required": ["format", "id", "purpose", "hypothesis", "prediction", "criterion", "evidence", "policy", "benchmarks", "evaluation"],
+  "properties": {
+    "format": {"const": "agent-memory-policy-round/v2"},
+    "id": {"$ref": "policy-round-v1.schema.json#/properties/id"},
+    "purpose": {"$ref": "policy-round-v1.schema.json#/properties/purpose"},
+    "hypothesis": {"$ref": "policy-round-v1.schema.json#/$defs/text"},
+    "prediction": {"$ref": "policy-round-v1.schema.json#/$defs/text"},
+    "criterion": {"$ref": "policy-round-v1.schema.json#/$defs/text"},
+    "evidence": {"$ref": "policy-round-v1.schema.json#/properties/evidence"},
+    "previous_decision": {"$ref": "policy-round-v1.schema.json#/$defs/ref"},
+    "policy": {
+      "type": "object", "additionalProperties": false,
+      "required": ["writing", "clause", "reader", "reader_instruction", "feedback"],
+      "properties": {
+        "writing": {"$ref": "policy-round-v1.schema.json#/$defs/ref"},
+        "clause": {"$ref": "policy-round-v1.schema.json#/$defs/ref"},
+        "candidate_instruction": {"$ref": "policy-round-v1.schema.json#/$defs/ref"},
+        "reader": {"$ref": "policy-round-v1.schema.json#/properties/policy/properties/reader"},
+        "reader_instruction": {"$ref": "policy-round-v1.schema.json#/$defs/ref"},
+        "feedback": {"$ref": "policy-round-v1.schema.json#/properties/policy/properties/feedback"}
+      }
+    },
+    "benchmarks": {
+      "type": "object", "additionalProperties": false, "minProperties": 1,
+      "properties": {
+        "banking-opening": {"$ref": "policy-round-v1.schema.json#/properties/benchmarks/properties/banking-opening"},
+        "bfcl-relevance": {"$ref": "policy-round-v1.schema.json#/properties/benchmarks/properties/bfcl-relevance"}
+      }
+    },
+    "evaluation": {
+      "type": "object", "additionalProperties": false, "required": ["reference", "policy_axes"],
+      "properties": {
+        "reference": {"const": "own_no_memory_first_pass"},
+        "stored_outcome_lines": {
+          "type": "object", "additionalProperties": false, "required": ["success", "failure"],
+          "properties": {
+            "success": {"type": "string", "pattern": "^\\S[^\\r\\n]*$"},
+            "failure": {"type": "string", "pattern": "^\\S[^\\r\\n]*$"}
+          }
+        },
+        "policy_axes": {"type": "array", "uniqueItems": true, "minItems": 1,
+                        "items": {"enum": ["condition", "delivery", "form"]}}
+      }
+    }
+  }
+}

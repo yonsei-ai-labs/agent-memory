@@ -23,6 +23,27 @@
 
 새 재수행 실험에서 `a`는 같은 과제·초기 상태·채점 기준의 **1회차 무기억**이고, `b`는 **해당 메모 조건의 2회차**다. 한 원천의 점수를 네 형식·여러 반복과 짝지어도 원천 실행 수와 수집 비용은 한 번만 센다. 회차 간 관측 차이에는 사용자 응답과 모델 재시도의 변동도 들어간다. 과제별 반복 수가 다르면 단순 합산과 과제별 동일 가중 평균은 달라지므로 집계 가중치를 명시한다. 기존 결과의 동시기 2회차 대조는 어느 회차를 기준으로 삼았는지 표시해 읽는다.
 
+### 자기 1회차와 비교하는 공용 결과표
+
+새 두 회차 실험에서는 계획의 `evaluation.reference`를 `own_no_memory_first_pass`로 둔다. 한 원천의 공개 기록으로 각 형식의 기억을 쓰고, 각 2회차를 그 기억의 원천 실행 ID에 연결한다. `policy_axes`에 `condition`(작성 정책), `form`(기억 형식), `delivery`(전달 방식) 중 비교할 축을 적는다. 채점기는 나머지 축, 원천, 작성 회차, 풀이 반복이 같은 배정을 짝짓는다. 기존 두 어댑터 중 사용할 벤치도 계획에서 고른다. 새 작성 규칙은 문장 파일 하나로 등록하며 은행과 BFCL에 들어갈 지침은 공통 정책에서 생성한다. 예시 계획은 상담 전체의 성패를 본문 첫 줄에 남기는 규칙만 바꾼다. `stored_outcome_lines`가 있으면 각 작성 요청의 실제 피드백을 원천 채점과 대조하고 저장 본문의 첫 줄이 일치·반대·표식 없음 중 어디에 속하는지 센다. [계획 예시](../../protocols/diagnostics/portable-writer-round-v2.json) · [작성 문장](../../protocols/instructions/episode-outcome-first-line-v1.txt)
+
+결과의 `no_memory_first_pass`에는 원래 1회차를 한 번씩 센다. `policies`에는 정책별 배정·채점·결측과 해당 원천 대비 회복·악화를 싣는다. 회복률의 분모는 짝이 채점된 원천 실패, 악화율의 분모는 짝이 채점된 원천 성공이다. `common`은 모든 정책과 원천이 함께 채점된 배정, 고유 원천 수, 고객 또는 질문 묶음 수를 보여 준다. 반복 배정에 복사된 원천 점수는 그 배정에서의 비교에만 쓰인다. 같은 원천에서의 성패 변화에는 모델과 환경의 실행 변동도 들어간다.
+
+`all_success_effort`는 모든 조건이 성공한 같은 배정에서 첫 상담원 요청부터 풀이 종료까지 토큰, 모델 요청 수, 기록된 비용을 합한다. 각 지표의 분모는 전 조건에서 그 지표가 관측된 배정이다. 첫 고객 발화 생성 비용과 기억 작성 비용은 이 합계에서 제외하며, 단계별 총비용은 기존 정책 근거표에서 읽는다. 상세 보기의 `slots`에서 원천·작성·2회차 실행, 저장 스냅샷, 첫 업무 판단 요청과 노출 필드를 추적한다. 본문 노출과 성공이 함께 관측됐을 때 해당 결정을 기억에 귀속하려면 공개 대화·도구 결과도 함께 대조해야 한다.
+
+다음 명령들은 보관 기록을 읽는다. 은행의 `--workspace`는 원래 상담에서 첫 고객 발화를 생성한 비용을 분리할 때 쓴다. 원장이 없는 사본에서는 이 인수를 생략하면 성패를 계산하며, 원천 노력의 결측은 지표의 관측 건수로 드러난다.
+
+```bash
+uv run python -m agent_memory_eval.analysis.outcome_report first-pass \
+  artifacts/analyses/20261127-banking-memory-cohort/initial.json.gz \
+  --recovery artifacts/analyses/20261127-banking-memory-cohort/recovery.json.gz \
+  --workspace . --policy-axes delivery --summary
+uv run python -m agent_memory_eval.analysis.outcome_report first-pass \
+  artifacts/analyses/20261127-bfcl-memory-cohort/native.json.gz --policy-axes delivery --summary
+```
+
+다른 기억 형식을 비교하려면 같은 명령에서 `--policy-axes form`을 사용한다. `prepare`는 선택한 벤치의 정책·등록 지문을 계산한다. 등록한 v2 실험의 `report`와 `decide`에는 계획에 고정한 1회차 대비 결과가 자동으로 포함된다. [공용 채점기](../../src/agent_memory_eval/analysis/first_pass.py) · [실험 실행기](../../src/agent_memory_eval/runner/policy_round.py)
+
 ## 기억 품질과 선택
 
 주석 가능한 과제에서 과거 경험으로부터 가져와야 할 근거 집합 R, 은행에 보존된 근거 A, 기억 반환·자동 제공·가공을 통해 입력에서 확인한 근거 E를 구분한다. 현재 과제의 기본 입력만으로 주어진 정보는 별도로 표시한다. 항목 수가 아닌 정보 단위로 주석해 저장 분할 방식의 차이를 완화한다.

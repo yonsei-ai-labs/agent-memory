@@ -102,24 +102,24 @@ def invoke(cmd, **kwargs):
         command()
 
 
-def check(root, checkout, delivery):
+def check(root, checkout, delivery, plan=Path("protocols/diagnostics/portable-writer-round-v1.json")):
     sys.addaudithook(block_network)
     root.mkdir(parents=True, exist_ok=False)
     (root / "data").mkdir()
     (root / "data/tau2-bench").symlink_to((ROOT / "data/tau2-bench").resolve(), target_is_directory=True)
     shutil.copytree(ROOT / "protocols", root / "protocols")
-    template = json.loads((root / "protocols/diagnostics/portable-writer-round-v1.json").read_bytes())
+    template = json.loads((root / plan).read_bytes())
     template["policy"]["reader"] = delivery
     if delivery == "on_demand":
         # Deliberately keep both assets outside the native runner's implementation checkout.
         instruction = root / "protocols/instructions/fixture-optional-reader.txt"
         instruction.write_text(ON_DEMAND_NOTICE + "\n", encoding="utf-8")
-        authored = template["policy"]["candidate_instruction"]
-        candidate = root / "protocols/instructions/fixture-candidate-writer.txt"
-        candidate.write_bytes((root / authored["path"]).read_bytes())
-        template["policy"]["candidate_instruction"] = dict(
-            path=str(candidate.relative_to(root)), sha256=authored["sha256"]
-        )
+        if authored := template["policy"].get("candidate_instruction"):
+            candidate = root / "protocols/instructions/fixture-candidate-writer.txt"
+            candidate.write_bytes((root / authored["path"]).read_bytes())
+            template["policy"]["candidate_instruction"] = dict(
+                path=str(candidate.relative_to(root)), sha256=authored["sha256"]
+            )
         template["policy"]["reader_instruction"] = dict(
             path=str(instruction.relative_to(root)), sha256=digest(instruction.read_bytes())
         )
@@ -194,6 +194,15 @@ def check(root, checkout, delivery):
         decision = policy_round.decide(root, template, checkout, "hold", "Scripted integration check.")
     report = bank.read(target / "results.json")
     for result in report["benchmarks"].values():
+        if "evaluation" in template:
+            primary = result["first_pass"]
+            assert primary["no_memory_first_pass"]["graded"] == primary["common"]["distinct_sources"] == 1
+            assert primary["common"]["graded_slots"] == 5
+            assert all(p["versus_first_pass"]["graded"] == p["first_decisions_with_body"] == 5 for p in primary["policies"])
+            if "stored_outcome_lines" in template["evaluation"]:
+                checks = primary["stored_outcome"]["by_condition_and_form"]
+                assert sum(c["counts"].get("no_marker_on_first_line", 0) for c in checks) == 10
+            result = result["policy_evidence"]
         assert result["writers"]["assigned"] == result["writers"]["observed"] == 10
         assert result["study_cost"]["confirmed_usd"] in {"0", "0.000000000"}
         assert {c["condition"]: (c["started"], c["graded"]) for c in result["by_condition"]} == {
@@ -232,5 +241,6 @@ if __name__ == "__main__":
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--bfcl-checkout", type=Path, required=True)
     parser.add_argument("--delivery", choices=("preload", "on_demand"), default="preload")
+    parser.add_argument("--plan", type=Path, default=Path("protocols/diagnostics/portable-writer-round-v1.json"))
     args = parser.parse_args()
-    print(json.dumps(check(args.output.resolve(), args.bfcl_checkout.resolve(), args.delivery)))
+    print(json.dumps(check(args.output.resolve(), args.bfcl_checkout.resolve(), args.delivery, args.plan)))

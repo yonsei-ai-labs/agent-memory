@@ -33,6 +33,17 @@ def request_effort_by_start(events, boundary, roles):
     return result
 
 
+def first_decision_effort(events):
+    """Exclude setup, including generation of the first customer utterance, from both passes."""
+    events = list(events)
+    starts = [e["event_seq"] for e in events if e["type"] == "model.request_started"
+              and e["payload"]["actor_role"] == "worker"]
+    if not starts:
+        return None
+    solve = request_effort_by_start(events, min(starts), {"worker", "user_simulator"})["solve"]
+    return dict(requests=solve["http_calls"], tokens=solve["tokens"], usd=solve["usd"])
+
+
 def business_calls_by_role(messages):
     """Count issued business calls by speaker, including turns without speech. Receipts are separate."""
     counts = {"assistant": 0, "user": 0}

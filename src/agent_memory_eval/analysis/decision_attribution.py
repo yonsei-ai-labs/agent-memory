@@ -10,6 +10,43 @@ def fingerprint(value):
     return digest(canonical(value))
 
 
+def projected_actions(calls, fields):
+    """Fingerprint the selected public arguments of each included call, retaining order and repeats."""
+    return [dict(name=name, arguments_sha256=fingerprint({k: arguments[k] for k in fields[name] if k in arguments}))
+            for name, arguments in calls if name in fields]
+
+
+def action_reuse_counts(observations, traces):
+    """Summarize graded episodes relative to their source. Two empty traces do not count as a reused action."""
+    if any(not isinstance(seq, list) for seq in traces.values()):
+        raise ContractError("A missing action sequence is not an observed empty sequence")
+    groups, source_grades, seen = {}, {}, set()
+    for row in observations:
+        run, source = row["run"], row["source"]
+        if run in seen or run == source or run not in traces or source not in traces:
+            raise ContractError("Missing or duplicate action comparison")
+        seen.add(run)
+        grade = row["source_grade"]
+        if type(grade) is not bool or type(row["success"]) is not bool or source_grades.setdefault(source, grade) is not grade:
+            raise ContractError("Inconsistent observed action grades")
+        before, after = traces[source], traces[run]
+        if row["source_signature"] != fingerprint(before) or row["signature"] != fingerprint(after):
+            raise ContractError("Projected action sequence differs from its receipt")
+        if before and after:
+            label = "exact_nonempty" if before == after else "different_nonempty"
+        elif before:
+            label = "only_source"
+        else:
+            label = "only_reader" if after else "both_empty"
+        if "match" in row and label != row["match"]:
+            raise ContractError("Stored action match differs from its traces")
+        cell = groups.setdefault((grade, row["group"]), Counter())
+        cell[label] += 1
+        cell["outcome_flip"] += grade != row["success"]
+        cell["total"] += 1
+    return [dict(source_grade=g, group=arm, **counts) for (g, arm), counts in sorted(groups.items())]
+
+
 @dataclass(frozen=True)
 class Action:
     name: str

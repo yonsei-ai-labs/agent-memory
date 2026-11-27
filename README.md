@@ -4,6 +4,8 @@
 
 초기 작업자 모델은 Luna, 초기 실증 환경은 τ²-bench다. 기억 관리·실험 제어·기록·분석을 벤치 실행과 분리하고 AppWorld·BFCL로의 확장을 설계한다. 저장 시점·형태·조회 방식, 재시도·전이·누적 변화와 이득·손해를 연구 범위로 유지한다.
 
+두 회차 정책 실험은 계획 파일에서 벤치, 작성 지침, 조회 방식, 비교할 축을 고른다. 결과에는 무기억 1회차 대비 회복·악화, 여러 정책이 함께 성공한 배정의 토큰·비용과 판단 근거가 남는다. [계획 예시](protocols/diagnostics/portable-writer-round-v2.json) · [저장된 은행·BFCL 결과를 다시 읽는 명령](docs/research/metrics.md#자기-1회차와-비교하는-공용-결과표)
+
 동일 과제의 메모리 비교는 무기억 1회차와 각 메모 조건을 **같은 첫 판단**에서 시작한다. 현재 τ²의 첫 공개 고객 발화와 BFCL `simple_python`의 고정 질문·함수 정의가 이 공통 시작 검사를 사용한다. [벤치별 지원 범위와 오프라인 실행 명령](docs/design/architecture.md#동일-과제의-첫-판단)
 
 τ² 소매 표본을 **66과제·49고객**으로 넓히고 같은 메모와 두 대조로 과제마다 세 번씩 다시 풀었다. 2회차 1,188건을 모두 시도해 1,135건을 공식 채점했다. 무기억 대비 네 형식은 각각 개선 19∼20쌍·악화 22∼25쌍이었다. 무기억 자체도 세 번 모두 채점된 57과제 중 20개에서 성패가 바뀌었다. [표본 확장 최종 보고서](docs/reports/20261120-retail-sample-expansion.md) · [대조별·고객군별 득실](artifacts/analyses/20261120-retail-sample-expansion-results.json) · [상승을 만든 상품 선택·고객 승인과 형식별 사례](docs/reports/20261120-retail-retry-gains.md) · [무기억 세션의 실제 입력·DB·기록 순서 점검](docs/reports/20261120-retail-session-isolation.md)

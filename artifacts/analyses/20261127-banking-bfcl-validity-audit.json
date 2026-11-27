@@ -1,0 +1,669 @@
+{
+  "banking": {
+    "by_customer_identity": {
+      "identified_customers": {
+        "complete": 25,
+        "difference": 0.020666666666666667,
+        "improved": 2,
+        "registered": 27,
+        "regressed": 2,
+        "tied": 21,
+        "two_sided_sign_p": 1
+      },
+      "unresolved_tasks": {
+        "complete": 7,
+        "difference": 0.1142857142857143,
+        "improved": 3,
+        "registered": 8,
+        "regressed": 0,
+        "tied": 4,
+        "two_sided_sign_p": 0.25
+      }
+    },
+    "by_initialization": {
+      "default_db": {
+        "median_reference_actions": 3,
+        "on_demand_graded": 84,
+        "on_demand_success": 29,
+        "preload_graded": 85,
+        "preload_success": 35,
+        "source_success": 7,
+        "tasks": 17,
+        "tasks_without_a_graded_reader_success": 6
+      },
+      "task_specific_db": {
+        "median_reference_actions": 13.0,
+        "on_demand_graded": 138,
+        "on_demand_success": 1,
+        "preload_graded": 140,
+        "preload_success": 2,
+        "source_success": 1,
+        "tasks": 28,
+        "tasks_without_a_graded_reader_success": 27
+      }
+    },
+    "comparison_without_task_083": {
+      "difference": 0.04247311827956989,
+      "two_sided_cluster_sign_p": 0.453125
+    },
+    "first_action_change_on_repeated_same_request": {
+      "arguments": 116,
+      "call_vs_no_call": 22,
+      "function_or_batch": 1,
+      "same": 6,
+      "wording": 15
+    },
+    "original_official_recount": {
+      "covered": "3.331821643",
+      "delivery": {
+        "on_demand": {
+          "assigned": 225,
+          "graded": 145,
+          "successes": 18,
+          "with_body": 0,
+          "with_body_and_response": 0
+        },
+        "preload": {
+          "assigned": 225,
+          "graded": 145,
+          "successes": 21,
+          "with_body": 225,
+          "with_body_and_response": 225
+        }
+      },
+      "outcomes": {
+        "both_failure": 116,
+        "both_success": 14,
+        "gain": 7,
+        "loss": 3,
+        "missing": 85
+      },
+      "sessions": 450,
+      "stored": 225
+    },
+    "partial_completion": {
+      "assessable_failures": 355,
+      "failures_with_at_least_one_correct_target_row": 43,
+      "official_failures": 380
+    },
+    "policy_settings": {
+      "on_demand_list_limit_schema": {
+        "type": [
+          "integer",
+          "null"
+        ]
+      },
+      "preload_system_suffix": "\n<memory_policy>\nYou may use the available notes from earlier work. A snapshot, when present, contains those notes. If memory_list and memory_get are available, reading is optional. Notes may be empty or inaccurate. Use a note only when it applies to this interaction.\n\n{\"enabled\":true,\"max_items\":4,\"max_payload_bytes\":65536,\"max_return_bytes\":131072,\"page_size\":4,\"read_mode\":\"preload\",\"same_episode_read\":false,\"write_timing\":\"none\"}\n</memory_policy>"
+    },
+    "recovered_official_recount": {
+      "cost": "4.275963276",
+      "matched_recoveries": 160,
+      "original": 450,
+      "paired": {
+        "both_failure": 180,
+        "both_success": 24,
+        "gain": 12,
+        "loss": 6,
+        "missing": 3
+      },
+      "verified_exact_first_worker_requests": 160
+    },
+    "successful_model_receipts": {
+      "primary on_demand user_simulator": {
+        "Fireworks|deepseek/deepseek-v4.1-flash-1017|deepseek/deepseek-v4.1-flash-20261017|ICN": 879
+      },
+      "primary on_demand worker": {
+        "OpenAI|openai/gpt-6-luna|openai/gpt-6-luna-20260922|ICN": 2541
+      },
+      "primary preload user_simulator": {
+        "Fireworks|deepseek/deepseek-v4.1-flash-1017|deepseek/deepseek-v4.1-flash-20261017|ICN": 745
+      },
+      "primary preload worker": {
+        "OpenAI|openai/gpt-6-luna|openai/gpt-6-luna-20260922|ICN": 2180
+      },
+      "recovery on_demand user_simulator": {
+        "Fireworks|deepseek/deepseek-v4.1-flash-1017|deepseek/deepseek-v4.1-flash-20261017|ICN": 754
+      },
+      "recovery on_demand worker": {
+        "OpenAI|openai/gpt-6-luna|openai/gpt-6-luna-20260922|ICN": 1452
+      },
+      "recovery preload user_simulator": {
+        "Fireworks|deepseek/deepseek-v4.1-flash-1017|deepseek/deepseek-v4.1-flash-20261017|ICN": 526
+      },
+      "recovery preload worker": {
+        "OpenAI|openai/gpt-6-luna|openai/gpt-6-luna-20260922|ICN": 1121
+      },
+      "source user_simulator": {
+        "Fireworks|deepseek/deepseek-v4.1-flash-1017|deepseek/deepseek-v4.1-flash-20261017|ICN": 366
+      },
+      "source worker": {
+        "OpenAI|openai/gpt-6-luna|openai/gpt-6-luna-20260922|ICN": 802
+      },
+      "writer writer": {
+        "OpenAI|openai/gpt-6-luna|openai/gpt-6-luna-20260922|ICN": 225
+      }
+    },
+    "tokens_by_paired_outcomes": {
+      "both_success": {
+        "candidate_total": "1929511",
+        "difference": "-704701",
+        "equal": 0,
+        "higher": 5,
+        "lower": 19,
+        "missing": 0,
+        "observed": 24,
+        "reference_total": "2634212",
+        "relative_difference_pct": -26.752
+      },
+      "jointly_graded": {
+        "candidate_total": "50632719",
+        "difference": "-17407145",
+        "equal": 0,
+        "higher": 70,
+        "lower": 152,
+        "missing": 0,
+        "observed": 222,
+        "reference_total": "68039864",
+        "relative_difference_pct": -25.584
+      }
+    },
+    "trusted_controls": {
+      "actions": 474,
+      "no_action_success": 0,
+      "reference_success": 45,
+      "returned_errors": 4,
+      "tasks": 45
+    },
+    "wire_and_source_checks": {
+      "customer_public_settings_checked": 3064,
+      "distinct_optional_first_inputs": 45,
+      "distinct_sessions": 880,
+      "fresh_reader_banks": 610,
+      "primary_worker_opening_controls_source_bank_verified": 450,
+      "recovery_worker_opening_controls_source_bank_verified": 160,
+      "sources": 45,
+      "writer_public_exp_and_feedback_matched": 225
+    }
+  },
+  "bfcl": {
+    "capped_working_responses": [
+      {
+        "category": "irrelevance",
+        "decode_error": null,
+        "phase": "source",
+        "response_sha256": "f0fccc15aa61cd5d7049f6b6c34b277188f3ce12371d7533933b393bf81336f5",
+        "run": "irrelevance_1-source"
+      },
+      {
+        "category": "irrelevance",
+        "decode_error": null,
+        "phase": "source",
+        "response_sha256": "f022046cdd2d4c95fedb9b31adf152801e9f12c0aee555cb43657610aabfb185",
+        "run": "irrelevance_120-source"
+      },
+      {
+        "category": "irrelevance",
+        "decode_error": null,
+        "phase": "source",
+        "response_sha256": "09ad7b2bb7f295c02798aa65dc3bf2b2fdf8295d59ae0b90fd7e42878c1d8441",
+        "run": "irrelevance_125-source"
+      },
+      {
+        "category": "irrelevance",
+        "decode_error": null,
+        "phase": "source",
+        "response_sha256": "39e21a2c963b5324120c6290d81d30c63892b5238c4107d01a6038c11de5baf5",
+        "run": "irrelevance_141-source"
+      },
+      {
+        "category": "irrelevance",
+        "decode_error": null,
+        "phase": "source",
+        "response_sha256": "3ca44344760590ad676adc285c22fabcf71180cf32971c6915be350027ec4896",
+        "run": "irrelevance_143-source"
+      },
+      {
+        "category": "irrelevance",
+        "decode_error": null,
+        "phase": "source",
+        "response_sha256": "70feb882cb94f6ff272e3666256a7817f43297279c7b62b3b6dcdb5a1b4565ec",
+        "run": "irrelevance_163-source"
+      },
+      {
+        "category": "irrelevance",
+        "decode_error": null,
+        "phase": "source",
+        "response_sha256": "855dfcd8ace36ca2c4fe1c4c587d2fd7261fe9a3ba40919b3ed1542d9b61f067",
+        "run": "irrelevance_166-source"
+      },
+      {
+        "category": "irrelevance",
+        "decode_error": null,
+        "phase": "source",
+        "response_sha256": "b0b8d15dcf6c694b8a71b459511182aed5cf1c6387d2fb72a966eba52e379e5f",
+        "run": "irrelevance_18-source"
+      },
+      {
+        "category": "irrelevance",
+        "decode_error": null,
+        "phase": "source",
+        "response_sha256": "dc567d7c761112b6619b9baec36b20e6703888d9086fa2cf97894c2c7a6f1e96",
+        "run": "irrelevance_211-source"
+      },
+      {
+        "category": "irrelevance",
+        "decode_error": null,
+        "phase": "source",
+        "response_sha256": "2eea7d1d4452d439dce44664aca8370180d080c2c507b99901c309b8eb133cb7",
+        "run": "irrelevance_219-source"
+      },
+      {
+        "category": "irrelevance",
+        "decode_error": null,
+        "phase": "source",
+        "response_sha256": "894a774d13dceea12eb0684df8be46868bd7628a1163938edf740525879ddab5",
+        "run": "irrelevance_221-source"
+      },
+      {
+        "category": "irrelevance",
+        "decode_error": null,
+        "phase": "source",
+        "response_sha256": "4a6917edb19c532087891045293995b2e7a76f348f6037a05fa3d7093c7a11cc",
+        "run": "irrelevance_35-source"
+      },
+      {
+        "category": "irrelevance",
+        "decode_error": null,
+        "phase": "source",
+        "response_sha256": "55d67dc203b256f5000b48dbe3e7314f2a942e358149e124e3d6cab7b0e93040",
+        "run": "irrelevance_47-source"
+      },
+      {
+        "category": "irrelevance",
+        "decode_error": null,
+        "phase": "on_demand",
+        "response_sha256": "9dc97e90596e609a7ea86b6a05ffdef3be3ee185c1541e509e8958e03181b48a",
+        "run": "irrelevance_97-fact-on_demand"
+      },
+      {
+        "category": "irrelevance",
+        "decode_error": null,
+        "phase": "on_demand",
+        "response_sha256": "9dc97e90596e609a7ea86b6a05ffdef3be3ee185c1541e509e8958e03181b48a",
+        "run": "irrelevance_97-episode-on_demand"
+      },
+      {
+        "category": "irrelevance",
+        "decode_error": null,
+        "phase": "on_demand",
+        "response_sha256": "9dc97e90596e609a7ea86b6a05ffdef3be3ee185c1541e509e8958e03181b48a",
+        "run": "irrelevance_97-procedure-on_demand"
+      },
+      {
+        "category": "irrelevance",
+        "decode_error": null,
+        "phase": "on_demand",
+        "response_sha256": "9dc97e90596e609a7ea86b6a05ffdef3be3ee185c1541e509e8958e03181b48a",
+        "run": "irrelevance_97-lesson-on_demand"
+      },
+      {
+        "category": "irrelevance",
+        "decode_error": null,
+        "phase": "on_demand",
+        "response_sha256": "9dc97e90596e609a7ea86b6a05ffdef3be3ee185c1541e509e8958e03181b48a",
+        "run": "irrelevance_97-free-on_demand"
+      },
+      {
+        "category": "live_relevance",
+        "decode_error": "malformed tool-call envelope",
+        "phase": "on_demand",
+        "response_sha256": "884dbeaca5a890c7d1fc5ea3e562ba65cc2919275f16cf158568d5c2b1d65685",
+        "run": "live_relevance_15-15-0-fact-on_demand"
+      },
+      {
+        "category": "live_relevance",
+        "decode_error": "malformed tool-call envelope",
+        "phase": "preload",
+        "response_sha256": "7e551db87b297f8aa90fc34241e9f79920b0a12f4746fa604e014a3af734bbd2",
+        "run": "live_relevance_15-15-0-episode-preload"
+      },
+      {
+        "category": "live_relevance",
+        "decode_error": "malformed tool-call envelope",
+        "phase": "on_demand",
+        "response_sha256": "884dbeaca5a890c7d1fc5ea3e562ba65cc2919275f16cf158568d5c2b1d65685",
+        "run": "live_relevance_15-15-0-episode-on_demand"
+      },
+      {
+        "category": "live_relevance",
+        "decode_error": "malformed tool-call envelope",
+        "phase": "preload",
+        "response_sha256": "1d9f90ee3e471bb7d1ecfcab3803acf555f3ee220e6f7cbfe8d75009067c3884",
+        "run": "live_relevance_15-15-0-procedure-preload"
+      },
+      {
+        "category": "live_relevance",
+        "decode_error": "malformed tool-call envelope",
+        "phase": "on_demand",
+        "response_sha256": "884dbeaca5a890c7d1fc5ea3e562ba65cc2919275f16cf158568d5c2b1d65685",
+        "run": "live_relevance_15-15-0-procedure-on_demand"
+      },
+      {
+        "category": "live_relevance",
+        "decode_error": "malformed tool-call envelope",
+        "phase": "preload",
+        "response_sha256": "d4438b5e8aa1c6583a01665de774e15f464ca23bb69eb34e820316776e4ffba3",
+        "run": "live_relevance_15-15-0-lesson-preload"
+      },
+      {
+        "category": "live_relevance",
+        "decode_error": "malformed tool-call envelope",
+        "phase": "on_demand",
+        "response_sha256": "884dbeaca5a890c7d1fc5ea3e562ba65cc2919275f16cf158568d5c2b1d65685",
+        "run": "live_relevance_15-15-0-lesson-on_demand"
+      },
+      {
+        "category": "live_relevance",
+        "decode_error": "malformed tool-call envelope",
+        "phase": "preload",
+        "response_sha256": "4b43b0340d2578564b16ea2e9b88d7918f3b25ba2cd1bb8de2b3957147cd5661",
+        "run": "live_relevance_15-15-0-free-preload"
+      },
+      {
+        "category": "live_relevance",
+        "decode_error": "malformed tool-call envelope",
+        "phase": "on_demand",
+        "response_sha256": "884dbeaca5a890c7d1fc5ea3e562ba65cc2919275f16cf158568d5c2b1d65685",
+        "run": "live_relevance_15-15-0-free-on_demand"
+      }
+    ],
+    "diagnostics": {
+      "all_started_complete_question_sensitivity": {
+        "irrelevance": {
+          "difference": 0.09655172413793103,
+          "n": 29
+        },
+        "live_relevance": {
+          "difference": -0.02,
+          "n": 10
+        }
+      },
+      "discordant_questions": {
+        "optional_vs_R1": [
+          "irrelevance_185",
+          "irrelevance_203",
+          "irrelevance_33",
+          "irrelevance_44"
+        ],
+        "preload_vs_R1": [
+          "irrelevance_133",
+          "irrelevance_185",
+          "irrelevance_203",
+          "irrelevance_60",
+          "irrelevance_97",
+          "live_relevance_5-5-0"
+        ]
+      },
+      "explicit_feedback_notes": {
+        "explicit_literal": 91,
+        "only_matching_value": 91,
+        "questions_with_explicit_literal": 32
+      },
+      "measures": {
+        "bare_preload_neutral_notice": 207,
+        "optional_limit_one_verified_requests": 207,
+        "optional_vs_R1_discordant_slots": 20,
+        "preload_vs_R1_discordant_slots": 9,
+        "unique_optional_question_inputs": 42,
+        "writers_infer_binary_target": 210
+      },
+      "official_method_sha256": "b1033684908819ccb312d4d0e2c563359d69247412f00206013b2292b0e3ce81",
+      "questions_with_unique_answer_from_writer_inputs": 42,
+      "recorded_call_presence_by_stage": {
+        "on_demand": {
+          "dispatched": 207,
+          "protocol_success": 152,
+          "rule_success": 157,
+          "ungraded": 10,
+          "ungraded_rule_success": 5,
+          "ungraded_with_valid_call": 0
+        },
+        "preload": {
+          "dispatched": 207,
+          "protocol_success": 169,
+          "rule_success": 169,
+          "ungraded": 4,
+          "ungraded_rule_success": 0,
+          "ungraded_with_valid_call": 0
+        },
+        "source": {
+          "dispatched": 55,
+          "protocol_success": 37,
+          "rule_success": 50,
+          "ungraded": 13,
+          "ungraded_rule_success": 13,
+          "ungraded_with_valid_call": 0
+        }
+      }
+    },
+    "explicit_boolean_notes_by_question": {
+      "irrelevance_102": [
+        "fact",
+        "free"
+      ],
+      "irrelevance_123": [
+        "episode"
+      ],
+      "irrelevance_133": [
+        "free",
+        "procedure"
+      ],
+      "irrelevance_149": [
+        "episode"
+      ],
+      "irrelevance_151": [
+        "episode",
+        "fact",
+        "free",
+        "lesson"
+      ],
+      "irrelevance_172": [
+        "episode",
+        "fact",
+        "free"
+      ],
+      "irrelevance_175": [
+        "episode",
+        "free",
+        "procedure"
+      ],
+      "irrelevance_184": [
+        "episode",
+        "fact"
+      ],
+      "irrelevance_185": [
+        "episode",
+        "lesson"
+      ],
+      "irrelevance_193": [
+        "fact",
+        "free",
+        "lesson",
+        "procedure"
+      ],
+      "irrelevance_201": [
+        "episode",
+        "fact",
+        "free",
+        "lesson"
+      ],
+      "irrelevance_203": [
+        "episode",
+        "fact",
+        "free"
+      ],
+      "irrelevance_208": [
+        "fact",
+        "free"
+      ],
+      "irrelevance_33": [
+        "episode",
+        "fact",
+        "free"
+      ],
+      "irrelevance_34": [
+        "fact"
+      ],
+      "irrelevance_37": [
+        "episode",
+        "fact",
+        "free",
+        "lesson"
+      ],
+      "irrelevance_44": [
+        "episode",
+        "free",
+        "lesson"
+      ],
+      "irrelevance_60": [
+        "episode",
+        "fact",
+        "free"
+      ],
+      "irrelevance_61": [
+        "fact",
+        "free",
+        "lesson"
+      ],
+      "irrelevance_71": [
+        "fact",
+        "free"
+      ],
+      "irrelevance_78": [
+        "episode",
+        "fact",
+        "free"
+      ],
+      "irrelevance_82": [
+        "free",
+        "lesson",
+        "procedure"
+      ],
+      "irrelevance_86": [
+        "episode",
+        "fact",
+        "free",
+        "lesson"
+      ],
+      "irrelevance_97": [
+        "fact",
+        "lesson"
+      ],
+      "live_relevance_0-0-0": [
+        "episode",
+        "fact",
+        "free",
+        "lesson"
+      ],
+      "live_relevance_1-1-0": [
+        "episode",
+        "fact",
+        "free",
+        "lesson",
+        "procedure"
+      ],
+      "live_relevance_11-11-0": [
+        "episode",
+        "fact",
+        "free",
+        "lesson"
+      ],
+      "live_relevance_12-12-0": [
+        "episode"
+      ],
+      "live_relevance_14-14-0": [
+        "episode",
+        "fact",
+        "free",
+        "procedure"
+      ],
+      "live_relevance_15-15-0": [
+        "episode",
+        "fact",
+        "lesson",
+        "procedure"
+      ],
+      "live_relevance_4-4-0": [
+        "lesson"
+      ],
+      "live_relevance_9-9-0": [
+        "episode",
+        "fact",
+        "free",
+        "lesson"
+      ]
+    },
+    "feedback_note_literal_case_insensitive_regex": "\\bsuccess[\"']?\\s*[:=]\\s*[\"']?(true|false)\\b",
+    "local_decoder_sensitivity": "Apply the pinned upstream call-presence function to each actual recorded final response using the recorded local decoder. Never score a slot without a dispatched response.",
+    "native_archive_regrade_identical": true,
+    "native_benchmark_revision": "6ea57973c7a6097fd7c5915698c54c17c5b1b6c8",
+    "official_recount": {
+      "all_pairs": {
+        "both_failure": 28,
+        "both_success": 148,
+        "gain": 17,
+        "loss": 4,
+        "missing": 78
+      },
+      "assigned": {
+        "on_demand": 275,
+        "preload": 275,
+        "source": 55,
+        "write": 275
+      },
+      "observed": {
+        "on_demand": {
+          "graded": 197,
+          "success": 152,
+          "with_body": 0
+        },
+        "preload": {
+          "graded": 203,
+          "success": 169,
+          "with_body": 207
+        },
+        "source": {
+          "graded": 42,
+          "success": 37
+        },
+        "write": {
+          "stored": 207
+        }
+      },
+      "optional_read_calls": {},
+      "original_business_wires_verified": {
+        "on_demand": 207,
+        "preload": 207
+      },
+      "tokens": {
+        "completion_tokens": 96832,
+        "prompt_tokens": 573044,
+        "requests": 679
+      },
+      "usd": 0,
+      "verified_distinct_sessions": 679
+    },
+    "source_binary_target": "If a recorded first pass is graded successful, the expected call/no-call equals its observed call/no-call. If unsuccessful, it is the opposite. This reconstructs the binary benchmark target, not recommended function names or arguments.",
+    "upstream_function": "berkeley-function-call-leaderboard/bfcl_eval/eval_checker/eval_runner.py::_evaluate_single_relevance_entry"
+  },
+  "format": "banking-bfcl-measurement-audit/v1",
+  "input_sha256_before_compression": {
+    "artifacts/analyses/20261127-banking-cohort-grader-check.json": "8be38f2cbfb8a251ab58919ecb756781b2fca76bf26e0057573eafa46bc44534",
+    "artifacts/analyses/20261127-banking-memory-cohort/initial.json.gz": "9a436d7f5a0b52f99e47dde0ebed5992460c255f5c43d3dd8544af3da1fb8378",
+    "artifacts/analyses/20261127-banking-memory-cohort/recovery.json.gz": "4ff884fd6cf80d2f2a7004763c201c0a9b4e2dcba107048248f1f67cb8e26885",
+    "artifacts/analyses/20261127-bfcl-memory-cohort/effects.json.gz": "7b7d501aa2cf271d3ff30096435a367ea284d04d4eae3d246801f611484da194",
+    "artifacts/analyses/20261127-bfcl-memory-cohort/native.json.gz": "aa399be955746c29a0d0bce2c568c6630ecbb5e91e9f26d8a634bf3c0852cdde",
+    "artifacts/pilots/20261127-banking-source-screen-preflight.json": "beac8ac589688a20b8182b53711be43ca6b0fc022a34710b3ac97a462add30bf"
+  },
+  "scope": "Read-only post-hoc audit of the original bank cohort, its one authorized recovery and the 55-question local BFCL cohort."
+}
