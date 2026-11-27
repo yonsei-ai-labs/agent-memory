@@ -47,7 +47,7 @@ class BfclRelevance:
             forms={rep: content_text(root, plan["writing"]["representations"][rep]) for rep in used_reps},
             delivery=[readers[name]["read_mode"] for name in used_readers],
             memory_notice_by_delivery={readers[name]["read_mode"]: content_text(root, readers[name]["notice"])
-                                       for name in used_readers},
+                                       if "notice" in readers[name] else "" for name in used_readers},
             conditions=[[rep, readers[reader]["read_mode"]] for rep, reader in pairs],
             reader_admission="sealed_bank",
         )

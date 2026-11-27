@@ -107,6 +107,11 @@ class StudyPlanTests(unittest.TestCase):
         with self.assertRaisesRegex(ContractError, "Tool descriptions apply to on_demand readers"):
             self.load(dict(self.plan, reading=reading))
 
+    def test_reader_needs_a_notice_or_tool_descriptions(self):
+        reading = dict(self.plan["reading"], preload=dict(read_mode="preload"))
+        with self.assertRaisesRegex(ContractError, "needs a notice, tool descriptions, or both"):
+            self.load(dict(self.plan, reading=reading))
+
     def test_budget_must_be_a_decimal_string(self):
         with self.assertRaisesRegex(ContractError, "Invalid study plan"):
             self.load(dict(self.plan, budget=dict(max_usd="7 dollars")))

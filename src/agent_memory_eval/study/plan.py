@@ -50,8 +50,10 @@ def check_plan(plan, root):
         raise ContractError("Version 1 plans allow one reader per read mode")
     if any("tool_descriptions" in r and r["read_mode"] != "on_demand" for r in readers.values()):
         raise ContractError("Tool descriptions apply to on_demand readers only")
+    if any("notice" not in r and "tool_descriptions" not in r for r in readers.values()):
+        raise ContractError("A reader needs a notice, tool descriptions, or both")
     refs = [plan["benchmark"]["setup"], plan["writing"]["instruction"], *reps.values(),
-            *(r["notice"] for r in readers.values()),
+            *(r["notice"] for r in readers.values() if "notice" in r),
             *(r["setup"] for r in plan.get("references", []) if "setup" in r)]
     for ref in refs:
         if "path" in ref:
