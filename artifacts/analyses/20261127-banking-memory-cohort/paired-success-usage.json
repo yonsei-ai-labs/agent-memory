@@ -1,0 +1,97 @@
+{
+  "bindings": [
+    {
+      "completion_sha256": "3a8be2a29e17c5380b901726d6c3ea6d89703d2c5175ce21b88be30c2b97e739",
+      "study": "tau-banking-memory-cohort-01-first"
+    },
+    {
+      "completion_sha256": "c3a1980106b37a54e2e905502d105371be529c7ddda8917963e230561c6b2ff8",
+      "study": "tau-banking-memory-cohort-01-first-outage-recovery"
+    }
+  ],
+  "both_success_pairs": 24,
+  "by_delivery_role": {
+    "on_demand": {
+      "user_simulator": {
+        "http_attempts": 161,
+        "reported_completion_tokens": 6755,
+        "reported_prompt_tokens": 411363,
+        "reported_tokens": 418118
+      },
+      "worker": {
+        "http_attempts": 211,
+        "reported_completion_tokens": 17673,
+        "reported_prompt_tokens": 2198421,
+        "reported_tokens": 2216094
+      }
+    },
+    "preload": {
+      "user_simulator": {
+        "http_attempts": 106,
+        "reported_completion_tokens": 4773,
+        "reported_prompt_tokens": 242814,
+        "reported_tokens": 247587
+      },
+      "worker": {
+        "http_attempts": 163,
+        "reported_completion_tokens": 12894,
+        "reported_prompt_tokens": 1669030,
+        "reported_tokens": 1681924
+      }
+    }
+  },
+  "by_task": {
+    "task_004": {
+      "both_success": 1,
+      "delta": -26689,
+      "on_demand": 62917,
+      "preload": 36228
+    },
+    "task_006": {
+      "both_success": 3,
+      "delta": -55001,
+      "on_demand": 100438,
+      "preload": 45437
+    },
+    "task_012": {
+      "both_success": 5,
+      "delta": -29202,
+      "on_demand": 219393,
+      "preload": 190191
+    },
+    "task_024": {
+      "both_success": 3,
+      "delta": -34830,
+      "on_demand": 389534,
+      "preload": 354704
+    },
+    "task_031": {
+      "both_success": 4,
+      "delta": -97950,
+      "on_demand": 1105065,
+      "preload": 1007115
+    },
+    "task_034": {
+      "both_success": 4,
+      "delta": -204881,
+      "on_demand": 385630,
+      "preload": 180749
+    },
+    "task_035": {
+      "both_success": 4,
+      "delta": -256148,
+      "on_demand": 371235,
+      "preload": 115087
+    }
+  },
+  "distinct_tasks": 7,
+  "format": "banking-verified-joint-success-usage/v1",
+  "method": "Join each interrupted cell to its one registered new consultation. Restrict to a form and source whose preload and on-demand consultations both have a native success. Require observed token and cost receipts, sum usage_by_role separately and group total tokens by source task. Writer cost is reported separately.",
+  "preload_higher": 5,
+  "preload_lower": 19,
+  "token_difference_median": -13601.5,
+  "usd": {
+    "on_demand": "0.081075389",
+    "preload": "0.063135284"
+  }
+}
