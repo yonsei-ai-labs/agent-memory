@@ -96,18 +96,19 @@ def scripted_reply(request, timeout):
 
 
 class FlakyCustomer:
-    """Fail the first customer reply after any writer has run, once, with a provider 503."""
+    """Fail one customer reply with a provider error: after any writer has run, or in the first pass."""
 
-    def __init__(self, fail=True):
-        self.writer_seen, self.pending = False, fail
+    def __init__(self, fail=True, *, code=503, in_first_pass=False):
+        self.writer_seen, self.pending, self.code, self.in_first_pass = False, fail, code, in_first_pass
 
     def __call__(self, request, timeout):
         wire = json.loads(request.data)
         if [t["function"]["name"] for t in wire.get("tools", [])] == ["memory_store"]:
             self.writer_seen = True
-        if self.pending and self.writer_seen and wire["model"].startswith("deepseek/"):
+        if (self.pending and (self.writer_seen or self.in_first_pass) and wire["model"].startswith("deepseek/")
+                and (self.writer_seen or len(wire["messages"]) > 2)):
             self.pending = False
-            raise HTTPError(request.full_url, 503, "Service Unavailable", {}, io.BytesIO(b"{}"))
+            raise HTTPError(request.full_url, self.code, "Provider error", {}, io.BytesIO(b"{}"))
         return scripted_reply(request, timeout)
 
 
@@ -193,6 +194,36 @@ class BankStudyTests(unittest.TestCase):
             self.assertEqual(card["conditions"][name]["assigned"], 1)
             self.assertEqual(card["conditions"][name]["missing"], {})
         self.assertEqual(card["conditions"]["outcome-first__preload"]["preloaded"], 1)
+
+    def test_undeclared_error_code_is_not_retried(self):
+        from agent_memory_eval.study.scorecard import scorecard
+        plan = bank_plan()
+        done = self.run_plan(plan, FlakyCustomer(code=502))
+        self.assertFalse(any("retry" in name for name in done["stages"]))
+        card = scorecard(self.adapter().outcomes(plan, self.workspace, ROOT))
+        missing = [c["missing"] for name, c in card["conditions"].items() if name != "no_memory" and c["missing"]]
+        self.assertEqual(missing, [{"HTTP_502": 1}])
+
+    def test_ungraded_reused_first_pass_stays_missing(self):
+        from agent_memory_eval.study.scorecard import scorecard
+        first = bank_plan()
+        self.run_plan(first, FlakyCustomer(in_first_pass=True))
+        second = bank_plan("bank-fixture-02", first_pass=dict(draws=1, reuse=[dict(recording="bank-fixture-01")]))
+        resolved = self.adapter().resolve(second, self.workspace, ROOT)
+        case, = resolved["record"]["cases"]
+        self.assertEqual(case["scheduled_stages"], [])
+        self.assertEqual(resolved["record"]["assigned"], dict(source=0, reused_first_pass=0, write=0, solve=0))
+        card = scorecard(self.adapter().outcomes(second, self.workspace, ROOT))
+        self.assertEqual(card["conditions"]["no_memory"]["graded"], 0)
+        for name in ("outcome-first__preload", "fact__on_demand"):
+            self.assertEqual(card["conditions"][name]["missing"], {"first_pass_ungraded": 1})
+
+    def test_reference_without_shared_first_passes_is_rejected(self):
+        self.run_plan(bank_plan(), FlakyCustomer(fail=False))
+        other = bank_plan("bank-fixture-03", benchmark=dict(bank_plan()["benchmark"], tasks=["task_076"]),
+                          references=[dict(recording="bank-fixture-01")])
+        with self.assertRaisesRegex(ContractError, "shares no first pass"):
+            self.adapter().outcomes(other, self.workspace, ROOT)
 
     def test_reused_first_pass_skips_the_source_stage(self):
         from agent_memory_eval.study.scorecard import scorecard
