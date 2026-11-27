@@ -76,7 +76,11 @@ python -m agent_memory_eval.study analyze --plan protocols/studies/<id>.json
 | 어댑터 | 연결 |
 | --- | --- |
 | `tau-banking` | τ³ 은행 원본 과제와 고객 시뮬레이터. 실행 핵심은 `experiments/forms_batch.execute_prepared`를 그대로 쓴다. |
+| `tau2-airline` | τ² 항공 train 과제. DB와 대화 확인으로 채점해 채점용 LLM이 없다. [설정](../../protocols/studies/setups/tau2-airline-v1.json) |
+| `tau2-retail` | τ² 리테일 train 과제. 자연어 판정이 있는 과제는 고정된 native 채점기를 부른다. [설정](../../protocols/studies/setups/tau2-retail-v1.json) |
 | `bfcl-relevance` | BFCL 단일 판단 문항과 로컬 모델. 실행 핵심은 `runner/bfcl_relevance`의 작성·풀이 함수를 쓴다. |
+
+τ² 세 어댑터는 같은 단계 실행 코드를 쓴다. 도메인마다 다른 것은 과제 묶음과 분할, 채점 기준, 기본 업무 도구, 채점기 연결뿐이다.
 
 어댑터는 과제 준비, 단계 실행, 결과 판독 세 가지만 맡는다. 정책 해석·배정·예산·재시도·점수표는 공용 코드가 맡는다.
 
@@ -105,6 +109,23 @@ v1에는 두 가지 제한이 있다. 한 계획에서 조회 방식은 제공 �
 - 처음 기록은 `solve/`에 그대로 남고 재시도는 `solve-retry-<n>/`에 쌓인다.
 - 점수표는 배정마다 처음으로 채점된 시도를 쓰고, 재시도로 채점된 수를 따로 보인다.
 
+### 단계 나누기와 판단 기록
+
+- 1회차만 도는 계획: `conditions`를 비우면 작성·조회 없이 무기억 1회차만 돈다. 다음 계획은 `first_pass.reuse`로 이 기록을 원천으로 쓴다.
+- 확인용 과제: `benchmark.confirmation_tasks`에 적은 과제는 분석과 정책 결정에 쓰지 않는다. 다음 정책 변경은 이 과제에서 판정한다.
+- 판단 기록: `decision`에 가설, 예측, 판정 기준, 근거 파일을 적는다. 근거 파일은 경로와 해시로 고정되므로, 정책이 어떤 분석에서 나왔는지 끝까지 추적된다.
+
+### 예산과 기술적 실패
+
+- 공급자 요청은 보내기 전에 입력 바이트 기준 예약금을 잡는다. `plan resolve`는 첫 묶음 한도가 가장 큰 요청 예약금의 두 배보다 작으면 실행 전에 거부한다.
+- 재사용할 1회차가 예산 가드(`BATCH_SPEND_LIMIT`)나 계획에 적은 HTTP 오류로 채점되지 않았으면, 다음 계획 안에서 같은 조건으로 그 1회차만 다시 돌린다(`replaces_first_pass`). 과제 때문에 실패한 1회차는 결측으로 남는다.
+- τ²는 단계 상한에 걸린 상담을 0점으로 채점한다. 점수표도 이를 실패로 세고 `step_capped`로 따로 보인다.
+- 재시도까지 모두 실패한 배정은 마지막 시도의 사유로 결측을 센다.
+
+### 분석 저장
+
+`analyze --save`는 배정별 행과 점수표를 `artifacts/studies/<계획 id>/`에 내용 해시 이름으로 남긴다. 배정별 행에는 원천과의 짝, 기억 제목·본문, 시작 제공 여부, 조회 수, 첫 업무 호출(기억 조회와 문장 답변을 건너뛴 첫 도구 호출), 공식 성패, 토큰, 비용이 들어간다. `--tasks`로 개발용·확인용 과제만 따로 점수화한다.
+
 ## 명령과 승인
 
 ```text
@@ -115,7 +136,8 @@ python -m agent_memory_eval.study run --plan <계획> --workspace <저장소>
 python -m agent_memory_eval.study analyze --plan <계획> --workspace <저장소>
 ```
 
-- 은행 실행에는 `artifacts/approvals/<계획 id>.json`이 필요하다. 이 기록은 계획 해시, 해석된 배정 해시, 배정 수, 금액 한도, 사용자의 승인 문장을 담는다. 계획이나 배정이 바뀌면 실행하지 않는다.
+- 실행 기록은 `--workspace`의 `runs/`에 쓰고, 승인·계획·분석 파일은 코드 저장소에 둔다. 실행 폴더가 심볼릭 링크를 거치면 기록 장치가 거부한다.
+- τ² 실행에는 `artifacts/approvals/<계획 id>.json`이 필요하다. 이 기록은 계획 해시, 해석된 배정 해시, 배정 수, 금액 한도, 사용자의 승인 문장을 담는다. 계획이나 배정이 바뀌면 실행하지 않는다.
 - BFCL은 로컬 모델이라 청구액이 없다. 실행에는 `--checkout`, `--model-python`, `--checkpoint`를 준다.
 - 실행 전에도 `analyze`를 쓸 수 있다. 이때는 재사용 1회차와 참조 기록만 읽는다.
 - `resume`은 같은 계획으로 이어 간다. 봉인된 묶음은 다시 보내지 않는다.
