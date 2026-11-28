@@ -1,0 +1,66 @@
+{
+  "format": "agent-memory-cohort-reader-host-closures/v1",
+  "scope_sha256": "908cb1488830b22d3377bdd8bc4914e1db872ef6922e4190d1022f797db7719c",
+  "closures": [
+    {
+      "domain": "airline",
+      "capsule_sha256": "a2d1ed0e990d3b7ed2846794dd5af8a6ca32b811cafb16cf28a173308482fe3c",
+      "native_journal": "runs/own-mixed-airline-01/task-4__source-1--to--4/solve/jobs/0011/log.jsonl",
+      "prefix_bytes": 88634,
+      "prefix_sha256": "5521a656cd91aa53be95f4cdbd9975b14ecd83fa212e3847568354cfd216434e",
+      "appended_bytes": 6694,
+      "appended_sha256": "42716af9892d358ab5fc46d070d042b7eb11b547883f44f8fb7faca3d002e8ea",
+      "append_timestamps_utc": [
+        "2026-11-28T15:05:33.234028Z",
+        "2026-11-28T15:05:33.319986Z"
+      ],
+      "events": [
+        "business.transition",
+        "model.request_finished",
+        "runtime.error",
+        "business.transition",
+        "outcome.scored",
+        "bank.snapshot_created",
+        "run.ended"
+      ],
+      "grading_status": "incomplete",
+      "held_usd": "0.0023373",
+      "known_usd": "0.001341318",
+      "log_sha256": "88edac6a991372867606b8915e335cf8354f7e216d7a5fc5e7a3583efef8e9b0",
+      "official_score": null,
+      "official_success": null,
+      "report_sha256": null,
+      "requests_including_unknown": 10,
+      "run": "r_2de34729cd644df5ab289fa009ad91e7",
+      "status": "error"
+    },
+    {
+      "domain": "retail",
+      "capsule_sha256": "f3640486bdbe7d5b63111f41fc3d17272c73396b7af8c25a99926a8d6dba9cf5",
+      "native_journal": "runs/own-mixed-retail-01/task-16__source-1--to--16/solve/jobs/0009/log.jsonl",
+      "prefix_bytes": 141801,
+      "prefix_sha256": "4a10724f7e1ee339bbd7e02cecd2ecdaf365a740cb53ec71e0d1a9b98ab39b22",
+      "appended_bytes": 4040,
+      "appended_sha256": "53db29614ceae8d35062659654da1f5b99c46e7aa881b256f80e8feed1be55d7",
+      "append_timestamps_utc": [
+        "2026-11-28T15:05:33.410152Z",
+        "2026-11-28T15:05:33.517674Z"
+      ],
+      "events": [
+        "business.transition",
+        "bank.snapshot_created",
+        "run.ended"
+      ],
+      "grading_status": "graded",
+      "held_usd": "0",
+      "known_usd": "0.005469341",
+      "log_sha256": "2d44e537e95b8b1ff2b566f32001bca1af3cbf3007d1a9a594af42e9d1ff7cea",
+      "official_score": 1.0,
+      "official_success": true,
+      "report_sha256": "96d0676e6545e3736782e9253d4662470fde5a4b3e27a60f127233278aeca7d5",
+      "requests_including_unknown": 17,
+      "run": "r_300e36ec8d154c09bc56602658d1b972",
+      "status": "completed"
+    }
+  ]
+}

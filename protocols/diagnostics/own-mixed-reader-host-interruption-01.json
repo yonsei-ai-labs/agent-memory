@@ -1,0 +1,130 @@
+{
+  "format": "agent-memory-cohort-reader-host-interruption/v1",
+  "id": "own-mixed-reader-host-interruption-01",
+  "boot_utc": "2026-11-28T14:55:05+00:00",
+  "original_batch": {
+    "path": "protocols/diagnostics/own-mixed-readers-final-01.json",
+    "sha256": "0f1e7acc483dba1ed46447a972a2ccada4fb470d529301ae9b1169216e07f08c"
+  },
+  "original_grant": {
+    "path": "artifacts/approvals/own-mixed-readers-final-01.json",
+    "sha256": "8d3aebd1cdba3d3379c7d0692e15bf78a16e516d2521efd18459fcb8d246c5e7"
+  },
+  "archive_manifest_sha256": "b9cc54b64d37882a04638d7ca679592b9f6afac81443ef56978f9290b6bf5660",
+  "accounting": {
+    "path": "artifacts/studies/own-mixed-readers-final-01/host-interruption-accounting.json",
+    "sha256": "e69869c75489b2cc77aa9e52fc05ec9e42b6d00e76a7af52ce98e9067ed7806e"
+  },
+  "additional_max_usd": "0",
+  "expected_executions": 6,
+  "allocation_scope": [
+    {
+      "domain": "bank",
+      "task": "task_053",
+      "index": 10,
+      "arm": "fact__on_demand__mixed",
+      "run": "r_e4a5991035a2495abcaaec0e32f2fa68",
+      "log_sha256": "2841d414334f9998abc62ef8192fe1e10178982abdf8147c96dcd92767a2c3ad",
+      "first_worker_wire_sha256": "0861051197b08c5d06bc6a7d32d64c45f1211caf120e45abfde86ec3aba3ad3d",
+      "action": "keep_recorded_limit",
+      "journal_bytes": 261664,
+      "request_starts": 32,
+      "request_finishes": 32
+    },
+    {
+      "domain": "bank",
+      "task": "task_055",
+      "index": 7,
+      "arm": "fact__on_demand__own",
+      "run": "r_12e7676b4e4640ba9359d9c0ffa470a7",
+      "log_sha256": "990654e0d75babf6ce081ad0bd5be6f41f69a816f47a0d346e1b7f4bb9c39024",
+      "first_worker_wire_sha256": "cfe6f744f0aaf287159cad8c674461f7c9ec6c369ddb669167b437a0d925f7ca",
+      "action": "repeat_host_interrupted",
+      "journal_bytes": 141648,
+      "request_starts": 17,
+      "request_finishes": 17
+    },
+    {
+      "domain": "bank",
+      "task": "task_056",
+      "index": 12,
+      "arm": "fact__preload__mixed",
+      "run": "r_07aa43a9741447ca957542fe9e5add04",
+      "log_sha256": "e1789fed3bc74aa5d5f6eb97d3b6a61ea1572b39504358bcad3c9087fc06dd2f",
+      "first_worker_wire_sha256": "3b44e51ddd3b7a66b72ae0c6fb4295754f50bba5c04e98fe262bf1a28665bb3b",
+      "action": "repeat_host_interrupted",
+      "journal_bytes": 387684,
+      "request_starts": 29,
+      "request_finishes": 29
+    },
+    {
+      "domain": "retail",
+      "task": "15",
+      "index": 10,
+      "arm": "lesson__when-needed__mixed",
+      "run": "r_e3bcb72f9f6a486fa1d28c6da608e971",
+      "log_sha256": "15f6498d3ff5fc5973fb5fcbab72f18d11cb618deae47b31769bdb67574c2fc3",
+      "first_worker_wire_sha256": null,
+      "action": "repeat_host_interrupted",
+      "journal_bytes": 438,
+      "request_starts": 0,
+      "request_finishes": 0
+    },
+    {
+      "domain": "retail",
+      "task": "16",
+      "index": 9,
+      "arm": "lesson__on_demand__own",
+      "run": "r_300e36ec8d154c09bc56602658d1b972",
+      "log_sha256": "4a10724f7e1ee339bbd7e02cecd2ecdaf365a740cb53ec71e0d1a9b98ab39b22",
+      "first_worker_wire_sha256": "8b69d9456d5077caef65fde274cfa34270309df36606d30b8178635bdb521050",
+      "action": "seal_recorded_grade",
+      "journal_bytes": 141801,
+      "request_starts": 17,
+      "request_finishes": 17
+    },
+    {
+      "domain": "airline",
+      "task": "4",
+      "index": 11,
+      "arm": "lesson__on_demand__mixed",
+      "run": "r_2de34729cd644df5ab289fa009ad91e7",
+      "log_sha256": "5521a656cd91aa53be95f4cdbd9975b14ecd83fa212e3847568354cfd216434e",
+      "first_worker_wire_sha256": "5d83283ae6ea582a7aea46dddde040f88203a6001653a0caa55a0abff8dc2467",
+      "action": "repeat_host_interrupted",
+      "journal_bytes": 88634,
+      "request_starts": 10,
+      "request_finishes": 9
+    },
+    {
+      "domain": "airline",
+      "task": "40",
+      "index": 11,
+      "arm": "fact__when-needed__own",
+      "run": "r_4544f04040c64c94b77fb430fcc0e3e8",
+      "log_sha256": "9d3dcf41f487e6bcd410e511e9258af13b6e17576ab32d4667c9a23d32d67608",
+      "first_worker_wire_sha256": null,
+      "action": "repeat_host_interrupted",
+      "journal_bytes": 5878,
+      "request_starts": 0,
+      "request_finishes": 0
+    },
+    {
+      "domain": "airline",
+      "task": "41",
+      "index": 11,
+      "arm": "lesson__on_demand__own",
+      "run": "r_e5d65210bd834b8a8849b429a7180471",
+      "log_sha256": "088e3f532bb66a87856494d5ce0ec3decaf8232ac8ae7e87892bde51f4d25aa6",
+      "first_worker_wire_sha256": "cdf8219d880e4dedcdd19a9fdea883ad4bb037606c3ecbbf70ec28ca524f0d6c",
+      "action": "repeat_host_interrupted",
+      "journal_bytes": 42285,
+      "request_starts": 4,
+      "request_finishes": 4
+    }
+  ],
+  "analysis": "original_registered_effects_and_separate_replacement_sensitivity",
+  "holdback": "benchmark_cap_less_original_reported_and_held_and_all_supplement_spending",
+  "repeat_policy": "one_new_native_episode_per_eligible_ungraded_slot_after_benchmark_completion_with_registered_transient_http_retries",
+  "input_policy": "same_registered_task_opening_writer_versions_policy_and_models_in_fresh_native_session"
+}

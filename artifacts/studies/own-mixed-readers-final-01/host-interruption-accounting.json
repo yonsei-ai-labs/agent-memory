@@ -1,0 +1,1610 @@
+{
+  "format": "local-native-reader-host-interruption-audit/v1",
+  "batch": "own-mixed-readers-final-01",
+  "scope": "Bank, retail, and airline initial final-batch solve waves committed at host interruption",
+  "boot_utc": "2026-11-28T14:55:05+00:00",
+  "snapshot_manifest_sha256": "b9cc54b64d37882a04638d7ca679592b9f6afac81443ef56978f9290b6bf5660",
+  "domains": {
+    "bank": {
+      "batch": "own-mixed-bank-01",
+      "grant": "solve-wave-10.json",
+      "registered_cases_allocated": 50,
+      "model_profile": {
+        "path": "protocols/models/project-standard-v1.json",
+        "sha256": "ef0ed266db31f8ed8fca4fb6321ae2907efb7755088d6f038e710e862f1f0da3"
+      },
+      "endpoint_terms_sha256": "e6e62fec4bbcb288e1ec2c01fa57a7c8dd8cea8689b9890c150447572ccf803a",
+      "status_counts": {
+        "completed": 568,
+        "error": 15,
+        "planned": 14,
+        "started": 3
+      },
+      "error_counts": {
+        "HTTP_429": 10,
+        "JSONDecodeError": 3,
+        "NATIVE_TIMEOUT": 1,
+        "TRANSPORT_UNKNOWN": 1
+      },
+      "delivery_counts": {
+        "response_received": 13423,
+        "not_submitted": 1,
+        "unknown": 1
+      },
+      "partial_rows": [
+        {
+          "task": "task_053",
+          "index": 10,
+          "arm": "fact__on_demand__mixed",
+          "run": "r_e4a5991035a2495abcaaec0e32f2fa68",
+          "status": "started",
+          "log_sha256": "2841d414334f9998abc62ef8192fe1e10178982abdf8147c96dcd92767a2c3ad",
+          "journal_records": 216,
+          "starts": 32,
+          "finishes": 32,
+          "deliveries": {
+            "response_received": 31,
+            "not_submitted": 1
+          },
+          "reported_usd": "0.010985406",
+          "held_usd": "0",
+          "first_worker_wire_sha256": "0861051197b08c5d06bc6a7d32d64c45f1211caf120e45abfde86ec3aba3ad3d",
+          "run_started": true,
+          "run_ended": false,
+          "last_event": {
+            "type": "runtime.error",
+            "utc": "2026-11-28T14:54:14.179418Z",
+            "code": "RUN_TIME_LIMIT"
+          },
+          "last_request_event": {
+            "type": "model.request_finished",
+            "utc": "2026-11-28T14:54:13.357947Z",
+            "request_id": "request_30bdfecae77a40b7bfb21c1b96d1a622",
+            "delivery_status": "not_submitted",
+            "cost_status": "not_applicable"
+          },
+          "registered_result_error": null,
+          "unknown_requests": [],
+          "role_usage": {
+            "worker": {
+              "requests": 23,
+              "http_calls": 22,
+              "total_tokens": 514238,
+              "reported_usd": "0.009303510",
+              "unknown_count": 0
+            },
+            "user_simulator": {
+              "requests": 9,
+              "http_calls": 9,
+              "total_tokens": 26412,
+              "reported_usd": "0.001681896",
+              "unknown_count": 0
+            }
+          }
+        },
+        {
+          "task": "task_055",
+          "index": 7,
+          "arm": "fact__on_demand__own",
+          "run": "r_12e7676b4e4640ba9359d9c0ffa470a7",
+          "status": "started",
+          "log_sha256": "990654e0d75babf6ce081ad0bd5be6f41f69a816f47a0d346e1b7f4bb9c39024",
+          "journal_records": 117,
+          "starts": 17,
+          "finishes": 17,
+          "deliveries": {
+            "response_received": 17
+          },
+          "reported_usd": "0.005611994",
+          "held_usd": "0",
+          "first_worker_wire_sha256": "cfe6f744f0aaf287159cad8c674461f7c9ec6c369ddb669167b437a0d925f7ca",
+          "run_started": true,
+          "run_ended": false,
+          "last_event": {
+            "type": "business.transition",
+            "utc": "2026-11-28T14:54:17.539343Z",
+            "request_id": "request_381aa7bfc20349b4abca2ebff9152cad",
+            "origin": "tau2_memory_dispatch"
+          },
+          "last_request_event": {
+            "type": "model.request_finished",
+            "utc": "2026-11-28T14:54:08.535991Z",
+            "request_id": "request_381aa7bfc20349b4abca2ebff9152cad",
+            "delivery_status": "response_received",
+            "cost_status": "observed"
+          },
+          "registered_result_error": null,
+          "unknown_requests": [],
+          "role_usage": {
+            "worker": {
+              "requests": 12,
+              "http_calls": 12,
+              "total_tokens": 200307,
+              "reported_usd": "0.004655270",
+              "unknown_count": 0
+            },
+            "user_simulator": {
+              "requests": 5,
+              "http_calls": 5,
+              "total_tokens": 15789,
+              "reported_usd": "0.000956724",
+              "unknown_count": 0
+            }
+          }
+        },
+        {
+          "task": "task_056",
+          "index": 12,
+          "arm": "fact__preload__mixed",
+          "run": "r_07aa43a9741447ca957542fe9e5add04",
+          "status": "started",
+          "log_sha256": "e1789fed3bc74aa5d5f6eb97d3b6a61ea1572b39504358bcad3c9087fc06dd2f",
+          "journal_records": 193,
+          "starts": 29,
+          "finishes": 29,
+          "deliveries": {
+            "response_received": 29
+          },
+          "reported_usd": "0.006798315",
+          "held_usd": "0",
+          "first_worker_wire_sha256": "3b44e51ddd3b7a66b72ae0c6fb4295754f50bba5c04e98fe262bf1a28665bb3b",
+          "run_started": true,
+          "run_ended": false,
+          "last_event": {
+            "type": "business.transition",
+            "utc": "2026-11-28T14:54:13.068390Z",
+            "origin": "tau2_worker_output"
+          },
+          "last_request_event": {
+            "type": "model.request_finished",
+            "utc": "2026-11-28T14:54:08.530291Z",
+            "request_id": "request_509011c2bb6247fda6008d1155318032",
+            "delivery_status": "response_received",
+            "cost_status": "observed"
+          },
+          "registered_result_error": null,
+          "unknown_requests": [],
+          "role_usage": {
+            "worker": {
+              "requests": 21,
+              "http_calls": 21,
+              "total_tokens": 271008,
+              "reported_usd": "0.005498115",
+              "unknown_count": 0
+            },
+            "user_simulator": {
+              "requests": 8,
+              "http_calls": 8,
+              "total_tokens": 20094,
+              "reported_usd": "0.001300200",
+              "unknown_count": 0
+            }
+          }
+        }
+      ],
+      "nearby_terminal_native_or_transport": [
+        {
+          "task": "task_052",
+          "index": 8,
+          "arm": "fact__preload__mixed",
+          "run": "r_c9d05c7f97294330ac433292a77361d5",
+          "status": "error",
+          "log_sha256": "b64a7511720d943012ce32ff2626e367fa68b2c10680c11f31b873370ce4c87f",
+          "journal_records": 274,
+          "starts": 41,
+          "finishes": 41,
+          "deliveries": {
+            "response_received": 41
+          },
+          "reported_usd": "0.008885017",
+          "held_usd": "0",
+          "first_worker_wire_sha256": "94235e368ed36798e36901d35f67039406db1dd36daeaca3f235e0e6ac351665",
+          "run_started": true,
+          "run_ended": true,
+          "last_event": {
+            "type": "run.ended",
+            "utc": "2026-11-28T14:51:11.732619Z",
+            "grading_status": "incomplete",
+            "termination_reason": "timeout"
+          },
+          "last_request_event": {
+            "type": "model.request_finished",
+            "utc": "2026-11-28T14:50:45.292752Z",
+            "request_id": "request_6b12acfd60964a448ddfe3f1fa5e8377",
+            "delivery_status": "response_received",
+            "cost_status": "observed"
+          },
+          "registered_result_error": "NATIVE_TIMEOUT",
+          "unknown_requests": [],
+          "role_usage": {
+            "worker": {
+              "requests": 30,
+              "http_calls": 30,
+              "total_tokens": 436056,
+              "reported_usd": "0.007374025",
+              "unknown_count": 0
+            },
+            "user_simulator": {
+              "requests": 11,
+              "http_calls": 11,
+              "total_tokens": 23351,
+              "reported_usd": "0.001510992",
+              "unknown_count": 0
+            }
+          },
+          "official_grade": {
+            "grading_status": "incomplete",
+            "official_artifact_ref": null,
+            "official_score": null,
+            "official_success": null
+          },
+          "native_disposition": {
+            "termination_reason": "timeout",
+            "error_code": "NATIVE_TIMEOUT",
+            "native_steps": 60,
+            "native_tool_errors": 0,
+            "native_reward": 0.0,
+            "native_report_ref": {
+              "media_type": "application/json",
+              "path": "blobs/sha256/44630798863ac82d08b68a1eb8bb139bae75ca214b69267ec8fc13ec6c718e6e",
+              "sha256": "44630798863ac82d08b68a1eb8bb139bae75ca214b69267ec8fc13ec6c718e6e"
+            }
+          }
+        },
+        {
+          "task": "task_054",
+          "index": 9,
+          "arm": "fact__on_demand__mixed",
+          "run": "r_2c7bf0b286ad484bbe55a893a7e4c2df",
+          "status": "error",
+          "log_sha256": "01fdf168309b5978b725d40305a145800da8b598939bf1186af52e663f69952e",
+          "journal_records": 142,
+          "starts": 18,
+          "finishes": 18,
+          "deliveries": {
+            "response_received": 17,
+            "unknown": 1
+          },
+          "reported_usd": "0.005959551",
+          "held_usd": "0.02374480",
+          "first_worker_wire_sha256": "82b9fd41b86c510fcb9431cee4d79fa1030fcfc0acb46d6e83084830bffdff55",
+          "run_started": true,
+          "run_ended": true,
+          "last_event": {
+            "type": "run.ended",
+            "utc": "2026-11-28T14:50:48.144674Z",
+            "grading_status": "incomplete",
+            "termination_reason": "runtime_error"
+          },
+          "last_request_event": {
+            "type": "model.request_finished",
+            "utc": "2026-11-28T14:50:35.342044Z",
+            "request_id": "request_edc8710ec19a43688269e2eef97a5ca1",
+            "delivery_status": "unknown",
+            "cost_status": "unknown"
+          },
+          "registered_result_error": "TRANSPORT_UNKNOWN",
+          "unknown_requests": [
+            {
+              "request_id": "request_edc8710ec19a43688269e2eef97a5ca1",
+              "utc": "2026-11-28T14:50:05.855986Z",
+              "role": "worker",
+              "model": "openai/gpt-6-luna",
+              "provider": "openai",
+              "request_sha256": "e9ad56461e32bd0c9d9f5aa868ef0fda3dd0feadeddc4add6519f58b63cf2c51",
+              "canonical_bytes": 108932,
+              "messages": 33,
+              "prompt_upper_bound": 111044,
+              "output_token_cap": 2048,
+              "prompt_rate": "2E-7",
+              "completion_rate": "7.5E-7",
+              "delivery": "unknown",
+              "held_usd": "0.02374480",
+              "already_reserved_code": "TRANSPORT_UNKNOWN"
+            }
+          ],
+          "role_usage": {
+            "worker": {
+              "requests": 16,
+              "http_calls": 16,
+              "total_tokens": 256017,
+              "reported_usd": "0.005407695",
+              "unknown_count": 1
+            },
+            "user_simulator": {
+              "requests": 2,
+              "http_calls": 2,
+              "total_tokens": 4707,
+              "reported_usd": "0.000551856",
+              "unknown_count": 0
+            }
+          },
+          "official_grade": {
+            "grading_status": "incomplete",
+            "official_artifact_ref": null,
+            "official_score": null,
+            "official_success": null
+          },
+          "native_disposition": {
+            "termination_reason": "runtime_error",
+            "error_code": "TRANSPORT_UNKNOWN",
+            "native_steps": 31,
+            "native_tool_errors": 0,
+            "native_reward": null,
+            "native_report_ref": null
+          }
+        }
+      ],
+      "unknown_requests": [
+        {
+          "task": "task_038",
+          "arm": "lesson__on_demand__mixed",
+          "index": 6,
+          "request_id": "request_4cdf5e6c93d24cb1a00a14d1133f9aab",
+          "utc": "2026-11-28T13:23:12.201387Z",
+          "role": "user_simulator",
+          "model": "deepseek/deepseek-v4.1-flash-1017",
+          "provider": "fireworks",
+          "request_sha256": "94507bb8970927d0b801b9500fc4106c51d1eb2cd061b5b7103b3e960e7b53d2",
+          "canonical_bytes": 14372,
+          "messages": 10,
+          "prompt_upper_bound": 15012,
+          "output_token_cap": 512,
+          "prompt_rate": "3E-7",
+          "completion_rate": "0.0000012",
+          "delivery": "response_received",
+          "held_usd": "0.0051180",
+          "already_reserved_code": 429
+        },
+        {
+          "task": "task_040",
+          "arm": "lesson__preload__mixed",
+          "index": 1,
+          "request_id": "request_18533cfcf6784c66924aa6acfd7900e7",
+          "utc": "2026-11-28T13:15:24.232492Z",
+          "role": "user_simulator",
+          "model": "deepseek/deepseek-v4.1-flash-1017",
+          "provider": "fireworks",
+          "request_sha256": "e125e6709b6afa419c0d5e296a6db7b4428d90dc5f7a171fb5be0b30ba84a109",
+          "canonical_bytes": 17379,
+          "messages": 16,
+          "prompt_upper_bound": 18403,
+          "output_token_cap": 512,
+          "prompt_rate": "3E-7",
+          "completion_rate": "0.0000012",
+          "delivery": "response_received",
+          "held_usd": "0.0061353",
+          "already_reserved_code": 429
+        },
+        {
+          "task": "task_041",
+          "arm": "fact__when-needed__mixed",
+          "index": 3,
+          "request_id": "request_0b148790d82f4ebd8e89cd2514936dfb",
+          "utc": "2026-11-28T13:41:47.567349Z",
+          "role": "user_simulator",
+          "model": "deepseek/deepseek-v4.1-flash-1017",
+          "provider": "fireworks",
+          "request_sha256": "6a53b589fdb34b23f55dad247ad163db81e044aa269898a9b0dc0ec87e773cd6",
+          "canonical_bytes": 30007,
+          "messages": 42,
+          "prompt_upper_bound": 32695,
+          "output_token_cap": 512,
+          "prompt_rate": "3E-7",
+          "completion_rate": "0.0000012",
+          "delivery": "response_received",
+          "held_usd": "0.0104229",
+          "already_reserved_code": 429
+        },
+        {
+          "task": "task_043",
+          "arm": "lesson__when-needed__own",
+          "index": 7,
+          "request_id": "request_a05cce653a8f450baf3b36793585674e",
+          "utc": "2026-11-28T13:40:43.847779Z",
+          "role": "user_simulator",
+          "model": "deepseek/deepseek-v4.1-flash-1017",
+          "provider": "fireworks",
+          "request_sha256": "ba584c23386048f050a26a03aa1fd4630c25bd50abec6b78a1539770c0128156",
+          "canonical_bytes": 10747,
+          "messages": 12,
+          "prompt_upper_bound": 11515,
+          "output_token_cap": 512,
+          "prompt_rate": "3E-7",
+          "completion_rate": "0.0000012",
+          "delivery": "response_received",
+          "held_usd": "0.0040689",
+          "already_reserved_code": 429
+        },
+        {
+          "task": "task_044",
+          "arm": "fact__preload__mixed",
+          "index": 6,
+          "request_id": "request_70353bb698bc419abd35ec46f98ff372",
+          "utc": "2026-11-28T13:40:21.491250Z",
+          "role": "user_simulator",
+          "model": "deepseek/deepseek-v4.1-flash-1017",
+          "provider": "fireworks",
+          "request_sha256": "0d342be7208087d8feb34ee70dcb433e5af09c606eb4233cba4a18c98328475a",
+          "canonical_bytes": 10351,
+          "messages": 6,
+          "prompt_upper_bound": 10735,
+          "output_token_cap": 512,
+          "prompt_rate": "3E-7",
+          "completion_rate": "0.0000012",
+          "delivery": "response_received",
+          "held_usd": "0.0038349",
+          "already_reserved_code": 429
+        },
+        {
+          "task": "task_048",
+          "arm": "fact__when-needed__mixed",
+          "index": 2,
+          "request_id": "request_8789c1cec53147f09340190ae2a5c7ea",
+          "utc": "2026-11-28T14:06:26.385759Z",
+          "role": "user_simulator",
+          "model": "deepseek/deepseek-v4.1-flash-1017",
+          "provider": "fireworks",
+          "request_sha256": "5105b395375f23864b34e3478f6ed34dfed42cdc667c21201f8554ae99f0682c",
+          "canonical_bytes": 22321,
+          "messages": 40,
+          "prompt_upper_bound": 24881,
+          "output_token_cap": 512,
+          "prompt_rate": "3E-7",
+          "completion_rate": "0.0000012",
+          "delivery": "response_received",
+          "held_usd": "0.0080787",
+          "already_reserved_code": 429
+        },
+        {
+          "task": "task_052",
+          "arm": "fact__on_demand__own",
+          "index": 6,
+          "request_id": "request_7a76885520114a4faeb89690b5e89d20",
+          "utc": "2026-11-28T14:34:53.645676Z",
+          "role": "user_simulator",
+          "model": "deepseek/deepseek-v4.1-flash-1017",
+          "provider": "fireworks",
+          "request_sha256": "edd67bad5e104bf42f78d549cce7d7dd37e673dfaf0b5ae9536a191cd415fcb1",
+          "canonical_bytes": 9285,
+          "messages": 10,
+          "prompt_upper_bound": 9925,
+          "output_token_cap": 512,
+          "prompt_rate": "3E-7",
+          "completion_rate": "0.0000012",
+          "delivery": "response_received",
+          "held_usd": "0.0035919",
+          "already_reserved_code": 429
+        },
+        {
+          "task": "task_054",
+          "arm": "fact__on_demand__mixed",
+          "index": 9,
+          "request_id": "request_edc8710ec19a43688269e2eef97a5ca1",
+          "utc": "2026-11-28T14:50:05.855986Z",
+          "role": "worker",
+          "model": "openai/gpt-6-luna",
+          "provider": "openai",
+          "request_sha256": "e9ad56461e32bd0c9d9f5aa868ef0fda3dd0feadeddc4add6519f58b63cf2c51",
+          "canonical_bytes": 108932,
+          "messages": 33,
+          "prompt_upper_bound": 111044,
+          "output_token_cap": 2048,
+          "prompt_rate": "2E-7",
+          "completion_rate": "7.5E-7",
+          "delivery": "unknown",
+          "held_usd": "0.02374480",
+          "already_reserved_code": "TRANSPORT_UNKNOWN"
+        },
+        {
+          "task": "task_055",
+          "arm": "lesson__on_demand__own",
+          "index": 4,
+          "request_id": "request_e1028d868cf64f92adb419a510c7ec32",
+          "utc": "2026-11-28T14:34:35.686199Z",
+          "role": "user_simulator",
+          "model": "deepseek/deepseek-v4.1-flash-1017",
+          "provider": "fireworks",
+          "request_sha256": "5830cb2110bc26393c01d7b373cf32441c3b63c62ebe64a601bfcbd0a59f4824",
+          "canonical_bytes": 18886,
+          "messages": 22,
+          "prompt_upper_bound": 20294,
+          "output_token_cap": 512,
+          "prompt_rate": "3E-7",
+          "completion_rate": "0.0000012",
+          "delivery": "response_received",
+          "held_usd": "0.0067026",
+          "already_reserved_code": 429
+        },
+        {
+          "task": "task_055",
+          "arm": "lesson__when-needed__own",
+          "index": 6,
+          "request_id": "request_dd513687ac6d4df2b0080c63bfcfd73e",
+          "utc": "2026-11-28T14:47:46.214174Z",
+          "role": "user_simulator",
+          "model": "deepseek/deepseek-v4.1-flash-1017",
+          "provider": "fireworks",
+          "request_sha256": "d10165e4312d6f11a2447c558a69c7d17aa4b949278214729e18ae4f676d9d8f",
+          "canonical_bytes": 20476,
+          "messages": 28,
+          "prompt_upper_bound": 22268,
+          "output_token_cap": 512,
+          "prompt_rate": "3E-7",
+          "completion_rate": "0.0000012",
+          "delivery": "response_received",
+          "held_usd": "0.0072948",
+          "already_reserved_code": 429
+        },
+        {
+          "task": "task_056",
+          "arm": "lesson__when-needed__own",
+          "index": 8,
+          "request_id": "request_9f5e2e52186d4c889d8f459e3522aa18",
+          "utc": "2026-11-28T14:34:50.986237Z",
+          "role": "user_simulator",
+          "model": "deepseek/deepseek-v4.1-flash-1017",
+          "provider": "fireworks",
+          "request_sha256": "407f553884ae8ba30a05d6c7bd55d2725479c3d092bf8a79b2510c3b488f705f",
+          "canonical_bytes": 10936,
+          "messages": 8,
+          "prompt_upper_bound": 11448,
+          "output_token_cap": 512,
+          "prompt_rate": "3E-7",
+          "completion_rate": "0.0000012",
+          "delivery": "response_received",
+          "held_usd": "0.0040488",
+          "already_reserved_code": 429
+        }
+      ],
+      "final_open_wave_shards": [
+        {
+          "case": "task_052__source-1--to--task_052",
+          "original_stage": "task-task_052__source-1--to--task_052/solve",
+          "runtime": "2fd7571bba65f9df8011be58bccd4872946973e5",
+          "counts": {
+            "completed": 6,
+            "error": 2,
+            "planned": 4
+          },
+          "suffix": [
+            9,
+            10,
+            11,
+            12
+          ],
+          "reported_usd": "0.068113914",
+          "held_usd": "0.0035919"
+        },
+        {
+          "case": "task_053__source-1--to--task_053",
+          "original_stage": "task-task_053__source-1--to--task_053/solve",
+          "runtime": "2fd7571bba65f9df8011be58bccd4872946973e5",
+          "counts": {
+            "completed": 9,
+            "started": 1,
+            "planned": 2
+          },
+          "suffix": [
+            11,
+            12
+          ],
+          "reported_usd": "0.102089960",
+          "held_usd": "0"
+        },
+        {
+          "case": "task_054__source-1--to--task_054",
+          "original_stage": "task-task_054__source-1--to--task_054/solve",
+          "runtime": "2fd7571bba65f9df8011be58bccd4872946973e5",
+          "counts": {
+            "completed": 8,
+            "error": 1,
+            "planned": 3
+          },
+          "suffix": [
+            10,
+            11,
+            12
+          ],
+          "reported_usd": "0.099685003",
+          "held_usd": "0.02374480"
+        },
+        {
+          "case": "task_055__source-1--to--task_055",
+          "original_stage": "task-task_055__source-1--to--task_055/solve",
+          "runtime": "2fd7571bba65f9df8011be58bccd4872946973e5",
+          "counts": {
+            "completed": 4,
+            "error": 2,
+            "started": 1,
+            "planned": 5
+          },
+          "suffix": [
+            8,
+            9,
+            10,
+            11,
+            12
+          ],
+          "reported_usd": "0.104783096",
+          "held_usd": "0.0139974"
+        },
+        {
+          "case": "task_056__source-1--to--task_056",
+          "original_stage": "task-task_056__source-1--to--task_056/solve",
+          "runtime": "2fd7571bba65f9df8011be58bccd4872946973e5",
+          "counts": {
+            "completed": 10,
+            "error": 1,
+            "started": 1
+          },
+          "suffix": [],
+          "reported_usd": "0.126101670",
+          "held_usd": "0.0040488"
+        }
+      ],
+      "all_prior_and_open_reader_jobs": {
+        "reported_usd": "3.727944177",
+        "held_usd": "0.08304160",
+        "reported_plus_held_usd": "3.810985777"
+      }
+    },
+    "retail": {
+      "batch": "own-mixed-retail-01",
+      "grant": "solve-wave-8.json",
+      "registered_cases_allocated": 24,
+      "model_profile": {
+        "path": "protocols/models/project-standard-v1.json",
+        "sha256": "ef0ed266db31f8ed8fca4fb6321ae2907efb7755088d6f038e710e862f1f0da3"
+      },
+      "endpoint_terms_sha256": "e6e62fec4bbcb288e1ec2c01fa57a7c8dd8cea8689b9890c150447572ccf803a",
+      "status_counts": {
+        "completed": 262,
+        "error": 13,
+        "not_started": 6,
+        "started": 2,
+        "planned": 5
+      },
+      "error_counts": {
+        "FIRST_PASS_MISMATCH": 1,
+        "HTTP_429": 10,
+        "HTTP_503": 2
+      },
+      "delivery_counts": {
+        "response_received": 5390
+      },
+      "partial_rows": [
+        {
+          "task": "15",
+          "index": 10,
+          "arm": "lesson__when-needed__mixed",
+          "run": "r_e3bcb72f9f6a486fa1d28c6da608e971",
+          "status": "started",
+          "log_sha256": "15f6498d3ff5fc5973fb5fcbab72f18d11cb618deae47b31769bdb67574c2fc3",
+          "journal_records": 1,
+          "starts": 0,
+          "finishes": 0,
+          "deliveries": {},
+          "reported_usd": "0",
+          "held_usd": "0",
+          "first_worker_wire_sha256": null,
+          "run_started": false,
+          "run_ended": false,
+          "last_event": null,
+          "last_request_event": null,
+          "registered_result_error": null,
+          "unknown_requests": [],
+          "role_usage": {}
+        },
+        {
+          "task": "16",
+          "index": 9,
+          "arm": "lesson__on_demand__own",
+          "run": "r_300e36ec8d154c09bc56602658d1b972",
+          "status": "started",
+          "log_sha256": "4a10724f7e1ee339bbd7e02cecd2ecdaf365a740cb53ec71e0d1a9b98ab39b22",
+          "journal_records": 115,
+          "starts": 17,
+          "finishes": 17,
+          "deliveries": {
+            "response_received": 17
+          },
+          "reported_usd": "0.005469341",
+          "held_usd": "0",
+          "first_worker_wire_sha256": "8b69d9456d5077caef65fde274cfa34270309df36606d30b8178635bdb521050",
+          "run_started": true,
+          "run_ended": false,
+          "last_event": {
+            "type": "outcome.scored",
+            "utc": "2026-11-28T14:54:14.271919Z",
+            "grading_status": "graded"
+          },
+          "last_request_event": {
+            "type": "model.request_finished",
+            "utc": "2026-11-28T14:54:11.616416Z",
+            "request_id": "request_0de30078d8bd4a12a27747cb45e7c44b",
+            "delivery_status": "response_received",
+            "cost_status": "observed"
+          },
+          "registered_result_error": null,
+          "unknown_requests": [],
+          "role_usage": {
+            "worker": {
+              "requests": 11,
+              "http_calls": 11,
+              "total_tokens": 63987,
+              "reported_usd": "0.001557065",
+              "unknown_count": 0
+            },
+            "user_simulator": {
+              "requests": 5,
+              "http_calls": 5,
+              "total_tokens": 5635,
+              "reported_usd": "0.000507276",
+              "unknown_count": 0
+            },
+            "grader": {
+              "requests": 1,
+              "http_calls": 1,
+              "total_tokens": 4010,
+              "reported_usd": "0.003405",
+              "unknown_count": 0
+            }
+          },
+          "official_grade": {
+            "grading_status": "graded",
+            "official_artifact_ref": {
+              "media_type": "application/json",
+              "path": "blobs/sha256/96d0676e6545e3736782e9253d4662470fde5a4b3e27a60f127233278aeca7d5",
+              "sha256": "96d0676e6545e3736782e9253d4662470fde5a4b3e27a60f127233278aeca7d5"
+            },
+            "official_score": 1.0,
+            "official_success": true
+          },
+          "native_disposition": {
+            "termination_reason": "user_stop",
+            "error_code": null,
+            "native_steps": 23,
+            "native_tool_errors": 0,
+            "native_reward": 1.0,
+            "native_report_ref": {
+              "media_type": "application/json",
+              "path": "blobs/sha256/96d0676e6545e3736782e9253d4662470fde5a4b3e27a60f127233278aeca7d5",
+              "sha256": "96d0676e6545e3736782e9253d4662470fde5a4b3e27a60f127233278aeca7d5"
+            }
+          }
+        }
+      ],
+      "nearby_terminal_native_or_transport": [],
+      "unknown_requests": [
+        {
+          "task": "106",
+          "arm": "lesson__preload__own",
+          "index": 10,
+          "request_id": "request_596c2e0b97a54ab5a655ebdb9db37345",
+          "utc": "2026-11-28T13:15:15.084981Z",
+          "role": "user_simulator",
+          "model": "deepseek/deepseek-v4.1-flash-1017",
+          "provider": "fireworks",
+          "request_sha256": "26e6193abddcc0a652e95f6846664e1b249a4dbe453e0e3c80be8a4afa240f79",
+          "canonical_bytes": 3816,
+          "messages": 4,
+          "prompt_upper_bound": 4072,
+          "output_token_cap": 512,
+          "prompt_rate": "3E-7",
+          "completion_rate": "0.0000012",
+          "delivery": "response_received",
+          "held_usd": "0.0018360",
+          "already_reserved_code": 429
+        },
+        {
+          "task": "109",
+          "arm": "fact__when-needed__mixed",
+          "index": 12,
+          "request_id": "request_3f9991bc9a2748f19b31f7836d5a6d84",
+          "utc": "2026-11-28T13:40:18.382062Z",
+          "role": "user_simulator",
+          "model": "deepseek/deepseek-v4.1-flash-1017",
+          "provider": "fireworks",
+          "request_sha256": "ae200d2e26eb4d29fd039ae8b3fc76d1ba60add2bd1dc5e93d2bd6f9c7aae2e5",
+          "canonical_bytes": 8128,
+          "messages": 14,
+          "prompt_upper_bound": 9024,
+          "output_token_cap": 512,
+          "prompt_rate": "3E-7",
+          "completion_rate": "0.0000012",
+          "delivery": "response_received",
+          "held_usd": "0.0033216",
+          "already_reserved_code": 429
+        },
+        {
+          "task": "110",
+          "arm": "fact__preload__mixed",
+          "index": 11,
+          "request_id": "request_6ac91d3a44eb4f928454b7aa5079a082",
+          "utc": "2026-11-28T13:27:23.989569Z",
+          "role": "user_simulator",
+          "model": "deepseek/deepseek-v4.1-flash-1017",
+          "provider": "fireworks",
+          "request_sha256": "15a4ce48671b020b4781c163d1c94d31e2f2a48335dca01c06ced60da6ca74ac",
+          "canonical_bytes": 7842,
+          "messages": 12,
+          "prompt_upper_bound": 8610,
+          "output_token_cap": 512,
+          "prompt_rate": "3E-7",
+          "completion_rate": "0.0000012",
+          "delivery": "response_received",
+          "held_usd": "0.0031974",
+          "already_reserved_code": 503
+        },
+        {
+          "task": "110",
+          "arm": "lesson__when-needed__mixed",
+          "index": 12,
+          "request_id": "request_c64ceb8590254b889f9c9f6d95227985",
+          "utc": "2026-11-28T13:29:29.771994Z",
+          "role": "user_simulator",
+          "model": "deepseek/deepseek-v4.1-flash-1017",
+          "provider": "fireworks",
+          "request_sha256": "61df48cf1eaebf85e05679c3971049c2852121ec1dd515dd195299e22958931c",
+          "canonical_bytes": 4798,
+          "messages": 4,
+          "prompt_upper_bound": 5054,
+          "output_token_cap": 512,
+          "prompt_rate": "3E-7",
+          "completion_rate": "0.0000012",
+          "delivery": "response_received",
+          "held_usd": "0.0021306",
+          "already_reserved_code": 503
+        },
+        {
+          "task": "111",
+          "arm": "lesson__when-needed__mixed",
+          "index": 8,
+          "request_id": "request_a6327b50a15948b3b7069038a9929d2c",
+          "utc": "2026-11-28T14:20:35.464793Z",
+          "role": "user_simulator",
+          "model": "deepseek/deepseek-v4.1-flash-1017",
+          "provider": "fireworks",
+          "request_sha256": "990719c379976bac0fb7ef563b9d6e93c4c2caef8d13c5f6e733d9ef29f3e7b1",
+          "canonical_bytes": 8844,
+          "messages": 16,
+          "prompt_upper_bound": 9868,
+          "output_token_cap": 512,
+          "prompt_rate": "3E-7",
+          "completion_rate": "0.0000012",
+          "delivery": "response_received",
+          "held_usd": "0.0035748",
+          "already_reserved_code": 429
+        },
+        {
+          "task": "112",
+          "arm": "fact__when-needed__mixed",
+          "index": 3,
+          "request_id": "request_c05ece00201e41ed876dae3c53cca833",
+          "utc": "2026-11-28T14:13:31.109673Z",
+          "role": "user_simulator",
+          "model": "deepseek/deepseek-v4.1-flash-1017",
+          "provider": "fireworks",
+          "request_sha256": "35ef7c862f1afd0a3fdd86681f625989eeb62c8fdd61c06cc9671b3f2a563963",
+          "canonical_bytes": 7717,
+          "messages": 10,
+          "prompt_upper_bound": 8357,
+          "output_token_cap": 512,
+          "prompt_rate": "3E-7",
+          "completion_rate": "0.0000012",
+          "delivery": "response_received",
+          "held_usd": "0.0031215",
+          "already_reserved_code": 429
+        },
+        {
+          "task": "112",
+          "arm": "lesson__on_demand__own",
+          "index": 10,
+          "request_id": "request_6737dc4ca23c49888e925d135a91420b",
+          "utc": "2026-11-28T14:20:34.083753Z",
+          "role": "user_simulator",
+          "model": "deepseek/deepseek-v4.1-flash-1017",
+          "provider": "fireworks",
+          "request_sha256": "09215ddaca94a6f3fa59920a202db99fc756c4e04ae4dc90ad3fc45fdbc5ccf4",
+          "canonical_bytes": 4236,
+          "messages": 4,
+          "prompt_upper_bound": 4492,
+          "output_token_cap": 512,
+          "prompt_rate": "3E-7",
+          "completion_rate": "0.0000012",
+          "delivery": "response_received",
+          "held_usd": "0.0019620",
+          "already_reserved_code": 429
+        },
+        {
+          "task": "15",
+          "arm": "fact__when-needed__own",
+          "index": 2,
+          "request_id": "request_f2cbd027d1724bb998750c79c5b27e28",
+          "utc": "2026-11-28T14:34:36.711776Z",
+          "role": "user_simulator",
+          "model": "deepseek/deepseek-v4.1-flash-1017",
+          "provider": "fireworks",
+          "request_sha256": "4e0a1b26c67891acbe2d0428a1829704c0fc5fadde963febb0232f2459e3caf8",
+          "canonical_bytes": 5137,
+          "messages": 10,
+          "prompt_upper_bound": 5777,
+          "output_token_cap": 512,
+          "prompt_rate": "3E-7",
+          "completion_rate": "0.0000012",
+          "delivery": "response_received",
+          "held_usd": "0.0023475",
+          "already_reserved_code": 429
+        },
+        {
+          "task": "15",
+          "arm": "fact__on_demand__mixed",
+          "index": 6,
+          "request_id": "request_6ce99f3662804af2ac5abc0297676a8f",
+          "utc": "2026-11-28T14:38:47.636832Z",
+          "role": "user_simulator",
+          "model": "deepseek/deepseek-v4.1-flash-1017",
+          "provider": "fireworks",
+          "request_sha256": "1512df3a546826d1b8056f77c249309532fe0a0faaddcb5a79aeb16326f053e0",
+          "canonical_bytes": 5631,
+          "messages": 10,
+          "prompt_upper_bound": 6271,
+          "output_token_cap": 512,
+          "prompt_rate": "3E-7",
+          "completion_rate": "0.0000012",
+          "delivery": "response_received",
+          "held_usd": "0.0024957",
+          "already_reserved_code": 429
+        },
+        {
+          "task": "15",
+          "arm": "fact__preload__mixed",
+          "index": 9,
+          "request_id": "request_72e8834ec3914dfc9d7ecc20214b1b60",
+          "utc": "2026-11-28T14:51:34.883498Z",
+          "role": "user_simulator",
+          "model": "deepseek/deepseek-v4.1-flash-1017",
+          "provider": "fireworks",
+          "request_sha256": "ece7c9404ac812a666bc3ffe0d31ce599e0a653b6c73474e8eb083b359d05cdd",
+          "canonical_bytes": 4540,
+          "messages": 6,
+          "prompt_upper_bound": 4924,
+          "output_token_cap": 512,
+          "prompt_rate": "3E-7",
+          "completion_rate": "0.0000012",
+          "delivery": "response_received",
+          "held_usd": "0.0020916",
+          "already_reserved_code": 429
+        },
+        {
+          "task": "16",
+          "arm": "fact__preload__mixed",
+          "index": 2,
+          "request_id": "request_f1c928e556ba4e3ea57300f056b469ee",
+          "utc": "2026-11-28T14:34:38.150472Z",
+          "role": "user_simulator",
+          "model": "deepseek/deepseek-v4.1-flash-1017",
+          "provider": "fireworks",
+          "request_sha256": "3cf20ea49e642ecf64bde5af44dd71ea1935fcae636952cb5b5393add7ec797f",
+          "canonical_bytes": 5920,
+          "messages": 8,
+          "prompt_upper_bound": 6432,
+          "output_token_cap": 512,
+          "prompt_rate": "3E-7",
+          "completion_rate": "0.0000012",
+          "delivery": "response_received",
+          "held_usd": "0.0025440",
+          "already_reserved_code": 429
+        },
+        {
+          "task": "17",
+          "arm": "lesson__when-needed__mixed",
+          "index": 9,
+          "request_id": "request_8383309199b040419f2548986462c10f",
+          "utc": "2026-11-28T14:38:37.170182Z",
+          "role": "user_simulator",
+          "model": "deepseek/deepseek-v4.1-flash-1017",
+          "provider": "fireworks",
+          "request_sha256": "8955bb3e21c197e9393373aeed8c22c91207bd725a10f042c5ea550850d2b81e",
+          "canonical_bytes": 4360,
+          "messages": 6,
+          "prompt_upper_bound": 4744,
+          "output_token_cap": 512,
+          "prompt_rate": "3E-7",
+          "completion_rate": "0.0000012",
+          "delivery": "response_received",
+          "held_usd": "0.0020376",
+          "already_reserved_code": 429
+        }
+      ],
+      "final_open_wave_shards": [
+        {
+          "case": "15__source-1--to--15",
+          "original_stage": "task-15__source-1--to--15/solve",
+          "runtime": "07844396eae8b12c547ad7b35d1b2d63f05ad3a8",
+          "counts": {
+            "completed": 6,
+            "error": 3,
+            "started": 1,
+            "planned": 2
+          },
+          "suffix": [
+            11,
+            12
+          ],
+          "reported_usd": "0.012919308",
+          "held_usd": "0.0069348"
+        },
+        {
+          "case": "16__source-1--to--16",
+          "original_stage": "task-16__source-1--to--16/solve",
+          "runtime": "07844396eae8b12c547ad7b35d1b2d63f05ad3a8",
+          "counts": {
+            "completed": 7,
+            "error": 1,
+            "started": 1,
+            "planned": 3
+          },
+          "suffix": [
+            10,
+            11,
+            12
+          ],
+          "reported_usd": "0.045033589",
+          "held_usd": "0.0025440"
+        },
+        {
+          "case": "17__source-1--to--17",
+          "original_stage": "task-17__source-1--to--17/solve",
+          "runtime": "07844396eae8b12c547ad7b35d1b2d63f05ad3a8",
+          "counts": {
+            "completed": 11,
+            "error": 1
+          },
+          "suffix": [],
+          "reported_usd": "0.011155105",
+          "held_usd": "0.0020376"
+        }
+      ],
+      "all_prior_and_open_reader_jobs": {
+        "reported_usd": "1.121654376",
+        "held_usd": "0.0306603",
+        "reported_plus_held_usd": "1.152314676"
+      }
+    },
+    "airline": {
+      "batch": "own-mixed-airline-01",
+      "grant": "solve-wave-12.json",
+      "registered_cases_allocated": 36,
+      "model_profile": {
+        "path": "protocols/models/project-standard-v1.json",
+        "sha256": "ef0ed266db31f8ed8fca4fb6321ae2907efb7755088d6f038e710e862f1f0da3"
+      },
+      "endpoint_terms_sha256": "48a566155fbc59c2a68c3e6d126b00f0a98df1a265c42557220d0f00a25b7e01",
+      "status_counts": {
+        "completed": 412,
+        "error": 14,
+        "started": 3,
+        "planned": 3
+      },
+      "error_counts": {
+        "NATIVE_MAX_STEPS": 2,
+        "HTTP_429": 12,
+        "HTTP_503": 2
+      },
+      "delivery_counts": {
+        "response_received": 6820,
+        "start_only_submission_unknown": 1
+      },
+      "partial_rows": [
+        {
+          "task": "4",
+          "index": 11,
+          "arm": "lesson__on_demand__mixed",
+          "run": "r_2de34729cd644df5ab289fa009ad91e7",
+          "status": "started",
+          "log_sha256": "5521a656cd91aa53be95f4cdbd9975b14ecd83fa212e3847568354cfd216434e",
+          "journal_records": 74,
+          "starts": 10,
+          "finishes": 9,
+          "deliveries": {
+            "response_received": 9,
+            "start_only_submission_unknown": 1
+          },
+          "reported_usd": "0.001341318",
+          "held_usd": "0.0023373",
+          "first_worker_wire_sha256": "5d83283ae6ea582a7aea46dddde040f88203a6001653a0caa55a0abff8dc2467",
+          "run_started": true,
+          "run_ended": false,
+          "last_event": {
+            "type": "model.request_started",
+            "utc": "2026-11-28T14:54:09.520425Z",
+            "request_id": "request_68e4f53ee4574b5a9fc848cbb182a305",
+            "actor_role": "user_simulator",
+            "delivery_status": "prepared"
+          },
+          "last_request_event": {
+            "type": "model.request_started",
+            "utc": "2026-11-28T14:54:09.520425Z",
+            "request_id": "request_68e4f53ee4574b5a9fc848cbb182a305",
+            "actor_role": "user_simulator",
+            "delivery_status": "prepared"
+          },
+          "registered_result_error": null,
+          "unknown_requests": [
+            {
+              "request_id": "request_68e4f53ee4574b5a9fc848cbb182a305",
+              "utc": "2026-11-28T14:54:09.520425Z",
+              "role": "user_simulator",
+              "model": "deepseek/deepseek-v4.1-flash-1017",
+              "provider": "fireworks",
+              "request_sha256": "3bc4d580f0f060c1174ef9f41c2e7948a48b2f5557f691eddd9ae2051b65f8fc",
+              "canonical_bytes": 5231,
+              "messages": 8,
+              "prompt_upper_bound": 5743,
+              "output_token_cap": 512,
+              "prompt_rate": "3E-7",
+              "completion_rate": "0.0000012",
+              "delivery": "start_only_submission_unknown",
+              "held_usd": "0.0023373"
+            }
+          ],
+          "role_usage": {
+            "worker": {
+              "requests": 7,
+              "http_calls": 7,
+              "total_tokens": 34177,
+              "reported_usd": "0.001093170",
+              "unknown_count": 0
+            },
+            "user_simulator": {
+              "requests": 3,
+              "http_calls": 3,
+              "total_tokens": 1692,
+              "reported_usd": "0.000248148",
+              "unknown_count": 1
+            }
+          }
+        },
+        {
+          "task": "40",
+          "index": 11,
+          "arm": "fact__when-needed__own",
+          "run": "r_4544f04040c64c94b77fb430fcc0e3e8",
+          "status": "started",
+          "log_sha256": "9d3dcf41f487e6bcd410e511e9258af13b6e17576ab32d4667c9a23d32d67608",
+          "journal_records": 7,
+          "starts": 0,
+          "finishes": 0,
+          "deliveries": {},
+          "reported_usd": "0",
+          "held_usd": "0",
+          "first_worker_wire_sha256": null,
+          "run_started": true,
+          "run_ended": false,
+          "last_event": {
+            "type": "business.transition",
+            "utc": "2026-11-28T14:54:06.347957Z",
+            "origin": "matched_trial.native_control"
+          },
+          "last_request_event": null,
+          "registered_result_error": null,
+          "unknown_requests": [],
+          "role_usage": {}
+        },
+        {
+          "task": "41",
+          "index": 11,
+          "arm": "lesson__on_demand__own",
+          "run": "r_e5d65210bd834b8a8849b429a7180471",
+          "status": "started",
+          "log_sha256": "088e3f532bb66a87856494d5ce0ec3decaf8232ac8ae7e87892bde51f4d25aa6",
+          "journal_records": 37,
+          "starts": 4,
+          "finishes": 4,
+          "deliveries": {
+            "response_received": 4
+          },
+          "reported_usd": "0.000370035",
+          "held_usd": "0",
+          "first_worker_wire_sha256": "cdf8219d880e4dedcdd19a9fdea883ad4bb037606c3ecbbf70ec28ca524f0d6c",
+          "run_started": true,
+          "run_ended": false,
+          "last_event": {
+            "type": "business.transition",
+            "utc": "2026-11-28T14:54:17.539153Z",
+            "request_id": "request_4a6325fdd4ea4f3aa947590c6cd8a10d",
+            "origin": "tau2_memory_dispatch"
+          },
+          "last_request_event": {
+            "type": "model.request_finished",
+            "utc": "2026-11-28T14:54:09.782261Z",
+            "request_id": "request_4a6325fdd4ea4f3aa947590c6cd8a10d",
+            "delivery_status": "response_received",
+            "cost_status": "observed"
+          },
+          "registered_result_error": null,
+          "unknown_requests": [],
+          "role_usage": {
+            "worker": {
+              "requests": 3,
+              "http_calls": 3,
+              "total_tokens": 11307,
+              "reported_usd": "0.000274035",
+              "unknown_count": 0
+            },
+            "user_simulator": {
+              "requests": 1,
+              "http_calls": 1,
+              "total_tokens": 763,
+              "reported_usd": "0.000096",
+              "unknown_count": 0
+            }
+          }
+        }
+      ],
+      "nearby_terminal_native_or_transport": [],
+      "unknown_requests": [
+        {
+          "task": "2",
+          "arm": "fact__on_demand__own",
+          "index": 12,
+          "request_id": "request_77d0a2e8d41443dd9b7651a5f39e124a",
+          "utc": "2026-11-28T12:55:57.423327Z",
+          "role": "user_simulator",
+          "model": "deepseek/deepseek-v4.1-flash-1017",
+          "provider": "fireworks",
+          "request_sha256": "ce81e264acfced0e9e02d846cdefd4b2aa8c8462becdcd49b83af9f04e95d961",
+          "canonical_bytes": 5433,
+          "messages": 6,
+          "prompt_upper_bound": 5817,
+          "output_token_cap": 512,
+          "prompt_rate": "3E-7",
+          "completion_rate": "0.0000012",
+          "delivery": "response_received",
+          "held_usd": "0.0023595",
+          "already_reserved_code": 429
+        },
+        {
+          "task": "20",
+          "arm": "lesson__preload__mixed",
+          "index": 3,
+          "request_id": "request_9ffdb33c68d941569ded312cab526913",
+          "utc": "2026-11-28T13:00:58.994104Z",
+          "role": "user_simulator",
+          "model": "deepseek/deepseek-v4.1-flash-1017",
+          "provider": "fireworks",
+          "request_sha256": "8c329c150e339b6333553fbc79837a5479d8463252c55a2cea3d7e54455bbe74",
+          "canonical_bytes": 6658,
+          "messages": 12,
+          "prompt_upper_bound": 7426,
+          "output_token_cap": 512,
+          "prompt_rate": "3E-7",
+          "completion_rate": "0.0000012",
+          "delivery": "response_received",
+          "held_usd": "0.0028422",
+          "already_reserved_code": 429
+        },
+        {
+          "task": "21",
+          "arm": "lesson__on_demand__mixed",
+          "index": 2,
+          "request_id": "request_3c9a6f8bb5a64166b1411b86d5eb8cd2",
+          "utc": "2026-11-28T13:00:55.101784Z",
+          "role": "user_simulator",
+          "model": "deepseek/deepseek-v4.1-flash-1017",
+          "provider": "fireworks",
+          "request_sha256": "102addabff4b405e394187c18b2db396a214a1f7ed85b12c9c6cf3d395f43159",
+          "canonical_bytes": 8526,
+          "messages": 18,
+          "prompt_upper_bound": 9678,
+          "output_token_cap": 512,
+          "prompt_rate": "3E-7",
+          "completion_rate": "0.0000012",
+          "delivery": "response_received",
+          "held_usd": "0.0035178",
+          "already_reserved_code": 429
+        },
+        {
+          "task": "23",
+          "arm": "lesson__on_demand__own",
+          "index": 10,
+          "request_id": "request_972e6c6393d44c34a20818c72c69b4ff",
+          "utc": "2026-11-28T13:27:45.053891Z",
+          "role": "user_simulator",
+          "model": "deepseek/deepseek-v4.1-flash-1017",
+          "provider": "fireworks",
+          "request_sha256": "c9ecf406ef28ac2188f0f85fec70862b111412b51f300038f23a2dbc2fb3e682",
+          "canonical_bytes": 10717,
+          "messages": 18,
+          "prompt_upper_bound": 11869,
+          "output_token_cap": 512,
+          "prompt_rate": "3E-7",
+          "completion_rate": "0.0000012",
+          "delivery": "response_received",
+          "held_usd": "0.0041751",
+          "already_reserved_code": 503
+        },
+        {
+          "task": "23",
+          "arm": "fact__on_demand__own",
+          "index": 11,
+          "request_id": "request_c7ec2c25cc76478eab50b6fdcabcd3ed",
+          "utc": "2026-11-28T13:29:52.420371Z",
+          "role": "user_simulator",
+          "model": "deepseek/deepseek-v4.1-flash-1017",
+          "provider": "fireworks",
+          "request_sha256": "108158225dd367a5a46bcf92b2e566bb52f2144a4d5665254f03f74ffe7c219a",
+          "canonical_bytes": 5672,
+          "messages": 4,
+          "prompt_upper_bound": 5928,
+          "output_token_cap": 512,
+          "prompt_rate": "3E-7",
+          "completion_rate": "0.0000012",
+          "delivery": "response_received",
+          "held_usd": "0.0023928",
+          "already_reserved_code": 503
+        },
+        {
+          "task": "24",
+          "arm": "lesson__preload__own",
+          "index": 11,
+          "request_id": "request_9f0ebe7632d74fcab7801d47808acd38",
+          "utc": "2026-11-28T13:23:16.556296Z",
+          "role": "user_simulator",
+          "model": "deepseek/deepseek-v4.1-flash-1017",
+          "provider": "fireworks",
+          "request_sha256": "a987fb491032b0a9969ac580e3874923db84e1808c53ea381c533876e5d0f220",
+          "canonical_bytes": 4938,
+          "messages": 6,
+          "prompt_upper_bound": 5322,
+          "output_token_cap": 512,
+          "prompt_rate": "3E-7",
+          "completion_rate": "0.0000012",
+          "delivery": "response_received",
+          "held_usd": "0.0022110",
+          "already_reserved_code": 429
+        },
+        {
+          "task": "3",
+          "arm": "fact__preload__own",
+          "index": 11,
+          "request_id": "request_045edfe3169a439fbface3215911ff58",
+          "utc": "2026-11-28T13:51:55.593025Z",
+          "role": "user_simulator",
+          "model": "deepseek/deepseek-v4.1-flash-1017",
+          "provider": "fireworks",
+          "request_sha256": "524e270600c0a669344f2be02f5e6f87e8a9ea51e1dc7ff24b387a38ce635c6e",
+          "canonical_bytes": 5096,
+          "messages": 6,
+          "prompt_upper_bound": 5480,
+          "output_token_cap": 512,
+          "prompt_rate": "3E-7",
+          "completion_rate": "0.0000012",
+          "delivery": "response_received",
+          "held_usd": "0.0022584",
+          "already_reserved_code": 429
+        },
+        {
+          "task": "30",
+          "arm": "lesson__preload__mixed",
+          "index": 8,
+          "request_id": "request_95f871a84f4745ad9f005470a785069f",
+          "utc": "2026-11-28T13:51:59.278646Z",
+          "role": "user_simulator",
+          "model": "deepseek/deepseek-v4.1-flash-1017",
+          "provider": "fireworks",
+          "request_sha256": "93d6e7522802d2aa77a3e4facb382306b5d88b61dd8c7644a33ed0c9ad112820",
+          "canonical_bytes": 5319,
+          "messages": 8,
+          "prompt_upper_bound": 5831,
+          "output_token_cap": 512,
+          "prompt_rate": "3E-7",
+          "completion_rate": "0.0000012",
+          "delivery": "response_received",
+          "held_usd": "0.0023637",
+          "already_reserved_code": 429
+        },
+        {
+          "task": "35",
+          "arm": "lesson__when-needed__own",
+          "index": 6,
+          "request_id": "request_217d9516d1ff48aa8eec7f9206752ee0",
+          "utc": "2026-11-28T14:13:56.682648Z",
+          "role": "user_simulator",
+          "model": "deepseek/deepseek-v4.1-flash-1017",
+          "provider": "fireworks",
+          "request_sha256": "2553790d5eaf76044600ad537124a349944c2bfcf7d92cbda83f8efd305a6f4b",
+          "canonical_bytes": 9793,
+          "messages": 22,
+          "prompt_upper_bound": 11201,
+          "output_token_cap": 512,
+          "prompt_rate": "3E-7",
+          "completion_rate": "0.0000012",
+          "delivery": "response_received",
+          "held_usd": "0.0039747",
+          "already_reserved_code": 429
+        },
+        {
+          "task": "35",
+          "arm": "lesson__preload__mixed",
+          "index": 10,
+          "request_id": "request_cf3636cf9d7147faad8fb80da8623e95",
+          "utc": "2026-11-28T14:20:43.127418Z",
+          "role": "user_simulator",
+          "model": "deepseek/deepseek-v4.1-flash-1017",
+          "provider": "fireworks",
+          "request_sha256": "db9f19ff24be1f722726fc3ffb3db7925c73b569adcf521fecef568091484707",
+          "canonical_bytes": 11934,
+          "messages": 36,
+          "prompt_upper_bound": 14238,
+          "output_token_cap": 512,
+          "prompt_rate": "3E-7",
+          "completion_rate": "0.0000012",
+          "delivery": "response_received",
+          "held_usd": "0.0048858",
+          "already_reserved_code": 429
+        },
+        {
+          "task": "36",
+          "arm": "lesson__when-needed__mixed",
+          "index": 10,
+          "request_id": "request_8d6b0c0a0d8c4e25ac838fb928c20f97",
+          "utc": "2026-11-28T14:20:51.401529Z",
+          "role": "user_simulator",
+          "model": "deepseek/deepseek-v4.1-flash-1017",
+          "provider": "fireworks",
+          "request_sha256": "60259a000b6228fd7f3c8c776bf9de919867df4ac5d9148059d04ef90fac3bac",
+          "canonical_bytes": 16405,
+          "messages": 106,
+          "prompt_upper_bound": 23189,
+          "output_token_cap": 512,
+          "prompt_rate": "3E-7",
+          "completion_rate": "0.0000012",
+          "delivery": "response_received",
+          "held_usd": "0.0075711",
+          "already_reserved_code": 429
+        },
+        {
+          "task": "36",
+          "arm": "lesson__on_demand__mixed",
+          "index": 12,
+          "request_id": "request_a90ecd92b19f45389b7b541dec2317e5",
+          "utc": "2026-11-28T14:25:18.432607Z",
+          "role": "user_simulator",
+          "model": "deepseek/deepseek-v4.1-flash-1017",
+          "provider": "fireworks",
+          "request_sha256": "711644e6237a0c797128dd2bfce525114f24a957f136454ea4138a9a8a4dc76c",
+          "canonical_bytes": 12551,
+          "messages": 78,
+          "prompt_upper_bound": 17543,
+          "output_token_cap": 512,
+          "prompt_rate": "3E-7",
+          "completion_rate": "0.0000012",
+          "delivery": "response_received",
+          "held_usd": "0.0058773",
+          "already_reserved_code": 429
+        },
+        {
+          "task": "4",
+          "arm": "lesson__when-needed__mixed",
+          "index": 8,
+          "request_id": "request_7ec81824611740e3898a723fea88e7dd",
+          "utc": "2026-11-28T14:38:54.450819Z",
+          "role": "user_simulator",
+          "model": "deepseek/deepseek-v4.1-flash-1017",
+          "provider": "fireworks",
+          "request_sha256": "19c7cb4a980723a0258313241b1947c74dc2df5efacb902266ea9bd5b714641f",
+          "canonical_bytes": 5057,
+          "messages": 8,
+          "prompt_upper_bound": 5569,
+          "output_token_cap": 512,
+          "prompt_rate": "3E-7",
+          "completion_rate": "0.0000012",
+          "delivery": "response_received",
+          "held_usd": "0.0022851",
+          "already_reserved_code": 429
+        },
+        {
+          "task": "4",
+          "arm": "lesson__on_demand__mixed",
+          "index": 11,
+          "request_id": "request_68e4f53ee4574b5a9fc848cbb182a305",
+          "utc": "2026-11-28T14:54:09.520425Z",
+          "role": "user_simulator",
+          "model": "deepseek/deepseek-v4.1-flash-1017",
+          "provider": "fireworks",
+          "request_sha256": "3bc4d580f0f060c1174ef9f41c2e7948a48b2f5557f691eddd9ae2051b65f8fc",
+          "canonical_bytes": 5231,
+          "messages": 8,
+          "prompt_upper_bound": 5743,
+          "output_token_cap": 512,
+          "prompt_rate": "3E-7",
+          "completion_rate": "0.0000012",
+          "delivery": "start_only_submission_unknown",
+          "held_usd": "0.0023373"
+        },
+        {
+          "task": "41",
+          "arm": "lesson__on_demand__mixed",
+          "index": 6,
+          "request_id": "request_e61fef7dc4bb40bdb649dc506b1edc45",
+          "utc": "2026-11-28T14:38:46.488566Z",
+          "role": "user_simulator",
+          "model": "deepseek/deepseek-v4.1-flash-1017",
+          "provider": "fireworks",
+          "request_sha256": "87747c0f72d08ee46b861b46108fde4453300d645ba8fb558cf745291ce7fa87",
+          "canonical_bytes": 4850,
+          "messages": 8,
+          "prompt_upper_bound": 5362,
+          "output_token_cap": 512,
+          "prompt_rate": "3E-7",
+          "completion_rate": "0.0000012",
+          "delivery": "response_received",
+          "held_usd": "0.0022230",
+          "already_reserved_code": 429
+        }
+      ],
+      "final_open_wave_shards": [
+        {
+          "case": "4__source-1--to--4",
+          "original_stage": "task-4__source-1--to--4/solve",
+          "runtime": "2fd7571bba65f9df8011be58bccd4872946973e5",
+          "counts": {
+            "completed": 9,
+            "error": 1,
+            "started": 1,
+            "planned": 1
+          },
+          "suffix": [
+            12
+          ],
+          "reported_usd": "0.011797926",
+          "held_usd": "0.0046224"
+        },
+        {
+          "case": "40__source-1--to--40",
+          "original_stage": "task-40__source-1--to--40/solve",
+          "runtime": "2fd7571bba65f9df8011be58bccd4872946973e5",
+          "counts": {
+            "completed": 10,
+            "started": 1,
+            "planned": 1
+          },
+          "suffix": [
+            12
+          ],
+          "reported_usd": "0.008969958",
+          "held_usd": "0"
+        },
+        {
+          "case": "41__source-1--to--41",
+          "original_stage": "task-41__source-1--to--41/solve",
+          "runtime": "2fd7571bba65f9df8011be58bccd4872946973e5",
+          "counts": {
+            "completed": 9,
+            "error": 1,
+            "started": 1,
+            "planned": 1
+          },
+          "suffix": [
+            12
+          ],
+          "reported_usd": "0.013075310",
+          "held_usd": "0.0022230"
+        }
+      ],
+      "all_prior_and_open_reader_jobs": {
+        "reported_usd": "0.939337954",
+        "held_usd": "0.0512748",
+        "reported_plus_held_usd": "0.990612754"
+      }
+    }
+  },
+  "accounting_total": {
+    "reported_usd": "5.788936507",
+    "held_usd": "0.16497670",
+    "reported_plus_held_usd": "5.953913207"
+  }
+}
