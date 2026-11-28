@@ -2,7 +2,7 @@
 
 새 실험은 계획 파일 하나로 선언한다. 벤치·과제·1회차·작성 방식·조회 방식·조합·참조 기록·반복·예산·재시도를 담고, 작성·조회 방식의 이름과 내용은 자유롭게 정한다. [계획 형식](study-plan-v1.schema.json) · [사용 방법](../docs/development/study-plans.md)
 
-등록된 재방문 첫 판단을 이어가는 계획은 기존 배정·체크포인트 영수증·모델을 해시로 고정하고, 같은 안내의 실제·빈 메모와 고객별 상담 지표를 선언한다. [후속 계획 형식](retail-followup-plan-v1.schema.json) · [전체 상담의 배정과 판독](../docs/development/study-plans.md#리테일-재방문의-최종-상담)
+등록된 재방문 첫 판단을 이어가는 계획은 기존 배정·체크포인트 영수증·모델을 해시로 고정하고, 같은 안내의 실제·빈 메모와 고객별 상담 지표를 선언한다. v2는 주 비교의 직접 가림 판독, 판독 불가와 네이티브 한도 종료의 처리까지 고정한다. v1의 원등록은 오프라인에서 다시 읽을 수 있다. [후속 계획 형식](retail-followup-plan-v1.schema.json) · [전체 상담의 배정과 판독](../docs/development/study-plans.md#리테일-재방문의-최종-상담)
 
 두 벤치의 공통 정책 라운드는 공개 근거와 개발 과제, 형식별 작성·조회 정책, 확인 전 기준을 등록한다. 정책 근거 결과는 행과 작성 기록을 생략한 요약에도 각 집합의 해시를 남긴다. [라운드 선언](policy-round-v1.schema.json) · [정책 근거 결과](policy-evidence-v1.schema.json) · [실제 사용 방법](../docs/reports/20261126-evidence-foundation-plan.md)
 

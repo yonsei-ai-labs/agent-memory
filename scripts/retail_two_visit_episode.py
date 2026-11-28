@@ -153,7 +153,7 @@ def start(journal, job, runtime, orch, policy, items, sources):
     return ctx, memory, bank
 
 
-def finish(journal, ctx, memory, bank, reason, result=None):
+def finish(journal, ctx, memory, bank, reason, result=None, *, continuation_outcome=None):
     grade = "graded" if result is not None else "not_available"
     score = result["reward"] if result is not None else None
     ref = journal.blobs.put(result) if result is not None else None
@@ -161,8 +161,11 @@ def finish(journal, ctx, memory, bank, reason, result=None):
     if bank:
         snapshot = memory.freeze(bank)
         memory.seal(bank)
+    evidence = ([ctx.event("business.transition", {"origin": "revisit.continuation_outcome",
+                                                   "result": continuation_outcome})]
+                if continuation_outcome is not None else [])
     journal.append(
-        [
+        evidence + [
             ctx.at("grade").event(
                 "outcome.scored",
                 {
@@ -563,13 +566,33 @@ def continue_decision(journal, job, task, prefix, runtime, record):
     from tau2.evaluator.evaluator_env import EnvironmentEvaluator
 
     orch, bridge = restore_decision(journal, job, task, prefix, runtime, record)
+    guard = runtime["guard"]
+    prior_calls = guard.calls if runtime.get("seal_continuation") and guard is not None else None
     journal.append(
         [bridge.ctx.event("business.transition", {"origin": "revisit.continued", "checkpoint_ref": record["checkpoint"]})]
     )
-    with bridge:
-        while not orch.done:
-            orch.step()
-            orch._check_termination()
+    try:
+        with bridge:
+            while not orch.done:
+                orch.step()
+                orch._check_termination()
+    except ContractError as error:
+        code = getattr(error, "code", None)
+        if not runtime.get("seal_continuation") or not (isinstance(error, ProviderError)
+                or code in {"ROLE_REQUEST_LIMIT", "INPUT_SIZE_LIMIT"}):
+            raise
+        outcome = {"status": "error", "run": job["run"]}
+        if isinstance(error, ProviderError):
+            outcome["provider_error"] = code
+            if code == "STUDY_LIMIT" and prior_calls is not None and guard.calls == prior_calls:
+                outcome["status"] = "budget_deferred"
+            detail = error.response.get("error") if isinstance(error.response, dict) else None
+            if isinstance(detail, dict) and type(detail.get("code")) is int:
+                outcome["http_status"] = detail["code"]
+        else:
+            outcome["reason"] = code
+        finish(journal, bridge.ctx, bridge.memory, bridge.bank_id, code, continuation_outcome=outcome)
+        return outcome
     reason = orch.termination_reason.value
     trajectory = [m.model_dump(mode="json") for m in orch.trajectory]
     ref = journal.blobs.put(trajectory)
@@ -577,11 +600,13 @@ def continue_decision(journal, job, task, prefix, runtime, record):
     if reason in {"agent_stop", "user_stop"}:
         score = EnvironmentEvaluator.calculate_reward(get_environment, orch.task, orch.trajectory)
         result = {"reward": score.reward, "native_reward": score.model_dump(mode="json"), "trajectory_ref": ref}
-    finish(journal, bridge.ctx, bridge.memory, bridge.bank_id, reason, result)
-    return {
+    outcome = {
         "status": "completed" if result else "incomplete",
         "run": bridge.ctx.run_id,
         "termination": reason,
         "trajectory": ref,
         "db_reward": result["reward"] if result else None,
     }
+    finish(journal, bridge.ctx, bridge.memory, bridge.bank_id, reason, result,
+           continuation_outcome=outcome if runtime.get("seal_continuation") and result is None else None)
+    return outcome

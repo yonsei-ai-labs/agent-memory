@@ -32,22 +32,26 @@
 
 ### 리테일 재방문의 최종 상담
 
-[재방문 후속 계획](../../protocols/studies/retail-revisit-followup-01.json)은 11월 23일에 같은 현재 대화·주문 목록에서 조건부 조회를 허용했던 상담을 이어간다. 주 질문은 지난 주문을 가리킨 고객이 어느 주문인지 다시 알려 주지 않아도, 상담원이 현재 승인을 받아 목표 주문을 취소할 수 있었는가이다. 실제 메모와 빈 메모에는 같은 안내와 도구가 제공됐다. 메모는 첫 방문에서 당시 작성자들이 남긴 네 형식의 묶음이다. 이 비교가 평가하는 것은 고정한 기억의 조회와 활용이다. [기존 첫 판단과 등록 기준](../reports/20261123-retail-conditional-retrieval.md)
+[재방문 후속 계획](../../protocols/studies/retail-revisit-followup-02.json)은 11월 23일에 같은 현재 대화·주문 목록에서 조건부 조회를 허용했던 상담을 이어간다. 주 질문은 지난 주문을 가리킨 고객이 어느 주문인지 다시 알려 주지 않아도, 상담원이 현재 승인을 받아 목표 주문을 취소할 수 있었는가이다. 실제 메모와 빈 메모에는 같은 안내와 도구가 제공됐다. 메모는 첫 방문에서 당시 작성자들이 남긴 네 형식의 묶음이다. 이 비교가 평가하는 것은 고정한 기억의 조회와 활용이다. [기존 첫 판단과 등록 기준](../reports/20261123-retail-conditional-retrieval.md)
 
-1. `plan resolve`는 원등록·첫 방문 154개의 작성 원본·체크포인트 영수증을 대조하고 실제 모델을 호출하기 직전의 네이티브 상태 622개를 복원한다. 77명의 첫 판단 1,848개와 사용량을 원기록에서 다시 집계한다. 안내가 같은 924쌍의 첫 요청이 맞아야 하며, 보관된 154쌍에서 실제 메모만 정답 75개, 빈 메모만 정답 3개가 재현된다. [사전 검증 결과](../../artifacts/analyses/20261128-retail-revisit-followup-preflight.json)
+1. `plan resolve`는 원등록·첫 방문 154개의 작성 원본·체크포인트 영수증을 대조하고 실제 모델을 호출하기 직전의 네이티브 상태 622개를 복원한다. 77명의 첫 판단 1,848개와 사용량을 원기록에서 다시 집계한다. 안내가 같은 924쌍의 첫 요청이 맞아야 하며, 보관된 154쌍에서 실제 메모만 정답 75개, 빈 메모만 정답 3개가 재현된다. [사전 검증 결과](../../artifacts/analyses/20261128-retail-revisit-followup-v2-preflight.json)
 2. 전체 상담 표본은 첫 판단 전에 정한 26명이다. 두 과거 이력, 세 현재 요청, 네 조건에 배정한 624개 모두가 점수표에 들어간다. 주 비교는 26명의 지난 주문 이력 52쌍이다. 현 주문을 직접 말한 두 유형에서는 현재 주문 존중 여부와 잘못된 취소 제안을 본다. 이 26명은 기존 77명에 포함된다. [표본 선정](../research/retail-conditional-retrieval-v1.md#어디까지-실행할-것인가)
-3. 실행기는 622개 원장의 봉인된 사본에서 같은 세션·DB·기억을 복원해 첫 업무 행동부터 이어간다. 같은 사례 안에서 네 조건의 실행 순서는 원등록에서 섞은 순서를 따른다. 조회 한도로 끝난 2개는 주 결과에서 실패로 센다. 각 후속 상담은 한 번만 시작한다. 일시적 공급자 오류가 두 상담 연속 발생하면 배정을 멈춘다. `resume`은 저장된 영수증을 재사용하고 시도 전 상담을 이어간다. 중단된 요청과 미확정 비용은 원장에 남는다.
-4. 1차 지표는 정상 종료·목표 DB·대상과 사유에 대한 현재 동의·대상 주문 재질문 0회가 모두 충족된 상담이다. 되물은 상담, 틀린 취소를 제안한 상담, 승인 후 성공, 최종 DB를 각각 함께 보고한다. 기술 결측과 미판독 대화는 미관측으로 두고 전체 배정에 대한 최선·최악의 범위를 낸다. 고객 안에서 두 이력의 짝차를 평균한 뒤 고객별로 같은 비중을 주고 95% 고객 재표집 구간을 계산한다. 과거 메모의 승인 문구는 현재 고객의 동의로 인정하지 않는다.
+3. 첫 판단에 도달한 622개 상담은 동일 세션·DB·기억의 사본에서 이어간다. 실행기는 상담을 시작하기 전에 별도 사본에서 다음 요청을 구성해 승인 금액으로 보낼 수 있는지 확인한다. 첫 요청을 보낼 수 없으면 원장과 미시작 배정을 보존한다. 실제 전송 후 한도가 소진되면 해당 상담과 확인·보류 비용을 기록하고 중단한다. HTTP 408·429·5xx 또는 전송 불명 장애가 두 상담 연속 발생하면 중단한다. 자격증명·경로를 공급자가 거부하면 첫 오류부터 중단 사유를 남긴다. 재개할 때 봉인된 상담은 원장의 종료 근거와 대조한다.
+4. 주 지표는 정상 종료, 정확한 주문의 취소, 대상·사유에 대한 현재 동의, 주문 식별 재질문 0회를 모두 충족한 상담이다. 조회 한도로 끝난 2개와 네이티브 단계·오류 한도 종료는 이 지표에서 실패다. 기술 장애나 최종 판독 불가로 주 결과를 알 수 없는 상담은 전체 배정의 최선·최악 범위에 포함한다. 목표 DB에 도달하지 못한 것으로 확인된 상담은 발화 판독 상태에 관계없이 주 지표에서 실패다. 되물음, 잘못된 제안, 동의를 갖춘 취소, 네이티브 DB 채점값도 함께 보고한다. 고객의 두 이력을 먼저 평균한 뒤 고객별로 같은 비중을 준다.
+5. 주 비교 52쌍에서 완료된 상담은 모두 조건과 정답을 가린 공개 발화로 직접 판독한다. 지난 11월 22일의 같은 26명·기존 조회 안내에서 주 비교에 해당하는 완료 상담은 103건이었다. 자동 규칙이 재질문을 놓친 5건에서 기존 가림 판독과 주 지표가 달랐다. 실제 메모 4건, 빈 메모 1건이었다. 다른 조건은 명확한 교환에만 자동 규칙을 쓰고, 모호한 대화는 직접 판독한다. [보관된 상담별 결과](../../artifacts/analyses/20261122-retail-two-visit-results-with-recovery.json) · [재현 검사](../../tests/test_study_retail_followup.py)
+6. 점수표는 첫 판단까지와 후속 상담에서 각각 목록·본문 요청, 반환, 답변을 생성한 작업자 입력에 들어간 제목·본문을 집계한다. 배정별 행에는 입력의 요청 ID와 반환 사건을 연결하고, 답변이 확인되지 않은 요청의 노출은 별도 표시한다. 완료·한도 종료·공급자 오류는 원장에 남긴 종결 사유와 결과 파일을 대조한다.
 
 전체 상담과 발화 판독을 마친 뒤, 1차 지표의 고객별 95% 구간과 전체 배정의 결측 범위가 같은 방향으로 0을 벗어나면 이 고객군의 개선 또는 악화로 판정한다. 나머지는 효과 미확정으로 마무리한다. 고객 26명으로 작은 차이까지 확정하기는 어렵다. 예를 들어 동률이 없는 독립 고객 26명에서 양측 5% 정확 부호검정은 19명 이상이 같은 방향이어야 한다. 실제 개선 확률이 65%인 경우 이 예시의 검정력은 약 26%다.
 
 ```bash
-plan=protocols/studies/retail-revisit-followup-01.json
+plan=protocols/studies/retail-revisit-followup-02.json
 uv run python -m agent_memory_eval.study plan resolve --plan "$plan"
 uv run python -m agent_memory_eval.study analyze --plan "$plan"
 ```
 
-새 유료 실행은 이 계획에 대해 승인된 실제 금액과 발언을 공통 `authorize` 명령에 전달하고, 기존 실험처럼 코드와 승인 기록을 커밋한 뒤 `run`으로 시작한다. 첫 판단의 과거 지출과 후속 상담의 신규 지출은 따로 집계한다. `analyze --review-packets <새 JSON 경로>`는 배정 조건과 채점 목표를 제외한 공개 대화를 내보낸다. 명확한 대화는 기존 판독 규칙을 적용하고, 모호한 대화에는 `--reviews <JSON 경로>`로 공개 발화 해시에 연결된 판독을 반영할 수 있다. 입력은 발화 해시를 키로 하고 `status`, `turns_sha256`, `clarifications`, `proposals`, `responses`를 담는다. [공개 발화 판독](../../scripts/analyze_retail_two_visit.py) · [보관할 계획의 계약](../../schemas/retail-followup-plan-v1.schema.json)
+유료 실행에는 이 계획에 승인된 금액과 실제 승인 발언을 `authorize`에 전달하고 코드·승인 기록을 커밋한다. 첫 판단의 과거 지출과 후속 상담의 신규 지출을 각각 집계한다. [v1 준비 기록](../../artifacts/analyses/20261128-retail-revisit-followup-preflight.json)과 [당시 계획](../../protocols/studies/retail-revisit-followup-01.json)은 보관한다.
+
+`analyze --review-packets <새 JSON 경로>`로 판독할 공개 대화를 내보낸다. 판독자에게는 이 파일을 전달한다. 파일에는 발화와 해시만 있으며 같은 대화는 한 번 판독한다. `analyze --reviews <JSON 경로>`로 해시별 판독을 반영한다. 주 비교에는 `method=blinded_direct_read`를 기록한다. `status=reviewed`이면 `turns_sha256`·`clarifications`·`proposals`·`responses`를, 직접 읽어도 판단할 수 없으면 `status=unresolved`와 같은 발화 해시를 제출한다. 점수표의 `awaiting_review`는 아직 판독이 필요한 건수이고 `unresolved`는 최종 결측 건수다. [공개 발화 채점](../../scripts/analyze_retail_two_visit.py) · [계획 계약](../../schemas/retail-followup-plan-v1.schema.json)
 
 ### 공식 과제의 1·2회차
 
@@ -100,7 +104,7 @@ python -m agent_memory_eval.study analyze --plan protocols/studies/<id>.json
 | `tau-banking` | τ³ 은행 원본 과제와 고객 시뮬레이터. 실행 핵심은 `experiments/forms_batch.execute_prepared`를 그대로 쓴다. |
 | `tau2-airline` | τ² 항공 train 과제. DB와 대화 확인으로 채점해 채점용 LLM이 없다. [설정](../../protocols/studies/setups/tau2-airline-v1.json) |
 | `tau2-retail` | τ² 리테일 train 과제. 자연어 판정이 있는 과제는 고정된 native 채점기를 부른다. [설정](../../protocols/studies/setups/tau2-retail-v1.json) |
-| `tau2-retail-revisit` | 등록한 재방문 첫 판단의 원기록 검산, 동일 세션 후속 상담, 실제·빈 메모의 고객별 짝비교. [후속 계획](../../protocols/studies/retail-revisit-followup-01.json) |
+| `tau2-retail-revisit` | 등록한 재방문 첫 판단의 원기록 검산, 동일 세션 후속 상담, 실제·빈 메모의 고객별 짝비교. [후속 계획](../../protocols/studies/retail-revisit-followup-02.json) |
 | `bfcl-relevance` | BFCL 단일 판단 문항과 로컬 모델. 실행 핵심은 `runner/bfcl_relevance`의 작성·풀이 함수를 쓴다. |
 
 τ² 세 어댑터는 같은 단계 실행 코드를 쓴다. 도메인마다 다른 것은 과제 묶음과 분할, 채점 기준, 기본 업무 도구, 채점기 연결뿐이다.

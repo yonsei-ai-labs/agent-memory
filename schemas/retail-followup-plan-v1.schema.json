@@ -5,7 +5,7 @@
   "additionalProperties": false,
   "required": ["format", "id", "question", "benchmark", "models", "sample", "execution", "comparison"],
   "properties": {
-    "format": {"const": "agent-memory-retail-followup/v1"},
+    "format": {"enum": ["agent-memory-retail-followup/v1", "agent-memory-retail-followup/v2"]},
     "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9.-]{2,80}$"},
     "question": {"type": "string", "pattern": "\\S"},
     "benchmark": {
@@ -33,6 +33,15 @@
         "pause_after_consecutive_transient_errors": {"type": "integer", "minimum": 1}
       }
     },
+    "scoring": {
+      "type": "object", "additionalProperties": false,
+      "required": ["primary_transcripts", "unresolved_reviews", "native_failure_terminations"],
+      "properties": {
+        "primary_transcripts": {"const": "blinded_direct_review_all_completed_primary_assignments"},
+        "unresolved_reviews": {"const": "final_missing_with_allocation_bounds"},
+        "native_failure_terminations": {"const": ["max_steps", "too_many_errors"]}
+      }
+    },
     "comparison": {
       "type": "object",
       "additionalProperties": false,
@@ -46,6 +55,9 @@
       }
     }
   },
+  "if": {"properties": {"format": {"const": "agent-memory-retail-followup/v2"}}},
+  "then": {"required": ["scoring"]},
+  "else": {"not": {"required": ["scoring"]}},
   "$defs": {
     "hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
     "ref": {

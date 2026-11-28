@@ -31,7 +31,7 @@ def main(argv=None):
     parser.add_argument("--tasks", help="Comma-separated task ids: score only these tasks (for example the confirmation set)")
     parser.add_argument("--save", action="store_true", help="Keep rows and scorecard under artifacts/studies/<plan id>/")
     parser.add_argument("--reviews", type=Path, help="Follow-up transcript labels keyed by public-turn hash")
-    parser.add_argument("--review-packets", type=Path, help="Export blinded public follow-up transcripts to a new JSON file")
+    parser.add_argument("--review-packets", type=Path, help="Export public transcripts for blinded review to a new JSON file")
     args = parser.parse_args(argv)
     plan = load_plan(args.plan, ROOT)
     if args.command in {"authorize", "run", "resume"}:
@@ -49,6 +49,8 @@ def main(argv=None):
             out = dict(plan=plan["id"], sha256=plan_digest(plan), adapter=adapter.name)
             if followup:
                 out["comparison"] = plan["comparison"]
+                if "scoring" in plan:
+                    out["scoring"] = plan["scoring"]
             else:
                 out["conditions"] = conditions(plan)
         elif staged:

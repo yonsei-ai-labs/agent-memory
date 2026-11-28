@@ -79,10 +79,10 @@ def main() -> None:
     if execution_fixture["contract"] != "per-role-limits/v1":
         raise ValueError("Unknown execution limit fixture contract")
     validators["policy-round"].validate(read_json(ROOT / "protocols/diagnostics/portable-writer-round-v1.json"))
-    from agent_memory_eval.study.plan import load_plan
+    from agent_memory_eval.study.plan import FOLLOWUP_FORMAT, LEGACY_FOLLOWUP_FORMAT, load_plan
     for plan_path in sorted(p for p in (ROOT / "protocols/studies").rglob("*.json") if "setups" not in p.parts):
         plan = read_json(plan_path)
-        key = "retail-followup-plan-v1" if plan["format"] == "agent-memory-retail-followup/v1" else "study-plan-v1"
+        key = "retail-followup-plan-v1" if plan["format"] in {FOLLOWUP_FORMAT, LEGACY_FOLLOWUP_FORMAT} else "study-plan-v1"
         validators[key].validate(plan)
         load_plan(plan_path, ROOT)
     unknown = read_json(ROOT / "protocols/studies/bank-outcome-first-01.json")

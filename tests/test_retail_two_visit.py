@@ -10,7 +10,7 @@ from tempfile import TemporaryDirectory
 from unittest.mock import patch
 
 from agent_memory_eval.analysis.paired_policy import customer_contrast
-from agent_memory_eval.contracts.core import ContractError, canonical, digest
+from agent_memory_eval.contracts.core import ContractError, canonical, digest, read_json
 from agent_memory_eval.contracts.validation import ROOT
 from agent_memory_eval.models.openrouter import ProviderError, request_reservation_usd
 from agent_memory_eval.recording.journal import BlobStore, Journal
@@ -276,7 +276,8 @@ class NativeTwoVisitTests(unittest.TestCase):
                                             decision_request=result["request"], confirmed_usd="0.001", held_usd="0")
 
         comparison = dict(memory="query", empty="empty_query", primary_mode="previous_only", primary_outcome="consent_without_reasking")
-        plan = dict(format=FOLLOWUP_FORMAT, id="followup", comparison=comparison,
+        scoring = read(ROOT / "protocols/studies/retail-revisit-followup-02.json")["scoring"]
+        plan = dict(format=FOLLOWUP_FORMAT, id="followup", models={}, comparison=comparison, scoring=scoring,
                     execution={"attempts_per_checkpoint": 1, "pause_after_consecutive_transient_errors": 2})
         record = dict(assigned=dict(registered=2, continuable=2), calibration={})
         native = dict(protocol=self.protocol, connection=self.connection, instructions=rt["instructions"],
@@ -302,6 +303,8 @@ class NativeTwoVisitTests(unittest.TestCase):
                     replies = (["Shall I cancel " + oid + " because it is no longer needed?",
                                 [call("cancel_pending_order", order_id=oid, reason="no longer needed")], "Cancelled."]
                                if worker else ["Yes, please cancel that order.", "###STOP###"])
+                    if worker and key == jobs[0]["run"]:
+                        replies = [[call("memory_list")], [call("memory_get", id="m_order")], *replies]
                     self.streams[key] = Replies(replies, self.model["selected_endpoint"]["provider_name"])
                 answer = self.streams[key].respond(wire)
                 answer["id"] = "test-followup-" + str(self.guard.calls)
@@ -317,23 +320,122 @@ class NativeTwoVisitTests(unittest.TestCase):
               patch.object(followup, "OpenRouterClient", MeteredReplies)):
             with self.assertRaises(ContractError):
                 adapter.run(plan, self.root, ROOT, approval=dict(approved, resolved_sha256="different"))
+            limited = dict(plan, id="low-budget")
+            grant = approval_for(limited, record, max_usd="0.0000001", user_authorization="synthetic test")
+            for _ in range(3):
+                paused = adapter.run(limited, self.root, ROOT, approval=grant)
+                self.assertEqual((paused["reserved_calls"], paused["pause_reason"]), (0, "study_limit"))
+            pending, partial = adapter.analyze(limited, self.root, ROOT)
+            self.assertEqual([r["status"] for r in pending], ["unstarted", "unstarted"])
+            self.assertEqual(partial["phase"], "partial")
+            for job in jobs:
+                folder = self.root / "runs/low-budget" / job["run"]
+                self.assertFalse((folder / "continuation.started").exists())
+                self.assertEqual(digest((folder / "log.jsonl").read_bytes()), receipts[job["run"]]["journal_sha256"])
             result = adapter.run(plan, self.root, ROOT, approval=approved)
-            self.assertEqual(result["reserved_calls"], 10)
+            self.assertEqual(result["reserved_calls"], 12)
             self.assertEqual(adapter.run(plan, self.root, ROOT, approval=approved), result)
-            rows, card = adapter.analyze(plan, self.root, ROOT)
-            self.assertEqual(card["continuation_billing"]["verified_submissions"], 10)
-            self.assertEqual([r["continuation_requests"] for r in rows], [5, 5])
+            ledger = self.root / "runs/followup/expense.jsonl"
+            first_reservation = read_json(ledger.read_bytes().splitlines()[0])["reserved"]
+            partial_plan = dict(plan, id="partly-funded")
+            grant = approval_for(partial_plan, record, max_usd=first_reservation, user_authorization="synthetic test")
+            partial = adapter.run(partial_plan, self.root, ROOT, approval=grant)
+            self.assertEqual(partial["pause_reason"], "study_limit")
+            self.assertGreater(partial["reserved_calls"], 0)
+            self.assertEqual(partial["stages"]["continuation"], {"error": 1})
+            self.assertEqual(adapter.run(partial_plan, self.root, ROOT, approval=grant), partial)
+            partially_funded, card = adapter.analyze(partial_plan, self.root, ROOT)
+            self.assertEqual([r["status"] for r in partially_funded], ["error", "unstarted"])
+            self.assertEqual(card["phase"], "partial")
+            packet_file = self.root / "blind.json"
+            rows, card = adapter.analyze(plan, self.root, ROOT, review_packets=packet_file)
+            self.assertEqual(card["continuation_billing"]["verified_submissions"], 12)
+            self.assertEqual([r["continuation_requests"] for r in rows], [7, 5])
             self.assertTrue(all(r["db_success"] for r in rows))
+            self.assertTrue(all(r["consent_without_reasking"] is None for r in rows))
+            self.assertEqual(card["phase"], "awaiting_transcript_review")
+            self.assertTrue(rows[0]["body_seen"])
+            exposure = rows[0]["memory_exposure"]
+            self.assertFalse(exposure["first_decision"]["body_in_input"])
+            self.assertTrue(exposure["continuation"]["body_in_input"])
+            self.assertTrue(any(s["field"] == "body" and s["return_event"] for s in exposure["continuation"]["input_spans"]))
+            self.assertFalse(rows[1]["body_seen"])
+            group = next(r for r in card["by_mode_arm"] if r["arm"] == "query")
+            self.assertEqual(group["memory_exposure"]["whole_consultation"]["body_in_input"], 1)
+            labels = {}
+            for key, packet in read(packet_file).items():
+                self.assertEqual(set(packet), {"turns_sha256", "turns"})
+                turns = packet["turns"]
+                offer = next(i for i, t in enumerate(turns) if t.get("text", "").startswith("Shall I cancel"))
+                yes = next(i for i, t in enumerate(turns) if t.get("text", "").startswith("Yes, please"))
+                labels[key] = dict(turns_sha256=key, status="reviewed", method="blinded_direct_read",
+                                   clarifications=[], proposals=[dict(turn=offer, order=oid, reason="no longer needed")],
+                                   responses=[dict(turn=yes, proposal=offer, disposition="confirmed")])
+            reviews = self.root / "reviews.json"
+            key = next(iter(labels))
+            write_json(reviews, {**labels, key: dict(labels[key], method="automatic")})
+            with self.assertRaisesRegex(ContractError, "direct blinded review"):
+                adapter.analyze(plan, self.root, ROOT, reviews=reviews)
+            write_json(reviews, {**labels, key: dict(turns_sha256=key, status="unresolved", method="blinded_direct_read")})
+            unresolved, card = adapter.analyze(plan, self.root, ROOT, reviews=reviews)
+            self.assertEqual(card["phase"], "scored")
+            self.assertTrue(any(r["consent_without_reasking"] is None for r in unresolved))
+            self.assertEqual(card["contrasts"]["consent_without_reasking"]["pairs"]["missing"], 1)
+            write_json(reviews, labels)
+            _, card = adapter.analyze(plan, self.root, ROOT, reviews=reviews)
             self.assertEqual(card["contrasts"]["consent_without_reasking"]["pairs"]["both_success"], 1)
             self.assertEqual(card["contrasts"]["asked_which_order"]["pairs"]["both_failure"], 1)
             with (self.root / "runs/followup/controller.lock").open("rb") as active:
                 followup.fcntl.flock(active, followup.fcntl.LOCK_EX)
                 with self.assertRaisesRegex(ContractError, "controller is active"):
                     adapter.analyze(plan, self.root, ROOT)
+            receipt_file = self.root / "runs/followup" / jobs[0]["run"] / "continuation.json"
+            write_json(receipt_file, dict(read(receipt_file), status="error", provider_error="HTTP_503"))
+            with self.assertRaisesRegex(ContractError, "native journal"):
+                adapter.analyze(plan, self.root, ROOT)
+            with self.assertRaisesRegex(ContractError, "native journal"):
+                adapter.run(plan, self.root, ROOT, approval=approved)
         for job in jobs:
             session = original / job["run"]
             self.assertEqual(digest((session / "log.jsonl").read_bytes()), receipts[job["run"]]["journal_sha256"])
             self.assertFalse((session / "continuation.started").exists())
+
+    def test_native_step_limit_and_provider_outage_have_distinct_recoverable_outcomes(self):
+        from agent_memory_eval.experiments.forms_batch import write_json
+        from agent_memory_eval.study.adapters.retail_revisit import consultation_row
+
+        for cause in ("max_steps", "HTTP_520", "STUDY_LIMIT"):
+            with self.subTest(cause=cause):
+                job = dict(self.job("query"), run="r_" + cause, customer="c", source="s", mode="previous_only")
+                rt = self.runtime([[call("get_order_details", order_id=job["target"])]], [])
+                rt["seal_continuation"] = True
+                rt["guard"] = ExpenseLedger(self.root / "unused-expense.jsonl", "1", 10, float("inf"))
+                if cause == "max_steps":
+                    rt["protocol"] = dict(self.protocol, native_steps=2)
+                folder = self.root / job["run"]
+                with Journal(folder, job["run"], contract_version="1.2") as journal:
+                    first = first_decision(journal, job, self.task, self.prefix, rt, [self.item], [], keep=True)
+                    sid = journal.scan["starts"][job["run"]]["session_id"]
+                raw = (folder / "log.jsonl").read_bytes()
+                first.update(journal_bytes=len(raw), journal_sha256=digest(raw))
+                write_json(folder / "decision.json", first)
+                write_json(folder / "continuation.started", dict(stage="continuation", run=job["run"]))
+                failure = (ProviderError("STUDY_LIMIT", submitted=False) if cause == "STUDY_LIMIT" else
+                           ProviderError("HTTP_520", {"error": {"code": 520}}, submitted=True))
+                with (Journal(folder, job["run"], contract_version="1.2") as journal,
+                      patch.object(rt["clients"]["worker"], "respond", side_effect=failure)):
+                    outcome = continue_decision(journal, job, self.task, self.prefix, rt, first)
+                self.assertEqual(recover_finished(folder, "continuation", job, True), outcome)
+                raw = (folder / "log.jsonl").read_bytes()
+                write_json(folder / "continuation.json", dict(outcome, journal_bytes=len(raw), journal_sha256=digest(raw)))
+                prior = dict(session=sid, first_lookup=False, focused=True, decision_request=first["request"], included=[],
+                             confirmed_usd="0", held_usd="0")
+                row = consultation_row(folder, job, first, prior, {}, {}, native_failures=["max_steps", "too_many_errors"])
+                self.assertEqual(row["reason"], cause)
+                if cause == "STUDY_LIMIT":
+                    self.assertEqual(row["status"], "budget_deferred")
+                self.assertIs(row["consent_without_reasking"], False if cause == "max_steps" else None)
+                self.assertIsNone(row["db_success"])
 
     def test_native_db_evaluator_ignores_absent_and_refused_consent(self):
         from tau2.data_model.message import AssistantMessage, ToolCall, UserMessage

@@ -211,13 +211,13 @@ class ExpenseLedger:
             os.fsync(stream.fileno())
         self.apply(row)
 
+    def can_reserve(self, maximum):
+        return (self.calls < self.max_calls and self.spent + self.held + maximum <= self.cap
+                and time.monotonic() < self.deadline)
+
     def before(self, wire, model):
         maximum = request_reservation_usd(wire, model)
-        if (
-            self.calls >= self.max_calls
-            or self.spent + self.held + maximum > self.cap
-            or time.monotonic() >= self.deadline
-        ):
+        if not self.can_reserve(maximum):
             self.denied = True
             raise ProviderError("STUDY_LIMIT")
         if self.unknown_cost:
@@ -271,11 +271,11 @@ def sealed_bank(folder, status, expected_run):
     return snapshot_items(BlobStore(folder), state, status["snapshot"])
 
 
-def recover_finished(folder, stage, job, keep):
+def recover_finished(folder, stage, job, keep, *, evidence=None):
     """Recover solely from durable terminal evidence when a process died before its receipt."""
     if not (folder / "log.jsonl").exists():
         return None
-    scan, _, experiment = read_experiment(folder)
+    scan, _, experiment = evidence if evidence is not None else read_experiment(folder)
     require(experiment == job["run"], "Attempted session identity changed")
     if scan["pending_requests"] or scan["tail_bytes"]:
         return None
@@ -310,12 +310,23 @@ def recover_finished(folder, stage, job, keep):
             "snapshot": ended["end_snapshot_id"],
             "provider_error": None,
         }
+    if ended and ended["grading_status"] == "not_available" and stage == "continuation":
+        terminal = [e["payload"]["result"] for e in events
+                    if e["payload"].get("origin") == "revisit.continuation_outcome"]
+        if terminal:
+            result, = terminal
+            reason = result.get("termination") or result.get("provider_error") or result.get("reason")
+            require(result["run"] == job["run"] and result["status"] in {"incomplete", "error", "budget_deferred"}
+                    and reason == ended["termination_reason"], "Continuation termination differs from the journal")
+            return result
     if ended and ended["grading_status"] == "graded":
         if stage == "source":
             return {"status": "completed", "run": job["run"]}
         if stage == "continuation":
             (outcome,) = [e["payload"] for e in events if e["type"] == "outcome.scored"]
             grade = blobs.get(outcome["official_artifact_ref"])
+            require(ended["termination_reason"] in {"agent_stop", "user_stop"}
+                    and grade["reward"] == outcome["official_score"], "Continuation native grade changed")
             return {
                 "status": "completed",
                 "run": job["run"],
@@ -326,7 +337,17 @@ def recover_finished(folder, stage, job, keep):
     return None
 
 
-def execute(study, runtime, *, through, continuation, destination, pause_after_transient=None):
+def verify_continuation_receipt(folder, job, receipt, *, evidence=None):
+    marker = folder / "continuation.started"
+    require(marker.is_file() and read(marker) == {"stage": "continuation", "run": job["run"]},
+            "Continuation lacks its original attempt marker")
+    require((folder / "log.jsonl").stat().st_size == receipt["journal_bytes"], "Unsealed follow-up journal suffix")
+    actual = recover_finished(folder, "continuation", job, True, evidence=evidence)
+    expected = {k: v for k, v in receipt.items() if k not in {"journal_bytes", "journal_sha256"}}
+    require(actual and actual == expected, "Full outcome differs from its native journal")
+
+
+def execute(study, runtime, *, through, continuation, destination, pause_after_transient=None, admit_continuation=None):
     jobs, tasks, prefixes = study["jobs"], study["tasks"], study["public"]
     known_sources = {j["task"]: j for j in jobs["source"]}
     writers = {(j["task"], j["arm"]): j for j in jobs["writer"]}
@@ -341,7 +362,13 @@ def execute(study, runtime, *, through, continuation, destination, pause_after_t
             folder = destination / j["run"]
             previous = read_receipt(folder, stage)
             if previous:
+                if stage == "continuation" and runtime.get("seal_continuation"):
+                    verify_continuation_receipt(folder, j, previous)
                 counts[previous["status"]] += 1
+                if admit_continuation and previous.get("provider_error") == "STUDY_LIMIT":
+                    runtime["guard"].denied = True
+                    runtime["guard"].pause_reason = "study_limit"
+                    break
                 continue
             folder.mkdir(exist_ok=True)
             marker = folder / (stage + ".started")
@@ -352,6 +379,10 @@ def execute(study, runtime, *, through, continuation, destination, pause_after_t
                     continue
             else:
                 if runtime["guard"].denied:
+                    break
+                if stage == "continuation" and admit_continuation and not admit_continuation(j, folder):
+                    runtime["guard"].denied = True
+                    runtime["guard"].pause_reason = "study_limit"
                     break
                 fixed(marker, {"stage": stage, "run": j["run"]})
                 runtime["guard"].unknown_cost = False
@@ -366,6 +397,8 @@ def execute(study, runtime, *, through, continuation, destination, pause_after_t
             fixed(folder / (stage + ".json"), value)
             counts[result["status"]] += 1
             guard = runtime["guard"]
+            if admit_continuation and result.get("provider_error") == "STUDY_LIMIT":
+                guard.denied = True
             write_json(
                 destination / "progress.json",
                 {
@@ -377,9 +410,10 @@ def execute(study, runtime, *, through, continuation, destination, pause_after_t
                 },
             )
             if pause_after_transient:
-                transient = result.get("provider_error") in {
-                    "HTTP_429", "HTTP_500", "HTTP_502", "HTTP_503", "HTTP_504", "TRANSPORT_UNKNOWN",
-                }
+                code = result.get("provider_error") or ""
+                status = code.removeprefix("HTTP_") if code.startswith("HTTP_") else str(result.get("http_status", ""))
+                transient = (code == "TRANSPORT_UNKNOWN" or status in {"408", "429"}
+                             or len(status) == 3 and status.isdigit() and status.startswith("5"))
                 consecutive_errors = consecutive_errors + 1 if transient else 0
                 if consecutive_errors >= pause_after_transient:
                     totals[stage] = dict(counts)
@@ -398,9 +432,15 @@ def execute(study, runtime, *, through, continuation, destination, pause_after_t
                 "UNPINNED_ROUTE",
                 "CREDENTIAL_IN_RESPONSE",
             }:
+                if runtime.get("seal_continuation"):
+                    totals[stage] = dict(counts)
+                    guard.pause_reason = result["provider_error"]
+                    return totals
                 raise ContractError("Provider rejected the frozen execution: " + result["provider_error"])
         totals[stage] = dict(counts)
         if runtime["guard"].denied:
+            if admit_continuation:
+                runtime["guard"].pause_reason = "study_limit"
             break
     return totals
 

@@ -12,7 +12,8 @@ FORMAT = "agent-memory-study-plan/v2"
 LEGACY_FORMAT = "agent-memory-study-plan/v1"  # Runs recorded before models were declared; readable, not runnable.
 SCHEMA = "study-plan-v1.schema.json"  # Covers both formats; v2 requires the models block.
 STANDARD_MODELS = "protocols/models/project-standard-v1.json"
-FOLLOWUP_FORMAT = "agent-memory-retail-followup/v1"
+LEGACY_FOLLOWUP_FORMAT = "agent-memory-retail-followup/v1"
+FOLLOWUP_FORMAT = "agent-memory-retail-followup/v2"
 
 
 def _schema():
@@ -39,7 +40,7 @@ def plan_digest(plan):
 
 
 def check_plan(plan, root):
-    if isinstance(plan, dict) and plan.get("format") == FOLLOWUP_FORMAT:
+    if isinstance(plan, dict) and plan.get("format") in {FOLLOWUP_FORMAT, LEGACY_FOLLOWUP_FORMAT}:
         schema = read_json((SCHEMA_ROOT / "retail-followup-plan-v1.schema.json").read_bytes())
         error = next(Draft202012Validator(schema).iter_errors(plan), None)
         if error:
@@ -99,6 +100,8 @@ def load_plan(path, root):
 
 def require_declared_models(plan):
     """Only plans that name the models under study may spend or run."""
+    if plan["format"] == LEGACY_FOLLOWUP_FORMAT:
+        raise ContractError("Use the v2 follow-up with blinded primary review before authorizing or running")
     if plan["format"] not in {FORMAT, FOLLOWUP_FORMAT} or "models" not in plan:
         raise ContractError("Declare the models under study (plan format v2) before running")
     return plan["models"]
