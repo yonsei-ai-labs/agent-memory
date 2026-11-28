@@ -139,6 +139,9 @@ class Tau2Bridge:
             entries.append(self.message_sources[identity])
         return entries
 
+    def validate_native_wire(self, actor, request, native_messages):
+        self.verify_wire(actor, request, native_messages)
+
     def completion(self, **kwargs):
         if self.active is None:
             raise ContractError("An untracked native model call was blocked")
@@ -157,7 +160,7 @@ class Tau2Bridge:
         if self.project_worker_history and actor == "worker":
             validation["project_self_authored"] = True
         if self.verify_wire is not None:
-            validation["validate_wire"] = lambda request: self.verify_wire(actor, request, expected["messages"])
+            validation["validate_wire"] = lambda request: self.validate_native_wire(actor, request, expected["messages"])
         message, source, request_id = self.gateway.call(self.ctx, self.registry, actor, template, entries,
             self.clients[actor], max_requests=None if self.execution_limits else self.config["guards"]["max_model_requests"],
             execution_limits=self.execution_limits, **validation)

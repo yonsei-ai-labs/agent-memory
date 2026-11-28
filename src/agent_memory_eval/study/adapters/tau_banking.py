@@ -19,7 +19,7 @@ from agent_memory_eval.adapters.tau2 import PIN, native_modules, verify_checkout
 from agent_memory_eval.analysis.recorded_decisions import require
 from agent_memory_eval.contracts.connection import validate_profile
 from agent_memory_eval.contracts.core import ContractError, canonical, digest, read_json
-from agent_memory_eval.contracts.validation import SCHEMA_ROOT
+from agent_memory_eval.contracts.validation import ROOT, SCHEMA_ROOT
 from agent_memory_eval.experiments.batch_recovery import POLICY as RESUME_UNSTARTED, stage_lease
 from agent_memory_eval.experiments.forms_batch import BatchGuard, endpoint_terms, execute_prepared, live_models, solve_connection
 from agent_memory_eval.experiments.fresh_forms import CostReservations
@@ -65,7 +65,7 @@ def outcome_fields(obs):
     return "missing", None, reason, False
 
 
-def recorded_stages(run_root):
+def recorded_stages(run_root, *, root=ROOT):
     close = run_root / "completion.json"
     stages = read(close)["stages"] if close.is_file() else {}
     checkpoint = run_root / "through-write.json"
@@ -77,7 +77,7 @@ def recorded_stages(run_root):
         stages.update(written["stages"])
     if (run_root / "reader-batches").is_dir():
         from agent_memory_eval.study.adapters.tau_reader_stage import reader_batch_stages
-        readers = reader_batch_stages(run_root, include_funded=True)
+        readers = reader_batch_stages(run_root, include_funded=True, root=root)
         require(stages.keys().isdisjoint(readers), "A reader shard is claimed by two stage controllers")
         stages.update(readers)
     return stages
@@ -226,9 +226,16 @@ def customer_tool_stop(folder, case, profile, design, identity, models, *, expec
                 customer_response_sha256=finish["response_ref"]["sha256"])
 
 
-def checked_input_stop(folder, case, close, rows, profile, design, identity, models, *, expected_seal=None):
+def checked_input_stop(folder, case, close, rows, profile, design, identity, models, *, expected_seal=None,
+                       wire_repair=None):
     invalid = {"FIRST_PASS_MISMATCH", "TASK_START_MISMATCH"}
     codes = {(r.get("result") or {}).get("error_code") for r in rows}
+    if wire_repair is not None:
+        from agent_memory_eval.study.adapters.tau_reader_operations import repair_arms
+        require(profile["stage"] == "solve" and close["stop_reason"] == "first_pass_mismatch",
+                "Wire-repair evidence must belong to a stopped reader shard")
+        repair_arms(folder, wire_repair)
+        return None
     if not codes & invalid and close.get("stop_reason") not in {s.lower() for s in invalid}:
         return None
     if profile["stage"] == "source" and codes == {"TASK_START_MISMATCH"}:
@@ -248,6 +255,12 @@ def _bank_shard(common, case, stage_name, grant):
     stage = cfg["stage_kinds"][stage_name]
     task_dir = output / ("task-" + case["task"])
     dest = task_dir / stage_name
+    repair = cfg.get("wire_repair")
+    name = f"{task_dir.name}/{stage_name}"
+    if repair and name in repair["previous_shards"]:
+        require((dest / "completion.json").is_file() and shard_seal(dest) == repair["previous_shards"][name],
+                "A reader shard frozen before the wire repair has changed")
+        identity = repair["prior_implementation"]
     opening = case.get("opening", case)
     donor = case.get("donor", case)
     imported = opening.get("imported_first_pass")
@@ -372,7 +385,8 @@ def _bank_shard(common, case, stage_name, grant):
             and endpoint_terms(ctl["model_catalog_entries"]) == endpoint_terms(models)
             and len(rows) == len(jobs) and all(all(r[k] == v for k, v in j.items()) for r, j in zip(rows, jobs)),
             "The sealed shard does not match its registration")
-    stop = checked_input_stop(dest, case, close, rows, profile, design, identity, models)
+    stop = checked_input_stop(dest, case, close, rows, profile, design, identity, models,
+                              wire_repair=repair["recoveries"].get(name) if repair else None)
     if stop:
         fixed(task_dir / "customer-opening-stop.json", stop)
 
@@ -707,7 +721,8 @@ class Tau2Study:
         return admit
 
     def _retry_cases(self, root, cfg, cases, stage, attempt, codes):
-        """Readers whose latest attempt of ``stage`` ended on a registered transient provider error."""
+        """Readers from a confirmed provider failure or a separately registered wire-repair stop."""
+        from agent_memory_eval.study.adapters.tau_reader_operations import retry_rows
         retry = []
         latest = stage if attempt == 1 else f"{stage}-retry-{attempt - 1}"
         for case in cases:
@@ -715,8 +730,9 @@ class Tau2Study:
             if not (task_dir / latest / "completion.json").is_file():
                 continue
             _, ctl, rows = sealed_rows(task_dir / latest)
-            failed = [r for r in rows if r["status"] == "error" and (r.get("result") or {}).get("official_success") is None
-                      and (r.get("result") or {}).get("error_code") in codes]
+            name = f"{task_dir.name}/{latest}"
+            certificate = (cfg.get("wire_repair") or {}).get("recoveries", {}).get(name)
+            failed = retry_rows(task_dir / latest, rows, codes, certificate, verify_http=bool(cfg.get("reader_operations")))
             if not failed:
                 continue
             write_dir = root / ("task-" + case.get("donor", case)["task"]) / "write"
@@ -724,9 +740,6 @@ class Tau2Study:
             writers = {w["arm"]: w for w in written}
             readers = {}
             for r in failed:
-                if cfg.get("reader_operations"):
-                    from agent_memory_eval.study.adapters.tau_reader_operations import confirmed_transient
-                    confirmed_transient(task_dir / latest, r)
                 writer = writers[case["arm_writer"][r["arm"]]]
                 readers[r["arm"]] = dict(index=r["index"], writer=writer["run_id"], snapshot=writer["result"]["snapshot_id"])
                 if "pool_sources" in case:

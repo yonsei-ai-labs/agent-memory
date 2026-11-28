@@ -141,3 +141,27 @@ def confirmed_transient(shard, row):
             "A transient reader retry has no received provider error")
     error = log.blobs.get(last["response_ref"]).get("error") or {}
     require(result["error_code"] == f"HTTP_{error.get('code')}", "A reader retry differs from its provider response")
+
+
+def repair_arms(shard, certificate):
+    """Allow only the independently verified wire failure and its eligible, never-dispatched suffix."""
+    if certificate is None:
+        return set()
+    from agent_memory_eval.study.reader_wire_evidence import verified_recovery
+    require(verified_recovery(shard, expected_seal=certificate["seal"]) == certificate,
+            "Wire-repair slots differ from the sealed input-validation evidence")
+    return certificate["failed"].keys() | certificate["unstarted"].keys()
+
+
+def retry_rows(shard, rows, codes, certificate=None, *, verify_http=True):
+    repaired = repair_arms(shard, certificate)
+    selected = []
+    for row in rows:
+        result = row.get("result") or {}
+        if row["status"] == "error" and result.get("official_success") is None and result.get("error_code") in codes:
+            if verify_http:
+                confirmed_transient(shard, row)
+            selected.append(row)
+        elif row["arm"] in repaired:
+            selected.append(row)
+    return selected

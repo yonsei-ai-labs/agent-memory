@@ -283,7 +283,7 @@ def _register(root, workspace, folder, plan, directory, scope, identity, *, publ
     return value
 
 
-def reader_command(plan, workspace, root, adapter, path, *, execute=False, checkout=None, progress=None):
+def reader_command(plan, workspace, root, adapter, path, *, execute=False, checkout=None, progress=None, wire_repair=None):
     workspace, root = Path(workspace).resolve(), Path(root).resolve()
     spec, scope, registration, resolved, sources = _context(plan, workspace, root, adapter, path, checkout)
     if not execute and "runtime_commit" not in scope:
@@ -296,17 +296,29 @@ def reader_command(plan, workspace, root, adapter, path, *, execute=False, check
     identity = implementation_identity(root)
     folder = workspace / "runs" / plan["id"]
     directory = safe_path(folder, "reader-batches/" + scope["id"])
+    original_identity = identity
+    if wire_repair:
+        require(plan["benchmark"]["adapter"] != "bfcl-relevance" and scope.get("runtime_commit")
+                and (directory / "registration.json").is_file(), "Wire repair requires a registered native reader batch")
+        original_identity = read(directory / "registration.json")["implementation"]
+        from agent_memory_eval.study.reader_wire_repair import register_repair
+    else:
+        require(not (directory / "wire-repair.json").is_file(), "Resume this batch with its registered wire repair")
     if not execute:
-        _register(root, workspace, folder, plan, directory, scope, identity, publish=False)
+        _register(root, workspace, folder, plan, directory, scope, original_identity, publish=False)
+        if wire_repair:
+            amendment = register_repair(root, folder, directory, wire_repair, identity, publish=False)
+            return dict(scope, wire_repair=amendment["spec_ref"], repaired_shards=amendment["recoveries"])
         return scope
     if plan["benchmark"]["adapter"] == "bfcl-relevance":
         from agent_memory_eval.study.adapters.bfcl_reader_stage import run_readers
     else:
         from agent_memory_eval.study.adapters.tau_reader_stage import run_readers
     with stage_lease(folder):
-        batch = _register(root, workspace, folder, plan, directory, scope, identity)
+        batch = _register(root, workspace, folder, plan, directory, scope, original_identity)
+        extra = dict(repair=register_repair(root, folder, directory, wire_repair, identity, publish=True)) if wire_repair else {}
         result = run_readers(adapter, plan, workspace, root, resolved=resolved, registration=registration,
-                             sources=sources, batch=batch, directory=directory, progress=progress)
+                             sources=sources, batch=batch, directory=directory, progress=progress, **extra)
         require(result["assigned_readers"] == scope["assigned_readers"] and result["eligible_readers"] == scope["eligible_readers"]
                 and Decimal(result["reported_usd"]) + Decimal(result["held_usd"]) <= Decimal(scope["max_usd"]),
                 "Reader receipt differs from its schedule or spending limit")

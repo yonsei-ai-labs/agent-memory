@@ -37,6 +37,7 @@ def main(argv=None):
     parser.add_argument("--writer-sources", type=Path, help="Released first passes for a separately approved writer-only stage")
     parser.add_argument("--writer-cap", action="append", metavar="PLAN=USD", help="One study's sublimit in the shared writer grant")
     parser.add_argument("--reader-batch", type=Path, help="Bound solve-only execution to the targets in this reader batch")
+    parser.add_argument("--reader-wire-repair", type=Path, help="Resume a stopped batch with its pinned renderer correction")
     parser.add_argument("--tasks", help="Comma-separated task ids: score only these tasks (for example the confirmation set)")
     parser.add_argument("--save", action="store_true", help="Keep rows and scorecard under artifacts/studies/<plan id>/")
     parser.add_argument("--reviews", type=Path, help="Follow-up transcript labels keyed by public-turn hash")
@@ -54,6 +55,8 @@ def main(argv=None):
     if args.command in {"authorize", "run", "resume"}:
         require_declared_models(plan)
     adapter = adapter_for(plan)
+    if args.reader_wire_repair and (not args.reader_batch or args.command == "authorize"):
+        parser.error("--reader-wire-repair requires a registered reader batch and its existing spending authorization")
     workspace = args.workspace.resolve()
     staged = adapter.execution_mode != "local"
     followup = adapter.execution_mode == "followup"
@@ -75,7 +78,8 @@ def main(argv=None):
             if args.max_usd or args.quote:
                 parser.error("Set the reader limit on its authorization")
             out = reader_command(plan, workspace, ROOT, adapter, args.reader_batch,
-                                 execute=args.command in {"run", "resume"}, checkout=args.checkout, progress=report_progress)
+                                 execute=args.command in {"run", "resume"}, checkout=args.checkout, progress=report_progress,
+                                 wire_repair=args.reader_wire_repair)
     elif args.writer_sources and args.command == "authorize":
         if not (is_cohort(plan) and args.through_stage == "write" and args.max_usd and args.quote
                 and args.writer_cap and all("=" in item for item in args.writer_cap)):

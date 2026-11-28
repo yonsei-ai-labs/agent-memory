@@ -32,7 +32,8 @@ def registered_rows(shard, case, registration, kind, stage_record):
     require(profile["registration_sha256"] == registration and profile["case"] == case["task"]
             and profile["stage"] == control["design"]["stage"] == kind, "Transfer shard belongs to another allocation")
     checked_input_stop(shard, case, close, rows, profile, control["design"], control["implementation"],
-                       control["model_catalog_entries"], expected_seal=stage_record.get("seal"))
+                       control["model_catalog_entries"], expected_seal=stage_record.get("seal"),
+                       wire_repair=stage_record.get("wire_repair"))
     return rows
 
 
@@ -375,7 +376,7 @@ class TauTransfer(Tau2Study):
         require(record["plan_sha256"] == plan_digest(plan), "Transfer recording belongs to another plan")
         if (folder / "registration.json").exists():
             require(read(folder / "registration.json")["preflight"] == record, "Changed transfer registration")
-        stages = recorded_stages(folder)
+        stages = recorded_stages(folder, root=root)
         registration = digest(canonical(record))
         effective_sources = effective_tau_sources(workspace, folder, plan)
         baselines = observed_baselines(plan, folder, workspace, record["cases"], registration, stages,

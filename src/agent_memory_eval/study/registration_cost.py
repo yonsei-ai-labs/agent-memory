@@ -43,7 +43,7 @@ def _tau_charge(cost, rows):
     return Charge(Decimal(cost["reported"]), Decimal(cost["held"]), cost["http"], unknown)
 
 
-def _tau_receipts(folder, plan, record, closure, receipts, *, source_supplement=False):
+def _tau_receipts(folder, plan, record, closure, receipts, *, source_supplement=False, root=ROOT):
     expected, allowed = set(), {}
     for case in record["cases"]:
         for base in case["scheduled_stages"]:
@@ -57,7 +57,7 @@ def _tau_receipts(folder, plan, record, closure, receipts, *, source_supplement=
                     allowed[f"{name}-retry-{n}"] = case["task"], kind
     if (folder / "reader-batches").is_dir():
         from agent_memory_eval.study.adapters.tau_reader_stage import reader_batch_stages
-        for name in reader_batch_stages(folder, include_funded=True):
+        for name in reader_batch_stages(folder, include_funded=True, root=root):
             if name not in allowed:
                 base, separator, suffix = name.rpartition("-retry-")
                 require(separator and suffix.isdecimal() and base in allowed and allowed[base][1] == "solve",
@@ -154,7 +154,7 @@ def registration_cost(plan, workspace, *, root=ROOT):
         _bfcl_receipts(folder, closure, receipts)
         view.update(coverage="request_reservations_to_date", request_basis="pre_submission_reservations")
     else:
-        unsealed = _tau_receipts(folder, plan, record, closure, receipts)
+        unsealed = _tau_receipts(folder, plan, record, closure, receipts, root=root)
         view.update(coverage="sealed_stage_ledgers_only", request_basis="sealed_stage_http_calls", unsealed_shards=unsealed)
     total = _totals([receipt for stage in receipts.values() for receipt in stage])
     if closure is not None:

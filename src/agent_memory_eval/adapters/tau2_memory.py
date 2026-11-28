@@ -1,16 +1,26 @@
 """Worker-private memory rounds around the pinned native tau2 agent and environment."""
 
 from copy import deepcopy
+import json
 from types import SimpleNamespace
 from unittest.mock import patch
 
 from agent_memory_eval.adapters.tau2 import Tau2Bridge
-from agent_memory_eval.contracts.core import ContractError, canonical, digest
+from agent_memory_eval.contracts.core import ContractError, canonical, digest, read_json
 from agent_memory_eval.contracts.connection import native_parameters
 from agent_memory_eval.memory.tools import memory_tools
 from agent_memory_eval.memory.context import memory_system_suffix
 from agent_memory_eval.memory.router import ToolRouter
 from agent_memory_eval.recording.provenance import public_assistant_message
+
+
+def _agreeing_pairs(pairs):
+    values = {}
+    for key, value in pairs:
+        if key in values and canonical(values[key]) != canonical(value):
+            raise ValueError("Conflicting duplicate tool argument")
+        values[key] = value
+    return values
 
 
 class NativeBusiness:
@@ -46,6 +56,7 @@ class Tau2MemoryBridge(Tau2Bridge):
         self.clients["writer"], self.models["writer"] = self.clients["worker"], self.models["worker"]
         self.post_instruction = post_instruction
         self.history_sources, self.history_hashes, self.tool_sources = {}, {}, {}
+        self.denied_arguments = {}
         self.pending, self.input_prefix = None, None
         self.preload_source = None
         self.original_next = self.orchestrator.agent.generate_next_message
@@ -109,6 +120,28 @@ class Tau2MemoryBridge(Tau2Bridge):
             entries.insert(1, (self.preload_source, ""))
         return entries
 
+    def validate_native_wire(self, actor, request, native_messages):
+        if actor == "worker" and self.denied_arguments:
+            # Only the comparison copy uses τ²'s rendering. The transport and provenance keep the original response bytes.
+            from agent_memory_eval.experiments.first_pass_match import FirstPassMismatch
+            request = deepcopy(request)
+            for (index, position), (original, native_text, denial) in self.denied_arguments.items():
+                wire_index = index + int(self.policy.preloads)
+                try:
+                    actual = request["messages"][wire_index]["tool_calls"][position]
+                    expected = native_messages[index]["tool_calls"][position]
+                    matches = (actual == original and expected["id"] == original["id"]
+                               and expected["function"]["name"] == original["function"]["name"]
+                               and expected["function"]["arguments"] == native_text
+                               and request["messages"][wire_index + 1 + position] == denial
+                               and native_messages[index + 1 + position] == denial)
+                except (IndexError, KeyError, TypeError):
+                    matches = False
+                if not matches:
+                    raise FirstPassMismatch("Rejected tool call or result differs from its provider or native record")
+                actual["function"]["arguments"] = native_text
+        super().validate_native_wire(actor, request, native_messages)
+
     def ensure_preload(self):
         if self.policy.preloads and self.preload_source is None:
             event = self.memory.preload(self.ctx, self.bank_id)
@@ -141,6 +174,33 @@ class Tau2MemoryBridge(Tau2Bridge):
         self.native_results[call.id] = result
         return self.utils.to_litellm_messages([result])[0]
 
+    def remember_denied_arguments(self, answer, raw, position, wire, producer):
+        event = self.journal.events[producer]
+        if event["type"] != "policy.denied" or event["payload"].get("code") != "INVALID_ARGUMENT":
+            return
+        call = raw["tool_calls"][position]
+        text = call["function"]["arguments"]
+        try:
+            read_json(text.encode())
+            return
+        except ValueError:
+            pass
+        try:
+            decoded = json.loads(text, object_pairs_hook=_agreeing_pairs)
+        except ValueError:
+            return  # Conflicting keys and malformed JSON remain subject to strict history verification.
+        denial = dict(role="tool", tool_call_id=call["id"],
+                      content=canonical(dict(status="error", error=dict(code="INVALID_ARGUMENT"))).decode())
+        native = self.utils.to_litellm_messages([answer])[0]["tool_calls"][position]
+        if (event["run_id"] != self.ctx.run_id or event["payload"]["tool"] != call["function"]["name"]
+                or wire != denial or self.journal.blobs.get(event["payload"]["tool_result_ref"]) != denial
+                or native["id"] != call["id"] or native["function"]["name"] != call["function"]["name"]
+                or canonical(decoded) != canonical(read_json(native["function"]["arguments"].encode()))):
+            raise ContractError("Rejected arguments or denial do not match their recorded producer")
+        public = public_assistant_message(raw) if self.project_worker_history else raw
+        self.denied_arguments[max(self.history_hashes), position] = (
+            deepcopy(public["tool_calls"][position]), native["function"]["arguments"], denial)
+
     def dispatch(self, answer, request_id):
         from tau2.data_model.message import ToolMessage
         raw = self.last_response[0]
@@ -149,8 +209,10 @@ class Tau2MemoryBridge(Tau2Bridge):
         before = (self.orchestrator.step_count, self.orchestrator.num_errors)
         results = self.router.dispatch(self.ctx, request_id, raw["tool_calls"], public_prefix=self.input_prefix)
         full = []
-        for wire, kind, producer in results:
+        for position, (wire, kind, producer) in enumerate(results):
             source = self.registry.add(kind, producer)
+            if self.verify_wire is not None and kind == "policy_result":
+                self.remember_denied_arguments(answer, raw, position, wire, producer)
             native = self.native_results.get(wire["tool_call_id"])
             if native is None:
                 native = ToolMessage(id=wire["tool_call_id"], role="tool", requestor="assistant",
