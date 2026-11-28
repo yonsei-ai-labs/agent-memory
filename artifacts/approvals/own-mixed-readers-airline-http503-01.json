@@ -1,0 +1,46 @@
+{
+  "format": "agent-memory-reader-http503-supplement/v1",
+  "id": "http503-01",
+  "plan_id": "own-mixed-airline-01",
+  "benchmark": "airline",
+  "task": "10",
+  "plan": {
+    "path": "protocols/studies/cohort/own-mixed-airline-01.json",
+    "sha256": "1fcd47556c27293e12be64aefd1d85ac1ac46c0a1586f7bf3add63f19ce1662d"
+  },
+  "batch": {
+    "path": "protocols/diagnostics/own-mixed-readers-smoke-01.json",
+    "sha256": "413672f86e99042a9e898f858d64209eea6a7d7c4fa6d5ff677a5ee776b82325"
+  },
+  "parent_results": {
+    "path": "artifacts/studies/own-mixed-readers-smoke-01/summary.json",
+    "sha256": "f94f1fe0df2457d08ccd24a5fd9717310191ccedea48eacf020ba78d4d70ca4d"
+  },
+  "original_grant": {
+    "path": "artifacts/approvals/own-mixed-readers-smoke-01.json",
+    "sha256": "f858cbad840ef4d2c68098dd0f335a735269825a7c83157604a2568bc42284b4"
+  },
+  "result_sha256": "257039b9afd461f1fed8ef381916dc161a7d9116cfafc70529f81bc9b4921bd6",
+  "conditions": [
+    "fact__on_demand__mixed",
+    "fact__preload__mixed",
+    "fact__preload__own",
+    "fact__when-needed__own",
+    "lesson__on_demand__mixed",
+    "lesson__preload__mixed"
+  ],
+  "required_error_role": "user_simulator",
+  "http_status": 503,
+  "max_concurrent": 1,
+  "minimum_inter_episode_seconds": 5,
+  "provider_backoff_seconds": [
+    120,
+    600,
+    1800
+  ],
+  "cumulative_benchmark_max_usd": "0.65",
+  "cumulative_batch_max_usd": "3.00",
+  "user_authorization": "안된 6건도 보완해서 하자",
+  "selection": "Resume every original ungraded condition whose three sealed attempts ended with a received simulator HTTP 503. New attempts start fresh from the same task opening and frozen note pool. The first official grade, including zero, closes the slot. Preserve earlier attempts and grade-free interruptions.",
+  "spending": "Charge all new requests and outstanding reservations against the unused original reader allowance. Pace every conversation. A provider 503 holds all subsequent conversations until backoff or a longer requested wait has elapsed."
+}
