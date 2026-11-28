@@ -26,6 +26,7 @@ class BfclRelevance:
 
     def compile(self, plan, root):
         """Native BFCL profile for exactly the declared tasks, representations, readers and conditions."""
+        require("transfer" not in plan, "Select the hosted adapter for a transfer plan")
         require("required_sources_sha256" not in plan["first_pass"], "The local BFCL adapter reuses matching generations only")
         setup = read_json(asset_text(root, plan["benchmark"]["setup"]).encode())
         declared = model_profile(plan, root)

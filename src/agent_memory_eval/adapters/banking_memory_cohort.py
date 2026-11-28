@@ -87,7 +87,7 @@ def allocation_counts(cases, repeat):
                 solve=banks * len(MODES) * repeat, second_pass_no_memory=0)
 
 
-def observation(folder, row, *, writer=None, business=None, policy=None):
+def observation(folder, row, *, writer=None, business=None, policy=None, transfer=None):
     """Audit one native episode, including delivered input and official outcome, using its sealed journal."""
     result = row.get("result") or {}
     obs = dict(run=row.get("run_id"), status=row["status"], reason=row.get("reason") or result.get("error_code"),
@@ -101,11 +101,19 @@ def observation(folder, row, *, writer=None, business=None, policy=None):
     if row["arm"] == "no_memory":
         require(not log.items and not log.start["source_run_ids"], "Baseline received prior memory")
     else:
-        require(writer and log.start["source_run_ids"] == [writer["run_id"]] and log.items == writer["items"]
-                and log.state["assignments"][log.run]["input_items_sha256"] == digest(canonical(writer["items"])),
+        items = [] if transfer and transfer["bank"] == "empty" else (writer or {}).get("items")
+        assignment = log.state["assignments"][log.run]
+        require(writer and log.start["source_run_ids"] == [writer["run_id"]] and log.items == items
+                and assignment["input_items_sha256"] == digest(canonical(items)),
                 "Reader used another bank")
+        if transfer:
+            require(assignment["source_task_id"] == writer["task_id"] == row["source_task_id"]
+                    and assignment["task_id"] == row["task_id"] != row["source_task_id"]
+                    and assignment["fixed_bank_delivery"]["bank_contents"] == transfer["bank"]
+                    and assignment["source_writer_bank_sha256"] == digest(canonical(writer)),
+                    "Transfer outcome does not match its writer, target or bank")
         obs.update(writer=writer["run_id"], writer_snapshot=writer["snapshot_id"])
-    reads, choices = Counter(), []
+    reads, choices, steps = Counter(), [], []
     for req in log.requests:
         if req["actor_role"] != "worker":
             continue
@@ -122,6 +130,18 @@ def observation(folder, row, *, writer=None, business=None, policy=None):
         calls = []
         if end["status"] == "response":
             calls = log.reply(req)["message"].get("tool_calls") or []
+            if transfer:
+                actions = []
+                for call in calls:
+                    fn = call["function"]
+                    if fn["name"] not in transfer["rule"]["tools"]:
+                        continue
+                    try:
+                        args = read_json(fn["arguments"].encode())
+                    except (ValueError, UnicodeError):
+                        args = None
+                    actions.append(dict(name=fn["name"], arguments=args if isinstance(args, dict) else {}))
+                steps.append(dict(request=req["request_id"], body="body" in fields, calls=actions))
         private = [c["function"]["name"] for c in calls if c["function"]["name"] in READS]
         reads.update(private)
         choices.append(dict(status=end["status"], delivery=end["delivery_status"], reads=private))
@@ -137,6 +157,9 @@ def observation(folder, row, *, writer=None, business=None, policy=None):
         messages = official["messages"]
         obs.update(success=grade["official_success"], report=grade["official_artifact_ref"]["sha256"])
     obs["effort"] = episode_effort(row, messages, choices)
+    if transfer:
+        from agent_memory_eval.study.transfer import decision_evidence
+        obs["decision"] = decision_evidence(transfer["rule"], steps, completed=messages is not None)
     if messages is not None:
         questions = customer_questions(messages)
         obs["customer_questions"] = questions

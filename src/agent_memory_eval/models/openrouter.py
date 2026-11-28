@@ -124,7 +124,7 @@ def request_reservation_usd(request, model):
     output = request.get("max_completion_tokens", request.get("max_tokens"))
     if type(output) is not int or output <= 0 or ("max_completion_tokens" in request and "max_tokens" in request):
         raise ProviderError("INVALID_OUTPUT_LIMIT")
-    pricing = model.get("reservation_pricing", model["pricing"])
+    pricing = model.get("reservation_pricing", model.get("pricing"))
     try:
         rates = [float(pricing[key]) for key in ("prompt", "completion")]
     except (KeyError, TypeError, ValueError, OverflowError):

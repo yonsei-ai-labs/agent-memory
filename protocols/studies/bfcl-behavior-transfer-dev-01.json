@@ -1,0 +1,119 @@
+{
+  "format": "agent-memory-study-plan/v3",
+  "id": "bfcl-behavior-transfer-dev-01",
+  "purpose": "development",
+  "question": "On different native tasks, how do ordinary optional lookup, decision-specific optional lookup, and preloading affect exposure to one donor note, the registered action, and the official result relative to an empty bank?",
+  "models": {
+    "profile": {
+      "path": "protocols/models/project-standard-v1.json",
+      "sha256": "ef0ed266db31f8ed8fca4fb6321ae2907efb7755088d6f038e710e862f1f0da3"
+    }
+  },
+  "benchmark": {
+    "adapter": "bfcl-relevance",
+    "setup": {
+      "path": "protocols/studies/setups/bfcl-relevance-transfer-v1.json",
+      "sha256": "9add0a486b9acd7c206f27ed5b695d0e3126b0e7db87b6ee07ab35a8f664e666"
+    },
+    "tasks": [
+      "live_relevance_8-8-0",
+      "live_relevance_9-9-0",
+      "irrelevance_54"
+    ]
+  },
+  "transfer": {
+    "pairs": [
+      {
+        "source": "live_relevance_8-8-0",
+        "target": "live_relevance_9-9-0",
+        "decision": {
+          "kind": "call_presence",
+          "description": "Determine whether a supplied function supports the new movie request.",
+          "expected": true
+        },
+        "source_cue": "Look for evidence of matching the requested operation and available inputs to an offered function. A superficially related function or the fact that the donor called one is insufficient."
+      },
+      {
+        "source": "live_relevance_8-8-0",
+        "target": "irrelevance_54",
+        "decision": {
+          "kind": "call_presence",
+          "description": "Determine whether a supplied function supports the new movie request.",
+          "expected": false
+        },
+        "source_cue": "Look for evidence of matching the requested operation and available inputs to an offered function. A superficially related function or the fact that the donor called one is insufficient."
+      }
+    ]
+  },
+  "first_pass": {
+    "draws": 1
+  },
+  "writing": {
+    "instruction": {
+      "path": "protocols/instructions/required-experience-writer-v1.txt",
+      "sha256": "54c0838ec92092c2accd1d78253ba560c95fadac6c65d698243f23cb38a67ed7"
+    },
+    "feedback": "result_only",
+    "representations": {
+      "free": {
+        "text": "Choose how to organize useful observations from this experience. You may combine forms."
+      }
+    }
+  },
+  "reading": {
+    "on_demand": {
+      "read_mode": "on_demand",
+      "tool_descriptions": {
+        "memory_list": "Browse note titles when a past situation, fact, procedure, or lesson could help with the current task. The list can be empty. It returns ids, versions, and titles. Use an id with memory_get to read a note, or the returned cursor for another page.",
+        "memory_get": "Read the title and body of a note by id when it looks relevant. A note describes prior work and may be incomplete or mistaken. Check whether it applies to the current situation."
+      }
+    },
+    "when-needed": {
+      "read_mode": "on_demand",
+      "tool_descriptions": {
+        "memory_list": "When a current decision depends on earlier context, you may browse prior note titles. For example, an unresolved reference, a past preference, or a condition still to check could make a note useful. If the current interaction already settles the decision, you can proceed. The list may be empty. It returns ids, versions, and titles. Use an id with memory_get to read a relevant note, or the returned cursor for another page.",
+        "memory_get": "Read the title and body of a note by id when it looks relevant. A note describes prior work and may be incomplete or mistaken. Check whether it applies to the current situation."
+      }
+    },
+    "preload": {
+      "read_mode": "preload",
+      "notice": {
+        "path": "protocols/instructions/matched-memory-read-v1.txt",
+        "sha256": "b623028e1bc06ca35d89b2f91a30159dd22999db0fa391cb95b61d5793f659a7"
+      }
+    }
+  },
+  "conditions": [
+    {
+      "representation": "free",
+      "reading": "on_demand"
+    },
+    {
+      "representation": "free",
+      "reading": "when-needed"
+    },
+    {
+      "representation": "free",
+      "reading": "preload"
+    }
+  ],
+  "repeats": 1,
+  "limits": {
+    "max_input_bytes": 128000
+  },
+  "budget": {
+    "max_usd": "1.00"
+  },
+  "retry": {
+    "http_codes": [
+      429,
+      500,
+      502,
+      503,
+      504
+    ],
+    "wait_seconds": [
+      120
+    ]
+  }
+}

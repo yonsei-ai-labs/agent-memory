@@ -9,8 +9,9 @@ from agent_memory_eval.contracts.validation import SCHEMA_ROOT
 from agent_memory_eval.recording.assets import asset_bytes, asset_text
 
 FORMAT = "agent-memory-study-plan/v2"
+TRANSFER_FORMAT = "agent-memory-study-plan/v3"
 LEGACY_FORMAT = "agent-memory-study-plan/v1"  # Runs recorded before models were declared; readable, not runnable.
-SCHEMA = "study-plan-v1.schema.json"  # Covers both formats; v2 requires the models block.
+SCHEMA = "study-plan-v1.schema.json"  # One schema reads the successive general study formats.
 STANDARD_MODELS = "protocols/models/project-standard-v1.json"
 LEGACY_FOLLOWUP_FORMAT = "agent-memory-retail-followup/v1"
 FOLLOWUP_FORMAT = "agent-memory-retail-followup/v3"
@@ -40,6 +41,36 @@ def plan_digest(plan):
     return digest(canonical(plan))
 
 
+def check_transfer(plan):
+    pairs = plan["transfer"]["pairs"]
+    origins = {p["source"] for p in pairs}
+    targets = {p["target"] for p in pairs}
+    if origins & targets or origins | targets != set(plan["benchmark"]["tasks"]):
+        raise ContractError("Register disjoint source and target tasks covering the task list")
+    if len({(p["source"], p["target"]) for p in pairs}) != len(pairs):
+        raise ContractError("Duplicate transfer pair")
+    if not set(plan["benchmark"].get("confirmation_tasks", [])) <= targets:
+        raise ContractError("Confirmation tasks must be transfer targets")
+    if plan.get("references"):
+        raise ContractError("Compare the paired readers of this transfer study")
+    bench = plan["benchmark"]["adapter"]
+    if bench not in {"tau2-retail", "tau2-airline", "bfcl-relevance"}:
+        raise ContractError("Transfer studies support retail, airline and BFCL")
+    decisions = {}
+    for pair in pairs:
+        rule = pair["decision"]
+        if ("customer_relation" in pair) != (bench != "bfcl-relevance"):
+            raise ContractError("Declare the customer relationship for every τ² transfer pair")
+        if (bench == "bfcl-relevance") != (rule["kind"] == "call_presence"):
+            raise ContractError("Use the native decision measure for this benchmark")
+        if rule["kind"] == "first_matching_tool":
+            expected = rule["expected"]
+            if (expected is not None and expected not in rule["tools"]) or (expected is None and rule.get("arguments")):
+                raise ContractError("Expected action must be among the registered tools")
+        if decisions.setdefault(pair["target"], rule) != rule:
+            raise ContractError("A target must have the same decision rule for every source")
+
+
 def check_plan(plan, root):
     if isinstance(plan, dict) and plan.get("format") in FOLLOWUP_FORMATS:
         schema = read_json((SCHEMA_ROOT / "retail-followup-plan-v1.schema.json").read_bytes())
@@ -54,13 +85,15 @@ def check_plan(plan, root):
     error = next(Draft202012Validator(_schema()).iter_errors(plan), None)
     if error is not None:
         raise ContractError(f"Invalid study plan: {error.message}")
+    if plan["format"] == TRANSFER_FORMAT:
+        check_transfer(plan)
     held_out = plan["benchmark"].get("confirmation_tasks", [])
     if not set(held_out) <= set(plan["benchmark"]["tasks"]):
         raise ContractError("Confirmation tasks must be planned tasks")
     if held_out and len(held_out) == len(plan["benchmark"]["tasks"]):
         raise ContractError("Confirmation tasks must leave development tasks to analyze")
     if "required_sources_sha256" in plan["first_pass"] and (
-            plan["format"] != FORMAT or plan["benchmark"]["adapter"] == "bfcl-relevance" or not plan["first_pass"].get("reuse")):
+            plan["format"] not in {FORMAT, TRANSFER_FORMAT} or plan["benchmark"]["adapter"] == "bfcl-relevance" or not plan["first_pass"].get("reuse")):
         raise ContractError("Pinning first-pass sources requires a v2 τ² plan with reuse recordings")
     pairs = conditions(plan)
     if len(set(pairs)) != len(pairs):
@@ -75,9 +108,10 @@ def check_plan(plan, root):
         # A τ² v2 study can vary only the two tool descriptions on the same sealed bank.
         tool_only_queries = all("tool_descriptions" in r and "notice" not in r
                                 for r in readers.values() if r["read_mode"] == "on_demand")
-        if (plan["format"] != FORMAT or plan["benchmark"]["adapter"] == "bfcl-relevance"
+        tool_variants = plan["format"] == TRANSFER_FORMAT or (plan["format"] == FORMAT and plan["benchmark"]["adapter"] != "bfcl-relevance")
+        if (not tool_variants
                 or modes.count("preload") > 1 or not tool_only_queries):
-            raise ContractError("Use one reader per read mode except for tool-only queries in a v2 τ² study")
+            raise ContractError("Use one reader per read mode except for registered tool-only query variants")
     if any("tool_descriptions" in r and r["read_mode"] != "on_demand" for r in readers.values()):
         raise ContractError("Tool descriptions apply to on_demand readers only")
     if any("notice" not in r and "tool_descriptions" not in r for r in readers.values()):
@@ -103,7 +137,7 @@ def require_declared_models(plan):
     """Only plans that name the models under study may spend or run."""
     if plan["format"] in FOLLOWUP_FORMATS - {FOLLOWUP_FORMAT}:
         raise ContractError("Use the current follow-up with blinded primary review and worker limits before authorizing or running")
-    if plan["format"] not in {FORMAT, FOLLOWUP_FORMAT} or "models" not in plan:
+    if plan["format"] not in {FORMAT, TRANSFER_FORMAT, FOLLOWUP_FORMAT} or "models" not in plan:
         raise ContractError("Declare the models under study (plan format v2) before running")
     return plan["models"]
 

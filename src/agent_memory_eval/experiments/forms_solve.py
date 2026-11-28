@@ -306,13 +306,24 @@ def run_forms_solve(journal, *, arm, task_id, repetition, run_id, connection, pr
                           read_mode=delivery["read_mode"] if delivery else ("none" if arm == "no_memory" else "preload"),
                           max_items=limits["read_bank_items"],
                           max_payload_bytes=limits["read_bank_payload_bytes"], max_return_bytes=limits["read_bank_return_bytes"])
+    transfer = matched_trial.get("donor") if matched_trial is not None else None
+    if transfer is not None:
+        if (not source_task_id or writer_bank is None or delivery is None or source_task_id != transfer["task_id"]
+                or (writer_bank["source_run_id"], writer_bank["source_log_sha256"], public_context_sha256)
+                != (transfer["run_id"], transfer["log_sha256"], transfer["public_context_sha256"])
+                or delivery.get("bank_contents") not in {"real", "empty"}):
+            raise ContractError("Transfer reader requires its registered donor and bank assignment")
+        if delivery["bank_contents"] == "empty":
+            items, revision = [], 0
+    elif delivery and "bank_contents" in delivery:
+        raise ContractError("A bank contrast requires a registered transfer")
     if matched_trial is not None:
         from agent_memory_eval.experiments.first_pass_match import FirstPassMismatch
         from agent_memory_eval.runner.tau2_baseline import ScopedGuard, spend_guard
-        if (first_pass_match is not None or source_task_id is not None or writer_pool is not None
+        if (first_pass_match is not None or (source_task_id is not None and transfer is None) or writer_pool is not None
                 or public_record is not None or preload_notice_version is not None or clients is None
                 or (policy.enabled and (writer_bank is None or delivery is None
-                    or public_context_sha256 != matched_trial.get("public_context_sha256")))
+                    or (transfer is None and public_context_sha256 != matched_trial.get("public_context_sha256"))))
                 or any(c.max_input_bytes != execution.max_input_bytes
                        or c.timeout_seconds != matched_trial["http_timeout_seconds"] for c in clients.values())):
             raise FirstPassMismatch("Fresh comparison requires its registered transport and own-source bank")

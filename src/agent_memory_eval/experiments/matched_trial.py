@@ -132,9 +132,25 @@ def source_task_start(control, events, requests, blobs):
 
 def source_receipt(folder, source, case, *, reconstruct_archived_start=False):
     """Accept a fresh measured source only from the registered case's source shard."""
-    with _source(folder, source.source_log_sha256) as (scan, blobs, _, _):
-        start, _, _ = _closed_run(scan, source.source_run_id)
-        events = [e for e in scan["events"].values() if e["run_id"] == source.source_run_id]
+    return _receipt(folder, case, source.task_id, source.source_run_id, source.source_log_sha256,
+                    context_sha256=source.public_context_sha256, reconstruct_archived_start=reconstruct_archived_start)
+
+
+def target_opening_receipt(folder, row, case):
+    """Use only the target's sealed public opening, independently of its eventual grade."""
+    return _receipt(folder, case, row["task_id"], row["run_id"], row["result"]["log_sha256"])
+
+
+def _receipt(folder, case, task, run, log_sha256, *, context_sha256=None, reconstruct_archived_start=False):
+    with _source(folder, log_sha256) as (scan, blobs, _, _):
+        events = [e for e in scan["events"].values() if e["run_id"] == run]
+        if context_sha256 is None:
+            if (case.get("task_start_mode") != TASK_START_FORMAT or
+                    sum(e["type"] == "run.ended" for e in events) != 1 or any(e["type"].startswith("memory.") for e in events)):
+                raise TaskStartMismatch("Expected a sealed no-memory target with a native opening")
+            start = scan["starts"][run]
+        else:
+            start, _, _ = _closed_run(scan, run)
         controls = [e for e in events if e["payload"].get("origin") == "matched_trial.native_control"]
         requests = [e for e in events if e["type"] == "model.request_started"]
         if (len(controls) != 1 or not requests or controls[0]["event_seq"] >= requests[0]["event_seq"]
@@ -147,7 +163,7 @@ def source_receipt(folder, source, case, *, reconstruct_archived_start=False):
         if (receipt["source_run_id"] is not None or receipt["source_log_sha256"] is not None
                 or receipt["registration_sha256"] != case["registration_sha256"]
                 or receipt["native_sha256"] != case["native_sha256"] or digest(canonical(control)) != case["native_sha256"]
-                or control["config"]["benchmark"]["task_id"] != source.task_id):
+                or control["config"]["benchmark"]["task_id"] != task):
             raise FirstPassMismatch("Source receipt differs from this series or native task")
         settings = {}
         customer_opening = None
@@ -173,6 +189,8 @@ def source_receipt(folder, source, case, *, reconstruct_archived_start=False):
                 raise TaskStartMismatch("Stored start differs from the observed source worker input")
             extra["task_start"] = start.record()
             extra["first_worker_request_id"] = requests[1]["payload"]["request_id"]
+            if context_sha256 is None:
+                context_sha256 = digest(start.public_input)
     return dict(registration_sha256=receipt["registration_sha256"], native_sha256=receipt["native_sha256"],
-                customer_opening_sha256=customer_opening, wire=settings, run_id=source.source_run_id,
-                log_sha256=source.source_log_sha256, public_context_sha256=source.public_context_sha256, **extra)
+                customer_opening_sha256=customer_opening, wire=settings, run_id=run,
+                log_sha256=log_sha256, public_context_sha256=context_sha256, **extra)

@@ -91,6 +91,31 @@ def business_tools(functions):
     return tools
 
 
+def hosted_tools(functions):
+    """BFCL's Python type names and dotted names need the OpenAI function-tool representation."""
+    import re
+    types = {"dict": "object", "list": "array", "tuple": "array", "float": "number", "int": "integer",
+             "bool": "boolean", "str": "string"}
+    def schema(value):
+        result = dict(value)
+        if "type" in result:
+            result["type"] = types.get(result["type"], result["type"])
+        if "properties" in result:
+            result["properties"] = {k: schema(v) for k, v in result["properties"].items()}
+        if isinstance(result.get("items"), dict):
+            result["items"] = schema(result["items"])
+        return result
+    tools = business_tools(functions)
+    names = {"memory_get", "memory_list", "memory_store"}
+    for tool in tools:
+        fn = tool["function"]
+        name = re.sub(r"[^A-Za-z0-9_-]", "_", fn["name"])
+        require(0 < len(name) <= 64 and name not in names, "BFCL function names collide on the provider ABI")
+        names.add(name)
+        fn.update(name=name, parameters=schema(fn["parameters"]))
+    return tools
+
+
 def normalized_first(wire, cfg, mode, items):
     value = deepcopy(wire)
     if mode:
@@ -127,28 +152,42 @@ def grade_reply(reply, category, is_empty, tools):
                 undeclared_functions=unknown, missing_required=missing)
 
 
-def solve(journal, cfg, case, client, is_empty, *, source=None, writer=None, form=None, mode=None, read_control=False):
+def solve(journal, cfg, case, client, is_empty, *, source=None, writer=None, form=None, mode=None, read_control=False,
+          transfer=None, run_id=None):
     category, row = case
     controls = dict(model=cfg["model"], revision=cfg["model_revision"], generation=cfg["generation"])
-    start = open_relevance(row, category, controls, reference=source["start"] if source else None)
+    reference = transfer["target_start"] if transfer else (source["start"] if source else None)
+    start = open_relevance(row, category, controls, reference=reference)
     public = read_json(start.public_input)
-    tools = business_tools(public["functions"])
+    tools = (hosted_tools if "wire_parameters" in cfg else business_tools)(public["functions"])
     question, = public["messages"]
-    run = row["id"] + "-" + (f"{form}-{mode}" if mode else "source")
+    run = run_id or row["id"] + "-" + (f"{form}-{mode}" if mode else "source")
     ctx = RunContext(journal.experiment_id, run, new_id("s"), f"{form}-{mode}" if mode else "no_memory",
                      "diagnostic", "solve", "observed")
     policy = MemoryPolicy(bool(mode), "none", False, PAGE_SIZE, read_mode=mode or "none")
     memory = MemoryService(journal, record_kind="observed")
     snapshot = writer["snapshot_id"] if writer else None
+    if transfer:
+        require(writer and transfer["source_task"] != row["id"] and transfer["bank"] in {"real", "empty"},
+                "A transfer requires an independent target and sealed writer")
+        if transfer["bank"] == "empty":
+            from agent_memory_eval.memory.imports import install_snapshot
+            snapshot = install_snapshot(memory, policy, {}, [], 0, {})
     items = snapshot_items(journal.blobs, journal.state, snapshot) if writer else []
     bank = memory.fork(snapshot, run, policy) if writer else None
+    parents = [transfer["source_run"] if transfer else source["run"], writer["run_id"]] if writer else []
     event = ctx.at("prepare").event("run.started", dict(bank_id=bank, start_snapshot_id=snapshot, fresh_session=True,
-        task_ref=journal.blobs.put(question), source_run_ids=[source["run"], writer["run_id"]] if writer else []))
+        task_ref=journal.blobs.put(question), source_run_ids=parents))
     journal.append([event])
+    if transfer:
+        journal.append([ctx.event("business.transition", dict(origin="bfcl.transfer_assignment",
+            target_start_ref=journal.blobs.put(start.record()), source_task=transfer["source_task"],
+            donor_snapshot=writer["snapshot_id"], bank=transfer["bank"]))])
     registry = SourceRegistry(journal, ctx)
     wire = dict(model=cfg["model"], seed=cfg["generation"]["seed"], max_completion_tokens=cfg["generation"]["worker_tokens"],
                 system=dict(role="system", content=worker_instruction(cfg, mode)),
                 tools=tools + (read_tools(cfg) if mode == "on_demand" else []))
+    wire.update(cfg.get("wire_parameters", {}))
     template = registry.template(wire, roles=("worker",))
     history = [(template, "/system")]
     if mode == "preload":
@@ -176,7 +215,15 @@ def solve(journal, cfg, case, client, is_empty, *, source=None, writer=None, for
         reply, own, request_id = gateway.call(ctx, registry, "worker", turn_template, history, client,
             max_requests=limit, validate_wire=check, project_self_authored=True)
         response = journal.blobs.get(registry.sources[own]["artifact_ref"])
-        if response["choices"][0]["finish_reason"] == "length" or response["local_generation"].get("decode_error"):
+        if "wire_parameters" in cfg:
+            from agent_memory_eval.memory.writing import writer_response_error
+            identity = dict(id=client.model["id"], canonical_slug=cfg["model_revision"],
+                            provider_name=client.model["selected_endpoint"]["provider_name"])
+            problem = writer_response_error(response, model_identity=identity, observed=True)
+            if problem:
+                reason = problem
+                break
+        if response["choices"][0]["finish_reason"] == "length" or response.get("local_generation", {}).get("decode_error"):
             reason = "incomplete_or_malformed_response"
             break
         names = [c["function"]["name"] for c in reply.get("tool_calls") or []]
@@ -185,9 +232,15 @@ def solve(journal, cfg, case, client, is_empty, *, source=None, writer=None, for
             if private.intersection(names):
                 reason = "mixed_private_business_response"
                 break
-            grade = grade_reply(reply, category, is_empty, tools)
+            try:
+                grade = grade_reply(reply, category, is_empty, tools)
+            except (ValueError, TypeError):
+                if "wire_parameters" not in cfg:
+                    raise
+                reason = "malformed_business_call"
+                break
             reason = "business_decision"
-            if not source:
+            if not source and not transfer:
                 for message in [dict(role="system", content=canonical(dict(available_functions=tools)).decode()),
                                 public_assistant_message(reply)]:
                     journal.append([ctx.event("business.transition", dict(origin="bfcl.public_observation",

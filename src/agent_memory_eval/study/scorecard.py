@@ -17,14 +17,14 @@ def _check(row):
 
 
 def effective_slots(rows):
-    """First graded attempt per (condition, source, repeat), in listed origin order then attempt order."""
+    """First graded attempt per condition, source, target, draw and repeat, in listed origin order then attempt order."""
     origins = {}
     for r in rows:
         _check(r)
         origins.setdefault(r["origin"], len(origins))
     grouped = defaultdict(list)
     for r in rows:
-        grouped[r["condition"], r["source"], r.get("repeat", 1)].append(r)
+        grouped[r["condition"], r["source"], r["task"], r.get("draw", 1), r.get("repeat", 1)].append(r)
     slots = {}
     for key, attempts in grouped.items():
         attempts.sort(key=lambda r: (origins[r["origin"]], r["attempt"]))
@@ -48,8 +48,11 @@ def _effort(pairs, field):
 
 
 def scorecard(rows):
+    if rows and "comparison" in rows[0]:
+        from agent_memory_eval.study.transfer import transfer_scorecard
+        return transfer_scorecard(rows)
     slots = effective_slots(rows)
-    sources = {s: r for (c, s, n), r in slots.items() if c == NO_MEMORY and n == 1}
+    sources = {s: r for (c, s, _, _, n), r in slots.items() if c == NO_MEMORY and n == 1}
     tasks = defaultdict(lambda: dict(first_pass_graded=0, first_pass_successes=0))
     for r in sources.values():
         if r["status"] == "graded":
@@ -61,8 +64,8 @@ def scorecard(rows):
         if r.get("cost_usd") is not None:
             cost[r["condition"]] += Decimal(r["cost_usd"])
     conditions = {}
-    for name in dict.fromkeys(c for c, _, _ in slots):
-        own = [r for (c, _, _), r in slots.items() if c == name]
+    for name in dict.fromkeys(c for c, *_ in slots):
+        own = [r for (c, *_), r in slots.items() if c == name]
         graded = [r for r in own if r["status"] == "graded"]
         paired = [(r, sources[r["source"]]) for r in graded
                   if r["source"] in sources and sources[r["source"]]["status"] == "graded"]
@@ -100,7 +103,7 @@ def save_analysis(root, plan_id, rows, card, *, tasks):
     folder.mkdir(parents=True, exist_ok=True)
     refs = {}
     scope = "all" if tasks is None else "tasks-" + digest(canonical(sorted(tasks)))[:12]
-    for key, value in (("rows", dict(format="agent-memory-study-rows/v1", plan_id=plan_id, scored_tasks=tasks, rows=rows)),
+    for key, value in (("rows", dict(format=("agent-memory-transfer-rows/v1" if card["format"] == "agent-memory-transfer-scorecard/v1" else "agent-memory-study-rows/v1"), plan_id=plan_id, scored_tasks=tasks, rows=rows)),
                        ("scorecard", dict(card, plan_id=plan_id, scored_tasks=tasks))):
         data = canonical(value) + b"\n"
         path = folder / f"{key}-{scope}-{digest(data)[:12]}.json"

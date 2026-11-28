@@ -40,10 +40,12 @@ def main(argv=None):
     plan = load_plan(args.plan, ROOT)
     if args.command in {"authorize", "run", "resume"}:
         require_declared_models(plan)
-    adapter = adapter_for(plan["benchmark"]["adapter"])
+    adapter = adapter_for(plan)
     workspace = args.workspace.resolve()
-    staged = adapter.execution_mode in {"staged", "followup"}
+    staged = adapter.execution_mode != "local"
     followup = adapter.execution_mode == "followup"
+    cumulative_grants = adapter.execution_mode in {"hosted", "followup"}
+    native_args = dict(checkout=args.checkout) if adapter.execution_mode == "hosted" else {}
     if (args.reviews or args.review_packets) and (not followup or args.command != "analyze"):
         parser.error("Transcript review options apply to follow-up analysis")
     if followup and args.tasks:
@@ -59,7 +61,7 @@ def main(argv=None):
                 out["conditions"] = conditions(plan)
         elif staged:
             kwargs = dict(progress=report_progress) if followup else {}
-            record = adapter.resolve(plan, workspace, ROOT, **kwargs)["record"]
+            record = adapter.resolve(plan, workspace, ROOT, **kwargs, **native_args)["record"]
             out = record if followup else dict(plan=plan["id"], assigned=record["assigned"], stages=record["stages"], cases=len(record["cases"]))
         else:
             cfg = adapter.compile(plan, ROOT)
@@ -70,27 +72,29 @@ def main(argv=None):
             parser.error("This local adapter has no provider spending authorization")
         if not (args.max_usd and args.quote and args.quote.strip()):
             parser.error("Record the approved ceiling and the person's own words")
-        if followup:
+        if cumulative_grants:
             from agent_memory_eval.study.followup_budget import approval_amount, publish_approval
-            approval_amount(args.max_usd)
-        record = adapter.resolve(plan, workspace, ROOT)["record"]
+            amount = approval_amount(args.max_usd)
+            if not followup and amount > approval_amount(plan["budget"]["max_usd"]):
+                parser.error("The amount exceeds the registered plan ceiling")
+        record = adapter.resolve(plan, workspace, ROOT, **native_args)["record"]
         path = approval_path(plan)
         path.parent.mkdir(parents=True, exist_ok=True)
         grant = approval_for(plan, record, max_usd=args.max_usd, user_authorization=args.quote)
-        if followup:
+        if cumulative_grants:
             path = publish_approval(path, grant)
         else:
             fixed(path, grant)
         out = dict(approval=str(path.relative_to(ROOT)), assigned=record["assigned"], max_usd=args.max_usd)
     elif args.command in {"run", "resume"}:
         if staged:
-            if followup:
+            if cumulative_grants:
                 from agent_memory_eval.study.followup_budget import approval_chain
                 first, *extra = approval_chain(approval_path(plan))
                 grants = dict(approval=first, increases=extra)
             else:
                 grants = dict(approval=read(approval_path(plan)))
-            out = adapter.run(plan, workspace, ROOT, **grants, progress=report_progress)
+            out = adapter.run(plan, workspace, ROOT, **grants, **native_args, progress=report_progress)
         else:
             if not (args.checkout and args.model_python and args.checkpoint):
                 parser.error("A BFCL run needs the pinned checkout, the model interpreter and the checkpoint")
@@ -102,10 +106,11 @@ def main(argv=None):
         if followup:
             rows, out = adapter.analyze(plan, workspace, ROOT, reviews=args.reviews, review_packets=args.review_packets)
         else:
-            kwargs = dict(checkout=args.checkout) if adapter.execution_mode == "local" else {}
+            kwargs = dict(checkout=args.checkout) if adapter.execution_mode == "local" else native_args
             rows = adapter.outcomes(plan, workspace, ROOT, **kwargs)
             if tasks is not None:
-                unknown = set(tasks) - set(plan["benchmark"]["tasks"])
+                allowed = ({p["target"] for p in plan["transfer"]["pairs"]} if "transfer" in plan else plan["benchmark"]["tasks"])
+                unknown = set(tasks) - set(allowed)
                 if unknown:
                     parser.error(f"Tasks outside the plan: {sorted(unknown)}")
                 rows = [r for r in rows if r["task"] in tasks]

@@ -23,7 +23,7 @@ from agent_memory_eval.contracts.validation import SCHEMA_ROOT
 from agent_memory_eval.experiments.batch_recovery import POLICY as RESUME_UNSTARTED, stage_lease
 from agent_memory_eval.experiments.forms_batch import BatchGuard, endpoint_terms, execute_prepared, live_models, solve_connection
 from agent_memory_eval.experiments.fresh_forms import CostReservations
-from agent_memory_eval.experiments.matched_trial import native_control, opening_hash, role_settings, source_receipt
+from agent_memory_eval.experiments.matched_trial import native_control, opening_hash, role_settings, source_receipt, target_opening_receipt
 from agent_memory_eval.experiments.paired_repetitions import FRESH_MATCHED
 from agent_memory_eval.memory.writing import REQUIRED_STORE_CONTRACT
 from agent_memory_eval.recording.assets import asset_text
@@ -122,13 +122,15 @@ def study_jobs(case, stage):
     ordered = sorted(arms, key=lambda a: digest(canonical([FRESH_MATCHED, case["task"], stage, a])))
     recovery = case.get("interrupted_readers") if stage == "solve" else None
     require(recovery is None or (recovery and set(recovery) <= set(ordered)), "Unregistered reader in the retry set")
-    return [dict(index=i, repetition=1, task_id=case["task_id"], phase="write" if stage == "write" else "solve", arm=arm)
+    source = dict(source_task_id=case["donor"]["task_id"]) if "donor" in case else {}
+    return [dict(index=i, repetition=1, task_id=case["task_id"], phase="write" if stage == "write" else "solve", arm=arm, **source)
             for i, arm in enumerate(ordered, 1) if recovery is None or arm in recovery]
 
 
 def study_design(cfg, case, stage, source=None):
     feedback = cfg["writer_feedback_level"]
-    cohort = dict(task_id=case["task_id"], source_group=case["customer"])
+    donor = case.get("donor", case)
+    cohort = dict(task_id=donor["task_id"], source_group=donor["customer"])
     if source is not None:
         cohort.update(run_id=source.source_run_id, source_log_sha256=source.source_log_sha256,
                       public_context_sha256=source.public_context_sha256, public_context_bytes=source.public_context_bytes)
@@ -147,6 +149,9 @@ def study_design(cfg, case, stage, source=None):
     for arm, descriptions in cfg.get("query_tools_by_arm", {}).items():
         if arm in design["delivery_arms"]:
             design["delivery_arms"][arm]["tool_descriptions"] = descriptions
+    if "donor" in case:
+        for arm, delivery in design["delivery_arms"].items():
+            delivery["bank_contents"] = case["contents"][arm]
     if stage == "solve" and "interrupted_readers" in case:
         forms = {p["writer"] for p in design["delivery_arms"].values()}
         design["writing"] = dict(cfg["writing"], lines={k: v for k, v in cfg["writing"]["lines"].items() if k in forms})
@@ -206,12 +211,15 @@ def _bank_shard(common, case, stage_name, grant):
     stage = cfg["stage_kinds"][stage_name]
     task_dir = output / ("task-" + case["task"])
     dest = task_dir / stage_name
-    imported = case.get("imported_first_pass")
-    source_dir = safe_path(workspace / "runs", imported["directory"]) if imported else task_dir / "source"
+    opening = case.get("opening", case)
+    donor = case.get("donor", case)
+    imported = opening.get("imported_first_pass")
+    source_dir = (safe_path(workspace / "runs", imported["directory"]) if imported
+                  else output / ("task-" + opening["task"]) / "source")
     if stage == "source":
         require(not imported, "A reused first pass cannot be resubmitted")
     tid = case["task_id"]
-    plan = dict(sources={}, tasks={tid: common["tasks"][case["task"]]}, connection=conn, modules=modules_for(str(workspace)),
+    plan = dict(sources={}, tasks={tid: common["tasks"][opening["task"]]}, connection=conn, modules=modules_for(str(workspace)),
                 instruction=asset_text(workspace, cfg["delivery_instruction"]))
     spec = dict(registration_sha256=cfg["registration_sha256"], native_sha256=case["native_sha256"],
                 customer_opening_sha256=case["customer_opening_sha256"], instruction_sha256=cfg["delivery_instruction"]["sha256"],
@@ -220,7 +228,14 @@ def _bank_shard(common, case, stage_name, grant):
     if "query_tool_descriptions" in cfg:
         spec["query_tool_descriptions"] = cfg["query_tool_descriptions"]
     source = None
-    if stage != "source":
+    if "donor" in case:
+        _, parent, (row,) = sealed_rows(source_dir)
+        require(not imported and row["task_id"] == tid and row["arm"] == "no_memory"
+                and parent["profile"]["registration_sha256"] == cfg["registration_sha256"]
+                and parent["design"]["stage"] == "source", "Wrong independent target opening")
+        receipt = target_opening_receipt(safe_path(source_dir, row["directory"]), row, spec)
+        spec.update(source=receipt, public_context_sha256=receipt["public_context_sha256"])
+    elif stage != "source":
         _, parent, first_rows = sealed_rows(source_dir)
         source_registration = imported["registration_sha256"] if imported else cfg["registration_sha256"]
         require(parent["profile"]["registration_sha256"] == source_registration and parent["design"]["stage"] == "source",
@@ -239,6 +254,18 @@ def _bank_shard(common, case, stage_name, grant):
                                               dict(spec, registration_sha256=source_registration)),
                         public_context_sha256=source.public_context_sha256)
             plan["sources"][tid] = source
+    if "donor" in case:
+        donor_import = donor.get("imported_first_pass")
+        donor_dir = (safe_path(workspace / "runs", donor_import["directory"]) if donor_import
+                     else output / ("task-" + donor["task"]) / "source")
+        source = source_from(donor_dir, donor["task_id"])
+        require(source is not None and spec.get("source"), "Transfer needs its donor and an independent target opening")
+        if donor_import:
+            require((source.source_run_id, source.source_log_sha256) == (donor_import["run_id"], donor_import["log_sha256"]),
+                    "Imported transfer donor changed")
+        spec["donor"] = dict(task_id=donor["task_id"], run_id=source.source_run_id,
+                             log_sha256=source.source_log_sha256, public_context_sha256=source.public_context_sha256)
+        plan["sources"] = {donor["task_id"]: source}
     design = study_design(cfg, case, stage, source)
     jobs = study_jobs(case, stage)
     profile = shard_profile(cfg, case, stage, grant, jobs)
@@ -251,18 +278,18 @@ def _bank_shard(common, case, stage_name, grant):
                 write_dir = safe_path(workspace / "runs", archived["directory"])
                 registration, seal = archived["registration_sha256"], archived["seal"]
             else:
-                write_dir, registration, seal = task_dir / "write", cfg["registration_sha256"], None
+                write_dir, registration, seal = output / ("task-" + donor["task"]) / "write", cfg["registration_sha256"], None
             _, parent, written = sealed_rows(write_dir, seal)
             require(parent["profile"]["registration_sha256"] == registration
-                    and parent["design"] == study_design(cfg, case, "write", source)
-                    and [r["arm"] for r in written] == [j["arm"] for j in study_jobs(case, "write")],
+                    and parent["design"] == study_design(cfg, donor, "write", source)
+                    and [r["arm"] for r in written] == [j["arm"] for j in study_jobs(donor, "write")],
                     "Writer banks do not belong to this registered task and first pass")
             by_arm = {r["arm"]: r for r in written}
-            bindings = (write_dir, {(1, tid, arm): by_arm[d["writer"]] for arm, d in design["delivery_arms"].items()})
+            bindings = (write_dir, {(1, donor["task_id"], arm): by_arm[d["writer"]] for arm, d in design["delivery_arms"].items()})
             if archived:
                 for job in jobs:
                     old = case["interrupted_readers"][job["arm"]]
-                    writer = bindings[1][1, tid, job["arm"]]
+                    writer = bindings[1][1, donor["task_id"], job["arm"]]
                     require((old["index"], old["writer"], old["snapshot"]) == (job["index"], writer["run_id"],
                             writer["result"]["snapshot_id"]), "A retried slot has another assignment or memory")
         if stage != "write" and common.get("judge") is not None:
@@ -298,6 +325,7 @@ def study_models(cfg, conn):
 
 class Tau2Study:
     """A τ² domain behind the declared-study runner; subclasses only name the domain."""
+    cross_task = False
     name = None
     execution_mode = "staged"
 
@@ -321,6 +349,7 @@ class Tau2Study:
         return dict(path=str(path.relative_to(workspace)), sha256=digest(data))
 
     def _configure(self, plan, workspace, root):
+        require(("transfer" in plan) == self.cross_task, "Select the adapter for the full study plan")
         setup = read_json(asset_text(root, plan["benchmark"]["setup"]).encode())
         base = read_json(asset_text(root, setup["base"]).encode())
         spec = self.spec
@@ -411,6 +440,7 @@ class Tau2Study:
                                  judge_config(cfg) if self.spec["judge"] else None)
         opening = opening_hash(orch, role_settings(control)["user_simulator"], modules[2])
         names = {t.name for t in orch.agent.tools}
+        require(set(cfg.get("transfer_tools", {}).get(tid, [])) <= names, "Target decision names an unavailable native tool")
         require(not any(n.startswith("memory_") for n in names) and self.spec["native_tool"] in (None, *names),
                 "Expected only the native business tools before memory assignment")
         native_case = dict(native_sha256=digest(canonical(control)), task_sha256=control["task_sha256"],
@@ -585,24 +615,27 @@ class Tau2Study:
                       and (r.get("result") or {}).get("error_code") in codes]
             if not failed:
                 continue
-            _, _, written = sealed_rows(task_dir / "write")
+            write_dir = root / ("task-" + case.get("donor", case)["task"]) / "write"
+            _, _, written = sealed_rows(write_dir)
             writers = {w["arm"]: w for w in written}
             readers = {}
             for r in failed:
                 writer = writers[case["arm_writer"][r["arm"]]]
                 readers[r["arm"]] = dict(index=r["index"], writer=writer["run_id"], snapshot=writer["result"]["snapshot_id"])
             retry.append(dict(case, scheduled_stages=[f"{stage}-retry-{attempt}"], interrupted_readers=readers,
-                              imported_writer_stage=dict(directory=f"{root.name}/task-{case['task']}/write",
-                                                         seal=shard_seal(task_dir / "write"),
+                              imported_writer_stage=dict(directory=str(write_dir.relative_to(root.parent)),
+                                                         seal=shard_seal(write_dir),
                                                          registration_sha256=cfg["registration_sha256"])))
         return retry
 
     def _groups(self, root, plan, cfg, cases, sleep):
         yield ("source", "source", [c for c in cases if "source" in c["scheduled_stages"]])
-        live = [c for c in cases if "write" in c["scheduled_stages"]]
+        writers = [c for c in cases if "write" in c["scheduled_stages"]]
+        if writers:
+            yield ("write", "write", writers)
+        live = [c for c in cases if "solve" in c["scheduled_stages"]]
         if not live:
             return
-        yield ("write", "write", live)
         codes = {f"HTTP_{code}" for code in plan["retry"]["http_codes"]}
         for stage in cfg["solve_stages"]:
             yield (stage, stage, live)

@@ -72,3 +72,5 @@ uv run python scripts/validate_design.py
 ```
 
 검증기는 두 버전의 스키마·합성 예시를 검사한다. v1.1은 journal 연결·승인 출처·요청 전체의 binding·반환/자기 작성 구간·노출 사건 완전성을 예시 범위에서 확인한다. 음성 사례는 `uv run python -m unittest discover -s tests`로 실행한다. [코어 계약의 한계](../docs/design/core-contracts.md#5-합성-검증의-범위와-남은-구현)를 따른다. 모델 API·벤치·내구성 있는 기록자나 라우터를 실행하지 않는다.
+
+일반 실험 계획 v3는 서로 다른 원천·목표 과제 쌍과 목표별 행동 판독 규칙을 선언한다. 기존 v1/v2 기록과 리테일 재방문 전용 계획은 각자 원래 형식을 따른다. [계획 스키마](study-plan-v1.schema.json) · [행동 전이 배정](../docs/development/study-plans.md#서로-다른-과제-사이의-행동-전이)

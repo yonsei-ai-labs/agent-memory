@@ -254,10 +254,10 @@ def run_jobs(rows, execute, guard, persist, *, written_arms=(*FORMS, "summary"),
         if row.get("source_task_id", row["task_id"]) in missing_sources:
             row.update(status="not_started", reason="first_pass_ungraded")
             continue
-        if row["phase"] == "solve" and (row["repetition"], row["task_id"]) in incomplete_form_sets:
+        if row["phase"] == "solve" and key[:2] in incomplete_form_sets:
             row.update(status="not_started", reason="required_form_set_incomplete")
             continue
-        if row["phase"] == "solve" and (row["repetition"], row["task_id"], row["arm"]) in incomplete_form_sets:
+        if row["phase"] == "solve" and key in incomplete_form_sets:
             row.update(status="not_started", reason="required_bank_incomplete")
             continue
         if row["phase"] == "solve" and row["arm"] in written_arms:
@@ -344,10 +344,10 @@ def verify_required_form_sets(design, plan, writer_root, bindings, *, root=ROOT)
     if admission == "sealed_bank" and {d["writer"] for d in delivery.values()} != forms:
         raise ContractError("Required reader arms must cover every registered writing form")
     common = asset_text(root, design["writing"]["common_instruction_ref"]).rstrip("\r\n")
-    groups = {(j["repetition"], j["task_id"]) for j in reader_jobs}
+    groups = {(j["repetition"], j.get("source_task_id", j["task_id"])) for j in reader_jobs}
     incomplete = set()
     for rep, tid in groups:
-        assigned = [j["arm"] for j in reader_jobs if (j["repetition"],j["task_id"]) == (rep,tid)]
+        assigned = [j["arm"] for j in reader_jobs if (j["repetition"], j.get("source_task_id", j["task_id"])) == (rep, tid)]
         if len(assigned) != len(delivery) or set(assigned) != set(delivery):
             raise ContractError("Required reader assignments differ from the declared delivery arms")
         source = plan["sources"].get(tid)
