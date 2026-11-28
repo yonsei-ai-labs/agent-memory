@@ -64,7 +64,7 @@ native 보고서의 비용에는 내부 기억 요청과 사후 작성이 빠질
 
 ## 검증과 후속 범위
 
-[native 행동 테스트](../../tests/test_tau2_memory.py)는 HTTP를 모의 처리하며 유료 모델을 호출하지 않는다. 실제 native 환경·대화·채점에 연결해 다음을 확인한다.
+[native 행동 테스트](https://github.com/yonsei-ai-labs/agent-memory/blob/40f881aa1f70f5772f52484a4f1a19d0de01162d/tests/test_tau2_memory.py)는 HTTP를 모의 처리하며 유료 모델을 호출하지 않는다. 실제 native 환경·대화·채점에 연결해 다음을 확인한다.
 
 - 두 회차의 새 객체/세션, snapshot 전달, 제목·본문·자기 작성 노출, 사용자/채점 trace의 기억 왕복 제외.
 - 기억·업무·기억의 부작용/결과 순서, 기억 오류 11회에도 native 단계/오류 한도 보존, 종료 도구 batch 전체 거절.

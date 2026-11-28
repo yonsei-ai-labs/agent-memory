@@ -69,7 +69,7 @@ uv run --frozen --extra tau2 python scripts/run_decision_replay.py --audit-only 
 uv run --frozen --extra tau2 python -m unittest discover -s tests -p 'test_decision_replay.py'
 ```
 
-[행동 테스트](../../tests/test_decision_replay.py)는 실제 원본 입력과 mock HTTP를 사용한다. 요청 변경 범위·배정·사람/자동 판정 분리·감사 재계산·원본 보존·전체 호출/비용 제한·503 비용 미확인 중단을 검증한다. 모델 효과나 실제 비용 결과는 아직 없다.
+[행동 테스트](https://github.com/yonsei-ai-labs/agent-memory/blob/40f881aa1f70f5772f52484a4f1a19d0de01162d/tests/test_decision_replay.py)는 실제 원본 입력과 mock HTTP를 사용한다. 요청 변경 범위·배정·사람/자동 판정 분리·감사 재계산·원본 보존·전체 호출/비용 제한·503 비용 미확인 중단을 검증한다. 모델 효과나 실제 비용 결과는 아직 없다.
 
 새 16개를 포함한 전체 148개 테스트와 기본 설계·문서·보관본 검사가 통과했다. 기존 실행 전 동결 참조 85개와 이전 전달 비교 참조 64개도 유지됐다.
 

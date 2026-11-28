@@ -54,7 +54,7 @@ uv run --extra tau2 python scripts/run_tau2_autonomy_pilot.py --output runs/auto
 
 이 과제의 채점에는 별도 한계가 있다. 고정 τ²의 `tasks.json`에서 과제 `0`은 actions/communicate_info가 비어 있고 reward_basis는 DB/COMMUNICATE다. ‘취소 진행을 거절해야 한다’는 NL assertion은 이 basis에 포함되지 않는다. 따라서 DB를 유지한 native 성공만으로 적절한 거절 설명이나 업무 품질을 확정하지 않는다. 이번 파일럿의 중심은 자율 조회와 실제 노출·도구 행동 관측이다.
 
-준비 검사·세 조건의 wire 대조·미조회/빈은행 처리·알 수 없는 비용 중단·snapshot 가져오기/대화 격리·보관본만으로의 audit는 [모의 native 테스트](../../tests/test_tau2_autonomy.py)로 확인한다. 기존 [guided 두 회차](tau2-memory.md)와 그 원본은 유지한다.
+준비 검사·세 조건의 wire 대조·미조회/빈은행 처리·알 수 없는 비용 중단·snapshot 가져오기/대화 격리·보관본만으로의 audit는 [모의 native 테스트](https://github.com/yonsei-ai-labs/agent-memory/blob/40f881aa1f70f5772f52484a4f1a19d0de01162d/tests/test_tau2_autonomy.py)로 확인한다. 기존 [guided 두 회차](tau2-memory.md)와 그 원본은 유지한다.
 
 ## 실제 관측
 
@@ -82,4 +82,4 @@ uv run --extra tau2 python scripts/run_tau2_autonomy_pilot.py --output runs/auto
 uv run --extra tau2 python scripts/analyze_tau2_pilot_actions.py --input runs/tau2-autonomy-luna-deepseek1017-pilot-02
 ```
 
-[보조 분석 기록](../../artifacts/analyses/20261114-tau2-action-comparison.json)에서 원래 차이 9/9쌍 중 7/9쌍에 이관 요약 이외의 차이가 남고, 2쌍은 요약만 달랐다. 최종 DB 차이는 0/9쌍이다. 같은 실행을 공유하는 비교이며 사후 기술 분석으로 해석한다. 제외한 요약의 내용이 무의미하다는 판단이나 남은 차이의 유용성·위해성 판정은 아니다. 중요한 ID·다른 도구 인수·순서 차이를 유지하고 원본을 변경하지 않는지는 [행동 비교 테스트](../../tests/test_action_comparison.py)로 확인한다. 결과의 해석과 후속 순서는 [진행 보고서와 2주 계획](../reports/20261114-progress-and-two-week-plan.md)에 있다.
+[보조 분석 기록](../../artifacts/analyses/20261114-tau2-action-comparison.json)에서 원래 차이 9/9쌍 중 7/9쌍에 이관 요약 이외의 차이가 남고, 2쌍은 요약만 달랐다. 최종 DB 차이는 0/9쌍이다. 같은 실행을 공유하는 비교이며 사후 기술 분석으로 해석한다. 제외한 요약의 내용이 무의미하다는 판단이나 남은 차이의 유용성·위해성 판정은 아니다. 중요한 ID·다른 도구 인수·순서 차이를 유지하고 원본을 변경하지 않는지는 [행동 비교 테스트](https://github.com/yonsei-ai-labs/agent-memory/blob/40f881aa1f70f5772f52484a4f1a19d0de01162d/tests/test_action_comparison.py)로 확인한다. 결과의 해석과 후속 순서는 [진행 보고서와 2주 계획](../reports/20261114-progress-and-two-week-plan.md)에 있다.

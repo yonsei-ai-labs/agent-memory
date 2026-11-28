@@ -10,7 +10,7 @@ from agent_memory_eval.analysis.recorded_decisions import require
 from agent_memory_eval.contracts.core import canonical, digest, read_json
 from agent_memory_eval.recording.assets import asset_text
 from agent_memory_eval.recording.journal import BlobStore, read_experiment
-from agent_memory_eval.study.plan import arm_name, conditions, content_text, model_profile, plan_digest, require_declared_models
+from agent_memory_eval.study.plan import LEGACY_FORMAT, arm_name, conditions, content_text, model_profile, plan_digest, require_declared_models
 from agent_memory_eval.study.records import fixed
 
 NATIVE_ONLY = ("selection", "assigned", "purpose", "representation_pairs", "policy_writer_pairs", "policy_registration")
@@ -63,8 +63,11 @@ class BfclRelevance:
             reader_admission="sealed_bank",
         )
         for name in used_readers:
-            if "tool_descriptions" in readers[name]:
-                cfg["read_tool_descriptions"] = readers[name]["tool_descriptions"]
+            reader = readers[name]
+            if "tool_descriptions" in reader:
+                cfg["read_tool_descriptions"] = reader["tool_descriptions"]
+            elif reader["read_mode"] == "on_demand" and plan["format"] != LEGACY_FORMAT:
+                cfg.pop("read_tool_descriptions", None)
         return cfg
 
     def _check_checkpoint(self, cfg, checkpoint):

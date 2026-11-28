@@ -45,6 +45,6 @@ uv run --frozen --extra tau2 python scripts/run_tau2_baseline.py --audit-only --
 uv run --frozen --extra tau2 python -m unittest discover -s tests -p 'test_tau2_baseline.py'
 ```
 
-[행동 검증](../../tests/test_tau2_baseline.py)은 fake HTTP를 사용한다. 과제별 실제 Luna 성공률·기억 효용·일반 전이의 결과와 구분한다. 실제 실행과 실패 경로 주석·경험 재사용 후보의 선정은 이 구현 뒤의 실증 단계다.
+[행동 검증](https://github.com/yonsei-ai-labs/agent-memory/blob/40f881aa1f70f5772f52484a4f1a19d0de01162d/tests/test_tau2_baseline.py)은 fake HTTP를 사용한다. 과제별 실제 Luna 성공률·기억 효용·일반 전이의 결과와 구분한다. 실제 실행과 실패 경로 주석·경험 재사용 후보의 선정은 이 구현 뒤의 실증 단계다.
 
 실제 호출 전 새 12개를 포함한 전체 128개 테스트가 통과했다. 기본 설계·링크·보관본 검사, 새 배치 스키마의 메타 검증, 이전 48회 동결 파일 64개 해시 대조도 통과했다. 이후 별도 ready 프로필의 측정과 읽기 전용 원본 감사가 완료됐다. [결과 receipt](../../artifacts/pilots/20261115-tau2-baseline-screening-results.json)·[행동 검토](../../artifacts/analyses/20261115-tau2-baseline-behavior-review.json)·[오프라인 DB 채점 진단](../../artifacts/analyses/20261115-tau2-train-grading-diagnostic.json)은 분석 전용이며 worker/writer 입력으로 사용하지 않는다. 새 공개 분석 테스트 4개는 기존 전체 128개 실행 이력과 별도로 통과했다.

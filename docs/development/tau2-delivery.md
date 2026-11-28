@@ -64,4 +64,4 @@ uv run --extra tau2 python scripts/run_tau2_delivery.py --output runs/new-delive
 
 공식 결과는 native 채점을 유지한다. 필요한 행동·금지 행동·사용자 설명의 의미 판정은 [주석 기준](../research/tau2-task-selection-and-rubric.md)에 따라 별도로 진행한다. 현재 실행기가 그 기준의 자동 판정기나 통계 추론까지 구현한 것은 아니다.
 
-[파일 코어 검증](../../tests/test_preload.py) 8개는 원문·노출·다른 은행·역할·버전·시점·한도를 검사한다. [전달 비교 검증](../../tests/test_tau2_delivery.py) 8개는 draft 거절, 배정/위치, 분할, 두 과제·네 조건의 native 경로, 조회 도구 없는 제공, 전송 전 용량 검사, 비용 미확인 시 생략과 원본 audit를 다룬다. 새 세션·DB 분리, 원천 대화 차단, 본문 노출과 native 단계 보존을 모의 HTTP로 확인했다. DB를 변경하지 않은 모의 실행에서 과제 0은 공식 성공, 과제 40은 공식 실패로 구분됐다. 이는 채점 연결 검증이며 새 Luna 실험 결과가 아니다.
+[파일 코어 검증](../../tests/test_preload.py) 8개는 원문·노출·다른 은행·역할·버전·시점·한도를 검사한다. [전달 비교 검증](https://github.com/yonsei-ai-labs/agent-memory/blob/40f881aa1f70f5772f52484a4f1a19d0de01162d/tests/test_tau2_delivery.py) 8개는 draft 거절, 배정/위치, 분할, 두 과제·네 조건의 native 경로, 조회 도구 없는 제공, 전송 전 용량 검사, 비용 미확인 시 생략과 원본 audit를 다룬다. 새 세션·DB 분리, 원천 대화 차단, 본문 노출과 native 단계 보존을 모의 HTTP로 확인했다. DB를 변경하지 않은 모의 실행에서 과제 0은 공식 성공, 과제 40은 공식 실패로 구분됐다. 이는 채점 연결 검증이며 새 Luna 실험 결과가 아니다.

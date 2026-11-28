@@ -13,8 +13,8 @@
 ### 돈을 쓰기 전에 확인한 것
 
 - 이전 1회차 138건 중 공식 성적과 공개 경험을 복원한 132건이 작성 대상이다. 다섯 형식으로 구성한 작성 입력 660개의 크기는 23,708~261,056바이트였다. 작성자는 원천의 공개 대화·업무 도구 결과와 공식 성패 한 비트를 받는다. 목표 문서 목록, 모범 행동, 비공개 고객 대본은 분석 자료에 둔다. 132건 중 126건에서 과제 지정 문서가 1회차 검색 결과에 등장했다. 작성자가 그 내용을 선택하는지와 선택한 내용이 다음 업무 판단에 도움이 되는지는 유료 실험에서 관측한다. [원천 결과](../../artifacts/analyses/20261127-banking-source-screen-results.json) · [작성 지침](../../protocols/instructions/required-experience-writer-v1.txt)
-- 보관된 은행 상담 40건을 새 판독기로 읽어 공식 성공을 자동 제공 8/20, 자율 조회 7/20으로 재현했다. 실제 작업자 입력에 기억 본문이 들어간 상담은 각각 20/20, 0/20이었다. 각 결과는 원천·작성자·스냅샷·공식 보고서·비용에 연결된다. [보관 결과](../../artifacts/analyses/20261124-banking-required-results.json) · [원기록 대조 테스트](../../tests/test_banking_memory.py)
-- 네이티브 은행 환경과 모의 모델 응답으로 새 자율 조회 조건의 한 경로를 확인했다. 작업자의 첫 질문과 시스템 메시지는 해당 1회차와 같다. 검색 용도는 목록·본문 도구 설명에만 있다. 모의 작업자가 조회를 선택한 다섯 상담에서 첫 입력 본문 노출은 0건, 이후 본문 노출은 5건이었고 공식 채점까지 이어졌다. 실제 은행 모델이 검색을 선택하는 빈도는 아직 관측되지 않았다. [조회 설명 원문](../../protocols/diagnostics/bfcl-tool-only-retrieval-v1.json) · [네이티브 연결 검증](../../tests/test_banking_memory.py)
+- 보관된 은행 상담 40건을 새 판독기로 읽어 공식 성공을 자동 제공 8/20, 자율 조회 7/20으로 재현했다. 실제 작업자 입력에 기억 본문이 들어간 상담은 각각 20/20, 0/20이었다. 각 결과는 원천·작성자·스냅샷·공식 보고서·비용에 연결된다. [보관 결과](../../artifacts/analyses/20261124-banking-required-results.json) · [원기록 대조 테스트](https://github.com/yonsei-ai-labs/agent-memory/blob/40f881aa1f70f5772f52484a4f1a19d0de01162d/tests/test_banking_memory.py)
+- 네이티브 은행 환경과 모의 모델 응답으로 새 자율 조회 조건의 한 경로를 확인했다. 작업자의 첫 질문과 시스템 메시지는 해당 1회차와 같다. 검색 용도는 목록·본문 도구 설명에만 있다. 모의 작업자가 조회를 선택한 다섯 상담에서 첫 입력 본문 노출은 0건, 이후 본문 노출은 5건이었고 공식 채점까지 이어졌다. 실제 은행 모델이 검색을 선택하는 빈도는 아직 관측되지 않았다. [조회 설명 원문](../../protocols/diagnostics/bfcl-tool-only-retrieval-v1.json) · [네이티브 연결 검증](https://github.com/yonsei-ai-labs/agent-memory/blob/40f881aa1f70f5772f52484a4f1a19d0de01162d/tests/test_banking_memory.py)
 
 ### 450건을 마친 뒤 판단할 것
 

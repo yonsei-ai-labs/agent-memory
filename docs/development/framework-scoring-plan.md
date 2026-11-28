@@ -18,7 +18,7 @@
 
 11월 25일 기준 다음 개발 산출물은 **여러 벤치의 보관 기록을 같은 분석 경로에 넣어, 어떤 기억 정책을 무엇과 비교했는지와 그 결론을 뒷받침하는 원문을 함께 내는 결과표**다. 메모가 도움 된 사례, 손해를 준 사례, 차이를 판정할 수 없는 사례 모두에서 평가가 정확해야 한다.
 
-소매 재방문 `previous_only`에서 빈 메모를 시작할 때 받은 동일한 154건의 첫 목표 주문 조회는 27/154, 최종 DB 취소는 154/154다. 이전 공용 집계 함수에 이 두 지표를 의도적으로 섞으면 같은 정책에서 개선 127건이 나왔다. 공개 보고서는 각 지표를 올바르게 짝지었다. 보완한 집계기는 이 입력에서 두 지표 이름과 불일치 항목을 반환하고 계산을 중단한다. 같은 첫 조회끼리 비교하면 개선·악화는 0·0이다. [보관 결과](../../artifacts/analyses/20261122-retail-two-visit-results-with-recovery.json) · [공용 집계](../../src/agent_memory_eval/analysis/paired_trials.py) · [실제 배정 회귀 검사](../../tests/test_common_measurements.py)
+소매 재방문 `previous_only`에서 빈 메모를 시작할 때 받은 동일한 154건의 첫 목표 주문 조회는 27/154, 최종 DB 취소는 154/154다. 이전 공용 집계 함수에 이 두 지표를 의도적으로 섞으면 같은 정책에서 개선 127건이 나왔다. 공개 보고서는 각 지표를 올바르게 짝지었다. 보완한 집계기는 이 입력에서 두 지표 이름과 불일치 항목을 반환하고 계산을 중단한다. 같은 첫 조회끼리 비교하면 개선·악화는 0·0이다. [보관 결과](../../artifacts/analyses/20261122-retail-two-visit-results-with-recovery.json) · [공용 집계](../../src/agent_memory_eval/analysis/paired_trials.py) · [실제 배정 회귀 검사](https://github.com/yonsei-ai-labs/agent-memory/blob/40f881aa1f70f5772f52484a4f1a19d0de01162d/tests/test_common_measurements.py)
 
 | 먼저 보완할 부분 | 공통 결과가 통과할 검사 |
 | --- | --- |

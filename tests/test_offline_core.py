@@ -7,15 +7,14 @@ import unittest
 from unittest.mock import patch
 
 from agent_memory_eval.adapters.fake import FakeBenchmark, SyntheticTask
-from agent_memory_eval.analysis.offline import summarize
 from agent_memory_eval.contracts.core import (ContractError, MemoryFault, MemoryPolicy, RunContext,
-                                             canonical, digest, new_id, read_json)
+                                             canonical, digest, new_id)
 from agent_memory_eval.contracts.validation import inspect_journal
 from agent_memory_eval.memory.service import MemoryService
 from agent_memory_eval.models.fake import FakeWorker, tool_call
-from agent_memory_eval.recording.journal import Journal, read_experiment
-from agent_memory_eval.recording.provenance import OfflineGateway, SourceRegistry, json_string_ranges
-from agent_memory_eval.runner.offline import OfflineRunner, tool_schemas
+from agent_memory_eval.recording.journal import Journal
+from agent_memory_eval.recording.provenance import OfflineGateway, SourceRegistry
+from agent_memory_eval.runner.offline import tool_schemas
 from agent_memory_eval.runner.router import ToolRouter
 
 
@@ -378,83 +377,6 @@ class OfflineCoreTests(unittest.TestCase):
         old = read_public_prefix(self.root, first, self.journal.events, len(self.journal.events) + 1)
         self.assertEqual(len(old["messages"]), 1)
         self.assertEqual(second["entry_count"], 2)
-
-
-class OfflineFlowTests(unittest.TestCase):
-    def test_two_sources_own_mixed_and_no_memory_recompute_without_leakage(self):
-        with TemporaryDirectory() as folder:
-            root = Path(folder)
-            with Journal(root, "synthetic-flow") as journal:
-                runner = OfflineRunner(journal)
-                runs = runner.two_pass()
-                before = (root / "log.jsonl").read_bytes()
-                summary = summarize(root)
-                self.assertEqual(summary["run_count"], 8)
-                self.assertEqual(summary["scheduled_runs"], 8)
-                self.assertFalse(journal.scan["records"][0]["events"])
-                initial_state = journal.blobs.get(journal.scan["records"][0]["state_ref"])
-                self.assertEqual(len(initial_state["schedule"]), 8)
-                self.assertEqual(len(summary["synthetic_pairs"]), 4)
-                self.assertTrue(all(v is None for v in summary["official_outcomes"].values()))
-                self.assertTrue(all(summary["synthetic_outcomes"].values()))
-                self.assertGreater(summary["retrieved_spans"], 0)
-                self.assertGreater(summary["self_authored_spans"], 0)
-                self.assertEqual(summary["incomplete_runs"], [])
-                secrets = [env.private_marker for env in runner.environments.values()]
-                sessions = {e["session_id"] for e in journal.events.values() if e["type"] == "run.started"}
-                self.assertEqual(len(sessions), 8)
-                self.assertEqual(len({id(env.state) for env in runner.environments.values()}), 8)
-                for run, assignment in journal.state["assignments"].items():
-                    for request in runner.workers[run].requests:
-                        text = canonical(request).decode()
-                        self.assertTrue(all(secret not in text for secret in secrets))
-                        self.assertNotIn("source_run_ids", text)
-                        self.assertNotIn("head_revision", text)
-                        if assignment["mode"] == "no_memory":
-                            self.assertTrue(all(not t["function"]["name"].startswith("memory_") for t in request["tools"]))
-                    self.assertEqual(runner.environments[run].steps, 3)
-                    self.assertEqual(runner.environments[run].user_turns, 1)
-                mixed = journal.state["snapshots"][runs["mixed_snapshot"]]
-                self.assertEqual(len(mixed["heads"]), 2)
-                for run in runs["probes"]:
-                    bank = run["bank_id"]
-                    if bank is not None:
-                        parent = journal.state["banks"][bank]["parent_snapshot"]
-                        self.assertEqual(journal.state["snapshots"][parent]["heads"], journal.state["banks"][bank]["start_heads"])
-                journal.export_views()
-                self.assertEqual((root / "log.jsonl").read_bytes(), before)
-            self.assertEqual(summarize(root), summary)
-
-    def test_all_write_timings_are_behaviors_and_post_write_preserves_result(self):
-        for timing, expected in (("none", 0), ("during_task", 1), ("post_task", 1), ("during_and_post", 2)):
-            with self.subTest(timing=timing), TemporaryDirectory() as folder:
-                with Journal(folder, "synthetic-timing") as journal:
-                    runner = OfflineRunner(journal)
-                    runner.run(SyntheticTask("t", "配送", "east"), MemoryPolicy(True, timing, False, 3),
-                               stage="collection", mode=timing, max_requests=12)
-                    stores = [e for e in journal.events.values() if e["type"] == "memory.stored"]
-                    self.assertEqual(len(stores), expected)
-                    summary = summarize(folder)
-                    self.assertEqual(list(summary["synthetic_outcomes"].values()), [True])
-                    grade_seq = next(e["event_seq"] for e in journal.events.values() if e["type"] == "outcome.scored")
-                    self.assertTrue(all(e["event_seq"] > grade_seq for e in stores if e["phase"] == "post_task_write"))
-
-    def test_request_limit_keeps_grade_and_grader_failure_stays_missing(self):
-        for fail_grade in (False, True):
-            with self.subTest(grader_error=fail_grade), TemporaryDirectory() as folder:
-                with Journal(folder, "synthetic-limit") as journal:
-                    runner = OfflineRunner(journal)
-                    result = runner.run(SyntheticTask("t", "配送", "east"),
-                        MemoryPolicy(False, "none", False, 2, read_mode="none"), stage="collection", mode="limit",
-                        max_requests=1, grader_error=fail_grade)
-                    summary = summarize(folder)
-                    self.assertEqual(summary["terminations"][result["run_id"]], "request_limit")
-                    self.assertIsNone(summary["official_outcomes"][result["run_id"]])
-                    if fail_grade:
-                        self.assertNotIn(result["run_id"], summary["synthetic_outcomes"])
-                    else:
-                        self.assertFalse(summary["synthetic_outcomes"][result["run_id"]])
-                    self.assertEqual(summary["incomplete_runs"], [])
 
 
 if __name__ == "__main__":

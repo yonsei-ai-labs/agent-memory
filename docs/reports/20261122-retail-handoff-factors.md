@@ -138,4 +138,4 @@ uv run --frozen --no-sync python -m scripts.analyze_retail_handoff_factors --out
 cmp outputs/retail-handoff-factors-replay.json artifacts/analyses/20261122-retail-handoff-factors.json
 ```
 
-두 번 실행한 결과가 바이트 단위로 일치했다. 결과 파일의 SHA-256은 `deba29ce5a0247aa877ec1fd21a494b09171a5972e5042b6b893d0554b28e88f`, 판정 파일은 `7a212765fe5d40e41e2187a43f0970534e9eb4f2dcb7f4a8c463715ce0a04402`다. 분류·짝비교·원기록 읽기와 판정 근거 대조의 행동 검증은 [테스트](../../tests/test_retail_handoff_factors.py)에 있다.
+두 번 실행한 결과가 바이트 단위로 일치했다. 결과 파일의 SHA-256은 `deba29ce5a0247aa877ec1fd21a494b09171a5972e5042b6b893d0554b28e88f`, 판정 파일은 `7a212765fe5d40e41e2187a43f0970534e9eb4f2dcb7f4a8c463715ce0a04402`다. 분류·짝비교·원기록 읽기와 판정 근거 대조의 행동 검증은 [테스트](https://github.com/yonsei-ai-labs/agent-memory/blob/40f881aa1f70f5772f52484a4f1a19d0de01162d/tests/test_retail_handoff_factors.py)에 있다.

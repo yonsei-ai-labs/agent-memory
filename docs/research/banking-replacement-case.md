@@ -30,7 +30,7 @@
 
 새 모델 실행의 예상 비용은 $0.05~0.15이고, 1회차 1건·필수 작성 10건·2회차 전체 상담 10건의 승인 총한도는 $0.30이다. [배정과 승인](../../artifacts/pilots/20261125-banking-replacement-authorization.json)
 
-공식 과제는 과거 대화와 초기 변경이 모두 빈 초기화 객체를 명시한다. 무기억 시작과 새 세션 복원에서 동일한 첫 업무 입력과 초기 DB를 확인했고, 대화·초기 동작·DB 변경이 실제로 들어 있는 경우는 기존 거부 조건을 검증했다. 도구·채점·격리 점검에 든 유료 호출은 0건이다. [시작점 검증](../../tests/test_banking_replacement.py)
+공식 과제는 과거 대화와 초기 변경이 모두 빈 초기화 객체를 명시한다. 무기억 시작과 새 세션 복원에서 동일한 첫 업무 입력과 초기 DB를 확인했고, 대화·초기 동작·DB 변경이 실제로 들어 있는 경우는 기존 거부 조건을 검증했다. 도구·채점·격리 점검에 든 유료 호출은 0건이다. [시작점 검증](https://github.com/yonsei-ai-labs/agent-memory/blob/40f881aa1f70f5772f52484a4f1a19d0de01162d/tests/test_banking_replacement.py)
 
 ```bash
 uv run python -m scripts.run_banking_replacement preflight --workspace . --output /tmp/banking-replacement-preflight.json

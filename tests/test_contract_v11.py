@@ -12,7 +12,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 from contract_v11 import (artifact, canonical, digest, inspect_journal, read_json,
                           record_hash, validate_batch, validate_fixture,
                           validate_manifest, validate_public_return, validators)
-from contract_fixture_v11 import write_fixture, write_journal
+from tests.contract_fixture_v11 import write_fixture, write_journal
 
 
 class ContractV11Tests(unittest.TestCase):

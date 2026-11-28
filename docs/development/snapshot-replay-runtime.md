@@ -61,6 +61,6 @@ uv run --frozen python scripts/review_snapshot_replays.py \
 
 최종 **전체 294개 테스트가 469.205초에 통과**했고 기본 검사 3종도 통과했다. 원본 경로를 옮긴 합성 예시에서 CLI 감사와 공개 판정을 재현했다. 네트워크·프로세스 실행·파일 쓰기/변경을 막은 감사 중 금지된 시도는 0이었고, 대상 110개 파일의 목록·크기·수정 시각이 같았다. 이 예시의 두 정상 응답과 두 오류는 모두 합성이며 실제 모델의 득실 결과가 아니다.
 
-[행동 테스트](../../tests/test_snapshot_replay.py)는 실제 파일 기록자·기억 서비스·게이트웨이·모의 HTTP를 사용한다. 요청 동일성, 빈 기억, 세션/은행 격리, 원본 삭제 후 감사, 입력/금액 한도, 비용 미확인 뒤 차단, HTTP 503, 부분/거절/잘못된 모델 응답, 공개 응답/비용/점수/설정/은행 변조와 판정 연결을 확인한다. 계약 [schema](../../schemas/snapshot-replay.schema.json)와 [합성 예시](../../tests/fixtures/snapshot-replay-v1.json)는 별도로 기본 검사에 포함한다. 일반 journal v1.1과 snapshot journal v1.2는 변경하지 않았다.
+[행동 테스트](https://github.com/yonsei-ai-labs/agent-memory/blob/40f881aa1f70f5772f52484a4f1a19d0de01162d/tests/test_snapshot_replay.py)는 실제 파일 기록자·기억 서비스·게이트웨이·모의 HTTP를 사용한다. 요청 동일성, 빈 기억, 세션/은행 격리, 원본 삭제 후 감사, 입력/금액 한도, 비용 미확인 뒤 차단, HTTP 503, 부분/거절/잘못된 모델 응답, 공개 응답/비용/점수/설정/은행 변조와 판정 연결을 확인한다. 계약 [schema](../../schemas/snapshot-replay.schema.json)와 [합성 예시](../../tests/fixtures/snapshot-replay-v1.json)는 별도로 기본 검사에 포함한다. 일반 journal v1.1과 snapshot journal v1.2는 변경하지 않았다.
 
 후속 [네 조건 배치](written-replay-batch.md)는 빈 작성을 포함한 전체 작성·통제 메모의 출처와 동일 입력의 의존성, 실패·생략·비용 감사를 연결한다. 사례·통제 메모 검토, 유료 반복·예산 확정과 실제 새 응답 관측이 남는다. 원경험/단순 요약 대조, 자연 실행, 자율 조회, 전체 에피소드, 전이·누적·득실과 전체 비용의 연구 범위를 유지한다.

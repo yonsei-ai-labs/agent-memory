@@ -77,7 +77,7 @@
 
 세 원본의 41,313개 파일에서 배정·역할별 요청·실제 기억 노출·비용을 대조했다. 저장 보상을 제거한 뒤 고정된 τ²에서 실제 업무 도구·DB·문자열 전달 조건을 엄격하게 재생했다. 공식 성적 234개 모두 보상 객체까지 일치했다. 실패 49개 가운데 46개는 DB에서, 3개는 DB와 전달 조건 양쪽에서 실패했다. 전달 요구는 36개 에피소드에 64개가 있었다. 재채점 중 모델·네트워크 접근은 0회다. 대화 비교 42쌍에서는 점수가 갈린 34쌍과 사전에 정한 같은 점수 대조 8쌍을 검토자 한 명씩 맡아 양쪽 최초 분기·결말의 인용 168개를 원문 위치와 대조했다. [공식 재채점](../../artifacts/analyses/20261118-two-pass-forms-final-native-regrade.json) · [가림 판정과 출처 연결](../../artifacts/analyses/20261118-two-pass-forms-final-actions.json)
 
-실제 로그를 검사하면서 오프라인 진단표가 벤치 원본 도구 응답의 `id`와 공개 기록의 `tool_call_id`를 모두 읽도록 고쳤다. 보상권 발급도 업무 행동에 포함시켰다. 공식 실행과 점수는 봉인한 원본에서 읽었다. 두 자료 형식, 추가 보상권의 반환값을 회귀 검사에 포함했고 전체 376개 검사가 통과했다. [진단표 생성 코드](../../scripts/export_two_pass_forms_diagnostics.py) · [두 회귀 검사](../../tests/test_forms_results.py)
+실제 로그를 검사하면서 오프라인 진단표가 벤치 원본 도구 응답의 `id`와 공개 기록의 `tool_call_id`를 모두 읽도록 고쳤다. 보상권 발급도 업무 행동에 포함시켰다. 공식 실행과 점수는 봉인한 원본에서 읽었다. 두 자료 형식, 추가 보상권의 반환값을 회귀 검사에 포함했고 전체 376개 검사가 통과했다. [진단표 생성 코드](../../scripts/export_two_pass_forms_diagnostics.py) · [두 회귀 검사](https://github.com/yonsei-ai-labs/agent-memory/blob/40f881aa1f70f5772f52484a4f1a19d0de01162d/tests/test_forms_results.py)
 
 고정 분석 commit `e303e99a5101baf614c41d73cc3bcff8e58ac9c4`에서 세 원본과 τ² checkout의 별도 사본으로 재현했다. 852.37초 후 독립 비용 감사·공식 성적·전환표·진단을 포함한 산출물 10개가 바이트까지 일치했다. 모델 인증 키 없이 수행했고 네트워크·보호 파일 쓰기 시도는 0회였다. 설계 검증·저장소 점검·과거 데이터 무결성 검사도 통과했다. [고정 commit 재현 영수증](../../artifacts/reproductions/20261118/two-pass-forms-final-01.json) · [세 원본 재현 설정](../../protocols/reproductions/two-pass-forms-final-20261118.json)
 

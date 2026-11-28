@@ -22,7 +22,7 @@
 - 등록 파일에 `source_opportunity_requirement`(단서, 근거 범위, 최소 고객 수)를 적으면, 1회차가 닫힌 뒤 단서가 있는 채점 원천의 서로 다른 고객 수를 센다. 기준 미달이면 연구 전체를 멈추고 작성·2회차 작업을 만들지도 보내지도 않는다. [실행 경로](../../scripts/run_banking_policy_cycle.py) · [판정](../../src/agent_memory_eval/analysis/trajectory.py)
 - 중단 영수증 `source-opportunity.json`에는 단서, 채점 원천 수, 관측하지 못한 원천 수, 단서가 나온 고객 수가 남고 덮어쓸 수 없다. [영수증 계약](../../schemas/source-opportunity-v1.schema.json)
 - 규칙은 사용자 승인에 묶인 사전 점검과 프로토콜 해시에 들어간다. 1회차를 본 뒤 규칙을 추가하면 1회차 등록과 해시가 달라져 2회차가 거부된다. 코드로 확인했고, 이 경우만 따로 다루는 테스트는 없다.
-- 관련 테스트 11개가 통과했다. [회귀 검사](../../tests/test_trajectory_report.py)
+- 관련 테스트 11개가 통과했다. [회귀 검사](https://github.com/yonsei-ai-labs/agent-memory/blob/40f881aa1f70f5772f52484a4f1a19d0de01162d/tests/test_trajectory_report.py)
 
 남은 것:
 

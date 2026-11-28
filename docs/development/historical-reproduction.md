@@ -29,7 +29,7 @@ uv run --frozen python scripts/reproduce_experiment.py --experiment baseline_dia
 
 별도 v2 registry는 `format`에 `agent-memory-historical-reproduction-registry/v2`를 쓴다. 배치 입력의 `kind`는 `run_batch`, `path`는 `runs/` 아래의 배치 폴더, `completion_sha256`은 그 폴더의 `completion.json` 원본 바이트 SHA-256이다. 실험 자체의 배치 경로는 고정 protocol lock의 `planned_output`과 일치해야 한다. 실행할 때 `--registry`로 해당 v2 파일을 지정한다.
 
-준비 검사는 완료 기록의 `allocation_sha256`과 `allocations.json`을 대조하며, `control.json`이 있으면 `control_sha256`도 대조한다. 생성된 각 `jobs/<id>/log.jsonl`은 해당 배정의 `result.log_sha256`으로 확인하고, 존재하는 내용 주소 blob은 파일명과 바이트 해시를 대조한다. 실제 job 디렉터리 집합은 `not_started`를 제외한 배정과 일치해야 한다. 원본을 복사하는 동안 생성된 모든 job의 기존 `writer.lock`과 배치 루트에 있는 경우 그 잠금까지 공유 모드로 잡는다. 잠금을 얻지 못하면 검토 시작 전에 중단한다. [배치 입력 행동 검사](../../tests/test_historical_reproduction_batch.py)
+준비 검사는 완료 기록의 `allocation_sha256`과 `allocations.json`을 대조하며, `control.json`이 있으면 `control_sha256`도 대조한다. 생성된 각 `jobs/<id>/log.jsonl`은 해당 배정의 `result.log_sha256`으로 확인하고, 존재하는 내용 주소 blob은 파일명과 바이트 해시를 대조한다. 실제 job 디렉터리 집합은 `not_started`를 제외한 배정과 일치해야 한다. 원본을 복사하는 동안 생성된 모든 job의 기존 `writer.lock`과 배치 루트에 있는 경우 그 잠금까지 공유 모드로 잡는다. 잠금을 얻지 못하면 검토 시작 전에 중단한다. [배치 입력 행동 검사](https://github.com/yonsei-ai-labs/agent-memory/blob/40f881aa1f70f5772f52484a4f1a19d0de01162d/tests/test_historical_reproduction_batch.py)
 
 ## 격리와 저장량
 
@@ -52,7 +52,7 @@ uv run --frozen python scripts/reproduce_experiment.py --experiment baseline_dia
 
 기존 7회(통과 6·실패 1)의 receipt와 child report는 [공유 증거 index](../../artifacts/reproductions/20261116/index.json)에 경로를 정리한 사본으로 보존했다. 원래 bytes 해시와 경로 치환을 구분하며 원본 receipt를 덮어쓰지 않는다. 이 사본은 검토용이며 자체로 재현을 다시 실행한 결과는 아니다. 쓰기 차단은 worktree 사본에 적용되며 원본 변경은 공유 writer 잠금과 전후 해시 대조로 점검한다. 원본 폴더의 OS 쓰기 권한을 제거하는 격리는 아니다.
 
-[행동 테스트](../../tests/test_historical_reproduction.py)는 실제 작은 Git 저장소·worktree·격리 Python으로 main 변경, 잘못된 import, 원본/해시/입력 오류, 활성 writer, 네트워크·쓰기·프로세스 시도, timeout·정리를 확인한다. 합성 테스트의 의존성 설치는 표준 라이브러리 fixture이며 실제 세 과거 명령의 uv 환경 검증과 구분한다.
+[행동 테스트](https://github.com/yonsei-ai-labs/agent-memory/blob/40f881aa1f70f5772f52484a4f1a19d0de01162d/tests/test_historical_reproduction.py)는 실제 작은 Git 저장소·worktree·격리 Python으로 main 변경, 잘못된 import, 원본/해시/입력 오류, 활성 writer, 네트워크·쓰기·프로세스 시도, timeout·정리를 확인한다. 합성 테스트의 의존성 설치는 표준 라이브러리 fixture이며 실제 세 과거 명령의 uv 환경 검증과 구분한다.
 
 ```bash
 uv run --frozen python -m unittest discover -s tests -p 'test_historical_reproduction.py'

@@ -75,7 +75,7 @@
 
 ## 원본에서 다시 확인하기
 
-실행 코드 고정점은 `ab76720`, 분석 코드 고정점은 `419675f`다. 분석기는 원래 작성물의 출처와 해시, 배정별 새 세션, 실제 작업자 요청에 들어간 은행과 시드, 고객 시뮬레이터 입력, 도구 반환과 장부 금액을 확인한다. 독립 재채점은 원래 대화·도구 호출과 고정 버전 τ²의 DB·문구 채점기를 사용한다. 아래 명령을 실행한 저장소에서는 출력 경로에 새 파일명을 쓴다. [실행기](../../scripts/run_frozen_bank_repeats.py) · [분석기](../../scripts/analyze_frozen_bank_repeats.py) · [오프라인 행동 검사](../../tests/test_frozen_bank_repeats.py)
+실행 코드 고정점은 `ab76720`, 분석 코드 고정점은 `419675f`다. 분석기는 원래 작성물의 출처와 해시, 배정별 새 세션, 실제 작업자 요청에 들어간 은행과 시드, 고객 시뮬레이터 입력, 도구 반환과 장부 금액을 확인한다. 독립 재채점은 원래 대화·도구 호출과 고정 버전 τ²의 DB·문구 채점기를 사용한다. 아래 명령을 실행한 저장소에서는 출력 경로에 새 파일명을 쓴다. [실행기](../../scripts/run_frozen_bank_repeats.py) · [분석기](../../scripts/analyze_frozen_bank_repeats.py) · [오프라인 행동 검사](https://github.com/yonsei-ai-labs/agent-memory/blob/40f881aa1f70f5772f52484a4f1a19d0de01162d/tests/test_frozen_bank_repeats.py)
 
 ```bash
 uv run python scripts/analyze_frozen_bank_repeats.py --workspace . --output /tmp/tau2-frozen-bank-check.json

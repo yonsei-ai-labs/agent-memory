@@ -60,7 +60,7 @@ Linux에서 등록된 상담 묶음을 실행할 때는 원장에 기록되는 �
 python3 scripts/watch_registered_provider.py --controller "$controller_pid" --study "$study_dir" --role user_simulator --report "$operator_log"
 ```
 
-감시 대상 역할에서 30초 안에 HTTP 429·502·503·504가 두 번 나오면 해당 실행의 전송을 잠시 멈춘다. 대기 시간은 120·600·1,800초 순으로 늘리고 공급자가 요청한 대기가 더 길면 그 시간을 따른다. 진행 중인 배정 하나에서 새 요청의 정상 응답을 확인하면 같은 실행을 재개한다. 묶음 사이에 진행 중인 상담이 없으면 다음 등록 묶음을 감시하면서 연다. 기존 오류와 비용은 원장에 남으며, 관측에 사용한 요청도 원래 배정에 포함된다. [운영 도구](../../scripts/watch_registered_provider.py) · [역할별 영수증과 프로세스 격리 검증](../../tests/test_registered_provider_watch.py)
+감시 대상 역할에서 30초 안에 HTTP 429·502·503·504가 두 번 나오면 해당 실행의 전송을 잠시 멈춘다. 대기 시간은 120·600·1,800초 순으로 늘리고 공급자가 요청한 대기가 더 길면 그 시간을 따른다. 진행 중인 배정 하나에서 새 요청의 정상 응답을 확인하면 같은 실행을 재개한다. 묶음 사이에 진행 중인 상담이 없으면 다음 등록 묶음을 감시하면서 연다. 기존 오류와 비용은 원장에 남으며, 관측에 사용한 요청도 원래 배정에 포함된다. [운영 도구](../../scripts/watch_registered_provider.py) · [역할별 영수증과 프로세스 격리 검증](https://github.com/yonsei-ai-labs/agent-memory/blob/40f881aa1f70f5772f52484a4f1a19d0de01162d/tests/test_registered_provider_watch.py)
 
 ## 현재 v1.1 실제 확인 결과
 
@@ -106,4 +106,4 @@ uv run python scripts/check_repository.py
 uv run python scripts/verify_legacy_data.py
 ```
 
-단위/통합 테스트는 모의 HTTP만 사용한다. [전송 테스트](../../tests/test_openrouter.py)는 경로·비밀 값·한도·미확인 비용·지원 파라미터·원 usage 보존·역할 차단을 검사한다. [native 테스트](../../tests/test_tau2_connection.py)는 추가 기능과 checkout이 있을 때 모의 응답으로 실제 도구 왕복·native 채점·읽기 전용 재검증을 확인한다. 테스트 명령 자체는 유료 모델을 호출하지 않는다.
+단위/통합 테스트는 모의 HTTP만 사용한다. [전송 테스트](../../tests/test_openrouter.py)는 경로·비밀 값·한도·미확인 비용·지원 파라미터·원 usage 보존·역할 차단을 검사한다. [native 테스트](https://github.com/yonsei-ai-labs/agent-memory/blob/40f881aa1f70f5772f52484a4f1a19d0de01162d/tests/test_tau2_connection.py)는 추가 기능과 checkout이 있을 때 모의 응답으로 실제 도구 왕복·native 채점·읽기 전용 재검증을 확인한다. 테스트 명령 자체는 유료 모델을 호출하지 않는다.

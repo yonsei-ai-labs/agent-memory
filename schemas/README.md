@@ -14,7 +14,7 @@
 
 과제별 표는 등록한 결과 파일에서 단계별 공식 성패를 집계한다. 검산표는 확인된 고객과 신원 미확정 과제, 전체 미조회 짝과 결과를 본 뒤 고른 부분집합을 구분한다. 지정된 총 짝 수의 검정력은 실제로 성패가 갈릴 짝 수의 변동을 포함해 계산한다. [과제별 원표](task-room-v1.schema.json) · [검산표](task-room-review-v1.schema.json) · [은행 적용 결과](../docs/reports/20261127-banking-task-room.md)
 
-은행 개설 기억을 판독할 때는 상품·계좌 유형·소유자, 주장한 결과와 공개 반환의 호출 ID를 함께 기록한다. 각 작성 배정의 모든 항목을 판독하면 고객별 비교에 한 건으로 들어간다. [판독 제출 형식 v2](opening-outcome-ratings-v2.schema.json) · [대상과 인용 검증 사례](../tests/test_opening_review_v2.py)
+은행 개설 기억을 판독할 때는 상품·계좌 유형·소유자, 주장한 결과와 공개 반환의 호출 ID를 함께 기록한다. 각 작성 배정의 모든 항목을 판독하면 고객별 비교에 한 건으로 들어간다. [판독 제출 형식 v2](opening-outcome-ratings-v2.schema.json) · [대상과 인용 검증 사례](https://github.com/yonsei-ai-labs/agent-memory/blob/40f881aa1f70f5772f52484a4f1a19d0de01162d/tests/test_opening_review_v2.py)
 
 공통 [짝비교 결과 v1](paired-outcomes-v1.schema.json)은 지표의 정의·버전·시점·단위와 집계 분모, 비교 배정, 원본 파일 해시, 조건별 관측의 JSON Pointer를 담는다. BFCL 스크립트 대조 예시로 지표 구조와 동작을 검증한다. [결과 스키마의 예시](../tests/fixtures/paired-outcomes-v1.json) · [보관 결과를 읽는 명령](../docs/development/framework-scoring-plan.md#보관-결과-짝비교-실행)
 

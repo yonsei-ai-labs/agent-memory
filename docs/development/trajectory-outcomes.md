@@ -31,7 +31,7 @@ uv run --offline python -m agent_memory_eval.analysis.outcome_report recording \
 {"source_opportunity_requirement": {"cue": "target_opening_return", "evidence": "source_only", "minimum_clusters": 1}}
 ```
 
-`source`는 공개 원천에서 확인한 단서를, `source_only`는 첫 입력과 대조해 과거에만 있었던 단서를 센다. 은행 실행기는 해당 단서가 있는 **채점 원천의 서로 다른 고객 수**를 확인한다. 후속 실행 폴더의 `source-opportunity.json`에 진행·중단과 근거 해시를 기록한다. 중단이면 등록된 모든 후속 상담을 미시작으로 읽을 수 있다. 통과하면 같은 판정을 후속 등록에 묶는다. 과거 은행 등록에는 이 조건이 없으며 BFCL 판독기는 동일한 단서 집계를 제공한다. [은행 실행 경로](../../scripts/run_banking_policy_cycle.py) · [판정의 회귀 검사](../../tests/test_trajectory_report.py)
+`source`는 공개 원천에서 확인한 단서를, `source_only`는 첫 입력과 대조해 과거에만 있었던 단서를 센다. 은행 실행기는 해당 단서가 있는 **채점 원천의 서로 다른 고객 수**를 확인한다. 후속 실행 폴더의 `source-opportunity.json`에 진행·중단과 근거 해시를 기록한다. 중단이면 등록된 모든 후속 상담을 미시작으로 읽을 수 있다. 통과하면 같은 판정을 후속 등록에 묶는다. 과거 은행 등록에는 이 조건이 없으며 BFCL 판독기는 동일한 단서 집계를 제공한다. [은행 실행 경로](../../scripts/run_banking_policy_cycle.py) · [판정의 회귀 검사](https://github.com/yonsei-ai-labs/agent-memory/blob/40f881aa1f70f5772f52484a4f1a19d0de01162d/tests/test_trajectory_report.py)
 
 ## 행동·진척·효율을 읽는 법
 
@@ -73,4 +73,4 @@ uv run --offline python -m agent_memory_eval.analysis.decision_cues \
 
 BFCL 전체에서도 원래 공개 질문을 단서로 넣어 무기억 1회차 8건, 자율 조회 40건, 시작 제공 40건을 검산했다. 88건 모두 현재 사용자 입력에서 같은 질문이 확인됐고, 기존 원장 판독의 작성자 연결, 노출 필드와 버전, 요청·응답 해시, 업무 함수 이름과 공식 성패가 일치했다. [BFCL 원장 집계와 관측 해시](../../artifacts/analyses/20261126-bfcl-trajectory-summary.json)
 
-정책 비교에서는 먼저 여러 과제의 성패·진척·비용을 본다. 어떤 조건에서 이득이나 손해가 생겼는지 설명할 때 해당 판단의 원기록으로 돌아간다. 위 사례들은 판단 당시 같은 단서를 제공한 출처가 여럿일 수 있고, 공식 성패가 없어도 중간 행동은 관찰할 수 있음을 보여 준다. [정책 비교의 다음 목표](../research/plan.md#현재-방향) · [판독 재현 검사](../../tests/test_decision_cues.py)
+정책 비교에서는 먼저 여러 과제의 성패·진척·비용을 본다. 어떤 조건에서 이득이나 손해가 생겼는지 설명할 때 해당 판단의 원기록으로 돌아간다. 위 사례들은 판단 당시 같은 단서를 제공한 출처가 여럿일 수 있고, 공식 성패가 없어도 중간 행동은 관찰할 수 있음을 보여 준다. [정책 비교의 다음 목표](../research/plan.md#현재-방향) · [판독 재현 검사](https://github.com/yonsei-ai-labs/agent-memory/blob/40f881aa1f70f5772f52484a4f1a19d0de01162d/tests/test_decision_cues.py)

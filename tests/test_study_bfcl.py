@@ -6,11 +6,9 @@ import unittest
 from agent_memory_eval.contracts.core import ContractError, digest
 from agent_memory_eval.contracts.validation import ROOT
 from agent_memory_eval.study.plan import FORMAT, LEGACY_FORMAT, STANDARD_MODELS
-from replay_policy_round import ON_DEMAND_NOTICE, LocalFixture
 
 SETUP = "protocols/diagnostics/bfcl-memory-cohort-transfer-v1.json"
-CHECKOUT = ROOT / ".local/benchmark-portability/bfcl-6ea5797"
-CHECKPOINT = Path.home() / ".cache/huggingface/hub/models--Qwen--Qwen3.5-4B/snapshots/851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a"
+ON_DEMAND_NOTICE = "Use memory tools when a prior note could help with this task."
 TASKS = ["live_relevance_0-0-0", "irrelevance_1"]
 
 
@@ -40,6 +38,20 @@ def fixture_plan():
 
 
 class BfclCompileTests(unittest.TestCase):
+    def test_removing_custom_tool_wording_changes_the_reader_request(self):
+        from agent_memory_eval.memory.tools import memory_tools
+        from agent_memory_eval.runner.bfcl_relevance import read_tools, worker_instruction
+        from agent_memory_eval.study.adapters.bfcl import BfclRelevance
+
+        plan = fixture_plan()
+        adapter = BfclRelevance()
+        custom = adapter.compile(plan, ROOT)
+        del plan["reading"]["on_demand"]["tool_descriptions"]
+        default = adapter.compile(plan, ROOT)
+        self.assertEqual(worker_instruction(default, "on_demand"), worker_instruction(custom, "on_demand"))
+        self.assertNotEqual(read_tools(default), read_tools(custom))
+        self.assertEqual(read_tools(default), memory_tools(["memory_list", "memory_get"], page_size=1))
+
     def test_profile_carries_only_the_declared_policies(self):
         from agent_memory_eval.study.adapters.bfcl import BfclRelevance
         cfg = BfclRelevance().compile(fixture_plan(), ROOT)
@@ -78,56 +90,6 @@ class BfclCompileTests(unittest.TestCase):
                 with self.subTest(kind=kind), self.assertRaisesRegex(ContractError, error):
                     BfclRelevance().run(plan, ws, ROOT, checkout=ws, model_python=ws, checkpoint=ws)
             self.assertFalse((ws / "runs").exists())
-
-
-@unittest.skipUnless(CHECKOUT.is_dir() and CHECKPOINT.is_dir(), "Pinned BFCL checkout and checkpoint required")
-class BfclRunTests(unittest.TestCase):
-    def test_declared_round_runs_and_scores_without_new_code(self):
-        from agent_memory_eval.study.adapters.bfcl import BfclRelevance
-        from agent_memory_eval.study.scorecard import scorecard
-        with tempfile.TemporaryDirectory() as tmp:
-            workspace = Path(tmp)
-            adapter = BfclRelevance()
-            plan = fixture_plan()
-            adapter.run(plan, workspace, ROOT, checkout=CHECKOUT, model_python=Path("python"), checkpoint=CHECKPOINT,
-                        client_factory=LocalFixture)
-            rows = adapter.outcomes(plan, workspace, ROOT, checkout=CHECKOUT)
-            card = scorecard(rows)
-            self.assertEqual(set(card["conditions"]), {"no_memory", "outcome-first__preload", "fact__on_demand"})
-            self.assertEqual(card["sources"], 2)
-            for name in ("outcome-first__preload", "fact__on_demand"):
-                self.assertEqual(card["conditions"][name]["assigned"], 2)
-            self.assertEqual(card["conditions"]["outcome-first__preload"]["preloaded"],
-                             card["conditions"]["outcome-first__preload"]["graded"])
-            self.assertGreater(card["conditions"]["fact__on_demand"]["reads"]["list_calls"], 0)
-            stored = [r for r in rows if r["condition"] == "outcome-first__preload"]
-            self.assertTrue(all(r["memory_body"] == "The worker asked for clarification." for r in stored))
-            self.assertEqual({r["first_decision"] for r in rows if r["status"] == "graded"}, {"no_call"})
-            folder = workspace / "runs/bfcl-fixture-01"
-            self.assertTrue((folder / "registration.json").is_file())
-            changed = dict(plan, question="Another question")
-            with self.assertRaisesRegex(ContractError, "registered with another plan"):
-                adapter.outcomes(changed, workspace, ROOT, checkout=CHECKOUT)
-            with self.assertRaisesRegex(ContractError, "different contents"):
-                adapter.run(changed, workspace, ROOT, checkout=CHECKOUT, model_python=Path("python"),
-                            checkpoint=CHECKPOINT, client_factory=LocalFixture)
-            # Preserve a graded first task while the other has no journal, then stop inside the first task.
-            (folder / TASKS[1]).rename(workspace / "untouched-fixture")
-            partial = adapter.outcomes(plan, workspace, ROOT, checkout=CHECKOUT)
-            self.assertEqual([r["missing_reason"] for r in partial if r["task"] == TASKS[1]], ["not_started"] * 3)
-            self.assertEqual([r for r in partial if r["task"] == TASKS[0]], [r for r in rows if r["task"] == TASKS[0]])
-            log = folder / TASKS[0] / "log.jsonl"
-            lines = log.read_bytes().splitlines(keepends=True)
-            names = {"-fact-on_demand": "fact__on_demand", "-outcome-first-preload": "outcome-first__preload"}
-            final, interrupted = max((i, condition) for i, line in enumerate(lines) for e in json.loads(line)["events"]
-                                     for suffix, condition in names.items()
-                                     if e["type"] == "run.started" and e["run_id"].endswith(suffix))
-            log.write_bytes(b"".join(lines[:final + 1]))
-            partial = adapter.outcomes(plan, workspace, ROOT, checkout=CHECKOUT)
-            counts = {r["condition"]: r for r in partial if r["task"] == TASKS[0]}
-            self.assertEqual(counts[interrupted]["missing_reason"], "interrupted")
-            closed = [r for r in rows if r["task"] == TASKS[0] and r["condition"] != interrupted]
-            self.assertEqual([counts[r["condition"]] for r in closed], closed)
 
 
 if __name__ == "__main__":

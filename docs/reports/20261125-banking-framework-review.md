@@ -31,7 +31,7 @@ uv run --offline python -m scripts.analyze_banking_memory --action-attempts \
   runs/tau-banking-policy-check-sources-01/task-task_014/source
 ```
 
-거래 접수 집계도 실제 DB와 대조했다. 은행 021의 오프라인 대조에서 같은 비대상 거래를 두 번 접수해 성공 응답을 두 번 받았고, 새 DB 행은 하나였다. 공통 집계기는 비대상 거래 한 건과 중복 접수 한 건으로 기록한다. [접수와 DB 재생 회귀 검사](../../tests/test_banking_dispute_evidence.py)
+거래 접수 집계도 실제 DB와 대조했다. 은행 021의 오프라인 대조에서 같은 비대상 거래를 두 번 접수해 성공 응답을 두 번 받았고, 새 DB 행은 하나였다. 공통 집계기는 비대상 거래 한 건과 중복 접수 한 건으로 기록한다. [접수와 DB 재생 회귀 검사](https://github.com/yonsei-ai-labs/agent-memory/blob/40f881aa1f70f5772f52484a4f1a19d0de01162d/tests/test_banking_dispute_evidence.py)
 
 ## 변경할 순서
 

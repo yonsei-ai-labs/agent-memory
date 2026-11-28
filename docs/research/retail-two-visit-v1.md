@@ -37,7 +37,7 @@
 
 **전체 상담**에서는 어느 주문인지 물은 횟수, 틀린 주문을 취소 대상으로 제안한 횟수와 이후 수정, 실제 취소 주문, 명시적인 고객 승인, DB 점수를 측정한다. 고객이 번호를 요청받으면 답하도록 설계했으므로 적절히 되물어도 전체 상담은 성공할 수 있다. 주문 식별 질문과 취소 직전의 필수 승인 질문은 다르게 센다.
 
-고정한 τ² 채점기에 통제 대화를 넣은 결과는 다음과 같다. 이 다섯 건에는 스크립트가 정한 응답을 썼다. [채점기 및 상담 재개 검증](../../tests/test_retail_two_visit.py)
+고정한 τ² 채점기에 통제 대화를 넣은 결과는 다음과 같다. 이 다섯 건에는 스크립트가 정한 응답을 썼다. [채점기 및 상담 재개 검증](https://github.com/yonsei-ai-labs/agent-memory/blob/40f881aa1f70f5772f52484a4f1a19d0de01162d/tests/test_retail_two_visit.py)
 
 | 상황 | DB 점수 | 동의를 갖춘 올바른 취소 |
 | --- | ---: | --- |
@@ -64,7 +64,7 @@ uv run --frozen --no-sync python -m unittest discover -s tests -p test_retail_tw
 
 유료 실행은 금액과 범위가 승인되면 같은 초안의 `status`를 `ready`로 둔 사본과 누적 `authorization`을 사용한다. `through`는 `decision` 또는 `continuation`, `continuation`은 첫 응답 전에 선택한 `sample` 또는 `all`이다. `max_usd`·`max_requests`·`max_seconds`는 최초 시작부터의 총한도다. 준비된 프로필 경로를 `python -m scripts.run_retail_two_visit live --profile`에 전달한다. 공급자 가격과 모델을 고정 당시 영수증과 대조하고 매 전송 직전 원문·출력 상한·캐시 단가로 최대액을 보류한다. 프로그램을 다시 시작하면 시작 표시와 영수증을 대조해 중복 전송을 막는다. 추가 한도가 승인된 경우 같은 구현 커밋에서 처음 정한 고객들의 체크포인트를 이어갈 수 있다. [실험 프로토콜](../../protocols/drafts/tau2-retail-two-visit-v1.json) · [상담과 메모 전달 구현](../../scripts/retail_two_visit_episode.py)
 
-실행 후 `python -m scripts.analyze_retail_two_visit`에 `--run`, `--blind-key`, `--output`, `--packets`를 주면 첫 판단 집계와 조건을 가린 판독 자료를 만든다. 분석자만 보관하는 임의 키 32바이트 이상을 재사용해 판독 결과를 연결한다. 판독 파일은 가명 ID별로 `status`, `turns_sha256`과 위의 세 목록을 담는다. 승인 사례와 거절 사례의 형식은 검증 코드에 있다. `--reviews`에 판독 파일을 주고 새 출력 경로를 쓰면 동의와 DB의 결합 성과가 계산된다. [판독과 근거 발화 검증](../../tests/test_retail_two_visit.py)
+실행 후 `python -m scripts.analyze_retail_two_visit`에 `--run`, `--blind-key`, `--output`, `--packets`를 주면 첫 판단 집계와 조건을 가린 판독 자료를 만든다. 분석자만 보관하는 임의 키 32바이트 이상을 재사용해 판독 결과를 연결한다. 판독 파일은 가명 ID별로 `status`, `turns_sha256`과 위의 세 목록을 담는다. 승인 사례와 거절 사례의 형식은 검증 코드에 있다. `--reviews`에 판독 파일을 주고 새 출력 경로를 쓰면 동의와 DB의 결합 성과가 계산된다. [판독과 근거 발화 검증](https://github.com/yonsei-ai-labs/agent-memory/blob/40f881aa1f70f5772f52484a4f1a19d0de01162d/tests/test_retail_two_visit.py)
 
 ### 전체 상담의 판독과 검산
 

@@ -91,4 +91,4 @@ PYTHONPATH=src uv run python scripts/review_memory_experiment_design.py review -
 cmp "$review_dir/review.json" artifacts/analyses/20261119-memory-design-review.json
 ```
 
-분석 코드와 결과는 `9e1eae9`에 보관했다. 별도 체크아웃에서 동일 원본으로 결과 파일의 바이트 일치를 확인했다. SHA-256은 `c1699b2cf3fe3a04c7e2b2bbe13ab46588cfca2285662da93c82c00fd645a06c`이다. 저장소 기본 검사 3종, 기존 테스트 406개와 이번 분석의 별도 경계 검사 3개가 통과했다. 경계 검사는 거부된 첫 예약 시도 뒤의 발화 제외, 가림 범위 밖 인용 거부, 제목만 노출된 상담을 미조회 대조에서 제외하는 동작을 확인한다. [재분석 코드](../../scripts/review_memory_experiment_design.py) · [경계 검사](../../tests/test_memory_experiment_design_review.py)
+분석 코드와 결과는 `9e1eae9`에 보관했다. 별도 체크아웃에서 동일 원본으로 결과 파일의 바이트 일치를 확인했다. SHA-256은 `c1699b2cf3fe3a04c7e2b2bbe13ab46588cfca2285662da93c82c00fd645a06c`이다. 저장소 기본 검사 3종, 기존 테스트 406개와 이번 분석의 별도 경계 검사 3개가 통과했다. 경계 검사는 거부된 첫 예약 시도 뒤의 발화 제외, 가림 범위 밖 인용 거부, 제목만 노출된 상담을 미조회 대조에서 제외하는 동작을 확인한다. [재분석 코드](../../scripts/review_memory_experiment_design.py) · [경계 검사](https://github.com/yonsei-ai-labs/agent-memory/blob/40f881aa1f70f5772f52484a4f1a19d0de01162d/tests/test_memory_experiment_design_review.py)
