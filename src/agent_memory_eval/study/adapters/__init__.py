@@ -2,6 +2,9 @@
 
 
 def adapter_for(name):
+    if name == "tau2-retail-revisit":
+        from agent_memory_eval.study.adapters.retail_revisit import RetailRevisit
+        return RetailRevisit()
     if name == "bfcl-relevance":
         from agent_memory_eval.study.adapters.bfcl import BfclRelevance
         return BfclRelevance()

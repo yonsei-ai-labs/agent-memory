@@ -277,6 +277,10 @@ def run_forms_solve(journal, *, arm, task_id, repetition, run_id, connection, pr
     if delivery is not None and (delivery["read_mode"] not in {"preload", "on_demand"} or arm == "no_memory"
             or arm == "empty_preload" and delivery != {"writer": "empty_preload", "read_mode": "preload"}):
         raise ContractError("A frozen-bank delivery must declare its writer and read policy")
+    if delivery is not None and "tool_descriptions" in delivery:
+        if matched_trial is None or delivery["read_mode"] != "on_demand" or "query_tool_descriptions" in matched_trial:
+            raise ContractError("Per-reader descriptions require a matched on-demand trial with one source of tool wording")
+        matched_trial = dict(matched_trial, query_tool_descriptions=delivery["tool_descriptions"])
     writer_condition = delivery["writer"] if delivery else arm
     if source_task_id is not None and (not isinstance(source_task_id, str) or not source_task_id
             or source_task_id == task_id or writer_bank is None):

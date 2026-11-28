@@ -6,6 +6,7 @@ from importlib.util import find_spec
 from agent_memory_eval.adapters.tau_banking_opening import DISPATCH, OPEN, OPENING_OUTCOMES, account_effects, opening_receipts, verify_account_rows
 from agent_memory_eval.analysis.receipt_review import join_outcome_reviews, outcome_packet, score_outcome_review
 from agent_memory_eval.contracts.core import ContractError
+from agent_memory_eval.contracts.validation import ROOT
 
 
 class AccountReceiptTests(unittest.TestCase):
@@ -51,6 +52,8 @@ class AccountReceiptTests(unittest.TestCase):
 
     @unittest.skipUnless(find_spec("tau2"), "Requires the pinned native banking environment")
     def test_required_read_is_part_of_the_sealed_database_hash(self):
+        from scripts.run_full_retail import modules_for
+        modules_for(ROOT)
         from tau2.data_model.message import AssistantMessage, ToolCall
         from tau2.domains.banking_knowledge.environment import get_environment, get_tasks
         from agent_memory_eval.adapters.tau_banking_opening import observed_accounts

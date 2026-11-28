@@ -43,6 +43,7 @@ def main() -> None:
         "plan": read_json(ROOT / "schemas" / "run-plan.schema.json"),
         "policy-round": read_json(ROOT / "schemas" / "policy-round-v1.schema.json"),
         "study-plan-v1": read_json(ROOT / "schemas" / "study-plan-v1.schema.json"),
+        "retail-followup-plan-v1": read_json(ROOT / "schemas" / "retail-followup-plan-v1.schema.json"),
         "policy-evidence": read_json(ROOT / "schemas" / "policy-evidence-v1.schema.json"),
         "event": read_json(ROOT / "schemas" / "event.schema.json"),
         "connection-check": read_json(ROOT / "schemas" / "connection-check.schema.json"),
@@ -80,7 +81,9 @@ def main() -> None:
     validators["policy-round"].validate(read_json(ROOT / "protocols/diagnostics/portable-writer-round-v1.json"))
     from agent_memory_eval.study.plan import load_plan
     for plan_path in sorted(p for p in (ROOT / "protocols/studies").rglob("*.json") if "setups" not in p.parts):
-        validators["study-plan-v1"].validate(read_json(plan_path))
+        plan = read_json(plan_path)
+        key = "retail-followup-plan-v1" if plan["format"] == "agent-memory-retail-followup/v1" else "study-plan-v1"
+        validators[key].validate(plan)
         load_plan(plan_path, ROOT)
     unknown = read_json(ROOT / "protocols/studies/bank-outcome-first-01.json")
     unknown["benchmark"] = dict(unknown["benchmark"], adapter="tau2-telecom")

@@ -53,7 +53,8 @@ def key(*parts):
     return digest(canonical(parts))
 
 
-def prepare(root, protocol):
+def prepare(root, protocol, *, workspace=None):
+    workspace = root if workspace is None else workspace
     design = {k: v for k, v in protocol.items() if k != "authorization"} | {"status": "draft"}
     require(design == read(root / DRAFT), "Ready profile differs from the studied design")
     diagnostic = read_json(asset_text(root, protocol["diagnostic"]).encode())
@@ -62,8 +63,8 @@ def prepare(root, protocol):
     replay = read_json(asset_text(root, protocol["replay"]).encode())
     base = read_json(asset_text(root, retail["base_design"]).encode())
     connection = read_json(asset_text(root, base["model"]["connection_profile_ref"]).encode())
-    modules = modules_for(root)
-    checked, tasks, public = prepare_pairs(root, diagnostic)
+    modules = modules_for(workspace)
+    checked, tasks, public = prepare_pairs(workspace, diagnostic)
     require(
         read_json(
             canonical(dict(protocol_sha256=protocol["diagnostic"]["sha256"], model_requests_sent=0, **checked))
@@ -71,7 +72,7 @@ def prepare(root, protocol):
         == cohort,
         "Native derived tasks or public prefixes changed",
     )
-    db = read_json(asset_text(root, diagnostic["inputs"]["db"]).encode())
+    db = read_json(asset_text(workspace, diagnostic["inputs"]["db"]).encode())
     profiles = {digest(u.encode()): usr["orders"] for u, usr in db["users"].items()}
     groups = {"includes_profile_first": [], "both_later": []}
     for u in cohort["reserved"]:
@@ -325,13 +326,14 @@ def recover_finished(folder, stage, job, keep):
     return None
 
 
-def execute(study, runtime, *, through, continuation, destination):
+def execute(study, runtime, *, through, continuation, destination, pause_after_transient=None):
     jobs, tasks, prefixes = study["jobs"], study["tasks"], study["public"]
     known_sources = {j["task"]: j for j in jobs["source"]}
     writers = {(j["task"], j["arm"]): j for j in jobs["writer"]}
     totals = {}
     for stage in STAGES[: STAGES.index(through) + 1]:
         counts = Counter()
+        consecutive_errors = 0
         for j in jobs[stage]:
             keep = continuation == "all" or (continuation == "sample" and j.get("in_sample", False))
             if stage == "continuation" and not keep:
@@ -374,6 +376,15 @@ def execute(study, runtime, *, through, continuation, destination):
                     "held_usd": str(guard.held),
                 },
             )
+            if pause_after_transient:
+                transient = result.get("provider_error") in {
+                    "HTTP_429", "HTTP_500", "HTTP_502", "HTTP_503", "HTTP_504", "TRANSPORT_UNKNOWN",
+                }
+                consecutive_errors = consecutive_errors + 1 if transient else 0
+                if consecutive_errors >= pause_after_transient:
+                    totals[stage] = dict(counts)
+                    guard.pause_reason = "consecutive_transient_errors"
+                    return totals
             if result.get("provider_error") in {"HTTP_429", "HTTP_503", "TRANSPORT_UNKNOWN"}:
                 time.sleep(min(max(12, guard.retry_after), max(0, guard.deadline - time.monotonic())))
             if result.get("provider_error") in {

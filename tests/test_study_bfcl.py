@@ -5,6 +5,7 @@ import unittest
 
 from agent_memory_eval.contracts.core import ContractError, digest
 from agent_memory_eval.contracts.validation import ROOT
+from agent_memory_eval.study.plan import FORMAT, LEGACY_FORMAT, STANDARD_MODELS
 from replay_policy_round import ON_DEMAND_NOTICE, LocalFixture
 
 SETUP = "protocols/diagnostics/bfcl-memory-cohort-transfer-v1.json"
@@ -15,8 +16,10 @@ TASKS = ["live_relevance_0-0-0", "irrelevance_1"]
 
 def fixture_plan():
     setup = json.loads((ROOT / SETUP).read_bytes())
+    local = "tests/fixtures/study-local-qwen-profile.json"
     return dict(
-        format="agent-memory-study-plan/v1", id="bfcl-fixture-01", purpose="development",
+        format=FORMAT, id="bfcl-fixture-01", purpose="development",
+        models=dict(profile=dict(path=local, sha256=digest((ROOT / local).read_bytes())), comparison=True),
         question="Does a new declared representation run through the shared BFCL path?",
         benchmark=dict(adapter="bfcl-relevance", setup=dict(path=SETUP, sha256=digest((ROOT / SETUP).read_bytes())),
                        tasks=TASKS),
@@ -61,6 +64,21 @@ class BfclCompileTests(unittest.TestCase):
         with self.assertRaisesRegex(ContractError, "not in the benchmark setup"):
             BfclRelevance().compile(plan, ROOT)
 
+    def test_standard_worker_and_legacy_run_stop_before_local_inference(self):
+        from agent_memory_eval.study.adapters.bfcl import BfclRelevance
+        plan = fixture_plan()
+        plan["models"] = dict(profile=dict(path=STANDARD_MODELS, sha256=digest((ROOT / STANDARD_MODELS).read_bytes())))
+        with tempfile.TemporaryDirectory() as tmp:
+            ws = Path(tmp)
+            for kind, error in ((FORMAT, "declared worker is openai/gpt-6-luna"),
+                                (LEGACY_FORMAT, "Declare the models under study")):
+                plan["format"] = kind
+                if kind == LEGACY_FORMAT:
+                    del plan["models"]
+                with self.subTest(kind=kind), self.assertRaisesRegex(ContractError, error):
+                    BfclRelevance().run(plan, ws, ROOT, checkout=ws, model_python=ws, checkpoint=ws)
+            self.assertFalse((ws / "runs").exists())
+
 
 @unittest.skipUnless(CHECKOUT.is_dir() and CHECKPOINT.is_dir(), "Pinned BFCL checkout and checkpoint required")
 class BfclRunTests(unittest.TestCase):
@@ -87,9 +105,10 @@ class BfclRunTests(unittest.TestCase):
             self.assertEqual({r["first_decision"] for r in rows if r["status"] == "graded"}, {"no_call"})
             folder = workspace / "runs/bfcl-fixture-01"
             self.assertTrue((folder / "registration.json").is_file())
+            changed = dict(plan, question="Another question")
+            with self.assertRaisesRegex(ContractError, "registered with another plan"):
+                adapter.outcomes(changed, workspace, ROOT, checkout=CHECKOUT)
             with self.assertRaisesRegex(ContractError, "different contents"):
-                changed = fixture_plan()
-                changed["question"] = "Another question"
                 adapter.run(changed, workspace, ROOT, checkout=CHECKOUT, model_python=Path("python"),
                             checkpoint=CHECKPOINT, client_factory=LocalFixture)
 

@@ -85,6 +85,11 @@
           "minimum": 1,
           "maximum": 10
         },
+        "required_sources_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$",
+          "description": "For a v2 τ² reuse study, require the registered sequence of [case, source run ID, sealed log SHA-256]."
+        },
         "reuse": {
           "type": "array",
           "uniqueItems": true,

@@ -10,7 +10,7 @@ from agent_memory_eval.analysis.recorded_decisions import require
 from agent_memory_eval.contracts.core import canonical, digest, read_json
 from agent_memory_eval.recording.assets import asset_text
 from agent_memory_eval.recording.journal import BlobStore, read_experiment
-from agent_memory_eval.study.plan import arm_name, conditions, content_text, plan_digest
+from agent_memory_eval.study.plan import arm_name, conditions, content_text, model_profile, plan_digest, require_declared_models
 from agent_memory_eval.study.records import fixed
 
 NATIVE_ONLY = ("selection", "assigned", "purpose", "representation_pairs", "policy_writer_pairs", "policy_registration")
@@ -25,7 +25,15 @@ class BfclRelevance:
 
     def compile(self, plan, root):
         """Native BFCL profile for exactly the declared tasks, representations, readers and conditions."""
+        require("required_sources_sha256" not in plan["first_pass"], "The local BFCL adapter reuses matching generations only")
         setup = read_json(asset_text(root, plan["benchmark"]["setup"]).encode())
+        declared = model_profile(plan, root)
+        if declared is not None:
+            worker = declared["endpoint_terms"]["worker"]
+            require(worker["model"] == setup["model"] and worker.get("provider") == "local-transformers"
+                    and declared["expected_revisions"]["worker"] == setup["model_revision"],
+                    f"BFCL's local adapter runs {setup['model']}; the declared worker is {worker['model']}. "
+                    "A matching transport and checkpoint are required.")
         category = {task: cat for cat, ids in setup["tasks"].items() for task in ids}
         tasks = {}
         for task in plan["benchmark"]["tasks"]:
@@ -93,6 +101,7 @@ class BfclRelevance:
 
     def run(self, plan, workspace, root, *, checkout, model_python, checkpoint, client_factory=None):
         from agent_memory_eval.runner.bfcl_relevance import audit_task, collect_task, load_inputs
+        require_declared_models(plan)
         cfg = self.compile(plan, root)
         run_root = Path(workspace) / "runs" / plan["id"]
         run_root.mkdir(parents=True, exist_ok=True)
@@ -166,7 +175,11 @@ class BfclRelevance:
         cases, is_empty = load_inputs(Path(checkout), cfg)
         rows = []
         if (run_root / "profile.json").is_file():
-            require(read_json((run_root / "profile.json").read_bytes()) == cfg, "The recorded profile differs from the plan")
+            profile_bytes = (run_root / "profile.json").read_bytes()
+            registration = read_json((run_root / "registration.json").read_bytes())
+            require(registration["plan_sha256"] == plan_digest(plan), "The run was registered with another plan")
+            require(digest(profile_bytes) == registration["profile_sha256"] and read_json(profile_bytes) == cfg,
+                    "The recorded profile differs from the plan")
             modes = {r["read_mode"]: name for name, r in plan.get("reading", {}).items()}
             rows = self._rows(run_root, cfg, cases, is_empty, plan["id"], modes)
         wanted = set(plan["benchmark"]["tasks"])

@@ -13,7 +13,7 @@ from scripts.audit_retail_order_choice import publish
 from scripts.run_retail_two_visit import read
 
 
-def audit(folder, *, allow_interrupted_decisions=False):
+def audit(folder, *, allow_interrupted_decisions=False, decision_prefixes=None):
     registration = read(folder / "registration.json")
     jobs = registration["jobs"]
     if registration.get("format") == "retail-derived-two-visit/recovery-v1":
@@ -79,6 +79,15 @@ def audit(folder, *, allow_interrupted_decisions=False):
             incomplete = (allow_interrupted_decisions and initial == "decision"
                           and (path / "decision.started").exists() and not (path / "decision.json").exists())
             raw_log = log.read_bytes()
+            if decision_prefixes is not None:
+                receipt = decision_prefixes[j["run"]]
+                size = receipt["journal_bytes"]
+                require(initial == "decision" and receipt["status"] == "checkpoint"
+                        and len(raw_log) >= size and digest(raw_log[:size]) == receipt["journal_sha256"],
+                        "Follow-up billing prefix differs from its original decision")
+                raw_log = raw_log[size:]
+                stage = "continuation"
+                incomplete = (path / "continuation.started").exists() and not (path / "continuation.json").exists()
             if incomplete and not raw_log.endswith(b"\n"):
                 raw_log = raw_log[:raw_log.rfind(b"\n") + 1]
             for line in raw_log.splitlines():

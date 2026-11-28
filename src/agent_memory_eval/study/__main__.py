@@ -7,7 +7,7 @@ import sys
 
 from agent_memory_eval.contracts.validation import ROOT
 from agent_memory_eval.study.adapters import adapter_for
-from agent_memory_eval.study.plan import conditions, load_plan, plan_digest
+from agent_memory_eval.study.plan import conditions, load_plan, plan_digest, require_declared_models
 from agent_memory_eval.study.records import fixed, read
 from agent_memory_eval.study.scorecard import scorecard
 
@@ -30,24 +30,42 @@ def main(argv=None):
     parser.add_argument("--quote", help="The person's own words approving the ceiling")
     parser.add_argument("--tasks", help="Comma-separated task ids: score only these tasks (for example the confirmation set)")
     parser.add_argument("--save", action="store_true", help="Keep rows and scorecard under artifacts/studies/<plan id>/")
+    parser.add_argument("--reviews", type=Path, help="Follow-up transcript labels keyed by public-turn hash")
+    parser.add_argument("--review-packets", type=Path, help="Export blinded public follow-up transcripts to a new JSON file")
     args = parser.parse_args(argv)
     plan = load_plan(args.plan, ROOT)
+    if args.command in {"authorize", "run", "resume"}:
+        require_declared_models(plan)
     adapter = adapter_for(plan["benchmark"]["adapter"])
     workspace = args.workspace.resolve()
     staged = hasattr(adapter, "resolve")  # τ² domains resolve paid stages; BFCL compiles a local profile.
+    followup = hasattr(adapter, "analyze")
+    if (args.reviews or args.review_packets) and (not followup or args.command != "analyze"):
+        parser.error("Transcript review options apply to follow-up analysis")
+    if followup and args.tasks:
+        parser.error("Use the complete preregistered follow-up cohort")
     if args.command == "plan":
         if args.action == "validate":
-            out = dict(plan=plan["id"], sha256=plan_digest(plan), adapter=adapter.name, conditions=conditions(plan))
+            out = dict(plan=plan["id"], sha256=plan_digest(plan), adapter=adapter.name)
+            if followup:
+                out["comparison"] = plan["comparison"]
+            else:
+                out["conditions"] = conditions(plan)
         elif staged:
             record = adapter.resolve(plan, workspace, ROOT)["record"]
-            out = dict(plan=plan["id"], assigned=record["assigned"], stages=record["stages"], cases=len(record["cases"]))
+            out = record if followup else dict(plan=plan["id"], assigned=record["assigned"], stages=record["stages"], cases=len(record["cases"]))
         else:
             cfg = adapter.compile(plan, ROOT)
             out = dict(plan=plan["id"], tasks=cfg["tasks"], conditions=cfg["conditions"])
     elif args.command == "authorize":
         from agent_memory_eval.study.adapters.tau_banking import approval_for
-        if not (args.max_usd and args.quote):
+        if not staged:
+            parser.error("This local adapter has no provider spending authorization")
+        if not (args.max_usd and args.quote and args.quote.strip()):
             parser.error("Record the approved ceiling and the person's own words")
+        if followup:
+            from agent_memory_eval.study.adapters.retail_revisit import approval_amount
+            approval_amount(args.max_usd)
         record = adapter.resolve(plan, workspace, ROOT)["record"]
         path = approval_path(plan)
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -65,15 +83,18 @@ def main(argv=None):
                               checkpoint=args.checkpoint)
     else:
         from agent_memory_eval.study.scorecard import save_analysis
-        kwargs = dict(checkout=args.checkout) if adapter.name == "bfcl-relevance" else {}
-        rows = adapter.outcomes(plan, workspace, ROOT, **kwargs)
         tasks = args.tasks.split(",") if args.tasks else None
-        if tasks is not None:
-            unknown = set(tasks) - set(plan["benchmark"]["tasks"])
-            if unknown:
-                parser.error(f"Tasks outside the plan: {sorted(unknown)}")
-            rows = [r for r in rows if r["task"] in tasks]
-        out = scorecard(rows)
+        if followup:
+            rows, out = adapter.analyze(plan, workspace, ROOT, reviews=args.reviews, review_packets=args.review_packets)
+        else:
+            kwargs = dict(checkout=args.checkout) if adapter.name == "bfcl-relevance" else {}
+            rows = adapter.outcomes(plan, workspace, ROOT, **kwargs)
+            if tasks is not None:
+                unknown = set(tasks) - set(plan["benchmark"]["tasks"])
+                if unknown:
+                    parser.error(f"Tasks outside the plan: {sorted(unknown)}")
+                rows = [r for r in rows if r["task"] in tasks]
+            out = scorecard(rows)
         if args.save:
             out = dict(out, saved=save_analysis(ROOT, plan["id"], rows, out, tasks=tasks))
     print(json.dumps(out, ensure_ascii=False, indent=2))

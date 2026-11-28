@@ -249,6 +249,92 @@ class NativeTwoVisitTests(unittest.TestCase):
             self.assertNotIn("official_success", submitted)
             self.assertNotIn(src["user_scenario"]["instructions"]["task_instructions"], submitted)
 
+    def test_followup_uses_original_decision_once_and_audits_only_subsequent_charges(self):
+        from agent_memory_eval.experiments.forms_batch import endpoint_terms, write_json
+        from agent_memory_eval.study.adapters import retail_revisit as followup
+        from agent_memory_eval.study.adapters.tau_banking import approval_for
+        from agent_memory_eval.study.plan import FOLLOWUP_FORMAT
+
+        original = self.root / "runs" / "prior"
+        original.mkdir(parents=True)
+        oid = self.case["target"]
+        jobs, receipts, prior_scores = [], {}, {}
+        for arm in ("query", "empty_query"):
+            job = dict(self.job(arm), in_sample=True, mode="previous_only", customer="customer", source=self.case["source"])
+            session = original / job["run"]
+            rt = self.runtime([[call("get_order_details", order_id=oid)]], [])
+            with Journal(session, job["run"], contract_version="1.2") as journal:
+                result = first_decision(journal, job, self.task, self.prefix, rt,
+                                        [self.item] if arm == "query" else [], [], keep=True)
+                source_session = journal.scan["starts"][job["run"]]["session_id"]
+            raw = (session / "log.jsonl").read_bytes()
+            receipt = dict(result, journal_bytes=len(raw), journal_sha256=digest(raw))
+            write_json(session / "decision.json", receipt)
+            jobs.append(job)
+            receipts[job["run"]] = receipt
+            prior_scores[job["run"]] = dict(session=source_session, first_lookup=False, focused=True, included=[],
+                                            decision_request=result["request"], confirmed_usd="0.001", held_usd="0")
+
+        comparison = dict(memory="query", empty="empty_query", primary_mode="previous_only", primary_outcome="consent_without_reasking")
+        plan = dict(format=FOLLOWUP_FORMAT, id="followup", comparison=comparison,
+                    execution={"attempts_per_checkpoint": 1, "pause_after_consecutive_transient_errors": 2})
+        record = dict(assigned=dict(registered=2, continuable=2), calibration={})
+        native = dict(protocol=self.protocol, connection=self.connection, instructions=rt["instructions"],
+                      tasks={self.task["id"]: self.task}, public=self.prefixes, modules=self.modules)
+        data = dict(record=record, native=native, jobs=jobs, upstreams=receipts, prior_scores=prior_scores,
+                    original=original, uncertainty=None)
+        terms = endpoint_terms(self.models)
+        profile = dict(expected_revisions={r: m["canonical_slug"] for r, m in self.models.items()}, endpoint_terms=terms)
+        approved = approval_for(plan, record, max_usd="1", user_authorization="synthetic test")
+
+        class MeteredReplies:
+            offline = True
+
+            def __init__(self, model, guard, **kwargs):
+                self.model, self.guard = model, guard
+                self.streams = {}
+
+            def respond(self, wire):
+                self.guard.before(wire, self.model)
+                key = self.guard.run_id
+                if key not in self.streams:
+                    worker = self.model["selected_endpoint"]["provider_name"] == terms["worker"]["provider_name"]
+                    replies = (["Shall I cancel " + oid + " because it is no longer needed?",
+                                [call("cancel_pending_order", order_id=oid, reason="no longer needed")], "Cancelled."]
+                               if worker else ["Yes, please cancel that order.", "###STOP###"])
+                    self.streams[key] = Replies(replies, self.model["selected_endpoint"]["provider_name"])
+                answer = self.streams[key].respond(wire)
+                answer["id"] = "test-followup-" + str(self.guard.calls)
+                self.guard.after(answer)
+                return answer
+
+        adapter = followup.RetailRevisit()
+        with (patch.object(adapter, "resolve", return_value=data),
+              patch.dict("os.environ", {"OPENROUTER_API_KEY": "synthetic"}),
+              patch.object(followup, "implementation_identity", return_value={"implementation_commit": "fixture"}),
+              patch.object(followup, "model_profile", return_value=profile),
+              patch.object(followup, "live_models", return_value=self.models),
+              patch.object(followup, "OpenRouterClient", MeteredReplies)):
+            with self.assertRaises(ContractError):
+                adapter.run(plan, self.root, ROOT, approval=dict(approved, resolved_sha256="different"))
+            result = adapter.run(plan, self.root, ROOT, approval=approved)
+            self.assertEqual(result["reserved_calls"], 10)
+            self.assertEqual(adapter.run(plan, self.root, ROOT, approval=approved), result)
+            rows, card = adapter.analyze(plan, self.root, ROOT)
+            self.assertEqual(card["continuation_billing"]["verified_submissions"], 10)
+            self.assertEqual([r["continuation_requests"] for r in rows], [5, 5])
+            self.assertTrue(all(r["db_success"] for r in rows))
+            self.assertEqual(card["contrasts"]["consent_without_reasking"]["pairs"]["both_success"], 1)
+            self.assertEqual(card["contrasts"]["asked_which_order"]["pairs"]["both_failure"], 1)
+            with (self.root / "runs/followup/controller.lock").open("rb") as active:
+                followup.fcntl.flock(active, followup.fcntl.LOCK_EX)
+                with self.assertRaisesRegex(ContractError, "controller is active"):
+                    adapter.analyze(plan, self.root, ROOT)
+        for job in jobs:
+            session = original / job["run"]
+            self.assertEqual(digest((session / "log.jsonl").read_bytes()), receipts[job["run"]]["journal_sha256"])
+            self.assertFalse((session / "continuation.started").exists())
+
     def test_native_db_evaluator_ignores_absent_and_refused_consent(self):
         from tau2.data_model.message import AssistantMessage, ToolCall, UserMessage
         from tau2.data_model.tasks import Task

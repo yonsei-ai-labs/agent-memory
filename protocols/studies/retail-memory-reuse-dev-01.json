@@ -1,0 +1,141 @@
+{
+  "format": "agent-memory-study-plan/v2",
+  "id": "retail-memory-reuse-dev-01",
+  "purpose": "development",
+  "question": "On the previously selected development tasks, does marking what can carry across interactions reduce premature action, and does a decision-specific list description change voluntary reading of the same note?",
+  "models": {
+    "profile": {
+      "path": "protocols/models/project-standard-v1.json",
+      "sha256": "ef0ed266db31f8ed8fca4fb6321ae2907efb7755088d6f038e710e862f1f0da3"
+    }
+  },
+  "benchmark": {
+    "adapter": "tau2-retail",
+    "setup": {
+      "path": "protocols/studies/setups/tau2-retail-v1.json",
+      "sha256": "67c831dbea7c19995cb0f41d3cd7afdb4cecfa6e503512d55db87078c905a740"
+    },
+    "tasks": [
+      "25",
+      "66",
+      "44",
+      "6",
+      "47"
+    ]
+  },
+  "first_pass": {
+    "draws": 3,
+    "required_sources_sha256": "400d7e6802cb1816a37373bba4092a1b68c7a203b9d68d051d9602b1513e760f",
+    "reuse": [
+      {
+        "recording": "fresh-retail-r2"
+      },
+      {
+        "recording": "fresh-retail-r1"
+      }
+    ]
+  },
+  "writing": {
+    "instruction": {
+      "path": "protocols/instructions/required-experience-writer-v1.txt",
+      "sha256": "54c0838ec92092c2accd1d78253ba560c95fadac6c65d698243f23cb38a67ed7"
+    },
+    "feedback": "result_only",
+    "representations": {
+      "free": {
+        "text": "Choose how to organize useful observations from this experience. You may combine forms."
+      },
+      "free-recheck": {
+        "path": "protocols/instructions/free-memory-reuse-v1.txt",
+        "sha256": "8e3ed588b3b227dbe53ff7d604a14c9ad350548f89dcfee69c980e3f43c3fb89"
+      }
+    }
+  },
+  "reading": {
+    "preload": {
+      "read_mode": "preload",
+      "notice": {
+        "path": "protocols/instructions/matched-memory-read-v1.txt",
+        "sha256": "b623028e1bc06ca35d89b2f91a30159dd22999db0fa391cb95b61d5793f659a7"
+      }
+    },
+    "on_demand": {
+      "read_mode": "on_demand",
+      "tool_descriptions": {
+        "memory_list": "Browse note titles when a past situation, fact, procedure, or lesson could help with the current task. The list can be empty. It returns ids, versions, and titles. Use an id with memory_get to read a note, or the returned cursor for another page.",
+        "memory_get": "Read the title and body of a note by id when it looks relevant. A note describes prior work and may be incomplete or mistaken. Check whether it applies to the current situation."
+      }
+    },
+    "when-needed": {
+      "read_mode": "on_demand",
+      "tool_descriptions": {
+        "memory_list": "When a current decision depends on earlier context, you may browse prior note titles. For example, an unresolved reference, a past preference, or a condition still to check could make a note useful. If the current interaction already settles the decision, you can proceed. The list may be empty. It returns ids, versions, and titles. Use an id with memory_get to read a relevant note, or the returned cursor for another page.",
+        "memory_get": "Read the title and body of a note by id when it looks relevant. A note describes prior work and may be incomplete or mistaken. Check whether it applies to the current situation."
+      }
+    }
+  },
+  "conditions": [
+    {
+      "representation": "free",
+      "reading": "preload"
+    },
+    {
+      "representation": "free",
+      "reading": "on_demand"
+    },
+    {
+      "representation": "free",
+      "reading": "when-needed"
+    },
+    {
+      "representation": "free-recheck",
+      "reading": "preload"
+    },
+    {
+      "representation": "free-recheck",
+      "reading": "on_demand"
+    },
+    {
+      "representation": "free-recheck",
+      "reading": "when-needed"
+    }
+  ],
+  "repeats": 1,
+  "limits": {
+    "max_concurrent": 6,
+    "max_input_bytes": 320000,
+    "writer_max_input_bytes": 512000
+  },
+  "budget": {
+    "max_usd": "2.80"
+  },
+  "retry": {
+    "http_codes": [
+      429,
+      500,
+      502,
+      503,
+      504
+    ],
+    "wait_seconds": [
+      120,
+      600,
+      1800
+    ]
+  },
+  "decision": {
+    "hypothesis": "An interaction-scoped note may preserve useful observations without carrying forward stale consent or completed actions. Giving a reason to list titles may initiate voluntary reads.",
+    "prediction": "With preload fixed, fewer workers will treat prior consent or completion as current before present evidence. With the same writer snapshot fixed, the revised list description may increase voluntary list calls and body exposure before a relevant action.",
+    "criterion": "Compare the two writers under identical preload. Count one carryover error per episode if a reply or business action treats past consent, completion or a changeable value as current before current public evidence establishes it. Record that decision and the preceding evidence. Count extra checks of facts the current interaction already settled. Prefer the writer with fewer episodes with carryover errors only if official regressions against the linked sources do not increase. Compare the two optional readers within each source and writer snapshot. Report list calls and actual title and body exposure before the first decision each note could inform. A rise in calls alone is insufficient. Prefer the reader only if more episodes receive a relevant body before that decision, the subsequent action is consistent with current evidence, and official regressions do not increase. Report all assignments, missing and unassessable evidence, paired differences by task, tokens and cost. Treat ties and missing comparisons as inconclusive. The 15 development sources all succeeded and the earlier free writer with preload succeeded in 14 of 15 episodes. This cohort assesses regressions and reading. Failure recovery and independent confirmation require other sources.",
+    "evidence": [
+      {
+        "path": "artifacts/studies/fresh-retail-r2/rows-tasks-59c1e7f0faaf-1312f1dcdaba.json",
+        "sha256": "1312f1dcdabae4eae363c2e8cf267217e68a774d0e81ad7b8123740c25498a54"
+      },
+      {
+        "path": "artifacts/studies/fresh-retail-r2/scorecard-tasks-59c1e7f0faaf-329bb2c56f05.json",
+        "sha256": "329bb2c56f05ef5d5fbfca6d8b467cc6d6593621195d36e52c5cc710ea3441a4"
+      }
+    ]
+  }
+}

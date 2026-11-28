@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Retail follow-up from registered first decisions",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["format", "id", "question", "benchmark", "models", "sample", "execution", "comparison"],
+  "properties": {
+    "format": {"const": "agent-memory-retail-followup/v1"},
+    "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9.-]{2,80}$"},
+    "question": {"type": "string", "pattern": "\\S"},
+    "benchmark": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["adapter", "recording", "registration_sha256", "checkpoint_receipts_sha256", "decisions"],
+      "properties": {
+        "adapter": {"const": "tau2-retail-revisit"},
+        "recording": {"type": "string", "pattern": "^[a-z0-9][a-z0-9.-]{2,80}$"},
+        "registration_sha256": {"$ref": "#/$defs/hash"},
+        "checkpoint_receipts_sha256": {"$ref": "#/$defs/hash"},
+        "decisions": {"$ref": "#/$defs/ref"}
+      }
+    },
+    "models": {
+      "type": "object", "additionalProperties": false, "required": ["profile"],
+      "properties": {"profile": {"$ref": "#/$defs/ref"}}
+    },
+    "sample": {"const": "all_registered_checkpoint_customers"},
+    "execution": {
+      "type": "object", "additionalProperties": false,
+      "required": ["attempts_per_checkpoint", "pause_after_consecutive_transient_errors"],
+      "properties": {
+        "attempts_per_checkpoint": {"const": 1},
+        "pause_after_consecutive_transient_errors": {"type": "integer", "minimum": 1}
+      }
+    },
+    "comparison": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["memory", "empty", "primary_mode", "primary_outcome", "decision_rule"],
+      "properties": {
+        "memory": {"type": "string", "minLength": 1},
+        "empty": {"type": "string", "minLength": 1},
+        "primary_mode": {"const": "previous_only"},
+        "primary_outcome": {"const": "consent_without_reasking"},
+        "decision_rule": {"const": "customer_interval_and_allocation_bounds"}
+      }
+    }
+  },
+  "$defs": {
+    "hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "ref": {
+      "type": "object", "additionalProperties": false, "required": ["path", "sha256"],
+      "properties": {"path": {"type": "string", "minLength": 1}, "sha256": {"$ref": "#/$defs/hash"}}
+    }
+  }
+}

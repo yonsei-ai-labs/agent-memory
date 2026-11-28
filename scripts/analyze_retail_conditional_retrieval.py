@@ -208,13 +208,7 @@ def summarize(rows, design):
                 continuation_criteria=conditions, recommend_continuation=all(conditions.values()), by_mode_arm=groups)
 
 
-def analyze(folder):
-    reg = read(folder / "registration.json")
-    design = read(ROOT / DRAFT)
-    preflight = read(ROOT / PREFLIGHT)
-    require(reg["design"] == design and reg["preflight"] == preflight
-            and digest(canonical(reg["jobs"])) == preflight["registered_jobs_sha256"], "Registration changed")
-    billing = audit_billing(folder, allow_interrupted_decisions=True)
+def charges_by_run(folder):
     amounts = defaultdict(lambda: [0, Decimal(0), Decimal(0)])
     reserved = {}
     ledger = folder / "expense.jsonl"
@@ -229,6 +223,17 @@ def analyze(folder):
             run, maximum = reserved.pop(entry["seq"])
             amounts[run][1] += Decimal(entry["cost"])
             amounts[run][2] -= maximum
+    return amounts
+
+
+def analyze(folder, *, root=ROOT):
+    reg = read(folder / "registration.json")
+    design = read(root / DRAFT)
+    preflight = read(root / PREFLIGHT)
+    require(reg["design"] == design and reg["preflight"] == preflight
+            and digest(canonical(reg["jobs"])) == preflight["registered_jobs_sha256"], "Registration changed")
+    billing = audit_billing(folder, allow_interrupted_decisions=True)
+    amounts = charges_by_run(folder)
     rows = []
     sessions = set()
     for job in reg["jobs"]["decision"]:
@@ -239,7 +244,7 @@ def analyze(folder):
             sessions.add(row["session"])
         calls, confirmed, held = amounts[job["run"]]
         rows.append(dict(row, submissions=calls, confirmed_usd=str(confirmed), held_usd=str(held)))
-    historical = read_json(asset_text(ROOT, design["inputs"]["previous_results"]).encode())
+    historical = read_json(asset_text(root, design["inputs"]["previous_results"]).encode())
     prior_expense = {stage: {k: str(sum(Decimal(historical[batch][stage][k]) for batch in
                                          ("expense_by_stage", "recovery_expense_by_stage")))
                              for k in ("confirmed_usd", "held_usd")} for stage in ("source", "writer")}

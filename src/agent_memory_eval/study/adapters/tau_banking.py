@@ -31,7 +31,7 @@ from agent_memory_eval.recording.journal import safe_path
 from agent_memory_eval.runner.task_start import FORMAT as START_FORMAT
 from agent_memory_eval.runner.tau2_baseline import build_baseline_orchestrator, native_config
 from agent_memory_eval.study.orchestrator import run_stages
-from agent_memory_eval.study.plan import arm_name, conditions, content_text, plan_digest
+from agent_memory_eval.study.plan import arm_name, conditions, content_text, model_profile, plan_digest, require_declared_models
 from agent_memory_eval.study.records import fixed, read, sealed_rows, shard_seal, source_from
 
 APPROVAL = "agent-memory-study-approval/v1"
@@ -61,6 +61,30 @@ def outcome_fields(obs):
     if reason == STEP_CAP:
         return "graded", False, None, True
     return "missing", None, reason, False
+
+
+def unstarted_stages(run_root):
+    close = run_root / "completion.json"
+    if not close.is_file():
+        return {}
+    return {name: entry["reason"] for name, entry in read(close)["stages"].items()
+            if entry.get("status") == "not_started"}
+
+
+def first_pass_identity(workspace, run_root, case):
+    imported = case.get("imported_first_pass")
+    source = (safe_path(workspace / "runs", imported["directory"]) if imported
+              else run_root / ("task-" + case["task"]) / "source")
+    if not (source / "completion.json").is_file():
+        return None
+    _, _, (row,) = sealed_rows(source)
+    log_hash = (row.get("result") or {}).get("log_sha256")
+    if not log_hash:
+        return None
+    identity = row["run_id"], log_hash
+    require(not imported or identity == (imported["run_id"], imported["log_sha256"]),
+            "Imported first-pass identity differs from its sealed source")
+    return identity
 
 
 def judge_config(cfg):
@@ -120,6 +144,9 @@ def study_design(cfg, case, stage, source=None):
         allocation=dict(blocks=[dict(task_id=case["task_id"], repetition=1, write=[j["arm"] for j in jobs if stage == "write"])],
                         jobs_sha256=digest(canonical(jobs))),
         reader_admission=cfg["reader_admission"])
+    for arm, descriptions in cfg.get("query_tools_by_arm", {}).items():
+        if arm in design["delivery_arms"]:
+            design["delivery_arms"][arm]["tool_descriptions"] = descriptions
     if stage == "solve" and "interrupted_readers" in case:
         forms = {p["writer"] for p in design["delivery_arms"].values()}
         design["writing"] = dict(cfg["writing"], lines={k: v for k, v in cfg["writing"]["lines"].items() if k in forms})
@@ -266,10 +293,7 @@ def approval_for(plan, record, *, max_usd, user_authorization):
 
 
 def study_models(cfg, conn):
-    models = live_models(conn)
-    require({r: m.get("canonical_slug") for r, m in models.items()} == cfg["expected_model_revisions"],
-            "Worker or customer model differs from the registered revision")
-    return models, judge_endpoint(cfg) if "grader" in cfg["expected_endpoint_terms"] else None
+    return live_models(conn), judge_endpoint(cfg) if "grader" in cfg["expected_endpoint_terms"] else None
 
 
 class Tau2Study:
@@ -333,9 +357,11 @@ class Tau2Study:
             schema = read_json((SCHEMA_ROOT / "required-form-writing-v1.schema.json").read_bytes())
             error = next(Draft202012Validator(schema).iter_errors(cfg["writing"]), None)
             require(error is None, f"Invalid writing policy: {error.message if error else ''}")
-        for reader in readers.values():
-            if "tool_descriptions" in reader:
-                cfg["query_tool_descriptions"] = reader["tool_descriptions"]
+        queries = {name: r["tool_descriptions"] for name, r in readers.items() if "tool_descriptions" in r}
+        if len(queries) > 1:
+            cfg["query_tools_by_arm"] = {arm_name(rep, name): queries[name] for rep, name in pairs if name in queries}
+        elif queries:
+            cfg["query_tool_descriptions"] = next(iter(queries.values()))
         asset_text(workspace, cfg["connection"])
         conn = read_json(asset_text(root, cfg["connection"]).encode())
         validate_profile(conn)
@@ -346,6 +372,16 @@ class Tau2Study:
         roles = ("worker", "user_simulator")
         cfg["expected_endpoint_terms"] = {r: cfg["endpoint_terms"][r] for r in (*roles, *(("grader",) if spec["judge"] else ()))}
         cfg["expected_model_revisions"] = {r: endpoints[r]["canonical_slug"] for r in roles}
+        declared = model_profile(plan, root)
+        if declared is not None:
+            revisions = dict(cfg["expected_model_revisions"])
+            if spec["judge"]:
+                revisions["grader"] = cfg["judge"]["canonical_slug"]
+                require(declared.get("judge") == cfg["judge"], "Declared judge differs from the native judge setup")
+            require(declared.get("connection") == cfg["connection"]
+                    and all(declared["expected_revisions"].get(r) == v for r, v in revisions.items())
+                    and all(declared["endpoint_terms"].get(r) == v for r, v in cfg["expected_endpoint_terms"].items()),
+                    "Declared model profile differs from the worker, simulator or grader in the benchmark setup")
         solves = ["solve", *(f"solve-repeat-{n}" for n in range(2, plan["repeats"] + 1))]
         cfg["stage_kinds"] = {"source": "source", "write": "write", **{s: "solve" for s in solves}}
         for stage in solves:
@@ -477,6 +513,14 @@ class Tau2Study:
                     case["scheduled_stages"] = ["source", *memory_stages]
                 cases.append(case)
                 tasks[name] = data
+        expected_sources = plan["first_pass"].get("required_sources_sha256")
+        if expected_sources:
+            source_ids = []
+            for case in cases:
+                source = case.get("imported_first_pass")
+                require(source, f"Missing the registered graded first pass for {case['task']}")
+                source_ids.append([case["task"], source["run_id"], source["log_sha256"]])
+            require(digest(canonical(source_ids)) == expected_sources, "The sealed first passes differ from the planned cohort")
         record_check = self._budget_check(plan, cfg, cases)
         live = [c for c in cases if "write" in c["scheduled_stages"]]
         assigned = dict(source=sum("source" in c["scheduled_stages"] for c in cases),
@@ -571,6 +615,7 @@ class Tau2Study:
     def run(self, plan, workspace, root, *, approval, identity=None, model_resolver=None, pool_factory=None,
             sleep=time.sleep, progress=None):
         from agent_memory_eval.reproduction.freeze import implementation_identity
+        require_declared_models(plan)
         workspace, root = Path(workspace), Path(root)
         resolved = self.resolve(plan, workspace, root)
         record, cfg = resolved["record"], resolved["cfg"]
@@ -583,6 +628,9 @@ class Tau2Study:
         models, judge = (model_resolver or study_models)(cfg, resolved["conn"])
         terms = endpoint_terms(dict(models, grader=judge) if judge is not None else models)
         require(terms == cfg["expected_endpoint_terms"], "Worker, customer or judge endpoint terms changed")
+        require({role: m.get("canonical_slug") for role, m in models.items()} == cfg["expected_model_revisions"]
+                and (judge is None or judge.get("canonical_slug") == cfg["judge"]["canonical_slug"]),
+                "Worker, customer or judge differs from the registered model revision")
         run_root = workspace / "runs" / plan["id"]
         run_root.mkdir(parents=True, exist_ok=True)
         fixed(run_root / "resolved-plan.json", record)
@@ -594,7 +642,7 @@ class Tau2Study:
                           (bank_shard, common), total_usd_limit=approval["max_usd"], max_concurrent=cfg["max_concurrent"],
                           admission=self._admission(cfg), pool_factory=pool_factory, progress=progress)
 
-    def _case_rows(self, workspace, run_root, case, origin, label, attempt_base):
+    def _case_rows(self, workspace, run_root, case, origin, label, attempt_base, unstarted):
         """Outcome rows of one case: its first pass, then every solve stage and retry in order."""
         from agent_memory_eval.adapters.banking_memory_cohort import observation
         from agent_memory_eval.experiments.forms_write import read_form_bank
@@ -639,6 +687,16 @@ class Tau2Study:
             _, _, (srow,) = sealed_rows(source_dir)
             rows.append(row("no_memory", observation(source_dir, srow), 0, origin_name=source_origin,
                             decision=first_decision(source_dir, srow)))
+        for stage in case.get("scheduled_stages", []):
+            reason = unstarted.get(f"{task_dir.name}/{stage}")
+            if not reason:
+                continue
+            obs = dict(success=None, status="missing", reason=reason)
+            if stage == "source":
+                rows.append(row("no_memory", obs, 0))
+            elif stage == "solve" or stage.startswith("solve-repeat-"):
+                repeat = 1 if stage == "solve" else int(stage.removeprefix("solve-repeat-"))
+                rows.extend(row(label(arm), obs, attempt_base, repeat) for arm in case["arms"])
         writer_stage = case.get("imported_writer_stage")
         write_dir = safe_path(workspace / "runs", writer_stage["directory"]) if writer_stage else task_dir / "write"
         banks = {}
@@ -672,22 +730,28 @@ class Tau2Study:
         else:  # Not run yet: first passes and references only.
             record = self.resolve(plan, workspace, root)["record"]
         rows = []
+        unstarted = unstarted_stages(run_root)
         for case in record["cases"]:
-            rows += self._case_rows(workspace, run_root, case, plan["id"], lambda arm: arm, 0)
+            rows += self._case_rows(workspace, run_root, case, plan["id"], lambda arm: arm, 0, unstarted)
             if "first_pass_missing" in case:
                 rows += [dict(task=case["task_id"], source=case["task"], repeat=n, condition=arm, origin=plan["id"],
                               attempt=0, status="missing", success=None, missing_reason="first_pass_ungraded",
                               tokens=None, business_calls=None, reads_list=0, reads_get=0, preloaded=False, cost_usd=None)
                          for arm in case["arms"] for n in range(1, plan["repeats"] + 1)]
-        sources = {c["task"] for c in record["cases"]}
+        sources = {c["task"]: c for c in record["cases"]}
         for ref in plan.get("references", []):
             ref_root = workspace / "runs" / ref["recording"]
             label_root = ref.get("attempt_of", ref["recording"])
             ref_cases = [c for c in read(ref_root / "registration.json")["preflight"]["cases"] if c["task"] in sources]
             require(ref_cases, f"Reference {ref['recording']} shares no first pass with the plan")
+            ref_unstarted = unstarted_stages(ref_root)
             for case in ref_cases:
+                source = first_pass_identity(workspace, run_root, sources[case["task"]])
+                require(source and source == first_pass_identity(workspace, ref_root, case),
+                        f"Reference {ref['recording']}/{case['task']} does not share the sealed first pass")
                 rows += [r for r in self._case_rows(workspace, ref_root, case, ref["recording"],
-                                                    lambda arm, p=label_root: f"{p}/{arm}", 1 if "attempt_of" in ref else 0)
+                                                    lambda arm, p=label_root: f"{p}/{arm}", 1 if "attempt_of" in ref else 0,
+                                                    ref_unstarted)
                          if r["condition"] != "no_memory"]
         return rows
 

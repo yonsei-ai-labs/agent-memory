@@ -21,6 +21,7 @@ from agent_memory_eval.contracts.core import ContractError, canonical, digest
 from agent_memory_eval.contracts.validation import ROOT
 from agent_memory_eval.experiments import forms_batch
 from agent_memory_eval.models.openrouter import OpenRouterClient
+from agent_memory_eval.study.plan import FORMAT, STANDARD_MODELS
 from replay_policy_round import ON_DEMAND_NOTICE
 
 SETUP = "protocols/pilots/tau-banking-memory-v1.json"
@@ -39,7 +40,7 @@ def bank_plan(plan_id="bank-fixture-01", **changes):
     query = json.loads((ROOT / QUERY).read_bytes())["arms"]["contextual"]["read_tool_descriptions"]
     notice = dict(text=ON_DEMAND_NOTICE)
     plan = dict(
-        format="agent-memory-study-plan/v1", id=plan_id, purpose="development",
+        format=FORMAT, models=dict(profile=ref(STANDARD_MODELS)), id=plan_id, purpose="development",
         question="Does a declared representation run through the shared banking path?",
         benchmark=dict(adapter="tau-banking", setup=ref(SETUP), tasks=[TASK]),
         first_pass=dict(draws=1),
@@ -169,6 +170,22 @@ class BankStudyTests(unittest.TestCase):
         with self.assertRaisesRegex(ContractError, "tool-only on_demand reader shows no notice"):
             self.adapter().resolve(plan, self.workspace, ROOT)
 
+    def test_declared_revision_must_match_the_native_setup(self):
+        plan = bank_plan()
+        profile = json.loads((ROOT / STANDARD_MODELS).read_bytes())
+        profile["expected_revisions"]["worker"] = "another-revision"
+        path = "protocols/models/other-revision.json"
+        data = canonical(profile)
+        (self.workspace / path).write_bytes(data)
+        setup = json.loads((ROOT / SETUP).read_bytes())
+        base = json.loads((ROOT / setup["base"]["path"]).read_bytes())
+        endpoints = Path(base["endpoints"]["path"])
+        (self.workspace / endpoints.parent).mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(ROOT / endpoints, self.workspace / endpoints)
+        plan["models"] = dict(comparison=True, profile=dict(path=path, sha256=digest(data)))
+        with self.assertRaisesRegex(ContractError, "Declared model profile differs"):
+            self.adapter().resolve(plan, self.workspace, self.workspace)
+
     def test_command_line_resolves_a_plan_in_a_fresh_interpreter(self):
         import subprocess
         import sys
@@ -227,6 +244,10 @@ class BankStudyTests(unittest.TestCase):
         from agent_memory_eval.study.scorecard import scorecard
         first = bank_plan()
         self.run_plan(first, FlakyCustomer(in_first_pass=True, code=502))
+        original = scorecard(self.adapter().outcomes(first, self.workspace, ROOT))
+        for name in ("outcome-first__preload", "fact__on_demand"):
+            self.assertEqual(original["conditions"][name]["assigned"], 1)
+            self.assertEqual(original["conditions"][name]["missing"], {"source_ungraded": 1})
         second = bank_plan("bank-fixture-02", first_pass=dict(draws=1, reuse=[dict(recording="bank-fixture-01")]))
         resolved = self.adapter().resolve(second, self.workspace, ROOT)
         case, = resolved["record"]["cases"]
@@ -258,19 +279,35 @@ class BankStudyTests(unittest.TestCase):
                           references=[dict(recording="bank-fixture-01")])
         with self.assertRaisesRegex(ContractError, "shares no first pass"):
             self.adapter().outcomes(other, self.workspace, ROOT)
+        unrelated = bank_plan("bank-fixture-04", references=[dict(recording="bank-fixture-01")])
+        self.run_plan(unrelated, FlakyCustomer(fail=False))
+        with self.assertRaisesRegex(ContractError, "does not share the sealed first pass"):
+            self.adapter().outcomes(unrelated, self.workspace, ROOT)
 
     def test_reused_first_pass_skips_the_source_stage(self):
         from agent_memory_eval.study.scorecard import scorecard
         self.run_plan(bank_plan(), FlakyCustomer(fail=False))
-        second = bank_plan("bank-fixture-02", first_pass=dict(draws=1, reuse=[dict(recording="bank-fixture-01")]))
+        second = bank_plan("bank-fixture-02", first_pass=dict(draws=1, reuse=[dict(recording="bank-fixture-01")]),
+                           references=[dict(recording="bank-fixture-01")])
         record = self.adapter().resolve(second, self.workspace, ROOT)["record"]
         self.assertEqual(record["assigned"], dict(source=0, reused_first_pass=1, write=2, solve=2))
+        case, = record["cases"]
+        original = case["imported_first_pass"]
+        source_ids = [[case["task"], original["run_id"], original["log_sha256"]]]
+        second["first_pass"]["required_sources_sha256"] = digest(canonical(source_ids))
+        wrong = dict(second, first_pass=dict(second["first_pass"], required_sources_sha256="0" * 64))
+        with self.assertRaisesRegex(ContractError, "differ from the planned cohort"):
+            self.adapter().resolve(wrong, self.workspace, ROOT)
+        absent = dict(second, first_pass=dict(second["first_pass"], reuse=[dict(recording="absent-fixture-01")]))
+        with self.assertRaisesRegex(ContractError, "Missing the registered graded first pass"):
+            self.adapter().resolve(absent, self.workspace, ROOT)
         self.run_plan(second, FlakyCustomer(fail=False))
         self.assertFalse((self.workspace / "runs/bank-fixture-02" / f"task-{TASK}__source-1" / "source").exists())
         rows = self.adapter().outcomes(second, self.workspace, ROOT)
         source, = [r for r in rows if r["condition"] == "no_memory"]
         self.assertEqual(source["origin"], "bank-fixture-01")
         self.assertEqual(scorecard(rows)["conditions"]["fact__on_demand"]["assigned"], 1)
+        self.assertEqual(scorecard(rows)["conditions"]["bank-fixture-01/fact__on_demand"]["assigned"], 1)
 
 
 if __name__ == "__main__":

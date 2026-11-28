@@ -481,12 +481,11 @@ def first_decision(journal, job, task, prefix, runtime, items, sources, *, keep)
     return {"status": "checkpoint" if keep else "decision", "run": ctx.run_id, "checkpoint": ref, "request": rid}
 
 
-def continue_decision(journal, job, task, prefix, runtime, record):
+def restore_decision(journal, job, task, prefix, runtime, record):
+    """Restore the exact native and memory state, without advancing the journal or calling a model."""
     from pydantic import TypeAdapter
     from tau2.data_model.message import AssistantMessage, Message
     from tau2.data_model.simulation import TerminationReason
-    from tau2.domains.retail.environment import get_environment
-    from tau2.evaluator.evaluator_env import EnvironmentEvaluator
 
     require(
         not journal.scan["pending_requests"] and set(journal.scan["incomplete_runs"]) == {job["run"]},
@@ -556,8 +555,16 @@ def continue_decision(journal, job, task, prefix, runtime, record):
             "prefix": cp["pending_prefix"],
         }
     bridge.gateway = PublicGateway(journal)
+    return orch, bridge
+
+
+def continue_decision(journal, job, task, prefix, runtime, record):
+    from tau2.domains.retail.environment import get_environment
+    from tau2.evaluator.evaluator_env import EnvironmentEvaluator
+
+    orch, bridge = restore_decision(journal, job, task, prefix, runtime, record)
     journal.append(
-        [ctx.event("business.transition", {"origin": "revisit.continued", "checkpoint_ref": record["checkpoint"]})]
+        [bridge.ctx.event("business.transition", {"origin": "revisit.continued", "checkpoint_ref": record["checkpoint"]})]
     )
     with bridge:
         while not orch.done:
@@ -570,10 +577,10 @@ def continue_decision(journal, job, task, prefix, runtime, record):
     if reason in {"agent_stop", "user_stop"}:
         score = EnvironmentEvaluator.calculate_reward(get_environment, orch.task, orch.trajectory)
         result = {"reward": score.reward, "native_reward": score.model_dump(mode="json"), "trajectory_ref": ref}
-    finish(journal, ctx, memory, bank, reason, result)
+    finish(journal, bridge.ctx, bridge.memory, bridge.bank_id, reason, result)
     return {
         "status": "completed" if result else "incomplete",
-        "run": ctx.run_id,
+        "run": bridge.ctx.run_id,
         "termination": reason,
         "trajectory": ref,
         "db_reward": result["reward"] if result else None,
