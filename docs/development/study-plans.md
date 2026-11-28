@@ -36,6 +36,8 @@ uv run python -m agent_memory_eval.study resume \
 
 각 실행의 `reader-batches/<배정 ID>/registration.json`은 실행 구현·쓰기 체크포인트·메모 해시·승인과 목표 목록을 묶는다. 정산이 끝나면 같은 디렉터리에 `result.json`을 만든다. 비용에는 실제 청구와 미정산 예약이 함께 들어간다. 새 배정은 이미 등록한 목표와 겹칠 수 없고, 앞선 배정도 남은 누적 한도에 반영한다. 총한도를 올리는 후속 배정은 계획별 `cumulative_max_usd`와 해당 배정의 승인을 기록한다. 하나의 목표에서 12조건은 같은 1회차와 같은 두 작성물을 공유한다.
 
+운영 조건을 바꾸어 다음 목표를 시작할 때는 배정의 `runtime_commit`에 실행 코드를 고정하고, `closed_reader_batches`에 앞선 등록·결과·보충 결과 해시를 명시한다. `plan resolve`는 새 배정을 기록하기 전에 과제 중복 여부, 앞선 배정의 봉인과 금액, 코드 일치를 확인한다. 기존 배정을 재개할 때는 등록 당시 구현을 사용한다. `operations.max_concurrent_tasks`가 과제 병렬 수를, `transient_backoff_seconds`가 해당 벤치에서 제공자 장애 후 새 상담을 시작하기까지의 대기를 정한다. 각 원장에 과제별 등록과 실제 요청 비용·미정산액이 남는다. [네 벤치 최종 배정](../../protocols/diagnostics/own-mixed-readers-final-01.json)
+
 τ²의 후속 상담 시작 발화, 혼합 메모 출처, 전환표는 작성기가 사용한 1회차를 함께 참조한다. BFCL은 1회차 체크포인트까지의 저널 바이트를 검증하고 그 뒤에 작성 기록을 추가한다. 결과표의 1회차 비용은 최초 시도와 보충 시도를 모두 포함한다.
 
 ## 서로 다른 과제 사이의 행동 전이
