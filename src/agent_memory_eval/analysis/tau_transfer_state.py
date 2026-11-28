@@ -233,15 +233,18 @@ def premature_state(log, report, native, control, context, evidence):
     """Verify the native zero for a capped consultation before any outcome criteria were evaluated."""
     if report["termination_reason"] in {"agent_stop", "user_stop"}:
         return None
+    require(report["termination_reason"] == native["termination_reason"] == "max_steps" and native["native_reward"] == 0,
+            "Unexpected premature termination recorded as an official cohort outcome")
     states, checksum, requests = _replay(log, report, native, control, context)
     reward = report["reward_info"]
     require(not states and not requests and reward["reward"] == 0 and reward["reward_basis"] is None
             and reward.get("db_check") is None and reward.get("action_checks") is None,
             "Premature native grade contains an evaluated state or action criterion")
     status = evidence["registered_calls_status"]
+    criteria = context[1].evaluation_criteria
+    declared = [basis.value for basis in criteria.reward_basis] if criteria and criteria.reward_basis is not None else None
     return dict(evidence, status="not_applicable", reason="premature_termination_before_native_state_comparison",
-                termination_reason=report["termination_reason"], declared_reward_basis=[
-                    basis.value for basis in context[1].evaluation_criteria.reward_basis],
+                termination_reason=report["termination_reason"], declared_reward_basis=declared,
                 official_reward_basis=None, official_db_match=None, diagnostic_db_match=None,
                 registered_calls_status="no_call_before_termination" if status == "no_call" else status,
                 replayed_reward_sha256=checksum, archived_judge_requests=requests,
