@@ -1,0 +1,251 @@
+{
+  "phase": "source",
+  "assigned": 517,
+  "reported_usd": "1.448662225",
+  "held_usd": "0.073419000",
+  "covered_usd": "1.522081225",
+  "cap_usd": "10.00",
+  "source_http503_policy": "artifacts/approvals/own-mixed-source-http503-01.json",
+  "row_file": "first-pass-tasks.csv",
+  "row_file_sha256": "06242b5ba93ec19bf0646faf9722c2941fcd11c96203067e97990b0e2eb7e811",
+  "benchmarks": {
+    "bank": {
+      "plan": "own-mixed-bank-01",
+      "assigned": 97,
+      "started": 97,
+      "first": {
+        "success": 3,
+        "failure": 70,
+        "missing": 24,
+        "missing_reasons": {
+          "HTTP_503": 22,
+          "JSONDecodeError": 1,
+          "TASK_START_MISMATCH": 1
+        },
+        "step_cap": 1,
+        "public_experiences": 73
+      },
+      "final": {
+        "success": 5,
+        "failure": 90,
+        "missing": 2,
+        "missing_reasons": {
+          "JSONDecodeError": 1,
+          "TASK_START_MISMATCH": 1
+        },
+        "step_cap": 1,
+        "public_experiences": 95
+      },
+      "initial_503": 22,
+      "retry_attempts": 22,
+      "retry_passes": [
+        {
+          "pass_number": 1,
+          "tasks": 22,
+          "implementation_commit": "00be9dc1f072eebcc3ddeeef0f0fe83d0669e909",
+          "checkpoint": "8cb8ba34487ac8e2d88312faa35dab56525959e7ff2245e842ec3c83ba7a3ba4"
+        }
+      ],
+      "first_cost": {
+        "reported_usd": "0.769262372",
+        "held_usd": "0.064488600",
+        "requests": 2258,
+        "unknown_price_requests": 22
+      },
+      "retry_cost": {
+        "reported_usd": "0.095339858",
+        "held_usd": "0",
+        "requests": 359,
+        "unknown_price_requests": 0
+      },
+      "cost": {
+        "reported_usd": "0.864602230",
+        "held_usd": "0.064488600",
+        "covered_usd": "0.929090830",
+        "requests": 2617,
+        "unknown_price_requests": 22
+      },
+      "cap_usd": "3.50",
+      "writer_requests": 0,
+      "second_pass_requests": 0,
+      "solver_commit": "bfd4de164fd79e39ca852ed27fcffaf089b7d6c3",
+      "plan_sha256": "3b69caef3bfe67fa19af7b03cc5616e9a14dcb39acf82cc7fb692d7f66aa4143",
+      "registration_sha256": "2e5739deb271af22a110ea8f8d88a30c2ed4a1510bdb150237f66f7f8a7247b4",
+      "source_checkpoint_sha256": "10679db4c9097e63dd1e84fc13a5ee6638bb4eed223e5cac84133b35e3cfdc4c",
+      "effective_sources_sha256": "ad427995fca027fa33cea161efeb8fbf7817c142f89cdad1281056c5ab576c9e"
+    },
+    "retail": {
+      "plan": "own-mixed-retail-01",
+      "assigned": 114,
+      "started": 114,
+      "first": {
+        "success": 84,
+        "failure": 26,
+        "missing": 4,
+        "missing_reasons": {
+          "TRANSPORT_UNKNOWN": 1,
+          "HTTP_503": 3
+        },
+        "step_cap": 0,
+        "public_experiences": 110
+      },
+      "final": {
+        "success": 87,
+        "failure": 26,
+        "missing": 1,
+        "missing_reasons": {
+          "TRANSPORT_UNKNOWN": 1
+        },
+        "step_cap": 0,
+        "public_experiences": 113
+      },
+      "initial_503": 3,
+      "retry_attempts": 3,
+      "retry_passes": [
+        {
+          "pass_number": 1,
+          "tasks": 3,
+          "implementation_commit": "00be9dc1f072eebcc3ddeeef0f0fe83d0669e909",
+          "checkpoint": "74eb6deb567edc8076ac9a726771bc3e2436790ed3fd5b63cedd4866b960ab35"
+        }
+      ],
+      "first_cost": {
+        "reported_usd": "0.432719926",
+        "held_usd": "0.008930400",
+        "requests": 2289,
+        "unknown_price_requests": 4
+      },
+      "retry_cost": {
+        "reported_usd": "0.013001631",
+        "held_usd": "0",
+        "requests": 59,
+        "unknown_price_requests": 0
+      },
+      "cost": {
+        "reported_usd": "0.445721557",
+        "held_usd": "0.008930400",
+        "covered_usd": "0.454651957",
+        "requests": 2348,
+        "unknown_price_requests": 4
+      },
+      "cap_usd": "4.50",
+      "writer_requests": 0,
+      "second_pass_requests": 0,
+      "solver_commit": "128e8e97c03bcdcddfe2745255f28fa94ab19e78",
+      "plan_sha256": "a3358010c9008d77839fd51a0f90ad4c99fb6087d905271bde22f45fe8175ff9",
+      "registration_sha256": "92d58b3f3d5dec6701179f5a3eb76d4cb88cce9e266d605babe973e06518984e",
+      "source_checkpoint_sha256": "c398ec06fa9d6e3ae3dc0edbf9444bbc140f685476fada884fdbf96b8423a798",
+      "effective_sources_sha256": "c2b9da3a9ab4ea912671ab1cd486efcbd94f363dabc2cb6a712d576f12b81f15"
+    },
+    "airline": {
+      "plan": "own-mixed-airline-01",
+      "assigned": 50,
+      "started": 50,
+      "first": {
+        "success": 31,
+        "failure": 19,
+        "missing": 0,
+        "missing_reasons": {},
+        "step_cap": 1,
+        "public_experiences": 50
+      },
+      "final": {
+        "success": 31,
+        "failure": 19,
+        "missing": 0,
+        "missing_reasons": {},
+        "step_cap": 1,
+        "public_experiences": 50
+      },
+      "initial_503": 0,
+      "retry_attempts": 0,
+      "retry_passes": [],
+      "first_cost": {
+        "reported_usd": "0.120845363",
+        "held_usd": "0.000000000",
+        "requests": 919,
+        "unknown_price_requests": 0
+      },
+      "retry_cost": {
+        "reported_usd": "0",
+        "held_usd": "0",
+        "requests": 0,
+        "unknown_price_requests": 0
+      },
+      "cost": {
+        "reported_usd": "0.120845363",
+        "held_usd": "0",
+        "covered_usd": "0.120845363",
+        "requests": 919,
+        "unknown_price_requests": 0
+      },
+      "cap_usd": "1.50",
+      "writer_requests": 0,
+      "second_pass_requests": 0,
+      "solver_commit": "128e8e97c03bcdcddfe2745255f28fa94ab19e78",
+      "plan_sha256": "951dc499de2e82be2f5f6fdc5446ea66acd6c8396849c3bdb87313e137c36216",
+      "registration_sha256": "45565018919f24a084d587a3425f32d97667ad347d9427716c578174b8ccd0ab",
+      "source_checkpoint_sha256": "d8a522b8c6ac637cfa41dc45d3d02c3c0411218b647c133f623b8454c241081d"
+    },
+    "bfcl": {
+      "plan": "own-mixed-bfcl-01",
+      "assigned": 256,
+      "started": 256,
+      "first": {
+        "success": 184,
+        "failure": 72,
+        "missing": 0,
+        "missing_reasons": {},
+        "step_cap": 0,
+        "public_experiences": 256
+      },
+      "final": {
+        "success": 184,
+        "failure": 72,
+        "missing": 0,
+        "missing_reasons": {},
+        "step_cap": 0,
+        "public_experiences": 256
+      },
+      "initial_503": 0,
+      "retry_attempts": 0,
+      "retry_passes": [],
+      "first_cost": {
+        "reported_usd": "0.017493075",
+        "held_usd": "0",
+        "requests": 256,
+        "unknown_price_requests": 0
+      },
+      "retry_cost": {
+        "reported_usd": "0",
+        "held_usd": "0",
+        "requests": 0,
+        "unknown_price_requests": 0
+      },
+      "cost": {
+        "reported_usd": "0.017493075",
+        "held_usd": "0",
+        "covered_usd": "0.017493075",
+        "requests": 256,
+        "unknown_price_requests": 0
+      },
+      "cap_usd": "0.50",
+      "writer_requests": 0,
+      "second_pass_requests": 0,
+      "solver_commit": "bfd4de164fd79e39ca852ed27fcffaf089b7d6c3",
+      "plan_sha256": "93fde3f1513c9efe42eabe999ba09906d11df890c1b766dc417f10f4d6c77a1f",
+      "registration_sha256": "58eff0b9ad07b8ec6173d81c24037edb7d6d9e19871fa8f4aba2b7489e486477",
+      "source_checkpoint_sha256": "22859d44b653676a49c3e30456ea445a533bde4e040a8ed3eacc809cc24d4d2e",
+      "category_counts": {
+        "irrelevance": {
+          "total": 240,
+          "success": 173
+        },
+        "live_relevance": {
+          "total": 16,
+          "success": 11
+        }
+      }
+    }
+  }
+}
