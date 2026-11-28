@@ -362,6 +362,9 @@ class TauTransfer(Tau2Study):
         return admit
 
     def outcomes(self, plan, workspace, root):
+        from itertools import chain
+
+        from agent_memory_eval.study.reader_supplements import reader_supplements
         from agent_memory_eval.study.writer_stage import effective_tau_sources
         workspace = Path(workspace)
         folder = workspace / "runs" / plan["id"]
@@ -386,6 +389,10 @@ class TauTransfer(Tau2Study):
             instruction = asset_text(workspace, cfg["delivery_instruction"])
         donors, written_memories = writer_banks(workspace, folder, record["cases"], registration, stages,
                                                catalog=catalog, effective_sources=effective_sources)
+        supplements = {}
+        if catalog is not None:
+            for added in reader_supplements(workspace, root, plan, record):
+                supplements.setdefault(added.case, []).extend(added.attempts)
         attempts = []
         for case in (c for c in record["cases"] if "donor" in c):
             donor = case["donor"]
@@ -401,10 +408,10 @@ class TauTransfer(Tau2Study):
                 design, bindings = study_design(cfg, case, "solve"), {}
                 bind_cohort_pools(design, bindings, case, catalog)
             for n, base in enumerate(case["scheduled_stages"], 1):
-                for k in range(len(plan["retry"]["wait_seconds"]) + 1):
-                    stage = base if k == 0 else f"{base}-retry-{k}"
-                    shard = task_dir / stage
-                    entry = stages.get(f"{task_dir.name}/{stage}", {})
+                original = [base, *(f"{base}-retry-{k}" for k in range(1, len(plan["retry"]["wait_seconds"]) + 1))]
+                native = ((k, task_dir / name, stages.get(f"{task_dir.name}/{name}", {})) for k, name in enumerate(original))
+                added = ((a.ordinal, a.shard, a.cost) for a in supplements.get(case["task"], ()))
+                for k, shard, entry in chain(native, added):
                     reason = entry.get("reason") if entry.get("status") == "not_started" else None
                     if reason:
                         arms = entry.get("arms", case["arms"])

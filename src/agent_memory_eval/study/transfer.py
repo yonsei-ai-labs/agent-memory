@@ -324,6 +324,7 @@ def _business_state(slots):
     summary = {}
     for target, rows in by_target.items():
         statuses, reasons, responses, fields, failed_fields = (Counter() for _ in range(5))
+        additional_fields = Counter()
         db_measured = db_mismatches = correct_decision_on_failure = 0
         for row in rows:
             state = row.get("state_diagnostics") or {}
@@ -343,6 +344,8 @@ def _business_state(slots):
             changed = {f"{entity['table']}.{field}" for entity in state["target_entities"]
                        for field in entity["different_fields"]}
             fields.update(changed)
+            additional_fields.update({f"{entity['table']}.{field}" for entity in state.get("additional_entities", ())
+                                      for field in entity["different_fields"]})
             if row["success"] is False:
                 failed_fields.update(changed)
         summary[target] = dict(assigned=len(rows), official_failures=sum(r["success"] is False for r in rows),
@@ -354,6 +357,8 @@ def _business_state(slots):
                                official_db_measured=db_measured, official_db_mismatches=db_mismatches if db_measured else None,
                                first_call_receipts=dict(responses), field_differences=dict(fields),
                                field_differences_on_official_failure=dict(failed_fields))
+        if additional_fields:
+            summary[target]["additional_entity_field_differences"] = dict(additional_fields)
     return summary
 
 

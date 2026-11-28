@@ -1,0 +1,215 @@
+{
+  "format": "agent-memory-reader-supplement-results/v1",
+  "batch": "own-mixed-readers-smoke-01",
+  "batch_sha256": "413672f86e99042a9e898f858d64209eea6a7d7c4fa6d5ff677a5ee776b82325",
+  "rubric": {
+    "path": "protocols/diagnostics/own-mixed-reader-actions-01.json",
+    "sha256": "cdae5efdd5a54b88d28225d58c531a636076d3dcbd13093942ea46789a85d8e3"
+  },
+  "writer_release": {
+    "path": "artifacts/studies/own-mixed-writers-01/summary.json",
+    "sha256": "874479ab8077eee6558d6b713bd0af32e28cf29bb4d4705c2c8ae358604fefee"
+  },
+  "max_usd": "3.00",
+  "benchmarks": {
+    "bank": {
+      "task": "task_039",
+      "baseline_success": false,
+      "assigned": 12,
+      "graded": 12,
+      "succeeded": 0,
+      "transitions": {
+        "success_success": 0,
+        "success_failure": 0,
+        "failure_success": 0,
+        "failure_failure": 12,
+        "ungraded": 0
+      },
+      "reader_attempts": 12,
+      "requests": 350,
+      "reported_usd": "0.129430125",
+      "held_usd": "0E-9",
+      "other_targets_started": 0,
+      "batch_registration_sha256": "df0bcb042eaedbe6da210cae7b79b6807323e8e14e62843cbb58bd6c6db06fc4",
+      "result_sha256": "a6674d006d9c081d223f293faf3191b32a449f6c64b54f07bfacd5fdb7d5e66c",
+      "released_reader_inputs_sha256": "b05a7a7f6ff0b32d6c399b50b691f4d3b3675d9a3bf35ea2466b30f623723492",
+      "missing_conditions": [],
+      "success_bounds_over_assigned": [
+        0,
+        0
+      ]
+    },
+    "retail": {
+      "task": "96",
+      "baseline_success": true,
+      "assigned": 12,
+      "graded": 12,
+      "succeeded": 11,
+      "transitions": {
+        "success_success": 11,
+        "success_failure": 1,
+        "failure_success": 0,
+        "failure_failure": 0,
+        "ungraded": 0
+      },
+      "reader_attempts": 12,
+      "requests": 193,
+      "reported_usd": "0.027899255",
+      "held_usd": "0E-9",
+      "other_targets_started": 0,
+      "batch_registration_sha256": "47d047d4afb5185bbb2845193373c2805edfffb976d4866059cd023dd32e0d9a",
+      "result_sha256": "4e80d6531f67958390dfdefd5b6bb71fbb6f68e25f3e1eec042bce978d458dd3",
+      "released_reader_inputs_sha256": "2d5fb385a2b98511e027003e62290d49e5c7e76acb5e257fb046e7f5e935db3a",
+      "missing_conditions": [],
+      "success_bounds_over_assigned": [
+        11,
+        11
+      ]
+    },
+    "airline": {
+      "task": "10",
+      "baseline_success": false,
+      "assigned": 12,
+      "graded": 12,
+      "succeeded": 11,
+      "transitions": {
+        "success_success": 0,
+        "success_failure": 0,
+        "failure_success": 11,
+        "failure_failure": 1,
+        "ungraded": 0
+      },
+      "reader_attempts": 30,
+      "requests": 459,
+      "reported_usd": "0.088024138",
+      "held_usd": "0.040818000",
+      "other_targets_started": 0,
+      "batch_registration_sha256": "3021527252b5253ef90636cd3ff7013200ce6c5c10d00d966eb259be0ce8ed8e",
+      "released_reader_inputs_sha256": "fa8797fc95d203af8203d1c2afc9f2f048c2b63c4a4e7c733f475bf1d092bb6e",
+      "missing_conditions": [],
+      "success_bounds_over_assigned": [
+        11,
+        11
+      ],
+      "original_result_sha256": "257039b9afd461f1fed8ef381916dc161a7d9116cfafc70529f81bc9b4921bd6",
+      "supplement_result_sha256": "0e7ab538abd562b3c93845ebeb862e17c42664bec941a70b8b12fe173903bb71"
+    },
+    "bfcl": {
+      "task": "live_relevance_10-10-0",
+      "baseline_success": false,
+      "assigned": 12,
+      "graded": 12,
+      "succeeded": 0,
+      "transitions": {
+        "success_success": 0,
+        "success_failure": 0,
+        "failure_success": 0,
+        "failure_failure": 12,
+        "ungraded": 0
+      },
+      "reader_attempts": 12,
+      "requests": 12,
+      "reported_usd": "0.001604600",
+      "held_usd": "0",
+      "other_targets_started": 0,
+      "batch_registration_sha256": "cc6b077f43ea7bcae7229f45b7206e2dcffbac25d8a8ebf627dd223df330aefe",
+      "result_sha256": "c53d2e4e4166e363e20044de0625bfec3cc295432b1256523b5b03f747e3463c",
+      "released_reader_inputs_sha256": "479f21116bc89caa787b7884addcdb6987233afead99bf06bec4c32a9423f6a4",
+      "missing_conditions": [],
+      "success_bounds_over_assigned": [
+        0,
+        0
+      ]
+    }
+  },
+  "assigned": 48,
+  "graded": 48,
+  "reviewed_attempts": 66,
+  "requests": 1014,
+  "reported_usd": "0.246958118",
+  "held_usd": "0.040818000",
+  "transitions": {
+    "success_success": 11,
+    "success_failure": 1,
+    "failure_success": 11,
+    "failure_failure": 25,
+    "ungraded": 0
+  },
+  "delivery": {
+    "preload": {
+      "slots": 16,
+      "title_in_input": 16,
+      "body_in_input": 16,
+      "bodies_in_input": 32,
+      "list_calls": 0,
+      "get_calls": 0
+    },
+    "on_demand": {
+      "slots": 16,
+      "title_in_input": 0,
+      "body_in_input": 0,
+      "bodies_in_input": 0,
+      "list_calls": 0,
+      "get_calls": 0
+    },
+    "when-needed": {
+      "slots": 16,
+      "title_in_input": 0,
+      "body_in_input": 0,
+      "bodies_in_input": 0,
+      "list_calls": 0,
+      "get_calls": 0
+    }
+  },
+  "files": {
+    "reader-outcomes.csv": "e0a55e2aaa123c56259fa2afd4942fb4a0e047585c075dc7069b6de429129ba4",
+    "behavior-evidence.json": "e0b61551689bd0385c2aa8841f23c10797633164b7858f900a05f7e21ee3276b",
+    "behavior-reviews.json": "09c6e37541efc8bf19cf354424c17eb5495dbb28a63d6ab48aeb2b29f97c26c6",
+    "note-matches.json": "77d2a318f34d1096e332a02ab899afa985a49c00da1e4c7694022f8300380264",
+    "blinded-packets.json": "9e4bd486cf5d0c6b2d9ecb528e611e42061190f682d10398eed6a52b571551ef"
+  },
+  "parent_results": {
+    "path": "artifacts/studies/own-mixed-readers-smoke-01/summary.json",
+    "sha256": "f94f1fe0df2457d08ccd24a5fd9717310191ccedea48eacf020ba78d4d70ca4d"
+  },
+  "original_implementation": "da6ea9e5a9ccec81842c96801f919a4ddae22ccb",
+  "supplement": {
+    "policy": {
+      "path": "artifacts/approvals/own-mixed-readers-airline-http503-01.json",
+      "sha256": "6d710eb20a91fc23c58043d9fdd91e0016f7824dd5ad5bafb53fef3a408efee8"
+    },
+    "registration_sha256": "277a6383a4025cc3397ea6a01f41f8d690a5d41d2f06e924ed32bda582f72078",
+    "result_sha256": "0e7ab538abd562b3c93845ebeb862e17c42664bec941a70b8b12fe173903bb71",
+    "implementation": {
+      "format": "agent-memory-implementation-freeze/v1",
+      "implementation_commit": "5b3103994f22a0cfb17197c5d98c77c72ec6ca71",
+      "implementation_tree": "e0cc33caf4a0f4823e024aa0970abccda404980c",
+      "worktree_has_uncommitted_implementation": false,
+      "lock_ref": {
+        "path": "uv.lock",
+        "sha256": "63db083690fe533507cd41852bd4ebf1440208acba382ef6a876d48caeaa7a1f"
+      },
+      "reproduction_commit": null,
+      "scope": "implementation_identity_only_not_a_paid_protocol_or_run_authorization"
+    },
+    "native_revision": "c06b07dd7c4d4ec61ba6ff9bcdf0b15dd7ef36d4",
+    "initial_reader_cost": {
+      "requests": 833,
+      "reported_usd": "0.210268400",
+      "held_usd": "0.040818000"
+    },
+    "new_reader_cost": {
+      "requests": 181,
+      "reported_usd": "0.036689718",
+      "held_usd": "0E-9"
+    },
+    "complete": true,
+    "changed_behavior_rows": 6,
+    "inherited_behavior_rows": 42,
+    "inherited_reviews": 60,
+    "new_attempts": 6,
+    "new_packets": 6,
+    "new_reviewed": 6
+  },
+  "reader_attempts": 66
+}

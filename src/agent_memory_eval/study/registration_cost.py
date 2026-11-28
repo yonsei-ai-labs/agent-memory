@@ -6,11 +6,13 @@ from typing import NamedTuple
 
 from agent_memory_eval.analysis.recorded_decisions import require
 from agent_memory_eval.contracts.core import canonical, digest, read_json
+from agent_memory_eval.contracts.validation import ROOT
 from agent_memory_eval.models.expense_ledger import read_run_reservations
 from agent_memory_eval.recording.assets import asset_bytes
 from agent_memory_eval.recording.journal import safe_path
 from agent_memory_eval.study.orchestrator import shard_accounting
 from agent_memory_eval.study.plan import plan_digest
+from agent_memory_eval.study.reader_supplements import reader_supplements
 from agent_memory_eval.study.records import read, sealed_rows
 
 
@@ -27,6 +29,18 @@ def _totals(receipts):
     unknown = None if any(r.unknown is None for r in receipts) else sum(r.unknown for r in receipts)
     return dict(reported_usd=format(reported, "f"), held_usd=format(held, "f"),
                 requests=sum(r.requests for r in receipts), unknown_price_requests=unknown)
+
+
+def _tau_charge(cost, rows):
+    unknown = 0
+    for row in rows:
+        result = row.get("result") or {}
+        count = sum(cell["unknown_count"] for cell in result.get("billing_by_role", {}).values())
+        if result.get("unknown_cost") and (not count or result.get("status") == "interrupted"):
+            unknown = None  # A partial journal can leave the number of submissions unknown.
+            break
+        unknown += count
+    return Charge(Decimal(cost["reported"]), Decimal(cost["held"]), cost["http"], unknown)
 
 
 def _tau_receipts(folder, plan, record, closure, receipts, *, source_supplement=False):
@@ -78,15 +92,7 @@ def _tau_receipts(folder, plan, record, closure, receipts, *, source_supplement=
             require(entry["seal"] == cost["seal"] and entry["http"] == cost["http"] and
                     all(Decimal(entry[k]) == Decimal(cost[k]) for k in ("reported", "held", "spent")),
                     "Controller spending differs from the sealed stage ledger")
-        unknown = 0
-        for row in rows:
-            result = row.get("result") or {}
-            count = sum(cell["unknown_count"] for cell in result.get("billing_by_role", {}).values())
-            if result.get("unknown_cost") and (not count or result.get("status") == "interrupted"):
-                unknown = None  # A partial journal can leave the number of submissions unknown.
-                break
-            unknown += count
-        receipts[kind].append(Charge(Decimal(cost["reported"]), Decimal(cost["held"]), cost["http"], unknown))
+        receipts[kind].append(_tau_charge(cost, rows))
     return unsealed
 
 
@@ -104,7 +110,21 @@ def _bfcl_receipts(folder, closure, receipts):
             receipts[entry["stage"]].append(Charge(reported, held, 1, int(pending)))
 
 
-def registration_cost(plan, workspace):
+def _supplement_charges(workspace, root, plan, record, view, receipts):
+    batches = {}
+    for added in reader_supplements(workspace, root, plan, record):
+        charges = [_tau_charge(a.cost, [a.row]) for a in added.attempts]
+        if added.pending is not None:
+            charges.append(Charge(Decimal(0), added.pending_grant, 0, None))
+            view["unsealed_shards"].append(str(added.pending.relative_to(Path(workspace) / "runs" / plan["id"])))
+        receipts["solve"].extend(charges)
+        batches[added.batch] = dict(**_totals(charges), live_grant_usd=str(added.pending_grant),
+                                    remaining_authorized_usd=str(added.open_allowance), closed=added.completion is not None)
+    if batches:
+        view.update(reader_supplements=batches, coverage="sealed_stage_ledgers_and_open_supplement_grants")
+
+
+def registration_cost(plan, workspace, *, root=ROOT):
     """Read financial evidence for the complete plan, independently of any selected tasks or terminal outcomes."""
     folder = Path(workspace) / "runs" / plan["id"]
     registration = folder / "registration.json"
@@ -142,16 +162,19 @@ def registration_cost(plan, workspace):
     continuation = folder / "write-continuation.json"
     if continuation.is_file() and not bfcl:
         from agent_memory_eval.study.writer_stage import active_writer_sources
-        _, meta = active_writer_sources(Path(workspace), folder, plan)
+        _, meta = active_writer_sources(Path(workspace), folder, plan, root=root)
         for ref in meta["source_recovery_checkpoints"]:
             check = read_json(asset_bytes(Path(workspace), ref))
             _tau_receipts(safe_path(Path(workspace), ref["path"]).parent, plan, record, check, receipts,
                           source_supplement=True)
         require(sum(r.reported + r.held for r in receipts["source"]) == Decimal(meta["prior_source_covered_usd"]),
                 "Original and recovered source spending differs from the writer release")
+    if not bfcl:
+        _supplement_charges(workspace, root, plan, record, view, receipts)
         total = _totals([receipt for stage in receipts.values() for receipt in stage])
-    if closure is not None and Decimal(total["held_usd"]) == 0 and total["unknown_price_requests"] == 0:
+    closed = closure is not None and all(s["closed"] for s in view.get("reader_supplements", {}).values())
+    if closed and Decimal(total["held_usd"]) == 0 and total["unknown_price_requests"] == 0:
         view["final_actual_usd"] = total["reported_usd"]
-    view.update(status="sealed" if closure is not None else "open",
+    view.update(status="sealed" if closed else "open",
                 stages={stage: _totals(events) for stage, events in receipts.items()}, total=total)
     return view

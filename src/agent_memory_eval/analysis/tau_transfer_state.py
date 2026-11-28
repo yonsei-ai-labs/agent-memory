@@ -319,5 +319,14 @@ def state_diagnostics(log, row, transfer, report, calls):
     db_match = actual == expected and observed.get_user_db_hash() == reference.get_user_db_hash()
     require(actual == native["final_db_hash"] and db_match is report["reward_info"]["db_check"]["db_match"],
             "Strict transfer state differs from the recorded final DB hash or native DB component")
+    if transfer.get("cohort") and actual != expected:
+        # A no-change reference can have no declared action or entity ID. Preserve the observed differences too.
+        actual_rows = getattr(observed.tools.db, table)
+        expected_rows = getattr(reference.tools.db, table)
+        extra_ids = sorted((actual_rows.keys() | expected_rows.keys()) - set(ids))
+        evidence["additional_entities"] = [
+            _entity_fields(table, key, observed, reference) for key in extra_ids
+            if actual_rows.get(key) != expected_rows.get(key)
+        ]
     return dict(status="verified", official_db_match=db_match, observed_db_sha256=actual, reference_db_sha256=expected,
                 target_entities=[_entity_fields(table, key, observed, reference) for key in ids], **evidence)

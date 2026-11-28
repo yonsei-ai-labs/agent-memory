@@ -182,7 +182,7 @@ def _register(root, workspace, folder, plan, directory, scope, identity):
         require(saved == dict(scope, implementation=saved["implementation"]), "The registered reader batch changed")
         return saved
     require(not directory.exists() or not any(directory.iterdir()), "Reader evidence exists without a registered scope")
-    cost = registration_cost(plan, workspace)
+    cost = registration_cost(plan, workspace, root=root)
     solve = cost["stages"]["solve"]
     previous_spent = Decimal(solve["reported_usd"]) + Decimal(solve["held_usd"])
     if not previous:
@@ -199,6 +199,14 @@ def _register(root, workspace, folder, plan, directory, scope, identity):
                         final["settled_readers"] == other["eligible_readers"] and 0 <= charge <= Decimal(other["max_usd"]),
                         "Invalid prior reader batch receipt")
                 settled += charge
+                extra = cost.get("reader_supplements", {}).get(other["id"])
+                if extra:
+                    sealed = Decimal(extra["reported_usd"]) + Decimal(extra["held_usd"]) - Decimal(extra["live_grant_usd"])
+                    remaining = Decimal(extra["remaining_authorized_usd"])
+                    require(charge + sealed + remaining <= Decimal(other["max_usd"]),
+                            "Original and recovered readers exceed their shared batch ceiling")
+                    settled += sealed
+                    open_limits += remaining
             else:
                 open_limits += Decimal(other["max_usd"])
         if open_limits:
