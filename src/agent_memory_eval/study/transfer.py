@@ -5,6 +5,7 @@ from decimal import Decimal
 from itertools import combinations
 import re
 
+from agent_memory_eval.analysis.cohort_bootstrap import CohortBootstrap, interval
 from agent_memory_eval.analysis.efficiency import combined_token_usage, paired_effort
 from agent_memory_eval.analysis.policy_evidence import stored_outcome_check
 from agent_memory_eval.analysis.tau_transfer_state import registered_arguments_match
@@ -242,7 +243,7 @@ def _reading_conditions(slots):
     return by_bank, matched
 
 
-def _contrast(pairs, metric, candidate, control):
+def _contrast_data(pairs, metric, candidate, control):
     counts = Counter()
     per_target = defaultdict(list)
     complete = defaultdict(list)
@@ -276,10 +277,10 @@ def _contrast(pairs, metric, candidate, control):
         **{k: counts[k] for k in (candidate + "_only", control + "_only", "both_success", "both_failure", "missing")},
         target_weighted_bounds=[sum(m[i] for m in means) / len(means) for i in (0, 1)] if means else None,
     )
-    if metric == "official_success" and group_by_task:
-        grouped = defaultdict(list)
-        for task, difference in observed.items():
-            grouped[group_by_task[task]].append(difference)
+    grouped = defaultdict(list)
+    if metric == "official_success" and (group_by_task or not pairs):
+        for task in sorted(observed):
+            grouped[group_by_task[task]].append(observed[task])
         total = sum(observed.values())
         result["shared_memory_groups"] = dict(
             registered=len(set(group_by_task.values())), with_complete_pairs=len(grouped),
@@ -288,6 +289,52 @@ def _contrast(pairs, metric, candidate, control):
                 for group, values in sorted(grouped.items()) if len(values) < len(observed)
             },
         )
+    return result, grouped
+
+
+def _contrast(pairs, metric, candidate, control):
+    return _contrast_data(pairs, metric, candidate, control)[0]
+
+
+def _official_comparison(pairs, candidate, control, bootstrap):
+    if bootstrap is None:
+        return dict(official_success=_contrast(pairs, "official_success", candidate, control))
+
+    def estimate(group):
+        result, observed = _contrast_data(group, "official_success", candidate, control)
+        samples = bootstrap.estimates(observed)
+        result["shared_memory_groups"].update(interval(samples, len(observed)))
+        return result, observed, samples
+
+    pooled, _, _ = estimate(pairs)
+    result = dict(official_success=pooled)
+    if not all(arms[control]["decision_rule"]["kind"] == "call_presence" for arms in pairs.values()):
+        return result
+    categories = {"live_relevance": {}, "irrelevance": {}}
+    for key, arms in pairs.items():
+        category = "live_relevance" if arms[control]["decision_rule"]["expected"] else "irrelevance"
+        categories[category][key] = arms
+    estimates = {category: estimate(group) for category, group in categories.items()}
+    by_category = {category: values[0] for category, values in estimates.items()}
+    observed_groups = set().union(*(groups for _, groups, _ in estimates.values()))
+    points = [c["complete_pair_target_weighted_difference"] for c in by_category.values()]
+    bounds = [c["target_weighted_bounds"] for c in by_category.values()]
+    # Use the same draw (and the same omitted group) for both halves of the balanced estimate.
+    balanced = [(a + b) / 2 if a is not None and b is not None else None
+                for a, b in zip(*(samples for _, _, samples in estimates.values()))]
+    leave_one_out = {}
+    for group in sorted(observed_groups):
+        points_without = [c["shared_memory_groups"]["leave_one_group_out"].get(group) if group in observed
+                          else c["complete_pair_target_weighted_difference"] for c, observed, _ in estimates.values()]
+        if None not in points_without:
+            leave_one_out[group] = sum(points_without) / 2
+    balanced_groups = dict(registered=pooled["shared_memory_groups"]["registered"], with_complete_pairs=len(observed_groups),
+                           leave_one_group_out=leave_one_out, **interval(balanced, len(observed_groups)))
+    result["bfcl_call_presence"] = dict(
+        by_category=by_category, equal_category_difference=sum(points) / 2 if None not in points else None,
+        equal_category_bounds=[(a + b) / 2 for a, b in zip(*bounds)] if None not in bounds else None,
+        equal_category_shared_memory_groups=balanced_groups,
+    )
     return result
 
 
@@ -438,7 +485,7 @@ def _pool_selection(rows):
                 items=[dict(relation=k[0], source_outcome=k[1], **v) for k, v in sorted(cells.items())])
 
 
-def _policy_contrasts(slots):
+def _policy_contrasts(slots, bootstrap):
     """Change one writing or reading policy while fixing the target, the other policy and the bank."""
     groups = defaultdict(lambda: defaultdict(dict))
     modes = {}
@@ -457,7 +504,7 @@ def _policy_contrasts(slots):
             pairs = {key: {control: row, candidate: levels[candidate][key]} for key, row in levels[control].items()}
             result.append(dict(
                 varied=axis, fixed_policy=fixed_policy, bank=bank, candidate=candidate, control=control,
-                official_success=_contrast(pairs, "official_success", candidate, control),
+                **_official_comparison(pairs, candidate, control, bootstrap),
                 registered_decision=_contrast(pairs, "registered_decision", candidate, control),
                 effort_all_assigned=paired_effort(
                     [(a[candidate]["success"], a[control]["success"], observed_effort(a[candidate]),
@@ -476,7 +523,8 @@ def transfer_scorecard(rows):
     slots = list(effective_slots(rows).values())
     cohort = any("bank_source_tasks" in r for r in rows)
     candidate, control = ("mixed", "own") if cohort else ("real", "empty")
-    metrics = ("official_success", "registered_decision", "registered_call_executed", "reference_call_executed")
+    bootstrap = CohortBootstrap(r["memory_group"] for r in slots) if cohort else None
+    metrics = ("registered_decision", "registered_call_executed", "reference_call_executed")
     for row in slots:
         key = row["source"], row["task"], row["draw"], row["repeat"]
         groups[row["comparison"]][key][row["bank"]] = row
@@ -514,6 +562,7 @@ def transfer_scorecard(rows):
                                                       for row in attempts),
             )
         comparisons[name] = dict(
+            **_official_comparison(pairs, candidate, control, bootstrap),
             **{metric: _contrast(pairs, metric, candidate, control) for metric in metrics},
             exposure=exposure,
             reader_usage_all_attempts=reader_cost,
@@ -525,19 +574,9 @@ def transfer_scorecard(rows):
             comparisons[name]["mixed_minus_own_effort"] = paired_effort(
                 [(a["mixed"]["success"], a["own"]["success"], observed_effort(a["mixed"]), observed_effort(a["own"]))
                  for a in pairs.values()], COHORT_EFFORT_METRICS, include_transitions=True, summarize_differences=True)
-            if all(a["own"]["decision_rule"]["kind"] == "call_presence" for a in pairs.values()):
-                categories = defaultdict(dict)
-                for key, arms in pairs.items():
-                    category = "live_relevance" if arms["own"]["decision_rule"]["expected"] else "irrelevance"
-                    categories[category][key] = arms
-                contrasts = {category: _contrast(group, "official_success", candidate, control)
-                             for category, group in categories.items()}
-                comparisons[name]["bfcl_call_presence"] = dict(by_category=contrasts, equal_category_bounds=[
-                    sum(group["target_weighted_bounds"][i] for group in contrasts.values()) / 2 for i in (0, 1)
-                ] if len(contrasts) == 2 else None)
     reading, same_input = _reading_conditions(slots)
     return dict(format="agent-memory-cohort-scorecard/v1" if cohort else "agent-memory-transfer-scorecard/v2", comparisons=comparisons,
-                **(dict(policy_contrasts=_policy_contrasts(slots)) if cohort else {}),
+                **(dict(policy_contrasts=_policy_contrasts(slots, bootstrap), shared_memory_bootstrap=bootstrap.design()) if cohort else {}),
                 target_no_memory=target_no_memory_summary(slots), reading_conditions=reading,
                 same_first_input_without_reads_or_exposure=same_input, writing_by_source=_writing_comparisons(slots),
                 business_state_by_target=_business_state(slots))

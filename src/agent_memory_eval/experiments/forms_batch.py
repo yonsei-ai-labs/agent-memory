@@ -232,7 +232,7 @@ def prepare(root, workspace, checkout, design):
 
 def run_jobs(rows, execute, guard, persist, *, written_arms=(*FORMS, "summary"), initial_writers=None,
              missing_sources=(), incomplete_form_sets=(), unavailable_pools=None, close_cost=None,
-             verify_written=None, resumable=False):
+             verify_written=None, resumable=False, before_start=None):
     """Persist all assignments before HTTP, a start before side effects, and every terminal disposition."""
     writers = dict(initial_writers or {})
     persist(rows)
@@ -271,6 +271,8 @@ def run_jobs(rows, execute, guard, persist, *, written_arms=(*FORMS, "summary"),
                 row.update(status="not_started", reason="writer_incomplete")
                 persist(rows)
                 continue
+        if before_start is not None:
+            before_start()
         row["status"] = "started"
         persist(rows)
         try:
@@ -451,6 +453,8 @@ def execute_prepared(profile, root, destination, identity, design, plan, models,
         if (destination / "completion.json").exists():
             raise ContractError("Completed batches must be read through their seal")
         rows = restore_batch(destination, control, plan["jobs"], rows, guard, close_cost)
+        if hasattr(guard, "restore_native_clock"):
+            guard.restore_native_clock(destination, rows)
     else:
         (destination / "jobs").mkdir()
         write_json(destination / "control.json", control)
@@ -514,7 +518,7 @@ def execute_prepared(profile, root, destination, identity, design, plan, models,
                     missing_sources=plan.get("missing_sources", ()), incomplete_form_sets=incomplete_form_sets,
                     unavailable_pools=unavailable,
                     verify_written=verify_written if combined_writing else None,
-                    close_cost=close_cost, resumable=resumable)
+                    close_cost=close_cost, resumable=resumable, before_start=getattr(guard, "before_episode", None))
     summary = dict(stop_reason=stop, http_calls=guard.calls, reported_usd=guard.reported_usd,
         unknown_cost=guard.unknown_cost, ended_at=datetime.now(timezone.utc).isoformat(),
         allocation_sha256=digest(ledger.read_bytes()), control_sha256=digest((destination / "control.json").read_bytes()))

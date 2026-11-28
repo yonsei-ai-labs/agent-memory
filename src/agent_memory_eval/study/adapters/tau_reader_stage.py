@@ -1,6 +1,7 @@
 """Run a funded subset of the registered τ² own/mixed readers against their sealed first passes and notes."""
 
 from decimal import Decimal
+from itertools import chain, repeat
 import os
 from pathlib import Path
 import time
@@ -20,7 +21,48 @@ from agent_memory_eval.study.reader_stage import reader_input_digest
 from agent_memory_eval.study.records import fixed, read, sealed_rows
 
 
-def _batch_evidence(folder, directory, scope):
+def _stage_order(scope, stage):
+    if stage in scope["solve_stages"]:
+        return scope["solve_stages"].index(stage)
+    suffix = stage.removeprefix("solve-retry-")
+    require(scope.get("operations") and stage != suffix and suffix.isdecimal() and str(int(suffix)) == suffix
+            and int(suffix) >= len(scope["solve_stages"]), "Unregistered reader retry stage")
+    return int(suffix)
+
+
+def _retry_lineage(folder, name, stages, codes):
+    task, stage = name.split("/")
+    base, separator, number = stage.rpartition("-retry-")
+    if not separator:
+        return
+    previous = f"{task}/{base}"
+    prior = previous if number == "1" else f"{previous}-retry-{int(number) - 1}"
+    require(prior in stages and stages[prior].get("seal"), "A reader retry has no sealed preceding stage")
+    _, old_control, old = sealed_rows(safe_path(folder, prior), stages[prior]["seal"])
+    eligible = {r["arm"]: r for r in old if r["status"] == "error" and r["result"].get("official_success") is None
+                and r["result"].get("error_code") in codes}
+    require(eligible, "A reader retry has no eligible provider failure")
+    shard = safe_path(folder, name)
+    if (shard / "completion.json").is_file():
+        _, ctl, rows = sealed_rows(shard, stages.get(name, {}).get("seal"))
+        require(len(rows) == len(eligible) and {r["arm"] for r in rows} == eligible.keys()
+                and ctl["design"]["interrupted_readers"].keys() == eligible.keys(),
+                "A retry includes an unregistered or settled reader")
+        for row in rows:
+            arm = row["arm"]
+            prior_row = eligible[arm]
+            old_result, result = prior_row["result"], row.get("result") or {}
+            old_wire, wire = old_result.get("first_worker_request_sha256"), result.get("first_worker_request_sha256")
+            require(row["index"] == prior_row["index"] and row["run_id"] != prior_row["run_id"]
+                    and (not result.get("session_id") or result["session_id"] != old_result.get("session_id"))
+                    and (not wire or not old_wire or old_wire == wire)
+                    and ctl["design"]["delivery_arms"][arm]["sources_sha256"] ==
+                    old_control["design"]["delivery_arms"][arm]["sources_sha256"], "Retry changed its assignment, input or session")
+    elif stages.get(name, {}).get("status") == "not_started":
+        require(set(stages[name]["arms"]) == eligible.keys(), "Unfunded retry differs from its eligible slots")
+
+
+def _batch_evidence(folder, directory, scope, *, include_funded=False):
     """An existing solve shard must have a prior grant. Every settled wave binds its shard seals."""
     controller = directory / "controller"
     registration = controller / "registration.json"
@@ -34,7 +76,7 @@ def _batch_evidence(folder, directory, scope):
                     "A settled reader wave lost its grant")
             continue
         stage, _, number = grant.stem.rpartition("-wave-")
-        require(registration.is_file() and stage in scope["solve_stages"] and number.isdecimal() and int(number) >= 1,
+        require(registration.is_file() and number.isdecimal() and int(number) >= 1,
                 "Unexpected reader wave or missing batch registration")
         wave = read(grant)
         cases = wave["tasks"]
@@ -43,7 +85,7 @@ def _batch_evidence(folder, directory, scope):
                 "A reader grant contains an unregistered or repeated shard")
         slots.update(names)
         receipt = grant.with_suffix(".settled.json")
-        waves.append((scope["solve_stages"].index(stage), int(number), receipt.is_file()))
+        waves.append((_stage_order(scope, stage), int(number), receipt.is_file()))
         if receipt.is_file():
             saved = read(receipt)
             require(saved["registration_sha256"] == digest(registration.read_bytes()) and set(saved["stages"]) == names,
@@ -59,10 +101,14 @@ def _batch_evidence(folder, directory, scope):
         require(registration.is_file() and saved["registration_sha256"] == digest(registration.read_bytes())
                 and set(stages) == slots and saved["stages"] == stages, "Reader completion differs from its wave receipts")
     verify_stage_entries(folder, stages)
-    return stages
+    if "operations" in scope:
+        codes = {f"HTTP_{code}" for code in scope["retry_http_codes"]}
+        for name in slots:
+            _retry_lineage(folder, name, stages, codes)
+    return (dict.fromkeys(slots, {}) | stages) if include_funded else stages
 
 
-def reader_batch_stages(folder):
+def reader_batch_stages(folder, *, include_funded=False):
     """Sealed reader receipts, including exclusions for which there is deliberately no task shard."""
     runs = folder / "reader-batches"
     if not runs.is_dir():
@@ -83,8 +129,8 @@ def reader_batch_stages(folder):
             scope = read(controller)
             require(scope["batch_registration_sha256"] == digest(path.read_bytes())
                     and scope["parent_registration_sha256"] == digest(parent.read_bytes())
-                    and scope["cases"] == [cases[t] for t in targets], "Reader batch belongs to different tasks or releases")
-            stages.update(_batch_evidence(folder, path.parent, scope))
+                    and scope.get("operations") == batch.get("operations") and scope["cases"] == [cases[t] for t in targets], "Reader batch belongs to different tasks or releases")
+            stages.update(_batch_evidence(folder, path.parent, scope, include_funded=include_funded))
         else:
             require(not any(p for task in targets for p in (folder / ("task-" + cases[task])).glob("solve*")),
                     "A registered target has reader shards without its batch controller")
@@ -94,13 +140,16 @@ def reader_batch_stages(folder):
 def _groups(adapter, folder, controller, cfg, plan, cases, sleep):
     yield "solve", "solve", cases
     codes = {f"HTTP_{code}" for code in plan["retry"]["http_codes"]}
-    for attempt, wait in enumerate(plan["retry"]["wait_seconds"], 1):
+    waits = plan["retry"]["wait_seconds"]
+    schedule = chain(waits, repeat(0)) if cfg.get("reader_operations") else waits
+    for attempt, wait in enumerate(schedule, 1):
         retry = adapter._retry_cases(folder, cfg, cases, "solve", attempt, codes)
         if not retry:
             break
         stage = f"solve-retry-{attempt}"
+        cfg["stage_kinds"][stage] = "solve"
         # Publication of the first grant follows the registered wait, including on a resumed batch.
-        if not (controller / f"{stage}-wave-1.json").is_file():
+        if wait and not (controller / f"{stage}-wave-1.json").is_file():
             sleep(wait)
         yield stage, stage, retry
 
@@ -157,7 +206,10 @@ def run_readers(adapter, plan, workspace, root, *, resolved, registration, sourc
     controller = directory / "controller"
     marker = directory / "registration.json"
     original = folder / "registration.json"
-    cfg = dict(resolved["cfg"], effective_sources=sources)
+    cfg = dict(resolved["cfg"], effective_sources=sources, stage_kinds=dict(resolved["cfg"]["stage_kinds"]))
+    operations = batch.get("operations")
+    if operations:
+        cfg.update(reader_operations=True, max_concurrent=min(operations["max_concurrent_tasks"], len(batch["tasks"])))
     record = resolved["record"]
     targets = batch["tasks"]
     require(directory == safe_path(folder / "reader-batches", batch["id"]) and read(marker) == batch
@@ -215,6 +267,8 @@ def run_readers(adapter, plan, workspace, root, *, resolved, registration, sourc
                  batch_registration_sha256=digest(marker.read_bytes()), cases=[c["task"] for c in cases],
                  solve_stages=[k for k, v in cfg["stage_kinds"].items() if v == "solve"],
                  endpoint_terms=cfg["expected_endpoint_terms"], model_revisions=revisions)
+    if operations:
+        scope.update(operations=operations, retry_http_codes=plan["retry"]["http_codes"])
     reader_batch_stages(folder)
     _batch_evidence(folder, directory, scope)
     models = read_json(asset_bytes(root, cfg["endpoints"]))["models"]
@@ -223,6 +277,10 @@ def run_readers(adapter, plan, workspace, root, *, resolved, registration, sourc
             "Registered worker or customer endpoint snapshot changed")
     common = dict(workspace=str(workspace), output=str(folder), cfg=cfg, models=models, conn=resolved["conn"],
                   identity=batch["implementation"], tasks={c["opening"]["task"]: resolved["tasks"][c["opening"]["task"]] for c in cases})
+
+    if operations:
+        common["reader_operations"] = dict(directory=str(controller), http_codes=plan["retry"]["http_codes"],
+                                           transient_backoff_seconds=operations["transient_backoff_seconds"])
 
     def prepare_models():
         if "judge" in common:
@@ -244,4 +302,6 @@ def run_readers(adapter, plan, workspace, root, *, resolved, registration, sourc
                         shard_root=folder, total_usd_limit=cap, max_concurrent=cfg["max_concurrent"],
                         admission=adapter._admission(cfg), verify_sealed=verify_sealed, before_dispatch=prepare_models,
                         pool_factory=pool_factory, progress=progress)
+    if operations:
+        _batch_evidence(folder, directory, scope)
     return _summary(folder, controller, cases, available, result)

@@ -11,10 +11,11 @@ from agent_memory_eval.experiments.forms_batch import endpoint_terms
 from agent_memory_eval.memory.writing import WriterFeedback, _experience, writer_inputs
 from agent_memory_eval.models.expense_ledger import ExpenseLedger, read_run_reservations
 from agent_memory_eval.models.openrouter import OpenRouterClient, request_reservation_usd
-from agent_memory_eval.recording.journal import BlobStore, Journal, read_experiment, safe_path
+from agent_memory_eval.recording.journal import BlobStore, Journal, read_experiment
 from agent_memory_eval.study.adapters.bfcl_transfer import (
-    audited_reader, audited_writer, cohort_checkpoint, collect_reader, hosted_model, job_sources, last_run,
-    reader_config, require_credentials, run_events, run_key, submitted_or_ended, terminal,
+    audited_reader, audited_writer, bounded_reader_batches, cohort_checkpoint, collect_reader, hosted_model,
+    interrupted_reader_reason, job_sources, last_run, native_request_limit, reader_attempts, reader_config,
+    reader_retry_wire, require_credentials, run_events, run_key, seal_interrupted_reader, submitted_or_ended, terminal,
 )
 from agent_memory_eval.study.cohort import is_cohort
 from agent_memory_eval.study.followup_budget import approval_amount
@@ -112,28 +113,26 @@ def _batch_scopes(directory, batch, resolved, plan):
         target: sum(limits[plan["reading"][job["reader"]]["read_mode"] + "_calls"] * attempts for job in jobs)
         for target, _, jobs in resolved["groups"]
     }
-    owners, budgets = {}, {}
+    owners, budgets, backoffs = {}, {}, {}
     study_cap = approval_amount(plan["budget"]["max_usd"])
-    for path in sorted(directory.parent.glob("*/registration.json")):
-        record = read(safe_path(directory.parent, path.relative_to(directory.parent)))
+    for record, waits in bounded_reader_batches(directory.parent.parent, calls_by_task.keys()):
         key, tasks = record["id"], record["tasks"]
-        require(key == path.parent.name and key not in budgets and isinstance(tasks, list) and tasks
-                and len(set(tasks)) == len(tasks) and set(tasks) <= calls_by_task.keys()
-                and owners.keys().isdisjoint(tasks), "Overlapping or unregistered BFCL reader assignments")
-        _reader_seal(path.parent, directory.parent.parent, resolved["journals"], tasks)
+        _reader_seal(directory.parent / key, directory.parent.parent, resolved["journals"], tasks)
         owners.update(dict.fromkeys(tasks, key))
+        backoffs[key] = waits
         budgets[key] = approval_amount(record["max_usd"]), sum(calls_by_task[t] for t in tasks)
         study_cap = max(study_cap, approval_amount(record["cumulative_max_usd"]))
-    return owners, budgets, study_cap
+    return owners, budgets, backoffs, study_cap
 
 
-def _slot_state(scan, study, job, retry, reserved):
+def _slot_state(scan, study, job, retry, reserved, waits, blobs):
     """Follow only unsubmitted replacements and registered HTTP retries, including interrupted paid attempts."""
-    runs = []
-    for attempt in range(1 + len(retry["wait_seconds"])):
+    runs, pending_wire = [], None
+    retryable = {f"HTTP_{code}" for code in retry["http_codes"]}
+    for attempt in reader_attempts(retry, waits):
         run = run_key(study, job, attempt)
         if run not in scan["starts"]:
-            return runs, False, None
+            return runs, False, pending_wire
         while True:
             runs.append(run)
             events = run_events(scan, run)
@@ -151,8 +150,15 @@ def _slot_state(scan, study, job, retry, reserved):
                 last = next(e for e in reversed(events) if e["type"] == "model.request_started")
                 return runs, False, last["payload"]["request_ref"]
             return runs, False, None
-        if not end or end["termination_reason"] not in {f"HTTP_{code}" for code in retry["http_codes"]}:
+        if not end:
+            if waits and interrupted_reader_reason(events, blobs, retry):
+                return runs, False, None
             break
+        reason = end["termination_reason"]
+        if reason not in retryable and not (waits and reason == "STUDY_LIMIT"):
+            break
+        if waits:
+            pending_wire = reader_retry_wire(events, reason)
     return runs, True, None
 
 
@@ -185,7 +191,7 @@ def _writer_notes(folder, evidence, workspace, root, plan, resolved, groups, sou
     return notes
 
 
-def _reader_jobs(plan, resolved, dest, workspace, root, sources, refs, owners, batch, expenses):
+def _reader_jobs(plan, resolved, dest, workspace, root, sources, refs, owners, backoffs, batch, expenses):
     """Check each appended session against its batch before opening any new journal for writing."""
     pending, seen, selected_notes = {}, {}, {}
     assigned = eligible = settled = 0
@@ -199,6 +205,7 @@ def _reader_jobs(plan, resolved, dest, workspace, root, sources, refs, owners, b
             continue
         evidence = read_experiment(folder)
         scan, _, experiment = evidence
+        blobs = BlobStore(folder)
         require(experiment == study and not scan["tail_bytes"], "Invalid BFCL reader journal")
         cutoff = sealed_bytes(log, ref["sha256"], ref["bytes"]).count(b"\n")
         suffix = [e for row in scan["records"][cutoff:] for e in row["events"]]
@@ -211,8 +218,9 @@ def _reader_jobs(plan, resolved, dest, workspace, root, sources, refs, owners, b
             owner = owners.get(task)
             if owner is None:
                 continue
+            waits_for_owner = backoffs[owner]
             for job in jobs:
-                runs, done, deferred = _slot_state(scan, study, job, plan["retry"], expenses)
+                runs, done, deferred = _slot_state(scan, study, job, plan["retry"], expenses, waits_for_owner, blobs)
                 members = job_sources(resolved, job)
                 available = all((member, draw, job["form"]) in notes for member in members)
                 require(available or not runs, "Started BFCL reader has an unavailable writer")
@@ -239,8 +247,10 @@ def _reader_jobs(plan, resolved, dest, workspace, root, sources, refs, owners, b
                     eligible += available
                     settled += done
                     if available and not done:
-                        cost = request_reservation_usd(BlobStore(folder).get(deferred), resolved["terms"]) if deferred else None
-                        pending.setdefault(name, []).append((job, notes, cost))
+                        cost = request_reservation_usd(blobs.get(deferred), resolved["terms"]) if deferred else None
+                        repair = (runs[-1] if waits_for_owner and runs and runs[-1] in expenses
+                                  and runs[-1] in scan["incomplete_runs"] else None)
+                        pending.setdefault(name, []).append((job, notes, cost, repair))
         require(suffix_runs == authorized_runs and all(
             event["run_id"] is not None or (event["type"] == "bank.snapshot_created"
                                             and tuple(event["payload"]["parent_snapshot_ids"]) in mixes)
@@ -284,25 +294,38 @@ def run_readers(adapter, plan, workspace, root, *, resolved, registration, sourc
             == batch["source_registration_sha256"] and digest((dest / "through-source.json").read_bytes())
             == writer["source_checkpoint_sha256"] and digest((dest / "through-write.json").read_bytes())
             == batch["writer_checkpoint_sha256"], "The released BFCL registration or writer checkpoint changed")
-    owners, budgets, study_cap = _batch_scopes(directory, batch, prepared, plan)
+    owners, budgets, backoffs, study_cap = _batch_scopes(directory, batch, prepared, plan)
     path = dest / "expenses.jsonl"
     ref = refs[path.name]
     prefix_rows = sealed_bytes(path, ref["sha256"], ref["bytes"]).count(b"\n") if ref["bytes"] else 0
     authorization = read(dest / "authorization.json")
-    require({k: v for k, v in authorization.items() if k != "max_requests"} == registration["approval"],
+    require({k: v for k, v in authorization.items() if k != "max_requests"} == registration["approval"]
+            and authorization["max_requests"] == native_request_limit(prepared["record"]["assigned"],
+                                                                      prepared["cfg"]["limits"], plan["retry"]),
             "Original BFCL authorization changed")
     guard = ReaderExpenseLedger(path, study_cap, authorization["max_requests"], prefix_rows, budgets, batch["id"],
                                 prepared["cfg"]["model"])
     require(guard.prior_covered == Decimal(batch["prior_source_writer_covered_usd"]),
             "BFCL source and writer spending differs from its release")
     pending, assigned, eligible, settled = _reader_jobs(
-        plan, prepared, dest, workspace, root, sources, refs, owners, batch, read_run_reservations(path))
+        plan, prepared, dest, workspace, root, sources, refs, owners, backoffs, batch, read_run_reservations(path))
     key = batch["id"]
+    waits = backoffs[key]
     client = None
     for name, entries in pending.items():
         with Journal(dest / name, plan["id"], contract_version="1.2") as journal:
-            for job, notes, deferred in entries:
-                if deferred is not None and not guard.can_reserve(deferred):
+            for job, notes, deferred, repair in entries:
+                if repair:
+                    end = seal_interrupted_reader(journal, repair, plan["retry"])
+                    require(end is not None, "BFCL reader recovery lost its recorded grade or HTTP receipt")
+                    if end["termination_reason"] == "business_decision":
+                        settled += 1
+                        if progress:
+                            progress("solve", settled, eligible, guard.reported[key])
+                        continue
+                    wire = reader_retry_wire(run_events(journal.scan, repair), end["termination_reason"])
+                    deferred = request_reservation_usd(journal.blobs.get(wire), prepared["terms"])
+                if (deferred is not None or waits) and not guard.can_reserve(deferred or Decimal(0)):
                     guard.denied = True
                     break
                 if client is None:
@@ -316,8 +339,9 @@ def run_readers(adapter, plan, workspace, root, *, resolved, registration, sourc
                                             max_input_bytes=plan.get("limits", {}).get("max_input_bytes", 128000))
                     if isinstance(client, OpenRouterClient):
                         require_credentials()
-                collect_reader(journal, guard, plan, root, prepared, job, notes, client, sleep)
-                _, done, _ = _slot_state(journal.scan, plan["id"], job, plan["retry"], guard.reserved_runs)
+                collect_reader(journal, guard, plan, root, prepared, job, notes, client, sleep, waits=waits)
+                _, done, _ = _slot_state(journal.scan, plan["id"], job, plan["retry"], guard.reserved_runs,
+                                         waits, journal.blobs)
                 require(done or guard.denied, "BFCL reader returned without a disposition")
                 settled += done
                 if progress:

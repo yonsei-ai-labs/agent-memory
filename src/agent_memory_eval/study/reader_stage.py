@@ -21,6 +21,9 @@ from agent_memory_eval.study.registration_cost import registration_cost
 from agent_memory_eval.study.writer_stage import active_writer_sources, file_ref
 
 
+RUNTIME_PATHS = ("src", "scripts", "schemas", "pyproject.toml", "uv.lock")
+
+
 def _publish(path, value):
     try:
         publish_json(path, value)
@@ -36,6 +39,8 @@ def _spec(root, path):
             "Expected a named cohort reader batch")
     limit = approval_amount(spec["max_usd"])
     total = Decimal(0)
+    if "runtime_commit" in spec:
+        require(re.fullmatch(r"[0-9a-f]{40}", spec["runtime_commit"]) is not None, "Expected a frozen reader commit")
     for name, part in spec["plans"].items():
         plan = read_json(asset_bytes(root, part["plan"]))
         tasks = part["tasks"]
@@ -43,6 +48,19 @@ def _spec(root, path):
                 and len(tasks) == len(set(tasks)) and set(tasks) <= set(plan["benchmark"]["tasks"]),
                 "Reader tasks must be a nonempty, unique subset of their original cohort")
         total += approval_amount(part["max_usd"])
+        if "operations" in part:
+            ops = part["operations"]
+            require("runtime_commit" in spec and set(ops) == {"max_concurrent_tasks", "transient_backoff_seconds"}
+                    and type(ops["max_concurrent_tasks"]) is int and ops["max_concurrent_tasks"] >= 1
+                    and (plan["benchmark"]["adapter"] != "bfcl-relevance" or ops["max_concurrent_tasks"] == 1),
+                    "Invalid reader concurrency or unfrozen operations")
+            waits = ops["transient_backoff_seconds"]
+            require(isinstance(waits, list) and waits and all(type(w) is int and w > 0 for w in waits)
+                    and waits == sorted(waits), "Register positive nondecreasing provider backoffs")
+        if "closed_reader_batches" in part:
+            require("runtime_commit" in spec and isinstance(part["closed_reader_batches"], dict)
+                    and all(re.fullmatch(r"[a-z0-9][a-z0-9-]*", k) and k != spec["id"]
+                            for k in part["closed_reader_batches"]), "Invalid prior reader batch registry")
     require(total <= limit, "Reader plan limits exceed the batch ceiling")
     if "action_review" in spec:
         asset_bytes(root, spec["action_review"])
@@ -140,17 +158,25 @@ def _context(plan, workspace, root, adapter, path, checkout):
                  source_registration_sha256=meta["source_registration_sha256"],
                  effective_sources_sha256=meta["effective_sources_sha256"], writer_results=spec["writer_results"],
                  writer_checkpoint_sha256=bench["writer_checkpoint_sha256"], **inputs)
+    if "runtime_commit" in spec:
+        scope["runtime_commit"] = spec["runtime_commit"]
+    for key in ("operations", "closed_reader_batches"):
+        if key in part:
+            scope[key] = part[key]
     return spec, scope, registration, resolved, sources
+
+
+def _check_runtime(root, old, new):
+    require(subprocess.run(["git", "-C", root, "diff", "--quiet", old, new, "--", *RUNTIME_PATHS]).returncode == 0,
+            "Resume with the frozen reader implementation")
 
 
 def _compatible_code(root, previous, current):
     if previous == current:
         return
     old, new = previous["implementation_commit"], current["implementation_commit"]
-    require(previous["lock_ref"] == current["lock_ref"]
-            and subprocess.run(["git", "-C", root, "diff", "--quiet", old, new, "--",
-                                "src", "scripts", "schemas", "pyproject.toml", "uv.lock"]).returncode == 0,
-            "Resume with the frozen reader implementation")
+    require(previous["lock_ref"] == current["lock_ref"], "Resume with the frozen reader implementation")
+    _check_runtime(root, old, new)
 
 
 def _prior_scope(root, plan, other):
@@ -159,24 +185,56 @@ def _prior_scope(root, plan, other):
     grant = read_json(asset_bytes(root, other["approval_ref"]))
     require(spec["id"] == other["id"] and spec["writer_results"] == other["writer_results"]
             and part["tasks"] == other["tasks"] and part["max_usd"] == other["max_usd"]
+            and other.get("runtime_commit") == spec.get("runtime_commit")
+            and all(other.get(key) == part.get(key) for key in ("operations", "closed_reader_batches"))
+            and other["cumulative_max_usd"] == part.get("cumulative_max_usd", plan["budget"]["max_usd"])
             and grant == _approval(spec, other["batch_ref"], grant["user_authorization"]),
             "Prior reader scope differs from its original batch or authorization")
 
 
-def _register(root, workspace, folder, plan, directory, scope, identity):
+def _closed_predecessor(folder, refs, other, scope):
+    """Bind a disjoint predecessor and every supplemental result before starting a new frozen runtime."""
+    require(set(refs) == {"registration_sha256", "result_sha256", "supplements"}, "Invalid predecessor receipt")
+    asset_bytes(folder, dict(path="registration.json", sha256=refs["registration_sha256"]))
+    result = read_json(asset_bytes(folder, dict(path="result.json", sha256=refs["result_sha256"])))
+    require(result["complete"] and not result["budget_deferred"] and result["settled_readers"] == other["eligible_readers"]
+            and all(other[k] == scope[k] for k in ("plan_sha256", "writer_checkpoint_sha256",
+                        "source_registration_sha256", "effective_sources_sha256", "writer_results")),
+            "Predecessor has open work or different original sources")
+    supplements = {p.parent.name for p in folder.glob("supplements/*/registration.json")}
+    require(supplements == set(refs["supplements"]), "Predecessor supplement set changed")
+    for name in supplements:
+        prefix = f"supplements/{name}/"
+        receipt = read_json(asset_bytes(folder, dict(path=prefix + "result.json", sha256=refs["supplements"][name])))
+        asset_bytes(folder, dict(path=prefix + "registration.json", sha256=receipt["registration_sha256"]))
+        require(receipt["complete"], "Predecessor supplement is still open")
+
+
+def _register(root, workspace, folder, plan, directory, scope, identity, *, publish=True):
     """Allocate disjoint native slots under the controller lock, before the first request."""
     previous = []
+    pins = scope.get("closed_reader_batches", {})
+    seen_pins = set()
+    marker_path = directory / "registration.json"
+    if "runtime_commit" in scope:
+        _check_runtime(root, scope["runtime_commit"], identity["implementation_commit"])
     for marker in sorted(directory.parent.glob("*/registration.json")):
         other = read(marker)
         require(other["id"] == marker.parent.name and other["plan_sha256"] == scope["plan_sha256"]
                 and other["writer_results"] == scope["writer_results"], "Different study in the reader batch registry")
-        _compatible_code(root, other["implementation"], identity)
         if marker.parent == directory:
+            _compatible_code(root, other["implementation"], identity)
             continue
         _prior_scope(root, plan, other)
         require(not set(other["tasks"]).intersection(scope["tasks"]), "Reader batches overlap an original target")
+        if other["id"] in pins:
+            _closed_predecessor(marker.parent, pins[other["id"]], other, scope)
+            seen_pins.add(other["id"])
+        elif not marker_path.is_file():
+            _compatible_code(root, other["implementation"], identity)
         previous.append((other, marker.parent))
-    marker = directory / "registration.json"
+    require(seen_pins == set(pins), "Missing a registered predecessor")
+    marker = marker_path
     if marker.is_file():
         saved = read(marker)
         require(saved == dict(scope, implementation=saved["implementation"]), "The registered reader batch changed")
@@ -218,24 +276,29 @@ def _register(root, workspace, folder, plan, directory, scope, identity):
     required = Decimal(scope["prior_source_writer_covered_usd"]) + previous_spent + Decimal(scope["max_usd"])
     require(required <= approval_amount(scope["cumulative_max_usd"]),
             "This batch exceeds its cumulative plan ceiling including prior spending and reservations")
-    directory.mkdir(parents=True, exist_ok=True)
     value = dict(scope, implementation=identity)
-    _publish(marker, value)
+    if publish:
+        directory.mkdir(parents=True, exist_ok=True)
+        _publish(marker, value)
     return value
 
 
 def reader_command(plan, workspace, root, adapter, path, *, execute=False, checkout=None, progress=None):
     workspace, root = Path(workspace).resolve(), Path(root).resolve()
     spec, scope, registration, resolved, sources = _context(plan, workspace, root, adapter, path, checkout)
-    if not execute:
+    if not execute and "runtime_commit" not in scope:
         return scope
     approval_path = safe_path(root / "artifacts/approvals", spec["id"] + ".json")
-    grant = read(approval_path)
-    require(grant == _approval(spec, scope["batch_ref"], grant["user_authorization"]), "Different reader authorization")
-    scope["approval_ref"] = file_ref(root, approval_path)
+    if execute or approval_path.is_file():
+        grant = read(approval_path)
+        require(grant == _approval(spec, scope["batch_ref"], grant["user_authorization"]), "Different reader authorization")
+        scope["approval_ref"] = file_ref(root, approval_path)
     identity = implementation_identity(root)
     folder = workspace / "runs" / plan["id"]
     directory = safe_path(folder, "reader-batches/" + scope["id"])
+    if not execute:
+        _register(root, workspace, folder, plan, directory, scope, identity, publish=False)
+        return scope
     if plan["benchmark"]["adapter"] == "bfcl-relevance":
         from agent_memory_eval.study.adapters.bfcl_reader_stage import run_readers
     else:

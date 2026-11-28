@@ -4,6 +4,7 @@ from collections import Counter, defaultdict
 from dataclasses import asdict
 from datetime import UTC, datetime
 from decimal import Decimal
+from itertools import count
 from math import ceil
 import os
 from pathlib import Path
@@ -41,7 +42,7 @@ from agent_memory_eval.models.openrouter import (
 )
 from agent_memory_eval.recording.assets import asset_text
 from agent_memory_eval.recording.batch import request_measurements, usage_from_events
-from agent_memory_eval.recording.journal import BlobStore, Journal, read_experiment
+from agent_memory_eval.recording.journal import BlobStore, Journal, read_experiment, safe_path
 from agent_memory_eval.reproduction.freeze import implementation_identity
 from agent_memory_eval.runner.bfcl_relevance import grade_reply, hosted_tools, load_inputs, normalized_first, solve
 from agent_memory_eval.study.adapters.tau_banking import approval_for
@@ -164,6 +165,96 @@ def retry_delay(journal, run, minimum):
                 wait = cooldown_seconds(receipt, minimum, received)
                 return max(0, ceil(wait - (datetime.now(UTC) - received).total_seconds()))
     return minimum
+
+
+def bounded_reader_batches(dest, tasks):
+    """Read the prospective retry policy attached to each disjoint set of original BFCL targets."""
+    directory = dest / "reader-batches"
+    claimed = set()
+    for path in sorted(directory.glob("*/registration.json")):
+        batch = read(safe_path(directory, path.relative_to(directory)))
+        selected = batch["tasks"]
+        require(batch["id"] == path.parent.name and isinstance(selected, list) and selected
+                and len(selected) == len(set(selected)) and set(selected) <= tasks and claimed.isdisjoint(selected),
+                "Overlapping or unregistered BFCL reader assignments")
+        claimed.update(selected)
+        waits = ()
+        if "operations" in batch:
+            ops = batch["operations"]
+            require(isinstance(ops, dict) and set(ops) == {"max_concurrent_tasks", "transient_backoff_seconds"},
+                    "Unexpected BFCL reader operations")
+            waits = ops["transient_backoff_seconds"]
+            require(type(ops["max_concurrent_tasks"]) is int and ops["max_concurrent_tasks"] == 1
+                    and isinstance(waits, list) and waits and all(type(w) is int and w > 0 for w in waits)
+                    and waits == sorted(waits), "Expected serial BFCL readers with registered provider backoffs")
+        yield batch, waits
+
+
+def reader_attempts(retry, waits):
+    """Apply the registered retry limit or the new batch's shared reservation limits."""
+    return count() if waits else range(1 + len(retry["wait_seconds"]))
+
+
+def native_request_limit(assigned, limits, retry):
+    attempts = 1 + len(retry["wait_seconds"])
+    return ((assigned["source"] + assigned.get("target_no_memory", 0)) * limits["source_calls"]
+            + assigned["write"] * limits["writer_calls"]
+            + assigned["solve"] * max(limits["preload_calls"], limits["on_demand_calls"]) * attempts)
+
+
+def reader_retry_wire(events, reason):
+    """Price the identical opening wire or the request denied by a mid-session funding stop."""
+    wires = [e["payload"]["request_ref"] for e in events if e["type"] == "model.request_started"]
+    return wires[-1] if reason == "STUDY_LIMIT" else wires[0]
+
+
+def reader_outcome_runs(scan, study, job, retry, waits):
+    """Every physical session for a new operations batch is a separate, chronological outcome row."""
+    for attempt in reader_attempts(retry, waits):
+        key = run_key(study, job, attempt)
+        if key not in scan["starts"]:
+            return
+        if waits:
+            while key in scan["starts"]:
+                yield key
+                key = run_key(study, key, "unsubmitted")
+        else:
+            yield last_run(scan, study, key)
+
+
+def interrupted_reader_reason(events, blobs, retry):
+    """Recover only a durable official grade or the last worker request's confirmed registered HTTP error."""
+    if any(e["type"] == "outcome.scored" and e["payload"]["grading_status"] == "graded" for e in events):
+        return "business_decision"
+    event = next((e for e in reversed(events) if e["type"] in {"model.request_started", "model.request_finished"}), None)
+    if event and event["type"] == "model.request_finished":
+        payload = event["payload"]
+        if payload["status"] == "error" and payload["delivery_status"] == "response_received" and payload["response_ref"]:
+            response = blobs.get(payload["response_ref"])
+            detail = response.get("error") if isinstance(response, dict) else None
+            if isinstance(detail, dict) and detail.get("code") in retry["http_codes"]:
+                return f"HTTP_{detail['code']}"
+    return None
+
+
+def seal_interrupted_reader(journal, run, retry):
+    events = run_events(journal.scan, run)
+    reason = interrupted_reader_reason(events, journal.blobs, retry)
+    if reason is None:
+        return None
+    start = journal.scan["starts"][run]
+    ctx = RunContext(journal.experiment_id, run, start["session_id"], start["condition_id"],
+                     "diagnostic", "solve", "observed")
+    graded = reason == "business_decision"
+    disposition = dict(termination_reason=reason, grading_status="graded" if graded else "not_available",
+                       end_snapshot_id=start["payload"]["start_snapshot_id"] if graded else None)
+    closing = []
+    if not any(e["type"] == "outcome.scored" for e in events):
+        closing.append(ctx.at("grade").event("outcome.scored", dict(grading_status="not_available",
+                       official_success=None, official_score=None, official_artifact_ref=None)))
+    closing.append(ctx.at("seal").event("run.ended", disposition))
+    journal.append(closing)
+    return disposition
 
 
 def note_binding(note):
@@ -494,7 +585,7 @@ def job_sources(p, job):
     return [job["source"]]
 
 
-def collect_reader(journal, guard, plan, root, p, job, notes, client, sleep):
+def collect_reader(journal, guard, plan, root, p, job, notes, client, sleep, *, waits=()):
     members = job_sources(p, job)
     draw, form = job["draw"], job["form"]
     if guard.denied or any((task, draw, form) not in notes for task in members):
@@ -506,17 +597,28 @@ def collect_reader(journal, guard, plan, root, p, job, notes, client, sleep):
     if is_cohort(plan):
         transfer.update(pool=[note_binding(notes[task, draw, form]) for task in members], condition=job["condition"])
     cfg, mode = reader_config(p, plan, job, root)
-    previous = None
-    for attempt in range(1 + len(plan["retry"]["wait_seconds"])):
+    retry = plan["retry"]
+    retryable = {f"HTTP_{code}" for code in retry["http_codes"]}
+    previous = end = None
+    schedule = waits or retry["wait_seconds"]
+    for attempt in reader_attempts(retry, waits):
         key = run_key(plan["id"], job, attempt)
         if attempt and key not in journal.scan["starts"]:
-            sleep(retry_delay(journal, previous, plan["retry"]["wait_seconds"][attempt - 1]))
+            if waits:
+                wire = reader_retry_wire(run_events(journal.scan, previous), end["termination_reason"])
+                if not guard.can_reserve(request_reservation_usd(journal.blobs.get(wire), client.model)):
+                    guard.denied = True
+                    return
+            if end["termination_reason"] in retryable:
+                sleep(retry_delay(journal, previous, schedule[min(attempt, len(schedule)) - 1]))
         previous, end = once(
             journal, guard, key, "solve",
             lambda run: solve(journal, cfg, p["cases"][target], client, p["is_empty"], run_id=run, writer=writer,
                               form=form, mode=mode, transfer=transfer),
         )
-        if not end or end["termination_reason"] not in {f"HTTP_{code}" for code in plan["retry"]["http_codes"]}:
+        if guard.denied or not end:
+            return
+        if end["termination_reason"] not in retryable and not (waits and end["termination_reason"] == "STUDY_LIMIT"):
             return
 
 
@@ -881,12 +983,7 @@ class BfclTransfer:
         dest.mkdir(parents=True, exist_ok=True)
         assigned = record["assigned"]
         limits = cfg["limits"]
-        attempts = 1 + len(plan["retry"]["wait_seconds"])
-        max_calls = (
-            (assigned["source"] + assigned.get("target_no_memory", 0)) * limits["source_calls"]
-            + assigned["write"] * limits["writer_calls"]
-            + assigned["solve"] * max(limits["preload_calls"], limits["on_demand_calls"]) * attempts
-        )
+        max_calls = native_request_limit(assigned, limits, plan["retry"])
         with stage_lease(dest):
             implementation = identity or implementation_identity(root)
             if (dest / "registration.json").is_file():
@@ -1014,6 +1111,8 @@ class BfclTransfer:
             require(seal == completion(dest, p["journals"], seal["summary"], cohort=cohort),
                     "Changed completed BFCL recording")
         reservations = read_run_reservations(dest / "expenses.jsonl")
+        backoffs = {task: waits for batch, waits in bounded_reader_batches(dest, set(plan["benchmark"]["tasks"]))
+                    for task in batch["tasks"]} if cohort else {}
         rows, written_memories = [], {}
         known_sessions, stages = set(), {}
         for name, groups in p["journals"].items():
@@ -1090,18 +1189,16 @@ class BfclTransfer:
                                 condition=job["condition"], origin=study)
                     members = job_sources(p, job)
                     missing = [task for task in members if (task, draw, form) not in written_memories]
-                    for attempt in range(1 + len(plan["retry"]["wait_seconds"])):
-                        run = last_run(scan, study, run_key(study, job, attempt))
-                        if run is None:
-                            if attempt == 0 and missing and closed.exists():
-                                ungraded = any((source_ends.get((task, draw)) or {}).get("grading_status") != "graded"
-                                               for task in missing)
-                                rec = dict(slot, attempt=0, success=None, status="missing", decision=None,
-                                           missing_reason="donor_ungraded" if ungraded else "writer_unavailable")
-                                if cohort:
-                                    rec["unavailable_source_tasks"] = missing
-                                rows.append(rec)
-                            break
+                    runs = list(reader_outcome_runs(scan, study, job, plan["retry"], backoffs.get(target)))
+                    if not runs and missing and closed.exists():
+                        ungraded = any((source_ends.get((task, draw)) or {}).get("grading_status") != "graded"
+                                       for task in missing)
+                        rec = dict(slot, attempt=0, success=None, status="missing", decision=None,
+                                   missing_reason="donor_ungraded" if ungraded else "writer_unavailable")
+                        if cohort:
+                            rec["unavailable_source_tasks"] = missing
+                        rows.append(rec)
+                    for attempt, run in enumerate(runs):
                         require(not missing, "Reader lacks a registered donor writer")
                         notes = [written_memories[task, draw, form] for task in members]
                         result = audited_reader(folder, evidence, run, job, cfg, mode, notes, p["cases"][target],

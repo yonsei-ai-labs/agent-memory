@@ -55,6 +55,14 @@ def _tau_receipts(folder, plan, record, closure, receipts, *, source_supplement=
             if kind == "solve":
                 for n in range(1, len(plan["retry"]["wait_seconds"]) + 1):
                     allowed[f"{name}-retry-{n}"] = case["task"], kind
+    if (folder / "reader-batches").is_dir():
+        from agent_memory_eval.study.adapters.tau_reader_stage import reader_batch_stages
+        for name in reader_batch_stages(folder, include_funded=True):
+            if name not in allowed:
+                base, separator, suffix = name.rpartition("-retry-")
+                require(separator and suffix.isdecimal() and base in allowed and allowed[base][1] == "solve",
+                        "An extended reader grant is outside the native schedule")
+                allowed[name] = allowed[base]
     present = {str(p.relative_to(folder)) for p in folder.glob("task-*/*") if p.is_dir()}
     require(present <= allowed.keys(), "Unregistered cohort cost shard")
     closed_entries = closure["stages"] if closure is not None else {}

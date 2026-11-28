@@ -77,7 +77,7 @@ def recorded_stages(run_root):
         stages.update(written["stages"])
     if (run_root / "reader-batches").is_dir():
         from agent_memory_eval.study.adapters.tau_reader_stage import reader_batch_stages
-        readers = reader_batch_stages(run_root)
+        readers = reader_batch_stages(run_root, include_funded=True)
         require(stages.keys().isdisjoint(readers), "A reader shard is claimed by two stage controllers")
         stages.update(readers)
     return stages
@@ -351,11 +351,22 @@ def _bank_shard(common, case, stage_name, grant):
             plan["grader"] = judge_config(cfg), common["judge"]
         plan.update(jobs=jobs, matched_trial=spec, summary=dict(native_sha256=case["native_sha256"],
                     jobs_sha256=design["allocation"]["jobs_sha256"]))
-        guard = BatchGuard(**profile["guards"])
+        if "reader_operations" in common:
+            from agent_memory_eval.study.adapters.tau_reader_operations import ReaderAdmission, ReaderGuard
+            operations = common["reader_operations"]
+            admission = ReaderAdmission(operations["directory"], operations["http_codes"], operations["transient_backoff_seconds"])
+            plan["admission"] = admission
+            guard = ReaderGuard(admission, **profile["guards"])
+        else:
+            guard = BatchGuard(**profile["guards"])
         reserve = CostReservations(dest, dict(codes=cfg["unpriced_http_codes"], maximum_per_stage=len(jobs),
                                    reserve_uncertain_transport=True), guard, dict(models, grader=common.get("judge")))
-        execute_prepared(profile, workspace, dest, identity, design, plan, models, guard, imported_writers=bindings,
-                         close_cost=reserve)
+        try:
+            execute_prepared(profile, workspace, dest, identity, design, plan, models, guard, imported_writers=bindings,
+                             close_cost=reserve)
+        finally:
+            if "reader_operations" in common:
+                admission.close()
     close, ctl, rows = sealed_rows(dest)
     require(ctl["profile"] == profile and ctl["design"] == design and ctl["implementation"] == identity
             and endpoint_terms(ctl["model_catalog_entries"]) == endpoint_terms(models)
@@ -713,6 +724,9 @@ class Tau2Study:
             writers = {w["arm"]: w for w in written}
             readers = {}
             for r in failed:
+                if cfg.get("reader_operations"):
+                    from agent_memory_eval.study.adapters.tau_reader_operations import confirmed_transient
+                    confirmed_transient(task_dir / latest, r)
                 writer = writers[case["arm_writer"][r["arm"]]]
                 readers[r["arm"]] = dict(index=r["index"], writer=writer["run_id"], snapshot=writer["result"]["snapshot_id"])
                 if "pool_sources" in case:

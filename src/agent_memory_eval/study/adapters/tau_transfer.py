@@ -408,8 +408,11 @@ class TauTransfer(Tau2Study):
                 design, bindings = study_design(cfg, case, "solve"), {}
                 bind_cohort_pools(design, bindings, case, catalog)
             for n, base in enumerate(case["scheduled_stages"], 1):
-                original = [base, *(f"{base}-retry-{k}" for k in range(1, len(plan["retry"]["wait_seconds"]) + 1))]
-                native = ((k, task_dir / name, stages.get(f"{task_dir.name}/{name}", {})) for k, name in enumerate(original))
+                prefix = f"{task_dir.name}/{base}-retry-"
+                retries = {int(name[len(prefix):]) for name in stages if name.startswith(prefix) and name[len(prefix):].isdecimal()}
+                retries.update(range(1, len(plan["retry"]["wait_seconds"]) + 1))
+                ordered = [(0, base), *((k, f"{base}-retry-{k}") for k in sorted(retries))]
+                native = ((k, task_dir / name, stages.get(f"{task_dir.name}/{name}", {})) for k, name in ordered)
                 added = ((a.ordinal, a.shard, a.cost) for a in supplements.get(case["task"], ()))
                 for k, shard, entry in chain(native, added):
                     reason = entry.get("reason") if entry.get("status") == "not_started" else None
