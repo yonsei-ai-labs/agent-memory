@@ -22,6 +22,7 @@ from agent_memory_eval.memory.preparation import snapshot_items
 from agent_memory_eval.memory.writing import (
     REQUIRED_STORE_CONTRACT,
     WriterFeedback,
+    _experience,
     freeze_public_experience,
     read_public_experience,
     writer_inputs,
@@ -34,6 +35,7 @@ from agent_memory_eval.models.openrouter import (
     ProviderError,
     model_catalog,
     model_endpoints,
+    request_reservation_usd,
     resolve_endpoint,
     resolve_model,
 )
@@ -112,17 +114,21 @@ def last_run(scan, study, key):
     return key
 
 
+def submitted_or_ended(events, ended, reserved):
+    deferred_codes = {"STUDY_LIMIT", "OPENROUTER_API_KEY_MISSING"}
+    deferred = (ended and ended["termination_reason"] in deferred_codes) or any(
+        e["type"] == "runtime.error" and e["payload"].get("code") in deferred_codes for e in events
+    )
+    return reserved or bool(ended and not deferred)
+
+
 def once(journal, guard, key, stage, action):
     """Recover only unsubmitted attempts and preserve every possibly charged request."""
     study, run = journal.experiment_id, key
-    deferred_codes = {"STUDY_LIMIT", "OPENROUTER_API_KEY_MISSING"}
     while run in journal.scan["starts"]:
         events = run_events(journal.scan, run)
         ended = terminal(events)
-        deferred = (ended and ended["termination_reason"] in deferred_codes) or any(
-            e["type"] == "runtime.error" and e["payload"].get("code") in deferred_codes for e in events
-        )
-        if run in guard.reserved_runs or (ended and not deferred):
+        if submitted_or_ended(events, ended, run in guard.reserved_runs):
             return run, ended
         run = run_key(study, run, "unsubmitted")
     guard.stage, guard.run_id = stage, run
@@ -206,6 +212,9 @@ def cohort_checkpoint(dest, journals, stage, *, create=False):
             raw = b"" if name == "expenses.jsonl" and not file.exists() else file.read_bytes()
             refs[name] = dict(bytes=len(raw), sha256=digest(raw))
         fixed(path, refs)
+    else:
+        return None
+    return refs
 
 
 def writer_instruction(plan, root, form):
@@ -511,6 +520,149 @@ def collect_reader(journal, guard, plan, root, p, job, notes, client, sleep):
             return
 
 
+def verify_writer_sources(plan, dest, prepared, sources):
+    """Audit the released native first passes and any writer progress without opening a journal for writing."""
+    study = plan["id"]
+    require(is_cohort(plan) and plan["first_pass"]["draws"] == 1
+            and set(sources) == set(plan["benchmark"]["tasks"]), "Expected one released BFCL source per cohort task")
+    require(read(dest / "registration.json")["preflight"] == prepared["record"], "BFCL source registration changed")
+    journals = prepared["journals"]
+    source_refs = cohort_checkpoint(dest, journals, "source")
+    require(source_refs is not None and not (dest / "completion.json").exists(),
+            "A writer continuation needs a completed source checkpoint and no reader completion")
+    require((dest / "registration.json").stat().st_size == source_refs["registration.json"]["bytes"],
+            "BFCL source registration has bytes beyond its checkpoint")
+    write_refs = cohort_checkpoint(dest, journals, "write")
+    bound = (dest / "write-continuation.json").is_file()
+    require(bound or write_refs is None, "BFCL writer checkpoint has no continuation")
+    if write_refs or not bound:
+        for name, ref in (write_refs or source_refs).items():
+            require((dest / name).stat().st_size == ref["bytes"], f"Unregistered activity after BFCL checkpoint: {name}")
+    expenses = read_run_reservations(dest / "expenses.jsonl")
+    firsts, stages = {}, {}
+    settled_slots, stored_slots = [], []
+    first_pending_seen, deferred_reservation = False, None
+    for name, groups in journals.items():
+        folder = dest / name
+        evidence = read_experiment(folder)
+        scan, _, experiment = evidence
+        require(experiment == study and not scan["tail_bytes"], "Invalid or incomplete BFCL continuation journal")
+        ref = source_refs[f"{name}/log.jsonl"]
+        cutoff = sealed_bytes(folder / "log.jsonl", ref["sha256"], ref["bytes"]).count(b"\n")
+        source_runs = {e["run_id"] for row in scan["records"][:cutoff] for e in row["events"]}
+        local_sources, local_writers = set(), set()
+        blobs = BlobStore(folder)
+        for task, draw, _ in groups:
+            release = sources[task]
+            run = run_key(study, task, draw, "source")
+            while run in source_runs and run != release["run_id"]:
+                events = run_events(scan, run)
+                require(not submitted_or_ended(events, terminal(events), run in expenses),
+                        "Released BFCL source replaces a submitted first pass")
+                local_sources.add(run)
+                run = run_key(study, run, "unsubmitted")
+            require(run == release["run_id"] and run in source_runs, f"Wrong BFCL first pass for {task}")
+            local_sources.add(run)
+            baseline = audited_baseline(folder, evidence, run, task, draw, 1, prepared, expenses.get(run, []))
+            events = run_events(scan, run)
+            end = terminal(events)
+            require(end and scan["starts"][run]["record_kind"] == "observed"
+                    and baseline["success"] is release["success"], f"Changed BFCL source outcome for {task}")
+            if baseline["success"] is None:
+                seal, = [row["record_sha256"] for row in scan["records"][:cutoff]
+                         if any(e["run_id"] == run and e["type"] == "run.ended" for e in row["events"])]
+                require(seal == release["seal"] and not release["public_context_sha256"],
+                        f"Changed ungraded BFCL source for {task}")
+                firsts[task] = (run, end)
+                continue
+            experience = _experience(blobs, scan, run)
+            context, _ = writer_inputs(blobs, scan, experience, WriterFeedback(plan["writing"]["feedback"]))
+            require(experience["source_commit_sha256"] == release["seal"]
+                    and digest(context["content"].encode()) == release["public_context_sha256"],
+                    f"Changed BFCL writer source seal or public input for {task}")
+            firsts[task] = (run, end)
+            for form in prepared["forms"]:
+                writer = run_key(study, task, draw, "write", form)
+                done = False
+                writer_events = []
+                while writer in scan["starts"]:
+                    head = scan["starts"][writer]
+                    require(not done and head["stage"] == "collection" and head["condition_id"] == form
+                            and head["payload"]["source_run_ids"] == [run] and head["payload"]["fresh_session"]
+                            and head["payload"]["task_ref"] == experience["task_ref"],
+                            "Repeated or misassigned BFCL writer")
+                    local_writers.add(writer)
+                    writer_events = run_events(scan, writer)
+                    requests = list(request_measurements(writer_events, reservations=expenses.get(writer, [])))
+                    require(len(requests) <= prepared["cfg"]["limits"]["writer_calls"]
+                            and all(start["payload"]["actor_role"] == "writer" for start, _ in requests),
+                            "Unexpected role or extra request in BFCL writing")
+                    end = terminal(writer_events)
+                    done = submitted_or_ended(writer_events, end, writer in expenses)
+                    if end and end["termination_reason"] == "memory_write_completed":
+                        stored_slots.append((task, draw, form))
+                    writer = run_key(study, writer, "unsubmitted")
+                if done:
+                    settled_slots.append((task, draw, form))
+                elif not first_pending_seen:
+                    first_pending_seen = True
+                    if any(e["type"] == "runtime.error" and e["payload"]["code"] == "STUDY_LIMIT" for e in writer_events):
+                        last = next(e for e in reversed(writer_events) if e["type"] == "model.request_started")
+                        wire = blobs.get(last["payload"]["request_ref"])
+                        deferred_reservation = str(request_reservation_usd(wire, prepared["terms"]))
+        writer_banks = {scan["starts"][w]["payload"]["bank_id"] for w in local_writers}
+        require(local_sources == source_runs and set(scan["starts"]) == local_sources | local_writers
+                and all(e["run_id"] in local_writers or (
+                    e["run_id"] is None and e["type"] == "bank.snapshot_created"
+                    and e["payload"]["bank_id"] in writer_banks and not e["payload"]["parent_snapshot_ids"])
+                    for row in scan["records"][cutoff:] for e in row["events"]),
+                "Unregistered BFCL source, writer or reader activity")
+        require(stages.keys().isdisjoint(scan["starts"]), "BFCL continuation journals share a run")
+        stages.update(dict.fromkeys(local_sources, "source"))
+        stages.update(dict.fromkeys(local_writers, "write"))
+    require(all(stages.get(run) == entry["stage"] and entry["model"] == prepared["cfg"]["model"]
+                for run, entries in expenses.items() for entry in entries),
+            "BFCL reservation outside the registered stage, model or run")
+    eligible = sum(source["success"] is not None for source in sources.values()) * len(prepared["forms"])
+    require(not write_refs or len(settled_slots) == eligible, "BFCL writer checkpoint is missing registered assignments")
+    ref = source_refs["expenses.jsonl"]
+    source_expense_rows = sealed_bytes(dest / "expenses.jsonl", ref["sha256"], ref["bytes"]).count(b"\n")
+    return dict(firsts=firsts, eligible=eligible, settled=len(settled_slots), stored=len(stored_slots),
+                settled_slots=settled_slots, stored_slots=stored_slots, source_expense_rows=source_expense_rows,
+                deferred_reservation=deferred_reservation)
+
+
+class WriterExpenseLedger(ExpenseLedger):
+    """Replay the original source ceiling through its byte checkpoint, then apply the separate writer allowance."""
+
+    def __init__(self, path, source_rows, source_cap, source_calls, writer_cap, writer_calls):
+        require(source_rows > 0, "BFCL source checkpoint contains no expense reservations")
+        self.remaining_source_rows = source_rows
+        self.writer_cap, self.writer_calls = approval_amount(writer_cap), writer_calls
+        super().__init__(path, source_cap, source_calls, float("inf"))
+        require(self.remaining_source_rows == 0, "Incomplete BFCL source expense prefix")
+
+    def apply(self, row):
+        if self.remaining_source_rows:
+            require("reserved" not in row or row["stage"] == "source", "Non-source request inside BFCL source checkpoint")
+            super().apply(row)
+            self.remaining_source_rows -= 1
+            if not self.remaining_source_rows:
+                self.source_spent, self.source_held, self.source_calls = self.spent, self.held, self.calls
+                self.cap = self.spent + self.held + self.writer_cap
+                self.max_calls = self.calls + self.writer_calls
+        else:
+            require(row["seq"] > self.source_calls and ("reserved" not in row or row["stage"] == "write"),
+                    "Non-writer expense after BFCL source checkpoint")
+            super().apply(row)
+
+    def summary(self, *, stored, settled, eligible):
+        return dict(completed_through=None if self.denied else "write", budget_deferred=self.denied,
+                    reported_usd=str(self.spent - self.source_spent or 0),
+                    reserved_usd=str(self.held - self.source_held or 0), requests=self.calls - self.source_calls,
+                    stored_writers=stored, settled_writers=settled, eligible_writers=eligible)
+
+
 class BfclTransfer:
     name = "bfcl-relevance"
     execution_mode = "hosted"
@@ -608,6 +760,7 @@ class BfclTransfer:
                 journals[f"{group[0]}--{group[1]}"].append(group)
         return dict(
             record=record,
+            checkout=checkout,
             cfg=cfg,
             cases=by_id,
             starts=starts,
@@ -619,6 +772,80 @@ class BfclTransfer:
             worker=worker,
             terms=terms,
         )
+
+    def run_writers(self, plan, workspace, root, *, resolved, registration, continuation, sources, progress=None,
+                    model_resolver=hosted_model, client_factory=OpenRouterClient):
+        """Continue only the registered writers from the released, native source journals."""
+        from agent_memory_eval.study.writer_stage import verify_continuation
+
+        dest = Path(workspace) / "runs" / plan["id"]
+        require(dest.is_dir(), "Missing original BFCL study")
+        with stage_lease(dest):
+            cap = verify_continuation(plan, workspace, root, continuation, registration, sources)
+            current = self.resolve(plan, workspace, root, checkout=resolved.get("checkout"))
+            require(current["record"] == resolved["record"], "BFCL writer schedule changed since preflight")
+            resolved = current
+            scope = dest / "write-continuation.json"
+            require(read(dest / "registration.json") == registration
+                    and registration["approval"].get("through_stage") == "source"
+                    and registration["worker"] == resolved["terms"],
+                    "BFCL writer continuation differs from its source-only registration")
+            authorization = read(dest / "authorization.json")
+            require({k: v for k, v in authorization.items() if k != "max_requests"} == registration["approval"],
+                    "Original BFCL authorization changed")
+            if scope.exists():
+                require(read(scope) == continuation, "BFCL writer continuation changed")
+            status = verify_writer_sources(plan, dest, resolved, sources)
+            cfg, eligible = resolved["cfg"], status["eligible"]
+            guard = WriterExpenseLedger(
+                dest / "expenses.jsonl", status["source_expense_rows"], registration["approval"]["max_usd"],
+                resolved["record"]["assigned"]["source"] * cfg["limits"]["source_calls"],
+                cap, eligible * cfg["limits"]["writer_calls"],
+            )
+            require(guard.source_spent + guard.source_held == Decimal(continuation["prior_source_covered_usd"])
+                    and eligible == continuation["eligible_writers"], "BFCL source costs or writer eligibility changed")
+            if status["settled"] == eligible:
+                require(scope.is_file(), "Completed BFCL writers have no recorded continuation")
+                cohort_checkpoint(dest, resolved["journals"], "write", create=True)
+                return guard.summary(stored=status["stored"], settled=status["settled"], eligible=eligible)
+            deferred = status["deferred_reservation"]
+            if deferred is not None and not guard.can_reserve(Decimal(deferred)):
+                guard.denied = True
+                return guard.summary(stored=status["stored"], settled=status["settled"], eligible=eligible)
+            if model_resolver is hosted_model or client_factory is OpenRouterClient:
+                require_credentials()
+            model = model_resolver(resolved["worker"])
+            require(endpoint_terms(dict(worker=model))["worker"] == resolved["terms"]
+                    and model["canonical_slug"] == cfg["model_revision"], "Hosted worker revision or endpoint terms changed")
+            limits = plan.get("limits", {})
+            writer = client_factory(model, guard, route=resolved["worker"]["provider"],
+                                    max_input_bytes=limits.get("writer_max_input_bytes", limits.get("max_input_bytes", 128000)))
+            if isinstance(writer, OpenRouterClient):
+                require_credentials()
+            fixed(scope, continuation)
+            count = 0
+            stored, settled = set(status["stored_slots"]), set(status["settled_slots"])
+            for name, groups in resolved["journals"].items():
+                with Journal(dest / name, plan["id"], contract_version="1.2") as journal:
+                    for task, draw, _ in groups:
+                        notes = collect_writers(journal, guard, plan, root, resolved, task, draw,
+                                                status["firsts"][task], writer)
+                        stored.update(notes)
+                        for form in resolved["forms"]:
+                            key = run_key(plan["id"], task, draw, "write", form)
+                            run = last_run(journal.scan, plan["id"], key)
+                            if run:
+                                events = run_events(journal.scan, run)
+                                if submitted_or_ended(events, terminal(events), run in guard.reserved_runs):
+                                    settled.add((task, draw, form))
+                        count += 1
+                        if progress:
+                            progress("write", count, len(resolved["groups"]), guard.spent - guard.source_spent)
+                        if guard.denied:
+                            return guard.summary(stored=len(stored), settled=len(settled), eligible=eligible)
+            require(len(settled) == eligible, "BFCL writing finished without processing every eligible slot")
+            cohort_checkpoint(dest, resolved["journals"], "write", create=True)
+            return guard.summary(stored=len(stored), settled=len(settled), eligible=eligible)
 
     def run(
         self,

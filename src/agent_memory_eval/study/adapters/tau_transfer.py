@@ -10,11 +10,13 @@ from agent_memory_eval.contracts.core import canonical, digest
 from agent_memory_eval.experiments.forms_write import read_form_bank
 from agent_memory_eval.recording.assets import asset_text
 from agent_memory_eval.recording.journal import BlobStore, safe_path
-from agent_memory_eval.study.adapters.tau_banking import TARGET_NO_MEMORY, Tau2Study, checked_input_stop, outcome_fields, study_design
+from agent_memory_eval.study.adapters.tau_banking import (
+    TARGET_NO_MEMORY, Tau2Study, checked_input_stop, outcome_fields, recorded_stages, study_design,
+)
 from agent_memory_eval.study.adapters.tau_cohort import bind_cohort_pools, cohort_catalog
 from agent_memory_eval.study.cohort import condition_banks, is_cohort, pool_sources
 from agent_memory_eval.study.plan import plan_digest
-from agent_memory_eval.study.records import read, sealed_rows
+from agent_memory_eval.study.records import first_pass_shard, read, sealed_rows
 from agent_memory_eval.study.transfer import allocation_rows
 
 
@@ -30,7 +32,7 @@ def registered_rows(shard, case, registration, kind, stage_record):
     require(profile["registration_sha256"] == registration and profile["case"] == case["task"]
             and profile["stage"] == control["design"]["stage"] == kind, "Transfer shard belongs to another allocation")
     checked_input_stop(shard, case, close, rows, profile, control["design"], control["implementation"],
-                       control["model_catalog_entries"])
+                       control["model_catalog_entries"], expected_seal=stage_record.get("seal"))
     return rows
 
 
@@ -90,7 +92,7 @@ def baseline_observation(shard, entry, case, index, workspace, rule, registratio
     return item
 
 
-def observed_baselines(plan, folder, workspace, cases, registration, stages):
+def observed_baselines(plan, folder, workspace, cases, registration, stages, *, effective_sources=None):
     rules = {p["target"]: p["decision"] for p in plan["transfer"]["pairs"]}
     baselines, sessions = {}, set()
     scheduled = baseline_stages(plan)
@@ -104,7 +106,10 @@ def observed_baselines(plan, folder, workspace, cases, registration, stages):
         repeats = []
         for index, stage in enumerate(scheduled, 1):
             name = f"task-{case['task']}/{stage}"
-            item = baseline_observation(folder / name, stages.get(name, {}), case, index, workspace, rules[task],
+            shard, entry = folder / name, stages.get(name, {})
+            if stage == "source":
+                shard, entry = first_pass_shard(workspace, folder, case, effective_sources, entry=entry)
+            item = baseline_observation(shard, entry, case, index, workspace, rules[task],
                                         registration, cohort=is_cohort(plan))
             if item.get("session_id"):
                 require(item["session_id"] not in sessions, "A no-memory target session was reused")
@@ -120,13 +125,13 @@ def observed_baselines(plan, folder, workspace, cases, registration, stages):
     return baselines
 
 
-def donor_tokens(workspace, folder, donor, registration, stages):
+def donor_tokens(workspace, folder, donor, registration, stages, *, effective_sources=None):
     imported = donor.get("imported_first_pass")
     name = f"task-{donor['task']}/source"
-    source = safe_path(workspace / "runs", imported["directory"]) if imported else folder / name
+    source, binding = first_pass_shard(workspace, folder, donor, effective_sources, entry=stages.get(name))
     if not (source / "completion.json").is_file():
         return None
-    _, control, (row,) = sealed_rows(source, None if imported else stages.get(name, {}).get("seal"))
+    _, control, (row,) = sealed_rows(source, binding.get("seal"))
     require(control["profile"]["registration_sha256"] == (imported["registration_sha256"] if imported else registration)
             and control["design"]["stage"] == "source" and row["arm"] == "no_memory" and row["task_id"] == donor["task_id"],
             "Wrong no-memory donor for the writer's token usage")
@@ -143,7 +148,7 @@ def donor_tokens(workspace, folder, donor, registration, stages):
                 token_usage_by_role=token_usage_by_role(log.events.values()))
 
 
-def writer_banks(workspace, folder, cases, registration, stages, *, catalog=None):
+def writer_banks(workspace, folder, cases, registration, stages, *, catalog=None, effective_sources=None):
     by_donor, notes = {}, {}
     for donor in cases:
         if "write" not in donor["scheduled_stages"]:
@@ -153,13 +158,15 @@ def writer_banks(workspace, folder, cases, registration, stages, *, catalog=None
         if not (shard / "completion.json").is_file():
             continue
         banks = {}
-        source = donor_tokens(workspace, folder, donor, registration, stages)
+        source = donor_tokens(workspace, folder, donor, registration, stages, effective_sources=effective_sources)
         for row in registered_rows(shard, donor, registration, "write", stages.get(name, {})):
             if row["status"] != "completed":
                 continue
             job = safe_path(shard, row["directory"])
             log_hash = row["result"]["log_sha256"]
             form = row["arm"]
+            if effective_sources:
+                require(source is not None and source["source_success"] is not None, "Writer has no graded effective donor")
             bank = catalog[donor["task_id"]]["banks"][form] if catalog is not None else read_form_bank(
                 job, expected_log_sha256=log_hash)
             require(bank["task_id"] == donor["task_id"] == row["task_id"] and bank["arm"] == form
@@ -307,7 +314,7 @@ class TauTransfer(Tau2Study):
     def _groups(self, root, plan, cfg, cases, sleep):
         for group in super()._groups(root, plan, cfg, cases, sleep):
             if group[1] == "solve" and is_cohort(plan):
-                stages = read(root / "completion.json")["stages"] if (root / "completion.json").is_file() else {}
+                stages = recorded_stages(root)
                 cfg["cohort_catalog"] = cohort_catalog(root.parent.parent, root, cfg, cases, stages)
             yield group
 
@@ -315,10 +322,10 @@ class TauTransfer(Tau2Study):
         normal = super()._admission(cfg)
 
         def opening_status(root, opening):
-            folder = root / ("task-" + opening["task"]) / "source"
+            folder, binding = first_pass_shard(root.parent.parent, root, opening, cfg.get("effective_sources"))
             if not (folder / "completion.json").is_file():
                 return "opening_not_started"
-            _, ctl, (row,) = sealed_rows(folder)
+            _, ctl, (row,) = sealed_rows(folder, binding.get("seal"))
             require(ctl["profile"]["case"] == opening["task"] and ctl["profile"]["registration_sha256"] == cfg["registration_sha256"]
                     and row["arm"] == "no_memory" and row["task_id"] == opening["task_id"],
                     "Wrong independent target opening")
@@ -355,6 +362,7 @@ class TauTransfer(Tau2Study):
         return admit
 
     def outcomes(self, plan, workspace, root):
+        from agent_memory_eval.study.writer_stage import effective_tau_sources
         workspace = Path(workspace)
         folder = workspace / "runs" / plan["id"]
         saved = folder / "resolved-plan.json"
@@ -364,16 +372,20 @@ class TauTransfer(Tau2Study):
         require(record["plan_sha256"] == plan_digest(plan), "Transfer recording belongs to another plan")
         if (folder / "registration.json").exists():
             require(read(folder / "registration.json")["preflight"] == record, "Changed transfer registration")
-        stages = read(folder / "completion.json")["stages"] if (folder / "completion.json").is_file() else {}
+        stages = recorded_stages(folder)
         registration = digest(canonical(record))
-        baselines = observed_baselines(plan, folder, workspace, record["cases"], registration, stages)
+        effective_sources = effective_tau_sources(workspace, folder, plan)
+        baselines = observed_baselines(plan, folder, workspace, record["cases"], registration, stages,
+                                       effective_sources=effective_sources)
         catalog = None
         if is_cohort(plan):
             _, cfg, _, _, _ = self._configure(plan, workspace, Path(root))
             cfg["registration_sha256"] = registration
+            cfg["effective_sources"] = effective_sources
             catalog = cohort_catalog(workspace, folder, cfg, record["cases"], stages)
             instruction = asset_text(workspace, cfg["delivery_instruction"])
-        donors, written_memories = writer_banks(workspace, folder, record["cases"], registration, stages, catalog=catalog)
+        donors, written_memories = writer_banks(workspace, folder, record["cases"], registration, stages,
+                                               catalog=catalog, effective_sources=effective_sources)
         attempts = []
         for case in (c for c in record["cases"] if "donor" in c):
             donor = case["donor"]

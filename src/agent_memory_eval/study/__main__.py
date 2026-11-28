@@ -34,6 +34,8 @@ def main(argv=None):
     parser.add_argument("--max-usd", help="Cumulative ceiling a person approved")
     parser.add_argument("--quote", help="The person's own words approving the ceiling")
     parser.add_argument("--through-stage", choices=["source", "write"], help="Stop a cohort after its sources or writers")
+    parser.add_argument("--writer-sources", type=Path, help="Released first passes for a separately approved writer-only stage")
+    parser.add_argument("--writer-cap", action="append", metavar="PLAN=USD", help="One study's sublimit in the shared writer grant")
     parser.add_argument("--tasks", help="Comma-separated task ids: score only these tasks (for example the confirmation set)")
     parser.add_argument("--save", action="store_true", help="Keep rows and scorecard under artifacts/studies/<plan id>/")
     parser.add_argument("--reviews", type=Path, help="Follow-up transcript labels keyed by public-turn hash")
@@ -54,7 +56,22 @@ def main(argv=None):
         parser.error("Transcript review options apply to follow-up analysis")
     if followup and args.tasks:
         parser.error("Use the complete preregistered follow-up cohort")
-    if args.command == "plan":
+    if args.writer_cap and not (args.writer_sources and args.command == "authorize"):
+        parser.error("--writer-cap belongs to a writer-stage authorization")
+    if args.writer_sources and args.command == "authorize":
+        if not (is_cohort(plan) and args.through_stage == "write" and args.max_usd and args.quote
+                and args.writer_cap and all("=" in item for item in args.writer_cap)):
+            parser.error("Writer authorization needs --through-stage write, --max-usd, --quote and --writer-cap PLAN=USD per plan")
+        from agent_memory_eval.study.writer_stage import authorize_writers
+        out = authorize_writers(ROOT, args.writer_sources, args.max_usd, args.quote, args.writer_cap)
+    elif args.writer_sources:
+        if not is_cohort(plan) or not (args.command == "plan" and args.action == "resolve" or
+                args.command in {"run", "resume"} and args.through_stage == "write"):
+            parser.error("--writer-sources requires cohort plan resolve or run/resume --through-stage write")
+        from agent_memory_eval.study.writer_stage import writer_command
+        out = writer_command(plan, workspace, ROOT, adapter, args.writer_sources, execute=args.command != "plan",
+                             checkout=args.checkout, progress=report_progress)
+    elif args.command == "plan":
         if args.action == "validate":
             out = dict(plan=plan["id"], sha256=plan_digest(plan), adapter=adapter.name)
             if followup:

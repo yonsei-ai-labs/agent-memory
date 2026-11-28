@@ -13,12 +13,12 @@ from agent_memory_eval.recording.assets import asset_text
 from agent_memory_eval.recording.journal import safe_path
 from agent_memory_eval.runner.task_start import TaskStart
 from agent_memory_eval.study.cohort_evidence import item_exposure
-from agent_memory_eval.study.records import sealed_rows, source_from
+from agent_memory_eval.study.records import first_pass_shard, sealed_rows, source_from
 
 
 def cohort_catalog(workspace, folder, cfg, cases, stages):
     """Resolve every writer once after the whole writing stage, including the unavailable slots."""
-    from agent_memory_eval.study.adapters.tau_banking import study_design, study_jobs
+    from agent_memory_eval.study.adapters.tau_banking import checked_input_stop, study_design, study_jobs
     instruction = asset_text(workspace, cfg["writing"]["common_instruction_ref"]).rstrip("\r\n")
     catalog = {}
     runs, sessions, snapshots = set(), set(), set()
@@ -36,10 +36,12 @@ def cohort_catalog(workspace, folder, cfg, cases, stages):
             name = f"{prefix}/{stage}"
             shard = folder / name
             entry = stages.get(name, {})
+            if stage == "source":
+                shard, entry = first_pass_shard(workspace, folder, case, cfg.get("effective_sources"), entry=entry)
             if not (shard / "completion.json").is_file():
                 missing.update(dict.fromkeys(case["representations"], stage + "_" + (entry.get("reason") or "not_started")))
                 break
-            _, ctl, rows = sealed_rows(shard, entry.get("seal"))
+            close, ctl, rows = sealed_rows(shard, entry.get("seal"))
             jobs = study_jobs(case, stage)
             require(ctl["profile"]["registration_sha256"] == cfg["registration_sha256"]
                     and ctl["profile"]["case"] == case["task"] and ctl["profile"]["stage"] == stage
@@ -55,8 +57,11 @@ def cohort_catalog(workspace, folder, cfg, cases, stages):
                     sessions.add(session)
             if stage == "source":
                 row, = rows
-                source = source_from(shard, tid)
+                source = source_from(shard, tid, binding=entry)
                 if source is None:
+                    if cfg.get("effective_sources"):
+                        checked_input_stop(shard, case, close, rows, ctl["profile"], ctl["design"], ctl["implementation"],
+                                           ctl["model_catalog_entries"], expected_seal=entry["seal"])
                     reason = (row.get("result") or {}).get("error_code") or row.get("reason") or "ungraded"
                     missing.update(dict.fromkeys(case["representations"], "source_" + reason))
                     break

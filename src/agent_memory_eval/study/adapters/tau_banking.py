@@ -33,7 +33,7 @@ from agent_memory_eval.runner.tau2_baseline import build_baseline_orchestrator, 
 from agent_memory_eval.study.cohort import check_through_stage, is_cohort
 from agent_memory_eval.study.orchestrator import run_stages
 from agent_memory_eval.study.plan import TRANSFER_FORMAT, arm_name, conditions, content_text, model_profile, plan_digest, require_declared_models
-from agent_memory_eval.study.records import fixed, read, sealed_rows, shard_seal, source_from
+from agent_memory_eval.study.records import first_pass_shard, fixed, read, sealed_rows, shard_seal, source_from
 
 APPROVAL = "agent-memory-study-approval/v1"
 RESOLVED = "agent-memory-study-resolved/v1"
@@ -65,21 +65,30 @@ def outcome_fields(obs):
     return "missing", None, reason, False
 
 
-def unstarted_stages(run_root):
+def recorded_stages(run_root):
     close = run_root / "completion.json"
-    if not close.is_file():
-        return {}
-    return {name: entry["reason"] for name, entry in read(close)["stages"].items()
+    stages = read(close)["stages"] if close.is_file() else {}
+    checkpoint = run_root / "through-write.json"
+    if (run_root / "write-continuation.json").is_file() and checkpoint.is_file():
+        written = read(checkpoint)
+        require(written["registration_sha256"] == digest((run_root / "registration.json").read_bytes())
+                and (not close.is_file() or all(stages.get(k) == v for k, v in written["stages"].items())),
+                "Writer checkpoint differs from the original registration or final stage records")
+        stages.update(written["stages"])
+    return stages
+
+
+def unstarted_stages(run_root):
+    return {name: entry["reason"] for name, entry in recorded_stages(run_root).items()
             if entry.get("status") == "not_started"}
 
 
-def first_pass_identity(workspace, run_root, case):
+def first_pass_identity(workspace, run_root, case, effective_sources=None):
     imported = case.get("imported_first_pass")
-    source = (safe_path(workspace / "runs", imported["directory"]) if imported
-              else run_root / ("task-" + case["task"]) / "source")
+    source, binding = first_pass_shard(workspace, run_root, case, effective_sources)
     if not (source / "completion.json").is_file():
         return None
-    _, _, (row,) = sealed_rows(source)
+    _, _, (row,) = sealed_rows(source, binding.get("seal"))
     log_hash = (row.get("result") or {}).get("log_sha256")
     if not log_hash:
         return None
@@ -179,11 +188,11 @@ def shard_profile(cfg, case, stage, grant, jobs):
                 interruption_policy=RESUME_UNSTARTED)
 
 
-def customer_tool_stop(folder, case, profile, design, identity, models):
+def customer_tool_stop(folder, case, profile, design, identity, models, *, expected_seal=None):
     """Certify a first pass the native customer ended with its own tool call before any worker input."""
     from agent_memory_eval.adapters.banking_source_screen import source_observation
     from agent_memory_eval.analysis.recorded_decisions import RecordedDecisions
-    close, ctl, rows = sealed_rows(folder)
+    close, ctl, rows = sealed_rows(folder, expected_seal)
     expected = study_jobs(case, "source")
     require(close["stop_reason"] == "task_start_mismatch" and len(rows) == len(expected) == 1
             and ctl["profile"] == profile and ctl["design"] == design and ctl["implementation"] == identity
@@ -212,13 +221,13 @@ def customer_tool_stop(folder, case, profile, design, identity, models):
                 customer_response_sha256=finish["response_ref"]["sha256"])
 
 
-def checked_input_stop(folder, case, close, rows, profile, design, identity, models):
+def checked_input_stop(folder, case, close, rows, profile, design, identity, models, *, expected_seal=None):
     invalid = {"FIRST_PASS_MISMATCH", "TASK_START_MISMATCH"}
     codes = {(r.get("result") or {}).get("error_code") for r in rows}
     if not codes & invalid and close.get("stop_reason") not in {s.lower() for s in invalid}:
         return None
     if profile["stage"] == "source" and codes == {"TASK_START_MISMATCH"}:
-        return customer_tool_stop(folder, case, profile, design, identity, models)
+        return customer_tool_stop(folder, case, profile, design, identity, models, expected_seal=expected_seal)
     raise ContractError("A consultation's first input differs from its first pass")
 
 
@@ -237,10 +246,9 @@ def _bank_shard(common, case, stage_name, grant):
     opening = case.get("opening", case)
     donor = case.get("donor", case)
     imported = opening.get("imported_first_pass")
-    source_dir = (safe_path(workspace / "runs", imported["directory"]) if imported
-                  else output / ("task-" + opening["task"]) / "source")
     if stage == "source":
-        require(not imported, "A reused first pass cannot be resubmitted")
+        require(not imported and not cfg.get("effective_sources"), "A bound first pass cannot be resubmitted")
+    source_dir, source_binding = first_pass_shard(workspace, output, opening, cfg.get("effective_sources"))
     if stage == TARGET_NO_MEMORY:
         require("donor" not in case and stage_name in case["scheduled_stages"] and stage_name in cfg["target_no_memory_stages"]
                 and case["task_id"] in cfg["transfer_tools"], "Unregistered no-memory target control")
@@ -260,7 +268,7 @@ def _bank_shard(common, case, stage_name, grant):
         spec["query_tool_descriptions"] = cfg["query_tool_descriptions"]
     source = None
     if "donor" in case or stage == TARGET_NO_MEMORY:
-        _, parent, (row,) = sealed_rows(source_dir)
+        _, parent, (row,) = sealed_rows(source_dir, source_binding.get("seal"))
         require(not imported and row["task_id"] == tid and row["arm"] == "no_memory"
                 and parent["profile"]["case"] == opening["task"]
                 and parent["profile"]["registration_sha256"] == cfg["registration_sha256"]
@@ -270,11 +278,11 @@ def _bank_shard(common, case, stage_name, grant):
         if stage == TARGET_NO_MEMORY:
             spec["target_no_memory_control"] = True
     elif stage != "source":
-        _, parent, first_rows = sealed_rows(source_dir)
+        _, parent, first_rows = sealed_rows(source_dir, source_binding.get("seal"))
         source_registration = imported["registration_sha256"] if imported else cfg["registration_sha256"]
         require(parent["profile"]["registration_sha256"] == source_registration and parent["design"]["stage"] == "source",
                 "The writer or reader was linked to another study's first pass")
-        source = source_from(source_dir, tid)
+        source = source_from(source_dir, tid, binding=source_binding)
         if source is None:
             plan["missing_sources"] = [tid]
         else:
@@ -290,9 +298,8 @@ def _bank_shard(common, case, stage_name, grant):
             plan["sources"][tid] = source
     if "donor" in case:
         donor_import = donor.get("imported_first_pass")
-        donor_dir = (safe_path(workspace / "runs", donor_import["directory"]) if donor_import
-                     else output / ("task-" + donor["task"]) / "source")
-        source = source_from(donor_dir, donor["task_id"])
+        donor_dir, donor_binding = first_pass_shard(workspace, output, donor, cfg.get("effective_sources"))
+        source = source_from(donor_dir, donor["task_id"], binding=donor_binding)
         require(source is not None and spec.get("source"), "Transfer needs its donor and an independent target opening")
         if donor_import:
             require((source.source_run_id, source.source_log_sha256) == (donor_import["run_id"], donor_import["log_sha256"]),
@@ -515,7 +522,7 @@ class Tau2Study:
     def _reused(self, workspace, plan, name, case):
         for ref in plan["first_pass"].get("reuse", []):
             recording = workspace / "runs" / ref["recording"]
-            shard = recording / f"task-{name}" / "source"
+            shard, _ = first_pass_shard(workspace, recording, case)
             if not (shard / "completion.json").is_file():
                 continue
             prior = {c["task"]: c for c in read(recording / "registration.json")["preflight"]["cases"]}.get(name)
@@ -668,11 +675,14 @@ class Tau2Study:
             kind = cfg["stage_kinds"][stage]
             task_dir = root / ("task-" + case["task"])
             if kind == "source":
+                require(not cfg.get("effective_sources") and not (root / "write-continuation.json").exists(),
+                        "A writer continuation cannot schedule new first passes")
                 return None
+            source, binding = first_pass_shard(root.parent.parent, root, case, cfg.get("effective_sources"))
             if "imported_first_pass" not in case:
-                if not (task_dir / "source" / "completion.json").is_file():
+                if not (source / "completion.json").is_file():
                     return "source_not_started"
-                _, _, (row,) = sealed_rows(task_dir / "source")
+                _, _, (row,) = sealed_rows(source, binding.get("seal"))
                 if (row.get("result") or {}).get("grading_status") != "graded":
                     return "source_ungraded"
             if kind == "solve" and "imported_writer_stage" not in case and not (task_dir / "write" / "completion.json").is_file():
@@ -734,6 +744,9 @@ class Tau2Study:
         check_through_stage(plan, through_stage, approved_through=approval.get("through_stage"))
         require_declared_models(plan)
         workspace, root = Path(workspace), Path(root)
+        run_root = workspace / "runs" / plan["id"]
+        require(not (run_root / "write-continuation.json").exists(),
+                "This study has a sealed writer continuation. Resume it with its stage-specific authority.")
         resolved = self.resolve(plan, workspace, root)
         record, cfg = resolved["record"], resolved["cfg"]
         self.check_approval_budget(plan, resolved, approval.get("max_usd"))
@@ -749,7 +762,6 @@ class Tau2Study:
         require({role: m.get("canonical_slug") for role, m in models.items()} == cfg["expected_model_revisions"]
                 and (judge is None or judge.get("canonical_slug") == cfg["judge"]["canonical_slug"]),
                 "Worker, customer or judge differs from the registered model revision")
-        run_root = workspace / "runs" / plan["id"]
         run_root.mkdir(parents=True, exist_ok=True)
         fixed(run_root / "resolved-plan.json", record)
         registration = dict(format="agent-memory-study-run/v1", adapter=self.name, implementation=identity,
@@ -773,7 +785,7 @@ class Tau2Study:
                           admission=self._admission(cfg), verify_sealed=verify_sealed, pool_factory=pool_factory,
                           progress=progress, through_stage=through_stage)
 
-    def _case_rows(self, workspace, run_root, case, origin, label, attempt_base, unstarted):
+    def _case_rows(self, workspace, run_root, case, origin, label, attempt_base, unstarted, effective_sources=None):
         """Outcome rows of one case: its first pass, then every solve stage and retry in order."""
         from agent_memory_eval.adapters.banking_memory_cohort import observation
         from agent_memory_eval.experiments.forms_write import read_form_bank
@@ -809,13 +821,10 @@ class Tau2Study:
                              origin=missing["recording"]))
             return rows
         imported = case.get("imported_first_pass")
-        if imported:
-            source_dir = safe_path(workspace / "runs", imported["directory"])
-            source_origin = imported["directory"].split("/")[0]
-        else:
-            source_dir, source_origin = task_dir / "source", origin
+        source_dir, source_binding = first_pass_shard(workspace, run_root, case, effective_sources)
+        source_origin = imported["directory"].split("/")[0] if imported else origin
         if (source_dir / "completion.json").is_file():
-            _, _, (srow,) = sealed_rows(source_dir)
+            _, _, (srow,) = sealed_rows(source_dir, source_binding.get("seal"))
             rows.append(row("no_memory", observation(source_dir, srow), 0, origin_name=source_origin,
                             decision=first_decision(source_dir, srow)))
         for stage in case.get("scheduled_stages", []):
@@ -823,7 +832,7 @@ class Tau2Study:
             if not reason:
                 continue
             obs = dict(success=None, status="missing", reason=reason)
-            if stage == "source":
+            if stage == "source" and not effective_sources:
                 rows.append(row("no_memory", obs, 0))
             elif stage == "solve" or stage.startswith("solve-repeat-"):
                 repeat = 1 if stage == "solve" else int(stage.removeprefix("solve-repeat-"))
@@ -834,8 +843,12 @@ class Tau2Study:
         if (write_dir / "completion.json").is_file():
             for w in sealed_rows(write_dir)[2]:
                 if w["status"] == "completed":
-                    banks[w["arm"]] = read_form_bank(safe_path(write_dir, w["directory"]),
-                                                     expected_log_sha256=w["result"]["log_sha256"])
+                    bank = read_form_bank(safe_path(write_dir, w["directory"]), expected_log_sha256=w["result"]["log_sha256"])
+                    if effective_sources:
+                        require((bank["source_run_id"], bank["source_log_sha256"], bank["public_context_sha256"]) ==
+                                (source_binding["run_id"], srow["result"]["log_sha256"], source_binding["public_context_sha256"]),
+                                "Writer belongs to another effective first pass")
+                    banks[w["arm"]] = bank
         solves = sorted(p for p in task_dir.iterdir() if p.is_dir() and p.name.startswith("solve")) if task_dir.is_dir() else []
         for folder in solves:
             name = folder.name
@@ -853,6 +866,7 @@ class Tau2Study:
 
     def outcomes(self, plan, workspace, root):
         """Rows for this plan's run, then for each reference recording in the order declared."""
+        from agent_memory_eval.study.writer_stage import effective_tau_sources
         workspace = Path(workspace)
         run_root = workspace / "runs" / plan["id"]
         if (run_root / "resolved-plan.json").is_file():
@@ -862,8 +876,9 @@ class Tau2Study:
             record = self.resolve(plan, workspace, root)["record"]
         rows = []
         unstarted = unstarted_stages(run_root)
+        effective_sources = effective_tau_sources(workspace, run_root, plan)
         for case in record["cases"]:
-            rows += self._case_rows(workspace, run_root, case, plan["id"], lambda arm: arm, 0, unstarted)
+            rows += self._case_rows(workspace, run_root, case, plan["id"], lambda arm: arm, 0, unstarted, effective_sources)
             if "first_pass_missing" in case:
                 rows += [dict(task=case["task_id"], source=case["task"], repeat=n, condition=arm, origin=plan["id"],
                               attempt=0, status="missing", success=None, missing_reason="first_pass_ungraded",
@@ -877,7 +892,7 @@ class Tau2Study:
             require(ref_cases, f"Reference {ref['recording']} shares no first pass with the plan")
             ref_unstarted = unstarted_stages(ref_root)
             for case in ref_cases:
-                source = first_pass_identity(workspace, run_root, sources[case["task"]])
+                source = first_pass_identity(workspace, run_root, sources[case["task"]], effective_sources)
                 reference_source = first_pass_identity(workspace, ref_root, case)
                 if source is None or reference_source is None:
                     reason = "plan_first_pass_unavailable" if source is None else "reference_first_pass_unavailable"

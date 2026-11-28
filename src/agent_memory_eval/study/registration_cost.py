@@ -5,8 +5,9 @@ from pathlib import Path
 from typing import NamedTuple
 
 from agent_memory_eval.analysis.recorded_decisions import require
-from agent_memory_eval.contracts.core import canonical, digest
+from agent_memory_eval.contracts.core import canonical, digest, read_json
 from agent_memory_eval.models.expense_ledger import read_run_reservations
+from agent_memory_eval.recording.assets import asset_bytes
 from agent_memory_eval.recording.journal import safe_path
 from agent_memory_eval.study.orchestrator import shard_accounting
 from agent_memory_eval.study.plan import plan_digest
@@ -28,7 +29,7 @@ def _totals(receipts):
                 requests=sum(r.requests for r in receipts), unknown_price_requests=unknown)
 
 
-def _tau_receipts(folder, plan, record, closure, receipts):
+def _tau_receipts(folder, plan, record, closure, receipts, *, source_supplement=False):
     expected, allowed = set(), {}
     for case in record["cases"]:
         for base in case["scheduled_stages"]:
@@ -44,7 +45,12 @@ def _tau_receipts(folder, plan, record, closure, receipts):
     require(present <= allowed.keys(), "Unregistered cohort cost shard")
     closed_entries = closure["stages"] if closure is not None else {}
     if closure is not None:
-        require(expected <= closed_entries.keys() <= allowed.keys() and present == {
+        if source_supplement:
+            require(all(allowed.get(n, (None, None))[1] == "source" for n in closed_entries),
+                    "A first-pass supplement contains another stage")
+        else:
+            require(expected <= closed_entries.keys(), "Completed cohort cost ledger has missing allocations")
+        require(closed_entries.keys() <= allowed.keys() and present == {
             key for key, value in closed_entries.items() if value.get("status") != "not_started"
         }, "Completed cohort cost ledger has missing or unexpected shards")
         for entry in closed_entries.values():
@@ -123,8 +129,8 @@ def registration_cost(plan, workspace):
         unsealed = _tau_receipts(folder, plan, record, closure, receipts)
         view.update(coverage="sealed_stage_ledgers_only", request_basis="sealed_stage_http_calls", unsealed_shards=unsealed)
     total = _totals([receipt for stage in receipts.values() for receipt in stage])
-    reported, held = Decimal(total["reported_usd"]), Decimal(total["held_usd"])
     if closure is not None:
+        reported, held = Decimal(total["reported_usd"]), Decimal(total["held_usd"])
         if bfcl:
             summary = closure["summary"]
             require((reported, held, total["requests"]) == (
@@ -133,8 +139,19 @@ def registration_cost(plan, workspace):
         else:
             require(reported + held == Decimal(closure["total_covered_usd"]),
                     "Stage spending differs from the completed registration total")
-        if not held and total["unknown_price_requests"] == 0:
-            view["final_actual_usd"] = total["reported_usd"]
+    continuation = folder / "write-continuation.json"
+    if continuation.is_file() and not bfcl:
+        from agent_memory_eval.study.writer_stage import active_writer_sources
+        _, meta = active_writer_sources(Path(workspace), folder, plan)
+        for ref in meta["source_recovery_checkpoints"]:
+            check = read_json(asset_bytes(Path(workspace), ref))
+            _tau_receipts(safe_path(Path(workspace), ref["path"]).parent, plan, record, check, receipts,
+                          source_supplement=True)
+        require(sum(r.reported + r.held for r in receipts["source"]) == Decimal(meta["prior_source_covered_usd"]),
+                "Original and recovered source spending differs from the writer release")
+        total = _totals([receipt for stage in receipts.values() for receipt in stage])
+    if closure is not None and Decimal(total["held_usd"]) == 0 and total["unknown_price_requests"] == 0:
+        view["final_actual_usd"] = total["reported_usd"]
     view.update(status="sealed" if closure is not None else "open",
                 stages={stage: _totals(events) for stage, events in receipts.items()}, total=total)
     return view

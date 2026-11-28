@@ -59,24 +59,30 @@ def verify_stage_checkpoints(root, registration_sha):
 
 def run_stages(root, registration, groups, shard, *, total_usd_limit, max_concurrent, prior_covered_usd="0",
                concurrency_by_stage=None, admission=None, verify_sealed=None, record_unfunded_shards=True, pool_factory=None,
-               progress=None, through_stage=None):
+               progress=None, through_stage=None, register_continuation=None):
     """Run (label, stage, cases) groups in order. Groups may be produced lazily after earlier groups finish.
 
     ``shard`` is (function, common): the function receives (common, case, stage, grant) in a worker process.
     A shard folder that already holds a completion record is never sent again.
+    A continuation registers its scope under this lock, after verifying the original records and before dispatch.
     """
     function, common = shard
     root.mkdir(parents=True, exist_ok=True)
     descriptor = os.open(root, os.O_RDONLY | os.O_DIRECTORY)
     try:
         fcntl.flock(descriptor, fcntl.LOCK_EX | fcntl.LOCK_NB)
-        fixed(root / "registration.json", registration)
+        registration_path = root / "registration.json"
+        if register_continuation is not None and not registration_path.is_file():
+            raise ContractError("A continuation needs the existing study registration")
+        fixed(registration_path, registration)
         limit = Decimal(str(total_usd_limit))
         total = Decimal(str(prior_covered_usd))
         seals = {}
         deferred = False
-        registration_sha = digest((root / "registration.json").read_bytes())
+        registration_sha = digest(registration_path.read_bytes())
         verify_stage_checkpoints(root, registration_sha)
+        if register_continuation is not None:
+            register_continuation()
         with (pool_factory or _process_pool)(max_concurrent) as pool:
             for label, stage, ordered in groups:
                 width = (concurrency_by_stage or {}).get(stage, max_concurrent)

@@ -8,6 +8,20 @@
 
 v3 계획에서 `transfer.bank_comparison`을 `own_vs_mixed`로 선언하면 등록된 모든 과제가 원천이자 목표다. 각 과제가 무기억으로 한 번 수행한 경험을 작성자들이 공유한다. `other_sources`는 혼합 조건에서 자기 메모에 더할 과제 ID다. 두 은행은 동일한 자기 메모 버전을 쓴다. 결과표는 작성 방식·전달 방식·후보 구성을 하나씩 바꿔 비교하고, 같은 목표의 1·2회차 전환과 메모별 노출을 함께 낸다. [네 벤치의 과제 목록과 분석 기준](../research/own-mixed-cohort.md)
 
+### 보충된 1회차에서 메모 작성 이어가기
+
+무기억 1회차만 승인한 뒤 기술 결측을 보충한 경우, 작성 단계는 최종 원천 목록을 별도로 고정한다. 아래 명령은 각 과제의 실행 ID, 봉인 해시, 공개 경험과 공식 성패를 원기록과 대조한다. 뱅킹·리테일·항공·BFCL에 같은 명령을 쓴다. [네 벤치의 원천 자료](../../artifacts/studies/own-mixed-round1/writer-sources.json)
+
+```bash
+uv run --no-sync python -m agent_memory_eval.study plan resolve \
+  --plan protocols/studies/cohort/own-mixed-bank-01.json \
+  --writer-sources artifacts/studies/own-mixed-round1/writer-sources.json
+```
+
+작성비 승인은 네 계획이 한 건을 공유한다. `authorize --through-stage write --writer-sources`에 원천 목록 경로, 승인자의 문구와 총액, 각 계획의 `--writer-cap PLAN=USD`를 지정한다. 계획별 `run --through-stage write`와 `resume --through-stage write`에는 같은 계획과 원천 목록을 전달한다. 이 경로가 보내는 모델 요청은 메모 작성이며, 누적 예약과 청구액은 승인된 작성비에서 차감한다. 중단 후 재개할 때는 작성 실행에 고정한 코드 커밋을 쓴다.
+
+τ²의 후속 상담 시작 발화, 혼합 메모 출처, 전환표는 작성기가 사용한 1회차를 함께 참조한다. BFCL은 1회차 체크포인트까지의 저널 바이트를 검증하고 그 뒤에 작성 기록을 추가한다. 결과표의 1회차 비용은 최초 시도와 보충 시도를 모두 포함한다.
+
 ## 서로 다른 과제 사이의 행동 전이
 
 이 설계는 한 과제에서 남긴 경험이 다른 과제의 판단을 돕거나 방해하는지 살펴본다. 일반 계획 v3의 `transfer.pairs`에 원천, 목표, 원천에서 찾아볼 공개 단서(`source_cue`), 목표에서 확인할 행동을 먼저 적는다. 단서는 분석자용 가설로 기록한다. 아래 세 계획은 실행 경로를 검증하는 개발용 배정이다.

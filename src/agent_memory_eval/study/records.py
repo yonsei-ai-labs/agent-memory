@@ -7,7 +7,7 @@ from agent_memory_eval.recording.batch import sealed_rows
 from agent_memory_eval.recording.experience import _closed_run, _pair, _source
 from agent_memory_eval.recording.journal import safe_path
 
-__all__ = ["read", "fixed", "sealed_rows", "source_from", "shard_seal"]
+__all__ = ["read", "fixed", "sealed_rows", "source_from", "shard_seal", "first_pass_shard"]
 
 
 def read(path):
@@ -27,9 +27,35 @@ def shard_seal(folder):
     return digest((folder / "completion.json").read_bytes())
 
 
-def source_from(folder, task):
+def first_pass_shard(workspace, run_root, case, effective_sources=None, *, entry=None):
+    """Locate the registered source draw, including its pinned replacement after a continuation."""
+    imported = case.get("imported_first_pass")
+    if effective_sources:
+        binding = effective_sources.get(case["task"])
+        if imported or not binding or not binding.get("seal"):
+            raise ContractError(f"Missing effective first-pass binding for {case['task']}")
+        folder = safe_path(workspace, binding["folder"])
+        if not (folder / "completion.json").is_file():
+            raise ContractError(f"Missing sealed effective first pass for {case['task']}")
+        _, control, (row,) = sealed_rows(folder, binding["seal"])
+        result = row.get("result") or {}
+        if (control["profile"]["case"] != case["task"] or control["design"]["stage"] != "source"
+                or (row["task_id"], row["arm"], row["run_id"]) != (case["task_id"], "no_memory", binding["run_id"])
+                or result.get("official_success") is not binding["success"]
+                or (result.get("grading_status") == "graded") != (type(binding["success"]) is bool)):
+            raise ContractError(f"Effective first pass differs from its registered draw for {case['task']}")
+        return folder, binding
+    if (run_root / "write-continuation.json").exists():
+        raise ContractError("A continued study requires its sealed effective first-pass bindings")
+    if imported:
+        return safe_path(workspace / "runs", imported["directory"]), imported
+    return run_root / ("task-" + case["task"]) / "source", entry or {}
+
+
+def source_from(folder, task, *, binding=None):
     """Public experience of a graded no-memory first pass, verified against its own journal."""
-    _, ctl, rows = sealed_rows(folder)
+    binding = binding or {}
+    _, ctl, rows = sealed_rows(folder, binding.get("seal"))
     (row,) = rows
     res = row.get("result") or {}
     if (row["arm"], row["task_id"], ctl["design"]["stage"]) != ("no_memory", task, "source"):
@@ -47,5 +73,8 @@ def source_from(folder, task):
                 or grade["payload"]["official_success"] is not res["official_success"]):
             raise ContractError("First-pass public projection or outcome differs")
         data = canonical(context)
-        return FormSource(task, run, res["log_sha256"], end["event_id"], end["event_seq"], data.decode(), digest(data),
+        checksum = digest(data)
+        if "public_context_sha256" in binding and checksum != binding["public_context_sha256"]:
+            raise ContractError("First-pass public experience differs from the sealed binding")
+        return FormSource(task, run, res["log_sha256"], end["event_id"], end["event_seq"], data.decode(), checksum,
                           len(data), res["official_success"], grade["event_id"])
