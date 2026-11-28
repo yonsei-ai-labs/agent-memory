@@ -8,7 +8,7 @@ import sys
 
 from jsonschema import Draft202012Validator
 
-from agent_memory_eval.adapters.tau2 import PIN, prepare_native
+from agent_memory_eval.adapters.tau2 import PIN, build_text_orchestrator, prepare_native
 from agent_memory_eval.adapters.tau2_memory import Tau2MemoryBridge
 from agent_memory_eval.contracts.core import ContractError, MemoryPolicy, RunContext, digest, new_id
 from agent_memory_eval.contracts.validation import ROOT, SCHEMA_ROOT
@@ -38,7 +38,6 @@ def prepare_memory_check(profile, checkout):
 
 
 def fresh_orchestrator(prepared):
-    from tau2.runner.build import build_text_orchestrator
     template, native, _, _ = prepared
     return build_text_orchestrator(native.model_copy(deep=True), template.task.model_copy(deep=True),
                                    seed=native.seed)

@@ -7,7 +7,7 @@ import time
 
 from jsonschema import Draft202012Validator, ValidationError
 
-from agent_memory_eval.adapters.tau2 import PIN, Tau2Bridge, native_modules, verify_checkout
+from agent_memory_eval.adapters.tau2 import PIN, Tau2Bridge, build_text_orchestrator, native_modules, verify_checkout
 from agent_memory_eval.contracts.connection import provider_route, validate_profile
 from agent_memory_eval.contracts.core import ContractError, RunContext, canonical, digest, new_id, read_json
 from agent_memory_eval.contracts.validation import ROOT, SCHEMA_ROOT
@@ -124,7 +124,6 @@ def native_config(config):
 
 def build_baseline_orchestrator(config, task):
     from tau2.data_model.tasks import Task
-    from tau2.runner.build import build_text_orchestrator
     native = native_config(config)
     orch = build_text_orchestrator(native, Task.model_validate(deepcopy(task)), seed=config["benchmark"]["seed"])
     return orch, native

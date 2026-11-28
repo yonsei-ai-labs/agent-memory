@@ -10,6 +10,7 @@ from concurrent.futures import ThreadPoolExecutor
 from contextlib import ExitStack
 from functools import partial
 from pathlib import Path
+from types import SimpleNamespace
 from unittest.mock import patch
 from urllib.error import HTTPError
 
@@ -128,6 +129,22 @@ class NativeTransferTests(unittest.TestCase):
             (ROOT / "data/tau2-bench").resolve(), target_is_directory=True
         )
         shutil.copytree(ROOT / "protocols", self.workspace / "protocols")
+
+    def test_native_clock_regression_preserves_call_before_result(self):
+        from tau2.data_model.message import AssistantMessage, ToolCall, ToolMessage
+        from agent_memory_eval.adapters.tau2 import build_text_orchestrator
+
+        call = ToolCall(id="call-1", name="get_order_details", arguments={"order_id": "one"})
+        request = AssistantMessage(role="assistant", tool_calls=[call], timestamp="2026-01-01T00:00:02")
+        result = ToolMessage(role="tool", id=call.id, content="{}", timestamp="2026-01-01T00:00:01")
+        native = SimpleNamespace(trajectory=[request, result])
+        with patch("tau2.runner.build.build_text_orchestrator", return_value=native):
+            messages = build_text_orchestrator(None, None, seed=1).get_trajectory()
+        self.assertEqual([m.role for m in messages], ["assistant", "tool"])
+        self.assertEqual([m.turn_idx for m in messages], [0, 1])
+        self.assertEqual([m.timestamp for m in messages], [request.timestamp, result.timestamp])
+        self.assertIsNone(request.turn_idx)
+        self.assertIsNone(result.turn_idx)
 
     def test_declared_customer_relationship_matches_native_identity(self):
         plan = study("retail")

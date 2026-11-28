@@ -53,6 +53,23 @@ def native_modules(checkout):
     return llm_agent, user_simulator, llm_utils
 
 
+def build_text_orchestrator(config, task, *, seed):
+    """Keep the native half-duplex execution order when exporting a trajectory for grading."""
+    from tau2.runner.build import build_text_orchestrator as build_native
+
+    orchestrator = build_native(config, task, seed=seed)
+
+    def get_trajectory():
+        # The native runner appends calls before their results. The wall clock can go backwards.
+        return [
+            message.model_copy(deep=True, update={"turn_idx": index})
+            for index, message in enumerate(orchestrator.trajectory)
+        ]
+
+    orchestrator.get_trajectory = get_trajectory
+    return orchestrator
+
+
 class Tau2Bridge:
     """Retain native prompt/message conversion, parsing and environment behavior."""
     def __init__(self, journal, ctx, orchestrator, config, models, guard, modules, opener=None, *, execution_limits=None):
@@ -183,7 +200,6 @@ def prepare_native(config, checkout):
     from loguru import logger
     logger.disable("tau2")
     from tau2.data_model.simulation import TextRunConfig
-    from tau2.runner.build import build_text_orchestrator
     from tau2.runner.helpers import get_tasks, load_task_splits
     bench = config["benchmark"]
     if bench["task_id"] not in load_task_splits(bench["domain"])[bench["split"]]:
