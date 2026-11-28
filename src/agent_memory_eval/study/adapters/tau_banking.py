@@ -39,6 +39,7 @@ RESOLVED = "agent-memory-study-resolved/v1"
 CASE_KEYS = ("task_sha256", "native_sha256", "customer_opening_sha256", "official_criteria_sha256", "initial_db")
 CALLS = {"source": lambda n: 201, "write": lambda n: 4 * n, "solve": lambda n: 201 * n}
 SECONDS = {"source": lambda n: 1500, "write": lambda n: 360 * n, "solve": lambda n: 1200 * n}
+TARGET_NO_MEMORY = "target_no_memory"
 # What differs between τ² domains. Everything else (stages, matching, sealing, scoring) is shared.
 DOMAINS = {
     "tau-banking": dict(domain="banking_knowledge", retrieval="grep_only", native_tool="grep",
@@ -118,17 +119,22 @@ def modules_for(workspace):
 
 def study_jobs(case, stage):
     """Assignments of one shard, ordered as in the November studies so equal arm sets get equal indices."""
-    arms = {"source": ["no_memory"], "write": list(case["representations"]), "solve": list(case["arms"])}[stage]
+    arms = {"source": ["no_memory"], TARGET_NO_MEMORY: ["no_memory"],
+            "write": case["representations"], "solve": case["arms"]}[stage]
     ordered = sorted(arms, key=lambda a: digest(canonical([FRESH_MATCHED, case["task"], stage, a])))
     recovery = case.get("interrupted_readers") if stage == "solve" else None
     require(recovery is None or (recovery and set(recovery) <= set(ordered)), "Unregistered reader in the retry set")
-    source = dict(source_task_id=case["donor"]["task_id"]) if "donor" in case else {}
-    return [dict(index=i, repetition=1, task_id=case["task_id"], phase="write" if stage == "write" else "solve", arm=arm, **source)
+    binding = dict(source_task_id=case["donor"]["task_id"]) if "donor" in case else {}
+    if stage == TARGET_NO_MEMORY:
+        binding["target_no_memory_index"] = case["target_no_memory_index"]
+    return [dict(index=i, repetition=1, task_id=case["task_id"], phase="write" if stage == "write" else "solve", arm=arm, **binding)
             for i, arm in enumerate(ordered, 1) if recovery is None or arm in recovery]
 
 
 def study_design(cfg, case, stage, source=None):
-    feedback = cfg["writer_feedback_level"]
+    writing, feedback = cfg["writing"], cfg["writer_feedback_level"]
+    if stage == TARGET_NO_MEMORY:
+        writing, feedback = dict(writing, lines={}), "none"
     donor = case.get("donor", case)
     cohort = dict(task_id=donor["task_id"], source_group=donor["customer"])
     if source is not None:
@@ -138,7 +144,7 @@ def study_design(cfg, case, stage, source=None):
             cohort["result_feedback"] = source.result_receipt()
     jobs = study_jobs(case, stage)
     design = dict(format=FRESH_MATCHED, stage=stage, source=dict(domain=case["domain"], split=case["split"],
-        feedback_level=feedback, cohort=[cohort]), writing=cfg["writing"],
+        feedback_level=feedback, cohort=[cohort]), writing=writing,
         second_pass=dict(proposed_limits=cfg["limits"]), model=dict(connection_profile_ref=cfg["connection"],
         seed_pairs=[dict(repetition=1, writer=cfg["writer_seed"], native_and_solver=cfg["native_and_worker_seed"])]),
         delivery_arms={j["arm"]: dict(writer=case["arm_writer"][j["arm"]], read_mode=case["arm_mode"][j["arm"]])
@@ -160,8 +166,10 @@ def study_design(cfg, case, stage, source=None):
 
 
 def shard_profile(cfg, case, stage, grant, jobs):
+    guard_kind = "source" if stage == TARGET_NO_MEMORY else stage
     return dict(name=cfg["name"], stage=stage, case=case["task"], registration_sha256=cfg["registration_sha256"],
-                guards=dict(max_usd=float(grant), max_calls=CALLS[stage](len(jobs)), max_seconds=SECONDS[stage](len(jobs))),
+                guards=dict(max_usd=float(grant), max_calls=CALLS[guard_kind](len(jobs)),
+                            max_seconds=SECONDS[guard_kind](len(jobs))),
                 http_timeout_seconds=cfg["http_timeout_seconds"], task_start_mode=cfg["task_start_mode"],
                 interruption_policy=RESUME_UNSTARTED)
 
@@ -218,23 +226,30 @@ def _bank_shard(common, case, stage_name, grant):
                   else output / ("task-" + opening["task"]) / "source")
     if stage == "source":
         require(not imported, "A reused first pass cannot be resubmitted")
+    if stage == TARGET_NO_MEMORY:
+        require("donor" not in case and stage_name in case["scheduled_stages"] and stage_name in cfg["target_no_memory_stages"]
+                and case["task_id"] in cfg["transfer_tools"], "Unregistered no-memory target control")
+        case = dict(case, target_no_memory_index=cfg["target_no_memory_stages"].index(stage_name) + 2)
     tid = case["task_id"]
     plan = dict(sources={}, tasks={tid: common["tasks"][opening["task"]]}, connection=conn, modules=modules_for(str(workspace)),
-                instruction=asset_text(workspace, cfg["delivery_instruction"]))
+                instruction="" if stage == TARGET_NO_MEMORY else asset_text(workspace, cfg["delivery_instruction"]))
     spec = dict(registration_sha256=cfg["registration_sha256"], native_sha256=case["native_sha256"],
                 customer_opening_sha256=case["customer_opening_sha256"], instruction_sha256=cfg["delivery_instruction"]["sha256"],
                 episode_cap_usd=cfg["episode_cap_usd"], http_timeout_seconds=cfg["http_timeout_seconds"],
                 task_start_mode=cfg["task_start_mode"])
-    if "query_tool_descriptions" in cfg:
+    if "query_tool_descriptions" in cfg and stage != TARGET_NO_MEMORY:
         spec["query_tool_descriptions"] = cfg["query_tool_descriptions"]
     source = None
-    if "donor" in case:
+    if "donor" in case or stage == TARGET_NO_MEMORY:
         _, parent, (row,) = sealed_rows(source_dir)
         require(not imported and row["task_id"] == tid and row["arm"] == "no_memory"
+                and parent["profile"]["case"] == opening["task"]
                 and parent["profile"]["registration_sha256"] == cfg["registration_sha256"]
                 and parent["design"]["stage"] == "source", "Wrong independent target opening")
         receipt = target_opening_receipt(safe_path(source_dir, row["directory"]), row, spec)
         spec.update(source=receipt, public_context_sha256=receipt["public_context_sha256"])
+        if stage == TARGET_NO_MEMORY:
+            spec["target_no_memory_control"] = True
     elif stage != "source":
         _, parent, first_rows = sealed_rows(source_dir)
         source_registration = imported["registration_sha256"] if imported else cfg["registration_sha256"]
@@ -630,6 +645,8 @@ class Tau2Study:
 
     def _groups(self, root, plan, cfg, cases, sleep):
         yield ("source", "source", [c for c in cases if "source" in c["scheduled_stages"]])
+        for stage in cfg.get("target_no_memory_stages", ()):
+            yield (stage, stage, [c for c in cases if stage in c["scheduled_stages"]])
         writers = [c for c in cases if "write" in c["scheduled_stages"]]
         if writers:
             yield ("write", "write", writers)

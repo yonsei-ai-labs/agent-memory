@@ -153,10 +153,14 @@ def grade_reply(reply, category, is_empty, tools):
 
 
 def solve(journal, cfg, case, client, is_empty, *, source=None, writer=None, form=None, mode=None, read_control=False,
-          transfer=None, run_id=None):
+          transfer=None, run_id=None, target_baseline=None):
     category, row = case
     controls = dict(model=cfg["model"], revision=cfg["model_revision"], generation=cfg["generation"])
     reference = transfer["target_start"] if transfer else (source["start"] if source else None)
+    if target_baseline is not None:
+        require(not any((source, writer, form, mode, read_control, transfer)),
+                "Target no-memory controls require an independent solve")
+        reference = target_baseline["target_start"]
     start = open_relevance(row, category, controls, reference=reference)
     public = read_json(start.public_input)
     tools = (hosted_tools if "wire_parameters" in cfg else business_tools)(public["functions"])
@@ -178,7 +182,12 @@ def solve(journal, cfg, case, client, is_empty, *, source=None, writer=None, for
     parents = [transfer["source_run"] if transfer else source["run"], writer["run_id"]] if writer else []
     event = ctx.at("prepare").event("run.started", dict(bank_id=bank, start_snapshot_id=snapshot, fresh_session=True,
         task_ref=journal.blobs.put(question), source_run_ids=parents))
-    journal.append([event])
+    opening_events = [event]
+    if target_baseline is not None:
+        opening_events.append(ctx.event("business.transition", dict(origin="bfcl.target_no_memory",
+            target_start_ref=journal.blobs.put(start.record()), index=target_baseline["index"],
+            draw=target_baseline["draw"])))
+    journal.append(opening_events)
     if transfer:
         journal.append([ctx.event("business.transition", dict(origin="bfcl.transfer_assignment",
             target_start_ref=journal.blobs.put(start.record()), source_task=transfer["source_task"],
@@ -240,7 +249,7 @@ def solve(journal, cfg, case, client, is_empty, *, source=None, writer=None, for
                 reason = "malformed_business_call"
                 break
             reason = "business_decision"
-            if not source and not transfer:
+            if not source and not transfer and target_baseline is None:
                 for message in [dict(role="system", content=canonical(dict(available_functions=tools)).decode()),
                                 public_assistant_message(reply)]:
                     journal.append([ctx.event("business.transition", dict(origin="bfcl.public_observation",

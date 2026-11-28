@@ -60,8 +60,12 @@ def query_descriptions(spec, policy):
 def verify_trial(journal, ctx, spec, control, policy, instruction, items):
     """The full control is analyst-only. Each role receives its own native messages."""
     first = spec.get("source")
+    replay_no_memory = spec.get("target_no_memory_control", False)
+    if replay_no_memory and (policy.enabled or first is None or spec.get("donor") is not None
+                             or spec.get("task_start_mode") != TASK_START_FORMAT or instruction or items):
+        raise FirstPassMismatch("A no-memory target control requires only its registered public opening")
     fingerprint = digest(canonical(control))
-    if (policy.enabled != (first is not None) or fingerprint != spec["native_sha256"]
+    if ((policy.enabled or replay_no_memory) != (first is not None) or fingerprint != spec["native_sha256"]
             or (policy.enabled and digest(instruction.encode()) != spec["instruction_sha256"])):
         raise FirstPassMismatch("Fresh task configuration, memory instruction or assignment changed")
     settings = role_settings(control)

@@ -315,6 +315,11 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
+        "target_no_memory_repeats": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Total independent no-memory sessions per target and source draw at the same public opening. Index 1 is the target first pass. In older plans τ² has one target opening session and BFCL has none."
+        },
         "pairs": {
           "type": "array",
           "minItems": 1,

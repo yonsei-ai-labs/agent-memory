@@ -8,6 +8,7 @@ from agent_memory_eval.contracts.validation import ROOT
 from agent_memory_eval.study.plan import check_plan, load_plan
 from agent_memory_eval.study.scorecard import scorecard
 from agent_memory_eval.study.transfer import allocation_rows, decision_evidence
+from agent_memory_eval.study.transfer_baselines import target_transitions
 
 
 def study(domain):
@@ -51,6 +52,24 @@ class TransferTests(unittest.TestCase):
         outcome = scorecard(rows)["comparisons"]["free__on_demand"]["official_success"]
         self.assertEqual((outcome["real_only"], outcome["missing"], outcome["targets"]), (1, 1, 2))
         self.assertEqual(outcome["target_weighted_bounds"], [0, 1])
+
+    def test_natural_transitions_use_only_independent_no_memory_repeats_of_the_same_input(self):
+        anchor = dict(run="first", opening_sha256="target-opening", first_worker_sha256="plain", success=False)
+        row = dict(task="target", opening_sha256="target-opening", first_worker_sha256="preload", success=True,
+                   target_baselines=[anchor])
+        without_repeat = target_transitions([row], "official_success")
+        self.assertEqual(without_repeat["observed"]["gain"], 1)
+        self.assertIsNone(without_repeat["no_memory_expectation"]["expected_counts"])
+        row["target_baselines"].extend([
+            dict(anchor, run="second", success=True), dict(anchor, run="third"),
+            dict(anchor, run="different-policy", first_worker_sha256="optional", success=True),
+        ])
+        unrelated = dict(row, opening_sha256="different-opening")
+        result = target_transitions([row, unrelated], "official_success")
+        self.assertEqual(result["missing_reasons"], {"matched_opening_unavailable": 1})
+        estimate = result["no_memory_expectation"]
+        self.assertEqual((estimate["covered_pairs"], estimate["independent_repeat_runs"]), (1, 2))
+        self.assertEqual(estimate["expected_counts"], dict(gain=0.5, loss=0, both_success=0, both_failure=0.5))
 
 
 if __name__ == "__main__":

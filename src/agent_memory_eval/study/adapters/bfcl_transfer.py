@@ -6,9 +6,10 @@ from pathlib import Path
 import time
 
 from agent_memory_eval.adapters.bfcl_task_start import REVISION, open_relevance
-from agent_memory_eval.analysis.efficiency import first_decision_effort
+from agent_memory_eval.analysis.efficiency import first_decision_effort, token_usage_by_role
 from agent_memory_eval.analysis.recorded_decisions import require
 from agent_memory_eval.analysis.requests import audit_requests
+from agent_memory_eval.analysis.selection import worker_choices
 from agent_memory_eval.contracts.core import MemoryPolicy, RunContext, canonical, digest, read_json
 from agent_memory_eval.experiments.batch_recovery import stage_lease
 from agent_memory_eval.experiments.forms_batch import endpoint_terms
@@ -123,96 +124,135 @@ def reader_config(cfg, plan, job, root):
     ), mode
 
 
-def audited_reader(folder, evidence, run, job, cfg, mode, source_run, writer_run, case, is_empty):
-    scan, state, _ = evidence
+def target_outcome(folder, evidence, run, cfg, mode, items, case, is_empty, expected_start, opening_ref):
+    scan, _, _ = evidence
     events = run_events(scan, run)
     end = terminal(events)
-    if end is None:
-        return None
     blobs = BlobStore(folder)
-    head = scan["starts"][run]["payload"]
-    require(head["fresh_session"] and head["source_run_ids"] == [source_run, writer_run], "Wrong transfer session")
-    write_end = terminal(run_events(scan, writer_run))
-    require(write_end and write_end["termination_reason"] == "memory_write_completed", "Unsealed donor writer")
-    (assignment,) = [e["payload"] for e in events if e["payload"].get("origin") == "bfcl.transfer_assignment"]
-    require(
-        assignment["bank"] == job["bank"]
-        and assignment["source_task"] == job["source"]
-        and assignment["donor_snapshot"] == write_end["end_snapshot_id"],
-        "Changed donor or control",
-    )
-    public = blobs.get(assignment["target_start_ref"])["public_input"]
-    require(public == dict(messages=case[1]["question"][0], functions=case[1]["function"]), "Changed public target")
-    items = snapshot_items(blobs, state, head["start_snapshot_id"])
-    expected = snapshot_items(blobs, state, write_end["end_snapshot_id"]) if job["bank"] == "real" else []
-    require(items == expected and (job["bank"] == "empty" or items), "Changed reader snapshot contents")
-    starts = [e["payload"] for e in events if e["type"] == "model.request_started"]
-    if starts:
-        first = normalized_first(blobs.get(starts[0]["request_ref"]), cfg, mode, items)
-        wanted = dict(
-            model=cfg["model"],
-            messages=[dict(role="system", content=cfg["worker_instruction"]), *public["messages"]],
-            tools=hosted_tools(public["functions"]),
-            **cfg["wire_parameters"],
-        )
-        require(first == wanted, "BFCL reader did not receive the registered fresh target input")
-    (score,) = [e["payload"] for e in events if e["type"] == "outcome.scored"]
-    success = score["official_success"]
-    grade = None
-    decision = None
-    reads = Counter()
-    finished = {e["payload"]["request_id"]: e["payload"] for e in events if e["type"] == "model.request_finished"}
-    for reply in finished.values():
-        if reply["status"] == "response":
-            message = blobs.get(reply["response_ref"])["choices"][0]["message"]
-            reads.update(
-                c["function"]["name"]
-                for c in message.get("tool_calls") or []
-                if c["function"]["name"] in {"memory_list", "memory_get"}
-            )
-    body_requests = {
-        e["payload"]["request_id"]
-        for e in events
-        if e["type"] == "memory.input_included" and e["payload"]["field"] == "body"
-    }
+    public = read_json(expected_start.public_input)
+    tools = hosted_tools(public["functions"])
+    require(blobs.get(scan["starts"][run]["payload"]["task_ref"]) == public["messages"][0],
+            "BFCL run started on a different target question")
+    choices = worker_choices(folder, run_id=run, evidence=evidence)["choices"]
+    require(opening_ref or (not choices and not end), "Missing BFCL target opening")
+    if opening_ref:
+        require(blobs.get(opening_ref) == expected_start.record(), "Changed registered BFCL target opening")
+    if choices:
+        first = blobs.get(choices[0]["request_ref"])
+        require(normalized_first(first, cfg, mode, items) == dict(
+            model=cfg["model"], messages=[dict(role="system", content=cfg["worker_instruction"]), *public["messages"]],
+            tools=tools, **cfg["wire_parameters"],
+        ), "BFCL reader did not receive the registered fresh target input")
+    sent = [s for s in choices if s["delivery"] == "response_received"]
+    first_worker = sent[0]["request_ref"]["sha256"] if sent else None
+    reads = Counter(r["name"] for s in choices for r in s["reads"])
+    returns = [e["payload"] for e in events if e["type"] == "memory.returned"]
+    returned_fields = Counter(f for p in returns for item in p["items"] for f in item["fields"])
+    included = Counter()
+    answered_fields = set()
+    for step in sent:
+        fields = {f["field"] for f in step["visible_memory"]}
+        included.update(fields)
+        if step["status"] == "response":
+            answered_fields.update(fields)
+            included["body_with_response"] += "body" in fields
+    grade, decision, success = None, None, None
+    reason = end["termination_reason"] if end else "interrupted"
+    if end:
+        (score,) = [e["payload"] for e in events if e["type"] == "outcome.scored"]
+        success = score["official_success"]
     if success is not None:
-        request = starts[-1]["request_id"]
-        finish = finished[request]
-        reply = blobs.get(finish["response_ref"])["choices"][0]["message"]
-        grade = grade_reply(reply, case[0], is_empty, hosted_tools(public["functions"]))
+        grade = grade_reply(choices[-1]["response"], case[0], is_empty, tools)
         require(
             grade == blobs.get(score["official_artifact_ref"]) and grade["valid"] is success,
             "Target action disagrees with native BFCL grade",
         )
-        decision = dict(correct=success, call=grade["any_call"], request=request, body_seen=request in body_requests)
-    elif (
-        end["termination_reason"]
-        in {
-            "private_read_limit",
-            "malformed_business_call",
-            "mixed_private_business_response",
-            "unavailable_memory_tool",
-            "WRITER_OUTPUT_TRUNCATED",
-        }
-        and starts
-    ):
-        request = starts[-1]["request_id"]
-        decision = dict(correct=False, call=None, request=request, body_seen=request in body_requests)
+        decision = dict(correct=success, call=grade["any_call"])
+    elif choices and reason in {
+        "private_read_limit", "malformed_business_call", "mixed_private_business_response",
+        "unavailable_memory_tool", "WRITER_OUTPUT_TRUNCATED",
+    }:
+        decision = dict(correct=False, call=None)
+    if decision is not None:
+        decision.update(request=choices[-1]["request_id"], body_seen="body" in answered_fields,
+                        title_seen="title" in answered_fields)
     return dict(
         success=success,
         status="graded" if success is not None else "missing",
         decision=decision,
-        missing_reason=None if success is not None else end["termination_reason"],
-        termination_reason=end["termination_reason"],
+        missing_reason=None if success is not None else reason,
+        termination_reason=reason,
         official_components=grade,
-        effort_from_first_worker=first_decision_effort(events),
+        opening_sha256=digest(expected_start.public_input) if opening_ref else None,
+        first_worker_sha256=first_worker,
+        effort_from_first_worker=first_decision_effort(events, token_breakdown=True),
+        token_usage_by_role=token_usage_by_role(events),
         run=run,
-        source_run=source_run,
-        writer_run=writer_run,
-        donor_snapshot=write_end["end_snapshot_id"],
         reads=dict(reads),
+        evidence=dict(
+            status="completed" if end else "interrupted", first_worker=first_worker, dispatched_worker=len(sent),
+            title_requests=included["title"], body_requests=included["body"],
+            body_requests_with_response=included["body_with_response"], reads=dict(reads),
+            returns=dict(Counter(p["operation"] for p in returns)), returned_titles=returned_fields["title"],
+            returned_bodies=returned_fields["body"],
+            unresolved_worker=sum(s["delivery"] in {"pending", "unknown"} for s in choices),
+        ),
         billing=usage_from_events(events),
     )
+
+
+def audited_reader(folder, evidence, run, job, cfg, mode, source_run, writer_run, case, is_empty, target_start):
+    scan, state, _ = evidence
+    head = scan["starts"][run]["payload"]
+    require(head["fresh_session"] and head["source_run_ids"] == [source_run, writer_run], "Wrong transfer session")
+    write_end = terminal(run_events(scan, writer_run))
+    require(write_end and write_end["termination_reason"] == "memory_write_completed", "Unsealed donor writer")
+    events = run_events(scan, run)
+    assignments = [e["payload"] for e in events if e["payload"].get("origin") == "bfcl.transfer_assignment"]
+    opening_ref = None
+    if assignments:
+        (assignment,) = assignments
+        require(
+            assignment["bank"] == job["bank"] and assignment["source_task"] == job["source"]
+            and assignment["donor_snapshot"] == write_end["end_snapshot_id"], "Changed donor or control",
+        )
+        opening_ref = assignment["target_start_ref"]
+    blobs = BlobStore(folder)
+    items = snapshot_items(blobs, state, head["start_snapshot_id"])
+    expected = snapshot_items(blobs, state, write_end["end_snapshot_id"]) if job["bank"] == "real" else []
+    require(items == expected and (job["bank"] == "empty" or items), "Changed reader snapshot contents")
+    result = target_outcome(folder, evidence, run, cfg, mode, items, case, is_empty, target_start, opening_ref)
+    return dict(result, source_run=source_run, writer_run=writer_run, donor_snapshot=write_end["end_snapshot_id"])
+
+
+def audited_baseline(folder, evidence, run, target, draw, index, p):
+    scan, _, _ = evidence
+    head = scan["starts"][run]
+    events = run_events(scan, run)
+    require(
+        head["condition_id"] == "no_memory" and head["payload"]["fresh_session"]
+        and head["payload"]["bank_id"] is None and head["payload"]["start_snapshot_id"] is None
+        and head["payload"]["source_run_ids"] == [] and not any(e["type"].startswith("memory.") for e in events),
+        "Target no-memory run received a prior session or memory",
+    )
+    roles = [e["payload"]["actor_role"] for e in events if e["type"] == "model.request_started"]
+    require(roles in ([], ["worker"]), "Unexpected participant or extra decision in a BFCL no-memory control")
+    (assignment,) = [e["payload"] for e in events if e["payload"].get("origin") == "bfcl.target_no_memory"]
+    require(assignment["index"] == index and assignment["draw"] == draw, "Wrong target no-memory repetition")
+    result = target_outcome(folder, evidence, run, p["cfg"], None, [], p["cases"][target], p["is_empty"],
+                            p["starts"][target], assignment["target_start_ref"])
+    return dict(index=index, **result)
+
+
+def target_rows(plan, attempts, **receipts):
+    rows = allocation_rows(plan, attempts, **receipts)
+    for row in rows:
+        for solve in [row, *row["target_baselines"]]:
+            solve.setdefault("opening_sha256", None)
+            solve.setdefault("first_worker_sha256", None)
+            solve["state_diagnostics"] = dict(status="not_applicable", reason="bfcl_relevance_has_no_database")
+            solve["dialogue"] = dict(status="not_applicable", reason="single_native_question_without_customer_simulator")
+    return rows
 
 
 class BfclTransfer:
@@ -278,6 +318,18 @@ class BfclTransfer:
             stages=["source", "write", "solve"],
             assigned=assigned,
         )
+        if "target_no_memory_repeats" in plan["transfer"]:
+            repeats = plan["transfer"]["target_no_memory_repeats"]
+            require(type(repeats) is int and repeats >= 1, "Register a positive number of target no-memory solves")
+            targets = dict.fromkeys(pair["target"] for pair in plan["transfer"]["pairs"])
+            controls = [
+                dict(target=t, draw=d, repeats=repeats)
+                for t in targets for d in range(1, plan["first_pass"]["draws"] + 1)
+            ]
+            record["target_no_memory"] = controls
+            assigned["target_no_memory"] = len(controls) * repeats
+            record["stages"].insert(0, "target_no_memory")
+            groups = [(c["target"], c["draw"], None) for c in controls] + groups
         return dict(
             record=record,
             cfg=cfg,
@@ -323,7 +375,7 @@ class BfclTransfer:
         limits = cfg["limits"]
         attempts = 1 + len(plan["retry"]["wait_seconds"])
         max_calls = (
-            assigned["source"] * limits["source_calls"]
+            (assigned["source"] + assigned.get("target_no_memory", 0)) * limits["source_calls"]
             + assigned["write"] * limits["writer_calls"]
             + assigned["solve"] * max(limits["preload_calls"], limits["on_demand_calls"]) * attempts
         )
@@ -364,8 +416,8 @@ class BfclTransfer:
                 route=prepared["worker"]["provider"],
                 max_input_bytes=plan.get("limits", {}).get("writer_max_input_bytes", client.max_input_bytes),
             )
-            for index, (source, draw, jobs) in enumerate(prepared["groups"], 1):
-                self._group(plan, root, dest, prepared, source, draw, jobs, guard, client, writer, sleep)
+            for index, (task, draw, jobs) in enumerate(prepared["groups"], 1):
+                self._group(plan, root, dest, prepared, task, draw, jobs, guard, client, writer, sleep)
                 if progress:
                     progress("transfer", index, len(prepared["groups"]), guard.spent)
                 if guard.denied:
@@ -380,9 +432,9 @@ class BfclTransfer:
                 fixed(closed, completion(dest, prepared["groups"], summary))
             return summary
 
-    def _group(self, plan, root, dest, p, source, draw, jobs, guard, client, writer_client, sleep):
+    def _group(self, plan, root, dest, p, task, draw, jobs, guard, client, writer_client, sleep):
         study, cfg = plan["id"], p["cfg"]
-        folder = dest / f"{source}--{draw}"
+        folder = dest / f"{task}--{draw}"
         with Journal(folder, study, contract_version="1.2") as journal:
 
             def once(key, stage, action):
@@ -434,6 +486,21 @@ class BfclTransfer:
                         )
                 return run, terminal(run_events(journal.scan, run))
 
+            if jobs is None:
+                # Each target/draw has its own journal, shared by all its donor comparisons.
+                for index in range(1, plan["transfer"]["target_no_memory_repeats"] + 1):
+                    if guard.denied:
+                        break
+                    once(
+                        run_key(study, task, draw, "target_no_memory", index),
+                        "target_no_memory",
+                        lambda run: solve(
+                            journal, cfg, p["cases"][task], client, p["is_empty"], run_id=run,
+                            target_baseline=dict(target_start=p["starts"][task], draw=draw, index=index),
+                        ),
+                    )
+                return
+            source = task
             source_run, end = once(
                 run_key(study, source, draw, "source"),
                 "source",
@@ -506,8 +573,9 @@ class BfclTransfer:
     def outcomes(self, plan, workspace, root, *, checkout=None):
         p = self.resolve(plan, workspace, root, checkout=checkout)
         dest = Path(workspace) / "runs" / plan["id"]
+        target_baselines = {}
         if not (dest / "registration.json").is_file():
-            return allocation_rows(plan, [])
+            return target_rows(plan, [], target_baselines=target_baselines)
         require(read(dest / "registration.json")["preflight"] == p["record"], "BFCL transfer registration changed")
         closed = dest / "completion.json"
         if closed.exists():
@@ -515,18 +583,29 @@ class BfclTransfer:
             require(seal == completion(dest, p["groups"], seal["summary"]), "Changed completed BFCL recording")
         rows = []
         written_memories = {}
-        for source, draw, jobs in p["groups"]:
-            folder = dest / f"{source}--{draw}"
+        known_sessions = set()
+        for task, draw, jobs in p["groups"]:
+            folder = dest / f"{task}--{draw}"
             if not (folder / "log.jsonl").exists():
                 continue
             evidence = read_experiment(folder)
             scan, state, experiment = evidence
             require(experiment in {None, plan["id"]}, "Journal belongs to another transfer study")
             sessions = [e["session_id"] for e in scan["starts"].values()]
-            require(len(set(sessions)) == len(sessions), "BFCL transfer sessions must be independent")
+            require(len(set(sessions)) == len(sessions) and known_sessions.isdisjoint(sessions),
+                    "BFCL transfer sessions must be independent")
+            known_sessions.update(sessions)
             if not any(scan[k] for k in ("tail_bytes", "incomplete_runs", "pending_requests")):
                 audit_requests(folder, evidence=evidence)
             study, blobs = plan["id"], BlobStore(folder)
+            if jobs is None:
+                controls = target_baselines[task, draw] = []
+                for i in range(1, plan["transfer"]["target_no_memory_repeats"] + 1):
+                    run = last_run(scan, study, run_key(study, task, draw, "target_no_memory", i))
+                    if run is not None:
+                        controls.append(audited_baseline(folder, evidence, run, task, draw, i, p))
+                continue
+            source = task
             source_run = last_run(scan, study, run_key(study, source, draw, "source"))
             source_end = terminal(run_events(scan, source_run))
             if source_end and source_end["grading_status"] == "graded":
@@ -577,6 +656,12 @@ class BfclTransfer:
                 written_memories[source, draw, form] = dict(
                     form=form, source_run=source_run, writer_run=writer, snapshot=snapshot,
                     feedback_success=bit, items=snapshot_items(blobs, state, snapshot),
+                    public_experience_ref=dict(
+                        path=str((folder / stored["experience_ref"]["path"]).relative_to(workspace)),
+                        sha256=stored["experience_ref"]["sha256"],
+                    ),
+                    token_usage_by_role=token_usage_by_role(run_events(scan, writer)),
+                    source_token_usage_by_role=token_usage_by_role(run_events(scan, source_run)),
                 )
             for job in jobs:
                 reader, mode = reader_config(p["cfg"], plan, job, root)
@@ -620,10 +705,7 @@ class BfclTransfer:
                         writers[job["form"]],
                         p["cases"][job["target"]],
                         p["is_empty"],
+                        p["starts"][job["target"]],
                     )
-                    if result is None:
-                        result = dict(
-                            success=None, status="missing", decision=None, missing_reason="interrupted", run=run
-                        )
                     rows.append(dict(slot, attempt=attempt, **result))
-        return allocation_rows(plan, rows, written_memories=written_memories)
+        return target_rows(plan, rows, written_memories=written_memories, target_baselines=target_baselines)

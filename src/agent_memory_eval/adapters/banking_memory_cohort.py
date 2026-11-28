@@ -93,6 +93,10 @@ def observation(folder, row, *, writer=None, business=None, policy=None, transfe
     obs = dict(run=row.get("run_id"), status=row["status"], reason=row.get("reason") or result.get("error_code"),
                journal=result.get("log_sha256"), success=None, effort={}, dispatched_worker=0,
                body_requests=0, body_requests_with_response=0, title_requests=0, reads={}, returns={})
+    if transfer:
+        from agent_memory_eval.analysis.tau_transfer_state import unmeasured_state
+        obs.update(first_worker_sha256=None, opening_sha256=None, opening_source_run=None,
+                   state_diagnostics=unmeasured_state(transfer.get("domain"), "no_sealed_episode"))
     if not obs["journal"]:
         require(result.get("official_success") is None, "Unsealed grade")
         return obs
@@ -113,7 +117,7 @@ def observation(folder, row, *, writer=None, business=None, policy=None, transfe
                     and assignment["source_writer_bank_sha256"] == digest(canonical(writer)),
                     "Transfer outcome does not match its writer, target or bank")
         obs.update(writer=writer["run_id"], writer_snapshot=writer["snapshot_id"])
-    reads, choices, steps = Counter(), [], []
+    reads, choices, steps, registered_calls = Counter(), [], [], []
     for req in log.requests:
         if req["actor_role"] != "worker":
             continue
@@ -123,6 +127,8 @@ def observation(folder, row, *, writer=None, business=None, policy=None, transfe
             fields = {s["field"] for s in log.visible(req, log.blobs.get(req["request_ref"]))}
             if not obs["dispatched_worker"]:
                 obs.update(first_worker=req["request_ref"]["sha256"], first_fields=sorted(fields))
+                if transfer and end["delivery_status"] == "response_received":
+                    obs["first_worker_sha256"] = obs["first_worker"]
             obs["dispatched_worker"] += 1
             obs["title_requests"] += "title" in fields
             obs["body_requests"] += "body" in fields
@@ -131,21 +137,31 @@ def observation(folder, row, *, writer=None, business=None, policy=None, transfe
         if end["status"] == "response":
             calls = log.reply(req)["message"].get("tool_calls") or []
             if transfer:
+                require(sent, "Worker response without a dispatched request")
                 actions = []
                 for call in calls:
                     fn = call["function"]
                     if fn["name"] not in transfer["rule"]["tools"]:
                         continue
+                    raw = fn["arguments"]
                     try:
-                        args = read_json(fn["arguments"].encode())
+                        args = read_json(raw.encode()) if isinstance(raw, str) else raw
                     except (ValueError, UnicodeError):
                         args = None
-                    actions.append(dict(name=fn["name"], arguments=args if isinstance(args, dict) else {}))
-                steps.append(dict(request=req["request_id"], body="body" in fields, calls=actions))
+                    action = dict(name=fn["name"], arguments=args if isinstance(args, dict) else {})
+                    actions.append(action)
+                    registered_calls.append(dict(action, request=req["request_id"], call_id=call["id"],
+                                                 arguments_valid=isinstance(args, dict)))
+                steps.append(dict(request=req["request_id"], title="title" in fields, body="body" in fields, calls=actions))
         private = [c["function"]["name"] for c in calls if c["function"]["name"] in READS]
         reads.update(private)
         choices.append(dict(status=end["status"], delivery=end["delivery_status"], reads=private))
-    obs.update(reads=dict(reads), returns=dict(Counter(e["payload"]["operation"] for e in log.of_type("memory.returned"))))
+    returns = [e["payload"] for e in log.of_type("memory.returned")]
+    obs.update(reads=dict(reads), returns=dict(Counter(p["operation"] for p in returns)))
+    if transfer:
+        returned_fields = Counter(f for p in returns for item in p["items"] for f in item["fields"])
+        obs.update(returned_titles=returned_fields["title"], returned_bodies=returned_fields["body"],
+                   unresolved_worker=sum(c["delivery"] == "unknown" for c in choices))
     grade, = [e["payload"] for e in log.of_type("outcome.scored")]
     require(grade["official_success"] is result["official_success"] and grade["grading_status"] == result["grading_status"]
             and grade["official_artifact_ref"] == result["report_ref"], "Native grade differs from the journal")
@@ -158,10 +174,12 @@ def observation(folder, row, *, writer=None, business=None, policy=None, transfe
         obs.update(success=grade["official_success"], report=grade["official_artifact_ref"]["sha256"])
     obs["effort"] = episode_effort(row, messages, choices)
     if transfer:
-        from agent_memory_eval.analysis.efficiency import first_decision_effort
+        from agent_memory_eval.analysis.efficiency import first_decision_effort, token_usage_by_role
+        from agent_memory_eval.analysis.tau_transfer_state import state_diagnostics
         from agent_memory_eval.study.transfer import decision_evidence
         obs["decision"] = decision_evidence(transfer["rule"], steps, completed=messages is not None)
-        obs["effort_from_first_worker"] = first_decision_effort(log.events.values())
+        obs["effort_from_first_worker"] = first_decision_effort(log.events.values(), token_breakdown=True)
+        obs["token_usage_by_role"] = token_usage_by_role(log.events.values())
         obs["termination_reason"] = result.get("termination_reason") or result.get("error_code")
         obs["official_components"] = None
         if messages is not None:
@@ -169,6 +187,8 @@ def observation(folder, row, *, writer=None, business=None, policy=None, transfe
             obs["official_components"] = {k: reward.get(k) for k in (
                 "reward_basis", "reward_breakdown", "db_check", "communicate_checks", "nl_assertions", "action_checks"
             )}
+        obs["state_diagnostics"] = state_diagnostics(log, row, transfer, official if messages is not None else None,
+                                                     registered_calls)
     if messages is not None:
         questions = customer_questions(messages)
         obs["customer_questions"] = questions
@@ -209,6 +229,14 @@ def observation(folder, row, *, writer=None, business=None, policy=None, transfe
         p = entry["payload"]
         if p.get("origin") == "task_start.first_decision":
             obs.update(start=p["task_start_ref"]["sha256"], start_source=p["source_run_id"])
+            if transfer:
+                from agent_memory_eval.runner.task_start import TaskStart
+                opening = TaskStart.from_record(log.blobs.get(p["task_start_ref"]))
+                domain, task = opening.task.task_id.split("/", 1)
+                require(opening.task.benchmark == "tau2" and domain == transfer.get("domain", domain)
+                        and task == row["task_id"] and opening.controls_sha256 == transfer.get("native_sha256", opening.controls_sha256),
+                        "Opening belongs to another native task or control")
+                obs.update(opening_sha256=digest(opening.public_input), opening_source_run=p["source_run_id"])
     return obs
 
 
