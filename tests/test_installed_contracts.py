@@ -19,7 +19,7 @@ class InstalledContractTests(unittest.TestCase):
             source.mkdir()
             for name in ("setup.py", "pyproject.toml", "README.md"):
                 shutil.copyfile(ROOT / name, source / name)
-            for name in ("src", "schemas"):
+            for name in ("src", "schemas", "scripts"):
                 shutil.copytree(ROOT / name, source / name, ignore=shutil.ignore_patterns("__pycache__", "*.egg-info"))
             subprocess.run(["uv", "build", "--offline", "--wheel", "--out-dir", str(temp / "dist"), str(source)],
                            cwd=temp, check=True, capture_output=True)
@@ -39,6 +39,10 @@ from agent_memory_eval.contracts.core import MemoryPolicy
 from agent_memory_eval.memory.service import MemoryService
 from agent_memory_eval.recording.journal import Journal
 from agent_memory_eval.policies.writer_pairs import writer_pairs
+from agent_memory_eval.study.adapters import adapter_for
+from scripts import run_retail_two_visit
+assert Path(run_retail_two_visit.__file__).resolve().is_relative_to(Path(sys.argv[1]))
+assert adapter_for("tau2-retail-revisit").execution_mode == "followup"
 assert SCHEMAS.resolve().is_relative_to(Path(sys.argv[1]))
 conditions, pairs = writer_pairs({"timeline": "Keep events."}, "Record confirmed results.")
 assert conditions[1]["id"] == pairs["timeline"]["candidate"]

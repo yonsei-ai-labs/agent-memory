@@ -141,9 +141,10 @@ class FollowupTests(unittest.TestCase):
             base = Path(tmp) / "grant.json"
             first = dict(plan_id="study", resolved_sha256="abc", max_usd="0.1", user_authorization="fixture")
             second = dict(first, max_usd="1", user_authorization="raise the cumulative fixture amount")
-            publish_approval(base, first)
-            publish_approval(base, second)
-            publish_approval(base, second)
+            self.assertEqual(publish_approval(base, first), base)
+            amendment = base.with_suffix(".increases") / "000001.json"
+            self.assertEqual(publish_approval(base, second), amendment)
+            self.assertEqual(publish_approval(base, second), amendment)
             self.assertEqual(approval_chain(base), [first, second])
             self.assertEqual(read(base), first)
             for change in (dict(max_usd="0.5"), dict(resolved_sha256="other", max_usd="2"), dict(user_authorization="", max_usd="2")):

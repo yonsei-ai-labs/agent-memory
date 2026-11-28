@@ -50,7 +50,7 @@ def publish_approval(path, grant):
     if path.exists():
         chain = approval_chain(path)
         if grant == chain[-1]:
-            return
+            return path if len(chain) == 1 else folder / f"{len(chain) - 1:06}.json"
         check_increase(chain[-1], grant)
         folder.mkdir(exist_ok=True)
         path = folder / f"{len(chain):06}.json"
@@ -59,6 +59,7 @@ def publish_approval(path, grant):
         publish_json(path, grant)
     except FileExistsError:
         require(read(path) == grant, "Another approval was recorded first")
+    return path
 
 
 def register_grants(dest, grants, max_calls, reserved_calls):

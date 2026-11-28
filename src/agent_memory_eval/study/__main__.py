@@ -78,7 +78,7 @@ def main(argv=None):
         path.parent.mkdir(parents=True, exist_ok=True)
         grant = approval_for(plan, record, max_usd=args.max_usd, user_authorization=args.quote)
         if followup:
-            publish_approval(path, grant)
+            path = publish_approval(path, grant)
         else:
             fixed(path, grant)
         out = dict(approval=str(path.relative_to(ROOT)), assigned=record["assigned"], max_usd=args.max_usd)

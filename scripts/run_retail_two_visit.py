@@ -191,7 +191,7 @@ class ExpenseLedger:
                 "Out-of-order reservation",
             )
             self.calls, self.open[seq] = seq, maximum
-            self.reserved_runs.add(row["run"])
+            self.reserved_runs.add(row.get("run"))
             self.held += maximum
         else:
             cost = Decimal(row["cost"])

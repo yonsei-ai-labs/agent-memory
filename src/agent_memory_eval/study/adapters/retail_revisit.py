@@ -453,6 +453,8 @@ class RetailRevisit:
             fixed(registration, dict(format=plan["format"], plan=plan, resolved=record, freeze=freeze,
                                                     endpoints=terms, jobs=dict(source=[], writer=[], decision=jobs, continuation=jobs)))
             guard = ExpenseLedger(dest / "expense.jsonl", amount, max_calls, float("inf"))
+            require(guard.reserved_runs <= {job["run"] for job in jobs},
+                    "Follow-up reservation lacks its registered consultation")
             register_grants(dest, grants, max_calls, guard.calls)
             batch_id = uuid4().hex
             write_json(dest / "batch-start.json", dict(batch_id=batch_id))
