@@ -36,6 +36,8 @@ BFCL의 고정 체크아웃이 기본 작업공간 밖에 있으면 `--checkout`
 
 [뱅킹](../../protocols/studies/smoke/fresh-smoke-bank-transfer-01.json) · [리테일](../../protocols/studies/smoke/fresh-smoke-retail-transfer-01.json) · [항공](../../protocols/studies/smoke/fresh-smoke-airline-transfer-01.json) · [BFCL](../../protocols/studies/smoke/fresh-smoke-bfcl-transfer-01.json)은 같은 Luna 모델과 공용 전이 실행기를 사용한다. 벤치마다 새 무기억 원천 하나에서 사실 메모와 교훈 메모를 작성한다. 두 작성 지침 모두 원천 상담 전체의 성패를 본문 첫 줄에 남기도록 한다. 다른 목표 하나에서 각 메모의 시작 제공과 선택적 조회를 빈 저장소와 짝짓는다. τ² 계열은 목표의 첫 고객 발화도 새로 생성하고 BFCL은 고정 문항을 사용한다. 벤치별 후속 배정은 여덟 건이다. 이 규모로 확인할 수 있는 것은 실행·노출·채점 경로다.
 
+네 벤치의 실제 Luna 응답과 리테일 채점 오류 수정 후의 별도 실행을 확인했다. [작성물·실제 노출·판단·비용](../reports/20261128-four-benchmark-transfer-smoke.md)
+
 `analyze --save`의 각 후속 행에서 `written_memory`는 원천, 작성 실행, 스냅샷, 작성자에게 제공된 성패, 저장된 제목·본문을 연결한다. 빈 저장소 배정에도 연구자가 대조할 작성물은 남는다. 작업자가 실제 본 내용은 `bank`, `reads`, `decision.body_seen`에서 확인한다. `official_components`와 `termination_reason`은 벤치의 공식 판정과 종료 이유를 보존하며, `effort_from_first_worker`는 첫 작업자 요청부터의 호출·토큰·금액을 센다.
 
 ### 단일 기억 전이의 판독 순서
