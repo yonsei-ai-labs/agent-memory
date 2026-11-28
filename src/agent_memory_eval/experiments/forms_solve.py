@@ -177,7 +177,7 @@ def _prepared_for_job(connection, prepared, limits, task_id, expected_split="tra
         basis_ok = (expected_domain == "banking_knowledge" and criteria is not None
                     and set(criteria.reward_basis) == {"DB", "NL_ASSERTION"} and bool(criteria.nl_assertions))
     valid_split = (expected_split is None and bench.get("retrieval_config") == "grep_only"
-                   if expected_domain == "banking_knowledge" else expected_split in {"train", "test"})
+                   if expected_domain == "banking_knowledge" else expected_split in {"base", "train", "test"})
     if (not valid_split or (bench["domain"], bench["split"], bench["source_revision"], bench["communicate_scorer"])
             != (expected_domain, expected_split, PIN, "substring")
             or not basis_ok
