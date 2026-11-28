@@ -158,8 +158,17 @@ def observation(folder, row, *, writer=None, business=None, policy=None, transfe
         obs.update(success=grade["official_success"], report=grade["official_artifact_ref"]["sha256"])
     obs["effort"] = episode_effort(row, messages, choices)
     if transfer:
+        from agent_memory_eval.analysis.efficiency import first_decision_effort
         from agent_memory_eval.study.transfer import decision_evidence
         obs["decision"] = decision_evidence(transfer["rule"], steps, completed=messages is not None)
+        obs["effort_from_first_worker"] = first_decision_effort(log.events.values())
+        obs["termination_reason"] = result.get("termination_reason") or result.get("error_code")
+        obs["official_components"] = None
+        if messages is not None:
+            reward = official["reward_info"]
+            obs["official_components"] = {k: reward.get(k) for k in (
+                "reward_basis", "reward_breakdown", "db_check", "communicate_checks", "nl_assertions", "action_checks"
+            )}
     if messages is not None:
         questions = customer_questions(messages)
         obs["customer_questions"] = questions

@@ -6,6 +6,7 @@ from pathlib import Path
 import time
 
 from agent_memory_eval.adapters.bfcl_task_start import REVISION, open_relevance
+from agent_memory_eval.analysis.efficiency import first_decision_effort
 from agent_memory_eval.analysis.recorded_decisions import require
 from agent_memory_eval.analysis.requests import audit_requests
 from agent_memory_eval.contracts.core import MemoryPolicy, RunContext, canonical, digest, read_json
@@ -157,6 +158,7 @@ def audited_reader(folder, evidence, run, job, cfg, mode, source_run, writer_run
         require(first == wanted, "BFCL reader did not receive the registered fresh target input")
     (score,) = [e["payload"] for e in events if e["type"] == "outcome.scored"]
     success = score["official_success"]
+    grade = None
     decision = None
     reads = Counter()
     finished = {e["payload"]["request_id"]: e["payload"] for e in events if e["type"] == "model.request_finished"}
@@ -201,6 +203,9 @@ def audited_reader(folder, evidence, run, job, cfg, mode, source_run, writer_run
         status="graded" if success is not None else "missing",
         decision=decision,
         missing_reason=None if success is not None else end["termination_reason"],
+        termination_reason=end["termination_reason"],
+        official_components=grade,
+        effort_from_first_worker=first_decision_effort(events),
         run=run,
         source_run=source_run,
         writer_run=writer_run,
@@ -509,6 +514,7 @@ class BfclTransfer:
             seal = read(closed)
             require(seal == completion(dest, p["groups"], seal["summary"]), "Changed completed BFCL recording")
         rows = []
+        written_memories = {}
         for source, draw, jobs in p["groups"]:
             folder = dest / f"{source}--{draw}"
             if not (folder / "log.jsonl").exists():
@@ -564,6 +570,14 @@ class BfclTransfer:
                 req = next(e["payload"] for e in run_events(scan, writer) if e["type"] == "model.request_started")
                 require(blobs.get(req["request_ref"]) == template, "Writer saw inputs outside its registered donor")
                 writers[form] = writer
+                snapshot = ended["end_snapshot_id"]
+                bit = None
+                if feedback.level == "result_only":
+                    bit = scan["events"][exp["outcome_event_id"]]["payload"]["official_success"]
+                written_memories[source, draw, form] = dict(
+                    form=form, source_run=source_run, writer_run=writer, snapshot=snapshot,
+                    feedback_success=bit, items=snapshot_items(blobs, state, snapshot),
+                )
             for job in jobs:
                 reader, mode = reader_config(p["cfg"], plan, job, root)
                 slot = dict(
@@ -612,4 +626,4 @@ class BfclTransfer:
                             success=None, status="missing", decision=None, missing_reason="interrupted", run=run
                         )
                     rows.append(dict(slot, attempt=attempt, **result))
-        return allocation_rows(plan, rows)
+        return allocation_rows(plan, rows, written_memories=written_memories)

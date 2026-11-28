@@ -148,6 +148,7 @@ class TauTransfer(Tau2Study):
         if (folder / "registration.json").exists():
             require(read(folder / "registration.json")["preflight"] == record, "Changed transfer registration")
         attempts, skipped = [], unstarted_stages(folder)
+        written_memories = {}
         for case in (c for c in record["cases"] if "donor" in c):
             donor = case["donor"]
             write_dir = folder / ("task-" + donor["task"]) / "write"
@@ -155,8 +156,15 @@ class TauTransfer(Tau2Study):
             if (write_dir / "completion.json").is_file():
                 for w in sealed_rows(write_dir)[2]:
                     if w["status"] == "completed":
-                        banks[w["arm"]] = read_form_bank(
+                        bank = read_form_bank(
                             safe_path(write_dir, w["directory"]), expected_log_sha256=w["result"]["log_sha256"]
+                        )
+                        form = w["arm"]
+                        banks[form] = bank
+                        written_memories[donor["task_id"], donor["source_draw"], form] = dict(
+                            form=form, source_run=bank["source_run_id"], writer_run=bank["run_id"],
+                            snapshot=bank["snapshot_id"], feedback_success=bank.get("result_feedback", {}).get("success"),
+                            items=bank["items"],
                         )
             task_dir = folder / ("task-" + case["task"])
             for n, base in enumerate(case["scheduled_stages"], 1):
@@ -199,6 +207,9 @@ class TauTransfer(Tau2Study):
                                 success=success,
                                 missing_reason=missing,
                                 decision=observed.get("decision"),
+                                termination_reason=observed.pop("termination_reason", None),
+                                official_components=observed.pop("official_components", None),
+                                effort_from_first_worker=observed.pop("effort_from_first_worker", None),
                                 reads=observed["reads"],
                                 billing=(row.get("result") or {}).get("billing_by_role", {}),
                                 evidence=observed,
@@ -206,4 +217,4 @@ class TauTransfer(Tau2Study):
                                 donor_snapshot=bank["snapshot_id"] if bank else None,
                             )
                         )
-        return allocation_rows(plan, attempts)
+        return allocation_rows(plan, attempts, written_memories=written_memories)

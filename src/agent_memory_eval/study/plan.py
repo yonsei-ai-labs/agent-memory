@@ -54,8 +54,8 @@ def check_transfer(plan):
     if plan.get("references"):
         raise ContractError("Compare the paired readers of this transfer study")
     bench = plan["benchmark"]["adapter"]
-    if bench not in {"tau2-retail", "tau2-airline", "bfcl-relevance"}:
-        raise ContractError("Transfer studies support retail, airline and BFCL")
+    if bench not in {"tau-banking", "tau2-retail", "tau2-airline", "bfcl-relevance"}:
+        raise ContractError(f"Unsupported transfer benchmark: {bench}")
     decisions = {}
     for pair in pairs:
         rule = pair["decision"]

@@ -15,6 +15,15 @@ def study(domain):
 
 
 class TransferTests(unittest.TestCase):
+    def test_banking_smoke_links_the_written_note_without_counting_it_as_exposed(self):
+        plan = load_plan(ROOT / "protocols/studies/smoke/fresh-smoke-bank-transfer-01.json", ROOT)
+        source = plan["transfer"]["pairs"][0]["source"]
+        note = dict(form="fact", items=[dict(title="Case", body="Prior task outcome: success.")])
+        rows = allocation_rows(plan, [], written_memories={(source, 1, "fact"): note})
+        self.assertEqual(len(rows), 8)
+        self.assertEqual(sum(r.get("written_memory") == note for r in rows), 4)
+        self.assertTrue(all(r["decision"] is None and r["status"] == "missing" for r in rows))
+
     def test_invalid_or_duplicate_pairs_are_rejected(self):
         plan = study("retail")
         for source, target in [("44", "44"), ("58", "37"), ("44", "unknown")]:

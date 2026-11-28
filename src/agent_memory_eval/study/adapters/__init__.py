@@ -10,7 +10,7 @@ def adapter_for(plan_or_name):
         if name == "bfcl-relevance":
             from agent_memory_eval.study.adapters.bfcl_transfer import BfclTransfer
             return BfclTransfer()
-        if name in ("tau2-airline", "tau2-retail"):
+        if name in ("tau-banking", "tau2-airline", "tau2-retail"):
             from agent_memory_eval.study.adapters.tau_transfer import TauTransfer
             return TauTransfer(name)
         raise ValueError(f"Unsupported transfer benchmark: {name}")

@@ -25,7 +25,7 @@ def decision_evidence(rule, steps, *, completed):
     return dict(correct=rule["expected"] is None if completed else None, call=None, request=None, body_seen=exposed)
 
 
-def allocation_rows(plan, attempts):
+def allocation_rows(plan, attempts, *, written_memories=None):
     """Materialize every registered target slot, including blocked, crashed and never-started sessions."""
     from agent_memory_eval.study.plan import arm_name, conditions
 
@@ -50,6 +50,11 @@ def allocation_rows(plan, attempts):
                         )
                         if "customer_relation" in pair:
                             expected[key]["customer_relation"] = pair["customer_relation"]
+                        memory = (written_memories or {}).get((pair["source"], draw, rep))
+                        if memory is not None:
+                            # This is the writer's sealed output, even for an empty-bank control.
+                            # Its presence in an analysis row does not imply exposure to the reader.
+                            expected[key]["written_memory"] = memory
     rows, seen = [], set()
     for row in attempts:
         key = row["source"], row["task"], row["draw"], row["repeat"], row["condition"]
