@@ -6,6 +6,7 @@ import math
 
 from agent_memory_eval.contracts.core import ContractError, canonical, digest, new_id, pointer, read_json
 from agent_memory_eval.contracts.validation import authored_fields, leaves, resolve_source, validate_manifest
+from agent_memory_eval.models import ProviderError, assistant_message
 
 
 def public_assistant_message(value):
@@ -228,8 +229,11 @@ class InputSizeLimit(ContractError):
         super().__init__(self.code)
 
 
-class InvalidUsage(ContractError):
+class InvalidUsage(ProviderError):
     code = "INVALID_USAGE_SHAPE"
+
+    def __init__(self, response):
+        super().__init__(self.code, response, submitted=True)
 
 
 class RecordingGateway:
@@ -296,14 +300,16 @@ class RecordingGateway:
                 response = worker.respond(deepcopy(final_wire))
                 ref = self.journal.blobs.put(response)
                 delivery = "response_received"
+                message = assistant_message(response)
                 reported_usage = response.get("usage")
                 if reported_usage is not None and not isinstance(reported_usage, dict):
-                    raise InvalidUsage("Provider usage is neither an object nor null")
+                    raise InvalidUsage(response)
                 usage = deepcopy(reported_usage)
-                if response["choices"][0]["message"]["role"] != "assistant":
-                    raise ContractError("Transport must return an assistant message")
                 if project_self_authored:
-                    public_assistant_message(response["choices"][0]["message"])
+                    try:
+                        public_assistant_message(message)
+                    except ContractError as cause:
+                        raise ProviderError("INVALID_RESPONSE_SHAPE", response, submitted=True) from cause
                 status, delivery = "response", "response_received"
             except Exception as caught:
                 status = "timeout" if isinstance(caught, TimeoutError) else "error"

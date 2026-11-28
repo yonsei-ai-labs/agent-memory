@@ -6,7 +6,7 @@ profile paths) comes from the plan instead.
 """
 
 from copy import deepcopy
-from decimal import Decimal
+from decimal import ROUND_CEILING, ROUND_DOWN, Decimal
 from functools import lru_cache
 import json
 import os
@@ -30,8 +30,9 @@ from agent_memory_eval.recording.assets import asset_text
 from agent_memory_eval.recording.journal import safe_path
 from agent_memory_eval.runner.task_start import FORMAT as START_FORMAT
 from agent_memory_eval.runner.tau2_baseline import build_baseline_orchestrator, native_config
+from agent_memory_eval.study.cohort import check_through_stage, is_cohort
 from agent_memory_eval.study.orchestrator import run_stages
-from agent_memory_eval.study.plan import arm_name, conditions, content_text, model_profile, plan_digest, require_declared_models
+from agent_memory_eval.study.plan import TRANSFER_FORMAT, arm_name, conditions, content_text, model_profile, plan_digest, require_declared_models
 from agent_memory_eval.study.records import fixed, read, sealed_rows, shard_seal, source_from
 
 APPROVAL = "agent-memory-study-approval/v1"
@@ -157,7 +158,11 @@ def study_design(cfg, case, stage, source=None):
             design["delivery_arms"][arm]["tool_descriptions"] = descriptions
     if "donor" in case:
         for arm, delivery in design["delivery_arms"].items():
-            delivery["bank_contents"] = case["contents"][arm]
+            scope = case["contents"][arm]
+            if "pool_sources" in case:
+                delivery.update(pool=scope, source_tasks=[case["task_id"]] if scope == "own" else case["pool_sources"])
+            else:
+                delivery["bank_contents"] = scope
     if stage == "solve" and "interrupted_readers" in case:
         forms = {p["writer"] for p in design["delivery_arms"].values()}
         design["writing"] = dict(cfg["writing"], lines={k: v for k, v in cfg["writing"]["lines"].items() if k in forms})
@@ -207,6 +212,16 @@ def customer_tool_stop(folder, case, profile, design, identity, models):
                 customer_response_sha256=finish["response_ref"]["sha256"])
 
 
+def checked_input_stop(folder, case, close, rows, profile, design, identity, models):
+    invalid = {"FIRST_PASS_MISMATCH", "TASK_START_MISMATCH"}
+    codes = {(r.get("result") or {}).get("error_code") for r in rows}
+    if not codes & invalid and close.get("stop_reason") not in {s.lower() for s in invalid}:
+        return None
+    if profile["stage"] == "source" and codes == {"TASK_START_MISMATCH"}:
+        return customer_tool_stop(folder, case, profile, design, identity, models)
+    raise ContractError("A consultation's first input differs from its first pass")
+
+
 def bank_shard(args):
     common, case, stage_name, grant = args
     with stage_lease(Path(common["output"]) / ("task-" + case["task"])):
@@ -237,6 +252,10 @@ def _bank_shard(common, case, stage_name, grant):
                 customer_opening_sha256=case["customer_opening_sha256"], instruction_sha256=cfg["delivery_instruction"]["sha256"],
                 episode_cap_usd=cfg["episode_cap_usd"], http_timeout_seconds=cfg["http_timeout_seconds"],
                 task_start_mode=cfg["task_start_mode"])
+    if case.get("banking_nl_assertion_judge"):
+        spec["banking_nl_assertion_judge"] = True
+    if cfg.get("grade_native_step_cap"):
+        spec["grade_native_step_cap"] = True
     if "query_tool_descriptions" in cfg and stage != TARGET_NO_MEMORY:
         spec["query_tool_descriptions"] = cfg["query_tool_descriptions"]
     source = None
@@ -278,15 +297,24 @@ def _bank_shard(common, case, stage_name, grant):
         if donor_import:
             require((source.source_run_id, source.source_log_sha256) == (donor_import["run_id"], donor_import["log_sha256"]),
                     "Imported transfer donor changed")
-        spec["donor"] = dict(task_id=donor["task_id"], run_id=source.source_run_id,
-                             log_sha256=source.source_log_sha256, public_context_sha256=source.public_context_sha256)
+        if "pool_sources" in case:
+            require(donor["task_id"] == tid and source.source_run_id == spec["source"]["run_id"]
+                    and source.source_log_sha256 == spec["source"]["log_sha256"],
+                    "Cohort writer and opening must come from the same first pass")
+            spec["cohort"] = dict(sources=case["pool_sources"])
+        else:
+            spec["donor"] = dict(task_id=donor["task_id"], run_id=source.source_run_id,
+                                 log_sha256=source.source_log_sha256, public_context_sha256=source.public_context_sha256)
         plan["sources"] = {donor["task_id"]: source}
     design = study_design(cfg, case, stage, source)
     jobs = study_jobs(case, stage)
     profile = shard_profile(cfg, case, stage, grant, jobs)
+    if "pool_sources" in case:
+        from agent_memory_eval.study.adapters.tau_cohort import bind_cohort_pools
+        bind_cohort_pools(design, plan, case, cfg["cohort_catalog"])
     if not (dest / "completion.json").exists():
         bindings = None
-        if stage == "solve":
+        if stage == "solve" and "pool_sources" not in case:
             archived = case.get("imported_writer_stage")
             require(bool(archived) == ("interrupted_readers" in case), "A retried reader uses its original writer stage")
             if archived:
@@ -307,7 +335,7 @@ def _bank_shard(common, case, stage_name, grant):
                     writer = bindings[1][1, donor["task_id"], job["arm"]]
                     require((old["index"], old["writer"], old["snapshot"]) == (job["index"], writer["run_id"],
                             writer["result"]["snapshot_id"]), "A retried slot has another assignment or memory")
-        if stage != "write" and common.get("judge") is not None:
+        if stage != "write" and common.get("judge") is not None and case.get("banking_nl_assertion_judge", True):
             plan["grader"] = judge_config(cfg), common["judge"]
         plan.update(jobs=jobs, matched_trial=spec, summary=dict(native_sha256=case["native_sha256"],
                     jobs_sha256=design["allocation"]["jobs_sha256"]))
@@ -316,16 +344,14 @@ def _bank_shard(common, case, stage_name, grant):
                                    reserve_uncertain_transport=True), guard, dict(models, grader=common.get("judge")))
         execute_prepared(profile, workspace, dest, identity, design, plan, models, guard, imported_writers=bindings,
                          close_cost=reserve)
-    _, ctl, rows = sealed_rows(dest)
+    close, ctl, rows = sealed_rows(dest)
     require(ctl["profile"] == profile and ctl["design"] == design and ctl["implementation"] == identity
             and endpoint_terms(ctl["model_catalog_entries"]) == endpoint_terms(models)
             and len(rows) == len(jobs) and all(all(r[k] == v for k, v in j.items()) for r, j in zip(rows, jobs)),
             "The sealed shard does not match its registration")
-    codes = {r.get("result", {}).get("error_code") for r in rows}
-    if stage == "source" and codes == {"TASK_START_MISMATCH"}:
-        fixed(task_dir / "customer-opening-stop.json", customer_tool_stop(dest, case, profile, design, identity, models))
-    elif codes & {"FIRST_PASS_MISMATCH", "TASK_START_MISMATCH"}:
-        raise ContractError("A consultation's first input differs from its first pass")
+    stop = checked_input_stop(dest, case, close, rows, profile, design, identity, models)
+    if stop:
+        fixed(task_dir / "customer-opening-stop.json", stop)
 
 
 def approval_for(plan, record, *, max_usd, user_authorization):
@@ -403,7 +429,8 @@ class Tau2Study:
             error = next(Draft202012Validator(schema).iter_errors(cfg["writing"]), None)
             require(error is None, f"Invalid writing policy: {error.message if error else ''}")
         queries = {name: r["tool_descriptions"] for name, r in readers.items() if "tool_descriptions" in r}
-        if len(queries) > 1:
+        if len(queries) > 1 or queries and any(r["read_mode"] == "on_demand" and "tool_descriptions" not in r
+                                               for r in readers.values()):
             cfg["query_tools_by_arm"] = {arm_name(rep, name): queries[name] for rep, name in pairs if name in queries}
         elif queries:
             cfg["query_tool_descriptions"] = next(iter(queries.values()))
@@ -415,12 +442,24 @@ class Tau2Study:
             conn["benchmark"]["retrieval_config"] = spec["retrieval"]
         endpoints = read_json(asset_text(root, cfg["endpoints"]).encode())["models"]
         roles = ("worker", "user_simulator")
-        cfg["expected_endpoint_terms"] = {r: cfg["endpoint_terms"][r] for r in (*roles, *(("grader",) if spec["judge"] else ()))}
+        if "nl_assertion_judge" in setup:
+            require(self.name == "tau-banking" and plan["format"] == TRANSFER_FORMAT and is_cohort(plan)
+                    and setup["nl_assertion_judge"] == "when_active",
+                    "The full banking judge setup requires a registered own/mixed cohort")
+            modules_for(str(workspace))
+            from tau2.domains.banking_knowledge.environment import get_tasks
+            requested = set(plan["benchmark"]["tasks"])
+            cfg["banking_nl_assertion_tasks"] = [
+                t.id for t in get_tasks() if t.id in requested and "NL_ASSERTION" in t.evaluation_criteria.reward_basis
+                and t.evaluation_criteria.nl_assertions
+            ]
+        with_judge = spec["judge"] or bool(cfg.get("banking_nl_assertion_tasks"))
+        cfg["expected_endpoint_terms"] = {r: cfg["endpoint_terms"][r] for r in (*roles, *(("grader",) if with_judge else ()))}
         cfg["expected_model_revisions"] = {r: endpoints[r]["canonical_slug"] for r in roles}
         declared = model_profile(plan, root)
         if declared is not None:
             revisions = dict(cfg["expected_model_revisions"])
-            if spec["judge"]:
+            if with_judge:
                 revisions["grader"] = cfg["judge"]["canonical_slug"]
                 require(declared.get("judge") == cfg["judge"], "Declared judge differs from the native judge setup")
             require(declared.get("connection") == cfg["connection"]
@@ -451,8 +490,9 @@ class Tau2Study:
                 "Runtime task differs from the registered selection or grading")
         task_data = task.model_dump(mode="json")
         orch, native = build_baseline_orchestrator(conf, task_data)
+        active_assertions = tid in cfg.get("banking_nl_assertion_tasks", ())
         control = native_control(orch, native, conf, cfg["limits"], cfg["http_timeout_seconds"],
-                                 judge_config(cfg) if self.spec["judge"] else None)
+                                 judge_config(cfg) if self.spec["judge"] or active_assertions else None)
         opening = opening_hash(orch, role_settings(control)["user_simulator"], modules[2])
         names = {t.name for t in orch.agent.tools}
         require(set(cfg.get("transfer_tools", {}).get(tid, [])) <= names, "Target decision names an unavailable native tool")
@@ -461,6 +501,8 @@ class Tau2Study:
         native_case = dict(native_sha256=digest(canonical(control)), task_sha256=control["task_sha256"],
                            customer_opening_sha256=opening, initial_db=control["initial_db"],
                            official_criteria_sha256=digest(canonical(task.evaluation_criteria.model_dump(mode="json"))))
+        if "banking_nl_assertion_tasks" in cfg:
+            native_case["banking_nl_assertion_judge"] = active_assertions
         if "initialized_databases" in control:  # Tasks that fill their databases before the first turn.
             observed = dict(agent=orch.environment.get_db_hash(), user=orch.environment.get_user_db_hash())
             require(observed == control["initialized_databases"], "Native opening differs from the initialized databases")
@@ -537,8 +579,10 @@ class Tau2Study:
             require(tid in population and tid in allowed, f"Task {tid} is not in the {self.name} setup's split")
             task = population[tid]
             basis = {r.value for r in task.evaluation_criteria.reward_basis}
-            require(basis in spec["basis"] and (spec["nl_assertions"] or not task.evaluation_criteria.nl_assertions)
-                    and greeting_start(task.initial_state), f"Task {tid} has unregistered grading or an initial action")
+            supported = basis in spec["basis"] and (spec["nl_assertions"] or not task.evaluation_criteria.nl_assertions)
+            if tid in cfg.get("banking_nl_assertion_tasks", ()):
+                supported = basis == {"DB", "NL_ASSERTION"} and bool(task.evaluation_criteria.nl_assertions)
+            require(supported and greeting_start(task.initial_state), f"Task {tid} has unregistered grading or an initial action")
             native, data = self._native_case(cfg, conn, modules, task)
             people = identities.get(tid, set())
             for draw in range(1, plan["first_pass"]["draws"] + 1):
@@ -582,7 +626,7 @@ class Tau2Study:
         cfg["registration_sha256"] = digest(canonical(record))
         return dict(cfg=cfg, conn=conn, cases=cases, tasks=tasks, record=record)
 
-    def _budget_check(self, plan, cfg, cases):
+    def _budget_check(self, plan, cfg, cases, *, approved=None):
         """Each shard's grant must cover the largest single-request reservation twice, or requests stop mid-episode."""
         terms = cfg["expected_endpoint_terms"]
         def reserve(role, input_bytes, output_tokens):
@@ -593,12 +637,30 @@ class Tau2Study:
         if "grader" in terms:
             judge = cfg["judge"]
             largest = max(largest, reserve("grader", judge["max_input_bytes"], judge["parameters"]["max_completion_tokens"]))
-        shards = max(1, min(cfg["max_concurrent"], len([c for c in cases if c["scheduled_stages"]]) or 1))
-        grant = Decimal(plan["budget"]["max_usd"]) / shards
+        if is_cohort(plan) or approved is not None:
+            wave = max((sum(stage in c["scheduled_stages"] for c in cases)
+                        for stage in ("source", "write", *cfg["solve_stages"])), default=0)
+        else:
+            wave = sum(bool(c["scheduled_stages"]) for c in cases)
+        shards = max(1, min(cfg["max_concurrent"], wave))
+        ceiling = Decimal(plan["budget"]["max_usd"]) if approved is None else approved
+        grant = ceiling / shards
+        if is_cohort(plan) and approved is None and ceiling == 0:
+            minimum = (2 * largest).quantize(Decimal("0.000001"), rounding=ROUND_CEILING)
+            return dict(largest_request_reservation_usd=f"{largest:.6f}", first_wave_shard_grant_usd="0.000000",
+                        minimum_shard_grant_usd=str(minimum), funding="pending")
+        if approved is not None or is_cohort(plan):
+            grant = grant.quantize(Decimal("0.000001"), rounding=ROUND_DOWN)
         require(grant >= 2 * largest, f"Budget leaves each shard less than twice the largest request reservation "
                                       f"(${largest:.4f} per request, ${grant:.4f} per shard). Raise budget.max_usd or lower "
                                       f"limits.max_concurrent.")
         return dict(largest_request_reservation_usd=f"{largest:.6f}", first_wave_shard_grant_usd=f"{grant:.6f}")
+
+    def check_approval_budget(self, plan, resolved, max_usd):
+        from agent_memory_eval.study.followup_budget import approval_amount
+        amount = approval_amount(max_usd)
+        require(amount <= Decimal(plan["budget"]["max_usd"]), "Approval exceeds the registered spending ceiling")
+        return self._budget_check(plan, resolved["cfg"], resolved["cases"], approved=amount)
 
     def _admission(self, cfg):
         def admit(root, stage, case):
@@ -625,7 +687,7 @@ class Tau2Study:
             task_dir = root / ("task-" + case["task"])
             if not (task_dir / latest / "completion.json").is_file():
                 continue
-            _, _, rows = sealed_rows(task_dir / latest)
+            _, ctl, rows = sealed_rows(task_dir / latest)
             failed = [r for r in rows if r["status"] == "error" and (r.get("result") or {}).get("official_success") is None
                       and (r.get("result") or {}).get("error_code") in codes]
             if not failed:
@@ -637,6 +699,8 @@ class Tau2Study:
             for r in failed:
                 writer = writers[case["arm_writer"][r["arm"]]]
                 readers[r["arm"]] = dict(index=r["index"], writer=writer["run_id"], snapshot=writer["result"]["snapshot_id"])
+                if "pool_sources" in case:
+                    readers[r["arm"]]["sources_sha256"] = ctl["design"]["delivery_arms"][r["arm"]]["sources_sha256"]
             retry.append(dict(case, scheduled_stages=[f"{stage}-retry-{attempt}"], interrupted_readers=readers,
                               imported_writer_stage=dict(directory=str(write_dir.relative_to(root.parent)),
                                                          seal=shard_seal(write_dir),
@@ -664,12 +728,14 @@ class Tau2Study:
                 yield (f"{stage}-retry-{attempt}", f"{stage}-retry-{attempt}", retry)
 
     def run(self, plan, workspace, root, *, approval, identity=None, model_resolver=None, pool_factory=None,
-            sleep=time.sleep, progress=None):
+            sleep=time.sleep, progress=None, through_stage=None):
         from agent_memory_eval.reproduction.freeze import implementation_identity
+        check_through_stage(plan, through_stage)
         require_declared_models(plan)
         workspace, root = Path(workspace), Path(root)
         resolved = self.resolve(plan, workspace, root)
         record, cfg = resolved["record"], resolved["cfg"]
+        self.check_approval_budget(plan, resolved, approval.get("max_usd"))
         require(approval.get("format") == APPROVAL and approval.get("plan_sha256") == plan_digest(plan)
                 and approval.get("resolved_sha256") == digest(canonical(record)) and approval.get("assigned") == record["assigned"]
                 and Decimal(approval["max_usd"]) <= Decimal(plan["budget"]["max_usd"]) and approval.get("user_authorization"),
@@ -689,9 +755,22 @@ class Tau2Study:
                             preflight=record, endpoint_terms=terms, approval=approval)
         common = dict(workspace=str(workspace), output=str(run_root), cfg=cfg, conn=resolved["conn"], identity=identity,
                       models=models, judge=judge, tasks=resolved["tasks"])
+
+        def verify_sealed(case, stage, grant):
+            folder = run_root / ("task-" + case["task"]) / stage
+            close, ctl, rows = sealed_rows(folder)
+            kind = cfg["stage_kinds"][stage]
+            # Only the first-pass customer-tool exception needs a reconstructed registration.
+            profile = shard_profile(cfg, case, kind, grant, rows)
+            design = study_design(cfg, case, "source") if kind == "source" else ctl["design"]
+            stop = checked_input_stop(folder, case, close, rows, profile, design, identity, models)
+            if stop:
+                fixed(folder.parent / "customer-opening-stop.json", stop)
+
         return run_stages(run_root, registration, self._groups(run_root, plan, cfg, resolved["cases"], sleep),
                           (bank_shard, common), total_usd_limit=approval["max_usd"], max_concurrent=cfg["max_concurrent"],
-                          admission=self._admission(cfg), pool_factory=pool_factory, progress=progress)
+                          admission=self._admission(cfg), verify_sealed=verify_sealed, pool_factory=pool_factory,
+                          progress=progress, through_stage=through_stage)
 
     def _case_rows(self, workspace, run_root, case, origin, label, attempt_base, unstarted):
         """Outcome rows of one case: its first pass, then every solve stage and retry in order."""

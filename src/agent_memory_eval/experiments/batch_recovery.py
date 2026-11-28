@@ -59,15 +59,6 @@ def _restore_result(folder, row):
     if row["status"] not in {"started", "interrupted"}:
         raise ContractError("Terminal allocation has no verifiable journal or checkpoint")
     pending = scan["pending_requests"] if scan is not None else []
-    # A start was durably recorded before transmission. Its billing is unknown until a return is committed.
-    for e in events:
-        pay = e["payload"]
-        if e["type"] == "model.request_started" and pay["request_id"] in pending:
-            cell = billing.setdefault(pay["actor_role"], dict(requests=0, http_calls=0, total_tokens=0,
-                                                              reported_usd="0", unknown_count=0))
-            cell["requests"] += 1
-            cell["http_calls"] += 1
-            cell["unknown_count"] += 1
     result = dict(run_id=row["run_id"], status="interrupted", error_code="CONTROLLER_INTERRUPTED",
                   billing_by_role=billing, partial_log_sha256=checksum, pending_request_ids=pending,
                   unknown_cost=bool(scan is None or pending or scan["tail_bytes"]

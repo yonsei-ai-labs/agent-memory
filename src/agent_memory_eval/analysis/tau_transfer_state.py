@@ -16,30 +16,36 @@ ENTITIES = {"airline": ("reservations", "reservation_id"), "retail": ("orders", 
 ITEM_CHANGES = {"modify_pending_order_items", "exchange_delivered_order_items"}
 
 
-def unmeasured_state(domain, reason):
-    if domain is not None and domain not in ENTITIES:
+def unmeasured_state(domain, reason, *, cohort=False):
+    if domain is not None and domain not in ENTITIES and not (cohort and domain == "banking_knowledge"):
         return dict(status="not_applicable", reason="no_order_or_reservation_comparison")
     return dict(status="unavailable", reason=reason)
 
 
-def _call_receipts(calls, messages, id_field):
+def _call_receipts(calls, messages, id_field, *, bank=False):
     """Bind wire calls to native messages by actor, ID, name and arguments, including incomplete runs."""
+    from agent_memory_eval.adapters.banking_business import decoded
+
+    def key(call_id, name, arguments):
+        return call_id, name, canonical(decoded(arguments) if bank else arguments)
+
     native, returns = defaultdict(deque), defaultdict(list)
     for index, msg in enumerate(messages):
         if msg["role"] == "assistant":
             for offset, call in enumerate(msg.get("tool_calls") or [], 1):
                 if call.get("requestor", "assistant") == "assistant":
-                    key = call["id"], call["name"], canonical(call["arguments"])
-                    native[key].append((index, index + offset))
+                    native[key(call["id"], call["name"], call["arguments"])].append((index, index + offset, call["arguments"]))
         elif msg["role"] == "tool" and msg.get("requestor", "assistant") == "assistant":
             returns[msg["id"]].append((index, msg))
     for call in calls:
         call["native_call_index"] = None
         call["receipt"] = dict(status="native_call_unavailable")
-        key = call["call_id"], call["name"], canonical(call["arguments"])
-        if not call["arguments_valid"] or not native[key]:
+        recorded = native[key(call["call_id"], call["name"], call["arguments"])]
+        if not call["arguments_valid"] or not recorded:
             continue
-        call["native_call_index"], next_index = native[key].popleft()
+        call["native_call_index"], next_index, native_args = recorded.popleft()
+        if bank and native_args != call["arguments"]:
+            call["native_arguments"] = native_args
         matches = returns[call["call_id"]]
         adjacent = [r for r in matches if r[0] == next_index]
         # A historical partial transcript can have an inverted timestamp. A unique ID still binds the return.
@@ -52,7 +58,7 @@ def _call_receipts(calls, messages, id_field):
         status = "returned"
         if reply.get("execution_status") == "rejected":
             status = "rejected_before_execution"
-        elif reply.get("error"):
+        elif reply.get("error") or (bank and str(reply.get("content")).strip().casefold().startswith(("error:", "failed to "))):
             status = "reported_error"
         receipt = dict(status=status, native_reply_index=index, reply_sha256=digest(canonical(reply)),
                        execution_status=reply.get("execution_status"), error=reply.get("error"))
@@ -76,6 +82,20 @@ def _replacement_pairs(args):
             and all(isinstance(item, str) for item in (*old, *new))):
         return None
     return Counter(zip(old, new))
+
+
+def registered_arguments_match(operation, observed, required):
+    """Check preregistered fields. An ordered old/new pair must remain together if items are reordered."""
+    if operation == "call_discoverable_agent_tool":
+        from agent_memory_eval.adapters.banking_business import decoded
+        observed, required = decoded(observed), decoded(required)
+    keys = required.keys()
+    if operation in ITEM_CHANGES and {"item_ids", "new_item_ids"} <= keys:
+        pairs = _replacement_pairs(required)
+        if pairs is None or _replacement_pairs(observed) != pairs:
+            return False
+        keys = keys - {"item_ids", "new_item_ids"}
+    return all(k in observed and canonical(observed[k]) == canonical(required[k]) for k in keys)
 
 
 def compare_reference_call(call, action):
@@ -119,7 +139,12 @@ def _native_context(workspace, native_bytes):
     loaded = pin_language_artifacts(config, update=False)
     task, = select_run_tasks(config, loaded)
     language = resolve_task(loaded, task, config.seed or 0)
-    options = language_environment_kwargs(loaded)
+    if config.domain == "banking_knowledge":
+        from tau2.runner.build import _build_env_kwargs
+        require(config.retrieval_config == "grep_only", "Expected the registered offline banking retrieval variant")
+        options = _build_env_kwargs(config, task, language_context=language)
+    else:
+        options = language_environment_kwargs(loaded)
     initial = registry.get_env_constructor(config.domain)(**options)
     return config, task, language, options, (initial.get_db_hash(), initial.get_user_db_hash())
 
@@ -131,7 +156,7 @@ def _reference_entities(task, rule, domain):
     ids = sorted({a.arguments[id_field] for a in actions if isinstance(a.arguments.get(id_field), str)})
     if registered_id is not None:
         ids = [registered_id]
-    references = [a for a in actions if a.requestor == "assistant" and a.name in rule["tools"]
+    references = [a for a in actions if a.requestor == "assistant" and a.name in rule.get("tools", ())
                   and (registered_id is None or a.arguments.get(id_field) == registered_id)]
     return table, ids, references
 
@@ -151,7 +176,7 @@ def _entity_fields(table, key, observed, reference):
                 different_fields=list(differences), field_differences=differences)
 
 
-def _replay(log, report, native, control, context):
+def _replay(log, report, native, control, context, *, inspect_environment=None):
     from tau2.data_model.simulation import SimulationRun
     from tau2.evaluator.evaluator import EvaluationType, evaluate_simulation
     from tau2.evaluator.evaluator_env import EnvironmentEvaluator
@@ -187,6 +212,8 @@ def _replay(log, report, native, control, context):
     def retain_environments(environment_constructor, **kwargs):
         def capture(**env_kwargs):
             env = environment_constructor(**env_kwargs)
+            if inspect_environment is not None:
+                inspect_environment(env, predicted="solo_mode" in env_kwargs)
             environments.append(env)
             return env
         return evaluate_environment(capture, **kwargs)
@@ -202,6 +229,25 @@ def _replay(log, report, native, control, context):
     return environments, checksum, recorded
 
 
+def premature_state(log, report, native, control, context, evidence):
+    """Verify the native zero for a capped consultation before any outcome criteria were evaluated."""
+    if report["termination_reason"] in {"agent_stop", "user_stop"}:
+        return None
+    states, checksum, requests = _replay(log, report, native, control, context)
+    reward = report["reward_info"]
+    require(not states and not requests and reward["reward"] == 0 and reward["reward_basis"] is None
+            and reward.get("db_check") is None and reward.get("action_checks") is None,
+            "Premature native grade contains an evaluated state or action criterion")
+    status = evidence["registered_calls_status"]
+    return dict(evidence, status="not_applicable", reason="premature_termination_before_native_state_comparison",
+                termination_reason=report["termination_reason"], declared_reward_basis=[
+                    basis.value for basis in context[1].evaluation_criteria.reward_basis],
+                official_reward_basis=None, official_db_match=None, diagnostic_db_match=None,
+                registered_calls_status="no_call_before_termination" if status == "no_call" else status,
+                replayed_reward_sha256=checksum, archived_judge_requests=requests,
+                recorded_final_db_sha256=native["final_db_hash"])
+
+
 def state_diagnostics(log, row, transfer, report, calls):
     """Read registered calls from the worker wire and the final DB/grade only from native analyst receipts."""
     result = row["result"]
@@ -211,24 +257,25 @@ def state_diagnostics(log, row, transfer, report, calls):
         "partial_trajectory_ref", "native_report_ref", "before_grade_ref", "final_db_hash"
     )), "Native state receipt differs from the allocation")
     domain = transfer.get("domain")
+    bank = domain == "banking_knowledge" and transfer.get("cohort", False)
     evidence_ref = native.get("native_report_ref") or native.get("partial_trajectory_ref")
     require(report is None or evidence_ref == result["report_ref"], "Different official and trajectory receipts")
     messages = report["messages"] if report is not None else []
     if report is None and evidence_ref:
         raw = log.blobs.get(evidence_ref)
         messages = raw if isinstance(raw, list) else raw["messages"]
-    _call_receipts(calls, messages, ENTITIES.get(domain, (None, None))[1])
+    _call_receipts(calls, messages, ENTITIES.get(domain, (None, None))[1], bank=bank)
     evidence = dict(trajectory_sha256=evidence_ref["sha256"] if evidence_ref else None,
                     registered_calls_status="observed" if calls else "no_call" if report else "incomplete_no_call",
                     first_registered_call=calls[0] if calls else None, subsequent_registered_calls=calls[1:])
     workspace = transfer.get("workspace")
-    if domain not in ENTITIES:
+    if not bank and domain not in ENTITIES:
         return dict(unmeasured_state(domain, "domain_not_supplied"), **evidence)
     if workspace is None or not (Path(workspace) / "data/tau2-bench").is_dir() or find_spec("tau2") is None:
-        return dict(unmeasured_state(domain, "pinned_native_checkout_or_install_unavailable"), **evidence)
+        return dict(status="unavailable", reason="pinned_native_checkout_or_install_unavailable", **evidence)
     controls = [e for e in transitions if e.get("origin") == "matched_trial.native_control"]
     if not controls and report is None:
-        return dict(unmeasured_state(domain, "no_native_controls"), **evidence)
+        return dict(status="unavailable", reason="no_native_controls", **evidence)
     event, = controls
     control = log.blobs.get(event["control_ref"])
     require(transfer.get("native_sha256", event["control_ref"]["sha256"]) == event["control_ref"]["sha256"],
@@ -241,16 +288,23 @@ def state_diagnostics(log, row, transfer, report, calls):
     require(config.domain == domain and task.id == row["task_id"]
             and digest(canonical(task.model_dump(mode="json"))) == control["task_sha256"]
             and initial == (control["initial_db"], control["initial_user_db"]), "Native task or initial state changed")
-    table, ids, references = _reference_entities(task, transfer["rule"], domain)
     evidence.update(benchmark_revision=PIN, native_control_sha256=event["control_ref"]["sha256"],
-                    task_sha256=language.task_sha256, reference_actions=[
-                        dict(action_id=a.action_id, name=a.name, arguments=a.arguments) for a in references])
+                    task_sha256=language.task_sha256)
+    if bank:
+        from agent_memory_eval.analysis.banking_transfer_state import banking_state
+        return banking_state(log, report, native, control, context, transfer["rule"], calls, evidence, _replay)
+    table, ids, references = _reference_entities(task, transfer["rule"], domain)
+    evidence["reference_actions"] = [dict(action_id=a.action_id, name=a.name, arguments=a.arguments) for a in references]
     for call in calls:
         comparisons = [compare_reference_call(call, action) for action in references]
         call.update(reference_comparisons=comparisons,
                     matches_any_reference=any(c["matches"] for c in comparisons) if comparisons else None)
     if report is None:
         return dict(unmeasured_state(domain, "no_official_grade"), **evidence)
+    if transfer.get("cohort"):
+        premature = premature_state(log, report, native, control, context, evidence)
+        if premature is not None:
+            return premature
     if "DB" not in (report["reward_info"]["reward_basis"] or []):
         return dict(status="not_applicable", reason="no_native_db_criterion", **evidence)
     states, checksum, judge_requests = _replay(log, report, native, control, context)

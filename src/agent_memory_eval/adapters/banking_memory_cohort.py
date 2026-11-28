@@ -10,7 +10,7 @@ from agent_memory_eval.adapters.tau2 import native_modules, verify_checkout
 from agent_memory_eval.analysis.claim_evidence import paired_counts
 from agent_memory_eval.analysis.clustered_outcomes import clustered_contrast
 from agent_memory_eval.analysis.decision_attribution import compare_episodes, compare_steps
-from agent_memory_eval.analysis.efficiency import METRICS, customer_questions, episode_effort, paired_effort
+from agent_memory_eval.analysis.efficiency import END_SIGNALS, METRICS, customer_questions, episode_effort, paired_effort
 from agent_memory_eval.analysis.policy_evidence import PolicyEvidence, counted
 from agent_memory_eval.analysis.recorded_decisions import READS, RecordedDecisions, require
 from agent_memory_eval.analysis.tau2_attribution import recorded_episode
@@ -95,8 +95,9 @@ def observation(folder, row, *, writer=None, business=None, policy=None, transfe
                body_requests=0, body_requests_with_response=0, title_requests=0, reads={}, returns={})
     if transfer:
         from agent_memory_eval.analysis.tau_transfer_state import unmeasured_state
-        obs.update(first_worker_sha256=None, opening_sha256=None, opening_source_run=None,
-                   state_diagnostics=unmeasured_state(transfer.get("domain"), "no_sealed_episode"))
+        obs.update(first_worker_sha256=None, opening_sha256=None, opening_source_run=None, answered_worker=0,
+                   state_diagnostics=unmeasured_state(transfer.get("domain"), "no_sealed_episode",
+                                                     cohort=transfer.get("cohort", False)))
     if not obs["journal"]:
         require(result.get("official_success") is None, "Unsealed grade")
         return obs
@@ -104,6 +105,10 @@ def observation(folder, row, *, writer=None, business=None, policy=None, transfe
     require(log.start["fresh_session"], "Shared solver session")
     if row["arm"] == "no_memory":
         require(not log.items and not log.start["source_run_ids"], "Baseline received prior memory")
+    elif transfer and "pool" in transfer:
+        from agent_memory_eval.study.adapters.tau_cohort import verify_reader_pool
+        verify_reader_pool(log, row, transfer)
+        obs.update(writer=writer["run_id"], writer_snapshot=writer["snapshot_id"])
     else:
         items = [] if transfer and transfer["bank"] == "empty" else (writer or {}).get("items")
         assignment = log.state["assignments"][log.run]
@@ -141,7 +146,7 @@ def observation(folder, row, *, writer=None, business=None, policy=None, transfe
                 actions = []
                 for call in calls:
                     fn = call["function"]
-                    if fn["name"] not in transfer["rule"]["tools"]:
+                    if fn["name"] not in transfer["rule"].get("tools", ()):
                         continue
                     raw = fn["arguments"]
                     try:
@@ -149,10 +154,16 @@ def observation(folder, row, *, writer=None, business=None, policy=None, transfe
                     except (ValueError, UnicodeError):
                         args = None
                     action = dict(name=fn["name"], arguments=args if isinstance(args, dict) else {})
+                    if not isinstance(args, dict):
+                        action["arguments_valid"] = False
                     actions.append(action)
                     registered_calls.append(dict(action, request=req["request_id"], call_id=call["id"],
                                                  arguments_valid=isinstance(args, dict)))
-                steps.append(dict(request=req["request_id"], title="title" in fields, body="body" in fields, calls=actions))
+                message = log.reply(req)["message"]
+                public_response = (any(not c["function"]["name"].startswith("memory_") for c in calls)
+                                   or not calls and bool((message.get("content") or "").strip()))
+                steps.append(dict(request=req["request_id"], title="title" in fields, body="body" in fields,
+                                  calls=actions, public_response=public_response))
         private = [c["function"]["name"] for c in calls if c["function"]["name"] in READS]
         reads.update(private)
         choices.append(dict(status=end["status"], delivery=end["delivery_status"], reads=private))
@@ -161,6 +172,7 @@ def observation(folder, row, *, writer=None, business=None, policy=None, transfe
     if transfer:
         returned_fields = Counter(f for p in returns for item in p["items"] for f in item["fields"])
         obs.update(returned_titles=returned_fields["title"], returned_bodies=returned_fields["body"],
+                   answered_worker=len(steps),
                    unresolved_worker=sum(c["delivery"] == "unknown" for c in choices))
     grade, = [e["payload"] for e in log.of_type("outcome.scored")]
     require(grade["official_success"] is result["official_success"] and grade["grading_status"] == result["grading_status"]
@@ -177,18 +189,26 @@ def observation(folder, row, *, writer=None, business=None, policy=None, transfe
         from agent_memory_eval.analysis.efficiency import first_decision_effort, token_usage_by_role
         from agent_memory_eval.analysis.tau_transfer_state import state_diagnostics
         from agent_memory_eval.study.transfer import decision_evidence
-        obs["decision"] = decision_evidence(transfer["rule"], steps, completed=messages is not None)
+        normal_end = messages is not None and result.get("termination_reason") in {"user_stop", "agent_stop"}
+        obs["decision"] = decision_evidence(transfer["rule"], steps, completed=normal_end)
         obs["effort_from_first_worker"] = first_decision_effort(log.events.values(), token_breakdown=True)
         obs["token_usage_by_role"] = token_usage_by_role(log.events.values())
         obs["termination_reason"] = result.get("termination_reason") or result.get("error_code")
         obs["official_components"] = None
         if messages is not None:
             reward = official["reward_info"]
+            if transfer.get("cohort"):
+                obs["effort"]["assistant_turns"] = sum(
+                    m["role"] == "assistant" and not m.get("tool_calls") and bool((m.get("content") or "").strip())
+                    and m["content"].strip() not in END_SIGNALS for m in messages)
             obs["official_components"] = {k: reward.get(k) for k in (
                 "reward_basis", "reward_breakdown", "db_check", "communicate_checks", "nl_assertions", "action_checks"
             )}
         obs["state_diagnostics"] = state_diagnostics(log, row, transfer, official if messages is not None else None,
                                                      registered_calls)
+        if "pool" in transfer:
+            from agent_memory_eval.study.adapters.tau_cohort import reader_item_evidence
+            obs["item_exposure"], obs["memory_steps"] = reader_item_evidence(log, transfer["pool"], obs["decision"])
     if messages is not None:
         questions = customer_questions(messages)
         obs["customer_questions"] = questions

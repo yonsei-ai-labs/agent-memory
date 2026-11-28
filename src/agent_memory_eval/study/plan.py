@@ -7,6 +7,7 @@ from jsonschema import Draft202012Validator
 from agent_memory_eval.contracts.core import ContractError, canonical, digest, read_json
 from agent_memory_eval.contracts.validation import SCHEMA_ROOT
 from agent_memory_eval.recording.assets import asset_bytes, asset_text
+from agent_memory_eval.study.cohort import is_cohort
 
 FORMAT = "agent-memory-study-plan/v2"
 TRANSFER_FORMAT = "agent-memory-study-plan/v3"
@@ -45,8 +46,21 @@ def check_transfer(plan):
     pairs = plan["transfer"]["pairs"]
     origins = {p["source"] for p in pairs}
     targets = {p["target"] for p in pairs}
-    if origins & targets or origins | targets != set(plan["benchmark"]["tasks"]):
+    cohort = is_cohort(plan)
+    tasks = set(plan["benchmark"]["tasks"])
+    if cohort:
+        if len(tasks) < 2 or targets != tasks or any(p["source"] != p["target"] for p in pairs):
+            raise ContractError("Register one own-memory comparison for every task, with at least two tasks")
+        first = plan["first_pass"]
+        if first != {"draws": 1} or plan["transfer"].get("target_no_memory_repeats", 1) != 1:
+            raise ContractError("The own/mixed cohort uses one fresh first pass per task")
+        for p in pairs:
+            if not set(p.get("other_sources", [])) <= tasks - {p["target"]}:
+                raise ContractError("Extra memories must belong to other registered tasks")
+    elif origins & targets or origins | targets != tasks:
         raise ContractError("Register disjoint source and target tasks covering the task list")
+    elif any("other_sources" in p for p in pairs):
+        raise ContractError("Only the mixed bank accepts additional sources")
     if len({(p["source"], p["target"]) for p in pairs}) != len(pairs):
         raise ContractError("Duplicate transfer pair")
     if not set(plan["benchmark"].get("confirmation_tasks", [])) <= targets:
@@ -61,8 +75,12 @@ def check_transfer(plan):
         rule = pair["decision"]
         if ("customer_relation" in pair) != (bench != "bfcl-relevance"):
             raise ContractError("Declare the customer relationship for every τ² transfer pair")
+        if cohort and "customer_relation" in pair and pair["customer_relation"] != "same_customer":
+            raise ContractError("The cohort reader revisits its own first-pass task")
         if (bench == "bfcl-relevance") != (rule["kind"] == "call_presence"):
             raise ContractError("Use the native decision measure for this benchmark")
+        if rule["kind"] == "official_only" and not cohort:
+            raise ContractError("A donor-transfer study requires a registered decision")
         if rule["kind"] == "first_matching_tool":
             expected = rule["expected"]
             if (expected is not None and expected not in rule["tools"]) or (expected is None and rule.get("arguments")):
@@ -101,6 +119,13 @@ def check_plan(plan, root):
     if pairs and not ("writing" in plan and "reading" in plan):
         raise ContractError("Conditions need declared writing and reading policies")
     reps, readers = plan.get("writing", {}).get("representations", {}), plan.get("reading", {})
+    if is_cohort(plan) and set(pairs) != {(rep, reader) for rep in reps for reader in readers}:
+        raise ContractError("Assign every declared writing and delivery policy to every cohort task")
+    if is_cohort(plan) and plan["purpose"] == "confirmation":
+        queries = [r for r in readers.values() if r["read_mode"] == "on_demand"]
+        if (len(readers) != 3 or len(queries) != 2 or queries[0] == queries[1]
+                or plan["writing"].get("feedback") != "result_only"):
+            raise ContractError("Register preload, two distinct optional lookup policies and outcome-only writer feedback")
     if any(rep not in reps or reader not in readers for rep, reader in pairs):
         raise ContractError("Undeclared representation or reading in a condition")
     modes = [reader["read_mode"] for reader in readers.values()]

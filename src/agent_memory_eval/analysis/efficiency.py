@@ -3,10 +3,12 @@
 from collections import defaultdict
 from decimal import Decimal
 import json
+from statistics import median
 
 from agent_memory_eval.analysis.claim_evidence import paired_counts
 from agent_memory_eval.contracts.core import ContractError, read_json
 from agent_memory_eval.recording.assets import asset_text
+from agent_memory_eval.recording.batch import request_measurements
 from agent_memory_eval.recording.experience import _closed_run, _source
 from agent_memory_eval.recording.journal import safe_path
 
@@ -15,47 +17,40 @@ METRICS = ("customer_turns", "business_calls", "memory_read_calls", "http_calls"
 END_SIGNALS = {"###STOP###", "###TRANSFER###", "###OUT-OF-SCOPE###"}
 
 
-def request_effort_by_start(events, boundary, roles):
-    """Partition actual submitted solve requests by their start, keeping unknown usage missing."""
-    phase = {e["payload"]["request_id"]: ("setup" if e["event_seq"] < boundary else "solve")
-             for e in events if e["type"] == "model.request_started" and e["payload"]["actor_role"] in roles}
+def request_effort_by_start(events, boundary, roles, *, reservations=None):
+    """Count submitted or unresolved attempts by start phase, keeping unreported effort missing."""
     grouped = {"setup": [], "solve": []}
-    for e in events:
-        p = e["payload"]
-        if e["type"] == "model.request_finished" and p["request_id"] in phase and p["delivery_status"] != "not_submitted":
-            grouped[phase[p["request_id"]]].append(p)
+    for start, finish in request_measurements(events, reservations=reservations):
+        if start["payload"]["actor_role"] in roles and finish["delivery_status"] != "not_submitted":
+            phase = "setup" if start["event_seq"] < boundary else "solve"
+            grouped[phase].append(finish)
     result = {}
     for name, rows in grouped.items():
         tokens = [(p.get("usage") or {}).get("total_tokens") for p in rows]
         costs = [p["cost_usd"] if p["cost_status"] == "observed" else None for p in rows]
-        result[name] = dict(http_calls=len(rows), tokens=sum(tokens) if all(type(t) is int for t in tokens) else None,
+        result[name] = dict(http_calls=len(rows), tokens=sum(tokens) if all(type(t) is int and t >= 0 for t in tokens) else None,
                             usd=str(sum((Decimal(str(v)) for v in costs), Decimal(0))) if None not in costs else None)
     return result
 
 
-def token_usage_by_role(events, *, since=None, roles=None):
-    """Token details for submitted requests. An unreported component keeps its total missing."""
-    actors = {}
+def token_usage_by_role(events, *, since=None, roles=None, reservations=None):
+    """Token details for submitted or unresolved attempts. Missing components keep their totals missing."""
     result = {}
-    for event in events:
-        p = event["payload"]
-        if event["type"] == "model.request_started":
-            role = p["actor_role"]
-            if (since is None or event["event_seq"] >= since) and (roles is None or role in roles):
-                actors[p["request_id"]] = role
-        elif event["type"] == "model.request_finished" and p["delivery_status"] != "not_submitted":
-            role = actors.get(p["request_id"])
-            if role is None:
-                continue
-            cell = result.setdefault(role, dict(requests=0, input_tokens=0, output_tokens=0,
-                                                cached_input_tokens=0, reasoning_tokens=0))
-            cell["requests"] += 1
-            usage = p.get("usage") or {}
-            components = dict(input_tokens=usage.get("prompt_tokens"), output_tokens=usage.get("completion_tokens"),
-                              cached_input_tokens=(usage.get("prompt_tokens_details") or {}).get("cached_tokens"),
-                              reasoning_tokens=(usage.get("completion_tokens_details") or {}).get("reasoning_tokens"))
-            for name, value in components.items():
-                cell[name] = cell[name] + value if cell[name] is not None and type(value) is int and value >= 0 else None
+    for start, finish in request_measurements(events, reservations=reservations):
+        role = start["payload"]["actor_role"]
+        if (finish["delivery_status"] == "not_submitted" or (since is not None and start["event_seq"] < since)
+                or (roles is not None and role not in roles)):
+            continue
+        cell = result.setdefault(role, dict(requests=0, input_tokens=0, output_tokens=0,
+                                            cached_input_tokens=0, reasoning_tokens=0))
+        cell["requests"] += 1
+        usage = finish.get("usage") or {}
+        prompt, completion = usage.get("prompt_tokens_details"), usage.get("completion_tokens_details")
+        components = dict(input_tokens=usage.get("prompt_tokens"), output_tokens=usage.get("completion_tokens"),
+                          cached_input_tokens=prompt.get("cached_tokens") if isinstance(prompt, dict) else None,
+                          reasoning_tokens=completion.get("reasoning_tokens") if isinstance(completion, dict) else None)
+        for name, value in components.items():
+            cell[name] = cell[name] + value if cell[name] is not None and type(value) is int and value >= 0 else None
     return result
 
 
@@ -78,7 +73,7 @@ def combined_token_usage(measurements):
     return dict(measured=measured, missing=missing, by_role=totals)
 
 
-def first_decision_effort(events, *, token_breakdown=False):
+def first_decision_effort(events, *, token_breakdown=False, reservations=None):
     """Exclude setup, including generation of the first customer utterance, from both passes."""
     events = list(events)
     starts = [e["event_seq"] for e in events if e["type"] == "model.request_started"
@@ -86,10 +81,12 @@ def first_decision_effort(events, *, token_breakdown=False):
     if not starts:
         return None
     roles = {"worker", "user_simulator"}
-    solve = request_effort_by_start(events, min(starts), roles)["solve"]
+    if reservations is not None:
+        reservations = tuple(reservations)
+    solve = request_effort_by_start(events, min(starts), roles, reservations=reservations)["solve"]
     effort = dict(requests=solve["http_calls"], tokens=solve["tokens"], usd=solve["usd"])
     if token_breakdown:
-        effort["by_role"] = token_usage_by_role(events, since=min(starts), roles=roles)
+        effort["by_role"] = token_usage_by_role(events, since=min(starts), roles=roles, reservations=reservations)
     return effort
 
 
@@ -205,7 +202,7 @@ def archived_effort(source, workspace, grades):
     return archive
 
 
-def paired_effort(pairs, metrics=METRICS, *, include_transitions=False):
+def paired_effort(pairs, metrics=METRICS, *, include_transitions=False, summarize_differences=False):
     """Each pair contains (candidate success, reference success, candidate metrics, reference metrics)."""
     pairs = list(pairs)
     outcomes = paired_counts((a, b) for a, b, _, _ in pairs)
@@ -232,5 +229,10 @@ def paired_effort(pairs, metrics=METRICS, *, include_transitions=False):
                                                              if values and reference else None),
                                     lower=sum(a < b for a, b in values), equal=sum(a == b for a, b in values),
                                     higher=sum(a > b for a, b in values))
+            if summarize_differences:
+                differences = [a - b for a, b in values]
+                measures[metric].update(
+                    mean_paired_difference=str((candidate - reference) / len(values)) if values else None,
+                    median_paired_difference=str(median(differences)) if values else None)
         result[group] = dict(pairs=len(rows), metrics=measures)
     return result

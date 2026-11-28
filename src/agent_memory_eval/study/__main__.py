@@ -7,6 +7,7 @@ import sys
 
 from agent_memory_eval.contracts.validation import ROOT
 from agent_memory_eval.study.adapters import adapter_for
+from agent_memory_eval.study.cohort import is_cohort
 from agent_memory_eval.study.plan import conditions, load_plan, plan_digest, require_declared_models
 from agent_memory_eval.study.records import fixed, read
 from agent_memory_eval.study.scorecard import scorecard
@@ -32,12 +33,15 @@ def main(argv=None):
     parser.add_argument("--checkpoint", type=Path, help="Pinned local model checkpoint")
     parser.add_argument("--max-usd", help="Cumulative ceiling a person approved")
     parser.add_argument("--quote", help="The person's own words approving the ceiling")
+    parser.add_argument("--through-stage", choices=["source", "write"], help="Stop a cohort after its sources or writers")
     parser.add_argument("--tasks", help="Comma-separated task ids: score only these tasks (for example the confirmation set)")
     parser.add_argument("--save", action="store_true", help="Keep rows and scorecard under artifacts/studies/<plan id>/")
     parser.add_argument("--reviews", type=Path, help="Follow-up transcript labels keyed by public-turn hash")
     parser.add_argument("--review-packets", type=Path, help="Export public transcripts for blinded review to a new JSON file")
     args = parser.parse_args(argv)
     plan = load_plan(args.plan, ROOT)
+    if args.through_stage and (args.command not in {"run", "resume"} or not is_cohort(plan)):
+        parser.error("--through-stage requires run or resume with an own/mixed cohort")
     if args.command in {"authorize", "run", "resume"}:
         require_declared_models(plan)
     adapter = adapter_for(plan)
@@ -77,7 +81,10 @@ def main(argv=None):
             amount = approval_amount(args.max_usd)
             if not followup and amount > approval_amount(plan["budget"]["max_usd"]):
                 parser.error("The amount exceeds the registered plan ceiling")
-        record = adapter.resolve(plan, workspace, ROOT, **native_args)["record"]
+        resolved = adapter.resolve(plan, workspace, ROOT, **native_args)
+        if hasattr(adapter, "check_approval_budget"):
+            adapter.check_approval_budget(plan, resolved, args.max_usd)
+        record = resolved["record"]
         path = approval_path(plan)
         path.parent.mkdir(parents=True, exist_ok=True)
         grant = approval_for(plan, record, max_usd=args.max_usd, user_authorization=args.quote)
@@ -94,7 +101,8 @@ def main(argv=None):
                 grants = dict(approval=first, increases=extra)
             else:
                 grants = dict(approval=read(approval_path(plan)))
-            out = adapter.run(plan, workspace, ROOT, **grants, **native_args, progress=report_progress)
+            phase = dict(through_stage=args.through_stage) if args.through_stage else {}
+            out = adapter.run(plan, workspace, ROOT, **grants, **native_args, **phase, progress=report_progress)
         else:
             if not (args.checkout and args.model_python and args.checkpoint):
                 parser.error("A BFCL run needs the pinned checkout, the model interpreter and the checkpoint")
@@ -115,9 +123,14 @@ def main(argv=None):
                     parser.error(f"Tasks outside the plan: {sorted(unknown)}")
                 rows = [r for r in rows if r["task"] in tasks]
             out = scorecard(rows)
+            if is_cohort(plan):
+                from agent_memory_eval.study.registration_cost import registration_cost
+                out["registration_cost"] = registration_cost(plan, workspace)
         if args.save:
             out = dict(out, saved=save_analysis(ROOT, plan["id"], rows, out, tasks=tasks))
     print(json.dumps(out, ensure_ascii=False, indent=2))
+    if args.through_stage and out["budget_deferred"]:
+        raise SystemExit(1)
 
 
 if __name__ == "__main__":

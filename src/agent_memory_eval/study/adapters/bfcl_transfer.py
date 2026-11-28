@@ -1,18 +1,23 @@
 """Two-pass BFCL transfer on the registered hosted worker, with paired native target decisions."""
 
 from collections import Counter, defaultdict
+from dataclasses import asdict
+from datetime import UTC, datetime
 from decimal import Decimal
+from math import ceil
+import os
 from pathlib import Path
 import time
 
 from agent_memory_eval.adapters.bfcl_task_start import REVISION, open_relevance
 from agent_memory_eval.analysis.efficiency import first_decision_effort, token_usage_by_role
-from agent_memory_eval.analysis.recorded_decisions import require
+from agent_memory_eval.analysis.recorded_decisions import require, sealed_bytes
 from agent_memory_eval.analysis.requests import audit_requests
 from agent_memory_eval.analysis.selection import worker_choices
 from agent_memory_eval.contracts.core import MemoryPolicy, RunContext, canonical, digest, read_json
 from agent_memory_eval.experiments.batch_recovery import stage_lease
 from agent_memory_eval.experiments.forms_batch import endpoint_terms
+from agent_memory_eval.experiments.forms_supplement import cooldown_seconds
 from agent_memory_eval.memory.preparation import snapshot_items
 from agent_memory_eval.memory.writing import (
     REQUIRED_STORE_CONTRACT,
@@ -23,7 +28,7 @@ from agent_memory_eval.memory.writing import (
     writer_template,
     write_from_experience,
 )
-from agent_memory_eval.models.expense_ledger import ExpenseLedger
+from agent_memory_eval.models.expense_ledger import ExpenseLedger, read_run_reservations
 from agent_memory_eval.models.openrouter import (
     OpenRouterClient,
     ProviderError,
@@ -33,11 +38,13 @@ from agent_memory_eval.models.openrouter import (
     resolve_model,
 )
 from agent_memory_eval.recording.assets import asset_text
-from agent_memory_eval.recording.batch import usage_from_events
+from agent_memory_eval.recording.batch import request_measurements, usage_from_events
 from agent_memory_eval.recording.journal import BlobStore, Journal, read_experiment
 from agent_memory_eval.reproduction.freeze import implementation_identity
 from agent_memory_eval.runner.bfcl_relevance import grade_reply, hosted_tools, load_inputs, normalized_first, solve
 from agent_memory_eval.study.adapters.tau_banking import approval_for
+from agent_memory_eval.study.cohort import check_through_stage, condition_banks, is_cohort, pool_sources, source_components
+from agent_memory_eval.study.cohort_evidence import item_exposure
 from agent_memory_eval.study.followup_budget import approval_amount, register_grants, registration_freeze
 from agent_memory_eval.study.plan import (
     arm_name,
@@ -48,7 +55,7 @@ from agent_memory_eval.study.plan import (
     require_declared_models,
 )
 from agent_memory_eval.study.records import fixed, read
-from agent_memory_eval.study.transfer import allocation_rows, reader_arms
+from agent_memory_eval.study.transfer import allocation_rows
 
 
 def hosted_model(worker):
@@ -68,7 +75,7 @@ def schedule(plan):
             for pair in pairs:
                 for rep, reader in policies:
                     for n in range(1, plan["repeats"] + 1):
-                        for bank, arm in zip(("real", "empty"), reader_arms(arm_name(rep, reader))):
+                        for bank, arm in condition_banks(plan, arm_name(rep, reader)):
                             tasks.append(
                                 dict(
                                     source=source,
@@ -105,9 +112,100 @@ def last_run(scan, study, key):
     return key
 
 
-def completion(dest, groups, summary):
-    files = ["registration.json", "expenses.jsonl", *[f"{s}--{d}/log.jsonl" for s, d, _ in groups]]
+def once(journal, guard, key, stage, action):
+    """Recover only unsubmitted attempts and preserve every possibly charged request."""
+    study, run = journal.experiment_id, key
+    deferred_codes = {"STUDY_LIMIT", "OPENROUTER_API_KEY_MISSING"}
+    while run in journal.scan["starts"]:
+        events = run_events(journal.scan, run)
+        ended = terminal(events)
+        deferred = (ended and ended["termination_reason"] in deferred_codes) or any(
+            e["type"] == "runtime.error" and e["payload"].get("code") in deferred_codes for e in events
+        )
+        if run in guard.reserved_runs or (ended and not deferred):
+            return run, ended
+        run = run_key(study, run, "unsubmitted")
+    guard.stage, guard.run_id = stage, run
+    guard.unknown_cost = False  # Any unreconciled older charge stays fully reserved.
+    try:
+        result = action(run)
+        if isinstance(result, dict) and result.get("error_code") == "OPENROUTER_API_KEY_MISSING":
+            raise ProviderError("OPENROUTER_API_KEY_MISSING")
+    except ProviderError as exc:
+        if exc.code == "OPENROUTER_API_KEY_MISSING":
+            raise
+        if run in journal.scan["starts"] and not terminal(run_events(journal.scan, run)):
+            start = journal.scan["starts"][run]
+            ctx = RunContext(study, run, start["session_id"], start["condition_id"], "diagnostic", "solve", "observed")
+            journal.append([ctx.at("grade").event("outcome.scored", dict(
+                grading_status="not_available", official_success=None, official_score=None, official_artifact_ref=None,
+            ))])
+            journal.append([ctx.at("seal").event("run.ended", dict(
+                termination_reason=exc.code, grading_status="not_available", end_snapshot_id=None,
+            ))])
+    return run, terminal(run_events(journal.scan, run))
+
+
+def retry_delay(journal, run, minimum):
+    """Rebuild the retry deadline from this failed attempt's durable HTTP receipt, including after a restart."""
+    for event in reversed(run_events(journal.scan, run)):
+        payload = event["payload"]
+        if event["type"] == "model.request_finished" and payload["response_ref"]:
+            response = journal.blobs.get(payload["response_ref"])
+            receipt = response.get("error") if isinstance(response, dict) else None
+            if isinstance(receipt, dict):
+                received = datetime.fromisoformat(event["timestamp_utc"])
+                wait = cooldown_seconds(receipt, minimum, received)
+                return max(0, ceil(wait - (datetime.now(UTC) - received).total_seconds()))
+    return minimum
+
+
+def note_binding(note):
+    return {key: note[key] for key in ("source_task", "source_run", "writer_run", "snapshot")}
+
+
+def cohort_journals(groups, pools):
+    """Put tasks linked by any registered note in the same journal; disconnected pools share no state."""
+    components = source_components((target, sources) for (target, _), sources in pools.items())
+    directories = {}
+    for component in components:
+        name = "cohort" if len(components) == 1 else "cohort/" + component[0]
+        directories.update(dict.fromkeys(component, name))
+    journals = defaultdict(list)
+    for group in groups:
+        journals[directories[group[0]]].append(group)
+    return journals
+
+
+def completion(dest, journals, summary, *, cohort):
+    logs = [f"{name}/log.jsonl" for name in journals]
+    if cohort:
+        require(all((dest / log).is_file() for log in logs), "Completed BFCL cohort is missing a registered journal")
+    files = ["registration.json", "expenses.jsonl", *logs]
     return dict(summary=summary, files={f: digest((dest / f).read_bytes()) for f in files if (dest / f).is_file()})
+
+
+def cohort_checkpoint(dest, journals, stage, *, create=False):
+    """Later phases append to the same journals. Verify the previously committed byte prefixes."""
+    path = dest / f"through-{stage}.json"
+    names = {"registration.json", "expenses.jsonl", *(f"{name}/log.jsonl" for name in journals)}
+    if path.exists():
+        refs = read(path)
+        require(set(refs) == names, "BFCL phase checkpoint differs from its registered journals")
+        for name, ref in refs.items():
+            file = dest / name
+            if name == "expenses.jsonl" and not ref["bytes"] and not file.exists():
+                require(ref["sha256"] == digest(b""), "Invalid empty expense checkpoint")
+            else:
+                require(file.is_file(), f"BFCL phase checkpoint is missing {name}")
+                sealed_bytes(file, ref["sha256"], ref["bytes"])
+    elif create:
+        refs = {}
+        for name in names:
+            file = dest / name
+            raw = b"" if name == "expenses.jsonl" and not file.exists() else file.read_bytes()
+            refs[name] = dict(bytes=len(raw), sha256=digest(raw))
+        fixed(path, refs)
 
 
 def writer_instruction(plan, root, form):
@@ -115,16 +213,18 @@ def writer_instruction(plan, root, form):
     return content_text(root, writing["instruction"]) + "\n" + content_text(root, writing["representations"][form])
 
 
-def reader_config(cfg, plan, job, root):
+def reader_config(p, plan, job, root):
     reader = plan["reading"][job["reader"]]
     mode = reader["read_mode"]
     notice = content_text(root, reader["notice"]) if "notice" in reader else ""
-    return dict(
-        cfg, memory_notice_by_delivery={mode: notice}, read_tool_descriptions=reader.get("tool_descriptions")
-    ), mode
+    cfg = dict(p["cfg"], memory_notice_by_delivery={mode: notice}, read_tool_descriptions=reader.get("tool_descriptions"))
+    if is_cohort(plan):
+        cfg["read_page_size"] = len(p["pools"][job["target"], job["draw"]])
+    return cfg, mode
 
 
-def target_outcome(folder, evidence, run, cfg, mode, items, case, is_empty, expected_start, opening_ref):
+def target_outcome(folder, evidence, run, cfg, mode, items, case, is_empty, expected_start, opening_ref,
+                   reservations, *, bank_items=None, cohort=False):
     scan, _, _ = evidence
     events = run_events(scan, run)
     end = terminal(events)
@@ -134,6 +234,11 @@ def target_outcome(folder, evidence, run, cfg, mode, items, case, is_empty, expe
     require(blobs.get(scan["starts"][run]["payload"]["task_ref"]) == public["messages"][0],
             "BFCL run started on a different target question")
     choices = worker_choices(folder, run_id=run, evidence=evidence)["choices"]
+    if any(step["delivery"] == "pending" for step in choices):
+        deliveries = {start["payload"]["request_id"]: finish["delivery_status"]
+                      for start, finish in request_measurements(events, reservations=reservations)}
+        for step in choices:
+            step["delivery"] = deliveries[step["request_id"]]
     require(opening_ref or (not choices and not end), "Missing BFCL target opening")
     if opening_ref:
         require(blobs.get(opening_ref) == expected_start.record(), "Changed registered BFCL target opening")
@@ -168,15 +273,22 @@ def target_outcome(folder, evidence, run, cfg, mode, items, case, is_empty, expe
             "Target action disagrees with native BFCL grade",
         )
         decision = dict(correct=success, call=grade["any_call"])
-    elif choices and reason in {
-        "private_read_limit", "malformed_business_call", "mixed_private_business_response",
-        "unavailable_memory_tool", "WRITER_OUTPUT_TRUNCATED",
-    }:
+    historical_policy_errors = {"private_read_limit", "malformed_business_call", "mixed_private_business_response",
+                                "unavailable_memory_tool", "WRITER_OUTPUT_TRUNCATED"}
+    if not cohort and choices and reason in historical_policy_errors:
         decision = dict(correct=False, call=None)
     if decision is not None:
         decision.update(request=choices[-1]["request_id"], body_seen="body" in answered_fields,
                         title_seen="title" in answered_fields)
-    return dict(
+    business_calls = None
+    if any(step["status"] == "response" for step in choices) and all(
+        step["status"] == "response" or step["delivery"] == "not_submitted" for step in choices
+    ):
+        business_calls = sum(
+            call["function"]["name"] not in {"memory_get", "memory_list", "memory_store"}
+            for step in choices if step["status"] == "response" for call in step["response"].get("tool_calls") or []
+        )
+    result = dict(
         success=success,
         status="graded" if success is not None else "missing",
         decision=decision,
@@ -185,8 +297,9 @@ def target_outcome(folder, evidence, run, cfg, mode, items, case, is_empty, expe
         official_components=grade,
         opening_sha256=digest(expected_start.public_input) if opening_ref else None,
         first_worker_sha256=first_worker,
-        effort_from_first_worker=first_decision_effort(events, token_breakdown=True),
-        token_usage_by_role=token_usage_by_role(events),
+        business_calls=business_calls,
+        effort_from_first_worker=first_decision_effort(events, token_breakdown=True, reservations=reservations),
+        token_usage_by_role=token_usage_by_role(events, reservations=reservations),
         run=run,
         reads=dict(reads),
         evidence=dict(
@@ -197,35 +310,101 @@ def target_outcome(folder, evidence, run, cfg, mode, items, case, is_empty, expe
             returned_bodies=returned_fields["body"],
             unresolved_worker=sum(s["delivery"] in {"pending", "unknown"} for s in choices),
         ),
-        billing=usage_from_events(events),
+        billing=usage_from_events(events, reservations=reservations),
     )
+    if cohort:
+        policy_errors = historical_policy_errors | {"WRITER_INCOMPLETE_TOOL_CALLS", "incomplete_or_malformed_response"}
+        result["policy_failure"] = reason if choices and reason in policy_errors else None
+        result["evidence"]["answered_worker"] = sum(s["status"] == "response" for s in choices)
+    if bank_items is not None:
+        cutoff = decision["request"] if grade is not None else None
+        result["item_exposure"] = item_exposure(bank_items, choices, events, cutoff, contents=items, blobs=blobs)
+    return result
 
 
-def audited_reader(folder, evidence, run, job, cfg, mode, source_run, writer_run, case, is_empty, target_start):
+def audited_reader(folder, evidence, run, job, cfg, mode, notes, case, is_empty, target_start, reservations):
     scan, state, _ = evidence
-    head = scan["starts"][run]["payload"]
-    require(head["fresh_session"] and head["source_run_ids"] == [source_run, writer_run], "Wrong transfer session")
-    write_end = terminal(run_events(scan, writer_run))
-    require(write_end and write_end["termination_reason"] == "memory_write_completed", "Unsealed donor writer")
+    start = scan["starts"][run]
+    head = start["payload"]
+    parents = [parent for note in notes for parent in (note["source_run"], note["writer_run"])]
+    require(head["fresh_session"] and head["source_run_ids"] == parents, "Wrong transfer session")
+    cohort = job["bank"] in {"own", "mixed"}
+    origin = "bfcl.cohort_assignment" if cohort else "bfcl.transfer_assignment"
     events = run_events(scan, run)
-    assignments = [e["payload"] for e in events if e["payload"].get("origin") == "bfcl.transfer_assignment"]
+    assignments = [e["payload"] for e in events if e["payload"].get("origin") == origin]
     opening_ref = None
     if assignments:
         (assignment,) = assignments
-        require(
-            assignment["bank"] == job["bank"] and assignment["source_task"] == job["source"]
-            and assignment["donor_snapshot"] == write_end["end_snapshot_id"], "Changed donor or control",
-        )
+        require(assignment["bank"] == job["bank"], "Changed reader bank")
+        if cohort:
+            require(assignment["sources"] == [note_binding(note) for note in notes], "Changed registered cohort pool")
+        else:
+            require(assignment["source_task"] == job["source"] and assignment["donor_snapshot"] == notes[0]["snapshot"],
+                    "Changed donor or control")
         opening_ref = assignment["target_start_ref"]
     blobs = BlobStore(folder)
     items = snapshot_items(blobs, state, head["start_snapshot_id"])
-    expected = snapshot_items(blobs, state, write_end["end_snapshot_id"]) if job["bank"] == "real" else []
+    expected = [] if job["bank"] == "empty" else [item for note in notes for item in note["items"]]
     require(items == expected and (job["bank"] == "empty" or items), "Changed reader snapshot contents")
-    result = target_outcome(folder, evidence, run, cfg, mode, items, case, is_empty, target_start, opening_ref)
-    return dict(result, source_run=source_run, writer_run=writer_run, donor_snapshot=write_end["end_snapshot_id"])
+    bank_items = None
+    if cohort:
+        require(start["condition_id"] == job["condition"] and opening_ref, "Missing cohort assignment or condition")
+        bank = state["banks"][head["bank_id"]]
+        snapshot = state["snapshots"][head["start_snapshot_id"]]
+        require(bank["owner_run"] == run and bank["parent_snapshot"] == head["start_snapshot_id"]
+                and bank["policy"] == asdict(MemoryPolicy(True, "none", False, cfg["read_page_size"], read_mode=mode))
+                and bank["heads"] == bank["start_heads"] == snapshot["heads"]
+                and bank["order"] == bank["start_order"] == snapshot["order"],
+                "Cohort session bank or retrieval policy changed")
+        expected_snapshots = [note["snapshot"] for note in notes]
+        if len(expected_snapshots) == 1:
+            require(head["start_snapshot_id"] == expected_snapshots[0], "Own bank differs from its writer snapshot")
+        else:
+            require(snapshot["parent_snapshot_ids"] == expected_snapshots,
+                    "Mixed bank differs from its registered writer snapshots")
+        bank_items = [dict(note_binding(note), item_id=item["id"], version_id=item["version"])
+                      for note in notes for item in note["items"]]
+    result = target_outcome(folder, evidence, run, cfg, mode, items, case, is_empty, target_start, opening_ref,
+                            reservations, bank_items=bank_items, cohort=cohort)
+    own, = [note for note in notes if note["source_task"] == job["source"]]
+    return dict(result, source_run=own["source_run"], writer_run=own["writer_run"], donor_snapshot=own["snapshot"])
 
 
-def audited_baseline(folder, evidence, run, target, draw, index, p):
+def audited_writer(folder, evidence, plan, root, workspace, cfg, task, form, source, writer, end, reservations):
+    scan, state, _ = evidence
+    blobs = BlobStore(folder)
+    stored = state["memory_writes"][writer]
+    exp = read_public_experience(blobs, scan, stored["experience_ref"])
+    feedback = WriterFeedback(plan["writing"]["feedback"])
+    require(exp["source_run_id"] == source and scan["starts"][writer]["condition_id"] == form
+            and stored["feedback"]["level"] == feedback.level, "Wrong transfer writer")
+    template = writer_template(dict(model=cfg["model"], **cfg["wire_parameters"]),
+                               writer_instruction(plan, root, form), completion_contract=REQUIRED_STORE_CONTRACT)
+    template["messages"] = [template.pop("system"), *writer_inputs(blobs, scan, exp, feedback)]
+    events = run_events(scan, writer)
+    req = next(e["payload"] for e in events if e["type"] == "model.request_started")
+    require(blobs.get(req["request_ref"]) == template, "Writer saw inputs outside its registered donor")
+    snapshot = end["end_snapshot_id"]
+    manifest = state["snapshots"][snapshot]
+    bank = state["banks"][manifest["bank_id"]]
+    items = snapshot_items(blobs, state, snapshot)
+    stored_versions = {(e["payload"]["item_id"], e["payload"]["version_id"]): e["payload"]["body_ref"]
+                       for e in events if e["type"] == "memory.stored"}
+    require(bank["sealed"] and bank["owner_run"] == writer and bank["heads"] == manifest["heads"]
+            and len(items) == 1 and stored_versions.get((items[0]["id"], items[0]["version"])) ==
+            state["versions"][items[0]["version"]], "Writer snapshot lacks its sealed item version")
+    success = scan["events"][exp["outcome_event_id"]]["payload"]["official_success"]
+    return dict(
+        form=form, source_task=task, source_run=source, writer_run=writer, snapshot=snapshot, source_success=success,
+        feedback_success=success if feedback.level != "none" else None, items=items,
+        public_experience_ref=dict(path=str((folder / stored["experience_ref"]["path"]).relative_to(workspace)),
+                                   sha256=stored["experience_ref"]["sha256"]),
+        token_usage_by_role=token_usage_by_role(events, reservations=reservations.get(writer, [])),
+        source_token_usage_by_role=token_usage_by_role(run_events(scan, source), reservations=reservations.get(source, [])),
+    )
+
+
+def audited_baseline(folder, evidence, run, target, draw, index, p, reservations):
     scan, _, _ = evidence
     head = scan["starts"][run]
     events = run_events(scan, run)
@@ -240,7 +419,7 @@ def audited_baseline(folder, evidence, run, target, draw, index, p):
     (assignment,) = [e["payload"] for e in events if e["payload"].get("origin") == "bfcl.target_no_memory"]
     require(assignment["index"] == index and assignment["draw"] == draw, "Wrong target no-memory repetition")
     result = target_outcome(folder, evidence, run, p["cfg"], None, [], p["cases"][target], p["is_empty"],
-                            p["starts"][target], assignment["target_start_ref"])
+                            p["starts"][target], assignment["target_start_ref"], reservations, cohort=bool(p["pools"]))
     return dict(index=index, **result)
 
 
@@ -250,9 +429,86 @@ def target_rows(plan, attempts, **receipts):
         for solve in [row, *row["target_baselines"]]:
             solve.setdefault("opening_sha256", None)
             solve.setdefault("first_worker_sha256", None)
+            solve.setdefault("business_calls", None)
+            if is_cohort(plan):
+                solve.setdefault("policy_failure", None)
             solve["state_diagnostics"] = dict(status="not_applicable", reason="bfcl_relevance_has_no_database")
             solve["dialogue"] = dict(status="not_applicable", reason="single_native_question_without_customer_simulator")
     return rows
+
+
+def require_credentials():
+    if not os.environ.get("OPENROUTER_API_KEY", "").strip():
+        raise ProviderError("OPENROUTER_API_KEY_MISSING")
+
+
+def collect_source(journal, guard, plan, p, task, draw, client):
+    anchor = None
+    if is_cohort(plan):
+        anchor = dict(target_start=p["starts"][task], index=1, draw=draw, writer_source=True)
+    return once(
+        journal, guard, run_key(plan["id"], task, draw, "source"), "source",
+        lambda run: solve(journal, p["cfg"], p["cases"][task], client, p["is_empty"], run_id=run,
+                          target_baseline=anchor),
+    )
+
+
+def collect_writers(journal, guard, plan, root, p, task, draw, first, client):
+    source_run, end = first
+    if not end or end["grading_status"] != "graded" or guard.denied:
+        return {}
+    experience = freeze_public_experience(journal, source_run)
+    cfg, notes = p["cfg"], {}
+    for form in p["forms"]:
+        if guard.denied:
+            break
+        instruction = writer_instruction(plan, root, form)
+        writer, end = once(
+            journal, guard, run_key(plan["id"], task, draw, "write", form), "write",
+            lambda run: write_from_experience(
+                journal, experience, WriterFeedback(plan["writing"]["feedback"]), instruction=instruction,
+                policy=MemoryPolicy(True, "post_task", False, 1, read_mode="none", max_items=1),
+                client=client, model_config=dict(model=cfg["model"], **cfg["wire_parameters"]),
+                max_requests=cfg["limits"]["writer_calls"], condition_id=form, run_id=run,
+                completion_contract=REQUIRED_STORE_CONTRACT,
+            ),
+        )
+        if end and end["termination_reason"] == "memory_write_completed":
+            notes[task, draw, form] = dict(source_task=task, source_run=source_run, writer_run=writer,
+                                          snapshot=end["end_snapshot_id"])
+    return notes
+
+
+def job_sources(p, job):
+    if job["bank"] == "mixed":
+        return p["pools"][job["target"], job["draw"]]
+    return [job["source"]]
+
+
+def collect_reader(journal, guard, plan, root, p, job, notes, client, sleep):
+    members = job_sources(p, job)
+    draw, form = job["draw"], job["form"]
+    if guard.denied or any((task, draw, form) not in notes for task in members):
+        return
+    source, target = job["source"], job["target"]
+    own = notes[source, draw, form]
+    writer = dict(run_id=own["writer_run"], snapshot_id=own["snapshot"])
+    transfer = dict(source_task=source, source_run=own["source_run"], target_start=p["starts"][target], bank=job["bank"])
+    if is_cohort(plan):
+        transfer.update(pool=[note_binding(notes[task, draw, form]) for task in members], condition=job["condition"])
+    cfg, mode = reader_config(p, plan, job, root)
+    previous = None
+    for attempt in range(1 + len(plan["retry"]["wait_seconds"])):
+        key = run_key(plan["id"], job, attempt)
+        if attempt and key not in journal.scan["starts"]:
+            sleep(retry_delay(journal, previous, plan["retry"]["wait_seconds"][attempt - 1]))
+        previous, end = once(
+            journal, guard, key, "solve",
+            lambda run: solve(journal, cfg, p["cases"][target], client, p["is_empty"], run_id=run, writer=writer,
+                              form=form, mode=mode, transfer=transfer),
+        )
+        if not end or end["termination_reason"] not in {f"HTTP_{code}" for code in plan["retry"]["http_codes"]}:
+            return
 
 
 class BfclTransfer:
@@ -298,7 +554,10 @@ class BfclTransfer:
             starts[row["id"]], by_id[row["id"]] = native, (cat, row)
         source_inputs = {starts[p["source"]].public_input for p in plan["transfer"]["pairs"]}
         for p in plan["transfer"]["pairs"]:
-            require(starts[p["target"]].public_input not in source_inputs, "Duplicate source and target public input")
+            if is_cohort(plan):
+                require(p["target"] == p["source"], "A cohort writer must use its own target first pass")
+            else:
+                require(starts[p["target"]].public_input not in source_inputs, "Duplicate source and target public input")
             require(
                 p["decision"]["expected"] == (by_id[p["target"]][0] == "live_relevance"), "Incorrect target rubric"
             )
@@ -318,7 +577,20 @@ class BfclTransfer:
             stages=["source", "write", "solve"],
             assigned=assigned,
         )
-        if "target_no_memory_repeats" in plan["transfer"]:
+        pools = {}
+        if is_cohort(plan):
+            require(plan["transfer"].get("target_no_memory_repeats", 1) == 1,
+                    "The cohort first pass is the single target baseline")
+            pools = {(task, draw): pool_sources(plan, task, draw) for task, draw, _ in groups}
+            journals = cohort_journals(groups, pools)
+            record.update(
+                first_pass_baseline="source",
+                cohort_pools=[dict(target=task, draw=draw, own=[task], mixed=mixed, list_page_size=len(mixed))
+                              for (task, draw), mixed in pools.items()],
+                cohort_journals=[dict(directory=name, tasks=[t for t, _, _ in local])
+                                 for name, local in journals.items()],
+            )
+        elif "target_no_memory_repeats" in plan["transfer"]:
             repeats = plan["transfer"]["target_no_memory_repeats"]
             require(type(repeats) is int and repeats >= 1, "Register a positive number of target no-memory solves")
             targets = dict.fromkeys(pair["target"] for pair in plan["transfer"]["pairs"])
@@ -330,12 +602,18 @@ class BfclTransfer:
             assigned["target_no_memory"] = len(controls) * repeats
             record["stages"].insert(0, "target_no_memory")
             groups = [(c["target"], c["draw"], None) for c in controls] + groups
+        if not is_cohort(plan):
+            journals = defaultdict(list)
+            for group in groups:
+                journals[f"{group[0]}--{group[1]}"].append(group)
         return dict(
             record=record,
             cfg=cfg,
             cases=by_id,
             starts=starts,
             groups=groups,
+            pools=pools,
+            journals=journals,
             forms=forms,
             is_empty=is_empty,
             worker=worker,
@@ -356,7 +634,9 @@ class BfclTransfer:
         client_factory=OpenRouterClient,
         identity=None,
         sleep=time.sleep,
+        through_stage=None,
     ):
+        check_through_stage(plan, through_stage)
         prepared = self.resolve(plan, workspace, root, checkout=checkout)
         record, cfg = prepared["record"], prepared["cfg"]
         grants = [approval, *increases]
@@ -392,12 +672,18 @@ class BfclTransfer:
             guard = ExpenseLedger(dest / "expenses.jsonl", grants[-1]["max_usd"], max_calls, float("inf"))
             register_grants(dest, grants, max_calls, guard.calls)
             closed = dest / "completion.json"
+            if is_cohort(plan):
+                for stage in ("source", "write"):
+                    cohort_checkpoint(dest, prepared["journals"], stage)
             if closed.is_file():
                 summary = read(closed)["summary"]
                 require(
-                    read(closed) == completion(dest, prepared["groups"], summary), "Changed completed BFCL recording"
+                    read(closed) == completion(dest, prepared["journals"], summary, cohort=is_cohort(plan)),
+                    "Changed completed BFCL recording"
                 )
-                return summary
+                return dict(summary, completed_through=through_stage) if through_stage else summary
+            if model_resolver is hosted_model or client_factory is OpenRouterClient:
+                require_credentials()
             model = model_resolver(prepared["worker"])
             require(
                 endpoint_terms(dict(worker=model))["worker"] == prepared["terms"]
@@ -416,159 +702,75 @@ class BfclTransfer:
                 route=prepared["worker"]["provider"],
                 max_input_bytes=plan.get("limits", {}).get("writer_max_input_bytes", client.max_input_bytes),
             )
-            for index, (task, draw, jobs) in enumerate(prepared["groups"], 1):
-                self._group(plan, root, dest, prepared, task, draw, jobs, guard, client, writer, sleep)
-                if progress:
-                    progress("transfer", index, len(prepared["groups"]), guard.spent)
-                if guard.denied:
-                    break
+            if isinstance(client, OpenRouterClient) or isinstance(writer, OpenRouterClient):
+                require_credentials()
+            if is_cohort(plan):
+                self._cohort(plan, root, dest, prepared, guard, client, writer, sleep, progress, through_stage)
+            else:
+                for index, (task, draw, jobs) in enumerate(prepared["groups"], 1):
+                    self._group(plan, root, dest, prepared, task, draw, jobs, guard, client, writer, sleep)
+                    if progress:
+                        progress("transfer", index, len(prepared["groups"]), guard.spent)
+                    if guard.denied:
+                        break
             summary = dict(
                 reported_usd=str(guard.spent),
                 reserved_usd=str(guard.held),
                 requests=guard.calls,
                 budget_deferred=guard.denied,
             )
-            if not guard.denied:
-                fixed(closed, completion(dest, prepared["groups"], summary))
+            if through_stage is not None:
+                if not guard.denied:
+                    cohort_checkpoint(dest, prepared["journals"], through_stage, create=True)
+                summary["completed_through"] = None if guard.denied else through_stage
+            elif not guard.denied:
+                fixed(closed, completion(dest, prepared["journals"], summary, cohort=is_cohort(plan)))
             return summary
 
     def _group(self, plan, root, dest, p, task, draw, jobs, guard, client, writer_client, sleep):
-        study, cfg = plan["id"], p["cfg"]
-        folder = dest / f"{task}--{draw}"
-        with Journal(folder, study, contract_version="1.2") as journal:
-
-            def once(key, stage, action):
-                # Retain any possibly submitted attempt. A provably unsubmitted interruption uses a fresh run id.
-                run = key
-                while run in journal.scan["starts"]:
-                    events = run_events(journal.scan, run)
-                    ended = terminal(events)
-                    deferred = (ended and ended["termination_reason"] == "STUDY_LIMIT") or any(
-                        e["type"] == "runtime.error" and e["payload"].get("code") == "STUDY_LIMIT" for e in events
-                    )
-                    if run in guard.reserved_runs or (ended and not deferred):
-                        return run, ended
-                    run = run_key(study, run, "unsubmitted")
-                guard.stage, guard.run_id = stage, run
-                guard.unknown_cost = False  # Unreconciled charges remain fully reserved in the persistent ledger.
-                try:
-                    action(run)
-                except ProviderError as exc:
-                    if run in journal.scan["starts"] and not terminal(run_events(journal.scan, run)):
-                        start = journal.scan["starts"][run]
-                        ctx = RunContext(
-                            study, run, start["session_id"], start["condition_id"], "diagnostic", "solve", "observed"
-                        )
-                        journal.append(
-                            [
-                                ctx.at("grade").event(
-                                    "outcome.scored",
-                                    dict(
-                                        grading_status="not_available",
-                                        official_success=None,
-                                        official_score=None,
-                                        official_artifact_ref=None,
-                                    ),
-                                )
-                            ]
-                        )
-                        journal.append(
-                            [
-                                ctx.at("seal").event(
-                                    "run.ended",
-                                    dict(
-                                        termination_reason=exc.code,
-                                        grading_status="not_available",
-                                        end_snapshot_id=None,
-                                    ),
-                                )
-                            ]
-                        )
-                return run, terminal(run_events(journal.scan, run))
-
+        with Journal(dest / f"{task}--{draw}", plan["id"], contract_version="1.2") as journal:
             if jobs is None:
-                # Each target/draw has its own journal, shared by all its donor comparisons.
                 for index in range(1, plan["transfer"]["target_no_memory_repeats"] + 1):
                     if guard.denied:
                         break
                     once(
-                        run_key(study, task, draw, "target_no_memory", index),
+                        journal, guard, run_key(plan["id"], task, draw, "target_no_memory", index),
                         "target_no_memory",
                         lambda run: solve(
-                            journal, cfg, p["cases"][task], client, p["is_empty"], run_id=run,
+                            journal, p["cfg"], p["cases"][task], client, p["is_empty"], run_id=run,
                             target_baseline=dict(target_start=p["starts"][task], draw=draw, index=index),
                         ),
                     )
                 return
-            source = task
-            source_run, end = once(
-                run_key(study, source, draw, "source"),
-                "source",
-                lambda run: solve(journal, cfg, p["cases"][source], client, p["is_empty"], run_id=run),
-            )
-            if not end or end["grading_status"] != "graded":
-                return
-            experience = freeze_public_experience(journal, source_run)
-            writing = plan["writing"]
-            writers = {}
-            for form in p["forms"]:
+            first = collect_source(journal, guard, plan, p, task, draw, client)
+            notes = collect_writers(journal, guard, plan, root, p, task, draw, first, writer_client)
+            for job in jobs:
+                collect_reader(journal, guard, plan, root, p, job, notes, client, sleep)
+
+    def _cohort(self, plan, root, dest, p, guard, client, writer_client, sleep, progress, through_stage=None):
+        firsts, notes = {}, {}
+        for phase in ("source", "write", "solve"):
+            count = 0
+            for name, groups in p["journals"].items():
                 if guard.denied:
                     return
-                instruction = writer_instruction(plan, root, form)
-                key = run_key(study, source, draw, "write", form)
-                run, end = once(
-                    key,
-                    "write",
-                    lambda run: write_from_experience(
-                        journal,
-                        experience,
-                        WriterFeedback(writing["feedback"]),
-                        instruction=instruction,
-                        policy=MemoryPolicy(True, "post_task", False, 1, read_mode="none", max_items=1),
-                        client=writer_client,
-                        model_config=dict(model=cfg["model"], **cfg["wire_parameters"]),
-                        max_requests=cfg["limits"]["writer_calls"],
-                        condition_id=form,
-                        run_id=run,
-                        completion_contract=REQUIRED_STORE_CONTRACT,
-                    ),
-                )
-                if end and end["termination_reason"] == "memory_write_completed":
-                    writers[form] = dict(run_id=run, snapshot_id=end["end_snapshot_id"])
-            for job in jobs:
-                if guard.denied or job["form"] not in writers:
-                    continue
-                reader, mode = reader_config(cfg, plan, job, root)
-                target = job["target"]
-                for attempt in range(len(plan["retry"]["wait_seconds"]) + 1):
-                    key = run_key(study, job, attempt)
-                    if attempt and key not in journal.scan["starts"]:
-                        sleep(max(plan["retry"]["wait_seconds"][attempt - 1], guard.retry_after))
-                    run, end = once(
-                        key,
-                        "solve",
-                        lambda run: solve(
-                            journal,
-                            reader,
-                            p["cases"][target],
-                            client,
-                            p["is_empty"],
-                            run_id=run,
-                            writer=writers[job["form"]],
-                            form=job["form"],
-                            mode=mode,
-                            transfer=dict(
-                                source_task=source,
-                                source_run=source_run,
-                                target_start=p["starts"][target],
-                                bank=job["bank"],
-                            ),
-                        ),
-                    )
-                    if not end or end["termination_reason"] not in {
-                        f"HTTP_{code}" for code in plan["retry"]["http_codes"]
-                    }:
-                        break
+                with Journal(dest / name, plan["id"], contract_version="1.2") as journal:
+                    for task, draw, jobs in groups:
+                        if guard.denied:
+                            return
+                        if phase == "source":
+                            firsts[task, draw] = collect_source(journal, guard, plan, p, task, draw, client)
+                        elif phase == "write":
+                            notes.update(collect_writers(journal, guard, plan, root, p, task, draw,
+                                                         firsts[task, draw], writer_client))
+                        else:
+                            for job in jobs:
+                                collect_reader(journal, guard, plan, root, p, job, notes, client, sleep)
+                        count += 1
+                        if progress:
+                            progress(phase, count, len(p["groups"]), guard.spent)
+            if phase == through_stage:
+                return
 
     def outcomes(self, plan, workspace, root, *, checkout=None):
         p = self.resolve(plan, workspace, root, checkout=checkout)
@@ -577,135 +779,110 @@ class BfclTransfer:
         if not (dest / "registration.json").is_file():
             return target_rows(plan, [], target_baselines=target_baselines)
         require(read(dest / "registration.json")["preflight"] == p["record"], "BFCL transfer registration changed")
+        study, cohort = plan["id"], is_cohort(plan)
         closed = dest / "completion.json"
         if closed.exists():
             seal = read(closed)
-            require(seal == completion(dest, p["groups"], seal["summary"]), "Changed completed BFCL recording")
-        rows = []
-        written_memories = {}
-        known_sessions = set()
-        for task, draw, jobs in p["groups"]:
-            folder = dest / f"{task}--{draw}"
+            require(seal == completion(dest, p["journals"], seal["summary"], cohort=cohort),
+                    "Changed completed BFCL recording")
+        reservations = read_run_reservations(dest / "expenses.jsonl")
+        rows, written_memories = [], {}
+        known_sessions, stages = set(), {}
+        for name, groups in p["journals"].items():
+            folder = dest / name
             if not (folder / "log.jsonl").exists():
                 continue
             evidence = read_experiment(folder)
-            scan, state, experiment = evidence
-            require(experiment in {None, plan["id"]}, "Journal belongs to another transfer study")
-            sessions = [e["session_id"] for e in scan["starts"].values()]
+            scan, _, experiment = evidence
+            require(experiment in {None, study}, "Journal belongs to another transfer study")
+            starts = list(scan["starts"].values())
+            sessions = [e["session_id"] for e in starts]
             require(len(set(sessions)) == len(sessions) and known_sessions.isdisjoint(sessions),
                     "BFCL transfer sessions must be independent")
             known_sessions.update(sessions)
+            if cohort:
+                phases = []
+                for start in starts:
+                    run = start["run_id"]
+                    require(run not in stages, "BFCL cohort journals share a run id")
+                    stage = "write" if start["stage"] == "collection" else (
+                        "source" if start["payload"]["bank_id"] is None else "solve")
+                    stages[run] = stage
+                    phases.append(p["record"]["stages"].index(stage))
+                require(phases == sorted(phases), "Cohort first passes, writers and readers ran out of phase")
             if not any(scan[k] for k in ("tail_bytes", "incomplete_runs", "pending_requests")):
                 audit_requests(folder, evidence=evidence)
-            study, blobs = plan["id"], BlobStore(folder)
-            if jobs is None:
-                controls = target_baselines[task, draw] = []
-                for i in range(1, plan["transfer"]["target_no_memory_repeats"] + 1):
-                    run = last_run(scan, study, run_key(study, task, draw, "target_no_memory", i))
-                    if run is not None:
-                        controls.append(audited_baseline(folder, evidence, run, task, draw, i, p))
-                continue
-            source = task
-            source_run = last_run(scan, study, run_key(study, source, draw, "source"))
-            source_end = terminal(run_events(scan, source_run))
-            if source_end and source_end["grading_status"] == "graded":
-                source_start = scan["starts"][source_run]["payload"]
-                public = read_json(p["starts"][source].public_input)
-                (req,) = [e["payload"] for e in run_events(scan, source_run) if e["type"] == "model.request_started"]
-                require(
-                    source_start["fresh_session"]
-                    and source_start["bank_id"] is None
-                    and not source_start["source_run_ids"]
-                    and blobs.get(req["request_ref"])
-                    == dict(
-                        model=p["cfg"]["model"],
-                        messages=[dict(role="system", content=p["cfg"]["worker_instruction"]), *public["messages"]],
-                        tools=hosted_tools(public["functions"]),
-                        **p["cfg"]["wire_parameters"],
-                    ),
-                    "Unexpected BFCL donor input",
-                )
-            writers = {}
-            for form in p["forms"]:
-                writer = last_run(scan, study, run_key(study, source, draw, "write", form))
-                ended = terminal(run_events(scan, writer))
-                if not ended or ended["termination_reason"] != "memory_write_completed":
+            source_ends = {}
+            for task, draw, jobs in groups:
+                if jobs is None:
+                    controls = target_baselines[task, draw] = []
+                    for i in range(1, plan["transfer"]["target_no_memory_repeats"] + 1):
+                        run = last_run(scan, study, run_key(study, task, draw, "target_no_memory", i))
+                        if run is not None:
+                            controls.append(audited_baseline(folder, evidence, run, task, draw, i, p,
+                                                             reservations.get(run, [])))
                     continue
-                stored = state["memory_writes"][writer]
-                exp = read_public_experience(blobs, scan, stored["experience_ref"])
-                feedback = WriterFeedback(plan["writing"]["feedback"])
-                require(
-                    exp["source_run_id"] == source_run
-                    and scan["starts"][writer]["condition_id"] == form
-                    and stored["feedback"]["level"] == feedback.level,
-                    "Wrong transfer writer",
-                )
-                template = writer_template(
-                    dict(model=p["cfg"]["model"], **p["cfg"]["wire_parameters"]),
-                    writer_instruction(plan, root, form),
-                    completion_contract=REQUIRED_STORE_CONTRACT,
-                )
-                template["messages"] = [template.pop("system"), *writer_inputs(blobs, scan, exp, feedback)]
-                req = next(e["payload"] for e in run_events(scan, writer) if e["type"] == "model.request_started")
-                require(blobs.get(req["request_ref"]) == template, "Writer saw inputs outside its registered donor")
-                writers[form] = writer
-                snapshot = ended["end_snapshot_id"]
-                bit = None
-                if feedback.level == "result_only":
-                    bit = scan["events"][exp["outcome_event_id"]]["payload"]["official_success"]
-                written_memories[source, draw, form] = dict(
-                    form=form, source_run=source_run, writer_run=writer, snapshot=snapshot,
-                    feedback_success=bit, items=snapshot_items(blobs, state, snapshot),
-                    public_experience_ref=dict(
-                        path=str((folder / stored["experience_ref"]["path"]).relative_to(workspace)),
-                        sha256=stored["experience_ref"]["sha256"],
-                    ),
-                    token_usage_by_role=token_usage_by_role(run_events(scan, writer)),
-                    source_token_usage_by_role=token_usage_by_role(run_events(scan, source_run)),
-                )
-            for job in jobs:
-                reader, mode = reader_config(p["cfg"], plan, job, root)
-                slot = dict(
-                    task=job["target"],
-                    source=source,
-                    draw=draw,
-                    repeat=job["repeat"],
-                    condition=job["condition"],
-                    origin=study,
-                )
-                for attempt in range(1 + len(plan["retry"]["wait_seconds"])):
-                    run = last_run(scan, study, run_key(study, job, attempt))
-                    if run is None:
-                        if attempt == 0 and job["form"] not in writers and closed.exists():
-                            reason = (
-                                "donor_ungraded"
-                                if not source_end or source_end["grading_status"] != "graded"
-                                else "writer_unavailable"
-                            )
-                            rows.append(
-                                dict(
-                                    slot,
-                                    attempt=0,
-                                    success=None,
-                                    status="missing",
-                                    decision=None,
-                                    missing_reason=reason,
-                                )
-                            )
-                        break
-                    require(job["form"] in writers, "Reader lacks its registered donor writer")
-                    result = audited_reader(
-                        folder,
-                        evidence,
-                        run,
-                        job,
-                        reader,
-                        mode,
-                        source_run,
-                        writers[job["form"]],
-                        p["cases"][job["target"]],
-                        p["is_empty"],
-                        p["starts"][job["target"]],
+                source_run = last_run(scan, study, run_key(study, task, draw, "source"))
+                if source_run is None:
+                    continue
+                source_end = source_ends[task, draw] = terminal(run_events(scan, source_run))
+                if cohort:
+                    target_baselines[task, draw] = [audited_baseline(folder, evidence, source_run, task, draw, 1, p,
+                                                                    reservations.get(source_run, []))]
+                elif source_end and source_end["grading_status"] == "graded":
+                    source_start = scan["starts"][source_run]["payload"]
+                    public = read_json(p["starts"][task].public_input)
+                    (req,) = [e["payload"] for e in run_events(scan, source_run) if e["type"] == "model.request_started"]
+                    require(
+                        source_start["fresh_session"] and source_start["bank_id"] is None and not source_start["source_run_ids"]
+                        and BlobStore(folder).get(req["request_ref"]) == dict(
+                            model=p["cfg"]["model"],
+                            messages=[dict(role="system", content=p["cfg"]["worker_instruction"]), *public["messages"]],
+                            tools=hosted_tools(public["functions"]), **p["cfg"]["wire_parameters"],
+                        ),
+                        "Unexpected BFCL donor input",
                     )
-                    rows.append(dict(slot, attempt=attempt, **result))
+                for form in p["forms"]:
+                    writer = last_run(scan, study, run_key(study, task, draw, "write", form))
+                    if writer is None:
+                        continue
+                    end = terminal(run_events(scan, writer))
+                    if end and end["termination_reason"] == "memory_write_completed":
+                        written_memories[task, draw, form] = audited_writer(
+                            folder, evidence, plan, root, workspace, p["cfg"], task, form, source_run,
+                            writer, end, reservations,
+                        )
+            for source, draw, jobs in groups:
+                if jobs is None:
+                    continue
+                for job in jobs:
+                    target, form = job["target"], job["form"]
+                    cfg, mode = reader_config(p, plan, job, root)
+                    slot = dict(task=target, source=source, draw=draw, repeat=job["repeat"],
+                                condition=job["condition"], origin=study)
+                    members = job_sources(p, job)
+                    missing = [task for task in members if (task, draw, form) not in written_memories]
+                    for attempt in range(1 + len(plan["retry"]["wait_seconds"])):
+                        run = last_run(scan, study, run_key(study, job, attempt))
+                        if run is None:
+                            if attempt == 0 and missing and closed.exists():
+                                ungraded = any((source_ends.get((task, draw)) or {}).get("grading_status") != "graded"
+                                               for task in missing)
+                                rec = dict(slot, attempt=0, success=None, status="missing", decision=None,
+                                           missing_reason="donor_ungraded" if ungraded else "writer_unavailable")
+                                if cohort:
+                                    rec["unavailable_source_tasks"] = missing
+                                rows.append(rec)
+                            break
+                        require(not missing, "Reader lacks a registered donor writer")
+                        notes = [written_memories[task, draw, form] for task in members]
+                        result = audited_reader(folder, evidence, run, job, cfg, mode, notes, p["cases"][target],
+                                                p["is_empty"], p["starts"][target], reservations.get(run, []))
+                        rows.append(dict(slot, attempt=attempt, **result))
+        if cohort:
+            submitted = sorted((entry for run in reservations.values() for entry in run), key=lambda e: e["seq"])
+            require(all(stages.get(e["run"]) == e["stage"] for e in submitted),
+                    "A cohort reservation belongs to the wrong journal stage")
+            phases = [p["record"]["stages"].index(e["stage"]) for e in submitted]
+            require(phases == sorted(phases), "Submitted requests crossed a global cohort phase barrier")
         return target_rows(plan, rows, written_memories=written_memories, target_baselines=target_baselines)

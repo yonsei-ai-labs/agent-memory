@@ -6,7 +6,7 @@
 
 [연구 계획](../research/plan.md), [실험 프로토콜](../research/experiment-protocol.md), [측정](../research/metrics.md)과 연결되는 기술 계약이다. 첫 오프라인 실행기는 [구현/검증 안내](../development/offline-core.md)에 있고 [무기억 연결](../development/tau2-connection.md)과 [τ² 기억/두 회차 binding](../development/tau2-memory.md)을 구현했다. [스키마](../../schemas/README.md)와 [v1.1 합성 fixture](../../tests/fixtures/contracts-v1.1/README.md)는 계약 검증 자료다.
 
-선언형 전이 계획은 원천 과제와 목표 과제를 따로 지정한다. 작성자는 원천의 공개 경험을 받고 두 목표 세션은 같은 새 과제의 공개 입력을 받는다. 독립 변수인 원천 메모의 내용과 실제 본문 노출을 각각 기록한다. [전이 계획과 관측](../development/study-plans.md#서로-다른-과제-사이의-행동-전이)
+선언형 계획은 전체 과제의 재수행과 다른 과제로의 전이를 지원한다. 전체 재수행은 목표의 1회차 경험으로 쓴 메모를 자기·혼합 조건에서 공유한다. 다른 과제로의 전이는 원천과 목표를 따로 지정한다. 작성자의 공개 경험, 후보 메모의 배정, 후속 작업자에게 실제로 도달한 내용은 각각 기록한다. [재수행 계획](../research/own-mixed-cohort.md) · [다른 과제로의 전이](../development/study-plans.md#서로-다른-과제-사이의-행동-전이)
 
 ## 1 설계의 범위와 결정
 

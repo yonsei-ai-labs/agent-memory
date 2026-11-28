@@ -315,6 +315,10 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
+        "bank_comparison": {
+          "const": "own_vs_mixed",
+          "description": "Revisit every registered task with its own note alone and with the same note plus other tasks' notes."
+        },
         "target_no_memory_repeats": {
           "type": "integer",
           "minimum": 1,
@@ -340,8 +344,18 @@
                 "$ref": "#/$defs/text",
                 "description": "Analyst-only hypothesis about a transferable cue to check in the donor's public experience and written note."
               },
+              "other_sources": {
+                "type": "array", "minItems": 1, "uniqueItems": true,
+                "items": {"$ref": "#/$defs/text"},
+                "description": "Other registered tasks in the mixed bank. If omitted, use the entire remaining cohort."
+              },
               "decision": {
                 "oneOf": [
+                  {
+                    "type": "object", "additionalProperties": false,
+                    "properties": {"kind": {"const": "official_only"}, "description": {"$ref": "#/$defs/text"}},
+                    "required": ["kind", "description"]
+                  },
                   {
                     "type": "object",
                     "additionalProperties": false,

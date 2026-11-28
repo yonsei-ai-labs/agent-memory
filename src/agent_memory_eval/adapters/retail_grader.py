@@ -1,4 +1,4 @@
-"""Transport for the pinned τ² retail NL evaluator, isolated from the two conversational roles."""
+"""Transport for the pinned τ² native NL assertion evaluator, isolated from the conversational roles."""
 
 from collections import Counter
 from contextlib import contextmanager

@@ -1,0 +1,16 @@
+{
+  "format": "agent-memory-study-setup/v1",
+  "name": "tau-banking-full-v1",
+  "purpose": "Native banking knowledge cohort covering the complete task catalog. Use the registered assertion judge for tasks with an active NL criterion.",
+  "base": {
+    "path": "protocols/pilots/tau2-fresh-matched-v1.json",
+    "sha256": "47c8801aceac146e292649164108057271b0918c90ac122ddfaa03bf1aaa6af1"
+  },
+  "revision": "c06b07dd7c4d4ec61ba6ff9bcdf0b15dd7ef36d4",
+  "domain": "banking_knowledge",
+  "retrieval_config": "grep_only",
+  "nl_assertion_judge": "when_active",
+  "task_start_mode": "agent-memory-task-start/v1",
+  "max_input_bytes": 160000,
+  "max_concurrent": 4
+}

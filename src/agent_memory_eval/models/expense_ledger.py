@@ -11,6 +11,47 @@ from agent_memory_eval.experiments.forms_supplement import cooldown_seconds
 from agent_memory_eval.models.openrouter import ProviderError, request_reservation_usd
 
 
+def _ledger_rows(path):
+    if path.exists():
+        with path.open("rb") as stream:
+            for line in stream:
+                require(line.endswith(b"\n"), "Unreconciled expense ledger tail")
+                yield read_json(line)
+
+
+def _reservation(row, next_seq):
+    maximum = Decimal(row["reserved"])
+    require(type(row["seq"]) is int and row["seq"] == next_seq and maximum.is_finite() and maximum >= 0,
+            "Out-of-order reservation")
+    return maximum
+
+
+def _charge(row, maximum):
+    cost = Decimal(row["cost"])
+    require(maximum is not None and cost.is_finite() and 0 <= cost <= maximum,
+            "Invalid receipt or pricing exceeded reservation")
+    return cost
+
+
+def read_run_reservations(path):
+    """Read each run's ordered wire reservations, including costs receipted before a journal finish."""
+    entries, by_run = [], {}
+    for row in _ledger_rows(path):
+        seq = row["seq"]
+        if "reserved" in row:
+            _reservation(row, len(entries) + 1)
+            entry = dict(row, cost=None)
+            entries.append(entry)
+            by_run.setdefault(row["run"], []).append(entry)
+        else:
+            require(type(seq) is int and 1 <= seq <= len(entries), "Receipt without a reservation")
+            entry = entries[seq - 1]
+            require(entry["cost"] is None, "Duplicate expense receipt")
+            _charge(row, Decimal(entry["reserved"]))
+            entry["cost"] = row["cost"]
+    return by_run
+
+
 class ExpenseLedger:
     """Persist the full request reservation before HTTP. Unreconciled requests retain it after restart."""
 
@@ -21,28 +62,18 @@ class ExpenseLedger:
         self.denied = self.unknown_cost = False
         self.stage = self.run_id = None
         self.retry_after = 0
-        if path.exists():
-            for line in path.read_bytes().splitlines(keepends=True):
-                require(line.endswith(b"\n"), "Unreconciled expense ledger tail")
-                self.apply(read_json(line))
+        for row in _ledger_rows(path):
+            self.apply(row)
 
     def apply(self, row):
         seq = row["seq"]
         if "reserved" in row:
-            maximum = Decimal(row["reserved"])
-            require(
-                type(seq) is int and seq == self.calls + 1 and maximum.is_finite() and maximum >= 0,
-                "Out-of-order reservation",
-            )
+            maximum = _reservation(row, self.calls + 1)
             self.calls, self.open[seq] = seq, maximum
             self.reserved_runs.add(row.get("run"))
             self.held += maximum
         else:
-            cost = Decimal(row["cost"])
-            require(
-                seq in self.open and cost.is_finite() and 0 <= cost <= self.open[seq],
-                "Invalid receipt or pricing exceeded reservation",
-            )
+            cost = _charge(row, self.open.get(seq))
             self.held -= self.open.pop(seq)
             self.spent += cost
         require(

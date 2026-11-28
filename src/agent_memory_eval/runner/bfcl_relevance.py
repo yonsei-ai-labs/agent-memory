@@ -32,7 +32,8 @@ PAGE_SIZE = 1
 
 
 def read_tools(cfg):
-    return memory_tools(["memory_list", "memory_get"], page_size=PAGE_SIZE if cfg.get("advertise_list_limit") else None,
+    return memory_tools(["memory_list", "memory_get"],
+                        page_size=cfg.get("read_page_size", PAGE_SIZE) if cfg.get("advertise_list_limit") else None,
                         read_descriptions=cfg.get("read_tool_descriptions"))
 
 
@@ -127,7 +128,9 @@ def normalized_first(wire, cfg, mode, items):
         if "worker_instruction" in cfg:
             require(system["content"] == cfg["worker_instruction"], "Unexpected business instructions")
         if mode == "preload":
-            require(value["messages"].pop(1) == snapshot_message(items), "Different preloaded bank")
+            position = next((i for i, message in enumerate(value["messages"]) if message["role"] != "system"), None)
+            require(position is not None and value["messages"].pop(position) == snapshot_message(items),
+                    "Different preloaded bank")
         else:
             private = read_tools(cfg)
             require(mode == "on_demand" and value["tools"][-len(private):] == private, "Different retrieval interface")
@@ -164,31 +167,57 @@ def solve(journal, cfg, case, client, is_empty, *, source=None, writer=None, for
     start = open_relevance(row, category, controls, reference=reference)
     public = read_json(start.public_input)
     tools = (hosted_tools if "wire_parameters" in cfg else business_tools)(public["functions"])
-    question, = public["messages"]
+    native_messages = public["messages"]
     run = run_id or row["id"] + "-" + (f"{form}-{mode}" if mode else "source")
-    ctx = RunContext(journal.experiment_id, run, new_id("s"), f"{form}-{mode}" if mode else "no_memory",
-                     "diagnostic", "solve", "observed")
-    policy = MemoryPolicy(bool(mode), "none", False, PAGE_SIZE, read_mode=mode or "none")
+    condition = f"{form}-{mode}" if mode else "no_memory"
+    pool = transfer.get("pool") if transfer else None
+    if pool is not None:
+        condition = transfer["condition"]
+    ctx = RunContext(journal.experiment_id, run, new_id("s"), condition, "diagnostic", "solve", "observed")
+    policy = MemoryPolicy(bool(mode), "none", False, cfg.get("read_page_size", PAGE_SIZE), read_mode=mode or "none")
     memory = MemoryService(journal, record_kind="observed")
     snapshot = writer["snapshot_id"] if writer else None
-    if transfer:
+    parents = []
+    if pool is not None:
+        own = [note for note in pool if note["source_task"] == row["id"]]
+        require(len(own) == 1 and own[0]["snapshot"] == snapshot and own[0]["writer_run"] == writer["run_id"]
+                and own[0]["source_run"] == transfer["source_run"] and row["id"] == transfer["source_task"]
+                and ((transfer["bank"] == "own" and len(pool) == 1)
+                     or (transfer["bank"] == "mixed" and len(pool) > 1)),
+                "A cohort reader requires its own sealed writer and the registered bank")
+        parents = [run_id for note in pool for run_id in (note["source_run"], note["writer_run"])]
+        if len(pool) > 1:
+            snapshots = [note["snapshot"] for note in pool]
+            snapshot = next((key for key, value in journal.state["snapshots"].items()
+                             if value["parent_snapshot_ids"] == snapshots), None) or memory.compose(snapshots)
+    elif transfer:
         require(writer and transfer["source_task"] != row["id"] and transfer["bank"] in {"real", "empty"},
                 "A transfer requires an independent target and sealed writer")
         if transfer["bank"] == "empty":
             from agent_memory_eval.memory.imports import install_snapshot
             snapshot = install_snapshot(memory, policy, {}, [], 0, {})
+    if writer and pool is None:
+        parents = [transfer["source_run"] if transfer else source["run"], writer["run_id"]]
     items = snapshot_items(journal.blobs, journal.state, snapshot) if writer else []
     bank = memory.fork(snapshot, run, policy) if writer else None
-    parents = [transfer["source_run"] if transfer else source["run"], writer["run_id"]] if writer else []
     event = ctx.at("prepare").event("run.started", dict(bank_id=bank, start_snapshot_id=snapshot, fresh_session=True,
-        task_ref=journal.blobs.put(question), source_run_ids=parents))
+        task_ref=journal.blobs.put(native_messages[0]), source_run_ids=parents))
     opening_events = [event]
+    question_event = None
+    if len(native_messages) > 1:
+        # This native BFCL turn begins with a task-specific system instruction and then its public user question.
+        question_event = ctx.event("business.transition", dict(origin="bfcl.public_question",
+            public_message_ref=journal.blobs.put(native_messages[-1])))
+        opening_events.append(question_event)
     if target_baseline is not None:
         opening_events.append(ctx.event("business.transition", dict(origin="bfcl.target_no_memory",
             target_start_ref=journal.blobs.put(start.record()), index=target_baseline["index"],
             draw=target_baseline["draw"])))
+    if pool is not None:
+        opening_events.append(ctx.event("business.transition", dict(origin="bfcl.cohort_assignment",
+            target_start_ref=journal.blobs.put(start.record()), bank=transfer["bank"], sources=pool)))
     journal.append(opening_events)
-    if transfer:
+    if transfer and pool is None:
         journal.append([ctx.event("business.transition", dict(origin="bfcl.transfer_assignment",
             target_start_ref=journal.blobs.put(start.record()), source_task=transfer["source_task"],
             donor_snapshot=writer["snapshot_id"], bank=transfer["bank"]))])
@@ -199,12 +228,17 @@ def solve(journal, cfg, case, client, is_empty, *, source=None, writer=None, for
     wire.update(cfg.get("wire_parameters", {}))
     template = registry.template(wire, roles=("worker",))
     history = [(template, "/system")]
+    if question_event:
+        history.append((registry.add("task_initial", event["event_id"]), ""))
     if mode == "preload":
         preload = memory.preload(ctx, bank)
         history.append((registry.add("memory_snapshot", preload["event_id"]), ""))
-    history.append((registry.add("task_initial", event["event_id"]), ""))
+    question_source = (registry.add("business_result", question_event["event_id"]) if question_event
+                       else registry.add("task_initial", event["event_id"]))
+    history.append((question_source, ""))
     first = dict(wire)
-    first["messages"] = [first.pop("system"), *([snapshot_message(items)] if mode == "preload" else []), question]
+    first["messages"] = [first.pop("system"), *native_messages[:-1],
+                         *([snapshot_message(items)] if mode == "preload" else []), native_messages[-1]]
     business = normalized_first(first, cfg, mode, items)
     if source:
         require(business == source["business"], "Worker's first business input changed before submission")
@@ -249,7 +283,7 @@ def solve(journal, cfg, case, client, is_empty, *, source=None, writer=None, for
                 reason = "malformed_business_call"
                 break
             reason = "business_decision"
-            if not source and not transfer and target_baseline is None:
+            if not source and not transfer and (target_baseline is None or target_baseline.get("writer_source")):
                 for message in [dict(role="system", content=canonical(dict(available_functions=tools)).decode()),
                                 public_assistant_message(reply)]:
                     journal.append([ctx.event("business.transition", dict(origin="bfcl.public_observation",
@@ -415,7 +449,7 @@ def audit_task(root, cfg, case, is_empty, *, sources_only=False, allow_partial=F
         else:
             require(firsts[form] == head["start_snapshot_id"] and source_wire == original and
                     head["source_run_ids"] == [source, f"{task}-write-{form}"], "Wrong source, bank or business input")
-        require(original["messages"] == [dict(role="system", content=cfg["worker_instruction"]), row["question"][0][0]]
+        require(original["messages"] == [dict(role="system", content=cfg["worker_instruction"]), *row["question"][0]]
                 and original["tools"] == business_tools(row["function"]), "Worker did not receive the public BFCL task")
         specs = [e["payload"] for e in batch if e["type"] == "memory.input_included"]
         fields = sorted({e["field"] for e in specs})

@@ -1,0 +1,216 @@
+{
+  "format": "agent-memory-study-plan/v3",
+  "id": "own-mixed-airline-01",
+  "purpose": "confirmation",
+  "question": "For every first-pass task, how do storage form, delivery, and adding other tasks’ notes to the same own note change outcomes, effort, selection, and task state?",
+  "models": {
+    "profile": {
+      "path": "protocols/models/project-standard-v1.json",
+      "sha256": "ef0ed266db31f8ed8fca4fb6321ae2907efb7755088d6f038e710e862f1f0da3"
+    }
+  },
+  "benchmark": {
+    "adapter": "tau2-airline",
+    "setup": {
+      "path": "protocols/studies/setups/tau2-airline-base-v1.json",
+      "sha256": "71500f8c5b31717d015aed21fbf5b08bd1a337952672ba4a6586a2690c58e556"
+    },
+    "tasks": [
+      "0",
+      "1",
+      "10",
+      "11",
+      "12",
+      "13",
+      "14",
+      "15",
+      "16",
+      "17",
+      "18",
+      "19",
+      "2",
+      "20",
+      "21",
+      "22",
+      "23",
+      "24",
+      "25",
+      "26",
+      "27",
+      "28",
+      "29",
+      "3",
+      "30",
+      "31",
+      "32",
+      "33",
+      "34",
+      "35",
+      "36",
+      "37",
+      "38",
+      "39",
+      "4",
+      "40",
+      "41",
+      "42",
+      "43",
+      "44",
+      "45",
+      "46",
+      "47",
+      "48",
+      "49",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9"
+    ]
+  },
+  "transfer": {
+    "bank_comparison": "own_vs_mixed",
+    "target_no_memory_repeats": 1,
+    "pairs": [
+      {"source": "0", "target": "0", "source_cue": "Use only evidence in the recorded first-pass experience.", "other_sources": ["48", "9"], "decision": {"kind": "official_only", "description": "No first change or handoff is registered for this task. Use the native grade."}, "customer_relation": "same_customer"},
+      {"source": "1", "target": "1", "source_cue": "Use only evidence in the recorded first-pass experience.", "other_sources": ["28", "36"], "decision": {"kind": "official_only", "description": "No first change or handoff is registered for this task. Use the native grade."}, "customer_relation": "same_customer"},
+      {"source": "10", "target": "10", "source_cue": "Use only evidence in the recorded first-pass experience.", "other_sources": ["37", "15"], "decision": {"kind": "official_only", "description": "No first change or handoff is registered for this task. Use the native grade."}, "customer_relation": "same_customer"},
+      {"source": "11", "target": "11", "source_cue": "Use only evidence in the recorded first-pass experience.", "other_sources": ["18", "2"], "decision": {"kind": "first_matching_tool", "description": "Check the first registered operation and native reference arguments.", "tools": ["book_reservation", "cancel_reservation", "transfer_to_human_agents", "update_reservation_baggages", "update_reservation_flights", "update_reservation_passengers"], "expected": "update_reservation_flights", "arguments": {"reservation_id": "GV1N64", "cabin": "basic_economy", "flights": [{"flight_number": "HAT003", "date": "2024-05-19"}, {"flight_number": "HAT290", "date": "2024-05-20"}], "payment_id": "gift_card_1642017"}}, "customer_relation": "same_customer"},
+      {"source": "12", "target": "12", "source_cue": "Use only evidence in the recorded first-pass experience.", "other_sources": ["45", "31"], "decision": {"kind": "first_matching_tool", "description": "Check the first registered operation and native reference arguments.", "tools": ["book_reservation", "cancel_reservation", "transfer_to_human_agents", "update_reservation_baggages", "update_reservation_flights", "update_reservation_passengers"], "expected": "update_reservation_baggages", "arguments": {"reservation_id": "YAX4DR", "total_baggages": 2, "nonfree_baggages": 0, "payment_id": "credit_card_4938634"}}, "customer_relation": "same_customer"},
+      {"source": "13", "target": "13", "source_cue": "Use only evidence in the recorded first-pass experience.", "other_sources": ["38", "7"], "decision": {"kind": "first_matching_tool", "description": "Check the first registered operation and native reference arguments.", "tools": ["book_reservation", "cancel_reservation", "transfer_to_human_agents", "update_reservation_baggages", "update_reservation_flights", "update_reservation_passengers"], "expected": "transfer_to_human_agents", "arguments": {}}, "customer_relation": "same_customer"},
+      {"source": "14", "target": "14", "source_cue": "Use only evidence in the recorded first-pass experience.", "other_sources": ["40", "41"], "decision": {"kind": "first_matching_tool", "description": "Check the first registered operation and native reference arguments.", "tools": ["book_reservation", "cancel_reservation", "transfer_to_human_agents", "update_reservation_baggages", "update_reservation_flights", "update_reservation_passengers"], "expected": "cancel_reservation", "arguments": {"reservation_id": "K1NW8N"}}, "customer_relation": "same_customer"},
+      {"source": "15", "target": "15", "source_cue": "Use only evidence in the recorded first-pass experience.", "other_sources": ["10", "37"], "decision": {"kind": "first_matching_tool", "description": "Check the first registered operation and native reference arguments.", "tools": ["book_reservation", "cancel_reservation", "transfer_to_human_agents", "update_reservation_baggages", "update_reservation_flights", "update_reservation_passengers"], "expected": "update_reservation_flights", "arguments": {"reservation_id": "M05KNL", "cabin": "economy", "flights": [{"flight_number": "HAT110", "date": "2024-05-24"}, {"flight_number": "HAT172", "date": "2024-05-24"}], "payment_id": "gift_card_8887175"}}, "customer_relation": "same_customer"},
+      {"source": "16", "target": "16", "source_cue": "Use only evidence in the recorded first-pass experience.", "other_sources": ["42", "20"], "decision": {"kind": "first_matching_tool", "description": "Check the first registered operation and native reference arguments.", "tools": ["book_reservation", "cancel_reservation", "transfer_to_human_agents", "update_reservation_baggages", "update_reservation_flights", "update_reservation_passengers"], "expected": "update_reservation_flights", "arguments": {"reservation_id": "M05KNL", "cabin": "economy", "flights": [{"flight_number": "HAT110", "date": "2024-05-24"}, {"flight_number": "HAT172", "date": "2024-05-24"}], "payment_id": "gift_card_8887175"}}, "customer_relation": "same_customer"},
+      {"source": "17", "target": "17", "source_cue": "Use only evidence in the recorded first-pass experience.", "other_sources": ["19", "6"], "decision": {"kind": "first_matching_tool", "description": "Check the first registered operation and native reference arguments.", "tools": ["book_reservation", "cancel_reservation", "transfer_to_human_agents", "update_reservation_baggages", "update_reservation_flights", "update_reservation_passengers"], "expected": "update_reservation_flights", "arguments": {"reservation_id": "FQ8APE", "cabin": "economy", "flights": [{"flight_number": "HAT056", "date": "2024-05-25"}, {"flight_number": "HAT138", "date": "2024-05-25"}], "payment_id": "gift_card_8190333"}}, "customer_relation": "same_customer"},
+      {"source": "18", "target": "18", "source_cue": "Use only evidence in the recorded first-pass experience.", "other_sources": ["2", "11"], "decision": {"kind": "first_matching_tool", "description": "Check the first registered operation and native reference arguments.", "tools": ["book_reservation", "cancel_reservation", "transfer_to_human_agents", "update_reservation_baggages", "update_reservation_flights", "update_reservation_passengers"], "expected": "update_reservation_flights", "arguments": {"reservation_id": "JG7FMM", "cabin": "economy", "flights": [{"flight_number": "HAT028", "date": "2024-05-21"}, {"flight_number": "HAT277", "date": "2024-05-21"}], "payment_id": "credit_card_2929732"}}, "customer_relation": "same_customer"},
+      {"source": "19", "target": "19", "source_cue": "Use only evidence in the recorded first-pass experience.", "other_sources": ["6", "17"], "decision": {"kind": "first_matching_tool", "description": "Check the first registered operation and native reference arguments.", "tools": ["book_reservation", "cancel_reservation", "transfer_to_human_agents", "update_reservation_baggages", "update_reservation_flights", "update_reservation_passengers"], "expected": "cancel_reservation", "arguments": {"reservation_id": "Z7GOZK"}}, "customer_relation": "same_customer"},
+      {"source": "2", "target": "2", "source_cue": "Use only evidence in the recorded first-pass experience.", "other_sources": ["11", "18"], "decision": {"kind": "official_only", "description": "No first change or handoff is registered for this task. Use the native grade."}, "customer_relation": "same_customer"},
+      {"source": "20", "target": "20", "source_cue": "Use only evidence in the recorded first-pass experience.", "other_sources": ["3", "8"], "decision": {"kind": "first_matching_tool", "description": "Check the first registered operation and native reference arguments.", "tools": ["book_reservation", "cancel_reservation", "transfer_to_human_agents", "update_reservation_baggages", "update_reservation_flights", "update_reservation_passengers"], "expected": "book_reservation", "arguments": {"user_id": "mia_li_3668", "origin": "JFK", "destination": "SEA", "flight_type": "one_way", "cabin": "economy", "flights": [{"flight_number": "HAT136", "date": "2024-05-20"}, {"flight_number": "HAT039", "date": "2024-05-20"}], "passengers": [{"first_name": "Mia", "last_name": "Li", "dob": "1990-04-05"}], "payment_methods": [{"payment_id": "certificate_7504069", "amount": 250}, {"payment_id": "credit_card_4421486", "amount": 5}], "total_baggages": 3, "nonfree_baggages": 0, "insurance": "no"}}, "customer_relation": "same_customer"},
+      {"source": "21", "target": "21", "source_cue": "Use only evidence in the recorded first-pass experience.", "other_sources": ["26", "5"], "decision": {"kind": "first_matching_tool", "description": "Check the first registered operation and native reference arguments.", "tools": ["book_reservation", "cancel_reservation", "transfer_to_human_agents", "update_reservation_baggages", "update_reservation_flights", "update_reservation_passengers"], "expected": "update_reservation_flights", "arguments": {"reservation_id": "OBUT9V", "cabin": "economy", "flights": [{"flight_number": "HAT078", "date": "2024-05-27"}, {"flight_number": "HAT118", "date": "2024-05-27"}, {"flight_number": "HAT290", "date": "2024-05-27"}, {"flight_number": "HAT175", "date": "2024-05-27"}], "payment_id": "gift_card_6276644"}}, "customer_relation": "same_customer"},
+      {"source": "22", "target": "22", "source_cue": "Use only evidence in the recorded first-pass experience.", "other_sources": ["34", "4"], "decision": {"kind": "first_matching_tool", "description": "Check the first registered operation and native reference arguments.", "tools": ["book_reservation", "cancel_reservation", "transfer_to_human_agents", "update_reservation_baggages", "update_reservation_flights", "update_reservation_passengers"], "expected": "update_reservation_flights", "arguments": {"reservation_id": "FQ8APE", "cabin": "economy", "flights": [{"flight_number": "HAT056", "date": "2024-05-25"}, {"flight_number": "HAT138", "date": "2024-05-25"}], "payment_id": "gift_card_8190333"}}, "customer_relation": "same_customer"},
+      {"source": "23", "target": "23", "source_cue": "Use only evidence in the recorded first-pass experience.", "other_sources": ["27", "49"], "decision": {"kind": "first_matching_tool", "description": "Check the first registered operation and native reference arguments.", "tools": ["book_reservation", "cancel_reservation", "transfer_to_human_agents", "update_reservation_baggages", "update_reservation_flights", "update_reservation_passengers"], "expected": "cancel_reservation", "arguments": {"reservation_id": "K1NW8N"}}, "customer_relation": "same_customer"},
+      {"source": "24", "target": "24", "source_cue": "Use only evidence in the recorded first-pass experience.", "other_sources": ["32", "44"], "decision": {"kind": "first_matching_tool", "description": "Check the first registered operation and native reference arguments.", "tools": ["book_reservation", "cancel_reservation", "transfer_to_human_agents", "update_reservation_baggages", "update_reservation_flights", "update_reservation_passengers"], "expected": "book_reservation", "arguments": {"user_id": "mia_kim_4397", "origin": "JFK", "destination": "SEA", "flight_type": "round_trip", "cabin": "basic_economy", "flights": [{"flight_number": "HAT069", "date": "2024-05-20"}, {"flight_number": "HAT276", "date": "2024-05-25"}], "passengers": [{"first_name": "Mia", "last_name": "Kim", "dob": "1965-06-09"}], "payment_methods": [{"payment_id": "gift_card_7359776", "amount": 39}, {"payment_id": "gift_card_7773485", "amount": 67}], "total_baggages": 1, "nonfree_baggages": 0, "insurance": "no"}}, "customer_relation": "same_customer"},
+      {"source": "25", "target": "25", "source_cue": "Use only evidence in the recorded first-pass experience.", "other_sources": ["46", "39"], "decision": {"kind": "first_matching_tool", "description": "Check the first registered operation and native reference arguments.", "tools": ["book_reservation", "cancel_reservation", "transfer_to_human_agents", "update_reservation_baggages", "update_reservation_flights", "update_reservation_passengers"], "expected": "book_reservation", "arguments": {"user_id": "ivan_muller_7015", "origin": "DTW", "destination": "SEA", "flight_type": "one_way", "cabin": "economy", "flights": [{"flight_number": "HAT097", "date": "2024-05-17"}, {"flight_number": "HAT251", "date": "2024-05-17"}], "passengers": [{"first_name": "Ivan", "last_name": "Smith", "dob": "1986-03-14"}], "payment_methods": [{"payment_id": "gift_card_8516878", "amount": 128}, {"payment_id": "credit_card_3563913", "amount": 247}], "total_baggages": 0, "nonfree_baggages": 0, "insurance": "no"}}, "customer_relation": "same_customer"},
+      {"source": "26", "target": "26", "source_cue": "Use only evidence in the recorded first-pass experience.", "other_sources": ["5", "21"], "decision": {"kind": "official_only", "description": "No first change or handoff is registered for this task. Use the native grade."}, "customer_relation": "same_customer"},
+      {"source": "27", "target": "27", "source_cue": "Use only evidence in the recorded first-pass experience.", "other_sources": ["49", "23"], "decision": {"kind": "official_only", "description": "No first change or handoff is registered for this task. Use the native grade."}, "customer_relation": "same_customer"},
+      {"source": "28", "target": "28", "source_cue": "Use only evidence in the recorded first-pass experience.", "other_sources": ["36", "1"], "decision": {"kind": "official_only", "description": "No first change or handoff is registered for this task. Use the native grade."}, "customer_relation": "same_customer"},
+      {"source": "29", "target": "29", "source_cue": "Use only evidence in the recorded first-pass experience.", "other_sources": ["35", "43"], "decision": {"kind": "first_matching_tool", "description": "Check the first registered operation and native reference arguments.", "tools": ["book_reservation", "cancel_reservation", "transfer_to_human_agents", "update_reservation_baggages", "update_reservation_flights", "update_reservation_passengers"], "expected": "cancel_reservation", "arguments": {"reservation_id": "VA5SGQ"}}, "customer_relation": "same_customer"},
+      {"source": "3", "target": "3", "source_cue": "Use only evidence in the recorded first-pass experience.", "other_sources": ["8", "16"], "decision": {"kind": "official_only", "description": "No first change or handoff is registered for this task. Use the native grade."}, "customer_relation": "same_customer"},
+      {"source": "30", "target": "30", "source_cue": "Use only evidence in the recorded first-pass experience.", "other_sources": ["33", "47"], "decision": {"kind": "first_matching_tool", "description": "Check the first registered operation and native reference arguments.", "tools": ["book_reservation", "cancel_reservation", "transfer_to_human_agents", "update_reservation_baggages", "update_reservation_flights", "update_reservation_passengers"], "expected": "update_reservation_flights", "arguments": {"reservation_id": "1N99U6", "cabin": "economy", "flights": [{"flight_number": "HAT266", "date": "2024-05-19"}, {"flight_number": "HAT112", "date": "2024-05-27"}], "payment_id": "gift_card_5634230"}}, "customer_relation": "same_customer"},
+      {"source": "31", "target": "31", "source_cue": "Use only evidence in the recorded first-pass experience.", "other_sources": ["12", "45"], "decision": {"kind": "official_only", "description": "No first change or handoff is registered for this task. Use the native grade."}, "customer_relation": "same_customer"},
+      {"source": "32", "target": "32", "source_cue": "Use only evidence in the recorded first-pass experience.", "other_sources": ["44", "24"], "decision": {"kind": "first_matching_tool", "description": "Check the first registered operation and native reference arguments.", "tools": ["book_reservation", "cancel_reservation", "transfer_to_human_agents", "update_reservation_baggages", "update_reservation_flights", "update_reservation_passengers"], "expected": "update_reservation_flights", "arguments": {"reservation_id": "OWZ4XL", "cabin": "economy", "flights": [{"flight_number": "HAT202", "date": "2024-05-21"}, {"flight_number": "HAT232", "date": "2024-05-21"}], "payment_id": "credit_card_9659780"}}, "customer_relation": "same_customer"},
+      {"source": "33", "target": "33", "source_cue": "Use only evidence in the recorded first-pass experience.", "other_sources": ["47", "30"], "decision": {"kind": "first_matching_tool", "description": "Check the first registered operation and native reference arguments.", "tools": ["book_reservation", "cancel_reservation", "transfer_to_human_agents", "update_reservation_baggages", "update_reservation_flights", "update_reservation_passengers"], "expected": "update_reservation_flights", "arguments": {"reservation_id": "HXDUBJ", "cabin": "economy", "flights": [{"flight_number": "HAT072", "date": "2024-05-19"}, {"flight_number": "HAT278", "date": "2024-05-23"}], "payment_id": "gift_card_6941833"}}, "customer_relation": "same_customer"},
+      {"source": "34", "target": "34", "source_cue": "Use only evidence in the recorded first-pass experience.", "other_sources": ["4", "22"], "decision": {"kind": "official_only", "description": "No first change or handoff is registered for this task. Use the native grade."}, "customer_relation": "same_customer"},
+      {"source": "35", "target": "35", "source_cue": "Use only evidence in the recorded first-pass experience.", "other_sources": ["43", "29"], "decision": {"kind": "first_matching_tool", "description": "Check the first registered operation and native reference arguments.", "tools": ["book_reservation", "cancel_reservation", "transfer_to_human_agents", "update_reservation_baggages", "update_reservation_flights", "update_reservation_passengers"], "expected": "book_reservation", "arguments": {"user_id": "aarav_ahmed_6699", "origin": "JFK", "destination": "SFO", "flight_type": "one_way", "cabin": "economy", "flights": [{"flight_number": "HAT069", "date": "2024-05-24"}, {"flight_number": "HAT258", "date": "2024-05-24"}], "passengers": [{"first_name": "Aarav", "last_name": "Ahmed", "dob": "1981-05-26"}], "payment_methods": [{"payment_id": "credit_card_9074831", "amount": 290}], "total_baggages": 0, "nonfree_baggages": 0, "insurance": "no"}}, "customer_relation": "same_customer"},
+      {"source": "36", "target": "36", "source_cue": "Use only evidence in the recorded first-pass experience.", "other_sources": ["1", "28"], "decision": {"kind": "official_only", "description": "No first change or handoff is registered for this task. Use the native grade."}, "customer_relation": "same_customer"},
+      {"source": "37", "target": "37", "source_cue": "Use only evidence in the recorded first-pass experience.", "other_sources": ["15", "10"], "decision": {"kind": "first_matching_tool", "description": "Check the first registered operation and native reference arguments.", "tools": ["book_reservation", "cancel_reservation", "transfer_to_human_agents", "update_reservation_baggages", "update_reservation_flights", "update_reservation_passengers"], "expected": "update_reservation_flights", "arguments": {"reservation_id": "M20IZO", "cabin": "business", "flights": [{"flight_number": "HAT268", "date": "2024-05-22"}, {"flight_number": "HAT010", "date": "2024-05-22"}], "payment_id": "credit_card_9074831"}}, "customer_relation": "same_customer"},
+      {"source": "38", "target": "38", "source_cue": "Use only evidence in the recorded first-pass experience.", "other_sources": ["7", "13"], "decision": {"kind": "official_only", "description": "No first change or handoff is registered for this task. Use the native grade."}, "customer_relation": "same_customer"},
+      {"source": "39", "target": "39", "source_cue": "Use only evidence in the recorded first-pass experience.", "other_sources": ["25", "46"], "decision": {"kind": "first_matching_tool", "description": "Check the first registered operation and native reference arguments.", "tools": ["book_reservation", "cancel_reservation", "transfer_to_human_agents", "update_reservation_baggages", "update_reservation_flights", "update_reservation_passengers"], "expected": "cancel_reservation", "arguments": {"reservation_id": "8C8K4E"}}, "customer_relation": "same_customer"},
+      {"source": "4", "target": "4", "source_cue": "Use only evidence in the recorded first-pass experience.", "other_sources": ["22", "34"], "decision": {"kind": "official_only", "description": "No first change or handoff is registered for this task. Use the native grade."}, "customer_relation": "same_customer"},
+      {"source": "40", "target": "40", "source_cue": "Use only evidence in the recorded first-pass experience.", "other_sources": ["41", "14"], "decision": {"kind": "first_matching_tool", "description": "Check the first registered operation and native reference arguments.", "tools": ["book_reservation", "cancel_reservation", "transfer_to_human_agents", "update_reservation_baggages", "update_reservation_flights", "update_reservation_passengers"], "expected": "update_reservation_passengers", "arguments": {"reservation_id": "3RK2T9", "passengers": [{"first_name": "Anya", "last_name": "Garcia", "dob": "1992-11-12"}, {"first_name": "Mei", "last_name": "Garcia", "dob": "1989-12-13"}]}}, "customer_relation": "same_customer"},
+      {"source": "41", "target": "41", "source_cue": "Use only evidence in the recorded first-pass experience.", "other_sources": ["14", "40"], "decision": {"kind": "official_only", "description": "No first change or handoff is registered for this task. Use the native grade."}, "customer_relation": "same_customer"},
+      {"source": "42", "target": "42", "source_cue": "Use only evidence in the recorded first-pass experience.", "other_sources": ["20", "3"], "decision": {"kind": "first_matching_tool", "description": "Check the first registered operation and native reference arguments.", "tools": ["book_reservation", "cancel_reservation", "transfer_to_human_agents", "update_reservation_baggages", "update_reservation_flights", "update_reservation_passengers"], "expected": "cancel_reservation", "arguments": {"reservation_id": "FDZ0T5"}}, "customer_relation": "same_customer"},
+      {"source": "43", "target": "43", "source_cue": "Use only evidence in the recorded first-pass experience.", "other_sources": ["29", "35"], "decision": {"kind": "official_only", "description": "No first change or handoff is registered for this task. Use the native grade."}, "customer_relation": "same_customer"},
+      {"source": "44", "target": "44", "source_cue": "Use only evidence in the recorded first-pass experience.", "other_sources": ["24", "32"], "decision": {"kind": "first_matching_tool", "description": "Check the first registered operation and native reference arguments.", "tools": ["book_reservation", "cancel_reservation", "transfer_to_human_agents", "update_reservation_baggages", "update_reservation_flights", "update_reservation_passengers"], "expected": "update_reservation_flights", "arguments": {"reservation_id": "NM1VX1", "cabin": "business", "flights": [{"flight_number": "HAT300", "date": "2024-05-25"}, {"flight_number": "HAT208", "date": "2024-05-27"}], "payment_id": "credit_card_4196779"}}, "customer_relation": "same_customer"},
+      {"source": "45", "target": "45", "source_cue": "Use only evidence in the recorded first-pass experience.", "other_sources": ["31", "12"], "decision": {"kind": "official_only", "description": "No first change or handoff is registered for this task. Use the native grade."}, "customer_relation": "same_customer"},
+      {"source": "46", "target": "46", "source_cue": "Use only evidence in the recorded first-pass experience.", "other_sources": ["39", "25"], "decision": {"kind": "official_only", "description": "No first change or handoff is registered for this task. Use the native grade."}, "customer_relation": "same_customer"},
+      {"source": "47", "target": "47", "source_cue": "Use only evidence in the recorded first-pass experience.", "other_sources": ["30", "33"], "decision": {"kind": "official_only", "description": "No first change or handoff is registered for this task. Use the native grade."}, "customer_relation": "same_customer"},
+      {"source": "48", "target": "48", "source_cue": "Use only evidence in the recorded first-pass experience.", "other_sources": ["9", "0"], "decision": {"kind": "official_only", "description": "No first change or handoff is registered for this task. Use the native grade."}, "customer_relation": "same_customer"},
+      {"source": "49", "target": "49", "source_cue": "Use only evidence in the recorded first-pass experience.", "other_sources": ["23", "27"], "decision": {"kind": "official_only", "description": "No first change or handoff is registered for this task. Use the native grade."}, "customer_relation": "same_customer"},
+      {"source": "5", "target": "5", "source_cue": "Use only evidence in the recorded first-pass experience.", "other_sources": ["21", "26"], "decision": {"kind": "official_only", "description": "No first change or handoff is registered for this task. Use the native grade."}, "customer_relation": "same_customer"},
+      {"source": "6", "target": "6", "source_cue": "Use only evidence in the recorded first-pass experience.", "other_sources": ["17", "19"], "decision": {"kind": "official_only", "description": "No first change or handoff is registered for this task. Use the native grade."}, "customer_relation": "same_customer"},
+      {"source": "7", "target": "7", "source_cue": "Use only evidence in the recorded first-pass experience.", "other_sources": ["13", "38"], "decision": {"kind": "first_matching_tool", "description": "Check the first registered operation and native reference arguments.", "tools": ["book_reservation", "cancel_reservation", "transfer_to_human_agents", "update_reservation_baggages", "update_reservation_flights", "update_reservation_passengers"], "expected": "update_reservation_flights", "arguments": {"reservation_id": "XEHM4B", "cabin": "business", "flights": [{"flight_number": "HAT005", "date": "2024-05-20"}, {"flight_number": "HAT178", "date": "2024-05-30"}], "payment_id": "credit_card_2408938"}}, "customer_relation": "same_customer"},
+      {"source": "8", "target": "8", "source_cue": "Use only evidence in the recorded first-pass experience.", "other_sources": ["16", "42"], "decision": {"kind": "first_matching_tool", "description": "Check the first registered operation and native reference arguments.", "tools": ["book_reservation", "cancel_reservation", "transfer_to_human_agents", "update_reservation_baggages", "update_reservation_flights", "update_reservation_passengers"], "expected": "book_reservation", "arguments": {"user_id": "sophia_silva_7557", "origin": "ORD", "destination": "PHL", "flight_type": "one_way", "cabin": "economy", "flights": [{"flight_number": "HAT271", "date": "2024-05-26"}], "passengers": [{"first_name": "Sophia", "last_name": "Silva", "dob": "1957-10-05"}, {"first_name": "Kevin", "last_name": "Smith", "dob": "2001-04-12"}], "payment_methods": [{"payment_id": "certificate_8045380", "amount": 348}], "total_baggages": 0, "nonfree_baggages": 0, "insurance": "no"}}, "customer_relation": "same_customer"},
+      {"source": "9", "target": "9", "source_cue": "Use only evidence in the recorded first-pass experience.", "other_sources": ["0", "48"], "decision": {"kind": "official_only", "description": "No first change or handoff is registered for this task. Use the native grade."}, "customer_relation": "same_customer"}
+    ]
+  },
+  "first_pass": {
+    "draws": 1
+  },
+  "writing": {
+    "instruction": {
+      "path": "protocols/instructions/required-experience-writer-v1.txt",
+      "sha256": "54c0838ec92092c2accd1d78253ba560c95fadac6c65d698243f23cb38a67ed7"
+    },
+    "feedback": "result_only",
+    "representations": {
+      "fact": {
+        "text": "Record observed facts and values, who or what they refer to, and limits of the evidence. Start the memory body with exactly one line that records the supplied outcome for the entire prior task: \"Prior task outcome: success.\" for true or \"Prior task outcome: failure.\" for false. Then write the requested memory form. A successful tool return describes that operation; the feedback describes the entire task and does not explain which action caused its outcome."
+      },
+      "lesson": {
+        "text": "State an evidence-supported lesson or caution and the conditions under which it applies. Start the memory body with exactly one line that records the supplied outcome for the entire prior task: \"Prior task outcome: success.\" for true or \"Prior task outcome: failure.\" for false. Then write the requested memory form. A successful tool return describes that operation; the feedback describes the entire task and does not explain which action caused its outcome."
+      }
+    }
+  },
+  "reading": {
+    "preload": {
+      "read_mode": "preload",
+      "notice": {
+        "path": "protocols/instructions/matched-memory-read-v1.txt",
+        "sha256": "b623028e1bc06ca35d89b2f91a30159dd22999db0fa391cb95b61d5793f659a7"
+      }
+    },
+    "on_demand": {
+      "read_mode": "on_demand",
+      "tool_descriptions": {
+        "memory_list": "Browse note titles when a past situation, fact, procedure, or lesson could help with the current task. The list can be empty. It returns ids, versions, and titles. Use an id with memory_get to read a note, or the returned cursor for another page.",
+        "memory_get": "Read the title and body of a note by id when it looks relevant. A note describes prior work and may be incomplete or mistaken. Check whether it applies to the current situation."
+      }
+    },
+    "when-needed": {
+      "read_mode": "on_demand",
+      "tool_descriptions": {
+        "memory_list": "When a current decision depends on earlier context, you may browse prior note titles. For example, an unresolved reference, a past preference, or a condition still to check could make a note useful. If the current interaction already settles the decision, you can proceed. The list may be empty. It returns ids, versions, and titles. Use an id with memory_get to read a relevant note, or the returned cursor for another page.",
+        "memory_get": "Read the title and body of a note by id when it looks relevant. A note describes prior work and may be incomplete or mistaken. Check whether it applies to the current situation."
+      }
+    }
+  },
+  "conditions": [
+    {
+      "representation": "fact",
+      "reading": "preload"
+    },
+    {
+      "representation": "fact",
+      "reading": "on_demand"
+    },
+    {
+      "representation": "fact",
+      "reading": "when-needed"
+    },
+    {
+      "representation": "lesson",
+      "reading": "preload"
+    },
+    {
+      "representation": "lesson",
+      "reading": "on_demand"
+    },
+    {
+      "representation": "lesson",
+      "reading": "when-needed"
+    }
+  ],
+  "repeats": 1,
+  "limits": {
+    "max_input_bytes": 320000,
+    "writer_max_input_bytes": 512000,
+    "max_concurrent": 1
+  },
+  "budget": {
+    "max_usd": "0"
+  },
+  "retry": {
+    "http_codes": [
+      429,
+      500,
+      502,
+      503,
+      504
+    ],
+    "wait_seconds": [
+      30,
+      120
+    ]
+  }
+}

@@ -103,7 +103,8 @@ def save_analysis(root, plan_id, rows, card, *, tasks):
     folder.mkdir(parents=True, exist_ok=True)
     refs = {}
     scope = "all" if tasks is None else "tasks-" + digest(canonical(sorted(tasks)))[:12]
-    transfer_rows = {"agent-memory-transfer-scorecard/v1": "agent-memory-transfer-rows/v1",
+    transfer_rows = {"agent-memory-cohort-scorecard/v1": "agent-memory-cohort-rows/v1",
+                     "agent-memory-transfer-scorecard/v1": "agent-memory-transfer-rows/v1",
                      "agent-memory-transfer-scorecard/v2": "agent-memory-transfer-rows/v2"}
     rows_format = transfer_rows.get(card["format"], "agent-memory-study-rows/v1")
     for key, value in (("rows", dict(format=rows_format, plan_id=plan_id, scored_tasks=tasks, rows=rows)),

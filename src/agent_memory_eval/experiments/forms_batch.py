@@ -231,7 +231,8 @@ def prepare(root, workspace, checkout, design):
 
 
 def run_jobs(rows, execute, guard, persist, *, written_arms=(*FORMS, "summary"), initial_writers=None,
-             missing_sources=(), incomplete_form_sets=(), close_cost=None, verify_written=None, resumable=False):
+             missing_sources=(), incomplete_form_sets=(), unavailable_pools=None, close_cost=None,
+             verify_written=None, resumable=False):
     """Persist all assignments before HTTP, a start before side effects, and every terminal disposition."""
     writers = dict(initial_writers or {})
     persist(rows)
@@ -253,6 +254,9 @@ def run_jobs(rows, execute, guard, persist, *, written_arms=(*FORMS, "summary"),
             verify_written = None
         if row.get("source_task_id", row["task_id"]) in missing_sources:
             row.update(status="not_started", reason="first_pass_ungraded")
+            continue
+        if unavailable_pools and row["arm"] in unavailable_pools:
+            row.update(status="not_started", reason=unavailable_pools[row["arm"]])
             continue
         if row["phase"] == "solve" and key[:2] in incomplete_form_sets:
             row.update(status="not_started", reason="required_form_set_incomplete")
@@ -324,9 +328,28 @@ def run_batch(profile, workspace, checkout):
     return execute_prepared(profile, root, destination, identity, design, plan, models, guard)
 
 
+def required_form_bank(writer_root, row, form, repetition, source, feedback, instruction):
+    """Read this exact required writing assignment and bind it to its first pass and instructions."""
+    from agent_memory_eval.experiments.forms_write import read_form_bank
+    if (row["status"], row["arm"], row["task_id"], row["repetition"]) != ("completed", form, source.task_id, repetition):
+        raise ContractError("Wrong task, repetition or format for the assigned writer")
+    bank = read_form_bank(safe_path(writer_root, row["directory"]), expected_log_sha256=row["result"]["log_sha256"])
+    if (bank.get("feedback_level", "none") != feedback or
+            (feedback == "result_only" and bank.get("result_feedback") != source.result_receipt())):
+        raise ContractError("Reader was assigned a bank from another feedback condition")
+    if (not bank["items"] or bank["snapshot_id"] != row["result"].get("snapshot_id")
+            or not all(i["title"].strip() and i["body"].strip() for i in bank["items"])
+            or bank.get("instruction_sha256") != digest(instruction.encode())
+            or (bank.get("completion_contract"), bank["run_id"], bank["arm"], bank["task_id"], bank["repetition"])
+            != (REQUIRED_STORE_CONTRACT, row["run_id"], form, source.task_id, repetition)
+            or (bank.get("source_run_id"), bank.get("source_log_sha256"), bank["public_context_sha256"])
+            != (source.source_run_id, source.source_log_sha256, source.public_context_sha256)):
+        raise ContractError("Required sealed memory differs from its form or original trajectory")
+    return bank
+
+
 def verify_required_form_sets(design, plan, writer_root, bindings, *, root=ROOT):
     """Check the whole registered set before the first reader can send, including both deliveries."""
-    from agent_memory_eval.experiments.forms_write import read_form_bank
     if design["writing"].get("completion_contract") != REQUIRED_STORE_CONTRACT:
         return set()
     reader_jobs = [j for j in plan["jobs"] if j["phase"] == "solve" and j["arm"] != "no_memory"]
@@ -369,19 +392,8 @@ def verify_required_form_sets(design, plan, writer_root, bindings, *, root=ROOT)
                 if key != verified[form]:
                     raise ContractError("Readers were assigned different banks for one format")
                 continue
-            bank = read_form_bank(safe_path(writer_root, row["directory"]), expected_log_sha256=key[1])
-            feedback = design["source"]["feedback_level"]
-            if (bank.get("feedback_level", "none") != feedback or
-                    (feedback == "result_only" and bank.get("result_feedback") != source.result_receipt())):
-                raise ContractError("Reader was assigned a bank from another feedback condition")
-            if (not bank["items"] or bank["snapshot_id"] != row["result"].get("snapshot_id")
-                    or not all(i["title"].strip() and i["body"].strip() for i in bank["items"])
-                    or bank.get("instruction_sha256") != digest((common + "\n" + design["writing"]["lines"][form]).encode())
-                    or (bank.get("completion_contract"), bank["run_id"], bank["arm"], bank["task_id"], bank["repetition"])
-                    != (REQUIRED_STORE_CONTRACT, key[0], form, tid, rep)
-                    or (bank.get("source_run_id"), bank.get("source_log_sha256"), bank["public_context_sha256"])
-                    != (source.source_run_id, source.source_log_sha256, source.public_context_sha256)):
-                raise ContractError("Required sealed memory differs from its form or original trajectory")
+            required_form_bank(writer_root, row, form, rep, source, design["source"]["feedback_level"],
+                               common + "\n" + design["writing"]["lines"][form])
             verified[form] = key
         if set(verified) != forms and admission == "complete_form_set":
             incomplete.add((rep, tid))
@@ -412,11 +424,20 @@ def execute_prepared(profile, root, destination, identity, design, plan, models,
     if pools is not None and (imported_writers is not None or not pools or set(pools) != set(delivery_arms)
             or any(delivery_arms[a].get("pool") not in {"own", "mixed"} for a in pools)):
         raise ContractError("Every registered retrieval arm needs its own verified source binding")
+    cohort = trial is not None and "cohort" in trial
+    unavailable = plan.get("unavailable_pools", {})
+    if cohort:
+        if (pools is None or design["stage"] != "solve" or design["reader_admission"] != "sealed_bank"
+                or design["writing"]["completion_contract"] != REQUIRED_STORE_CONTRACT
+                or set(unavailable) != {a for a, banks in pools.items() if banks is None}):
+            raise ContractError("Each cohort reader needs its complete sealed pool or a recorded missing source")
+    elif unavailable:
+        raise ContractError("Unregistered cohort pool exclusion")
     writer_root, bindings = imported_writers or (destination, {})
     def verify_written(writers):
         return verify_required_form_sets(design, plan, writer_root, writers, root=root)
     combined_writing = "representation_pairs" in design and imported_writers is None
-    incomplete_form_sets = set() if combined_writing else verify_written(bindings)
+    incomplete_form_sets = set() if combined_writing or cohort else verify_written(bindings)
     rows = [dict(row, status="planned", directory=f'jobs/{row["index"]:04d}', run_id=new_id("r")) for row in plan["jobs"]]
     resumable = profile.get("interruption_policy") == RESUME_UNSTARTED
     destination.mkdir(exist_ok=resumable)
@@ -491,6 +512,7 @@ def execute_prepared(profile, root, destination, identity, design, plan, models,
     stop = run_jobs(rows, dispatch, guard, lambda values: write_json(ledger, values),
                     written_arms=() if pools is not None else (delivery_arms or written_arms), initial_writers=bindings,
                     missing_sources=plan.get("missing_sources", ()), incomplete_form_sets=incomplete_form_sets,
+                    unavailable_pools=unavailable,
                     verify_written=verify_written if combined_writing else None,
                     close_cost=close_cost, resumable=resumable)
     summary = dict(stop_reason=stop, http_calls=guard.calls, reported_usd=guard.reported_usd,

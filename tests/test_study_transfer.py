@@ -8,7 +8,7 @@ from agent_memory_eval.contracts.validation import ROOT
 from agent_memory_eval.study.plan import check_plan, load_plan
 from agent_memory_eval.study.scorecard import scorecard
 from agent_memory_eval.study.transfer import allocation_rows, decision_evidence
-from agent_memory_eval.study.transfer_baselines import target_transitions
+from agent_memory_eval.study.transfer_baselines import outcome, target_transitions
 
 
 def study(domain):
@@ -16,6 +16,40 @@ def study(domain):
 
 
 class TransferTests(unittest.TestCase):
+    def test_each_cohort_task_keeps_its_first_pass_across_all_policy_comparisons(self):
+        plan = study("airline")
+        tasks = plan["benchmark"]["tasks"]
+        template = plan["transfer"]["pairs"][0]
+        plan["transfer"] = dict(bank_comparison="own_vs_mixed", pairs=[
+            dict(template, source=t, target=t, customer_relation="same_customer") for t in tasks])
+        plan["writing"]["representations"]["fact"] = dict(text="Write facts from the same experience.")
+        plan["conditions"] += [dict(representation="fact", reading=r) for r in plan["reading"]]
+        check_plan(plan, ROOT)
+        rows = allocation_rows(plan, [])
+        self.assertEqual(len(rows), len(tasks) * 12)
+        for row in rows:
+            expected = {row["task"]} if row["bank"] == "own" else set(tasks)
+            self.assertEqual(set(row["bank_source_tasks"]), expected)
+            self.assertEqual([b["index"] for b in row["target_baselines"]], [1])
+        card = scorecard(rows)
+        self.assertEqual(card["target_no_memory"]["assigned"], len(tasks))
+        self.assertEqual(len(card["policy_contrasts"]), 18)
+        self.assertTrue(all(c["official_success"]["missing"] == len(tasks) for c in card["policy_contrasts"]))
+
+    def test_attempt_return_and_full_reference_have_separate_outcomes(self):
+        rule = dict(kind="first_matching_tool", tools=["update"], expected="update", arguments={})
+        step = dict(request="a", body=False, calls=[dict(name="update", arguments={}, arguments_valid=False)])
+        self.assertFalse(decision_evidence(rule, [step], completed=True)["correct"])
+        step["calls"][0]["arguments_valid"] = True
+        call = dict(receipt=dict(status="reported_error"), matches_any_reference=False)
+        row = dict(decision_rule=rule, decision=decision_evidence(rule, [step], completed=True),
+                   state_diagnostics=dict(reference_actions=["update"], first_registered_call=call))
+        self.assertTrue(outcome(row, "registered_decision"))
+        self.assertFalse(outcome(row, "registered_call_executed"))
+        call["receipt"]["status"] = "returned"
+        self.assertTrue(outcome(row, "registered_call_executed"))
+        self.assertFalse(outcome(row, "reference_call_executed"))
+
     def test_banking_smoke_links_the_written_note_without_counting_it_as_exposed(self):
         plan = load_plan(ROOT / "protocols/studies/smoke/fresh-smoke-bank-transfer-01.json", ROOT)
         source = plan["transfer"]["pairs"][0]["source"]

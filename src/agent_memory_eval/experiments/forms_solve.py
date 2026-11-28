@@ -71,7 +71,7 @@ def _bank_input(arm, task_id, repetition, writer_bank, public_record, expected_h
 def resolve_retrieval_pool(delivery, sources, task_id, repetition, target_hash, written_arms):
     """Import independent public writer versions in their preregistered order."""
     if (not isinstance(sources, list) or not sources or not delivery
-            or delivery.get("read_mode") != "on_demand" or delivery.get("pool") not in {"own", "mixed"}
+            or delivery.get("read_mode") not in {"on_demand", "preload"} or delivery.get("pool") not in {"own", "mixed"}
             or delivery.get("sources_sha256") != digest(canonical(sources))):
         raise ContractError("Retrieval pool differs from its registered sources")
     items, lineage = [], []
@@ -86,12 +86,16 @@ def resolve_retrieval_pool(delivery, sources, task_id, repetition, target_hash, 
         items.extend(block)
         lineage.append({k: bank[k] for k in ("task_id", "run_id", "snapshot_id", "journal_sha256",
                                               "public_context_sha256", "status")})
+        if "source_tasks" in delivery:
+            lineage[-1].update(source_run_id=bank["source_run_id"], source_log_sha256=bank["source_log_sha256"])
         lineage[-1]["heads"] = [[i["id"], i["version"]] for i in block]
     if (any(len({b[k] for b in lineage}) != len(sources) for k in ("task_id", "run_id", "snapshot_id"))
             or [b["public_context_sha256"] for b in lineage if b["task_id"] == task_id] != [target_hash]
             or (delivery["pool"] == "own") != (len(sources) == 1)
             or any(len({i[k] for i in items}) != len(items) for k in ("id", "version"))):
         raise ContractError("Pool must contain the target and distinct independent source versions")
+    if "source_tasks" in delivery and [b["task_id"] for b in lineage] != delivery["source_tasks"]:
+        raise ContractError("Cohort writer order differs from the registered source tasks")
     return items, lineage
 
 
@@ -162,12 +166,16 @@ def model_free_basis(domain, criteria):
             and not criteria.nl_assertions and not criteria.communicate_info)
 
 
-def _prepared_for_job(connection, prepared, limits, task_id, expected_split="train", expected_domain="airline", full_retail=False):
+def _prepared_for_job(connection, prepared, limits, task_id, expected_split="train", expected_domain="airline",
+                      full_retail=False, *, banking_judge=False):
     template, native, models, _ = prepared
     bench = connection["benchmark"]
     criteria = template.task.evaluation_criteria
     basis_ok = (expected_domain == "retail" and criteria is not None
                 and set(criteria.reward_basis) in ({"DB"}, {"DB", "NL_ASSERTION"})) if full_retail else model_free_basis(expected_domain, criteria)
+    if banking_judge:
+        basis_ok = (expected_domain == "banking_knowledge" and criteria is not None
+                    and set(criteria.reward_basis) == {"DB", "NL_ASSERTION"} and bool(criteria.nl_assertions))
     valid_split = (expected_split is None and bench.get("retrieval_config") == "grep_only"
                    if expected_domain == "banking_knowledge" else expected_split in {"train", "test"})
     if (not valid_split or (bench["domain"], bench["split"], bench["source_revision"], bench["communicate_scorer"])
@@ -273,7 +281,11 @@ def run_forms_solve(journal, *, arm, task_id, repetition, run_id, connection, pr
             raise ContractError("Same-task comparisons use the domain-neutral memory notice")
         preload_notice_version = "memory-only-v1"
     rendered_instruction = past_memory_instruction(instruction, notice_version=preload_notice_version)
-    _prepared_for_job(connection, prepared, limits, task_id, expected_split, expected_domain, native_grader is not None)
+    banking_judge = bool(matched_trial and matched_trial.get("banking_nl_assertion_judge"))
+    if banking_judge != (native_grader is not None and expected_domain == "banking_knowledge"):
+        raise ContractError("Banking judgment must be registered for this native assertion task")
+    _prepared_for_job(connection, prepared, limits, task_id, expected_split, expected_domain,
+                      full_retail=native_grader is not None and not banking_judge, banking_judge=banking_judge)
     if delivery is not None and (delivery["read_mode"] not in {"preload", "on_demand"} or arm == "no_memory"
             or arm == "empty_preload" and delivery != {"writer": "empty_preload", "read_mode": "preload"}):
         raise ContractError("A frozen-bank delivery must declare its writer and read policy")
@@ -307,6 +319,16 @@ def run_forms_solve(journal, *, arm, task_id, repetition, run_id, connection, pr
                           max_items=limits["read_bank_items"],
                           max_payload_bytes=limits["read_bank_payload_bytes"], max_return_bytes=limits["read_bank_return_bytes"])
     transfer = matched_trial.get("donor") if matched_trial is not None else None
+    cohort = matched_trial.get("cohort") if matched_trial is not None else None
+    if cohort is not None:
+        if transfer is not None or lineage is None or delivery is None:
+            raise ContractError("Cohort delivery requires its registered pool and target opening")
+        own, = [b for b in lineage if b["task_id"] == task_id]
+        expected = [task_id] if delivery["pool"] == "own" else cohort["sources"]
+        opening = matched_trial["source"]
+        if (delivery.get("source_tasks") != expected or own["source_run_id"] != opening["run_id"]
+                or own["source_log_sha256"] != opening["log_sha256"] or own["public_context_sha256"] != public_context_sha256):
+            raise ContractError("Cohort bank belongs to another target opening or source set")
     if transfer is not None:
         if (not source_task_id or writer_bank is None or delivery is None or source_task_id != transfer["task_id"]
                 or (writer_bank["source_run_id"], writer_bank["source_log_sha256"], public_context_sha256)
@@ -320,9 +342,10 @@ def run_forms_solve(journal, *, arm, task_id, repetition, run_id, connection, pr
     if matched_trial is not None:
         from agent_memory_eval.experiments.first_pass_match import FirstPassMismatch
         from agent_memory_eval.runner.tau2_baseline import ScopedGuard, spend_guard
-        if (first_pass_match is not None or (source_task_id is not None and transfer is None) or writer_pool is not None
+        if (first_pass_match is not None or (source_task_id is not None and transfer is None)
+                or (writer_pool is not None) != (cohort is not None)
                 or public_record is not None or preload_notice_version is not None or clients is None
-                or (policy.enabled and (writer_bank is None or delivery is None
+                or (policy.enabled and cohort is None and (writer_bank is None or delivery is None
                     or (transfer is None and public_context_sha256 != matched_trial.get("public_context_sha256"))))
                 or any(c.max_input_bytes != execution.max_input_bytes
                        or c.timeout_seconds != matched_trial["http_timeout_seconds"] for c in clients.values())):
@@ -472,6 +495,10 @@ def run_forms_solve(journal, *, arm, task_id, repetition, run_id, connection, pr
             score, grading, report_ref = raw_reward, "graded", raw_report_ref
         else:
             error_code = "NATIVE_" + termination.upper()
+            if termination == "max_steps" and (matched_trial or {}).get("grade_native_step_cap"):
+                if raw_reward != 0 or result.reward_info.reward_basis is not None:
+                    raise ContractError("Native step cap differs from the registered benchmark failure")
+                score, grading, report_ref = raw_reward, "graded", raw_report_ref
     except Exception as error:
         error_code = getattr(error, "code", type(error).__name__)
         if getattr(error, "recorded_event_id", None) not in journal.events:

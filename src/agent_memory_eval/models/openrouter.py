@@ -14,16 +14,10 @@ from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
 from agent_memory_eval.contracts.core import ContractError, canonical, read_json
+from agent_memory_eval.models import ProviderError, assistant_message
 
 
 API_ROOT = "https://openrouter.ai/api/v1"
-
-
-class ProviderError(ContractError):
-    def __init__(self, code, response=None, submitted=False, *, response_available=None):
-        self.code, self.response, self.submitted = code, response, submitted
-        self.response_available = response is not None if response_available is None else response_available
-        super().__init__(code)
 
 
 def _http_error_receipt(error, secrets):
@@ -218,8 +212,7 @@ class OpenRouterClient:
             self.guard.unknown_cost = True
             raise ProviderError("INVALID_RESPONSE_JSON", submitted=True) from None
         self.guard.after(result)
-        if not isinstance(result, dict):
-            raise ProviderError("INVALID_RESPONSE_SHAPE", result, submitted=True, response_available=True)
-        if "error" in result:
+        if isinstance(result, dict) and "error" in result:
             raise ProviderError("PROVIDER_RESPONSE_ERROR", result, submitted=True)
+        assistant_message(result)
         return result
