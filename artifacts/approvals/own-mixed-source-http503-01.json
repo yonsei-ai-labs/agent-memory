@@ -1,0 +1,40 @@
+{
+  "format": "agent-memory-source-http503-recovery/v1",
+  "scope": "source",
+  "http_status": 503,
+  "eligibility": "Every ungraded first pass whose latest sealed attempt ended in HTTP_503. Preserve every attempt. The first subsequent terminal result other than HTTP_503 remains the one result for its original task.",
+  "funding_authorization": "1회차에만 최대 $10 으로 ㄱㄱ",
+  "retry_authorization": "503 은 다시 다 실험해. 503이 나는건 너무 빨리 호출해서 그럴수 있으니 요청 속도를 조절할 필요도 있긴하겠다",
+  "cumulative_max_usd": "10.00",
+  "max_concurrent": 1,
+  "minimum_inter_episode_seconds": 5,
+  "provider_backoff_seconds": [
+    120,
+    600,
+    1800
+  ],
+  "plans": [
+    {
+      "plan": "protocols/studies/cohort/own-mixed-bank-01.json",
+      "approval": "artifacts/approvals/own-mixed-bank-01.json",
+      "approval_sha256": "0a6799d12f56820601fe6052a217800343485f22879921a90b8cc130a766154d"
+    },
+    {
+      "plan": "protocols/studies/cohort/own-mixed-retail-01.json",
+      "approval": "artifacts/approvals/own-mixed-retail-01.json",
+      "approval_sha256": "e37021f51907225b60ddee3e6af1bd64aaf6454c6fd42bbf0d4ef0aa8dd9bd53"
+    },
+    {
+      "plan": "protocols/studies/cohort/own-mixed-airline-01.json",
+      "approval": "artifacts/approvals/own-mixed-airline-01.json",
+      "approval_sha256": "c46765e64feddabe18abde55bc0297c4551a207f50d1b7d66c6fcf0947662f10"
+    },
+    {
+      "plan": "protocols/studies/cohort/own-mixed-bfcl-01.json",
+      "approval": "artifacts/approvals/own-mixed-bfcl-01.json",
+      "approval_sha256": "6ac21e8d70cb70ba53043f266a45ee0ae152c0b2f1381f20eac0c5cec88bb031",
+      "completed_checkpoint_sha256": "22859d44b653676a49c3e30456ea445a533bde4e040a8ed3eacc809cc24d4d2e",
+      "verified_graded_sources": 256
+    }
+  ]
+}
