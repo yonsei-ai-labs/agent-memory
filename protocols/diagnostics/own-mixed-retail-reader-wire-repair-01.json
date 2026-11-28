@@ -1,0 +1,60 @@
+{
+  "format": "agent-memory-cohort-reader-wire-repair/v1",
+  "id": "own-mixed-retail-reader-wire-repair-01",
+  "runtime_commit": "bdb2921e286cef360fc4a96d8309a640536c784c",
+  "plan": {
+    "path": "protocols/studies/cohort/own-mixed-retail-01.json",
+    "sha256": "f45ae1f7b8921b64dfca9c4a5c06397e5f6d22a9761b2808beca9f9a69dfc7c7"
+  },
+  "batch_ref": {
+    "path": "protocols/diagnostics/own-mixed-readers-final-01.json",
+    "sha256": "0f1e7acc483dba1ed46447a972a2ccada4fb470d529301ae9b1169216e07f08c"
+  },
+  "approval_ref": {
+    "path": "artifacts/approvals/own-mixed-readers-final-01.json",
+    "sha256": "8d3aebd1cdba3d3379c7d0692e15bf78a16e516d2521efd18459fcb8d246c5e7"
+  },
+  "batch_registration_sha256": "0b0850349bc064668ab078135ea898c3bc611d89820325c50ee6438b4e5de465",
+  "additional_max_usd": "0",
+  "reason": "The native renderer keeps one copy of an identical duplicate tool argument after the original call is denied. A subsequent request was blocked by the history comparison. Preserve the rejected call and the original sealed attempt.",
+  "previous_shards": {
+    "task-0__source-1--to--0/solve": "c517d5038222e980ba238163f12998584f579b4e040f9d1d453d69bebfc42f46",
+    "task-100__source-1--to--100/solve": "7f72ffcb74366fd6ece6da38f1ac3f58856129c74c864e0e41d40e40d328841f",
+    "task-101__source-1--to--101/solve": "a30272e0fa65c68a61920f6645a75b36e5c7aa2857c7115ce7983576fc3b32fb",
+    "task-102__source-1--to--102/solve": "86651ae4c36e2a859e147f376a4520c1874c3df2faa1bcc40e67dd04e2162424",
+    "task-103__source-1--to--103/solve": "b803a63da45b05f09a32f55e2265c1e69863a297776246057fb9f318afb691da",
+    "task-104__source-1--to--104/solve": "9e1a96c854e76449d8842aa0e04b46f9a4519189f7f0fa61679fecce97d6dfa9",
+    "task-105__source-1--to--105/solve": "35bfb115dbb5bbc0a448a2ebe71b791a370236c7e944411e0cef23ddae2a779a",
+    "task-10__source-1--to--10/solve": "daa1eef1aa8ac2c19ddb8ab46e0929b93a141897797aa28d9e83455499d72518",
+    "task-1__source-1--to--1/solve": "849727463c92194b511ddd3ed49dc41eafcbca42b543dc1b1438256d9c920f5c"
+  },
+  "recoveries": {
+    "task-103__source-1--to--103/solve": {
+      "seal": "b803a63da45b05f09a32f55e2265c1e69863a297776246057fb9f318afb691da",
+      "failed": {
+        "fact__on_demand__mixed": {
+          "index": 6,
+          "run_id": "r_b31769962c054882a5ecfa445d667432",
+          "log_sha256": "2f5138c7a9041fd5b5f73c64210d224097abd1f7495b29d8d6f097106e4819e3",
+          "first_worker_request_sha256": "22a1dea730cc6c2be74f91256494a5fdc6fc2403221d25386bbc35f0977bf19a"
+        }
+      },
+      "unstarted": {
+        "lesson__when-needed__mixed": 7,
+        "lesson__when-needed__own": 8,
+        "lesson__on_demand__own": 9,
+        "fact__on_demand__own": 10,
+        "lesson__preload__mixed": 11,
+        "fact__when-needed__mixed": 12
+      }
+    }
+  },
+  "controller_files": {
+    "registration.json": "1a01f55df8321b021892b8651ec10a7950ed966886618aaef8697b637505ff26",
+    "solve-wave-1.json": "3204f72300056e31cd302fef6f51e1a60a90ac48514a9fade27eb9ef6e542558",
+    "solve-wave-1.settled.json": "f0e585c25ce8493a634217895fe75cb4cb5ea27a1e2a6b9a1467c262c715bb4f",
+    "solve-wave-2.json": "08f69049dd563e072afba25ee6d9a4bf50a15860715b67e0f729269ee98d6c16",
+    "solve-wave-2.settled.json": "17ade4cca6fab5893f85a968fd86cd58c6c4b5e5916a8a09b46e4d03e8b79614",
+    "solve-wave-3.json": "82bd9296fffd337f69ff6734d763569eead2a52b37d41103b6d88476bf8aeddf"
+  }
+}

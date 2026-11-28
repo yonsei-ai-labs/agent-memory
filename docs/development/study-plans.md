@@ -38,6 +38,10 @@ uv run python -m agent_memory_eval.study resume \
 
 운영 조건을 바꾸어 다음 목표를 시작할 때는 배정의 `runtime_commit`에 실행 코드를 고정하고, `closed_reader_batches`에 앞선 등록·결과·보충 결과 해시를 명시한다. `plan resolve`는 새 배정을 기록하기 전에 과제 중복 여부, 앞선 배정의 봉인과 금액, 코드 일치를 확인한다. 기존 배정을 재개할 때는 등록 당시 구현을 사용한다. `operations.max_concurrent_tasks`가 과제 병렬 수를, `transient_backoff_seconds`가 해당 벤치에서 제공자 장애 후 새 상담을 시작하기까지의 대기를 정한다. 각 원장에 과제별 등록과 실제 요청 비용·미정산액이 남는다. [네 벤치 최종 배정](../../protocols/diagnostics/own-mixed-readers-final-01.json)
 
+실제 작업자의 한 도구 호출에 같은 인수가 같은 값으로 두 번 들어온 경우를 τ² 리테일 103에서 확인했다. 도구 라우터는 이 요청을 거부했고, 다음 턴의 이력 비교에서 이중 키 때문에 전송이 중단됐다. 수정 구현은 실제로 거부된 그 호출의 원문과 네이티브 표현을 검증한다. 원래 응답 25개를 오프라인 재생해 원래 구현이 차단한 26번째 입력과 수정본이 모의 전송한 입력의 SHA-256이 모두 `a453a8e39d4945834e8edf999c99559fa5b4ecd577a27b6bad7b9712c3fbd6e0`임을 확인했다. 이전에 과금된 요청은 25개다.
+
+중단된 배치는 같은 `--reader-batch`에 `--reader-wire-repair protocols/diagnostics/own-mixed-retail-reader-wire-repair-01.json`을 추가해 이어간다. 보완 등록은 원래 등록·승인·기존 상담의 완료 해시, 중단된 실행과 아직 전송하지 않은 조건, 새 실행 커밋을 고정한다. 기존 실행을 검증할 때는 이전 구현 ID를 사용하고 이후 실행은 새 ID를 기록한다. 채점된 실행은 다시 보내지 않는다. 기술 중단과 미전송 조건은 원래 배정 인덱스로 재개하며 모든 시도의 금액을 원래 한도에서 차감한다. [리테일 보완 등록](../../protocols/diagnostics/own-mixed-retail-reader-wire-repair-01.json)
+
 τ²의 후속 상담 시작 발화, 혼합 메모 출처, 전환표는 작성기가 사용한 1회차를 함께 참조한다. BFCL은 1회차 체크포인트까지의 저널 바이트를 검증하고 그 뒤에 작성 기록을 추가한다. 결과표의 1회차 비용은 최초 시도와 보충 시도를 모두 포함한다.
 
 ## 서로 다른 과제 사이의 행동 전이
