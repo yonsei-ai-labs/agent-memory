@@ -354,10 +354,11 @@ def _bank_shard(common, case, stage_name, grant):
         fixed(task_dir / "customer-opening-stop.json", stop)
 
 
-def approval_for(plan, record, *, max_usd, user_authorization):
+def approval_for(plan, record, *, max_usd, user_authorization, through_stage=None):
     """The spending record a person approves: this plan, this resolved allocation, one cumulative ceiling."""
     return dict(format=APPROVAL, plan_id=plan["id"], plan_sha256=plan_digest(plan), resolved_sha256=digest(canonical(record)),
-                assigned=record["assigned"], max_usd=str(max_usd), user_authorization=user_authorization)
+                assigned=record["assigned"], max_usd=str(max_usd), user_authorization=user_authorization,
+                **({"through_stage": through_stage} if through_stage is not None else {}))
 
 
 def study_models(cfg, conn):
@@ -730,7 +731,7 @@ class Tau2Study:
     def run(self, plan, workspace, root, *, approval, identity=None, model_resolver=None, pool_factory=None,
             sleep=time.sleep, progress=None, through_stage=None):
         from agent_memory_eval.reproduction.freeze import implementation_identity
-        check_through_stage(plan, through_stage)
+        check_through_stage(plan, through_stage, approved_through=approval.get("through_stage"))
         require_declared_models(plan)
         workspace, root = Path(workspace), Path(root)
         resolved = self.resolve(plan, workspace, root)

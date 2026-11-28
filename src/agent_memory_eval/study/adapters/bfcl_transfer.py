@@ -636,13 +636,14 @@ class BfclTransfer:
         sleep=time.sleep,
         through_stage=None,
     ):
-        check_through_stage(plan, through_stage)
+        grants = [approval, *increases]
+        check_through_stage(plan, through_stage, approved_through=grants[-1].get("through_stage"))
         prepared = self.resolve(plan, workspace, root, checkout=checkout)
         record, cfg = prepared["record"], prepared["cfg"]
-        grants = [approval, *increases]
         require(
             all(
-                g == approval_for(plan, record, max_usd=g["max_usd"], user_authorization=g["user_authorization"])
+                g == approval_for(plan, record, max_usd=g["max_usd"], user_authorization=g["user_authorization"],
+                                  through_stage=g.get("through_stage"))
                 and g["user_authorization"].strip()
                 and approval_amount(g["max_usd"]) <= Decimal(plan["budget"]["max_usd"])
                 for g in grants

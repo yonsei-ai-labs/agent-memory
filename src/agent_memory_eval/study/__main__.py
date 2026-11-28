@@ -40,8 +40,8 @@ def main(argv=None):
     parser.add_argument("--review-packets", type=Path, help="Export public transcripts for blinded review to a new JSON file")
     args = parser.parse_args(argv)
     plan = load_plan(args.plan, ROOT)
-    if args.through_stage and (args.command not in {"run", "resume"} or not is_cohort(plan)):
-        parser.error("--through-stage requires run or resume with an own/mixed cohort")
+    if args.through_stage and (args.command not in {"authorize", "run", "resume"} or not is_cohort(plan)):
+        parser.error("--through-stage requires authorize, run or resume with an own/mixed cohort")
     if args.command in {"authorize", "run", "resume"}:
         require_declared_models(plan)
     adapter = adapter_for(plan)
@@ -87,7 +87,8 @@ def main(argv=None):
         record = resolved["record"]
         path = approval_path(plan)
         path.parent.mkdir(parents=True, exist_ok=True)
-        grant = approval_for(plan, record, max_usd=args.max_usd, user_authorization=args.quote)
+        grant = approval_for(plan, record, max_usd=args.max_usd, user_authorization=args.quote,
+                             through_stage=args.through_stage)
         if cumulative_grants:
             path = publish_approval(path, grant)
         else:
@@ -129,7 +130,7 @@ def main(argv=None):
         if args.save:
             out = dict(out, saved=save_analysis(ROOT, plan["id"], rows, out, tasks=tasks))
     print(json.dumps(out, ensure_ascii=False, indent=2))
-    if args.through_stage and out["budget_deferred"]:
+    if args.through_stage and args.command in {"run", "resume"} and out["budget_deferred"]:
         raise SystemExit(1)
 
 

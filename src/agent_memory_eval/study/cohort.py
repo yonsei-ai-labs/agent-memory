@@ -9,9 +9,13 @@ def is_cohort(plan):
     return plan.get("transfer", {}).get("bank_comparison") == "own_vs_mixed"
 
 
-def check_through_stage(plan, stage):
+def check_through_stage(plan, stage, *, approved_through=None):
     if stage is not None and (not is_cohort(plan) or stage not in {"source", "write"}):
         raise ContractError("A source or writing checkpoint requires an own/mixed cohort")
+    if approved_through is not None:
+        allowed = {"source": {"source"}, "write": {"source", "write"}}
+        if stage not in allowed.get(approved_through, ()):
+            raise ContractError(f"This spending approval covers only stages through {approved_through}")
 
 
 def pool_sources(plan, target, draw=1):
