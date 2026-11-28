@@ -75,6 +75,11 @@ def recorded_stages(run_root):
                 and (not close.is_file() or all(stages.get(k) == v for k, v in written["stages"].items())),
                 "Writer checkpoint differs from the original registration or final stage records")
         stages.update(written["stages"])
+    if (run_root / "reader-batches").is_dir():
+        from agent_memory_eval.study.adapters.tau_reader_stage import reader_batch_stages
+        readers = reader_batch_stages(run_root)
+        require(stages.keys().isdisjoint(readers), "A reader shard is claimed by two stage controllers")
+        stages.update(readers)
     return stages
 
 

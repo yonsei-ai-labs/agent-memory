@@ -111,10 +111,10 @@ def writer_sources(plan, workspace, root, release_ref):
     return registration, sources, meta
 
 
-def active_writer_sources(workspace, folder, plan):
+def active_writer_sources(workspace, folder, plan, *, root=ROOT):
     marker = read(folder / "write-continuation.json")
-    _, sources, meta = writer_sources(plan, workspace, ROOT, marker["source_release"])
-    approval_ref, cap = writer_grant(ROOT, marker["source_release"], plan, meta)
+    _, sources, meta = writer_sources(plan, workspace, root, marker["source_release"])
+    approval_ref, cap = writer_grant(root, marker["source_release"], plan, meta)
     require(marker["format"] == "agent-memory-cohort-writer-continuation/v1" and marker["stage"] == "write"
             and marker["approval_ref"] == approval_ref and marker["max_usd"] == str(cap)
             and all(marker.get(k) == v for k, v in meta.items()), "Changed writer approval or first-pass binding")

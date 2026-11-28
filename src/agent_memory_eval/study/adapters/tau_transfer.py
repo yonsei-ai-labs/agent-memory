@@ -407,7 +407,9 @@ class TauTransfer(Tau2Study):
                     entry = stages.get(f"{task_dir.name}/{stage}", {})
                     reason = entry.get("reason") if entry.get("status") == "not_started" else None
                     if reason:
-                        rows = [dict(arm=a, status="not_started", reason=reason) for a in case["arms"]]
+                        arms = entry.get("arms", case["arms"])
+                        require(set(arms) <= set(case["arms"]), "Unregistered arm in excluded reader shard")
+                        rows = [dict(arm=a, status="not_started", reason=reason) for a in arms]
                     elif (shard / "completion.json").is_file():
                         rows = registered_rows(shard, case, registration, "solve", entry)
                     else:

@@ -20,6 +20,22 @@ uv run --no-sync python -m agent_memory_eval.study plan resolve \
 
 작성비 승인은 네 계획이 한 건을 공유한다. `authorize --through-stage write --writer-sources`에 원천 목록 경로, 승인자의 문구와 총액, 각 계획의 `--writer-cap PLAN=USD`를 지정한다. 계획별 `run --through-stage write`와 `resume --through-stage write`에는 같은 계획과 원천 목록을 전달한다. 이 경로가 보내는 모델 요청은 메모 작성이며, 누적 예약과 청구액은 승인된 작성비에서 차감한다. 중단 후 재개할 때는 작성 실행에 고정한 코드 커밋을 쓴다.
 
+### 봉인된 메모로 2회차를 이어가기
+
+`--reader-batch`는 기존 코호트의 2회차 실행 대상을 제한한다. 배정 파일은 원래 v3 계획, 작성 결과, 판독 기준, 벤치별 목표 ID와 비용을 고정한다. `plan resolve`는 과금 없이 해당 목표의 원천·후보 메모와 수행 가능 수를 확인한다. 네 벤치에 공통으로 쓰는 배정 승인은 `authorize --reader-batch`로 한 번 기록한다. 각 벤치의 `resume --reader-batch`는 그 벤치에 명시한 목표만 수행한다. `--tasks`는 분석 행을 고를 때 쓴다. [첫 48건의 배정과 한도](../../protocols/diagnostics/own-mixed-readers-smoke-01.json)
+
+```bash
+uv run python -m agent_memory_eval.study plan resolve \
+  --plan protocols/studies/cohort/own-mixed-bank-01.json \
+  --reader-batch protocols/diagnostics/own-mixed-readers-smoke-01.json
+
+uv run python -m agent_memory_eval.study resume \
+  --plan protocols/studies/cohort/own-mixed-bank-01.json \
+  --reader-batch protocols/diagnostics/own-mixed-readers-smoke-01.json
+```
+
+각 실행의 `reader-batches/<배정 ID>/registration.json`은 실행 구현·쓰기 체크포인트·메모 해시·승인과 목표 목록을 묶는다. 정산이 끝나면 같은 디렉터리에 `result.json`을 만든다. 비용에는 실제 청구와 미정산 예약이 함께 들어간다. 새 배정은 이미 등록한 목표와 겹칠 수 없고, 앞선 배정도 남은 누적 한도에 반영한다. 총한도를 올리는 후속 배정은 계획별 `cumulative_max_usd`와 해당 배정의 승인을 기록한다. 하나의 목표에서 12조건은 같은 1회차와 같은 두 작성물을 공유한다.
+
 τ²의 후속 상담 시작 발화, 혼합 메모 출처, 전환표는 작성기가 사용한 1회차를 함께 참조한다. BFCL은 1회차 체크포인트까지의 저널 바이트를 검증하고 그 뒤에 작성 기록을 추가한다. 결과표의 1회차 비용은 최초 시도와 보충 시도를 모두 포함한다.
 
 ## 서로 다른 과제 사이의 행동 전이

@@ -36,12 +36,19 @@ def main(argv=None):
     parser.add_argument("--through-stage", choices=["source", "write"], help="Stop a cohort after its sources or writers")
     parser.add_argument("--writer-sources", type=Path, help="Released first passes for a separately approved writer-only stage")
     parser.add_argument("--writer-cap", action="append", metavar="PLAN=USD", help="One study's sublimit in the shared writer grant")
+    parser.add_argument("--reader-batch", type=Path, help="Bound solve-only execution to the targets in this reader batch")
     parser.add_argument("--tasks", help="Comma-separated task ids: score only these tasks (for example the confirmation set)")
     parser.add_argument("--save", action="store_true", help="Keep rows and scorecard under artifacts/studies/<plan id>/")
     parser.add_argument("--reviews", type=Path, help="Follow-up transcript labels keyed by public-turn hash")
     parser.add_argument("--review-packets", type=Path, help="Export public transcripts for blinded review to a new JSON file")
     args = parser.parse_args(argv)
     plan = load_plan(args.plan, ROOT)
+    if args.tasks is not None and args.command != "analyze":
+        parser.error("--tasks selects analysis rows only; use a registered --reader-batch to limit execution")
+    if args.reader_batch and (not is_cohort(plan) or args.writer_sources or args.writer_cap or args.through_stage
+                              or not (args.command in {"authorize", "run", "resume"}
+                                      or args.command == "plan" and args.action == "resolve")):
+        parser.error("--reader-batch requires a cohort plan resolve, authorize, run or resume")
     if args.through_stage and (args.command not in {"authorize", "run", "resume"} or not is_cohort(plan)):
         parser.error("--through-stage requires authorize, run or resume with an own/mixed cohort")
     if args.command in {"authorize", "run", "resume"}:
@@ -58,7 +65,18 @@ def main(argv=None):
         parser.error("Use the complete preregistered follow-up cohort")
     if args.writer_cap and not (args.writer_sources and args.command == "authorize"):
         parser.error("--writer-cap belongs to a writer-stage authorization")
-    if args.writer_sources and args.command == "authorize":
+    if args.reader_batch:
+        from agent_memory_eval.study.reader_stage import authorize_readers, reader_command
+        if args.command == "authorize":
+            if not args.max_usd or not args.quote:
+                parser.error("Specify the registered reader batch limit and the authorization with --max-usd and --quote")
+            out = authorize_readers(ROOT, args.reader_batch, args.max_usd, args.quote, plan["id"])
+        else:
+            if args.max_usd or args.quote:
+                parser.error("Set the reader limit on its authorization")
+            out = reader_command(plan, workspace, ROOT, adapter, args.reader_batch,
+                                 execute=args.command in {"run", "resume"}, checkout=args.checkout, progress=report_progress)
+    elif args.writer_sources and args.command == "authorize":
         if not (is_cohort(plan) and args.through_stage == "write" and args.max_usd and args.quote
                 and args.writer_cap and all("=" in item for item in args.writer_cap)):
             parser.error("Writer authorization needs --through-stage write, --max-usd, --quote and --writer-cap PLAN=USD per plan")
@@ -147,7 +165,7 @@ def main(argv=None):
         if args.save:
             out = dict(out, saved=save_analysis(ROOT, plan["id"], rows, out, tasks=tasks))
     print(json.dumps(out, ensure_ascii=False, indent=2))
-    if args.through_stage and args.command in {"run", "resume"} and out["budget_deferred"]:
+    if (args.through_stage or args.reader_batch) and args.command in {"run", "resume"} and out["budget_deferred"]:
         raise SystemExit(1)
 
 

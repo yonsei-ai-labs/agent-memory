@@ -1,0 +1,67 @@
+{
+  "id": "own-mixed-reader-actions-01",
+  "scope": "Prospective, descriptive follow-up of four named cases in the writer content audit. Twelve original reader slots per case (fact and lesson × three registered read policies × own and mixed banks). Observations at specific actions are nested within a slot; the 48 slots are the denominator. No inference about why the official outcome occurred or whether a memory caused an action.",
+  "writer_index": {"path": "artifacts/studies/own-mixed-writers-01/writer-outcomes.csv", "sha256": "dcd6284aa2d65b73d8dd7df6a3f1631ce13e7c748b822a74ae004e6685e176c3"},
+  "content_audit": {"path": "artifacts/studies/own-mixed-writers-01/content-review.csv", "sha256": "a14c440a54329dc8df0f9e887782c66b870dee8379b58305ed14a0687978bb48"},
+  "action_clock": "Select the actual answered worker request that emits the claim, calculation, question or business call. Use the order and item/version spans in submitted worker wires up to and including its own input. Its tool returns and receipts occur later. Record own and other items separately, including title alone, body, both, and neither. An unanswered request with possible delivery is uncertain, and a return alone is not confirmed input. Without an action there is no action-specific exposure cutoff.",
+  "claims_in_titles": "None of the eight audited own titles contains the disputed proposition. The banking lesson title does advise checking transaction mapping. Score title visibility separately. A body containing a claim was available to the worker; attention, belief and causal use remain unobserved.",
+  "review": "Read a condition-masked packet of customer and worker business turns, tool arguments and public receipts. Cite the action and specific observations in a rationale for each axis; if a finding depends on a receipt, cite its public receipt. Mark successive incompatible actions separately. Inputs also supplied by the current customer or tool must remain possible sources. Join annotations to the assignment, sealed writer text and earlier item-specific inputs only after coding the actions. In mixed banks inspect each visible other note for the relevant clue before attributing even a possible match. Do not label an action as caused by any note. Retain every attempt and use the first officially graded attempt, otherwise the last observed attempt, for each registered slot.",
+  "fates": {
+    "repeated": "Positive evidence of the specific erroneous proposition or its registered operational counterpart. Cite the exact public claim, argument or response. A wrong official result alone is insufficient.",
+    "corrected_or_reverified": "Positive public evidence for the registered distinction or an explicitly checked, correctly applied transaction, address, fare or question. Identify what was checked and the answer or action. Silence about the error, a lookup alone, a correct final grade or generic caution is insufficient.",
+    "other_observed": "The relevant public action is interpretable but establishes another outcome, such as a distinct unconnected error, a different itinerary with a valid quote, or a function call with no title question. Record the observed facts.",
+    "no_opportunity": "A sufficiently observed public path never reaches the named situation. Cite the observed reason or path. An interrupted run before any diagnostic evidence, or an unstarted slot, does not establish absence of opportunity.",
+    "unclear": "A relevant decision, a possible partial observation, or its meaning cannot be resolved from the supplied public record. Record what is missing. Missing/unstarted runs and pending manual decisions remain explicit."
+  },
+  "targets": {
+    "bank": {
+      "study": "own-mixed-bank-01",
+      "plan_file_sha256": "bf51ef7af89996e85f6420510eae5fe0716c1942a6a51c55b2d9325b230325e6",
+      "task": "task_039",
+      "body_claim": {"fact": "Contradicted: two submissions allegedly mismatched.", "lesson": "Contradicted: several allegedly shifted IDs offered as an explanation for failure."},
+      "axes": {
+        "dispute_mapping": "For each charge the current customer identifies, compare merchant, date, full charge amount and requested dispute reason against the current transaction record. Match each filed inner transaction ID, date and reason to its own call and returned receipt. Identify wrong, confirmed, duplicate, omitted and unresolved filings. Cite the actual filing or assertion as the action, not earlier verification, tool discovery or the last turn by default. A new wrong mapping or an assertion that sound mappings are shifted is error-compatible. Explicit correction or alignment of current evidence, filing and receipt is positive re-verification. Previously filed disputes were in fact mapped correctly. A partial-refund request is not the original charge amount. Never infer a whole-task failure cause."
+      },
+      "source_public_disputes": [
+        ["Costco", "10/09/2025", "234.56", "txn_a450807f1148", "unauthorized_fraudulent_charge"],
+        ["Costco", "10/23/2025", "312.87", "txn_f7ce44574766", "duplicate_charge"],
+        ["Costco", "11/04/2025", "267.34", "txn_39469d5db822", "goods_services_not_as_described"],
+        ["Costco", "11/11/2025", "198.23", "txn_02bf2e9dcfa7", "incorrect_amount"],
+        ["Amazon", "10/11/2025", "129.45", "txn_2f16599b9075", "unauthorized_fraudulent_charge"],
+        ["Amazon", "10/26/2025", "215.67", "txn_182e896e1c97", "duplicate_charge"],
+        ["Amazon", "11/06/2025", "162.54", "txn_b94ce7d77e7f", "canceled_subscription_still_charging"],
+        ["Amazon", "11/13/2025", "56.78", "txn_d8e6e3386b89", "refund_never_processed"]
+      ]
+    },
+    "retail": {
+      "study": "own-mixed-retail-01",
+      "plan_file_sha256": "f45ae1f7b8921b64dfca9c4a5c06397e5f6d22a9761b2808beca9f9a69dfc7c7",
+      "task": "96",
+      "body_claim": {"fact": "Contradicted: profile and other order both showed the New York address.", "lesson": "Contradicted: the profile's NYC address was looked up and used."},
+      "axes": {
+        "address_source": "Use the particular response identifying where the address came from. Repeat if the worker calls NYC the profile address or claims both records match. Positive correction needs an explicit accurate distinction grounded in current public evidence: profile in Los Angeles, order #W3407479 in New York. Retrieving both alone or quoting the approved destination establishes no such distinction.",
+        "order_change": "Record customer authorization, entity, destination and actual receipt separately. Match modify_pending_order_address for #W6750959 to its returned NYC address. Check separately for a profile mutation or wrong-order change. A verified intended update is positive evidence of the order operation only. A public promise, proposed change or arguments without an execution receipt cannot establish modification."
+      }
+    },
+    "airline": {
+      "study": "own-mixed-airline-01",
+      "plan_file_sha256": "1fcd47556c27293e12be64aefd1d85ac1ac46c0a1586f7bf3add63f19ce1662d",
+      "task": "10",
+      "body_claim": {"fact": "Supported comparison: distinguishes cabin prices, $846 quote and $2,010 payment-history entry.", "lesson": "Contradicted: calls the $113/$165 outbound economy fares business fares."},
+      "axes": {
+        "outbound_fare": "Use the dated flight and cabin price row, calculator operands and worker's fare explanation. For HAT190 and HAT047 both dated May 24, economy was 113 and 165 and business was 464 and 202. A different date or itinerary can legitimately have other prices. An explicit business label on those economy fares, or their use for those business seats in the relevant calculation, is error-compatible. Checking and applying the current itinerary's actual business prices is positive evidence. A search or a bare number alone is insufficient.",
+        "quote_and_update": "Record pre-change quote for three passengers, its basis, approval or rejection, then the actual operation/receipt for 4NQLHD if present. Compare old and new payment_history and cabin/legs. The prior quote was 846 and the new entry was 2010; a second-pass estimate or transaction may differ. Distinguish repeated underquote from an accurate current quote, a correctly anticipated refusal and a later reconciliation. A receipt supports a payment-history entry only, not settlement, refund, or a cause of failure."
+      }
+    },
+    "bfcl": {
+      "study": "own-mixed-bfcl-01",
+      "plan_file_sha256": "4be51cd597731bcc173bfad9854ca0a52ac4711edf964e71b4ed0061275e559d",
+      "task": "live_relevance_10-10-0",
+      "body_claim": {"fact": "Supported comparison: the worker explicitly asked which movie.", "lesson": "Contradicted: the worker allegedly omitted the title question."},
+      "axes": {
+        "movie_title_question": "Read the public business reply semantically. Directly asking which movie or asking the user for its title is positive evidence. Asking for other identifying details while omitting title is the operational counterpart of the false historical description. A call, a guessed movie, a supplied argument or a mention of missing data without a title question is distinct. A first-pass title was asked for; this axis observes a fresh reply and does not adjudicate any factual answer.",
+        "business_call_presence": "Record whether a non-memory function call was emitted at that public decision. Record the official BFCL call-presence grade and any ungraded/malformed state separately. No invocation receipt, successful purchase, factual-answer grade or database state is implied."
+      }
+    }
+  }
+}
