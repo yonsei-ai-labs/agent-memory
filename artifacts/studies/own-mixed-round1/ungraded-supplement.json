@@ -1,0 +1,172 @@
+{
+  "phase": "source",
+  "scope_file": "runs/own-mixed-source-ungraded-01/scope.json",
+  "scope_sha256": "d6ff5956e3e95dc3a67329963ca4f425724a0385203da92e7c2eb6d9d9e0291b",
+  "collection_rule": "one fresh no-memory attempt per ungraded task after HTTP 503 recovery",
+  "solver_commit": "6776b912dbdc3eaa87a03d3e127e6bb6e3e2013c",
+  "parent_summary_sha256": "5d0cf7b2880e5928043a605c5048d6091401323e89d12503d14a98361f178b7f",
+  "cases": [
+    {
+      "benchmark": "bank",
+      "task": "task_041",
+      "original": {
+        "task": "task_041",
+        "folder": "runs/own-mixed-bank-01/task-task_041__source-1/source",
+        "seal": "a2a061f061363b964094ede788d72adcc5c4152d14c512854fa0b321af02948b",
+        "run_id": "r_1c63896547ae481c81949bf4edacb306",
+        "success": null,
+        "missing": "JSONDecodeError"
+      },
+      "supplemental": {
+        "task": "task_041",
+        "folder": "runs/own-mixed-source-ungraded-01/bank/task-task_041__source-1/source",
+        "seal": "879b07b187222215f81fc55279247ceddc3d108f04df4bbbdf100f4107615a31",
+        "run_id": "r_067dc4872c0746d5af6fb937e3537ec9",
+        "success": false,
+        "missing": null,
+        "opening_sha256": "6a35f475bb0d7ff542a369574f56b21abd08340f607fd268fc3828408eec415b",
+        "public_context_sha256": "83b1429095c1244b7f9c90a60782803332a3e15a454e2a949372b28f32194eff"
+      },
+      "first_worker_request_original": "18bed044d40d88e020dd13c575a8507712ece4fd8c311b3164117cf75af0ad1b",
+      "first_worker_request_supplemental": "18bed044d40d88e020dd13c575a8507712ece4fd8c311b3164117cf75af0ad1b",
+      "same_first_customer_message": true,
+      "requests_by_role": {
+        "user_simulator": 14,
+        "worker": 38
+      },
+      "termination": "user_stop",
+      "native_score": 0.0,
+      "log_sha256": "965d3a8f30217f5ec3220bbcbd1aff85e7e7462d70bf2930bb1a58c22ae7f230",
+      "session_id": "s_d8d9d4d87a2048b693401c5517e83901",
+      "reported_usd": "0.019285884",
+      "held_usd": "0E-9"
+    },
+    {
+      "benchmark": "bank",
+      "task": "task_081",
+      "original": {
+        "task": "task_081",
+        "folder": "runs/own-mixed-bank-01/task-task_081__source-1/source",
+        "seal": "ac04fc799589fd4b939c16933f3045f75294cfb2ae3acaf97fa9c9bb6f6d0d0c",
+        "run_id": "r_5c4a0f7f36e3400cbd3d9cf41c78b86a",
+        "success": null,
+        "missing": "TASK_START_MISMATCH"
+      },
+      "supplemental": {
+        "task": "task_081",
+        "folder": "runs/own-mixed-source-ungraded-01/bank/task-task_081__source-1/source",
+        "seal": "10ec81a57acf28c0aaf42273b7890d2b310c618c25c49e1c64dfe575780cd0fd",
+        "run_id": "r_4dc615d3a2664100b6307beeef1bd22a",
+        "success": null,
+        "missing": "TASK_START_MISMATCH",
+        "opening_sha256": "eb38c6d7ff01a519bccfa5cb38e57e6d0301dd0b8784c69bf827bec1695d3a1f"
+      },
+      "first_worker_request_original": null,
+      "first_worker_request_supplemental": null,
+      "same_first_customer_message": null,
+      "requests_by_role": {
+        "user_simulator": 1
+      },
+      "termination": "runtime_error",
+      "native_score": null,
+      "log_sha256": "24070a6d8e081fa8c6d609c19ced7c375bef1dfdb6eff9e155951c1f65cbb4c1",
+      "session_id": "s_10ee764c9bd24f7b9a279df7b5ff6423",
+      "reported_usd": "0.00009102",
+      "held_usd": "0E-8"
+    },
+    {
+      "benchmark": "retail",
+      "task": "35",
+      "original": {
+        "task": "35",
+        "folder": "runs/own-mixed-retail-01/task-35__source-1/source",
+        "seal": "88281d9e966350ee13c0f2b73ae38c5a9db57346563565a161c0ddf8b09ee821",
+        "run_id": "r_d5ed58a59afd404890280dbd6e3e1131",
+        "success": null,
+        "missing": "TRANSPORT_UNKNOWN"
+      },
+      "supplemental": {
+        "task": "35",
+        "folder": "runs/own-mixed-source-ungraded-01/retail/task-35__source-1/source",
+        "seal": "f0a0800764da4ff11740fc348e888a356449621700cd4aae5e33c879456ace02",
+        "run_id": "r_e4f313602fbc4379b028e9d022c62919",
+        "success": true,
+        "missing": null,
+        "opening_sha256": "f69dd525bf533244ea9c27b3db381d5eb8ca361c17991f2ebde418a43c03b027",
+        "public_context_sha256": "2a04c60fc121802d8c8612c003c2c29db68251ecd776471ecbb5f2f71412ece5"
+      },
+      "first_worker_request_original": "346d09791e0149d81cc9834f40925a3b8f758e081f47781d5cc646840a6f87b0",
+      "first_worker_request_supplemental": "6d9b453b470fe57de21403c39d25b88bae328d204a0681f5abe4e71460393598",
+      "same_first_customer_message": false,
+      "requests_by_role": {
+        "user_simulator": 10,
+        "worker": 17
+      },
+      "termination": "user_stop",
+      "native_score": 1.0,
+      "log_sha256": "dd423d789fcf59ddbfd58c2f7bce1f4997f8d0e5c81eb4baff27af3f26a184dd",
+      "session_id": "s_a2376d2921d3424ba2906514e9b80332",
+      "reported_usd": "0.003833318",
+      "held_usd": "0E-9"
+    }
+  ],
+  "by_benchmark": {
+    "bank": {
+      "added_reported_usd": "0.019376904",
+      "added_held_usd": "0E-9",
+      "added_requests": 53,
+      "effective_index": "runs/own-mixed-source-ungraded-01/bank/effective-sources.json",
+      "effective_index_sha256": "1bc9d3a3c274d08d29562c33d9d9b1f568455a05500afcdb249e36fb44ad3211",
+      "source_checkpoint_sha256": "a6528431d1a1e8872e315eb0dbac770652a62fa7b8d80edbc5bdc36aa720edaa"
+    },
+    "retail": {
+      "added_reported_usd": "0.003833318",
+      "added_held_usd": "0E-9",
+      "added_requests": 27,
+      "effective_index": "runs/own-mixed-source-ungraded-01/retail/effective-sources.json",
+      "effective_index_sha256": "ac12ad0e81ce80de696eb6ff4e481095a15208404dede90ee24b9e64a87c83ef",
+      "source_checkpoint_sha256": "4c7ba08a5efa88e405e50f4d68e60609e25664d456e866dd0d462d25214dc94b"
+    }
+  },
+  "assigned": 517,
+  "counts_by_benchmark": {
+    "bank": {
+      "success": 5,
+      "failure": 91,
+      "missing": 1
+    },
+    "retail": {
+      "success": 88,
+      "failure": 26,
+      "missing": 0
+    },
+    "airline": {
+      "success": 31,
+      "failure": 19,
+      "missing": 0
+    },
+    "bfcl": {
+      "success": 184,
+      "failure": 72,
+      "missing": 0
+    }
+  },
+  "before_supplement": {
+    "success": 307,
+    "failure": 207,
+    "missing": 3
+  },
+  "after_supplement": {
+    "success": 308,
+    "failure": 208,
+    "missing": 1
+  },
+  "row_file": "first-pass-tasks-after-supplement.csv",
+  "row_file_sha256": "80de30840a431c3b4f36710a5a0e0e6eef5d2cfd4f4ed0ffa147673c2aef741e",
+  "additional_reported_usd": "0.023210222",
+  "additional_held_usd": "0E-9",
+  "cumulative_reported_usd": "1.471872447",
+  "cumulative_held_usd": "0.073419000",
+  "cumulative_covered_usd": "1.545291447",
+  "cap_usd": "10.00"
+}
