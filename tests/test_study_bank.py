@@ -280,6 +280,10 @@ class BankStudyTests(unittest.TestCase):
         with self.assertRaisesRegex(ContractError, "shares no first pass"):
             self.adapter().outcomes(other, self.workspace, ROOT)
         unrelated = bank_plan("bank-fixture-04", references=[dict(recording="bank-fixture-01")])
+        pending = self.adapter().outcomes(unrelated, self.workspace, ROOT)
+        self.assertTrue(pending)
+        self.assertEqual({r["missing_reason"] for r in pending}, {"plan_first_pass_unavailable"})
+        self.assertTrue(all(r["success"] is None for r in pending))
         self.run_plan(unrelated, FlakyCustomer(fail=False))
         with self.assertRaisesRegex(ContractError, "does not share the sealed first pass"):
             self.adapter().outcomes(unrelated, self.workspace, ROOT)

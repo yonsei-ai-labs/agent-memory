@@ -276,7 +276,7 @@ class NativeTwoVisitTests(unittest.TestCase):
                                             decision_request=result["request"], confirmed_usd="0.001", held_usd="0")
 
         comparison = dict(memory="query", empty="empty_query", primary_mode="previous_only", primary_outcome="consent_without_reasking")
-        scoring = read(ROOT / "protocols/studies/retail-revisit-followup-02.json")["scoring"]
+        scoring = read(ROOT / "protocols/studies/retail-revisit-followup-03.json")["scoring"]
         plan = dict(format=FOLLOWUP_FORMAT, id="followup", models={}, comparison=comparison, scoring=scoring,
                     execution={"attempts_per_checkpoint": 1, "pause_after_consecutive_transient_errors": 2})
         record = dict(assigned=dict(registered=2, continuable=2), calibration={})
@@ -332,6 +332,27 @@ class NativeTwoVisitTests(unittest.TestCase):
                 folder = self.root / "runs/low-budget" / job["run"]
                 self.assertFalse((folder / "continuation.started").exists())
                 self.assertEqual(digest((folder / "log.jsonl").read_bytes()), receipts[job["run"]]["journal_sha256"])
+            increase = approval_for(limited, record, max_usd="1", user_authorization="synthetic cumulative increase")
+            # Die after the native request start was logged but before the transport could reserve or send it.
+            with patch.object(MeteredReplies, "respond", side_effect=SystemExit), self.assertRaises(SystemExit):
+                adapter.run(limited, self.root, ROOT, approval=grant, increases=[increase])
+            with self.assertRaisesRegex(ContractError, "summary belongs to another batch"):
+                adapter.analyze(limited, self.root, ROOT)
+            reported = []
+            resumed = adapter.run(limited, self.root, ROOT, approval=grant, increases=[increase],
+                                  progress=lambda *args: reported.append(args))
+            self.assertEqual([(e[0], e[1], e[2]) for e in reported], [("continuation", 1, 2), ("continuation", 2, 2)])
+            self.assertEqual(resumed["reserved_calls"], 12)
+            archived, = (self.root / "runs/low-budget/unsubmitted" / jobs[0]["run"]).iterdir()
+            self.assertTrue((archived / "continuation.started").is_file())
+            self.assertFalse((archived / "continuation.json").exists())
+            self.assertEqual(adapter.analyze(limited, self.root, ROOT)[1]["continuation_billing"]["authorized_usd"], "1")
+            boundary = self.root / "runs/low-budget/grant-increases/000001.json"
+            entry = read(boundary)
+            write_json(boundary, dict(entry, after_reserved_calls=1))
+            with self.assertRaisesRegex(ContractError, "cap authorized at that reservation"):
+                adapter.analyze(limited, self.root, ROOT)
+            write_json(boundary, entry)
             result = adapter.run(plan, self.root, ROOT, approval=approved)
             self.assertEqual(result["reserved_calls"], 12)
             self.assertEqual(adapter.run(plan, self.root, ROOT, approval=approved), result)
@@ -347,6 +368,29 @@ class NativeTwoVisitTests(unittest.TestCase):
             partially_funded, card = adapter.analyze(partial_plan, self.root, ROOT)
             self.assertEqual([r["status"] for r in partially_funded], ["error", "unstarted"])
             self.assertEqual(card["phase"], "partial")
+            paid = self.root / "runs/partly-funded" / jobs[0]["run"] / "continuation.json"
+            earlier = paid.read_bytes()
+            raised = approval_for(partial_plan, record, max_usd="2", user_authorization="synthetic increase after stop")
+            adapter.run(partial_plan, self.root, ROOT, approval=grant, increases=[raised])
+            funded, card = adapter.analyze(partial_plan, self.root, ROOT)
+            self.assertEqual([r["status"] for r in funded], ["error", "completed"])
+            self.assertEqual(funded[0]["continuation_requests"], partially_funded[0]["continuation_requests"])
+            self.assertEqual(paid.read_bytes(), earlier)
+            self.assertEqual(card["continuation_billing"]["authorized_usd"], "2")
+            with self.assertRaises(ContractError):
+                adapter.run(partial_plan, self.root, ROOT, approval=grant)
+            # A reservation survives a process death before HTTP or its response can be established.
+            held_plan = dict(plan, id="unknown-delivery")
+            held_grant = approval_for(held_plan, record, max_usd="1", user_authorization="synthetic")
+            def crash_after_reservation(client, wire):
+                client.guard.before(wire, client.model)
+                raise SystemExit
+            with patch.object(MeteredReplies, "respond", crash_after_reservation), self.assertRaises(SystemExit):
+                adapter.run(held_plan, self.root, ROOT, approval=held_grant)
+            adapter.run(held_plan, self.root, ROOT, approval=held_grant)
+            held, _ = adapter.analyze(held_plan, self.root, ROOT)
+            self.assertEqual((held[0]["status"], held[0]["continuation_requests"]), ("interrupted", 1))
+            self.assertEqual(held[1]["status"], "completed")
             packet_file = self.root / "blind.json"
             rows, card = adapter.analyze(plan, self.root, ROOT, review_packets=packet_file)
             self.assertEqual(card["continuation_billing"]["verified_submissions"], 12)
@@ -404,14 +448,23 @@ class NativeTwoVisitTests(unittest.TestCase):
         from agent_memory_eval.experiments.forms_batch import write_json
         from agent_memory_eval.study.adapters.retail_revisit import consultation_row
 
-        for cause in ("max_steps", "HTTP_520", "STUDY_LIMIT"):
-            with self.subTest(cause=cause):
-                job = dict(self.job("query"), run="r_" + cause, customer="c", source="s", mode="previous_only")
-                rt = self.runtime([[call("get_order_details", order_id=job["target"])]], [])
+        from agent_memory_eval.recording.provenance import RoleRequestLimit
+        scoring = read(ROOT / "protocols/studies/retail-revisit-followup-03.json")["scoring"]
+        for cause, actor in (("max_steps", "worker"), ("too_many_errors", "worker"), ("HTTP_520", "worker"), ("STUDY_LIMIT", "worker"),
+                             ("ROLE_REQUEST_LIMIT", "worker"), ("ROLE_REQUEST_LIMIT", "user_simulator"),
+                             ("INPUT_SIZE_LIMIT", "worker"), ("INPUT_SIZE_LIMIT", "user_simulator")):
+            with self.subTest(cause=cause, actor=actor):
+                job = dict(self.job("query"), run=f"r_{cause}_{actor}", customer="c", source="s", mode="previous_only")
+                first_reply = [call("get_order_details", order_id=job["target"])] if actor == "worker" else "Which order?"
+                if cause == "too_many_errors":
+                    first_reply = [call("get_order_details", order_id="#missing-fixture-order")]
+                rt = self.runtime([first_reply], [])
                 rt["seal_continuation"] = True
                 rt["guard"] = ExpenseLedger(self.root / "unused-expense.jsonl", "1", 10, float("inf"))
                 if cause == "max_steps":
                     rt["protocol"] = dict(self.protocol, native_steps=2)
+                elif cause == "too_many_errors":
+                    rt["protocol"] = dict(self.protocol, native_errors=1)
                 folder = self.root / job["run"]
                 with Journal(folder, job["run"], contract_version="1.2") as journal:
                     first = first_decision(journal, job, self.task, self.prefix, rt, [self.item], [], keep=True)
@@ -422,19 +475,30 @@ class NativeTwoVisitTests(unittest.TestCase):
                 write_json(folder / "continuation.started", dict(stage="continuation", run=job["run"]))
                 failure = (ProviderError("STUDY_LIMIT", submitted=False) if cause == "STUDY_LIMIT" else
                            ProviderError("HTTP_520", {"error": {"code": 520}}, submitted=True))
+                if cause == "ROLE_REQUEST_LIMIT":
+                    failure = RoleRequestLimit(actor)
+                    if actor == "worker":
+                        rt["protocol"] = dict(self.protocol, limits=dict(self.protocol["limits"], worker_requests=1))
+                elif cause == "INPUT_SIZE_LIMIT":
+                    rt["protocol"] = dict(self.protocol, limits=dict(self.protocol["limits"], max_input_bytes=1))
                 with (Journal(folder, job["run"], contract_version="1.2") as journal,
-                      patch.object(rt["clients"]["worker"], "respond", side_effect=failure)):
+                      patch.object(rt["clients"][actor], "respond", side_effect=failure)):
                     outcome = continue_decision(journal, job, self.task, self.prefix, rt, first)
                 self.assertEqual(recover_finished(folder, "continuation", job, True), outcome)
                 raw = (folder / "log.jsonl").read_bytes()
                 write_json(folder / "continuation.json", dict(outcome, journal_bytes=len(raw), journal_sha256=digest(raw)))
                 prior = dict(session=sid, first_lookup=False, focused=True, decision_request=first["request"], included=[],
                              confirmed_usd="0", held_usd="0")
-                row = consultation_row(folder, job, first, prior, {}, {}, native_failures=["max_steps", "too_many_errors"])
+                row = consultation_row(folder, job, first, prior, {}, {},
+                                       native_failures=scoring["native_failure_terminations"],
+                                       worker_limits=scoring["worker_failure_limits"])
                 self.assertEqual(row["reason"], cause)
                 if cause == "STUDY_LIMIT":
                     self.assertEqual(row["status"], "budget_deferred")
-                self.assertIs(row["consent_without_reasking"], False if cause == "max_steps" else None)
+                failed = cause in scoring["native_failure_terminations"] or actor == "worker" and cause in scoring["worker_failure_limits"]
+                if cause in scoring["worker_failure_limits"]:
+                    self.assertEqual(row["actor_role"], actor)
+                self.assertIs(row["consent_without_reasking"], False if failed else None)
                 self.assertIsNone(row["db_success"])
 
     def test_native_db_evaluator_ignores_absent_and_refused_consent(self):

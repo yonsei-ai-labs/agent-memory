@@ -1,4 +1,4 @@
 from setuptools import find_packages, setup
 
-# Package the canonical schema directory alongside the Python code in wheels and sdists.
-setup(packages=[*find_packages("src"), "agent_memory_eval.schemas"])
+# Include the canonical schemas and the retail execution modules in editable installs and wheels.
+setup(packages=[*find_packages("src"), "agent_memory_eval.schemas", "scripts"])

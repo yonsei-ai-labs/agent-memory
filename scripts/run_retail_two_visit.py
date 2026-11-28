@@ -173,6 +173,7 @@ class ExpenseLedger:
     def __init__(self, path, cap, max_calls, deadline):
         self.path, self.cap, self.max_calls, self.deadline = path, Decimal(str(cap)), max_calls, deadline
         self.calls, self.spent, self.held, self.open = 0, Decimal(0), Decimal(0), {}
+        self.reserved_runs = set()
         self.denied = self.unknown_cost = False
         self.stage = self.run_id = None
         self.retry_after = 0
@@ -190,6 +191,7 @@ class ExpenseLedger:
                 "Out-of-order reservation",
             )
             self.calls, self.open[seq] = seq, maximum
+            self.reserved_runs.add(row["run"])
             self.held += maximum
         else:
             cost = Decimal(row["cost"])
@@ -318,6 +320,11 @@ def recover_finished(folder, stage, job, keep, *, evidence=None):
             reason = result.get("termination") or result.get("provider_error") or result.get("reason")
             require(result["run"] == job["run"] and result["status"] in {"incomplete", "error", "budget_deferred"}
                     and reason == ended["termination_reason"], "Continuation termination differs from the journal")
+            if "actor_role" in result:
+                actors = [e["payload"]["actor_role"] for e in events if e["type"] == "model.request_started"
+                          or (e["type"] == "runtime.error" and e["payload"].get("code") == reason)]
+                require(reason in {"ROLE_REQUEST_LIMIT", "INPUT_SIZE_LIMIT"} and actors
+                        and result["actor_role"] == actors[-1], "Limit actor differs from the native request")
             return result
     if ended and ended["grading_status"] == "graded":
         if stage == "source":
@@ -347,7 +354,8 @@ def verify_continuation_receipt(folder, job, receipt, *, evidence=None):
     require(actual and actual == expected, "Full outcome differs from its native journal")
 
 
-def execute(study, runtime, *, through, continuation, destination, pause_after_transient=None, admit_continuation=None):
+def execute(study, runtime, *, through, continuation, destination, pause_after_transient=None, admit_continuation=None,
+            progress=None):
     jobs, tasks, prefixes = study["jobs"], study["tasks"], study["public"]
     known_sources = {j["task"]: j for j in jobs["source"]}
     writers = {(j["task"], j["arm"]): j for j in jobs["writer"]}
@@ -365,7 +373,8 @@ def execute(study, runtime, *, through, continuation, destination, pause_after_t
                 if stage == "continuation" and runtime.get("seal_continuation"):
                     verify_continuation_receipt(folder, j, previous)
                 counts[previous["status"]] += 1
-                if admit_continuation and previous.get("provider_error") == "STUDY_LIMIT":
+                if (admit_continuation and previous.get("provider_error") == "STUDY_LIMIT"
+                        and Decimal(previous["ceiling_usd"]) >= runtime["guard"].cap):
                     runtime["guard"].denied = True
                     runtime["guard"].pause_reason = "study_limit"
                     break
@@ -397,6 +406,8 @@ def execute(study, runtime, *, through, continuation, destination, pause_after_t
             fixed(folder / (stage + ".json"), value)
             counts[result["status"]] += 1
             guard = runtime["guard"]
+            if progress:
+                progress(stage, sum(counts.values()), len(jobs[stage]), str(guard.spent))
             if admit_continuation and result.get("provider_error") == "STUDY_LIMIT":
                 guard.denied = True
             write_json(

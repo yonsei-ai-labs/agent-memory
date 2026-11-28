@@ -5,7 +5,7 @@
   "additionalProperties": false,
   "required": ["format", "id", "question", "benchmark", "models", "sample", "execution", "comparison"],
   "properties": {
-    "format": {"enum": ["agent-memory-retail-followup/v1", "agent-memory-retail-followup/v2"]},
+    "format": {"enum": ["agent-memory-retail-followup/v1", "agent-memory-retail-followup/v2", "agent-memory-retail-followup/v3"]},
     "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9.-]{2,80}$"},
     "question": {"type": "string", "pattern": "\\S"},
     "benchmark": {
@@ -39,7 +39,8 @@
       "properties": {
         "primary_transcripts": {"const": "blinded_direct_review_all_completed_primary_assignments"},
         "unresolved_reviews": {"const": "final_missing_with_allocation_bounds"},
-        "native_failure_terminations": {"const": ["max_steps", "too_many_errors"]}
+        "native_failure_terminations": {"const": ["max_steps", "too_many_errors"]},
+        "worker_failure_limits": {"const": ["ROLE_REQUEST_LIMIT", "INPUT_SIZE_LIMIT"]}
       }
     },
     "comparison": {
@@ -55,9 +56,13 @@
       }
     }
   },
-  "if": {"properties": {"format": {"const": "agent-memory-retail-followup/v2"}}},
-  "then": {"required": ["scoring"]},
-  "else": {"not": {"required": ["scoring"]}},
+  "allOf": [
+    {"if": {"properties": {"format": {"const": "agent-memory-retail-followup/v1"}}},
+     "then": {"not": {"required": ["scoring"]}}, "else": {"required": ["scoring"]}},
+    {"if": {"properties": {"format": {"const": "agent-memory-retail-followup/v3"}}},
+     "then": {"properties": {"scoring": {"required": ["worker_failure_limits"]}}},
+     "else": {"properties": {"scoring": {"not": {"required": ["worker_failure_limits"]}}}}}
+  ],
   "$defs": {
     "hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
     "ref": {

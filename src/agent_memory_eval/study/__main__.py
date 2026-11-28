@@ -17,6 +17,10 @@ def approval_path(plan):
     return ROOT / "artifacts" / "approvals" / f"{plan['id']}.json"
 
 
+def report_progress(label, done, total, spent):
+    print(label, done, "of", total, "USD", spent, file=sys.stderr, flush=True)
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(prog="python -m agent_memory_eval.study", description=__doc__)
     parser.add_argument("command", choices=["plan", "authorize", "run", "resume", "analyze"])
@@ -38,8 +42,8 @@ def main(argv=None):
         require_declared_models(plan)
     adapter = adapter_for(plan["benchmark"]["adapter"])
     workspace = args.workspace.resolve()
-    staged = hasattr(adapter, "resolve")  # τ² domains resolve paid stages; BFCL compiles a local profile.
-    followup = hasattr(adapter, "analyze")
+    staged = adapter.execution_mode in {"staged", "followup"}
+    followup = adapter.execution_mode == "followup"
     if (args.reviews or args.review_packets) and (not followup or args.command != "analyze"):
         parser.error("Transcript review options apply to follow-up analysis")
     if followup and args.tasks:
@@ -54,7 +58,8 @@ def main(argv=None):
             else:
                 out["conditions"] = conditions(plan)
         elif staged:
-            record = adapter.resolve(plan, workspace, ROOT)["record"]
+            kwargs = dict(progress=report_progress) if followup else {}
+            record = adapter.resolve(plan, workspace, ROOT, **kwargs)["record"]
             out = record if followup else dict(plan=plan["id"], assigned=record["assigned"], stages=record["stages"], cases=len(record["cases"]))
         else:
             cfg = adapter.compile(plan, ROOT)
@@ -66,18 +71,26 @@ def main(argv=None):
         if not (args.max_usd and args.quote and args.quote.strip()):
             parser.error("Record the approved ceiling and the person's own words")
         if followup:
-            from agent_memory_eval.study.adapters.retail_revisit import approval_amount
+            from agent_memory_eval.study.followup_budget import approval_amount, publish_approval
             approval_amount(args.max_usd)
         record = adapter.resolve(plan, workspace, ROOT)["record"]
         path = approval_path(plan)
         path.parent.mkdir(parents=True, exist_ok=True)
-        fixed(path, approval_for(plan, record, max_usd=args.max_usd, user_authorization=args.quote))
+        grant = approval_for(plan, record, max_usd=args.max_usd, user_authorization=args.quote)
+        if followup:
+            publish_approval(path, grant)
+        else:
+            fixed(path, grant)
         out = dict(approval=str(path.relative_to(ROOT)), assigned=record["assigned"], max_usd=args.max_usd)
     elif args.command in {"run", "resume"}:
         if staged:
-            out = adapter.run(plan, workspace, ROOT, approval=read(approval_path(plan)),
-                              progress=lambda label, done, total, spent: print(label, done, "of", total, "USD", spent,
-                                                                              file=sys.stderr, flush=True))
+            if followup:
+                from agent_memory_eval.study.followup_budget import approval_chain
+                first, *extra = approval_chain(approval_path(plan))
+                grants = dict(approval=first, increases=extra)
+            else:
+                grants = dict(approval=read(approval_path(plan)))
+            out = adapter.run(plan, workspace, ROOT, **grants, progress=report_progress)
         else:
             if not (args.checkout and args.model_python and args.checkpoint):
                 parser.error("A BFCL run needs the pinned checkout, the model interpreter and the checkpoint")
@@ -89,7 +102,7 @@ def main(argv=None):
         if followup:
             rows, out = adapter.analyze(plan, workspace, ROOT, reviews=args.reviews, review_packets=args.review_packets)
         else:
-            kwargs = dict(checkout=args.checkout) if adapter.name == "bfcl-relevance" else {}
+            kwargs = dict(checkout=args.checkout) if adapter.execution_mode == "local" else {}
             rows = adapter.outcomes(plan, workspace, ROOT, **kwargs)
             if tasks is not None:
                 unknown = set(tasks) - set(plan["benchmark"]["tasks"])

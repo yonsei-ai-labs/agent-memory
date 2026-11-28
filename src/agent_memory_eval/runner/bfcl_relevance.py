@@ -14,7 +14,7 @@ from agent_memory_eval.adapters.bfcl_task_start import REVISION, open_relevance
 from agent_memory_eval.analysis.recorded_decisions import require, sealed_bytes
 from agent_memory_eval.analysis.requests import audit_requests
 from agent_memory_eval.contracts.core import MemoryPolicy, RunContext, canonical, digest, new_id, read_json
-from agent_memory_eval.contracts.validation import ROOT
+from agent_memory_eval.contracts.validation import ROOT, inspect_journal
 from agent_memory_eval.memory.context import snapshot_message
 from agent_memory_eval.memory.preparation import snapshot_items
 from agent_memory_eval.memory.router import ToolRouter
@@ -265,11 +265,24 @@ def collect_task(root, cfg, case, client, is_empty, *, parent=None, pairs=None):
             solve(journal, cfg, case, client, is_empty, source=source, writer=writers[form], form=form, mode=mode)
 
 
-def audit_task(root, cfg, case, is_empty, *, sources_only=False):
+def audit_task(root, cfg, case, is_empty, *, sources_only=False, allow_partial=False):
     category, row = case
     task = row["id"]
     folder = root / task
-    scan, state, experiment = read_experiment(folder)
+    log = folder / "log.jsonl"
+    interrupted = set()
+    if allow_partial and not log.exists():
+        scan, state, experiment = inspect_journal(b""), {}, None
+    else:
+        scan, state, experiment = read_experiment(folder)
+    if allow_partial and (scan["tail_bytes"] or scan["incomplete_runs"]):
+        # Native BFCL sessions execute sequentially within one task journal. Audit its closed prefix normally.
+        ended_at = max((i for i, record in enumerate(scan["records"], 1)
+                        if any(e["type"] == "run.ended" for e in record["events"])), default=0)
+        interrupted = set(scan["incomplete_runs"])
+        prefix = b"".join(log.read_bytes().splitlines(keepends=True)[:ended_at])
+        scan = inspect_journal(prefix)
+        state = BlobStore(folder).get(scan["records"][-1]["state_ref"]) if ended_at else {}
     audit_requests(folder, evidence=(scan, state, experiment))
     require(not scan["incomplete_runs"] and not scan["pending_requests"], "Unclosed local trial")
     blobs = BlobStore(folder)
@@ -285,6 +298,9 @@ def audit_task(root, cfg, case, is_empty, *, sources_only=False):
     for run, phase, form, mode in slots:
         rec = dict(task=task, run=run, phase=phase, form=form, mode=mode, success=None, status="not_started")
         rows.append(rec)
+        if run in interrupted:
+            rec["status"] = "interrupted"
+            continue
         if run not in scan["starts"]:
             continue
         batch = [e for e in events if e["run_id"] == run]
@@ -363,7 +379,7 @@ def audit_task(root, cfg, case, is_empty, *, sources_only=False):
             g = grade_reply(raw["choices"][0]["message"], category, is_empty, original["tools"])
             require(g == blobs.get(scored["official_artifact_ref"]) and g["valid"] is rec["success"], "Grade mismatch")
             rec.update(any_call=g["any_call"], undeclared=g["undeclared_functions"], missing_required=g["missing_required"])
-    return dict(journal_sha256=digest((folder / "log.jsonl").read_bytes()), allocations=rows)
+    return dict(journal_sha256=digest(log.read_bytes()) if log.exists() else None, allocations=rows)
 
 
 def comparison_inputs(cfg, args):

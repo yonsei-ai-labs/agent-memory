@@ -111,6 +111,23 @@ class BfclRunTests(unittest.TestCase):
             with self.assertRaisesRegex(ContractError, "different contents"):
                 adapter.run(changed, workspace, ROOT, checkout=CHECKOUT, model_python=Path("python"),
                             checkpoint=CHECKPOINT, client_factory=LocalFixture)
+            # Preserve a graded first task while the other has no journal, then stop inside the first task.
+            (folder / TASKS[1]).rename(workspace / "untouched-fixture")
+            partial = adapter.outcomes(plan, workspace, ROOT, checkout=CHECKOUT)
+            self.assertEqual([r["missing_reason"] for r in partial if r["task"] == TASKS[1]], ["not_started"] * 3)
+            self.assertEqual([r for r in partial if r["task"] == TASKS[0]], [r for r in rows if r["task"] == TASKS[0]])
+            log = folder / TASKS[0] / "log.jsonl"
+            lines = log.read_bytes().splitlines(keepends=True)
+            names = {"-fact-on_demand": "fact__on_demand", "-outcome-first-preload": "outcome-first__preload"}
+            final, interrupted = max((i, condition) for i, line in enumerate(lines) for e in json.loads(line)["events"]
+                                     for suffix, condition in names.items()
+                                     if e["type"] == "run.started" and e["run_id"].endswith(suffix))
+            log.write_bytes(b"".join(lines[:final + 1]))
+            partial = adapter.outcomes(plan, workspace, ROOT, checkout=CHECKOUT)
+            counts = {r["condition"]: r for r in partial if r["task"] == TASKS[0]}
+            self.assertEqual(counts[interrupted]["missing_reason"], "interrupted")
+            closed = [r for r in rows if r["task"] == TASKS[0] and r["condition"] != interrupted]
+            self.assertEqual([counts[r["condition"]] for r in closed], closed)
 
 
 if __name__ == "__main__":

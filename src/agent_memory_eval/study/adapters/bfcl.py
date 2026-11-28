@@ -22,6 +22,7 @@ def _implementation(root):
 
 class BfclRelevance:
     name = "bfcl-relevance"
+    execution_mode = "local"
 
     def compile(self, plan, root):
         """Native BFCL profile for exactly the declared tasks, representations, readers and conditions."""
@@ -139,8 +140,10 @@ class BfclRelevance:
         rows = []
         for case in cases:
             task = case[1]["id"]
-            audited = audit_task(run_root, cfg, case, is_empty)["allocations"]
-            _, state, _ = read_experiment(run_root / task)
+            require(modes is not None or (run_root / task / "log.jsonl").is_file(),
+                    f"Reference evidence is missing for BFCL task {task}")
+            audited = audit_task(run_root, cfg, case, is_empty, allow_partial=modes is not None)["allocations"]
+            state = read_experiment(run_root / task)[1] if any(rec.get("snapshot") for rec in audited) else None
             blobs = BlobStore(run_root / task)
             for rec in audited:
                 if rec["phase"] == "write":
@@ -152,15 +155,15 @@ class BfclRelevance:
                 else:
                     condition = f"{origin}/{rec['form']}__{rec['mode']}"
                 graded = rec["success"] is not None
-                started = rec["status"] != "not_started"
+                measured = "prompt_tokens" in rec
                 rows.append(dict(
                     task=task, source=task, condition=condition, origin=origin, attempt=0,
                     status="graded" if graded else "missing", success=rec["success"],
                     missing_reason=None if graded else rec["status"],
-                    tokens=rec["prompt_tokens"] + rec["completion_tokens"] if started else None,
+                    tokens=rec["prompt_tokens"] + rec["completion_tokens"] if measured else None,
                     business_calls=int(rec["any_call"]) if rec.get("any_call") is not None else None,
                     reads_list=rec.get("reads", {}).get("memory_list", 0), reads_get=rec.get("reads", {}).get("memory_get", 0),
-                    preloaded=rec["mode"] == "preload" and "body" in rec.get("fields", []), cost_usd="0" if started else None,
+                    preloaded=rec["mode"] == "preload" and "body" in rec.get("fields", []), cost_usd="0" if measured else None,
                     first_decision=None if rec.get("any_call") is None else ("call" if rec["any_call"] else "no_call"),
                 ))
                 items = snapshot_items(blobs, state, rec["snapshot"]) if rec["phase"] == "solve" and rec.get("snapshot") else []
@@ -172,14 +175,18 @@ class BfclRelevance:
         from agent_memory_eval.runner.bfcl_relevance import load_inputs
         run_root = Path(workspace) / "runs" / plan["id"]
         cfg = self.compile(plan, root)
+        require(checkout is not None, "Analyzing BFCL needs its pinned checkout")
         cases, is_empty = load_inputs(Path(checkout), cfg)
         rows = []
         if (run_root / "profile.json").is_file():
             profile_bytes = (run_root / "profile.json").read_bytes()
-            registration = read_json((run_root / "registration.json").read_bytes())
-            require(registration["plan_sha256"] == plan_digest(plan), "The run was registered with another plan")
-            require(digest(profile_bytes) == registration["profile_sha256"] and read_json(profile_bytes) == cfg,
-                    "The recorded profile differs from the plan")
+            require(read_json(profile_bytes) == cfg, "The recorded profile differs from the plan")
+            if (run_root / "registration.json").is_file():
+                registration = read_json((run_root / "registration.json").read_bytes())
+                require(registration["plan_sha256"] == plan_digest(plan), "The run was registered with another plan")
+                require(digest(profile_bytes) == registration["profile_sha256"], "The recorded profile hash differs")
+            else:
+                require(not any(run_root.glob("*/log.jsonl")), "Local task evidence lacks its BFCL registration")
             modes = {r["read_mode"]: name for name, r in plan.get("reading", {}).items()}
             rows = self._rows(run_root, cfg, cases, is_empty, plan["id"], modes)
         wanted = set(plan["benchmark"]["tasks"])

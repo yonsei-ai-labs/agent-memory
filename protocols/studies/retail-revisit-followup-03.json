@@ -1,0 +1,36 @@
+{
+  "format": "agent-memory-retail-followup/v3",
+  "id": "retail-revisit-followup-03",
+  "question": "When a returning customer refers to a previous order, does access to the frozen notes under the conditional retrieval instruction help complete the correct, currently authorized cancellation without asking which order again?",
+  "benchmark": {
+    "adapter": "tau2-retail-revisit",
+    "recording": "tau2-retail-conditional-retrieval-01",
+    "registration_sha256": "2d227e6c03fde5994c2a26ad787b4aa53d96c03b9f1091f41b77769f9e1233e1",
+    "checkpoint_receipts_sha256": "d72b4e5953386872f13d23a98a120fe6ff419677770148720d59fb1810100a69",
+    "decisions": {
+      "path": "artifacts/analyses/20261123-retail-conditional-retrieval-results.json",
+      "sha256": "0a03ca89e87d7d219d4a2e734bd3ce05d657424667a4475c85740aef748458b1"
+    }
+  },
+  "models": {
+    "profile": {
+      "path": "protocols/models/project-standard-v1.json",
+      "sha256": "ef0ed266db31f8ed8fca4fb6321ae2907efb7755088d6f038e710e862f1f0da3"
+    }
+  },
+  "sample": "all_registered_checkpoint_customers",
+  "execution": {"attempts_per_checkpoint": 1, "pause_after_consecutive_transient_errors": 2},
+  "scoring": {
+    "primary_transcripts": "blinded_direct_review_all_completed_primary_assignments",
+    "unresolved_reviews": "final_missing_with_allocation_bounds",
+    "native_failure_terminations": ["max_steps", "too_many_errors"],
+    "worker_failure_limits": ["ROLE_REQUEST_LIMIT", "INPUT_SIZE_LIMIT"]
+  },
+  "comparison": {
+    "memory": "conditional_query",
+    "empty": "conditional_empty_query",
+    "primary_mode": "previous_only",
+    "primary_outcome": "consent_without_reasking",
+    "decision_rule": "customer_interval_and_allocation_bounds"
+  }
+}

@@ -1,7 +1,8 @@
 """Paired retail outcomes for a follow-up of previously registered first decisions."""
 
 from collections import Counter, defaultdict
-from decimal import Decimal, InvalidOperation
+from contextlib import contextmanager
+from decimal import Decimal
 import fcntl
 from functools import partial
 import os
@@ -9,19 +10,21 @@ from pathlib import Path
 import shutil
 from tempfile import TemporaryDirectory
 from types import SimpleNamespace
+from uuid import uuid4
 
 from agent_memory_eval.analysis.claim_evidence import paired_counts
 from agent_memory_eval.analysis.paired_policy import customer_contrast
+from agent_memory_eval.analysis.recorded_decisions import require
 from agent_memory_eval.contracts.core import ContractError, canonical, digest, read_json
 from agent_memory_eval.experiments.forms_batch import endpoint_terms, live_models, write_json
 from agent_memory_eval.memory.preparation import snapshot_items
 from agent_memory_eval.models.openrouter import OpenRouterClient, request_reservation_usd
 from agent_memory_eval.recording.assets import asset_bytes, asset_text, publish_json
-from agent_memory_eval.recording.journal import BlobStore, Journal, read_experiment, safe_path
+from agent_memory_eval.recording.journal import BlobStore, Journal, read_experiment, safe_path, sync_directory
 from agent_memory_eval.reproduction.freeze import implementation_identity
-from agent_memory_eval.study.plan import check_plan, model_profile, plan_digest, require_declared_models
+from agent_memory_eval.study.followup_budget import approval_amount, check_increase, register_grants, registration_freeze
+from agent_memory_eval.study.plan import FOLLOWUP_FORMAT, check_plan, model_profile, plan_digest, require_declared_models
 from agent_memory_eval.study.records import fixed
-from scripts.analyze_full_retail import require
 from scripts.analyze_retail_conditional_retrieval import analyze as score_decisions, charges_by_run, seen_in_input
 from scripts.analyze_retail_two_visit import grade_turns, public_turns, uptake
 from scripts.audit_retail_two_visit_billing import audit as audit_billing
@@ -33,13 +36,20 @@ from scripts.run_retail_two_visit import (
 )
 
 
-def approval_amount(value):
+@contextmanager
+def controller_lock(dest, *, exclusive):
     try:
-        amount = Decimal(str(value))
-    except InvalidOperation as error:
-        raise ContractError("Supply a positive finite spending ceiling") from error
-    require(amount.is_finite() and amount > 0, "Supply a positive finite spending ceiling")
-    return amount
+        lock = (dest / "controller.lock").open("a+b" if exclusive else "rb")
+    except OSError as error:
+        raise ContractError("Cannot open the follow-up controller lock. Resume to initialize the batch") from error
+    with lock:
+        try:
+            fcntl.flock(lock, (fcntl.LOCK_EX if exclusive else fcntl.LOCK_SH) | fcntl.LOCK_NB)
+        except BlockingIOError as error:
+            raise ContractError("The follow-up controller is active; wait for its closed batch") from error
+        except OSError as error:
+            raise ContractError("Cannot lock the follow-up controller") from error
+        yield
 
 
 def copy_checkpoint(original, dest, job, expected, *, copy_blob=shutil.copyfile):
@@ -57,7 +67,37 @@ def copy_checkpoint(original, dest, job, expected, *, copy_blob=shutil.copyfile)
                     and (staging / "log.jsonl").stat().st_size == expected["journal_bytes"],
                     "Checkpoint copy differs from the sealed original")
             staging.rename(target)
+            sync_directory(dest)
     require(read_receipt(target, "decision") == expected, "The follow-up session has a different first decision")
+
+
+def restore_unsubmitted(original, dest, job, first, guard):
+    """Retain a crashed local attempt before restoring its sealed prefix. A reservation forbids resubmission."""
+    folder = dest / job["run"]
+    marker = folder / "continuation.started"
+    if job["run"] in guard.reserved_runs or not marker.exists():
+        return
+    require(read(marker) == dict(stage="continuation", run=job["run"]), "Changed attempt marker")
+    evidence = read_experiment(folder)
+    terminal = recover_finished(folder, "continuation", job, True, evidence=evidence)
+    receipt = read_receipt(folder, "continuation")
+    if receipt is not None:
+        verify_continuation_receipt(folder, job, receipt, evidence=evidence)
+    if terminal is not None and (terminal["status"] != "budget_deferred"
+                                 or approval_amount(terminal["ceiling_usd"]) >= guard.cap):
+        return
+    # A pending request without a durable reservation could not have reached the live transport.
+    suffix = (folder / "log.jsonl").read_bytes()[first["journal_bytes"]:]
+    for line in suffix.splitlines(keepends=True):
+        if line.endswith(b"\n"):
+            require(all(e["type"] != "model.request_finished" or e["payload"]["delivery_status"] == "not_submitted"
+                        for e in read_json(line)["events"]), "Submission evidence has no matching reservation")
+    archive = safe_path(dest, "unsubmitted/" + job["run"])
+    archive.mkdir(parents=True, exist_ok=True)
+    folder.rename(archive / uuid4().hex)
+    sync_directory(archive)
+    sync_directory(dest)
+    copy_checkpoint(original, dest, job, first)
 
 
 def first_request_fits(job, folder, *, runtime):
@@ -199,7 +239,7 @@ def transcript_outcome(turns, target, db_reward, reviews, packets, *, direct_rev
 
 
 def consultation_row(folder, job, first, previous, reviews, packets, *, original_folder=None,
-                     direct_review=False, native_failures=()):
+                     direct_review=False, native_failures=(), worker_limits=()):
     row = {k: job[k] for k in ("customer", "source", "task", "run", "mode", "arm")}
     row.update(first_decision=first["status"], session=previous["session"], first_lookup=previous["first_lookup"],
                focused=previous["focused"], decision_request=previous["decision_request"],
@@ -235,7 +275,9 @@ def consultation_row(folder, job, first, previous, reviews, packets, *, original
     row.update(status=receipt["status"], reason=receipt.get("provider_error") or receipt.get("reason")
                or receipt.get("termination"), journal_sha256=receipt["journal_sha256"])
     if row["status"] != "completed":
-        if row["status"] == "incomplete" and receipt["termination"] in native_failures:
+        row["actor_role"] = receipt.get("actor_role")
+        if ((row["status"] == "incomplete" and receipt["termination"] in native_failures)
+                or (row["actor_role"] == "worker" and row["reason"] in worker_limits)):
             row.update(consent_without_reasking=False, consent_qualified=False)
         return row
     turns = public_turns(BlobStore(folder).get(receipt["trajectory"]))
@@ -285,17 +327,20 @@ def followup_scorecard(rows, resolved, comparison, billing):
             verdict = "improved_in_this_cohort"
         elif max(estimate["interval"][1], estimate["bounds"][1]) < 0:
             verdict = "worse_in_this_cohort"
-    return dict(format="agent-memory-retail-followup-scorecard/v2", phase=phase,
+    scoring = resolved["record"].get("scoring")
+    version = "v3" if scoring and "worker_failure_limits" in scoring else "v2"
+    return dict(format="agent-memory-retail-followup-scorecard/" + version, phase=phase,
                 statuses=statuses, reviews=dict(reviews), completed_without_process_labels=unreviewed + reviews["unresolved"],
-                allocation=resolved["record"]["assigned"], scoring=resolved["record"].get("scoring"),
+                allocation=resolved["record"]["assigned"], scoring=scoring,
                 calibration=resolved["record"]["calibration"], primary=comparison, primary_result=verdict, contrasts=contrasts,
                 by_mode_arm=summary, continuation_billing=billing)
 
 
 class RetailRevisit:
     name = "tau2-retail-revisit"
+    execution_mode = "followup"
 
-    def resolve(self, plan, workspace, root, *, restore_native=True):
+    def resolve(self, plan, workspace, root, *, restore_native=True, progress=None):
         check_plan(plan, root)
         benchmark = plan["benchmark"]
         original = safe_path(Path(workspace) / "runs", benchmark["recording"])
@@ -305,8 +350,10 @@ class RetailRevisit:
         require(design["name"] == benchmark["recording"] and design["decision"]["worker"] == profile["endpoint_terms"]["worker"]["model"]
                 and not reg["jobs"]["continuation"] and digest(canonical(reg["jobs"])) == reg["preflight"]["registered_jobs_sha256"],
                 "Different study, worker or original decision schedule")
+        require(set(reg["endpoints"]) == {"worker", "user_simulator"}, "Historical follow-up endpoint roles changed")
         for role, terms in reg["endpoints"].items():
-            require(all(profile["endpoint_terms"][role][k] == terms[k] for k in ("model", "provider", "provider_name", "pricing")),
+            declared = profile["endpoint_terms"].get(role, {})
+            require(all(k in terms and declared.get(k) == terms[k] for k in ("model", "provider", "provider_name", "pricing")),
                     "Historical model route or price differs from the declared profile")
         published = read_json(asset_bytes(root, benchmark["decisions"]))
         require(published["registration_sha256"] == benchmark["registration_sha256"] and score_decisions(original, root=root) == published,
@@ -314,7 +361,7 @@ class RetailRevisit:
         previous = read_json(asset_bytes(root, design["inputs"]["previous_preflight"]))
         base = read_json(asset_bytes(root, design["inputs"]["base_design"]))
         native = prepare(root, base, workspace=workspace)
-        require(native["record"] == previous and all(m["canonical_slug"] == profile["expected_revisions"][role]
+        require(native["record"] == previous and all(m["canonical_slug"] == profile["expected_revisions"].get(role)
                     for role, m in native["models"].items()), "Native tasks, prefixes or model revisions changed")
         sample = set(previous["continuation_sample"])
         comparison = plan["comparison"]
@@ -331,7 +378,7 @@ class RetailRevisit:
         # No provider clients or append method are available to the preflight.
         runtime = dict(native, clients={}, guard=None)
         upstreams = {}
-        for job in selected:
+        for number, job in enumerate(selected, 1):
             run = job["run"]
             folder = safe_path(original, run)
             receipt = read_receipt(folder, "decision")
@@ -343,6 +390,8 @@ class RetailRevisit:
                                           blobs=BlobStore(folder), root=folder)
                 restore_decision(journal, job, native["tasks"][job["task"]], native["public"][job["prefix"]], runtime, receipt)
             upstreams[run] = receipt
+            if progress and (number % 50 == 0 or number == len(selected)):
+                progress("verify_checkpoint", number, len(selected), "0")
         require(digest(canonical(upstreams)) == benchmark["checkpoint_receipts_sha256"],
                 "Frozen first-decision receipts have changed")
         require(len(selected) == design["continuation"]["checkpoint_sessions"]
@@ -369,51 +418,61 @@ class RetailRevisit:
         return dict(record=record, original=original, registration=reg, jobs=selected, upstreams=upstreams,
                     prior_scores=scores, uncertainty=uncertainty, native=native)
 
-    def run(self, plan, workspace, root, *, approval, progress=None):
+    def run(self, plan, workspace, root, *, approval, increases=(), progress=None):
         from agent_memory_eval.study.adapters.tau_banking import approval_for
         require_declared_models(plan)
-        data = self.resolve(plan, workspace, root)
+        data = self.resolve(plan, workspace, root, progress=progress)
         record, native = data["record"], data["native"]
-        amount = approval_amount(approval.get("max_usd"))
-        require(isinstance(approval.get("user_authorization"), str) and approval["user_authorization"].strip()
-                and approval == approval_for(plan, record, max_usd=approval["max_usd"],
-                                            user_authorization=approval["user_authorization"]),
-                "Spending is not authorized for this follow-up plan and checkpoint cohort")
+        grants = [approval, *increases]
+        for index, grant in enumerate(grants):
+            amount = approval_amount(grant.get("max_usd"))
+            require(isinstance(grant.get("user_authorization"), str) and grant["user_authorization"].strip()
+                    and grant == approval_for(plan, record, max_usd=grant["max_usd"],
+                                             user_authorization=grant["user_authorization"]),
+                    "Spending is not authorized for this follow-up plan and checkpoint cohort")
+            if index:
+                check_increase(grants[index - 1], grant)
         require(os.getenv("OPENROUTER_API_KEY"), "Missing OpenRouter credentials")
         freeze = implementation_identity(root)
         profile = model_profile(plan, root)
         models = live_models(native["connection"])
         terms = endpoint_terms(models)
         require(set(models) == {"worker", "user_simulator"}
-                and all(terms[r] == profile["endpoint_terms"][r]
-                        and m["canonical_slug"] == profile["expected_revisions"][r] for r, m in models.items()),
+                and all(terms[r] == profile["endpoint_terms"].get(r)
+                        and m["canonical_slug"] == profile["expected_revisions"].get(r) for r, m in models.items()),
                 "Live worker or customer model, route or price differs from the plan")
         dest = safe_path(Path(workspace) / "runs", plan["id"])
         dest.mkdir(exist_ok=True)
         jobs = [j for j in data["jobs"] if data["upstreams"][j["run"]]["status"] == "checkpoint"]
         limits = native["protocol"]["limits"]
         max_calls = len(jobs) * (limits["worker_requests"] + limits["user_simulator_requests"])
-        with (dest / "controller.lock").open("a+b") as lock:
-            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
-            fixed(dest / "registration.json", dict(format=plan["format"], plan=plan, resolved=record, freeze=freeze,
+        with controller_lock(dest, exclusive=True):
+            registration = dest / "registration.json"
+            if registration.is_file():
+                freeze = registration_freeze(root, plan["id"], read(registration)["freeze"], freeze)
+            fixed(registration, dict(format=plan["format"], plan=plan, resolved=record, freeze=freeze,
                                                     endpoints=terms, jobs=dict(source=[], writer=[], decision=jobs, continuation=jobs)))
-            fixed(dest / "authorization.json", dict(approval, max_requests=max_calls))
-            for job in jobs:
-                copy_checkpoint(data["original"], dest, job, data["upstreams"][job["run"]])
             guard = ExpenseLedger(dest / "expense.jsonl", amount, max_calls, float("inf"))
+            register_grants(dest, grants, max_calls, guard.calls)
+            batch_id = uuid4().hex
+            write_json(dest / "batch-start.json", dict(batch_id=batch_id))
+            for job in jobs:
+                first = data["upstreams"][job["run"]]
+                copy_checkpoint(data["original"], dest, job, first)
+                restore_unsubmitted(data["original"], dest, job, first, guard)
             clients = {r: OpenRouterClient(m, guard, route=native["connection"][r]["provider"],
                        max_input_bytes=limits["max_input_bytes"], timeout_seconds=native["protocol"]["request_timeout_seconds"])
                        for r, m in models.items()}
             study = dict(native, jobs=dict(source=[], writer=[], decision=[], continuation=jobs))
             runtime = dict(study, guard=guard, clients=clients, models=models, seal_continuation=True)
             totals = execute(study, runtime,
-                             through="continuation", continuation="sample", destination=dest,
+                             through="continuation", continuation="sample", destination=dest, progress=progress,
                              admit_continuation=partial(first_request_fits, runtime=runtime),
                              pause_after_transient=plan["execution"]["pause_after_consecutive_transient_errors"])
             summary = dict(stages=totals, confirmed_usd=str(guard.spent), held_usd=str(guard.held),
                            reserved_calls=guard.calls, stopped_at_limit=guard.denied,
                            pause_reason=getattr(guard, "pause_reason", None))
-            write_json(dest / "summary.json", summary)
+            write_json(dest / "summary.json", dict(summary, batch_id=batch_id, authorized_usd=str(amount)))
             return summary
 
     def analyze(self, plan, workspace, root, *, reviews=None, review_packets=None):
@@ -422,11 +481,7 @@ class RetailRevisit:
         dest = safe_path(Path(workspace) / "runs", plan["id"])
         if not dest.exists():
             return self._score(plan, data, None, reviews, review_packets)
-        with (dest / "controller.lock").open("rb") as lock:
-            try:
-                fcntl.flock(lock, fcntl.LOCK_SH | fcntl.LOCK_NB)
-            except BlockingIOError as error:
-                raise ContractError("The follow-up controller is active; score its closed batch") from error
+        with controller_lock(dest, exclusive=False):
             return self._score(plan, data, dest, reviews, review_packets)
 
     @staticmethod
@@ -441,7 +496,15 @@ class RetailRevisit:
                     and reg["jobs"] == dict(source=[], writer=[], decision=eligible, continuation=eligible),
                     "Follow-up registration does not match the frozen cohort")
             require((dest / "summary.json").is_file(), "Resume the interrupted controller to reconcile costs before analysis")
+            summary = read(dest / "summary.json")
+            if plan.get("format") == FOLLOWUP_FORMAT:
+                batch = dest / "batch-start.json"
+                require(batch.is_file() and summary.get("batch_id") and summary["batch_id"] == read(batch).get("batch_id"),
+                        "Resume the interrupted controller: the last summary belongs to another batch")
             billing = audit_billing(dest, allow_interrupted_decisions=True, decision_prefixes=data["upstreams"])
+            if plan.get("format") == FOLLOWUP_FORMAT:
+                require(Decimal(summary["authorized_usd"]) == Decimal(billing["authorized_usd"]),
+                        "Resume to close the batch under its latest approved ceiling")
         amounts = charges_by_run(dest) if dest else {}
         labels = read(reviews) if reviews else {}
         rows, packets = [], {}
@@ -452,14 +515,14 @@ class RetailRevisit:
             row = consultation_row(folder, job, data["upstreams"][run], data["prior_scores"][run], labels, packets,
                                    original_folder=safe_path(data["original"], run),
                                    direct_review=bool(scoring) and primary,
-                                   native_failures=scoring.get("native_failure_terminations", ()))
+                                   native_failures=scoring.get("native_failure_terminations", ()),
+                                   worker_limits=scoring.get("worker_failure_limits", ()))
             calls, confirmed, held = amounts.get(run, (0, 0, 0))
             require(row["status"] != "budget_deferred" or calls == 0, "Deferred consultation already submitted a request")
             rows.append(dict(row, continuation_requests=calls, continuation_confirmed_usd=str(confirmed),
                              continuation_held_usd=str(held)))
         require(set(labels) <= packets.keys(), "Review includes an unknown public transcript")
         if dest:
-            summary = read(dest / "summary.json")
             attempted = Counter(r["status"] for r in rows if r["first_decision"] == "checkpoint"
                                 and r["status"] != "unstarted")
             require(dict(attempted) == summary["stages"]["continuation"],

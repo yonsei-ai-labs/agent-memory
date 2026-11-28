@@ -584,13 +584,21 @@ def continue_decision(journal, job, task, prefix, runtime, record):
         outcome = {"status": "error", "run": job["run"]}
         if isinstance(error, ProviderError):
             outcome["provider_error"] = code
-            if code == "STUDY_LIMIT" and prior_calls is not None and guard.calls == prior_calls:
-                outcome["status"] = "budget_deferred"
+            if code == "STUDY_LIMIT" and prior_calls is not None:
+                outcome["ceiling_usd"] = str(guard.cap)
+                if guard.calls == prior_calls:
+                    outcome["status"] = "budget_deferred"
             detail = error.response.get("error") if isinstance(error.response, dict) else None
             if isinstance(detail, dict) and type(detail.get("code")) is int:
                 outcome["http_status"] = detail["code"]
         else:
             outcome["reason"] = code
+        if code in {"ROLE_REQUEST_LIMIT", "INPUT_SIZE_LIMIT"}:
+            actor = getattr(error, "actor", None)
+            if actor is None:
+                starts = [e["payload"] for e in journal.events.values() if e["type"] == "model.request_started"]
+                actor = starts[-1]["actor_role"]
+            outcome["actor_role"] = actor
         finish(journal, bridge.ctx, bridge.memory, bridge.bank_id, code, continuation_outcome=outcome)
         return outcome
     reason = orch.termination_reason.value

@@ -299,6 +299,7 @@ def study_models(cfg, conn):
 class Tau2Study:
     """A τ² domain behind the declared-study runner; subclasses only name the domain."""
     name = None
+    execution_mode = "staged"
 
     @property
     def spec(self):
@@ -747,7 +748,19 @@ class Tau2Study:
             ref_unstarted = unstarted_stages(ref_root)
             for case in ref_cases:
                 source = first_pass_identity(workspace, run_root, sources[case["task"]])
-                require(source and source == first_pass_identity(workspace, ref_root, case),
+                reference_source = first_pass_identity(workspace, ref_root, case)
+                if source is None or reference_source is None:
+                    reason = "plan_first_pass_unavailable" if source is None else "reference_first_pass_unavailable"
+                    solve_stages = [s for s in case.get("scheduled_stages", ["solve"])
+                                    if s == "solve" or s.startswith("solve-repeat-")]
+                    for stage in solve_stages:
+                        repeat = 1 if stage == "solve" else int(stage.removeprefix("solve-repeat-"))
+                        rows.extend(dict(task=case["task_id"], source=case["task"], repeat=repeat,
+                                         condition=f"{label_root}/{arm}", origin=ref["recording"], attempt=int("attempt_of" in ref),
+                                         status="missing", success=None, missing_reason=reason, tokens=None, business_calls=None,
+                                         reads_list=0, reads_get=0, preloaded=False, cost_usd=None) for arm in case["arms"])
+                    continue
+                require(source == reference_source,
                         f"Reference {ref['recording']}/{case['task']} does not share the sealed first pass")
                 rows += [r for r in self._case_rows(workspace, ref_root, case, ref["recording"],
                                                     lambda arm, p=label_root: f"{p}/{arm}", 1 if "attempt_of" in ref else 0,

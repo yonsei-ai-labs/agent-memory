@@ -13,7 +13,8 @@ LEGACY_FORMAT = "agent-memory-study-plan/v1"  # Runs recorded before models were
 SCHEMA = "study-plan-v1.schema.json"  # Covers both formats; v2 requires the models block.
 STANDARD_MODELS = "protocols/models/project-standard-v1.json"
 LEGACY_FOLLOWUP_FORMAT = "agent-memory-retail-followup/v1"
-FOLLOWUP_FORMAT = "agent-memory-retail-followup/v2"
+FOLLOWUP_FORMAT = "agent-memory-retail-followup/v3"
+FOLLOWUP_FORMATS = {LEGACY_FOLLOWUP_FORMAT, "agent-memory-retail-followup/v2", FOLLOWUP_FORMAT}
 
 
 def _schema():
@@ -40,7 +41,7 @@ def plan_digest(plan):
 
 
 def check_plan(plan, root):
-    if isinstance(plan, dict) and plan.get("format") in {FOLLOWUP_FORMAT, LEGACY_FOLLOWUP_FORMAT}:
+    if isinstance(plan, dict) and plan.get("format") in FOLLOWUP_FORMATS:
         schema = read_json((SCHEMA_ROOT / "retail-followup-plan-v1.schema.json").read_bytes())
         error = next(Draft202012Validator(schema).iter_errors(plan), None)
         if error:
@@ -100,8 +101,8 @@ def load_plan(path, root):
 
 def require_declared_models(plan):
     """Only plans that name the models under study may spend or run."""
-    if plan["format"] == LEGACY_FOLLOWUP_FORMAT:
-        raise ContractError("Use the v2 follow-up with blinded primary review before authorizing or running")
+    if plan["format"] in FOLLOWUP_FORMATS - {FOLLOWUP_FORMAT}:
+        raise ContractError("Use the current follow-up with blinded primary review and worker limits before authorizing or running")
     if plan["format"] not in {FORMAT, FOLLOWUP_FORMAT} or "models" not in plan:
         raise ContractError("Declare the models under study (plan format v2) before running")
     return plan["models"]
@@ -121,4 +122,7 @@ def model_profile(plan, root):
     if (not isinstance(terms, dict) or not isinstance(terms.get("worker"), dict)
             or not terms["worker"].get("model") or not isinstance(revisions, dict) or not revisions.get("worker")):
         raise ContractError("Model profile must identify the worker endpoint and revision")
+    if plan.get("format") in FOLLOWUP_FORMATS:
+        if not isinstance(terms.get("user_simulator"), dict) or not revisions.get("user_simulator"):
+            raise ContractError("The follow-up model profile must identify the user_simulator endpoint and revision")
     return profile

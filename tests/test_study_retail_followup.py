@@ -3,6 +3,8 @@
 from copy import deepcopy
 from collections import Counter
 from pathlib import Path
+import subprocess
+import sys
 from tempfile import TemporaryDirectory
 from types import SimpleNamespace
 import unittest
@@ -65,12 +67,17 @@ class FollowupTests(unittest.TestCase):
         self.assertEqual(estimate["pairs"], audit["pairs"])
         self.assertEqual(estimate["registered_customers"], audit["customers"])
 
-    def test_archived_plan_is_readable_and_v2_requires_the_scoring_rules(self):
+    def test_archived_plans_are_readable_and_current_plan_requires_role_attribution(self):
         old = load_plan(ROOT / "protocols/studies/retail-revisit-followup-01.json", ROOT)
         with self.assertRaisesRegex(ContractError, "blinded primary"):
             require_declared_models(old)
-        active = load_plan(ROOT / "protocols/studies/retail-revisit-followup-02.json", ROOT)
+        v2 = load_plan(ROOT / "protocols/studies/retail-revisit-followup-02.json", ROOT)
+        with self.assertRaisesRegex(ContractError, "worker limits"):
+            require_declared_models(v2)
+        active = load_plan(ROOT / "protocols/studies/retail-revisit-followup-03.json", ROOT)
         self.assertEqual(active["benchmark"], old["benchmark"])
+        with self.assertRaisesRegex(ContractError, "worker_failure_limits"):
+            check_plan(dict(active, scoring=v2["scoring"]), ROOT)
         del active["scoring"]
         with self.assertRaisesRegex(ContractError, "scoring"):
             check_plan(active, ROOT)
@@ -128,6 +135,64 @@ class FollowupTests(unittest.TestCase):
             with self.subTest(amount=amount), self.assertRaises(ContractError):
                 approval_amount(amount)
 
+    def test_approval_increases_are_monotonic_and_linked_to_the_same_allocation(self):
+        from agent_memory_eval.study.followup_budget import approval_chain, publish_approval
+        with TemporaryDirectory() as tmp:
+            base = Path(tmp) / "grant.json"
+            first = dict(plan_id="study", resolved_sha256="abc", max_usd="0.1", user_authorization="fixture")
+            second = dict(first, max_usd="1", user_authorization="raise the cumulative fixture amount")
+            publish_approval(base, first)
+            publish_approval(base, second)
+            publish_approval(base, second)
+            self.assertEqual(approval_chain(base), [first, second])
+            self.assertEqual(read(base), first)
+            for change in (dict(max_usd="0.5"), dict(resolved_sha256="other", max_usd="2"), dict(user_authorization="", max_usd="2")):
+                with self.assertRaises(ContractError):
+                    publish_approval(base, dict(second, **change))
+            (base.with_suffix(".increases") / "000001.json").rename(base.with_suffix(".increases") / "000002.json")
+            with self.assertRaisesRegex(ContractError, "history"):
+                approval_chain(base)
+
+    def test_review_cli_outside_repository_and_incomplete_model_profile(self):
+        from agent_memory_eval.study.plan import model_profile
+        with TemporaryDirectory() as tmp:
+            plan = ROOT / "protocols/studies/retail-revisit-followup-03.json"
+            cmd = [sys.executable, "-I", "-m", "agent_memory_eval.study", "plan", "validate", "--plan", str(plan)]
+            output = subprocess.run(cmd, cwd=tmp, capture_output=True, check=True)
+            self.assertEqual(read_json(output.stdout)["plan"], "retail-revisit-followup-03")
+            data = read(plan)
+            partial = read(ROOT / data["models"]["profile"]["path"])
+            del partial["expected_revisions"]["user_simulator"]
+            with patch("agent_memory_eval.study.plan.asset_text", return_value=canonical(partial).decode()):
+                with self.assertRaisesRegex(ContractError, "user_simulator"):
+                    model_profile(data, ROOT)
+
+    def test_only_committed_ceiling_increases_can_change_the_resume_revision(self):
+        from agent_memory_eval.reproduction.freeze import implementation_identity
+        from agent_memory_eval.study.followup_budget import registration_freeze
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            def git(*args):
+                subprocess.run(["git", "-C", str(root), "-c", "user.name=Fixture", "-c", "user.email=fixture@example.test",
+                                *args], check=True, capture_output=True)
+            git("init", "-q")
+            code = root / "runner.py"
+            code.write_text("pass\n")
+            git("add", ".")
+            git("commit", "-qm", "fixed implementation")
+            first = implementation_identity(root)
+            grants = root / "artifacts/approvals/retail.increases"
+            grants.mkdir(parents=True)
+            (grants / "000001.json").write_text("{}\n")
+            git("add", ".")
+            git("commit", "-qm", "increase")
+            self.assertEqual(registration_freeze(root, "retail", first, implementation_identity(root)), first)
+            code.write_text("changed = True\n")
+            git("add", ".")
+            git("commit", "-qm", "changed implementation")
+            with self.assertRaisesRegex(ContractError, "registered implementation"):
+                registration_freeze(root, "retail", first, implementation_identity(root))
+
     def test_consecutive_outages_preserve_unsent_jobs_for_resume(self):
         jobs = [dict(run=f"r_{n}", in_sample=True) for n in range(3)]
         study = dict(jobs=dict(source=[], writer=[], decision=[], continuation=jobs), tasks={}, public={})
@@ -156,6 +221,11 @@ class FollowupTests(unittest.TestCase):
                      first_confirmed_usd="0", first_held_usd="0", continuation_confirmed_usd="0", continuation_held_usd="0",
                      **dict.fromkeys(ENDPOINTS, arm == "real")) for c in ("a", "b", "c", "d") for arm in ("real", "empty")]
         self.assertEqual(followup_scorecard(rows, data, comparison, {})["primary_result"], "improved_in_this_cohort")
+        negative = [dict(r, consent_without_reasking=r["arm"] == "empty") for r in rows]
+        negative[0].update(review="unresolved", consent_without_reasking=None)
+        worse = followup_scorecard(negative, data, comparison, {})
+        self.assertEqual(worse["primary_result"], "worse_in_this_cohort")
+        self.assertEqual(worse["contrasts"]["consent_without_reasking"]["bounds"], [-1, -.75])
         for row in rows[4:]:
             row.update(status="error", **dict.fromkeys(ENDPOINTS))
         self.assertEqual(followup_scorecard(rows, data, comparison, {})["primary_result"], "inconclusive")

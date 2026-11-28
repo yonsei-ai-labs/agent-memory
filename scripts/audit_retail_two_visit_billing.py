@@ -8,6 +8,7 @@ from pathlib import Path
 from agent_memory_eval.contracts.core import digest, read_json
 from agent_memory_eval.models.openrouter import request_reservation_usd
 from agent_memory_eval.recording.journal import BlobStore
+from agent_memory_eval.study.followup_budget import ceiling_schedule
 from scripts.analyze_full_retail import require
 from scripts.audit_retail_order_choice import publish
 from scripts.run_retail_two_visit import read
@@ -19,6 +20,9 @@ def audit(folder, *, allow_interrupted_decisions=False, decision_prefixes=None):
     if registration.get("format") == "retail-derived-two-visit/recovery-v1":
         jobs = {**jobs, **read(folder / "upstreams.json")["attempts"]}
     grants = read(folder / "authorization.json")
+    schedule = (ceiling_schedule(folder, grants) if registration.get("format") == "agent-memory-retail-followup/v3"
+                else [(0, Decimal(str(grants["max_usd"])))])
+    grant_index = 0
     path = folder / "expense.jsonl"
     ledger = path.read_bytes() if path.exists() or not allow_interrupted_decisions else b""
     require(ledger.endswith(b"\n") or (allow_interrupted_decisions and not ledger), "Truncated expense ledger")
@@ -34,6 +38,8 @@ def audit(folder, *, allow_interrupted_decisions=False, decision_prefixes=None):
                 seq == len(reservations) + 1 and Decimal(row["reserved"]) >= 0, "Invalid reservation sequence"
             )
             reservations[seq] = row
+            while grant_index + 1 < len(schedule) and schedule[grant_index + 1][0] < seq:
+                grant_index += 1
             calls[row["stage"], row["run"]].append(row)
             exposure += Decimal(row["reserved"])
         else:
@@ -44,7 +50,8 @@ def audit(folder, *, allow_interrupted_decisions=False, decision_prefixes=None):
             r.update(row)
             exposure += Decimal(row["cost"]) - Decimal(r["reserved"])
         maximum_exposure = max(maximum_exposure, exposure)
-        require(exposure <= Decimal(str(grants["max_usd"])), "Ledger exceeded the authorized cap")
+        require(exposure <= schedule[grant_index][1], "Ledger exceeded the cap authorized at that reservation")
+    require(schedule[-1][0] <= len(reservations), "Budget increase refers to a future reservation")
     matched = set()
     generation_ids = set()
     counts = Counter()
@@ -171,7 +178,7 @@ def audit(folder, *, allow_interrupted_decisions=False, decision_prefixes=None):
         "confirmed_usd": str(total),
         "held_usd": str(held),
         "peak_confirmed_plus_held_usd": str(maximum_exposure),
-        "authorized_usd": grants["max_usd"],
+        "authorized_usd": (str(schedule[-1][1]) if len(schedule) > 1 else grants["max_usd"]),
         **({"interrupted_requests": dict(interrupted)} if allow_interrupted_decisions else {}),
         "per_stage": {
             s: {k: str(v) if isinstance(v, Decimal) else v for k, v in g.items()} for s, g in by_stage.items()
